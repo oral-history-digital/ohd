@@ -176,22 +176,28 @@ class Interview < ActiveRecord::Base
       end.join(' ')
     end
     
-    dynamic_integer :registry_entry_and_registry_reference_type_search_facets do
-      (project.registry_entry_search_facets + project.registry_reference_type_search_facets).inject({}) do |mem, facet|
-        mem[facet.name.to_sym] = facet.name.to_sym#, :multiple => true, :stored => true, :references => RegistryEntry
-        #integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
-      end
-    end
+    #dynamic_integer :registry_entry_and_registry_reference_type_search_facets do
+      #(project.registry_entry_search_facets + project.registry_reference_type_search_facets).inject({}) do |mem, facet|
+        #mem[facet.name.to_sym] = facet.name.to_sym#, :multiple => true, :stored => true, :references => RegistryEntry
+        ##integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
+      #end
+    #end
 
-    dynamic_string :person_search_facets do
-      project.person_search_facets.inject({}) do |mem, facet|
-        mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
-      end
-    end
+    #dynamic_string :person_search_facets do
+      #project.person_search_facets.inject({}) do |mem, facet|
+        #mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
+      #end
+    #end
 
-    dynamic_string :interview_search_facets do
-      project.interview_search_facets.inject({}) do |mem, facet|
-        mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
+    #dynamic_string :interview_search_facets do
+      #project.interview_search_facets.inject({}) do |mem, facet|
+        #mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
+      #end
+    #end
+
+    dynamic_string :search_facets, :multiple => true, :stored => true do
+      project.search_facets.inject({}) do |mem, facet|
+        mem[facet.name] = facet.name.to_sym 
       end
     end
 
@@ -366,7 +372,7 @@ class Interview < ActiveRecord::Base
 
   after_initialize do 
     project.registry_entry_search_facets.each do |facet|
-      define_method facet.name do 
+      define_singleton_method facet.name do 
         if project.name.to_sym == :mog
           segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id) 
         else
@@ -378,7 +384,7 @@ class Interview < ActiveRecord::Base
 
   after_initialize do 
     project.registry_reference_type_search_facets.each do |facet|
-      define_method facet.name do 
+      define_singleton_method facet.name do 
         registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet.name).first.id).map(&:registry_entry_id)
       end
     end
@@ -387,7 +393,7 @@ class Interview < ActiveRecord::Base
   # ZWAR_MIGRATE: Uncomment this after migrating zwar
   after_initialize do 
     project.person_search_facets.each do |facet|
-      define_method facet.name do 
+      define_singleton_method facet.name do 
         # TODO: what if there are more intervviewees?
         interviewees.first && interviewees.first.send(facet.name.to_sym) ? interviewees.first.send(facet.name.to_sym).split(', ') : ''
       end

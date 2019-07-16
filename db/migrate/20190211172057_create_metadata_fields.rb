@@ -1,7 +1,5 @@
 class CreateMetadataFields < ActiveRecord::Migration[5.2]
   def change
-    #drop_table :metadata_fields
-    #drop_table :metadata_field_translations
     create_table :metadata_fields do |t|
       t.integer :project_id
       t.string :name 
@@ -21,9 +19,9 @@ class CreateMetadataFields < ActiveRecord::Migration[5.2]
       dir.up do
         MetadataField.create_translation_table! label: :string
 
-        YAML::load_file('config/project.yml')['default']['person_properties'].each do |hash|
+        YAML::load_file('config/project.yml')['default']['metadata_fields'].each do |hash|
           labels = hash.delete('label')
-          metadatum = MetadataField.create hash
+          metadatum = MetadataField.create hash.update(project_id: Project.actual.id)
           labels.each do |locale, label|
             metadatum.update_attributes locale: locale, label: label
           end if labels

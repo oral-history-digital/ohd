@@ -25,29 +25,27 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.timestamps
     end
 
+    add_column :interviews, :project_id, :integer
+
     reversible do |dir|
       dir.up do
         Project.create_translation_table! name: :string # was project_name in project.yml
+        #
+        # create this project
+        attributes = Project.attribute_names.inject({}) do |mem, name| 
+          mem[name] = YAML::load_file('config/project.yml')['default'][name] || YAML::load_file('config/project.yml')['default']["project_#{name}"] #Rails.configuration.project[name] || Rails.configuration.project["project_#{name}"]
+          mem
+        end
+        project = Project.create attributes
+        connection.execute(<<-EOQ)
+          UPDATE interviews
+          SET project_id = #{project.id}
+        EOQ
       end
 
       dir.down do
         Project.drop_translation_table!
       end
     end
-
-    add_column :interviews, :project_id, :integer
-
-    # create this project
-    attributes = Project.attribute_names.inject({}) do |mem, name| 
-      mem[name] = YAML::load_file('config/project.yml')['default'][name] || YAML::load_file('config/project.yml')['default']["project_#{name}"] #Rails.configuration.project[name] || Rails.configuration.project["project_#{name}"]
-      mem
-    end
-    project = Project.create attributes
-    binding.pry
-    connection.execute(<<-EOQ)
-      UPDATE interviews
-      SET project_id = #{project.id}
-    EOQ
-
   end
 end

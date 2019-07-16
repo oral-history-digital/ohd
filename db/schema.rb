@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_12_090507) do
+ActiveRecord::Schema.define(version: 2019_07_16_114858) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", null: false
@@ -127,6 +127,23 @@ ActiveRecord::Schema.define(version: 2019_07_12_090507) do
     t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
+  create_table "external_link_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "external_link_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "url"
+    t.index ["external_link_id"], name: "index_external_link_translations_on_external_link_id"
+    t.index ["locale"], name: "index_external_link_translations_on_locale"
+  end
+
+  create_table "external_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "histories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "person_id"
     t.datetime "created_at", null: false
@@ -189,6 +206,7 @@ ActiveRecord::Schema.define(version: 2019_07_12_090507) do
     t.integer "language_id"
     t.string "workflow_state", default: "unshared"
     t.string "doi_status"
+    t.integer "project_id"
   end
 
   create_table "language_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -203,6 +221,31 @@ ActiveRecord::Schema.define(version: 2019_07_12_090507) do
 
   create_table "languages", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "code"
+  end
+
+  create_table "metadata_field_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "metadata_field_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "label"
+    t.index ["locale"], name: "index_metadata_field_translations_on_locale"
+    t.index ["metadata_field_id"], name: "index_metadata_field_translations_on_metadata_field_id"
+  end
+
+  create_table "metadata_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "project_id"
+    t.string "name"
+    t.boolean "use_as_facet"
+    t.boolean "use_in_results_table"
+    t.boolean "use_in_details_view"
+    t.boolean "display_on_landing_page"
+    t.string "ref_object_type"
+    t.string "source"
+    t.string "label"
+    t.string "values"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "people", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -254,15 +297,47 @@ ActiveRecord::Schema.define(version: 2019_07_12_090507) do
     t.string "workflow_state"
   end
 
+  create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "available_locales"
+    t.string "default_locale"
+    t.string "view_modes"
+    t.string "upload_types"
+    t.string "primary_color_rgb"
+    t.string "shortname"
+    t.string "initials"
+    t.string "domain"
+    t.string "archive_domain"
+    t.string "doi"
+    t.string "cooperation_partner"
+    t.string "leader"
+    t.string "manager"
+    t.string "hosting_institution"
+    t.string "funder_names"
+    t.string "contact_email"
+    t.string "smtp_server"
+    t.string "has_newsletter"
+    t.string "hidden_registry_entry_ids"
+    t.string "pdf_registry_entry_codes"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "entry_code"
-    t.string "entry_desc"
+    t.string "code"
+    t.string "desc"
     t.string "latitude"
     t.string "longitude"
     t.string "workflow_state", null: false
     t.boolean "list_priority"
     t.datetime "created_at"
     t.datetime "updated_at"
+  end
+
+  create_table "registry_entry_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "registry_entry_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "registry_entry_relations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -508,6 +583,13 @@ ActiveRecord::Schema.define(version: 2019_07_12_090507) do
     t.index ["media_id"], name: "index_user_contents_on_media_id"
     t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash"
     t.index ["user_id"], name: "index_user_contents_on_user_id"
+  end
+
+  create_table "user_registration_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "project_id"
+    t.integer "user_registration_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "user_registrations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

@@ -186,7 +186,9 @@ class SearchesController < ApplicationController
         with(facet.to_sym).any_of(params[facet]) if params[facet]
       end
       with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
-      facet *current_project.search_facets_names
+      dynamic :search_facets do
+        facet *current_project.search_facets_names
+      end
       order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
       # TODO: sort linguistically
       paginate page: params[:page] || 1, per_page: 12

@@ -1,7 +1,7 @@
 class CreateExternalLinks < ActiveRecord::Migration[5.2]
   def change
     create_table :external_links do |t|
-      t.name :string
+      t.string :name 
       t.integer :project_id
 
       t.timestamps
@@ -12,7 +12,7 @@ class CreateExternalLinks < ActiveRecord::Migration[5.2]
         ExternalLink.create_translation_table! url: :string
 
         # create these external_links
-        config.project['external_links'].each do |name, values|
+        YAML::load_file('config/project.yml')['default']['external_links'].each do |name, values|
           link = ExternalLink.create name: name, project_id: Project.actual.id
           values.each do |locale, url|
             link.update_attributes locale: locale, url: url

@@ -23,11 +23,11 @@ class Project < ApplicationRecord
         nil
       end
     end
-  end
 
-  # TODO: fit this method 
-  def actual
-    first
+    # TODO: fit this method 
+    def actual
+      first
+    end
   end
 
   def name
@@ -38,21 +38,27 @@ class Project < ApplicationRecord
     name
   end
 
-  %w(registry_entry registry_reference_type person interview).each do |m|
-    define_method "#{m}_search_facets" do
-      metadata_fields.where(use_as_facet: true, facet_type: m.classify)
-    end
-  end
-
-  # used for metadata that is not used as facet
-  %w(registry_entry registry_reference_type person interview).each do |m|
-    define_method "#{m}_metadata_fields" do
-      metadata_fields.where(facet_type: m.classify)
-    end
+  def search_facets
+    metadata_fields.where(use_as_facet: true)
   end
 
   def search_facets_names
     metadata_fields.where(use_as_facet: true).map(&:name)
+  end
+
+  %w(registry_entry registry_reference_type person interview).each do |m|
+    define_method "#{m}_search_facets" do
+      metadata_fields.where(use_as_facet: true, source: m)
+      # TODO: classify source
+      #metadata_fields.where(use_as_facet: true, source: m.classify)
+    end
+    #
+    # used for metadata that is not used as facet
+    define_method "#{m}_metadata_fields" do
+      metadata_fields.where(source: m)
+      # TODO: classify source
+      #metadata_fields.where(source: m.classify)
+    end
   end
 
   def min_to_max_birth_year_range
