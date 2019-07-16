@@ -195,6 +195,9 @@ class Interview < ActiveRecord::Base
       end
     end
 
+    # TODO: replace the following occurences of I18n.available_locales with project.available_locales 
+    # or do sth. resulting in the same (e.g. reset I18n.available_locales in application_controller after having seen params[:project])
+    #
     # Create localized attributes so that we can order
     # interviews in all languages.
     I18n.available_locales.each do |locale|
