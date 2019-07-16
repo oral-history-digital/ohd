@@ -1015,7 +1015,7 @@ class RegistryEntry < ActiveRecord::Base
 
   def localized_hash
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = descriptor(projectified(locale))
+      mem[locale] = descriptor(locale)
       mem
     end
     #if registry_names.first

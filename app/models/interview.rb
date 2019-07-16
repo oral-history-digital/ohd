@@ -305,7 +305,7 @@ class Interview < ActiveRecord::Base
 
   def localized_hash_for(method)
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = self.send(method, projectified(locale))
+      mem[locale] = self.send(method, locale)
       mem
     end
   end
@@ -357,7 +357,6 @@ class Interview < ActiveRecord::Base
   # end
 
   def reverted_short_title(locale)
-    locale = projectified(locale)
     begin
       [interviewees.first.last_name(locale), interviewees.first.first_name(locale)].join(', ')
     rescue
@@ -546,22 +545,21 @@ class Interview < ActiveRecord::Base
         #break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
       #end
       #return nil unless used_locale.is_a?(Symbol)
-      used_locale = projectified(locale)
 
       # Build last name with a locale-specific pattern.
-      last_name = first_interviewee.last_name(used_locale) || ''
-      birth_name = first_interviewee.birth_name(used_locale)
+      last_name = first_interviewee.last_name(locale) || ''
+      birth_name = first_interviewee.birth_name(locale)
       lastname_with_birthname = if birth_name.blank?
                                   last_name
                                 else
-                                  I18n.t('interview_title_patterns.lastname_with_birthname', :locale => used_locale, :lastname => last_name, :birthname => birth_name)
+                                  I18n.t('interview_title_patterns.lastname_with_birthname', :locale => locale, :lastname => last_name, :birthname => birth_name)
                                 end
 
       # Build first name.
       first_names = []
-      first_name = first_interviewee.first_name(used_locale)
+      first_name = first_interviewee.first_name(locale)
       first_names << first_name unless first_name.blank?
-      other_first_names = first_interviewee.other_first_names(used_locale)
+      other_first_names = first_interviewee.other_first_names(locale)
       first_names << other_first_names unless other_first_names.blank?
 
       # Combine first and last name with a locale-specific pattern.
@@ -580,7 +578,6 @@ class Interview < ActiveRecord::Base
   end
 
   def short_title(locale)
-    locale = projectified(locale) 
     begin
       [interviewees.first.first_name(locale), interviewees.first.last_name(locale)].join(' ')
     rescue

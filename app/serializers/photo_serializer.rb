@@ -15,7 +15,7 @@ class PhotoSerializer < ApplicationSerializer
 
   def captions
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = ActionView::Base.full_sanitizer.sanitize(object.caption(projectified(locale)))
+      mem[locale] = ActionView::Base.full_sanitizer.sanitize(object.caption(locale))
       mem
     end
   end

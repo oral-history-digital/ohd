@@ -111,8 +111,8 @@ class InterviewsController < ApplicationController
 
   def show
     @interview = Interview.find_by_archive_id(params[:id])
-    @locale = projectified(params[:locale])
-    interview_locale = ISO_639.find(@interview.language.code).send(Project.alpha)
+    @locale = params[:locale]
+    interview_locale = @interview.transcript_locales.first
 
     respond_to do |format|
       format.json do
@@ -126,7 +126,7 @@ class InterviewsController < ApplicationController
       end
       format.pdf do
         @lang = params[:lang].to_sym
-        @orig_lang = projectified(@interview.language.code)
+        @orig_lang = @interview.transcript_locales.first
         pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
@@ -161,7 +161,7 @@ class InterviewsController < ApplicationController
 
   def metadata
     @interview = Interview.find_by_archive_id(params[:id])
-    @locale = projectified(params[:locale])
+    @locale = params[:locale]
     respond_to do |format|
       format.xml
     end
@@ -303,7 +303,7 @@ class InterviewsController < ApplicationController
 
   def doi_json(archive_id)
     @interview = Interview.find_by_archive_id(archive_id)
-    @locale = projectified(params[:locale])
+    @locale = params[:locale]
     xml = render_to_string(template: "/interviews/metadata.xml", layout: false)
     {
       "data": {
