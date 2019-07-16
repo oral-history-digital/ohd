@@ -11,7 +11,7 @@ class RegistryReferenceTypeSerializer < ApplicationSerializer
              end
 
   def registry_entry_code
-    object.try(:registry_entry).try(:entry_code) || ""
+    object.try(:registry_entry).try(:code) || ""
   end
 
   def display_on_landing_page

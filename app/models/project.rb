@@ -66,11 +66,8 @@ class Project < ApplicationRecord
   def search_facets_hash
     @search_facets_hash ||= metadata_fields.inject({}) do |mem, facet|
       case facet["source"]
-        # TODO: unify entry_code and code to code
-      when "registry_entry"
-        mem[facet.name.to_sym] = ::FacetSerializer.new(RegistryEntry.find_by_entry_code(facet.name)).as_json
-      when "registry_reference_type"
-        mem[facet.name.to_sym] = ::FacetSerializer.new(RegistryReferenceType.find_by_code(facet.name)).as_json
+      when "registry_entry",  "registry_reference_type"
+        mem[facet.name.to_sym] = ::FacetSerializer.new(facet.source.classify.constantize.find_by_code(facet.name)).as_json
       when "person"
         if facet.name == "year_of_birth"
           facet_label_hash = facet.localized_hash

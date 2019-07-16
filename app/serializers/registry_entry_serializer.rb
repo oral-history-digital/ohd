@@ -2,7 +2,7 @@ class RegistryEntrySerializer < ApplicationSerializer
   attributes :id,
              :latitude,
              :longitude,
-             :entry_desc,
+             :desc,
              :name,
              :notes,
              :parent_ids,

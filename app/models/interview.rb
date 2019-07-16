@@ -391,8 +391,8 @@ class Interview < ActiveRecord::Base
       end
     end
   end
-  #def facet_category_ids(entry_code)
-    #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(entry_code)).map(&:registry_entry_id)
+  #def facet_category_ids(code)
+    #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(code)).map(&:registry_entry_id)
   #end
 
   def languages

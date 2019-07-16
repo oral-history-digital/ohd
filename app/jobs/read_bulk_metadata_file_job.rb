@@ -127,7 +127,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     place = nil
     country = nil
 
-    places = RegistryEntry.find_by_entry_code('places')
+    places = RegistryEntry.find_by_code('places')
     
     # find or create country registry_entry as a child of places
     places.children.each do |c| 

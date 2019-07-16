@@ -84,7 +84,7 @@ class RegistryEntry < ActiveRecord::Base
         descriptor(locale)
       end
     end
-    text :entry_desc
+    text :desc
   end
 
   scope :with_state, -> (workflow_state) {
@@ -224,8 +224,8 @@ class RegistryEntry < ActiveRecord::Base
   end
 
   class << self
-    def descendant_ids(entry_code, entry_dedalo_code=nil)
-      entry = entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code) : find_by_entry_code(entry_code)
+    def descendant_ids(code, entry_dedalo_code=nil)
+      entry = entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code) : find_by_code(code)
       entry ? entry.descendants.map(&:id) : []
     end
 
@@ -237,7 +237,7 @@ class RegistryEntry < ActiveRecord::Base
     # name positions are given by the order
     #
     def create_with_parent_and_names(parent_id, names_w_locales, code=nil)
-      registry_entry = RegistryEntry.create entry_code: code, entry_desc: code, workflow_state: "public", list_priority: false
+      registry_entry = RegistryEntry.create code: code, desc: code, workflow_state: "public", list_priority: false
       RegistryHierarchy.create(ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true) if parent_id
 
       names_w_locales.gsub("\"", '').split('#').each do |name_w_locale| 
@@ -251,7 +251,7 @@ class RegistryEntry < ActiveRecord::Base
 
     def find_or_create_descendant(parent_code, descendant_name)
       descendant = nil
-      parent = find_by_entry_code parent_code
+      parent = find_by_code parent_code
       parent.children.each do |c| 
         descendant = c if c.registry_names.first.translations.map(&:descriptor).include?(descendant_name)
       end
@@ -1295,7 +1295,7 @@ class RegistryEntry < ActiveRecord::Base
         :id => id,
         :descriptor => all_descriptors,
         :display_name => options[:display_name],
-        :entry_desc => entry_desc
+        :desc => desc
     }
 
     # Hierarchy data.
@@ -1345,7 +1345,7 @@ class RegistryEntry < ActiveRecord::Base
     # Additional properties.
     if options[:include_properties]
       [
-          :entry_code, :latitude, :longitude, :workflow_state,
+          :code, :latitude, :longitude, :workflow_state,
           :list_priority, :updated_at
       ].each do |property_name|
         re_hash[property_name] = send(property_name)

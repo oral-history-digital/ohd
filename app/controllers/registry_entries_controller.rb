@@ -87,7 +87,7 @@ class RegistryEntriesController < ApplicationController
             ]
           end
 
-        json = Rails.cache.fetch "#{Project.cache_key_prefix}-#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
           registry_entries = registry_entries.includes(registry_names: :translations)
           {
             data: registry_entries.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
@@ -98,8 +98,8 @@ class RegistryEntriesController < ApplicationController
         render plain: json
       end
       format.pdf do
-        @registry_entries = RegistryEntry.where(entry_code: Project.pdf_registry_entry_codes).map { |e| e.descendants.includes(registry_names: :translations) }.flatten.sort { |a, b| a.descriptor <=> b.descriptor }
-        @locale = ISO_639.find(params[:locale]).send(Project.alpha).to_sym
+        @registry_entries = RegistryEntry.where(code: current_project.pdf_registry_entry_codes).map { |e| e.descendants.includes(registry_names: :translations) }.flatten.sort { |a, b| a.descriptor <=> b.descriptor }
+        @locale = params[:locale]
         pdf = render_to_string(:template => "/registry_entries/index.pdf.erb", :layout => "latex.pdf.erbtex")
         send_data pdf, filename: "registry_entries_#{@locale}.pdf", :type => "application/pdf" #, :disposition => "attachment"
       end
@@ -141,7 +141,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: parent.id,
           data_type: "registry_entries",
-          data: Rails.cache.fetch("#{Project.cache_key_prefix}-registry_entry-#{parent.id}-#{parent.updated_at}") { ::RegistryEntrySerializer.new(parent).as_json },
+          data: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{parent.id}-#{parent.updated_at}") { ::RegistryEntrySerializer.new(parent).as_json },
         }, status: :ok
       end
     end

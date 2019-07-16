@@ -241,9 +241,9 @@ export default class RegistryEntry extends React.Component {
     }
 
     description() {
-        if(this.props.registryEntry.entry_desc !== ''){
+        if(this.props.registryEntry.desc !== ''){
             return (
-                <div style={{color: 'grey', marginTop: '6px' }}>{this.props.registryEntry.entry_desc}</div>
+                <div style={{color: 'grey', marginTop: '6px' }}>{this.props.registryEntry.desc}</div>
             )
         }
     }
