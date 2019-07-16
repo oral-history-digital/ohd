@@ -4,6 +4,8 @@ class Segment < ActiveRecord::Base
   include IsoHelpers
 
   belongs_to :interview#, inverse_of: :segments
+  has_one :project, through: :interview
+
   belongs_to :speaking_person, 
     -> { includes(:translations) },
     class_name: 'Person',
@@ -159,7 +161,7 @@ class Segment < ActiveRecord::Base
     if self.tape.nil?
       raise "Interview ID missing." if self.interview_id.nil?
 
-      tape_media_id = (self.media_id || '')[Regexp.new("#{Project.project_initials}\\d{3}_\\d{2}_\\d{2}", Regexp::IGNORECASE)]
+      tape_media_id = (self.media_id || '')[Regexp.new("#{project.initials}\\d{3}_\\d{2}_\\d{2}", Regexp::IGNORECASE)]
       tape = Tape.where({media_id: tape_media_id, interview_id: self.interview_id}).first
       raise "No tape found for media_id='#{tape_media_id}' and interview_id=#{self.interview_id}" if tape.nil?
 
@@ -178,7 +180,10 @@ class Segment < ActiveRecord::Base
       'public'
     end
 
-    (Project.available_locales + [:orig]).each do |locale|
+    # TODO: replace the following occurences of I18n.available_locales with project.available_locales 
+    # or do sth. resulting in the same (e.g. reset I18n.available_locales in application_controller after having seen params[:project])
+    #
+    (I18n.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true
     end
     #dynamic_string :transcripts, stored: true  do # needs to be stored to enable highlighting
@@ -225,15 +230,16 @@ class Segment < ActiveRecord::Base
     
   end
 
-  (Project.available_locales).each do |locale|
-    define_method "text_#{locale}" do 
-      text(ISO_639.find(locale).send(Project.alpha))
+  after_initialize do
+    (project.available_locales).each do |locale|
+      define_method "text_#{locale}" do 
+        text(locale)
+      end
     end
   end
 
   def text_orig 
-    locale = orig_lang
-    text(ISO_639.find(locale).send(Project.alpha))
+    text(orig_lang)
   end
 
   def transcripts(allowed_to_see_all=false)
@@ -241,7 +247,7 @@ class Segment < ActiveRecord::Base
     selected_translations = hide_original ? translations.where(spec: 'with_replacements') : translations
     selected_translations.inject({}) do |mem, translation|
       # TODO: rm Nokogiri parser after segment sanitation
-      mem[ISO_639.find(translation.locale.to_s).alpha2] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : ''
+      mem[translation.locale.to_s] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : ''
       mem
     end
   end
@@ -315,7 +321,7 @@ class Segment < ActiveRecord::Base
 
   def as_vtt_subtitles(lang)
     # TODO: rm strip
-    raw_segment_text = text(projectified(lang))
+    raw_segment_text = text(lang)
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
     end_time = self.next.try(:time) || 9999
     "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
@@ -334,17 +340,17 @@ class Segment < ActiveRecord::Base
   def last_heading
     mainheadings = Segment.mainheadings_until(id, interview_id)
     if mainheadings.count > 0
-      mainheadings_count = mainheadings.map{|mh| mh.mainheading(projectified(Project.available_locales.first))}.uniq.count
+      mainheadings_count = mainheadings.map{|mh| mh.mainheading(interview.languages.first)}.uniq.count
       subheadings = Segment.subheadings_until(id, interview_id, mainheadings.last.id)
       
       if subheadings.count > 0
         I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheadings.last.subheading(projectified(locale))}"
+          mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheadings.last.subheading(locale)}"
           mem
         end
       else
         I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = "#{mainheadings_count}. #{mainheadings.last.mainheading(projectified(locale))}"
+          mem[locale] = "#{mainheadings_count}. #{mainheadings.last.mainheading(locale)}"
           mem
         end
       end
