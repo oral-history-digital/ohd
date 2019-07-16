@@ -183,7 +183,7 @@ default: &default
     - 
       name: birth_location
       source: registry_reference_type
-      ref_object_type: person
+      ref_object_type: Person
       display_on_landing_page: false
       use_as_facet: false
       label:
@@ -195,7 +195,7 @@ default: &default
     - 
       name: home_location
       source: registry_reference_type
-      ref_object_type: person
+      ref_object_type: Person
       use_in_detail_view: true
       use_as_facet: false
       label:
