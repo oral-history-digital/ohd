@@ -8,8 +8,8 @@ class PersonSerializer < ApplicationSerializer
                :typology,
              # :histories
              ] | 
-                Project.metadata_fields_registry_reference_type.select { |f| f["ref_object_type"] == "person" }.inject([]) { |mem, i| mem << i["name"] } |
-                Project.metadata_fields_person.inject([]) { |mem, i| mem << i["name"] }
+             MetadataField.where(ref_obect_type: 'Person', source: 'registry_reference_type').inject([]) { |mem, i| mem << i.name } |
+             MetadataField.where(source: 'Person').inject([]) { |mem, i| mem << i.name } 
 
 
   def names

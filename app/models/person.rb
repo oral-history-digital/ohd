@@ -11,7 +11,7 @@ class Person < ApplicationRecord
 
   has_many :contributions, dependent: :destroy
   has_many :interviews,
-    -> { where("contributions.contribution_type = '#{Project.contribution_types["interviewee"]}'") },
+    -> { where("contributions.contribution_type": "interviewee") },
     through: :contributions
 
   has_many :histories, dependent: :destroy
@@ -31,13 +31,13 @@ class Person < ApplicationRecord
       "public"
     end
 
-    (Project.available_locales + [:orig]).each do |locale|
+    (I18n.available_locales + [:orig]).each do |locale|
       string :"name_#{locale}" do
         "#{first_name(locale)} #{last_name(locale)}"
       end
     end
 
-    (Project.available_locales + [:orig]).each do |locale|
+    (I18n.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true do
         "#{first_name(locale)} #{last_name(locale)}"
       end
@@ -53,9 +53,9 @@ class Person < ApplicationRecord
     end
   end
 
-  Project.metadata_fields_registry_reference_type.select{|f| f['ref_object_type'] == 'person'}.each do |f|
-    define_method f["name"] do
-      ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: f["name"])).first
+  MetadataFields.where(source: 'registry_reference_type', ref_object_type: 'Person').each do |f|
+    define_method f.name do
+      ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: f.name)).first
       ref && ref.registry_entry
     end
   end
@@ -67,7 +67,7 @@ class Person < ApplicationRecord
   def name(last_name_as_inital = false)
     I18n.available_locales.inject({}) do |mem, locale|
       inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)
-      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}" if Project.available_locales.include?(locale.to_s)
+      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}" if I18n.available_locales.include?(locale.to_s)
       mem
     end
   end
