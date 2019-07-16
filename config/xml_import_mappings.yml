@@ -104,8 +104,8 @@ annotation:
 registry-entry:
   key_attributes: 'id'
   id: 'id'
-  entry-code: 'entry_code'
-  entry-desc: 'entry_desc'
+  entry-code: 'code'
+  entry-desc: 'desc'
   latitude: 'latitude'
   longitude: 'longitude'
   workflow-state: 'workflow_state'
