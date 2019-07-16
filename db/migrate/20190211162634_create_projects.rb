@@ -1,6 +1,5 @@
 class CreateProjects < ActiveRecord::Migration[5.2]
   def change
-    drop_table :projects
     create_table :projects do |t|
       t.string :available_locales
       t.string :default_locale
@@ -36,7 +35,7 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       end
     end
 
-    #add_column :interviews, :project_id, :integer
+    add_column :interviews, :project_id, :integer
 
     # create this project
     attributes = Project.attribute_names.inject({}) do |mem, name| 
