@@ -20,6 +20,11 @@ export default class ArchiveSearch extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 1);
+        this.props.setViewMode(this.props.viewModes[0]);
+    }
+
+    componentWillUpdate(nextProps) {
+        this.props.setViewMode(nextProps.viewModes[0])
     }
 
     content(displayType) {
