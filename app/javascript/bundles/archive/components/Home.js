@@ -33,7 +33,9 @@ export default class Home extends React.Component {
     content() {
         return (
                 <WrapperPageContainer
-                    tabIndex={0}>
+                    // show login tab automatically, unless we're in campscapes
+                    // TODO: generalize this
+                    tabIndex={this.project !== 'campscapes' ? 0 : -1}>
                     <div className='wrapper-content home-content'
                         dangerouslySetInnerHTML = {{__html: this.props.homeContent}}
                     />
