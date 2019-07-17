@@ -4,8 +4,6 @@ import Interview from '../components/Interview';
 import { fetchData } from '../actions/dataActionCreators';
 import { setArchiveId } from '../actions/archiveActionCreators';
 
-//import { getInterview } from '../../../lib/utils';
-
 const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
@@ -17,6 +15,7 @@ const mapStateToProps = (state) => {
         interviewsStatus: state.data.statuses.interviews,
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
+        project: state.archive.project,
         doiContentsStatus: state.data.statuses.doi_contents,
     }
 }

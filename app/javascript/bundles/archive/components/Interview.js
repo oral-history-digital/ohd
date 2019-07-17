@@ -1,10 +1,14 @@
 import React from 'react';
 
 import WrapperPageContainer from '../containers/WrapperPageContainer';
+import InterviewInfoContainer from '../containers/InterviewInfoContainer';
+import InterviewDataContainer from '../containers/InterviewDataContainer';
+import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
+import PersonDataContainer from '../containers/PersonDataContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import { t, fullname, getInterviewee } from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 
 export default class Interview extends React.Component {
 
@@ -112,6 +116,18 @@ export default class Interview extends React.Component {
                     <AuthShowContainer ifLoggedOut={true}>
                         {this.loggedOutContent()}
                     </AuthShowContainer>
+                    {/* for campscapes only: show metadata on left side. TODO: generalize this */}
+                    <div style={{"padding": "5%"}} className={this.props.project !== 'campscapes' && 'hidden'}>
+                        <h3>{t(this.props, 'person_info')}</h3>
+                        <div>
+                            <PersonDataContainer/>
+                            <InterviewRegistryReferencesContainer
+                                refObjectType={'person'}
+                            />
+                        </div>
+                        <h3>{t(this.props, 'interview_info')}</h3>
+                        <InterviewInfoContainer refObjectType={'interview'}/>
+                    </div>
                 </WrapperPageContainer>
             );
         } else {
