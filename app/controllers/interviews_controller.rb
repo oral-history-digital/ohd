@@ -112,7 +112,7 @@ class InterviewsController < ApplicationController
   def show
     @interview = Interview.find_by_archive_id(params[:id])
     @locale = projectified(params[:locale])
-    interview_locale = ISO_639.find(@interview.language.code).send(Project.alpha)
+    interview_locale = @interview.language && ISO_639.find(@interview.language.code).send(Project.alpha)
 
     respond_to do |format|
       format.json do
