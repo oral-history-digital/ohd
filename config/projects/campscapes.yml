@@ -225,6 +225,9 @@ default: &default
       use_as_facet: false
       display_on_landing_page: true
       use_in_results_table: false
+      label:
+        de: Ort des Interviews
+        en: Interview location
 
   fullname_on_landing_page: true
 
