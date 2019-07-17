@@ -254,7 +254,7 @@ header.site-header {
   // -webkit-transition: max-height 1s;
   // transition: max-height 1s;
   @include screen-m {
-    padding: 30px 5%;
+    padding: 30px 5% 25px;
   }
 }
 .video-title-container {
