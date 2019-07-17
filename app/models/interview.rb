@@ -169,7 +169,7 @@ class Interview < ActiveRecord::Base
     string :title, :stored => true
 
     # in order to fast access places of birth for all interviews
-    string :birth_location, :stored => true
+    # string :birth_location, :stored => true
 
     text :transcript, :boost => 5 do
       segments.includes(:translations).inject([]) do |all, segment|
