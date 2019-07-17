@@ -20,11 +20,6 @@ export default class ArchiveSearch extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 1);
-        this.props.setViewMode(this.props.viewModes[0]);
-    }
-
-    componentWillUpdate(nextProps) {
-        this.props.setViewMode(nextProps.viewModes[0])
     }
 
     content(displayType) {
@@ -245,6 +240,7 @@ export default class ArchiveSearch extends React.Component {
 
     tabPanels() {
         let _this = this
+        // alert("" + this.props.viewModes.length + " " + this.props.viewModes[0])
         return this.props.viewModes.map(function(viewMode, i) {
             return (
                 <TabPanel key={i}>

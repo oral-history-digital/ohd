@@ -77,7 +77,7 @@ const archive = (state = initialState, action) => {
                 languages: action.languages,
                 uploadTypes: action.uploadTypes,
                 locales: action.locales,
-                viewMode: state.viewMode || action.viewMode,
+                viewMode: action.viewMode,
                 viewModes: action.viewModes,
                 detailViewFields: action.detailViewFields,
                 listColumns: action.listColumns,
