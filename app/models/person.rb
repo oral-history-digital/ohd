@@ -53,7 +53,7 @@ class Person < ApplicationRecord
     end
   end
 
-  Project.metadata_fields_registry_reference_type.select{|f| f['ref_object_type'] == 'person'}.each do |f|
+  Project.metadata_fields_registry_reference_type.select { |f| f["ref_object_type"] == "person" }.each do |f|
     define_method f["name"] do
       ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: f["name"])).first
       ref && ref.registry_entry
@@ -61,7 +61,7 @@ class Person < ApplicationRecord
   end
 
   def year_of_birth
-    date_of_birth.blank? ? "?" : date_of_birth[/19\d{2}/]
+    date_of_birth.blank? ? "" : date_of_birth[/19\d{2}/]
   end
 
   def name(last_name_as_inital = false)

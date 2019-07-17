@@ -170,6 +170,15 @@ default: &default
         female: female
         male: male
     - 
+      name: date_of_birth
+      source: person
+      use_as_facet: false
+      display_on_landing_page: true
+      use_in_detail_view: true
+      label:
+        de: Geburtsdatum
+        en: Date of Birth
+    - 
       name: year_of_birth
       source: person
       use_as_facet: false
