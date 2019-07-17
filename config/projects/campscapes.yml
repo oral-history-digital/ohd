@@ -67,20 +67,24 @@ default: &default
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
     conditions: #nutzungsbedingungen:
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/index.html'
+      en: 'http://www.campscapes.org/wpautoterms/terms-and-conditions/'
+      de: 'http://www.campscapes.org/wpautoterms/terms-and-conditions/'
     # request_for_use: #nutzungsantrag:
     #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       # ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
     privacy_protection: #datenschutzbestimmungen:
-      en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/hinweise_zum_datenschutz/index.html'
+      en: 'http://www.campscapes.org/wpautoterms/privacy-policy/'
+      de: 'http://www.campscapes.org/wpautoterms/privacy-policy/'
     # annotation_guidelines:
     #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
     # team:
     #   en: 'http://www.zwangsarbeit-archiv.de/en/team'
     contact: #kontakt:
-      en: 'http://www.zwangsarbeit-archiv.de/en/kontakt'
+      en: ' https://www.cedis.fu-berlin.de/services/projektentwicklung/aktuell/ic-access/index.html'
+      de: ' https://www.cedis.fu-berlin.de/services/projektentwicklung/aktuell/ic-access/index.html'
     legal_info: #impressum:
-      en: 'http://www.zwangsarbeit-archiv.de/en/impressum'
+      en: 'http://www.campscapes.org/'
+      de: 'http://www.campscapes.org/'
 
   # Please mount the CIFS storage server locally like this (read-only for normal users!):
   # sudo mkdir -p /mnt/eaz-diga.cedis.fu-berlin.de/data
@@ -228,6 +232,16 @@ default: &default
       label:
         de: Ort des Interviews
         en: Interview location
+    # - 
+    #   name: accessibility
+    #   source: registry_entry
+    #   use_as_facet: true
+    #   display_on_landing_page: true
+    #   use_in_detail_view: true
+    #   use_in_results_table: true
+    #   label:
+    #     de: Zugänglichkeit
+    #     en: Accessibility
 
   fullname_on_landing_page: true
 
