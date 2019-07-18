@@ -25,11 +25,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
           unless data[0].blank? && data[1].blank? && data[2].blank?
             interviewee = find_or_create_person(first_name: data[1], birth_name: data[2], last_name: data[3], other_first_names: data[4], gender: gender(data[5]), date_of_birth: data[6] || data[7])
 
-            interviewer_names = data[18].split(/[ ,]/).reject(&:blank?)
-            interviewer = find_or_create_person(first_name: interviewer_names[0], last_name: interviewer_names[1])
-
-            Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
-            Contribution.find_or_create_by person_id: interviewer.id, interview_id: interview.id, contribution_type: 'interviewer' if interviewer
+            interviewer_names = data[18] && data[18].split(/[ ,]/).reject(&:blank?)
+            interviewer = find_or_create_person(first_name: interviewer_names[0], last_name: interviewer_names[1]) if interviewer_names
 
             short_bio = interviewee.biographical_entries.where(text: data[12]).first
             interviewee.biographical_entries << BiographicalEntry.create(text: data[12]) unless short_bio || data[12].blank?
@@ -51,6 +48,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
             else
               interview = Interview.create interview_data
             end
+
+            Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
+            Contribution.find_or_create_by person_id: interviewer.id, interview_id: interview.id, contribution_type: 'interviewer' if interviewer
 
             # create accesibility and reference it
             accessibility = data[17] && RegistryEntry.find_or_create_descendant('accessibility', data[17])
@@ -102,7 +102,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_person(opts)
-    Person.where(opts).first || Person.create opts
+    Person.where(opts).first || Person.create(opts)
   end
 
   def find_or_create_collection(name)
@@ -167,7 +167,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def log(text, error=true)
-    File.open(File.join(Rails.root, 'tmp', 'metadata_import.log'), 'a') do |f|
+    File.open(File.join(Rails.root, 'log', 'metadata_import.log'), 'a') do |f|
       f.puts "* #{DateTime.now} - #{error ? 'ERROR' : 'INFO'}: #{text}"
     end
   end
