@@ -7,10 +7,11 @@ import Home from '../components/Home';
 const mapStateToProps = (state) => {
 
     return {
+        account: state.data.accounts.current,
         homeContent: state.archive.homeContent[state.archive.locale],
         locale: state.archive.locale,
+        project: state.archive.project,
         translations: state.archive.translations,
-        account: state.data.accounts.current
     }
 }
 

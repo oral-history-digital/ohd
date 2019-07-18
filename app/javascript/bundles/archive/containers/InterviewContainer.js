@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import Interview from '../components/Interview';
 import { fetchData } from '../actions/dataActionCreators';
 import { setArchiveId } from '../actions/archiveActionCreators';
-
-//import { getInterview } from '../../../lib/utils';
+import { getInterviewArchiveIdWithOffset } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
@@ -17,7 +16,10 @@ const mapStateToProps = (state) => {
         interviewsStatus: state.data.statuses.interviews,
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
+        project: state.archive.project,
         doiContentsStatus: state.data.statuses.doi_contents,
+        prevArchiveId: getInterviewArchiveIdWithOffset(state.archive.archiveId, state.search.archive.foundInterviews, -1),
+        nextArchiveId: getInterviewArchiveIdWithOffset(state.archive.archiveId, state.search.archive.foundInterviews, 1),
     }
 }
 
