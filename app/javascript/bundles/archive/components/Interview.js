@@ -111,38 +111,73 @@ export default class Interview extends React.Component {
             return (
                 <WrapperPageContainer tabIndex={tabIndex}>
                     <AuthShowContainer ifLoggedIn={true}>
-                        <VideoPlayerContainer interview={this.interview()}/>
-                        <InterviewTabsContainer interview={this.interview()}/>
+                        <VideoPlayerContainer
+                            interview={this.interview()}
+                        />
+                        <InterviewTabsContainer
+                            interview={this.interview()}
+                        />
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
                         {this.loggedOutContent()}
                     </AuthShowContainer>
                     {/* for campscapes only: show metadata on left side. TODO: generalize this */}
-                    <div style={{"padding": "5%"}} className={this.props.project !== 'campscapes' && 'hidden'}>
-                        <h3>{t(this.props, 'person_info')}</h3>
+                    <div
+                        style={{ padding: "5%" }}
+                        className={
+                            this.props.project !== "campscapes" &&
+                            "hidden"
+                        }
+                    >
+                        <h3>{t(this.props, "person_info")}</h3>
                         <div>
-                            <PersonDataContainer/>
+                            <PersonDataContainer />
                             <InterviewRegistryReferencesContainer
-                                refObjectType={'person'}
+                                refObjectType={"person"}
                             />
                         </div>
-                        <h3>{t(this.props, 'interview_info')}</h3>
-                        <InterviewInfoContainer refObjectType={'interview'}/>
+                        <h3>{t(this.props, "interview_info")}</h3>
+                        <InterviewInfoContainer
+                            refObjectType={"interview"}
+                        />
                     </div>
                     {/* TODO: this div is needs to get a better structure, and inline styles have to be removed */}
-                    <div style={{'padding': '5%'}} className={this.props.project !== 'campscapes' && 'hidden'}>
-                        <Link className={`search-result-link ${!!this.props.prevArchiveId || 'hidden'}`}
-                            to={'/' + this.props.locale + '/interviews/' + this.props.prevArchiveId}
-                            style={{'padding-right': '10%'}}
+                    <div
+                        style={{ padding: "5%" }}
+                        className={
+                            this.props.project !== "campscapes" &&
+                            "hidden"
+                        }
+                    >
+                        <Link
+                            className={`search-result-link ${!!this
+                                .props.prevArchiveId || "hidden"}`}
+                            to={
+                                "/" +
+                                this.props.locale +
+                                "/interviews/" +
+                                this.props.prevArchiveId
+                            }
+                            style={{ "margin-right": "10%" }}
                         >
-                            <i className={'fa fa-chevron-left'} />
+                            <i className={"fa fa-chevron-left"} />
                             {this.props.prevArchiveId}
                         </Link>
-                        <Link className={`search-result-link ${!!this.props.nextArchiveId || 'hidden'}`}
-                            to={'/' + this.props.locale + '/interviews/' + this.props.nextArchiveId}
+                        <Link
+                            className={`search-result-link ${!!this
+                                .props.nextArchiveId || "hidden"}`}
+                            to={
+                                "/" +
+                                this.props.locale +
+                                "/interviews/" +
+                                this.props.nextArchiveId
+                            }
                         >
                             {this.props.nextArchiveId}
-                            <i className={'fa fa-chevron-right'} style={{'margin-left': 10}}/>
+                            <i
+                                className={"fa fa-chevron-right"}
+                                style={{ "margin-left": 10 }}
+                            />
                         </Link>
                     </div>
                 </WrapperPageContainer>
