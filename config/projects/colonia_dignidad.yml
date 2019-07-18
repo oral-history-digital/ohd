@@ -143,52 +143,98 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  metadata_fields:
-    - name: 'person_reference'
-      source: 'registry_entry'
-    - name: 'forced_labor_groups'
-      source: 'registry_entry'
+  metadata_fields: 
+    - 
+      name: person_reference
+      source: registry_entry
+    - 
+      name: forced_labor_groups
+      source: registry_entry
+      display_on_landing_page: true
       use_as_facet: true
-      display_on_landing_page: true`
-    - name: 'forced_labor_fields'
-      source: 'registry_entry'
+    - 
+      name: forced_labor_fields
+      source: registry_entry
       use_as_facet: true
-    - name: 'language_id'
-      source: 'language'
+    - 
+      name: language
+      source: language
+      use_in_results_table: true
+      label:
+        de: Sprache
+        en: Language
+        ru: Язык
+    - 
+      name: language_id
+      source: language
       use_as_facet: true
-    - name: 'year_of_birth'
-      source: 'person'
+      label:
+        de: Sprache
+        en: Language
+        ru: Язык
+    -
+      name: date_of_birth
+      source: person
+      use_in_detail_view: true
+      label:
+        de: Geburtsdatum
+        en: Date of Birth
+    - 
+      name: year_of_birth
+      source: person
       use_as_facet: true
-    - name: 'gender'
-      source: 'person'
+    - 
+      name: gender
+      source: person
       use_as_facet: true
-      values:
-        female: 'female'
-        male: 'male'
-    - name: 'collection_id'
-      source: 'collection'
-      use_as_facet: true 
-    - name: 'media_type'
-      source: 'interview'
+      values: 
+        female: female
+        male: male
+    - 
+      name: collection_id
+      source: collection
       use_as_facet: true
-    - name: 'birth_location'
-      source: 'registry_reference_type'
-      use_as_facet: false
+    - 
+      name: media_type
+      source: interview
+      use_in_results_table: true
+      use_as_facet: true
+      label:
+        de: Medientyp
+        en: Media Type
+        ru: Аудио/Видео
+    - 
+      name: birth_location
+      source: registry_reference_type
+      ref_object_type: person
       display_on_landing_page: false
-    - name: 'forced_labor_habitations'
-      source: 'registry_entry'
-      # use_as_facet: true
-    - name: 'home_location'
-      source: 'registry_reference_type'
       use_as_facet: false
-    - name: 'forced_labor_location'
-      source: 'registry_reference_type'
+      label:
+        de: Geburtsort
+        en: Place of Birth
+    - 
+      name: forced_labor_habitations
+      source: registry_entry
+    - 
+      name: home_location
+      source: registry_reference_type
+      ref_object_type: person
+      use_in_detail_view: true
       use_as_facet: false
-    - name: 'deportation_location'
-      source: 'registry_reference_type'
+      label:
+        de: Herkunftsort
+        en: Home Location
+    - 
+      name: forced_labor_location
+      source: registry_reference_type
       use_as_facet: false
-    - name: 'return_location'
-      source: 'registry_reference_type'
+    - 
+      name: deportation_location
+      source: registry_reference_type
+      use_as_facet: false
+    - 
+      name: return_location
+      source: registry_reference_type
       use_as_facet: false
 
   # NB: The map has not yet been generalized to work for all historical
