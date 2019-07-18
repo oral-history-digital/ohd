@@ -23,11 +23,13 @@ class ReadBulkMetadataFileJob < ApplicationJob
       unless index == 0
         begin
           unless data[0].blank? && data[1].blank? && data[2].blank?
-            interviewee = Person.where(first_name: data[1], birth_name: data[2], last_name: data[3], other_first_names: data[4], gender: gender(data[5]), date_of_birth: data[6] || data[7]).first
-            if interviewee
-            else
-              interviewee = Person.create first_name: data[1] && data[1][0..200], birth_name: data[2] && data[2][0..200], last_name: data[3] && data[3][0..200], other_first_names: data[4] && data[4][0..200], gender: gender(data[5]), date_of_birth: data[6] || data[7]
-            end
+            interviewee = find_or_create_person(first_name: data[1], birth_name: data[2], last_name: data[3], other_first_names: data[4], gender: gender(data[5]), date_of_birth: data[6] || data[7])
+
+            interviewer_names = data[18].split(/[ ,]/).reject(&:blank?)
+            interviewer = find_or_create_person(first_name: interviewer_names[0], last_name: interviewer_names[1])
+
+            Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
+            Contribution.find_or_create_by person_id: interviewer.id, interview_id: interview.id, contribution_type: 'interviewer' if interviewer
 
             short_bio = interviewee.biographical_entries.where(text: data[12]).first
             interviewee.biographical_entries << BiographicalEntry.create(text: data[12]) unless short_bio || data[12].blank?
@@ -50,7 +52,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
               interview = Interview.create interview_data
             end
 
-            Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: Project.contribution_types['interviewee']
+            # create accesibility and reference it
+            accessibility = data[17] && RegistryEntry.find_or_create_descendant('accessibility', data[17])
+            create_reference(accessibility.id, interview, interview) if accessibility
 
             # create camp and reference it
             camp = data[32] && RegistryEntry.find_or_create_descendant('camps', data[32])
@@ -97,6 +101,10 @@ class ReadBulkMetadataFileJob < ApplicationJob
     "new#{format("%04d", number)}"
   end
 
+  def find_or_create_person(opts)
+    Person.where(opts).first || Person.create opts
+  end
+
   def find_or_create_collection(name)
     collection = nil
     Collection.all.each do |c| 
@@ -136,7 +144,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
     if country
     elsif country_name && country_name.length > 0 # might be only e.g. D 
-      country = RegistryEntry.create_with_parent_and_names(places.id, "#{I18n.default_locale}::#{country_name.gsub(' ', ';')}") 
+      country = RegistryEntry.create_with_parent_and_names(places.id, "#{I18n.locale}::#{country_name.gsub(' ', ';')}") 
     end
 
     if country
@@ -149,7 +157,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     if place
     elsif name && name.length > 1
       parent_place = country || places
-      place = RegistryEntry.create_with_parent_and_names(parent_place.id, "#{I18n.default_locale}::#{name.gsub(' ', ';')}") 
+      place = RegistryEntry.create_with_parent_and_names(parent_place.id, "#{I18n.locale}::#{name.gsub(' ', ';')}") 
     end
     place
   end
