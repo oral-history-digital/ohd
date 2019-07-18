@@ -38,7 +38,7 @@ namespace :users do
     }
 
     admins.each do |login, name_parts|
-      account = UserAccount.create login: login, email: login
+      account = UserAccount.new login: login, email: login
       account.skip_confirmation!
       #next if account.nil?
       reg = account.build_user_registration
