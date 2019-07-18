@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
@@ -127,6 +128,22 @@ export default class Interview extends React.Component {
                         </div>
                         <h3>{t(this.props, 'interview_info')}</h3>
                         <InterviewInfoContainer refObjectType={'interview'}/>
+                    </div>
+                    {/* TODO: this div is needs to get a better structure, and inline styles have to be removed */}
+                    <div style={{'padding': '5%'}} className={this.props.project !== 'campscapes' && 'hidden'}>
+                        <Link className={`search-result-link ${!!this.props.prevArchiveId || 'hidden'}`}
+                            to={'/' + this.props.locale + '/interviews/' + this.props.prevArchiveId}
+                            style={{'padding-right': '10%'}}
+                        >
+                            <i className={'fa fa-chevron-left'} />
+                            {this.props.prevArchiveId}
+                        </Link>
+                        <Link className={`search-result-link ${!!this.props.nextArchiveId || 'hidden'}`}
+                            to={'/' + this.props.locale + '/interviews/' + this.props.nextArchiveId}
+                        >
+                            {this.props.nextArchiveId}
+                            <i className={'fa fa-chevron-right'} style={{'margin-left': 10}}/>
+                        </Link>
                     </div>
                 </WrapperPageContainer>
             );
