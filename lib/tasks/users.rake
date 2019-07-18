@@ -34,6 +34,7 @@ namespace :users do
     admins = { 
       'jmb@cedis.fu-berlin.de' => %w(Herr Michael Baur),
       'rico.simke@cedis.fu-berlin.de' => %w(Herr Rico Simke),
+      'cord.pagenstecher@cedis.fu-berlin.de' => %w(Herr Cord Pagenstecher),
       'chrgregor@googlemail.com' => %w(Herr Christian Gregor)
     }
 
