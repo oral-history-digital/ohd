@@ -10,9 +10,11 @@ class Project < ApplicationRecord
   has_many :user_registrations,
     through: :user_registration_projects
 
+  translates :name 
+
   class << self
     def config
-      @config ||= {} #Rails.configuration.project
+      @config ||= Rails.configuration.project
     end
 
     def method_missing(n, *args, &block)
@@ -30,7 +32,7 @@ class Project < ApplicationRecord
     end
   end
 
-  def name
+  def identifier
     shortname.downcase
   end
 
@@ -44,6 +46,14 @@ class Project < ApplicationRecord
 
   def search_facets_names
     metadata_fields.where(use_as_facet: true).map(&:name)
+  end
+
+  def list_columns
+    metadata_fields.where(use_in_results_table: true)
+  end
+
+  def detail_view_fields
+    metadata_fields.where(use_in_details_view: true)
   end
 
   %w(registry_entry registry_reference_type person interview).each do |m|

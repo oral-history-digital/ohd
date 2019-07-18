@@ -54,7 +54,7 @@ class InterviewSerializer < ApplicationSerializer
              #:citation_timecode,
              #:indexed_at,
              #:src,
-             ] | Project.list_columns.inject([]) { |mem, i| mem << i["name"] } | Project.detail_view_fields.inject([]) { |mem, i| mem << i["name"] }
+  ] | Project.actual.list_columns.inject([]) { |mem, i| mem << i["name"] } | Project.actual.detail_view_fields.inject([]) { |mem, i| mem << i["name"] }
 
   def camps
     I18n.available_locales.inject({}) do |mem, locale|

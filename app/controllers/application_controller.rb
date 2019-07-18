@@ -41,8 +41,10 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project
-    Project.find_by_name(params[:project]) 
+    Project.first
+    #Project.find_by_name(params[:project]) 
   end
+  helper_method :current_project
 
   private
 

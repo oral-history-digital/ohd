@@ -7,7 +7,6 @@ class UnifyMogData < ActiveRecord::Migration[5.2]
       Contribution.where(contribution_type: 'Translated').update_all contribution_type: 'translator'
       Contribution.where(contribution_type: 'Indexed').update_all contribution_type: 'segmentator'
 
-
       connection.execute(<<-EOQ)
         UPDATE segment_translations SET locale = 'el' WHERE locale='ell';
         UPDATE segment_translations SET locale = 'de' WHERE locale='deu';
@@ -30,5 +29,15 @@ class UnifyMogData < ActiveRecord::Migration[5.2]
         UPDATE text_materials SET locale = 'en' WHERE locale='eng';
       EOQ
     end
+
+    if Project.name.to_sym == :zwar
+      Contribution.where(contribution_type: 'interview').update_all contribution_type: 'interviewer'
+      Contribution.where(contribution_type: 'transcript').update_all contribution_type: 'transcriptor'
+      Contribution.where(contribution_type: 'translation').update_all contribution_type: 'translator'
+      Contribution.where(contribution_type: 'segmentation').update_all contribution_type: 'segmentator'
+      Contribution.where(contribution_type: 'Camera recorder').update_all contribution_type: 'cinematographer'
+      Contribution.where(contribution_type: 'proof_reading').update_all contribution_type: 'proofreader'
+    end
+
   end
 end

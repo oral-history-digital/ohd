@@ -9,7 +9,7 @@ class Contribution < ActiveRecord::Base
 
   validates_associated :interview, :person
   validates_presence_of :contribution_type
-  validates :contribution_type, inclusion: Project.contribution_types.values
+  validates :contribution_type, inclusion: %w(interviewee interviewer transcriptor translator segmentator cinematographer quality_manager proofreader)
   validates_uniqueness_of :person_id, :scope => [ :interview_id, :contribution_type ]
 
 end

@@ -152,7 +152,7 @@ default: &default
     -
       name: date_of_birth
       source: person
-      use_in_detail_view: true
+      use_in_details_view: true
       label:
         de: Geburtsdatum
         en: Date of Birth
@@ -196,7 +196,7 @@ default: &default
       name: home_location
       source: registry_reference_type
       ref_object_type: Person
-      use_in_detail_view: true
+      use_in_details_view: true
       use_as_facet: false
       label:
         de: Herkunftsort
