@@ -34,11 +34,12 @@ namespace :users do
     admins = { 
       'jmb@cedis.fu-berlin.de' => %w(Herr Michael Baur),
       'rico.simke@cedis.fu-berlin.de' => %w(Herr Rico Simke),
+      'cord.pagenstecher@cedis.fu-berlin.de' => %w(Herr Cord Pagenstecher),
       'chrgregor@googlemail.com' => %w(Herr Christian Gregor)
     }
 
     admins.each do |login, name_parts|
-      account = UserAccount.create login: login, email: login
+      account = UserAccount.new login: login, email: login
       account.skip_confirmation!
       #next if account.nil?
       reg = account.build_user_registration
