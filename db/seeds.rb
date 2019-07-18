@@ -19,7 +19,7 @@ places = RegistryEntry.create_with_parent_and_names(root.id, 'en::places')
 end
 
 # create forced_labor_groups registry_entry as a child of root
-forced_labor_groups = RegistryEntry.create_with_parent_and_names(root.id, 'forced_labor_groups')
+forced_labor_groups = RegistryEntry.create_with_parent_and_names(root.id,  'en::forced labor groups', 'forced_labor_groups')
 groups = RegistryEntry.create_with_parent_and_names(root.id, 'en::Group', 'groups')
 group_details = RegistryEntry.create_with_parent_and_names(root.id, 'en::Group Details', 'group_details')
 
