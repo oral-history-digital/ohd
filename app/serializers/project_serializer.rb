@@ -1,3 +1,23 @@
 class ProjectSerializer < ActiveModel::Serializer
-  attributes :id
+  attributes :id,
+    :available_locales,
+    :default_locale,
+    :view_modes,
+    :upload_types,
+    :primary_color_rgb,
+    :shortname,
+    :initials,
+    :domain,
+    :archive_domain,
+    :doi,
+    :cooperation_partner,
+    :leader,
+    :manager,
+    :hosting_institution,
+    :funder_names,
+    :contact_email,
+    :smtp_server,
+    :has_newsletter,
+    :hidden_registry_entry_ids,
+    :pdf_registry_entry_codes
 end
