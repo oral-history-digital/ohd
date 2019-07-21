@@ -25,7 +25,7 @@ class HomeController < ApplicationController
               mem
             end,
             collections: Collection.all.map{|c| {value: c.id, name: c.localized_hash}}, 
-            contribution_types: current_project.contribution_types,
+            contribution_types: Project.contribution_types,
             registry_entry_search_facets: current_project.registry_entry_search_facets.map{|facet| {id: RegistryEntry.find_by_code(facet.name).id, display_on_landing_page: facet.display_on_landing_page}},
             registry_reference_type_metadata_fields: current_project.registry_reference_type_metadata_fields.inject({}){|mem, facet| mem[facet.name] = RegistryReferenceTypeSerializer.new(RegistryReferenceType.find_by_code(facet.name)).as_json; mem},
             languages: Language.all.map{|c| {value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2}}, 
@@ -41,14 +41,14 @@ class HomeController < ApplicationController
             list_columns: current_project.list_columns,
             media_streams: Project.media_streams,
             hidden_registry_entry_ids: current_project.hidden_registry_entry_ids,
-            fullname_on_landing_page: current_project.fullname_on_landing_page,
+            #fullname_on_landing_page: current_project.fullname_on_landing_page,
           }
         end
         home_content = {}
         locales.each do |i|
           I18n.locale = i
           template = "/home/home.#{i}.html+#{current_project.name == 'empty' ? 'zwar' : current_project.name}"
-          home_content[i] = render_to_string(template: template, layout: false)
+          home_content[i] = ""#render_to_string(template: template, layout: false)
         end
         json[:home_content] = home_content
         render plain: json.to_json

@@ -44,7 +44,7 @@ class UserRegistrationSerializer < ApplicationSerializer
         hsh[alpha2_locale] = {
           firstname: i.first_name,
           lastname: i.last_name
-        } if Project.available_locales.include?( alpha2_locale )}
+        } if I18n.available_locales.include?( alpha2_locale )}
   end
 
   def transitions_to

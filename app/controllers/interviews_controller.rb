@@ -207,7 +207,7 @@ class InterviewsController < ApplicationController
     unless params[:id] == 'new'
       @interview = Interview.find_by_archive_id(params[:id])
       json = Rails.cache.fetch "#{Project.cache_key_prefix}-interview-doi-contents-#{@interview.archive_id}-#{@interview.updated_at}" do
-        locales = Project.available_locales.reject{|locale| locale == 'alias'}
+        locales = current_project.available_locales.reject{|locale| locale == 'alias'}
         doi_contents = locales.inject({}){|mem, locale| mem[locale] = doi_content(locale, @interview); mem}
         {
           archive_id: params[:id],

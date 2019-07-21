@@ -166,9 +166,6 @@ class Interview < ActiveRecord::Base
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
 
-    # in order to fast access places of birth for all interviews
-    string :birth_location, :stored => true
-
     text :transcript, :boost => 5 do
       segments.includes(:translations).inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
@@ -198,6 +195,7 @@ class Interview < ActiveRecord::Base
     dynamic_string :search_facets, :multiple => true, :stored => true do
       project.search_facets.inject({}) do |mem, facet|
         mem[facet.name] = facet.name.to_sym 
+        mem
       end
     end
 

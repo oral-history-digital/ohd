@@ -53,7 +53,7 @@ class Person < ApplicationRecord
     end
   end
 
-  MetadataFields.where(source: 'registry_reference_type', ref_object_type: 'Person').each do |f|
+  MetadataField.where(source: 'registry_reference_type', ref_object_type: 'Person').each do |f|
     define_method f.name do
       ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: f.name)).first
       ref && ref.registry_entry

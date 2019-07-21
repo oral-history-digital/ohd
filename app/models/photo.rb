@@ -32,7 +32,7 @@ class Photo < ActiveRecord::Base
     end
     string :workflow_state
     integer :id, :stored => true
-    (Project.available_locales + [:orig]).each do |locale|
+    (I18n.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true do
         caption(locale)
       end

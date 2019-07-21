@@ -26,7 +26,7 @@ class Collection < ActiveRecord::Base
 
   def localized_hash
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = name(locale) if Project.available_locales.include?( locale.to_s )
+      mem[locale] = name(locale) if I18n.available_locales.include?( locale.to_s )
       mem
     end
   end

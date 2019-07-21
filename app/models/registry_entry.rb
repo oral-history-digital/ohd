@@ -1020,7 +1020,7 @@ class RegistryEntry < ActiveRecord::Base
     end
     #if registry_names.first
       #registry_names.first.translations.inject({}) do |mem, name|
-        #if Project.available_locales.include?( name.locale[0..1] )
+        #if I18n.available_locales.include?( name.locale[0..1] )
           #mem[name.locale[0..1]] = name.descriptor.gsub(/,\s*/, ', ')
         #end
         #mem
@@ -1032,7 +1032,7 @@ class RegistryEntry < ActiveRecord::Base
 
   def localized_notes_hash
     registry_names.first.translations.inject({}) do |mem, name|
-      if Project.available_locales.include?( name.locale[0..1] )
+      if I18n.available_locales.include?( name.locale[0..1] )
         mem[name.locale[0..1]] = name.notes
       end
       mem
@@ -1041,7 +1041,7 @@ class RegistryEntry < ActiveRecord::Base
 
   def localized_with_note
     registry_names.first.translations.inject({}) do |mem, name|
-      if Project.available_locales.include?( name.locale[0..1] )
+      if I18n.available_locales.include?( name.locale[0..1] )
         mem[name.locale[0..1]] = {
           title: name.descriptor.gsub(/,\s*/, ', '),
           note: name.notes

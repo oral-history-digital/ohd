@@ -31,15 +31,15 @@ default: &default
       192k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_192k.mp3
       256k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_256k.mp3
 
-  #contribution_types:
-    #interviewee: 'interviewee'
-    #interviewer: 'interview'
-    #transcriptor: 'transcript'
-    #translator: 'translation'
-    #segmentator: 'segmentation'
-    #cinematographer: 'Camera recorder'
-    #quality_manager: 'Quality management interviewing'
-    #proofreader: 'proof_reading' 
+  contribution_types:
+    interviewee: 'interviewee'
+    interviewer: 'interviewer'
+    transcriptor: 'transcriptor'
+    translator: 'translator'
+    segmentator: 'segmentator'
+    cinematographer: 'cinematographer'
+    quality_manager: 'quality_manager'
+    proofreader: 'proofreader' 
 
   upload_types:
     - bulk_metadata

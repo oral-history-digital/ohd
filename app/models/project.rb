@@ -12,6 +12,13 @@ class Project < ApplicationRecord
 
   translates :name 
 
+  serialize :view_modes, Array
+  serialize :available_locales
+  serialize :upload_types
+  serialize :name
+  serialize :hidden_registry_entry_ids
+  serialize :pdf_registry_entry_codes
+
   class << self
     def config
       @config ||= Rails.configuration.project
@@ -38,6 +45,13 @@ class Project < ApplicationRecord
 
   def cache_key_prefix
     name
+  end
+
+  # there is a rails method available_locales as well.
+  # we need to overwrite it here.
+  #
+  def available_locales
+    read_attribute :available_locales
   end
 
   def search_facets

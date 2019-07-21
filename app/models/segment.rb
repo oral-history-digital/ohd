@@ -232,7 +232,7 @@ class Segment < ActiveRecord::Base
 
   after_initialize do
     (project.available_locales).each do |locale|
-      define_method "text_#{locale}" do 
+      define_singleton_method "text_#{locale}" do 
         text(locale)
       end
     end

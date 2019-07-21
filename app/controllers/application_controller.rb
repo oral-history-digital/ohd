@@ -21,10 +21,15 @@ class ApplicationController < ActionController::Base
 
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
-    locale ||= (params[:locale] || I18n.default_locale).to_sym
-    valid_locales = I18n.available_locales if valid_locales.empty?
+    locale ||= (params[:locale] || current_project.default_locale).to_sym
+    valid_locales = current_project.available_locales if valid_locales.empty?
     locale = I18n.default_locale unless valid_locales.include?(locale)
     I18n.locale = locale
+  end
+
+  prepend_before_action :set_available_locales
+  def set_available_locales
+    I18n.available_locales = current_project.available_locales
   end
 
   # Append the locale to all requests.
@@ -33,7 +38,7 @@ class ApplicationController < ActionController::Base
   end
 
   def set_variant
-    request.variant = Project.name.to_sym
+    request.variant = current_project.identifier.to_sym
   end
   
   def not_found

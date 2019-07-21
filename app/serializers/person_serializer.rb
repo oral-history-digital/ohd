@@ -17,7 +17,7 @@ class PersonSerializer < ApplicationSerializer
       alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
       hsh[alpha2_locale] = { firstname: i.first_name,
                             lastname: i.last_name,
-                            birthname: i.birth_name } if Project.available_locales.include?(alpha2_locale)
+                            birthname: i.birth_name } if I18n.available_locales.include?(alpha2_locale)
     }
   end
 
@@ -45,7 +45,7 @@ class PersonSerializer < ApplicationSerializer
         alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
         hsh[alpha2_locale] = facets.map { |typology|
           I18n.backend.translate(alpha2_locale, "search_facets.#{typology.parameterize(separator: "_")}")
-        } if Project.available_locales.include?(alpha2_locale)
+        } if I18n.available_locales.include?(alpha2_locale)
       }
     end
   end
