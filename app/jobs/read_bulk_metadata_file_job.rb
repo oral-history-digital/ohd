@@ -49,7 +49,6 @@ class ReadBulkMetadataFileJob < ApplicationJob
               interview = Interview.create interview_data
             end
 
-            binding.pry
             Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
 
             # create accesibility and reference it
@@ -134,13 +133,11 @@ class ReadBulkMetadataFileJob < ApplicationJob
   def find_or_create_place(name, country_name)
     country = country_name && RegistryEntry.find_or_create_descendant('places', "#{I18n.locale}::#{country_name}")
     place = name && RegistryEntry.find_or_create_descendant(country ? country.entry_code : 'places', "#{I18n.locale}::#{name}")
-    binding.pry
     place
   end
 
   def create_reference(registry_entry_id, interview, ref_object, ref_type_id=nil)
     rr = RegistryReference.create registry_entry_id: registry_entry_id, ref_object_id: ref_object.id, ref_object_type:ref_object.class.name, registry_reference_type_id: ref_type_id, ref_position: 0, original_descriptor: "", ref_details: "", ref_comments: "", ref_info: "", workflow_state: "checked", interview_id: interview.id
-    binding.pry
     rr
   end
 
