@@ -64,6 +64,13 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
+  def accessibility
+    I18n.available_locales.inject({}) do |mem, locale|
+      object.accessibility && mem[locale] = object.accessibility.map { |f| RegistryEntry.find(f).to_s(locale) }
+      mem
+    end
+  end
+
   def gender
     if object.interviewees.first
       Project.localized_hash_for("search_facets", object.interviewees.first.gender)

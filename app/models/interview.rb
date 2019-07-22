@@ -324,7 +324,7 @@ class Interview < ActiveRecord::Base
   end
 
   def country_of_birth
-    interviewees.first && interviewees.first.birth_location && interviewees.first.birth_location.parents.first.id.to_i
+    interviewees.first && interviewees.first.birth_location && interviewees.first.birth_location.parents.first.entry_code != 'places' && interviewees.first.birth_location.parents.first.id.to_i
   end
 
   def localized_hash_for_country_of_birth

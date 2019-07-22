@@ -105,6 +105,17 @@ export default class Interview extends React.Component {
         }
     }
 
+    metadatum(label, value, className) {
+        if (value) {
+            return (
+                <p>
+                    <span className="flyout-content-label">{label}:</span>
+                    <span className={"flyout-content-data " + className}>{value}</span>
+                </p>
+            )
+        }
+    }
+
     content() {
         if (this.interviewLoaded()){
             let tabIndex = this.props.locales.length + 2;
@@ -140,6 +151,18 @@ export default class Interview extends React.Component {
                         <InterviewInfoContainer
                             refObjectType={"interview"}
                         />
+                    </div>
+                    {/* for campscapes only: show metadata on left side. TODO: generalize this */}
+                    <div
+                        style={{ padding: "5%" }}
+                        className={
+                            this.props.project !== "campscapes" &&
+                            "hidden"
+                        }
+                    >
+                        {this.metadatum(t(this.props, 'contributions.interviewer'), this.interviewLoaded() && this.interview().properties.interviewer)}
+                        {this.metadatum('Link', this.interviewLoaded() && this.interview().properties.link)}
+                        {this.metadatum('Signature', this.interviewLoaded() && this.interview().properties.signature_original)}
                     </div>
                     {/* TODO: this div is needs to get a better structure, and inline styles have to be removed */}
                     <div
