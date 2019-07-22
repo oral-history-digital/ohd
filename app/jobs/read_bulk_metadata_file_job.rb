@@ -23,24 +23,24 @@ class ReadBulkMetadataFileJob < ApplicationJob
       unless index == 0
         begin
           unless data[0].blank? && data[1].blank? && data[2].blank?
-            interviewee = find_or_create_person(first_name: data[1], birth_name: data[2], last_name: data[3], other_first_names: data[4], gender: gender(data[5]), date_of_birth: data[6] || data[7])
+            interviewee = find_or_create_person(first_name: data[1], last_name: data[2], other_first_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6])
 
             #interviewer_names = data[18] && data[18].split(/[ ,]/).reject(&:blank?)
             #interviewer = find_or_create_person(first_name: interviewer_names[0], last_name: interviewer_names[1]) if interviewer_names
 
-            short_bio = interviewee.biographical_entries.where(text: data[12]).first
-            interviewee.biographical_entries << BiographicalEntry.create(text: data[12]) unless short_bio || data[12].blank?
+            short_bio = interviewee.biographical_entries.where(text: data[11]).first
+            interviewee.biographical_entries << BiographicalEntry.create(text: data[11]) unless short_bio || data[11].blank?
 
             interview = Interview.find_by_archive_id(data[0])
 
             interview_data = {
-              interview_date: data[18] || data[19],
-              collection_id: data[13] && find_or_create_collection(data[13]).id,
-              language_id: (language = find_or_create_language(data[17]); language ? language.id : nil),
-              duration: data[23],
-              video: data[16] && data[16].downcase == 'video',
+              interview_date: data[17] || data[18],
+              collection_id: data[12] && find_or_create_collection(data[12]).id,
+              language_id: (language = find_or_create_language(data[16]); language ? language.id : nil),
+              duration: data[21],
+              video: data[15] && data[15].downcase == 'video',
               archive_id: data[0],
-              properties: {interviewer: data[25], signature_original: data[15], link: data[31]}
+              properties: {interviewer: data[23], signature_original: data[14], link: data[27]}
             }
 
             if interview
@@ -52,29 +52,29 @@ class ReadBulkMetadataFileJob < ApplicationJob
             Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
 
             # create accesibility and reference it
-            accessibility = data[24] && RegistryEntry.find_or_create_descendant('accessibility', "#{I18n.locale}::#{data[24]}")
+            accessibility = data[22] && RegistryEntry.find_or_create_descendant('accessibility', "#{I18n.locale}::#{data[22]}")
             create_reference(accessibility.id, interview, interview) if accessibility
 
             # create camp and reference it
-            camp = data[32] && RegistryEntry.find_or_create_descendant('camps', "#{I18n.locale}::#{data[32]}")
+            camp = data[28] && RegistryEntry.find_or_create_descendant('camps', "#{I18n.locale}::#{data[28]}")
             create_reference(camp.id, interview, interview) if camp
 
             # create group and reference it
-            group = data[8] && RegistryEntry.find_or_create_descendant('groups', "#{I18n.locale}::#{data[8]}")
+            group = data[7] && RegistryEntry.find_or_create_descendant('groups', "#{I18n.locale}::#{data[7]}")
             create_reference(group.id, interview, interview) if group
 
             # create group_details and reference it
-            group_details = data[9] && RegistryEntry.find_or_create_descendant('group_details', "#{I18n.locale}::#{data[9]}")
+            group_details = data[8] && RegistryEntry.find_or_create_descendant('group_details', "#{I18n.locale}::#{data[8]}")
             create_reference(group.id, interview, interview) if group_details
 
             # create birth location and reference it
             birth_location_type = RegistryReferenceType.find_by_code('birth_location')
-            place = find_or_create_place(data[10], data[11])
+            place = find_or_create_place(data[9], data[10])
             create_reference(place.id, interview, interviewee, birth_location_type.id) if place
 
             # create interview location and reference it
             interview_location_type = RegistryReferenceType.find_by_code('interview_location')
-            place = find_or_create_place(data[20], data[21])
+            place = find_or_create_place(data[19], data[20])
             create_reference(place.id, interview, interview, interview_location_type.id) if place
           end
           File.delete(file_path) if File.exist?(file_path)
