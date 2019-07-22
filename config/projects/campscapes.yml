@@ -232,16 +232,16 @@ default: &default
       label:
         de: Ort des Interviews
         en: Interview location
-    # - 
-    #   name: accessibility
-    #   source: registry_entry
-    #   use_as_facet: true
-    #   display_on_landing_page: true
-    #   use_in_detail_view: true
-    #   use_in_results_table: true
-    #   label:
-    #     de: Zugänglichkeit
-    #     en: Accessibility
+    - 
+      name: accessibility
+      source: registry_entry
+      use_as_facet: true
+      display_on_landing_page: true
+      use_in_detail_view: true
+      use_in_results_table: true
+      label:
+        de: Zugänglichkeit
+        en: Accessibility
 
   fullname_on_landing_page: true
 

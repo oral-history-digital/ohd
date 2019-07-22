@@ -43,6 +43,7 @@ class InterviewSerializer < ApplicationSerializer
                :photos,
                :observations,
                :doi_status,
+               :properties,
              #:updated_at,
              #:segmented,
              #:researched,
@@ -64,7 +65,11 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def gender
-    Project.localized_hash_for("search_facets", object.interviewees.first.gender)
+    if object.interviewees.first
+      Project.localized_hash_for("search_facets", object.interviewees.first.gender)
+    else
+      {}
+    end
   end
 
   def media_type
@@ -90,7 +95,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def interviewee_id
-    object.interviewees.first.id
+    object.interviewees.first && object.interviewees.first.id
   end
 
   def transitions_to

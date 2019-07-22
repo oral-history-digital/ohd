@@ -140,6 +140,9 @@ class Interview < ActiveRecord::Base
            dependent: :destroy
 
   translates :observations
+
+  serialize :properties
+
   #validate :has_standard_name
 
   #def has_standard_name
@@ -227,6 +230,10 @@ class Interview < ActiveRecord::Base
           ''
         end
       end
+    end
+
+    text :interviewer_property do 
+      properties && properties[:interviewer]
     end
 
     # photo caption texts
@@ -317,7 +324,7 @@ class Interview < ActiveRecord::Base
   end
 
   def country_of_birth
-    interviewees.first.birth_location && interviewees.first.birth_location.parents.first.id.to_i
+    interviewees.first && interviewees.first.birth_location && interviewees.first.birth_location.parents.first.id.to_i
   end
 
   def localized_hash_for_country_of_birth

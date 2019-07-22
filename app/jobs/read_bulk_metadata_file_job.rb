@@ -25,22 +25,22 @@ class ReadBulkMetadataFileJob < ApplicationJob
           unless data[0].blank? && data[1].blank? && data[2].blank?
             interviewee = find_or_create_person(first_name: data[1], birth_name: data[2], last_name: data[3], other_first_names: data[4], gender: gender(data[5]), date_of_birth: data[6] || data[7])
 
-            interviewer_names = data[18] && data[18].split(/[ ,]/).reject(&:blank?)
-            interviewer = find_or_create_person(first_name: interviewer_names[0], last_name: interviewer_names[1]) if interviewer_names
+            #interviewer_names = data[18] && data[18].split(/[ ,]/).reject(&:blank?)
+            #interviewer = find_or_create_person(first_name: interviewer_names[0], last_name: interviewer_names[1]) if interviewer_names
 
             short_bio = interviewee.biographical_entries.where(text: data[12]).first
             interviewee.biographical_entries << BiographicalEntry.create(text: data[12]) unless short_bio || data[12].blank?
 
-            interview_date = Date.parse(data[18]) rescue nil
             interview = Interview.find_by_archive_id(data[0])
 
             interview_data = {
-              interview_date: interview_date,
+              interview_date: data[18] || data[19],
               collection_id: data[13] && find_or_create_collection(data[13]).id,
               language_id: (language = find_or_create_language(data[17]); language ? language.id : nil),
               duration: data[23],
               video: data[16] && data[16].downcase == 'video',
-              archive_id: data[0]
+              archive_id: data[0],
+              properties: {interviewer: data[25], signature_original: data[15], link: data[31]}
             }
 
             if interview
@@ -49,23 +49,23 @@ class ReadBulkMetadataFileJob < ApplicationJob
               interview = Interview.create interview_data
             end
 
+            binding.pry
             Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
-            Contribution.find_or_create_by person_id: interviewer.id, interview_id: interview.id, contribution_type: 'interviewer' if interviewer
 
             # create accesibility and reference it
-            accessibility = data[17] && RegistryEntry.find_or_create_descendant('accessibility', data[17])
+            accessibility = data[24] && RegistryEntry.find_or_create_descendant('accessibility', "#{I18n.locale}::#{data[24]}")
             create_reference(accessibility.id, interview, interview) if accessibility
 
             # create camp and reference it
-            camp = data[32] && RegistryEntry.find_or_create_descendant('camps', data[32])
+            camp = data[32] && RegistryEntry.find_or_create_descendant('camps', "#{I18n.locale}::#{data[32]}")
             create_reference(camp.id, interview, interview) if camp
 
             # create group and reference it
-            group = data[8] && RegistryEntry.find_or_create_descendant('groups', data[8])
+            group = data[8] && RegistryEntry.find_or_create_descendant('groups', "#{I18n.locale}::#{data[8]}")
             create_reference(group.id, interview, interview) if group
 
             # create group_details and reference it
-            group_details = data[9] && RegistryEntry.find_or_create_descendant('group_details', data[9])
+            group_details = data[9] && RegistryEntry.find_or_create_descendant('group_details', "#{I18n.locale}::#{data[9]}")
             create_reference(group.id, interview, interview) if group_details
 
             # create birth location and reference it
@@ -132,38 +132,16 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_place(name, country_name)
-    place = nil
-    country = nil
-
-    places = RegistryEntry.find_by_entry_code('places')
-    
-    # find or create country registry_entry as a child of places
-    places.children.each do |c| 
-      country = c if c.registry_names.first.translations.map(&:descriptor).include?(country_name)
-    end
-
-    if country
-    elsif country_name && country_name.length > 0 # might be only e.g. D 
-      country = RegistryEntry.create_with_parent_and_names(places.id, "#{I18n.locale}::#{country_name.gsub(' ', ';')}") 
-    end
-
-    if country
-      # find or create place registry_entry as a child of country
-      country.descendants.each do |c| 
-        place = c if c.registry_names.first.translations.map(&:descriptor).include?(name)
-      end
-    end
-
-    if place
-    elsif name && name.length > 1
-      parent_place = country || places
-      place = RegistryEntry.create_with_parent_and_names(parent_place.id, "#{I18n.locale}::#{name.gsub(' ', ';')}") 
-    end
+    country = country_name && RegistryEntry.find_or_create_descendant('places', "#{I18n.locale}::#{country_name}")
+    place = name && RegistryEntry.find_or_create_descendant(country ? country.entry_code : 'places', "#{I18n.locale}::#{name}")
+    binding.pry
     place
   end
 
   def create_reference(registry_entry_id, interview, ref_object, ref_type_id=nil)
-    RegistryReference.create registry_entry_id: registry_entry_id, ref_object_id: ref_object.id, ref_object_type:ref_object.class.name, registry_reference_type_id: ref_type_id, ref_position: 0, original_descriptor: "", ref_details: "", ref_comments: "", ref_info: "", workflow_state: "checked", interview_id: interview.id
+    rr = RegistryReference.create registry_entry_id: registry_entry_id, ref_object_id: ref_object.id, ref_object_type:ref_object.class.name, registry_reference_type_id: ref_type_id, ref_position: 0, original_descriptor: "", ref_details: "", ref_comments: "", ref_info: "", workflow_state: "checked", interview_id: interview.id
+    binding.pry
+    rr
   end
 
   def log(text, error=true)

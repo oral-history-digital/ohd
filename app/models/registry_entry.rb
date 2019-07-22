@@ -144,6 +144,14 @@ class RegistryEntry < ActiveRecord::Base
     end.flatten.uniq.join(' ')
   end
 
+  def names_w(locale)
+    registry_names.includes(:translations).where("registry_name_translations.locale": locale).map do |rn|
+      rn.translations.map do |t|
+        t.descriptor
+      end
+    end.flatten.uniq.join(' ')
+  end
+
   def self.merge(opts={})
     merge_to_id = opts[:id]
     where(id: JSON.parse(opts[:ids])).each do |registry_entry|
@@ -248,12 +256,14 @@ class RegistryEntry < ActiveRecord::Base
     def find_or_create_descendant(parent_code, descendant_name)
       descendant = nil
       parent = find_by_entry_code parent_code
+      locale, names = descendant_name.split('::')
       parent.children.each do |c| 
-        descendant = c if c.registry_names.first.translations.map(&:descriptor).include?(descendant_name)
+        descendant = c if c.names_w(locale) == names
+        #descendant = c if c.registry_names.first.translations.map(&:descriptor).include?(descendant_name)
       end
 
       if descendant.nil? && descendant_name.length > 2
-        descendant = RegistryEntry.create_with_parent_and_names(parent.id, descendant_name[0..200]) 
+        descendant = RegistryEntry.create_with_parent_and_names(parent.id, descendant_name, names.gsub(/\s+/, '_').downcase) 
       end
       descendant
     end
