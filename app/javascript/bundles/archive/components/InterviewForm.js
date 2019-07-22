@@ -8,6 +8,7 @@ export default class InterviewForm extends React.Component {
     constructor(props) {
         super(props);
         this.showContribution = this.showContribution.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     showContribution(value) {
@@ -17,6 +18,11 @@ export default class InterviewForm extends React.Component {
                 <span>{t(this.props, `contributions.${value.contribution_type}`) + ', '}</span>
             </span>
         )
+    }
+
+    onSubmit(params, locale){
+        this.props.submitData(params, locale);
+        if (typeof this.props.onSubmitCallback === "function") {this.props.onSubmitCallback()}
     }
 
     render() {
@@ -77,7 +83,7 @@ export default class InterviewForm extends React.Component {
         let props = {
             scope: 'interview',
             values: {id: this.props.interview && this.props.interview.archive_id},
-            onSubmit: this.props.submitData,
+            onSubmit: this.onSubmit,
             submitText: this.props.submitText,
             elements: elements
         }

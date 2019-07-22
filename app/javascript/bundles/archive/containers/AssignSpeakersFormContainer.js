@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import AssignSpeakersForm from '../components/AssignSpeakersForm';
-import { fetchData, submitData, returnToForm } from '../actions/dataActionCreators';
+import { fetchData, submitData } from '../actions/dataActionCreators';
 import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
@@ -20,7 +20,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
     submitData: (params) => dispatch(submitData(params)),
-    returnToForm: (dataType) => dispatch(returnToForm(dataType))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignSpeakersForm);

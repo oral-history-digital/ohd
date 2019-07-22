@@ -9,7 +9,9 @@ export default class AssignSpeakersForm extends React.Component {
     constructor(props) {
         super(props);
         this.showContribution = this.showContribution.bind(this);
-        this.state = {};
+        this.state = {
+            showForm: true
+        };
     }
 
     componentDidMount() {
@@ -40,7 +42,7 @@ export default class AssignSpeakersForm extends React.Component {
     }
 
     returnToForm() {
-        this.props.returnToForm('interviews');
+        this.setState({showForm: true});
     }
 
     formElements() {
@@ -58,27 +60,26 @@ export default class AssignSpeakersForm extends React.Component {
     }
 
     form() {
-        return (
-            <Form 
-                scope='update_speaker'
-                onSubmit={this.props.submitData}
-                values={{
-                    id: this.props.interview.archive_id
-                }}
-                elements={this.formElements()}
-                subForm={this.allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer}
-                subFormProps={{withSpeakerDesignation: true}}
-                subFormScope='contribution'
-                subScopeRepresentation={this.showContribution}
-            />
-        )
+        if (this.state.showForm) {
+            return (
+                <Form 
+                    scope='update_speaker'
+                    onSubmit={this.props.submitData}
+                    values={{
+                        id: this.props.interview.archive_id
+                    }}
+                    elements={this.formElements()}
+                    subForm={this.allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer}
+                    subFormProps={{withSpeakerDesignation: true}}
+                    subFormScope='contribution'
+                    subScopeRepresentation={this.showContribution}
+                />
+            )
+        }
     }
 
     msg() {
-        if (
-            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] &&
-            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] != 'fetching' 
-        ) {
+        if (!this.state.showForm) {
             return (
                 <div>
                     <p>
