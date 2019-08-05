@@ -23,13 +23,13 @@ default: &default
       video: 480p
       audio: 192k
     video:
-      240p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd240p.mp4
-      480p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4
-      720p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd720p.mp4
+      240p: https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_240p.mp4
+      480p: https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_480p.mp4
+      720p: https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_720p.mp4
     audio:
-      128k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_128k.mp3
-      192k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_192k.mp3
-      256k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_256k.mp3
+      128k: https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_128k.mp3
+      192k: https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_192k.mp3
+      256k: https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_256k.mp3
 
   contribution_types:
     interviewee: 'interviewee'
@@ -50,14 +50,14 @@ default: &default
     en: 'Forced Labor 1939-1945. Memory and History'
     ru: 'Принудительный труд 1939-1945. Воспоминания и история'
 
-  project_id: 'zwar'
+  project_id: 'cdoh'
 
   # used in PDFs
   # give the color code as fractions of 255
   # e.g. '143, 32, 28' ==> '0.560784314, 0.125490196, 0.109803922'
   primary_color_rgb: '0.560784314, 0.125490196, 0.109803922'
 
-  project_shortname: 'ZWAR'
+  project_shortname: 'CDOH'
 
   project_initials: 'ZA' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
 
