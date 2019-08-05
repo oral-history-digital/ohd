@@ -1,0 +1,125 @@
+<h1>Das Online-Archiv "Zwangsarbeit 1939-1945"</h1>
+
+<%= render 'teaser' %>
+
+<p></p>
+
+<p>
+  Das Online-Archiv &quot;Zwangsarbeit 1939-1945&quot; beinhaltet Zeitzeugen-Interviews
+  von knapp 600 ehemaligen Zwangsarbeiterinnen und Zwangsarbeitern aus 26 Ländern.
+  Es setzt sich aus unterschiedlichen Teilsammlungen zusammen. Diese wurden,
+  finanziert durch die Stiftung &quot;Erinnerung, Verantwortung und Zukunft&quot;,
+  in den Jahren 2005-2006 von verschiedenen Institutionen weltweit erstellt.
+  Das digitale Archiv bewahrt diese Zeitzeugnisse für die Zukunft und stellt sie
+  für Bildung und Wissenschaft zur Verfügung.
+</p>
+
+<% unless self.controller.respond_to? :current_user_account %>
+  <p style="font-weight: bold;">
+    Aus Gr&uuml;nden des Pers&ouml;nlichkeitsschutzes m&uuml;ssen
+    Sie zur Benutzung des Archivs "Zwangsarbeit 1939-1945" <%= link_to 'angemeldet', new_user_account_session_path %> sein und
+    die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> sowie die
+    <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> anerkennen.
+  </p>
+<% else %>
+  <br/>
+  <p>
+    Als angemeldeter Nutzer haben Sie Zugriff auf alle Interviews in voller L&auml;nge, die
+    wir unter unseren <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %> und
+    <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> im Web bereitstellen
+    k&ouml;nnen.
+  </p>
+<% end %>
+
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="#">
+      <img src="<%= image_path("#{Project.name}/teaser/kategorien.png") %>" alt="Kategorien"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Kategorien-Suche</h3>
+<p>
+  Inhaltliche Kategorien in der Suchleiste am rechten Bildschirmrand geben einen Einblick in die Systematik des Archivs und dienen dem thematisch strukturierten Zugang.
+  <br/>
+    <%= link_to 'Beschreibung der Kategorien »',
+                faq_searching_path(anchor: 'recherchemoeglichkeiten'),
+                title: 'Welche Recherchemöglichkeiten gibt es?' %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="#">
+      <img src="<%= image_path("#{Project.name}/teaser/volltext.png") %>" alt="Volltextsuche"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Volltextsuche</h3>
+<p>
+  Die Volltextsuche über das Suchfeld rechts ermöglicht einen intuitiven Zugang über Suchbegriffe, die genau Ihrem Rechercheinteresse entsprechen.
+  <br/>
+    <%= link_to 'Beschreibung der Volltextsuche »',
+                faq_searching_path(anchor: 'suche-allgemein'),
+                title: 'Wie kann ich die Volltextsuche nutzen?' %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="<%= public_map_path -%>">
+      <img src="<%= image_path("#{Project.name}/teaser/karte.png") %>" alt="Karte"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Kartenrecherche</h3>
+<p>
+  Über die interaktive Karte lassen sich biografische Stationen der Interviewten recherchieren: Geburtsort, Ort der Deportation, Lager, Firmen und Haftorte, Wohnorte ab 1945.
+  <br/>
+    <%= link_to 'zur Kartenrecherche »', public_map_path, title: 'Kartenrecherche' %>
+    <br/>
+</p>
+<br style="clear: both;"/>
+
+<div class="contentImagesLeft">
+  <div class="contentImage100">
+    <a href="<%= collections_path -%>">
+      <img src="<%= image_path("#{Project.name}/teaser/collections.png") %>" alt="Teilsammlungen"/>
+    </a>
+  </div>
+</div>
+<h3 style="margin-top: 8px;">Übersicht der Teilsammlungen</h3>
+<p>
+  Die Übersicht über die geographische Verteilung der Teilsammlungen gibt Ihnen einen Einblick in die Entstehung des Archivs und einen regionalen Zugang.
+  <br/>
+    <%= link_to 'zur Karte der Teilsammlungen »', collections_path, :title => 'Geografische Verteilung der Teilsammlungen' %>
+    <br/>
+</p>
+
+<hr style="clear: both;"/>
+<h2 class="clear">Multilinguales Archiv</h2>
+<p>
+    Das Archiv mit seinen in 25 Sprachen geführten Interviews steht in deutscher Sprache komplett
+    zur Verfügung. Die Nutzeroberfläche sowie die Daten zu Person und Interview stehen zudem in
+    englisch und russisch bereit.
+</p>
+<p>
+    Inhaltsverzeichnis, Bildunterschriften, Kurzbiografien und redaktionelle Anmerkungen liegen
+    für die russischsprachigen Interviews auf russisch, für die englischsprachigen Interviews auf
+    englisch vor. Für Interviews in anderen Sprachen werden sie auf deutsch angezeigt, auch wenn
+    Sie die russische oder englische Archivversion ausgewählt haben.
+</p>
+<h2 class="clear">Fragen und Antworten</h2>
+<p>
+  Über die
+  <%= link_to t(:faq), faq_index_path, title: 'Fragen und Antworten zur Nutzung des Archivs' %>
+  auf dieser Seite finden Sie inhaltliche oder technische Hinweise zur Nutzung des Archivs.
+  Sollten Ihre Fragen dort nicht beantwortet werden, schreiben Sie uns bitte eine E-Mail an:
+  <a href="mailto:mail@zwangsarbeit-archiv.de" target="_blank" title="Kontakt">
+    mail@zwangsarbeit-archiv.de
+  </a>
+</p>

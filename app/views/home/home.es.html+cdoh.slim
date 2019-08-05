@@ -1,0 +1,32 @@
+.home-text
+  h1 Das Interview-Archiv "Zwangsarbeit 1939-1945"
+
+  p
+    | Knapp 600 ehemalige Zwangsarbeiterinnen und Zwangsarbeiter aus 26 Ländern erzählen ihre
+      Lebensgeschichte in ausführlichen Audio- und Video-Interviews. Nach einer Anmeldung können
+      Sie die vollständigen Interviews anhören, Transkripte und Übersetzungen durchsuchen,
+      Inhaltsverzeichnisse und Anmerkungen, Fotos und Kurzbiografien ansehen. 
+      Weitere Informationen zur NS-Zwangsarbeit, zum Projekt und zu Bildungsangeboten finden Sie 
+      auf der begleitenden 
+    a href="http://www.zwangsarbeit-archiv.de" Webseite
+    | .
+
+.search-results-container
+  - Interview.random_featured(6).each do |interview|
+    .interview-preview.search-result
+      a.search-result-link[href="/de/interviews/#{interview.archive_id}"]
+        .search-result-img
+          img src="https://medien.cedis.fu-berlin.de/zwar/stills/#{interview['archive_id']}_still_original.JPG"
+        div
+          p.search-result-name
+            | #{current_user_account ? interview.short_title(:de) : interview.anonymous_title(:de)}
+        .search-result-data
+          span
+            | #{interview.localized_hash_for_media_type[:de]}
+            | &nbsp;
+          span
+            | #{Time.at(interview.duration).utc.strftime("%-H h %M min")}
+          br
+          span
+            | #{interview.language.to_s(:de)} #{(interview.translated) ? I18n.t('status.translated', locale: :de) : ''}
+        

@@ -2,8 +2,7 @@ default: &default
 
   available_locales:
     - de
-    - en
-    - ru
+    - es
     # - alias
 
   # grid, list and/or map
@@ -59,7 +58,7 @@ default: &default
 
   project_shortname: 'CDOH'
 
-  project_initials: 'ZA' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
+  project_initials: 'CD' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
 
   project_domain: 'zwangsarbeit-archiv.de'
 
