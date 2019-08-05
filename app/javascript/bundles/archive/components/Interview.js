@@ -160,9 +160,9 @@ export default class Interview extends React.Component {
                             "hidden"
                         }
                     >
-                        {this.metadatum(t(this.props, 'contributions.interviewer'), this.interviewLoaded() && this.interview().properties.interviewer)}
-                        {this.metadatum('Link', this.interviewLoaded() && this.interview().properties.link)}
-                        {this.metadatum('Signature', this.interviewLoaded() && this.interview().properties.signature_original)}
+                        {this.metadatum(t(this.props, 'contributions.interviewer'), this.interviewLoaded() && this.interview().properties && this.interview().properties.interviewer)}
+                        {this.metadatum('Link', this.interviewLoaded() && this.interview().properties && this.interview().properties.link)}
+                        {this.metadatum('Signature', this.interviewLoaded() && this.interview().properties && this.interview().properties.signature_original)}
                     </div>
                     {/* TODO: this div is needs to get a better structure, and inline styles have to be removed */}
                     <div
