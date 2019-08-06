@@ -14,9 +14,9 @@ namespace :cache do
       when :mog
         BASE_URL = 'https://archive.occupation-memories.org'
       when :campscapes
-        BASE_URL = 'http://da03.cedis.fu-berlin.de:84'
-      when :cdoh
         BASE_URL = 'http://testimonies.campscapes.org'
+      when :cdoh
+        BASE_URL = 'http://da03.cedis.fu-berlin.de:86'
     end
   end
 
