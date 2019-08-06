@@ -323,10 +323,6 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  def country_of_birth
-    interviewees.first && interviewees.first.birth_location && interviewees.first.birth_location.parents.first.entry_code != 'places' && interviewees.first.birth_location.parents.first.id.to_i
-  end
-
   def localized_hash_for_country_of_birth
     I18n.available_locales.inject({}) do |mem, locale|
       if(interviewees && interviewees.first && interviewees.first.birth_location)
@@ -387,7 +383,7 @@ class Interview < ActiveRecord::Base
   Project.metadata_fields_person.each do |facet|
     define_method facet["name"] do 
       # TODO: what if there are more intervviewees?
-      interviewees.first && interviewees.first.send(facet["name"].to_sym) ? interviewees.first.send(facet["name"].to_sym).split(', ') : ''
+      interviewees.first && interviewees.first.send(facet["name"]) ? interviewees.first.send(facet["name"]).try(:split, ', ') : ''
     end
   end
   #def facet_category_ids(entry_code)

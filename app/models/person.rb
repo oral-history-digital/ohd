@@ -64,6 +64,10 @@ class Person < ApplicationRecord
     date_of_birth.blank? ? "" : date_of_birth[/19\d{2}/]
   end
 
+  def country_of_birth
+    birth_location && birth_location.parents.first.entry_code != 'places' && birth_location.parents.first.id.to_i
+  end
+
   def name(last_name_as_inital = false)
     I18n.available_locales.inject({}) do |mem, locale|
       inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)

@@ -96,7 +96,8 @@ class InterviewSerializer < ApplicationSerializer
 
   def country_of_birth
     I18n.available_locales.inject({}) do |mem, locale|
-      object.country_of_birth && mem[locale] = object.country_of_birth.yield_self { |f| RegistryEntry.find(f).to_s(locale) }
+      interviewee = object.interviewees.first
+      interviewee && interviewee.country_of_birth && mem[locale] = interviewee.country_of_birth.yield_self { |f| RegistryEntry.find(f).to_s(locale) }
       mem
     end
   end
