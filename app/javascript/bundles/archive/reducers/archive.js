@@ -83,6 +83,7 @@ const archive = (state = initialState, action) => {
                 listColumns: action.listColumns,
                 project: action.project,
                 projectDoi: action.projectDoi,
+                isCatalog: action.isCatalog,
                 hiddenRegistryEntryIds: action.hiddenRegistryEntryIds,
                 projectName: action.projectName,
                 archiveDomain: action.archiveDomain,

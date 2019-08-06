@@ -33,7 +33,7 @@ export default class MarkTextForm extends React.Component {
                     scope='mark_text'
                     onSubmit={this.props.submitData}
                     values={{
-                        id: this.props.interview.archive_id
+                        id: this.props.interview && this.props.interview.archive_id
                     }}
                     elements={[
                         {

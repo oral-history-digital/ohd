@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
         project: state.archive.project,
+        isCatalog: state.archive.isCatalog,
         doiContentsStatus: state.data.statuses.doi_contents,
         prevArchiveId: getInterviewArchiveIdWithOffset(state.archive.archiveId, state.search.archive.foundInterviews, -1),
         nextArchiveId: getInterviewArchiveIdWithOffset(state.archive.archiveId, state.search.archive.foundInterviews, 1),

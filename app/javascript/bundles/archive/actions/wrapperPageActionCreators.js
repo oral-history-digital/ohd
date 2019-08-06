@@ -33,6 +33,7 @@ function receiveStaticContent(json){
         detailViewFields: json.detail_view_fields,
         project: json.project,
         projectDoi: json.project_doi,
+        isCatalog: json.is_catalog,
         hiddenRegistryEntryIds: json.hidden_registry_entry_ids,
         projectName: json.project_name,
         projectDomain: json.project_domain,

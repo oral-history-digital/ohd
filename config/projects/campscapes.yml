@@ -64,6 +64,8 @@ default: &default
 
   project_doi: ''
 
+  is_catalog: true
+
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
     conditions: #nutzungsbedingungen:
@@ -193,9 +195,9 @@ default: &default
         en: Year of Birth
     - 
       name: country_of_birth
-      source: interview
-      use_as_facet: true
-      use_in_results_table: true
+      source: person
+      use_as_facet: false
+      use_in_results_table: false
       use_in_detail_view: true
       label: 
         de: Herkunftsland

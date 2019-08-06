@@ -230,7 +230,8 @@ export default class FlyoutTabs extends React.Component {
     }
 
     downloads() {
-        if (this.props.archiveId && this.props.archiveId !== 'new') {
+        //if (this.props.archiveId && this.props.archiveId !== 'new') {
+        if (this.props.interview) {
             let links = [];
             for (var i=1; i<parseInt(this.props.interview.tape_count); i++) {
                 links.push(

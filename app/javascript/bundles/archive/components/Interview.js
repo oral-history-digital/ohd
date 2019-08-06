@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
+import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
 import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
@@ -105,113 +106,39 @@ export default class Interview extends React.Component {
         }
     }
 
-    metadatum(label, value, className) {
-        if (value) {
-            return (
-                <p>
-                    <span className="flyout-content-label">{label}:</span>
-                    <span className={"flyout-content-data " + className}>{value}</span>
-                </p>
-            )
-        }
-    }
-
     content() {
         if (this.interviewLoaded()){
-            let tabIndex = this.props.locales.length + 2;
-            return (
-                <WrapperPageContainer tabIndex={tabIndex}>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <VideoPlayerContainer
-                            interview={this.interview()}
-                        />
-                        <InterviewTabsContainer
-                            interview={this.interview()}
-                        />
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
-                        {this.loggedOutContent()}
-                    </AuthShowContainer>
-                    {/* for campscapes only: show metadata on left side. TODO: generalize this */}
-                    <div
-                        style={{ padding: "5%" }}
-                        className={
-                            this.props.project !== "campscapes" &&
-                            "hidden"
-                        }
-                    >
-                        <h3>{t(this.props, "person_info")}</h3>
-                        <div>
-                            <PersonDataContainer />
-                            <InterviewRegistryReferencesContainer
-                                refObjectType={"person"}
+            if (!this.props.isCatalog) {
+                return (
+                    <div>
+                        <AuthShowContainer ifLoggedIn={true}>
+                            <VideoPlayerContainer
+                                interview={this.interview()}
                             />
-                        </div>
-                        <h3>{t(this.props, "interview_info")}</h3>
-                        <InterviewInfoContainer
-                            refObjectType={"interview"}
-                        />
-                    </div>
-                    {/* for campscapes only: show metadata on left side. TODO: generalize this */}
-                    <div
-                        style={{ padding: "5%" }}
-                        className={
-                            this.props.project !== "campscapes" &&
-                            "hidden"
-                        }
-                    >
-                        {this.metadatum(t(this.props, 'contributions.interviewer'), this.interviewLoaded() && this.interview().properties && this.interview().properties.interviewer)}
-                        {this.metadatum('Link', this.interviewLoaded() && this.interview().properties && this.interview().properties.link)}
-                        {this.metadatum('Signature', this.interviewLoaded() && this.interview().properties && this.interview().properties.signature_original)}
-                    </div>
-                    {/* TODO: this div is needs to get a better structure, and inline styles have to be removed */}
-                    <div
-                        style={{ padding: "5%" }}
-                        className={
-                            this.props.project !== "campscapes" &&
-                            "hidden"
-                        }
-                    >
-                        <Link
-                            className={`search-result-link ${!!this
-                                .props.prevArchiveId || "hidden"}`}
-                            to={
-                                "/" +
-                                this.props.locale +
-                                "/interviews/" +
-                                this.props.prevArchiveId
-                            }
-                            style={{ "margin-right": "10%" }}
-                        >
-                            <i className={"fa fa-chevron-left"} />
-                            {this.props.prevArchiveId}
-                        </Link>
-                        <Link
-                            className={`search-result-link ${!!this
-                                .props.nextArchiveId || "hidden"}`}
-                            to={
-                                "/" +
-                                this.props.locale +
-                                "/interviews/" +
-                                this.props.nextArchiveId
-                            }
-                        >
-                            {this.props.nextArchiveId}
-                            <i
-                                className={"fa fa-chevron-right"}
-                                style={{ "margin-left": 10 }}
+                            <InterviewTabsContainer
+                                interview={this.interview()}
                             />
-                        </Link>
+                        </AuthShowContainer>
+                        <AuthShowContainer ifLoggedOut={true}>
+                            {this.loggedOutContent()}
+                        </AuthShowContainer>
                     </div>
-                </WrapperPageContainer>
-            );
+                )
+            } else {
+                return (<InterviewDetailsLeftSideContainer interview={this.interview()} />);
+            }
         } else {
             return null;
         }
     }
 
     render() {
-        return this.content();
+        let tabIndex = this.props.locales.length + 2;
+        return (
+            <WrapperPageContainer tabIndex={tabIndex}>
+                {this.content()}
+            </WrapperPageContainer>
+        )
     }
 }
 

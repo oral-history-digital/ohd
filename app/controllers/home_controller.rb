@@ -34,6 +34,7 @@ class HomeController < ApplicationController
             project_name: Project.project_name,
             project_domain: Project.project_domain,
             project_doi: Project.project_doi,
+            is_catalog: Project.is_catalog,
             archive_domain: Project.archive_domain,
             locales: Project.available_locales,
             view_modes: Project.view_modes,
