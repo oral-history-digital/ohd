@@ -23,7 +23,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
       unless index == 0
         begin
           unless data[0].blank? && data[1].blank? && data[2].blank?
-            interviewee = find_or_create_person(first_name: data[1], last_name: data[2], other_first_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6])
+            interviewee = find_or_create_person(first_name: data[1], last_name: data[2], alias_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6])
 
             #interviewer_names = data[18] && data[18].split(/[ ,]/).reject(&:blank?)
             #interviewer = find_or_create_person(first_name: interviewer_names[0], last_name: interviewer_names[1]) if interviewer_names
