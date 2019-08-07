@@ -3,6 +3,8 @@ import { connect } from 'react-redux';
 import InterviewListRow from '../components/InterviewListRow';
 import { searchInInterview } from '../actions/searchActionCreators';
 import { setTapeAndTime } from '../actions/interviewActionCreators';
+import { addRemoveArchiveId } from '../actions/archiveActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state, ownProps) => {
   return {
@@ -10,12 +12,16 @@ const mapStateToProps = (state, ownProps) => {
       locale: state.archive.locale,
       translations: state.archive.translations,
       listColumns: state.archive.listColumns,
+      editView: getCookie('editView'),
+      account: state.data.accounts.current,
+      selectedArchiveIds: state.archive.selectedArchiveIds,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     searchInInterview: (props) => dispatch(searchInInterview(props)),
+    addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),
 })
 
 // Don't forget to actually use connect!

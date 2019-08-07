@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { t } from '../../../lib/utils';
 
 export default class AdminActions extends React.Component {
@@ -39,7 +40,11 @@ export default class AdminActions extends React.Component {
             }
         });
         this.props.closeArchivePopup();
-        this.context.router.history.push(`/${this.props.locale}/searches/archive`);
+        if (this.context.router.route.match.params.archiveId === undefined) {
+            location.reload();
+        } else {
+            this.context.router.history.push(`/${this.props.locale}/searches/archive`);
+        }
     }
 
     exportDOI() {

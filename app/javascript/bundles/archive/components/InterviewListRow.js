@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { t } from '../../../lib/utils';
+import { t, admin } from '../../../lib/utils';
 
 import AuthShowContainer from '../containers/AuthShowContainer';
 
@@ -45,9 +45,20 @@ export default class InterviewListRow extends React.Component {
         })
     }
 
+    renderExportCheckbox() {
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+            return <td onClick={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}>
+                <input type='checkbox' className='export-checkbox' checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0} />
+            </td>
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <tr>
+                {this.renderExportCheckbox()}
                 <td>
                     <Link className={'search-result-link'}
                         onClick={() => {

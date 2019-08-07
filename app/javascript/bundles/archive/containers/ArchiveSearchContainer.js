@@ -3,6 +3,7 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import ArchiveSearch from '../components/ArchiveSearch';
 import { searchInArchive } from '../actions/searchActionCreators';
 import { setViewMode } from '../actions/archiveActionCreators';
+import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
@@ -23,6 +24,8 @@ const mapStateToProps = (state) => {
         viewMode: state.archive.viewMode,
         listColumns: state.archive.listColumns,
         detailViewFields: state.archive.detailViewFields,
+        editView: getCookie('editView'),
+        account: state.data.accounts.current,
     }
 }
 

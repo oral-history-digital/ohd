@@ -8,7 +8,7 @@ import InterviewListRowContainer from '../containers/InterviewListRowContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import { t, queryToText } from '../../../lib/utils';
+import { t, admin, queryToText } from '../../../lib/utils';
 import moment from 'moment';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
@@ -41,12 +41,20 @@ export default class ArchiveSearch extends React.Component {
 
     listHeader() {
         let props = this.props
-        return props.listColumns.map(function(column, i){
+        let headers = [];
+
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+            headers.push(<td key={`list-header-column-selected`}><strong>{t(this.props, 'selected')}</strong></td>);
+        }
+
+        props.listColumns.map(function(column, i){
             let label = (column['label'] && column['label'][props.locale] ) || t(props, column["name"])
-            return (
+            headers.push (
                 <td key={`list-header-column-${i}`}><strong>{label}</strong></td>
             )
         })
+
+        return headers;
     }
 
     foundInterviews(displayType) {
