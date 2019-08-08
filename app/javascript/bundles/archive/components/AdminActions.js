@@ -9,6 +9,10 @@ export default class AdminActions extends React.Component {
         router: PropTypes.object
     }
 
+    selectedArchiveIds() {
+        return this.props.archiveIds.filter(archiveId => archiveId !== 'dummy');
+    }
+
     doiResults() {
         if (Object.keys(this.props.doiResult).length > 0) {
             return <h4>DOI Status:</h4> + Object.keys(this.props.doiResult).map((archiveId) => {
@@ -22,8 +26,8 @@ export default class AdminActions extends React.Component {
     }
 
     messages() {
-        return this.props.archiveIds.map((archiveId) => {
-            if (archiveId !== 'dummy') {
+        return this.selectedArchiveIds().map((archiveId) => {
+            if (this.props.statuses[archiveId] !== undefined) {
                 return (
                     <div>
                         {`${archiveId}: ${this.props.statuses[archiveId]}`}
@@ -34,13 +38,12 @@ export default class AdminActions extends React.Component {
     }
 
     deleteInterviews() {
-        this.props.archiveIds.forEach((archiveId) => {
-            if (archiveId !== 'dummy') {
-                this.props.deleteData('interviews', archiveId);
-            }
+        this.selectedArchiveIds().forEach((archiveId) => {
+            this.props.deleteData('interviews', archiveId);
         });
         this.props.closeArchivePopup();
         if (this.context.router.route.match.params.archiveId === undefined) {
+            // TODO: faster aproach would be to just hide or delete the dom-elements 
             location.reload();
         } else {
             this.context.router.history.push(`/${this.props.locale}/searches/archive`);
@@ -48,7 +51,7 @@ export default class AdminActions extends React.Component {
     }
 
     exportDOI() {
-        this.props.submitDois(this.props.archiveIds, this.props.locale)
+        this.props.submitDois(this.selectedArchiveIds(), this.props.locale)
         this.props.closeArchivePopup();
     }
 
@@ -68,7 +71,7 @@ export default class AdminActions extends React.Component {
                 title: title,
                 content: (
                     <div>
-                        {t(this.props, 'delete_interviews.confirm_text', {archive_ids: this.props.archiveIds.join(', ')})}
+                        {t(this.props, 'delete_interviews.confirm_text', {archive_ids: this.selectedArchiveIds().join(', ')})}
                         <div className='any-button' onClick={() => this.deleteInterviews()}>
                             {t(this.props, 'delete_interviews.ok')}
                         </div>
@@ -90,7 +93,7 @@ export default class AdminActions extends React.Component {
                 content: (
                     <div>
                         {t(this.props, 'doi.text1') + ' '}
-                        {this.links(this.props.archiveIds)}
+                        {this.links(this.selectedArchiveIds())}
                         {' ' + t(this.props, 'doi.text2')}
                         <div className='any-button' onClick={() => this.exportDOI()}>
                             {t(this.props, 'doi.ok')}
