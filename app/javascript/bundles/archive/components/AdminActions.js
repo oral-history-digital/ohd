@@ -50,6 +50,18 @@ export default class AdminActions extends React.Component {
         }
     }
 
+    updateInterviews(params) {
+        this.selectedArchiveIds().forEach((archiveId) => {
+            let updatedParams = Object.assign({}, params, {id: archiveId});
+            this.props.submitData({interview: updatedParams}, this.props.locale);
+        });
+        this.props.closeArchivePopup();
+        if (this.context.router.route.match.params.archiveId === undefined) {
+            // TODO: faster aproach would be to just hide or delete the dom-elements 
+            location.reload();
+        } 
+    }
+
     exportDOI() {
         this.props.submitDois(this.selectedArchiveIds(), this.props.locale)
         this.props.closeArchivePopup();
@@ -63,7 +75,7 @@ export default class AdminActions extends React.Component {
     }
 
     deleteButton() {
-        let title = t(this.props, 'delete_interviews.title');
+        let title = t(this.props, 'edit.interviews.delete.title');
         return <div
             className='flyout-sub-tabs-content-ico-link'
             title={title}
@@ -71,9 +83,30 @@ export default class AdminActions extends React.Component {
                 title: title,
                 content: (
                     <div>
-                        {t(this.props, 'delete_interviews.confirm_text', {archive_ids: this.selectedArchiveIds().join(', ')})}
+                        {t(this.props, 'edit.interviews.delete.confirm_text', {archive_ids: this.selectedArchiveIds().join(', ')})}
                         <div className='any-button' onClick={() => this.deleteInterviews()}>
-                            {t(this.props, 'delete_interviews.ok')}
+                            {t(this.props, 'submit')}
+                        </div>
+                    </div>
+                )
+            })}
+        >
+            {title}
+        </div>
+    }
+
+    updateButton(params, action) {
+        let title = t(this.props, `edit.interviews.${action}.title`);
+        return <div
+            className='flyout-sub-tabs-content-ico-link'
+            title={title}
+            onClick={() => this.props.openArchivePopup({
+                title: title,
+                content: (
+                    <div>
+                        {t(this.props, `edit.interviews.${action}.confirm_text`, {archive_ids: this.selectedArchiveIds().join(', ')})}
+                        <div className='any-button' onClick={() => this.updateInterviews(params)}>
+                            {t(this.props, 'submit')}
                         </div>
                     </div>
                 )
@@ -121,6 +154,8 @@ export default class AdminActions extends React.Component {
                 {this.doiButton()}
                 {this.messages()}
                 {this.deleteButton()}
+                {this.updateButton({workflow_state: 'publish'}, 'publish')}
+                {this.updateButton({workflow_state: 'unpublish'}, 'unpublish')}
                 {this.reset()}
                 {this.setAll()}
             </div>
