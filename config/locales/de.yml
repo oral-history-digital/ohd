@@ -227,6 +227,22 @@ de:
       edit: Interview bearbeiten
       processed: 'Interview angelegt: '
       return: Weiteres Interview anlegen
+    interviews:
+      publish: 
+        title: Interviews publizieren
+        confirm_text: "Sollen die Interviews %{archive_ids} wirklich publiziert werden?"
+      unpublish: 
+        title: Interviews nicht mehr öffentlich setzen
+        confirm_text: "Sollen die Interviews %{archive_ids} wirklich nicht mehr öffentlich sein?"
+      publish_biographies: 
+        title: Biographien publizieren
+        confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich publiziert werden?"
+      unpublish_biographies: 
+        title: Biographien nicht mehr öffentlich setzen
+        confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich nicht mehr öffentlich sein?"
+      delete:
+        title: Interviews löschen
+        confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
     segment:
       edit: Segment bearbeiten
       edit_heading: Überschriften bearbeiten
@@ -347,9 +363,6 @@ de:
     created: Erfolgreich veröffentlicht!
     already_registered: Bereits zu einem früheren Zeitpunkt veröffentlicht!
     bad: Etwas stimmt nicht
-  delete_interviews:
-    title: Interviews löschen
-    confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
   workflow_states:
     unshared: nicht öffentlich
     unpublish: nicht öffentlich
@@ -606,6 +619,7 @@ de:
         home_locations: Wohnort
         duration: Art und Länge des Interviews
         interview_date: geführt am
+        tape_count: Anzahl der Tapes
         interviewers: Interviewführung
         transcriptors: Transkription
         translators: Übersetzung
