@@ -17,6 +17,8 @@ class InterviewsController < ApplicationController
   def create
     authorize Interview
     @interview = Interview.create interview_params
+    @interview.find_or_create_tapes(interview_params[:tape_count])
+
     @interview.send("#{params[:interview][:workflow_state]}!") if params[:interview][:workflow_state]
 
     respond_to do |format|
@@ -37,6 +39,7 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
     @interview.update_attributes interview_params
+    @interview.find_or_create_tapes(interview_params[:tape_count])
 
     clear_cache @interview
 
@@ -274,10 +277,12 @@ class InterviewsController < ApplicationController
       "archive_id",
       "language_id",
       "interview_date",
+      "tape_count",
       "video",
       "translated",
       "observations",
-      "workflow_state"
+      "workflow_state",
+      "biographies_workflow_state"
     )
   end
 

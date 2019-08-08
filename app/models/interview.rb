@@ -261,6 +261,24 @@ class Interview < ActiveRecord::Base
     self.send("#{change}!")
   end
 
+  def biographies_workflow_state=(change)
+    interviewees.each do |interviewee|
+      interviewee.biographical_entries.each do |bio|
+        bio.send("#{change}!")
+      end
+    end
+  end
+
+  def tape_count=(d)
+    # dummy: build did not do the trick here. Therefore I implemented find_or_create_tapes
+  end
+
+  def find_or_create_tapes(d)
+    (1..d.to_i).each do |t|
+      Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', t)}", number: t, interview_id: id)
+    end
+  end
+
   def self.random_featured(n = 1)
     if n == 1
       researched.with_still_image.order(Arel.sql('RAND()')).first || first

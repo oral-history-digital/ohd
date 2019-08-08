@@ -55,6 +55,12 @@ export default class InterviewForm extends React.Component {
                 elementType: 'input',
             },
             { 
+                attribute: 'tape_count',
+                value: this.props.interview && this.props.interview.tape_count,
+                elementType: 'input',
+                validate: function(v){return /^\d+$/.test(v)}
+            },
+            { 
                 attribute: 'observations',
                 value: this.props.interview && this.props.interview.observations && this.props.interview.observations[this.props.locale],
                 elementType: 'textarea',
