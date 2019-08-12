@@ -75,7 +75,8 @@ export default class Account extends React.Component {
 
                 <AuthShowContainer ifLoggedOut={true}>
                     <p>
-                        {this.props.authStatus.error ? '' : t(this.props, 'registration_needed')}
+                        {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
+                        {(this.props.authStatus.error || this.props.project === 'campscapes') ? '' : t(this.props, 'registration_needed')}
                     </p>
                     <LoginFormContainer/>
                     <div className={'register-link'}>

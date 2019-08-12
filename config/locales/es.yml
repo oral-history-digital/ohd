@@ -1,12 +1,12 @@
 ---
-el:
+es:
   bg: bulgarisch
   bs: bosnisch
   ca: katalanisch
   cs: tschechisch
-  de: DE
-  el: EL
-  en: EN
+  de: deutsch
+  el: griechisch
+  en: englisch
   es: spanisch
   fr: französisch
   he: hebräisch
@@ -19,37 +19,35 @@ el:
   no: norwegisch
   pl: polnisch
   ro: rumänisch
-  ru: RU
+  ru: russisch
   sk: slowakisch
   sl: slowenisch
   sr: serbisch
   uk: ukrainisch
-  in: στο
+  in: in
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
     Bitte klicken Sie auf den Link "<a href="/de/user_accounts/password/new">Passwort
     wiederherstellen</a>", um ein neues Passwort zu kreieren oder das alte wiederherzustellen.
     Vielen Dank für Ihr Verständnis.
-  observation: Περιγραφή συνέντευξης
-  tape: Ταινία
-  word: word
-  italic: italic
-  text: text
-  or: or
+  observation: Interviewsituation
+  tape: Band
+  word: Wort
+  italic: kursiv
+  text: Text
+  or: oder
   legend:
-    title: Σύμβολα απομαγνητοφώνησης
+    title: Legende der Transkriptionszeichen
     mog:
-      missed: ακατανόητες λέξεις, ελλιπείς λέξεις και συλλαβές, Εξήγηση λέξεων,
-        εκφράσεων διαλέκτου
-      comment: Σχόλια του απομαγνητοφωνητή, μεταφράσεις ξένων λέξεων και αποσπασμάτων
-        κειμένου
-      pause_1: Σύντομη παύση έως ένα δευτερόλεπτο
-      pause_2: Παύση μέχρι δύο δευτερόλεπτα
-      pause_3: Μεγαλύτερη παύση μέχρι 3 δευτερόλεπτα
-      pause_4: Μεγάλη παύση από 4 δευτερόλεπτα και πάνω
-      assert: Διακοπή μιας σκέψης, πρότασης, λέξης, έκφρασης.
-      omission: Η απόστροφος σηματοδοτεί την ένωση δύο λέξεων, όταν λείπουν συλλαβές
+      missed: unverständliche, vergessene, fehlende und vermutete Wörter/Silben, Erklärung von Dialekt
+      comment: Kommentare des/der Transkriptors/in, Übersetzungen fremdsprachlicher Wörter/Passagen
+      pause_1: kurze Pause bis 1 Sekunde
+      pause_2: mittlere Pause bis 2 Sekunden
+      pause_3: längere Pause bis 3 Sekunden
+      pause_4: Lange Pause, Länge in Sekunden ab 4 Sekunden
+      assert: Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung / einer Satzstruktur.
+      omission: Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei Buchstaben wegfallen
     zwar:
       address: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
       broken_word: abgebrochenes Wort oder abgebrochener Satz, meist mit einer kurzen Sprechpause verbunden
@@ -70,154 +68,154 @@ el:
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
   mark_texts: Text chiffrieren
-  interview_with: Συνέντευξη με
+  interview_with: Interview mit
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
-  archive_id: Κωδικός συνέντευξης
+  archive_id: Archiv-ID
   biographical_entries_of: Kurzbiografie von
-  noscript: Παρακαλώ ενεργοποιήστε το Javascript για να μπορέσετε να δείτε αυτή τη
-    σελίδα.
-  interviews: Συνεντεύξεις
-  places: Τόποι γέννησης
-  interview_location_desc_one: " αναφέρεται στο κεφάλαιο "
-  interview_location_desc_two: "."
-  archive_map_explanation: Ο χάρτης παρουσιάζει τους τόπους γέννησης των συνεντευξιαζόμενων
-  interview_map_explanation: Παρουσίαση των τόπων που αναφέρονται στη συνέντευξη
-  interview_gallery_explanation: Η φωτογραφική συλλογή αποτελείται από φωτογραφίες
-    που αποτυπώνουν τη συνέντευξη ή στιγμιότυπα μετά το τέλος της καθώς και φωτογραφίες
-    που ανήκουν στην ιδιοκτησία του συνεντευξιαζόμενου.
-  interview_empty_gallery_explanation: Δεν υπάρχουν φωτογραφίες για αυτή τη συνέντευξη.
-  transcript_header: Απομαγνητοφώνηση της συνέντευξης με
+  noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
+  interviews: Interviews
+  places: Geburtsorte
+  interview_location_desc_one: " wird in Kapitel "
+  interview_location_desc_two: " erwähnt."
+  archive_map_explanation: Die Karte stellt die Geburtsorte der Interviewten dar.
+  interview_map_explanation: Darstellung der im Interview erwähnten Orte
+  interview_gallery_explanation: Die Bildergalerie zeigt Fotos von der Interviewsituation
+    sowie Familienfotos und andere historische Fotos aus dem Besitz der interviewten
+    Person.
+  interview_empty_gallery_explanation: Zu diesem Interview sind keine Fotos vorhanden.
+  transcript_header: Transkript des Interviews mit
   translation_header: Übersetzung des Interviews mit
-  tapes: Ταινίες
-  without_translation: Αυτή η συνέντευξη δεν έχει ακόμα μεταφραστεί στα γερμανικά.
+  tapes: Bänder
+  without_translation: Dieses Interview wurde noch nicht ins Deutsche übersetzt.
   without_transcript: Dieses Interview wurde noch nicht transkribiert.
-  without_index: Οι επικεφαλίδες αυτής της συνέντευξης δεν μεταφράζονται στα γερμανικά.
-  without_ref_tree: Αυτή η συνέντευξη δεν έχει ακόμα ευρετηριαστεί.
-  private: Ιδιωτικό
-  proposed: Προς διερεύνηση  για δημοσίευση
-  postponed: Αποσύρθηκε από τη σύνταξη
-  shared: Δημοσιεύτηκε
-  rejected: Η δημοσίευση δεν έγινε δεκτή
-  interview_archive: Αρχείο
-  called: τελευταία επίσκεψη
-  download: Αποθήκευση
+  without_index: Die Überschriften dieses Interviews wurde noch nicht ins Deutsche
+    übersetzt.
+  without_ref_tree: Dieses Interviews wurde noch nicht verschlagwortet.
+  private: Privat
+  proposed: In Prüfung zur Veröffentlichung
+  postponed: Zurückgestellt durch die Redaktion
+  shared: Veröffentlicht
+  rejected: Veröffentlichung abgelehnt
+  interview_archive: Interview-Archiv
+  called: Abruf
+  download: Download
   download_user_statistics: Benutzerstatistik runterladen
   back: Zurück
   export_search_results: Suchergebnisse exportieren
   language_de: Deutsch
-  language_elde: ελληνική με γερμανική μετάφραση
-  language_eldeen: ελληνική με γερμανική μετάφραση
+  language_elde: Griechisch mit deutscher Übersetzung
+  language_eldeen: Griechisch mit deutscher Übersetzung
   language_rude: Russisch mit deutscher Übersetzung
-  language_el: ελληνική
-  more: περισσότερες πληροφορίες
-  segment: Απόσπασμα
-  publish: Δημοσίευση
-  login: Εγγραφή
+  language_el: Griechisch
+  more: mehr erfahren
+  segment: Ausschnitt
+  publish: An die Redaktion zur Veröffentlichung absenden
+  login: Anmelden
   login_name: Login
-  logout: Έξοδος
-  login_errors: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
-  logged_in_as: 'Εγγεγραμμένος/η ως '
-  user_name: Χρήστης
-  notice: Σήμανση ως αγαπημένο
-  forget_password: Ξεχάσατε τον κωδικό σας
-  account_activation_errors: Ο κωδικός και η επαλήθευση κωδικού πρέπει να είναι ίδιοι
-    και μέχρι έξι σημεία
-  submit: Αποστολή
-  platform: Μία πλατφόρμα του
-  cooperation: σε συνεργασία με
-  promoted: Χρηματοδότηση
-  forget_password_question: Ξεχάσατε τον κωδικό σας
-  enter_email: Παρακαλώ δώστε την ηλεκτρονική σας διεύθυνση, με την οποία έγινε η
-    εγγραφή σας στο Αρχείο. Θα λάβετε στο E-Mail σας ένα σύνδεσμο για τον επανακαθορισμό
-    του κωδικού σας.
+  logout: Abmelden
+  login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
+  logged_in_as: Angemeldet als
+  user_name: Benutzer(in)
+  notice: Merken
+  forget_password: Passwort wiederherstellen
+  account_activation_errors: Passwort und Passwortbestätigung müssen gleich und mind.
+    6 Zeichen lang sein
+  submit: Absenden
+  platform: Eine Plattform der
+  cooperation: in Kooperation mit
+  promoted: gefördert durch
+  forget_password_question: Passwort wiederherstellen
+  enter_email: Bitte geben Sie die E-Mail Adresse an, mit der Sie sich in dem Archiv
+    registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.
   email: E-Mail
-  change_password: Αλλαγή κωδικού
-  archive_results: Αποτελέσματα αναζήτησης
+  change_password: Passwort ändern
+  archive_results: Suchergebnisse
   segment_results: Suchergebnisse im Transkript
   photo_results: Suchergebnisse in Fotos
   biographicalentry_results: Suchergebnisse in biografischen Einträgen
   person_results: Suchergebnisse für Personen
   user_registration_results: Suchergebnisse für Benutzer
   segment_hits: Treffer im Transkript
-  no_interviews_results: Δε βρέθηκαν συνεντεύξεις.
-  interview_id: Κωδικός συνέντευξης
-  interview_duration: Διάρκεια συνέντευξης
-  home: Αρχική σελίδα
-  login_page: Είσοδος
-  logout_page: Έξοδος
+  no_interviews_results: Keine Interviews gefunden.
+  interview_id: Interview-ID
+  interview_duration: Interviewdauer
+  home: Startseite
+  login_page: Login
+  logout_page: Logout
   account_page: Konto
-  interview: Συνέντευξη
-  user_content: Προσωπικός φάκελος συνεντεύξεων
-  user_content_errors: Παρακαλώ δώστε τον τίτλο και την περιγραφή
-  archive_search: Αναζήτηση στο Αρχείο
+  interview: Interview
+  user_content: Arbeitsmappe
+  user_content_errors: Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)
+  archive_search: Suche im Archiv
   search: Suchen
-  interviewee_name: Όνομα
-  periods: Χρονικές περίοδοι
-  keywords: Λέξεις-κλειδιά
-  keywords_mog: Λέξεις-κλειδιά
+  interviewee_name: Name
+  periods: Zeitperioden
+  keywords: Registereinträge
+  keywords_mog: Schlagworte
   registry: Register
-  annotations: σημειώσεις
-  reset: επαναφορά
+  registry_mog: Thesaurus
+  annotations: Anmerkungen
+  reset: zurücksetzen
   set_all: Alle checken
-  transcript: Απομαγνητοφωνημένο κείμενο
-  translation: Μετάφραση
-  segmentation: Ιστορική επεξεργασία
-  table_of_contents: Περιεχόμενα
-  interview_search: Αναζήτηση στη συνέντευξη
-  write_annotation: Γράψτε μια σημείωση
-  read_annotation: Ανάγνωση σημειώσεων
-  annotation_for: Σημείωση στο
-  annotation_for_chapter: Οι σημειώσεις σας στο κεφάλαιο
-  max_300: Μέχρι 300 Χαρακτήρες
-  annotation_explanation: Μπορείτε να δείτε τις σημειώσεις σας στον προσωπικό σας
-    φάκελο
-  annotation_confirmation: Επιθυμώ να δημοσιευτεί το σχόλιό μου σε όλους τους χρήστες.
-    Συμφωνώ με τις  <a class="conditions-link" href="%{link}"
-    target="_blank">οδηγίες συγγραφής σχολίων</a>.
-  save: αποθηκεύστε
-  cancel: διακοπή
+  transcript: Transkript
+  translation: Übersetzung
+  segmentation: Segmentierung
+  table_of_contents: Inhaltsverzeichnis
+  interview_search: Suche im Interview
+  write_annotation: Anmerkung schreiben
+  read_annotation: Anmerkung lesen
+  annotation_for: 'Anmerkung zu '
+  annotation_for_chapter: Ihre Anmerkung zum Kapitel
+  max_300: 300 verfügbare Zeichen
+  annotation_explanation: Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.
+  annotation_confirmation: Ich möchte, dass diese Anmerkung veröffentlicht und allen
+    angemeldeten Archivnutzerinenn und -nutzern angezeigt wird. Hiermit stimme ich
+    den den <a class="conditions-link" href="%{link}"
+    target="_blank">Richtlinien für Anmerkungen</a> zu.
+  save: speichern
+  cancel: abbrechen
   assign_speakers: Sprecher zuordnen
-  person_info: Σχετικά με το άτομο
-  date_of_birth: Ημερομηνία γέννησης
-  year_of_birth: Έτος γέννησης
-  place_of_birth: Τόπος γέννησης
-  # place_of_interview: Τόπος συνέντευξης
-  typology: Εμπειρία
-  typologies: Εμπειρία
-  history: Σύντομο βιογραφικό
-  biographical_entries_from: Biografische Einträge von
-  interview_info: Σχετικά με τη συνέντευξη
-  place: Τόπος
-  duration: Διάρκεια
+  person_info: Zur Person
+  date_of_birth: Geburtsdatum
+  year_of_birth: Jahrgang
+  place_of_birth: Geburtsort
+  # place_of_interview: Interviewort
+  typology: Erfahrung
+  typologies: Erfahrungen
+  history: Kurzbiografie
+  biographical_entries_from: Kurzbiografie von
+  interview_info: Zum Interview
+  place: Ort
+  duration: Dauer
   id: ID
-  map: Χάρτης
-  photos: Φωτογραφίες
-  citation: Τρόπος παραπομπής συνέντευξης
-  date: Ημερομηνία
-  interview_type: Βίντεο
-  language: Γλώσσα
-  camera: Κάμερα
-  order_new_password: Ξεχάσατε τον κωδικό σας;
-  ordered_new_password: Εστάλη σε εσάς ένα μέιλ με οδηγίες για την αλλαγή του κωδικού
-    σας.
-  conditions: Προϋποθέσεις χρήσης
-  privacy_protection: Προστασία δεδομένων
+  map: Karte
+  photos: Fotos
+  citation: Zitierweise
+  date: Datum
+  interview_type: 'Art: Video'
+  language: Sprache
+  camera: Kamera
+  order_new_password: Passwort wiederherstellen
+  ordered_new_password: Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres
+    Passwortes geschickt.
+  conditions: Nutzungsbedingungen
+  privacy_protection: Datenschutz
   legal_info: Impressum
   request_for_use: Herausgabe von Archivmaterial
   annotation_guidelines: Anmerkungsrichtlinien
-  team: Ομάδα
-  contact: Επικοινωνία
-  help: Βοήθεια
+  team: Team
+  contact: Kontakt
+  help: Hilfe
   usage_application: Nutzungsantrag
-  save_interview_reference: Αποθηκεύστε τη συνέντευξη
-  save_user_annotation: Γράψτε σημείωση
-  save_search: Αποθήκευση αναζήτησης
-  call_search: Εναπαφορά αναζήτησης
-  call_interview_reference: Επαναφορά συνέντευξης
-  call_user_annotation: Επαναφορά σημείωσης
-  title: Τίτλος
-  description: Περιγραφή
+  save_interview_reference: Interview merken
+  save_user_annotation: Anmerkung verfassen
+  save_search: Suche speichern
+  call_search: Suche aufrufen
+  call_interview_reference: Interview aufrufen
+  call_user_annotation: Stelle im Interview aufrufen
+  title: Titel
+  description: Beschreibung
   edit:
     text:
       new: Text auswählen
@@ -300,22 +298,22 @@ el:
       edit: Foto bearbeiten
       delete: Foto löschen
     user_registration:
-      show: Details
-      edit: Bearbeiten
-    role:
-      new: Rolle hinzufügen
-      edit: Rolle bearbeiten
-      delete: Rolle löschen
-      admin: Rollen bearbeiten
-    role_permission:
-      new: Erlaubnis hinzufügen
-      edit: Erlaubnis bearbeiten
-      delete: Erlaubnis löschen
-    permission:
-      new: Erlaubnis hinzufügen
-      edit: Erlaubnis bearbeiten
-      delete: Erlaubnis löschen
-      admin: Erlaubnisse bearbeiten
+      show: 'Details'
+      edit: 'Bearbeiten'
+    role: 
+      new: 'Rolle hinzufügen'
+      edit: 'Rolle bearbeiten'
+      delete: 'Rolle löschen'
+      admin: 'Rollen bearbeiten'
+    role_permission: 
+      new: 'Berechtigung hinzufügen'
+      edit: 'Berechtigung bearbeiten'
+      delete: 'Berechtigung löschen'
+    permission: 
+      new: 'Berechtigung hinzufügen'
+      edit: 'Berechtigung bearbeiten'
+      delete: 'Berechtigung löschen'
+      admin: 'Berechtigungen bearbeiten'
     user_role:
       show: Beschreibung
       edit: Bearbeiten
@@ -326,26 +324,32 @@ el:
       new: Hinzufügen
     upload_transcript: 
       title: Transkript hochladen
-      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört, aus dem Dateinamen erschlossen werden. Dabei steht gg für die Gesamtzahl der Tapes und aa für die Nummer des aktuellen Tapes.
+      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden. 
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
+      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
+    upload_bulk_photo:
+      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
+    upload_bulk_texts:
+      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
+    upload_bulk_metadata:
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
     downloads:
       title: Downloads
-    administration: administration
-    indexing: curation/ indexing
-  edit_interview_reference: Επεξεργασία αποθηκευμένης συνέντευξης
-  edit_user_annotation: Επεξεργασία αποθηκευμένης σημείωσης
-  edit_search: Επεξεργασία επεξεργασμένης αναζήτησης
-  query: Κριτήρια αναζήτησης
-  delete: Διαγραφή
-  delete_user_content: Απομάκρυνση από τον προσωπικό φάκελο
-  choose: " Παρακαλώ επιλέξτε"
-  enter_search_field: Παρακαλώ δώστε τον όρο αναζήτησης ...
-  enter_field: Στοιχεία ...
+    administration: Verwaltung
+    indexing: Erschliessung
+  edit_interview_reference: Gespeichertes Interview Bearbeiten
+  edit_user_annotation: Gespeicherte Anmerkung bearbeiten
+  edit_search: Gespeicherte Suche bearbeiten
+  query: Suchkriterien
+  delete: Löschen
+  delete_user_content: Aus Arbeitsmappe entfernen
+  choose: Bitte auswählen
+  enter_search_field: Bitte Suchbegriff eingeben ...
+  enter_field: Name, Suchbegriff, ...
   enter_field_hagen: Name, Pseudonym, Suchbegriff, ...
-  saved_searches: Αποθηκευμένα αποτελέσματα
-  saved_interviews: Αποθηκευμένες συνεντεύξεις
-  saved_annotations: Αποθηκευμένες σημειώσεις
+  saved_searches: Gespeicherte Suchergebnisse
+  saved_interviews: Gespeicherte Interviews
+  saved_annotations: Gespeicherte Anmerkungen
   text_materials: Textmaterialien
   grid: Raster
   list: Liste
@@ -355,9 +359,9 @@ el:
     text1: Die Interviews  
     text2:  werden bei Datacite registriert. 
     ok: Bestätigen
-    name: DOI
-    created: Created!
-    already_registered: already_registered
+    name: doi
+    created: Erfolgreich veröffentlicht!
+    already_registered: Bereits zu einem früheren Zeitpunkt veröffentlicht!
     bad: Etwas stimmt nicht
   workflow_states:
     unshared: nicht öffentlich
@@ -387,7 +391,7 @@ el:
     proof_reading: Lektorat
     research: Erschließung
     interview: Interview
-    transcript: Transkript
+    transcript: Transkription
     translation: Übersetzung
     segmentation: Segmentierung
     Informants: Interviewte(r)
@@ -424,86 +428,82 @@ el:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
   user_registration:
-    registration: Εγγραφή
-    registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών "Μνήμες
-      από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα και να εξηγήσετε
-      τους λόγους για τους οποίους επιθυμείτε πρόσβαση στο Αρχείο. Θα πρέπει να συναινέσετε
-      με τους '
-    registration_text_two: " και να αποστείλετε τη φόρμα εγγραφής για να λάβετε κατόπιν
-      τους κωδικούς πρόσβασης. Οι προϋποθέσεις προστασίας "
-    registration_text_three: " αναλύουν, για ποιους λόγους επεξεργαζόμαστε τα δεδομένα
-      σας, και για ποιο λόγο τα αξιοποιούμε. Εντός δύο εργασιακών ημερών μετά την
-      αποστολή της εγγραφής σας, λαμβάνετε τα δεδομένα εισόδου σας και μια απάντηση
-      στο αίτημά σας."
-    tos_agreement: Προϋποθέσεις χρήσης
-    priv_agreement: Υποδείξεις για την προστασία δεδομένων
-    notes_on_receive_newsletter: Θα ήθελα να εγγραφώ και να λαμβάνω το newsletter
-      του προγράμματος "Μνήμες από την Κατοχή στην Ελλάδα".
-    notes_on_tos_agreement: Συμφωνώ με τις προϋποθέσεις χρήσης
-    priv_agreement_alias: προσωπικών δεδομένων
-    notes_on_priv_agreement: Συμφωνώ με την προστασία δεδομένων
-    register: Αποστολή εγγραφής
+    registration: Registrierung
+    registration_text_one: 'Um die Interviews im Archiv ansehen zu können ist eine
+      Registrierung notwendig. Die '
+    registration_text_two: " erklären, für wen und für welche Zwecke das Archiv nutzbar
+      ist. Die "
+    registration_text_three: " erläutern, warum wir welche Daten verarbeiten und wofür
+      wir sie nutzen. Innerhalb von zwei Werktagen nach dem Absenden Ihrer Registrierung
+      erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung."
+    tos_agreement: Nutzungsbedingungen
+    priv_agreement: Hinweise zum Datenschutz
+    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes abonnieren.
+    notes_on_tos_agreement: Ich stimme den Nutzungsbedingungen zu.
+    priv_agreement_alias: Datenschutzbestimmungen
+    notes_on_priv_agreement: Ich stimme der  Datenschutzpraxis zu.
+    register: Registrierung senden
     appellation:
-      ms: Κυρία
-      ms_dr: Κυρία Δρ.
-      ms_prof: Καθηγήτρια
-      mr: Κύριος
-      mr_dr: Κύριος Δρ.
-      mr_prof: Καθηγητής
+      ms: Frau
+      ms_dr: Frau Dr.
+      ms_prof: Frau Prof.
+      mr: Herr
+      mr_dr: Herr Dr.
+      mr_prof: Herr Prof.
     job_description:
-      researcher: Λέκτορας/ ερευνητής
-      filmmaker: Σκηνοθέτης/τρια, δημοσιογράφος, δάσκαλος/λα
-      journalist: Δημοσιογράφος
-      teacher: Δάσκαλος
-      memorial_staff: Εργαζόμενος/η σε μουσείο/μνημείο
-      pupil: Μαθητής/μαθήτρια
-      student: Φοιτητής/φοιτήτρια
-      other: Άλλο
+      researcher: Dozent(in)/Forscher(in)
+      filmmaker: Filmemacher(in)
+      journalist: Journalist(in)
+      teacher: Lehrer(in)
+      memorial_staff: Mitarbeiter(in) (Museen /Gedenkstätten)
+      pupil: Schüler(in)
+      student: Student(in)
+      other: Sonstige
     research_intentions:
-      exhibition: Εκθεση
-      education: Εκπαιδευτικό πρόγραμμα
-      film: Ντοκιμαντέρ/φιλμ
-      genealogy: Οικογενειακή έρευνα
-      art: Καλλιτεχνικό πρότζεκτ
-      personal_interest: Προσωπικό ενδιαφέρον
-      press_publishing: Δημοσίευση στον Τύπο
-      school_project: Σχολικό πρότζεκτ/ομιλία
-      university_teaching: Πανεπιστημιακή διδασκαλία
-      scientific_paper: Επιστημονικές δημοσιεύσεις
-      other: Άλλο
+      exhibition: Ausstellung
+      education: Bildungsarbeit
+      film: Dokumentarfilm
+      genealogy: Familienforschung
+      art: Kunstprojekt
+      personal_interest: Persönliches Interesse
+      press_publishing: Pressepublikation
+      school_project: Schulprojekt /Referat
+      university_teaching: universitäre Lehre
+      scientific_paper: wissenschaftliche Publikation
+      other: Sonstige
   genders:
     female: weiblich
     male: männlich
   search_facets:
     forced_labor_fields: Einsatzbereich
     forced_labor_groups: Gruppe
-    periods: Χρονικές περίοδοι
-    fulltext: Όρος αναζήτησης
-    gender: Φύλο
-    Man: άρρεν
-    Woman: θήλυ
-    man: άρρεν
-    woman: θήλυ
-    male: άρρεν
-    female: θήλυ
+    periods: Zeitperioden
+    fulltext: Suchbegriff
+    gender: Geschlecht
+    Man: männlich
+    Woman: weiblich
+    man: männlich
+    woman: weiblich
+    male: männlich
+    female: weiblich
     video: Video
     audio: Audio
     born: geb.
-    typology: Εμπειρία
-    resistance: Αντίσταση
-    occupation: Καθημερινότητα
-    flight: Διαφυγή
-    concentration_camp: Στρατόπεδα συγκέντρωσης
-    persecution_of_jews: 'Διώξεις Εβραίων '
-    retaliation: Αντίποινα και εκτελέσεις
-    collaboration: Συνεργασία
-    interview_id: Συνεντεύξεις
-    archive_id: Όνομα
+    typology: Erfahrungen
+    resistance: Widerstand
+    occupation: Besatzungsalltag
+    flight: Flucht
+    concentration_camp: Konzentrationslager
+    persecution_of_jews: Judenverfolgung
+    retaliation: Vergeltungsaktionen und Massenhinrichtungen
+    collaboration: Kollaboration
+    interview_id: Interviews
+    archive_id: Name
     collection_id: Teilsammlung
-    media_type: media type
+    media_type: Medientyp
     language_id: Sprache
     age: Alter
-    year_of_birth: Έτος γέννησης
+    year_of_birth: Geburtsjahr
     interview_date: Entstehungszeit
   activerecord:
     models:
@@ -569,11 +569,12 @@ el:
         other: Aufgaben
         supervised_other: Betreute Aufgaben
       permission:
-        one: Erlaubnis
-        other: Erlaubnisse
+        one: 'Berechtigung'
+        other: 'Berechtigungen'
       role_permission:
-        one: Zur Rolle gehörende Erlaubnis
-        other: Zur Rolle gehörende Erlaubnisse
+        one: 'Zur Rolle gehörende Berechtigung'
+        other: 'Zur Rolle gehörende Berechtigungen'
+
     attributes:
       history:
         forced_labor_details: Zwangsarbeitdetails
@@ -601,7 +602,7 @@ el:
         interviews: Interviewte
       interview:
         person_name: Name
-        collection_id: Teilsammlung
+        collection_id: Sammlung
         archive_id: Archiv-ID
         forced_labor_groups: Gruppe
         forced_labor_fields: Einsatzbereich
@@ -615,7 +616,7 @@ el:
         liberation_date: Datum der Befreiung
         return_locations: Wohnorte ab 1945
         return_date: Datum der Rückkehr
-        home_locations: Wohnort (Land)
+        home_locations: Wohnort
         duration: Art und Länge des Interviews
         interview_date: geführt am
         tape_count: Anzahl der Tapes
@@ -626,21 +627,11 @@ el:
         proofreaders: Lektorat
         segmentators: Segmentierung
         language: Sprache
-        language_id: Sprache
+        language_id: Originalsprache
         video: liegt ein Video vor?
         translated: ist das Interview bereits übersetzt?
         workflow_state: 'Status ändern zu:'
         observations: Protokoll
-        collection: Teilsammlung
-        data: Transkriptdatei
-        timecode: Timecode
-        transcript: Transkript
-        translation: Translation
-        annotations: Anmerkungen
-        tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
-          erschliessen?
-        tape_count: Geamtzahl der Tapes
-        tape_number: Nummer dieses Tapes
       transcript:
         collection_id: Sammlung
         archive_id: Archiv-ID
@@ -679,9 +670,8 @@ el:
         heading: Kapitel
         media_id: Medien ID
       user_account:
-        login: Όνομα σύνδεσης
-        password: Κωδικός
-        email: Ηλεκτρονική διεύθυνση
+        login: Login
+        password: Passwort
       account:
         gender: Geschlecht
         first_name: Vorname
@@ -693,38 +683,26 @@ el:
         processed_at: Bearbeitet am
         admin_comments: Kommentar
         default_locale: Standart Locale
-        appellation: Προσφώνηση
-        first_name: Όνομα
-        last_name: Επώνυμο
-        email: Ηλεκτρονική διεύθυνση
-        job_description: Επάγγελμα
-        research_intentions: Ερευνητικά ενδιαφέροντα
-        comments: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
-        organization: Ίδρυμα
-        homepage: Ιστοσελίδα ιδρύματος
-        address: Διεύθυνση
-        street: Οδός
-        zipcode: Ταχυδρομικός κώδικας
-        city: Τόπος
-        country: Χώρα
+        appellation: Anrede
+        first_name: Vorname
+        last_name: Nachname
+        email: E-Mail
+        job_description: Beruf
+        research_intentions: Rechercheanliegen
+        comments: Präzisierung des Anliegens
+        organization: Institution
+        homepage: Homepage der Institution
+        address: Adresse
+        street: Straße
+        zipcode: PLZ
+        city: Ort
+        country: Land
         receive_newsletter: Newsletter
-        tos_agreement: Προϋποθέσεις χρήσης
-        priv_agreement: Υποδείξεις για την προστασία δεδομένων
+        tos_agreement: Nutzungsbedingungen
+        priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
         workflow_state: Status
         transition_to: 'Status ändern zu:'
-        registration: Εγγραφή
-        registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών
-          "Μνήμες από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα
-          και να εξηγήσετε τους λόγους για τους οποίους επιθυμείτε πρόσβαση στο Αρχείο.
-          Θα πρέπει να συναινέσετε με τους '
-        registration_text_two: " και να αποστείλετε τη φόρμα εγγραφής για να λάβετε
-          κατόπιν τους κωδικούς πρόσβασης. Οι προϋποθέσεις προστασίας "
-        registration_text_three: " αναλύουν, για ποιους λόγους επεξεργαζόμαστε τα
-          δεδομένα σας, και για ποιο λόγο τα αξιοποιούμε. Εντός δύο εργασιακών ημερών
-          μετά την αποστολή της εγγραφής σας, λαμβάνετε τα δεδομένα εισόδου σας και
-          μια απάντηση στο αίτημά σας."
-        priv_agreement_alias: προσωπικών δεδομένων
       user_role:
         role_id: Rolle
       role:
@@ -732,12 +710,12 @@ el:
         name: Name
         desc: Beschreibung
       role_permission:
-        name: Name
-        desc: Beschreibung
-        permission_id: Erlaubnis
-        controller: Controller
-        action: Action
-        created_at: angelegt
+        name: 'Name'
+        desc: 'Beschreibung'
+        permission_id: 'Berechtigung'
+        controller: 'Controller'
+        action: 'Action'
+        created_at: 'angelegt'
       permission:
         name: Name
         desc: Beschreibung
@@ -780,13 +758,13 @@ el:
         text_to_mark: zu chiffrierender Text
     errors:
       default:
-        select: Παρακαλώ δώστε
-        textarea: Παρακαλώ συμπληρώστε
-        checkbox_input: Παρακαλώ συμπληρώστε
-        text_input: Παρακαλώ συμπληρώστε
-        file_input: Παρακαλώ συμπληρώστε
-        password_input: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
-        email_input: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
+        select: Bitte auswählen
+        textarea: Bitte angeben
+        checkbox_input: Bitte zustimmen
+        text_input: Bitte angeben
+        file_input: Bitte Datei auswählen
+        password_input: Bitte berichtigen Sie Ihr Passwort
+        email_input: Bitte berichtigen Sie Ihre Email
       template:
         header: Ihre Anfrage konnte nicht bearbeitet werden
         body: 'Folgendes Problem ist aufgetreten:'
@@ -805,10 +783,3 @@ el:
           attributes:
             description:
               too_long: Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.
-  history_of: Σύντομο βιογραφικό του/της
-  edit_interview:
-    new: New interview
-    edit: Edit interview
-  translated_typology: Είδος εμπειρίας
-  indexation: Ιστορική επεξεργασία
-  annotation_for_interview: Παρατηρήσεις πάνω στη συνέντευξη

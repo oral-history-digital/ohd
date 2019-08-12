@@ -76,7 +76,7 @@ export default class PersonData extends React.Component {
             let interviewee = getInterviewee(_this.props);
             // first, I wrote this. Do we still need it?:
             // let field = _this.props.interview[column["name"]]
-            if(column["source"] === 'person' && interviewee[column["name"]]){
+            if(column["source"] === 'person'){
                 return(
                     _this.content(
                         (column["label"] && column["label"][_this.props.locale]) || t(column["name"]) || column["name"], 

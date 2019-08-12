@@ -8,8 +8,11 @@ export default class Uploads extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = { };
+        this.state = {
+            showForm: true
+        };
         this.handleUploadTypeChange = this.handleUploadTypeChange.bind(this);
+        this.returnToForm = this.returnToForm.bind(this);
     }
 
     handleUploadTypeChange(name, value) {
@@ -40,35 +43,36 @@ export default class Uploads extends React.Component {
             return null;
         }
     }
+
     returnToForm() {
-        this.props.returnToForm('uploads');
+        this.setState({showForm: true});
     }
 
     content() {
         if (
-            this.props.processing 
+            !this.state.showForm
         ) {
             return (
                 <div>
                     <p>
                         {t(this.props, 'edit.upload.processing')}
-                        {this.props.processing}
                     </p>
-                    <div 
+                    <button 
                         className='return-to-upload'
                         onClick={() => this.returnToForm()}
                     >
                         {t(this.props, 'edit.upload.return')}
-                    </div>
+                    </button>
                 </div>
             )
         } else {
+            let _this = this;
             return (
                 <div>
                     {this.explanations()}
                     <Form 
                         scope='upload'
-                        onSubmit={this.props.submitData}
+                        onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.setState({showForm: false})}}
                         submitText='edit.upload.upload'
                         elements={[
                             {

@@ -8,7 +8,10 @@ export default class MarkTextForm extends React.Component {
     constructor(props) {
         super(props);
         this.showMarkedText = this.showMarkedText.bind(this);
-        this.state = {};
+        this.returnToForm = this.returnToForm.bind(this);
+        this.state = {
+            showForm: true
+        };
     }
 
     showMarkedText(value) {
@@ -18,44 +21,55 @@ export default class MarkTextForm extends React.Component {
     }
 
     returnToForm() {
-        this.props.returnToForm('interviews');
+        this.setState({showForm: true});
     }
 
     form() {
-        return (
-            <Form 
-                scope='mark_text'
-                onSubmit={this.props.submitData}
-                values={{
-                    id: this.props.interview.archive_id
-                }}
-                elements={[
-                    {
-                        elementType: 'select',
-                        attribute: 'locale',
-                        values: this.props.interview && this.props.interview.languages,
-                        withEmpty: true,
-                        validate: function(v){return v !== ''},
-                        individualErrorMsg: 'empty'
-                    },
-                ]}
-                subForm={SingleTextInputFormContainer}
-                subFormProps={{}}
-                subFormScope='text'
-                subScopeRepresentation={this.showMarkedText}
-            />
-        )
+        if (
+            this.state.showForm
+        ) {
+            return (
+                <Form 
+                    scope='mark_text'
+                    onSubmit={this.props.submitData}
+                    values={{
+                        id: this.props.interview && this.props.interview.archive_id
+                    }}
+                    elements={[
+                        {
+                            elementType: 'select',
+                            attribute: 'locale',
+                            values: this.props.interview && this.props.interview.languages,
+                            withEmpty: true,
+                            validate: function(v){return v !== ''},
+                            individualErrorMsg: 'empty'
+                        },
+                    ]}
+                    subForm={SingleTextInputFormContainer}
+                    subFormProps={{}}
+                    subFormScope='text'
+                    subScopeRepresentation={this.showMarkedText}
+                />
+            )
+        }
     }
 
     msg() {
         if (
-            this.props.markTextStatus[`for_interviews_${this.props.archiveId}`]
+            //this.props.markTextStatus[`for_interviews_${this.props.archiveId}`]
+            !this.state.showForm
         ) {
             return (
                 <div>
                     <p>
                         {t(this.props, 'edit.text.' + this.props.markTextStatus[`for_interviews_${this.props.archiveId}`])}
                     </p>
+                    <button 
+                        className='return-to-upload'
+                        onClick={() => this.returnToForm()}
+                    >
+                        {t(this.props, 'edit.upload.return')}
+                    </button>
                 </div>
             )
         }

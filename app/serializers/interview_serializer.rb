@@ -43,6 +43,7 @@ class InterviewSerializer < ApplicationSerializer
                :photos,
                :observations,
                :doi_status,
+               :properties,
              #:updated_at,
              #:segmented,
              #:researched,
@@ -63,8 +64,19 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
+  def accessibility
+    I18n.available_locales.inject({}) do |mem, locale|
+      object.accessibility && mem[locale] = object.accessibility.map { |f| RegistryEntry.find(f).to_s(locale) }
+      mem
+    end
+  end
+
   def gender
-    Project.localized_hash_for("search_facets", object.interviewees.first.gender)
+    if object.interviewees.first
+      Project.localized_hash_for("search_facets", object.interviewees.first.gender)
+    else
+      {}
+    end
   end
 
   def media_type
@@ -84,13 +96,14 @@ class InterviewSerializer < ApplicationSerializer
 
   def country_of_birth
     I18n.available_locales.inject({}) do |mem, locale|
-      object.country_of_birth && mem[locale] = object.country_of_birth.yield_self { |f| RegistryEntry.find(f).to_s(locale) }
+      interviewee = object.interviewees.first
+      interviewee && interviewee.country_of_birth && mem[locale] = interviewee.country_of_birth.yield_self { |f| RegistryEntry.find(f).to_s(locale) }
       mem
     end
   end
 
   def interviewee_id
-    object.interviewees.first.id
+    object.interviewees.first && object.interviewees.first.id
   end
 
   def transitions_to

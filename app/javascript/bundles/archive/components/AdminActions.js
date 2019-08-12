@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 import { t } from '../../../lib/utils';
 
 export default class AdminActions extends React.Component {
 
     static contextTypes = {
         router: PropTypes.object
+    }
+
+    selectedArchiveIds() {
+        return this.props.archiveIds.filter(archiveId => archiveId !== 'dummy');
     }
 
     doiResults() {
@@ -21,8 +26,8 @@ export default class AdminActions extends React.Component {
     }
 
     messages() {
-        return this.props.archiveIds.map((archiveId) => {
-            if (archiveId !== 'dummy') {
+        return this.selectedArchiveIds().map((archiveId) => {
+            if (this.props.statuses[archiveId] !== undefined) {
                 return (
                     <div>
                         {`${archiveId}: ${this.props.statuses[archiveId]}`}
@@ -33,17 +38,32 @@ export default class AdminActions extends React.Component {
     }
 
     deleteInterviews() {
-        this.props.archiveIds.forEach((archiveId) => {
-            if (archiveId !== 'dummy') {
-                this.props.deleteData('interviews', archiveId);
-            }
+        this.selectedArchiveIds().forEach((archiveId) => {
+            this.props.deleteData('interviews', archiveId);
         });
         this.props.closeArchivePopup();
-        this.context.router.history.push(`/${this.props.locale}/searches/archive`);
+        if (this.context.router.route.match.params.archiveId === undefined) {
+            // TODO: faster aproach would be to just hide or delete the dom-elements 
+            location.reload();
+        } else {
+            this.context.router.history.push(`/${this.props.locale}/searches/archive`);
+        }
+    }
+
+    updateInterviews(params) {
+        this.selectedArchiveIds().forEach((archiveId) => {
+            let updatedParams = Object.assign({}, params, {id: archiveId});
+            this.props.submitData({interview: updatedParams}, this.props.locale);
+        });
+        this.props.closeArchivePopup();
+        if (this.context.router.route.match.params.archiveId === undefined) {
+            // TODO: faster aproach would be to just hide or delete the dom-elements 
+            location.reload();
+        } 
     }
 
     exportDOI() {
-        this.props.submitDois(this.props.archiveIds, this.props.locale)
+        this.props.submitDois(this.selectedArchiveIds(), this.props.locale)
         this.props.closeArchivePopup();
     }
 
@@ -55,7 +75,7 @@ export default class AdminActions extends React.Component {
     }
 
     deleteButton() {
-        let title = t(this.props, 'delete_interviews.title');
+        let title = t(this.props, 'edit.interviews.delete.title');
         return <div
             className='flyout-sub-tabs-content-ico-link'
             title={title}
@@ -63,9 +83,30 @@ export default class AdminActions extends React.Component {
                 title: title,
                 content: (
                     <div>
-                        {t(this.props, 'delete_interviews.confirm_text', {archive_ids: this.props.archiveIds.join(', ')})}
+                        {t(this.props, 'edit.interviews.delete.confirm_text', {archive_ids: this.selectedArchiveIds().join(', ')})}
                         <div className='any-button' onClick={() => this.deleteInterviews()}>
-                            {t(this.props, 'delete_interviews.ok')}
+                            {t(this.props, 'submit')}
+                        </div>
+                    </div>
+                )
+            })}
+        >
+            {title}
+        </div>
+    }
+
+    updateButton(params, action) {
+        let title = t(this.props, `edit.interviews.${action}.title`);
+        return <div
+            className='flyout-sub-tabs-content-ico-link'
+            title={title}
+            onClick={() => this.props.openArchivePopup({
+                title: title,
+                content: (
+                    <div>
+                        {t(this.props, `edit.interviews.${action}.confirm_text`, {archive_ids: this.selectedArchiveIds().join(', ')})}
+                        <div className='any-button' onClick={() => this.updateInterviews(params)}>
+                            {t(this.props, 'submit')}
                         </div>
                     </div>
                 )
@@ -85,7 +126,7 @@ export default class AdminActions extends React.Component {
                 content: (
                     <div>
                         {t(this.props, 'doi.text1') + ' '}
-                        {this.links(this.props.archiveIds)}
+                        {this.links(this.selectedArchiveIds())}
                         {' ' + t(this.props, 'doi.text2')}
                         <div className='any-button' onClick={() => this.exportDOI()}>
                             {t(this.props, 'doi.ok')}
@@ -113,6 +154,10 @@ export default class AdminActions extends React.Component {
                 {this.doiButton()}
                 {this.messages()}
                 {this.deleteButton()}
+                {this.updateButton({workflow_state: 'publish'}, 'publish')}
+                {this.updateButton({workflow_state: 'unpublish'}, 'unpublish')}
+                {this.updateButton({biographies_workflow_state: 'publish'}, 'publish_biographies')}
+                {this.updateButton({biographies_workflow_state: 'unpublish'}, 'unpublish_biographies')}
                 {this.reset()}
                 {this.setAll()}
             </div>

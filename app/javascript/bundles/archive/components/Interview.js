@@ -1,10 +1,16 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 import WrapperPageContainer from '../containers/WrapperPageContainer';
+import InterviewInfoContainer from '../containers/InterviewInfoContainer';
+import InterviewDataContainer from '../containers/InterviewDataContainer';
+import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
+import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
+import PersonDataContainer from '../containers/PersonDataContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import { t, fullname, getInterviewee } from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 
 export default class Interview extends React.Component {
 
@@ -102,25 +108,37 @@ export default class Interview extends React.Component {
 
     content() {
         if (this.interviewLoaded()){
-            let tabIndex = this.props.locales.length + 2;
-            return (
-                <WrapperPageContainer tabIndex={tabIndex}>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <VideoPlayerContainer interview={this.interview()}/>
-                        <InterviewTabsContainer interview={this.interview()}/>
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
-                        {this.loggedOutContent()}
-                    </AuthShowContainer>
-                </WrapperPageContainer>
-            );
+            if (!this.props.isCatalog) {
+                return (
+                    <div>
+                        <AuthShowContainer ifLoggedIn={true}>
+                            <VideoPlayerContainer
+                                interview={this.interview()}
+                            />
+                            <InterviewTabsContainer
+                                interview={this.interview()}
+                            />
+                        </AuthShowContainer>
+                        <AuthShowContainer ifLoggedOut={true}>
+                            {this.loggedOutContent()}
+                        </AuthShowContainer>
+                    </div>
+                )
+            } else {
+                return (<InterviewDetailsLeftSideContainer interview={this.interview()} />);
+            }
         } else {
             return null;
         }
     }
 
     render() {
-        return this.content();
+        let tabIndex = this.props.locales.length + 2;
+        return (
+            <WrapperPageContainer tabIndex={tabIndex}>
+                {this.content()}
+            </WrapperPageContainer>
+        )
     }
 }
 

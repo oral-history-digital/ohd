@@ -138,6 +138,9 @@ class Interview < ActiveRecord::Base
            dependent: :destroy
 
   translates :observations
+
+  serialize :properties
+
   #validate :has_standard_name
 
   #def has_standard_name
@@ -165,6 +168,9 @@ class Interview < ActiveRecord::Base
     
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
+
+    # in order to fast access places of birth for all interviews
+    # string :birth_location, :stored => true
 
     text :transcript, :boost => 5 do
       segments.includes(:translations).inject([]) do |all, segment|
@@ -241,6 +247,10 @@ class Interview < ActiveRecord::Base
       end
     end
 
+    text :interviewer_property do 
+      properties && properties[:interviewer]
+    end
+
     # photo caption texts
     #
     I18n.available_locales.each do |locale|
@@ -264,6 +274,24 @@ class Interview < ActiveRecord::Base
 
   def workflow_state=(change)
     self.send("#{change}!")
+  end
+
+  def biographies_workflow_state=(change)
+    interviewees.each do |interviewee|
+      interviewee.biographical_entries.each do |bio|
+        bio.send("#{change}!")
+      end
+    end
+  end
+
+  def tape_count=(d)
+    # dummy: build did not do the trick here. Therefore I implemented find_or_create_tapes
+  end
+
+  def find_or_create_tapes(d)
+    (1..d.to_i).each do |t|
+      Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', t)}", number: t, interview_id: id)
+    end
   end
 
   def self.random_featured(n = 1)
@@ -328,10 +356,6 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  def country_of_birth
-    interviewees.first.birth_location && !interviewees.first.birth_location.parents.empty? && interviewees.first.birth_location.parents.first.id.to_i
-  end
-
   def localized_hash_for_country_of_birth
     I18n.available_locales.inject({}) do |mem, locale|
       if(interviewees && interviewees.first && interviewees.first.birth_location)
@@ -393,7 +417,7 @@ class Interview < ActiveRecord::Base
     project.person_search_facets.each do |facet|
       define_singleton_method facet.name do 
         # TODO: what if there are more intervviewees?
-        interviewees.first && interviewees.first.send(facet.name.to_sym) ? interviewees.first.send(facet.name.to_sym).split(', ') : ''
+        interviewees.first && interviewees.first.send(facet.name.to_sym) ? interviewees.first.send(facet.name.to_sym).try(:split, ', ') : ''
       end
     end
   end

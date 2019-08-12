@@ -17,9 +17,9 @@ class Tape < ActiveRecord::Base
   validates_uniqueness_of :media_id
 
   before_validation :inform, on: :create
-  before_save :check_state
+  #before_save :check_state
 
-  after_save :update_interview_duration
+  #after_save :update_interview_duration
 
   # check that this tape matches the existing number
   # of tapes in it's media_id
@@ -136,15 +136,15 @@ class Tape < ActiveRecord::Base
 
   private
 
-  def check_state
-    import! unless segments.empty? or !digitized?
-  end
+  #def check_state
+    #import! unless segments.empty? or !digitized?
+  #end
 
-  def update_interview_duration
-    # update interview duration if this is the last tape
-    if total_number_of_tapes == number.to_i
-      interview.recalculate_duration!
-    end
-  end
+  #def update_interview_duration
+    ## update interview duration if this is the last tape
+    #if total_number_of_tapes == number.to_i
+      #interview.recalculate_duration!
+    #end
+  #end
 
 end

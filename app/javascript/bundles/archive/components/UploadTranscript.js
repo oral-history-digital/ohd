@@ -11,7 +11,8 @@ export default class UploadTranscript extends React.Component {
         super(props);
         this.state = {
             hideTapeAndArchiveInputs: false, 
-            tapeDurationsSet: false
+            tapeDurationsSet: false,
+            showForm: true
         };
 
         this.handleTapeAndArchiveIdFromFileChange = this.handleTapeAndArchiveIdFromFileChange.bind(this);
@@ -30,17 +31,17 @@ export default class UploadTranscript extends React.Component {
     }
 
     returnToForm() {
-        this.props.returnToForm('uploads');
+        this.setState({showForm: true});
     }
 
     content() {
         if (
-            this.props.processing 
+            !this.state.showForm
         ) {
             return (
                 <div>
                     <p>
-                        {t(this.props, 'edit.upload.processing', {archiveId: this.props.processing})}
+                        {t(this.props, 'edit.upload.processing')}
                     </p>
                     <div 
                         className='return-to-upload'
@@ -59,7 +60,7 @@ export default class UploadTranscript extends React.Component {
                     </p>
                     <Form 
                         scope='transcript'
-                        onSubmit={this.props.submitData}
+                        onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.setState({showForm: false})}}
                         submitText='edit.upload_transcript.title'
                         values={{ }}
                         elements={[

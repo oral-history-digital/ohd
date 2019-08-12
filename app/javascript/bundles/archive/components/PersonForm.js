@@ -9,7 +9,11 @@ export default class PersonForm extends React.Component {
         return (
             <Form 
                 scope='person'
-                onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                onSubmit={function(params, locale){
+                    _this.props.submitData(params, locale);
+                    if (typeof _this.props.closeArchivePopup === "function") {_this.props.closeArchivePopup()};
+                    if (typeof _this.props.onSubmitCallback === "function") {_this.props.onSubmitCallback()}}
+                }
                 values={{
                     id: this.props.person && this.props.person.id
                 }}

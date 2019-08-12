@@ -1,5 +1,6 @@
 class RegistryReferenceTypeSerializer < ApplicationSerializer
   attributes :id,
+             :code,
              :name,
              :registry_reference_ids,
              :registry_entry_id,

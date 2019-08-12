@@ -61,7 +61,11 @@ class Person < ApplicationRecord
   end
 
   def year_of_birth
-    date_of_birth.blank? ? "?" : date_of_birth[/19\d{2}/]
+    date_of_birth.blank? ? "" : date_of_birth[/19\d{2}/]
+  end
+
+  def country_of_birth
+    birth_location && birth_location.parents.first.entry_code != 'places' && birth_location.parents.first.id.to_i
   end
 
   def name(last_name_as_inital = false)

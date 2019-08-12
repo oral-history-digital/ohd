@@ -247,14 +247,14 @@ header.site-header {
 
 .wrapper-video {
   position: relative;
-  padding: 30px 5%;
+  padding: 30px 5% 25px;
   height: auto;
   background: $gray-darker;
   color: #fff;
   // -webkit-transition: max-height 1s;
   // transition: max-height 1s;
   @include screen-m {
-    padding: 30px 5%;
+    padding: 30px 5% 25px;
   }
 }
 .video-title-container {

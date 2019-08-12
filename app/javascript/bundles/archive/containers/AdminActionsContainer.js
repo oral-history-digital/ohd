@@ -5,7 +5,7 @@ import {
     addRemoveArchiveId,
     setArchiveIds
 } from '../actions/archiveActionCreators';
-import { deleteData } from '../actions/dataActionCreators';
+import { deleteData, submitData } from '../actions/dataActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
@@ -24,6 +24,7 @@ const mapDispatchToProps = (dispatch) => ({
     addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),
     setArchiveIds: (archiveIds) => dispatch(setArchiveIds(archiveIds)),
     deleteData: (dataType, id, nestedDataType, nestedId, skipRemove, locale) => dispatch(deleteData(dataType, id, nestedDataType, nestedId, skipRemove, locale)),
+    submitData: (params, locale) => dispatch(submitData(params, locale)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })

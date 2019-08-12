@@ -7,21 +7,38 @@ import { t } from '../../../lib/utils';
 
 export default class EditInterview extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            showForm: true
+        };
+        this.returnToForm = this.returnToForm.bind(this);
+        this.hideForm = this.hideForm.bind(this);
+    }
+
+    returnToForm() {
+        this.setState({showForm: true});
+    }
+
+    hideForm() {
+        this.setState({showForm: false});
+    }
+
     content() {
         if (
-            this.props.processed 
+            !this.state.showForm
         ) {
+            //<Link to={'/' + this.props.locale + '/interviews/' + this.props.processed}>
+                //{this.props.processed}
+            //</Link>
             return (
                 <div>
                     <p>
                         {t(this.props, 'edit.interview.processed')}
-                        <Link to={'/' + this.props.locale + '/interviews/' + this.props.processed}>
-                            {this.props.processed}
-                        </Link>
                     </p>
                     <button 
                         className='return-to-upload'
-                        onClick={() => this.props.returnToForm('interviews')}
+                        onClick={() => this.returnToForm()}
                     >
                         {t(this.props, 'edit.interview.return')}
                     </button>
@@ -29,7 +46,7 @@ export default class EditInterview extends React.Component {
             )
         } else {
             return (
-                <InterviewFormContainer submitText='edit.interview.new' withContributions={true} />
+                <InterviewFormContainer submitText='edit.interview.new' withContributions={true} onSubmitCallback={this.hideForm} />
             )
         }
     }

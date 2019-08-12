@@ -150,9 +150,9 @@ export default class ArchiveSearchForm extends React.Component {
                         className={'flyout-search'} 
                         onSubmit={this.handleSubmit}
                     >
-                        <AuthShowContainer ifLoggedIn={true}>
+                        {/*<AuthShowContainer ifLoggedIn={true}>*/}
                             {this.renderInputField()}
-                        </AuthShowContainer>
+                        {/*</AuthShowContainer>*/}
                         {this.renderResetButton()}
                         {this.renderFacets()}
                     </form>

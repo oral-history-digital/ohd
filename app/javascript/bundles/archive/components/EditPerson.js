@@ -6,31 +6,43 @@ import { t } from '../../../lib/utils';
 
 export default class EditPerson extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            showForm: true
+        };
+        this.returnToForm = this.returnToForm.bind(this);
+        this.hideForm = this.hideForm.bind(this);
+    }
+
     returnToForm() {
-        this.props.returnToForm('people');
+        this.setState({showForm: true});
+    }
+
+    hideForm() {
+        this.setState({showForm: false});
     }
 
     content() {
         if (
-            this.props.processed 
+            !this.state.showForm
         ) {
             return (
                 <div>
                     <p>
                         {t(this.props, 'edit.person.processed')}
-                        {this.props.processed}
                     </p>
-                    <div 
+                    <button 
                         className='return-to-upload'
                         onClick={() => this.returnToForm()}
                     >
                         {t(this.props, 'edit.person.return')}
-                    </div>
+                    </button>
                 </div>
             )
         } else {
             return (
-                <PersonFormContainer />
+                <PersonFormContainer onSubmitCallback={this.hideForm} />
             )
         }
     }
