@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_16_114858) do
+ActiveRecord::Schema.define(version: 2019_08_12_130015) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -129,16 +129,16 @@ ActiveRecord::Schema.define(version: 2019_07_16_114858) do
 
   create_table "external_link_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "external_link_id", null: false
-    t.string "locale", null: false
+    t.string "locale", limit: 255, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "url"
+    t.string "url", limit: 255
     t.index ["external_link_id"], name: "index_external_link_translations_on_external_link_id"
     t.index ["locale"], name: "index_external_link_translations_on_locale"
   end
 
   create_table "external_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name"
+    t.string "name", limit: 255
     t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -204,8 +204,8 @@ ActiveRecord::Schema.define(version: 2019_07_16_114858) do
     t.string "citation_timecode", limit: 18
     t.datetime "indexed_at"
     t.integer "language_id"
-    t.string "workflow_state", default: "unshared"
-    t.string "doi_status"
+    t.string "workflow_state", limit: 255, default: "unshared"
+    t.string "doi_status", limit: 255
     t.integer "project_id"
     t.string "properties"
   end
@@ -226,25 +226,25 @@ ActiveRecord::Schema.define(version: 2019_07_16_114858) do
 
   create_table "metadata_field_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "metadata_field_id", null: false
-    t.string "locale", null: false
+    t.string "locale", limit: 255, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "label"
+    t.string "label", limit: 255
     t.index ["locale"], name: "index_metadata_field_translations_on_locale"
     t.index ["metadata_field_id"], name: "index_metadata_field_translations_on_metadata_field_id"
   end
 
   create_table "metadata_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
-    t.string "name"
+    t.string "name", limit: 255
     t.boolean "use_as_facet"
     t.boolean "use_in_results_table"
     t.boolean "use_in_details_view"
     t.boolean "display_on_landing_page"
-    t.string "ref_object_type"
-    t.string "source"
-    t.string "label"
-    t.string "values"
+    t.string "ref_object_type", limit: 255
+    t.string "source", limit: 255
+    t.string "label", limit: 255
+    t.string "values", limit: 255
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -300,45 +300,46 @@ ActiveRecord::Schema.define(version: 2019_07_16_114858) do
 
   create_table "project_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id", null: false
-    t.string "locale", null: false
+    t.string "locale", limit: 255, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name"
+    t.string "name", limit: 255
     t.index ["locale"], name: "index_project_translations_on_locale"
     t.index ["project_id"], name: "index_project_translations_on_project_id"
   end
 
   create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "available_locales"
-    t.string "default_locale"
-    t.string "view_modes"
-    t.string "upload_types"
-    t.string "primary_color_rgb"
-    t.string "shortname"
-    t.string "initials"
-    t.string "domain"
-    t.string "archive_domain"
-    t.string "doi"
-    t.string "cooperation_partner"
-    t.string "leader"
-    t.string "manager"
-    t.string "hosting_institution"
-    t.string "funder_names"
-    t.string "contact_email"
-    t.string "smtp_server"
-    t.string "has_newsletter"
-    t.string "hidden_registry_entry_ids"
-    t.string "pdf_registry_entry_codes"
+    t.string "available_locales", limit: 255
+    t.string "default_locale", limit: 255
+    t.string "view_modes", limit: 255
+    t.string "upload_types", limit: 255
+    t.string "primary_color_rgb", limit: 255
+    t.string "shortname", limit: 255
+    t.string "initials", limit: 255
+    t.string "domain", limit: 255
+    t.string "archive_domain", limit: 255
+    t.string "doi", limit: 255
+    t.string "cooperation_partner", limit: 255
+    t.string "leader", limit: 255
+    t.string "manager", limit: 255
+    t.string "hosting_institution", limit: 255
+    t.string "funder_names", limit: 255
+    t.string "contact_email", limit: 255
+    t.string "smtp_server", limit: 255
+    t.string "has_newsletter", limit: 255
+    t.string "hidden_registry_entry_ids", limit: 255
+    t.string "pdf_registry_entry_codes", limit: 255
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "is_catalog", default: false
   end
 
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "code"
-    t.string "desc"
-    t.string "latitude"
-    t.string "longitude"
-    t.string "workflow_state", null: false
+    t.string "code", limit: 255
+    t.string "desc", limit: 255
+    t.string "latitude", limit: 255
+    t.string "longitude", limit: 255
+    t.string "workflow_state", limit: 255, null: false
     t.boolean "list_priority"
     t.datetime "created_at"
     t.datetime "updated_at"
@@ -455,7 +456,7 @@ ActiveRecord::Schema.define(version: 2019_07_16_114858) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "text", limit: 16777215
-    t.string "spec", default: "original"
+    t.string "spec", limit: 255, default: "original"
     t.index ["segment_id"], name: "index_segment_translations_on_segment_id"
   end
 
@@ -547,7 +548,7 @@ ActiveRecord::Schema.define(version: 2019_07_16_114858) do
     t.index ["user_account_id", "ip"], name: "index_user_account_ips_on_user_account_id_and_ip"
   end
 
-  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 128, default: "", null: false
     t.string "password_salt", limit: 255, default: "", null: false
