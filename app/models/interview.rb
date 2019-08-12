@@ -414,7 +414,7 @@ class Interview < ActiveRecord::Base
 
   # ZWAR_MIGRATE: Uncomment this after migrating zwar
   after_initialize do 
-    project.person_search_facets.each do |facet|
+    project.person_metadata_fields.each do |facet|
       define_singleton_method facet.name do 
         # TODO: what if there are more intervviewees?
         interviewees.first && interviewees.first.send(facet.name.to_sym) ? interviewees.first.send(facet.name.to_sym).try(:split, ', ') : ''

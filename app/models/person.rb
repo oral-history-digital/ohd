@@ -65,7 +65,7 @@ class Person < ApplicationRecord
   end
 
   def country_of_birth
-    birth_location && birth_location.parents.first.entry_code != 'places' && birth_location.parents.first.id.to_i
+    birth_location && birth_location.parents.first && birth_location.parents.first.code != 'places' && birth_location.parents.first.id.to_i
   end
 
   def name(last_name_as_inital = false)
