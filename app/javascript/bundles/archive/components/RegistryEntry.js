@@ -199,6 +199,12 @@ export default class RegistryEntry extends React.Component {
         }
     }
 
+    showId() {
+        if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
+            return ` (ID: ${this.props.registryEntry.id})`
+        }
+    }
+
     entry() {
         let css = this.state.childrenVisible ? 'open' : '';
         return (
@@ -211,7 +217,7 @@ export default class RegistryEntry extends React.Component {
             >
                 {this.props.registryEntry.name[this.props.locale]}
                 {/* {(this.props.registryEntry.child_ids[this.props.locale].length > 0) && ` (${this.props.registryEntry.child_ids[this.props.locale].length})`} */}
-                {/* {` (ID: ${this.props.registryEntry.id})`} */}
+                {this.showId()}
             </div>
         )
     }

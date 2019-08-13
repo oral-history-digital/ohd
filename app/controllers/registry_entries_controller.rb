@@ -5,8 +5,9 @@ class RegistryEntriesController < ApplicationController
 
   def create
     authorize RegistryEntry
-    I18n.locale = ISO_639.find(Language.find(registry_entry_params[:lang]).code.split(/[\/-]/)[0]).alpha2
-    @registry_entry = RegistryEntry.create_with_parent_and_name(registry_entry_params[:parent_id], registry_entry_params[:descriptor])
+    locale = ISO_639.find(Language.find(registry_entry_params[:lang]).code.split(/[\/-]/)[0]).alpha2
+    I18n.locale = locale
+    @registry_entry = RegistryEntry.create_with_parent_and_names(registry_entry_params[:parent_id], "#{locale}::#{registry_entry_params[:descriptor]}")
     @registry_entry.reload.update_attributes registry_entry_params.slice(:latitude, :longitude, :notes)
     clear_cache @registry_entry.parents.first
 
