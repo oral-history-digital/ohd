@@ -4,6 +4,7 @@ class MetadataFieldsController < ApplicationController
   layout 'responsive'
 
   def create
+    authorize MetadataField
     @metadata_field = MetadataField.create metadata_field_params
     respond_to do |format|
       format.json do

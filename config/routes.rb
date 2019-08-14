@@ -22,6 +22,8 @@ Rails.application.routes.draw do
 
     localized do
       resources :projects
+      resources :metadata_fields
+      resources :external_links
 
       resources :contributions, only: [:create, :destroy]
       #resources :histories, only: [:create, :update, :destroy]

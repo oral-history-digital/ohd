@@ -4,6 +4,7 @@ class ExternalLinksController < ApplicationController
   layout 'responsive'
 
   def create
+    authorize ExternalLink
     @external_link = ExternalLink.create external_link_params
     respond_to do |format|
       format.json do
