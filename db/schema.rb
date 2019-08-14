@@ -206,8 +206,8 @@ ActiveRecord::Schema.define(version: 2019_08_12_130015) do
     t.integer "language_id"
     t.string "workflow_state", limit: 255, default: "unshared"
     t.string "doi_status", limit: 255
-    t.integer "project_id"
     t.string "properties"
+    t.integer "project_id"
   end
 
   create_table "language_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -300,38 +300,39 @@ ActiveRecord::Schema.define(version: 2019_08_12_130015) do
 
   create_table "project_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id", null: false
-    t.string "locale", limit: 255, null: false
+    t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "name", limit: 255
+    t.string "name"
     t.index ["locale"], name: "index_project_translations_on_locale"
     t.index ["project_id"], name: "index_project_translations_on_project_id"
   end
 
   create_table "projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "available_locales", limit: 255
-    t.string "default_locale", limit: 255
-    t.string "view_modes", limit: 255
-    t.string "upload_types", limit: 255
-    t.string "primary_color_rgb", limit: 255
-    t.string "shortname", limit: 255
-    t.string "initials", limit: 255
-    t.string "domain", limit: 255
-    t.string "archive_domain", limit: 255
-    t.string "doi", limit: 255
-    t.string "cooperation_partner", limit: 255
-    t.string "leader", limit: 255
-    t.string "manager", limit: 255
-    t.string "hosting_institution", limit: 255
-    t.string "funder_names", limit: 255
-    t.string "contact_email", limit: 255
-    t.string "smtp_server", limit: 255
-    t.string "has_newsletter", limit: 255
-    t.string "hidden_registry_entry_ids", limit: 255
-    t.string "pdf_registry_entry_codes", limit: 255
+    t.string "name"
+    t.string "available_locales"
+    t.string "default_locale"
+    t.string "view_modes"
+    t.string "upload_types"
+    t.string "primary_color_rgb"
+    t.string "shortname"
+    t.string "initials"
+    t.string "domain"
+    t.string "archive_domain"
+    t.string "doi"
+    t.string "cooperation_partner"
+    t.string "leader"
+    t.string "manager"
+    t.string "hosting_institution"
+    t.string "funder_names"
+    t.string "contact_email"
+    t.string "smtp_server"
+    t.boolean "has_newsletter"
+    t.boolean "is_catalog"
+    t.string "hidden_registry_entry_ids"
+    t.string "pdf_registry_entry_codes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "is_catalog", default: false
   end
 
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

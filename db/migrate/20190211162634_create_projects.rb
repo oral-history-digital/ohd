@@ -1,6 +1,7 @@
 class CreateProjects < ActiveRecord::Migration[5.2]
   def change
     create_table :projects do |t|
+      t.string :name
       t.string :available_locales
       t.string :default_locale
       t.string :view_modes
@@ -18,7 +19,8 @@ class CreateProjects < ActiveRecord::Migration[5.2]
       t.string :funder_names
       t.string :contact_email
       t.string :smtp_server
-      t.string :has_newsletter
+      t.boolean :has_newsletter
+      t.boolean :is_catalog
       t.string :hidden_registry_entry_ids
       t.string :pdf_registry_entry_codes
 
@@ -32,8 +34,12 @@ class CreateProjects < ActiveRecord::Migration[5.2]
         Project.create_translation_table! name: :string # was project_name in project.yml
         #
         # create this project
-        attributes = Project.attribute_names.inject({}) do |mem, name| 
-          mem[name] = YAML::load_file('config/project.yml')['default'][name] || YAML::load_file('config/project.yml')['default']["project_#{name}"] #Rails.configuration.project[name] || Rails.configuration.project["project_#{name}"]
+        attributes = Project.attribute_names.reject{|n| n == 'id'}.inject({}) do |mem, name| 
+          if name == 'name'
+            mem[:translations_attributes] = YAML::load_file('config/project.yml')['default']["project_#{name}"].map{|locale, name| {locale: locale, name: name}}
+          else
+            mem[name] = YAML::load_file('config/project.yml')['default'][name] || YAML::load_file('config/project.yml')['default']["project_#{name}"]
+          end
           mem
         end
         project = Project.create attributes
