@@ -40,7 +40,8 @@ const initialState = {
         },
     },
     roles: { query: {page: 1} },
-    permissions: { query: {page: 1} }
+    permissions: { query: {page: 1} },
+    projects: { query: {page: 1} }
 }
 
 const search = (state = initialState, action) => {

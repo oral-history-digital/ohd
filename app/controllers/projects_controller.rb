@@ -3,13 +3,21 @@ class ProjectsController < ApplicationController
 
   # GET /projects
   def index
-    policy_scope(Project)
+    page = params[:page] || 1
+    projects = policy_scope(Project).where(search_params).order("created_at DESC").paginate page: page
+    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+
     respond_to do |format|
+      format.html { render 'react/app' }
       format.json do
         json = Rails.cache.fetch "projects-all'-#{Project.maximum(:updated_at)}" do
           {
-            data: Project.includes(:translations, metadata_fields: [:translations], external_links: [:translations]).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
-            data_type: 'projects'
+            #data: Project.includes(:translations, metadata_fields: [:translations], external_links: [:translations]).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            data_type: 'projects',
+            extra_params: extra_params,
+            page: params[:page], 
+            result_pages_count: projects.total_pages
           }
         end
         render json: json
@@ -98,7 +106,12 @@ class ProjectsController < ApplicationController
           "smtp_server",
           "has_newsletter",
           "hidden_registry_entry_ids",
-          "pdf_registry_entry_codes"
+          "pdf_registry_entry_codes",
+          "is_catalog"
       )
+    end
+
+    def search_params
+      params.permit(:name).to_h
     end
 end

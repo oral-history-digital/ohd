@@ -7,7 +7,7 @@ export default class Data extends React.Component {
     baseData() {
         return (
             <div className='base-data box'>
-                <p className='name'>{this.props.data.name}</p>
+                <p className='name'>{this.props.data.name || this.props.data.title}</p>
             </div>
         )
                 //<p className='created-at'>
@@ -24,7 +24,7 @@ export default class Data extends React.Component {
                         return (
                             <p className='detail'>
                                 <span className='name'>{t(this.props, `activerecord.attributes.${this.props.scope}.${detail}`) + ': '}</span>
-                                <span className='content'>{this.props.data[detail]}</span>
+                                <span className='content'>{this.props.data[detail] ? this.props.data[detail] : 'not defined'}</span>
                             </p>
                         )
                     })

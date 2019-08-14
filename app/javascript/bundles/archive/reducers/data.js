@@ -30,7 +30,8 @@ const initialState = {
         user_registrations: {resultPagesCount: 1},
         roles: {},
         permissions: {},
-        tasks: {}
+        tasks: {},
+        projects: {}
     }
 }
 

@@ -4,8 +4,6 @@ Rails.application.routes.draw do
   #root :to => redirect("/#{Project.default_locale}")
   root to: "home#archive", locale: :de #Project.default_locale.to_sym
 
-  resources :projects
-
   scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
     devise_for :user_accounts, :controllers => {sessions: 'sessions', passwords: 'passwords'}, skip: [:registrations]
     resources :accounts, only: [:show, :update] do
@@ -23,6 +21,8 @@ Rails.application.routes.draw do
     end
 
     localized do
+      resources :projects
+
       resources :contributions, only: [:create, :destroy]
       #resources :histories, only: [:create, :update, :destroy]
       resources :biographical_entries, only: [:create, :show, :update]

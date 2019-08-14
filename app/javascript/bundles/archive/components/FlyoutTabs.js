@@ -5,6 +5,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserRegistrationSearchFormContainer from '../containers/UserRegistrationSearchFormContainer';
+import ProjectSearchFormContainer from '../containers/ProjectSearchFormContainer';
 import RoleSearchFormContainer from '../containers/RoleSearchFormContainer';
 import PermissionSearchFormContainer from '../containers/PermissionSearchFormContainer';
 import RegistryEntrySearchFormContainer from '../containers/RegistryEntrySearchFormContainer';
@@ -287,6 +288,12 @@ export default class FlyoutTabs extends React.Component {
                             <PermissionSearchFormContainer/>,
                             `/${this.props.locale}/permissions`,
                             {type: 'Permission', action: 'update'}
+                        )}
+                        {this.subTab(
+                            'edit.project.admin', 
+                            <ProjectSearchFormContainer/>,
+                            `/${this.props.locale}/projects`,
+                            {type: 'Project', action: 'update'}
                         )}
                     </div>
                 </TabPanel>

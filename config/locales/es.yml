@@ -252,6 +252,24 @@ es:
       edit: Person bearbeiten
       processed: 'Person angelegt: '
       return: Weitere Person anlegen
+    project:
+      new: Projekt hinzufügen
+      edit: Projekt bearbeiten
+      admin: Projekte bearbeiten
+      processed: 'Projekt angelegt: '
+      return: Weitere Projekt anlegen
+    metadata_field:
+      new: Metadatum hinzufügen
+      edit: Metadatum bearbeiten
+      admin: Metadatume bearbeiten
+      processed: 'Metadatum angelegt: '
+      return: Weiteres Metadatum anlegen
+    external_link:
+      new: Externen Link hinzufügen
+      edit: Externen Link bearbeiten
+      admin: Externen Links bearbeiten
+      processed: 'Externer Link angelegt: '
+      return: Weiteren Externen Link anlegen
     contribution:
       new: Mitwirkende/n hinzufügen
     registry_reference:
@@ -574,6 +592,15 @@ es:
       role_permission:
         one: 'Zur Rolle gehörende Berechtigung'
         other: 'Zur Rolle gehörende Berechtigungen'
+      project:
+        one: Projekt
+        other: Projekte
+      metadata_field:
+        one: Metadatum
+        other: Metadaten
+      external_link:
+        one: Externer Link
+        other: Externe Links
 
     attributes:
       history:
@@ -644,6 +671,44 @@ es:
         tape_number: Nummer dieses Tapes
         tape_durations: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden
         time_shifts: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden
+      project:
+        title: Name
+        available_locales: verfügbare Sprachen
+        default_locale: default Sprache
+        view_modes: Ansichten
+        upload_types: UploadTypen
+        primary_color_rgb: Primary Color RGB
+        shortname: Kürzel
+        initials: Initialen
+        domain: Projektdomain
+        archive_domain: Archivdomain
+        doi: DOI
+        cooperation_partner: Kooperationspartner
+        leader: Projektleiter
+        manager: Projektmanager
+        hosting_institution: Institution
+        funder_names: Finanzierung
+        contact_email: Kontaktemail
+        smtp_server: SMTP-Server
+        has_newsletter: Newsletter
+        hidden_registry_entry_ids: versteckte Registereinträge (IDs) 
+        pdf_registry_entry_codes: Codes der Registereinträge für PDF
+        is_catalog: Ist das Projekt ein Katalog
+      metadata_field:
+        name: Name
+        locale: Sprache
+        use_as_facet: als Facette benutzen
+        use_in_results_table: als Suchergebnis zeigen
+        use_in_details_view: in der Detailansicht zeigen
+        display_on_landing_page: Auf der Landing-Page zeigen
+        ref_object_type: RefObjectType
+        source: Source
+        label: Label
+        values: Values
+      external_link:
+        name: Name
+        url: URL
+        locale: Sprache
       upload:
         type: Art des Uploads
         data: Datei

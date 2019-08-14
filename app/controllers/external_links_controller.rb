@@ -85,6 +85,6 @@ class ExternalLinksController < ApplicationController
     end
 
     def external_link_params
-      params.require(:external_link).permit(:name, :url, :locale)
+      params.require(:external_link).permit(:project_id, :name, :url, :locale)
     end
 end
