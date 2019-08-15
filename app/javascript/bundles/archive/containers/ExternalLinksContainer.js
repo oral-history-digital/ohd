@@ -19,15 +19,9 @@ const mapStateToProps = (state) => {
                 validate: function(v){return v.length > 1} 
             },
             {
+                elementType: 'multiLocaleInput',
                 attribute: 'url',
-                validate: function(v){return v.length > 1} 
-            },
-            {
-                elementType: 'select',
-                attribute: 'locale',
-                values: state.archive.languages,
-                withEmpty: true,
-                validate: function(v){return v !== ''} 
+                //validate: function(v){return v.length > 1} 
             },
         ]
     }

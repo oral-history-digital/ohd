@@ -6,6 +6,8 @@ class MetadataFieldsController < ApplicationController
   def create
     authorize MetadataField
     @metadata_field = MetadataField.create metadata_field_params
+    clear_cache @metadata_field.project
+    
     respond_to do |format|
       format.json do
         render json: {

@@ -6,6 +6,7 @@ import { openArchivePopup, closeArchivePopup } from '../../actions/archivePopupA
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
+        locales: state.archive.locales,
         translations: state.archive.translations,
     }
 }

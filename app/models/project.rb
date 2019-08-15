@@ -11,6 +11,7 @@ class Project < ApplicationRecord
     through: :user_registration_projects
 
   translates :name 
+  accepts_nested_attributes_for :translations
 
   serialize :view_modes, Array
   serialize :available_locales

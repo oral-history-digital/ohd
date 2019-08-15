@@ -1,5 +1,6 @@
 import React from 'react';
 import InputContainer from '../../containers/form/InputContainer';
+import MultiLocaleInputContainer from '../../containers/form/MultiLocaleInputContainer';
 import TextareaContainer from '../../containers/form/TextareaContainer';
 import SelectContainer from '../../containers/form/SelectContainer';
 import { t, pluralize } from '../../../../lib/utils';
@@ -33,6 +34,7 @@ export default class Form extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        let v = this.valid();
         if(this.valid()) {
             this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values}, this.props.locale);
         } 
@@ -43,7 +45,13 @@ export default class Form extends React.Component {
         if (this.props.data)
             values.id = this.props.data.id
         this.props.elements.map((element, index) => {
-            values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
+            if (element.elementType === 'multiLocaleInput') {
+                this.props.locales.map((locale, index) => {
+                    values[`[${element.attribute}]${locale}`] = (this.props.data && this.props.data[element.attribute] && this.props.data[element.attribute][locale])
+                })
+            } else {
+                values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
+            }
         })
         this.setState({ values: values });
     }
@@ -65,7 +73,7 @@ export default class Form extends React.Component {
     valid() {
         let errors = false;
         Object.keys(this.state.errors).map((name, index) => {
-            let hidden = this.props.elements.filter(element => element.attribute === name)[0].hidden;
+            let hidden = this.props.elements.filter(element => element.attribute === name)[0] && this.props.elements.filter(element => element.attribute === name)[0].hidden;
             errors = (!hidden && this.state.errors[name]) || errors;
         })
         this.setState({showErrors: errors});
@@ -144,6 +152,7 @@ export default class Form extends React.Component {
         return {
             select: SelectContainer,
             input: InputContainer,
+            multiLocaleInput: MultiLocaleInputContainer,
             textarea: TextareaContainer 
         }
     }

@@ -16,6 +16,15 @@ export default class Data extends React.Component {
                 //</p>
     }
 
+    values(detail) {
+        return Object.keys(this.props.data[detail]).map((key,index) => {
+            return <span className='content'>
+                <br/>
+                <b>{`${key}: `}</b>{this.props.data[detail][key]}
+            </span>
+        })
+    }
+
     details() {
         return (
             <div className='details'>
@@ -24,7 +33,7 @@ export default class Data extends React.Component {
                         return (
                             <p className='detail'>
                                 <span className='name'>{t(this.props, `activerecord.attributes.${this.props.scope}.${detail}`) + ': '}</span>
-                                <span className='content'>{this.props.data[detail] ? this.props.data[detail] : 'not defined'}</span>
+                                <span className='content'>{typeof(this.props.data[detail]) === 'object' ? this.values(detail) : (this.props.data[detail] || 'not defined')}</span>
                             </p>
                         )
                     })

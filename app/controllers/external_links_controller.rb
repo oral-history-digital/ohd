@@ -5,7 +5,9 @@ class ExternalLinksController < ApplicationController
 
   def create
     authorize ExternalLink
-    @external_link = ExternalLink.create external_link_params
+    @external_link = ExternalLink.create prepared_params
+    clear_cache @external_link.project
+
     respond_to do |format|
       format.json do
         render json: {
@@ -20,9 +22,10 @@ class ExternalLinksController < ApplicationController
   end
 
   def update
-    @external_link.update_attributes(external_link_params)
+    @external_link.update_attributes(prepared_params)
 
     clear_cache @external_link
+    clear_cache @external_link.project
 
     respond_to do |format|
       format.json do
@@ -85,7 +88,20 @@ class ExternalLinksController < ApplicationController
       authorize @external_link
     end
 
+    def prepared_params
+      all_params = external_link_params
+      urls = all_params.delete('url')
+      atts = []
+      urls.each { |locale, translation| atts << {locale: locale, url: translation} }
+      all_params.merge(translations_attributes: atts)
+    end
+
     def external_link_params
-      params.require(:external_link).permit(:project_id, :name, :url, :locale)
+      params.require(:external_link).permit(
+        :project_id, 
+        :name 
+      ).tap do |whitelisted|
+        whitelisted[:url] = params[:external_link][:url].permit!
+      end
     end
 end
