@@ -65,8 +65,8 @@ var Loader = {
                     req.attach(`${scope}[${param}]`, params[scope][param]);
                 } else {
                     req.field(`${scope}[${param}]`, 
-                        params[scope][param]
-                        //typeof(params[scope][param]) === 'object' ? JSON.stringify(params[scope][param]) : params[scope][param]
+                        //params[scope][param]
+                        typeof(params[scope][param]) === 'object' ? JSON.stringify(params[scope][param]) : params[scope][param]
                     );
                 }
             } else {

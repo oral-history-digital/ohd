@@ -85,8 +85,10 @@ export function submitData(params, locale='de') {
     let pluralizedDataType = pluralize(dataType);
 
     if(params[dataType].id) {
+        let id = params[dataType].id;
+        delete params[dataType].id;
         return dispatch => {
-            Loader.put(`/${locale}/${pluralizedDataType}/${params[dataType].id}`, params, dispatch, receiveData);
+            Loader.put(`/${locale}/${pluralizedDataType}/${id}`, params, dispatch, receiveData);
         }
     } else {
         return dispatch => {

@@ -89,19 +89,17 @@ class ExternalLinksController < ApplicationController
     end
 
     def prepared_params
-      all_params = external_link_params
-      urls = all_params.delete('url')
-      atts = []
-      urls.each { |locale, translation| atts << {locale: locale, url: translation} }
-      all_params.merge(translations_attributes: atts)
+      external_link_params.merge(translations_attributes: JSON.parse(external_link_params[:translations_attributes]))
     end
 
     def external_link_params
       params.require(:external_link).permit(
         :project_id, 
-        :name 
-      ).tap do |whitelisted|
-        whitelisted[:url] = params[:external_link][:url].permit!
-      end
+        :name,
+        :translations_attributes
+      )
+      #).tap do |whitelisted|
+        #whitelisted[:url] = params[:external_link][:translations_attributes].permit!
+      #end
     end
 end

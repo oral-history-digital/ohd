@@ -27,9 +27,25 @@ export default class Form extends React.Component {
     }
 
     handleChange(name, value) {
-        this.setState({ 
-            values: Object.assign({}, this.state.values, {[name]: value})
-        })
+        // name should be e.g. translations_attributes-de-url-13
+        let nameParts = name.split('-');
+        if (nameParts[0] === 'translations_attributes') {
+            let index = this.state.values.translations_attributes.findIndex((t) => t.locale === nameParts[1]);
+            index = index === -1 ? this.state.values.translations_attributes.length : index;
+            let translation = {
+                locale: nameParts[1],
+                id: nameParts[3],
+                [nameParts[2]]: value
+            }
+
+            this.setState({values: Object.assign({}, this.state.values, {
+                translations_attributes: Object.assign([], this.state.values.translations_attributes, {[index]: translation})
+            })})
+        } else {
+            this.setState({ 
+                values: Object.assign({}, this.state.values, {[name]: value})
+            })
+        }
     }
 
     handleSubmit(event) {
@@ -47,7 +63,7 @@ export default class Form extends React.Component {
         this.props.elements.map((element, index) => {
             if (element.elementType === 'multiLocaleInput') {
                 this.props.locales.map((locale, index) => {
-                    values[`[${element.attribute}]${locale}`] = (this.props.data && this.props.data[element.attribute] && this.props.data[element.attribute][locale])
+                    values.translations_attributes = (this.props.data && this.props.data.translations) || [];
                 })
             } else {
                 values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
