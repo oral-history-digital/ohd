@@ -71,6 +71,7 @@ export default class DataSearchForm extends React.Component {
             name: element.attributeName,
             value: this.props.query[element.attributeName],
             onChange: this.handleChange,
+            key: `search-form-element-${element.attribute}`
         };
 
         if (element.type === 'select') {
@@ -93,7 +94,7 @@ export default class DataSearchForm extends React.Component {
                 >
                     {this.props.searchableAttributes.map((element, index) => {
                         return (
-                            <FormElement label={t(this.props, `activerecord.attributes.${this.props.scope}.${element.attributeName}`)} >
+                            <FormElement label={t(this.props, `activerecord.attributes.${this.props.scope}.${element.attributeName}`)} key={`form-element-${element.attributeName}`}>
                                 {this.searchFormElement(element)}
                             </FormElement>
                         )
