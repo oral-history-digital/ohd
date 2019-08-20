@@ -657,6 +657,7 @@ en:
         time_shifts: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden
       project:
         title: Name
+        name: Name
         available_locales: verfügbare Sprachen
         default_locale: default Sprache
         view_modes: Ansichten
