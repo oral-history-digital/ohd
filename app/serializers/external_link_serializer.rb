@@ -19,7 +19,7 @@ class ExternalLinkSerializer < ApplicationSerializer
   def translations
     I18n.available_locales.inject([]) do |mem, locale|
       translation = object.translations.where(locale: locale).first
-      mem.push(translation.attributes.reject{|k,v| !(ExternalLink.translated_attribute_names + [:id, :locale]).include?(k.to_sym)}) if translation
+      mem.push(translation.attributes.reject{|k,v| !(object.translated_attribute_names + [:id, :locale]).include?(k.to_sym)}) if translation
       mem
     end
   end

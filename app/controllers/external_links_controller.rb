@@ -6,7 +6,7 @@ class ExternalLinksController < ApplicationController
   def create
     authorize ExternalLink
     @external_link = ExternalLink.create prepared_params
-    clear_cache @external_link.project
+    @external_link.project.touch
 
     respond_to do |format|
       format.json do
@@ -25,7 +25,7 @@ class ExternalLinksController < ApplicationController
     @external_link.update_attributes(prepared_params)
 
     clear_cache @external_link
-    clear_cache @external_link.project
+    @external_link.project.touch
 
     respond_to do |format|
       format.json do

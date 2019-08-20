@@ -56,6 +56,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'label',
+                elementType: 'multiLocaleInput',
             },
             {
                 attribute: 'values',

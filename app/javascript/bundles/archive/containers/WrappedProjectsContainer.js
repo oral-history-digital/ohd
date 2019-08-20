@@ -24,6 +24,10 @@ const mapStateToProps = (state) => {
         detailsAttributes: ['title'],
         formElements: [
             {
+                attribute: 'name',
+                elementType: 'multiLocaleInput'
+            },
+            {
                 attribute: 'shortname',
                 validate: function(v){return v.length > 1} 
             },
@@ -98,7 +102,6 @@ const mapStateToProps = (state) => {
         ],
         joinedData: {
             metadata_field: MetadataFieldsContainer,
-            external_link: ExternalLinksContainer,
         },
     }
 }
