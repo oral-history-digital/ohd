@@ -4,8 +4,11 @@ class FacetSerializer < ApplicationSerializer
              :subfacets
 
   def name
-    facet_label_hash = MetadataField.find_by_name(object.code).localized_hash
-    facet_label_hash || object.localized_hash
+    if object.is_a? RegistryEntry
+      object.localized_hash
+    else
+      MetadataField.find_by_name(object.code).localized_hash
+    end
   end
 
   def subfacets

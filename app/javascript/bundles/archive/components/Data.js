@@ -17,12 +17,16 @@ export default class Data extends React.Component {
     }
 
     values(detail) {
-        return Object.keys(this.props.data[detail]).map((key,index) => {
-            return <span className='content'>
-                <br/>
-                <b>{`${key}: `}</b>{this.props.data[detail][key]}
-            </span>
-        })
+        if (this.props.data && this.props.data[detail] !== null && typeof(this.props.data[detail]) === 'object') { 
+            return Object.keys(this.props.data[detail]).map((key,index) => {
+                return <span className='content'>
+                    <br/>
+                    <b>{`${key}: `}</b>{this.props.data[detail][key]}
+                </span>
+            })
+        } else {
+            return this.props.data[detail] || 'not defined';
+        }
     }
 
     details() {
@@ -33,7 +37,7 @@ export default class Data extends React.Component {
                         return (
                             <p className='detail'>
                                 <span className='name'>{t(this.props, `activerecord.attributes.${this.props.scope}.${detail}`) + ': '}</span>
-                                <span className='content'>{typeof(this.props.data[detail]) === 'object' ? this.values(detail) : (this.props.data[detail] || 'not defined')}</span>
+                                <span className='content'>{this.values(detail)}</span>
                             </p>
                         )
                     })
@@ -120,7 +124,7 @@ export default class Data extends React.Component {
                     initialFormValues: {[`${this.props.scope}_id`]: this.props.data.id}
                 }
                 return (
-                    <div className={`${pluralize(joined_model_name_underscore)} box`}>
+                    <div className={`${pluralize(joined_model_name_underscore)} box`} key={`${joined_model_name_underscore}-box`}>
                         <h4 className='title'>{t(this.props, `activerecord.models.${joined_model_name_underscore}.other`)}</h4>
                         {React.createElement(this.props.joinedData[joined_model_name_underscore], props)}
                     </div>
