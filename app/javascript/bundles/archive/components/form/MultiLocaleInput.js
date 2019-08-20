@@ -15,7 +15,7 @@ export default class MultiLocaleInput extends React.Component {
 
         let props = Object.assign({}, this.props, {
             attribute: `translations_attributes-${locale}-${this.props.attribute}-${(translation && translation.id)}`, // ? translation.id : ''}`,
-            value: translation[this.props.attribute],
+            value: translation && translation[this.props.attribute],
             label: this.label(locale),
             key: `${this.props.attribute}-${locale}`
         })
