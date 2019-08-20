@@ -102,6 +102,7 @@ const mapStateToProps = (state) => {
         ],
         joinedData: {
             metadata_field: MetadataFieldsContainer,
+            external_link: ExternalLinksContainer,
         },
     }
 }
