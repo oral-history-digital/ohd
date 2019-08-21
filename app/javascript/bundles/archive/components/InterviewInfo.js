@@ -67,12 +67,12 @@ export default class InterviewInfo extends React.Component {
 
     metadataFields() {
         let metadataFields = [];
-        for (var r in this.props.personPropertiesRegistryReferenceType) {
-            if (this.props.personPropertiesRegistryReferenceType[r]["ref_object_type"] == this.props.refObjectType && (this.props.account.email || this.props.personPropertiesRegistryReferenceType[r]['display_on_landing_page'])) {
+        for (var r in this.props.registryReferenceTypeMetadataFields) {
+            if (this.props.registryReferenceTypeMetadataFields[r]["ref_object_type"] == this.props.refObjectType && (this.props.account.email || this.props.registryReferenceTypeMetadataFields[r]['display_on_landing_page'])) {
                 metadataFields.push(  
                     <MetadataRegistryReferenceTypeContainer
                     key={`this.props.registry-reference-type-search-facets-${r}`} 
-                    referenceType={this.props.personPropertiesRegistryReferenceType[r]} 
+                    referenceType={this.props.registryReferenceTypeMetadataFields[r]} 
                     interview={this.props.interview}
                     refObjectType={this.props.refObjectType}
                     />  
@@ -83,7 +83,7 @@ export default class InterviewInfo extends React.Component {
     }
 
     render() {
-        if (this.props.interview) {
+        if (this.props.interview && this.props.interview.language) {
             return (
                 <div>
                     {this.content(t(this.props, 'id'), this.props.archiveId, "")}

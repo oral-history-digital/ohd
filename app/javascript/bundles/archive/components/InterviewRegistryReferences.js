@@ -46,7 +46,7 @@ export default class InterviewRegistryReferences extends React.Component {
     //}
 
     render() {
-        if (this.props.interview && (this.props.registryEntrySearchFacets || this.props.personPropertiesRegistryReferenceType)) {
+        if (this.props.interview && (this.props.registryEntrySearchFacets || this.props.registryReferenceTypeMetadataFields)) {
             return (
                 <div>
                     {this.searchFacets()}
