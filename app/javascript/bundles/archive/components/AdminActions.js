@@ -17,7 +17,7 @@ export default class AdminActions extends React.Component {
         if (Object.keys(this.props.doiResult).length > 0) {
             return <h4>DOI Status:</h4> + Object.keys(this.props.doiResult).map((archiveId) => {
                 return (
-                    <div>
+                    <div key={`doi-result-${archiveId}`}>
                         {`${archiveId}: ${this.props.doiResult[archiveId]}`}
                     </div>
                 )
@@ -29,7 +29,7 @@ export default class AdminActions extends React.Component {
         return this.selectedArchiveIds().map((archiveId) => {
             if (this.props.statuses[archiveId] !== undefined) {
                 return (
-                    <div>
+                    <div key={`admin-action-message-${archiveId}`}>
                         {`${archiveId}: ${this.props.statuses[archiveId]}`}
                     </div>
                 )

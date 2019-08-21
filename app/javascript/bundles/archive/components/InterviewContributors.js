@@ -17,15 +17,15 @@ export default class InterviewContributors extends React.Component {
                 let contribution = this.props.interview.contributions[c];
                 if (contribution !== 'fetched' && contribution.contribution_type !== 'interviewee') {
                     if (!contributionTypes[contribution.contribution_type]) {
-                        contributionTypes[contribution.contribution_type] = [<span key={`contribution-${contribution.id}`} className='flyout-content-label'>{t(this.props, `contributions.${contribution.contribution_type}`)}: </span>];
+                        contributionTypes[contribution.contribution_type] = [<span className='flyout-content-label' key={`contribution-label-${contribution.id}`}>{t(this.props, `contributions.${contribution.contribution_type}`)}: </span>];
                     }
-                    contributionTypes[contribution.contribution_type].push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={true} key={`contribution-${contribution.id}`} />)
+                    contributionTypes[contribution.contribution_type].push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={true} key={`contribution-person-${contribution.id}`} />)
                 }
             }
         } 
         return Object.keys(contributionTypes).map((key, index) => {
             return (
-              <div>
+              <div key={`contribution-${index}`}>
                 <p>{contributionTypes[key]}</p>
               </div>
             );
@@ -49,20 +49,12 @@ export default class InterviewContributors extends React.Component {
         }
     }
 
-    contributions() {
-        return (
-            <div>
-                {this.contributors()}
-                {this.addContribution()}
-            </div>
-        );
-    }
-
     render() {
         if (this.props.interview) {
             return (
                 <div>
-                    {this.contributions()}
+                    {this.contributors()}
+                    {this.addContribution()}
                 </div>
             );
         } else {
