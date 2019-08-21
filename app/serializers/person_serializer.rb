@@ -8,7 +8,7 @@ class PersonSerializer < ApplicationSerializer
                :typology,
              # :histories
              ] | 
-             MetadataField.where(ref_obect_type: 'Person', source: 'registry_reference_type').inject([]) { |mem, i| mem << i.name } |
+             MetadataField.where(ref_object_type: 'Person', source: 'registry_reference_type').inject([]) { |mem, i| mem << i.name } |
              MetadataField.where(source: 'Person').inject([]) { |mem, i| mem << i.name } 
 
 
@@ -58,7 +58,7 @@ class PersonSerializer < ApplicationSerializer
     object.biographical_entries.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}") { BiographicalEntrySerializer.new(c) }; mem }
   end
 
-  Project.metadata_fields_registry_reference_type.select { |f| f["ref_object_type"] == "person" }.each do |f|
+  Project.registry_reference_type_metadata_fields.select { |f| f["ref_object_type"] == "person" }.each do |f|
     define_method f["name"] do
       RegistryEntrySerializer.new(object.send(f["name"])) if object.send(f["name"])
     end

@@ -325,7 +325,7 @@ class InterviewsController < ApplicationController
   end
 
   def doi_content(locale, interview)
-    template = "/interviews/_doi.#{locale}.html+#{current_project.name.to_s}"
+    template = "/interviews/_doi.#{locale}.html+#{current_project.identifier.to_s}"
     render_to_string(template: template, locals: { interview: interview }, layout: false)
   end
 end
