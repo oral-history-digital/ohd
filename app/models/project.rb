@@ -87,83 +87,87 @@ class Project < ApplicationRecord
   end
 
   def min_to_max_birth_year_range
-    Rails.cache.fetch("#{Project.cache_key_prefix}-min_to_max_birth_year") do
-      first = (Interview.all.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
-      last = (Interview.all.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
+    Rails.cache.fetch("#{shortname}-min_to_max_birth_year") do
+      first = (interviews.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
+      last = (interviews.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
       (first..last)
     end
   end
 
   def search_facets_hash
-    @search_facets_hash ||= search_facets.inject({}) do |mem, facet|
-      case facet["source"]
-      when "registry_entry",  "registry_reference_type"
-        mem[facet.name.to_sym] = ::FacetSerializer.new(facet.source.classify.constantize.find_by_code(facet.name)).as_json
-      when "person"
-        if facet.name == "year_of_birth"
+    # TODO: there is potential to make the following (uncached) faster
+    #
+    Rails.cache.fetch("#{shortname}-search-facets-hash") do
+      search_facets.inject({}) do |mem, facet|
+        case facet["source"]
+        when "registry_entry",  "registry_reference_type"
+          mem[facet.name.to_sym] = ::FacetSerializer.new(facet.source.classify.constantize.find_by_code(facet.name)).as_json
+        when "person"
+          if facet.name == "year_of_birth"
+            facet_label_hash = facet.localized_hash
+            mem[facet.name.to_sym] = {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
+                h = {}
+                I18n.available_locales.map { |l| h[l] = key }
+                subfacets[key] = {
+                  name: h,
+                  count: 0,
+                }
+                subfacets
+              end,
+            }
+          else #gender
+            facet_label_hash = facet.localized_hash
+            mem[facet.name.to_sym] = {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: facet["values"].inject({}) do |subfacets, (key, value)|
+                subfacets[value] = {
+                  name: localized_hash_for("search_facets", key),
+                  count: 0,
+                }
+                subfacets
+              end,
+            }
+          end
+        when "interview"
           facet_label_hash = facet.localized_hash
           mem[facet.name.to_sym] = {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
-              h = {}
-              I18n.available_locales.map { |l| h[l] = key }
-              subfacets[key] = {
-                name: h,
+            subfacets: interviews.inject({}) do |subfacets, interview|
+              subfacets[interview.send(facet.name).to_s] = {
+                name: interview.send("localized_hash_for_" + facet.name),
                 count: 0,
               }
               subfacets
             end,
           }
-        else #gender
+        when "collection"
           facet_label_hash = facet.localized_hash
           mem[facet.name.to_sym] = {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: facet["values"].inject({}) do |subfacets, (key, value)|
-              subfacets[value] = {
-                name: localized_hash_for("search_facets", key),
+            subfacets: interviews.inject({}) do |subfacets, interview|
+              subfacets[interview.send(facet.name)] = {
+                name: interview.collection ? interview.collection.localized_hash : { en: "no collection" },
+                count: 0,
+              }
+              subfacets
+            end,
+          }
+        when "language"
+          mem[facet.name.to_sym] = {
+            name: localized_hash_for("search_facets", facet.name),
+            subfacets: interviews.inject({}) do |subfacets, interview|
+              subfacets[interview.send(facet.name)] = {
+                name: interview.language ? interview.language.localized_hash : { en: "no language" },
                 count: 0,
               }
               subfacets
             end,
           }
         end
-      when "interview"
-        facet_label_hash = facet.localized_hash
-        mem[facet.name.to_sym] = {
-          name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-          subfacets: Interview.all.inject({}) do |subfacets, interview|
-            subfacets[interview.send(facet.name).to_s] = {
-              name: interview.send("localized_hash_for_" + facet.name),
-              count: 0,
-            }
-            subfacets
-          end,
-        }
-      when "collection"
-        facet_label_hash = facet.localized_hash
-        mem[facet.name.to_sym] = {
-          name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-          subfacets: Interview.all.inject({}) do |subfacets, interview|
-            subfacets[interview.send(facet.name)] = {
-              name: interview.collection ? interview.collection.localized_hash : { en: "no collection" },
-              count: 0,
-            }
-            subfacets
-          end,
-        }
-      when "language"
-        mem[facet.name.to_sym] = {
-          name: localized_hash_for("search_facets", facet.name),
-          subfacets: Interview.all.inject({}) do |subfacets, interview|
-            subfacets[interview.send(facet.name)] = {
-              name: interview.language ? interview.language.localized_hash : { en: "no language" },
-              count: 0,
-            }
-            subfacets
-          end,
-        }
+        mem.with_indifferent_access
       end
-      mem.with_indifferent_access
     end
   end
 
