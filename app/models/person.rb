@@ -71,7 +71,7 @@ class Person < ApplicationRecord
   def name(last_name_as_inital = false)
     I18n.available_locales.inject({}) do |mem, locale|
       inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)
-      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}" if I18n.available_locales.include?(locale.to_s)
+      mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}"
       mem
     end
   end

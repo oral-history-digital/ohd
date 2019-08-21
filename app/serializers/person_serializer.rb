@@ -17,7 +17,7 @@ class PersonSerializer < ApplicationSerializer
       alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
       hsh[alpha2_locale] = { firstname: i.first_name,
                             lastname: i.last_name,
-                            birthname: i.birth_name } if I18n.available_locales.include?(alpha2_locale)
+                            birthname: i.birth_name } 
     }
   end
 
@@ -58,7 +58,7 @@ class PersonSerializer < ApplicationSerializer
     object.biographical_entries.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}") { BiographicalEntrySerializer.new(c) }; mem }
   end
 
-  Project.registry_reference_type_metadata_fields.select { |f| f["ref_object_type"] == "person" }.each do |f|
+  Project.actual.registry_reference_type_metadata_fields.select { |f| f["ref_object_type"] == "person" }.each do |f|
     define_method f["name"] do
       RegistryEntrySerializer.new(object.send(f["name"])) if object.send(f["name"])
     end
