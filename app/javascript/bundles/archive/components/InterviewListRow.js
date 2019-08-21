@@ -47,8 +47,13 @@ export default class InterviewListRow extends React.Component {
 
     renderExportCheckbox() {
         if (admin(this.props, {type: 'Interview', action: 'update'})) {
-            return <td onClick={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}>
-                <input type='checkbox' className='export-checkbox' checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0} />
+            return <td>
+                <input 
+                    type='checkbox' 
+                    className='export-checkbox' 
+                    checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0} 
+                    onChange={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}
+                />
             </td>
         } else {
             return null;
