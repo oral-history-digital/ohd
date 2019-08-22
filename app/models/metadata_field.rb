@@ -1,3 +1,4 @@
+require 'globalize'
 class MetadataField < ApplicationRecord
 
   belongs_to :project

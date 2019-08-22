@@ -1,3 +1,4 @@
+require 'globalize'
 class Project < ApplicationRecord
 
   has_many :interviews 
