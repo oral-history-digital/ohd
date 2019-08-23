@@ -4,22 +4,22 @@ when :en -%>
 
         You can confirm your new email through the link below:
 
-        <%= confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :en) %>
+        <%= confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, protocol: current_project.shortname.downcase == 'campscapes' ? 'http' : 'https', host: current_project.archive_domain, :locale => :en) %>
 <% when :ru -%>
         Добро пожаловать <%= @resource.display_name %>!
 
         Вы можете подтвердить Ваш доступ, перейдя по следующей ссылке:
 
-        <%= confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :ru) %>
+        <%= confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, protocol: current_project.shortname.downcase == 'campscapes' ? 'http' : 'https', host: current_project.archive_domain, :locale => :ru) %>
 <% when :el -%>
         Καλώς ήρθατε <%= @resource.display_name %>!
         Μπορείτε να επιβεβαιώσετε την είσοδό σας πατώντας στο παρακάτω λινκ:
 
-        <%= confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :el) %>
+        <%= confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, protocol: current_project.shortname.downcase == 'campscapes' ? 'http' : 'https', host: current_project.archive_domain, :locale => :el) %>
 <% else -%>
         Willkommen <%= @resource.display_name %>!
 
         Sie können Ihre neue Email jetzt bestätigen unter dem nachfolgenden Link:
 
-        <%= confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, :locale => :de) %>
+        <%= confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, protocol: current_project.shortname.downcase == 'campscapes' ? 'http' : 'https', host: current_project.archive_domain, :locale => :de) %>
 <% end -%>

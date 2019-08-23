@@ -1,6 +1,11 @@
 # Methods added to this helper will be available to all templates in the application.
 module ApplicationHelper
 
+  def current_project
+    Project.first
+    #Project.find_by_name(params[:project]) 
+  end
+
   def tab_index_for_params
     case params[:controller]
     when 'interviews'

@@ -21,7 +21,7 @@ class UserRegistrationsController < ApplicationController
   def create
     @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
-      AdminMailer.with(registration: @user_registration).new_registration_info.deliver
+      AdminMailer.with(registration: @user_registration, project: current_project).new_registration_info.deliver
       render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
     elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       @user_registration = UserRegistration.where(email: @user_registration.email).first
@@ -37,6 +37,7 @@ class UserRegistrationsController < ApplicationController
   def activate
     # here the confirmation_token is passed as :id
     account_for_token(params[:id])
+    @project = current_project
 
     if !@user_account.nil? && @user_account.errors.empty?
       @login = @user_account.login 
@@ -55,6 +56,7 @@ class UserRegistrationsController < ApplicationController
     account_for_token(params[:id])
     password = params['user_account'].blank? ? nil : params['user_account']['password']
     password_confirmation = params['user_account'].blank? ? nil : params['user_account']['password_confirmation']
+    @project = current_project
 
     @user_account.confirm_with_password!(password, password_confirmation)
     if @user_account.errors.empty?
