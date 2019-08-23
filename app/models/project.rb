@@ -98,7 +98,7 @@ class Project < ApplicationRecord
   def search_facets_hash
     # TODO: there is potential to make the following (uncached) faster
     #
-    Rails.cache.fetch("#{shortname}-search-facets-hash") do
+    Rails.cache.fetch("#{shortname}-#{updated_at}-search-facets-hash") do
       search_facets.inject({}) do |mem, facet|
         case facet["source"]
         when "registry_entry",  "registry_reference_type"
