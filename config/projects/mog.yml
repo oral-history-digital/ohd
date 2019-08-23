@@ -130,7 +130,6 @@ default: &default
     - 
       name: person_reference
       source: registry_entry
-      descriptor: Person
     - 
       name: gender
       source: person
