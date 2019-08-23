@@ -138,10 +138,17 @@ default: &default
       values: 
         female: Woman
         male: Man
+      values: 
+        female: female
+        male: male
+        other: other
     - 
       name: year_of_birth
       source: person
       use_as_facet: true
+      label:
+        de: Geburtsjahr
+        en: Year of Birth
     - 
       name: typology
       source: person
