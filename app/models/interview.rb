@@ -156,6 +156,7 @@ class Interview < ActiveRecord::Base
   #has_one_attached :still_image
 
   searchable do
+    integer :project_id, :stored => true, :references => Project
     integer :language_id, :stored => true, :references => Language
     string :archive_id, :stored => true, :references => Interview
     # in order to be able to search for archive_id with fulltextsearch
