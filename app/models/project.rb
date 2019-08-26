@@ -46,7 +46,7 @@ class Project < ApplicationRecord
   end
 
   def cache_key_prefix
-    name
+    shortname.downcase
   end
 
   # there is a rails method available_locales as well.
