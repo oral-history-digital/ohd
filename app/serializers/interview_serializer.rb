@@ -29,7 +29,6 @@ class InterviewSerializer < ApplicationSerializer
                :src_base,
                :references,
                :formatted_duration,
-               :person_names,
               #  :place_of_interview,
                :year_of_birth,
                :country_of_birth,
@@ -193,17 +192,6 @@ class InterviewSerializer < ApplicationSerializer
         mem[locale] = object.anonymous_title(locale)
         mem
       end
-    end
-  end
-
-  def person_names
-    object.contributors.inject({}) do |obj, c|
-      obj.merge(c.id => c.translations.each_with_object({}) { |i, hsh|
-                  alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
-                  hsh[alpha2_locale] = { firstname: i.first_name,
-                                        lastname: i.last_name,
-                                        birthname: i.birth_name } if I18n.available_locales.include?(alpha2_locale)
-                })
     end
   end
 
