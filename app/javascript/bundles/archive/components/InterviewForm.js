@@ -66,10 +66,10 @@ export default class InterviewForm extends React.Component {
                 elementType: 'textarea',
             },
             { 
-                attribute: 'video',
-                value: this.props.interview && this.props.interview.video,
-                elementType: 'input',
-                type: 'checkbox'
+                attribute: 'media_type',
+                value: this.props.interview && this.props.interview.media_type,
+                elementType: 'select',
+                values: ['video', 'audio']
             },
             { 
                 attribute: 'translated',

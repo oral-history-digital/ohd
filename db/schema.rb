@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_12_130015) do
+ActiveRecord::Schema.define(version: 2019_08_26_134735) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -184,7 +184,6 @@ ActiveRecord::Schema.define(version: 2019_08_12_130015) do
   create_table "interviews", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "archive_id", limit: 255
     t.integer "collection_id"
-    t.boolean "video"
     t.integer "duration"
     t.boolean "translated"
     t.datetime "created_at"
@@ -208,6 +207,7 @@ ActiveRecord::Schema.define(version: 2019_08_12_130015) do
     t.string "doi_status", limit: 255
     t.string "properties"
     t.integer "project_id"
+    t.string "media_type"
   end
 
   create_table "language_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

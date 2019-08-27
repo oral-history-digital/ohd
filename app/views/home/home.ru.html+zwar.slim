@@ -20,7 +20,7 @@
             | #{current_user_account ? interview.short_title(:ru) : interview.anonymous_title(:ru)}
         .search-result-data
           span
-            | #{interview.localized_hash_for_media_type[:ru]}
+            | #{I18n.t("search_facets.#{interview.media_type}", :ru)}
             | &nbsp;
           span
             | #{Time.at(interview.duration).utc.strftime("%-H h %M min")}

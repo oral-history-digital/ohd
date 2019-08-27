@@ -78,10 +78,6 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def media_type
-    object.localized_hash_for_media_type
-  end
-
   def collection_id
     object.collection && object.collection.localized_hash
   end
