@@ -21,7 +21,6 @@ const mapStateToProps = (state) => {
             "ref_object_type",
             "source",
             "label",
-            "values"
         ],
         formElements: [
             {
@@ -57,9 +56,6 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'label',
                 elementType: 'multiLocaleInput',
-            },
-            {
-                attribute: 'values',
             },
         ]
     }
