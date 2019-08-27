@@ -394,7 +394,7 @@ class Interview < ActiveRecord::Base
   after_initialize do 
     project.registry_reference_type_search_facets.each do |facet|
       define_singleton_method facet.name do 
-        registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet.name).first.id).map(&:registry_entry_id)
+        interviewees.first && interviewees.first.registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: facet.name).first.id).map(&:registry_entry_id)
       end
     end
   end

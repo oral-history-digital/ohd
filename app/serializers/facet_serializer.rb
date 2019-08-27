@@ -15,7 +15,7 @@ class FacetSerializer < ApplicationSerializer
     case object.class.name
     when "RegistryEntry"
       object.children.inject({}) do |mem, child|
-        mem[child.id] = {
+        mem[child.id.to_s] = {
           name: child.localized_hash,
           count: 0,
           priority: child.list_priority,
@@ -24,7 +24,7 @@ class FacetSerializer < ApplicationSerializer
       end
     when "RegistryReferenceType"
       object.registry_references.inject({}) do |mem, ref|
-        mem[ref.registry_entry_id] = {
+        mem[ref.registry_entry_id.to_s] = {
           name: ref.registry_entry.localized_hash,
           count: 0,
         }

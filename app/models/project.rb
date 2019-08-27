@@ -112,7 +112,7 @@ class Project < ApplicationRecord
               subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
                 h = {}
                 I18n.available_locales.map { |l| h[l] = key }
-                subfacets[key] = {
+                subfacets[key.to_s] = {
                   name: h,
                   count: 0,
                 }
@@ -123,7 +123,7 @@ class Project < ApplicationRecord
             mem[facet.name.to_sym] = {
               name: name,
               subfacets: facet.source.classify.constantize.group(facet.name).count.keys.compact.inject({}) do |subfacets, key|
-                subfacets[key] = {
+                subfacets[key.to_s] = {
                   name: localized_hash_for("search_facets", key),
                   count: 0,
                 }
@@ -136,7 +136,7 @@ class Project < ApplicationRecord
           mem[facet.name.to_sym] = {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: facet.source.classify.constantize.all.inject({}) do |subfacets, sf|
-              subfacets[sf.id] = {
+              subfacets[sf.id.to_s] = {
                 name: sf.localized_hash,
                 count: 0,
               }
