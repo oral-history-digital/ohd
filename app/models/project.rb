@@ -119,6 +119,17 @@ class Project < ApplicationRecord
                 subfacets
               end,
             }
+          elsif facet.name == "typology"
+            mem[facet.name.to_sym] = {
+              name: name,
+              subfacets: %w( collaboration concentration_camp flight occupation persecution_of_jews resistance retaliation ).inject({}) do |subfacets, key|
+                subfacets[key.to_s] = {
+                  name: localized_hash_for("search_facets", key),
+                  count: 0,
+                }
+                subfacets
+              end,
+            }
           else 
             mem[facet.name.to_sym] = {
               name: name,
