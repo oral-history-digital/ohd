@@ -182,13 +182,13 @@ class SearchesController < ApplicationController
   def archive
     search = Interview.search do
       fulltext params[:fulltext]
-      current_project.search_facets_names.each do |facet|
-        with(facet.to_sym).any_of(params[facet]) if params[facet]
-      end
       with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
       with(:project_id, current_project.id)
       dynamic :search_facets do
         facet *current_project.search_facets_names
+        current_project.search_facets_names.each do |facet|
+          with(facet.to_sym).any_of(params[facet]) if params[facet]
+        end
       end
       order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
       # TODO: sort linguistically
