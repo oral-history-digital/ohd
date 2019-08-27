@@ -201,7 +201,7 @@ class Interview < ActiveRecord::Base
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
       project.search_facets.inject({}) do |mem, facet|
-        mem[facet.name] = facet.name.to_sym 
+        mem[facet.name] = self.send(facet.name) 
         mem
       end
     end
@@ -339,20 +339,6 @@ class Interview < ActiveRecord::Base
   def localized_hash_for(method)
     I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = self.send(method, locale)
-      mem
-    end
-  end
-
-  def localized_hash_for_media_type
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = I18n.t(read_attribute(:video) ? 'media.video' : 'media.audio', :locale => locale)
-      mem
-    end
-  end
-
-  def localized_hash_for_interview_date
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = interview_date
       mem
     end
   end
@@ -624,17 +610,12 @@ class Interview < ActiveRecord::Base
   end
 
   def video
-    I18n.t(read_attribute(:video) ? 'media.video' : 'media.audio')
+    I18n.t("media.#{media_type}")
   end
 
   def video?
-    read_attribute(:video)
+    media_type == 'video'
   end
-
-  def media_type
-    read_attribute(:video) ? 'video' : 'audio'
-  end
-
 
   def has_headings?
     segments.with_heading.count > 0 ? true : false

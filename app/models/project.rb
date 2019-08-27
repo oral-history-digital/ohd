@@ -98,16 +98,17 @@ class Project < ApplicationRecord
   def search_facets_hash
     # TODO: there is potential to make the following (uncached) faster
     #
-    Rails.cache.fetch("#{shortname}-#{updated_at}-search-facets-hash") do
+    Rails.cache.fetch("#{cache_key_prefix}-#{updated_at}-search-facets-hash") do
       search_facets.inject({}) do |mem, facet|
         case facet["source"]
         when "registry_entry",  "registry_reference_type"
           mem[facet.name.to_sym] = ::FacetSerializer.new(facet.source.classify.constantize.find_by_code(facet.name)).as_json
-        when "person"
+        when "person", "interview"
+          facet_label_hash = facet.localized_hash
+          name = facet_label_hash || localized_hash_for("search_facets", facet.name)
           if facet.name == "year_of_birth"
-            facet_label_hash = facet.localized_hash
             mem[facet.name.to_sym] = {
-              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              name: name,
               subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
                 h = {}
                 I18n.available_locales.map { |l| h[l] = key }
@@ -118,12 +119,11 @@ class Project < ApplicationRecord
                 subfacets
               end,
             }
-          else #gender
-            facet_label_hash = facet.localized_hash
+          else 
             mem[facet.name.to_sym] = {
-              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-              subfacets: facet["values"].inject({}) do |subfacets, (key, value)|
-                subfacets[value] = {
+              name: name,
+              subfacets: facet.source.classify.constantize.group(facet.name).count.keys.compact.inject({}) do |subfacets, key|
+                subfacets[key] = {
                   name: localized_hash_for("search_facets", key),
                   count: 0,
                 }
@@ -131,36 +131,13 @@ class Project < ApplicationRecord
               end,
             }
           end
-        when "interview"
+        when "collection", "language"
           facet_label_hash = facet.localized_hash
           mem[facet.name.to_sym] = {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: interviews.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet.name).to_s] = {
-                name: interview.send("localized_hash_for_" + facet.name),
-                count: 0,
-              }
-              subfacets
-            end,
-          }
-        when "collection"
-          facet_label_hash = facet.localized_hash
-          mem[facet.name.to_sym] = {
-            name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: interviews.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet.name)] = {
-                name: interview.collection ? interview.collection.localized_hash : { en: "no collection" },
-                count: 0,
-              }
-              subfacets
-            end,
-          }
-        when "language"
-          mem[facet.name.to_sym] = {
-            name: localized_hash_for("search_facets", facet.name),
-            subfacets: interviews.inject({}) do |subfacets, interview|
-              subfacets[interview.send(facet.name)] = {
-                name: interview.language ? interview.language.localized_hash : { en: "no language" },
+            subfacets: facet.source.classify.constantize.all.inject({}) do |subfacets, sf|
+              subfacets[sf.id] = {
+                name: sf.localized_hash,
                 count: 0,
               }
               subfacets
