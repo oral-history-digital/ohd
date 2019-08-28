@@ -165,7 +165,7 @@ class Interview < ActiveRecord::Base
     string :workflow_state
 
     # in order to find pseudonyms with fulltextsearch (hagen)
-    #(text :pseudonym_string, :stored => true) if project.name == 'hagen'
+    #(text :pseudonym_string, :stored => true) if project.identifier == 'hagen'
     
     # in order to fast access a list of titles for the name autocomplete:
     string :title, :stored => true
@@ -382,7 +382,7 @@ class Interview < ActiveRecord::Base
   after_initialize do 
     project.registry_entry_search_facets.each do |facet|
       define_singleton_method facet.name do 
-        if project.name.to_sym == :mog
+        if project.identifier.to_sym == :mog
           segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id) 
         else
           registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
@@ -425,7 +425,7 @@ class Interview < ActiveRecord::Base
   def translated
     # the attribute 'translated' is wrong on many interviews in zwar.
     # this is why we use the languages-array for checking
-    if project.name == 'zwar'
+    if project.identifier == 'zwar'
       (self.languages.size > 1) && ('de'.in? self.languages)
     else
       read_attribute :translated
@@ -692,7 +692,7 @@ class Interview < ActiveRecord::Base
 
   def oai_dc_identifier
     archive_id
-    "oai:#{project.name}:#{archive_id}"
+    "oai:#{project.identifier}:#{archive_id}"
   end
 
   def oai_dc_creator
@@ -715,7 +715,7 @@ class Interview < ActiveRecord::Base
   end
 
   def oai_dc_publisher
-    "Interview-Archiv \"#{project.project_name['de']}\""
+    "Interview-Archiv \"#{project.name('de')}\""
   end
 
   def oai_dc_contributor

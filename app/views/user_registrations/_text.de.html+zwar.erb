@@ -1,5 +1,5 @@
 <p>
-  F&uuml;r die Recherche im Archiv "<%= Project.project_name['de'] %>" ist eine Registrierung notwendig.
+  F&uuml;r die Recherche im Archiv "<%= current_project.name('de') %>" ist eine Registrierung notwendig.
   Die <%= external_link('devise.registration_fields.tos_agreement', :nutzungsbedingungen) %>
   erkl&auml;ren, f&uuml;r wen und f&uuml;r welche Zwecke das Archiv nutzbar ist. Die
   <%= external_link('devise.registration_fields.priv_agreement', :datenschutzbestimmungen) %> erl&auml;utern, warum wir

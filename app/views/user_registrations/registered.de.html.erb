@@ -1,6 +1,6 @@
 <h1>Eine Registrierung f&uuml;r <span><%= @user_registration.email %></span> liegt bereits vor</h1>
 
-<p>Die von Ihnen angegebene E-Mail Adresse ist bereits f&uuml;r das Archiv "<%= Project.project_name['de'] %>" registriert.</p>
+<p>Die von Ihnen angegebene E-Mail Adresse ist bereits f&uuml;r das Archiv "<%= current_project.name('de') %>" registriert.</p>
 
 <% case @user_registration.workflow_state
     when 'checked' %>
@@ -13,4 +13,4 @@
 
 <br/>
 
-<p><a href="http://<%= Project.project_domain %>/sammlung" style="font-weight: bold;">Hier</a> erfahren Sie mehr &uuml;ber die Sammlung des Projektes "<%= Project.project_name['de'] %>".</p>
+<p><a href="http://<%= Project.project_domain %>/sammlung" style="font-weight: bold;">Hier</a> erfahren Sie mehr &uuml;ber die Sammlung des Projektes "<%= current_project.name('de') %>".</p>
