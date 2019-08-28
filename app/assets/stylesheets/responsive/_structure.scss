@@ -256,6 +256,9 @@ header.site-header {
   @include screen-m {
     padding: 30px 5% 25px;
   }
+  .fa {
+    color: white !important;
+  }
 }
 .video-title-container {
   @include clearfix();
