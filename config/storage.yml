@@ -4,7 +4,7 @@ dev:
  
 fu_server:
   service: Disk
-  root: /mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/<%= Project.cache_key_prefix %>/storage
+  root: /mnt/vfiler11.campus.fu-berlin.de/cedis_stream04_da/<%= Project.current.cache_key_prefix %>/storage
  
 test:
   service: Disk
