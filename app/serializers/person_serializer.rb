@@ -51,14 +51,14 @@ class PersonSerializer < ApplicationSerializer
   end
 
   def histories
-    object.histories.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.cache_key_prefix}-history-#{c.id}-#{c.updated_at}") { HistorySerializer.new(c) }; mem }
+    object.histories.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.current.cache_key_prefix}-history-#{c.id}-#{c.updated_at}") { HistorySerializer.new(c) }; mem }
   end
 
   def biographical_entries
     object.biographical_entries.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}") { BiographicalEntrySerializer.new(c) }; mem }
   end
 
-  Project.actual.registry_reference_type_metadata_fields.select { |f| f["ref_object_type"] == "person" }.each do |f|
+  Project.current.registry_reference_type_metadata_fields.select { |f| f["ref_object_type"] == "person" }.each do |f|
     define_method f["name"] do
       RegistryEntrySerializer.new(object.send(f["name"])) if object.send(f["name"])
     end

@@ -136,13 +136,13 @@ export default class ArchiveSearch extends React.Component {
     }
 
     resultsFromTo() {
-        let from = (this.actualPage() -1) * 12 + 1;
-        let to   = this.actualPage() * 12;
+        let from = (this.currentPage() -1) * 12 + 1;
+        let to   = this.currentPage() * 12;
         to = Math.min(to, this.props.resultsCount);
         return `${t(this.props, 'archive_results')} ${from} - ${to}`;
     }
 
-    actualPage() {
+    currentPage() {
         return this.props.query['page'] != undefined ? this.props.query['page'] : 1;
     }
 
@@ -153,7 +153,7 @@ export default class ArchiveSearch extends React.Component {
         }
         return resultPages.map((page, index) => {
             let pageClass = 'pagination-button'
-            if (this.actualPage() == page) {
+            if (this.currentPage() == page) {
                 pageClass = 'pagination-button active'
             }
             return (

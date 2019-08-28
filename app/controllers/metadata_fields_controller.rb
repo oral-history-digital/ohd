@@ -45,7 +45,7 @@ class MetadataFieldsController < ApplicationController
     policy_scope(MetadataField)
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch("#{Project.cache_key_prefix}-project-metadata_fields-#{@project.id}-#{@project.metadata_fields.maximum(:updated_at)}") do
+        json = Rails.cache.fetch("#{Project.current.cache_key_prefix}-project-metadata_fields-#{@project.id}-#{@project.metadata_fields.maximum(:updated_at)}") do
           {
             data: @project.metadata_fields_for.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             nested_data_type: 'metadata_fields',

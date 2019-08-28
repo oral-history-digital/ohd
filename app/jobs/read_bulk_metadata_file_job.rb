@@ -4,7 +4,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
   def perform(file_path, receiver)
     read_file(file_path)
     Interview.reindex
-    Rails.cache.redis.keys("#{Project.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
+    Rails.cache.redis.keys("#{Project.current.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
 
     #WebNotificationsChannel.broadcast_to(
       #receiver,

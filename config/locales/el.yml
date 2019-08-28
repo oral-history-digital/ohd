@@ -156,7 +156,8 @@ el:
   periods: Χρονικές περίοδοι
   keywords: Λέξεις-κλειδιά
   keywords_mog: Λέξεις-κλειδιά
-  registry: Register
+  registry: Θησαυρός
+  registry_mog: Θησαυρός
   annotations: σημειώσεις
   reset: επαναφορά
   set_all: Alle checken

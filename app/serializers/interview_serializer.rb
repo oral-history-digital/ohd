@@ -54,7 +54,7 @@ class InterviewSerializer < ApplicationSerializer
              #:citation_timecode,
              #:indexed_at,
              #:src,
-  ] | Project.actual.list_columns.inject([]) { |mem, i| mem << i["name"] } | Project.actual.detail_view_fields.inject([]) { |mem, i| mem << i["name"] }
+  ] | Project.current.list_columns.inject([]) { |mem, i| mem << i["name"] } | Project.current.detail_view_fields.inject([]) { |mem, i| mem << i["name"] }
 
   def camps
     I18n.available_locales.inject({}) do |mem, locale|
@@ -192,7 +192,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def still_url
-    case Project.name.to_sym
+    case Project.current.initials.to_sym
     when :mog
       "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub("mog", "")}_2.jpg"
     when :zwar
