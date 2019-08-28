@@ -68,7 +68,7 @@ const interview = (state = initialState, action) => {
             })
         case SET_ACTUAL_SEGMENT:
             return Object.assign({}, state, {
-                actualSegment: action.segment
+                currentSegment: action.segment
             })
         case TRANSCRIPT_SCROLL:
             return Object.assign({}, state, {

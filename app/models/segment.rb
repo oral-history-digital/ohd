@@ -124,7 +124,7 @@ class Segment < ActiveRecord::Base
           if segment.next && segment.next.timecode < opts[:next_timecode]
             segment = segment.next 
           else
-            # if the calculated start-time for the next segment is bigger than the actual tape`s time
+            # if the calculated start-time for the next segment is bigger than the current tape`s time
             # associate to the next tape
             # set time  of next segment to zero or a given shift
             #

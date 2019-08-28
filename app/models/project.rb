@@ -36,7 +36,7 @@ class Project < ApplicationRecord
     end
 
     # TODO: fit this method 
-    def actual
+    def current
       first
     end
   end

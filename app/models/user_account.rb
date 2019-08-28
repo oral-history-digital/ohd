@@ -72,7 +72,7 @@ class UserAccount < ActiveRecord::Base
 
   # self.confirm_by_token: not used.
 
-  # Confirm a user by setting it's confirmed_at to actual time. If the user
+  # Confirm a user by setting it's confirmed_at to current time. If the user
   # is already confirmed, add en error to email field.
   # Additionally, we require passwords for confirming the account.
   def confirm_with_password!(password, password_confirmation)

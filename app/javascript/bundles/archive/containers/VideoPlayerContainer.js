@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
         tape: state.interview.tape,
         videoTime: state.interview.videoTime,
         videoStatus: state.interview.videoStatus,
-        actualSegment: state.interview.actualSegment,
+        currentSegment: state.interview.currentSegment,
         people: state.data.people,
         contributionTypes: state.archive.contributionTypes,
         mediaStreams: state.archive.mediaStreams,
