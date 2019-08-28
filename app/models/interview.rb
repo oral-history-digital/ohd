@@ -404,7 +404,7 @@ class Interview < ActiveRecord::Base
     project.person_metadata_fields.each do |facet|
       define_singleton_method facet.name do 
         # TODO: what if there are more intervviewees?
-        interviewees.first && interviewees.first.send(facet.name.to_sym) ? interviewees.first.send(facet.name.to_sym).try(:split, ', ') : ''
+        interviewees.first && interviewees.first.send(facet.name.to_sym) ? interviewees.first.send(facet.name.to_sym).try(:split, ',') : ''
       end
     end
   end
