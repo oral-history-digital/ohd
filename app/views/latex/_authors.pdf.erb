@@ -1,0 +1,19 @@
+<% if @locale.to_s == 'el' %>
+        \par{<%= latex_escape( "ΣΥΓΓΡΑΦΕΙΣ ΤΟΥ ΘΗΣΑΥΡΟΥ:") %>}\\
+        \par{<%= latex_escape( "ΣΥΝΤΟΝΙΣΜΟΣ ΚΑΙ ΣΥΓΓΡΑΦΗ") %>}\\
+        \textbf{<%= latex_escape( "ΔΡ. ΙΑΣΟΝΑΣ ΧΑΝΔΡΙΝΟΣ") %>}\\
+        \par{<%= latex_escape( "ΚΑΙ Η ΟΜΑΔΑ ΤΩΝ ΙΣΤΟΡΙΚΩΝ") %>}\\
+        \textbf{<%= latex_escape( "ΔΡ. ΑΝΝΑ ΜΑΡΙΑ ΔΡΟΥΜΠΟΥΚΗ") %>}\\
+        \textbf{<%= latex_escape( "ΔΡ. ΑΝΤΩΝΗΣ ΑΝΤΩΝΙΟΥ") %>}\\
+        \textbf{<%= latex_escape( "ΚΕΡΑΣΙΑ-ΕΡΣΗ ΜΑ") %>}\\
+<% else %>
+        \par{<%= latex_escape( "AUTOREN VON THESAURUS:") %>} \\
+        \par{<%= latex_escape("KOΟRDINATION UND REDAKTION") %>}\\
+        \textbf{<%= latex_escape("DR. IASONAS CHANDRINOS") %>}\\
+        \par{<%= latex_escape("UND DAS HISTORIKER-TEAM") %>}\\
+        \textbf{<%= latex_escape("DR. ANTONIS ANTONIOU") %>}\\
+        \textbf{<%= latex_escape("DR. ANNA MARIA DROUMPOUKI") %>}\\
+        \textbf{<%= latex_escape("KERASIA MALAGIORGI") %>}\\
+<% end %>
+
+

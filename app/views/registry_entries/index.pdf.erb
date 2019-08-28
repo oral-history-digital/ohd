@@ -1,5 +1,5 @@
 <% 
-  title = I18n.t('activerecord.models.registry_entries.other', locale: @locale)
+  title = current_project.identifier == 'mog' ? I18n.t('registry_mog', locale: @locale) : I18n.t('registry', locale: @locale)
   last_entry = nil
 %>
 
@@ -18,7 +18,22 @@
                space_above: 3,
                space_below: 3,
                font_size: 18
+           } %>
 
+<%= render partial: "./latex/authors",
+           locals: {
+               space_above: 3,
+               space_below: 3,
+               font_size: 18
+           } %>
+
+   \vspace{2cm}
+
+<%= render partial: "./latex/explanation",
+           locals: {
+               space_above: 20,
+               space_below: 3,
+               font_size: 18
            } %>
 
 \newpage
@@ -38,16 +53,16 @@
            } %>
 
 <% @registry_entries.each do |registry_entry| %>
-  <% unless registry_entry.descriptor.blank? %>
+  <% unless registry_entry.descriptor(@locale).blank? %>
     <%# get first char for table of contents %>
-    <% if last_entry && last_entry.descriptor[0] != registry_entry.descriptor[0] %>
-      \section*{<%= registry_entry.descriptor[0].upcase %>}
-      \addcontentsline{toc}{section}{<%= registry_entry.descriptor[0].upcase %>}
+    <% if last_entry && last_entry.descriptor(@locale)[0] != registry_entry.descriptor(@locale)[0] %>
+      \section*{<%= registry_entry.descriptor(@locale)[0].upcase %>}
+      \addcontentsline{toc}{section}{<%= registry_entry.descriptor(@locale)[0].upcase %>}
     <% end %>
   
-    \textbf{<%= latex_escape(registry_entry.descriptor) %>}\\
-    <% unless registry_entry.registry_names.first.notes.blank? %>
-      <%= latex_escape(registry_entry.registry_names.first.notes) %>\\
+    <%= @locale.to_s == 'el' ? 'ΠΟ' : 'BB' %> \textbf{<%= latex_escape(registry_entry.descriptor(@locale)) %>}\\
+    <% unless registry_entry.registry_names.first.notes(@locale).blank? %>
+      <%= @locale.to_s == 'el' ? 'Σε' : 'SH' %> <%= latex_escape(registry_entry.registry_names.first.notes(@locale)) %>\\
     <% end %>
   
     <% last_entry = registry_entry %>
