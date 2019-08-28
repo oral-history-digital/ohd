@@ -88,7 +88,7 @@ class Project < ApplicationRecord
   end
 
   def min_to_max_birth_year_range
-    Rails.cache.fetch("#{shortname}-min_to_max_birth_year") do
+    Rails.cache.fetch("#{cache_key_prefix}-min_to_max_birth_year") do
       first = (interviews.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
       last = (interviews.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
       (first..last)
