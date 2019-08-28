@@ -192,7 +192,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def still_url
-    case Project.name.to_sym
+    case Project.current.initials.to_sym
     when :mog
       "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub("mog", "")}_2.jpg"
     when :zwar
