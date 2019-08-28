@@ -3,6 +3,8 @@ import React from 'react';
 import Tooltip from 'rc-tooltip';
 import Slider from 'rc-slider';
 const Range = Slider.createSliderWithTooltip(Slider.Range);
+
+// TODO: this does not work
 import 'rc-slider/assets/index.css';
 
 const rangeStyle = { width: 318 };
