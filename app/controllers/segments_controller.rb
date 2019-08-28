@@ -37,7 +37,7 @@ class SegmentsController < ApplicationController
 
     clear_cache @segment
     #if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
-      #Rails.cache.delete "#{Project.cache_key_prefix}-headings-#{@segment.id}-#{@segment.updated_at}"
+      #Rails.cache.delete "#{Project.current.cache_key_prefix}-headings-#{@segment.id}-#{@segment.updated_at}"
     #end
 
     respond_to do |format|
@@ -61,7 +61,7 @@ class SegmentsController < ApplicationController
     policy_scope(Segment)
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch("#{Project.cache_key_prefix}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
+        json = Rails.cache.fetch("#{Project.current.cache_key_prefix}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
           {
             data: @interview.tapes.inject({}) do |tapes, tape|
               segments_for_tape = tape.segments.
