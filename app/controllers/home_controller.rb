@@ -31,7 +31,7 @@ class HomeController < ApplicationController
             languages: Language.all.map{|c| {value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2}}, 
             upload_types: current_project.upload_types,
             project: current_project.initials.to_s,
-            project_name: current_project.name,
+            project_name: I18n.available_locales.inject({}){ |mem, locale| mem[locale] = current_project.name(locale); mem },
             project_domain: current_project.domain,
             project_doi: current_project.doi,
             is_catalog: current_project.is_catalog,
@@ -49,7 +49,7 @@ class HomeController < ApplicationController
         home_content = {}
         locales.each do |i|
           I18n.locale = i
-          template = "/home/home.#{i}.html+#{current_project.name == 'empty' ? 'zwar' : current_project.name}"
+          template = "/home/home.#{i}.html+#{current_project.initials == 'empty' ? 'zwar' : current_project.initials}"
           home_content[i] = ""#render_to_string(template: template, layout: false)
         end
         json[:home_content] = home_content
