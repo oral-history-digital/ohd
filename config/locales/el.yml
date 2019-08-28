@@ -402,17 +402,12 @@ el:
     translator: Übersetzung
     segmentator: Segmentierung
     cinematographer: Kamera
-    proof_reading: Lektorat
+    proofreader: Lektorat
     research: Erschließung
-    interview: Interview
-    transcript: Transkript
-    translation: Übersetzung
-    segmentation: Segmentierung
-    Informants: Interviewte(r)
-    Interviewer: Interview
-    Transcribed / described: Transkript
-    Translated: Übersetzung
-    Indexed: Erschließung
+    quality_manager_translation: Qualitätsmangement Übersetzung
+    quality_manager_transcription: Qualitätsmangement Transkription
+    quality_manager_interviewing: Qualitätsmangement Interview
+    quality_manager_research: Qualitätsmangement Erschließung
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen
