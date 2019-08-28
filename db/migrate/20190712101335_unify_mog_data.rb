@@ -6,6 +6,11 @@ class UnifyMogData < ActiveRecord::Migration[5.2]
       Contribution.where(contribution_type: 'Transcribed / described').update_all contribution_type: 'transcriptor'
       Contribution.where(contribution_type: 'Translated').update_all contribution_type: 'translator'
       Contribution.where(contribution_type: 'Indexed').update_all contribution_type: 'segmentator'
+      Contribution.where(contribution_type: 'Quality management translation').update_all contribution_type: 'quality_manager_translation'
+      Contribution.where(contribution_type: 'Quality management transcription').update_all contribution_type: 'quality_manager_transcription'
+      Contribution.where(contribution_type: 'Quality management interviewing').update_all contribution_type: 'quality_manager_interviewing'
+      Contribution.where(contribution_type: 'Quality management indexation').update_all contribution_type: 'quality_manager_research'
+      Contribution.where(contribution_type: 'Camera recorder').update_all contribution_type: 'cinematographer'
 
 
       execute "UPDATE collection_translations SET locale = 'el' WHERE locale='ell';"

@@ -442,15 +442,10 @@ ru:
     cinematographer: Kamera
     proof_reading: корректура
     research: обработка
-    interview: интервью
-    transcript: транскрипция
-    translation: перевод
-    segmentation: сегментация
-    Informants: Interviewte(r)
-    Interviewer: Interview
-    Transcribed / described: Transkript
-    Translated: Übersetzung
-    Indexed: Erschließung
+    quality_manager_translation: Qualitätsmangement Übersetzung
+    quality_manager_transcription: Qualitätsmangement Transkription
+    quality_manager_interviewing: Qualitätsmangement Interview
+    quality_manager_research: Qualitätsmangement Erschließung
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen
