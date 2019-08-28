@@ -26,7 +26,7 @@ export default class Gallery extends React.Component {
     renderPhotos() {
         let photos = [];
         if (
-            this.props.interview 
+            this.props.interview && this.props.interview.photos
         ) {
             for (var c in this.props.interview.photos) {
                 let photo = this.props.interview.photos[c];
@@ -83,7 +83,7 @@ export default class Gallery extends React.Component {
     }
 
     render() {
-        let explanation = this.props.interview && Object.keys(this.props.interview.photos).length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation' 
+        let explanation = this.props.interview && this.props.interview.photos && Object.keys(this.props.interview.photos).length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation' 
         return (
             <div>
                 <div className='explanation'>{t(this.props, explanation)}</div>
