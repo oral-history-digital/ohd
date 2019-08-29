@@ -21,7 +21,7 @@ class CreateMetadataFields < ActiveRecord::Migration[5.2]
 
         YAML::load_file('config/project.yml')['default']['metadata_fields'].each do |hash|
           labels = hash.delete('label')
-          metadatum = MetadataField.create hash.update(project_id: Project.actual.id)
+          metadatum = MetadataField.create hash.update(project_id: Project.current.id)
           labels.each do |locale, label|
             metadatum.update_attributes locale: locale, label: label
           end if labels

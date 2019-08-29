@@ -13,7 +13,7 @@ class CreateExternalLinks < ActiveRecord::Migration[5.2]
 
         # create these external_links
         YAML::load_file('config/project.yml')['default']['external_links'].each do |name, values|
-          link = ExternalLink.create name: name, project_id: Project.actual.id
+          link = ExternalLink.create name: name, project_id: Project.current.id
           values.each do |locale, url|
             link.update_attributes locale: locale, url: url
           end
