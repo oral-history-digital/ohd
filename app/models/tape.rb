@@ -49,7 +49,7 @@ class Tape < ActiveRecord::Base
   end
 
   def total_number_of_tapes
-    if Project.name.to_sym == :mog
+    if Project.current.identifier.to_sym == :mog
       interview.tapes.count
     else
       media_id.sub(/^[A-Z_]+\d+_/, '')[/^\d+/].to_i

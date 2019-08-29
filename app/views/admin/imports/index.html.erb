@@ -24,7 +24,7 @@
       <% @interviews.each do |interview| -%>
       <li id="<%= interview['archive_id'] -%>" class="import closed">
         <span class="archive_id">
-          <%= image_tag "#{Project.name}/spinner.gif", id: "#{interview['archive_id']}_spinner", class: "spinner", style: "display: none;" -%>
+          <%= image_tag "#{Project.current.identifier}/spinner.gif", id: "#{interview['archive_id']}_spinner", class: "spinner", style: "display: none;" -%>
           <%= link_to interview['archive_id'], '#', 
                       class: 'remote get more', 
                       url: for_interview_admin_imports_path(archive_id: interview['archive_id']),

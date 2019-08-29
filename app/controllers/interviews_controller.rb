@@ -312,10 +312,10 @@ class InterviewsController < ApplicationController
     xml = render_to_string(template: "/interviews/metadata.xml", layout: false)
     {
       "data": {
-        "id": "#{Rails.configuration.datacite["prefix"]}/#{Project.name}.#{archive_id}",
+        "id": "#{Rails.configuration.datacite["prefix"]}/#{Project.current.identifier}.#{archive_id}",
         "type": "dois",
         "attributes": {
-          "doi": "#{Rails.configuration.datacite["prefix"]}/#{Project.name}.#{archive_id}",
+          "doi": "#{Rails.configuration.datacite["prefix"]}/#{Project.current.identifier}.#{archive_id}",
           "event": "publish",
           "url": "https://www.datacite.org",
           "xml": Base64.encode64(xml),
