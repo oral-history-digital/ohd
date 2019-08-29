@@ -28,7 +28,7 @@ html
 
 
     /<link rel="shortcut icon" href="/favicon.ico" />
-    title == current_project.name[I18n.locale.to_s]
+    title == current_project.name(I18n.locale.to_s)
 
   body
     .layout-indicator style="display: block;"
