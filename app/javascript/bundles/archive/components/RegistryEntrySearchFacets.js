@@ -62,7 +62,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
             return registryEntries;
         } else if (!admin(this.props, {type: 'RegistryEntry', action: 'create'})){
             return (
-                <span>---</span>
+                null
             )
         }
     }
@@ -96,7 +96,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
     }
 
     render() {
-        if (this.props.registryEntries && this.props.registryEntries[this.props.parentEntryId]) {
+        if (this.props.registryEntries && this.props.registryEntries[this.props.parentEntryId] && this.registryEntries.length !== 0) {
             return (
                 <p>
                     <span className={'flyout-content-label'}>{(this.props.label && this.props.label[this.props.locale]) || this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]}:</span>

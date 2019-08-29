@@ -105,7 +105,7 @@ export default class PersonData extends React.Component {
                     <AuthShowContainer ifLoggedOut={true}>
                         {this.content(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
-                    {this.history()}
+                    {/* {this.history()} */}
                     {this.detailViewFields()}
                 </div>
             );
