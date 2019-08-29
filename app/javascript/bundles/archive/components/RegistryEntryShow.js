@@ -126,12 +126,16 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     show(id, key) {
-        return (
-            <span className={'breadcrumb'} key={key}>
-                {this.props.registryEntry.ancestors[id].name[this.props.locale]}
-                {/* {` (ID: ${id})`} */}
-            </span>
-        )
+        if(this.props.registryEntry.ancestors[id]){
+            return (
+                <span className={'breadcrumb'} key={key}>
+                    {this.props.registryEntry.ancestors[id].name[this.props.locale]}
+                    {/* {` (ID: ${id})`} */}
+                </span>
+            )
+        } else {
+            return null;
+        }
     }
 
     breadCrumb() {
