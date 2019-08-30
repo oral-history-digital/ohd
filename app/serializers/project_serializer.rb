@@ -8,6 +8,7 @@ class ProjectSerializer < ActiveModel::Serializer
     :upload_types,
     :primary_color_rgb,
     :initials,
+    :identifier,
     :domain,
     :archive_domain,
     :doi,
@@ -30,11 +31,11 @@ class ProjectSerializer < ActiveModel::Serializer
   end
 
   def metadata_fields
-    object.metadata_fields.inject({}){|mem, c| mem[c.id] = MetadataFieldSerializer.new(c); mem}
+    object.metadata_fields.inject({}) { |mem, c| mem[c.id] = MetadataFieldSerializer.new(c); mem }
   end
 
   def external_links
-    object.external_links.inject({}){|mem, c| mem[c.id] = ExternalLinkSerializer.new(c); mem}
+    object.external_links.inject({}) { |mem, c| mem[c.id] = ExternalLinkSerializer.new(c); mem }
   end
 
   def name
@@ -52,7 +53,7 @@ class ProjectSerializer < ActiveModel::Serializer
   def translations
     I18n.available_locales.inject([]) do |mem, locale|
       translation = object.translations.where(locale: locale).first
-      mem.push(translation.attributes.reject{|k,v| !(object.translated_attribute_names + [:id, :locale]).include?(k.to_sym)}) if translation
+      mem.push(translation.attributes.reject { |k, v| !(object.translated_attribute_names + [:id, :locale]).include?(k.to_sym) }) if translation
       mem
     end
   end

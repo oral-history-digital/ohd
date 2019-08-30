@@ -15,8 +15,8 @@ class HomeController < ApplicationController
         render :template => "/react/app.html"
       end
       format.json do
-        locales = current_project.available_locales.reject{|i| i == 'alias'}
-        json = Rails.cache.fetch("#{current_project.cache_key_prefix}-static-content") do 
+        locales = current_project.available_locales.reject { |i| i == "alias" }
+        json = Rails.cache.fetch("#{current_project.cache_key_prefix}-static-content") do
           {
             external_links: current_project.external_links,
             translations: translations,
@@ -24,14 +24,14 @@ class HomeController < ApplicationController
               mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
               mem
             end,
-            collections: Collection.all.map{|c| {value: c.id, name: c.localized_hash}}, 
+            collections: Collection.all.map { |c| { value: c.id, name: c.localized_hash } },
             contribution_types: Project.contribution_types,
-            registry_entry_search_facets: current_project.registry_entry_search_facets.map{|facet| {id: RegistryEntry.find_by_code(facet.name).id, display_on_landing_page: facet.display_on_landing_page}},
-            registry_reference_type_metadata_fields: current_project.registry_reference_type_metadata_fields.inject({}){|mem, facet| mem[facet.name] = RegistryReferenceTypeSerializer.new(RegistryReferenceType.find_by_code(facet.name)).as_json; mem},
-            languages: Language.all.map{|c| {value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2}}, 
+            registry_entry_search_facets: current_project.registry_entry_search_facets.map { |facet| { id: RegistryEntry.find_by_code(facet.name).id, display_on_landing_page: facet.display_on_landing_page } },
+            registry_reference_type_metadata_fields: current_project.registry_reference_type_metadata_fields.inject({}) { |mem, facet| mem[facet.name] = RegistryReferenceTypeSerializer.new(RegistryReferenceType.find_by_code(facet.name)).as_json; mem },
+            languages: Language.all.map { |c| { value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2 } },
             upload_types: current_project.upload_types,
-            project: current_project.initials.to_s,
-            project_name: I18n.available_locales.inject({}){ |mem, locale| mem[locale] = current_project.name(locale); mem },
+            project: current_project.identifier.to_s,
+            project_name: I18n.available_locales.inject({}) { |mem, locale| mem[locale] = current_project.name(locale); mem },
             project_domain: current_project.domain,
             project_doi: current_project.doi,
             is_catalog: current_project.is_catalog,
@@ -43,14 +43,14 @@ class HomeController < ApplicationController
             detail_view_fields: current_project.detail_view_fields,
             media_streams: Project.media_streams,
             hidden_registry_entry_ids: current_project.hidden_registry_entry_ids,
-            #fullname_on_landing_page: current_project.fullname_on_landing_page,
+          #fullname_on_landing_page: current_project.fullname_on_landing_page,
           }
         end
         home_content = {}
         locales.each do |i|
           I18n.locale = i
-          template = "/home/home.#{i}.html+#{current_project.initials == 'empty' ? 'zwar' : current_project.initials}"
-          home_content[i] = ""#render_to_string(template: template, layout: false)
+          template = "/home/home.#{i}.html+#{current_project.identifier == "empty" ? "zwar" : current_project.identifier}"
+          home_content[i] = "" #render_to_string(template: template, layout: false)
         end
         json[:home_content] = home_content
         render plain: json.to_json
