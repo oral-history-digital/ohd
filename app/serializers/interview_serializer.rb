@@ -28,7 +28,7 @@ class InterviewSerializer < ApplicationSerializer
     :still_url,
     :src_base,
     :references,
-    :formatted_duration,
+    :duration_seconds,
     #  :place_of_interview,
     :year_of_birth,
     :country_of_birth,
@@ -232,11 +232,18 @@ class InterviewSerializer < ApplicationSerializer
   #   self.place_of_interview
   # end
 
-  def formatted_duration
-    # Time.at(object.duration).utc.strftime("%H:%M")
-    # TODO: localize this
+  def duration_seconds
     if object.duration
-      Time.at(object.duration).utc.strftime("%-H h %M min")
+      object.duration
+    end
+  end
+
+  def duration
+    if object.duration
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = Time.at(object.duration).utc.strftime("%-H h %M min")
+        mem
+      end
     end
   end
 

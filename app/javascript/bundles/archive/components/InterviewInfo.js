@@ -43,7 +43,7 @@ export default class InterviewInfo extends React.Component {
                     {this.content(t(this.props, 'date'), this.props.interview.interview_date, "")}
                     {/* {this.placeOfInterview()} */}
                     {this.content(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.video ? 'video' : 'audio'}`), "")}
-                    {this.content(t(this.props, 'duration'), this.props.interview.formatted_duration, "")}
+                    {this.content(t(this.props, 'duration'), this.props.interview.duration[this.props.locale], "")}
                     {this.tapes()}
                     {this.language()}
                     {this.collection()}
@@ -68,6 +68,7 @@ export default class InterviewInfo extends React.Component {
     metadataFields() {
         let metadataFields = [];
         for (var r in this.props.registryReferenceTypeMetadataFields) {
+            // debugger;
             if (this.props.registryReferenceTypeMetadataFields[r]["ref_object_type"] == this.props.refObjectType && (this.props.account.email || this.props.registryReferenceTypeMetadataFields[r]['display_on_landing_page'])) {
                 metadataFields.push(  
                     <MetadataRegistryReferenceTypeContainer
