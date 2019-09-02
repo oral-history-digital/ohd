@@ -40,7 +40,7 @@ class HomeController < ApplicationController
             view_modes: current_project.view_modes,
             view_mode: current_project.view_modes[0],
             list_columns: current_project.list_columns,
-            detail_view_fields: current_project.detail_view_fields,
+            detail_view_fields: current_project.detail_view_fields.inject({}) { |mem, field| mem[field.name] = MetadataFieldSerializer.new(MetadataField.find_by_name(field.name)).as_json; mem },
             media_streams: Project.media_streams,
             hidden_registry_entry_ids: current_project.hidden_registry_entry_ids,
           #fullname_on_landing_page: current_project.fullname_on_landing_page,
