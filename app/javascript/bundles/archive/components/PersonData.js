@@ -17,13 +17,6 @@ export default class PersonData extends React.Component {
         )
     }
 
-    // dateOfBirth(){
-    //     let interviewee = getInterviewee(this.props);
-    //     if (interviewee.date_of_birth){
-    //         return this.content(t(this.props, 'date_of_birth'), interviewee.date_of_birth, "")
-    //     }
-    // }
-
     typologies(){
         let interviewee = getInterviewee(this.props);
         if (interviewee.typology && interviewee.typology[this.props.locale]){
@@ -72,25 +65,23 @@ export default class PersonData extends React.Component {
 
     detailViewFields() {
         let _this = this
-        return _this.props.detailViewFields.map(function(column, i){
+        let i = 0
+        for(let r in _this.props.detailViewFields) {
             let interviewee = getInterviewee(_this.props);
-            // first, I wrote this. Do we still need it?:
-            // let field = _this.props.interview[column["name"]]
-            if(column["source"] === 'person'){
+            i+=1;
+            if(this.props.detailViewFields[r]["source"] === 'person'){
                 return(
                     _this.content(
-                        (column["label"] && column["label"][_this.props.locale]) || t(column["name"]) || column["name"], 
-                        interviewee[column["name"]] || "---",
-                        // first, I wrote this. Do we still need it?:
-                        // (field && field[_this.props.locale]) || (typeof (field) !== 'object' && _this.props.interview[column["name"]]) || _this.props.interview[column["name"]][0] || "---",
+                        (this.props.detailViewFields[r]["label"] && this.props.detailViewFields[r]["label"][_this.props.locale]) || t(this.props.detailViewFields[r]["name"]) || this.props.detailViewFields[r]["name"], 
+                        interviewee[this.props.detailViewFields[r]["name"]] || "---",
                         "",
                         i
                     )
-                )
+                    )
             } else {
                 return null
             }
-        });
+        }
     }
 
     info() {

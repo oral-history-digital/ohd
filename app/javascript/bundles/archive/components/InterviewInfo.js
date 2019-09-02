@@ -68,7 +68,6 @@ export default class InterviewInfo extends React.Component {
     metadataFields() {
         let metadataFields = [];
         for (var r in this.props.registryReferenceTypeMetadataFields) {
-            // debugger;
             if (this.props.registryReferenceTypeMetadataFields[r]["ref_object_type"] == this.props.refObjectType && (this.props.account.email || this.props.registryReferenceTypeMetadataFields[r]['display_on_landing_page'])) {
                 metadataFields.push(  
                     <MetadataRegistryReferenceTypeContainer
