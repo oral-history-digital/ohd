@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :texts
   root :to => redirect("/de")
   #root :to => redirect("/#{Project.default_locale}")
   root to: "home#archive", locale: :de #Project.default_locale.to_sym
