@@ -1,48 +1,40 @@
 class TextsController < ApplicationController
   before_action :set_text, only: [:show, :edit, :update, :destroy]
 
-  # GET /texts
-  def index
-    @texts = Text.all
-  end
-
-  # GET /texts/1
-  def show
-  end
-
-  # GET /texts/new
-  def new
-    @text = Text.new
-  end
-
-  # GET /texts/1/edit
-  def edit
-  end
-
   # POST /texts
   def create
-    @text = Text.new(text_params)
+    authorize Text
+    @text = Text.create(text_params)
 
-    if @text.save
-      redirect_to @text, notice: 'Text was successfully created.'
-    else
-      render :new
+    respond_to do |format|
+      format.json do
+        render json: data_json(@text, msg: 'processed')
+      end
     end
   end
 
   # PATCH/PUT /texts/1
   def update
-    if @text.update(text_params)
-      redirect_to @text, notice: 'Text was successfully updated.'
-    else
-      render :edit
+    @text.update(text_params)
+
+    respond_to do |format|
+      format.json do
+        render json: data_json(@text)
+      end
     end
   end
 
   # DELETE /texts/1
   def destroy
     @text.destroy
-    redirect_to texts_url, notice: 'Text was successfully destroyed.'
+
+    respond_to do |format|
+      format.html do
+        render :action => 'index'
+      end
+      format.js
+      format.json { render json: {}, status: :ok }
+    end
   end
 
   private
@@ -53,6 +45,6 @@ class TextsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def text_params
-      params.require(:text).permit(:name, :project_id)
+      params.require(:text).permit(:name, :project_id, :text)
     end
 end
