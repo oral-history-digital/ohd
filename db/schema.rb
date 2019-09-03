@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_08_28_121402) do
+ActiveRecord::Schema.define(version: 2019_09_02_121758) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -382,6 +382,7 @@ ActiveRecord::Schema.define(version: 2019_08_28_121402) do
     t.string "pdf_registry_entry_codes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "cache_key_prefix", default: "mog"
   end
 
   create_table "registry_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
