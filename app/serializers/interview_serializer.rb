@@ -176,6 +176,16 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
+  def media_type
+    if object.media_type
+      # add 'default' to have available the string 'audio' or 'video'
+      (I18n.available_locales + [:default]).inject({}) do |mem, locale|
+        mem[locale] = (locale == :default) ? object.media_type : I18n.t("search_facets.#{object.media_type}", locale: locale)
+        mem
+      end
+    end
+  end
+
   def short_title
     object.localized_hash
   end
@@ -248,7 +258,12 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def year_of_birth
-    object.interviewees.first.year_of_birth if object.interviewees.first
+    if object.interviewees.first
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.interviewees.first.year_of_birth
+        mem
+      end
+    end
   end
 
   # def duration

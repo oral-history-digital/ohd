@@ -107,10 +107,10 @@ export default class InterviewPreview extends React.Component {
         if (this.props.project === 'zwar') {
             return (
                 <div className={'search-result-data'}>
-                    <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration[this.props.locale]}</span><br/>
+                    <span>{this.props.interview.media_type[this.props.locale]}</span> <span>{this.props.interview.duration[this.props.locale]}</span><br/>
                     <span>{this.props.interview.language[this.props.locale]}</span>
                     <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
-                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
+                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>
                     <small className={this.facetToClass("forced-labor-fields")}><br/>{this.props.interview.forced_labor_fields[this.props.locale].join(', ')}</small>
                 </div>
             );
@@ -120,14 +120,14 @@ export default class InterviewPreview extends React.Component {
                 <div className={'search-result-data'} lang={this.props.locale}>
                     {this.typologies()}
                     {this.content( t(this.props, 'duration'), this.props.interview.duration[this.props.locale])}
-                    <small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
+                    <small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>
                 </div>
             )
         }
         else if (this.props.project === 'hagen') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
-                    <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration[this.props.locale]}</span><br/>
+                    <span>{this.props.interview.media_type[this.props.locale]}</span> <span>{this.props.interview.duration[this.props.locale]}</span><br/>
                 </div>
             )
         }
