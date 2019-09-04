@@ -1,0 +1,129 @@
+//
+// Variables
+// --------------------------------------------------
+
+// Colors
+// --------------------------------------------------
+
+$primary-color: #8f201c !default;
+$secondary-color: $primary-color !default;
+
+$header-logo-padding: 12px 0 0;
+
+$gray-darkest:  #222 !default;
+$gray-darker:   #333 !default;
+$gray-dark:     #666 !default;
+$gray-medium:   #999 !default;
+$gray-light:    #ccc !default;
+$gray-lighter:  #ddd !default;
+$gray-lightest: #eee !default;
+$gray-pale:     #f1f1f1 !default;
+$gray-paler:    #f4f4f4 !default;
+
+$gray-warm:     #8b8b7a !default;
+
+$flyout-tab-title-text-color: #fff !default;
+
+
+// Basics
+// --------------------------------------------------
+
+$body-bg-color:    #fff !default;
+$body-text-color:  $gray-darkest !default;
+
+$link-color:       $primary-color !default;
+$link-hover-color: $primary-color !default;
+
+$text-margin-medium: 9px;
+$text-margin-large: 11px;
+
+
+// Fonts
+// --------------------------------------------------
+
+// Body
+$font-family: "FiraSans", Arial, Helvetica, sans-serif !default;
+
+$font-size-root: 16px !default;
+
+$font-size-small:    0.75rem !default;
+$font-size-medium:   0.875rem !default;
+$font-size-large:    1rem !default;
+$font-size-larger:   1.125rem !default;
+
+$line-height-small:  1.063rem !default;
+$line-height-medium: 1.313rem !default;
+$line-height-large:  1.5rem !default;
+$line-height-larger: 1.688rem !default;
+
+// Headings
+$font-family-heading: "FiraSans", Arial, Helvetica, sans-serif !default;
+
+$font-size-heading-h1: 1.6rem !default; //1.563rem
+$font-size-heading-h2: 1.313rem !default;
+$font-size-heading-h3: 1.188rem !default;
+$font-size-heading-h4: 0.875rem !default;
+$font-size-heading-h5: 0.875rem !default;
+$font-size-heading-h6: 0.75rem !default;
+$font-size-heading-h1-large: 2rem !default;
+$font-size-heading-h2-large: 1.438rem !default;
+$font-size-heading-h3-large: 1.313rem !default;
+$font-size-heading-h4-large: 1em !default;
+$font-size-heading-h5-large: 1em !default;
+$font-size-heading-h6-large: 0.875rem !default;
+
+$line-height-heading-h1: 2rem !default;
+$line-height-heading-h2: 1.688rem !default;
+$line-height-heading-h3: 1.563rem !default;
+$line-height-heading-h4: 1.25rem !default;
+$line-height-heading-h5: 1.25rem !default;
+$line-height-heading-h6: 1.063rem !default;
+$line-height-heading-h1-large: 2.25rem !default;
+$line-height-heading-h2-large: 1.938rem !default;
+$line-height-heading-h3-large: 1.75rem !default;
+$line-height-heading-h4-large: 1.438rem !default;
+$line-height-heading-h5-large: 1.438rem !default;
+$line-height-heading-h6-large: 1.25rem !default;
+
+$font-family-heading-weight: normal !default;
+
+// Icons
+$font-path: "../fonts/" !default;
+
+
+// Miscellaneous
+// --------------------------------------------------
+
+$hr-border: $gray-lighter !default;
+$video-element-margin: 0 12%;
+$video-element-margin-m: 0 17.5%;
+$video-element-margin-l: 0 27%;
+
+
+// Breakpoints
+// --------------------------------------------------
+
+// Extra small screen
+$screen-xs: 480px !default;
+$screen-xs-min: $screen-xs !default;
+
+// Small screen
+$screen-s:  520px !default;
+$screen-s-min: $screen-s !default;
+
+// Medium screen
+$screen-m:  768px !default;
+$screen-m-min: $screen-m !default;
+
+// Large screen
+$screen-l:  990px !default;
+$screen-l-min: $screen-l !default;
+
+// Extra large screen
+$screen-xl: 1200px !default;
+$screen-xl-min: $screen-xl !default;
+
+$screen-xs-max: ($screen-s-min - 1) !default;
+$screen-s-max:  ($screen-m-min - 1) !default;
+$screen-m-max:  ($screen-l-min - 1) !default;
+$screen-l-max:  ($screen-xl-min - 1) !default;
