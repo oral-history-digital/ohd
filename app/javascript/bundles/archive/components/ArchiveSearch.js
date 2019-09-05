@@ -234,28 +234,36 @@ export default class ArchiveSearch extends React.Component {
     }
 
     searchResultTabs() {
-        let _this = this;
-        return _this.props.viewModes.map(function(viewMode, i) {
-            let visibility = (_this.props.viewModes.length < 2) ? 'hidden' : ''
-            return (
-                <Tab className={'search-results-tab ' + visibility} key={i}>
-                    {/* <i className="fa fa-th"></i> */}
-                    <span>{t(_this.props, viewMode)}</span>
-                </Tab>
-            )   
-        })
+        if (this.props.viewModes) {
+            let _this = this;
+            return _this.props.viewModes.map(function(viewMode, i) {
+                let visibility = (_this.props.viewModes.length < 2) ? 'hidden' : ''
+                return (
+                    <Tab className={'search-results-tab ' + visibility} key={i}>
+                        {/* <i className="fa fa-th"></i> */}
+                        <span>{t(_this.props, viewMode)}</span>
+                    </Tab>
+                )   
+            })
+        } else {
+            return null;
+        }
     }
 
     tabPanels() {
-        let _this = this
-        // alert("" + this.props.viewModes.length + " " + this.props.viewModes[0])
-        return this.props.viewModes.map(function(viewMode, i) {
-            return (
-                <TabPanel key={i}>
-                    {_this.content(viewMode)}
-                </TabPanel>
-            )
-        })
+        if (this.props.viewModes) {
+            let _this = this
+            // alert("" + this.props.viewModes.length + " " + this.props.viewModes[0])
+            return this.props.viewModes.map(function(viewMode, i) {
+                return (
+                    <TabPanel key={i}>
+                        {_this.content(viewMode)}
+                    </TabPanel>
+                )
+            })
+        } else {
+            return null;
+        }
     }
 
     render() {
@@ -277,7 +285,7 @@ export default class ArchiveSearch extends React.Component {
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        defaultIndex={this.props.viewModes.indexOf(this.props.viewMode)}
+                        defaultIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 1}
                         onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
                         <TabList className={'search-results-tabs'}>

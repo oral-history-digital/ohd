@@ -2,13 +2,14 @@ import { connect } from 'react-redux';
 
 import MarkTextForm from '../components/MarkTextForm';
 import { fetchData, submitData } from '../actions/dataActionCreators';
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getProject } from '../../../lib/utils';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return { 
         locale: state.archive.locale,
-        locales: state.archive.locales,
+        locales: (project && project.locales) || state.archive.locales,
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
         account: state.data.accounts.current,

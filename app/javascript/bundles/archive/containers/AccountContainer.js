@@ -5,16 +5,17 @@ import { submitLogout } from '../actions/accountActionCreators';
 import { changeToEditView } from '../actions/archiveActionCreators';
 import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
-import { getCookie } from '../../../lib/utils';
+import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return { 
         locale: state.archive.locale,
         translations: state.archive.translations,
         authStatus: state.account,
         account: state.data.accounts.current,
         accountsStatus: state.data.statuses.accounts,
-        project: state.archive.project,
+        project: project && project.identifier,
         editView: getCookie('editView')
     }
 }

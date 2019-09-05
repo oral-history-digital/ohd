@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import SegmentForm from '../components/SegmentForm';
 import { submitData } from '../actions/dataActionCreators';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return { 
         locale: state.archive.locale,
-        locales: state.archive.locales,
+        locales: (project && project.locales) || state.archive.locales,
         translations: state.archive.translations,
         people: state.data.people,
     }

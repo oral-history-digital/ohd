@@ -103,27 +103,29 @@ export default class Transcript extends React.Component {
         for (var segmentId in shownSegments) {
             let segment = shownSegments[segmentId];
             let interviewee = getInterviewee(this.props);
-            segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
-            if (
-                (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
-                (speaker !== segment.speaker && segment.speaker_id === null) 
-            ) {
-                segment.speakerIdChanged = true;
-                speakerId = segment.speaker_id;
-                speaker = segment.speaker;
+            if (segment) {
+                segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
+                if (
+                    (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
+                    (speaker !== segment.speaker && segment.speaker_id === null) 
+                ) {
+                    segment.speakerIdChanged = true;
+                    speakerId = segment.speaker_id;
+                    speaker = segment.speaker;
+                }
+                let active = false;
+                if (segment.time <= this.props.transcriptTime + 10 && segment.time >= this.props.transcriptTime - 5) {
+                    active = true;
+                }
+                transcript.push(
+                    <SegmentContainer
+                        data={segment}
+                        originalLocale={this.props.originalLocale}
+                        active={parseInt(segmentId) === activeId}
+                        key={"segment-" + segment.id}
+                    />
+                )
             }
-            let active = false;
-            if (segment.time <= this.props.transcriptTime + 10 && segment.time >= this.props.transcriptTime - 5) {
-                active = true;
-            }
-            transcript.push(
-                <SegmentContainer
-                    data={segment}
-                    originalLocale={this.props.originalLocale}
-                    active={parseInt(segmentId) === activeId}
-                    key={"segment-" + segment.id}
-                />
-            )
         }
         return transcript;
     }

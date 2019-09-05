@@ -48,6 +48,8 @@ export default class WrapperPage extends React.Component {
         if(!this.props.translations) {
             this.props.fetchStaticContent();
         }
+        this.loadProjects();
+        this.setProjectId();
     }
 
     componentDidUpdate() {
@@ -57,6 +59,29 @@ export default class WrapperPage extends React.Component {
             }
         } else {
             document.body.classList.remove('noScroll');
+        }
+        this.loadProjects();
+        this.setProjectId();
+    }
+
+    loadProjects() {
+        if (!this.props.projectsStatus) {
+            this.props.fetchData('projects', null, null, this.props.locale, 'all');
+        }
+    }
+
+    setProjectId() {
+        //
+        // TODO: enable this for really multi-project use
+        //
+        //if(this.props.project && this.props.project.identifier !== this.context.router.route.match.params.projectId) {
+            //this.props.setProjectId(this.context.router.route.match.params.projectId);
+        //}
+        //
+        // TODO: rm the following if multi-project is enabled
+        //
+        if (this.props.projectsStatus && this.props.projectsStatus.split('-')[0] === 'fetched') { // && this.context.router.route.match.params.projectId !== this.props.projectId) {
+            this.props.setProjectId(this.props.projects[1].identifier);
         }
     }
 
@@ -206,7 +231,10 @@ export default class WrapperPage extends React.Component {
     }
 
     renderLogos() {
-        switch(this.props.project) {
+        //
+        // TODO: fit this to uploadable project-logos
+        //
+        switch(this.props.project && this.props.project.identifier) {
             case 'zwar':
                 return (
                     <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
@@ -238,22 +266,22 @@ export default class WrapperPage extends React.Component {
     }
 
     renderExternalLinks() {
-        if (this.props.locale && this.props.externalLinks) {
-            let links = this.props.externalLinks;
+        if (this.props.project) {
+            let links = this.props.project.external_links;
             let locale = this.props.locale;
             let props = this.props;
-            return Object.keys(this.props.externalLinks).map(function (key, index) {
-                let link = links[key][locale];
-                if(link !== undefined) {
+            return Object.keys(links).map(function (key, index) {
+                //let link = links[key].url[locale];
+                //if(link !== undefined) {
                     return (
                         <li key={'external-link-' + key}>
-                            <a href={link}
+                            <a href={links[key].url[locale]}
                                 target="_blank" rel="noopener">
-                                {t(props, key)}
+                                {t(props, links[key].name)}
                             </a>
                         </li>
                     )
-                }
+                //}
             })
         }
     }
@@ -287,7 +315,7 @@ export default class WrapperPage extends React.Component {
     }
 
     renderProjectSpecificFooter() {
-        switch(this.props.project){
+        switch(this.props.project && this.props.project.identifier){
             case 'zwar':
                 if (this.props.locale === 'de') {
                     return (
@@ -321,7 +349,7 @@ export default class WrapperPage extends React.Component {
 
     render() {
         let logoSrc = '';
-        switch(this.props.project) {
+        switch(this.props.project && this.props.project.identifier){
             case 'mog':
                 logoSrc = this.props.locale == "de" ? deLogoSrc : elLogoSrc;
                 break;
@@ -365,7 +393,7 @@ export default class WrapperPage extends React.Component {
                             <ul className='footer-bottom-nav'>
                                 {this.renderExternalLinks()}
                             </ul>
-                            <p>{this.props.projectName && this.props.projectName[this.props.locale]}</p>
+                            <p>{this.props.project && this.props.project.name[this.props.locale]}</p>
                             { this.renderProjectSpecificFooter() }
                             {this.renderLogos()}
                         </footer>

@@ -1,6 +1,7 @@
 import {
     SET_LOCALE,
     SET_ARCHIVE_ID,
+    SET_PROJECT_ID,
     SET_VIEW_MODE,
 
     REQUEST_STATIC_CONTENT,
@@ -18,9 +19,9 @@ const initialState = {
     locale: 'de',
     locales: ['de', 'en'],
     archiveId: null,
+    projectId: null,
     viewModes: ['grid', 'list'],
     viewMode: 'grid',
-    fullnameOnLandingPage: false,
 
     listColumns: [],
     detailViewFields: [],
@@ -44,6 +45,10 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 archiveId: action.archiveId
             })
+        case SET_PROJECT_ID:
+            return Object.assign({}, state, {
+                projectId: action.projectId
+            })
         case SET_VIEW_MODE:
             return Object.assign({}, state, {
                 viewMode: action.viewMode
@@ -64,32 +69,32 @@ const archive = (state = initialState, action) => {
             })
         case RECEIVE_STATIC_CONTENT:
             return Object.assign({}, state, {
-                isFetchingExternalLinks: false,
-                externalLinks: action.externalLinks,
+                //isFetchingExternalLinks: false,
+                //externalLinks: action.externalLinks,
                 homeContent: action.homeContent,
                 translations: action.translations,
                 country_keys: action.countryKeys,
                 collections: action.collections,
                 contributionTypes: action.contributionTypes,
+                // TODO: get project specific root-registry_entries
                 rootRegistryEntry: action.rootRegistryEntry,
-                registryEntrySearchFacets: action.registryEntrySearchFacets,
-                registryReferenceTypeMetadataFields: action.registryReferenceTypeMetadataFields,
+                //registryEntrySearchFacets: action.registryEntrySearchFacets,
+                //registryReferenceTypeMetadataFields: action.registryReferenceTypeMetadataFields,
                 languages: action.languages,
-                uploadTypes: action.uploadTypes,
-                locales: action.locales,
-                viewMode: action.viewMode,
-                viewModes: action.viewModes,
-                detailViewFields: action.detailViewFields,
-                listColumns: action.listColumns,
-                project: action.project,
-                projectDoi: action.projectDoi,
-                isCatalog: action.isCatalog,
-                hiddenRegistryEntryIds: action.hiddenRegistryEntryIds,
-                projectName: action.projectName,
-                archiveDomain: action.archiveDomain,
-                projectDomain: action.projectDomain,
+                //uploadTypes: action.uploadTypes,
+                //locales: action.locales,
+                //viewMode: action.viewMode,
+                //viewModes: action.viewModes,
+                //detailViewFields: action.detailViewFields,
+                //listColumns: action.listColumns,
+                //project: action.project,
+                //projectDoi: action.projectDoi,
+                //isCatalog: action.isCatalog,
+                //hiddenRegistryEntryIds: action.hiddenRegistryEntryIds,
+                //projectName: action.projectName,
+                //archiveDomain: action.archiveDomain,
+                //projectDomain: action.projectDomain,
                 mediaStreams: action.mediaStreams,
-                fullnameOnLandingPage: action.fullnameOnLandingPage,
             })
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {

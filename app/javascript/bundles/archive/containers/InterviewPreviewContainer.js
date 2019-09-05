@@ -4,20 +4,21 @@ import InterviewPreview from '../components/InterviewPreview';
 import { searchInInterview } from '../actions/searchActionCreators';
 import { setTapeAndTime } from '../actions/interviewActionCreators';
 import { addRemoveArchiveId } from '../actions/archiveActionCreators';
-import { getCookie } from '../../../lib/utils';
+import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-      fulltext: state.search.archive.query.fulltext,
-      locale: state.archive.locale,
-      translations: state.archive.translations,
-      query: state.search.archive.query,
-      selectedArchiveIds: state.archive.selectedArchiveIds,
-      statuses: state.data.statuses.interviews,
-      segments: ownProps.interview && state.search.interviews[ownProps.interview.archive_id] || {},
-      project: state.archive.project,
-      editView: getCookie('editView'),
-      account: state.data.accounts.current,
+    let project = getProject(state);
+    return {
+        fulltext: state.search.archive.query.fulltext,
+        locale: state.archive.locale,
+        translations: state.archive.translations,
+        query: state.search.archive.query,
+        selectedArchiveIds: state.archive.selectedArchiveIds,
+        statuses: state.data.statuses.interviews,
+        segments: ownProps.interview && state.search.interviews[ownProps.interview.archive_id] || {},
+        project: project && project.identifier,
+        editView: getCookie('editView'),
+        account: state.data.accounts.current,
     }
 }
 

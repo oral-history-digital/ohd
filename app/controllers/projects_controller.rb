@@ -3,21 +3,27 @@ class ProjectsController < ApplicationController
 
   # GET /projects
   def index
-    page = params[:page] || 1
-    projects = policy_scope(Project).where(search_params).order("created_at DESC").paginate page: page
-    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+    #if params[:all]
+    if params.keys.include?('all')
+      projects = policy_scope(Project).all
+      extra_params = 'all'
+    else
+      page = params[:page] || 1
+      projects = policy_scope(Project).where(search_params).order("created_at DESC").paginate page: page
+      extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+    end
 
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do
-        json = Rails.cache.fetch "projects-all'-#{Project.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "projects-#{extra_params}-#{Project.maximum(:updated_at)}" do
           {
             #data: Project.includes(:translations, metadata_fields: [:translations], external_links: [:translations]).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'projects',
             extra_params: extra_params,
             page: params[:page], 
-            result_pages_count: projects.total_pages
+            result_pages_count: projects.respond_to?(:total_pages) ? projects.total_pages : nil
           }
         end
         render json: json

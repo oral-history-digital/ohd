@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import Gallery from '../components/Gallery';
-import { getInterview, getCookie } from '../../../lib/utils';
+import { getInterview, getCookie, getProject } from '../../../lib/utils';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return {
         interview: getInterview(state),
         translations: state.archive.translations,
@@ -11,7 +12,7 @@ const mapStateToProps = (state) => {
         editView: getCookie('editView'),
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        project: state.archive.project,
+        project: project && project.identifier,
     }
 }
 

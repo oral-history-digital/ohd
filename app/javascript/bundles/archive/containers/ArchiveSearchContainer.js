@@ -4,8 +4,10 @@ import ArchiveSearch from '../components/ArchiveSearch';
 import { searchInArchive } from '../actions/searchActionCreators';
 import { setViewMode } from '../actions/archiveActionCreators';
 import { getCookie } from '../../../lib/utils';
+import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return { 
         foundInterviews: state.search.archive.foundInterviews,
         allInterviewsCount: state.search.archive.allInterviewsCount,
@@ -17,13 +19,13 @@ const mapStateToProps = (state) => {
         interviews: state.search.interviews,
         translations: state.archive.translations,
         locale: state.archive.locale,
-        locales: state.archive.locales,
+        locales: (project && project.locales) || state.archive.locales,
         isArchiveSearching: state.search.isArchiveSearching,
-        project: state.archive.project,
-        viewModes: state.archive.viewModes,
-        viewMode: state.archive.viewMode,
-        listColumns: state.archive.listColumns,
-        detailViewFields: state.archive.detailViewFields,
+        project: project && project.identifier,
+        viewModes: project && project.view_modes,
+        viewMode: state.archive.view_mode,
+        listColumns: project && project.list_columns,
+        detailViewFields: project && project.detail_view_fields,
         editView: getCookie('editView'),
         account: state.data.accounts.current,
     }

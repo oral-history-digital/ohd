@@ -2,11 +2,13 @@ import { connect } from 'react-redux';
 
 import InterviewForm from '../components/InterviewForm';
 import { submitData } from '../actions/dataActionCreators';
+import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return { 
         locale: state.archive.locale,
-        locales: state.archive.locales,
+        locales: (project && project.locales) || state.archive.locales,
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
         collections: state.archive.collections,

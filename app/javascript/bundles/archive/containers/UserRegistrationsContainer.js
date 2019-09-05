@@ -5,11 +5,13 @@ import {
     setQueryParams, 
 } from '../actions/searchActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
+import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return { 
         locale: state.archive.locale,
-        locales: state.archive.locales,
+        locales: (project && project.locales) || state.archive.locales,
         translations: state.archive.translations,
         userRegistrations: state.data.user_registrations,
         resultPagesCount: state.data.statuses.user_registrations.resultPagesCount,

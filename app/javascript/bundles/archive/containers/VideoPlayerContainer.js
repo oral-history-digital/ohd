@@ -5,15 +5,16 @@ import {handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndR
 import {handleTranscriptScroll} from '../actions/interviewActionCreators';
 import {openArchivePopup} from '../actions/archivePopupActionCreators';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let interview = getInterview(state);
+    let project = getProject(state);
     return {
-        project: state.archive.project,
+        project: project && project.identifier,
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,
-        locales: state.archive.locales,
+        locales: (project && project.locales) || state.archive.locales,
         translations: state.archive.translations,
         tape: state.interview.tape,
         videoTime: state.interview.videoTime,

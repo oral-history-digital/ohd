@@ -338,25 +338,25 @@ class Segment < ActiveRecord::Base
   end
 
   def last_heading
-    mainheadings = Segment.mainheadings_until(id, interview_id)
-    if mainheadings.count > 0
-      mainheadings_count = mainheadings.map{|mh| mh.mainheading(interview.languages.first)}.uniq.count
-      subheadings = Segment.subheadings_until(id, interview_id, mainheadings.last.id)
+    #mainheadings = Segment.mainheadings_until(id, interview_id)
+    #if mainheadings.count > 0
+      #mainheadings_count = mainheadings.map{|mh| mh.mainheading(interview.languages.first)}.uniq.count
+      #subheadings = Segment.subheadings_until(id, interview_id, mainheadings.last.id)
       
-      if subheadings.count > 0
-        I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheadings.last.subheading(locale)}"
-          mem
-        end
-      else
-        I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = "#{mainheadings_count}. #{mainheadings.last.mainheading(locale)}"
-          mem
-        end
-      end
-    else
+      #if subheadings.count > 0
+        #I18n.available_locales.inject({}) do |mem, locale|
+          #mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheadings.last.subheading(locale)}"
+          #mem
+        #end
+      #else
+        #I18n.available_locales.inject({}) do |mem, locale|
+          #mem[locale] = "#{mainheadings_count}. #{mainheadings.last.mainheading(locale)}"
+          #mem
+        #end
+      #end
+    #else
       {}
-    end
+    #end
   end
 
   def has_heading?

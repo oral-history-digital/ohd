@@ -9,18 +9,20 @@ import {
 } from '../actions/searchActionCreators';
 import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-  return {
-      allInterviewsTitles: state.search.archive.allInterviewsTitles,
-      allInterviewsPseudonyms: state.search.archive.allInterviewsPseudonyms,
-      facets: state.search.archive.facets,
-      query: state.search.archive.query,
-      translations: state.archive.translations,
-      locale: state.archive.locale,
-      isArchiveSearching: state.search.isArchiveSearching,
-      project: state.archive.project,
-  }
+    let project = getProject(state);
+    return {
+        allInterviewsTitles: state.search.archive.allInterviewsTitles,
+        allInterviewsPseudonyms: state.search.archive.allInterviewsPseudonyms,
+        facets: state.search.archive.facets,
+        query: state.search.archive.query,
+        translations: state.archive.translations,
+        locale: state.archive.locale,
+        isArchiveSearching: state.search.isArchiveSearching,
+        project: project && project.identifier,
+    }
 }
 
 const mapDispatchToProps = (dispatch) => ({

@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import DataList from '../components/DataList';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
-import { getCookie } from '../../../lib/utils';
+import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return { 
         locale: state.archive.locale,
-        locales: state.archive.locales,
+        locales: (project && project.locales) || state.archive.locales,
         translations: state.archive.translations,
         account: state.data.accounts.current,
         editView: getCookie('editView'),

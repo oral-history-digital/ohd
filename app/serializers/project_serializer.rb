@@ -1,5 +1,6 @@
 class ProjectSerializer < ActiveModel::Serializer
   attributes :id,
+    :name,
     :shortname,
     :title,
     :available_locales,
@@ -24,6 +25,8 @@ class ProjectSerializer < ActiveModel::Serializer
     :pdf_registry_entry_codes,
     :metadata_fields,
     :external_links,
+    :detail_view_fields,
+    :list_columns,
     :translations
 
   def title
@@ -43,6 +46,10 @@ class ProjectSerializer < ActiveModel::Serializer
       mem[locale] = object.name(locale)
       mem
     end
+  end
+  
+  def detail_view_fields
+    object.detail_view_fields.inject({}) { |mem, field| mem[field.name] = MetadataFieldSerializer.new(MetadataField.find_by_name(field.name)).as_json; mem }
   end
 
   # serialized translations are needed to construct 'translations_attributes' e.g. in MultiLocaleInput

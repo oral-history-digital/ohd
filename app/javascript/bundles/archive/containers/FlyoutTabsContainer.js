@@ -5,21 +5,22 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { setLocale } from '../actions/archiveActionCreators';
 import { changeRegistryEntriesViewMode } from '../actions/searchActionCreators';
 
-import { getInterview, getCookie } from '../../../lib/utils';
+import { getInterview, getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return {
         visible: state.flyoutTabs.visible,
         archiveId: state.archive.archiveId,
         selectedArchiveIds: state.archive.selectedArchiveIds,
         locale: state.archive.locale,
-        locales: state.archive.locales,
+        locales: (project && project.locales) || state.archive.locales,
         editView: getCookie('editView'),
         translations: state.archive.translations,
         account: state.data.accounts.current,
         authStatus: state.account,
         interview: getInterview(state),
-        project: state.archive.project,
+        project: project && project.identifier,
         showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree
     }
 }

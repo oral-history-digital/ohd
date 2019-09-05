@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         account: state.data.accounts.current,
         interview: getInterview(state),
-        project: state.archive.project,
+        project: project && project.identifier,
     }
 }
 

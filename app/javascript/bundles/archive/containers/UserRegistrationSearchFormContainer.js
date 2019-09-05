@@ -6,8 +6,10 @@ import {
     setQueryParams, 
 } from '../actions/searchActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
+import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return {
         translations: state.archive.translations,
         locale: state.archive.locale,
@@ -21,7 +23,7 @@ const mapStateToProps = (state) => {
             {
                 attributeName: 'default_locale', 
                 type: 'select',
-                values: state.archive.locales,
+                values: (project && project.locales) || state.archive.locales,
             },
             {attributeName: 'workflow_state', type: 'select', values: ['all', 'unchecked', 'checked', 'registered', 'postponed', 'rejected']}
         ]
