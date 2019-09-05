@@ -69,31 +69,13 @@ const archive = (state = initialState, action) => {
             })
         case RECEIVE_STATIC_CONTENT:
             return Object.assign({}, state, {
-                //isFetchingExternalLinks: false,
-                //externalLinks: action.externalLinks,
                 homeContent: action.homeContent,
                 translations: action.translations,
                 country_keys: action.countryKeys,
                 collections: action.collections,
                 contributionTypes: action.contributionTypes,
-                // TODO: get project specific root-registry_entries
                 rootRegistryEntry: action.rootRegistryEntry,
-                //registryEntrySearchFacets: action.registryEntrySearchFacets,
-                //registryReferenceTypeMetadataFields: action.registryReferenceTypeMetadataFields,
                 languages: action.languages,
-                //uploadTypes: action.uploadTypes,
-                //locales: action.locales,
-                //viewMode: action.viewMode,
-                //viewModes: action.viewModes,
-                //detailViewFields: action.detailViewFields,
-                //listColumns: action.listColumns,
-                //project: action.project,
-                //projectDoi: action.projectDoi,
-                //isCatalog: action.isCatalog,
-                //hiddenRegistryEntryIds: action.hiddenRegistryEntryIds,
-                //projectName: action.projectName,
-                //archiveDomain: action.archiveDomain,
-                //projectDomain: action.projectDomain,
                 mediaStreams: action.mediaStreams,
             })
         case CHANGE_TO_EDIT_VIEW:

@@ -271,17 +271,14 @@ export default class WrapperPage extends React.Component {
             let locale = this.props.locale;
             let props = this.props;
             return Object.keys(links).map(function (key, index) {
-                //let link = links[key].url[locale];
-                //if(link !== undefined) {
-                    return (
-                        <li key={'external-link-' + key}>
-                            <a href={links[key].url[locale]}
-                                target="_blank" rel="noopener">
-                                {t(props, links[key].name)}
-                            </a>
-                        </li>
-                    )
-                //}
+                return (
+                    <li key={'external-link-' + key}>
+                        <a href={links[key].url[locale]}
+                            target="_blank" rel="noopener">
+                            {t(props, links[key].name)}
+                        </a>
+                    </li>
+                )
             })
         }
     }
