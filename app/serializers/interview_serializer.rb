@@ -250,10 +250,7 @@ class InterviewSerializer < ApplicationSerializer
 
   def duration
     if object.duration
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = Time.at(object.duration).utc.strftime("%-H h %M min")
-        mem
-      end
+      Time.at(object.duration).utc.strftime("%-H h %M min")
     end
   end
 

@@ -16,10 +16,9 @@ export default class InterviewInfo extends React.Component {
     }
 
     collection(){
-        if(this.props.collections && this.props.collections[0]){
-            let collection_id = this.props.interview.collection_id;
-            let collection_name = this.props.collections.filter(collection => collection.name[this.props.locale] === collection_id[this.props.locale])[0].name[this.props.locale];
-            return this.content(t(this.props, 'activerecord.models.collection.one'), collection_name, "")
+        let c = this.props.collections && this.props.collections[this.props.interview.collection_id]
+        if(c){
+            return this.content(t(this.props, 'activerecord.models.collection.one'), c.name[this.props.locale], "")
         }
     }
 
@@ -43,7 +42,7 @@ export default class InterviewInfo extends React.Component {
                     {this.content(t(this.props, 'date'), this.props.interview.interview_date, "")}
                     {/* {this.placeOfInterview()} */}
                     {this.content(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.video ? 'video' : 'audio'}`), "")}
-                    {this.content(t(this.props, 'duration'), this.props.interview.duration[this.props.locale], "")}
+                    {this.content(t(this.props, 'duration'), this.props.interview.duration, "")}
                     {this.tapes()}
                     {this.language()}
                     {this.collection()}

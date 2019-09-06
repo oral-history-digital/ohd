@@ -48,6 +48,7 @@ export default class WrapperPage extends React.Component {
         if(!this.props.translations) {
             this.props.fetchStaticContent();
         }
+        this.loadCollections();
         this.loadProjects();
         this.setProjectId();
     }
@@ -60,8 +61,15 @@ export default class WrapperPage extends React.Component {
         } else {
             document.body.classList.remove('noScroll');
         }
+        this.loadCollections();
         this.loadProjects();
         this.setProjectId();
+    }
+
+    loadCollections() {
+        if (!this.props.collectionsStatus) {
+            this.props.fetchData('collections', null, null, 'en');
+        }
     }
 
     loadProjects() {

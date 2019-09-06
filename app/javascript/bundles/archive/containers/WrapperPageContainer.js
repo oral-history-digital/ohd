@@ -19,6 +19,8 @@ const mapStateToProps = (state) => {
         disabled: state.popup.show,
         visible: state.flyoutTabs.visible,
         loggedInAt: state.account.loggedInAt,
+        collections: state.data.collections,
+        collectionsStatus: state.data.statuses.collections.all,
         projects: state.data.projects,
         projectsStatus: state.data.statuses.projects.all,
         project: getProject(state),

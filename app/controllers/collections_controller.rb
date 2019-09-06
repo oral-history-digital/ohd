@@ -1,13 +1,24 @@
 class CollectionsController < ApplicationController
 
-  #skip_before_action authenticate_user_account!, :only => :index
-  before_action :collection, only: :index
-  before_action :object, only: :show
+  skip_before_action :authenticate_user_account!, only: [:index]
 
   def show
   end
 
   def index
+    policy_scope(Collection)
+    respond_to do |format|
+      format.html { render 'react/app' }
+      format.json do
+        json = Rails.cache.fetch "collections-#{Collection.maximum(:updated_at)}" do
+          {
+            data: Collection.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            data_type: 'collections',
+          }
+        end
+        render json: json
+      end
+    end
   end
 
   def countries
@@ -15,19 +26,5 @@ class CollectionsController < ApplicationController
   end
 
   private
-
-  def object
-    @collection = Collection.includes(:translations).find_by(project_id: param) unless param.nil?
-    raise ActiveRecord::RecordNotFound if @collection.nil?
-    @collection
-  end
-
-  def param
-    params[:id] || params[:project_id]
-  end
-
-  def collection
-    @collections = Collection.includes(:translations).all.sort_by(&:to_s)
-  end
 
 end

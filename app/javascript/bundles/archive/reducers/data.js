@@ -31,7 +31,8 @@ const initialState = {
         roles: {},
         permissions: {},
         tasks: {},
-        projects: {}
+        projects: {},
+        collections: {},
     }
 }
 
