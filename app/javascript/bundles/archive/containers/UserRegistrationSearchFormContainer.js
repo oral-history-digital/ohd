@@ -23,7 +23,7 @@ const mapStateToProps = (state) => {
             {
                 attributeName: 'default_locale', 
                 type: 'select',
-                values: (project && project.locales) || state.archive.locales,
+                values: (project && project.available_locales) || state.archive.locales,
             },
             {attributeName: 'workflow_state', type: 'select', values: ['all', 'unchecked', 'checked', 'registered', 'postponed', 'rejected']}
         ]

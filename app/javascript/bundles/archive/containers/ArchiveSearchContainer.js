@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         interviews: state.search.interviews,
         translations: state.archive.translations,
         locale: state.archive.locale,
-        locales: (project && project.locales) || state.archive.locales,
+        locales: (project && project.available_locales) || state.archive.locales,
         isArchiveSearching: state.search.isArchiveSearching,
         project: project && project.identifier,
         viewModes: project && project.view_modes,

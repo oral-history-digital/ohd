@@ -8,7 +8,7 @@ import { getProject } from '../../../lib/utils';
 const mapStateToProps = (state) => {
     let project = getProject(state);
     return { 
-        locales: (project && project.locales) || state.archive.locales,
+        locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,
         registryReferenceTypes: state.data.registry_reference_types,
