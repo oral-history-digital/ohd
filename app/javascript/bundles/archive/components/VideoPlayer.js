@@ -48,7 +48,7 @@ export default class VideoPlayer extends React.Component {
 
     componentWillUnmount() {
         // reset resolution to undefined, otherwise changing video to audio or audio to video will crash
-        this.props.setTapeAndTimeAndResolution(this.props.tape, this.video.currentTime, undefined);
+        this.props.setTapeAndTimeAndResolution(this.props.tape, this.video && this.video.currentTime, undefined);
     }
 
     handleTapeChange(e) {
