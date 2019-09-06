@@ -33,7 +33,7 @@ class HomeController < ApplicationController
         locales.each do |i|
           I18n.locale = i
           template = "/home/home.#{i}.html+#{current_project.identifier == "empty" ? "zwar" : current_project.identifier}"
-          home_content[i] = '' #render_to_string(template: template, layout: false)
+          home_content[i] = render_to_string(template: template, layout: false)
         end
         json[:home_content] = home_content
         render plain: json.to_json
