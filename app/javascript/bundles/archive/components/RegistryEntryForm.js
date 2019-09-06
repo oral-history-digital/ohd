@@ -68,7 +68,7 @@ export default class RegistryEntryForm extends React.Component {
                 <Form 
                     key={`registry-entry-form-${this.props.registryEntry && this.props.registryEntry.id}-${this.state.lang.locale}`}
                     scope='registry_entry'
-                    onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     values={{
                         id: this.props.registryEntry && this.props.registryEntry.id,
                         workflow_state: this.props.registryEntry && this.props.registryEntry.workflow_state || 'preliminary',

@@ -257,7 +257,7 @@ class Segment < ActiveRecord::Base
   end
 
   def orig_lang
-    interview.language.first_code
+    interview.language && interview.language.first_code
   end
 
   def archive_id

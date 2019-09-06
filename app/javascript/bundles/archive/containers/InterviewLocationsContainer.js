@@ -25,6 +25,7 @@ const mapStateToProps = (state) => {
         locations: state.locations,
         birthLocation: birthLocation,
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
         isFetchingLocations: state.archive.isFetchingLocations
     }
@@ -32,8 +33,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
-    fetchLocations: archiveId => dispatch(fetchLocations(archiveId)),
-    fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
+    fetchLocations: (url, archiveId) => dispatch(fetchLocations(url, archiveId)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
 })
 
 // Don't forget to actually use connect!

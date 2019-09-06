@@ -22,13 +22,13 @@ export default class RegistryEntrySearchFacets extends React.Component {
         if (
             !this.props.registryEntriesStatus[this.props.parentEntryId]
         ) {
-            this.props.fetchData('registry_entries', this.props.parentEntryId);
+            this.props.fetchData(this.props, 'registry_entries', this.props.parentEntryId);
         }
 
         if (
             !this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`] 
         ) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.parentEntryId}`);
+            this.props.fetchData(this.props, 'registry_entries', null, null, `children_for_entry=${this.props.parentEntryId}`);
         } 
     }
 

@@ -15,7 +15,7 @@ export default class ArchiveLocations extends React.Component {
     }
 
     handleClick(segmentId, archiveId) {
-        this.props.searchInInterview({fulltext: this.props.fulltext, id: archiveId});
+        this.props.searchInInterview(`/${props.projectId}/${props.locale}/searches/interview`, {fulltext: this.props.fulltext, id: archiveId});
         this.context.router.history.push(`/${this.props.locale}/interviews/${archiveId}`);
     }
 

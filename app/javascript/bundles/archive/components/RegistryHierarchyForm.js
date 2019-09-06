@@ -27,7 +27,7 @@ export default class RegistryEntryForm extends React.Component {
                 <Form 
                     key={`registry-hierarchy-form-${this.props.descendantRegistryEntry && this.props.descendantRegistryEntry.id}`}
                     scope='registry_hierarchy'
-                    onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     values={{
                         id: this.props.registryHierarchy && this.props.registryHierarchy.id,
                         descendant_id: this.props.descendantRegistryEntry && this.props.descendantRegistryEntry.id,

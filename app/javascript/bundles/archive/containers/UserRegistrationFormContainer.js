@@ -7,12 +7,13 @@ import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitData: (params, locale) => dispatch(submitData(params, locale)),
+    submitData: (props, params) => dispatch(submitData(props, params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 

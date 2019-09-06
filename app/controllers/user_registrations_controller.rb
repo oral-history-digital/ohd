@@ -21,6 +21,7 @@ class UserRegistrationsController < ApplicationController
   def create
     @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
+      UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id
       AdminMailer.with(registration: @user_registration, project: current_project).new_registration_info.deliver
       render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
     elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -73,6 +74,7 @@ class UserRegistrationsController < ApplicationController
   end
 
   def update
+    @project = current_project
     @user_registration = UserRegistration.find(params[:id])
     authorize @user_registration
     @user_registration.update_attributes(user_registration_params)

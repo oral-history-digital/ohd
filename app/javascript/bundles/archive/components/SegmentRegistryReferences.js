@@ -22,7 +22,7 @@ export default class SegmentRegistryReferences extends React.Component {
 
     loadRegistryEntries() {
         if (!this.props.registryEntriesStatus[`references_for_segment_${this.props.segment.id}`]) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, `references_for_segment=${this.props.segment.id}`);
+            this.props.fetchData(this.props, 'registry_entries', null, null, `references_for_segment=${this.props.segment.id}`);
         }
     }
 
@@ -32,7 +32,7 @@ export default class SegmentRegistryReferences extends React.Component {
             !this.props.registryEntriesStatus[1] || 
             this.props.registryEntriesStatus[1].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData('registry_entries', 1);
+            this.props.fetchData(this.props, 'registry_entries', 1);
         }
     }
 

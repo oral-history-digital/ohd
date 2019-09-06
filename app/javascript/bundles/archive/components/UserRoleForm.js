@@ -17,7 +17,7 @@ export default class UserRoleForm extends React.Component {
             !this.props.rolesStatus.all ||
             this.props.rolesStatus.all.split('-')[0] === 'reload'
         ) {
-            this.props.fetchData('roles');
+            this.props.fetchData(this.props, 'roles');
         }
     }
 
@@ -27,7 +27,7 @@ export default class UserRoleForm extends React.Component {
             <div>
                 <Form 
                     scope='user_role'
-                    onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     values={{
                         user_id: this.props.userId,
                     }}

@@ -28,13 +28,13 @@ export default class RegistryReferenceForm extends React.Component {
             (this.props.registryEntriesStatus[this.state.parentEntryId] &&
                 this.props.registryEntriesStatus[this.state.parentEntryId].split('-')[0] === 'reload')
         ) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.state.parentEntryId}`);
+            this.props.fetchData(this.props, 'registry_entries', null, null, `children_for_entry=${this.state.parentEntryId}`);
         }
     }
 
     loadRegistryReferenceTypes() {
         if (!this.props.registryReferenceTypesStatus) {
-            this.props.fetchData('registry_reference_types');
+            this.props.fetchData(this.props, 'registry_reference_types');
         }
     }
 
@@ -49,7 +49,7 @@ export default class RegistryReferenceForm extends React.Component {
                 this.props.registryEntriesStatus[this.props.parentEntryId].split('-')[0] === 'reload'
             )
         ) {
-            this.props.fetchData('registry_entries', this.props.parentEntryId);
+            this.props.fetchData(this.props, 'registry_entries', this.props.parentEntryId);
         }
     }
 
@@ -159,7 +159,7 @@ export default class RegistryReferenceForm extends React.Component {
                         ref_position: 1,
                         workflow_state: 'preliminary'
                     }}
-                    onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     elements={_this.elements()}
                 />
             </div>

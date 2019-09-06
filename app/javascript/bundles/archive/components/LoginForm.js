@@ -5,10 +5,11 @@ import { t } from '../../../lib/utils';
 export default class LoginForm extends React.Component {
 
     render() {
+        let _this = this;
         return (
             <Form 
                 scope='user_account'
-                onSubmit={this.props.submitLogin}
+                onSubmit={function(params){_this.props.submitLogin(`/${_this.props.projectId}/${_this.props.locale}/user_accounts/sign_in`, params)}}
                 submitText='login'
                 elements={[
                     {

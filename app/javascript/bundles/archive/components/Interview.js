@@ -39,7 +39,7 @@ export default class Interview extends React.Component {
             !this.props.interviewsStatus[this.props.match.params.archiveId] ||
             this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData('interviews', this.props.match.params.archiveId);
+            this.props.fetchData(this.props, 'interviews', this.props.match.params.archiveId);
         }
     }
 
@@ -53,7 +53,7 @@ export default class Interview extends React.Component {
             this.interviewLoaded() &&
             !this.props.peopleStatus[`contributors_for_interview_${this.interview().id}`]
         ) {
-            this.props.fetchData('people', null, null, this.props.locale, `contributors_for_interview=${this.interview().id}`);
+            this.props.fetchData(this.props, 'people', null, null, `contributors_for_interview=${this.interview().id}`);
         }
     }
 
@@ -63,7 +63,7 @@ export default class Interview extends React.Component {
 
     loadDoiContent() {
         if (!this.props.doiContentsStatus[`for_interviews_${this.props.match.params.archiveId}`]) {
-            this.props.fetchData('interviews', this.props.match.params.archiveId, 'doi_contents');
+            this.props.fetchData(this.props, 'interviews', this.props.match.params.archiveId, 'doi_contents');
         }
     }
 

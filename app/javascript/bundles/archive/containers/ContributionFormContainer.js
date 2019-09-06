@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     let project = getProject(state);
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         locales: (project && project.locales) || state.archive.locales,
         translations: state.archive.translations,
         people: state.data.people,
@@ -19,7 +20,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     closeArchivePopup: () => dispatch(closeArchivePopup()),
-    fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContributionForm);

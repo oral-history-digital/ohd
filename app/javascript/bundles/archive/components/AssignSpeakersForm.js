@@ -27,7 +27,7 @@ export default class AssignSpeakersForm extends React.Component {
             !this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] ||
             this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData('interviews', this.props.archiveId, 'speaker_designations');
+            this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'speaker_designations');
         }
     }
 

@@ -22,10 +22,11 @@ export default class RegistryEntries extends React.Component {
 
     loadRegistryEntries() {
         if (
+            this.props.projectId &&
             this.props.registryEntryParent &&
             !this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`]
         ) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, `children_for_entry=${this.props.registryEntryParent.id}`);
+            this.props.fetchData(this.props, 'registry_entries', null, null, `children_for_entry=${this.props.registryEntryParent.id}`);
         }
     }
 

@@ -70,7 +70,7 @@ class TranscriptsController < ApplicationController
 
   def find_or_create_interview(archive_id)
     interview = Interview.where('lower(archive_id) = ?', archive_id.downcase).first 
-    interview ||= Interview.create archive_id: archive_id
+    interview ||= Interview.create archive_id: archive_id, project_id: current_project.id
   end
 
   def find_or_create_tape(tape_media_id, interview)

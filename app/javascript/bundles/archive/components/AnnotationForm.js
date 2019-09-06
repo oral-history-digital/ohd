@@ -31,7 +31,7 @@ export default class AnnotationForm extends React.Component {
         event.preventDefault();
         let preparedValues = this.state.values;
         preparedValues.text = this.state.values.text.toString('html');
-        this.props.submitData({annotation: preparedValues}, this.props.locale);
+        this.props.submitData(this.props, {annotation: preparedValues});
         this.props.closeArchivePopup();
     }
 

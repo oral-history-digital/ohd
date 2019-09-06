@@ -9,6 +9,7 @@ import { setTapeAndTime } from '../actions/interviewActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         interviews: state.data.interviews,
         interviewsStatus: state.data.statuses && state.data.statuses.interviews,
         segments: state.data.segments,
@@ -20,7 +21,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchData: (dataType, id, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, id, nestedDataType, locale, extraParams)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     closeArchivePopup: () => dispatch(closeArchivePopup()),
     setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),

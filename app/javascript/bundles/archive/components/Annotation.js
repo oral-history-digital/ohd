@@ -25,7 +25,7 @@ export default class Annotation extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData('annotations', this.props.annotation.id, null, null, true);
+        this.props.deleteData(this.props, 'annotations', this.props.annotation.id, null, null, true);
         this.props.closeArchivePopup();
     }
 

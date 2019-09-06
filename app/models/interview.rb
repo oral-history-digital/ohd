@@ -465,11 +465,11 @@ class Interview < ActiveRecord::Base
   end
 
   def transcript_locales
-    language.code.split(/[\/-]/)
+    language && language.code.split(/[\/-]/)
   end
 
   def right_to_left
-    language.code == 'heb' ? true : false
+    language && language.code == 'heb' ? true : false
   end
 
   def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, contribution_data)

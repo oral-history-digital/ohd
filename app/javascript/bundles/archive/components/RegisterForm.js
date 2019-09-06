@@ -123,7 +123,7 @@ export default class RegisterForm extends React.Component {
             },
         ];
 
-        if (this.props.project === 'mog') {
+        if (this.props.projectId === 'mog') {
             return firstElements.concat(otherElements);
         } else {
             return firstElements.concat(addressElements).concat(otherElements);
@@ -131,10 +131,11 @@ export default class RegisterForm extends React.Component {
     }
 
     render() {
+        let _this = this;
         return (
             <Form 
                 scope='user_registration'
-                onSubmit={this.props.submitRegister}
+                onSubmit={function(params){_this.props.submitRegister(`/${_this.props.projectId}/${_this.props.locale}/user_registrations`, params)}}
                 submitText='user_registration.register'
                 elements={this.formElements()}
             />

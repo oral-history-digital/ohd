@@ -60,7 +60,7 @@ export default class UploadTranscript extends React.Component {
                     </p>
                     <Form 
                         scope='transcript'
-                        onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.setState({showForm: false})}}
+                        onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
                         submitText='edit.upload_transcript.title'
                         values={{ }}
                         elements={[

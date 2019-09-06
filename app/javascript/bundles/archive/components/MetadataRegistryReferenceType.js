@@ -33,7 +33,7 @@ export default class MetadataRegistryReferenceType extends React.Component {
         }
 
         if (!this.props.registryEntriesStatus[string]) {
-            this.props.fetchData('registry_entries', null, null, this.props.locale, string2);
+            this.props.fetchData(this.props, 'registry_entries', null, null, string2);
         }
     }
 

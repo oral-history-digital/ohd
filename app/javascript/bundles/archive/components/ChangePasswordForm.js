@@ -29,7 +29,7 @@ export default class ChangePasswordForm extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.account.email && !this.props.account.email) {
-            this.context.router.history.push(`/${this.props.locale}/searches/archive`);
+            this.context.router.history.push(`/${this.props.projectId}/${this.props.locale}/searches/archive`);
         }
     }
 
@@ -51,10 +51,10 @@ export default class ChangePasswordForm extends React.Component {
             let params = this.state.values;
 
             if (!this.props.account.active) {
-                url = `/${this.props.locale}/user_registrations/${resetToken}/confirm`;
+                url = `/${this.props.projectId}/${this.props.locale}/user_registrations/${resetToken}/confirm`;
                 method = 'post';
             } else {
-                url = `/${this.props.locale}/user_accounts/password`;
+                url = `/${this.props.projectId}/${this.props.locale}/user_accounts/password`;
                 method = 'put';
                 params.reset_password_token = resetToken;
             }

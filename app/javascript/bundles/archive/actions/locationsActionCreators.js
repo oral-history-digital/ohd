@@ -5,7 +5,6 @@ import Loader from '../../../lib/loader'
 import { 
   REQUEST_LOCATIONS,
   RECEIVE_LOCATIONS,
-  LOCATIONS_URL,
 } from '../constants/archiveConstants';
 
 const requestLocations = (archiveId) => ({
@@ -23,10 +22,10 @@ function receiveLocations(json){
   }
 }
 
-export function fetchLocations(archiveId) {
+export function fetchLocations(url, archiveId) {
   return dispatch => {
     dispatch(requestLocations(archiveId))
-    Loader.getJson(`${LOCATIONS_URL}?archive_id=${archiveId}`, null, dispatch, receiveLocations);
+    Loader.getJson(`${url}?archive_id=${archiveId}`, null, dispatch, receiveLocations);
   }
 }
 

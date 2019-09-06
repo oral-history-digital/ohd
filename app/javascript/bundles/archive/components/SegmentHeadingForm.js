@@ -11,7 +11,7 @@ export default class SegmentHeadingForm extends React.Component {
                 {`${t(this.props, 'edit.segment.speaker_string')}: ${this.props.segment.speaker}`}
                 <Form 
                     scope='segment'
-                    onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     values={{
                         id: this.props.segment && this.props.segment.id
                     }}

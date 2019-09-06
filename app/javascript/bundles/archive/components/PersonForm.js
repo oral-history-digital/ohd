@@ -9,8 +9,8 @@ export default class PersonForm extends React.Component {
         return (
             <Form 
                 scope='person'
-                onSubmit={function(params, locale){
-                    _this.props.submitData(params, locale);
+                onSubmit={function(params){
+                    _this.props.submitData(_this.props, params);
                     if (typeof _this.props.closeArchivePopup === "function") {_this.props.closeArchivePopup()};
                     if (typeof _this.props.onSubmitCallback === "function") {_this.props.onSubmitCallback()}}
                 }

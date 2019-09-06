@@ -6,7 +6,7 @@ class ApplicationController < ActionController::Base
   #protect_from_forgery # See ActionController::RequestForgeryProtection for details
 
   before_action :authenticate_user_account!
-  before_action :set_variant
+  #before_action :set_variant
 
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
@@ -22,14 +22,9 @@ class ApplicationController < ActionController::Base
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
     locale ||= (params[:locale] || current_project.default_locale).to_sym
-    valid_locales = current_project.available_locales if valid_locales.empty?
-    locale = I18n.default_locale unless valid_locales.include?(locale)
+    #valid_locales = current_project.available_locales if valid_locales.empty?
+    #locale = I18n.default_locale unless valid_locales.include?(locale)
     I18n.locale = locale
-  end
-
-  prepend_before_action :set_available_locales
-  def set_available_locales
-    I18n.available_locales = current_project.available_locales
   end
 
   # Append the locale to all requests.
@@ -37,19 +32,24 @@ class ApplicationController < ActionController::Base
     options.merge({ :locale => I18n.locale })
   end
 
-  def set_variant
-    request.variant = current_project.identifier.to_sym
+  def current_project
+    #Project.first
+    Project.where(shortname: params[:project_id].upcase).first
   end
+  helper_method :current_project
+
+  #def set_variant
+    #request.variant = current_project.identifier.to_sym
+  #end
   
   def not_found
     raise ActionController::RoutingError.new('Not Found')
   end
 
-  def current_project
-    Project.first
-    #Project.find_by_name(params[:project]) 
+  append_after_action :set_available_locales
+  def set_available_locales
+    I18n.available_locales = current_project.available_locales if current_project
   end
-  helper_method :current_project
 
   private
 

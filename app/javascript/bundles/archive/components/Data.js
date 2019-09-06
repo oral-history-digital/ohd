@@ -5,11 +5,19 @@ import { t, admin, pluralize } from '../../../lib/utils';
 export default class Data extends React.Component {
 
     baseData() {
-        return (
-            <div className='base-data box'>
-                <p className='name'>{this.props.data.name || this.props.data.title}</p>
-            </div>
-        )
+        if (this.props.data.archive_domain) {
+            return (
+                <div className='base-data box'>
+                    <p className='link'><a href={'https://' + this.props.data.archive_domain}>{this.props.data.title || this.props.data.name}</a></p>
+                </div>
+            )
+        } else {
+            return (
+                <div className='base-data box'>
+                    <p className='name'>{this.props.data.title || this.props.data.name}</p>
+                </div>
+            )
+        }
                 //<p className='created-at'>
                     //<span className='title'>{t(this.props, `activerecord.attributes.${this.props.scope}.created_at`) + ': '}</span>
                     //<span className='content'>{this.props.data.created_at}</span>
@@ -84,7 +92,7 @@ export default class Data extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData(pluralize(this.props.scope), this.props.data.id, null, null, true);
+        this.props.deleteData(this.props, pluralize(this.props.scope), this.props.data.id, null, null, false);
         this.props.closeArchivePopup();
     }
 

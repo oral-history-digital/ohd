@@ -15,7 +15,7 @@ export default class RegistryEntryShow extends React.Component {
 
     fetchInterview(archiveId) {
         if(!this.props.interviewsStatus || !this.props.interviewsStatus[archiveId]) {
-            this.props.fetchData('interviews', archiveId)
+            this.props.fetchData(this.props, 'interviews', archiveId)
         }
     }
 
@@ -25,7 +25,7 @@ export default class RegistryEntryShow extends React.Component {
 
     fetchSegment(id) {
         if(!this.props.segmentsStatus || !this.props.segmentsStatus[id]) {
-            this.props.fetchData('segments', id)
+            this.props.fetchData(this.props, 'segments', id)
         }
     }
 
@@ -35,7 +35,7 @@ export default class RegistryEntryShow extends React.Component {
 
     loadRegistryReferenceTypes() {
         if (!this.props.registryReferenceTypesStatus) {
-            this.props.fetchData('registry_reference_types');
+            this.props.fetchData(this.props, 'registry_reference_types');
         }
     }
 
@@ -67,7 +67,7 @@ export default class RegistryEntryShow extends React.Component {
                             this.props.closeArchivePopup();
                             this.props.setArchiveId(rr.ref_interview_archive_id);
                         }}
-                        to={'/' + this.props.locale + '/interviews/' + rr.ref_interview_archive_id}
+                        to={'/' + this.props.projectId + '/' + this.props.locale + '/interviews/' + rr.ref_interview_archive_id}
                         >
                             {`${ref_object_string}`}
                         </Link>
@@ -88,7 +88,7 @@ export default class RegistryEntryShow extends React.Component {
                                 this.props.setArchiveId(this.props.segments[rr.ref_object_id].interview_archive_id);
                                 this.props.setTapeAndTime(this.props.segments[rr.ref_object_id].tape_nbr, this.props.segments[rr.ref_object_id].time)
                             }}
-                            to={'/' + this.props.locale + '/interviews/' + this.props.segments[rr.ref_object_id].interview_archive_id}
+                            to={'/' + this.props.projectId + '/' + this.props.locale + '/interviews/' + this.props.segments[rr.ref_object_id].interview_archive_id}
                             >
                                 {`${ref_object_string}`}
                             </Link>

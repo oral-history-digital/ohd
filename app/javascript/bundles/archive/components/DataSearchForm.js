@@ -22,7 +22,7 @@ export default class DataSearchForm extends React.Component {
          if (
             !this.props.dataStatus[statifiedQuery(this.props.query)]
          ) {
-            this.props.fetchData(pluralize(this.props.scope), null, null, this.props.locale, parametrizedQuery(this.props.query));
+            this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
          }
      }
 
@@ -41,12 +41,12 @@ export default class DataSearchForm extends React.Component {
     handleReset(event) {
         this.form.reset();
         this.props.resetQuery(pluralize(this.props.scope));
-        this.props.fetchData(pluralize(this.props.scope), null, null, this.props.locale, null);
+        this.props.fetchData(this.props, pluralize(this.props.scope), null, null, null);
     }
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        this.props.fetchData(pluralize(this.props.scope), null, null, this.props.locale, parametrizedQuery(this.props.query));
+        this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
     }
 
     optionsForSelect(attributeName, values) {

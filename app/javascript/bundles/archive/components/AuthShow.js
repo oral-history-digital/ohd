@@ -17,7 +17,7 @@ export default class AuthShow extends React.Component {
     }
 
     loadAccount() {
-        this.props.fetchData('accounts', 'current');
+        this.props.fetchData(this.props, 'accounts', 'current');
     }
 
     content() {

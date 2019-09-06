@@ -2,8 +2,8 @@
 module ApplicationHelper
 
   def current_project
-    Project.first
-    #Project.find_by_name(params[:project]) 
+    #Project.first
+    Project.where(shortname: params[:project_id].upcase).first
   end
 
   def tab_index_for_params

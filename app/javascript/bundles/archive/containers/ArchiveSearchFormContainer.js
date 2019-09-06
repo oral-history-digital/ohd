@@ -4,7 +4,6 @@ import ArchiveSearchForm from '../components/ArchiveSearchForm';
 import { 
     resetQuery, 
     setQueryParams, 
-    //loadFacets, 
     searchInArchive 
 } from '../actions/searchActionCreators';
 import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
@@ -29,7 +28,6 @@ const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
     resetQuery: (scope) => dispatch(resetQuery(scope)),
-    //loadFacets: () => dispatch(loadFacets()),
     searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
 })

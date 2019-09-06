@@ -23,8 +23,8 @@ const mapDispatchToProps = (dispatch) => ({
     submitDois: (params, locale) => dispatch(submitDois(params, locale)),
     addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),
     setArchiveIds: (archiveIds) => dispatch(setArchiveIds(archiveIds)),
-    deleteData: (dataType, id, nestedDataType, nestedId, skipRemove, locale) => dispatch(deleteData(dataType, id, nestedDataType, nestedId, skipRemove, locale)),
-    submitData: (params, locale) => dispatch(submitData(params, locale)),
+    deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
+    submitData: (props, params) => dispatch(submitData(props, params)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })

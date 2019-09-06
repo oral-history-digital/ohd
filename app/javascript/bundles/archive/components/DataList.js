@@ -20,7 +20,7 @@ export default class DataLists extends React.Component {
          if (
             this.props.joinDataStatus && !this.props.joinDataStatus.all
          ) {
-            this.props.fetchData(this.props.joinDataScope, null, null, this.props.locale, null);
+            this.props.fetchData(this.props, this.props.joinDataScope, null, null, null);
          }
      }
 
@@ -52,7 +52,7 @@ export default class DataLists extends React.Component {
                 data={data}
                 values={this.props.initialFormValues}
                 scope={this.props.scope}
-                onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 submitText='submit'
                 elements={this.props.formElements}
             />

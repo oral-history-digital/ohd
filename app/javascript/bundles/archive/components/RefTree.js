@@ -16,7 +16,7 @@ export default class RefTree extends React.Component {
 
     loadRefTree() {
         if (!this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`]) {
-            this.props.fetchData('interviews', this.props.archiveId, 'ref_tree');
+            this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'ref_tree');
         }
     }
 

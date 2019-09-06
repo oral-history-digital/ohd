@@ -72,7 +72,7 @@ export default class Uploads extends React.Component {
                     {this.explanations()}
                     <Form 
                         scope='upload'
-                        onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.setState({showForm: false})}}
+                        onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
                         submitText='edit.upload.upload'
                         elements={[
                             {

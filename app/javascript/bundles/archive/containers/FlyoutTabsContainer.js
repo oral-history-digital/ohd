@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     return {
         visible: state.flyoutTabs.visible,
         archiveId: state.archive.archiveId,
+        projectId: state.archive.projectId,
         selectedArchiveIds: state.archive.selectedArchiveIds,
         locale: state.archive.locale,
         locales: (project && project.locales) || state.archive.locales,
@@ -20,7 +21,6 @@ const mapStateToProps = (state) => {
         account: state.data.accounts.current,
         authStatus: state.account,
         interview: getInterview(state),
-        project: project && project.identifier,
         showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree
     }
 }

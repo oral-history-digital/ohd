@@ -26,7 +26,7 @@ export default class Account extends React.Component {
             !this.props.accountsStatus.current ||
             this.props.accountsStatus.current.split('-')[0] === 'reload'
         ) {
-            this.props.fetchData('accounts', 'current');
+            this.props.fetchData(this.props, 'accounts', 'current');
         }
     }
 
@@ -65,7 +65,7 @@ export default class Account extends React.Component {
                     {this.changeToEditView()}
                     <div
                         className='logout'
-                        onClick={() => this.props.submitLogout()}
+                        onClick={() => this.props.submitLogout(`/${this.props.projectId}/${this.props.locale}/user_accounts/sign_out`)}
                     >
                         {t(this.props, 'logout')}
                     </div>
@@ -76,16 +76,16 @@ export default class Account extends React.Component {
                 <AuthShowContainer ifLoggedOut={true}>
                     <p>
                         {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
-                        {(this.props.authStatus.error || this.props.project === 'campscapes') ? '' : t(this.props, 'registration_needed')}
+                        {(this.props.authStatus.error || this.props.projectId === 'campscapes') ? '' : t(this.props, 'registration_needed')}
                     </p>
                     <LoginFormContainer/>
                     <div className={'register-link'}>
-                        <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_registrations/new', e)}>
+                        <a href='' onClick={(e) => this.openLink('/' + this.props.projectId + '/' + this.props.locale + '/user_registrations/new', e)}>
                             {t(this.props, 'user_registration.registration')}
                         </a>
                     </div>
                     <div className={'order-new-password-link'}>
-                        <a href='' onClick={(e) => this.openLink('/' + this.props.locale + '/user_accounts/password/new', e)}>
+                        <a href='' onClick={(e) => this.openLink('/' + this.props.projectId + '/' + this.props.locale + '/user_accounts/password/new', e)}>
                             {t(this.props, 'forget_password')}
                         </a>
                     </div>

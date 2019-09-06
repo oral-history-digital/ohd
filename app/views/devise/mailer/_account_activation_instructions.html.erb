@@ -1,5 +1,6 @@
 <% 
-  url = activate_user_registration_url(id: @user_account.confirmation_token, protocol: current_project.shortname.downcase == 'campscapes' ? 'http' : 'https', host: current_project.archive_domain, locale: @user_account.user_registration.default_locale)
+  protocol = @resource.user_registration.projects.last.shortname.downcase == 'campscapes' ? 'http' : 'https' 
+  url = "#{protocol}://#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}/user_registrations/#{@user_account.confirmation_token}/activate" 
   case @user_account.user_registration.default_locale
   when :en 
 -%>
@@ -9,7 +10,7 @@
     <p><%= link_to 'Activate your access now', url %></p>
     <br/>
     <p>Best regards,</p>
-    <p>The archive team "<%= current_project.name('en') %>"</p>
+    <p>The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
   <% when :ru -%>
     <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
     <p>настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @user_account.email %></p>
@@ -17,7 +18,7 @@
     <p><%= link_to 'Активировать доступ сейчас', url %></p>
     <br/>
     <p>С уважением,</p>
-    <p>Команда архива "<%= current_project.name('ru') %>"</p>
+    <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% else -%>
     <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
     <p>wir bestätigen hiermit Ihren Zugang zum Archiv. Ihr Benutzername lautet: <%= @user_account.email %></p>
@@ -25,5 +26,5 @@
     <p><%= link_to 'Zugang jetzt aktivieren', url %></p>
     <br/>
     <p>Mit freundlichen Grüßen,</p>
-    <p>Das Archiv-Team "<%= current_project.name('de') %>"</p>
+    <p>Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>

@@ -4,7 +4,6 @@ import Loader from '../../../lib/loader'
 import {
     RECEIVE_STATIC_CONTENT,
     REQUEST_STATIC_CONTENT,
-    HOME_CONTENT_URL
 } from '../constants/archiveConstants';
 
 const requestStaticContent = () => ({
@@ -27,10 +26,10 @@ function receiveStaticContent(json){
     }
 }
 
-export function fetchStaticContent(archiveId) {
+export function fetchStaticContent(url) {
     return dispatch => {
         dispatch(requestStaticContent())
-        Loader.getJson(`${HOME_CONTENT_URL}`, null, dispatch, receiveStaticContent);
+        Loader.getJson(url, null, dispatch, receiveStaticContent);
     }
 }
 

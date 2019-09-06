@@ -50,27 +50,27 @@ export default class FlyoutTabs extends React.Component {
     handleTabClick(tabIndex) {
         if (tabIndex === 0) {
             // account
-            loggedIn(this.props) && this.context.router.history.push(`/${this.props.locale}/accounts/current`);
+            loggedIn(this.props) && this.context.router.history.push(`/${this.props.projectId}/${this.props.locale}/accounts/current`);
         } else if (tabIndex > 0 && tabIndex < this.props.locales.length + 1) {
             // locales (language switchers)
             this.switchLocale(this.props.locales[tabIndex - 1]);
         } else if (tabIndex === this.props.locales.length + 1) {
             // arrchive-search
-            this.context.router.history.push(`/${this.props.locale}/searches/archive`);
+            this.context.router.history.push(`/${this.props.projectId}/${this.props.locale}/searches/archive`);
         } else if (tabIndex === this.props.locales.length + 2) {
             // interview
-            this.context.router.history.push(`/${this.props.locale}/interviews/${this.props.archiveId}`);
+            this.context.router.history.push(`/${this.props.projectId}/${this.props.locale}/interviews/${this.props.archiveId}`);
         } else if (tabIndex === this.props.locales.length + 3) {
              // registry entries
-            this.context.router.history.push(`/${this.props.locale}/registry_entries`);
+            this.context.router.history.push(`/${this.props.projectId}/${this.props.locale}/registry_entries`);
         }
-        if (tabIndex >= this.props.locales.length + 1) {
+        if (tabIndex  === 0 || tabIndex >= this.props.locales.length + 1) {
             this.setState({tabIndex: tabIndex});
         }
     }
 
     switchLocale(locale) {
-        let newPath = this.context.router.route.location.pathname.replace(/^\/[a-z]{2}\//, `/${locale}/`);
+        let newPath = this.context.router.route.location.pathname.replace(/^\/[a-z]{2,4}\/[a-z]{2}\//, `/${this.props.projectId}/${locale}/`);
         this.context.router.history.push(newPath);
         this.props.setLocale(locale);
     }
@@ -219,11 +219,11 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key={'tabpanel-indexing'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.indexing')}</div>
                     <div className='flyout-sub-tabs-container'>
-                        {this.subTab('edit.interview.new', 'description', `/${this.props.locale}/interviews/new`, {type: 'Interview', action: 'create'})}
-                        {this.subTab('edit.upload_transcript.title', 'description', `/${this.props.locale}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
+                        {this.subTab('edit.interview.new', 'description', `/${this.props.projectId}/${this.props.locale}/interviews/new`, {type: 'Interview', action: 'create'})}
+                        {this.subTab('edit.upload_transcript.title', 'description', `/${this.props.projectId}/${this.props.locale}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
                         {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'update', id: this.props.archiveId}, this.props.archiveId)}
-                        {this.subTab('edit.upload.upload', 'description', `/${this.props.locale}/uploads/new`, {type: 'Interview', action: 'update'})}
-                        {this.subTab('edit.person.new', 'description', `/${this.props.locale}/people/new`, {type: 'Person', action: 'create'})}
+                        {this.subTab('edit.upload.upload', 'description', `/${this.props.projectId}/${this.props.locale}/uploads/new`, {type: 'Interview', action: 'update'})}
+                        {this.subTab('edit.person.new', 'description', `/${this.props.projectId}/${this.props.locale}/people/new`, {type: 'Person', action: 'create'})}
                     </div>
                 </TabPanel>
             )
@@ -240,8 +240,8 @@ export default class FlyoutTabs extends React.Component {
                 links.push(
                     <p key={`downloads-for-tape-${i}`}>
                         <h4>{`${t(this.props, 'tape')} ${i}:`}</h4>
-                        <a href={`/${this.props.locale}/interviews/${this.props.archiveId}.ods?tape_number=${i}`} download>ods</a>&#44;&#xa0;
-                        <a href={`/${this.props.locale}/interviews/${this.props.archiveId}.vtt?tape_number=${i}`} download>vtt</a>
+                        <a href={`/${this.props.projectId}/${this.props.locale}/interviews/${this.props.archiveId}.ods?tape_number=${i}`} download>ods</a>&#44;&#xa0;
+                        <a href={`/${this.props.projectId}/${this.props.locale}/interviews/${this.props.archiveId}.vtt?tape_number=${i}`} download>vtt</a>
                     </p>
                 );
             }
@@ -271,30 +271,30 @@ export default class FlyoutTabs extends React.Component {
                             'edit.users.admin', 
                             <div>
                                 <UserRegistrationSearchFormContainer/>
-                                <a href={`/${this.props.locale}/admin/user_statistics.csv`}>
+                                <a href={`/${this.props.projectId}/${this.props.locale}/admin/user_statistics.csv`}>
                                     <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_user_statistics')}></i>
                                     <span>{` ${t(this.props, 'download_user_statistics')}`}</span>
                                 </a>
                             </div>,
-                            `/${this.props.locale}/user_registrations`,
+                            `/${this.props.projectId}/${this.props.locale}/user_registrations`,
                             {type: 'UserRegistration', action: 'update'}
                         )}
                         {this.subTab(
                             'edit.role.admin', 
                             <RoleSearchFormContainer/>,
-                            `/${this.props.locale}/roles`,
+                            `/${this.props.projectId}/${this.props.locale}/roles`,
                             {type: 'Role', action: 'update'}
                         )}
                         {this.subTab(
                             'edit.permission.admin', 
                             <PermissionSearchFormContainer/>,
-                            `/${this.props.locale}/permissions`,
+                            `/${this.props.projectId}/${this.props.locale}/permissions`,
                             {type: 'Permission', action: 'update'}
                         )}
                         {this.subTab(
                             'edit.project.admin', 
                             <ProjectSearchFormContainer/>,
-                            `/${this.props.locale}/projects`,
+                            `/${this.props.projectId}/${this.props.locale}/projects`,
                             {type: 'Project', action: 'update'}
                         )}
                     </div>
@@ -309,7 +309,7 @@ export default class FlyoutTabs extends React.Component {
         let css = loggedIn(this.props) ? 'flyout-tab' : 'hidden';
         return (
             <Tab className={css} key='registry'>
-                {t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry')}
+                {t(this.props, (this.props.projectId === 'mog') ? 'registry_mog' : 'registry')}
             </Tab>
         );
     }
@@ -317,7 +317,7 @@ export default class FlyoutTabs extends React.Component {
     registryEntriesTabPanel() {
         return (
             <TabPanel key={'tabpanel-registry-entries'}>
-                <div className='flyout-tab-title'>{t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry')}</div>
+                <div className='flyout-tab-title'>{t(this.props, (this.props.projectId === 'mog') ? 'registry_mog' : 'registry')}</div>
                 <div className='flyout-sub-tabs-container'>
                     <RegistryEntrySearchFormContainer />
                     <div>
@@ -325,7 +325,7 @@ export default class FlyoutTabs extends React.Component {
                             {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                         </button>
                     </div>
-                    <a href={`/${this.props.locale}/registry_entries.pdf`}>
+                    <a href={`/${this.props.projectId}/${this.props.locale}/registry_entries.pdf`}>
                         <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                         <span>{` ${t(this.props, 'download')}`}</span>
                     </a>

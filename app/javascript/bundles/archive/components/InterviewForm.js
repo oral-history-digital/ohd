@@ -20,8 +20,8 @@ export default class InterviewForm extends React.Component {
         )
     }
 
-    onSubmit(params, locale){
-        this.props.submitData(params, locale);
+    onSubmit(params){
+        this.props.submitData(this.props, params);
         if (typeof this.props.onSubmitCallback === "function") {this.props.onSubmitCallback()}
     }
 

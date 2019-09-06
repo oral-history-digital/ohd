@@ -39,7 +39,7 @@ export default class AdminActions extends React.Component {
 
     deleteInterviews() {
         this.selectedArchiveIds().forEach((archiveId) => {
-            this.props.deleteData('interviews', archiveId);
+            this.props.deleteData(this.props, 'interviews', archiveId);
         });
         this.props.closeArchivePopup();
         if (this.context.router.route.match.params.archiveId === undefined) {
@@ -53,7 +53,7 @@ export default class AdminActions extends React.Component {
     updateInterviews(params) {
         this.selectedArchiveIds().forEach((archiveId) => {
             let updatedParams = Object.assign({}, params, {id: archiveId});
-            this.props.submitData({interview: updatedParams}, this.props.locale);
+            this.props.submitData(this.props, {interview: updatedParams});
         });
         this.props.closeArchivePopup();
         if (this.context.router.route.match.params.archiveId === undefined) {

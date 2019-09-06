@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
     setActualSegment: segment => dispatch(setActualSegment(segment)),
-    fetchData: (dataType, id, nestedDataType) => dispatch(fetchData(dataType, id, nestedDataType)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transcript);

@@ -21,7 +21,7 @@ export default class History extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData('people', this.props.history.person_id, 'histories', this.props.history.id);
+        this.props.deleteData(this.props, 'people', this.props.history.person_id, 'histories', this.props.history.id);
         this.props.closeArchivePopup();
     }
 

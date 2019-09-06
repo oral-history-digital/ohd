@@ -1,13 +1,13 @@
 class AdminMailer < ApplicationMailer
 
-  def new_registration_info project
+  def new_registration_info 
     registration = params[:registration]
-    project = params[:project]
+    @project = params[:project]
     @user_name = registration.full_name
-    @url = user_registrations_url(locale: 'de')
+    @url = user_registrations_url(project_id: @project.identifier, locale: 'de')
 
     mail(
-      subject: "new registration for #{project.shortname}",
+      subject: "new registration for #{@project.shortname}",
       from: "no-reply@cedis.fu-berlin.de",
       to: Project.contact_email,
       date: Time.now

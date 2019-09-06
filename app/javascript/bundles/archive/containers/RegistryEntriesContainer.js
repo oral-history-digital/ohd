@@ -8,6 +8,7 @@ import { getCookie } from '../../../lib/utils';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,
         registryEntriesStatus: state.data.statuses.registry_entries,
@@ -18,7 +19,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
 })
 

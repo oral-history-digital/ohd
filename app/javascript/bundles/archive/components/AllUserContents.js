@@ -7,7 +7,7 @@ export default class AllUserContents extends React.Component {
 
     componentDidMount() {
         if (!this.props.status && this.props.account.email && !this.props.account.error) {
-            this.props.fetchData('user_contents');
+            this.props.fetchData(this.props, 'user_contents');
         }
     }
 

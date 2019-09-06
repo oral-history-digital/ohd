@@ -9,7 +9,7 @@ export default class BiographicalEntryForm extends React.Component {
         return (
             <Form 
                 scope='biographical_entry'
-                onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 values={{
                     id: this.props.biographicalEntry && this.props.biographicalEntry.id,
                     person_id: (this.props.person && this.props.person.id) || (this.props.biographicalEntry && this.props.biographicalEntry.person_id)

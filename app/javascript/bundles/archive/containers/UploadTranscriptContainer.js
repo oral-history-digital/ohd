@@ -8,6 +8,7 @@ const mapStateToProps = (state) => {
     let project = getProject(state);
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         locales: (project && project.locales) || state.archive.locales,
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
@@ -19,7 +20,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitData: (params) => dispatch(submitData(params)),
+    submitData: (props, params) => dispatch(submitData(props, params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadTranscript);

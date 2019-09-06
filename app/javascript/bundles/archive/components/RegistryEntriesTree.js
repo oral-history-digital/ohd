@@ -26,7 +26,7 @@ export default class RegistryEntriesTree extends React.Component {
             !this.props.registryEntriesStatus[1] ||
             this.props.registryEntriesStatus[1].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData('registry_entries', 1);
+            this.props.fetchData(this.props, 'registry_entries', 1);
         }
     }
 
@@ -58,7 +58,7 @@ export default class RegistryEntriesTree extends React.Component {
                 ids.push(result.registry_entry.id);
             }
         })
-        this.props.submitData({merge_registry_entry: {id: id, ids: ids}}, this.props.locale);
+        this.props.submitData(this.props, {merge_registry_entry: {id: id, ids: ids}});
     }
 
     mergeRegistryEntriesConfirm() {

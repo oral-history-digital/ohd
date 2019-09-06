@@ -52,7 +52,7 @@ export default class Form extends React.Component {
         event.preventDefault();
         let v = this.valid();
         if(this.valid()) {
-            this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values}, this.props.locale);
+            this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
         } 
     }
 
@@ -131,7 +131,8 @@ export default class Form extends React.Component {
         }
     }
 
-    handleSubFormSubmit(params) {
+    // props is a dummy here
+    handleSubFormSubmit(props, params) {
         let scope = Object.keys(params)[0];
         let nestedValues = this.state.values[pluralize(scope)] || [];
         this.setState({ 

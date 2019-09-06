@@ -21,7 +21,7 @@ export default class Person extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData('interviews', this.props.archiveId, 'contributions', this.props.contribution.id);
+        this.props.deleteData(this.props, 'interviews', this.props.archiveId, 'contributions', this.props.contribution.id);
         this.props.closeArchivePopup();
     }
 

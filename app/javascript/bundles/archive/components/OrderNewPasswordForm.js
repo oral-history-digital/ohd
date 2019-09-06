@@ -35,7 +35,7 @@ export default class OrderNewPasswordForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         if(this.valid()) {
-            this.props.submitOrderNewPassword({user_account: this.state.values});
+            this.props.submitOrderNewPassword(`/${this.props.projectId}/${this.props.locale}/user_accounts/password`, {user_account: this.state.values});
         } 
     }
 
@@ -74,7 +74,7 @@ export default class OrderNewPasswordForm extends React.Component {
                     value={this.props.account.email && this.props.account.email.includes('@') ? this.props.account.email : ''}
                     type='text' 
                     showErrors={this.state.showErrors}
-                    validate={function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(v)}} 
+                    validate={function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/.test(v)}} 
                     handleChange={this.handleChange}
                     handleErrors={this.handleErrors}
                 />

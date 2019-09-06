@@ -20,7 +20,7 @@ export default class UserRole extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData('user_roles', this.props.userRole.id, null, null, true);
+        this.props.deleteData(this.props, 'user_roles', this.props.userRole.id, null, null, true);
         this.props.closeArchivePopup();
     }
 

@@ -65,8 +65,8 @@ const deleteProcessMsg = (dataType) => ({
     dataType: dataType,
 });
 
-export function fetchData(dataType, id, nestedDataType, locale='de', extraParams) {
-    let url = `/${locale}/${dataType}`
+export function fetchData(props, dataType, id, nestedDataType, extraParams) {
+    let url = `/${props.projectId}/${props.locale}/${dataType}`
     if  (id)
         url += `/${id}`
     if  (nestedDataType)
@@ -80,7 +80,7 @@ export function fetchData(dataType, id, nestedDataType, locale='de', extraParams
     }
 }
 
-export function submitData(params, locale='de') {
+export function submitData(props, params) {
     let dataType = Object.keys(params)[0]; 
     let pluralizedDataType = pluralize(dataType);
 
@@ -88,18 +88,18 @@ export function submitData(params, locale='de') {
         let id = params[dataType].id;
         delete params[dataType].id;
         return dispatch => {
-            Loader.put(`/${locale}/${pluralizedDataType}/${id}`, params, dispatch, receiveData);
+            Loader.put(`/${props.projectId}/${props.locale}/${pluralizedDataType}/${id}`, params, dispatch, receiveData);
         }
     } else {
         return dispatch => {
             //dispatch(addData(params));
-            Loader.post(`/${locale}/${pluralizedDataType}`, params, dispatch, receiveData);
+            Loader.post(`/${props.projectId}/${props.locale}/${pluralizedDataType}`, params, dispatch, receiveData);
         }
     }
 }
 
-export function deleteData(dataType, id, nestedDataType, nestedId, skipRemove=false, locale='de') {
-    let url = `/${locale}/${dataType}/${id}`
+export function deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove=false) {
+    let url = `/${props.projectId}/${props.locale}/${dataType}/${id}`
     if  (nestedDataType)
         url += `/${nestedDataType}/${nestedId}`
 

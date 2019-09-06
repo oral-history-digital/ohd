@@ -30,7 +30,7 @@ export default class TableOfContents extends React.Component {
             !this.props.headingsStatus[`for_interviews_${this.props.archiveId}`] ||
             this.props.headingsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData('interviews', this.props.archiveId, 'headings');
+            this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'headings');
         }
     }
 

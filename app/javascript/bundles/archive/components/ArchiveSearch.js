@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Observer from 'react-intersection-observer'
 
@@ -99,7 +100,8 @@ export default class ArchiveSearch extends React.Component {
         if(inView){
             let query = this.props.query;
             query['page'] = (this.props.query['page'] || 1) + 1;
-            let url = `/${this.props.locale}/searches/archive`;
+            //let url = `/${this.props.projectId}/${this.props.locale}/searches/archive`;
+            let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
             this.props.searchInArchive(url, query);
         }
     }
@@ -296,6 +298,10 @@ export default class ArchiveSearch extends React.Component {
                 </div>
             </WrapperPageContainer>
         )
+    }
+
+    static contextTypes = {
+        router: PropTypes.object
     }
 }
 

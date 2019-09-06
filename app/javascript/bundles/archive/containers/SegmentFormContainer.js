@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitData: (params, locale) => dispatch(submitData(params, locale)),
+    submitData: (props, params) => dispatch(submitData(props, params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 

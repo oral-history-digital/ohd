@@ -21,7 +21,7 @@ export default class BiographicalEntry extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData('people', this.props.data.person_id, 'biographical_entries', this.props.data.id);
+        this.props.deleteData(this.props, 'people', this.props.data.person_id, 'biographical_entries', this.props.data.id);
         this.props.closeArchivePopup();
     }
 

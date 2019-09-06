@@ -26,8 +26,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchStaticContent:() => dispatch(fetchStaticContent()),
-    fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
+    fetchStaticContent:(url) => dispatch(fetchStaticContent(url)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     setLocale: locale => dispatch(setLocale(locale)),
     setProjectId: id => dispatch(setProjectId(id)),
     closeArchivePopup: () => dispatch(closeArchivePopup()),

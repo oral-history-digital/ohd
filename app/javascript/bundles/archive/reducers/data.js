@@ -9,6 +9,7 @@ import {
 
 const initialState = {
     accounts: {current: {}}, 
+    projects: {},
     statuses: {
         accounts: {},
         interviews: {},

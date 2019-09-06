@@ -1,5 +1,6 @@
 class PasswordsController < Devise::PasswordsController  
 
+  skip_before_action :require_no_authentication
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
 

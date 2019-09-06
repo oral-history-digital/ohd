@@ -1,25 +1,28 @@
+<% protocol = @resource.user_registration.projects.last.shortname.downcase == 'campscapes' ? 'http' : 'https' %>
+<% url = "#{protocol}://#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}" %>
+
 <% case I18n.locale
   when :en -%>
     <p>Welcome <%= @resource.display_name %>!</p>
 
     <p>You can confirm your new email now through the link below:</p>
 
-    <p><%= link_to 'Confirm email', confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, protocol: current_project.shortname.downcase == 'campscapes' ? 'http' : 'https', host: current_project.archive_domain, :locale => :en) %></p>
+    <p><%= link_to 'Confirm email', url %></p>
   <% when :ru -%>
     <p>Добро пожаловать <%= @resource.display_name %>!</p>
 
     <p>Вы можете подтвердить Ваш доступ, перейдя по следующей ссылке:</p>
 
-    <p><%= link_to 'Подтвердить доступ сейчас', confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, protocol: current_project.shortname.downcase == 'campscapes' ? 'http' : 'https', host: current_project.archive_domain, :locale => :ru) %></p>
+    <p><%= link_to 'Подтвердить доступ сейчас', url %></p>
   <% when :el -%>
         <p>Καλώς ήρθατε <%= @resource.display_name %>!</p>
         <p>Μπορείτε να επιβεβαιώσετε την είσοδό σας πατώντας στο παρακάτω λινκ:</p>
 
-        <p><%= link_to 'Zugang jetzt bestätigen', confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, protocol: current_project.shortname.downcase == 'campscapes' ? 'http' : 'https', host: current_project.archive_domain, :locale => :el) %></p>
+        <p><%= link_to 'Zugang jetzt bestätigen', url %></p>
   <% else -%>
     <p>Willkommen <%= @resource.display_name %>!</p>
 
     <p>Sie können Ihre neue Email jetzt bestätigen unter dem nachfolgenden Link:</p>
 
-    <p><%= link_to 'Email jetzt bestätigen', confirm_new_email_account_url(@resource, :confirmation_token => @resource.confirmation_token, protocol: current_project.shortname.downcase == 'campscapes' ? 'http' : 'https', host: current_project.archive_domain, :locale => :de) %></p>
+    <p><%= link_to 'Email jetzt bestätigen', url %></p>
 <% end -%>

@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchData: (dataType, archiveId, nestedDataType) => dispatch(fetchData(dataType, archiveId, nestedDataType)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RefTree);

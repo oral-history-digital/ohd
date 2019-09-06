@@ -34,7 +34,7 @@ export default class WrappedDataList extends React.Component {
     handleScroll(inView) {
         if(inView){
             this.props.setQueryParams(pluralize(this.props.scope), {page: this.props.query.page + 1});
-            this.props.fetchData(pluralize(this.props.scope), null, null, this.props.locale, parametrizedQuery(this.props.query));
+            this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
         }
     }
 
@@ -66,7 +66,7 @@ export default class WrappedDataList extends React.Component {
                 data={data}
                 //values={{ id: data && data.id }}
                 scope={this.props.scope}
-                onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 submitText='submit'
                 elements={this.props.formElements}
             />

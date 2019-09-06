@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     let project = getProject(state);
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         locales: (project && project.locales) || state.archive.locales,
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,
@@ -18,8 +19,8 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchData: (dataType, archiveId, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, archiveId, nestedDataType, locale, extraParams)),
-    submitData: (params, locale) => dispatch(submitData(params, locale)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
+    submitData: (props, params) => dispatch(submitData(props, params)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
 })
 

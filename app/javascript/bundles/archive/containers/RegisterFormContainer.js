@@ -5,7 +5,7 @@ import { submitRegister } from '../actions/accountActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
-        project: project && project.identifier,
+        projectId: state.archive.projectId,
         locale: state.archive.locale,
         translations: state.archive.translations,
         country_keys: state.archive.country_keys,
@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitRegister: (params) => dispatch(submitRegister(params)),
+    submitRegister: (url, params) => dispatch(submitRegister(url, params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

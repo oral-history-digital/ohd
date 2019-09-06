@@ -9,7 +9,7 @@ export default class SingleTextInputForm extends React.Component {
         return (
             <Form 
                 scope='text'
-                onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 elements={[
                     {attribute: 'text_to_mark'}
                 ]}

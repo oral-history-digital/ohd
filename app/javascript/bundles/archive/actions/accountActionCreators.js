@@ -7,25 +7,20 @@ import {
     LOGGED_IN,
     AUTH_ERROR,
     SUBMIT_LOGIN,
-    LOGIN_URL,
 
     LOGOUT,
     SUBMIT_LOGOUT,
-    LOGOUT_URL,
 
     REGISTER,
     REGISTERED,
     SUBMIT_REGISTER,
-    REGISTER_URL,
 
     CHANGE_PASSWORD,
     CHANGED_PASSWORD,
     SUBMIT_CHANGE_PASSWORD,
-    CHANGE_PASSWORD_URL,
 
     ORDER_NEW_PASSWORD,
     ORDERED_NEW_PASSWORD,
-    ORDER_NEW_PASSWORD_URL
 } from '../constants/archiveConstants';
 
 const login = () => ({
@@ -41,10 +36,10 @@ const loggedIn = (json) => ({
     admin: json.admin,
 })
 
-export function submitLogin(params) {
+export function submitLogin(url, params) {
     return dispatch => {
         dispatch(login())
-        Loader.post(LOGIN_URL, params, dispatch, loggedIn, authError);
+        Loader.post(url, params, dispatch, loggedIn, authError);
     }
 }
 
@@ -59,10 +54,10 @@ const logout = () => ({
         type: LOGOUT,
 })
 
-export function submitLogout() {
+export function submitLogout(url) {
     return dispatch => {
         dispatch(logout())
-        Loader.delete(LOGOUT_URL, dispatch, null);
+        Loader.delete(url, dispatch, null);
     }
 }
 
@@ -75,10 +70,10 @@ const registered = (json) => ({
         registrationStatus: json.registration_status
 })
 
-export function submitRegister(params) {
+export function submitRegister(url, params) {
     return dispatch => {
         dispatch(register())
-        Loader.post(REGISTER_URL, params, dispatch, registered);
+        Loader.post(url, params, dispatch, registered);
     }
 }
 
@@ -111,10 +106,10 @@ const orderedNewPassword = (json) => ({
         //orderNewPasswordStatus: json
 })
 
-export function submitOrderNewPassword(params) {
+export function submitOrderNewPassword(url, params) {
     return dispatch => {
         dispatch(orderNewPassword())
-        Loader.post(ORDER_NEW_PASSWORD_URL, params, dispatch, orderedNewPassword, authError);
+        Loader.post(url, params, dispatch, orderedNewPassword, authError);
     }
 }
 

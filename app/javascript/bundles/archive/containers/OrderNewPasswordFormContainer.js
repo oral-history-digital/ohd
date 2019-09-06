@@ -6,13 +6,14 @@ import { submitOrderNewPassword } from '../actions/accountActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
         account: state.data.accounts.current
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitOrderNewPassword: (params) => dispatch(submitOrderNewPassword(params)),
+    submitOrderNewPassword: (url, params) => dispatch(submitOrderNewPassword(url, params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderNewPasswordForm);

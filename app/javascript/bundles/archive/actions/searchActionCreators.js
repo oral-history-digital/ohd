@@ -5,8 +5,6 @@ import Loader from '../../../lib/loader'
 import { 
     SET_QUERY_PARAMS,
     RESET_QUERY,
-    RECEIVE_FACETS,
-    REQUEST_FACETS,
 
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
@@ -17,8 +15,6 @@ import {
 
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
-    INTERVIEW_SEARCH_URL,
-    FACETS_URL,
 } from '../constants/archiveConstants';
 
 export function setQueryParams(scope, params){
@@ -33,25 +29,6 @@ export function resetQuery(scope){
     return {
         type: RESET_QUERY,
         scope: scope,
-    }
-}
-
-const requestFacets = () => ({
-    type: REQUEST_FACETS,
-});
-
-function receiveFacets(json){
-    return {
-        type: RECEIVE_FACETS,
-        facets: json.facets,
-        receivedAt: Date.now()
-    }
-}
-
-export function loadFacets() {
-    return dispatch => {
-        dispatch(requestFacets())
-        Loader.getJson(FACETS_URL, null, dispatch, receiveFacets);
     }
 }
 
@@ -101,10 +78,10 @@ function receiveInterviewSearchResults(json){
     }
 }
 
-export function searchInInterview(searchQuery) {
+export function searchInInterview(url, searchQuery) {
     return dispatch => {
         dispatch(requestInterviewSearch(searchQuery))
-        Loader.getJson(INTERVIEW_SEARCH_URL, searchQuery, dispatch, receiveInterviewSearchResults);
+        Loader.getJson(url, searchQuery, dispatch, receiveInterviewSearchResults);
     }
 }
 

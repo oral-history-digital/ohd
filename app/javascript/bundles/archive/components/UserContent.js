@@ -1,5 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
@@ -88,7 +89,8 @@ export default class UserContent extends React.Component {
                 </Link>
             </p>
         } else if (this.props.data.type === 'Search') {
-            let url = `/${this.props.locale}/searches/archive`;
+            //let url = `/${this.props.projectId}/${this.props.locale}/searches/archive`;
+            let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
@@ -132,6 +134,10 @@ export default class UserContent extends React.Component {
                 </div>
             </div>
         )
+    }
+
+    static contextTypes = {
+        router: PropTypes.object
     }
 }
 

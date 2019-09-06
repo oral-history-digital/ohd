@@ -8,6 +8,7 @@ import { getCookie } from '../../../lib/utils';
 const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
+        projectId: state.archive.projectId,
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,
@@ -16,7 +17,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    deleteData: (dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(dataType, id, nestedDataType, nestedId, skipRemove)),
+    deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })

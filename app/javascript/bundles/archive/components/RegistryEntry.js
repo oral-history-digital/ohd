@@ -26,7 +26,7 @@ export default class RegistryEntry extends React.Component {
             this.props.registryEntriesStatus[this.props.registryEntry.id] &&
             this.props.registryEntriesStatus[this.props.registryEntry.id].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData('registry_entries', this.props.registryEntry.id);
+            this.props.fetchData(this.props, 'registry_entries', this.props.registryEntry.id);
         }
     }
 
@@ -72,7 +72,7 @@ export default class RegistryEntry extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData('registry_entries', this.props.registryEntry.id, null, null, true);
+        this.props.deleteData(this.props, 'registry_entries', this.props.registryEntry.id, null, null, true);
         this.props.closeArchivePopup();
     }
 
@@ -101,7 +101,7 @@ export default class RegistryEntry extends React.Component {
     }
 
     rmParent(parentId) {
-        this.props.deleteData('registry_hierarchies', this.parentRegistryHierarchyId(), null, null, true);
+        this.props.deleteData(this.props, 'registry_hierarchies', this.parentRegistryHierarchyId(), null, null, true);
         this.props.closeArchivePopup();
     }
 

@@ -60,7 +60,7 @@ export default class UserContentForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         if (this.valid()) {
-            this.props.submitData({user_content: this.state});
+            this.props.submitData(this.props, {user_content: this.state});
             this.props.closeArchivePopup();
         } else {
             this.setErrors();

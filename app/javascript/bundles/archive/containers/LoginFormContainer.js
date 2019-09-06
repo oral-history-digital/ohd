@@ -6,12 +6,13 @@ import { submitLogin } from '../actions/accountActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitLogin: (params) => dispatch(submitLogin(params)),
+    submitLogin: (url, params) => dispatch(submitLogin(url, params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

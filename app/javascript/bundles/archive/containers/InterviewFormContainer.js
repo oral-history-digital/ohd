@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitData: (params) => dispatch(submitData(params))
+    submitData: (props, params) => dispatch(submitData(props, params))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewForm);

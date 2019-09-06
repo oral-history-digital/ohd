@@ -18,7 +18,7 @@ export default class ContributionForm extends React.Component {
 
     loadAllPeople() {
         if (!this.props.peopleStatus.all) {
-            this.props.fetchData('people');
+            this.props.fetchData(this.props, 'people');
         }
     }
 
@@ -60,7 +60,7 @@ export default class ContributionForm extends React.Component {
                     id: this.props.contribution && this.props.contribution.id,
                     interview_id: this.props.interview && this.props.interview.id
                 }}
-                onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 elements={this.formElements()}
             />
         );

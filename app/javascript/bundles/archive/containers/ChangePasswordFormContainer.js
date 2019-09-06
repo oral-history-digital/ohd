@@ -6,6 +6,7 @@ import { submitChangePassword } from '../actions/accountActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
         account: state.account
         //account: state.data.accounts.current

@@ -35,7 +35,7 @@ export default class Carousel extends React.Component {
     }
 
     destroy(photo) {
-        this.props.deleteData('interviews', this.props.archiveId, 'photos', photo.id);
+        this.props.deleteData(this.props, 'interviews', this.props.archiveId, 'photos', photo.id);
         this.props.closeArchivePopup();
     }
 

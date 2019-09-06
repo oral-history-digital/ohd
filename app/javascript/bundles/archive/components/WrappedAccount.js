@@ -50,7 +50,7 @@ export default class WrappedAccount extends React.Component {
             <Form 
                 data={this.props.account}
                 scope='account'
-                onSubmit={function(params, locale){_this.props.submitData(params, locale); _this.props.closeArchivePopup()}}
+                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 submitText='submit'
                 elements={[
                     {

@@ -11,6 +11,7 @@ const mapStateToProps = (state) => {
     let project = getProject(state);
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         locales: (project && project.locales) || state.archive.locales,
         translations: state.archive.translations,
         userRegistrations: state.data.user_registrations,
@@ -21,7 +22,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    fetchData: (dataType, id, nestedDataType, locale, extraParams) => dispatch(fetchData(dataType, id, nestedDataType, locale, extraParams)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
 })
 

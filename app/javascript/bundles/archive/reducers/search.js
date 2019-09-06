@@ -8,8 +8,6 @@ import {
 
     SET_QUERY_PARAMS,
     RESET_QUERY,
-    RECEIVE_FACETS,
-    REQUEST_FACETS,
 
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
@@ -87,15 +85,6 @@ const search = (state = initialState, action) => {
                     query: {},
                 }),
                 'interviews': (action.scope === 'archive') ? {} : state['interviews'],
-            })
-        case REQUEST_FACETS:
-            return Object.assign({}, state, {
-                isFetchingFacets: true,
-            })
-        case RECEIVE_FACETS:
-            return Object.assign({}, state, {
-                isFetchingFacets: false,
-                facets: action.facets,
             })
         case CHANGE_REGISTRY_ENTRIES_VIEW_MODE:
             return Object.assign({}, state, {

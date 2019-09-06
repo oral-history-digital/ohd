@@ -43,7 +43,7 @@ export default class Transcript extends React.Component {
             this.props.loadSegments &&
             !this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`]
         ) {
-            this.props.fetchData('interviews', this.props.archiveId, 'segments');
+            this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'segments');
         }
     }
 
