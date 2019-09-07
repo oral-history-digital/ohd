@@ -129,16 +129,16 @@ ActiveRecord::Schema.define(version: 2019_09_03_090231) do
 
   create_table "external_link_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "external_link_id", null: false
-    t.string "locale", limit: 255, null: false
+    t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "url", limit: 255
+    t.string "url"
     t.index ["external_link_id"], name: "index_external_link_translations_on_external_link_id"
     t.index ["locale"], name: "index_external_link_translations_on_locale"
   end
 
   create_table "external_links", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "name", limit: 255
+    t.string "name"
     t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -205,8 +205,8 @@ ActiveRecord::Schema.define(version: 2019_09_03_090231) do
     t.integer "language_id"
     t.string "workflow_state", limit: 255, default: "unshared"
     t.string "doi_status", limit: 255
-    t.string "properties"
     t.integer "project_id"
+    t.string "properties"
     t.string "media_type"
   end
 
@@ -226,25 +226,25 @@ ActiveRecord::Schema.define(version: 2019_09_03_090231) do
 
   create_table "metadata_field_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "metadata_field_id", null: false
-    t.string "locale", limit: 255, null: false
+    t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "label", limit: 255
+    t.string "label"
     t.index ["locale"], name: "index_metadata_field_translations_on_locale"
     t.index ["metadata_field_id"], name: "index_metadata_field_translations_on_metadata_field_id"
   end
 
   create_table "metadata_fields", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
-    t.string "name", limit: 255
+    t.string "name"
     t.boolean "use_as_facet"
     t.boolean "use_in_results_table"
     t.boolean "use_in_details_view"
     t.boolean "display_on_landing_page"
-    t.string "ref_object_type", limit: 255
-    t.string "source", limit: 255
-    t.string "label", limit: 255
-    t.string "values", limit: 255
+    t.string "ref_object_type"
+    t.string "source"
+    t.string "label"
+    t.string "values"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
@@ -333,7 +333,7 @@ ActiveRecord::Schema.define(version: 2019_09_03_090231) do
     t.string "pdf_registry_entry_codes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "cache_key_prefix", default: "zwar"
+    t.string "cache_key_prefix", default: "campscapes"
   end
 
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -458,7 +458,7 @@ ActiveRecord::Schema.define(version: 2019_09_03_090231) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "text", limit: 16777215
-    t.string "spec", limit: 255, default: "original"
+    t.string "spec", default: "original"
     t.index ["segment_id"], name: "index_segment_translations_on_segment_id"
   end
 
@@ -567,7 +567,7 @@ ActiveRecord::Schema.define(version: 2019_09_03_090231) do
     t.index ["user_account_id", "ip"], name: "index_user_account_ips_on_user_account_id_and_ip"
   end
 
-  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
+  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 128, default: "", null: false
     t.string "password_salt", limit: 255, default: "", null: false
