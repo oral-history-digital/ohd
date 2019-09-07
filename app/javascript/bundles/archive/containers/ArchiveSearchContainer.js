@@ -23,7 +23,7 @@ const mapStateToProps = (state) => {
         isArchiveSearching: state.search.isArchiveSearching,
         project: project && project.identifier,
         viewModes: project && project.view_modes,
-        viewMode: state.archive.view_mode,
+        viewMode: state.archive.viewMode,
         listColumns: project && project.list_columns,
         detailViewFields: project && project.detail_view_fields,
         editView: getCookie('editView'),

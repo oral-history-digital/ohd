@@ -10,6 +10,7 @@ class ProjectSerializer < ActiveModel::Serializer
     :primary_color_rgb,
     :initials,
     :identifier,
+    :is_catalog,
     :domain,
     :archive_domain,
     :doi,
