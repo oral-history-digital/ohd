@@ -40,25 +40,21 @@ export default class ArchiveSearch extends React.Component {
     }
 
     listHeader() {
-        if (this.props.viewModes) {
-            let props = this.props
-            let headers = [];
+        let props = this.props
+        let headers = [];
 
-            if (admin(this.props, {type: 'Interview', action: 'update'})) {
-                headers.push(<td key={`list-header-column-selected`}><strong>{t(this.props, 'selected')}</strong></td>);
-            }
-
-            props.listColumns.map(function(column, i){
-                let label = (column['label'] && column['label'][props.locale] ) || t(props, column["name"])
-                headers.push (
-                    <td key={`list-header-column-${i}`}><strong>{label}</strong></td>
-                )
-            })
-
-            return headers;
-        } else {
-            return null;
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+            headers.push(<td key={`list-header-column-selected`}><strong>{t(this.props, 'selected')}</strong></td>);
         }
+
+        props.listColumns.map(function(column, i){
+            let label = (column['label'] && column['label'][props.locale] ) || t(props, column["name"])
+            headers.push (
+                <td key={`list-header-column-${i}`}><strong>{label}</strong></td>
+            )
+        })
+
+        return headers;
     }
 
     foundInterviews(displayType) {
@@ -285,8 +281,7 @@ export default class ArchiveSearch extends React.Component {
                         {this.renderArchiveResultsCount()}
                     </div>
                     
-                    {this.content('list')}
-                    {/*<Tabs
+                    <Tabs
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
@@ -298,7 +293,7 @@ export default class ArchiveSearch extends React.Component {
                             {this.searchResultTabs()}
                         </TabList>
                         {this.tabPanels()}
-                    </Tabs>*/}
+                    </Tabs>
                 </div>
             </WrapperPageContainer>
         )
