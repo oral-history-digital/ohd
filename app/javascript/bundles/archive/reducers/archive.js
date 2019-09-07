@@ -21,7 +21,7 @@ const initialState = {
     archiveId: null,
     projectId: null,
     viewModes: ['grid', 'list'],
-    viewMode: 'grid',
+    viewMode: 'list',
 
     listColumns: [],
     detailViewFields: [],

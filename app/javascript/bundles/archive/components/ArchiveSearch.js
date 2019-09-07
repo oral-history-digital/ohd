@@ -253,7 +253,7 @@ export default class ArchiveSearch extends React.Component {
     tabPanels() {
         if (this.props.viewModes) {
             let _this = this
-            // alert("" + this.props.viewModes.length + " " + this.props.viewModes[0])
+            console.log("***" + this.props.viewModes.length + " " + this.props.viewModes[0])
             return this.props.viewModes.map(function(viewMode, i) {
                 return (
                     <TabPanel key={i}>
