@@ -285,7 +285,8 @@ export default class ArchiveSearch extends React.Component {
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        defaultIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 1}
+                        selectedIndex={0}
+                        //defaultIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
                         onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
                         <TabList className={'search-results-tabs'}>
