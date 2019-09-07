@@ -4,17 +4,18 @@ import InterviewListRow from '../components/InterviewListRow';
 import { searchInInterview } from '../actions/searchActionCreators';
 import { setTapeAndTime } from '../actions/interviewActionCreators';
 import { addRemoveArchiveId } from '../actions/archiveActionCreators';
-import { getCookie } from '../../../lib/utils';
+import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state, ownProps) => {
-  return {
-      fulltext: state.search.query && state.search.query.fulltext || '',
-      locale: state.archive.locale,
-      translations: state.archive.translations,
-      listColumns: state.archive.listColumns,
-      editView: getCookie('editView'),
-      account: state.data.accounts.current,
-      selectedArchiveIds: state.archive.selectedArchiveIds,
+    let project = getProject(state);
+    return {
+        fulltext: state.search.query && state.search.query.fulltext || '',
+        locale: state.archive.locale,
+        translations: state.archive.translations,
+        listColumns: project && project.list_columns,
+        editView: getCookie('editView'),
+        account: state.data.accounts.current,
+        selectedArchiveIds: state.archive.selectedArchiveIds,
     }
 }
 
