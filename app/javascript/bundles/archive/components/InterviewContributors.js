@@ -23,12 +23,27 @@ export default class InterviewContributors extends React.Component {
                 }
             }
         } 
-        return Object.keys(contributionTypes).map((key, index) => {
-            return (
-              <div key={`contribution-${index}`}>
-                <p>{contributionTypes[key]}</p>
-              </div>
-            );
+        //return Object.keys(contributionTypes).map((key, index) => {
+        return [
+            'interviewer', 
+            'cinematographer', 
+            'transcriptor', 
+            'translator', 
+            'segmentator', 
+            'quality_manager_interviewing',
+            'quality_manager_transcription',
+            'quality_manager_translation',
+            'quality_manager_research',
+        ].map((key, index) => {
+            if (contributionTypes[key]) {
+                return (
+                  <div key={`contribution-${index}`}>
+                    <p>{contributionTypes[key]}</p>
+                  </div>
+                );
+            } else {
+                return null;
+            }
         })
     }
 
