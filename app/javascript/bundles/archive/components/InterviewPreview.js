@@ -117,7 +117,6 @@ export default class InterviewPreview extends React.Component {
         }
         else if (this.props.project === 'mog') {
             let a = this.props.interview.year_of_birth[this.props.locale];
-            debugger;
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
                     {this.content(t(this.props, 'typologies'), this.props.interview.typology[this.props.locale])}
