@@ -69,14 +69,14 @@ default: &default
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
     conditions: #nutzungsbedingungen:
-      en: 'http://www.campscapes.org/wpautoterms/terms-and-conditions/'
-      de: 'http://www.campscapes.org/wpautoterms/terms-and-conditions/'
+      en: 'http://www.campscapes.org/terms-and-conditions/'
+      de: 'http://www.campscapes.org/terms-and-conditions/'
     # request_for_use: #nutzungsantrag:
     #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       # ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
     privacy_protection: #datenschutzbestimmungen:
-      en: 'http://www.campscapes.org/wpautoterms/privacy-policy/'
-      de: 'http://www.campscapes.org/wpautoterms/privacy-policy/'
+      en: 'http://www.campscapes.org/privacy-policy/'
+      de: 'http://www.campscapes.org/privacy-policy/'
     # annotation_guidelines:
     #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
     # team:

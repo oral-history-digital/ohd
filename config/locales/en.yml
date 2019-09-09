@@ -472,37 +472,36 @@ en:
     female: female
     male: male
   search_facets:
+    accessibility: Accessibility
+    groups: Group
+    camps: Camp
     country_of_birth: Country Of Birth
     forced_labor_fields: Deployment Area
     forced_labor_groups: Forced Labor Group
     periods: Time periods
     fulltext: search keyword
     gender: gender
-    Man: Male
-    Woman: Female
-    man: male
-    woman: female
-    male: male
-    female: female
+    male: Male
+    female: Female
     video: Video
     audio: Audio
     born: born
     typology: Experience background
-    resistance: resistance
+    resistance: Resistance
     occupation: Occupation
-    flight: flight
-    concentration_camp: concentration camp
+    flight: Flight
+    concentration_camp: Concentration Camp
     persecution_of_jews: Persecution of Jews
     retaliation: Retaliation and mass executions
     collaboration: Collaboration
     interview_id: Interviews
     archive_id: Interview ID
     collection_id: Subcollection
-    media_type: media type
+    media_type: Media Type
     language_id: Language
-    age: Alter
+    age: Age
     year_of_birth: Year of birth
-    interview_date: Entstehungszeit
+    interview_date: Date of Interview
   activerecord:
     models:
       interview:

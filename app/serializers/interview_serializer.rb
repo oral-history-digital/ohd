@@ -83,8 +83,9 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def groups
+    exist_groups = !object.groups.empty? 
     I18n.available_locales.inject({}) do |mem, locale|
-      object.groups && mem[locale] = object.groups.map { |f| RegistryEntry.find(f).to_s(locale) }
+      mem[locale] = exist_groups ? object.groups.map { |f| RegistryEntry.find(f).to_s(locale) } : '---'
       mem
     end
   end
@@ -153,7 +154,7 @@ class InterviewSerializer < ApplicationSerializer
   def interview_date
     Date.parse(object.interview_date).strftime("%d.%m.%Y")
   rescue
-    object.interview_date || "no date given"
+    object.interview_date || "---"
   end
 
   def video
@@ -249,8 +250,10 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def duration
-    if object.duration
+    if object.duration && object.duration > 0
       Time.at(object.duration).utc.strftime("%-H h %M min")
+    else 
+      '---'
     end
   end
 

@@ -11,17 +11,6 @@ export default class InterviewInfo extends React.Component {
     //     }
     // }
 
-    language(){
-        return this.content(t(this.props, 'language'), this.props.interview.language[this.props.locale], "");
-    }
-
-    collection(){
-        let c = this.props.collections && this.props.collections[this.props.interview.collection_id]
-        if(c){
-            return this.content(t(this.props, 'activerecord.models.collection.one'), c.name[this.props.locale], "")
-        }
-    }
-
     tapes(){
         if (this.props.interview.tape_count > 1){
             return this.content(t(this.props, 'tapes'), this.props.interview.tape_count, "")
@@ -44,8 +33,11 @@ export default class InterviewInfo extends React.Component {
                     {this.content(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.video ? 'video' : 'audio'}`), "")}
                     {this.content(t(this.props, 'duration'), this.props.interview.duration, "")}
                     {this.tapes()}
-                    {this.language()}
-                    {this.collection()}
+                    {this.content(t(this.props, 'search_facets.camps'), this.props.interview.camps[this.props.locale], "")}
+                    {this.content(t(this.props, 'search_facets.accessibility'), this.props.interview.accessibility[this.props.locale], "")}
+                    {this.content(t(this.props, 'search_facets.groups'), this.props.interview.groups[this.props.locale], "")}
+                    {this.content(t(this.props, 'language'), this.props.interview.language[this.props.locale], "")}
+                    {this.content(t(this.props, 'activerecord.models.collection.one'), this.props.interview.collection_id[this.props.locale], "")}
 
                     {/*this.content(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "")*/}
                 </div>
@@ -54,14 +46,12 @@ export default class InterviewInfo extends React.Component {
     }
 
     content(label, value, className) {
-        if (value) {
-            return (
-                <p>
-                    <span className="flyout-content-label">{label}:</span>
-                    <span className={"flyout-content-data " + className}>{value}</span>
-                </p>
-            )
-        }
+        return (
+            <p>
+                <span className="flyout-content-label">{label}:</span>
+                <span className={"flyout-content-data " + className}>{value || '---'}</span>
+            </p>
+        )
     }
 
     metadataFields() {

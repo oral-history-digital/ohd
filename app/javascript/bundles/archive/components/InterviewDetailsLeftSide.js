@@ -13,10 +13,18 @@ export default class InterviewDetailsLeftSide extends React.Component {
             return (
                 <p>
                     <span className="flyout-content-label">{label}:</span>
-                    <span className={"flyout-content-data " + className}>{value}</span>
+                    <span className={"flyout-content-data " + className}>{value || '---'}</span>
                 </p>
             )
         }
+    }
+
+    metadataFields(){
+        let _this = this;
+        return this.props.detailViewFields.map(function(datum, i){
+            let value = (_this.props.interview[datum.name] && _this.props.interview[datum.name][_this.props.locale])
+            return _this.metadatum(datum.name, value, '')
+        })
     }
 
     render() {
@@ -31,12 +39,10 @@ export default class InterviewDetailsLeftSide extends React.Component {
                         />
                     </div>
                     <h3>{t(this.props, "interview_info")}</h3>
-                    <InterviewInfoContainer
+                    {/*this.metadataFields()*/}
+                    {<InterviewInfoContainer
                         refObjectType={"interview"}
-                    />
-                </div>
-                {/* for campscapes only: show metadata on left side. TODO: generalize this */}
-                <div style={{ padding: "5%" }} >
+                    />}
                     {this.metadatum(t(this.props, 'contributions.interviewer'), this.props.interview && this.props.interview.properties && this.props.interview.properties.interviewer)}
                     {this.metadatum('Link', this.props.interview && this.props.interview.properties && <a href={this.props.interview.properties.link} target='_blank'>{this.props.interview.properties.link}</a>)}
                     {this.metadatum('Signature', this.props.interview && this.props.interview.properties && this.props.interview.properties.signature_original)}
