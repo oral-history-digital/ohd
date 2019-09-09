@@ -68,7 +68,7 @@ export default class WrapperPage extends React.Component {
 
     loadCollections() {
         if (!this.props.collectionsStatus) {
-            this.props.fetchData('collections', null, null, 'en');
+            this.props.fetchData('collections', null, null, 'de');
         }
     }
 

@@ -31,6 +31,7 @@ class InterviewSerializer < ApplicationSerializer
     :duration_seconds,
     #  :place_of_interview,
     :year_of_birth,
+    :typology,
     :country_of_birth,
     :segments,
     :last_segments_ids,
@@ -261,6 +262,15 @@ class InterviewSerializer < ApplicationSerializer
     if object.interviewees.first
       I18n.available_locales.inject({}) do |mem, locale|
         mem[locale] = object.interviewees.first.year_of_birth
+        mem
+      end
+    end
+  end
+
+  def typology
+    if object.interviewees.first
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.interviewees.first.typology.split(',').map{|t| I18n.t(t, scope: 'search_facets')}.join(', ')
         mem
       end
     end
