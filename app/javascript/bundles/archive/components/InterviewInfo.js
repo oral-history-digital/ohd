@@ -7,13 +7,13 @@ export default class InterviewInfo extends React.Component {
 
     // placeOfInterview(){
     //     if (this.props.interview.place_of_interview){
-    //         return this.content(t(this.props, 'place_of_interview'), this.props.interview.place_of_interview.name[this.props.locale], "" );
+    //         return this.content(t(this.props, 'place_of_interview'), this.props.interview.place_of_interview.name[this.props.locale], "", true );
     //     }
     // }
 
     tapes(){
         if (this.props.interview.tape_count > 1){
-            return this.content(t(this.props, 'tapes'), this.props.interview.tape_count, "")
+            return this.content(t(this.props, 'tapes'), this.props.interview.tape_count, "", true)
         }
     }
 
@@ -28,30 +28,34 @@ export default class InterviewInfo extends React.Component {
         } else {
             return (
                 <div>
-                    {this.content(t(this.props, 'date'), this.props.interview.interview_date, "")}
+                    {this.content(t(this.props, 'date'), this.props.interview.interview_date, "", true)}
                     {/* {this.placeOfInterview()} */}
-                    {this.content(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.video ? 'video' : 'audio'}`), "")}
-                    {this.content(t(this.props, 'duration'), this.props.interview.duration, "")}
+                    {this.content(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.video ? 'video' : 'audio'}`), "", true)}
+                    {this.content(t(this.props, 'duration'), this.props.interview.duration, "", true)}
                     {this.tapes()}
-                    {this.content(t(this.props, 'search_facets.camps'), this.props.interview.camps[this.props.locale], "")}
-                    {this.content(t(this.props, 'search_facets.accessibility'), this.props.interview.accessibility[this.props.locale], "")}
-                    {this.content(t(this.props, 'search_facets.groups'), this.props.interview.groups[this.props.locale], "")}
-                    {this.content(t(this.props, 'language'), this.props.interview.language[this.props.locale], "")}
-                    {this.content(t(this.props, 'activerecord.models.collection.one'), this.props.interview.collection_id[this.props.locale], "")}
+                    {this.content(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId !== 'mog')}
+                    {this.content(t(this.props, 'search_facets.accessibility'), this.props.interview.accessibility && this.props.interview.accessibility[this.props.locale], "", this.props.projectId !== 'mog')}
+                    {this.content(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId !== 'mog')}
+                    {this.content(t(this.props, 'language'), this.props.interview.language && this.props.interview.language[this.props.locale], "", this.props.projectId !== 'mog')}
+                    {this.content(t(this.props, 'activerecord.models.collection.one'), this.props.interview.collection_id && this.props.interview.collection_id[this.props.locale], "", this.props.projectId !== 'mog', )}
 
-                    {/*this.content(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "")*/}
+                    {/*this.content(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "", true)*/}
                 </div>
             );
         }
     }
 
-    content(label, value, className) {
-        return (
-            <p>
-                <span className="flyout-content-label">{label}:</span>
-                <span className={"flyout-content-data " + className}>{value || '---'}</span>
-            </p>
-        )
+    content(label, value, className, condition) {
+        if (condition) {
+            return (
+                <p>
+                    <span className="flyout-content-label">{label}:</span>
+                    <span className={"flyout-content-data " + className}>{value || '---'}</span>
+                </p>
+            )
+        } else {
+            return null;
+        }
     }
 
     metadataFields() {
@@ -75,7 +79,7 @@ export default class InterviewInfo extends React.Component {
         if (this.props.interview && this.props.interview.language) {
             return (
                 <div>
-                    {this.content(t(this.props, 'id'), this.props.archiveId, "")}
+                    {this.content(t(this.props, 'id'), this.props.archiveId, "", true)}
                     {this.info()}
                     {this.metadataFields()}
                 </div>
