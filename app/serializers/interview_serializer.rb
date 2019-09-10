@@ -270,7 +270,7 @@ class InterviewSerializer < ApplicationSerializer
   def typology
     if object.interviewees.first
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.interviewees.first.typology.split(',').map{|t| I18n.t(t, scope: 'search_facets')}.join(', ')
+        mem[locale] = object.interviewees.first.typology && object.interviewees.first.typology.split(',').map{|t| I18n.t(t, scope: 'search_facets')}.join(', ')
         mem
       end
     end

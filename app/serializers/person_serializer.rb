@@ -12,12 +12,14 @@ class PersonSerializer < ApplicationSerializer
              MetadataField.where(source: "Person").inject([]) { |mem, i| mem << i.name }
 
   def names
-    object.translations.each_with_object({}) { |i, hsh|
-      alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
-      hsh[alpha2_locale] = { firstname: i.first_name,
-                            lastname: i.last_name,
-                            birthname: i.birth_name }
-    }
+    object.translations.inject({}) do |mem, t|
+      mem[t.locale] = { 
+        firstname: t.first_name,
+        lastname: t.last_name,
+        birthname: t.birth_name 
+      }
+      mem
+    end
   end
 
   # dummy. will be filled in search
@@ -38,14 +40,9 @@ class PersonSerializer < ApplicationSerializer
   end
 
   def typology
-    if object.typology
-      facets = object.typology.split(",")
-      object.translations.each_with_object({}) { |i, hsh|
-        alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
-        hsh[alpha2_locale] = facets.map { |typology|
-          I18n.backend.translate(alpha2_locale, "search_facets.#{typology.parameterize(separator: "_")}")
-        } if I18n.available_locales.include?(alpha2_locale)
-      }
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.typology && object.typology.split(',').map{|t| I18n.t(t, scope: 'search_facets')}.join(', ')
+      mem
     end
   end
 
