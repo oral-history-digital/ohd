@@ -377,7 +377,7 @@ de:
     text1: Die Interviews  
     text2:  werden bei Datacite registriert. 
     ok: Bestätigen
-    name: doi
+    name: DOI
     created: Erfolgreich veröffentlicht!
     already_registered: Bereits zu einem früheren Zeitpunkt veröffentlicht!
     bad: Etwas stimmt nicht
