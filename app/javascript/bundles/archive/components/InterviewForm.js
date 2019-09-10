@@ -68,6 +68,7 @@ export default class InterviewForm extends React.Component {
             { 
                 attribute: 'media_type',
                 value: this.props.interview && this.props.interview.media_type,
+                optionsScope: 'search_facets',
                 elementType: 'select',
                 values: ['video', 'audio']
             },

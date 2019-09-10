@@ -30,13 +30,13 @@ export default class InterviewInfo extends React.Component {
                 <div>
                     {contentField(t(this.props, 'date'), this.props.interview.interview_date, "", true)}
                     {/* {this.placeOfInterview()} */}
-                    {contentField(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.video ? 'video' : 'audio'}`), "", true)}
+                    {contentField(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.media_type}`), "", true)}
                     {contentField(t(this.props, 'duration'), this.props.interview.duration, "", true)}
                     {this.tapes()}
                     {contentField(t(this.props, 'search_facets.accessibility'), this.props.interview.accessibility && this.props.interview.accessibility[this.props.locale], "", this.props.projectId !== 'mog')}
                     {contentField(t(this.props, 'language'), this.props.interview.language && this.props.interview.language[this.props.locale], "", this.props.projectId !== 'mog')}
                     {contentField(t(this.props, 'interview_location'), this.props.interview.interview_location && this.props.interview.interview_location[this.props.locale], "", this.props.projectId !== 'mog')}
-                    {contentField(t(this.props, 'activerecord.models.collection.one'), this.props.interview.collection_id && this.props.interview.collection_id[this.props.locale], "", this.props.projectId !== 'mog', )}
+                    {contentField(t(this.props, 'activerecord.models.collection.one'), this.props.interview.collection[this.props.locale], "", this.props.projectId !== 'mog', )}
 
                     {/*contentField(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "", true)*/}
                 </div>

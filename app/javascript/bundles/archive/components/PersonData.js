@@ -55,7 +55,6 @@ export default class PersonData extends React.Component {
     }
 
     detailViewFields(){
-        debugger;
         if (Array.isArray(this.props.detailViewFields)) {
             let _this = this;
             let interviewee = getInterviewee(_this.props);

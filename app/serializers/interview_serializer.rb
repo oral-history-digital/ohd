@@ -3,6 +3,7 @@ class InterviewSerializer < ApplicationSerializer
     :id,
     :archive_id,
     :collection_id,
+    :collection,
     :tape_count,
     :video,
     :media_type,
@@ -57,6 +58,12 @@ class InterviewSerializer < ApplicationSerializer
   #:src,
   ] | Project.current.list_columns.inject([]) { |mem, i| mem << i["name"] } | Project.current.detail_view_fields.inject([]) { |mem, i| mem << i["name"] }
 
+  #belongs_to :colletion, serializer: CollectionSerializer
+
+  def collection
+    object.collection && object.collection.localized_hash || {}
+  end
+
   def camps
     I18n.available_locales.inject({}) do |mem, locale|
       object.camps && mem[locale] = object.camps.map { |f| RegistryEntry.find(f).to_s(locale) }
@@ -77,10 +84,6 @@ class InterviewSerializer < ApplicationSerializer
     else
       {}
     end
-  end
-
-  def collection_id
-    object.collection && object.collection.localized_hash
   end
 
   def groups
@@ -182,15 +185,15 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def media_type
-    if object.media_type
-      # add 'default' to have available the string 'audio' or 'video'
-      (I18n.available_locales + [:default]).inject({}) do |mem, locale|
-        mem[locale] = (locale == :default) ? object.media_type : I18n.t("search_facets.#{object.media_type}", locale: locale)
-        mem
-      end
-    end
-  end
+  #def media_type
+    #if object.media_type
+      ## add 'default' to have available the string 'audio' or 'video'
+      #(I18n.available_locales + [:default]).inject({}) do |mem, locale|
+        #mem[locale] = (locale == :default) ? object.media_type : I18n.t("search_facets.#{object.media_type}", locale: locale)
+        #mem
+      #end
+    #end
+  #end
 
   def short_title
     object.localized_hash
