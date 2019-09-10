@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, fullname, admin, getInterviewee } from '../../../lib/utils';
+import { t, fullname, admin, getInterviewee, contentField } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
@@ -8,19 +8,10 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 export default class PersonData extends React.Component {
 
 
-    content(label, value, className, key='') {
-        return (
-            <p key={`persondata-content-${key}`}>
-                <span className="flyout-content-label">{label}:</span>
-                <span className={"flyout-content-data " + className}>{value}</span>
-            </p>
-        )
-    }
-
     typologies(){
         let interviewee = getInterviewee(this.props);
         if (interviewee.typology && interviewee.typology[this.props.locale]){
-            return this.content(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
+            return contentField(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
         } else {
             return "";
         }
@@ -65,17 +56,14 @@ export default class PersonData extends React.Component {
 
     detailViewFields() {
         let _this = this
-        let i = 0
         for(let r in _this.props.detailViewFields) {
             let interviewee = getInterviewee(_this.props);
-            i+=1;
             if(this.props.detailViewFields[r]["source"] === 'person'){
                 return(
-                    _this.content(
+                    contentField(
                         (this.props.detailViewFields[r]["label"] && this.props.detailViewFields[r]["label"][_this.props.locale]) || t(this.props.detailViewFields[r]["name"]) || this.props.detailViewFields[r]["name"], 
                         interviewee[this.props.detailViewFields[r]["name"]] || "---",
-                        "",
-                        i
+                        ""
                     )
                     )
             } else {
@@ -90,11 +78,11 @@ export default class PersonData extends React.Component {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
-                        {this.content(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
+                        {contentField(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
                         {this.typologies()}
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
-                        {this.content(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
+                        {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
                     {/* {this.history()} */}
                     {this.detailViewFields()}
@@ -110,7 +98,7 @@ export default class PersonData extends React.Component {
         if (admin(this.props, {type: 'BiographicalEntry', action: 'update'})) {
             return (
                 <div>
-                    {this.content(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}
+                    {contentField(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}
                     <BiographicalEntriesContainer person={interviewee} />
                 </div>
             );
