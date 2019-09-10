@@ -12,11 +12,12 @@ class PersonSerializer < ApplicationSerializer
              MetadataField.where(source: "Person").inject([]) { |mem, i| mem << i.name }
 
   def names
-    object.translations.inject({}) do |mem, t|
-      mem[t.locale] = { 
-        firstname: t.first_name,
-        lastname: t.last_name,
-        birthname: t.birth_name 
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = { 
+        firstname: object.first_name(locale),
+        lastname: object.last_name(locale),
+        aliasname: object.alias_names(locale),
+        birthname: object.birth_name(locale) 
       }
       mem
     end
@@ -37,6 +38,10 @@ class PersonSerializer < ApplicationSerializer
         object.date_of_birth
       end
     end
+  end
+
+  def birth_location
+    (object.birth_location && object.birth_location.localized_hash) || {}
   end
 
   def typology

@@ -267,7 +267,7 @@ export function getInterviewArchiveIdWithOffset(archiveId, list, offset=1) {
     }
 }
 
-export function contentField(label, value, className, condition=true) {
+export function contentField(label, value, className='', condition=true) {
     if (condition) {
         return (
             <p className={`${label}-${value}`}>

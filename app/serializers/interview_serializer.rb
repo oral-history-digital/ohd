@@ -99,6 +99,10 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
+  def interview_location
+    (!object.interview_location.empty? && object.interview_location.first.localized_hash) || {}
+  end
+
   def interviewee_id
     object.interviewees.first && object.interviewees.first.id
   end

@@ -54,22 +54,16 @@ export default class PersonData extends React.Component {
         );
     }
 
-    detailViewFields() {
-        let _this = this
-        for(let r in _this.props.detailViewFields) {
-            let interviewee = getInterviewee(_this.props);
-            if(this.props.detailViewFields[r]["source"] === 'person'){
-                return(
-                    contentField(
-                        (this.props.detailViewFields[r]["label"] && this.props.detailViewFields[r]["label"][_this.props.locale]) || t(this.props.detailViewFields[r]["name"]) || this.props.detailViewFields[r]["name"], 
-                        interviewee[this.props.detailViewFields[r]["name"]] || "---",
-                        ""
-                    )
-                    )
-            } else {
-                return null
+    detailViewFields(){
+        let _this = this;
+        let interviewee = getInterviewee(_this.props);
+        return this.props.detailViewFields.map(function(datum, i){
+            if (datum.source === 'person' || datum.ref_object_type === 'Person') {
+                let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
+                let value = (interviewee[datum.name] && interviewee[datum.name][_this.props.locale])
+                return contentField(label, value)
             }
-        }
+        })
     }
 
     info() {
@@ -84,8 +78,12 @@ export default class PersonData extends React.Component {
                     <AuthShowContainer ifLoggedOut={true}>
                         {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
+                    {contentField(t(this.props, 'activerecord.attributes.person.alias_name'), interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes')}
                     {/* {this.history()} */}
                     {this.detailViewFields()}
+                    {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'activerecord.models.biographical_entry.one'), interviewee.biographical_entries[0] && interviewee.biographical_entries[0].text[this.props.locale], '', this.props.projectId === 'campscapes')}
                 </div>
             );
         } else {
