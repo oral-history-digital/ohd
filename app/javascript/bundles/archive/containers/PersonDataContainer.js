@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
         people: state.data.people,
         contributionTypes: state.archive.contributionTypes,
         account: state.data.accounts.current,
-        detailViewFields: project && project.detail_view_fields,
+        detailViewFields: (project && project.detail_view_fields) || [],
     }
 }
 

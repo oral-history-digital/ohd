@@ -282,6 +282,7 @@ class InterviewsController < ApplicationController
       "translated",
       "observations",
       "workflow_state",
+      "media_type",
       "biographies_workflow_state"
     )
   end
