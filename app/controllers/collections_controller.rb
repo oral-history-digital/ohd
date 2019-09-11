@@ -10,9 +10,10 @@ class CollectionsController < ApplicationController
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do
-        json = Rails.cache.fetch "collections-#{Collection.maximum(:updated_at)}" do
+        extra_params = params[:collections_for_project] ?  "collections_for_project_#{params[:collections_for_project]}" : nil
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-collections-#{extra_params ? extra_params : 'all'}-#{Collection.maximum(:updated_at)}" do
           {
-            data: Collection.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            data: current_project.collections.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'collections',
           }
         end

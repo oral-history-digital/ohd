@@ -67,8 +67,11 @@ export default class WrapperPage extends React.Component {
     }
 
     loadCollections() {
-        if (!this.props.collectionsStatus) {
-            this.props.fetchData('collections', null, null, 'de');
+        if (
+            this.props.projectId &&
+            !this.props.collectionsStatus[`collections_for_project_${this.props.projectId}`]
+        ) {
+            this.props.fetchData('collections', null, null, this.props.locale, `collections_for_project=${this.props.projectId}`);
         }
     }
 
@@ -88,9 +91,9 @@ export default class WrapperPage extends React.Component {
         //
         // TODO: rm the following if multi-project is enabled
         //
-        if (this.props.projectsStatus && this.props.projectsStatus.split('-')[0] === 'fetched') { // && this.context.router.route.match.params.projectId !== this.props.projectId) {
-            this.props.setProjectId(this.props.projects[1].identifier);
-        }
+        //if (this.props.projectsStatus && this.props.projectsStatus.split('-')[0] === 'fetched') { // && this.context.router.route.match.params.projectId !== this.props.projectId) {
+            //this.props.setProjectId(this.props.projects[1].identifier);
+        //}
     }
 
     createSocket() {

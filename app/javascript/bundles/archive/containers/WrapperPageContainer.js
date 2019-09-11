@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
         visible: state.flyoutTabs.visible,
         loggedInAt: state.account.loggedInAt,
         collections: state.data.collections,
-        collectionsStatus: state.data.statuses.collections.all,
+        collectionsStatus: state.data.statuses.collections,
         projects: state.data.projects,
         projectsStatus: state.data.statuses.projects.all,
         project: project,

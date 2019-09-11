@@ -3,6 +3,7 @@ require 'globalize'
 class Collection < ActiveRecord::Base
 
   has_many :interviews
+  belongs_to :project
 
   translates :name, :institution, :countries, :interviewers, :responsibles, :notes
 
