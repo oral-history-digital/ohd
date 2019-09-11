@@ -219,11 +219,11 @@ export default class FlyoutTabs extends React.Component {
                 <TabPanel key={'tabpanel-indexing'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.indexing')}</div>
                     <div className='flyout-sub-tabs-container'>
-                        {this.subTab('edit.interview.new', 'description', `/${pathBase(this.props)}/interviews/new`, {type: 'Interview', action: 'create'})}
-                        {this.subTab('edit.upload_transcript.title', 'description', `/${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
+                        {this.subTab('edit.interview.new', 'description', `${pathBase(this.props)}/interviews/new`, {type: 'Interview', action: 'create'})}
+                        {this.subTab('edit.upload_transcript.title', 'description', `${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
                         {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'update', id: this.props.archiveId}, this.props.archiveId)}
-                        {this.subTab('edit.upload.upload', 'description', `/${pathBase(this.props)}/uploads/new`, {type: 'Interview', action: 'update'})}
-                        {this.subTab('edit.person.new', 'description', `/${pathBase(this.props)}/people/new`, {type: 'Person', action: 'create'})}
+                        {this.subTab('edit.upload.upload', 'description', `${pathBase(this.props)}/uploads/new`, {type: 'Interview', action: 'update'})}
+                        {this.subTab('edit.person.new', 'description', `${pathBase(this.props)}/people/new`, {type: 'Person', action: 'create'})}
                     </div>
                 </TabPanel>
             )
@@ -240,8 +240,8 @@ export default class FlyoutTabs extends React.Component {
                 links.push(
                     <p key={`downloads-for-tape-${i}`}>
                         <h4>{`${t(this.props, 'tape')} ${i}:`}</h4>
-                        <a href={`/${pathBase(this.props)}/interviews/${this.props.archiveId}.ods?tape_number=${i}`} download>ods</a>&#44;&#xa0;
-                        <a href={`/${pathBase(this.props)}/interviews/${this.props.archiveId}.vtt?tape_number=${i}`} download>vtt</a>
+                        <a href={`${pathBase(this.props)}/interviews/${this.props.archiveId}.ods?tape_number=${i}`} download>ods</a>&#44;&#xa0;
+                        <a href={`${pathBase(this.props)}/interviews/${this.props.archiveId}.vtt?tape_number=${i}`} download>vtt</a>
                     </p>
                 );
             }
@@ -271,30 +271,30 @@ export default class FlyoutTabs extends React.Component {
                             'edit.users.admin', 
                             <div>
                                 <UserRegistrationSearchFormContainer/>
-                                <a href={`/${pathBase(this.props)}/admin/user_statistics.csv`}>
+                                <a href={`${pathBase(this.props)}/admin/user_statistics.csv`}>
                                     <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_user_statistics')}></i>
                                     <span>{` ${t(this.props, 'download_user_statistics')}`}</span>
                                 </a>
                             </div>,
-                            `/${pathBase(this.props)}/user_registrations`,
+                            `${pathBase(this.props)}/user_registrations`,
                             {type: 'UserRegistration', action: 'update'}
                         )}
                         {this.subTab(
                             'edit.role.admin', 
                             <RoleSearchFormContainer/>,
-                            `/${pathBase(this.props)}/roles`,
+                            `${pathBase(this.props)}/roles`,
                             {type: 'Role', action: 'update'}
                         )}
                         {this.subTab(
                             'edit.permission.admin', 
                             <PermissionSearchFormContainer/>,
-                            `/${pathBase(this.props)}/permissions`,
+                            `${pathBase(this.props)}/permissions`,
                             {type: 'Permission', action: 'update'}
                         )}
                         {this.subTab(
                             'edit.project.admin', 
                             <ProjectSearchFormContainer/>,
-                            `/${pathBase(this.props)}/projects`,
+                            `${pathBase(this.props)}/projects`,
                             {type: 'Project', action: 'update'}
                         )}
                     </div>
@@ -325,7 +325,7 @@ export default class FlyoutTabs extends React.Component {
                             {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                         </button>
                     </div>
-                    <a href={`/${pathBase(this.props)}/registry_entries.pdf`}>
+                    <a href={`${pathBase(this.props)}/registry_entries.pdf`}>
                         <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                         <span>{` ${t(this.props, 'download')}`}</span>
                     </a>

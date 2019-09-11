@@ -192,13 +192,13 @@ class RegistryEntry < ActiveRecord::Base
       #
       # replace e.g. ö with o - than remove all non alphanumeric chars
       #
-      translation = c.registry_names.first.translations.where(locale: locale).first 
+      translation = c.registry_names.first && c.registry_names.first.translations.where(locale: locale).first 
       if translation
         local_name = translation.descriptor.mb_chars.normalize(:kd)
         Rails.configuration.mapping_to_ascii.each{|k,v| local_name = local_name.gsub(k,v)}
         local_name.downcase.to_s
       else
-        local_name = 'ZZZZZZZZZZZ'
+        local_name = 'no names given'
       end
 
       [

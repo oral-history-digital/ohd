@@ -14,7 +14,7 @@ export default class InterviewLocations extends React.Component {
 
     componentDidMount() {
         if (!this.locationsLoaded()) {
-            this.props.fetchLocations(`/${pathBase(this.props)}/locations`, this.props.archiveId);
+            this.props.fetchLocations(`${pathBase(this.props)}/locations`, this.props.archiveId);
             // this.props.fetchData(this.props, 'locations', null, null, 'de', `archive_id=${this.props.archiveId}`);
         }
     }

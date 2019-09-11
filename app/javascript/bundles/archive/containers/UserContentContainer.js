@@ -9,6 +9,7 @@ import { searchInArchive } from '../actions/searchActionCreators';
 const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
         facets: state.search.archive.facets,
     }
