@@ -137,7 +137,7 @@ class SearchesController < ApplicationController
   end
 
   def archive
-    search = Interview.archive_search(current_user_account, current_project, locale, params[:fulltext], params[:facet], params[:page])
+    search = Interview.archive_search(current_user_account, current_project, locale, params)
     dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
 
     respond_to do |format|
