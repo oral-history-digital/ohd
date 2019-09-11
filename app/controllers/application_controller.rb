@@ -153,7 +153,7 @@ class ApplicationController < ActionController::Base
           allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
           foundInterviews: search.results.map{|i| cache_single(i)},
           allInterviewsCount: search.total,
-          resultPagesCount: 1,
+          resultPagesCount: search.results.total_pages,
           resultsCount: search.total,
         },
         interviews: {},
