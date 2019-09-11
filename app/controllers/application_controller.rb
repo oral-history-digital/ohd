@@ -147,7 +147,7 @@ class ApplicationController < ActionController::Base
       {
         archive: {
           facets: current_project.updated_search_facets(search),
-          query:{},
+          query: search_query,
           allInterviewsTitles: dropdown_values[:all_interviews_titles],
           allInterviewsPseudonyms: dropdown_values[:all_interviews_pseudonyms],
           allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
@@ -176,6 +176,13 @@ class ApplicationController < ActionController::Base
   helper_method :initial_redux_state
 
   private
+
+  def search_query
+    current_project.search_facets_names.inject({}) do |mem, facet|
+      mem["#{facet}[]"] = params[facet] if params[facet]
+      mem
+    end
+  end
 
   def country_keys
     Rails.cache.fetch("#{current_project.cache_key_prefix}-country-keys") do
