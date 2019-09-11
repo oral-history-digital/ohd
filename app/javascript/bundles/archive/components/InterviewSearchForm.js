@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import { t, pathBase } from '../../../lib/utils';
 import PixelLoader from '../../../lib/PixelLoader'
 
 
@@ -20,7 +20,7 @@ export default class InterviewSearchForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.searchInInterview(`/${props.projectId}/${props.locale}/searches/interview`, {fulltext: this.state.value, id: this.props.archiveId});
+        this.props.searchInInterview(`${pathBase(props)}/searches/interview`, {fulltext: this.state.value, id: this.props.archiveId});
     }
 
     loader(){

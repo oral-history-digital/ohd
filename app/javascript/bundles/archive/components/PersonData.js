@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, fullname, admin, getInterviewee, contentField } from '../../../lib/utils';
+import { t, fullname, admin, getInterviewee, contentField, pathBase } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
@@ -27,7 +27,7 @@ export default class PersonData extends React.Component {
         if (!condition && this.existsPublicBiography(lang)) {
             return (
                 <a className='flyout-download-link-lang'
-                    href={"/" + this.props.locale + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
+                    href={pathBase(this.props) + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
                     <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                     <span>{t(this.props, lang)}</span>
                 </a>
@@ -55,19 +55,15 @@ export default class PersonData extends React.Component {
     }
 
     detailViewFields(){
-        if (Array.isArray(this.props.detailViewFields)) {
-            let _this = this;
-            let interviewee = getInterviewee(_this.props);
-            return this.props.detailViewFields.map(function(datum, i){
-                if (datum.source === 'person' || datum.ref_object_type === 'Person') {
-                    let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
-                    let value = (interviewee[datum.name] && interviewee[datum.name][_this.props.locale])
-                    return contentField(label, value)
-                }
-            })
-        } else {
-            return null;
-        }
+        let _this = this;
+        let interviewee = getInterviewee(_this.props);
+        return this.props.detailViewFields.map(function(datum, i){
+            if (datum.source === 'person' || datum.ref_object_type === 'Person') {
+                let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
+                let value = (interviewee[datum.name] && interviewee[datum.name][_this.props.locale])
+                return contentField(label, value)
+            }
+        })
     }
 
     info() {

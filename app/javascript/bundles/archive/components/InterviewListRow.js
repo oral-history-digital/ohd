@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { t, admin } from '../../../lib/utils';
+import { t, admin, pathBase } from '../../../lib/utils';
 
 import AuthShowContainer from '../containers/AuthShowContainer';
 
@@ -67,10 +67,10 @@ export default class InterviewListRow extends React.Component {
                 <td>
                     <Link className={'search-result-link'}
                         onClick={() => {
-                            this.props.searchInInterview(`/${props.projectId}/${props.locale}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                            this.props.searchInInterview(`${pathBase(props)}searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
                             this.props.setTapeAndTime(1, 0);
                         }}
-                        to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
+                        to={pathBase(this.props) + 'interviews/' + this.props.interview.archive_id}
                         element='tr'
                     >
                         <AuthShowContainer ifLoggedIn={true}>

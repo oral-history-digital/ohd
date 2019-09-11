@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { t } from '../../../lib/utils';
+import { t, pathBase } from '../../../lib/utils';
 import {Navigation} from 'react-router-dom'
 import LocationsContainer from '../containers/LocationsContainer'
 
@@ -15,8 +15,8 @@ export default class ArchiveLocations extends React.Component {
     }
 
     handleClick(segmentId, archiveId) {
-        this.props.searchInInterview(`/${props.projectId}/${props.locale}/searches/interview`, {fulltext: this.props.fulltext, id: archiveId});
-        this.context.router.history.push(`/${this.props.locale}/interviews/${archiveId}`);
+        this.props.searchInInterview(`${pathBase(props)}/searches/interview`, {fulltext: this.props.fulltext, id: archiveId});
+        this.context.router.history.push(`${pathBase(props)}/${archiveId}`);
     }
 
     // locations() {

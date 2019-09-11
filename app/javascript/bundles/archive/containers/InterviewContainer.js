@@ -9,6 +9,7 @@ import { getProject } from '../../../lib/utils';
 const mapStateToProps = (state) => {
     let project = getProject(state);
     return { 
+        projectId: state.archive.projectId,
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,

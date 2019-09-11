@@ -1,7 +1,7 @@
 /* eslint-disable import/prefer-default-export */
 
 import Loader from '../../../lib/loader'
-import { pluralize } from  '../../../lib/utils';
+import { pluralize, pathBase } from  '../../../lib/utils';
 
 import { 
     REQUEST_DATA,
@@ -66,7 +66,7 @@ const deleteProcessMsg = (dataType) => ({
 });
 
 export function fetchData(props, dataType, id, nestedDataType, extraParams) {
-    let url = `/${props.projectId}/${props.locale}/${dataType}`
+    let url = `${pathBase(props)}/${dataType}`
     if  (id)
         url += `/${id}`
     if  (nestedDataType)
@@ -88,18 +88,18 @@ export function submitData(props, params) {
         let id = params[dataType].id;
         delete params[dataType].id;
         return dispatch => {
-            Loader.put(`/${props.projectId}/${props.locale}/${pluralizedDataType}/${id}`, params, dispatch, receiveData);
+            Loader.put(`${pathBase(props)}/${pluralizedDataType}/${id}`, params, dispatch, receiveData);
         }
     } else {
         return dispatch => {
             //dispatch(addData(params));
-            Loader.post(`/${props.projectId}/${props.locale}/${pluralizedDataType}`, params, dispatch, receiveData);
+            Loader.post(`${pathBase(props)}/${pluralizedDataType}`, params, dispatch, receiveData);
         }
     }
 }
 
 export function deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove=false) {
-    let url = `/${props.projectId}/${props.locale}/${dataType}/${id}`
+    let url = `${pathBase(props)}/${dataType}/${id}`
     if  (nestedDataType)
         url += `/${nestedDataType}/${nestedId}`
 

@@ -11,6 +11,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         fulltext: state.search.query && state.search.query.fulltext || '',
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
         listColumns: project && project.list_columns,
         editView: getCookie('editView'),
