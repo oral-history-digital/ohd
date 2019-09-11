@@ -136,18 +136,25 @@ class ApplicationController < ActionController::Base
         transcriptScrollEnabled: false,
         resolution: nil,
       },
-      search: {
+      search: initial_search_redux_state
+    }
+  end
+
+  def initial_search_redux_state
+    Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-search-#{Interview.maximum(:updated_at)}") do
+      search = Interview.archive_search(current_user_account, current_project, locale, params[:fulltext], params[:facet], 1)
+      dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
+      {
         archive: {
-          facets: nil,
+          facets: current_project.updated_search_facets(search),
           query:{},
-          allInterviewsTitles: [],
-          allInterviewsPseudonyms: [],
-          allInterviewsPlacesOfBirth: [],
-          foundInterviews: [],
-          #foundSegmentsForInterviews: {},
-          allInterviewsCount: 0,
+          allInterviewsTitles: dropdown_values[:all_interviews_titles],
+          allInterviewsPseudonyms: dropdown_values[:all_interviews_pseudonyms],
+          allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
+          foundInterviews: search.results.map{|i| cache_single(i)},
+          allInterviewsCount: search.total,
           resultPagesCount: 1,
-          resultsCount: 0,
+          resultsCount: search.total,
         },
         interviews: {},
         registryEntries: {
@@ -164,7 +171,7 @@ class ApplicationController < ActionController::Base
         permissions: { query: {page: 1} },
         projects: { query: {page: 1} }
       }
-    }
+    end
   end
   helper_method :initial_redux_state
 
@@ -213,7 +220,7 @@ class ApplicationController < ActionController::Base
   # serialized compiled cache of an instance
   #
   def cache_single(data, name=nil)
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}") do
+    Rails.cache.fetch("#{Project.current.cache_key_prefix}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}") do
       raw = "#{name || data.class.name}Serializer".constantize.new(data)
       # compile raw-json to string first (making all db-requests!!) using to_json
       # without to_json the lazy serializers wouldn`t do the work to really request the db
@@ -239,7 +246,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clear_cache(ref_object)
-    Rails.cache.delete "#{current_project.cache_key_prefix}-#{ref_object.class.name.underscore}-#{ref_object.id}-#{ref_object.updated_at}"
+    Rails.cache.delete "#{Project.current.cache_key_prefix}-#{ref_object.class.name.underscore}-#{ref_object.id}-#{ref_object.updated_at}"
   end
 
 end
