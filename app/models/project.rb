@@ -57,6 +57,10 @@ class Project < ApplicationRecord
     read_attribute :available_locales
   end
 
+  def archive_domain
+    Rails.env == 'development' ? 'http://localhost:3000' : read_attribute(:archive_domain)
+  end
+
   def search_facets
     metadata_fields.where(use_as_facet: true)
   end
