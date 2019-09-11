@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
-import { t, queryToText } from '../../../lib/utils';
+import { t, queryToText, pathBase } from '../../../lib/utils';
 
 export default class UserContent extends React.Component {
 
@@ -89,7 +89,7 @@ export default class UserContent extends React.Component {
                 </Link>
             </p>
         } else if (this.props.data.type === 'Search') {
-            //let url = `/${this.props.projectId}/${this.props.locale}/searches/archive`;
+            //let url = `/${pathBase(this.props)}/searches/archive`;
             let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>

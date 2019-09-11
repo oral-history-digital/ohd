@@ -1,7 +1,7 @@
 import React from 'react';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import OrderNewPasswordFormContainer from '../containers/OrderNewPasswordFormContainer';
-import { t } from '../../../lib/utils';
+import { t, pathBase } from '../../../lib/utils';
 
 
 export default class OrderNewPassword extends React.Component {

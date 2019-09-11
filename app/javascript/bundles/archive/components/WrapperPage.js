@@ -71,7 +71,7 @@ export default class WrapperPage extends React.Component {
             this.props.projectId &&
             !this.props.collectionsStatus[`collections_for_project_${this.props.projectId}`]
         ) {
-            this.props.fetchData('collections', null, null, this.props.locale, `collections_for_project=${this.props.projectId}`);
+            this.props.fetchData(this.props, 'collections', null, null, `collections_for_project=${this.props.projectId}`);
         }
     }
 

@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from '../containers/form/Form';
-import { t } from '../../../lib/utils';
+import { t, pathBase } from '../../../lib/utils';
 
 export default class LoginForm extends React.Component {
 
@@ -9,7 +9,7 @@ export default class LoginForm extends React.Component {
         return (
             <Form 
                 scope='user_account'
-                onSubmit={function(params){_this.props.submitLogin(`/${_this.props.projectId}/${_this.props.locale}/user_accounts/sign_in`, params)}}
+                onSubmit={function(params){_this.props.submitLogin(`/${pathBase(_this.props)}/user_accounts/sign_in`, params)}}
                 submitText='login'
                 elements={[
                     {

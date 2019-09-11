@@ -5,7 +5,7 @@ import LoginFormContainer from '../containers/LoginFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
 import {Link} from 'react-router-dom';
 
-import { t, loggedIn } from '../../../lib/utils';
+import { t, loggedIn, pathBase } from '../../../lib/utils';
 
 export default class Account extends React.Component {
 
@@ -65,7 +65,7 @@ export default class Account extends React.Component {
                     {this.changeToEditView()}
                     <div
                         className='logout'
-                        onClick={() => this.props.submitLogout(`/${this.props.projectId}/${this.props.locale}/user_accounts/sign_out`)}
+                        onClick={() => this.props.submitLogout(`/${pathBase(this.props)}/user_accounts/sign_out`)}
                     >
                         {t(this.props, 'logout')}
                     </div>
@@ -80,12 +80,12 @@ export default class Account extends React.Component {
                     </p>
                     <LoginFormContainer/>
                     <div className={'register-link'}>
-                        <a href='' onClick={(e) => this.openLink('/' + this.props.projectId + '/' + this.props.locale + '/user_registrations/new', e)}>
+                        <a href='' onClick={(e) => this.openLink(pathBase(this.props) + '/user_registrations/new', e)}>
                             {t(this.props, 'user_registration.registration')}
                         </a>
                     </div>
                     <div className={'order-new-password-link'}>
-                        <a href='' onClick={(e) => this.openLink('/' + this.props.projectId + '/' + this.props.locale + '/user_accounts/password/new', e)}>
+                        <a href='' onClick={(e) => this.openLink(pathBase(this.props) + '/user_accounts/password/new', e)}>
                             {t(this.props, 'forget_password')}
                         </a>
                     </div>

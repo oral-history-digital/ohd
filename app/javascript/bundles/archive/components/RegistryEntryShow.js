@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import { t, pathBase } from '../../../lib/utils';
 import {Link} from 'react-router-dom';
 import PixelLoader from '../../../lib/PixelLoader'
 
@@ -67,7 +67,7 @@ export default class RegistryEntryShow extends React.Component {
                             this.props.closeArchivePopup();
                             this.props.setArchiveId(rr.ref_interview_archive_id);
                         }}
-                        to={'/' + this.props.projectId + '/' + this.props.locale + '/interviews/' + rr.ref_interview_archive_id}
+                        to={pathBase(this.props) + '/interviews/' + rr.ref_interview_archive_id}
                         >
                             {`${ref_object_string}`}
                         </Link>
@@ -88,7 +88,7 @@ export default class RegistryEntryShow extends React.Component {
                                 this.props.setArchiveId(this.props.segments[rr.ref_object_id].interview_archive_id);
                                 this.props.setTapeAndTime(this.props.segments[rr.ref_object_id].tape_nbr, this.props.segments[rr.ref_object_id].time)
                             }}
-                            to={'/' + this.props.projectId + '/' + this.props.locale + '/interviews/' + this.props.segments[rr.ref_object_id].interview_archive_id}
+                            to={pathBase(this.props) + '/interviews/' + this.props.segments[rr.ref_object_id].interview_archive_id}
                             >
                                 {`${ref_object_string}`}
                             </Link>

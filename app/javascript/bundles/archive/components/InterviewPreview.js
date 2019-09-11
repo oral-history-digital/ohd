@@ -8,7 +8,7 @@ import '../../../css/slick.css';
 import '../../../css/slick-theme.css';
 import AuthShowContainer from '../containers/AuthShowContainer';
 
-import { t, admin } from '../../../lib/utils';
+import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class InterviewPreview extends React.Component {
 
@@ -39,9 +39,9 @@ export default class InterviewPreview extends React.Component {
 
     componentDidMount() {
         if(this.props.fulltext) {
-            this.props.searchInInterview(`/${this.props.projectId}/${this.props.locale}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+            this.props.searchInInterview(`/${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
         } else {
-            this.props.searchInInterview(`/${this.props.projectId}/${this.props.locale}/searches/interview`, {fulltext: '', id: this.props.interview.archive_id});
+            this.props.searchInInterview(`/${pathBase(this.props)}/searches/interview`, {fulltext: '', id: this.props.interview.archive_id});
         }
     }
 
@@ -86,7 +86,7 @@ export default class InterviewPreview extends React.Component {
                 <Link 
                     key={"segment-wrapper" + segment.id}
                     onClick={() => {
-                        this.props.searchInInterview(`/${this.props.projectId}/${this.props.locale}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                        this.props.searchInInterview(`/${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
                         this.props.setTapeAndTime(1, 0);
                     }}
                     to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
@@ -169,10 +169,10 @@ export default class InterviewPreview extends React.Component {
                     {this.renderBadge()}
                     <Link className={'search-result-link'}
                         onClick={() => {
-                            this.props.searchInInterview(`/${this.props.projectId}/${this.props.locale}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                            this.props.searchInInterview(`/${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
                             this.props.setTapeAndTime(1, 0);
                         }}
-                        to={'/' + this.props.projectId + '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
+                        to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                     >
                         <div className="search-result-img">
                             <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>

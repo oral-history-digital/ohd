@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import { t, pathBase } from '../../../lib/utils';
 import PixelLoader from '../../../lib/PixelLoader'
 
 
@@ -20,7 +20,7 @@ export default class RegistryEntrySearchForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        let url = `/${this.props.projectId}/${this.props.locale}/searches/registry_entry`;
+        let url = `/${pathBase(this.props)}/searches/registry_entry`;
         this.props.searchRegistryEntry(url, {fulltext: this.state.value});
     }
 

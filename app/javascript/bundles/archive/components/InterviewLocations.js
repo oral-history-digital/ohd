@@ -4,7 +4,7 @@ import {render} from 'react-dom';
 import {Navigation} from 'react-router-dom'
 import LocationsContainer from '../containers/LocationsContainer'
 import moment from 'moment';
-import { t } from '../../../lib/utils';
+import { t, pathBase } from '../../../lib/utils';
 
 export default class InterviewLocations extends React.Component {
 
@@ -14,7 +14,7 @@ export default class InterviewLocations extends React.Component {
 
     componentDidMount() {
         if (!this.locationsLoaded()) {
-            this.props.fetchLocations(`/${this.props.projectId}/${this.props.locale}/locations`, this.props.archiveId);
+            this.props.fetchLocations(`/${pathBase(this.props)}/locations`, this.props.archiveId);
             // this.props.fetchData(this.props, 'locations', null, null, 'de', `archive_id=${this.props.archiveId}`);
         }
     }
