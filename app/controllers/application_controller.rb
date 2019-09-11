@@ -66,10 +66,10 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         translations: translations,
-        country_keys: country_keys,
-        contribution_types: Project.contribution_types,
+        countryKeys: country_keys,
+        contributionTypes: Project.contribution_types,
         languages: Language.all.map { |c| { value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2 } },
-        media_streams: Project.media_streams,
+        mediaStreams: Project.media_streams,
       },
       account: {
         isLoggingIn: false,
