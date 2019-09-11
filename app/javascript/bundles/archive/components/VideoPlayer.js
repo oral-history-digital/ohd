@@ -48,7 +48,7 @@ export default class VideoPlayer extends React.Component {
 
     componentWillUnmount() {
         // reset resolution to undefined, otherwise changing video to audio or audio to video will crash
-        this.props.setTapeAndTimeAndResolution(this.props.tape, this.video.currentTime, undefined);
+        this.props.setTapeAndTimeAndResolution(this.props.tape, this.video && this.video.currentTime, undefined);
     }
 
     handleTapeChange(e) {
@@ -207,18 +207,20 @@ export default class VideoPlayer extends React.Component {
     }
 
     resolutionSelector(){
-        let resolutions = Object.keys(this.props.mediaStreams[this.props.interview.media_type])
-        if (resolutions.length > 1) {
+        if (this.props.mediaStreams) {
+            let resolutions = Object.keys(this.props.mediaStreams[this.props.interview.media_type])
+            if (resolutions.length > 1) {
 
-            let options = [];
-            for(var i = 0; i < resolutions.length; i++) {
-                options.push(<option value={resolutions[i]} key={'resolution' + i}>{resolutions[i]}</option>);
+                let options = [];
+                for(var i = 0; i < resolutions.length; i++) {
+                    options.push(<option value={resolutions[i]} key={'resolution' + i}>{resolutions[i]}</option>);
+                }
+                return (
+                    <select value={this.props.resolution} onChange={this.handleResolutionChange} className={'resolutionselector'}>
+                        {options}
+                    </select>
+                )
             }
-            return (
-                <select value={this.props.resolution} onChange={this.handleResolutionChange} className={'resolutionselector'}>
-                    {options}
-                </select>
-            )
         }
         else {
             return null;

@@ -69,14 +69,14 @@ default: &default
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
   external_links:
     conditions: #nutzungsbedingungen:
-      en: 'http://www.campscapes.org/wpautoterms/terms-and-conditions/'
-      de: 'http://www.campscapes.org/wpautoterms/terms-and-conditions/'
+      en: 'http://www.campscapes.org/terms-and-conditions/'
+      de: 'http://www.campscapes.org/terms-and-conditions/'
     # request_for_use: #nutzungsantrag:
     #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/archivmaterial/index.html'
       # ru: 'http://www.zwangsarbeit-archiv.de/ru/sammlung/nutzungsbedingungen/archivmaterial/index.html'
     privacy_protection: #datenschutzbestimmungen:
-      en: 'http://www.campscapes.org/wpautoterms/privacy-policy/'
-      de: 'http://www.campscapes.org/wpautoterms/privacy-policy/'
+      en: 'http://www.campscapes.org/privacy-policy/'
+      de: 'http://www.campscapes.org/privacy-policy/'
     # annotation_guidelines:
     #   en: 'http://www.zwangsarbeit-archiv.de/en/sammlung/nutzungsbedingungen/anmerkungen-richtlinien/index.html'
     # team:
@@ -167,7 +167,7 @@ default: &default
       name: gender
       source: person
       use_as_facet: false
-      use_in_detail_view: true
+      use_in_details_view: true
       display_on_landing_page: true
       label:
         de: Geschlecht
@@ -180,7 +180,7 @@ default: &default
       source: person
       use_as_facet: false
       display_on_landing_page: true
-      use_in_detail_view: true
+      use_in_details_view: true
       label:
         de: Geburtsdatum
         en: Date of Birth
@@ -189,7 +189,7 @@ default: &default
       source: person
       use_as_facet: false
       display_on_landing_page: true
-      use_in_detail_view: true
+      use_in_details_view: true
       label:
         de: Geburtsjahr
         en: Year of Birth
@@ -198,7 +198,7 @@ default: &default
       source: person
       use_as_facet: false
       use_in_results_table: false
-      use_in_detail_view: true
+      use_in_details_view: true
       label: 
         de: Herkunftsland
         en: Country of Birth
@@ -239,7 +239,7 @@ default: &default
       source: registry_entry
       use_as_facet: true
       display_on_landing_page: true
-      use_in_detail_view: true
+      use_in_details_view: true
       use_in_results_table: true
       label:
         de: Zugänglichkeit

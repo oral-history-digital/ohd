@@ -1,19 +1,21 @@
 import { connect } from 'react-redux';
 import PersonData from '../components/PersonData';
-import { getInterview, getCookie } from '../../../lib/utils';
+import { getInterview, getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let interview = getInterview(state);
+    let project = getProject(state);
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
+        projectId: state.archive.projectId,
         editView: getCookie('editView'),
         interview: interview,
         people: state.data.people,
         contributionTypes: state.archive.contributionTypes,
         account: state.data.accounts.current,
-        detailViewFields: state.archive.detailViewFields,
+        detailViewFields: (project && project.detail_view_fields) || [],
     }
 }
 

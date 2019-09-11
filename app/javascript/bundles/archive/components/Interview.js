@@ -45,7 +45,8 @@ export default class Interview extends React.Component {
 
     interviewLoaded() {
         return this.props.interviewsStatus[this.props.match.params.archiveId] && 
-            this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'fetched';
+            (this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'fetched' ||
+            this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'processed');
     }
 
     loadContributors() {

@@ -110,7 +110,7 @@ export default class InterviewPreview extends React.Component {
                     <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration[this.props.locale]}</span><br/>
                     <span>{this.props.interview.language[this.props.locale]}</span>
                     <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
-                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
+                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>
                     <small className={this.facetToClass("forced-labor-fields")}><br/>{this.props.interview.forced_labor_fields[this.props.locale].join(', ')}</small>
                 </div>
             );
@@ -118,9 +118,10 @@ export default class InterviewPreview extends React.Component {
         else if (this.props.projectId === 'mog') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
-                    {this.typologies()}
-                    {this.content( t(this.props, 'duration'), this.props.interview.duration[this.props.locale])}
-                    <small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth}</small>
+                    {this.content(t(this.props, 'typologies'), this.props.interview.typology[this.props.locale])}
+                    {this.content( t(this.props, 'duration'), this.props.interview.duration)}
+                    {this.content( t(this.props, 'year_of_birth'), this.props.interview.year_of_birth[this.props.locale])}
+                {/*<small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>*/}
                 </div>
             )
         }
@@ -144,19 +145,6 @@ export default class InterviewPreview extends React.Component {
                 <span>{value}</span>
             </div>
         )
-    }
-
-
-
-    typologies(){
-        let interviewee =  this.props.interview.interviewees && this.props.interview.interviewees[0];
-        if (interviewee && interviewee.typology && interviewee.typology[this.props.locale]) {
-            //if (interviewee.typology[this.props.locale] && interviewee.typology[this.props.locale].length > 1) {
-                return this.content(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '), "");
-            //} else if (interviewee.typology && interviewee.typology[this.props.locale].length == 1) {
-                //return this.content(t(this.props, 'typology'), interviewee.typology[this.props.locale][0], "");
-            //}
-        }
     }
 
     renderExportCheckbox() {

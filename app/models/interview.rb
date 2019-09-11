@@ -465,7 +465,7 @@ class Interview < ActiveRecord::Base
   end
 
   def transcript_locales
-    language && language.code.split(/[\/-]/)
+    language ? language.code.split(/[\/-]/) : []
   end
 
   def right_to_left
@@ -760,7 +760,7 @@ class Interview < ActiveRecord::Base
   #end
 
   def oai_dc_language
-    self.language.name
+    language && language.name
   end
 
   #def oai_dc_relation
@@ -774,5 +774,53 @@ class Interview < ActiveRecord::Base
 
   def type
     'Interview'
+  end
+
+  class << self
+    # https://github.com/sunspot/sunspot#stored-fields
+    # in order to being able to get a dropdown list in search field
+    def dropdown_search_values(project, user_account)
+      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{Interview.maximum(:updated_at)}") do
+        search = Interview.search do
+          adjust_solr_params do |params|
+            params[:rows] = project.interviews.size
+          end
+          with(:workflow_state, (user_account && user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
+          with(:project_id, project.id)
+        end
+
+        all_interviews_titles = search.hits.map{ |hit| eval hit.stored(:title) }
+        # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
+        #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
+        #    ...]
+        all_interviews_pseudonyms = search.hits.map do 
+          |hit| {:de => RegistryEntry.find(hit.stored :pseudonym ).first.registry_names.first.try(:descriptor)} if hit.stored(:pseudonym).try(:first)
+        end.compact
+        all_interviews_birth_locations = search.hits.map {|hit| hit.stored(:birth_location) }
+
+        {
+          all_interviews_titles: all_interviews_titles,
+          all_interviews_pseudonyms: all_interviews_pseudonyms,
+          all_interviews_birth_locations: all_interviews_birth_locations
+        }
+      end
+    end
+
+    def archive_search(user_account, project, locale, params)
+      search = Interview.search do
+        fulltext params[:fulltext]
+        with(:workflow_state, (user_account && user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
+        with(:project_id, project.id)
+        dynamic :search_facets do
+          facet *project.search_facets_names
+          project.search_facets_names.each do |facet|
+            with(facet.to_sym).any_of(params[facet]) if params[facet]
+          end
+        end
+        order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
+        # TODO: sort linguistically
+        paginate page: params[:page] || 1, per_page: 12
+      end
+    end
   end
 end

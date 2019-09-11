@@ -49,7 +49,7 @@ export default class ArchiveSearch extends React.Component {
         }
 
         props.listColumns.map(function(column, i){
-            let label = (column['label'] && column['label'][props.locale] ) || t(props, column["name"])
+            let label = (props.project && props.project.metadata_fields[column.id].label[props.locale]) || t(props, column.name);
             headers.push (
                 <td key={`list-header-column-${i}`}><strong>{label}</strong></td>
             )
@@ -274,7 +274,7 @@ export default class ArchiveSearch extends React.Component {
                 tabIndex={ this.props.locales.length + 1 }
             >
                 <div className='wrapper-content interviews'>
-                    <h1 className="search-results-title">{t(this.props, (this.props.project === 'mog') ? 'archive_results' : 'interviews')}</h1>
+                    <h1 className="search-results-title">{t(this.props, (this.props.projectId === 'mog') ? 'archive_results' : 'interviews')}</h1>
                     <div className="search-results-legend">
                         <AuthShowContainer ifLoggedIn={true}>
                             {this.saveSearchLink()}
@@ -287,7 +287,8 @@ export default class ArchiveSearch extends React.Component {
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        defaultIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 1}
+                        selectedIndex={0}
+                        //defaultIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
                         onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
                         <TabList className={'search-results-tabs'}>

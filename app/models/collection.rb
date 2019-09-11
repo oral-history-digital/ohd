@@ -3,6 +3,7 @@ require 'globalize'
 class Collection < ActiveRecord::Base
 
   has_many :interviews
+  belongs_to :project
 
   translates :name, :institution, :countries, :interviewers, :responsibles, :notes
 
@@ -26,7 +27,7 @@ class Collection < ActiveRecord::Base
 
   def localized_hash
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = name(locale) if I18n.available_locales.include?( locale.to_s )
+      mem[locale] = name(locale) 
       mem
     end
   end

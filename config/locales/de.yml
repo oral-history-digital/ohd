@@ -180,6 +180,10 @@ de:
   date_of_birth: Geburtsdatum
   year_of_birth: Jahrgang
   place_of_birth: Geburtsort
+  country_of_birth: Geburtsland
+  birth_location: Geburtsort
+  interview_location: Interviewort
+  gender: Geschlecht
   # place_of_interview: Interviewort
   typology: Erfahrung
   typologies: Erfahrungen
@@ -377,7 +381,7 @@ de:
     text1: Die Interviews  
     text2:  werden bei Datacite registriert. 
     ok: Bestätigen
-    name: doi
+    name: DOI
     created: Erfolgreich veröffentlicht!
     already_registered: Bereits zu einem früheren Zeitpunkt veröffentlicht!
     bad: Etwas stimmt nicht
@@ -488,6 +492,7 @@ de:
     female: weiblich
     male: männlich
   search_facets:
+    accessibility: Zugänglichkeit
     forced_labor_fields: Einsatzbereich
     forced_labor_groups: Gruppe
     periods: Zeitperioden
@@ -794,6 +799,7 @@ de:
         first_name: Vorname
         last_name: Nachname
         birth_name: Geburtsname
+        alias_name: Weiterer Name
         date_of_birth: Geburtsdatum
       registry_entry:
         descriptor: Name

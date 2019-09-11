@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, admin } from '../../../lib/utils';
+import { t, admin, contentField } from '../../../lib/utils';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
 import MetadataRegistryReferenceTypeContainer from '../containers/MetadataRegistryReferenceTypeContainer';
 
@@ -7,25 +7,13 @@ export default class InterviewInfo extends React.Component {
 
     // placeOfInterview(){
     //     if (this.props.interview.place_of_interview){
-    //         return this.content(t(this.props, 'place_of_interview'), this.props.interview.place_of_interview.name[this.props.locale], "" );
+    //         return contentField(t(this.props, 'place_of_interview'), this.props.interview.place_of_interview.name[this.props.locale], "", true );
     //     }
     // }
 
-    language(){
-        return this.content(t(this.props, 'language'), this.props.interview.language[this.props.locale], "");
-    }
-
-    collection(){
-        if(this.props.collections && this.props.collections[0]){
-            let collection_id = this.props.interview.collection_id;
-            let collection_name = this.props.collections.filter(collection => collection.name[this.props.locale] === collection_id[this.props.locale])[0].name[this.props.locale];
-            return this.content(t(this.props, 'activerecord.models.collection.one'), collection_name, "")
-        }
-    }
-
     tapes(){
         if (this.props.interview.tape_count > 1){
-            return this.content(t(this.props, 'tapes'), this.props.interview.tape_count, "")
+            return contentField(t(this.props, 'tapes'), this.props.interview.tape_count, "", true)
         }
     }
 
@@ -40,28 +28,19 @@ export default class InterviewInfo extends React.Component {
         } else {
             return (
                 <div>
-                    {this.content(t(this.props, 'date'), this.props.interview.interview_date, "")}
+                    {contentField(t(this.props, 'date'), this.props.interview.interview_date, "", true)}
                     {/* {this.placeOfInterview()} */}
-                    {this.content(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.video ? 'video' : 'audio'}`), "")}
-                    {this.content(t(this.props, 'duration'), this.props.interview.duration[this.props.locale], "")}
+                    {contentField(t(this.props, 'search_facets.media_type'), t(this.props, `search_facets.${this.props.interview.media_type}`), "", true)}
+                    {contentField(t(this.props, 'duration'), this.props.interview.duration, "", true)}
                     {this.tapes()}
-                    {this.language()}
-                    {this.collection()}
+                    {contentField(t(this.props, 'search_facets.accessibility'), this.props.interview.accessibility && this.props.interview.accessibility[this.props.locale], "", this.props.projectId !== 'mog')}
+                    {contentField(t(this.props, 'language'), this.props.interview.language && this.props.interview.language[this.props.locale], "", this.props.projectId !== 'mog')}
+                    {contentField(t(this.props, 'interview_location'), this.props.interview.interview_location && this.props.interview.interview_location[this.props.locale], "", this.props.projectId !== 'mog')}
+                    {contentField(t(this.props, 'activerecord.models.collection.one'), this.props.interview.collection[this.props.locale], "", this.props.projectId !== 'mog', )}
 
-                    {/*this.content(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "")*/}
+                    {/*contentField(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "", true)*/}
                 </div>
             );
-        }
-    }
-
-    content(label, value, className) {
-        if (value) {
-            return (
-                <p>
-                    <span className="flyout-content-label">{label}:</span>
-                    <span className={"flyout-content-data " + className}>{value}</span>
-                </p>
-            )
         }
     }
 
@@ -86,7 +65,7 @@ export default class InterviewInfo extends React.Component {
         if (this.props.interview && this.props.interview.language) {
             return (
                 <div>
-                    {this.content(t(this.props, 'id'), this.props.archiveId, "")}
+                    {contentField(t(this.props, 'id'), this.props.archiveId, "", true)}
                     {this.info()}
                     {this.metadataFields()}
                 </div>

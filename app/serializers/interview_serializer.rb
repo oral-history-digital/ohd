@@ -3,6 +3,7 @@ class InterviewSerializer < ApplicationSerializer
     :id,
     :archive_id,
     :collection_id,
+    :collection,
     :tape_count,
     :video,
     :media_type,
@@ -31,6 +32,7 @@ class InterviewSerializer < ApplicationSerializer
     :duration_seconds,
     #  :place_of_interview,
     :year_of_birth,
+    :typology,
     :country_of_birth,
     :segments,
     :last_segments_ids,
@@ -56,6 +58,12 @@ class InterviewSerializer < ApplicationSerializer
   #:src,
   ] | Project.current.list_columns.inject([]) { |mem, i| mem << i["name"] } | Project.current.detail_view_fields.inject([]) { |mem, i| mem << i["name"] }
 
+  #belongs_to :colletion, serializer: CollectionSerializer
+
+  def collection
+    object.collection && object.collection.localized_hash || {}
+  end
+
   def camps
     I18n.available_locales.inject({}) do |mem, locale|
       object.camps && mem[locale] = object.camps.map { |f| RegistryEntry.find(f).to_s(locale) }
@@ -78,13 +86,10 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def collection_id
-    object.collection && object.collection.localized_hash
-  end
-
   def groups
+    exist_groups = !object.groups.empty? 
     I18n.available_locales.inject({}) do |mem, locale|
-      object.groups && mem[locale] = object.groups.map { |f| RegistryEntry.find(f).to_s(locale) }
+      mem[locale] = exist_groups ? object.groups.map { |f| RegistryEntry.find(f).to_s(locale) } : '---'
       mem
     end
   end
@@ -95,6 +100,10 @@ class InterviewSerializer < ApplicationSerializer
       interviewee && interviewee.country_of_birth && mem[locale] = interviewee.country_of_birth.yield_self { |f| RegistryEntry.find(f).to_s(locale) }
       mem
     end
+  end
+
+  def interview_location
+    (!object.interview_location.empty? && object.interview_location.first.localized_hash) || {}
   end
 
   def interviewee_id
@@ -153,7 +162,7 @@ class InterviewSerializer < ApplicationSerializer
   def interview_date
     Date.parse(object.interview_date).strftime("%d.%m.%Y")
   rescue
-    object.interview_date || "no date given"
+    object.interview_date || "---"
   end
 
   def video
@@ -175,6 +184,16 @@ class InterviewSerializer < ApplicationSerializer
       {}
     end
   end
+
+  #def media_type
+    #if object.media_type
+      ## add 'default' to have available the string 'audio' or 'video'
+      #(I18n.available_locales + [:default]).inject({}) do |mem, locale|
+        #mem[locale] = (locale == :default) ? object.media_type : I18n.t("search_facets.#{object.media_type}", locale: locale)
+        #mem
+      #end
+    #end
+  #end
 
   def short_title
     object.localized_hash
@@ -239,16 +258,29 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def duration
-    if object.duration
+    if object.duration && object.duration > 0
+      Time.at(object.duration).utc.strftime("%-H h %M min")
+    else 
+      '---'
+    end
+  end
+
+  def year_of_birth
+    if object.interviewees.first
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = Time.at(object.duration).utc.strftime("%-H h %M min")
+        mem[locale] = object.interviewees.first.year_of_birth
         mem
       end
     end
   end
 
-  def year_of_birth
-    object.interviewees.first.year_of_birth if object.interviewees.first
+  def typology
+    if object.interviewees.first
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.interviewees.first.typology && object.interviewees.first.typology.split(',').map{|t| I18n.t(t, scope: 'search_facets')}.join(', ')
+        mem
+      end
+    end
   end
 
   # def duration

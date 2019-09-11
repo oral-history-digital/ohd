@@ -9,7 +9,8 @@ const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,
-        locales: (project && project.locales) || state.archive.locales,
+        locales: (project && project.available_locales) || state.archive.locales,
+        detailViewFields: project && project.detail_view_fields,
         translations: state.archive.translations,
         prevArchiveId: getInterviewArchiveIdWithOffset(state.archive.archiveId, state.search.archive.foundInterviews, -1),
         nextArchiveId: getInterviewArchiveIdWithOffset(state.archive.archiveId, state.search.archive.foundInterviews, 1),

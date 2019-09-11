@@ -23,7 +23,6 @@ class HomeController < ApplicationController
               mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
               mem
             end,
-            collections: Collection.all.map { |c| { value: c.id, name: c.localized_hash } },
             contribution_types: Project.contribution_types,
             languages: Language.all.map { |c| { value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2 } },
             media_streams: Project.media_streams,
@@ -33,7 +32,7 @@ class HomeController < ApplicationController
         locales.each do |i|
           I18n.locale = i
           template = "/home/home.#{i}.html+#{current_project.identifier == "empty" ? "zwar" : current_project.identifier}"
-          home_content[i] = '' #render_to_string(template: template, layout: false)
+          home_content[i] = render_to_string(template: template, layout: false)
         end
         json[:home_content] = home_content
         render plain: json.to_json

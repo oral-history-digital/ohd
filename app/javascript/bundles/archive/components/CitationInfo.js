@@ -22,9 +22,9 @@ export default class CitationInfoInfo extends React.Component {
 
     doi(withCalled=false) {
         if (this.props.interview.doi_status === 'created') {
-            let doi = `https://doi.org/${this.props.projectDoi}/${this.props.project}.${this.props.interview.archive_id}`;
+            let doi = `https://doi.org/${this.props.projectDoi}/${this.props.projectId}.${this.props.interview.archive_id}`;
             let called = withCalled ? ` (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})` : '';
-            return `, ${t(this.props, 'doi')}: ${doi}${called}`;
+            return `, ${t(this.props, 'doi.name')}: ${doi}${called}`;
         } else {
             return '';
         }

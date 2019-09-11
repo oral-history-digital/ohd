@@ -167,10 +167,14 @@ en:
   save: Save
   cancel: Cancel
   assign_speakers: Sprecher zuordnen
-  person_info: About the person
-  date_of_birth: Date of birth
-  year_of_birth: Born in
-  place_of_birth: Place of birth
+  person_info: About the Person
+  date_of_birth: Date of Birth
+  year_of_birth: Year of Birth
+  place_of_birth: Place of Birth
+  country_of_birth: Country of Birth
+  birth_location: Place of  Birth
+  interview_location: Place of Interview
+  gender: Gender
   # place_of_interview: Interviewort
   typology: Experience background
   typologies: Erfahrungen
@@ -472,37 +476,36 @@ en:
     female: female
     male: male
   search_facets:
+    accessibility: Accessibility
+    groups: Group
+    camps: Camp
     country_of_birth: Country Of Birth
     forced_labor_fields: Deployment Area
     forced_labor_groups: Forced Labor Group
     periods: Time periods
     fulltext: search keyword
     gender: gender
-    Man: Male
-    Woman: Female
-    man: male
-    woman: female
-    male: male
-    female: female
+    male: Male
+    female: Female
     video: Video
     audio: Audio
     born: born
     typology: Experience background
-    resistance: resistance
+    resistance: Resistance
     occupation: Occupation
-    flight: flight
-    concentration_camp: concentration camp
+    flight: Flight
+    concentration_camp: Concentration Camp
     persecution_of_jews: Persecution of Jews
     retaliation: Retaliation and mass executions
     collaboration: Collaboration
     interview_id: Interviews
     archive_id: Interview ID
     collection_id: Subcollection
-    media_type: media type
+    media_type: Media Type
     language_id: Language
-    age: Alter
+    age: Age
     year_of_birth: Year of birth
-    interview_date: Entstehungszeit
+    interview_date: Date of Interview
   activerecord:
     models:
       interview:
@@ -774,11 +777,12 @@ en:
         name: Name
         desc: Beschreibung
       person:
-        gender: Geschlecht
-        first_name: Vorname
-        last_name: Nachname
-        birth_name: Geburtsname
-        date_of_birth: Geburtsdatum
+        gender: Gender
+        first_name: First Name
+        last_name: Last Name
+        birth_name: Birth Name
+        alias_name: Additional Name
+        date_of_birth: Date of Birth
       registry_entry:
         descriptor: Name
         notes: Anmerkungen

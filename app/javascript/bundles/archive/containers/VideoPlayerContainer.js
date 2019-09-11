@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
         project: project && project.identifier,
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,
-        locales: (project && project.locales) || state.archive.locales,
+        locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
         tape: state.interview.tape,
         videoTime: state.interview.videoTime,

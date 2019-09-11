@@ -100,49 +100,6 @@ class SearchesController < ApplicationController
     end
   end
 
-  # https://github.com/sunspot/sunspot#stored-fields
-  def all_interviews_titles
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-all_interviews_titles") do
-      search = Interview.search do
-        adjust_solr_params do |params|
-          params[:rows] = Interview.all.size
-        end
-        with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
-      end
-      search.hits.map{ |hit| eval hit.stored(:title) }
-      # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
-      #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
-      #    ...]
-    end
-  end
-
-  # hagen only
-  # in order to being able to get a dropdown list in search field
-  def all_interviews_pseudonyms
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-all_interviews_pseudonyms") do
-      search = Interview.search do
-        adjust_solr_params do |params|
-          params[:rows] = Interview.all.size
-        end
-        with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
-      end
-      ps = search.hits.map{ |hit| {:de => RegistryEntry.find(hit.stored :pseudonym ).first.registry_names.first.try(:descriptor)} if hit.stored(:pseudonym).try(:first)}
-      ps.compact
-    end
-  end
-
-  def all_interviews_birth_locations
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-all_interviews_birth_locations") do
-      search = Interview.search do
-        adjust_solr_params do |params|
-          params[:rows] = Interview.all.size
-        end
-        with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
-      end
-      search.hits.map {|hit| hit.stored(:birth_location) }
-    end
-  end
-
   def export_archive_search
     search = Interview.search do
       adjust_solr_params do |params|
@@ -180,20 +137,8 @@ class SearchesController < ApplicationController
   end
 
   def archive
-    search = Interview.search do
-      fulltext params[:fulltext]
-      with(:workflow_state, (current_user_account && current_user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
-      with(:project_id, current_project.id)
-      dynamic :search_facets do
-        facet *current_project.search_facets_names
-        current_project.search_facets_names.each do |facet|
-          with(facet.to_sym).any_of(params[facet]) if params[facet]
-        end
-      end
-      order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
-      # TODO: sort linguistically
-      paginate page: params[:page] || 1, per_page: 12
-    end
+    search = Interview.archive_search(current_user_account, current_project, locale, params)
+    dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
 
     respond_to do |format|
       format.html do
@@ -201,9 +146,9 @@ class SearchesController < ApplicationController
       end
       format.json do
         render json: {
-            all_interviews_titles: all_interviews_titles,
-            all_interviews_pseudonyms: all_interviews_pseudonyms,
-            all_interviews_birth_locations: all_interviews_birth_locations,
+            all_interviews_titles: dropdown_values[:all_interviews_titles],
+            all_interviews_pseudonyms: dropdown_values[:all_interviews_pseudonyms],
+            all_interviews_birth_locations: dropdown_values[:all_interviews_birth_locations],
             all_interviews_count: search.total,
             result_pages_count: search.results.total_pages,
             results_count: search.total,

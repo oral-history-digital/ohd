@@ -98,7 +98,7 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{Project.current.cache_key_prefix}-interview-speaker_designations-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-speaker_designations-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           {
             data: @interview.speaker_designations,
             nested_data_type: "speaker_designations",
@@ -122,7 +122,7 @@ class InterviewsController < ApplicationController
         render json: data_json(@interview)
       end
       format.vtt do
-        vtt = Rails.cache.fetch "#{Project.current.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:tape_number]}" do
+        vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:tape_number]}" do
           @interview.to_vtt(params[:lang] || interview_locale, params[:tape_number])
         end
         render plain: vtt
@@ -209,7 +209,7 @@ class InterviewsController < ApplicationController
     json = {}
     unless params[:id] == "new"
       @interview = Interview.find_by_archive_id(params[:id])
-      json = Rails.cache.fetch "#{Project.current.cache_key_prefix}-interview-doi-contents-#{@interview.archive_id}-#{@interview.updated_at}" do
+      json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-doi-contents-#{@interview.archive_id}-#{@interview.updated_at}" do
         locales = current_project.available_locales.reject{|locale| locale == 'alias'}
         doi_contents = locales.inject({}){|mem, locale| mem[locale] = doi_content(locale, @interview); mem}
         {
@@ -233,12 +233,12 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{Project.current.cache_key_prefix}-interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-headings-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}" do
           segments = @interview.segments.
             includes(:translations, :annotations => [:translations]). #, registry_references: {registry_entry: {registry_names: :translations}, registry_reference_type: {} } ).
             where.not(timecode: "00:00:00.000")
           {
-            data: segments.with_heading.map { |s| Rails.cache.fetch("#{Project.current.cache_key_prefix}-headings-#{s.id}-#{s.updated_at}") { ::HeadingSerializer.new(s).as_json } },
+            data: segments.with_heading.map { |s| Rails.cache.fetch("#{current_project.cache_key_prefix}-headings-#{s.id}-#{s.updated_at}") { ::HeadingSerializer.new(s).as_json } },
             nested_data_type: "headings",
             data_type: "interviews",
             archive_id: params[:id],
@@ -254,7 +254,7 @@ class InterviewsController < ApplicationController
     authorize @interview
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{Project.current.cache_key_prefix}-interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           {
             data: ActiveRecord::Base.connection.column_exists?(:registry_entries, :entry_dedalo_code) ? ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id) : ref_tree.part(1),
@@ -282,6 +282,7 @@ class InterviewsController < ApplicationController
       "translated",
       "observations",
       "workflow_state",
+      "media_type",
       "biographies_workflow_state"
     )
   end
@@ -312,10 +313,10 @@ class InterviewsController < ApplicationController
     xml = render_to_string(template: "/interviews/metadata.xml", layout: false)
     {
       "data": {
-        "id": "#{Rails.configuration.datacite["prefix"]}/#{Project.current.identifier}.#{archive_id}",
+        "id": "#{Rails.configuration.datacite["prefix"]}/#{current_project.identifier}.#{archive_id}",
         "type": "dois",
         "attributes": {
-          "doi": "#{Rails.configuration.datacite["prefix"]}/#{Project.current.identifier}.#{archive_id}",
+          "doi": "#{Rails.configuration.datacite["prefix"]}/#{current_project.identifier}.#{archive_id}",
           "event": "publish",
           "url": "https://www.datacite.org",
           "xml": Base64.encode64(xml),

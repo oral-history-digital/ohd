@@ -64,7 +64,7 @@ export default class FlyoutTabs extends React.Component {
              // registry entries
             this.context.router.history.push(`/${this.props.projectId}/${this.props.locale}/registry_entries`);
         }
-        if (tabIndex  === 0 || tabIndex >= this.props.locales.length + 1) {
+        if (tabIndex === 0 || tabIndex >= this.props.locales.length + 1) {
             this.setState({tabIndex: tabIndex});
         }
     }

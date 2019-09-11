@@ -35,10 +35,10 @@ export default class InterviewListRow extends React.Component {
         }
     }
 
-    column(){
+    columns(){
         let props = this.props
         return props.listColumns.map(function(column, i){
-            let label = (props.interview[column["name"]] && props.interview[column["name"]][props.locale])
+            let label = (props.interview[column.name] && props.interview[column.name][props.locale])
             return (
                 <td key={i}>{(label && ''+label) || '---'}</td>
             )
@@ -81,7 +81,7 @@ export default class InterviewListRow extends React.Component {
                         </AuthShowContainer>
                     </Link>
                 </td>
-                {this.column()}
+                {this.columns()}
             </tr>
         );
     }

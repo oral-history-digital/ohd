@@ -1,3 +1,5 @@
+import React from 'react';
+
 export function get(state, dataType, id) {
     return state.data[dataType][id]
 }
@@ -262,5 +264,18 @@ export function getInterviewArchiveIdWithOffset(archiveId, list, offset=1) {
     let offsetItem = list[list.findIndex(i => i.archive_id === archiveId)+offset]
     if (list.length > 1 && offsetItem){
         return offsetItem.archive_id
+    }
+}
+
+export function contentField(label, value, className='', condition=true) {
+    if (condition) {
+        return (
+            <p className={`${label}-${value}`}>
+                <span className="flyout-content-label">{label}:</span>
+                <span className={"flyout-content-data " + className}>{value || '---'}</span>
+            </p>
+        )
+    } else {
+        return null;
     }
 }

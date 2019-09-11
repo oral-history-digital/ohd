@@ -10,18 +10,22 @@ import { fetchData } from '../actions/dataActionCreators';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return {
         archiveId: state.archive.archiveId,
         projectId: state.archive.projectId,
         transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
         locale: state.archive.locale,
+        locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
         disabled: state.popup.show,
         visible: state.flyoutTabs.visible,
         loggedInAt: state.account.loggedInAt,
+        collections: state.data.collections,
+        collectionsStatus: state.data.statuses.collections,
         projects: state.data.projects,
         projectsStatus: state.data.statuses.projects.all,
-        project: getProject(state),
+        project: project,
     }
 }
 

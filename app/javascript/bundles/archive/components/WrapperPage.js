@@ -48,8 +48,9 @@ export default class WrapperPage extends React.Component {
             let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}`;
             this.props.fetchStaticContent(url);
         }
-        this.setProjectId();
+        this.loadCollections();
         this.loadProjects();
+        this.setProjectId();
     }
 
     componentDidUpdate() {
@@ -60,8 +61,18 @@ export default class WrapperPage extends React.Component {
         } else {
             document.body.classList.remove('noScroll');
         }
-        this.setProjectId();
+        this.loadCollections();
         this.loadProjects();
+        this.setProjectId();
+    }
+
+    loadCollections() {
+        if (
+            this.props.projectId &&
+            !this.props.collectionsStatus[`collections_for_project_${this.props.projectId}`]
+        ) {
+            this.props.fetchData('collections', null, null, this.props.locale, `collections_for_project=${this.props.projectId}`);
+        }
     }
 
     loadProjects() {

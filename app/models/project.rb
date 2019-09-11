@@ -2,6 +2,7 @@ require 'globalize'
 class Project < ApplicationRecord
 
   has_many :interviews 
+  has_many :collections 
   has_many :metadata_fields 
   has_many :external_links 
   has_many :registry_entry_projects
@@ -54,6 +55,10 @@ class Project < ApplicationRecord
   #
   def available_locales
     read_attribute :available_locales
+  end
+
+  def archive_domain
+    Rails.env == 'development' ? 'http://localhost:3000' : read_attribute(:archive_domain)
   end
 
   def search_facets

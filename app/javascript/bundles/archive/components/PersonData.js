@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, fullname, admin, getInterviewee } from '../../../lib/utils';
+import { t, fullname, admin, getInterviewee, contentField } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
@@ -8,19 +8,10 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 export default class PersonData extends React.Component {
 
 
-    content(label, value, className, key='') {
-        return (
-            <p key={`persondata-content-${key}`}>
-                <span className="flyout-content-label">{label}:</span>
-                <span className={"flyout-content-data " + className}>{value}</span>
-            </p>
-        )
-    }
-
     typologies(){
         let interviewee = getInterviewee(this.props);
         if (interviewee.typology && interviewee.typology[this.props.locale]){
-            return this.content(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
+            return contentField(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
         } else {
             return "";
         }
@@ -63,24 +54,19 @@ export default class PersonData extends React.Component {
         );
     }
 
-    detailViewFields() {
-        let _this = this
-        let i = 0
-        for(let r in _this.props.detailViewFields) {
+    detailViewFields(){
+        if (Array.isArray(this.props.detailViewFields)) {
+            let _this = this;
             let interviewee = getInterviewee(_this.props);
-            i+=1;
-            if(this.props.detailViewFields[r]["source"] === 'person'){
-                return(
-                    _this.content(
-                        (this.props.detailViewFields[r]["label"] && this.props.detailViewFields[r]["label"][_this.props.locale]) || t(this.props.detailViewFields[r]["name"]) || this.props.detailViewFields[r]["name"], 
-                        interviewee[this.props.detailViewFields[r]["name"]] || "---",
-                        "",
-                        i
-                    )
-                    )
-            } else {
-                return null
-            }
+            return this.props.detailViewFields.map(function(datum, i){
+                if (datum.source === 'person' || datum.ref_object_type === 'Person') {
+                    let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
+                    let value = (interviewee[datum.name] && interviewee[datum.name][_this.props.locale])
+                    return contentField(label, value)
+                }
+            })
+        } else {
+            return null;
         }
     }
 
@@ -90,14 +76,18 @@ export default class PersonData extends React.Component {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
-                        {this.content(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
+                        {contentField(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
                         {this.typologies()}
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
-                        {this.content(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
+                        {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
+                    {contentField(t(this.props, 'activerecord.attributes.person.alias_name'), interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes')}
                     {/* {this.history()} */}
                     {this.detailViewFields()}
+                    {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'activerecord.models.biographical_entry.one'), interviewee.biographical_entries[0] && interviewee.biographical_entries[0].text[this.props.locale], '', this.props.projectId === 'campscapes')}
                 </div>
             );
         } else {
@@ -110,7 +100,7 @@ export default class PersonData extends React.Component {
         if (admin(this.props, {type: 'BiographicalEntry', action: 'update'})) {
             return (
                 <div>
-                    {this.content(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}
+                    {contentField(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}
                     <BiographicalEntriesContainer person={interviewee} />
                 </div>
             );
