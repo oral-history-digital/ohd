@@ -33,8 +33,8 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project
-    #Project.first
-    Project.where(shortname: params[:project_id].upcase).first
+    Project.first
+    #Project.where(shortname: params[:project_id].upcase).first
   end
   helper_method :current_project
 

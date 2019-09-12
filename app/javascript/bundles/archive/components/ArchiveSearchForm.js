@@ -4,7 +4,7 @@ import serialize from 'form-serialize';
 import {Navigation} from 'react-router-dom'
 import FacetContainer from '../containers/FacetContainer';
 import spinnerSrc from '../../../images/large_spinner.gif'
-import { t, iOS } from '../../../lib/utils';
+import { t, iOS, pathBase } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 
 export default class ArchiveSearchForm extends React.Component {
@@ -17,7 +17,8 @@ export default class ArchiveSearchForm extends React.Component {
 
     componentDidMount() {
         if (!this.facetsLoaded()) {
-            let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+            //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+            let url = `${pathBase(this.props)}/searches/archive`;
             this.props.searchInArchive(url, {});
         }
     }
@@ -35,7 +36,8 @@ export default class ArchiveSearchForm extends React.Component {
     handleReset(event) {
         this.form.reset();
         this.props.resetQuery('archive');
-        let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+        //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+        let url = `${pathBase(this.props)}/searches/archive`;
         this.props.searchInArchive(url, {});
     }
 
@@ -93,7 +95,8 @@ export default class ArchiveSearchForm extends React.Component {
 
     submit(params) {
         if (!this.props.isArchiveSearching) {
-            let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+            //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+            let url = `${pathBase(this.props)}/searches/archive`;
             this.props.searchInArchive(url, params);
             this.context.router.history.push(url);
         }
@@ -121,7 +124,7 @@ export default class ArchiveSearchForm extends React.Component {
                     type="text" 
                     name="fulltext" 
                     value={fulltext}
-                    placeholder={t(this.props, (this.props.project === 'hagen' ? 'enter_field_hagen' : 'enter_field'))}
+                    placeholder={t(this.props, (this.props.projectId === 'hagen' ? 'enter_field_hagen' : 'enter_field'))}
                     onChange={this.handleChange}
                     list='allInterviewTitles' 
                     autoFocus

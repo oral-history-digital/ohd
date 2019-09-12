@@ -1,8 +1,8 @@
 import React from 'react';
 
 export function pathBase(props) {
-    return `/${props.projectId}/${props.locale}`;
-    //return `/${props.locale}`;
+    //return `/${props.projectId}/${props.locale}`;
+    return `/${props.locale}`;
 }
 
 export function get(state, dataType, id) {

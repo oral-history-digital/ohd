@@ -8,10 +8,8 @@ import {
 } from '../actions/searchActionCreators';
 import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
-import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
     return {
         allInterviewsTitles: state.search.archive.allInterviewsTitles,
         allInterviewsPseudonyms: state.search.archive.allInterviewsPseudonyms,
@@ -20,7 +18,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         locale: state.archive.locale,
         isArchiveSearching: state.search.isArchiveSearching,
-        project: project && project.identifier,
+        projectId: state.archive.projectId
     }
 }
 

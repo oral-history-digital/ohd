@@ -50,7 +50,7 @@ export default class WrapperPage extends React.Component {
         }
         this.loadCollections();
         this.loadProjects();
-        this.setProjectId();
+        //this.setProjectId();
     }
 
     componentDidUpdate() {
@@ -63,7 +63,7 @@ export default class WrapperPage extends React.Component {
         }
         this.loadCollections();
         this.loadProjects();
-        this.setProjectId();
+        //this.setProjectId();
     }
 
     loadCollections() {
@@ -85,16 +85,9 @@ export default class WrapperPage extends React.Component {
         //
         // TODO: enable this for really multi-project use
         //
-        //if (this.props.projectsStatus && this.props.projectsStatus.split('-')[0] === 'fetched' && this.context.router.route.match.params.projectId !== this.props.projectId) {
         if (this.context.router.route.match.params.projectId !== this.props.projectId) {
             this.props.setProjectId(this.context.router.route.match.params.projectId);
         }
-        //
-        // TODO: rm the following if multi-project is enabled
-        //
-        //if (this.props.projectsStatus && this.props.projectsStatus.split('-')[0] === 'fetched') { // && this.context.router.route.match.params.projectId !== this.props.projectId) {
-            //this.props.setProjectId(this.props.projects[1].identifier);
-        //}
     }
 
     createSocket() {

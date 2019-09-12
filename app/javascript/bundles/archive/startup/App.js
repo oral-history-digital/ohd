@@ -28,23 +28,23 @@ const App = (props) => (
     <Provider store={archiveStore(props)}>
         <BrowserRouter>
             <div>
-                <Route exact path="/:projectId/:locale" component={HomeContainer} />
-                <Route path="/:projectId/:locale/accounts/current" component={WrappedAccountContainer} />
-                <Route exact path="/:projectId/:locale/interviews/new" component={EditInterviewContainer} />
-                <Route exact path="/:projectId/:locale/interviews/:archiveId" component={InterviewContainer} />
-                <Route path="/:projectId/:locale/transcripts/new" component={UploadTranscriptContainer} />
-                <Route path="/:projectId/:locale/uploads/new" component={UploadsContainer} />
-                <Route exact path="/:projectId/:locale/people/new" component={EditPersonContainer} />
-                <Route path="/:projectId/:locale/registry_entries" component={RegistryEntriesTreeContainer} />
-                <Route path="/:projectId/:locale/searches/archive" component={ArchiveSearchContainer} />
-                <Route path="/:projectId/:locale/projects" component={WrappedProjectsContainer} />
-                <Route path="/:projectId/:locale/roles" component={WrappedRolesContainer} />
-                <Route path="/:projectId/:locale/permissions" component={WrappedPermissionsContainer} />
-                <Route path="/:projectId/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />
-                <Route path="/:projectId/:locale/user_accounts/password/edit" component={ActivateAccountContainer} />
-                <Route exact path="/:projectId/:locale/user_registrations/:resetPasswordToken/activate" component={ActivateAccountContainer} />
-                <Route exact path="/:projectId/:locale/user_registrations/new" component={RegisterContainer} />
-                <Route exact path="/:projectId/:locale/user_registrations" component={UserRegistrationsContainer} />
+                <Route exact path="/:locale" component={HomeContainer} />
+                <Route path="/:locale/accounts/current" component={WrappedAccountContainer} />
+                <Route exact path="/:locale/interviews/new" component={EditInterviewContainer} />
+                <Route exact path="/:locale/interviews/:archiveId" component={InterviewContainer} />
+                <Route path="/:locale/transcripts/new" component={UploadTranscriptContainer} />
+                <Route path="/:locale/uploads/new" component={UploadsContainer} />
+                <Route exact path="/:locale/people/new" component={EditPersonContainer} />
+                <Route path="/:locale/registry_entries" component={RegistryEntriesTreeContainer} />
+                <Route path="/:locale/searches/archive" component={ArchiveSearchContainer} />
+                <Route path="/:locale/projects" component={WrappedProjectsContainer} />
+                <Route path="/:locale/roles" component={WrappedRolesContainer} />
+                <Route path="/:locale/permissions" component={WrappedPermissionsContainer} />
+                <Route path="/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />
+                <Route path="/:locale/user_accounts/password/edit" component={ActivateAccountContainer} />
+                <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" component={ActivateAccountContainer} />
+                <Route exact path="/:locale/user_registrations/new" component={RegisterContainer} />
+                <Route exact path="/:locale/user_registrations" component={UserRegistrationsContainer} />
             </div>
         </BrowserRouter>
     </Provider>

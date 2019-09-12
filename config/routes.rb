@@ -4,7 +4,7 @@ Rails.application.routes.draw do
   #root :to => redirect("/#{Project.default_locale}")
   root to: "home#archive", project_id: 'zwar', locale: :de #Project.default_locale.to_sym
 
-  scope "/:project_id", :constraints => {:locale => /[a-z]{2,4}/} do
+  #scope "/:project_id", :constraints => {:locale => /[a-z]{2,4}/} do
     scope "/:locale", :constraints => {:locale => /[a-z]{2}/} do
       devise_for :user_accounts, :controllers => {sessions: 'sessions', passwords: 'passwords'}, skip: [:registrations]
       resources :accounts, only: [:show, :update] do
@@ -161,7 +161,7 @@ Rails.application.routes.draw do
         end
       end
     end
-  end
+  #end
 
   get 'photos/src/:name' => 'photos#src'
   get 'photos/thumb/:name' => 'photos#thumb'
