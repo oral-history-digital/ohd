@@ -35,7 +35,7 @@ export default class OrderNewPasswordForm extends React.Component {
     handleSubmit(event) {
         event.preventDefault();
         if(this.valid()) {
-            this.props.submitOrderNewPassword(`/${pathBase(this.props)}/user_accounts/password`, {user_account: this.state.values});
+            this.props.submitOrderNewPassword(`${pathBase(this.props)}/user_accounts/password`, {user_account: this.state.values});
         } 
     }
 

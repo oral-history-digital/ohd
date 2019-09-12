@@ -20,7 +20,7 @@ export default class RegistryEntrySearchForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        let url = `/${pathBase(this.props)}/searches/registry_entry`;
+        let url = `${pathBase(this.props)}/searches/registry_entry`;
         this.props.searchRegistryEntry(url, {fulltext: this.state.value});
     }
 

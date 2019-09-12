@@ -65,7 +65,7 @@ export default class Account extends React.Component {
                     {this.changeToEditView()}
                     <div
                         className='logout'
-                        onClick={() => this.props.submitLogout(`/${pathBase(this.props)}/user_accounts/sign_out`)}
+                        onClick={() => this.props.submitLogout(`${pathBase(this.props)}/user_accounts/sign_out`)}
                     >
                         {t(this.props, 'logout')}
                     </div>

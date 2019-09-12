@@ -9,7 +9,7 @@ export default class LoginForm extends React.Component {
         return (
             <Form 
                 scope='user_account'
-                onSubmit={function(params){_this.props.submitLogin(`/${pathBase(_this.props)}/user_accounts/sign_in`, params)}}
+                onSubmit={function(params){_this.props.submitLogin(`${pathBase(_this.props)}/user_accounts/sign_in`, params)}}
                 submitText='login'
                 elements={[
                     {

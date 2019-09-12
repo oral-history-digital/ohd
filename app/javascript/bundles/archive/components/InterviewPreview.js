@@ -39,9 +39,9 @@ export default class InterviewPreview extends React.Component {
 
     componentDidMount() {
         if(this.props.fulltext) {
-            this.props.searchInInterview(`/${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+            this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
         } else {
-            this.props.searchInInterview(`/${pathBase(this.props)}/searches/interview`, {fulltext: '', id: this.props.interview.archive_id});
+            this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: '', id: this.props.interview.archive_id});
         }
     }
 
@@ -86,7 +86,7 @@ export default class InterviewPreview extends React.Component {
                 <Link 
                     key={"segment-wrapper" + segment.id}
                     onClick={() => {
-                        this.props.searchInInterview(`/${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                        this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
                         this.props.setTapeAndTime(1, 0);
                     }}
                     to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
@@ -169,7 +169,7 @@ export default class InterviewPreview extends React.Component {
                     {this.renderBadge()}
                     <Link className={'search-result-link'}
                         onClick={() => {
-                            this.props.searchInInterview(`/${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                            this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
                             this.props.setTapeAndTime(1, 0);
                         }}
                         to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
