@@ -39,9 +39,12 @@ export default class Account extends React.Component {
     }
 
     changeToEditView() {
-        if (this.props.account.admin || 
-            (this.props.account.permissions && Object.keys(this.props.account.permissions).length > 0) || 
-            (this.props.account.tasks && Object.keys(this.props.account.tasks).length > 0)
+        if (
+            this.props.account && (
+                this.props.account.admin || 
+                (this.props.account.permissions && Object.keys(this.props.account.permissions).length > 0) || 
+                (this.props.account.tasks && Object.keys(this.props.account.tasks).length > 0)
+            )
         ){
             return (
                 <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.props.editView)}>
@@ -60,7 +63,7 @@ export default class Account extends React.Component {
             <div className={'flyout-login-container'}>
                 <AuthShowContainer ifLoggedIn={true}>
                     <div className='info'>
-                        {`${t(this.props, 'logged_in_as')} ${this.props.account.first_name} ${this.props.account.last_name}`}
+                        {`${t(this.props, 'logged_in_as')} ${this.props.account && this.props.account.first_name} ${this.props.account && this.props.account.last_name}`}
                     </div>
                     {this.changeToEditView()}
                     <div
