@@ -54,20 +54,18 @@ export default class PersonData extends React.Component {
     }
 
     detailViewFields(){
-        if (Array.isArray(this.props.detailViewFields)) {
-            let _this = this;
-            let interviewee = getInterviewee(_this.props);
-            return this.props.detailViewFields.map(function(datum, i){
-                if (datum.source === 'person' || datum.ref_object_type === 'Person') {
-                    let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
-                    let value = interviewee[datum.name] && (interviewee[datum.name][_this.props.locale] || interviewee[datum.name])
-                    if (typeof value === "object"){ value = value.join(", ") }
-                    return contentField(label, value)
-                }
-            })
-        } else {
-            return null;
-        }
+        let _this = this;
+        let interviewee = getInterviewee(_this.props);
+        return this.props.detailViewFields.map(function(datum, i){
+            if (datum.source === 'person' || datum.ref_object_type === 'Person') {
+                let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
+                let value = datum.ref_object_type === 'Person' ? interviewee[datum.name][_this.props.locale] :
+                    interviewee[datum.name]
+                //let value = interviewee[datum.name] && (interviewee[datum.name][_this.props.locale] || interviewee[datum.name])
+                //if (typeof value === "object"){ value = value.join(", ") }
+                return contentField(label, value)
+            }
+        })
     }
 
     // // RS

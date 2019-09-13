@@ -87,18 +87,26 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def groups
-    exist_groups = !object.groups.empty? 
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = exist_groups ? object.groups.map { |f| RegistryEntry.find(f).to_s(locale) } : '---'
-      mem
+    if !object.groups.empty? 
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.groups.map{|f| RegistryEntry.find(f).to_s(locale) }.join(', ')
+        mem
+      end
+    else
+      {}
     end
   end
 
   def country_of_birth
-    I18n.available_locales.inject({}) do |mem, locale|
-      interviewee = object.interviewees.first
-      interviewee && interviewee.country_of_birth && mem[locale] = interviewee.country_of_birth.yield_self { |f| RegistryEntry.find(f).to_s(locale) }
-      mem
+    interviewee = object.interviewees.first
+    country = interviewee && interviewee.country_of_birth 
+    if country
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = country.to_s(locale) 
+        mem
+      end
+    else
+      {}
     end
   end
 
