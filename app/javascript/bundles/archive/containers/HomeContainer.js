@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
 
     return {
         account: state.data.accounts.current,
-        homeContent: state.archive.homeContent[state.archive.locale],
+        homeContent: state.archive.homeContent && state.archive.homeContent !== '' && state.archive.homeContent[state.archive.locale],
         locale: state.archive.locale,
         project: project && project.identifier,
         translations: state.archive.translations,

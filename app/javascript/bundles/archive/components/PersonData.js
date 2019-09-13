@@ -7,7 +7,6 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class PersonData extends React.Component {
 
-
     // typologies(){
     //     let interviewee = getInterviewee(this.props);
     //     if (interviewee.typology && interviewee.typology[this.props.locale]){

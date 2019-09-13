@@ -58,6 +58,23 @@ export default class InterviewInfo extends React.Component {
                 );
             }
         }
+
+        let i = 0;
+        for(let r in this.props.detailViewFields) {
+            i+=1;
+            // if(this.props.detailViewFields[r]["source"] === 'registry_entry'){
+            //     metadataFields.push(
+            //         // TODO: load label of each this.props.interview[this.props.detailViewFields[r]["name"]]
+            //         // this.content(
+            //         //     (this.props.detailViewFields[r]["label"] && this.props.detailViewFields[r]["label"][this.props.locale]) || t(this.props.detailViewFields[r]["name"]) || this.props.detailViewFields[r]["name"], 
+            //         //     value || this.props.interview[this.props.detailViewFields[r]["name"]] || "---",
+            //         //     "",
+            //         //     i
+            //         // )
+            //     )
+            // }
+        }
+
         return metadataFields;
     }
 

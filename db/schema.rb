@@ -585,7 +585,7 @@ ActiveRecord::Schema.define(version: 2019_09_03_090231) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
-  create_table "text_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "text_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.integer "text_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -595,7 +595,7 @@ ActiveRecord::Schema.define(version: 2019_09_03_090231) do
     t.index ["text_id"], name: "index_text_translations_on_text_id"
   end
 
-  create_table "texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "texts", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name"
     t.integer "project_id"
     t.datetime "created_at", null: false
