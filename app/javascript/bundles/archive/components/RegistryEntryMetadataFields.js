@@ -4,7 +4,7 @@ import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormC
 import RegistryReferenceContainer from '../containers/RegistryReferenceContainer';
 import { t, admin } from '../../../lib/utils';
 
-export default class RegistryEntrySearchFacets extends React.Component {
+export default class RegistryEntryMetadataFields extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -34,37 +34,51 @@ export default class RegistryEntrySearchFacets extends React.Component {
 
     registryEntries() {
         let registryEntries = [];
-        if (
-            this.props.interview && 
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`] &&
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`].split('-')[0] === 'fetched'
-        ) {
-            for (var c in this.props.interview.registry_references) {
-                let registryReference = this.props.interview.registry_references[c];
-                let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
-                if (registryEntry && registryEntry.parent_ids[this.props.locale].indexOf(this.props.parentEntryId) > -1 && registryReference !== 'fetched') {
-                    registryEntries.push(
-                        <RegistryReferenceContainer 
-                            registryEntry={registryEntry} 
-                            registryReference={registryReference} 
-                            refObjectType='interview'
-                            locale={this.props.locale}
-                            key={`registry_reference-${registryReference.id}`} 
-                        />
-                    );
-                }
+        for (var c in this.props.interview[this.props.code]) {
+            let registryEntry = this.props.interview[this.props.code][c]
+            if (this.props.registryEntries[registryEntry]) {
+                registryEntries.push(
+                    this.props.registryEntries[registryEntry].name[this.props.locale]
+                );
             }
-            if (registryEntries.length > 1) registryEntries.unshift(
-                <br key={this.props.parentEntryId}/>
-            )
-        } 
-        if (registryEntries.length > 0) {
-            return registryEntries;
-        } else if (!admin(this.props, {type: 'RegistryEntry', action: 'create'})){
-            return (
-                null
-            )
         }
+        return (
+            <span>{registryEntries.join(", ")}</span>
+        )
+        // if (
+        //     this.props.interview && 
+        //     this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`] &&
+        //     this.props.registryEntriesStatus[`children_for_entry_${this.props.parentEntryId}`].split('-')[0] === 'fetched'
+        // ) {
+        //     for (var c in this.props.interview.registry_references) {
+        //         debugger;
+        //         let registryReference = this.props.interview.registry_references[c];
+        //         let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
+        //         if (registryEntry && registryEntry.parent_ids[this.props.locale].indexOf(this.props.parentEntryId) > -1 && registryReference !== 'fetched') {
+        //             registryEntries.push(
+        //                 <RegistryReferenceContainer 
+        //                     registryEntry={registryEntry} 
+        //                     registryReference={registryReference} 
+        //                     refObjectType='interview'
+        //                     locale={this.props.locale}
+        //                     key={`registry_reference-${registryReference.id}`} 
+        //                 />
+        //             );
+        //         }
+        //     }
+        //     if (registryEntries.length > 1) {
+        //         registryEntries.unshift(
+        //             <br key={this.props.parentEntryId}/>
+        //         )
+        //     }
+        // } 
+        // if (registryEntries.length > 0) {
+        //     return registryEntries;
+        // } else if (!admin(this.props, {type: 'RegistryEntry', action: 'create'})){
+        //     return (
+        //         "null"
+        //     )
+        // }
     }
 
     addRegistryReference() {
@@ -96,7 +110,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
     }
 
     render() {
-        if (this.props.registryEntries && this.props.registryEntries[this.props.parentEntryId] && this.registryEntries.length !== 0) {
+        if (this.props.registryEntries && this.props.registryEntries[this.props.parentEntryId] ) {
             return (
                 <p>
                     <span className={'flyout-content-label'}>{(this.props.label && this.props.label[this.props.locale]) || this.props.registryEntries[this.props.parentEntryId].name[this.props.locale]}:</span>
@@ -105,6 +119,7 @@ export default class RegistryEntrySearchFacets extends React.Component {
                 </p>
             )
         } else {
+            // debugger;
             return null;
         }
     }

@@ -275,7 +275,7 @@ export function getInterviewArchiveIdWithOffset(archiveId, list, offset=1) {
 export function contentField(label, value, className='', condition=true) {
     if (condition) {
         return (
-            <p className={`${label}-${value}`}>
+            <p className={`${label}-${value}`} key={`content-field-${label}-${value}`}>
                 <span className="flyout-content-label">{label}:</span>
                 <span className={"flyout-content-data " + className}>{value || '---'}</span>
             </p>

@@ -45,9 +45,18 @@ class PersonSerializer < ApplicationSerializer
   end
 
   def typology
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.typology && object.typology.split(',').map{|t| I18n.t(t, scope: 'search_facets')}.join(', ')
-      mem
+    # I18n.available_locales.inject({}) do |mem, locale|
+    #   mem[locale] = object.typology && object.typology.split(',').map{|t| I18n.t(t, scope: 'search_facets')}.join(', ')
+    #   mem
+    if object.typology
+      facets = object.typology.split(",")
+      object.translations.each_with_object({}) { |i, hsh|
+        alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
+        hsh[alpha2_locale] = facets.map { |typology|
+          I18n.backend.translate(alpha2_locale, "search_facets.#{typology.parameterize(separator: "_")}")
+        # } if I18n.available_locales.include?(alpha2_locale)
+        }
+      }
     end
   end
 

@@ -1,20 +1,21 @@
 import React from 'react';
-import RegistryEntrySearchFacetsContainer from '../containers/RegistryEntrySearchFacetsContainer';
+import RegistryEntryMetadataFieldsContainer from '../containers/RegistryEntryMetadataFieldsContainer';
 import MetadataRegistryReferenceTypeContainer from '../containers/MetadataRegistryReferenceTypeContainer';
 
 export default class InterviewRegistryReferences extends React.Component {
 
     searchFacets() {
         let facets = [];
-        for (var r in this.props.registryEntrySearchFacets) {
-            if (this.props.account.email || this.props.registryEntrySearchFacets[r]['display_on_landing_page']) {
+        for (var r in this.props.registryEntryMetadataFields) {
+            if (this.props.account.email || this.props.registryEntryMetadataFields[r]['display_on_landing_page']) {
                 facets.push(
-                    <RegistryEntrySearchFacetsContainer 
-                        key={`this.props.registry-entry-search-facets-${this.props.registryEntrySearchFacets[r]['id']}`} 
-                        parentEntryId={this.props.registryEntrySearchFacets[r]['id']} 
+                    <RegistryEntryMetadataFieldsContainer
+                        key={`this.props.registry-entry-search-facets-${this.props.registryEntryMetadataFields[r]['id']}`} 
+                        parentEntryId={this.props.registryEntryMetadataFields[r]['id']} 
                         interview={this.props.interview} 
-                        label={this.props.registryEntrySearchFacets[r]['label']}
-                        />
+                        label={this.props.registryEntryMetadataFields[r]['label']}
+                        code={this.props.registryEntryMetadataFields[r]['code']}
+                    />
                 );
             }
         }
@@ -36,7 +37,7 @@ export default class InterviewRegistryReferences extends React.Component {
     }
 
     //registryReferences() {
-        //if (this.props.registryEntrySearchFacets || this.props.registryReferenceTypeMetadataFields) {
+        //if (this.props.registryEntryMetadataFields || this.props.registryReferenceTypeMetadataFields) {
             //return (
                 //<div>
                     //{this.searchFacets()}
@@ -48,7 +49,7 @@ export default class InterviewRegistryReferences extends React.Component {
     //}
 
     render() {
-        if (this.props.interview && (this.props.registryEntrySearchFacets || this.props.registryReferenceTypeMetadataFields)) {
+        if (this.props.interview && (this.props.registryEntryMetadataFields || this.props.registryReferenceTypeMetadataFields)) {
             return (
                 <div>
                     {this.searchFacets()}

@@ -8,14 +8,14 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 export default class PersonData extends React.Component {
 
 
-    typologies(){
-        let interviewee = getInterviewee(this.props);
-        if (interviewee.typology && interviewee.typology[this.props.locale]){
-            return contentField(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
-        } else {
-            return "";
-        }
-    }
+    // typologies(){
+    //     let interviewee = getInterviewee(this.props);
+    //     if (interviewee.typology && interviewee.typology[this.props.locale]){
+    //         return contentField(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
+    //     } else {
+    //         return "";
+    //     }
+    // }
 
     existsPublicBiography(lang) {
         let firstKey = Object.keys(getInterviewee(this.props).biographical_entries)[0];
@@ -55,16 +55,44 @@ export default class PersonData extends React.Component {
     }
 
     detailViewFields(){
-        let _this = this;
-        let interviewee = getInterviewee(_this.props);
-        return this.props.detailViewFields.map(function(datum, i){
-            if (datum.source === 'person' || datum.ref_object_type === 'Person') {
-                let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
-                let value = (interviewee[datum.name] && interviewee[datum.name][_this.props.locale])
-                return contentField(label, value)
-            }
-        })
+        if (Array.isArray(this.props.detailViewFields)) {
+            let _this = this;
+            let interviewee = getInterviewee(_this.props);
+            return this.props.detailViewFields.map(function(datum, i){
+                if (datum.source === 'person' || datum.ref_object_type === 'Person') {
+                    let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
+                    let value = interviewee[datum.name] && (interviewee[datum.name][_this.props.locale] || interviewee[datum.name])
+                    if (typeof value === "object"){ value = value.join(", ") }
+                    return contentField(label, value)
+                }
+            })
+        } else {
+            return null;
+        }
     }
+
+    // // RS
+    // detailViewFields() {
+    //     let _this = this
+    //     let interviewee = getInterviewee(_this.props);
+    //     let contents = []
+    //     for(let r in _this.props.detailViewFields) {
+    //         let datum = _this.props.detailViewFields[r]
+    //         if(datum && datum["source"] === 'person'){
+    //             let label = datum["label"] && datum["label"][_this.props.locale] || t(_this.props, datum["name"]) || datum["name"];
+    //             let value = interviewee[datum["name"]][_this.props.locale]
+    //             if (typeof value === 'object'){ value = value.join(", ") }
+    //             contents.push(
+    //                 contentField(
+    //                     label,
+    //                     value || interviewee[datum["name"]] || "bra"
+                        
+    //                 )
+    //             )
+    //         }
+    //     }
+    //     return contents
+    // }
 
     info() {
         let interviewee = getInterviewee(this.props);
@@ -73,7 +101,7 @@ export default class PersonData extends React.Component {
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
                         {contentField(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
-                        {this.typologies()}
+                        {/* {this.typologies()} */}
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
                         {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}

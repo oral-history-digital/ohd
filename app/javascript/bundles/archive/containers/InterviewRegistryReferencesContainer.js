@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         editView: getCookie('editView'),
         interview: getInterview(state),
-        registryEntrySearchFacets: state.archive.registryEntrySearchFacets,
+        registryEntryMetadataFields: state.archive.registryEntryMetadataFields,
         registryReferenceTypeMetadataFields: state.archive.registryReferenceTypeMetadataFields,
         account: state.data.accounts.current,
     }

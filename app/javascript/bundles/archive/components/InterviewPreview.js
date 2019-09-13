@@ -106,7 +106,7 @@ export default class InterviewPreview extends React.Component {
     interviewDetails() {
         if (this.props.projectId === 'zwar') {
             return (
-                <div className={'search-result-data'}>
+                <div className={'search-result-data'} lang={this.props.locale}>
                     <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration[this.props.locale]}</span><br/>
                     <span>{this.props.interview.language[this.props.locale]}</span>
                     <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
@@ -115,12 +115,12 @@ export default class InterviewPreview extends React.Component {
                 </div>
             );
         }
-        else if (this.props.projectId === 'mog') {
+        else if (this.props.project === 'mog') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
+                    {this.content( t(this.props, 'duration'), this.props.interview.duration[this.props.locale])}
                     {this.content(t(this.props, 'typologies'), this.props.interview.typology[this.props.locale])}
-                    {this.content( t(this.props, 'duration'), this.props.interview.duration)}
-                    {this.content( t(this.props, 'year_of_birth'), this.props.interview.year_of_birth[this.props.locale])}
+                    <small className={this.facetToClass("year-of-birth")}>{this.content( t(this.props, 'year_of_birth'), this.props.interview.year_of_birth[this.props.locale])}</small>
                 {/*<small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>*/}
                 </div>
             )
@@ -177,14 +177,15 @@ export default class InterviewPreview extends React.Component {
                         <div className="search-result-img">
                             <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
                         </div>
+                        
                         <AuthShowContainer ifLoggedIn={true}>
                             <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
                         </AuthShowContainer>
                         <AuthShowContainer ifLoggedOut={true}>
                             <p className={'search-result-name'}>{this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}</p>
-                        </AuthShowContainer>
-
-                        {this.interviewDetails()}
+                        </AuthShowContainer> 
+                        
+                        {this.interviewDetails()} 
                     </Link>
                     {this.renderSlider()}
                     {this.renderExportCheckbox()}

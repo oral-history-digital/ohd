@@ -49,9 +49,10 @@ class ProjectSerializer < ActiveModel::Serializer
     end
   end
   
-  #def detail_view_fields
+  def detail_view_fields
     #object.detail_view_fields.inject({}) { |mem, field| mem[field.name] = MetadataFieldSerializer.new(MetadataField.find_by_name(field.name)).as_json; mem }
-  #end
+    object.detail_view_fields.map{|field| field['label'] = field.localized_hash; field}
+  end
 
   # serialized translations are needed to construct 'translations_attributes' e.g. in MultiLocaleInput
   # containing the id of a translation

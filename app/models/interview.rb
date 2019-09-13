@@ -383,7 +383,7 @@ class Interview < ActiveRecord::Base
     project.registry_entry_search_facets.each do |facet|
       define_singleton_method facet.name do 
         if project.identifier.to_sym == :mog
-          segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id) 
+          segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id).uniq 
         else
           registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
         end
