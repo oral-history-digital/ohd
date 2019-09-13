@@ -272,7 +272,7 @@ export default class VideoPlayer extends React.Component {
         if (this.props.project) {
             return (
                 <div className='wrapper-video'>
-                    {/* <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
+                    <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
                     <i className="fa fa-compress compress" aria-hidden="true" onClick={() => this.compressVideo()} />
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
@@ -289,7 +289,7 @@ export default class VideoPlayer extends React.Component {
                     </div>
                     <div className='video-element'>
                         {this.mediaElement(this)}
-                    </div> */}
+                    </div>
                 </div>
             );
         } else {

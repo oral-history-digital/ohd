@@ -49,10 +49,8 @@ export default class UserRegistrations extends React.Component {
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <div className='wrapper-content'>
                         {this.userRegistrations()}
                         {this.renderScrollObserver()}
-                    </div>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true}>
                     {t(this.props, 'devise.failure.unauthenticated')}
