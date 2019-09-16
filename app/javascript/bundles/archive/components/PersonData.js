@@ -59,37 +59,12 @@ export default class PersonData extends React.Component {
         return this.props.detailViewFields.map(function(datum, i){
             if (datum.source === 'person' || datum.ref_object_type === 'Person') {
                 let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
-                let value = datum.ref_object_type === 'Person' ? interviewee[datum.name][_this.props.locale] :
-                    interviewee[datum.name]
-                //let value = interviewee[datum.name] && (interviewee[datum.name][_this.props.locale] || interviewee[datum.name])
-                //if (typeof value === "object"){ value = value.join(", ") }
+                let value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
+                if (typeof value === "object"){ value = value.join(", ") } //this is needed for mog and probably all other projects
                 return contentField(label, value)
             }
         })
     }
-
-    // // RS
-    // detailViewFields() {
-    //     let _this = this
-    //     let interviewee = getInterviewee(_this.props);
-    //     let contents = []
-    //     for(let r in _this.props.detailViewFields) {
-    //         let datum = _this.props.detailViewFields[r]
-    //         if(datum && datum["source"] === 'person'){
-    //             let label = datum["label"] && datum["label"][_this.props.locale] || t(_this.props, datum["name"]) || datum["name"];
-    //             let value = interviewee[datum["name"]][_this.props.locale]
-    //             if (typeof value === 'object'){ value = value.join(", ") }
-    //             contents.push(
-    //                 contentField(
-    //                     label,
-    //                     value || interviewee[datum["name"]] || "bra"
-                        
-    //                 )
-    //             )
-    //         }
-    //     }
-    //     return contents
-    // }
 
     info() {
         let interviewee = getInterviewee(this.props);
