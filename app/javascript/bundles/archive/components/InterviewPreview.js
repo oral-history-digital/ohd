@@ -115,7 +115,7 @@ export default class InterviewPreview extends React.Component {
                 </div>
             );
         }
-        else if (this.props.project === 'mog') {
+        else if (this.props.projectId === 'mog') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
                     {this.content( t(this.props, 'duration'), this.props.interview.duration[this.props.locale])}
