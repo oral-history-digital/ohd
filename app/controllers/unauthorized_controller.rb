@@ -1,8 +1,6 @@
 class UnauthorizedController < ActionController::Metal
   include ActionController::Rendering
 
-  respond_to :json, :html
-
   def self.call(env)
     #raise "unauthorized"
     render json: {error: 'registration_needed'}

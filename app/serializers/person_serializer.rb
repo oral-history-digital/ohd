@@ -6,10 +6,11 @@ class PersonSerializer < ApplicationSerializer
                :names,
                :text,
                :typology,
+               :translations
              # :histories
              ] |
              MetadataField.where(ref_object_type: "Person", source: "registry_reference_type").inject([]) { |mem, i| mem << i.name } |
-             MetadataField.where(source: "Person").inject([]) { |mem, i| mem << i.name }
+             MetadataField.where(source: "Person").inject([]) { |mem, i| mem << i.name } 
 
   def names
     I18n.available_locales.inject({}) do |mem, locale|
@@ -44,6 +45,28 @@ class PersonSerializer < ApplicationSerializer
     define_method f.name do
       registry_entry = object.send(f.name)
       registry_entry && registry_entry.localized_hash || {}
+    end
+  end
+
+  Person.translated_attribute_names.each do |name|
+    define_method name do
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.send(name, locale)
+        mem
+      end
+    end
+  end
+
+  # serialized translations are needed to construct 'translations_attributes' e.g. in MultiLocaleInput
+  # containing the id of a translation
+  #
+  # without the id a translation would not be updated but newly created!!
+  #
+  def translations
+    I18n.available_locales.inject([]) do |mem, locale|
+      translation = object.translations.where(locale: locale).first
+      mem.push(translation.attributes.reject { |k, v| !(object.translated_attribute_names + [:id, :locale]).include?(k.to_sym) }) if translation
+      mem
     end
   end
 

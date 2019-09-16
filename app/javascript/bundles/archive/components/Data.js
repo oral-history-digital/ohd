@@ -14,7 +14,7 @@ export default class Data extends React.Component {
         } else {
             return (
                 <div className='base-data box'>
-                    <p className='name'>{this.props.data.title || this.props.data.name}</p>
+                    <p className='name'>{this.props.data.title || this.props.data.name.hasOwnProperty(this.props.locale) ? this.props.data.name[this.props.locale] : this.props.data.name}</p>
                 </div>
             )
         }
@@ -60,7 +60,7 @@ export default class Data extends React.Component {
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, `edit.${this.props.scope}.show`)}
                 onClick={() => this.props.openArchivePopup({
-                    title: this.props.data.name || this.props.data.title,
+                    title: this.props.data.title || this.props.data.name.hasOwnProperty(this.props.locale) ? this.props.data.name[this.props.locale] : this.props.data.name,
                     content: this.details()
                 })}
             >

@@ -169,6 +169,7 @@ class ApplicationController < ActionController::Base
         },
         roles: { query: {page: 1} },
         permissions: { query: {page: 1} },
+        people: { query: {page: 1} },
         projects: { query: {page: 1} }
       }
     end

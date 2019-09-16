@@ -9,8 +9,13 @@ export default class InterviewContributors extends React.Component {
         let contributionTypes = {};
         if (
             this.props.interview &&
-            this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`] &&
-            this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`].split('-')[0] === 'fetched' && 
+            (
+                (
+                    this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`] &&
+                    this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`].split('-')[0] === 'fetched'
+                ) || 
+                this.props.peopleStatus.all && this.props.peopleStatus.all.split('-')[0] === 'fetched'
+            ) &&
             this.props.contributionTypes
         ) {
             for (var c in this.props.interview.contributions) {

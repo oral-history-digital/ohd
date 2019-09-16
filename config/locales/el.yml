@@ -269,7 +269,8 @@ el:
       edit: Segment bearbeiten
       edit_heading: Überschriften bearbeiten
       speaker_string: Sprecher (als String)
-    person:
+    people:
+      admin: Personen bearbeiten
       new: Person hinzufügen
       edit: Person bearbeiten
       processed: 'Person angelegt: '
@@ -592,6 +593,9 @@ el:
       project:
         one: Projekt
         other: Projekte
+      person:
+        one: Person
+        other: Personen
       metadata_field:
         one: Metadatum
         other: Metadaten
@@ -819,6 +823,9 @@ el:
         last_name: Nachname
         birth_name: Geburtsname
         date_of_birth: Geburtsdatum
+        alias_names: Weiterer Name
+        other_first_names: Weiterer Name
+        typology: Erfahrungen
       registry_entry:
         descriptor: Name
         notes: Anmerkungen
