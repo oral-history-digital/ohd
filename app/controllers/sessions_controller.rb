@@ -9,7 +9,6 @@ class SessionsController < Devise::SessionsController
 
   def create
     self.resource = warden.authenticate!(auth_options)
-    binding.pry
     if resource.user_registration.projects.include?(current_project)
       set_flash_message!(:notice, :signed_in)
       sign_in(resource_name, resource)

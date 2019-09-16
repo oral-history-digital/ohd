@@ -36,7 +36,6 @@ namespace :import do
         language = Language.find_by_code(data[1]) 
         interview = Interview.find_by_archive_id(data[0])
         interview.update_attributes language_id: language.id
-        binding.pry
       rescue StandardError => e
         puts "#{data[0]}: #{data[1]}"
         puts ("#{e.message}: #{e.backtrace}")
