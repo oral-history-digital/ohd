@@ -107,7 +107,7 @@ export default class ArchiveSearch extends React.Component {
     }
 
     handleTabClick(tabIndex) {
-        this.props.setViewMode(this.props.viewModes[tabIndex])
+    this.props.setViewMode(this.props.viewModes[tabIndex])
     }
 
 
@@ -242,7 +242,6 @@ export default class ArchiveSearch extends React.Component {
                 let visibility = (_this.props.viewModes.length < 2) ? 'hidden' : ''
                 return (
                     <Tab className={'search-results-tab ' + visibility} key={i}>
-                        {/* <i className="fa fa-th"></i> */}
                         <span>{t(_this.props, viewMode)}</span>
                     </Tab>
                 )   
@@ -255,7 +254,6 @@ export default class ArchiveSearch extends React.Component {
     tabPanels() {
         if (this.props.viewModes) {
             let _this = this
-            // alert("" + this.props.viewModes.length + " " + this.props.viewModes[0])
             return this.props.viewModes.map(function(viewMode, i) {
                 return (
                     <TabPanel key={i}>
@@ -287,8 +285,8 @@ export default class ArchiveSearch extends React.Component {
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        selectedIndex={0}
-                        //defaultIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
+                        selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
+                        defaultIndex={0}
                         onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
                         <TabList className={'search-results-tabs'}>
