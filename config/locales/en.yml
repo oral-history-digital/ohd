@@ -25,6 +25,7 @@ en:
   sr: Serbian
   uk: Ukrainian
   in: in
+  not_your_project: You are not registered for this project.
   registration_needed: For reasons of privacy you have to register. After registration
     you have access to all testimonies in full length.
   change_to_bcrypt: We have recently updated the way we store our passwords. Please

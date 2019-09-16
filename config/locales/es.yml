@@ -25,6 +25,7 @@ es:
   sr: serbisch
   uk: ukrainisch
   in: in
+  not_your_project: You are not registered for this project.
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
