@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
+import InterviewEditViewContainer from '../containers/InterviewEditViewContainer';
 import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
 import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
@@ -109,7 +110,25 @@ export default class Interview extends React.Component {
 
     content() {
         if (this.interviewLoaded()){
-            if (!this.props.isCatalog) {
+            if (this.props.isCatalog) {
+                return (<InterviewDetailsLeftSideContainer interview={this.interview()} />);
+            } else if (this.props.interviewEditView) {
+                return (
+                    <div>
+                        <AuthShowContainer ifLoggedIn={true}>
+                            <VideoPlayerContainer
+                                interview={this.interview()}
+                            />
+                            <InterviewEditViewContainer
+                                interview={this.interview()}
+                            />
+                        </AuthShowContainer>
+                        <AuthShowContainer ifLoggedOut={true}>
+                            {this.loggedOutContent()}
+                        </AuthShowContainer>
+                    </div>
+                )
+            } else {
                 return (
                     <div>
                         <AuthShowContainer ifLoggedIn={true}>
@@ -125,8 +144,6 @@ export default class Interview extends React.Component {
                         </AuthShowContainer>
                     </div>
                 )
-            } else {
-                return (<InterviewDetailsLeftSideContainer interview={this.interview()} />);
             }
         } else {
             return null;

@@ -134,7 +134,7 @@ class ApplicationController < ActionController::Base
         videoStatus: 'pause',
         transcriptTime: 0,
         transcriptScrollEnabled: false,
-        resolution: nil,
+        resolution: '480p',
       },
       search: initial_search_redux_state
     }

@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
-import { t, fullname, segments, activeSegment, getInterviewee } from '../../../lib/utils';
+import { t, admin, fullname, segments, activeSegment, getInterviewee } from '../../../lib/utils';
 import moment from 'moment';
 
 import { MISSING_STILL } from '../constants/archiveConstants'
@@ -268,12 +268,19 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
+    interviewEditViewButton() {
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+            return <i className="fa fa-edit edit" aria-hidden="true" onClick={() => this.props.changeToInterviewEditView(!this.props.interviewEditView)} />
+        }
+    }
+
     render() {
         if (this.props.project) {
             return (
                 <div className='wrapper-video'>
                     <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
                     <i className="fa fa-compress compress" aria-hidden="true" onClick={() => this.compressVideo()} />
+                    {this.interviewEditViewButton()}
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
                             {fullname(this.props, getInterviewee(this.props), true)}

@@ -8,6 +8,7 @@ import {
     RECEIVE_STATIC_CONTENT,
 
     CHANGE_TO_EDIT_VIEW,
+    CHANGE_TO_INTERVIEW_EDIT_VIEW,
 
     //EXPORT_DOI,
     RECEIVE_RESULT,
@@ -83,6 +84,10 @@ const archive = (state = initialState, action) => {
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {
                 editView: action.editView
+            })
+        case CHANGE_TO_INTERVIEW_EDIT_VIEW:
+            return Object.assign({}, state, {
+                interviewEditView: action.interviewEditView
             })
         case RECEIVE_RESULT:
             return Object.assign({}, state, {
