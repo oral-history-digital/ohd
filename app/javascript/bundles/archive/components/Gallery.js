@@ -25,13 +25,15 @@ export default class Gallery extends React.Component {
 
     renderPhotos() {
         let photos = [];
+        let n = 0;
         if (
             this.props.interview && this.props.interview.photos
         ) {
             for (var c in this.props.interview.photos) {
                 let photo = this.props.interview.photos[c];
                 if (photo.workflow_state === 'public' || admin(this.props, photo)) {
-                    photos.push(this.photo(photo));
+                    photos.push(this.photo(photo, n));
+                    n+=1;
                 }
             }
         } 
@@ -46,14 +48,16 @@ export default class Gallery extends React.Component {
         }
     }
 
-    photo(photo) {
+    photo(photo, n) {
         return (
             <div key={"photo-" + photo.id}
                  className={'thumbnail'}
                  onClick={() => this.props.openArchivePopup({
-                     title: null,
+                     title: 'null',
                      big: true,
-                     content: <CarouselContainer/>
+                     content: <CarouselContainer
+                                n={n}
+                                />,
                  })}
 
             >
