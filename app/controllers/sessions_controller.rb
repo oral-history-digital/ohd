@@ -15,6 +15,7 @@ class SessionsController < Devise::SessionsController
       yield resource if block_given?
       respond_with resource, location: after_sign_in_path_for(resource)
     else
+      sign_out
       render json: {error: 'not_your_project'}
     end
   rescue BCrypt::Errors::InvalidHash

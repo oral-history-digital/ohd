@@ -6,6 +6,7 @@ import InterviewLocationsContainer from '../containers/InterviewLocationsContain
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import UserRegistrationSearchFormContainer from '../containers/UserRegistrationSearchFormContainer';
 import ProjectSearchFormContainer from '../containers/ProjectSearchFormContainer';
+import PeopleSearchFormContainer from '../containers/PeopleSearchFormContainer';
 import RoleSearchFormContainer from '../containers/RoleSearchFormContainer';
 import PermissionSearchFormContainer from '../containers/PermissionSearchFormContainer';
 import RegistryEntrySearchFormContainer from '../containers/RegistryEntrySearchFormContainer';
@@ -223,7 +224,7 @@ export default class FlyoutTabs extends React.Component {
                         {this.subTab('edit.upload_transcript.title', 'description', `${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
                         {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'update', id: this.props.archiveId}, this.props.archiveId)}
                         {this.subTab('edit.upload.upload', 'description', `${pathBase(this.props)}/uploads/new`, {type: 'Interview', action: 'update'})}
-                        {this.subTab('edit.person.new', 'description', `${pathBase(this.props)}/people/new`, {type: 'Person', action: 'create'})}
+                        {this.subTab( 'edit.people.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
                     </div>
                 </TabPanel>
             )

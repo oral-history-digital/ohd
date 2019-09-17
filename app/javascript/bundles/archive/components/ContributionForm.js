@@ -18,7 +18,7 @@ export default class ContributionForm extends React.Component {
 
     loadAllPeople() {
         if (!this.props.peopleStatus.all) {
-            this.props.fetchData(this.props, 'people');
+            this.props.fetchData(this.props, 'people', null, null, 'all');
         }
     }
 

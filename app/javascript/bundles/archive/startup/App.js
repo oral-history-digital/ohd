@@ -12,7 +12,7 @@ import InterviewContainer from '../containers/InterviewContainer';
 import EditInterviewContainer from '../containers/EditInterviewContainer';
 import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import UploadsContainer from '../containers/UploadsContainer';
-import EditPersonContainer from '../containers/EditPersonContainer';
+import WrappedPeopleContainer from '../containers/WrappedPeopleContainer';
 import RegistryEntriesTreeContainer from '../containers/RegistryEntriesTreeContainer';
 import ArchiveSearchContainer from '../containers/ArchiveSearchContainer';
 import RegisterContainer from '../containers/RegisterContainer';
@@ -34,10 +34,10 @@ const App = (props) => (
                 <Route exact path="/:locale/interviews/:archiveId" component={InterviewContainer} />
                 <Route path="/:locale/transcripts/new" component={UploadTranscriptContainer} />
                 <Route path="/:locale/uploads/new" component={UploadsContainer} />
-                <Route exact path="/:locale/people/new" component={EditPersonContainer} />
                 <Route path="/:locale/registry_entries" component={RegistryEntriesTreeContainer} />
                 <Route path="/:locale/searches/archive" component={ArchiveSearchContainer} />
                 <Route path="/:locale/projects" component={WrappedProjectsContainer} />
+                <Route path="/:locale/people" component={WrappedPeopleContainer} />
                 <Route path="/:locale/roles" component={WrappedRolesContainer} />
                 <Route path="/:locale/permissions" component={WrappedPermissionsContainer} />
                 <Route path="/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />

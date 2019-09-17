@@ -113,7 +113,7 @@ class ApplicationController < ActionController::Base
           Project.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         accounts: {
-          current: current_user_account && ::UserAccountSerializer.new(current_user_account)
+          current: current_user_account && ::UserAccountSerializer.new(current_user_account) || {}
         }
       },
       popup: {
@@ -169,6 +169,7 @@ class ApplicationController < ActionController::Base
         },
         roles: { query: {page: 1} },
         permissions: { query: {page: 1} },
+        people: { query: {page: 1} },
         projects: { query: {page: 1} }
       }
     end

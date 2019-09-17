@@ -12,7 +12,7 @@ class PeopleController < ApplicationController
 
   def create
     authorize Person
-    @person = Person.create person_params
+    @person = Person.create prepared_params
     respond_to do |format|
       format.json do
         render json: data_json(@person, msg: 'processed')
@@ -23,7 +23,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find params[:id]
     authorize @person
-    @person.update_attributes person_params
+    @person.update_attributes prepared_params
     respond_to do |format|
       format.json do
         render json: data_json(@person)
@@ -32,21 +32,29 @@ class PeopleController < ApplicationController
   end
 
   def index
-    policy_scope(Person)
-    respond_to do |format|
-      extra_params = params[:contributors_for_interview] ?  "contributors_for_interview_#{params[:contributors_for_interview]}" : nil
+    if params.keys.include?('all')
+      people = policy_scope(Person).all
+      extra_params = 'all'
+    elsif params[:contributors_for_interview] 
+      people = policy_scope(Person).where(id: Interview.find(params[:contributors_for_interview]).map(&:person_id))
+      extra_params = "contributors_for_interview_#{params[:contributors_for_interview]}"
+    else
+      page = params[:page] || 1
+      people = policy_scope(Person).includes(:translations).where(search_params).order("person_translations.last_name ASC").paginate page: page
+      extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+    end
 
+    respond_to do |format|
+      format.html { render 'react/app' }
       format.json do
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{extra_params ? extra_params : 'all'}-#{Person.maximum(:updated_at)}" do
-          people = (
-            params[:contributors_for_interview] ?
-              Interview.find(params[:contributors_for_interview]).contributors :
-              Person.all
-          ).includes(:translations, :histories, :biographical_entries, :registry_references)
+          people = people.includes(:translations, :histories, :biographical_entries, :registry_references)
           {
             data: people.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'people',
-            extra_params: extra_params
+            extra_params: extra_params,
+            page: params[:page] || 1, 
+            result_pages_count: people.total_pages
           }
         end
         render json: json
@@ -70,6 +78,10 @@ class PeopleController < ApplicationController
 
   private
 
+  def prepared_params
+    person_params.merge(translations_attributes: JSON.parse(person_params[:translations_attributes]))
+  end
+
   def person_params
     params.require(:person).
       permit(
@@ -80,6 +92,16 @@ class PeopleController < ApplicationController
         'birth_name',
         'gender',
         'date_of_birth',
+        :translations_attributes
     )
+  end
+
+  def search_params
+    params.permit(
+      :first_name,
+      :last_name,
+      :birth_name,
+      :alias_names
+    ).to_h
   end
 end

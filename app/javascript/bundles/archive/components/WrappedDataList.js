@@ -22,7 +22,7 @@ export default class WrappedDataList extends React.Component {
             this.props.dataStatus[statifiedQuery(this.props.query)].split('-')[0] === 'fetching'
         ) {
             return <img src={spinnerSrc} className="archive-search-spinner"/>;
-        } else if (this.props.resultPagesCount > (this.props.query.page)) {
+        } else if (!this.props.resultPagesCount || this.props.resultPagesCount > (this.props.query.page)) {
             return (
                 <Observer
                     onChange={inView => this.handleScroll(inView)}
