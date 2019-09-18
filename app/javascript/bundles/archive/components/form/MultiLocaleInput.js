@@ -10,6 +10,18 @@ export default class MultiLocaleInput extends React.Component {
         return `${label} (${locale})`;
     }
 
+    // the (perhaps given) attribute-value is fetched from serialized translations
+    // than the new value is send back in a stringified JSON-hash in the scope of the form and further scoped with 'translations_attributes'
+    //
+    // like this resource.update_attributes(resource_params) needs only to JSON.parse(translations_attributes)
+    //
+    // so to update a persons translated first_name
+    // the transmitted params would be:
+    //
+    // {"person"=>{"translations_attributes"=>"[{\"locale\":\"de\",\"id\":\"339\",\"first_name\":\"Ewa\"},{\"id\":340,\"locale\":\"ru\",\"first_name\":\"Эва\"]"}
+    //
+    // TODO: enable validation for this MultiLocaleInput
+    //
     input(locale) {
         let translation = this.props.data && this.props.data.translations && this.props.data.translations.find(t => t.locale === locale)
 
