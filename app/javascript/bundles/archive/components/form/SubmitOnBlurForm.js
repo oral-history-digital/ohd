@@ -1,7 +1,7 @@
 import React from 'react';
 import { t, pluralize } from '../../../../lib/utils';
 
-export default class SubmitOnFocusOutForm extends React.Component {
+export default class SubmitOnBlurForm extends React.Component {
 
     constructor(props, context) {
         super(props);

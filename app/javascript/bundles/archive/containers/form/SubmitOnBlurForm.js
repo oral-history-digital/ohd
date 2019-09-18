@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import SubmitOnFocusOutForm from '../../components/form/SubmitOnFocusOutForm';
+import SubmitOnBlurForm from '../../components/form/SubmitOnBlurForm';
 import { submitData } from '../../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
@@ -16,4 +16,4 @@ const mapDispatchToProps = (dispatch) => ({
     submitData: (props, params) => dispatch(submitData(props, params)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubmitOnFocusOutForm);
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitOnBlurForm);

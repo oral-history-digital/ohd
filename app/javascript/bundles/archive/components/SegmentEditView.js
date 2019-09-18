@@ -3,7 +3,7 @@ import React from 'react';
 //import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
 import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
-import SubmitOnFocusOutForm from '../containers/form/SubmitOnFocusOutForm';
+import SubmitOnBlurForm from '../containers/form/SubmitOnBlurForm';
 import { t, fullname, admin } from "../../../lib/utils";
 
 export default class SegmentEditView extends React.Component {
@@ -72,7 +72,7 @@ export default class SegmentEditView extends React.Component {
         switch (columnName) {
             case 'text_orig': {
                 return (
-                    <SubmitOnFocusOutForm
+                    <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
                         translationLocale={this.props.originalLocale}
@@ -84,7 +84,7 @@ export default class SegmentEditView extends React.Component {
             }
             case 'text_translated': {
                 return (
-                    <SubmitOnFocusOutForm
+                    <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
                         translationLocale={this.props.translatedLocale}
@@ -96,7 +96,7 @@ export default class SegmentEditView extends React.Component {
             }
             case 'heading_orig': {
                 return (
-                    <SubmitOnFocusOutForm
+                    <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
                         translationLocale={this.props.originalLocale}
@@ -108,7 +108,7 @@ export default class SegmentEditView extends React.Component {
             }
             case 'heading_translated': {
                 return (
-                    <SubmitOnFocusOutForm
+                    <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
                         translationLocale={this.props.translatedLocale}
