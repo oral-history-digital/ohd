@@ -22,9 +22,8 @@ class Annotation < ActiveRecord::Base
                             :unless => Proc.new{|i| i.interview_id.nil?}
 
   def localized_hash
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = text(locale) if I18n.available_locales.include?( locale.to_s )
-      #mem[locale] = ActionView::Base.full_sanitizer.sanitize(text(locale)).gsub("&nbsp;", " ")  if I18n.available_locales.include?( locale.to_s )
+    translations.inject({}) do |mem, translation|
+      mem[translation.locale] = translation.text
       mem
     end
   end

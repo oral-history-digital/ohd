@@ -94,7 +94,7 @@ export default class SegmentEditView extends React.Component {
                 )
                 break;
             }
-            case 'heading_orig': {
+            case 'mainheading_orig': {
                 return (
                     <SubmitOnBlurForm
                         data={this.props.segment}
@@ -106,7 +106,7 @@ export default class SegmentEditView extends React.Component {
                 )
                 break;
             }
-            case 'heading_translated': {
+            case 'mainheading_translated': {
                 return (
                     <SubmitOnBlurForm
                         data={this.props.segment}
@@ -115,6 +115,46 @@ export default class SegmentEditView extends React.Component {
                         attribute='mainheading'
                         type='input'
                     />
+                )
+                break;
+            }
+            case 'subheading_orig': {
+                return (
+                    <SubmitOnBlurForm
+                        data={this.props.segment}
+                        scope='segment'
+                        translationLocale={this.props.originalLocale}
+                        attribute='subheading'
+                        type='input'
+                    />
+                )
+                break;
+            }
+            case 'subheading_translated': {
+                return (
+                    <SubmitOnBlurForm
+                        data={this.props.segment}
+                        scope='segment'
+                        translationLocale={this.props.translatedLocale}
+                        attribute='subheading'
+                        type='input'
+                    />
+                )
+                break;
+            }
+            case 'registry_references': {
+                return (
+                    <SegmentRegistryReferencesContainer 
+                        segment={this.props.segment} 
+                        interview={this.props.interview} 
+                        locale={this.props.locale} 
+                    />
+                )
+                break;
+            }
+            case 'annotations': {
+                return (
+                    <AnnotationsContainer segment={this.props.segment} locale={this.props.locale} />
                 )
                 break;
             }

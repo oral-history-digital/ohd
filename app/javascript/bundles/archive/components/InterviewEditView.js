@@ -45,7 +45,7 @@ export default class InterviewEditView extends React.Component {
 
     columns() {
         // TODO: change this to various edit views!
-        return ['text_orig', 'text_translated', 'heading_orig', 'heading_translated'];
+        return ['text_orig', 'text_translated', 'mainheading_orig', 'mainheading_translated', 'subheading_orig', 'subheading_translated', 'registry_references', 'annotations'];
     }
 
     tableHeader() {
