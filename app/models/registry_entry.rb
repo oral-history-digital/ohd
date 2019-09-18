@@ -914,7 +914,7 @@ class RegistryEntry < ActiveRecord::Base
   end
 
   def available_translations
-    registry_names.map { |n| n.translations.map{|t| t.locale[0..1].to_sym} }.flatten.uniq
+    registry_names.map { |n| n.translations.map{|t| t.locale[0..1]} }.flatten.uniq
     #registry_names.map { |n| n.translations.map(&:locale) }.flatten.uniq
   end
 
