@@ -269,9 +269,12 @@ class InterviewsController < ApplicationController
   end
 
   def initial_interview_redux_state
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
+    #Rails.cache.fetch("#{current_project.cache_key_prefix}-#{current_user_account ? current_user_account.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
       initial_redux_state.update(
-        archive: initial_redux_state[:archive].update(archiveId: @interview.archive_id),
+        archive: initial_redux_state[:archive].update(
+          archiveId: @interview.archive_id,
+          interviewEditView: cookies[:interviewEditView]
+        ),
         data: initial_redux_state[:data].update(
           interviews: {"#{@interview.identifier}": cache_single(@interview)}, 
           people: @interview.contributors.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
@@ -281,7 +284,7 @@ class InterviewsController < ApplicationController
           )
         )
       )
-    end
+    #end
   end
   helper_method :initial_interview_redux_state
 

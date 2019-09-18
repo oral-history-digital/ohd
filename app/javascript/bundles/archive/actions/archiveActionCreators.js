@@ -11,6 +11,7 @@ import {
     SET_VIEW_MODE,
 
     CHANGE_TO_EDIT_VIEW,
+    CHANGE_TO_INTERVIEW_EDIT_VIEW,
 
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS,
@@ -59,6 +60,20 @@ export function changeToEditView(bool) {
         // remove cookie through negative expiration time:
         let expireDays = bool ? 3 : -1;
         setCookie('editView', bool, expireDays);
+    }
+}
+
+const interviewEditView = (bool) => ({
+    type: CHANGE_TO_INTERVIEW_EDIT_VIEW,
+    interviewEditView: bool
+});
+
+export function changeToInterviewEditView(bool) {
+    return dispatch => {
+        dispatch(interviewEditView(bool));
+        // remove cookie through negative expiration time:
+        let expireDays = bool ? 3 : -1;
+        setCookie('interviewEditView', bool, expireDays);
     }
 }
 

@@ -137,7 +137,7 @@ header.site-header {
   height: 400px
 }
 
-.expand, .compress {
+.expand, .compress, .edit {
   transition: background-color 0.3s;
   &:hover {
     background-color: $primary-color;
@@ -150,7 +150,7 @@ header.site-header {
   display: none;
 }
 
-.compress {
+.compress, .edit {
   display: block;
   position: absolute;
   right: 0;
@@ -158,6 +158,10 @@ header.site-header {
   cursor: pointer;
   padding: 20px 17px 17px 20px;
   margin: 10px;
+}
+
+.edit {
+  right: 50px;
 }
 
 .fix-video {
@@ -181,7 +185,7 @@ header.site-header {
     // -ms-transition: height .1s linear;
     // -o-transition: height .1s linear;
     // transition: height .1s linear;
-    .expand {
+    .expand, .edit {
       display: block;
       position: absolute;
       right: 0;
@@ -193,6 +197,10 @@ header.site-header {
 
     .compress {
       display: none;
+    }
+
+    .edit {
+      right: 50px;
     }
 
     .video-element {

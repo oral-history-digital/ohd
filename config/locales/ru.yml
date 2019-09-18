@@ -38,6 +38,11 @@ ru:
   italic: italic
   text: text
   or: or
+  edit_column_header:
+    text_orig: Transkript
+    text_translated: Übersetzung
+    heading_orig: Überschrift (orig.)
+    heading_translated: Überschrift (übers.)
   legend:
     title: графические oбозначения
     mog:

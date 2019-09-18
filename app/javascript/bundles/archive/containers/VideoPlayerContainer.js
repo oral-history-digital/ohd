@@ -4,8 +4,9 @@ import VideoPlayer from '../components/VideoPlayer';
 import {handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution} from '../actions/videoPlayerActionCreators';
 import {handleTranscriptScroll} from '../actions/interviewActionCreators';
 import {openArchivePopup} from '../actions/archivePopupActionCreators';
+import { changeToInterviewEditView } from '../actions/archiveActionCreators';
 
-import { getInterview, getProject } from '../../../lib/utils';
+import { getInterview, getProject, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let interview = getInterview(state);
@@ -24,6 +25,7 @@ const mapStateToProps = (state) => {
         contributionTypes: state.archive.contributionTypes,
         mediaStreams: state.archive.mediaStreams,
         resolution: state.interview.resolution,
+        interviewEditView: getCookie('interviewEditView')
     }
 }
 
@@ -33,7 +35,8 @@ const mapDispatchToProps = (dispatch) => ({
     setNextTape: () => dispatch(setNextTape()),
     setTapeAndTimeAndResolution: (tape, time, resolution) => dispatch(setTapeAndTimeAndResolution(tape, time, resolution)),
     handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
-    openArchivePopup: (params) => dispatch(openArchivePopup(params))
+    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
+    changeToInterviewEditView: (bool) => dispatch(changeToInterviewEditView(bool)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayer);
