@@ -286,7 +286,7 @@ export default class VideoPlayer extends React.Component {
                         content: <SelectInterviewEditViewColumnsFormContainer />
                     })}
                 >
-                    <i className="fa fa-microscope"></i>
+                    <i className="fa fa-check-square check-square"></i>
                 </div>
             )
         //} else {

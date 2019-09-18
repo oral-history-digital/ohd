@@ -1,6 +1,4 @@
 import React from 'react';
-//import SegmentFormContainer from '../containers/SegmentFormContainer';
-//import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
 import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import SubmitOnBlurForm from '../containers/form/SubmitOnBlurForm';
@@ -12,21 +10,6 @@ export default class SegmentEditView extends React.Component {
         super(props);
         this.state = {};
     }
-
-    //shouldComponentUpdate(nextProps, nextState) {
-        //if (nextProps.statuses[this.props.segment.id] !== this.props.statuses[this.props.segment.id]) {
-            //return true;
-        //}
-        //if (nextProps.active !== this.props.active) {
-            //return true;
-        //}
-
-        //return false;
-    //}
-
-    //css() {
-        //return 'segment ' + (this.props.active ? 'active' : 'inactive');
-    //}
 
     columnElement(columnName) {
         switch (columnName) {

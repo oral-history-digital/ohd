@@ -60,15 +60,15 @@ class SegmentSerializer < ApplicationSerializer
   end
 
   def mainheading
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.mainheading(locale)
+    object.translations.inject({}) do |mem, translation|
+      mem[translation.locale] = translation.mainheading
       mem
     end
   end
 
   def subheading
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.subheading(locale)
+    object.translations.inject({}) do |mem, translation|
+      mem[translation.locale] = translation.subheading
       mem
     end
   end
