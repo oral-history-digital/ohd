@@ -64,10 +64,26 @@ var Loader = {
                     // you need more file-inputs? change the implementation here!
                     req.attach(`${scope}[${param}]`, params[scope][param]);
                 } else {
-                    req.field(`${scope}[${param}]`, 
-                        //params[scope][param]
-                        typeof(params[scope][param]) === 'object' ? JSON.stringify(params[scope][param]) : params[scope][param]
-                    );
+                    if (Array.isArray(params[scope][param])) {
+                        // value is an array
+                        params[scope][param].map((elem) => {
+                            if (typeof(elem) === 'object') {
+                                // array elements are hashes/ objects
+                                Object.keys(elem).map((e) => {
+                                    req.field(`${scope}[${param}][][${e}]`, elem[e]);
+                                })
+                            } else {
+                                // array values are some non-complex values like strings or ints
+                                req.field(`${scope}[${param}][]`, elem);
+                            }
+                        })
+                    } else if (typeof(params[scope][param]) === 'object') {
+                        // value is a hash/ object
+                        req.field(`${scope}[${param}]`, JSON.stringify(params[scope][param]));
+                    } else {
+                        // normal value
+                        req.field(`${scope}[${param}]`, params[scope][param]);
+                    }
                 }
             } else {
                 // clean params from undefined values
