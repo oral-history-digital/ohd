@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
-  root :to => redirect("/zwar/de")
-  #root :to => redirect("/#{Project.default_locale}")
+  # root :to => redirect("/zwar/de")
+  root :to => redirect("/#{Project.default_locale}")
   root to: "home#archive", project_id: 'zwar', locale: :de #Project.default_locale.to_sym
 
   #scope "/:project_id", :constraints => {:locale => /[a-z]{2,4}/} do
