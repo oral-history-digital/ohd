@@ -9,9 +9,11 @@ import { getInterview } from '../../../lib/utils';
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
+        contributionTypes: state.archive.contributionTypes,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         interview: getInterview(state),
+        people: state.data.people,
         tape: state.interview.tape,
         transcriptTime: state.interview.transcriptTime,
         transcriptScrollEnabled: state.interview.transcriptScrollEnabled,

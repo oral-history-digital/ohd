@@ -87,9 +87,9 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def groups
-    if !object.groups.empty? 
+    if !object.groups.empty?
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.groups.map{|f| RegistryEntry.find(f).to_s(locale) }.join(', ')
+        mem[locale] = object.groups.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
         mem
       end
     else
@@ -99,10 +99,10 @@ class InterviewSerializer < ApplicationSerializer
 
   def country_of_birth
     interviewee = object.interviewees.first
-    country = interviewee && interviewee.country_of_birth 
+    country = interviewee && interviewee.country_of_birth
     if country
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = country.to_s(locale) 
+        mem[locale] = country.to_s(locale)
         mem
       end
     else
@@ -194,13 +194,13 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   #def media_type
-    #if object.media_type
-      ## add 'default' to have available the string 'audio' or 'video'
-      #(I18n.available_locales + [:default]).inject({}) do |mem, locale|
-        #mem[locale] = (locale == :default) ? object.media_type : I18n.t("search_facets.#{object.media_type}", locale: locale)
-        #mem
-      #end
-    #end
+  #if object.media_type
+  ## add 'default' to have available the string 'audio' or 'video'
+  #(I18n.available_locales + [:default]).inject({}) do |mem, locale|
+  #mem[locale] = (locale == :default) ? object.media_type : I18n.t("search_facets.#{object.media_type}", locale: locale)
+  #mem
+  #end
+  #end
   #end
 
   def short_title
@@ -268,8 +268,8 @@ class InterviewSerializer < ApplicationSerializer
   def duration
     if object.duration && object.duration > 0
       Time.at(object.duration).utc.strftime("%-H h %M min")
-    else 
-      '---'
+    else
+      "---"
     end
   end
 
@@ -285,7 +285,7 @@ class InterviewSerializer < ApplicationSerializer
   def typology
     if object.interviewees.first
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.interviewees.first.typology && object.interviewees.first.typology.split(',').map{|t| I18n.t(t, scope: 'search_facets')}.join(', ')
+        mem[locale] = object.interviewees.first.typology && object.interviewees.first.typology.split(",").map { |t| I18n.t(t, scope: "search_facets", locale: locale) }.join(", ")
         mem
       end
     end

@@ -71,7 +71,12 @@ export default class FlyoutTabs extends React.Component {
     }
 
     switchLocale(locale) {
+        // with projectId
         let newPath = this.context.router.route.location.pathname.replace(/^\/[a-z]{2,4}\/[a-z]{2}\//, `/${this.props.projectId}/${locale}/`);
+        // workaround: (without projectId in path), TODO: fit this when multi-project is finished
+        if (newPath === this.context.router.route.location.pathname) {
+            newPath = this.context.router.route.location.pathname.replace(/^\/[a-z]{2}\//, `/${locale}/`);
+        }
         this.context.router.history.push(newPath);
         this.props.setLocale(locale);
     }
