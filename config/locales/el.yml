@@ -39,6 +39,7 @@ el:
   text: text
   or: or
   edit_column_header:
+    select_columns: Zu bearbeitende Daten auswählen
     text_orig: Transkript
     text_translated: Übersetzung
     mainheading_orig: Überschrift (orig.)

@@ -9,6 +9,7 @@ import {
 
     CHANGE_TO_EDIT_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
+    SELECT_INTERVIEW_EDIT_VIEW_COLUMNS,
 
     //EXPORT_DOI,
     RECEIVE_RESULT,
@@ -89,6 +90,8 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 interviewEditView: action.interviewEditView
             })
+        case SELECT_INTERVIEW_EDIT_VIEW_COLUMNS:
+            return Object.assign({}, state, { selectedInterviewEditViewColumns: action.interviewEditViewColumns })
         case RECEIVE_RESULT:
             return Object.assign({}, state, {
                 doiResult: action.result

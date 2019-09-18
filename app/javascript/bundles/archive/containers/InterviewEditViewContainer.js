@@ -13,7 +13,8 @@ const mapStateToProps = (state) => {
         interview: getInterview(state),
         tape: state.interview.tape,
         transcriptTime: state.interview.transcriptTime,
-        segmentsStatus: state.data.statuses.segments
+        segmentsStatus: state.data.statuses.segments,
+        selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,
     }
 }
 

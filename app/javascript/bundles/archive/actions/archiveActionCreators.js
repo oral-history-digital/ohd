@@ -12,6 +12,7 @@ import {
 
     CHANGE_TO_EDIT_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
+    SELECT_INTERVIEW_EDIT_VIEW_COLUMNS,
 
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS,
@@ -74,6 +75,17 @@ export function changeToInterviewEditView(bool) {
         // remove cookie through negative expiration time:
         let expireDays = bool ? 3 : -1;
         setCookie('interviewEditView', bool, expireDays);
+    }
+}
+
+const setSelectedInterviewEditViewColumns = (params) => ({
+    type: SELECT_INTERVIEW_EDIT_VIEW_COLUMNS,
+    interviewEditViewColumns: params
+});
+
+export function selectInterviewEditViewColumns(params) {
+    return dispatch => {
+        dispatch(setSelectedInterviewEditViewColumns(params));
     }
 }
 
