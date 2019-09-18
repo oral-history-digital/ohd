@@ -20,7 +20,8 @@ class SegmentSerializer < ApplicationSerializer
              :timecode,
              :speaker_changed,
              :speaker_id,
-             :speaker
+             :speaker,
+             :translations
              #:speaker_is_interviewee
 
   belongs_to :speaking_person, serializer: LightPersonSerializer
