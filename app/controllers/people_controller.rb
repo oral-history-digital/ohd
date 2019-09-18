@@ -12,7 +12,7 @@ class PeopleController < ApplicationController
 
   def create
     authorize Person
-    @person = Person.create prepared_params
+    @person = Person.create person_params
     respond_to do |format|
       format.json do
         render json: data_json(@person, msg: 'processed')
@@ -23,7 +23,7 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find params[:id]
     authorize @person
-    @person.update_attributes prepared_params
+    @person.update_attributes person_params
     respond_to do |format|
       format.json do
         render json: data_json(@person)
@@ -78,10 +78,6 @@ class PeopleController < ApplicationController
 
   private
 
-  def prepared_params
-    person_params.merge(translations_attributes: JSON.parse(person_params[:translations_attributes]))
-  end
-
   def person_params
     params.require(:person).
       permit(
@@ -92,7 +88,7 @@ class PeopleController < ApplicationController
         'birth_name',
         'gender',
         'date_of_birth',
-        :translations_attributes
+        translations_attributes: [:locale, :id, :first_name, :last_name, :birth_name, :other_first_names, :alias_names]
     )
   end
 

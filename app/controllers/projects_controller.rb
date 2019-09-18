@@ -52,7 +52,7 @@ class ProjectsController < ApplicationController
   # POST /projects
   def create
     authorize Project
-    @project = Project.create(prepared_params)
+    @project = Project.create(project_params)
 
     respond_to do |format|
       format.json do
@@ -63,7 +63,7 @@ class ProjectsController < ApplicationController
 
   # PATCH/PUT /projects/1
   def update
-    @project.update(prepared_params)
+    @project.update(project_params)
 
     respond_to do |format|
       format.json do
@@ -92,10 +92,6 @@ class ProjectsController < ApplicationController
       authorize @project
     end
 
-    def prepared_params
-      project_params.merge(translations_attributes: JSON.parse(project_params[:translations_attributes]))
-    end
-
     # Only allow a trusted parameter "white list" through.
     def project_params
       params.require(:project).
@@ -121,7 +117,7 @@ class ProjectsController < ApplicationController
           "hidden_registry_entry_ids",
           "pdf_registry_entry_codes",
           "is_catalog",
-          :translations_attributes
+          translations_attributes: [:locale, :name, :id]
       )
     end
 
