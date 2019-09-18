@@ -50,7 +50,7 @@ export default class SubmitOnBlurForm extends React.Component {
         let params = {[this.props.scope]: {id: this.props.data.id}};
 
         if (this.props.translationLocale) {
-            params[this.props.scope].translations_attributes = {id: this.translation().id, locale: this.props.translationLocale, [this.props.attribute]: this.state.value};
+            params[this.props.scope].translations_attributes = [{id: this.translation().id, locale: this.props.translationLocale, [this.props.attribute]: this.state.value}];
         } else {
             params[this.props.scope][this.props.attribute] = this.state.value;
         }

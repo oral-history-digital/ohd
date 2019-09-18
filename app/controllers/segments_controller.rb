@@ -107,6 +107,12 @@ class SegmentsController < ApplicationController
   private
 
   def segment_params
-    params.require(:segment).permit(:text, :mainheading, :subheading, :speaker_id)
+    params.require(:segment).permit(
+      :text, 
+      :mainheading, 
+      :subheading, 
+      :speaker_id,
+      translations_attributes: [:locale, :text, :id, :mainheading, :subheading]
+    )
   end
 end
