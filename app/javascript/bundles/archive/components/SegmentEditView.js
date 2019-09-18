@@ -3,6 +3,7 @@ import React from 'react';
 //import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
 import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
+import SubmitOnFocusOutForm from '../containers/form/SubmitOnFocusOutForm';
 import { t, fullname, admin } from "../../../lib/utils";
 
 export default class SegmentEditView extends React.Component {
@@ -67,22 +68,54 @@ export default class SegmentEditView extends React.Component {
         //}
     //}
 
-    columnValue(columnName) {
+    columnElement(columnName) {
         switch (columnName) {
             case 'text_orig': {
-                return this.props.segment.text[this.props.originalLocale];
+                return (
+                    <SubmitOnFocusOutForm
+                        data={this.props.segment}
+                        scope='segment'
+                        translationLocale={this.props.originalLocale}
+                        attribute='text'
+                        type='textarea'
+                    />
+                )
                 break;
             }
             case 'text_translated': {
-                return this.props.segment.text[this.props.translatedLocale];
+                return (
+                    <SubmitOnFocusOutForm
+                        data={this.props.segment}
+                        scope='segment'
+                        translationLocale={this.props.translatedLocale}
+                        attribute='text'
+                        type='textarea'
+                    />
+                )
                 break;
             }
             case 'heading_orig': {
-                return this.props.segment.mainheading[this.props.originalLocale];
+                return (
+                    <SubmitOnFocusOutForm
+                        data={this.props.segment}
+                        scope='segment'
+                        translationLocale={this.props.originalLocale}
+                        attribute='mainheading'
+                        type='input'
+                    />
+                )
                 break;
             }
             case 'heading_translated': {
-                return this.props.segment.mainheading[this.props.translatedLocale];
+                return (
+                    <SubmitOnFocusOutForm
+                        data={this.props.segment}
+                        scope='segment'
+                        translationLocale={this.props.translatedLocale}
+                        attribute='mainheading'
+                        type='input'
+                    />
+                )
                 break;
             }
         }
@@ -92,7 +125,9 @@ export default class SegmentEditView extends React.Component {
         let _this = this;
         return this.props.columns.map(function(column, i){
             return (
-                <td key={`${_this.props.segment.id}-column-${i}`}>{_this.columnValue(column)}</td>
+                <td key={`${_this.props.segment.id}-column-${i}`}>
+                    {_this.columnElement(column)}
+                </td>
             )
         })
     }
