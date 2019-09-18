@@ -291,6 +291,15 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
+  def periods
+    if object.periods
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.periods.map{|p| RegistryEntry.find(p).descriptor(locale)}
+        mem
+      end
+    end
+  end
+
   # def duration
   #   object.duration.timecode
   # end

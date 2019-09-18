@@ -57,12 +57,15 @@ export default class PersonData extends React.Component {
         let _this = this;
         let interviewee = getInterviewee(_this.props);
         return this.props.detailViewFields.map(function(datum, i){
+            let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
+            let value = ''
             if (datum.source === 'person' || datum.ref_object_type === 'Person') {
-                let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
-                let value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
-                if (typeof value === "object"){ value = value.join(", ") } //this is needed for mog and probably all other projects
-                return contentField(label, value)
+                value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
+            } else {
+                value = _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
             }
+            if (typeof value === "object"){ value = value.join(", ") } //this is needed for mog and probably all other projects
+            return contentField(label, value)
         })
     }
 
