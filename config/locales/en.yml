@@ -566,8 +566,8 @@ en:
           show_tree: Alle Einträge zeigen
           show_search_results: Suchergebnisse zeigen
       biographical_entry:
-        one: Kurzbiographie
-        other: Kurzbiographien
+        one: Short Biography
+        other: Short Biographies
       user_registration:
         one: Benutzer/ Registrierung
         other: Benutzer/ Registrierung
