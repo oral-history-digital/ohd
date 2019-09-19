@@ -22,7 +22,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
     setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
-    searchInInterview: (props) => dispatch(searchInInterview(props)),
+    searchInInterview: (url, searchQuery) => dispatch(searchInInterview(url, searchQuery)),
     addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),
 })
 

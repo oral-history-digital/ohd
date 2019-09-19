@@ -7,14 +7,14 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class PersonData extends React.Component {
 
-    typologies(){
-        let interviewee = getInterviewee(this.props);
-        if (interviewee.typology && interviewee.typology[this.props.locale]){
-            return contentField(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
-        } else {
-            return "";
-        }
-    }
+    // typologies(){
+    //     let interviewee = getInterviewee(this.props);
+    //     if (interviewee.typology && interviewee.typology[this.props.locale]){
+    //         return contentField(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
+    //     } else {
+    //         return "";
+    //     }
+    // }
 
     existsPublicBiography(lang) {
         let firstKey = Object.keys(getInterviewee(this.props).biographical_entries)[0];
@@ -76,7 +76,7 @@ export default class PersonData extends React.Component {
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
                         {contentField(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
-                        {this.typologies()}
+                        {/* {this.typologies()} */}
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
                         {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
