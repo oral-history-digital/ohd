@@ -490,6 +490,7 @@ en:
   search_facets:
     accessibility: Accessibility
     groups: Group
+    group_details: Group Details
     camps: Camp
     country_of_birth: Country Of Birth
     forced_labor_fields: Deployment Area

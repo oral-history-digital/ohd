@@ -97,6 +97,7 @@ export default class PersonData extends React.Component {
                     {this.detailViewFields()}
                     {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'search_facets.group_details'), this.props.interview.group_details && this.props.interview.group_details[this.props.locale], "", this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'activerecord.models.biographical_entry.one'), biographicalEntry && biographicalEntry.text[this.props.locale], '', this.props.projectId === 'campscapes')}
                 </div>
             );
