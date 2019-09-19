@@ -40,7 +40,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
               duration: data[21],
               video: data[15] && data[15].downcase == 'video',
               archive_id: data[0],
-              properties: {interviewer: data[23], signature_original: data[14], link: data[27]}
+              properties: {interviewer: data[23], signature_original: data[14], link: data[27], subcollection: data[13]}
             }
 
             if interview
