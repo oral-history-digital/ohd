@@ -65,6 +65,7 @@ class ApplicationController < ActionController::Base
         editView: false,
         doiResult: {},
         selectedArchiveIds: ['dummy'],
+        selectedInterviewEditViewColumns: ['text_orig', 'text_translated'],
         translations: translations,
         countryKeys: country_keys,
         contributionTypes: Project.contribution_types,

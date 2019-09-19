@@ -35,7 +35,8 @@ class SegmentsController < ApplicationController
     #@segment.save
     @segment.update_attributes(segment_params)
 
-    clear_cache @segment
+    @segment.touch
+    @segment.reload
     #if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
       #Rails.cache.delete "#{current_project.cache_key_prefix}-headings-#{@segment.id}-#{@segment.updated_at}"
     #end
@@ -107,6 +108,12 @@ class SegmentsController < ApplicationController
   private
 
   def segment_params
-    params.require(:segment).permit(:text, :mainheading, :subheading, :speaker_id)
+    params.require(:segment).permit(
+      :text, 
+      :mainheading, 
+      :subheading, 
+      :speaker_id,
+      translations_attributes: [:locale, :text, :id, :mainheading, :subheading]
+    )
   end
 end

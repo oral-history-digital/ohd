@@ -137,7 +137,7 @@ header.site-header {
   height: 400px
 }
 
-.expand, .compress, .edit {
+.expand, .compress, .edit, .check-square {
   transition: background-color 0.3s;
   &:hover {
     background-color: $primary-color;
@@ -150,7 +150,7 @@ header.site-header {
   display: none;
 }
 
-.compress, .edit {
+.compress, .edit, .check-square {
   display: block;
   position: absolute;
   right: 0;
@@ -162,6 +162,10 @@ header.site-header {
 
 .edit {
   right: 50px;
+}
+
+.check-square {
+  right: 100px;
 }
 
 .fix-video {
@@ -201,6 +205,10 @@ header.site-header {
 
     .edit {
       right: 50px;
+    }
+
+    .check-square {
+      right: 100px;
     }
 
     .video-element {

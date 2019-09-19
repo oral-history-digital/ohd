@@ -39,10 +39,15 @@ ru:
   text: text
   or: or
   edit_column_header:
+    select_columns: Zu bearbeitende Daten auswählen
     text_orig: Transkript
     text_translated: Übersetzung
-    heading_orig: Überschrift (orig.)
-    heading_translated: Überschrift (übers.)
+    mainheading_orig: Überschrift (orig.)
+    mainheading_translated: Überschrift (übers.)
+    subheading_orig: 2.Überschrift (orig.)
+    subheading_translated: 2.Überschrift (übers.)
+    registry_references: Erwähnungen
+    annotations: Anmerkungen
   legend:
     title: графические oбозначения
     mog:

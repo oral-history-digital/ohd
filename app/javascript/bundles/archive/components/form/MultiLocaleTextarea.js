@@ -1,9 +1,9 @@
 import React from 'react';
-import InputContainer from '../../containers/form/InputContainer';
+import TextareaContainer from '../../containers/form/TextareaContainer';
 import MultiLocaleWrapperContainer from '../../containers/form/MultiLocaleWrapperContainer';
 import { t } from '../../../../lib/utils';
 
-export default class MultiLocaleInput extends React.Component {
+export default class MultiLocaleTextarea extends React.Component {
 
     render() {
         return (
@@ -12,7 +12,7 @@ export default class MultiLocaleInput extends React.Component {
                 scope={this.props.scope}
                 attribute={this.props.attribute}
             >
-                <InputContainer />
+                <TextareaContainer />
             </MultiLocaleWrapperContainer>
         )
     }

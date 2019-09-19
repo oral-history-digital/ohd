@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
+import SelectInterviewEditViewColumnsFormContainer from '../containers/SelectInterviewEditViewColumnsFormContainer';
 import { t, admin, fullname, segments, activeSegment, getInterviewee } from '../../../lib/utils';
 import moment from 'moment';
 
@@ -268,10 +269,29 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
-    interviewEditViewButton() {
-        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+    enableInterviewEditViewButton() {
+        //if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return <i className="fa fa-edit edit" aria-hidden="true" onClick={() => this.props.changeToInterviewEditView(!this.props.interviewEditView)} />
-        }
+        //}
+    }
+
+    selectInterviewEditViewColumns() {
+        //if (admin(this.props, {type: 'Interview', action: 'update'})) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit_column_header.select_columns')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit_column_header.select_columns'),
+                        content: <SelectInterviewEditViewColumnsFormContainer />
+                    })}
+                >
+                    <i className="fa fa-check-square check-square"></i>
+                </div>
+            )
+        //} else {
+            //return null;
+        //}
     }
 
     render() {
@@ -280,7 +300,8 @@ export default class VideoPlayer extends React.Component {
                 <div className='wrapper-video'>
                     <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
                     <i className="fa fa-compress compress" aria-hidden="true" onClick={() => this.compressVideo()} />
-                    {this.interviewEditViewButton()}
+                    {this.enableInterviewEditViewButton()}
+                    {this.selectInterviewEditViewColumns()}
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
                             {fullname(this.props, getInterviewee(this.props), true)}

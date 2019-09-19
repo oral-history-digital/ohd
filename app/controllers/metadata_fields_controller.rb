@@ -5,7 +5,7 @@ class MetadataFieldsController < ApplicationController
 
   def create
     authorize MetadataField
-    @metadata_field = MetadataField.create prepared_params
+    @metadata_field = MetadataField.create metadata_field_params
     @metadata_field.project.touch
     
     respond_to do |format|
@@ -22,7 +22,7 @@ class MetadataFieldsController < ApplicationController
   end
 
   def update
-    @metadata_field.update_attributes(prepared_params)
+    @metadata_field.update_attributes(metadata_field_params)
 
     clear_cache @metadata_field
     @metadata_field.project.touch
@@ -88,10 +88,6 @@ class MetadataFieldsController < ApplicationController
       authorize @metadata_field
     end
 
-    def prepared_params
-      metadata_field_params.merge(translations_attributes: JSON.parse(metadata_field_params[:translations_attributes]))
-    end
-
     def metadata_field_params
       params.require(:metadata_field).permit(
         "project_id",
@@ -105,7 +101,7 @@ class MetadataFieldsController < ApplicationController
         "source",
         "label",
         "values",
-        :translations_attributes
+        translations_attributes: [:locale, :label, :id]
       )
     end
 end

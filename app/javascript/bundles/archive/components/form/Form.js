@@ -1,6 +1,7 @@
 import React from 'react';
 import InputContainer from '../../containers/form/InputContainer';
 import MultiLocaleInputContainer from '../../containers/form/MultiLocaleInputContainer';
+import MultiLocaleTextareaContainer from '../../containers/form/MultiLocaleTextareaContainer';
 import TextareaContainer from '../../containers/form/TextareaContainer';
 import SelectContainer from '../../containers/form/SelectContainer';
 import { t, pluralize } from '../../../../lib/utils';
@@ -170,6 +171,7 @@ export default class Form extends React.Component {
             select: SelectContainer,
             input: InputContainer,
             multiLocaleInput: MultiLocaleInputContainer,
+            multiLocaleTextarea: MultiLocaleTextareaContainer,
             textarea: TextareaContainer 
         }
     }

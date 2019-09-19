@@ -39,17 +39,8 @@ export default class InterviewEditView extends React.Component {
         }
     }
 
-    firstSegment() {
-        return segments(this.props)[this.props.interview.first_segments_ids[this.props.tape]];
-    }
-
-    columns() {
-        // TODO: change this to various edit views!
-        return ['text_orig', 'text_translated', 'heading_orig', 'heading_translated'];
-    }
-
     tableHeader() {
-        let row = this.columns().map((column, index) => {
+        let row = this.props.selectedInterviewEditViewColumns.map((column, index) => {
             return <th className='box' key={`edit-column-header-${index}`}>{t(this.props, `edit_column_header.${column}`)}</th>
         })
         return <tr>{row}</tr>;
@@ -62,7 +53,6 @@ export default class InterviewEditView extends React.Component {
             let segment = shownSegments[segmentId];
             rows.push(<SegmentEditViewContainer 
                 segment={segment} 
-                columns={this.columns()} 
                 originalLocale={this.props.interview.lang}
                 translatedLocale={this.props.interview.languages.filter(locale => locale !== this.props.interview.lang)[0]}
                 key={`segment-edit-view-${segmentId}`} 

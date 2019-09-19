@@ -17,5 +17,21 @@ class ApplicationSerializer < ActiveModel::Serializer
     :update
   end
 
+  # serialized translations are needed to construct 'translations_attributes' e.g. in MultiLocaleInput
+  # containing the id of a translation
+  #
+  # without the id a translation would not be updated but newly created!!
+  #
+  def translations
+    if object.respond_to? :translations
+      object.translations.inject([]) do |mem, translation|
+        mem.push(translation.attributes.reject { |k, v| !(object.translated_attribute_names + [:id, :locale]).include?(k.to_sym) })
+        mem
+      end
+    else
+      []
+    end
+  end
+
 end
 

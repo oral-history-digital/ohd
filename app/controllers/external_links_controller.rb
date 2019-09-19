@@ -5,7 +5,7 @@ class ExternalLinksController < ApplicationController
 
   def create
     authorize ExternalLink
-    @external_link = ExternalLink.create prepared_params
+    @external_link = ExternalLink.create external_link_params
     @external_link.project.touch
 
     respond_to do |format|
@@ -22,7 +22,7 @@ class ExternalLinksController < ApplicationController
   end
 
   def update
-    @external_link.update_attributes(prepared_params)
+    @external_link.update_attributes(external_link_params)
 
     clear_cache @external_link
     @external_link.project.touch
@@ -88,18 +88,12 @@ class ExternalLinksController < ApplicationController
       authorize @external_link
     end
 
-    def prepared_params
-      external_link_params.merge(translations_attributes: JSON.parse(external_link_params[:translations_attributes]))
-    end
-
     def external_link_params
       params.require(:external_link).permit(
         :project_id, 
         :name,
-        :translations_attributes
+        translations_attributes: [:locale, :url, :id]
       )
-      #).tap do |whitelisted|
-        #whitelisted[:url] = params[:external_link][:translations_attributes].permit!
-      #end
+
     end
 end
