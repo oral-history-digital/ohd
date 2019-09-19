@@ -7,14 +7,14 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class PersonData extends React.Component {
 
-    // typologies(){
-    //     let interviewee = getInterviewee(this.props);
-    //     if (interviewee.typology && interviewee.typology[this.props.locale]){
-    //         return contentField(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
-    //     } else {
-    //         return "";
-    //     }
-    // }
+    typologies(){
+        let interviewee = getInterviewee(this.props);
+        if (interviewee.typology && interviewee.typology[this.props.locale]){
+            return contentField(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
+        } else {
+            return "";
+        }
+    }
 
     existsPublicBiography(lang) {
         let firstKey = Object.keys(getInterviewee(this.props).biographical_entries)[0];
@@ -57,12 +57,15 @@ export default class PersonData extends React.Component {
         let _this = this;
         let interviewee = getInterviewee(_this.props);
         return this.props.detailViewFields.map(function(datum, i){
+            let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
+            let value = ''
             if (datum.source === 'person' || datum.ref_object_type === 'Person') {
-                let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
-                let value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
-                if (typeof value === "object"){ value = value.join(", ") } //this is needed for mog and probably all other projects
-                return contentField(label, value)
+                value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
+            } else {
+                value = _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
             }
+            if (typeof value === "object"){ value = value.join(", ") } //this is needed for mog and probably all other projects
+            return contentField(label, value)
         })
     }
 
@@ -73,7 +76,7 @@ export default class PersonData extends React.Component {
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
                         {contentField(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
-                        {/* {this.typologies()} */}
+                        {this.typologies()}
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
                         {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
