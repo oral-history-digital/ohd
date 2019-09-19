@@ -118,15 +118,15 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_language(name)
-    lang = ISO_639.find(name)
-    lang = ISO_639.find_by_english_name(name) unless lang
-    if lang
-      language = Language.find_by_code(lang.alpha3) 
-      language = Language.create(code: lang.alpha3, name: lang.english_name) unless language
+    languages = name.split(' and ').map do |l| 
+      ISO_639.find(l) ||
+      ISO_639.find_by_english_name(l.classify) ||
+      ISO_639.search(l) 
     end
-    if language
-    else
-    end
+    code = languages.map(&:alpha3).join('/')
+    english_name = languages.map(&:english_name).join(' and ')
+    language = Language.find_by_code(code)
+    language = Language.create(code: code, name: english_name) unless language
     language
   end
 
