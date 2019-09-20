@@ -28,12 +28,11 @@ class TranscriptsController < ApplicationController
       interview.recalculate_duration!
     end
 
-    contribution_data = transcript_params[:contributions] ? JSON.parse(transcript_params[:contributions]) : []
-    create_contributions(interview, contribution_data)
+    create_contributions(interview, transcript_params[:contributions])
     
     locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send(Project.alpha) 
 
-    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account, contribution_data)
+    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account, transcript_params[:contributions])
 
     respond_to do |format|
       format.json do
