@@ -709,7 +709,7 @@ ru:
         segmentators: Сегментация
         language: Язык
         language_id: Originalsprache
-        video: liegt ein Video vor?
+        media_type: Media Typ
         translated: ist das Interview bereits übersetzt?
         workflow_state: 'Status ändern zu:'
         observations: Protokoll

@@ -38,7 +38,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
               collection_id: data[12] && find_or_create_collection(data[12]).id,
               language_id: (language = find_or_create_language(data[16]); language ? language.id : nil),
               duration: data[21],
-              video: data[15] && data[15].downcase == 'video',
+              media_type: data[15],
               archive_id: data[0],
               properties: {interviewer: data[23], signature_original: data[14], link: data[27], subcollection: data[13]}
             }
@@ -49,7 +49,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
               interview = Interview.create interview_data
             end
 
-            Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
+            # cleanup missleading contributions
+            Contribution.where(interview_id: interview.id, contribution_type: 'interviewee').destroy_all
+            Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
 
             # create accesibility and reference it
             accessibility = data[22] && RegistryEntry.find_or_create_descendant('accessibility', "#{I18n.locale}::#{data[22]}")
@@ -101,7 +103,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_person(opts)
-    Person.where(opts).first || Person.create(opts)
+    person = Person.where(opts).first 
+    person ? person.update_attributes(opts) : Person.create(opts)
+    person
   end
 
   def find_or_create_collection(name)
@@ -121,7 +125,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     languages = name.split(' and ').map do |l| 
       ISO_639.find(l) ||
       ISO_639.find_by_english_name(l.classify) ||
-      ISO_639.search(l) 
+      ISO_639.search(l).first 
     end
     code = languages.map(&:alpha3).join('/')
     english_name = languages.map(&:english_name).join(' and ')
@@ -132,7 +136,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
   def find_or_create_place(name, country_name)
     country = country_name && RegistryEntry.find_or_create_descendant('places', "#{I18n.locale}::#{country_name}")
-    place = name && RegistryEntry.find_or_create_descendant(country ? country.entry_code : 'places', "#{I18n.locale}::#{name}")
+    place = name && RegistryEntry.find_or_create_descendant(country ? country.code : 'places', "#{I18n.locale}::#{name}")
     place
   end
 
