@@ -53,7 +53,7 @@ class InterviewsController < ApplicationController
   def mark_texts
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
-    texts_to_mark = mark_text_params[:texts] && JSON.parse(mark_text_params[:texts]).map { |t| t["text_to_mark"] }
+    texts_to_mark = mark_text_params[:texts].map{ |t| t["text_to_mark"] }
 
     MarkTextJob.perform_later(@interview, texts_to_mark, mark_text_params[:locale], current_user_account)
 
@@ -73,12 +73,11 @@ class InterviewsController < ApplicationController
   def update_speakers
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
-    contribution_data = update_speakers_params[:contributions] && JSON.parse(update_speakers_params[:contributions])
 
     # speakers are people designated through column speaker in segment.
-    # contributors (contribution_data) are people designated through column speaker_id
+    # contributors (update_speakers_params[:contributions]) are people designated through column speaker_id
     #
-    AssignSpeakersJob.perform_later(@interview, speakers, contribution_data, current_user_account)
+    AssignSpeakersJob.perform_later(@interview, speakers, update_speakers_params[:contributions], current_user_account)
 
     respond_to do |format|
       format.json do
@@ -310,8 +309,8 @@ class InterviewsController < ApplicationController
   def mark_text_params
     params.require(:mark_text).
       permit(
-      "texts",
-      "locale"
+      :locale,
+      texts: [:text_to_mark]
     )
   end
 

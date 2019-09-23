@@ -25,13 +25,14 @@ export default class MarkTextForm extends React.Component {
     }
 
     form() {
+        let _this = this;
         if (
             this.state.showForm
         ) {
             return (
                 <Form 
                     scope='mark_text'
-                    onSubmit={this.props.submitData}
+                    onSubmit={function(params){_this.props.submitData(_this.props, params)}}
                     values={{
                         id: this.props.interview && this.props.interview.archive_id
                     }}
