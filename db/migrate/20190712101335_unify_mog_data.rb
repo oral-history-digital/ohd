@@ -1,6 +1,6 @@
 class UnifyMogData < ActiveRecord::Migration[5.2]
   def change
-    if Project.identifier.to_sym == :mog
+    if Project.current.identifier.to_sym == :mog
       Contribution.where(contribution_type: 'Informants').update_all contribution_type: 'interviewee'
       Contribution.where(contribution_type: 'Interviewer').update_all contribution_type: 'interviewer'
       Contribution.where(contribution_type: 'Transcribed / described').update_all contribution_type: 'transcriptor'
