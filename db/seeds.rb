@@ -1,3 +1,5 @@
+require "iso-639"
+
 I18n.locale = :en
 
 # create root registry_entry
@@ -32,5 +34,7 @@ accessibility = RegistryEntry.create_with_parent_and_names(root.id, 'en::Accessi
 
 # create default collection
 Collection.create name: 'default'
+
+ISO_639::ISO_639_1.each{|l| Language.create(code: l.alpha3, name: l.english_name) unless Language.find_by_code l.alpha3}
 
 Rake::Task['users:init_admins'].execute

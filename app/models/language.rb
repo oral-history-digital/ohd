@@ -4,7 +4,7 @@ class Language < ActiveRecord::Base
 
   RTL_LANGUAGES = %w( Hebräisch Arabisch )
 
-  translates :name, :abbreviated
+  translates :name, :abbreviated, fallbacks_for_empty_translations: true
 
   has_many :interviews
 
