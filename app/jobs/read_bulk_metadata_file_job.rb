@@ -1,8 +1,8 @@
 class ReadBulkMetadataFileJob < ApplicationJob
   queue_as :default
 
-  def perform(file_path, receiver)
-    read_file(file_path)
+  def perform(file_path, receiver, project)
+    read_file(file_path, project)
     Interview.reindex
     Rails.cache.redis.keys("#{Project.current.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
 
@@ -15,7 +15,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
   end
 
-  def read_file(file_path)
+  def read_file(file_path, project)
     I18n.locale = :en
 
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00" })
@@ -34,6 +34,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
             interview = Interview.find_by_archive_id(data[0])
 
             interview_data = {
+              project_id: project.id,
               interview_date: data[17] || data[18],
               collection_id: data[12] && find_or_create_collection(data[12]).id,
               language_id: (language = find_or_create_language(data[16]); language ? language.id : nil),
@@ -67,7 +68,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
             # create group_details and reference it
             group_details = data[8] && RegistryEntry.find_or_create_descendant('group_details', "#{I18n.locale}::#{data[8]}")
-            create_reference(group.id, interview, interview) if group_details
+            create_reference(group_details.id, interview, interview) if group_details
 
             # create birth location and reference it
             birth_location_type = RegistryReferenceType.find_by_code('birth_location')

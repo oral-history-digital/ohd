@@ -56,26 +56,12 @@ class InterviewSerializer < ApplicationSerializer
   #:citation_timecode,
   #:indexed_at,
   #:src,
-  ] | Project.current.list_columns.inject([]) { |mem, i| mem << i["name"] } | Project.current.detail_view_fields.inject([]) { |mem, i| mem << i["name"] }
+  ] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_entry_metadata_fields.map(&:name)
 
   #belongs_to :colletion, serializer: CollectionSerializer
 
   def collection
     object.collection && object.collection.localized_hash || {}
-  end
-
-  def camps
-    I18n.available_locales.inject({}) do |mem, locale|
-      object.camps && mem[locale] = object.camps.map { |f| RegistryEntry.find(f).to_s(locale) }
-      mem
-    end
-  end
-
-  def accessibility
-    I18n.available_locales.inject({}) do |mem, locale|
-      object.accessibility && mem[locale] = object.accessibility.map { |f| RegistryEntry.find(f).to_s(locale) }
-      mem
-    end
   end
 
   def gender
@@ -86,14 +72,16 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def groups
-    if !object.groups.empty?
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.groups.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
-        mem
+  Project.current.registry_entry_metadata_fields.each do |m|
+    define_method m.name do
+      if !object.send(m.name).empty?
+        I18n.available_locales.inject({}) do |mem, locale|
+          mem[locale] = object.send(m.name).map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+          mem
+        end
+      else
+        {}
       end
-    else
-      {}
     end
   end
 
