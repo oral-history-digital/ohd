@@ -32,13 +32,13 @@ default: &default
 
   contribution_types:
     interviewee: 'interviewee'
-    interviewer: 'interview'
-    transcriptor: 'transcript'
-    translator: 'translation'
-    segmentator: 'segmentation'
-    cinematographer: 'Camera recorder'
-    quality_manager: 'Quality management interviewing'
-    proofreader: 'proof_reading' 
+    interviewer: 'interviewer'
+    transcriptor: 'transcriptor'
+    translator: 'translator'
+    segmentator: 'segmentator'
+    cinematographer: 'cinematographer'
+    quality_manager: 'quality_manager'
+    proofreader: 'proofreader' 
 
   upload_types:
     - bulk_metadata
