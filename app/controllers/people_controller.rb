@@ -52,8 +52,8 @@ class PeopleController < ApplicationController
             data: people.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: "people",
             extra_params: extra_params,
-          # page: params[:page] || 1,
-          # result_pages_count: people.total_pages,
+            page: params[:page] || 1,
+            result_pages_count: people.respond_to?(:total_pages) ? people.total_pages : 1,
           }
         end
         render json: json
