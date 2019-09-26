@@ -33,11 +33,11 @@ export default class Form extends React.Component {
         if (nameParts[0] === 'translations_attributes') {
             let index = this.state.values.translations_attributes.findIndex((t) => t.locale === nameParts[1]);
             index = index === -1 ? this.state.values.translations_attributes.length : index;
-            let translation = {
+            let translation = Object.assign({}, this.state.values.translations_attributes[index], {
                 locale: nameParts[1],
                 id: nameParts[3],
                 [nameParts[2]]: value
-            }
+            })
 
             this.setState({values: Object.assign({}, this.state.values, {
                 translations_attributes: Object.assign([], this.state.values.translations_attributes, {[index]: translation})
