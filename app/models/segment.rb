@@ -80,7 +80,11 @@ class Segment < ActiveRecord::Base
   class << self
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
-      assign_speakers_and_update_text(segment, opts)
+      if opts[:speaker_id]
+        segment.update_attributes speaker_id: opts[:speaker_id], text: opts[:text], locale: opts[:locale]
+      else
+        assign_speakers_and_update_text(segment, opts)
+      end
     end
 
     # this methods substitutes speaker_designations (e.g. *CG:*) 

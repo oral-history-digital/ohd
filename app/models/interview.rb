@@ -475,8 +475,10 @@ class Interview < ActiveRecord::Base
   def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, contribution_data)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
-      parsed_sheet = sheet.parse(timecode: 'Timecode', transcript: 'Transkript')
+      parsed_sheet = sheet.parse(timecode: 'Timecode', transcript: 'Transcript', speaker: 'Speaker')
       parsed_sheet.each_with_index do |row, index|
+        contribution = contribution_data.select{|c| c['speaker_designation'] ==  row[:speaker]}.first
+        speaker_id = contribution && contribution['person_id']
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
           Segment.create_or_update_by({ 
             interview_id: id, 
@@ -485,7 +487,8 @@ class Interview < ActiveRecord::Base
             tape_id: tape_id,
             text: row[:transcript], 
             locale: locale,
-            contribution_data: contribution_data
+            contribution_data: contribution_data, 
+            speaker_id: speaker_id
           })
         end
       end
