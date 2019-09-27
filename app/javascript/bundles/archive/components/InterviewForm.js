@@ -33,7 +33,7 @@ export default class InterviewForm extends React.Component {
                 values: this.props.collections,
                 value: this.props.interview && this.props.interview.collection_id,
                 withEmpty: true,
-                validate: function(v){return v !== ''},
+                validate: function(v){return /^\d+$/.test(v)},
                 individualErrorMsg: 'empty'
             },
             { 
@@ -47,7 +47,7 @@ export default class InterviewForm extends React.Component {
                 values: this.props.languages,
                 value: this.props.interview && this.props.interview.language_id,
                 withEmpty: true,
-                validate: function(v){return v !== ''} 
+                validate: function(v){return /^\d+$/.test(v)},
             },
             { 
                 attribute: 'interview_date',
@@ -90,6 +90,7 @@ export default class InterviewForm extends React.Component {
         let props = {
             scope: 'interview',
             values: {id: this.props.interview && this.props.interview.archive_id},
+            //data: this.props.interview,
             onSubmit: this.onSubmit,
             submitText: this.props.submitText,
             elements: elements
