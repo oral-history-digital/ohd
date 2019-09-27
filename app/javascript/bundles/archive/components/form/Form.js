@@ -76,7 +76,12 @@ export default class Form extends React.Component {
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
-            errors[element.attribute] = element.validate && !(element.value || (this.props.data && this.props.data[element.attribute])) ? true : false
+            let error = false;
+            let value = element.value || (this.props.data && this.props.data[element.attribute]);
+            if (typeof(element.validate) === 'function') {
+                error = !element.validate(value);
+            }
+            errors[element.attribute] = error;
         })
         this.setState({ errors: errors });
     }
@@ -178,7 +183,7 @@ export default class Form extends React.Component {
 
     elementComponent(props) {
         props['scope'] = props.scope || this.props.scope;
-        props['showErrors'] = this.state.showErrors;
+        props['showErrors'] = this.state.errors[props.attribute];
         props['handleChange'] = this.handleChange;
         props['handleErrors'] = this.handleErrors;
         props['key'] = props.attribute;
