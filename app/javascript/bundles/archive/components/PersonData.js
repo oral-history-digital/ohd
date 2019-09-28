@@ -72,7 +72,7 @@ export default class PersonData extends React.Component {
                 value = datum.ref_object_type === 'Person' ? interviewee[datum.name][_this.props.locale] :
                     interviewee[datum.name]
             } else {
-                value = _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
+                value = _this.props.interview[datum.name] && _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
             }
             if (Array.isArray(value)){ value = value.join(", ") } //this is needed for mog and probably all other projects
             return contentField(label, value)
