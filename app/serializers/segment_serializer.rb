@@ -24,8 +24,6 @@ class SegmentSerializer < ApplicationSerializer
              :translations
              #:speaker_is_interviewee
 
-  belongs_to :speaking_person, serializer: LightPersonSerializer
-
   def interview_archive_id
     object.interview.archive_id
   end  
