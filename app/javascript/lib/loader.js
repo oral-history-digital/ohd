@@ -70,7 +70,8 @@ var Loader = {
                             if (typeof(elem) === 'object') {
                                 // array elements are hashes/ objects
                                 Object.keys(elem).map((e) => {
-                                    req.field(`${scope}[${param}][][${e}]`, elem[e]);
+                                    if (elem[e]) 
+                                        req.field(`${scope}[${param}][][${e}]`, elem[e]);
                                 })
                             } else {
                                 // array values are some non-complex values like strings or ints

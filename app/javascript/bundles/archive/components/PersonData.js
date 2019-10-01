@@ -60,17 +60,28 @@ export default class PersonData extends React.Component {
             let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
             let value = ''
             if (datum.source === 'person' || datum.ref_object_type === 'Person') {
-                value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
+                //
+                // Pardon Rico mit dieser Version gibt es immer den Fehler:
+                //
+                // Uncaught Invariant Violation: Objects are not valid as a React child (found: object with keys {}). If you meant to render a collection of children, use an array instead.
+                //
+                // vielleicht sollten wir nochmal klären bei  welchen Daten die eine Version bei dir nicht und die andere bei mir nicht läuft und dann eine gemeinsame Lösing finden :).
+                //
+                //value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
+                //
+                value = datum.ref_object_type === 'Person' ? interviewee[datum.name][_this.props.locale] :
+                    interviewee[datum.name]
             } else {
-                value = _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
+                value = _this.props.interview[datum.name] && _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
             }
-            if (typeof value === "object"){ value = value.join(", ") } //this is needed for mog and probably all other projects
+            if (Array.isArray(value)){ value = value.join(", ") } //this is needed for mog and probably all other projects
             return contentField(label, value)
         })
     }
 
     info() {
         let interviewee = getInterviewee(this.props);
+        let biographicalEntry = interviewee.biographical_entries[Object.keys(interviewee.biographical_entries)[0]];
         if (interviewee) {
             return (
                 <div>
@@ -81,12 +92,13 @@ export default class PersonData extends React.Component {
                     <AuthShowContainer ifLoggedOut={true}>
                         {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
-                    {contentField(t(this.props, 'activerecord.attributes.person.alias_name'), interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'activerecord.attributes.person.alias_names'), interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes')}
                     {/* {this.history()} */}
                     {this.detailViewFields()}
                     {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId === 'campscapes')}
-                    {contentField(t(this.props, 'activerecord.models.biographical_entry.one'), interviewee.biographical_entries[0] && interviewee.biographical_entries[0].text[this.props.locale], '', this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'search_facets.group_details'), this.props.interview.group_details && this.props.interview.group_details[this.props.locale], "", this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'activerecord.models.biographical_entry.one'), biographicalEntry && biographicalEntry.text[this.props.locale], '', this.props.projectId === 'campscapes')}
                 </div>
             );
         } else {

@@ -88,14 +88,14 @@ export default class VideoPlayer extends React.Component {
 
     src() {
         // this will run only if tape_count < 10!!
-        if(this.props.mediaStreams && this.props.resolution && this.props.mediaStreams[this.props.interview.media_type][this.props.resolution]) {
+        if(this.props.interview.media_type && this.props.mediaStreams && this.props.resolution && this.props.mediaStreams[this.props.interview.media_type][this.props.resolution]) {
             let url = this.props.mediaStreams[this.props.interview.media_type][this.props.resolution];
                 url = url.replace(/\#\{archive_id\}/g, (this.props.project === 'mog') ? this.props.archiveId : this.props.archiveId.toUpperCase());
                 url = url.replace(/\#\{tape_count\}/g, this.props.interview.tape_count);
                 url = url.replace(/\#\{tape_number\}/g, this.props.tape);
                 return url;
         } else {
-        return null;
+            return null;
         }
     }
 
@@ -208,7 +208,7 @@ export default class VideoPlayer extends React.Component {
     }
 
     resolutionSelector(){
-        if (this.props.mediaStreams) {
+        if (this.props.interview.media_type && this.props.mediaStreams) {
             let resolutions = Object.keys(this.props.mediaStreams[this.props.interview.media_type])
             if (resolutions.length > 1) {
 

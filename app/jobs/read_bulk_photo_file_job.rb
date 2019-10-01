@@ -3,7 +3,7 @@ require 'open-uri'
 class ReadBulkPhotoFileJob < ApplicationJob
   queue_as :default
 
-  def perform(file_path, receiver)
+  def perform(file_path, receiver, project)
     read_file(file_path)
     File.delete(file_path) if File.exist?(file_path)
     Interview.reindex

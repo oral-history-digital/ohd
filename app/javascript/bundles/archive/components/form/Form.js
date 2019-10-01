@@ -33,11 +33,11 @@ export default class Form extends React.Component {
         if (nameParts[0] === 'translations_attributes') {
             let index = this.state.values.translations_attributes.findIndex((t) => t.locale === nameParts[1]);
             index = index === -1 ? this.state.values.translations_attributes.length : index;
-            let translation = {
+            let translation = Object.assign({}, this.state.values.translations_attributes[index], {
                 locale: nameParts[1],
                 id: nameParts[3],
                 [nameParts[2]]: value
-            }
+            })
 
             this.setState({values: Object.assign({}, this.state.values, {
                 translations_attributes: Object.assign([], this.state.values.translations_attributes, {[index]: translation})
@@ -76,7 +76,12 @@ export default class Form extends React.Component {
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
-            errors[element.attribute] = element.validate && !(element.value || (this.props.data && this.props.data[element.attribute])) ? true : false
+            let error = false;
+            let value = element.value || (this.props.data && this.props.data[element.attribute]);
+            if (typeof(element.validate) === 'function') {
+                error = !element.validate(value);
+            }
+            errors[element.attribute] = error;
         })
         this.setState({ errors: errors });
     }
@@ -178,7 +183,7 @@ export default class Form extends React.Component {
 
     elementComponent(props) {
         props['scope'] = props.scope || this.props.scope;
-        props['showErrors'] = this.state.showErrors;
+        props['showErrors'] = this.state.errors[props.attribute];
         props['handleChange'] = this.handleChange;
         props['handleErrors'] = this.handleErrors;
         props['key'] = props.attribute;

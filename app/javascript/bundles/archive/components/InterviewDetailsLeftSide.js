@@ -32,6 +32,7 @@ export default class InterviewDetailsLeftSide extends React.Component {
                     {<InterviewInfoContainer
                         refObjectType={"interview"}
                     />}
+                    {contentField(t(this.props, 'subcollection'), this.props.interview && this.props.interview.properties && this.props.interview.properties.subcollection)}
                     {contentField(t(this.props, 'contributions.interviewer'), this.props.interview && this.props.interview.properties && this.props.interview.properties.interviewer)}
                     {contentField('Link', this.props.interview && this.props.interview.properties && <a href={this.props.interview.properties.link} target='_blank'>{this.props.interview.properties.link}</a>)}
                     {contentField('Signature', this.props.interview && this.props.interview.properties && this.props.interview.properties.signature_original)}

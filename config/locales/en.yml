@@ -88,6 +88,7 @@ en:
   interview_gallery_explanation: The picture gallery contains photos of the interview
     situation as well as family photos and other historical photos from the interviewed
     person's private collection.
+  subcollection: Subcollection
   interview_empty_gallery_explanation: There are no photos available for this interview.
   transcript_header: Transcript of the interview with
   translation_header: Translation of the interview with
@@ -490,6 +491,7 @@ en:
   search_facets:
     accessibility: Accessibility
     groups: Group
+    group_details: Group Details
     camps: Camp
     country_of_birth: Country Of Birth
     forced_labor_fields: Deployment Area
@@ -566,8 +568,8 @@ en:
           show_tree: Alle Einträge zeigen
           show_search_results: Suchergebnisse zeigen
       biographical_entry:
-        one: Kurzbiographie
-        other: Kurzbiographien
+        one: Short Biography
+        other: Short Biographies
       user_registration:
         one: Benutzer/ Registrierung
         other: Benutzer/ Registrierung
@@ -652,7 +654,7 @@ en:
         segmentators: Segmentierung
         language: Sprache
         language_id: Originalsprache
-        video: liegt ein Video vor?
+        media_type: Media Typ
         translated: ist das Interview bereits übersetzt?
         workflow_state: 'Status ändern zu:'
         observations: Protokoll

@@ -1,8 +1,8 @@
 class ReadBulkMetadataFileJob < ApplicationJob
   queue_as :default
 
-  def perform(file_path, receiver)
-    read_file(file_path)
+  def perform(file_path, receiver, project)
+    read_file(file_path, project)
     Interview.reindex
     Rails.cache.redis.keys("#{Project.current.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
 
@@ -15,7 +15,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
   end
 
-  def read_file(file_path)
+  def read_file(file_path, project)
     I18n.locale = :en
 
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00" })
@@ -34,13 +34,14 @@ class ReadBulkMetadataFileJob < ApplicationJob
             interview = Interview.find_by_archive_id(data[0])
 
             interview_data = {
+              project_id: project.id,
               interview_date: data[17] || data[18],
               collection_id: data[12] && find_or_create_collection(data[12]).id,
               language_id: (language = find_or_create_language(data[16]); language ? language.id : nil),
               duration: data[21],
-              video: data[15] && data[15].downcase == 'video',
+              media_type: data[15],
               archive_id: data[0],
-              properties: {interviewer: data[23], signature_original: data[14], link: data[27]}
+              properties: {interviewer: data[23], signature_original: data[14], link: data[27], subcollection: data[13]}
             }
 
             if interview
@@ -49,7 +50,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
               interview = Interview.create interview_data
             end
 
-            Contribution.find_or_create_by person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
+            # cleanup missleading contributions
+            Contribution.where(interview_id: interview.id, contribution_type: 'interviewee').destroy_all
+            Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
 
             # create accesibility and reference it
             accessibility = data[22] && RegistryEntry.find_or_create_descendant('accessibility', "#{I18n.locale}::#{data[22]}")
@@ -65,7 +68,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
             # create group_details and reference it
             group_details = data[8] && RegistryEntry.find_or_create_descendant('group_details', "#{I18n.locale}::#{data[8]}")
-            create_reference(group.id, interview, interview) if group_details
+            create_reference(group_details.id, interview, interview) if group_details
 
             # create birth location and reference it
             birth_location_type = RegistryReferenceType.find_by_code('birth_location')
@@ -101,7 +104,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_person(opts)
-    Person.where(opts).first || Person.create(opts)
+    person = Person.where(opts).first 
+    person ? person.update_attributes(opts) : Person.create(opts)
+    person
   end
 
   def find_or_create_collection(name)
@@ -118,21 +123,21 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_language(name)
-    lang = ISO_639.find(name)
-    lang = ISO_639.find_by_english_name(name) unless lang
-    if lang
-      language = Language.find_by_code(lang.alpha3) 
-      language = Language.create(code: lang.alpha3, name: lang.english_name) unless language
+    languages = name.split(' and ').map do |l| 
+      ISO_639.find(l) ||
+      ISO_639.find_by_english_name(l.classify) ||
+      ISO_639.search(l).first 
     end
-    if language
-    else
-    end
+    code = languages.map(&:alpha3).join('/')
+    english_name = languages.map(&:english_name).join(' and ')
+    language = Language.find_by_code(code)
+    language = Language.create(code: code, name: english_name) unless language
     language
   end
 
   def find_or_create_place(name, country_name)
     country = country_name && RegistryEntry.find_or_create_descendant('places', "#{I18n.locale}::#{country_name}")
-    place = name && RegistryEntry.find_or_create_descendant(country ? country.entry_code : 'places', "#{I18n.locale}::#{name}")
+    place = name && RegistryEntry.find_or_create_descendant(country ? country.code : 'places', "#{I18n.locale}::#{name}")
     place
   end
 

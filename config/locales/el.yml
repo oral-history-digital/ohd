@@ -665,7 +665,7 @@ el:
         segmentators: Segmentierung
         language: Sprache
         language_id: Sprache
-        video: liegt ein Video vor?
+        media_type: Media Typ
         translated: ist das Interview bereits übersetzt?
         workflow_state: 'Status ändern zu:'
         observations: Protokoll

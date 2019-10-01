@@ -12,7 +12,7 @@ export default class MultiLocaleInput extends React.Component {
                 scope={this.props.scope}
                 attribute={this.props.attribute}
             >
-                <InputContainer />
+                <InputContainer handleChange={this.props.handleChange}/>
             </MultiLocaleWrapperContainer>
         )
     }

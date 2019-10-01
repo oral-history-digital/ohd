@@ -251,7 +251,7 @@ export default class WrapperPage extends React.Component {
                         </a>
                     </div>
                 )
-            break;
+                break;
             case 'campscapes':
                 return (
                     <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
@@ -263,6 +263,18 @@ export default class WrapperPage extends React.Component {
                         </a>
                         <a  href="https://ec.europa.eu/programmes/horizon2020/en">
                             <img src="/packs/EU-logo.jpg" alt="Logo eu" style={{maxHeight: 66, maxWidth: 100}}/>
+                        </a>
+                    </div>
+                )
+                break;
+            case 'cdoh':
+                return (
+                    <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
+                        <a className='fu-logo' href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
+                            <img src="/packs/fu-logo-3x.png" />
+                        </a>
+                        <a href="https://www.auswaertiges-amt.de" target="_blank" title="Auswärtiges Amt" rel="noopener">
+                            <img src="/packs/auswaertiges-amt-logo.png" />
                         </a>
                     </div>
                 )

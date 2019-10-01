@@ -113,10 +113,10 @@ export default class FlyoutTabs extends React.Component {
             return (
                 <TabPanel key='interview'>
                     <div className='flyout-tab-title'>{t(this.props, 'interview')}</div>
-                    <AuthShowContainer ifLoggedOut={this.props.project !== "campscapes"}>
+                    <AuthShowContainer ifLoggedOut={this.props.projectId !== "campscapes"}>
                         <AccountContainer/>
                     </AuthShowContainer>
-                    <div className={`flyout-sub-tabs-container flyout-video ${this.props.project === "campscapes" ? "hidden": ""}`}>
+                    <div className={`flyout-sub-tabs-container flyout-video ${this.props.projectId === "campscapes" ? "hidden": ""}`}>
                         <InterviewDataContainer
                             title={t(this.props, 'person_info')}
                             open={true}
@@ -129,13 +129,13 @@ export default class FlyoutTabs extends React.Component {
                                 </div>
                             }
                         /> 
-                        <AuthShowContainer ifLoggedOut={this.props.project !== "campscapes"}>
+                        <AuthShowContainer ifLoggedOut={this.props.projectId !== "campscapes"}>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
                                 content={ <InterviewInfoContainer refObjectType={'interview'}/> }/>
                         </AuthShowContainer>
-                        <AuthShowContainer ifLoggedIn={this.props.project !== "campscapes"}>
+                        <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
@@ -146,9 +146,9 @@ export default class FlyoutTabs extends React.Component {
                         {/* <InterviewDataContainer
                             title={t(this.props, 'activerecord.models.registry_references.other')}
                             content={<InterviewRegistryReferencesContainer/>}/> */}
-                        <AuthShowContainer ifLoggedIn={this.props.project !== "campscapes"}>
+                        <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
                             {this.renderPhotos()}
-                            {/* {(this.props.project === 'mog' || this.props.project === 'zwar') && this.renderMap()} */}
+                            {/* {(this.props.projectId === 'mog' || this.props.projectId === 'zwar') && this.renderMap()} */}
                             {this.renderMap()}
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}

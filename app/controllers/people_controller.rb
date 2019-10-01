@@ -22,6 +22,8 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find params[:id]
     authorize @person
+    clear_cache @person
+
     @person.update_attributes person_params
     respond_to do |format|
       format.json do
@@ -52,8 +54,8 @@ class PeopleController < ApplicationController
             data: people.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: "people",
             extra_params: extra_params,
-          # page: params[:page] || 1,
-          # result_pages_count: people.total_pages,
+            page: params[:page] || 1,
+            result_pages_count: people.respond_to?(:total_pages) ? people.total_pages : 1,
           }
         end
         render json: json
