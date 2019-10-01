@@ -424,10 +424,10 @@ de:
     cinematographer: Kamera
     proof_reading: Lektorat
     research: Erschließung
-    quality_manager_translation: Qualitätsmangement Übersetzung
-    quality_manager_transcription: Qualitätsmangement Transkription
-    quality_manager_interviewing: Qualitätsmangement Interview
-    quality_manager_research: Qualitätsmangement Erschließung
+    quality_manager_translation: Qualitätsmanagement Übersetzung
+    quality_manager_transcription: Qualitätsmanagement Transkription
+    quality_manager_interviewing: Qualitätsmanagement Interview
+    quality_manager_research: Qualitätsmanagement Erschließung
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen
