@@ -16,7 +16,7 @@ const mapStateToProps = (state, ownProps) => {
         selectedArchiveIds: state.archive.selectedArchiveIds,
         statuses: state.data.statuses.interviews,
         segments: ownProps.interview && state.search.interviews[ownProps.interview.archive_id] || {},
-        editView: getCookie('editView'),
+        editView: state.archive.editView,
         account: state.data.accounts.current,
     }
 }

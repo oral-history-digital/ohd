@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
         statuses: state.data.statuses.segments,
         account: state.data.accounts.current,
         selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,
-        editView: getCookie('editView')
+        editView: state.archive.editView,
     }
 }
 

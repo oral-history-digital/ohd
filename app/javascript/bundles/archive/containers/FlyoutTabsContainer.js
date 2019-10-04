@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
         selectedArchiveIds: state.archive.selectedArchiveIds,
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
-        editView: getCookie('editView'),
+        editView: state.archive.editView,
         translations: state.archive.translations,
         account: state.data.accounts.current,
         authStatus: state.account,

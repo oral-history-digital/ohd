@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
         interview: getInterview(state),
         translations: state.archive.translations,
         locale: state.archive.locale,
-        editView: getCookie('editView'),
+        editView: state.archive.editView,
         translations: state.archive.translations,
         account: state.data.accounts.current,
         project: project && project.identifier,

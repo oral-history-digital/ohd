@@ -14,7 +14,7 @@ const mapStateToProps = (state, ownProps) => {
         projectId: state.archive.projectId,
         translations: state.archive.translations,
         listColumns: project && project.list_columns,
-        editView: getCookie('editView'),
+        editView: state.archive.editView,
         account: state.data.accounts.current,
         selectedArchiveIds: state.archive.selectedArchiveIds,
     }

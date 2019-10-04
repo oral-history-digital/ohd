@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
         registryEntries: state.data.registry_entries,
         registryEntriesStatus: state.data.statuses.registry_entries,
         account: state.data.accounts.current,
-        editView: getCookie('editView')
+        editView: state.archive.editView,
     }
 }
 
