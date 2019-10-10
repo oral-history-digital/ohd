@@ -27,8 +27,7 @@ class ProjectSerializer < ActiveModel::Serializer
     :metadata_fields,
     :external_links,
     :detail_view_fields,
-    :list_columns,
-    :translations
+    :list_columns
 
   def title
     object.shortname

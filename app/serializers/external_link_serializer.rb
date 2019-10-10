@@ -1,8 +1,7 @@
 class ExternalLinkSerializer < ApplicationSerializer
   attributes :id, 
     :name, 
-    :url,
-    :translations
+    :url
 
   def url
     I18n.available_locales.inject({}) do |mem, locale|

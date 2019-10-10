@@ -9,7 +9,7 @@ class Annotation < ActiveRecord::Base
 
   belongs_to :segment
 
-  translates :text
+  translates :text, fallbacks_for_empty_translations: true, touch: true
 
   # Validation: either interview_id or user_content_id must be nil
   validates_numericality_of :interview_id,

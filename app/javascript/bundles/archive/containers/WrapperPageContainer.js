@@ -23,8 +23,10 @@ const mapStateToProps = (state) => {
         loggedInAt: state.account.loggedInAt,
         collections: state.data.collections,
         collectionsStatus: state.data.statuses.collections,
+        languages: state.data.languages,
+        languagesStatus: state.data.statuses.languages,
         projects: state.data.projects,
-        projectsStatus: state.data.statuses.projects.all,
+        projectsStatus: state.data.statuses.projects,
         project: project,
     }
 }

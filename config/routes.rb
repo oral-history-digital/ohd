@@ -24,6 +24,7 @@ Rails.application.routes.draw do
       localized do
         resources :texts
         resources :projects
+        resources :languages
         resources :metadata_fields
         resources :external_links
 
@@ -52,7 +53,7 @@ Rails.application.routes.draw do
         #get 'map', to: 'registry_references#map', :as => :public_map
         #get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
 
-        resources :collections, only: [:show, :index] do
+        resources :collections do
           collection do
             get :countries
           end

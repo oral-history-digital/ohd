@@ -257,6 +257,14 @@ el:
       delete:
         title: Interviews löschen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
+    language:
+      new: Sprache hinzufügen
+      edit: Sprache bearbeiten
+      admin: Sprachen bearbeiten
+    collection:
+      new: Sammmlung hinzufügen
+      edit: Sammmlung bearbeiten
+      admin: Sammmlungen bearbeiten
     project:
       new: Projekt hinzufügen
       edit: Projekt bearbeiten
@@ -279,7 +287,7 @@ el:
       edit: Segment bearbeiten
       edit_heading: Überschriften bearbeiten
       speaker_string: Sprecher (als String)
-    people:
+    person:
       admin: Personen bearbeiten
       new: Person hinzufügen
       edit: Person bearbeiten
@@ -545,6 +553,9 @@ el:
       collection:
         one: Teilsammlung
         other: Teilsammlungen
+      language:
+        one: Sprache
+        other: Sprachen
       photo:
         one: Bild
         other: Bilder
@@ -629,6 +640,7 @@ el:
         person_id: Person
         speaker_designation: Sprecherauszeichnung (z.B. *CG:*)
       collection:
+        project_id: Projekt
         name: Name
         countries: Interviews in
         institution: Durchgeführt von
@@ -637,6 +649,9 @@ el:
         homepage: Homepage
         notes: Weitere Anmerkungen
         interviews: Interviewte
+      language:
+        code: Code
+        name: Name
       interview:
         person_name: Name
         collection_id: Teilsammlung

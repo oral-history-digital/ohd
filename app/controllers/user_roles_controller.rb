@@ -3,7 +3,7 @@ class UserRolesController < ApplicationController
   def create
     authorize UserRole
     @user_role = UserRole.create user_role_params
-    clear_cache @user_role.user.user_registration
+    @user_role.user.user_registration.touch
 
     respond_to do |format|
       format.json do
@@ -17,7 +17,7 @@ class UserRolesController < ApplicationController
     authorize @user_role
     user_registration = @user_role.user.user_registration
     @user_role.destroy
-    clear_cache user_registration
+    user_registration.touch
 
     respond_to do |format|
       format.json { 

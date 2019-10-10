@@ -298,12 +298,20 @@ ru:
       edit: Segment bearbeiten
       edit_heading: Überschriften bearbeiten
       speaker_string: Sprecher (als String)
-    people:
+    person:
       admin: Personen bearbeiten
       new: Person hinzufügen
       edit: Person bearbeiten
       processed: 'Person angelegt: '
       return: Weitere Person anlegen
+    language:
+      new: Sprache hinzufügen
+      edit: Sprache bearbeiten
+      admin: Sprachen bearbeiten
+    collection:
+      new: Sammmlung hinzufügen
+      edit: Sammmlung bearbeiten
+      admin: Sammmlungen bearbeiten
     project:
       new: Projekt hinzufügen
       edit: Projekt bearbeiten
@@ -589,6 +597,9 @@ ru:
       collection:
         one: Частичное собрание
         other: Частичные собрания
+      language:
+        one: Sprache
+        other: Sprachen
       photo:
         one: Фотография
         other: Фотографии
@@ -673,6 +684,7 @@ ru:
         person_id: Person
         speaker_designation: Sprecherauszeichnung (z.B. *CG:*)
       collection:
+        project_id: Projekt
         name: Имя
         countries: Страна
         institution: Организация
@@ -681,6 +693,9 @@ ru:
         homepage: Сайт
         notes: Дальнейшие примечания
         interviews: Интервьюируемый
+      language:
+        code: Code
+        name: Name
       interview:
         person_name: Имя
         collection_id: Sammlung

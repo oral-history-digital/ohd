@@ -22,9 +22,8 @@ class PeopleController < ApplicationController
   def update
     @person = Person.find params[:id]
     authorize @person
-    clear_cache @person
-
     @person.update_attributes person_params
+
     respond_to do |format|
       format.json do
         render json: data_json(@person)

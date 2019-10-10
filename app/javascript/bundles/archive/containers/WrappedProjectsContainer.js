@@ -38,7 +38,7 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'select',
                 attribute: 'default_locale',
-                values: state.archive.languages,
+                values: state.data.languages,
                 withEmpty: true,
                 validate: function(v){return v !== ''} 
             },

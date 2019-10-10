@@ -4,10 +4,12 @@ class Language < ActiveRecord::Base
 
   RTL_LANGUAGES = %w( Hebräisch Arabisch )
 
-  translates :name, :abbreviated, fallbacks_for_empty_translations: true
+  translates :name, :abbreviated, fallbacks_for_empty_translations: true, touch: true
+  accepts_nested_attributes_for :translations
 
   has_many :interviews
 
+  after_update :touch_interviews
 
   class << self
     def find_by_name(name)
@@ -45,6 +47,12 @@ class Language < ActiveRecord::Base
 
   def direction
     @direction ||= RTL_LANGUAGES.include?(name) ? 'RTL' : 'LTR'
+  end
+
+  private
+
+  def touch_interviews
+    interviews.update_all(updated_at: DateTime.now)
   end
 
 end

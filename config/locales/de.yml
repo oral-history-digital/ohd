@@ -262,12 +262,24 @@ de:
       edit: Segment bearbeiten
       edit_heading: Überschriften bearbeiten
       speaker_string: Sprecher (als String)
-    people:
+    person:
       admin: Personen bearbeiten
       new: Person hinzufügen
       edit: Person bearbeiten
       processed: 'Person angelegt: '
       return: Weitere Person anlegen
+    collection:
+      admin: Sammlungen bearbeiten
+      new: Sammlung hinzufügen
+      edit: Sammlung bearbeiten
+      processed: 'Sammlung angelegt: '
+      return: Weitere Sammlung anlegen
+    language:
+      admin: Sprachen bearbeiten
+      new: Sprache hinzufügen
+      edit: Sprache bearbeiten
+      processed: 'Sprache angelegt: '
+      return: Weitere Sprache anlegen
     project:
       new: Projekt hinzufügen
       edit: Projekt bearbeiten
@@ -549,6 +561,9 @@ de:
       collection:
         one: Teilsammlung
         other: Teilsammlungen
+      language:
+        one: Sprache
+        other: Sprachen
       photo:
         one: Bild
         other: Bilder
@@ -634,6 +649,7 @@ de:
         person_id: Person
         speaker_designation: Sprecherauszeichnung (z.B. *CG:*)
       collection:
+        project_id: Projekt
         name: Name
         countries: Interviews in
         institution: Durchgeführt von
@@ -642,6 +658,9 @@ de:
         homepage: Homepage
         notes: Weitere Anmerkungen
         interviews: Interviewte
+      language:
+        code: Code
+        name: Name
       interview:
         person_name: Name
         collection_id: Sammlung

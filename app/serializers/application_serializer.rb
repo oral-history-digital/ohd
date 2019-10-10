@@ -1,5 +1,5 @@
 class ApplicationSerializer < ActiveModel::Serializer
-  attributes :id, :type
+  attributes :id, :type, :translations
 
   def type 
     object.class.name

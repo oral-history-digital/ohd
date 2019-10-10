@@ -78,7 +78,6 @@ class UserRegistrationsController < ApplicationController
     @user_registration = UserRegistration.find(params[:id])
     authorize @user_registration
     @user_registration.update_attributes(user_registration_params)
-    clear_cache @user_registration
 
     respond_to do |format|
       format.json do

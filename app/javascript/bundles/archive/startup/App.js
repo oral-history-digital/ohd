@@ -13,6 +13,8 @@ import EditInterviewContainer from '../containers/EditInterviewContainer';
 import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import UploadsContainer from '../containers/UploadsContainer';
 import WrappedPeopleContainer from '../containers/WrappedPeopleContainer';
+import WrappedLanguagesContainer from '../containers/WrappedLanguagesContainer';
+import WrappedCollectionsContainer from '../containers/WrappedCollectionsContainer';
 import RegistryEntriesTreeContainer from '../containers/RegistryEntriesTreeContainer';
 import ArchiveSearchContainer from '../containers/ArchiveSearchContainer';
 import RegisterContainer from '../containers/RegisterContainer';
@@ -38,6 +40,8 @@ const App = (props) => (
                 <Route path="/:locale/searches/archive" component={ArchiveSearchContainer} />
                 <Route path="/:locale/projects" component={WrappedProjectsContainer} />
                 <Route path="/:locale/people" component={WrappedPeopleContainer} />
+                <Route path="/:locale/languages" component={WrappedLanguagesContainer} />
+                <Route path="/:locale/collections" component={WrappedCollectionsContainer} />
                 <Route path="/:locale/roles" component={WrappedRolesContainer} />
                 <Route path="/:locale/permissions" component={WrappedPermissionsContainer} />
                 <Route path="/:locale/user_accounts/password/new" component={OrderNewPasswordContainer} />

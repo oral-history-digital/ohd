@@ -1,6 +1,6 @@
 require 'globalize'
 class ExternalLink < ApplicationRecord
   belongs_to :project
-  translates :url
+  translates :url, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 end

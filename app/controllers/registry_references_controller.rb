@@ -9,8 +9,7 @@ class RegistryReferencesController < ApplicationController
     authorize RegistryReference
     @registry_reference = RegistryReference.create(registry_reference_params)
 
-    clear_cache(@registry_reference.ref_object)
-    Rails.cache.delete "#{current_project.cache_key_prefix}-interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
+    @registry_reference.ref_object.touch
 
     respond_to do |format|
       format.json do
@@ -43,8 +42,7 @@ class RegistryReferencesController < ApplicationController
     authorize @registry_reference
     @registry_reference.update_attributes registry_reference_params
 
-    clear_cache(@registry_reference.ref_object)
-    Rails.cache.delete "#{current_project.cache_key_prefix}-interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
+    @registry_reference.ref_object.touch
 
     respond_to do |format|
       format.json do
@@ -64,9 +62,7 @@ class RegistryReferencesController < ApplicationController
     authorize @registry_reference
     ref_object = @registry_reference.ref_object 
     @registry_reference.destroy
-
-    clear_cache ref_object
-    Rails.cache.delete "#{current_project.cache_key_prefix}-interview-segments-#{@registry_reference.ref_object.interview.id}-#{@registry_reference.ref_object.interview.segments.maximum(:updated_at)}" if @registry_reference.ref_object_type == 'Segment'
+    ref_object.touch
 
     respond_to do |format|
       format.html do

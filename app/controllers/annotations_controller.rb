@@ -33,8 +33,7 @@ class AnnotationsController < ApplicationController
     authorize @annotation
     @annotation.update_attributes annotation_params
 
-    clear_cache @annotation.segment
-    Rails.cache.delete "#{current_project.cache_key_prefix}-interview-segments-#{@annotation.interview_id}-#{@annotation.interview.segments.maximum(:updated_at)}" 
+    @annotation.segment.touch
 
     respond_to do |format|
       format.json do
@@ -54,10 +53,9 @@ class AnnotationsController < ApplicationController
   def destroy 
     @annotation = Annotation.find(params[:id])
     authorize @annotation
+    segment = @annotation.segment
     @annotation.destroy
-
-    clear_cache @annotation.segment
-    Rails.cache.delete "#{current_project.cache_key_prefix}-interview-segments-#{@annotation.interview_id}-#{@annotation.interview.segments.maximum(:updated_at)}" 
+    segment.touch
 
     respond_to do |format|
       format.json do

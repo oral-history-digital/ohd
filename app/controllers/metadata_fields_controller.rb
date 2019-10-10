@@ -23,8 +23,6 @@ class MetadataFieldsController < ApplicationController
 
   def update
     @metadata_field.update_attributes(metadata_field_params)
-
-    clear_cache @metadata_field
     @metadata_field.project.touch
 
     respond_to do |format|

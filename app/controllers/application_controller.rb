@@ -51,6 +51,8 @@ class ApplicationController < ActionController::Base
     I18n.available_locales = current_project.available_locales if current_project
   end
 
+  # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
+  #
   def initial_redux_state
     {
       archive: {
@@ -69,7 +71,7 @@ class ApplicationController < ActionController::Base
         translations: translations,
         countryKeys: country_keys,
         contributionTypes: Project.contribution_types,
-        languages: Language.all.map { |c| { value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2 } },
+        #languages: Language.all.map { |c| { value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2 } },
         mediaStreams: Project.media_streams,
       },
       account: {
@@ -105,13 +107,17 @@ class ApplicationController < ActionController::Base
           permissions: {},
           tasks: {},
           projects: {all: 'fetched'},
-          collections: {"collections_for_project_#{current_project.identifier}": 'fetched'}
+          collections: {"collections_for_project_#{current_project.identifier}": 'fetched'},
+          languages: {all: 'fetched'},
         },
         collections: Rails.cache.fetch("#{current_project.cache_key_prefix}-collections-collections_for_project_#{current_project.identifier}-#{Collection.maximum(:updated_at)}") do
           current_project.collections.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}") do 
           Project.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+        end,
+        languages: Rails.cache.fetch("languages-#{Language.maximum(:updated_at)}") do 
+          Language.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         accounts: {
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || {}
@@ -171,7 +177,9 @@ class ApplicationController < ActionController::Base
         roles: { query: {page: 1} },
         permissions: { query: {page: 1} },
         people: { query: {page: 1} },
-        projects: { query: {page: 1} }
+        projects: { query: {page: 1} },
+        collections: { query: {page: 1} },
+        languages: { query: {page: 1} }
       }
     end
   end

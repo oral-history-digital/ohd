@@ -23,8 +23,6 @@ class ExternalLinksController < ApplicationController
 
   def update
     @external_link.update_attributes(external_link_params)
-
-    clear_cache @external_link
     @external_link.project.touch
 
     respond_to do |format|

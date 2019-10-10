@@ -7,6 +7,8 @@ import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer
 import UserRegistrationSearchFormContainer from '../containers/UserRegistrationSearchFormContainer';
 import ProjectSearchFormContainer from '../containers/ProjectSearchFormContainer';
 import PeopleSearchFormContainer from '../containers/PeopleSearchFormContainer';
+import CollectionsSearchFormContainer from '../containers/CollectionsSearchFormContainer';
+import LanguagesSearchFormContainer from '../containers/LanguagesSearchFormContainer';
 import RoleSearchFormContainer from '../containers/RoleSearchFormContainer';
 import PermissionSearchFormContainer from '../containers/PermissionSearchFormContainer';
 import RegistryEntrySearchFormContainer from '../containers/RegistryEntrySearchFormContainer';
@@ -229,7 +231,9 @@ export default class FlyoutTabs extends React.Component {
                         {this.subTab('edit.upload_transcript.title', 'description', `${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
                         {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'update', id: this.props.archiveId}, this.props.archiveId)}
                         {this.subTab('edit.upload.upload', 'description', `${pathBase(this.props)}/uploads/new`, {type: 'Interview', action: 'update'})}
-                        {this.subTab( 'edit.people.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
+                        {this.subTab( 'edit.person.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
+                        {this.subTab( 'edit.collection.admin', <CollectionsSearchFormContainer/>, `${pathBase(this.props)}/collections`, {type: 'Collection', action: 'update'})}
+                        {this.subTab( 'edit.language.admin', <LanguagesSearchFormContainer/>, `${pathBase(this.props)}/languages`, {type: 'Language', action: 'update'})}
                     </div>
                 </TabPanel>
             )

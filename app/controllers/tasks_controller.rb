@@ -4,7 +4,7 @@ class TasksController < ApplicationController
     authorize Task
     @task = Task.create task_params
     @task.update_attributes(supervisor_id: current_user_account.user.id)
-    clear_cache @task.user.user_registration
+    @task.user.user_registration.touch
 
     respond_to do |format|
       format.json do
@@ -21,7 +21,7 @@ class TasksController < ApplicationController
     @task = Task.find params[:id]
     authorize @task
     @task.update_attributes task_params
-    clear_cache @task.user.user_registration
+    @task.user.user_registration.touch
 
     respond_to do |format|
       format.json do
@@ -56,7 +56,7 @@ class TasksController < ApplicationController
     authorize @task
     user_registration = @task.user.user_registration
     @task.destroy
-    clear_cache user_registration
+    user_registration.touch
 
     respond_to do |format|
       format.json { 

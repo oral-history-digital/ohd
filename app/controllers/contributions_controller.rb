@@ -3,7 +3,7 @@ class ContributionsController < ApplicationController
   def create
     authorize Contribution
     @contribution = Contribution.create(contribution_params)
-    clear_cache @contribution.interview
+    @contribution.interview.touch
 
     if @contribution.contribution_type == Project.contribution_types['interviewee']
       reload_data_type = 'interviews'
@@ -33,7 +33,7 @@ class ContributionsController < ApplicationController
     authorize @contribution
     interview = @contribution.interview 
     @contribution.destroy
-    clear_cache interview
+    interview.touch
 
     respond_to do |format|
       format.html do

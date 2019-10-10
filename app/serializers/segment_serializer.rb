@@ -20,8 +20,7 @@ class SegmentSerializer < ApplicationSerializer
              :timecode,
              :speaker_changed,
              :speaker_id,
-             :speaker,
-             :translations
+             :speaker
              #:speaker_is_interviewee
 
   def interview_archive_id

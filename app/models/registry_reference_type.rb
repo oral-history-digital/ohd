@@ -2,7 +2,7 @@ require 'globalize'
 
 class RegistryReferenceType < ActiveRecord::Base
 
-  translates :name
+  translates :name, fallbacks_for_empty_translations: true, touch: true
 
   # The relation to a registry entry defines "allowed" registry
   # reference types for all registry entries that are descendants

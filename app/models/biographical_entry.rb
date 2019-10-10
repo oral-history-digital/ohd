@@ -3,7 +3,7 @@ class BiographicalEntry < ApplicationRecord
 
   belongs_to :person, touch: true
   
-  translates :text, :start_date, :end_date
+  translates :text, :start_date, :end_date, fallbacks_for_empty_translations: true, touch: true
 
   workflow do
     state :unshared do

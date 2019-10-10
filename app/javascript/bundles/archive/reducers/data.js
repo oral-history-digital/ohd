@@ -34,6 +34,7 @@ const initialState = {
         tasks: {},
         projects: {},
         collections: {},
+        languages: {},
     }
 }
 

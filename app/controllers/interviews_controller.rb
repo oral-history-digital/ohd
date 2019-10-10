@@ -41,8 +41,6 @@ class InterviewsController < ApplicationController
     @interview.update_attributes interview_params
     @interview.find_or_create_tapes(interview_params[:tape_count])
 
-    clear_cache @interview
-
     respond_to do |format|
       format.json do
         render json: data_json(@interview, msg: "processed")
@@ -143,8 +141,6 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id(params[:id])
     authorize @interview
     @interview.destroy
-
-    clear_cache @interview
 
     respond_to do |format|
       format.html do

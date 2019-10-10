@@ -10,8 +10,7 @@ class MetadataFieldSerializer < ApplicationSerializer
     :source,
     #:locale,
     :label,
-    :values,
-    :translations
+    :values
 
   def label
     I18n.available_locales.inject({}) do |mem, locale|

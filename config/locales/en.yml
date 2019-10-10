@@ -254,12 +254,20 @@ en:
       edit: Segment bearbeiten
       edit_heading: Überschriften bearbeiten
       speaker_string: Sprecher (als String)
-    people:
+    person:
       admin: Personen bearbeiten
       new: Person hinzufügen
       edit: Person bearbeiten
       processed: 'Person angelegt: '
       return: Weitere Person anlegen
+    language:
+      new: Sprache hinzufügen
+      edit: Sprache bearbeiten
+      admin: Sprachen bearbeiten
+    collection:
+      new: Sammmlung hinzufügen
+      edit: Sammmlung bearbeiten
+      admin: Sammmlungen bearbeiten
     project:
       new: Projekt hinzufügen
       edit: Projekt bearbeiten
@@ -531,6 +539,9 @@ en:
       segment:
         one: Ausschnitt
         other: Ausschnitte
+      language:
+        one: Language
+        other: Languages
       collection:
         one: Collection
         other: Collections
@@ -618,6 +629,7 @@ en:
         person_id: Person
         speaker_designation: speaker designation (e.g. *CG:*)
       collection:
+        project_id: Projekt
         name: Name
         countries: Interviews in
         institution: Durchgeführt von
@@ -626,6 +638,9 @@ en:
         homepage: Homepage
         notes: Weitere Anmerkungen
         interviews: Interviewte
+      language:
+        code: Code
+        name: Name
       interview:
         person_name: Name
         collection_id: Sammlung
