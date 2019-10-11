@@ -36,10 +36,6 @@ export default class WrapperPage extends React.Component {
         router: PropTypes.object
     }
 
-    componentWillMount() {
-        //this.createSocket()
-    }
-
     componentDidMount() {
         if(this.props.locale !== this.context.router.route.match.params.locale) {
             this.props.setLocale(this.context.router.route.match.params.locale);
