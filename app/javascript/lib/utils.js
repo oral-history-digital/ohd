@@ -273,12 +273,24 @@ export function getInterviewArchiveIdWithOffset(archiveId, list, offset=1) {
     }
 }
 
-export function contentField(label, value, className='', condition=true) {
+export function contentField(label, value, className='', condition=true, collection=null) {
+    let collectionDetails = ''
+    if (collection){
+        collectionDetails = (
+            <span>
+                <i className="fa fa-info-circle" aria-hidden="true" title={collection.notes}  style={{'color': 'grey'}} />
+                <a href={collection.homepage} title={collection.homepage} target='_blank'>
+                    <i class="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
+                </a>
+            </span>
+        )
+    }
     if (condition) {
         return (
             <p className={`${label}-${value}`} key={`content-field-${label}-${value}`}>
                 <span className="flyout-content-label">{label}:</span>
                 <span className={"flyout-content-data " + className}>{value || '---'}</span>
+                {collectionDetails}
             </p>
         )
     } else {
