@@ -156,6 +156,9 @@ class Project < ApplicationRecord
               subfacets[sf.id.to_s] = {
                 name: sf.localized_hash,
                 count: 0,
+                homepage: sf.try(:homepage),
+                institution: sf.try(:institution),
+                notes: sf.try(:notes),
               }
               subfacets
             end,

@@ -142,6 +142,19 @@ export default class Facet extends React.Component {
         }
     }
 
+    renderCollectionInfo(subfacet) {
+        if(this.props.facet === 'collection_id') {
+            return (
+                <span>
+                    <i className="fa fa-info-circle" aria-hidden="true" title={subfacet.notes}  style={{'color': 'grey'}} />
+                    <a href={subfacet.homepage} title={subfacet.homepage} target='_blank'>
+                        <i class="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
+                    </a>
+                </span>
+            )
+        }
+    }
+
     renderSubfacets() {
         return this.sortedSubfacets().filter(subfacetId => {
             let subfacetName = this.props.data.subfacets[subfacetId].name[this.props.locale];
@@ -165,6 +178,8 @@ export default class Facet extends React.Component {
                             {this.localDescriptor(subfacetId)}
                             <span className='flyout-radio-container-facet-count'>({this.props.data.subfacets[subfacetId].count})</span>
                         </label>
+                        &nbsp;
+                        {this.renderCollectionInfo(this.props.data.subfacets[subfacetId])}
                     </div>
                 )
             }
