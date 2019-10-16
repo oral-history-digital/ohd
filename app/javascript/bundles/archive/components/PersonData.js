@@ -81,8 +81,8 @@ export default class PersonData extends React.Component {
 
     info() {
         let interviewee = getInterviewee(this.props);
-        let biographicalEntry = interviewee.biographical_entries[Object.keys(interviewee.biographical_entries)[0]];
         if (interviewee) {
+            let biographicalEntry = interviewee.biographical_entries[Object.keys(interviewee.biographical_entries)[0]];
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>

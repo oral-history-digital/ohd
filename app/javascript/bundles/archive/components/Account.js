@@ -13,12 +13,24 @@ export default class Account extends React.Component {
         router: PropTypes.object
     }
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            editView: this.props.editViewCookie,
+        }
+        this.props.changeToEditView(this.props.editViewCookie)
+    }
+
     componentDidMount() {
         this.loadAccount()
     }
 
     componentDidUpdate(prevProps) {
         this.loadAccount();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({editView: nextProps.editView})
     }
 
     loadAccount() {
@@ -47,8 +59,8 @@ export default class Account extends React.Component {
             )
         ){
             return (
-                <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.props.editView)}>
-                    <span className={`switch-input ${this.props.editView ? 'checked' : ''}`} type="checkbox" />
+                <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.state.editView)}>
+                    <span className={`switch-input ${this.state.editView ? 'checked' : ''}`} type="checkbox" />
                     <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span> 
                     <span className="switch-handle"></span> 
                 </div>

@@ -226,7 +226,8 @@ export function queryToText(query, props) {
                 queryText = queryText + nextElement + key + ": ";
                 if (Array.isArray(value)) {
                     value.forEach(function (element, index) {
-                        let val = props.facets[k.replace('[]','')]['subfacets'][element]['name'][props.locale]
+                        let el = props.facets[k.replace('[]','')]['subfacets'][element]
+                        let val = el ? el['name'][props.locale] : ''
                         // let locale_element = (element + '').toLowerCase().split().join('_')
                         // val = val || t(props, 'search_facets')[locale_element];
                         // val = val || locale_element
@@ -272,12 +273,24 @@ export function getInterviewArchiveIdWithOffset(archiveId, list, offset=1) {
     }
 }
 
-export function contentField(label, value, className='', condition=true) {
+export function contentField(label, value, className='', condition=true, collection=null) {
+    let collectionDetails = ''
+    if (collection){
+        collectionDetails = (
+            <span>
+                <i className="fa fa-info-circle" aria-hidden="true" title={collection.notes}  style={{'color': 'grey'}} />
+                <a href={collection.homepage} title={collection.homepage} target='_blank'>
+                    <i class="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
+                </a>
+            </span>
+        )
+    }
     if (condition) {
         return (
             <p className={`${label}-${value}`} key={`content-field-${label}-${value}`}>
                 <span className="flyout-content-label">{label}:</span>
                 <span className={"flyout-content-data " + className}>{value || '---'}</span>
+                {collectionDetails}
             </p>
         )
     } else {

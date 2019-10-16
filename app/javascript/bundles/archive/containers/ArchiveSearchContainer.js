@@ -27,7 +27,7 @@ const mapStateToProps = (state) => {
         viewMode: state.archive.viewMode,
         listColumns: project && project.list_columns,
         detailViewFields: project && project.detail_view_fields,
-        editView: getCookie('editView'),
+        editView: state.archive.editView,
         account: state.data.accounts.current,
     }
 }

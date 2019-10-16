@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
-        editView: getCookie('editView'),
+        editView: state.archive.editView,
         interview: getInterview(state),
         // the following is just a trick to force rerender after deletion
         account: state.data.accounts.current,

@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: getCookie('editView'),
+        editView: state.archive.editView,
         data: state.data.projects,
         dataStatus: state.data.statuses.projects,
         resultPagesCount: state.data.statuses.projects.resultPagesCount,
@@ -47,6 +47,11 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: "view_modes",
+            },
+            {
+                attribute: "fullname_on_landing_page",
+                elementType: 'input',
+                type: "checkbox",
             },
             {
                 attribute: "upload_types",

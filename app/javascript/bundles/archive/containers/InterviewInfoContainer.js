@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         projectId: state.archive.projectId,
         collections: state.data.collections,
-        editView: getCookie('editView'),
+        editView: state.archive.editView,
         interview: getInterview(state),
         people: state.data.people,
         peopleStatus: state.data.statuses.people,

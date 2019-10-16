@@ -433,7 +433,7 @@ el:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen
   tasks:
-    Interview: Interview
+    Interview: Συνέντευξη
     BiographicalEntry: Biographie
     RegistryReference: Nennungen / Referenzen
     Contribution: Beiträge
@@ -542,7 +542,7 @@ el:
   activerecord:
     models:
       interview:
-        one: Interview
+        one: Συνέντευξη
         other: Interviews
       tape:
         one: Band
@@ -563,7 +563,7 @@ el:
         one: Inhalt
         other: Inhalte
       interview_reference:
-        one: Interview
+        one: Συνέντευξη
         other: Interviews
       search:
         one: Suchanfrage
@@ -674,7 +674,7 @@ el:
         tape_count: Anzahl der Tapes
         interviewers: Interviewführung
         transcriptors: Transkription
-        translators: Übersetzung
+        translators: Μετάφραση
         researchers: Erschließung
         proofreaders: Lektorat
         segmentators: Segmentierung

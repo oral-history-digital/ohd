@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
-        editView: getCookie('editView'),
+        editView: state.archive.editView,
         interview: getInterview(state),
         registryEntryMetadataFields: state.archive.registryEntryMetadataFields,
         registryReferenceTypeMetadataFields: state.archive.registryReferenceTypeMetadataFields,
