@@ -65,6 +65,14 @@ class HomeController < ApplicationController
     end
   end
 
+  def legal_notice
+    respond_to do |format|
+      format.html do
+        render :template => "/home/legal_notice.#{params[:locale]}.html+#{current_project.identifier == "empty" ? "zwar" : current_project.identifier}"
+      end
+    end
+  end
+
   private
 
   def translations

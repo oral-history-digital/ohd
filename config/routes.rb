@@ -45,7 +45,7 @@ Rails.application.routes.draw do
         resources :biographical_entries, only: [:destroy]
       end
 
-      %w{archive faq_archive_contents faq_index faq_searching faq_technical map_tutorial terms_of_use}.each do |site|
+      %w{archive faq_archive_contents faq_index faq_searching faq_technical map_tutorial terms_of_use legal_notice}.each do |site|
         get site, to: "home##{site}", as: site
         get "/", to: "home#archive", as: :home
       end

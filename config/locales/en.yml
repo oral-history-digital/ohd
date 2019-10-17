@@ -208,7 +208,7 @@ en:
     your password.
   conditions: Terms of use
   privacy_protection: Protection of privacy
-  legal_info: Imprint
+  legal_info: Legal Notice
   request_for_use: Disclosure of Archive Materials
   annotation_guidelines: Users' Annotations in the Archive
   team: Team
@@ -691,6 +691,7 @@ en:
         available_locales: verfügbare Sprachen
         default_locale: default Sprache
         view_modes: Ansichten
+        fullname_on_landing_page: Show full name on landing page
         upload_types: UploadTypen
         primary_color_rgb: Primary Color RGB
         shortname: Kürzel
