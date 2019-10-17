@@ -370,6 +370,15 @@ export default class FlyoutTabs extends React.Component {
         }
     }
 
+    renderSearchTheArchiveButton() {
+        if (this.props.projectId === 'campscapes') {
+            return t(this.props, 'user_registration.notes_on_tos_agreement')
+        }
+        else {
+            return t(this.props, 'archive_search')
+        }
+    }
+
     render() {
         return (
             <Tabs
@@ -383,7 +392,7 @@ export default class FlyoutTabs extends React.Component {
                     <TabList className='flyout'>
                         {this.loginTab()}
                         {this.localeTabs()}
-                        <Tab className='flyout-tab' key='archive-search'>{t(this.props, 'archive_search')}</Tab>
+                        <Tab className='flyout-tab' key='archive-search'>{this.renderSearchTheArchiveButton()}</Tab>
                         {this.interviewTab()}
                         {this.registryEntriesTab()}
                         {this.indexingTab()}

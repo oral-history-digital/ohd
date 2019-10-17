@@ -24,7 +24,7 @@ class HomeController < ApplicationController
               mem
             end,
             contribution_types: Project.contribution_types,
-            registry_entry_metadata_fields: current_project.registry_entry_metadata_fields.where('use_in_details_view').map { |field| { id: RegistryEntry.find_by_code(field.name).id, code: RegistryEntry.find_by_code(field.name).code, display_on_landing_page: field.display_on_landing_page } },
+            registry_entry_metadata_fields: current_project.registry_entry_metadata_fields.where("use_in_details_view").map { |field| { id: RegistryEntry.find_by_code(field.name).id, code: RegistryEntry.find_by_code(field.name).code, display_on_landing_page: field.display_on_landing_page } },
             registry_reference_type_metadata_fields: current_project.registry_reference_type_metadata_fields.inject({}) { |mem, facet| mem[facet.name] = RegistryReferenceTypeSerializer.new(RegistryReferenceType.find_by_code(facet.name)).as_json; mem },
             languages: Language.all.map { |c| { value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2 } },
             media_streams: Project.media_streams,
@@ -55,6 +55,14 @@ class HomeController < ApplicationController
   end
 
   def map_tutorial
+  end
+
+  def terms_of_use
+    respond_to do |format|
+      format.html do
+        render :template => "/home/terms_of_use.#{params[:locale]}.html+#{current_project.identifier == "empty" ? "zwar" : current_project.identifier}"
+      end
+    end
   end
 
   private
