@@ -73,6 +73,14 @@ class HomeController < ApplicationController
     end
   end
 
+  def privacy_policy
+    respond_to do |format|
+      format.html do
+        render :template => "/home/privacy_policy.#{params[:locale]}.html+#{current_project.identifier == "empty" ? "zwar" : current_project.identifier}"
+      end
+    end
+  end
+
   private
 
   def translations
