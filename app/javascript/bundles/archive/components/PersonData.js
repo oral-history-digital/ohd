@@ -75,6 +75,7 @@ export default class PersonData extends React.Component {
                 value = _this.props.interview[datum.name] && _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
             }
             if (Array.isArray(value)){ value = value.join(", ") } //this is needed for mog and probably all other projects
+            if (typeof value === "object" || typeof value === "undefined"){ value = "" } //this is needed for mog and probably all other projects
             return contentField(label, value)
         })
     }
