@@ -199,7 +199,7 @@ export default class ArchiveSearch extends React.Component {
     exportSearch() {
         let query = this.props.query;
         delete query['page'];
-        let url = `/${this.props.locale}/searches/export_archive_search.csv`;
+        let url = `/${this.props.locale}/searches/archive.csv`;
         for (let param of Object.keys(query)) {
             if(query[param] && query[param].length > 0) url += `?${param}=${query[param]}` 
         }
