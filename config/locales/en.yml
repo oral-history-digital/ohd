@@ -497,6 +497,8 @@ en:
     female: female
     male: male
   search_facets:
+    language: Language
+    collection: Collection
     accessibility: Accessibility
     groups: Group
     group_details: Group Details
