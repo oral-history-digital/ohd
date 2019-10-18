@@ -122,7 +122,7 @@ class SearchesController < ApplicationController
         }
       end
       format.csv do
-        search = Interview.archive_search(current_user_account, current_project, locale, params, 999999)
+        search = Interview.archive_search(current_user_account, current_project, locale, params)
         desired_columns = current_project.list_columns.map(&:name)
         options = {}
         csv = CSV.generate(options) do |csv|
