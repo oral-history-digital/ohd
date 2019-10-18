@@ -809,10 +809,10 @@ class Interview < ActiveRecord::Base
       end
     end
 
-    def archive_search(user_account, project, locale, params)
+    def archive_search(user_account, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, (user_account && user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
+        with(:workflow_state, (user_account && user_account.admin?) ? Interview.workflow_spec.states.keys : "public")
         with(:project_id, project.id)
         dynamic :search_facets do
           facet *project.search_facets_names
@@ -822,7 +822,7 @@ class Interview < ActiveRecord::Base
         end
         order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
         # TODO: sort linguistically
-        paginate page: params[:page] || 1, per_page: 12
+        paginate page: params[:page] || 1, per_page: per_page
       end
     end
   end

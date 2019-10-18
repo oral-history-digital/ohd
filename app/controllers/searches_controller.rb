@@ -100,14 +100,13 @@ class SearchesController < ApplicationController
   end
 
   def archive
-    search = Interview.archive_search(current_user_account, current_project, locale, params)
-    dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
-
     respond_to do |format|
       format.html do
         render :template => "/react/app.html"
       end
       format.json do
+        search = Interview.archive_search(current_user_account, current_project, locale, params)
+        dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
         render json: {
           all_interviews_titles: dropdown_values[:all_interviews_titles],
           all_interviews_pseudonyms: dropdown_values[:all_interviews_pseudonyms],
@@ -123,6 +122,7 @@ class SearchesController < ApplicationController
         }
       end
       format.csv do
+        search = Interview.archive_search(current_user_account, current_project, locale, params, 999999)
         desired_columns = current_project.list_columns.map(&:name)
         options = {}
         csv = CSV.generate(options) do |csv|
