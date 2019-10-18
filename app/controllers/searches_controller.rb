@@ -126,9 +126,9 @@ class SearchesController < ApplicationController
         desired_columns = current_project.list_columns.map(&:name)
         options = {}
         csv = CSV.generate(options) do |csv|
-          csv << desired_columns.map { |c| t("search_facets.#{c}") }
+          csv << (desired_columns.map { |c| t("search_facets.#{c}") }).insert(0, t("title"))
           search.results.each do |interview|
-            values = desired_columns.map { |c| interview.send(*c) }
+            values = (desired_columns.map { |c| interview.send(*c) }).insert(0, interview.localized_hash[locale])
             # binding.pry
             values = values.map { |v|
               v.class.to_s == "Array" ? v.map { |id| RegistryEntry.find(id).to_s(locale) }.join(",") : v
