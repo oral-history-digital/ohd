@@ -148,7 +148,7 @@ export default class Facet extends React.Component {
                 <span>
                     <i className="fa fa-info-circle" aria-hidden="true" title={subfacet.notes}  style={{'color': 'grey'}} />
                     <a href={subfacet.homepage} title={subfacet.homepage} target='_blank'>
-                        <i class="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
+                        <i className="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
                     </a>
                 </span>
             )
