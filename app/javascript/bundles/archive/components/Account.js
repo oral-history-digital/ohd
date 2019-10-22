@@ -32,10 +32,6 @@ export default class Account extends React.Component {
         }
     }
 
-    //componentWillReceiveProps(nextProps) {
-        //this.setState({editView: nextProps.editView})
-    //}
-
     loadAccount() {
         if (
             !this.props.accountsStatus.current ||
