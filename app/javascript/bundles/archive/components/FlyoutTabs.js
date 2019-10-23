@@ -371,7 +371,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     renderSearchTheArchiveButton() {
-        if (this.props.projectId === 'campscapes') {
+        if (this.props.projectId === 'campscapes'&& !this.props.archiveId) {
             return t(this.props, 'user_registration.notes_on_tos_agreement')
         }
         else {
