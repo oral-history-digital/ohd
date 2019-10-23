@@ -265,6 +265,7 @@ class InterviewsController < ApplicationController
 
   def initial_interview_redux_state
     #Rails.cache.fetch("#{current_project.cache_key_prefix}-#{current_user_account ? current_user_account.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
+    if @interview
       initial_redux_state.update(
         archive: initial_redux_state[:archive].update(
           archiveId: @interview.archive_id,
@@ -279,6 +280,9 @@ class InterviewsController < ApplicationController
           )
         )
       )
+    else
+      initial_redux_state
+    end
     #end
   end
   helper_method :initial_interview_redux_state
