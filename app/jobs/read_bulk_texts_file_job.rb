@@ -2,7 +2,7 @@ class ReadBulkTextsFileJob < ApplicationJob
   include IsoHelpers
   queue_as :default
 
-  def perform(file_path, receiver, project)
+  def perform(file_path, receiver, project, locale)
     zip_content = []
     Zip::File.open(file_path) do |zip_file|
       zip_file.each do |entry|

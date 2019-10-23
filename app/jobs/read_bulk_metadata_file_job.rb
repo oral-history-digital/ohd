@@ -1,7 +1,7 @@
 class ReadBulkMetadataFileJob < ApplicationJob
   queue_as :default
 
-  def perform(file_path, receiver, project)
+  def perform(file_path, receiver, project, locale)
     read_file(file_path, project)
     Interview.reindex
     Rails.cache.redis.keys("#{Project.current.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
