@@ -25,12 +25,11 @@ export default class Account extends React.Component {
         this.loadAccount()
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate(prevProps, prevState) {
         this.loadAccount();
-    }
-
-    componentWillReceiveProps(nextProps) {
-        this.setState({editView: nextProps.editView})
+        if (prevProps.editView !== this.props.editView) {
+            this.setState({editView: this.props.editView})
+        }
     }
 
     loadAccount() {

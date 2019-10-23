@@ -19,7 +19,7 @@ export default class WrappedAccount extends React.Component {
             <div className='details box'>
                 {['first_name', 'last_name', 'email'].map((detail, index) => {
                         return (
-                            <p className='detail'>
+                            <p className='detail' key={`${detail}-detail`}>
                                 <span className='name'>{t(this.props, `activerecord.attributes.account.${detail}`) + ': '}</span>
                                 <span className='content'>{this.props.account[detail]}</span>
                             </p>
