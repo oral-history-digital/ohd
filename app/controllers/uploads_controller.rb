@@ -18,7 +18,8 @@ class UploadsController < ApplicationController
     file_path = File.join(Rails.root, 'tmp', file.original_filename)
     File.open(file_path, 'wb') {|f| f.write(file.read) }
 
-    "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user_account, current_project)
+    current_locale ||= (params[:locale] || current_project.default_locale).to_sym
+    "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user_account, current_project, current_locale)
 
     respond_to do |format|
       format.html { render 'react/app' }
