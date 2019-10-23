@@ -280,7 +280,7 @@ export function contentField(label, value, className='', condition=true, collect
             <span>
                 <i className="fa fa-info-circle" aria-hidden="true" title={collection.notes}  style={{'color': 'grey'}} />
                 <a href={collection.homepage} title={collection.homepage} target='_blank'>
-                    <i class="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
+                    <i className="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
                 </a>
             </span>
         )
