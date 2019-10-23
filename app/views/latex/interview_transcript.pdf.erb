@@ -1,5 +1,5 @@
 <% 
-  interviewee_name = @interview.interviewees.last.name(true)[@locale]
+  interviewee_name = @interview.interviewees.last.name(true)[@locale.to_sym]
   title = "#{I18n.t((@orig_lang == @lang) ? 'transcript_header' : 'translation_header', locale: @locale)} #{interviewee_name}"
   header_text = "#{I18n.t('transcript', locale: @locale)}:  #{I18n.t('interview_with', locale: @locale)} #{interviewee_name} (#{I18n.t('archive_id', locale: @locale)} #{@interview.archive_id})"
   tape = 0
@@ -72,7 +72,7 @@
 
     <% if segment.speaker_id != speaker_id && segment.speaking_person %>
       \vspace*{<%= 0.2 %>cm}
-      \textit{<%= segment.speaking_person.name[@locale] + ': ' %>}
+      \textit{<%= segment.speaking_person.name[@locale.to_sym] + ': ' %>}
     <% end %>
     <%= latex_escape(CGI::unescapeHTML segment.text(@lang)) %>
 

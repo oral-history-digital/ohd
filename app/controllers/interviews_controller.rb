@@ -112,7 +112,7 @@ class InterviewsController < ApplicationController
   def show
     @interview = Interview.find_by_archive_id(params[:id])
     @locale = params[:locale]
-    interview_locale = @interview.transcript_locales.first
+    interview_locale = ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
 
     respond_to do |format|
       format.json do
@@ -126,7 +126,7 @@ class InterviewsController < ApplicationController
       end
       format.pdf do
         @lang = params[:lang].to_sym
-        @orig_lang = @interview.transcript_locales.first
+        @orig_lang = interview_locale
         pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
