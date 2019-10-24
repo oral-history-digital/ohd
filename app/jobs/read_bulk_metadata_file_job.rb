@@ -2,7 +2,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
   queue_as :default
 
   def perform(file_path, receiver, project, locale)
-    read_file(file_path, project)
+    read_file(file_path, project, locale)
     Interview.reindex
     Rails.cache.redis.keys("#{Project.current.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
 
@@ -15,8 +15,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
   end
 
-  def read_file(file_path, project)
-    I18n.locale = :en
+  def read_file(file_path, project, locale)
+    I18n.locale = locale
 
     csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00" })
     csv.each_with_index do |data, index|
