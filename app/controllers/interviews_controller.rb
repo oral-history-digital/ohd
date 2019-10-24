@@ -75,7 +75,7 @@ class InterviewsController < ApplicationController
     # speakers are people designated through column speaker in segment.
     # contributors (update_speakers_params[:contributions]) are people designated through column speaker_id
     #
-    AssignSpeakersJob.perform_later(@interview, speakers, update_speakers_params[:contributions], current_user_account)
+    AssignSpeakersJob.perform_later(@interview, speakers, update_speakers_params[:contributions_attributes], current_user_account)
 
     respond_to do |format|
       format.json do
@@ -292,6 +292,7 @@ class InterviewsController < ApplicationController
   def interview_params
     params.require(:interview).
       permit(
+      "project_id",
       "collection_id",
       "archive_id",
       "language_id",
@@ -302,7 +303,8 @@ class InterviewsController < ApplicationController
       "observations",
       "workflow_state",
       "media_type",
-      "biographies_workflow_state"
+      "biographies_workflow_state",
+      contributions_attributes: [:person_id, :contribution_type, :speaker_designation]
     )
   end
 
@@ -317,7 +319,7 @@ class InterviewsController < ApplicationController
   def update_speakers_params
     params.require(:update_speaker).
       permit(
-      "contributions",
+      contributions_attributes: [:person_id, :contribution_type, :speaker_designation],
       speakers: {},
     )
   end

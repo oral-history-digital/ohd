@@ -141,6 +141,8 @@ class Interview < ActiveRecord::Base
 
   serialize :properties
 
+  accepts_nested_attributes_for :contributions
+
   #validate :has_standard_name
 
   #def has_standard_name
