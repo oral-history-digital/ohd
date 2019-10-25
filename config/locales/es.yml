@@ -384,7 +384,7 @@ es:
   choose: Bitte auswählen
   enter_search_field: Bitte Suchbegriff eingeben ...
   enter_field: Name, Suchbegriff, ...
-  enter_field_hagen: Name, Pseudonym, Suchbegriff, ...
+  enter_field_dg: Name, Pseudonym, Suchbegriff, ...
   saved_searches: Gespeicherte Suchergebnisse
   saved_interviews: Gespeicherte Interviews
   saved_annotations: Gespeicherte Anmerkungen
@@ -702,6 +702,7 @@ es:
         available_locales: verfügbare Sprachen
         default_locale: default Sprache
         view_modes: Ansichten
+        fullname_on_landing_page: Show full name on landing page
         upload_types: UploadTypen
         primary_color_rgb: Primary Color RGB
         shortname: Kürzel

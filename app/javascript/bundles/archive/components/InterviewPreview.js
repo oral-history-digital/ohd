@@ -125,7 +125,7 @@ export default class InterviewPreview extends React.Component {
                 </div>
             )
         }
-        else if (this.props.projectId === 'hagen') {
+        else if (this.props.projectId === 'dg') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
                     <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration[this.props.locale]}</span><br/>

@@ -124,7 +124,7 @@ export default class ArchiveSearchForm extends React.Component {
                     type="text" 
                     name="fulltext" 
                     value={fulltext}
-                    placeholder={t(this.props, (this.props.projectId === 'hagen' ? 'enter_field_hagen' : 'enter_field'))}
+                    placeholder={t(this.props, (this.props.projectId === 'dg' ? 'enter_field_dg' : 'enter_field'))}
                     onChange={this.handleChange}
                     list='allInterviewTitles' 
                     autoFocus

@@ -14,7 +14,7 @@ import zwarLogoEn from '../../../images/zwar-logo-red_en.png'
 import zwarLogoDe from '../../../images/zwar-logo-red_de.svg'
 import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
 import zwarLogoRu from '../../../images/zwar-logo-red_ru.png'
-import hagenLogo from '../../../images/hagen-logo.gif'
+import dgLogo from '../../../images/dg-logo.gif'
 import campscapesLogo from '../../../images/campscapes.png'
 
 import { t } from '../../../lib/utils';
@@ -383,8 +383,8 @@ export default class WrapperPage extends React.Component {
                         break;
                 }
                 break;
-            case 'hagen':
-                logoSrc = hagenLogo;
+            case 'dg':
+                logoSrc = dgLogo;
                 break;
             case 'campscapes':
             logoSrc = campscapesLogo;
