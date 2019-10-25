@@ -23,7 +23,6 @@ class PeopleController < ApplicationController
     @person = Person.find params[:id]
     authorize @person
     @person.update_attributes person_params
-    @person.touch
 
     respond_to do |format|
       format.json do

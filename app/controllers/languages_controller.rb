@@ -23,7 +23,6 @@ class LanguagesController < ApplicationController
     @language = Language.find params[:id]
     authorize @language
     @language.update_attributes language_params
-    @language.touch # if only translations_attributes are updated cache won`t be sweeped
 
     respond_to do |format|
       format.json do

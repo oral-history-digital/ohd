@@ -23,7 +23,6 @@ class CollectionsController < ApplicationController
     @collection = Collection.find params[:id]
     authorize @collection
     @collection.update_attributes collection_params
-    @collection.touch # if only translations_attributes are updated cache won`t be sweeped
 
     respond_to do |format|
       format.json do

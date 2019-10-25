@@ -137,7 +137,7 @@ class Interview < ActiveRecord::Base
            -> {order('item_type ASC')},
            dependent: :destroy
 
-  translates :observations
+  translates :observations, fallbacks_for_empty_translations: true, touch: true
 
   serialize :properties
 

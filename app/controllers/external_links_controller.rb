@@ -24,7 +24,6 @@ class ExternalLinksController < ApplicationController
   def update
     @external_link.update_attributes(external_link_params)
     @external_link.project.touch
-    @external_link.touch
 
     respond_to do |format|
       format.json do

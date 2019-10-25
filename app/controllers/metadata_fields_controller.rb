@@ -24,7 +24,6 @@ class MetadataFieldsController < ApplicationController
   def update
     @metadata_field.update_attributes(metadata_field_params)
     @metadata_field.project.touch
-    @metadata_field.touch
 
     respond_to do |format|
       format.json do

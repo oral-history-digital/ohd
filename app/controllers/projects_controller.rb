@@ -64,7 +64,6 @@ class ProjectsController < ApplicationController
   # PATCH/PUT /projects/1
   def update
     @project.update(project_params)
-    @project.touch
 
     respond_to do |format|
       format.json do
