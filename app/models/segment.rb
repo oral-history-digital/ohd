@@ -244,8 +244,6 @@ class Segment < ActiveRecord::Base
   end
 
   def transcripts(allowed_to_see_all=false)
-    #hide_original = translations.where(spec: 'with_replacements').count > 0 && !allowed_to_see_all
-    #selected_translations = hide_original ? translations.where(spec: 'public') : translations
     translations.inject({}) do |mem, translation|
       # TODO: rm Nokogiri parser after segment sanitation
       mem[translation.locale.to_s] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : ''
