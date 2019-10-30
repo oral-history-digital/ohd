@@ -51,9 +51,8 @@ class InterviewsController < ApplicationController
   def mark_texts
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
-    texts_to_mark = mark_text_params[:texts].map{ |t| t["text_to_mark"] }
 
-    MarkTextJob.perform_later(@interview, texts_to_mark, mark_text_params[:locale], current_user_account)
+    MarkTextJob.perform_later(@interview, mark_text_params[:texts_attributes].as_json, mark_text_params[:locale], current_user_account)
 
     respond_to do |format|
       format.json do
@@ -312,7 +311,7 @@ class InterviewsController < ApplicationController
     params.require(:mark_text).
       permit(
       :locale,
-      texts: [:text_to_mark]
+      texts_attributes: [:text_to_mark, :replacement]
     )
   end
 
