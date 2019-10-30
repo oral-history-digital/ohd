@@ -88,10 +88,11 @@ export default class Transcript extends React.Component {
     }
 
     transcripted(locale) {
-        return this.firstSegment() && this.firstSegment().text.hasOwnProperty(locale);
+        return this.firstSegment() && this.firstSegment().text.hasOwnProperty(`${locale}-original`);
     }
 
     transcript(){
+        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
         let activeId = activeSegment(this.props.transcriptTime, this.props).id;
         let shownSegments = this.props.transcriptScrollEnabled ?
             segments(this.props) :
@@ -120,7 +121,7 @@ export default class Transcript extends React.Component {
                 transcript.push(
                     <SegmentContainer
                         data={segment}
-                        originalLocale={this.props.originalLocale}
+                        contentLocale={locale}
                         active={parseInt(segmentId) === activeId}
                         key={"segment-" + segment.id}
                     />
@@ -135,8 +136,8 @@ export default class Transcript extends React.Component {
             if (this.props.originalLocale) {
                 return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
             } else {
-                return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_translation');
-                // return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
+                //return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_translation');
+                return this.transcripted(this.props.locale) ? this.transcript() : t(this.props, 'without_translation');
             }
         } else {
             return <img src={spinnerSrc} className="archive-search-spinner"/>;

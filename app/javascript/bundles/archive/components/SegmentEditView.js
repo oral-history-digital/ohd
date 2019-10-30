@@ -18,7 +18,7 @@ export default class SegmentEditView extends React.Component {
                     <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
-                        translationLocale={this.props.originalLocale}
+                        locale={this.props.originalLocale}
                         attribute='text'
                         type='textarea'
                     />
@@ -30,7 +30,7 @@ export default class SegmentEditView extends React.Component {
                     <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
-                        translationLocale={this.props.translatedLocale}
+                        locale={this.props.translationLocale}
                         attribute='text'
                         type='textarea'
                     />
@@ -42,7 +42,7 @@ export default class SegmentEditView extends React.Component {
                     <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
-                        translationLocale={this.props.originalLocale}
+                        locale={this.props.originalLocale}
                         attribute='mainheading'
                         type='input'
                     />
@@ -54,7 +54,7 @@ export default class SegmentEditView extends React.Component {
                     <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
-                        translationLocale={this.props.translatedLocale}
+                        locale={this.props.translationLocale}
                         attribute='mainheading'
                         type='input'
                     />
@@ -66,7 +66,7 @@ export default class SegmentEditView extends React.Component {
                     <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
-                        translationLocale={this.props.originalLocale}
+                        locale={this.props.originalLocale}
                         attribute='subheading'
                         type='input'
                     />
@@ -78,7 +78,7 @@ export default class SegmentEditView extends React.Component {
                     <SubmitOnBlurForm
                         data={this.props.segment}
                         scope='segment'
-                        translationLocale={this.props.translatedLocale}
+                        locale={this.props.translationLocale}
                         attribute='subheading'
                         type='input'
                     />

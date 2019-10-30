@@ -81,7 +81,7 @@ class Segment < ActiveRecord::Base
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       if opts[:speaker_id]
-        segment.update_attributes speaker_id: opts[:speaker_id], text: opts[:text], locale: opts[:locale]
+        segment.update_and_write_public_version(opts)
       else
         assign_speakers_and_update_text(segment, opts)
       end
@@ -114,10 +114,10 @@ class Segment < ActiveRecord::Base
         if splitted_text.length.even?
           speaker_designation = splitted_text.shift
           text = splitted_text.shift.gsub(/\n+/, '')
-          segment.update_attributes text: text, locale: opts[:locale], speaker_id: opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
+          segment.update_and_write_public_version text: text, locale: opts[:locale], speaker_id: opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
         else
           text = splitted_text.shift.gsub(/\n+/, '')
-          segment.update_attributes text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
+          segment.update_and_write_public_version text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
         end
 
         # if there is another speaker_designation in the text
@@ -243,14 +243,10 @@ class Segment < ActiveRecord::Base
     end
   end
 
-  def text_orig 
-    text(orig_lang)
-  end
-
   def transcripts(allowed_to_see_all=false)
-    hide_original = translations.where(spec: 'with_replacements').count > 0 && !allowed_to_see_all
-    selected_translations = hide_original ? translations.where(spec: 'with_replacements') : translations
-    selected_translations.inject({}) do |mem, translation|
+    #hide_original = translations.where(spec: 'with_replacements').count > 0 && !allowed_to_see_all
+    #selected_translations = hide_original ? translations.where(spec: 'public') : translations
+    translations.inject({}) do |mem, translation|
       # TODO: rm Nokogiri parser after segment sanitation
       mem[translation.locale.to_s] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : ''
       mem
@@ -261,8 +257,8 @@ class Segment < ActiveRecord::Base
     "#{tape_id}.#{timecode}"
   end
 
-  def orig_lang
-    interview.language && interview.language.first_code
+  def orig_locale
+    interview.language && ISO_639.find(interview.language.first_code).alpha2
   end
 
   def archive_id
@@ -286,10 +282,6 @@ class Segment < ActiveRecord::Base
   #
   def speaker_designation
     speaker_id.blank? && speaker
-  end
-
-  def create_or_update_marked_copy(text, locale, specification)
-    translations.find_or_create_by(locale: 'bs', spec: specification).update_attribute(:text, text)
   end
 
   # return a range of media ids up to and not including the segment's media id
@@ -381,6 +373,24 @@ class Segment < ActiveRecord::Base
 
   def self.media_id_diff(mid, diff)
     mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i + diff.to_i).to_s.rjust(4,'0'))
+  end
+
+  def public_text(locale)
+    text("#{locale}-original") && text("#{locale}-original").
+      gsub(/\/\([\w=?]+\)[\\$]/, '').                                                 # e.g. /(p1)\  => ''
+      gsub(/\/\([\w+=?]\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1').                         # e.g. /(o) bla bla\  => bla bla 
+      gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\)[\\$]/, '')                         # e.g. /(o) (bla bla)\  =>  ''
+      gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1')  # e.g. /(o) (bla bla) bla bla\  => bla bla 
+  end
+
+  def update_and_write_public_version(params)
+    opts = params.to_h.select{|k,v| attribute_names.include?(k.to_s)} # || k == :locale
+    opts.update(locale: "#{params[:locale]}-original")
+    update_attributes(opts)
+    #
+    # now write the public version
+    opts.update(text: public_text(params[:locale]), locale: "#{params[:locale]}-public")
+    update_attributes(opts)
   end
 
   private

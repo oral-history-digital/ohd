@@ -28,6 +28,7 @@ class TranscriptsController < ApplicationController
       interview.recalculate_duration!
     end
 
+    interview.update_attributes language_id: transcript_params[:language_id]
     create_contributions(interview, transcript_params[:contributions_attributes])
     
     locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send(Project.alpha) 
@@ -51,6 +52,7 @@ class TranscriptsController < ApplicationController
     params.require(:transcript).
       permit(
         :archive_id,
+        :language_id,
         :transcript_language_id,
         :tape_count,
         :tape_number,
