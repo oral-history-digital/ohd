@@ -377,8 +377,12 @@ class Segment < ActiveRecord::Base
     text("#{locale}-original") && text("#{locale}-original").
       gsub(/\/\([\w=?]+\)[\\$]/, '').                                                 # e.g. /(p1)\  => ''
       gsub(/\/\([\w+=?]\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1').                         # e.g. /(o) bla bla\  => bla bla 
-      gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\)[\\$]/, '')                         # e.g. /(o) (bla bla)\  =>  ''
+      gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\)[\\$]/, '').                         # e.g. /(o) (bla bla)\  =>  ''
       gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1')  # e.g. /(o) (bla bla) bla bla\  => bla bla 
+  end
+
+  def text_orig
+    'dummy'
   end
 
   def update_and_write_public_version(params)
