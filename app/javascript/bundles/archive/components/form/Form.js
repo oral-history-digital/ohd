@@ -51,7 +51,6 @@ export default class Form extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        let v = this.valid();
         if(this.valid()) {
             this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
         } 
