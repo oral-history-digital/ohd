@@ -232,7 +232,7 @@ export default class VideoPlayer extends React.Component {
         let _this = this;
         return(
             React.createElement(
-                _this.props.project == 'hagen' ? 'audio' : 'video',
+                _this.props.project == 'dg' ? 'audio' : 'video',
                 {
                   ref: function ref(video) {
                     _this.video = video;
@@ -255,7 +255,7 @@ export default class VideoPlayer extends React.Component {
                   },
                   src: _this.src()
                 },
-                (_this.props.project != 'hagen') && _this.subtitles()
+                (_this.props.project != 'dg') && _this.subtitles()
               )
         )
     }

@@ -19,7 +19,7 @@ default: &default
     defaults:
       audio: 480p
     audio:
-      default: https://medien.cedis.fu-berlin.de/zwar/hagen/#{archive_id}_#{tape_count}_0#{tape_number)_240p.mp3
+      480p: https://medien.cedis.fu-berlin.de/zwar/hagen/#{archive_id}_#{tape_count}_0#{tape_number}.mp3
 
 
   contribution_types:
@@ -32,14 +32,14 @@ default: &default
   project_name:
     de: 'Deutsches Gedächtnis'
 
-  project_id: 'hagen'
+  project_id: 'dg'
 
   # used in PDFs
   # give the color code as fractions of 255
   # e.g. '143, 32, 28' ==> '0.560784314, 0.125490196, 0.109803922'
   primary_color_rgb: '0,0.43529411764705883,0.7176470588235294'
 
-  project_shortname: 'LUSIR'
+  project_shortname: 'DG'
 
   project_initials: 'DG'
 
