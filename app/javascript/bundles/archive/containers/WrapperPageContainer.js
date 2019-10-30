@@ -4,10 +4,10 @@ import WrapperPage from '../components/WrapperPage';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { hideFlyoutTabs, showFlyoutTabs, toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
-import { setLocale, setProjectId } from '../actions/archiveActionCreators';
+import { changeToEditView, setLocale, setProjectId } from '../actions/archiveActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
-import { getProject } from '../../../lib/utils';
+import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -28,6 +28,8 @@ const mapStateToProps = (state) => {
         projects: state.data.projects,
         projectsStatus: state.data.statuses.projects,
         project: project,
+        editViewCookie: getCookie('editView'),
+        editView: state.archive.editView,
     }
 }
 
@@ -39,7 +41,8 @@ const mapDispatchToProps = (dispatch) => ({
     closeArchivePopup: () => dispatch(closeArchivePopup()),
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
     showFlyoutTabs: () => dispatch(showFlyoutTabs()),
-    toggleFlyoutTabs: (currentState) => { currentState ? dispatch(hideFlyoutTabs()) :  dispatch(showFlyoutTabs())}
+    toggleFlyoutTabs: (currentState) => { currentState ? dispatch(hideFlyoutTabs()) :  dispatch(showFlyoutTabs())},
+    changeToEditView: (bool) => dispatch(changeToEditView(bool)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrapperPage);

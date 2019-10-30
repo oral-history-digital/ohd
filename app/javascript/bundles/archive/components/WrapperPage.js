@@ -28,15 +28,17 @@ export default class WrapperPage extends React.Component {
         this.onResize = this.onResize.bind(this);
         this.state = {
             currentMQ: 'unknown',
-            notifications: []
-        };
+            notifications: [],
+            editView: this.props.editViewCookie,
+        }
+        this.props.changeToEditView(this.props.editViewCookie)
     }
 
     static contextTypes = {
         router: PropTypes.object
     }
 
-    componentDidMount() {
+    componentDidMount(prevProps) {
         if(this.props.locale !== this.context.router.route.match.params.locale) {
             this.props.setLocale(this.context.router.route.match.params.locale);
         }
@@ -49,13 +51,16 @@ export default class WrapperPage extends React.Component {
         //this.setProjectId();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps, prevState) {
         if (this.props.visible && (this.state.currentMQ === 'S' || this.state.currentMQ === 'XS')) {
             if (!document.body.classList.contains('noScroll')) {
                 document.body.classList.add('noScroll');
             }
         } else {
             document.body.classList.remove('noScroll');
+        }
+        if (prevProps.editView !== this.props.editView) {
+            this.setState({editView: this.props.editView})
         }
         this.loadCollections();
         this.loadProjects();

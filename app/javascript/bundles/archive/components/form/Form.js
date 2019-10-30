@@ -107,10 +107,10 @@ export default class Form extends React.Component {
             className='flyout-sub-tabs-content-ico-link'
             title={t(this.props, 'delete')}
             onClick={() => {
-                let subScopeValues = this.state.values[pluralize(this.props.subFormScope)];
+                let subScopeValues = this.state.values[`${pluralize(this.props.subFormScope)}_attributes`];
                 this.setState({ 
                     values: Object.assign({}, this.state.values, {
-                        [pluralize(this.props.subFormScope)]: subScopeValues.slice(0,index).concat(subScopeValues.slice(index+1))
+                        [`${pluralize(this.props.subFormScope)}_attributes`]: subScopeValues.slice(0,index).concat(subScopeValues.slice(index+1))
                     })
                 })
             }}
@@ -119,12 +119,16 @@ export default class Form extends React.Component {
         </span>
     }
 
+    subFormScopeAsRailsAttributes() {
+        return `${pluralize(this.props.subFormScope)}_attributes`;
+    }
+
     selectedSubScopeValues() {
-        if (this.props.subFormScope && this.state.values[pluralize(this.props.subFormScope)]) {
+        if (this.props.subFormScope && this.state.values[this.subFormScopeAsRailsAttributes()]) {
             return (
                 <div>
                     <h4 className='nested-value-header'>{t(this.props, `${pluralize(this.props.subFormScope)}.title`)}</h4>
-                    {this.state.values[pluralize(this.props.subFormScope)].map((value, index) => {
+                    {this.state.values[this.subFormScopeAsRailsAttributes()].map((value, index) => {
                         return (
                             <p key={`${this.props.scope}-${this.props.subScope}-${index}`} >
                                 <span className='flyout-content-data'>{this.props.subScopeRepresentation(value)}</span>
@@ -139,12 +143,10 @@ export default class Form extends React.Component {
 
     // props is a dummy here
     handleSubFormSubmit(props, params) {
-        let scope = Object.keys(params)[0];
-        let nestedValues = this.state.values[pluralize(scope)] || [];
+        let nestedValues = this.state.values[this.subFormScopeAsRailsAttributes()] || [];
         this.setState({ 
             values: Object.assign({}, this.state.values, {
-                [pluralize(scope)]: [...nestedValues, params[scope]]
-                //[pluralize(scope)]: Object.assign([...nestedValues], {[nestedValues.length]: params[scope]})
+                [this.subFormScopeAsRailsAttributes()]: [...nestedValues, params[this.props.subFormScope]]
             })
         })
     }

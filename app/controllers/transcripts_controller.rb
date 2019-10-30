@@ -28,11 +28,11 @@ class TranscriptsController < ApplicationController
       interview.recalculate_duration!
     end
 
-    create_contributions(interview, transcript_params[:contributions])
+    create_contributions(interview, transcript_params[:contributions_attributes])
     
     locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send(Project.alpha) 
 
-    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account, transcript_params[:contributions].map(&:to_h))
+    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account, transcript_params[:contributions_attributes].map(&:to_h))
 
     respond_to do |format|
       format.json do
@@ -56,7 +56,7 @@ class TranscriptsController < ApplicationController
         :tape_number,
         :tape_durations,
         :time_shifts,
-        contributions: [:person_id, :contribution_type, :speaker_designation]
+        contributions_attributes: [:person_id, :contribution_type, :speaker_designation]
     )
   end
 

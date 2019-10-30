@@ -2,7 +2,7 @@ require 'globalize'
 class MetadataField < ApplicationRecord
 
   belongs_to :project
-  translates :label
+  translates :label, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
   serialize :values
 

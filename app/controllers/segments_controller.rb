@@ -35,7 +35,7 @@ class SegmentsController < ApplicationController
     #@segment.save
     @segment.update_attributes(segment_params)
 
-    @segment.reload
+    @segment.touch
     #if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
       #Rails.cache.delete "#{current_project.cache_key_prefix}-headings-#{@segment.id}-#{@segment.updated_at}"
     #end

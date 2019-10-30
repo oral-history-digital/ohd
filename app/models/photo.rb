@@ -12,7 +12,7 @@ class Photo < ActiveRecord::Base
                     #:url => (ApplicationController.relative_url_root || '') + "/interviews/:interview/photos/:basename_:style.:extension",
                     #:path => ":rails_root/assets/archive_images/gallery/:basename_:style.:extension"
 
-  translates :caption
+  translates :caption, fallbacks_for_empty_translations: true, touch: true
 
   scope :for_file, -> (filename) { where('photo_file_name LIKE ?', (filename || '').sub(/([^.]+)_\w+(\.\w{3,4})?$/,'\1\2') + '%') }
 

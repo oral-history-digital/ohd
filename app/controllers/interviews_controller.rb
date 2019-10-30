@@ -75,7 +75,7 @@ class InterviewsController < ApplicationController
     # speakers are people designated through column speaker in segment.
     # contributors (update_speakers_params[:contributions]) are people designated through column speaker_id
     #
-    AssignSpeakersJob.perform_later(@interview, speakers, update_speakers_params[:contributions], current_user_account)
+    AssignSpeakersJob.perform_later(@interview, speakers, update_speakers_params[:contributions_attributes], current_user_account)
 
     respond_to do |format|
       format.json do
@@ -112,7 +112,7 @@ class InterviewsController < ApplicationController
   def show
     @interview = Interview.find_by_archive_id(params[:id])
     @locale = params[:locale]
-    interview_locale = @interview.transcript_locales.first
+    interview_locale = ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
 
     respond_to do |format|
       format.json do
@@ -126,7 +126,7 @@ class InterviewsController < ApplicationController
       end
       format.pdf do
         @lang = params[:lang].to_sym
-        @orig_lang = @interview.transcript_locales.first
+        @orig_lang = interview_locale
         pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
@@ -265,6 +265,7 @@ class InterviewsController < ApplicationController
 
   def initial_interview_redux_state
     #Rails.cache.fetch("#{current_project.cache_key_prefix}-#{current_user_account ? current_user_account.id : 'logged-out'}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
+    if @interview
       initial_redux_state.update(
         archive: initial_redux_state[:archive].update(
           archiveId: @interview.archive_id,
@@ -279,6 +280,9 @@ class InterviewsController < ApplicationController
           )
         )
       )
+    else
+      initial_redux_state
+    end
     #end
   end
   helper_method :initial_interview_redux_state
@@ -288,6 +292,7 @@ class InterviewsController < ApplicationController
   def interview_params
     params.require(:interview).
       permit(
+      "project_id",
       "collection_id",
       "archive_id",
       "language_id",
@@ -298,7 +303,8 @@ class InterviewsController < ApplicationController
       "observations",
       "workflow_state",
       "media_type",
-      "biographies_workflow_state"
+      "biographies_workflow_state",
+      contributions_attributes: [:person_id, :contribution_type, :speaker_designation]
     )
   end
 
@@ -313,7 +319,7 @@ class InterviewsController < ApplicationController
   def update_speakers_params
     params.require(:update_speaker).
       permit(
-      "contributions",
+      contributions_attributes: [:person_id, :contribution_type, :speaker_designation],
       speakers: {},
     )
   end

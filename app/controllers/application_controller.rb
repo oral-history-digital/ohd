@@ -116,7 +116,7 @@ class ApplicationController < ActionController::Base
         projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}") do 
           Project.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
-        languages: Rails.cache.fetch("languages-#{Language.maximum(:updated_at)}") do 
+        languages: Rails.cache.fetch("#{current_project.cache_key_prefix}-languages-#{Language.maximum(:updated_at)}") do 
           Language.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         accounts: {

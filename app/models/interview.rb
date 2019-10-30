@@ -137,9 +137,11 @@ class Interview < ActiveRecord::Base
            -> {order('item_type ASC')},
            dependent: :destroy
 
-  translates :observations
+  translates :observations, fallbacks_for_empty_translations: true, touch: true
 
   serialize :properties
+
+  accepts_nested_attributes_for :contributions
 
   #validate :has_standard_name
 
@@ -324,10 +326,10 @@ class Interview < ActiveRecord::Base
     short_title(locale)
   end
 
-  # def place_of_interview
-  #   ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
-  #   ref && ref.registry_entry
-  # end
+   def place_of_interview
+     ref = registry_references.where(registry_reference_type: RegistryReferenceType.where(code: 'interview_location')).first
+     ref && ref.registry_entry
+   end
 
   def localized_hash(use_full_title=false)
     I18n.available_locales.inject({}) do |mem, locale|
@@ -464,7 +466,7 @@ class Interview < ActiveRecord::Base
     speakers.flatten.uniq.compact.reject{|s| s == false}
   end
 
-  def transcript_locales
+  def alpha3_transcript_locales
     language ? language.code.split(/[\/-]/) : []
   end
 
