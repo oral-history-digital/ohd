@@ -44,7 +44,7 @@ export default class Segment extends React.Component {
     transcript() {
         //let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
         //return (this.props.data.text) ? (this.props.data.text[`${locale}-original`] || this.props.data.text['de-original']) : ''
-        return this.props.data.text[`${this.props.contentLocale}-original`] || ''
+        return admin(this.props, this.props.data) ? (this.props.data.text[`${this.props.contentLocale}-original`] || '') : (this.props.data.text[`${this.props.contentLocale}-public`] || '')
     }
 
     toggleAdditionalContent(type) {
