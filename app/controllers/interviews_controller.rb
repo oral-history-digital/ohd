@@ -43,7 +43,12 @@ class InterviewsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: data_json(@interview, msg: "processed")
+        render json: {
+          archive_id: @interview.archive_id,
+          data_type: 'interviews',
+          data: JSON.parse(InterviewWithSegmentsSerializer.new(@interview).to_json),
+          msg: "processed"
+        }
       end
     end
   end
