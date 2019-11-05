@@ -131,7 +131,7 @@ export default class RegisterForm extends React.Component {
         return (
             <Form 
                 scope='user_registration'
-                onSubmit={function(params){_this.props.submitRegister(`/${pathBase(_this.props)}/user_registrations`, params)}}
+                onSubmit={function(params){_this.props.submitRegister(`${pathBase(_this.props)}/user_registrations`, params)}}
                 submitText='user_registration.register'
                 elements={this.formElements()}
             />
