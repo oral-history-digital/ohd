@@ -13,17 +13,18 @@ export default class SegmentHeadingForm extends React.Component {
                     scope='segment'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     values={{
-                        id: this.props.segment && this.props.segment.id
+                        id: this.props.segment && this.props.segment.id,
+                        locale: this.props.contentLocale
                     }}
                     submitText='submit'
                     elements={[
                         {
                             attribute: 'mainheading',
-                            value: this.props.segment && this.props.segment.mainheading[this.props.locale],
+                            value: this.props.segment && this.props.segment.mainheading[`${this.props.contentLocale}-original`],
                         },
                         {
                             attribute: 'subheading',
-                            value: this.props.segment && this.props.segment.subheading[this.props.locale],
+                            value: this.props.segment && this.props.segment.subheading[`${this.props.contentLocale}-original`],
                         },
                     ]}
                 />

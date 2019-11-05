@@ -4,11 +4,7 @@ import SubmitOnBlurForm from '../../components/form/SubmitOnBlurForm';
 import { submitData } from '../../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
-    //let project = getProject(state);
     return {
-        locale: state.archive.locale,
-        //locales: (project && project.locales) || state.archive.locales,
-        translations: state.archive.translations,
     }
 }
 

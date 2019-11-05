@@ -33,9 +33,8 @@ class SegmentsController < ApplicationController
     #@segment.text = segment_params[:text]
     #@segment.speaker_id = segment_params[:speaker_id]
     #@segment.save
-    @segment.update_attributes(segment_params)
+    @segment.update_and_write_public_version(segment_params)
 
-    @segment.touch
     #if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
       #Rails.cache.delete "#{current_project.cache_key_prefix}-headings-#{@segment.id}-#{@segment.updated_at}"
     #end
@@ -112,6 +111,7 @@ class SegmentsController < ApplicationController
       :mainheading, 
       :subheading, 
       :speaker_id,
+      :locale,
       translations_attributes: [:locale, :text, :id, :mainheading, :subheading]
     )
   end

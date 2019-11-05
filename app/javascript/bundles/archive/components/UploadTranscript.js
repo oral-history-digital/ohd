@@ -73,6 +73,15 @@ export default class UploadTranscript extends React.Component {
                             },
                             {
                                 elementType: 'select',
+                                attribute: 'language_id',
+                                values: this.props.languages,
+                                label: t(this.props, 'activerecord.attributes.transcript.interview_original_language_id'),
+                                //value: this.props.interview && this.props.interview.language_id,
+                                withEmpty: true,
+                                validate: function(v){return /^\d+$/.test(v)},
+                            },
+                            {
+                                elementType: 'select',
                                 attribute: 'transcript_language_id',
                                 label: t(this.props, 'activerecord.attributes.transcript.transcript_language_id'),
                                 values: this.props.languages,

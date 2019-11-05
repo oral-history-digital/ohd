@@ -13,7 +13,8 @@ export default class SegmentForm extends React.Component {
                     scope='segment'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     values={{
-                        id: this.props.segment && this.props.segment.id
+                        id: this.props.segment && this.props.segment.id,
+                        locale: this.props.contentLocale
                     }}
                     submitText='submit'
                     elements={[
@@ -29,7 +30,7 @@ export default class SegmentForm extends React.Component {
                         {
                             elementType: 'textarea',
                             attribute: 'text',
-                            value: this.props.segment && this.props.segment.text[this.props.locale],
+                            value: this.props.segment && this.props.segment.text[`${this.props.contentLocale}-original`],
                             validate: function(v){return v && v.length > 1} 
                         },
                     ]}

@@ -42,8 +42,9 @@ export default class Segment extends React.Component {
     }
 
     transcript() {
-        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
-        return (this.props.data.text) ? (this.props.data.text[locale] || this.props.data.text['de']) : ''
+        //let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
+        //return (this.props.data.text) ? (this.props.data.text[`${locale}-original`] || this.props.data.text['de-original']) : ''
+        return admin(this.props, this.props.data) ? (this.props.data.text[`${this.props.contentLocale}-original`] || '') : (this.props.data.text[`${this.props.contentLocale}-public`] || '')
     }
 
     toggleAdditionalContent(type) {
@@ -66,8 +67,8 @@ export default class Segment extends React.Component {
             return (
                 <div className='scope-note'>
                     <div onClick={() => this.setOpenReference(null)} className='close'></div>
-                    <div className='title'>{this.state.openReference.name[this.props.locale]}</div>
-                    <div className='note'>{this.state.openReference.notes[this.props.locale]}</div>
+                    <div className='title'>{this.state.openReference.name[this.props.contentLocale]}</div>
+                    <div className='note'>{this.state.openReference.notes[this.props.contentLocale]}</div>
                 </div>
             )
         }
@@ -168,7 +169,7 @@ export default class Segment extends React.Component {
                     title={t(this.props, 'edit.segment.edit')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.segment.edit'),
-                        content: <SegmentFormContainer segment={this.props.data} locale={locale} />
+                        content: <SegmentFormContainer segment={this.props.data} contentLocale={contentLocale} />
                     })}
                 >
                     <i className="fa fa-pencil"></i>
@@ -187,7 +188,7 @@ export default class Segment extends React.Component {
                     title={t(this.props, 'edit.segment.edit_heading')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.segment.edit_heading'),
-                        content: <SegmentHeadingFormContainer segment={this.props.data} locale={locale} />
+                        content: <SegmentHeadingFormContainer segment={this.props.data} contentLocale={contentLocale} />
                     })}
                 >
                     <i className="fa fa-pencil"></i>
@@ -199,7 +200,6 @@ export default class Segment extends React.Component {
     }
 
     render() {
-        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
         let contentTransRowCss = this.speakerChanged() ? 'content-trans-row speaker-change' : 'content-trans-row';
         if (this.transcript()) {
@@ -215,14 +215,14 @@ export default class Segment extends React.Component {
                                  dangerouslySetInnerHTML={{__html: this.transcript()}}
                             />
                         </div>
-                        {this.renderLinks(locale)}
+                        {this.renderLinks(this.props.contentLocale)}
                         <div className={contentOpenClass}>
                             <div>
-                                {this.annotations(locale)}
+                                {this.annotations(this.props.contentLocale)}
                                 {this.userAnnotations()}
                             </div>
                             <div className='content-trans-text-element-data'>
-                                {this.references(locale)}
+                                {this.references(this.props.contentLocale)}
                                 {this.openReference()}
                             </div>
                         </div>

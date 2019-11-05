@@ -3,14 +3,12 @@ class MarkTextJob < ApplicationJob
 
   def perform(interview, texts_to_mark, locale, receiver)
     interview.segments.each do |segment|
-      text = segment.text(locale)
+      text = segment.text("#{locale}-original")
       texts_to_mark.each do |t|
-        regexp = Regexp.new(Regexp.quote(t))
+        regexp = Regexp.new(Regexp.quote(t['text_to_mark']))
         if text =~ regexp
-          replacement = ''
-          t.length.times{|i| replacement << '*'}
-          text = text.gsub(regexp, replacement)
-          segment.create_or_update_marked_copy(text, locale, 'with_replacement')
+          text = text.gsub(regexp, t['replacement'])
+          segment.update_and_write_public_version(text: text, locale: locale)
         end
       end
     end

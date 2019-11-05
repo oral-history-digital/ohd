@@ -28,15 +28,16 @@ export default class SubmitOnBlurForm extends React.Component {
         }
     }
 
-    translation() {
-        if (this.props.translationLocale) {
-            return this.props.data.translations.find(t => t.locale === this.props.translationLocale)
-        }
-    }
+    //translation() {
+        //if (this.props.locale) {
+            //return this.props.data.translations.find(t => t.locale === this.props.locale)
+        //}
+    //}
 
     value() {
-        if (this.props.translationLocale) {
-            return this.translation()[this.props.attribute];
+        if (this.props.locale) {
+            //return this.translation()[this.props.attribute];
+            return this.props.data[this.props.attribute][`${this.props.locale}-original`] || ''
         } else {
             return this.props.data[this.props.attribute];
         }
@@ -47,16 +48,19 @@ export default class SubmitOnBlurForm extends React.Component {
     submit(event) {
         event.preventDefault();
 
-        let params = {[this.props.scope]: {id: this.props.data.id}};
+        //let params = {[this.props.scope]: {id: this.props.data.id}};
 
-        if (this.props.translationLocale) {
-            params[this.props.scope].translations_attributes = [{id: this.translation().id, locale: this.props.translationLocale, [this.props.attribute]: this.state.value}];
-        } else {
-            params[this.props.scope][this.props.attribute] = this.state.value;
-        }
+        //if (this.props.locale) {
+            ////params[this.props.scope].translations_attributes = [{id: this.translation().id, locale: this.props.locale, [this.props.attribute]: this.state.value}];
+            //params[this.props.scope].locale = this.props.locale;
+        //} else {
+            //params[this.props.scope][this.props.attribute] = this.state.value;
+        //}
 
+        let a = {[this.props.scope]: {id: this.props.data.id, locale: this.props.locale, [this.props.attribute]: this.state.value}};
         if(this.state.valid) {
-            this.props.submitData(this.props, params);
+            //this.props.submitData(this.props, params);
+            this.props.submitData(this.props, {[this.props.scope]: {id: this.props.data.id, locale: this.props.locale, [this.props.attribute]: this.state.value}});
         } 
     }
 

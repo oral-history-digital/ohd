@@ -20,7 +20,7 @@ export default class DataSearchForm extends React.Component {
 
     loadData() {
          if (
-            !this.props.dataStatus[statifiedQuery(this.props.query)]
+            !(this.props.dataStatus[statifiedQuery(this.props.query)] || this.props.dataStatus.all)
          ) {
             this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
          }
