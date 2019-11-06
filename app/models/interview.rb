@@ -477,7 +477,7 @@ class Interview < ActiveRecord::Base
   def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, contribution_data)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
-      parsed_sheet = sheet.parse(timecode: 'Timecode', transcript: 'Transcript', speaker: 'Speaker')
+      parsed_sheet = sheet.parse(timecode: /^Timecode$/i, transcript: /^Transcript$/i, speaker: /^Speaker$/i)
       parsed_sheet.each_with_index do |row, index|
         contribution = contribution_data.select{|c| c['speaker_designation'] ==  row[:speaker]}.first
         speaker_id = contribution && contribution['person_id']
@@ -487,7 +487,7 @@ class Interview < ActiveRecord::Base
             timecode: row[:timecode], 
             next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode, 
             tape_id: tape_id,
-            text: row[:transcript], 
+            text: row[:transcript] || '', 
             locale: locale,
             contribution_data: contribution_data, 
             speaker_id: speaker_id
