@@ -123,16 +123,20 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_language(name)
-    languages = name.split(' and ').map do |l| 
-      ISO_639.find(l) ||
-      ISO_639.find_by_english_name(l.classify) ||
-      ISO_639.search(l).first 
+    if name
+      languages = name.split(' and ').map do |l| 
+        # ISO_639 knows only english  and french
+        ISO_639.find(l) ||
+        ISO_639.find(l[0..2]) || # some german language names can be found like this 
+        ISO_639.find_by_english_name(l.classify) ||
+        ISO_639.search(l).first 
+      end.compact.uniq
+      code = languages.map(&:alpha3).join('/')
+      english_name = languages.map(&:english_name).join(' and ')
+      language = Language.find_by_code(code)
+      language = Language.create(code: code, name: english_name) unless language
+      language
     end
-    code = languages.map(&:alpha3).join('/')
-    english_name = languages.map(&:english_name).join(' and ')
-    language = Language.find_by_code(code)
-    language = Language.create(code: code, name: english_name) unless language
-    language
   end
 
   def find_or_create_place(name, country_name)
