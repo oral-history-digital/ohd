@@ -18,7 +18,13 @@ class ReadBulkMetadataFileJob < ApplicationJob
   def read_file(file_path, project, locale)
     I18n.locale = locale
 
-    csv = Roo::CSV.new(file_path, csv_options: { col_sep: ";", row_sep: :auto, quote_char: "\x00" })
+    csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00" }
+    csv = Roo::CSV.new(file_path, csv_options: csv_options)
+    if csv.first.length == 1
+      csv_options.update(col_sep: "\t")
+      csv = Roo::CSV.new(file_path, csv_options: csv_options)
+    end
+
     csv.each_with_index do |data, index|
       unless index == 0
         begin
