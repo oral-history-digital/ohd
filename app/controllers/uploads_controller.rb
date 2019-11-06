@@ -19,7 +19,7 @@ class UploadsController < ApplicationController
     File.open(file_path, 'wb') {|f| f.write(file.read) }
 
     current_locale ||= (params[:locale] || current_project.default_locale).to_sym
-    "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user_account, current_project, current_locale)
+    "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user_account, current_project, current_locale.to_s)
 
     respond_to do |format|
       format.html { render 'react/app' }
