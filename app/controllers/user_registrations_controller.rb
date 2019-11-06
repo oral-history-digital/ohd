@@ -146,7 +146,7 @@ class UserRegistrationsController < ApplicationController
       )
     end
   end
-  helper_method :initial_interview_redux_state
+  helper_method :initial_user_registration_redux_state
 
   private
 
