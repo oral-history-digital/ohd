@@ -10,7 +10,10 @@ export default class RegistryEntry extends React.Component {
 
     constructor(props, context) {
         super(props, context);
-        this.state = {childrenVisible: false};
+        this.state = {
+            childrenVisible: false,
+            editButtonsVisible: false,
+        };
     }
 
     componentDidMount() {
@@ -43,7 +46,8 @@ export default class RegistryEntry extends React.Component {
                         />
                 })}
             >
-                <i className="fa fa-pencil"></i>
+                <i className="fa fa-pencil" />
+                {t(this.props, 'edit.registry_entry.edit')}
             </div>
         )
     }
@@ -63,12 +67,24 @@ export default class RegistryEntry extends React.Component {
                     />
                     })}
                 >
-                    <i className="fa fa-eye"></i>
+                    <i className="fa fa-eye" />
                 </div>
             )
         } else {
             return <div className='flyout-sub-tabs-content-ico-link' />;
         }
+    }
+
+    ellipsis() {
+        return (
+            <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, 'more')}
+                onClick={() => this.setState({ editButtonsVisible: !this.state.editButtonsVisible })}
+            >
+                <i className="fa fa-ellipsis-v" />
+            </div>
+        )
     }
 
     destroy() {
@@ -93,7 +109,8 @@ export default class RegistryEntry extends React.Component {
                     )
                 })}
             >
-                <i className="fa fa-trash-o"></i>
+                <i className="fa fa-trash-o" />
+                {t(this.props, 'delete')}
             </div>
         } else {
             return null;
@@ -126,7 +143,8 @@ export default class RegistryEntry extends React.Component {
                     )
                 })}
             >
-                <i className="fa fa-trash-o"></i>
+                <i className="fa fa-minus-circle" />
+                {t(this.props, 'edit.registry_entry.delete_parent')}
             </div>
         } else {
             return null;
@@ -145,7 +163,26 @@ export default class RegistryEntry extends React.Component {
                              />
                 })}
             >
-                <i className="fa fa-plus"></i>
+                <i className="fa fa-sitemap" style={{'transform': 'rotate(180deg)'}} />
+                {t(this.props, 'edit.registry_entry.add_parent')}
+            </div>
+        )
+    }
+
+    addRegistryEntry() {
+        return (
+            <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, 'edit.registry_entry.new')}
+                onClick={() => this.props.openArchivePopup({
+                    title: t(this.props, 'edit.registry_entry.new'),
+                    content: <RegistryEntryFormContainer 
+                                registryEntryParent={this.props.registryEntry}
+                            />
+                })}
+            >
+                <i className="fa fa-sitemap" />
+                {t(this.props, 'edit.registry_entry.new')}
             </div>
         )
     }
@@ -175,6 +212,7 @@ export default class RegistryEntry extends React.Component {
             <div className={'flyout-sub-tabs-content-ico'}>
                 {this.show()}
                 {this.osmLink()}
+                {this.ellipsis()}
                 {this.editButtons()}
             </div>
         )
@@ -182,12 +220,20 @@ export default class RegistryEntry extends React.Component {
 
     editButtons() {
         if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
+            let css = this.state.editButtonsVisible ? '' : 'invisible'
             return (
-                <div className={'flyout-sub-tabs-content-ico'}>
-                    {this.edit()}
-                    {this.delete()}
-                    {this.addParent()}
-                    {this.deleteParent()}
+                <div className={`registry-entry-edit-buttons ${css}`}>
+                    <i 
+                        className='fa-times fa'
+                        style={{'position': 'absolute', 'color': '#8b8b7a', 'cursor': 'pointer'}}
+                        onClick={() => this.setState({ editButtonsVisible: !this.state.editButtonsVisible })}></i>
+                    <ul>
+                        <li>{this.edit()}</li>
+                        <li>{this.delete()}</li>
+                        <li>{this.addRegistryEntry()}</li>
+                        <li>{this.addParent()}</li>
+                        <li>{this.deleteParent()} </li>
+                    </ul>
                 </div>
             )
         }

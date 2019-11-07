@@ -1,5 +1,4 @@
 class RegistryReferenceSerializer < ApplicationSerializer
-
   attributes :id,
              :ref_object_id,
              :ref_object_type,
@@ -8,6 +7,16 @@ class RegistryReferenceSerializer < ApplicationSerializer
              :ref_interview_archive_id
 
   def ref_interview_archive_id
-    object.ref_object_type == 'Interview' ? Interview.find(object.ref_object_id).archive_id : nil
+    if object.ref_object_type == "Interview"
+      Interview.find(object.ref_object_id).archive_id
+    elsif object.ref_object_type == "Person"
+      begin
+        Person.find(object.ref_object_id).interviews.first.archive_id
+      rescue
+        nil
+      end
+    else
+      nil
+    end
   end
 end
