@@ -76,7 +76,7 @@ export default class Form extends React.Component {
         let errors = {};
         this.props.elements.map((element, index) => {
             let error = false;
-            let value = element.value || (this.props.data && this.props.data[element.attribute]);
+            let value = element.value || (this.props.data && this.props.data[element.attribute]) || '';
             if (typeof(element.validate) === 'function') {
                 error = !element.validate(value);
             }

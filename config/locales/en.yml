@@ -819,8 +819,8 @@ en:
         last_name: Last Name
         birth_name: Birth Name
         date_of_birth: Date of Birth
-        alias_names: Weiterer Name
-        other_first_names: Weiterer Name
+        alias_names: Alias Names
+        other_first_names: Other First Names
         typology: Erfahrungen
       registry_entry:
         descriptor: Name

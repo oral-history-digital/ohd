@@ -1,10 +1,10 @@
-require 'globalize'
-class Project < ApplicationRecord
+require "globalize"
 
-  has_many :interviews 
-  has_many :collections 
-  has_many :metadata_fields 
-  has_many :external_links 
+class Project < ApplicationRecord
+  has_many :interviews
+  has_many :collections
+  has_many :metadata_fields
+  has_many :external_links
   has_many :registry_entry_projects
   has_many :registry_entries,
     through: :registry_entry_projects
@@ -21,6 +21,7 @@ class Project < ApplicationRecord
   serialize :name
   serialize :hidden_registry_entry_ids
   serialize :pdf_registry_entry_codes
+  # serialize :fullname_on_landing_page
 
   class << self
     def config
@@ -36,7 +37,7 @@ class Project < ApplicationRecord
       end
     end
 
-    # TODO: fit this method 
+    # TODO: fit this method
     def current
       first
     end
@@ -58,7 +59,7 @@ class Project < ApplicationRecord
   end
 
   def archive_domain
-    Rails.env == 'development' ? 'http://localhost:3000' : read_attribute(:archive_domain)
+    Rails.env == "development" ? "http://localhost:3000" : read_attribute(:archive_domain)
   end
 
   def search_facets
@@ -103,10 +104,10 @@ class Project < ApplicationRecord
   def search_facets_hash
     # TODO: there is potential to make the following (uncached) faster
     #
-    Rails.cache.fetch("#{cache_key_prefix}-#{updated_at}-search-facets-hash") do
+    Rails.cache.fetch("#{cache_key_prefix}-#{updated_at}-#{metadata_fields.maximum(:updated_at)}-search-facets-hash") do
       search_facets.inject({}) do |mem, facet|
         case facet["source"]
-        when "registry_entry",  "registry_reference_type"
+        when "registry_entry", "registry_reference_type"
           mem[facet.name.to_sym] = ::FacetSerializer.new(facet.source.classify.constantize.find_by_code(facet.name)).as_json
         when "person", "interview"
           facet_label_hash = facet.localized_hash
@@ -128,7 +129,7 @@ class Project < ApplicationRecord
             mem[facet.name.to_sym] = {
               name: name,
               subfacets: %w( collaboration concentration_camp flight occupation persecution_of_jews resistance retaliation ).inject({}) do |subfacets, key|
-              #subfacets: [ "Collaboration", "Concentration camp", "Flight", "Occupation", "Persecution of Jews", "Resistance", "Retaliation" ].inject({}) do |subfacets, key|
+                #subfacets: [ "Collaboration", "Concentration camp", "Flight", "Occupation", "Persecution of Jews", "Resistance", "Retaliation" ].inject({}) do |subfacets, key|
                 subfacets[key.to_s] = {
                   name: localized_hash_for("search_facets", key),
                   count: 0,
@@ -136,7 +137,7 @@ class Project < ApplicationRecord
                 subfacets
               end,
             }
-          else 
+          else
             mem[facet.name.to_sym] = {
               name: name,
               subfacets: facet.source.classify.constantize.group(facet.name).count.keys.compact.inject({}) do |subfacets, key|
@@ -170,6 +171,7 @@ class Project < ApplicationRecord
   end
 
   def localized_hash_for(specifier, key = nil)
+    key == "" && key = "nil"
     I18n.available_locales.inject({}) do |desc, locale|
       desc[locale] = I18n.t([specifier, key].compact.join("."), locale: locale)
       desc
@@ -185,5 +187,4 @@ class Project < ApplicationRecord
     end
     facets
   end
-
 end

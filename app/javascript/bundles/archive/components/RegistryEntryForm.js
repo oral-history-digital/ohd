@@ -13,8 +13,8 @@ export default class RegistryEntryForm extends React.Component {
     }
 
     handleLanguageChange(name, value) {
-        let lang = this.selectLanguageBy('value', value);
-        this.setState({lang: this.selectLanguageBy('value', value)})
+        let lang = this.selectLanguageBy('id', parseInt(value));
+        this.setState({lang: lang})
     }
 
     selectLanguageBy(attribute, value) {

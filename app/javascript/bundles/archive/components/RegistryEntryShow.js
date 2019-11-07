@@ -57,23 +57,6 @@ export default class RegistryEntryShow extends React.Component {
     refObject(rr) {
         let ref_object_string = ''
         switch (rr.ref_object_type.toLowerCase()) {
-            case 'interview':
-                this.fetchInterview(rr.ref_interview_archive_id)
-                if(this.interviewIsFetched(rr.ref_interview_archive_id)) {
-                    ref_object_string = `${this.props.interviews[rr.ref_interview_archive_id].short_title[this.props.locale]} (${this.props.interviews[rr.ref_interview_archive_id].archive_id})`
-                    return (
-                        <Link className={'search-result-link'}
-                        onClick={() => {
-                            this.props.closeArchivePopup();
-                            this.props.setArchiveId(rr.ref_interview_archive_id);
-                        }}
-                        to={pathBase(this.props) + '/interviews/' + rr.ref_interview_archive_id}
-                        >
-                            {`${ref_object_string}`}
-                        </Link>
-                    )
-                }
-
             case 'segment':
                 this.fetchSegment(rr.ref_object_id)
                 if(this.segmentIsFetched(rr.ref_object_id)) {
@@ -96,7 +79,21 @@ export default class RegistryEntryShow extends React.Component {
                     } 
                 } 
             default:
-                return null;
+                this.fetchInterview(rr.ref_interview_archive_id)
+                if(this.interviewIsFetched(rr.ref_interview_archive_id)) {
+                    ref_object_string = `${this.props.interviews[rr.ref_interview_archive_id].short_title[this.props.locale]} (${this.props.interviews[rr.ref_interview_archive_id].archive_id})`
+                    return (
+                        <Link className={'search-result-link'}
+                        onClick={() => {
+                            this.props.closeArchivePopup();
+                            this.props.setArchiveId(rr.ref_interview_archive_id);
+                        }}
+                        to={pathBase(this.props) + '/interviews/' + rr.ref_interview_archive_id}
+                        >
+                            {`${ref_object_string}`}
+                        </Link>
+                    )
+                }
         }
     }
 

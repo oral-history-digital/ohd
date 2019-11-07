@@ -70,7 +70,8 @@
   }
   .fa {
     color: $primary-color;
-    margin-right: 10px;
+    margin-left: 5px;
+    margin-right: 5px;
     &:hover {
       color: $gray-dark;
     }
@@ -132,6 +133,22 @@ a.flyout-download-link-lang {
   display: inline;
   text-align: right;
   padding: 0;
+}
+
+.registry-entry-edit-buttons {
+  background: #fff;
+  border: 1px solid black;
+  padding: 10px 25px 0 0;
+  position: absolute;
+  text-align: right;
+  &.invisible {
+    display: none;
+  }
+  ul {
+    list-style: none;
+    padding-left: 0;
+    text-align: left;
+  }
 }
 span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-child) {
   margin-right: 15px;

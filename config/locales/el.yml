@@ -850,8 +850,8 @@ el:
         last_name: Nachname
         birth_name: Geburtsname
         date_of_birth: Geburtsdatum
-        alias_names: Weiterer Name
-        other_first_names: Weiterer Name
+        alias_names: Alias Names
+        other_first_names: Other First Names
         typology: Erfahrungen
       registry_entry:
         descriptor: Name

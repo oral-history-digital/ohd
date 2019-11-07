@@ -9,7 +9,7 @@ namespace :cache do
     case project.to_sym
       when :zwar
         BASE_URL = 'https://archiv.zwangsarbeit-archiv.de'
-      when :hagen
+      when :dg
         BASE_URL = 'http://da03.cedis.fu-berlin.de:81'
       when :mog
         BASE_URL = 'https://archive.occupation-memories.org'

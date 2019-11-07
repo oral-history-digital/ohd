@@ -93,7 +93,7 @@ export default class PersonData extends React.Component {
                     <AuthShowContainer ifLoggedOut={true}>
                         {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
-                    {contentField(t(this.props, 'activerecord.attributes.person.alias_names'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'activerecord.attributes.person.alias_names'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes' || this.props.projectId === 'dg')}
                     {/* {this.history()} */}
                     {this.detailViewFields()}
                     {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
@@ -114,6 +114,7 @@ export default class PersonData extends React.Component {
                 <div>
                     {contentField(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}
                     <BiographicalEntriesContainer person={interviewee} />
+                    {this.info()}
                 </div>
             );
         } else {

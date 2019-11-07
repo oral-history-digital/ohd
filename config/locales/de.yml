@@ -24,7 +24,7 @@ de:
   sl: slowenisch
   sr: serbisch
   uk: ukrainisch
-  in: in
+  in: bei
   not_your_project: You are not registered for this project.
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
@@ -156,6 +156,7 @@ de:
   logout_page: Logout
   account_page: Konto
   interview: Interview
+  person: Interviewte(r)
   user_content: Arbeitsmappe
   user_content_errors: Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)
   archive_search: Suche im Archiv
@@ -190,6 +191,8 @@ de:
   person_info: Zur Person
   date_of_birth: Geburtsdatum
   year_of_birth: Jahrgang
+  interview_date: Datum des Interviews
+  home_location: Wohnort
   place_of_birth: Geburtsort
   country_of_birth: Geburtsland
   birth_location: Geburtsort
@@ -304,13 +307,13 @@ de:
       new: Erwähnung hinzufügen
       delete: Erwähnung löschen
     registry_entry:
-      new: Registereintrag hinzufügen
+      new: Neuen Untereintrag hinzufügen
       edit: Registereintrag bearbeiten
       go_up: Eine Ebene höher
       parent: Elternknoten/-eintrag
       show_children: Kinderknoten/-einträge anzeigen
-      add_parent: Elternknoten hinzufügen
-      delete_parent: Elternknoten löschen
+      add_parent: Weiteren bestehenden Elternknoten für diesen Eintrag festlegen
+      delete_parent: Zuordung zu diesem Elternknoten entfernen (löscht nicht den Eintrag)
     registry_entries:
       edit: Registereinträge bearbeiten
     users:
@@ -835,8 +838,8 @@ de:
         first_name: Vorname
         last_name: Nachname
         birth_name: Geburtsname
-        alias_names: Weiterer Name
-        other_first_names: Weiterer Name
+        alias_names: Weitere Namen
+        other_first_names: Weitere Vornamen
         date_of_birth: Geburtsdatum
         typology: Erfahrungen
       registry_entry:

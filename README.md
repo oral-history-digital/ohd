@@ -14,7 +14,7 @@ This is the web application for CeDiS-Archiv 2.0.
     # or
     ln -s projects/zwar.yml project.yml
     # or
-    ln -s projects/hagen.yml project.yml
+    ln -s projects/dg.yml project.yml
     # or for a new empty project
     ln -s projects/empty.yml project.yml
     ```
