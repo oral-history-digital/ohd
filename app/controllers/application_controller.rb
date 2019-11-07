@@ -113,8 +113,8 @@ class ApplicationController < ActionController::Base
         collections: Rails.cache.fetch("#{current_project.cache_key_prefix}-collections-collections_for_project_#{current_project.identifier}-#{Collection.maximum(:updated_at)}") do
           current_project.collections.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
-        projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}") do 
-          Project.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+        projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
+          Project.all.inject({}) { |mem, s| mem[s.id] = cache_single(s, nil, "metadata_fields"); mem }
         end,
         languages: Rails.cache.fetch("#{current_project.cache_key_prefix}-languages-#{Language.maximum(:updated_at)}") do 
           Language.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
@@ -240,8 +240,8 @@ class ApplicationController < ActionController::Base
   #
   # serialized compiled cache of an instance
   #
-  def cache_single(data, name=nil)
-    Rails.cache.fetch("#{Project.current.cache_key_prefix}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}") do
+  def cache_single(data, name = nil, related = nil)
+    Rails.cache.fetch("#{Project.current.cache_key_prefix}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}-#{related && data.send(related).maximum(:updated_at)}") do
       raw = "#{name || data.class.name}Serializer".constantize.new(data)
       # compile raw-json to string first (making all db-requests!!) using to_json
       # without to_json the lazy serializers wouldn`t do the work to really request the db
