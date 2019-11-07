@@ -14,7 +14,7 @@ class RegistryReferencesController < ApplicationController
     respond_to do |format|
       format.json do
         json = {}
-        if @registry_reference.ref_object_type == 'Interview'
+        if @registry_reference.ref_object_type == 'Interview' || @registry_reference.ref_object_type == 'Person'
           json = {
             data_type: @registry_reference.ref_object_type.underscore.pluralize,
             "#{@registry_reference.ref_object.identifier_method}": @registry_reference.ref_object.identifier,

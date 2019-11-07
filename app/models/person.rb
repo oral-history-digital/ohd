@@ -76,4 +76,12 @@ class Person < ApplicationRecord
       mem
     end
   end
+
+  def identifier
+    id
+  end
+
+  def identifier_method
+    'id'
+  end
 end

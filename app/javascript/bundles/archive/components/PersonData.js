@@ -57,27 +57,35 @@ export default class PersonData extends React.Component {
         let _this = this;
         let interviewee = getInterviewee(_this.props);
         return this.props.detailViewFields.map(function(datum, i){
-            let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
-            let value = ''
-            if (datum.source === 'person' || datum.ref_object_type === 'Person') {
-                //
-                // Pardon Rico mit dieser Version gibt es immer den Fehler:
-                //
-                // Uncaught Invariant Violation: Objects are not valid as a React child (found: object with keys {}). If you meant to render a collection of children, use an array instead.
-                //
-                // vielleicht sollten wir nochmal klären bei  welchen Daten die eine Version bei dir nicht und die andere bei mir nicht läuft und dann eine gemeinsame Lösing finden :).
-                //
-                //value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
-                //
-                value = datum.ref_object_type === 'Person' ? interviewee[datum.name][_this.props.locale] :
-                    interviewee[datum.name]
-            } else {
-                value = _this.props.interview[datum.name] && _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
+            // exclude registryReference type metadata
+            if (!datum.ref_object_type){
+                let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
+                let value = ''
+                if (datum.source === 'person') {
+                    value = interviewee[datum.name]
+                } else {
+                    value = _this.props.interview[datum.name] && _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
+                }
+                if (Array.isArray(value)){ value = value.join(", ") } //this is needed for mog and probably all other projects
+                if (typeof value === "object" || typeof value === "undefined"){ value = "" } //this is needed for mog and probably all other projects
+                return contentField(label, value)
             }
-            if (Array.isArray(value)){ value = value.join(", ") } //this is needed for mog and probably all other projects
-            if (typeof value === "object" || typeof value === "undefined"){ value = "" } //this is needed for mog and probably all other projects
-            return contentField(label, value)
         })
+    }
+
+    biographical_entries() {
+        if(this.props.projectId !== 'dg')
+        {
+            let interviewee = getInterviewee(this.props);
+            return (
+                <div>
+                    {contentField(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}
+                    <BiographicalEntriesContainer person={interviewee} />
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     info() {
@@ -108,12 +116,10 @@ export default class PersonData extends React.Component {
     }
 
     render() {
-        let interviewee = getInterviewee(this.props);
         if (admin(this.props, {type: 'BiographicalEntry', action: 'update'})) {
             return (
                 <div>
-                    {contentField(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}
-                    <BiographicalEntriesContainer person={interviewee} />
+                    {this.biographical_entries()}
                     {this.info()}
                 </div>
             );
