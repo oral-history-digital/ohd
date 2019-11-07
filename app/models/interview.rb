@@ -269,14 +269,24 @@ class Interview < ActiveRecord::Base
   workflow do
     state :unshared do
       event :publish, transition_to: :public
+      event :unpublish, transitions_to: :unshared
     end
     state :public do
       event :unpublish, transitions_to: :unshared
+      event :publish, transition_to: :public
     end
   end
 
   def workflow_state=(change)
-    self.send("#{change}!")
+    case change
+    when "public"
+      verb = "publish"
+    when "unshared"
+      verb = "unpublish"
+    else
+      verb = change
+  end
+    self.try(:send, "#{verb}!")
   end
 
   def biographies_workflow_state=(change)
