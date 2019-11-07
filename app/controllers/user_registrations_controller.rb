@@ -135,18 +135,16 @@ class UserRegistrationsController < ApplicationController
   end
 
   def initial_user_registration_redux_state
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-interview-#{@interview.archive_id}-#{@interview.updated_at}") do
-      initial_redux_state.update(
-        account: initial_redux_state[:account].update(
-          login: @login, 
-          display_name: @display_name, 
-          registration_status: @registration_status, 
-          active: @active
-        )
+    initial_redux_state.update(
+      account: initial_redux_state[:account].update(
+        login: @login, 
+        display_name: @display_name, 
+        registration_status: @registration_status, 
+        active: @active
       )
-    end
+    )
   end
-  helper_method :initial_interview_redux_state
+  helper_method :initial_user_registration_redux_state
 
   private
 

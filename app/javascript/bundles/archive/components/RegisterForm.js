@@ -5,12 +5,8 @@ import { t, pathBase } from '../../../lib/utils';
 export default class RegisterForm extends React.Component {
 
     formElements() {
-        let conditionsLink; 
-        let privacyLink; 
-        if (this.props.externalLinks.conditions) {
-            conditionsLink = this.props.externalLinks.conditions[this.props.locale];
-            privacyLink = this.props.externalLinks.privacy_protection[this.props.locale];
-        }
+        let conditionsLink = Object.values(this.props.externalLinks).filter(link => link.name === 'conditions')[0] || {};
+        let privacyLink = Object.values(this.props.externalLinks).filter(link => link.name === 'privacy_protection')[0] || {};
 
         let firstElements = [
             {
@@ -24,13 +20,13 @@ export default class RegisterForm extends React.Component {
                 elementType: 'input',
                 attribute: 'first_name',
                 type: 'text',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v && v.length > 1} 
             },
             {
                 elementType: 'input',
                 attribute: 'last_name',
                 type: 'text',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v && v.length > 1} 
             },
             {
                 elementType: 'input',
@@ -53,7 +49,7 @@ export default class RegisterForm extends React.Component {
             {
                 elementType: 'textarea',
                 attribute: 'comments',
-                validate: function(v){return v.length > 10} 
+                validate: function(v){return v && v.length > 10} 
             },
             {
                 elementType: 'input',
@@ -72,19 +68,19 @@ export default class RegisterForm extends React.Component {
                 elementType: 'input',
                 attribute: 'street',
                 type: 'text',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v && v.length > 1} 
             },
             {
                 elementType: 'input',
                 attribute: 'zipcode',
                 type: 'text',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v && v.length > 1} 
             },
             {
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v && v.length > 1} 
             }
         ];
 
@@ -93,7 +89,7 @@ export default class RegisterForm extends React.Component {
                 elementType: 'select',
                 attribute: 'country',
                 optionsScope: 'countries',
-                values: this.props.country_keys && this.props.country_keys[this.props.locale],
+                values: this.props.countryKeys && this.props.countryKeys[this.props.locale],
                 withEmpty: true,
                 validate: function(v){return v !== ''} 
             },
@@ -104,7 +100,7 @@ export default class RegisterForm extends React.Component {
                 type: 'checkbox',
                 validate: function(v){return v !== false && v !== '0'},
                 help: (
-                    <a href={conditionsLink} target="_blank" title="Externer Link" rel="noopener">
+                    <a href={conditionsLink[this.props.locale]} target="_blank" title="Externer Link" rel="noopener">
                         {t(this.props, 'user_registration.tos_agreement')}
                     </a>
                 )
@@ -116,7 +112,7 @@ export default class RegisterForm extends React.Component {
                 type: 'checkbox',
                 validate: function(v){return v !== false && v !== '0'},
                 help: (
-                    <a href={privacyLink} target="_blank" title="Externer Link" rel="noopener">
+                    <a href={privacyLink[this.props.locale]} target="_blank" title="Externer Link" rel="noopener">
                         {t(this.props, 'user_registration.priv_agreement')}
                     </a>
                 )
@@ -135,7 +131,7 @@ export default class RegisterForm extends React.Component {
         return (
             <Form 
                 scope='user_registration'
-                onSubmit={function(params){_this.props.submitRegister(`/${pathBase(_this.props)}/user_registrations`, params)}}
+                onSubmit={function(params){_this.props.submitRegister(`${pathBase(_this.props)}/user_registrations`, params)}}
                 submitText='user_registration.register'
                 elements={this.formElements()}
             />

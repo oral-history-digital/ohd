@@ -1,15 +1,17 @@
 import { connect } from 'react-redux';
 
 import Register from '../components/Register';
+import { getProject } from '../../../lib/utils';
 
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
+    let project = getProject(state);
 
     return {
         registrationStatus: state.account.registrationStatus,
         translations: state.archive.translations,
-        externalLinks: state.archive.externalLinks,
+        externalLinks: project && project.external_links,
         locale: state.archive.locale
     }
 }

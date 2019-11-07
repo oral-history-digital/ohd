@@ -13,12 +13,8 @@ export default class Register extends React.Component {
     content() {
         if (!this.props.registrationStatus) {
 
-            let conditionsLink; 
-            let privacyLink; 
-            if (this.props.externalLinks.conditions) {
-                conditionsLink = this.props.externalLinks.conditions[this.props.locale];
-                privacyLink = this.props.externalLinks.privacy_protection[this.props.locale];
-            }
+            let conditionsLink = Object.values(this.props.externalLinks).filter(link => link.name === 'conditions')[0] || {};
+            let privacyLink = Object.values(this.props.externalLinks).filter(link => link.name === 'privacy_protection')[0] || {};
 
             return (
                 <div>
@@ -27,11 +23,11 @@ export default class Register extends React.Component {
                     </h1>
                     <p>
                         {t(this.props, 'user_registration.registration_text_one')}
-                        <a href={conditionsLink} target="_blank" title="" rel="noopener">
+                        <a href={conditionsLink[this.props.locale]} target="_blank" title="" rel="noopener">
                             {t(this.props, 'user_registration.tos_agreement')}
                         </a>
                         {t(this.props, 'user_registration.registration_text_two')}
-                        <a href={privacyLink} target="_blank" title="" rel="noopener">
+                        <a href={privacyLink[this.props.locale]} target="_blank" title="" rel="noopener">
                             {t(this.props, 'user_registration.priv_agreement_alias')}
                         </a>
                         {t(this.props, 'user_registration.registration_text_three')}
