@@ -130,7 +130,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
   def find_or_create_language(name)
     if name
-      languages = name.split(' and ').map do |l| 
+      languages = name.split(/\s+[ua]nd\s+/).map do |l| 
         # ISO_639 knows only english  and french
         ISO_639.find(l) ||
         ISO_639.find(l[0..2]) || # some german language names can be found like this 
