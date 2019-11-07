@@ -10,7 +10,7 @@ class MetadataField < ApplicationRecord
 
   def localized_hash
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = label(locale)
+      mem[locale] = label(locale) || I18n.t(".#{name}")
       mem
     end
   end
