@@ -14,10 +14,10 @@ class PersonSerializer < ApplicationSerializer
   def names
     I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = {
-        firstname: object.first_name(locale),
-        lastname: object.last_name(locale),
-        aliasname: object.alias_names(locale),
-        birthname: object.birth_name(locale),
+        firstname: object.first_name(locale) || object.first_name(I18n.default_locale), 
+        lastname: object.last_name(locale) || object.last_name(I18n.default_locale), 
+        aliasname: object.alias_names(locale) || object.alias_names(I18n.default_locale), 
+        birthname: object.birth_name(locale) || object.birth_name(I18n.default_locale), 
       }
       mem
     end

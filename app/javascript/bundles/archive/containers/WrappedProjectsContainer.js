@@ -36,11 +36,8 @@ const mapStateToProps = (state) => {
                 attribute: "initials"
             },
             {
-                elementType: 'select',
                 attribute: 'default_locale',
-                values: state.data.languages,
-                withEmpty: true,
-                validate: function(v){return v !== ''} 
+                validate: function(v){return /^[a-z]{2}$/.test(v)}
             },
             {
                 attribute: "available_locales",
@@ -56,9 +53,9 @@ const mapStateToProps = (state) => {
             {
                 attribute: "upload_types",
             },
-            {
-                attribute: "primary_color_rgb",
-            },
+            //{
+                //attribute: "primary_color_rgb",
+            //},
             {
                 attribute: "domain"
             },
