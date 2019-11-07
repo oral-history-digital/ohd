@@ -700,8 +700,8 @@ es:
       project:
         title: Name
         name: Name
-        available_locales: verfügbare Sprachen
-        default_locale: default Sprache
+        available_locales: verfügbare Sprachcodes (alpha2)
+        default_locale: default Sprachcode (alpha2)
         view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         upload_types: UploadTypen
