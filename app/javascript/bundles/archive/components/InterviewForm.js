@@ -86,10 +86,11 @@ export default class InterviewForm extends React.Component {
                     elementType: 'select',
                     attribute: 'workflow_state',
                     values: this.props.interview && Object.values(this.props.interview.transitions_to),
+                    value: this.props.interview.workflow_state,
                     optionsScope: 'workflow_states',
-                    help: (
-                        <span>{'=: ' + t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}</span>
-                    )
+                    // help: (
+                    //     <span>{'=: ' + t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}</span>
+                    // )
                 }
             )
         }
