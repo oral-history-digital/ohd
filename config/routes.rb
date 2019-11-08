@@ -43,6 +43,7 @@ Rails.application.routes.draw do
       resources :people do
         #resources :histories, only: [:create, :update, :destroy]
         resources :biographical_entries, only: [:destroy]
+        resources :registry_references, only: [:create, :update, :destroy]
       end
 
       %w{archive faq_archive_contents faq_index faq_searching faq_technical map_tutorial terms_of_use legal_notice privacy_policy}.each do |site|
