@@ -52,6 +52,7 @@ export default class MetadataRegistryReferenceType extends React.Component {
             this.props.registryEntriesStatus[string] &&
             this.props.registryEntriesStatus[string].split('-')[0] === 'fetched'
         ) {
+            // registry references for interview
             for (var c in this.props.interview.registry_references) {  
                 let registryReference = this.props.interview.registry_references[c];
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
@@ -68,6 +69,25 @@ export default class MetadataRegistryReferenceType extends React.Component {
                     );
                 }
             }
+
+            // registry references for interviewee
+            for (var c in this.props.interviewee.registry_references) {  
+                let registryReference = this.props.interviewee.registry_references[c];
+                let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
+                let refObjectType = registryReference.ref_object_type;
+                if (registryEntry && registryReference.registry_reference_type_id == this.props.referenceType.id) {
+                    registryEntries.push(
+                        <RegistryReferenceContainer 
+                            registryEntry={registryEntry} 
+                            registryReference={registryReference} 
+                            refObjectType={refObjectType}
+                            locale={this.props.locale}
+                            key={`registry_reference-${registryReference.id}`} 
+                        />
+                    );
+                }
+            }
+
             if (registryEntries.length > 1) registryEntries.unshift(
                 <br key={this.props.referenceType.id}/>
             )

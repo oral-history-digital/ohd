@@ -6,6 +6,7 @@ class PersonSerializer < ApplicationSerializer
                :names,
                :text,
                :typology,
+               :registry_references,
              # :histories
              ] |
              MetadataField.where(ref_object_type: "Person", source: "registry_reference_type").inject([]) { |mem, i| mem << i.name } |
@@ -83,4 +84,9 @@ class PersonSerializer < ApplicationSerializer
       RegistryEntrySerializer.new(object.send(f["name"])) if object.send(f["name"])
     end
   end
+
+  def registry_references
+    object.registry_references && object.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
+  end
+
 end

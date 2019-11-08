@@ -123,7 +123,7 @@ const data = (state = initialState, action) => {
                 })
             }
         case RECEIVE_DATA:
-            if (action.extraId) {
+            if (action.extraId) { //for segments
                 let statuses = updateStatus(state.statuses, action.nestedDataType, {[action.nestedId]: action.msg || `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 return Object.assign({}, state, {

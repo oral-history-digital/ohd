@@ -115,9 +115,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def registry_references
-    i = object.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
-    p = object.interviewees.first && object.interviewees.first.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
-    p ? i.merge(p) : i
+    object.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
   end
 
   def photos
