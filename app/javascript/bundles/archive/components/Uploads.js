@@ -28,7 +28,7 @@ export default class Uploads extends React.Component {
                     <p className='explanation'>
                         {t(this.props, `upload.explanation.${this.state.explanation}`)}
                     </p>
-                    {this.downloadLink(this.state.explanation)}
+                    {this.downloadLink()}
                 </div>
             )
         } else {
@@ -36,9 +36,9 @@ export default class Uploads extends React.Component {
         }
     }
 
-    downloadLink(explanation) {
-        if (explanation === 'bulk_metadata') {
-            return (<a href={`/${this.state.explanation}.csv`} download>{`${this.state.explanation}.csv`}</a>);
+    downloadLink() {
+        if (this.state.explanation === 'bulk_metadata') {
+            return (<a href={`/metadata-import-template.csv`} download>{`metadata-import-template.csv`}</a>);
         } else {
             return null;
         }
