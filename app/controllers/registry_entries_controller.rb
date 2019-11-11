@@ -45,8 +45,8 @@ class RegistryEntriesController < ApplicationController
     authorize @registry_entry
     I18n.locale = ISO_639.find(Language.find(registry_entry_params[:lang]).code.split(/[\/-]/)[0]).alpha2
     @registry_entry.update_attributes registry_entry_params.slice(:descriptor, :notes, :latitude, :longitude, :parent_id)
-    clear_cache @registry_entry
-    clear_cache @registry_entry.parents.first
+    @registry_entry.touch
+    @registry_entry.parents.each(&:touch)
 
     respond_to do |format|
       format.json do
