@@ -19,7 +19,6 @@ export default class MetadataRegistryReferenceType extends React.Component {
     }
 
     registryReferences() {
-        debugger;
         if (this.props.refObjectType === 'Person' || this.props.refObjectType === 'person') {
             return this.props.interviewee.registry_references;
         } else if (this.props.refObjectType === 'Interview' || this.props.refObjectType === 'interview') {
