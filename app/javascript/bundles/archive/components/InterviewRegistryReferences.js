@@ -27,6 +27,7 @@ export default class InterviewRegistryReferences extends React.Component {
                         key={`this.props.registry-reference-type-search-facets-${r}`} 
                         referenceType={this.props.registryReferenceTypeMetadataFields[r]} 
                         interview={this.props.interview}
+                        interviewee={this.props.interviewee}
                         refObjectType={this.props.refObjectType}
                         />  
                     );

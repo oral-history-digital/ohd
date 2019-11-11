@@ -18,6 +18,17 @@ export default class MetadataRegistryReferenceType extends React.Component {
         this.loadRegistryEntries();
     }
 
+    registryReferences() {
+        debugger;
+        if (this.props.refObjectType === 'Person' || this.props.refObjectType === 'person') {
+            return this.props.interviewee.registry_references;
+        } else if (this.props.refObjectType === 'Interview' || this.props.refObjectType === 'interview') {
+            return this.props.interview.registry_references;
+        } else {
+            return null;
+        }
+    }
+
     loadRegistryEntries() {
         let string = ''
         let string2 = ''
@@ -52,22 +63,22 @@ export default class MetadataRegistryReferenceType extends React.Component {
             this.props.registryEntriesStatus[string] &&
             this.props.registryEntriesStatus[string].split('-')[0] === 'fetched'
         ) {
-            for (var c in this.props.interview.registry_references) {  
-                let registryReference = this.props.interview.registry_references[c];
+            for (var c in this.registryReferences()) {  
+                let registryReference = this.registryReferences()[c];
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
-                let refObjectType = registryReference.ref_object_type;
                 if (registryEntry && registryReference.registry_reference_type_id == this.props.referenceType.id) {
                     registryEntries.push(
                         <RegistryReferenceContainer 
                             registryEntry={registryEntry} 
                             registryReference={registryReference} 
-                            refObjectType={refObjectType}
+                            refObjectType={this.props.refObjectType}
                             locale={this.props.locale}
                             key={`registry_reference-${registryReference.id}`} 
                         />
                     );
                 }
             }
+
             if (registryEntries.length > 1) registryEntries.unshift(
                 <br key={this.props.referenceType.id}/>
             )

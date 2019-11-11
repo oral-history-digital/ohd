@@ -3,6 +3,10 @@ class RegistryReference < BaseRegistryReference
   belongs_to :ref_object, polymorphic: true
   belongs_to :registry_reference_type
 
+  after_update :touch_objects
+  before_destroy :touch_objects
+  after_create :touch_objects
+
   scope :for_interview, ->(interview_id) {
           where(interview_id: interview_id)
         }
@@ -18,4 +22,9 @@ class RegistryReference < BaseRegistryReference
             # exclude dedalo default location (Valencia)
             where.not('registry_entries.longitude': '-0.376295').where.not('registry_entries.latitude': '39.462571')
         }
+
+  def touch_objects
+    registry_entry.touch
+    ref_object_type.constantize.find(ref_object_id).touch
+  end
 end
