@@ -71,10 +71,15 @@ class ApplicationController < ActionController::Base
         translations: translations,
         countryKeys: country_keys,
         contributionTypes: Project.contribution_types,
-        #languages: Language.all.map { |c| { value: c.id.to_s, name: c.localized_hash, locale: ISO_639.find(c.code.split(/[\/-]/)[0]).alpha2 } },
         mediaStreams: Project.media_streams,
-        registryEntryMetadataFields: current_project.registry_entry_metadata_fields.where("use_in_details_view").map { |field| { id: RegistryEntry.find_by_code(field.name).id, code: RegistryEntry.find_by_code(field.name).code, display_on_landing_page: field.display_on_landing_page } },
-        registryReferenceTypeMetadataFields: current_project.registry_reference_type_metadata_fields.inject({}) { |mem, facet| mem[facet.name] = RegistryReferenceTypeSerializer.new(RegistryReferenceType.find_by_code(facet.name)).as_json; mem },
+        registryEntryMetadataFields: current_project.registry_entry_metadata_fields.where("use_in_details_view").map do |field| 
+          { id: RegistryEntry.find_by_code(field.name).id, code: RegistryEntry.find_by_code(field.name).code, display_on_landing_page: field.display_on_landing_page } 
+        end,
+        registryReferenceTypeMetadataFields: current_project.registry_reference_type_metadata_fields.inject({}) do |mem, facet| 
+          rr = RegistryReferenceType.find_by_code(facet.name)
+          mem[facet.name] = RegistryReferenceTypeSerializer.new(rr).as_json if rr
+          mem 
+        end,
       },
       account: {
         isLoggingIn: false,
