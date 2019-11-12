@@ -38,13 +38,31 @@ set :keep_releases, 2
 set :project_yml, 'empty.yml'
 
 namespace :deploy do
-  desc 'Copy correct project file into config directory'
 
+  desc 'Copy correct project file into config directory'
   task :copy_project_file do
     on roles(:app) do
       execute :cp, release_path.join('config', 'projects', "#{fetch(:project_yml)}"), release_path.join('config', 'project.yml')
     end
   end
 
+  desc 'Stop delayed_job worker'
+  task :stop_delayed_job_worker do
+    on roles(:app) do
+      execute "#{release_path.join('bin', 'delayed_job')} stop"
+    end
+  end
+
+  desc 'Start delayed_job worker'
+  task :start_delayed_job_worker do
+    on roles(:app) do
+      execute "#{release_path.join('bin', 'delayed_job')} start"
+    end
+  end
+
+
+
   before :updated, 'copy_project_file'
+  before :updated, 'stop_delayed_job_worker'
+  after :finishing, 'start_delayed_job_worker'
 end
