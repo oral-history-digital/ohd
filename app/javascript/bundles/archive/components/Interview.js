@@ -6,8 +6,6 @@ import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import InterviewEditViewContainer from '../containers/InterviewEditViewContainer';
 import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
-import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
-import PersonDataContainer from '../containers/PersonDataContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
