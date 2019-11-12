@@ -384,8 +384,9 @@ class Interview < ActiveRecord::Base
   # end
 
   def reverted_short_title(locale)
+    interviewee = interviewees.first
     begin
-      [interviewees.first.last_name(locale), interviewees.first.first_name(locale)].join(', ')
+      [interviewee.last_name(locale) || interviewee.last_name(I18n.defaut_locale), interviewee.first_name(locale) || interviewee.first_name(I18n.default_locale)].join(', ')
     rescue
       "Interviewee might not be in DB, interview-id = #{id}"
     end
@@ -582,8 +583,8 @@ class Interview < ActiveRecord::Base
       #return nil unless used_locale.is_a?(Symbol)
 
       # Build last name with a locale-specific pattern.
-      last_name = first_interviewee.last_name(locale) || ''
-      birth_name = first_interviewee.birth_name(locale)
+      last_name = first_interviewee.last_name(locale) || first_interviewee.last_name(I18n.default_locale) 
+      birth_name = first_interviewee.birth_name(locale) || first_interviewee.birth_name(I18n.default_locale) 
       lastname_with_birthname = if birth_name.blank?
                                   last_name
                                 else
@@ -592,9 +593,9 @@ class Interview < ActiveRecord::Base
 
       # Build first name.
       first_names = []
-      first_name = first_interviewee.first_name(locale)
+      first_name = first_interviewee.first_name(locale) || first_interviewee.first_name(I18n.default_locale) 
       first_names << first_name unless first_name.blank?
-      other_first_names = first_interviewee.other_first_names(locale)
+      other_first_names = first_interviewee.other_first_names(locale) || first_interviewee.other_first_names(I18n.default_locale) 
       first_names << other_first_names unless other_first_names.blank?
 
       # Combine first and last name with a locale-specific pattern.
