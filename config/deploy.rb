@@ -63,6 +63,6 @@ namespace :deploy do
 
 
   before :updated, 'copy_project_file'
-  before :updated, 'stop_delayed_job_worker'
+  before :finishing, 'stop_delayed_job_worker'
   after :finishing, 'start_delayed_job_worker'
 end
