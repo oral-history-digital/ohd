@@ -21,7 +21,7 @@ export default class InterviewRegistryReferences extends React.Component {
         }
         for (var r in this.props.registryReferenceTypeMetadataFields) {
             if(this.props.refObjectType && this.props.registryReferenceTypeMetadataFields[r]['ref_object_type']) {
-                if (this.props.registryReferenceTypeMetadataFields[r]['ref_object_type'].toLowerCase() === this.props.refObjectType.toLowerCase() && this.props.account.email || this.props.registryReferenceTypeMetadataFields[r]['display_on_landing_page']) {
+                if (this.props.registryReferenceTypeMetadataFields[r]['ref_object_type'].toLowerCase() === this.props.refObjectType.toLowerCase() && (this.props.account.email || this.props.registryReferenceTypeMetadataFields[r]['display_on_landing_page'])) {
                     facets.push(  
                         <MetadataRegistryReferenceTypeContainer
                         key={`this.props.registry-reference-type-search-facets-${r}`} 
