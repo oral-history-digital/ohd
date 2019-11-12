@@ -108,7 +108,8 @@ class Project < ApplicationRecord
       search_facets.inject({}) do |mem, facet|
         case facet["source"]
         when "registry_entry", "registry_reference_type"
-          mem[facet.name.to_sym] = ::FacetSerializer.new(facet.source.classify.constantize.find_by_code(facet.name)).as_json
+          rr = facet.source.classify.constantize.find_by_code(facet.name)
+          mem[facet.name.to_sym] = ::FacetSerializer.new(rr).as_json if rr
         when "person", "interview"
           facet_label_hash = facet.localized_hash
           name = facet_label_hash || localized_hash_for("search_facets", facet.name)
