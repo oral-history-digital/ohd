@@ -49,20 +49,20 @@ namespace :deploy do
   desc 'Stop delayed_job worker'
   task :stop_delayed_job_worker do
     on roles(:app) do
-      execute "#{release_path.join('bin', 'delayed_job')} stop"
+      execute "#{current_path.join('bin', 'delayed_job')} stop"
     end
   end
 
   desc 'Start delayed_job worker'
   task :start_delayed_job_worker do
     on roles(:app) do
-      execute "#{release_path.join('bin', 'delayed_job')} start"
+      execute "#{current_path.join('bin', 'delayed_job')} start"
     end
   end
 
 
 
   before :updated, 'copy_project_file'
-  before :finishing, 'stop_delayed_job_worker'
+  before :starting, 'stop_delayed_job_worker'
   after :finishing, 'start_delayed_job_worker'
 end
