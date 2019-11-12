@@ -23,6 +23,7 @@ append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunsp
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 append :linked_dirs, "solr", "node_modules", "tmp" #tmp is important for pids like delayed_job
+set :delayed_job_pid_dir, '/tmp'
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -46,23 +47,5 @@ namespace :deploy do
     end
   end
 
-  desc 'Stop delayed_job worker'
-  task :stop_delayed_job_worker do
-    on roles(:app) do
-      execute "#{current_path.join('bin', 'delayed_job')} stop"
-    end
-  end
-
-  desc 'Start delayed_job worker'
-  task :start_delayed_job_worker do
-    on roles(:app) do
-      execute "#{current_path.join('bin', 'delayed_job')} start"
-    end
-  end
-
-
-
   before :updated, 'copy_project_file'
-  after :starting, 'stop_delayed_job_worker'
-  after :finishing, 'start_delayed_job_worker'
 end

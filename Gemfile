@@ -66,6 +66,7 @@ group :development do
   gem 'ruby-debug-ide'
   gem 'debase'
   gem "capistrano", "= 3.11.0"
+  gem 'capistrano3-delayed-job', '~> 1.0'
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'
   gem 'capistrano-passenger'
