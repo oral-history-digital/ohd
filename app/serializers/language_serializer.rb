@@ -9,6 +9,7 @@ class LanguageSerializer < ApplicationSerializer
   end
 
   def locale
-    ISO_639.find(object.code.split(/[\/-]/)[0]).alpha2
+    l = ISO_639.find(object.code.split(/[\/-]/)[0])
+    l && l.alpha2
   end
 end
