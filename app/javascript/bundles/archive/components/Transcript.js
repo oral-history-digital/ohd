@@ -34,10 +34,6 @@ export default class Transcript extends React.Component {
         window.removeEventListener('wheel', this.handleScroll);
     }
 
-    componentDidUpdate() {
-        this.loadSegments();
-    }
-
     loadSegments() {
         if (
             this.props.loadSegments &&
@@ -48,6 +44,7 @@ export default class Transcript extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
+        this.loadSegments();
         if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
             let currentSegment = activeSegment(this.props.transcriptTime, this.props);
             let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
