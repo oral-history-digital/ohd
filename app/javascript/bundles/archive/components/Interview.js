@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import WrapperPageContainer from '../containers/WrapperPageContainer';
-import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import InterviewEditViewContainer from '../containers/InterviewEditViewContainer';
 import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
