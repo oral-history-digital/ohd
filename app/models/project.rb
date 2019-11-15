@@ -47,10 +47,6 @@ class Project < ApplicationRecord
     shortname.downcase
   end
 
-  def cache_key_prefix
-    shortname.downcase
-  end
-
   # there is a rails method available_locales as well.
   # we need to overwrite it here.
   #
