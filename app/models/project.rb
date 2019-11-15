@@ -78,15 +78,15 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_details_view: true)
   end
 
-  %w(registry_entry registry_reference_type person interview).each do |m|
-    define_method "#{m}_search_facets" do
+  %w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
+    define_method "#{m.underscore}_search_facets" do
       metadata_fields.where(use_as_facet: true, source: m)
       # TODO: classify source
       #metadata_fields.where(use_as_facet: true, source: m.classify)
     end
     #
     # used for metadata that is not used as facet
-    define_method "#{m}_metadata_fields" do
+    define_method "#{m.underscore}_metadata_fields" do
       metadata_fields.where(source: m)
       # TODO: classify source
       #metadata_fields.where(source: m.classify)
@@ -107,10 +107,10 @@ class Project < ApplicationRecord
     Rails.cache.fetch("#{cache_key_prefix}-#{updated_at}-#{metadata_fields.maximum(:updated_at)}-search-facets-hash") do
       search_facets.inject({}) do |mem, facet|
         case facet["source"]
-        when "registry_entry", "registry_reference_type"
+        when "RegistryEntry", "RegistryReference_type"
           rr = facet.source.classify.constantize.find_by_code(facet.name)
           mem[facet.name.to_sym] = ::FacetSerializer.new(rr).as_json if rr
-        when "person", "interview"
+        when "Person", "Interview"
           facet_label_hash = facet.localized_hash
           name = facet_label_hash || localized_hash_for("search_facets", facet.name)
           if facet.name == "year_of_birth"
@@ -150,7 +150,7 @@ class Project < ApplicationRecord
               end,
             }
           end
-        when "collection", "language"
+        when "Collection", "Language"
           facet_label_hash = facet.localized_hash
           mem[facet.name.to_sym] = {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
