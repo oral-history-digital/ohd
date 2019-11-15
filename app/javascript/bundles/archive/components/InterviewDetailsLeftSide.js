@@ -24,13 +24,13 @@ export default class InterviewDetailsLeftSide extends React.Component {
                     <div>
                         <PersonDataContainer />
                         <InterviewRegistryReferencesContainer
-                            refObjectType={"person"}
+                            refObjectType={"Person"}
                         />
                     </div>
                     <h3>{t(this.props, "interview_info")}</h3>
                     {/*this.metadataFields()*/}
                     {<InterviewInfoContainer
-                        refObjectType={"interview"}
+                        refObjectType={"Interview"}
                     />}
                     {contentField(t(this.props, 'subcollection'), this.props.interview && this.props.interview.properties && this.props.interview.properties.subcollection)}
                     {contentField(t(this.props, 'contributions.interviewer'), this.props.interview && this.props.interview.properties && this.props.interview.properties.interviewer)}

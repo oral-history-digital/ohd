@@ -118,7 +118,7 @@ export default class FlyoutTabs extends React.Component {
                                 <div>
                                     <PersonDataContainer/>
                                     <InterviewRegistryReferencesContainer
-                                        refObjectType={'person'}
+                                        refObjectType={'Person'}
                                     />
                                 </div>
                             }

@@ -28,9 +28,9 @@ export default class RegistryReference extends React.Component {
     }
 
     destroy() {
-        if (this.props.refObjectType === 'interview' || this.props.refObjectType === 'Interview') {
+        if (this.props.refObjectType === 'Interview') {
             this.props.deleteData(this.props, pluralize(this.props.refObjectType), this.props.archiveId, 'registry_references', this.props.registryReference.id);
-        } else if (this.props.refObjectType === 'person' || this.props.refObjectType === 'Person'){
+        } else if (this.props.refObjectType === 'Person'){
             this.props.deleteData(this.props, 'people', this.props.registryReference.ref_object_id, 'registry_references', this.props.registryReference.id);
         } else {
             this.props.deleteData(this.props, 'registry_references', this.props.registryReference.id, null, null, true);

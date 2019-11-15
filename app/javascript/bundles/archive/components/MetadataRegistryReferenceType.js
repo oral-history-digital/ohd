@@ -19,9 +19,9 @@ export default class MetadataRegistryReferenceType extends React.Component {
     }
 
     registryReferences() {
-        if (this.props.refObjectType === 'Person' || this.props.refObjectType === 'person') {
+        if (this.props.refObjectType === 'Person') {
             return this.props.interviewee.registry_references;
-        } else if (this.props.refObjectType === 'Interview' || this.props.refObjectType === 'interview') {
+        } else if (this.props.refObjectType === 'Interview') {
             return this.props.interview.registry_references;
         } else {
             return null;
@@ -32,11 +32,11 @@ export default class MetadataRegistryReferenceType extends React.Component {
         let string = ''
         let string2 = ''
         switch(this.props.refObjectType) {
-            case 'person' || 'Person':
+            case 'Person':
                 string = `references_for_person_${this.props.interview.interviewee_id}_type_id_${this.props.referenceType.id}`
                 string2 = `references_for_person=${this.props.interview.interviewee_id}&type_id=${this.props.referenceType.id}`
                 break
-            case 'interview' || 'Interview':
+            case 'Interview':
                 string = `references_for_interview_${this.props.interview.archive_id}_type_id_${this.props.referenceType.id}`
                 string2 = `references_for_interview=${this.props.interview.archive_id}&type_id=${this.props.referenceType.id}`
                 break;
@@ -50,10 +50,10 @@ export default class MetadataRegistryReferenceType extends React.Component {
         let registryEntries = [];
         let string = ''
         switch(this.props.refObjectType) {
-            case 'person':
+            case 'Person':
                 string = `references_for_person_${this.props.interview.interviewee_id}_type_id_${this.props.referenceType.id}`
                 break
-            case 'interview':
+            case 'Interview':
                 string = `references_for_interview_${this.props.interview.archive_id}_type_id_${this.props.referenceType.id}`
                 break
         }
@@ -93,7 +93,7 @@ export default class MetadataRegistryReferenceType extends React.Component {
 
     addRegistryReference() {
         if (admin(this.props, {type: 'RegistryReference', action: 'create'})) {
-            let refObject = (this.props.refObjectType === 'interview' || this.props.refObjectType === 'Interview') ? this.props.interview : {id: this.props.interview.interviewee_id}
+            let refObject = (this.props.refObjectType === 'Interview') ? this.props.interview : {id: this.props.interview.interviewee_id}
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
