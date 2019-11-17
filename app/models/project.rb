@@ -180,6 +180,9 @@ class Project < ApplicationRecord
     search_facets_names.each do |facet|
       search.facet("search_facets:#{facet}").rows.each do |row|
         facets[facet][:subfacets][row.value][:count] = row.count if facets[facet][:subfacets][row.value]
+      rescue StandardError => e
+        p "*** facet: #{facet}, row.value: #{row.value}"
+        p "*** error: #{e.message}"
       end
     end
     facets
