@@ -23,17 +23,12 @@ class HeadingSerializer < ApplicationSerializer
     object.tape.number
   end
 
-  def mainheading
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.mainheading(locale)
-      mem
-    end
-  end
-
-  def subheading
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.subheading(locale)
-      mem
+  %w(mainheading subheading).each do |m|
+    define_method m do
+      object.translations.inject({}) do |mem, t|
+        mem[t.locale] = t.send(m)
+        mem
+      end
     end
   end
 
