@@ -246,7 +246,7 @@ class Segment < ActiveRecord::Base
   def transcripts(allowed_to_see_all=false)
     translations.inject({}) do |mem, translation|
       # TODO: rm Nokogiri parser after segment sanitation
-      mem[translation.locale.to_s] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : ''
+      mem[translation.locale.to_s] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : nil
       mem
     end
   end
