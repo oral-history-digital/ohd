@@ -64,7 +64,7 @@ class ApplicationController < ActionController::Base
         listColumns: current_project.list_columns,
         detailViewFields: current_project.detail_view_fields,
         homeContent: home_content,
-        editView: false,
+        editView: !!cookies["editView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedInterviewEditViewColumns: ['text_orig', 'text_translated'],
