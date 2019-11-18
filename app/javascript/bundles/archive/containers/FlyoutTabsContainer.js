@@ -5,7 +5,7 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { setLocale } from '../actions/archiveActionCreators';
 import { changeRegistryEntriesViewMode } from '../actions/searchActionCreators';
 
-import { getInterview, getCookie, getProject } from '../../../lib/utils';
+import { getInterview, getInterviewee, getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -21,6 +21,7 @@ const mapStateToProps = (state) => {
         account: state.data.accounts.current,
         authStatus: state.account,
         interview: getInterview(state),
+        interviewee: getInterviewee({interview: getInterview(state), people: state.data.people}),
         showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree
     }
 }

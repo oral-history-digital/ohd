@@ -1,6 +1,6 @@
 import React from 'react';
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
-import { t, pluralize, admin } from '../../../lib/utils';
+import { t, pluralize, toUnderscoreCase, admin } from '../../../lib/utils';
 
 export default class RegistryReference extends React.Component {
 
@@ -28,12 +28,16 @@ export default class RegistryReference extends React.Component {
     }
 
     destroy() {
-        if (this.props.refObjectType === 'Interview') {
-            this.props.deleteData(this.props, pluralize(this.props.refObjectType), this.props.archiveId, 'registry_references', this.props.registryReference.id);
-        } else if (this.props.refObjectType === 'Person'){
-            this.props.deleteData(this.props, 'people', this.props.registryReference.ref_object_id, 'registry_references', this.props.registryReference.id);
-        } else {
+        if (this.props.refObject.type === 'Segment') {
             this.props.deleteData(this.props, 'registry_references', this.props.registryReference.id, null, null, true);
+        } else {
+            // refObject.type === Person || Interview
+            this.props.deleteData(
+                this.props, pluralize(toUnderscoreCase(this.props.refObject.type)), 
+                this.props.refObject.archiveId || this.props.refObject.id, 
+                'registry_references', 
+                this.props.registryReference.id
+            );
         }
         this.props.closeArchivePopup();
     }

@@ -71,20 +71,10 @@ class RegistryEntriesController < ApplicationController
               RegistryEntry.find(params[:children_for_entry]).children,
               "children_for_entry_#{params[:children_for_entry]}",
             ]
-          elsif params[:references_for_segment]
+          elsif params[:ref_object_type]
             [
-              Segment.find(params[:references_for_segment]).registry_entries,
-              "references_for_segment_#{params[:references_for_segment]}",
-            ]
-          elsif params[:references_for_interview]
-            [
-              Interview.find_by_archive_id(params[:references_for_interview]).registry_entries.where("registry_references.registry_reference_type_id": params[:type_id]),
-              "references_for_interview_#{params[:references_for_interview]}_type_id_#{params[:type_id]}",
-            ]
-          elsif params[:references_for_person]
-            [
-              Person.find(params[:references_for_person]).registry_entries.where("registry_references.registry_reference_type_id": params[:type_id]),
-              "references_for_person_#{params[:references_for_person]}_type_id_#{params[:type_id]}",
+              params[:ref_object_type].classify.constantize.find(params[:ref_object_id]).registry_entries,
+              "ref_object_type_#{params[:ref_object_type]}_ref_object_id_#{params[:ref_object_id]}",
             ]
           end
 

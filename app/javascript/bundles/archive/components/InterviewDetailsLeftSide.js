@@ -8,14 +8,6 @@ import { t, contentField } from '../../../lib/utils';
 
 export default class InterviewDetailsLeftSide extends React.Component {
 
-    metadataFields(){
-        let _this = this;
-        return this.props.detailViewFields.map(function(datum, i){
-            let value = (_this.props.interview[datum.name] && _this.props.interview[datum.name][_this.props.locale])
-            return contentField(datum.name, value, '')
-        })
-    }
-
     render() {
         return (
             <div>
@@ -23,15 +15,10 @@ export default class InterviewDetailsLeftSide extends React.Component {
                     <h3>{t(this.props, "person_info")}</h3>
                     <div>
                         <PersonDataContainer />
-                        <InterviewRegistryReferencesContainer
-                            refObjectType={"Person"}
-                        />
+                        <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />
                     </div>
                     <h3>{t(this.props, "interview_info")}</h3>
-                    {/*this.metadataFields()*/}
-                    {<InterviewInfoContainer
-                        refObjectType={"Interview"}
-                    />}
+                    {<InterviewInfoContainer />}
                     {contentField(t(this.props, 'subcollection'), this.props.interview && this.props.interview.properties && this.props.interview.properties.subcollection)}
                     {contentField(t(this.props, 'contributions.interviewer'), this.props.interview && this.props.interview.properties && this.props.interview.properties.interviewer)}
                     {contentField('Link', this.props.interview && this.props.interview.properties && <a href={this.props.interview.properties.link} target='_blank'>{this.props.interview.properties.link}</a>)}

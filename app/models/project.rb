@@ -77,15 +77,11 @@ class Project < ApplicationRecord
   %w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
     define_method "#{m.underscore}_search_facets" do
       metadata_fields.where(use_as_facet: true, source: m)
-      # TODO: classify source
-      #metadata_fields.where(use_as_facet: true, source: m.classify)
     end
     #
     # used for metadata that is not used as facet
     define_method "#{m.underscore}_metadata_fields" do
       metadata_fields.where(source: m)
-      # TODO: classify source
-      #metadata_fields.where(source: m.classify)
     end
   end
 

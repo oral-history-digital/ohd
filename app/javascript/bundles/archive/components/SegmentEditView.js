@@ -1,5 +1,5 @@
 import React from 'react';
-import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
+import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import SubmitOnBlurForm from '../containers/form/SubmitOnBlurForm';
 import { t, fullname, admin } from "../../../lib/utils";
@@ -87,9 +87,9 @@ export default class SegmentEditView extends React.Component {
             }
             case 'registry_references': {
                 return (
-                    <SegmentRegistryReferencesContainer 
-                        segment={this.props.segment} 
-                        interview={this.props.interview} 
+                    <RegistryReferencesContainer 
+                        refObject={this.props.segment} 
+                        parentEntryId={1}
                         locale={this.props.locale} 
                     />
                 )

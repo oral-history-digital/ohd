@@ -1,6 +1,8 @@
 class MetadataFieldSerializer < ApplicationSerializer
   attributes :id,
     :project_id,
+    :registry_entry_id,
+    :registry_reference_type_id,
     :name,
     :use_as_facet,
     :use_in_results_table,

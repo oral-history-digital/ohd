@@ -4,7 +4,7 @@ import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormC
 import RegistryReferenceContainer from '../containers/RegistryReferenceContainer';
 import { t, admin } from '../../../lib/utils';
 
-export default class SegmentRegistryReferences extends React.Component {
+export default class RegistryReferences extends React.Component {
 
     constructor(props, context) {
         super(props, context);
@@ -21,8 +21,8 @@ export default class SegmentRegistryReferences extends React.Component {
     }
 
     loadRegistryEntries() {
-        if (!this.props.registryEntriesStatus[`references_for_segment_${this.props.segment.id}`]) {
-            this.props.fetchData(this.props, 'registry_entries', null, null, `references_for_segment=${this.props.segment.id}`);
+        if (!this.props.registryEntriesStatus[`ref_object_type_${this.props.refObject.type}_ref_object_id_${this.props.refObject.id}`]) {
+            this.props.fetchData(this.props, 'registry_entries', null, null, `ref_object_type=${this.props.refObject.type}&ref_object_id=${this.props.refObject.id}`);
         }
     }
 
@@ -43,19 +43,25 @@ export default class SegmentRegistryReferences extends React.Component {
         let usedRegistryEntryIds = [];
 
         if (
-            this.props.segment && 
-            this.props.registryEntriesStatus[`references_for_segment_${this.props.segment.id}`] &&
-            this.props.registryEntriesStatus[`references_for_segment_${this.props.segment.id}`].split('-')[0] === 'fetched'
+            this.props.refObject && 
+            this.props.registryEntriesStatus[`ref_object_type_${this.props.refObject.type}_ref_object_id_${this.props.refObject.id}`] &&
+            this.props.registryEntriesStatus[`ref_object_type_${this.props.refObject.type}_ref_object_id_${this.props.refObject.id}`].split('-')[0] === 'fetched'
         ) {
-            for (var c in this.props.segment.registry_references) {
-                let registryReference = this.props.segment.registry_references[c];
+            for (var c in this.props.refObject.registry_references) {
+
+                let registryReference = this.props.refObject.registry_references[c];
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
-                if (registryEntry && usedRegistryEntryIds.indexOf(registryEntry.id) === -1 && registryReference !== 'fetched') {
+
+                if (
+                    registryEntry && 
+                    usedRegistryEntryIds.indexOf(registryEntry.id) === -1 && 
+                    registryReference.registry_reference_type_id == this.props.registryReferenceTypeId
+                ) {
                     registryReferences.push(
                         <RegistryReferenceContainer 
                             registryEntry={registryEntry} 
                             registryReference={registryReference} 
-                            refObjectType='Segment'
+                            refObject={this.props.refObject}
                             locale={this.props.locale}
                             key={`registry_reference-${registryReference.id}`} 
                             setOpenReference={this.props.setOpenReference}
@@ -78,12 +84,12 @@ export default class SegmentRegistryReferences extends React.Component {
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.registry_reference.new'),
                         content: <RegistryReferenceFormContainer 
-                                     refObject={this.props.segment} 
-                                     refObjectType='Segment' 
+                                     refObject={this.props.refObject} 
                                      interview={this.props.interview} 
-                                     parentEntryId={1}
+                                     parentEntryId={this.props.parentEntryId}
                                      locale={this.props.locale}
                                      goDeeper={true}
+                                     selectRegistryReferenceType={!!this.props.registryReferenceTypeId}
                                  />
                     })}
                 >
@@ -97,10 +103,10 @@ export default class SegmentRegistryReferences extends React.Component {
 
     render() {
         return (
-            <div>
+            <span>
                 {this.registryReferences()}
                 {this.addRegistryReference()}
-            </div>
+            </span>
         )
     }
 }

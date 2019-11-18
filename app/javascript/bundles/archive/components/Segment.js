@@ -1,7 +1,7 @@
 import React from 'react';
 import SegmentFormContainer from '../containers/SegmentFormContainer';
 import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
-import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
+import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { t, fullname, admin } from "../../../lib/utils";
 
@@ -77,9 +77,9 @@ export default class Segment extends React.Component {
 
     references(locale) {
         if (this.state.contentType == 'references') {
-            return <SegmentRegistryReferencesContainer 
-                       segment={this.props.data} 
-                       interview={this.props.interview} 
+            return <RegistryReferencesContainer 
+                       refObject={this.props.data} 
+                       parentEntryId={1}
                        locale={locale} 
                        setOpenReference={this.setOpenReference}
                    />

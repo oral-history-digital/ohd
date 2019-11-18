@@ -62,7 +62,6 @@ class ApplicationController < ActionController::Base
         viewModes: current_project.view_modes,
         viewMode: current_project.view_modes.first,
         listColumns: current_project.list_columns,
-        detailViewFields: current_project.detail_view_fields,
         homeContent: home_content,
         editView: !!cookies["editView"],
         doiResult: {},
@@ -72,15 +71,6 @@ class ApplicationController < ActionController::Base
         countryKeys: country_keys,
         contributionTypes: Project.contribution_types,
         mediaStreams: Project.media_streams,
-        registryEntryMetadataFields: current_project.registry_entry_metadata_fields.where("use_in_details_view").map do |field| 
-          registry_entry = RegistryEntry.find_by_code(field.name)
-          registry_entry ? { id: registry_entry.id, code: registry_entry.code, display_on_landing_page: field.display_on_landing_page } : {}
-        end,
-        registryReferenceTypeMetadataFields: current_project.registry_reference_type_metadata_fields.inject({}) do |mem, facet| 
-          rr = RegistryReferenceType.find_by_code(facet.name)
-          mem[facet.name] = RegistryReferenceTypeSerializer.new(rr).as_json if rr
-          mem 
-        end,
       },
       account: {
         isLoggingIn: false,

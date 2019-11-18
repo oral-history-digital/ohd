@@ -1,7 +1,7 @@
 import React from 'react';
 import { t, admin, contentField } from '../../../lib/utils';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
-import MetadataRegistryReferenceTypeContainer from '../containers/MetadataRegistryReferenceTypeContainer';
+import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 
 export default class InterviewInfo extends React.Component {
 
@@ -44,31 +44,13 @@ export default class InterviewInfo extends React.Component {
         }
     }
 
-    metadataFields() {
-        let metadataFields = [];
-        for (let r in this.props.registryReferenceTypeMetadataFields) {
-            if (this.props.registryReferenceTypeMetadataFields[r]["ref_object_type"] == this.props.refObjectType && (this.props.account.email || this.props.registryReferenceTypeMetadataFields[r]['display_on_landing_page'])) {
-                metadataFields.push(  
-                    <MetadataRegistryReferenceTypeContainer
-                    key={`this.props.registry-reference-type-search-facets-${r}`} 
-                    referenceType={this.props.registryReferenceTypeMetadataFields[r]} 
-                    interview={this.props.interview}
-                    refObjectType={this.props.refObjectType}
-                    />  
-                );
-            }
-        }
-
-        return metadataFields;
-    }
-
     render() {
         if (this.props.interview && this.props.interview.language) {
             return (
                 <div>
                     {contentField(t(this.props, 'id'), this.props.archiveId, "", true)}
                     {this.info()}
-                    {this.metadataFields()}
+                    <SelectedRegistryReferencesContainer refObject={this.props.interview} />
                 </div>
             );
         } else {

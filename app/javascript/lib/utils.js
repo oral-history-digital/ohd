@@ -83,9 +83,9 @@ export function activeSegment(time, props) {
 }
 
 export function getInterviewee(props) {
-    if (props.interview && props.people && props.contributionTypes) {
+    if (props.interview && props.people) {
         for(var c in props.interview.contributions) {
-            if (props.interview.contributions[c].contribution_type === props.contributionTypes.interviewee)
+            if (props.interview.contributions[c].contribution_type === 'interviewee')
                 return props.people[props.interview.contributions[c].person_id];
         }
     }
@@ -296,4 +296,8 @@ export function contentField(label, value, className='', condition=true, collect
     } else {
         return null;
     }
+}
+
+export function toUnderscoreCase(str) {
+    return str.split(/(?=[A-Z])/).join('_').toLowerCase();
 }
