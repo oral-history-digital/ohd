@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
-import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
+import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import { t, contentField } from '../../../lib/utils';
 
