@@ -87,6 +87,7 @@ export default class RegistryReferences extends React.Component {
                                      refObject={this.props.refObject} 
                                      interview={this.props.interview} 
                                      parentEntryId={this.props.parentEntryId}
+                                     registryReferenceTypeId={this.props.registryReferenceTypeId}
                                      locale={this.props.locale}
                                      goDeeper={true}
                                      selectRegistryReferenceType={!!this.props.registryReferenceTypeId}
