@@ -3,14 +3,16 @@ import InterviewInfo from '../components/InterviewInfo';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
-import { getInterview, getCookie } from '../../../lib/utils';
+import { getInterview, getProject, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         projectId: state.archive.projectId,
+        project: project,
         collections: state.data.collections,
         editView: state.archive.editView,
         interview: getInterview(state),
@@ -19,10 +21,7 @@ const mapStateToProps = (state) => {
         // the following is just a trick to force rerender after deletion
         contributionsLastModified: state.data.statuses.contributions.lastModified,
         contributionTypes: state.archive.contributionTypes,
-        registryEntryMetadataFields: state.archive.registry_entry_metadata_fields,
-        registryReferenceTypeMetadataFields: state.archive.registry_reference_type_metadata_fields,
         account: state.data.accounts.current,
-        detailViewFields: state.archive.detailViewFields,
     }
 }
 

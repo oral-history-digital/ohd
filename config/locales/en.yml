@@ -819,7 +819,7 @@ en:
         last_name: Last Name
         birth_name: Birth Name
         date_of_birth: Date of Birth
-        alias_names: Alias Names
+        alias_names: Additional Names
         other_first_names: Other First Names
         typology: Erfahrungen
       registry_entry:

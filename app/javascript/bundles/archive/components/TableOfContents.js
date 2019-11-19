@@ -57,11 +57,12 @@ export default class TableOfContents extends React.Component {
 
         if (this.props.interview && this.props.interview.headings) {
             Object.values(this.props.interview.headings).sort(function(a, b) {a.time - b.time}).map((segment, index) => {
-                if (segment.mainheading[this.props.locale] && /\w+/.test(segment.mainheading[this.props.locale]) && segment.mainheading[this.props.locale] !== lastMainheading) {
+                mainheading = segment.mainheading[`${this.props.locale}-original`] || segment.mainheading[`${this.props.locale}-public`];
+                subheading = segment.subheading[`${this.props.locale}-original`] || segment.subheading[`${this.props.locale}-public`];
+                if (mainheading && /\w+/.test(mainheading) && mainheading !== lastMainheading) {
                     mainIndex += 1;
                     subIndex = 0;
-                    lastMainheading = segment.mainheading[this.props.locale];
-                    mainheading = segment.mainheading[this.props.locale];
+                    lastMainheading = mainheading;
                     headings.push({
                         main: true,
                         chapter: mainIndex + '.',
@@ -87,9 +88,8 @@ export default class TableOfContents extends React.Component {
                         }
                     }
                 }
-                if (segment.subheading[this.props.locale] && /\w+/.test(segment.subheading[this.props.locale])) {
+                if (subheading && /\w+/.test(subheading)) {
                     subIndex += 1;
-                    subheading = segment.subheading[this.props.locale];
                     if (headings[mainIndex - 1]) {
                         headings[mainIndex - 1].subheadings.push({
                             main: false,

@@ -14,14 +14,6 @@ class Collection < ActiveRecord::Base
     name(I18n.locale)
   end
 
-  def project_id
-    read_attribute(:project_id) || "projekt_#{id}"
-  end
-
-  def to_param
-    project_id
-  end
-
   def self.human_name
     I18n.t(:collection)
   end

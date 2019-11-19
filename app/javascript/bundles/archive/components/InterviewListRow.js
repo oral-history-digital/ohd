@@ -38,9 +38,11 @@ export default class InterviewListRow extends React.Component {
     columns(){
         let props = this.props
         return props.listColumns.map(function(column, i){
-            let label = (props.interview[column.name] && props.interview[column.name][props.locale])
+            let value = props.interview[column.name];
+            if (typeof value === 'object' && value !== null)
+                value = value[props.locale]
             return (
-                <td key={i}>{(label && ''+label) || '---'}</td>
+                <td key={i}>{value || '---'}</td>
             )
         })
     }

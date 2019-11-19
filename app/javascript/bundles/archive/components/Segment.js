@@ -1,7 +1,7 @@
 import React from 'react';
 import SegmentFormContainer from '../containers/SegmentFormContainer';
 import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
-import SegmentRegistryReferencesContainer from '../containers/SegmentRegistryReferencesContainer';
+import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { t, fullname, admin } from "../../../lib/utils";
 
@@ -44,7 +44,8 @@ export default class Segment extends React.Component {
     transcript() {
         //let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
         //return (this.props.data.text) ? (this.props.data.text[`${locale}-original`] || this.props.data.text['de-original']) : ''
-        return admin(this.props, this.props.data) ? (this.props.data.text[`${this.props.contentLocale}-original`] || '') : (this.props.data.text[`${this.props.contentLocale}-public`] || '')
+        return admin(this.props, this.props.data) ? (this.props.data.text[`${this.props.contentLocale}-original`] || this.props.data.text[`${this.props.contentLocale}-public`]) : 
+               (this.props.data.text[`${this.props.contentLocale}-public`] || '')
     }
 
     toggleAdditionalContent(type) {
@@ -76,9 +77,9 @@ export default class Segment extends React.Component {
 
     references(locale) {
         if (this.state.contentType == 'references') {
-            return <SegmentRegistryReferencesContainer 
-                       segment={this.props.data} 
-                       interview={this.props.interview} 
+            return <RegistryReferencesContainer 
+                       refObject={this.props.data} 
+                       parentEntryId={1}
                        locale={locale} 
                        setOpenReference={this.setOpenReference}
                    />
@@ -202,7 +203,8 @@ export default class Segment extends React.Component {
     render() {
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
         let contentTransRowCss = this.speakerChanged() ? 'content-trans-row speaker-change' : 'content-trans-row';
-        if (this.transcript()) {
+        let text = this.transcript();
+        if (text) {
             let tabIndex = this.props.originalLocale ? 0 : 1;
             return (
                     <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
@@ -212,7 +214,7 @@ export default class Segment extends React.Component {
                         <div className='content-trans-text'
                              onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
                             <div className={this.css()}
-                                 dangerouslySetInnerHTML={{__html: this.transcript()}}
+                                 dangerouslySetInnerHTML={{__html: text}}
                             />
                         </div>
                         {this.renderLinks(this.props.contentLocale)}

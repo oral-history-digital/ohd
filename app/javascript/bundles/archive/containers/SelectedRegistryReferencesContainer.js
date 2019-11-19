@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
-import InterviewRegistryReferences from '../components/InterviewRegistryReferences';
+import SelectedRegistryReferences from '../components/SelectedRegistryReferences';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
-import { getInterview, getInterviewee } from '../../../lib/utils';
+import { getInterview, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return {
@@ -11,9 +11,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         editView: state.archive.editView,
         interview: getInterview(state),
-        interviewee: getInterviewee({interview: getInterview(state), people: state.data.people, contributionTypes: state.archive.contributionTypes}),
-        registryEntryMetadataFields: state.archive.registryEntryMetadataFields,
-        registryReferenceTypeMetadataFields: state.archive.registryReferenceTypeMetadataFields,
+        project: getProject(state),
         account: state.data.accounts.current,
     }
 }
@@ -24,5 +22,5 @@ const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(InterviewRegistryReferences);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectedRegistryReferences);
 

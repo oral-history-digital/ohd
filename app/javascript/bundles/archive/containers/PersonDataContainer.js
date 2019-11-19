@@ -16,8 +16,6 @@ const mapStateToProps = (state) => {
         contributionTypes: state.archive.contributionTypes,
         account: state.data.accounts.current,
         detailViewFields: (project && project.detail_view_fields) || [],
-        registryEntryMetadataFields: state.archive.registry_entry_metadata_fields,
-        registryReferenceTypeMetadataFields: state.archive.registry_reference_type_metadata_fields,
     }
 }
 

@@ -116,7 +116,7 @@ class InterviewsController < ApplicationController
   def show
     @interview = Interview.find_by_archive_id(params[:id])
     @locale = params[:locale]
-    interview_locale = ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
+    interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym 
 
     respond_to do |format|
       format.json do

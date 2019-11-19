@@ -47,10 +47,6 @@ class Project < ApplicationRecord
     shortname.downcase
   end
 
-  def cache_key_prefix
-    shortname.downcase
-  end
-
   # there is a rails method available_locales as well.
   # we need to overwrite it here.
   #
@@ -78,18 +74,14 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_details_view: true)
   end
 
-  %w(registry_entry registry_reference_type person interview).each do |m|
-    define_method "#{m}_search_facets" do
+  %w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
+    define_method "#{m.underscore}_search_facets" do
       metadata_fields.where(use_as_facet: true, source: m)
-      # TODO: classify source
-      #metadata_fields.where(use_as_facet: true, source: m.classify)
     end
     #
     # used for metadata that is not used as facet
-    define_method "#{m}_metadata_fields" do
+    define_method "#{m.underscore}_metadata_fields" do
       metadata_fields.where(source: m)
-      # TODO: classify source
-      #metadata_fields.where(source: m.classify)
     end
   end
 
@@ -107,9 +99,10 @@ class Project < ApplicationRecord
     Rails.cache.fetch("#{cache_key_prefix}-#{updated_at}-#{metadata_fields.maximum(:updated_at)}-search-facets-hash") do
       search_facets.inject({}) do |mem, facet|
         case facet["source"]
-        when "registry_entry", "registry_reference_type"
-          mem[facet.name.to_sym] = ::FacetSerializer.new(facet.source.classify.constantize.find_by_code(facet.name)).as_json
-        when "person", "interview"
+        when "RegistryEntry", "RegistryReference_type"
+          rr = facet.source.classify.constantize.find_by_code(facet.name)
+          mem[facet.name.to_sym] = ::FacetSerializer.new(rr).as_json if rr
+        when "Person", "Interview"
           facet_label_hash = facet.localized_hash
           name = facet_label_hash || localized_hash_for("search_facets", facet.name)
           if facet.name == "year_of_birth"
@@ -149,7 +142,7 @@ class Project < ApplicationRecord
               end,
             }
           end
-        when "collection", "language"
+        when "Collection", "Language"
           facet_label_hash = facet.localized_hash
           mem[facet.name.to_sym] = {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
@@ -183,6 +176,9 @@ class Project < ApplicationRecord
     search_facets_names.each do |facet|
       search.facet("search_facets:#{facet}").rows.each do |row|
         facets[facet][:subfacets][row.value][:count] = row.count if facets[facet][:subfacets][row.value]
+      rescue StandardError => e
+        p "*** facet: #{facet}, row.value: #{row.value}"
+        p "*** error: #{e.message}"
       end
     end
     facets

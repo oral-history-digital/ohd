@@ -23,6 +23,7 @@ append :linked_files, "config/database.yml", "config/secrets.yml", "config/sunsp
 # Default value for linked_dirs is []
 # append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
 append :linked_dirs, "solr", "node_modules", "tmp" #tmp is important for pids like delayed_job
+set :delayed_job_pid_dir, '/tmp'
 
 # Default value for default_env is {}
 # set :default_env, { path: "/opt/ruby/bin:$PATH" }
@@ -38,8 +39,8 @@ set :keep_releases, 2
 set :project_yml, 'empty.yml'
 
 namespace :deploy do
-  desc 'Copy correct project file into config directory'
 
+  desc 'Copy correct project file into config directory'
   task :copy_project_file do
     on roles(:app) do
       execute :cp, release_path.join('config', 'projects', "#{fetch(:project_yml)}"), release_path.join('config', 'project.yml')

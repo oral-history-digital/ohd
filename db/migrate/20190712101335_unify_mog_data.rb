@@ -54,7 +54,7 @@ class UnifyMogData < ActiveRecord::Migration[5.2]
       execute "UPDATE registry_reference_type_translations SET locale = 'en' WHERE locale='eng';"
     end
 
-    if Project.name.to_sym == :zwar
+    if Project.current.identifier.to_sym == :zwar
       Contribution.where(contribution_type: 'interview').update_all contribution_type: 'interviewer'
       Contribution.where(contribution_type: 'transcript').update_all contribution_type: 'transcriptor'
       Contribution.where(contribution_type: 'translation').update_all contribution_type: 'translator'

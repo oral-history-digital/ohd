@@ -15,7 +15,7 @@ import RegistryEntrySearchFormContainer from '../containers/RegistryEntrySearchF
 import AllUserContentsContainer from '../containers/AllUserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
-import InterviewRegistryReferencesContainer from '../containers/InterviewRegistryReferencesContainer';
+import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 import InterviewTextMaterialsContainer from '../containers/InterviewTextMaterialsContainer';
 import AssignSpeakersFormContainer from '../containers/AssignSpeakersFormContainer';
 import MarkTextFormContainer from '../containers/MarkTextFormContainer';
@@ -117,9 +117,7 @@ export default class FlyoutTabs extends React.Component {
                             content={
                                 <div>
                                     <PersonDataContainer/>
-                                    <InterviewRegistryReferencesContainer
-                                        refObjectType={'person'}
-                                    />
+                                    <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />
                                 </div>
                             }
                         /> 
@@ -127,19 +125,21 @@ export default class FlyoutTabs extends React.Component {
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
-                                content={ <InterviewInfoContainer refObjectType={'interview'}/> }/>
+                                content={ <InterviewInfoContainer/> }/>
                         </AuthShowContainer>
                         <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
-                                content={ <div><InterviewInfoContainer refObjectType={'interview'}/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }/>
+                                content={ <div><InterviewInfoContainer/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }/>
                         </AuthShowContainer>
                         {this.assignSpeakersForm()}
                         {this.markTextForm()}
                         {/* <InterviewDataContainer
-                            title={t(this.props, 'activerecord.models.registry_references.other')}
-                            content={<InterviewRegistryReferencesContainer/>}/> */}
+                                title={t(this.props, 'activerecord.models.registry_references.other')}
+                                content={ <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />}
+                            /> 
+                        */}
                         <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
                             {this.renderPhotos()}
                             {/* {(this.props.projectId === 'mog' || this.props.projectId === 'zwar') && this.renderMap()} */}
