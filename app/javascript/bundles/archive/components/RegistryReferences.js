@@ -90,7 +90,6 @@ export default class RegistryReferences extends React.Component {
                                      registryReferenceTypeId={this.props.registryReferenceTypeId}
                                      locale={this.props.locale}
                                      goDeeper={true}
-                                     selectRegistryReferenceType={!!this.props.registryReferenceTypeId}
                                  />
                     })}
                 >
