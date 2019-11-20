@@ -62,7 +62,7 @@ export default class PersonData extends React.Component {
                 let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
                 let value = ''
                 if (datum.source === 'Person') {
-                    value = interviewee[datum.name]
+                    value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
                 } else {
                     // TODO: this is the PersonData-component!! So is it right to show metadataFields whithout source === 'Person' here?
                     value = _this.props.interview[datum.name] && _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]

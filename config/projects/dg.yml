@@ -24,10 +24,13 @@ default: &default
 
   contribution_types:
     interviewee: 'interviewee'
-    interviewer: 'interview'
-    transcriptor: 'transcript'
-    translator: 'translation'
-    segmentator: 'segmentation'
+    interviewer: 'interviewer'
+    transcriptor: 'transcriptor'
+    translator: 'translator'
+    segmentator: 'segmentator'
+    cinematographer: 'cinematographer'
+    quality_manager: 'quality_manager'
+    proofreader: 'proofreader'
 
   project_name:
     de: 'Deutsches Gedächtnis'

@@ -28,7 +28,7 @@ export default class InterviewTextMaterials extends React.Component {
     }
 
     render() {
-        if (this.props.interview && this.props.interview.language) {
+        if (this.props.interview && this.props.interview.language && this.props.projectId !== "dg") {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>

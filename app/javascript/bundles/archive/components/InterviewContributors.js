@@ -24,7 +24,7 @@ export default class InterviewContributors extends React.Component {
                     if (!contributionTypes[contribution.contribution_type]) {
                         contributionTypes[contribution.contribution_type] = [<span className='flyout-content-label' key={`contribution-label-${contribution.id}`}>{t(this.props, `contributions.${contribution.contribution_type}`)}: </span>];
                     }
-                    contributionTypes[contribution.contribution_type].push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={true} key={`contribution-person-${contribution.id}`} />)
+                    contributionTypes[contribution.contribution_type].push(<PersonContainer data={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-person-${contribution.id}`} />)
                 }
             }
         } 
@@ -63,7 +63,7 @@ export default class InterviewContributors extends React.Component {
                         content: <ContributionFormContainer interview={this.props.interview} submitData={this.props.submitData} />
                     })}
                 >
-                    <i className="fa fa-plus"></i>
+                    <i className="fa fa-plus"></i> {t(this.props, 'edit.contribution.new')}
                 </div>
             )
         }

@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
         interview: getInterview(state),
         // the following is just a trick to force rerender after deletion
         account: state.data.accounts.current,
+        projectId: state.archive.projectId,
     }
 }
 
