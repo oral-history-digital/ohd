@@ -69,7 +69,10 @@ class Segment < ActiveRecord::Base
   # validates_uniqueness_of :media_id
   #validates_format_of :media_id, :with => /\A[a-z]{0,2}\d{3}_\d{2}_\d{2}_\d{3,4}\z/i
 
-  validates_associated :interview
+  # the following validation is preventing transcript imports in production mode
+  # as well as there is an associated interview
+  # so for now I comment it
+  #validates_associated :interview
   validates_associated :tape
 
   # TODO: rm this: segments won`t change id any more when platform and archive are joined together?!

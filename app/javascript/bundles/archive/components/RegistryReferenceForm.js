@@ -71,7 +71,7 @@ export default class RegistryReferenceForm extends React.Component {
                 handlechangecallback: _this.handleSelectedRegistryEntry
             }
         ]
-        if (_this.props.selectRegistryReferenceType) {
+        if (!_this.props.registryReferenceTypeId) {
             elements.push(
                 {
                     elementType: 'select',
@@ -79,7 +79,6 @@ export default class RegistryReferenceForm extends React.Component {
                     values: this.props.registryReferenceTypesStatus && this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched' && Object.values(this.props.registryReferenceTypes),
                     value: this.props.registry_reference && this.props.registry_reference.registry_reference_type_id || this.props.refTypeId,
                     withEmpty: false,
-                    hidden: (_this.props.selectRegistryReferenceType == 'hidden') ? true : false
                 }
             )
         }
