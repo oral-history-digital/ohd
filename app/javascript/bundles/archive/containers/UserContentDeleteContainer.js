@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    deleteData: (dataType, id) => dispatch(deleteData(dataType, id)),
+    deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
