@@ -6,7 +6,7 @@ export default class SelectedRegistryReferences extends React.Component {
 
     registryReferencesByType() {
         let registryReferences = [];
-        if (this.props.project) {
+        if (this.props.project && this.props.refObject) {
             for (let r in this.props.project.metadata_fields) {
                 let metadataField = this.props.project.metadata_fields[r];
                 if (

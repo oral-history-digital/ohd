@@ -129,8 +129,11 @@ export default class Segment extends React.Component {
             let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
             let tabIndex = this.props.originalLocale ? 0 : 1;
             return (
-                <div className="content-trans-speaker-link" title={this.props.data.speaker_id ? fullname(this.props, this.props.people[this.props.data.speaker_id]) : this.props.data.speaker}
-                     onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
+                <div 
+                    className="content-trans-speaker-link" 
+                    title={(this.props.people && this.props.data.speaker_id) ? fullname(this.props, this.props.people[this.props.data.speaker_id]) : this.props.data.speaker}
+                    onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}
+                >
                     <i className={speakerCss}></i>
                 </div>
             )

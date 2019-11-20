@@ -33,7 +33,7 @@ class SegmentsController < ApplicationController
     #@segment.text = segment_params[:text]
     #@segment.speaker_id = segment_params[:speaker_id]
     #@segment.save
-    @segment.update_and_write_public_version(segment_params)
+    @segment.update_original_and_write_other_versions(segment_params)
 
     #if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
       #Rails.cache.delete "#{current_project.cache_key_prefix}-headings-#{@segment.id}-#{@segment.updated_at}"

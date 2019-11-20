@@ -215,9 +215,11 @@ class Interview < ActiveRecord::Base
     # interviews in all languages.
     I18n.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
-        title = full_title(locale).mb_chars.normalize(:kd)
-        Rails.configuration.mapping_to_ascii.each{|k,v| title = title.gsub(k,v)}
-        title.downcase.to_s
+        if full_title(locale)
+          title = full_title(locale).mb_chars.normalize(:kd)
+          Rails.configuration.mapping_to_ascii.each{|k,v| title = title.gsub(k,v)}
+          title.downcase.to_s
+        end
       end
       text :"person_name_#{locale}", :stored => true, :boost => 20 do
         full_title(locale)
@@ -388,7 +390,7 @@ class Interview < ActiveRecord::Base
     begin
       [interviewee.last_name(locale) || interviewee.last_name(I18n.defaut_locale), interviewee.first_name(locale) || interviewee.first_name(I18n.default_locale)].join(', ')
     rescue
-      "Interviewee might not be in DB, interview-id = #{id}"
+      "Interviewee might not be in DB, interview-archive_id = #{archive_id}"
     end
   end
 

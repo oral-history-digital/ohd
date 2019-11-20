@@ -153,12 +153,6 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def interview_date
-    Date.parse(object.interview_date).strftime("%d.%m.%Y")
-  rescue
-    object.interview_date || "---"
-  end
-
   def video
     object.video? ? true : false
   end
