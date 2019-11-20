@@ -12,7 +12,6 @@ export default class SelectedRegistryReferences extends React.Component {
                 if (
                     metadataField.registry_entry_id && 
                     metadataField.use_in_details_view &&
-                    this.props.refObject &&
                     metadataField.ref_object_type === this.props.refObject.type 
                 ) {
                     registryReferences.push(
