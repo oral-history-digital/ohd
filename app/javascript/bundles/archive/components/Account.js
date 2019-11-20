@@ -28,7 +28,6 @@ export default class Account extends React.Component {
     componentDidUpdate(prevProps, prevState) {
         this.loadAccount();
         if (prevProps.editView !== this.props.editView) {
-            debugger;
             this.setState({editView: this.props.editView})
         }
     }
