@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import InterviewDetailsLeftSide from '../components/InterviewDetailsLeftSide';
 import { getInterviewArchiveIdWithOffset } from '../../../lib/utils';
-import { getProject, getInterviewee } from '../../../lib/utils';
+import { getProject, getInterview, getInterviewee } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
