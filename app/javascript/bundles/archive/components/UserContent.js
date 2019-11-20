@@ -71,7 +71,7 @@ export default class UserContent extends React.Component {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
-                    to={'/' + this.props.locale + '/interviews/' + this.props.data.media_id}>
+                    to={pathBase(this.props) + '/interviews/' + this.props.data.media_id}>
                     {t(this.props, callKey)}
                 </Link>
             </p>
@@ -83,14 +83,14 @@ export default class UserContent extends React.Component {
                         this.props.setArchiveId(this.props.data.properties.interview_archive_id);
                         this.props.setTapeAndTime(this.props.data.properties.tape_nbr, this.props.data.properties.time)
                     }}
-                    to={'/' + this.props.locale + '/interviews/' + this.props.data.properties.interview_archive_id}
+                    to={pathBase(this.props) + '/interviews/' + this.props.data.properties.interview_archive_id}
                 >
                     {t(this.props, callKey)}
                 </Link>
             </p>
         } else if (this.props.data.type === 'Search') {
-            //let url = `${pathBase(this.props)}/searches/archive`;
-            let url = `${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+            let url = `${pathBase(this.props)}/searches/archive`;
+            //let url = `${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
