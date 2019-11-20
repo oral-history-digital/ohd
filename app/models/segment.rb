@@ -84,7 +84,7 @@ class Segment < ActiveRecord::Base
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       if opts[:speaker_id]
-        segment.update_and_write_public_version(opts)
+        segment.update_original_and_write_other_versions(opts)
       else
         assign_speakers_and_update_text(segment, opts)
       end
@@ -117,10 +117,10 @@ class Segment < ActiveRecord::Base
         if splitted_text.length.even?
           speaker_designation = splitted_text.shift
           text = splitted_text.shift.gsub(/\n+/, '')
-          segment.update_and_write_public_version text: text, locale: opts[:locale], speaker_id: opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
+          segment.update_original_and_write_other_versions text: text, locale: opts[:locale], speaker_id: opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
         else
           text = splitted_text.shift.gsub(/\n+/, '')
-          segment.update_and_write_public_version text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
+          segment.update_original_and_write_other_versions text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
         end
 
         # if there is another speaker_designation in the text
@@ -319,7 +319,7 @@ class Segment < ActiveRecord::Base
 
   def as_vtt_subtitles(lang)
     # TODO: rm strip
-    raw_segment_text = text(lang)
+    raw_segment_text = text("#{lang}-subtitle")
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
     end_time = self.next.try(:time) || 9999
     "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
@@ -376,26 +376,137 @@ class Segment < ActiveRecord::Base
     mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i + diff.to_i).to_s.rjust(4,'0'))
   end
 
-  def public_text(locale)
-    text("#{locale}-original") && text("#{locale}-original").
-      gsub(/\/\([\w=?]+\)[\\$]/, '').                                                 # e.g. /(p1)\  => ''
-      gsub(/\/\([\w+=?]\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1').                         # e.g. /(o) bla bla\  => bla bla 
-      gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\)[\\$]/, '').                         # e.g. /(o) (bla bla)\  =>  ''
-      gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1')  # e.g. /(o) (bla bla) bla bla\  => bla bla 
-  end
-
   def text_orig
     'dummy'
   end
 
-  def update_and_write_public_version(params)
+  def text_replacements
+    {
+      subtitle: {
+        # <res>
+        "res": {
+          "de": "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz (xy Minuten) nicht veröffentlicht"
+        },
+        # <an>
+        "an": {
+          "de": "XXX"
+        },
+        # <n>
+        "n": {
+          "de": ""
+        },
+        # <i>
+        "i": {
+          "de": "(Schnitt)"
+        },
+        # <p1>, <p2>, ...
+        "p\d*": {
+          "de": ""
+        },
+        # <? xyz>, <?1>, <?2>, ...
+        "\?": {             
+          "de": '(\1?)'
+        },
+        # <=>
+        "=": {
+          "de": ""
+        },
+        # <l(es) en este tiempo>
+        "l": {
+          "de": '\2'    # \1 == es
+        },
+        # <ld Ick kanns nich globen>
+        "ld": {
+          "de": '\1' 
+        },
+        # <v(Lachen)>
+        "v": {
+          "de": ""
+        },
+        # <s(Sprechweise) xyz>
+        "s": {
+          "de": '\2'    # \1 == Sprechweise
+        },
+        # <sim ....> TODO!!
+        # <nl(Geräusch) xyz>
+        "nl": {
+          "de": '\2'    # \1 == Geräusch
+        },
+        # <g(Gestikart) xyz>
+        "g": {
+          "de": '\2'    # \1 == Gestikart
+        },
+        # <m(Art derMimik) xyz>
+        "m": {
+          "de": '\2'    # \1 == Art der Mimik
+        },
+      },
+      public: {
+        "res": {
+          "de": "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz (xy Minuten) nicht veröffentlicht"
+        },
+        "an": {
+          "de": "XXX"
+        },
+        "n": {
+          "de": '\1'
+        },
+        "i": {
+          "de": "<c(Pause)>"
+        },
+        # <p1>, <p2>, ...              stays
+        # <? xyz>, <?1>, <?2>, ...     stays
+        # <=>                          stays
+        # <l(es) en este tiempo>       stays
+        # <ld Ick kanns nich globen>   stays
+        # <v(Lachen)>                  stays
+        # <s(Sprechweise) xyz>         stays
+        # <sim ....> TODO!!
+        # <nl(Geräusch) xyz>           stays
+        # <g(Gestikart) xyz>           stays
+        # <m(Art derMimik) xyz>        stays
+      }
+    }
+  end
+
+  def enciphered_text(version, locale)
+    if text("#{locale}-original")
+      text_enciphered = text("#{locale}-original")
+      text_replacements[version].each do |key, replacement|
+        #text_enciphered = text_enciphered.gsub(/<#{key}\s*(.*)>/, replacement[locale])
+        binding.pry
+        text_enciphered = text_enciphered.
+          # TODO: replace with utf8 À
+          #gsub(/<#{key}\s*([a-zA-ZÀ-ÿ .,¡!¿?]*)>/, replacement[locale.to_sym] || replacement[:de]).                            # e.g. <res bla bla>, <=>, <p1>,   
+          #gsub(/<#{key}\s*(\([a-zA-ZÀ-ÿ .,¡!¿?]+\))\s*([a-zA-ZÀ-ÿ .,¡!¿?]*)/, replacement[locale.to_sym] || replacement[:de])  # e.g. <(n)(1977)>, <s(lachend) bla bla>, 
+          gsub(/<#{key}\s*([a-zA-Z .,!?]*)>/, replacement[locale.to_sym] || replacement[:de]).                            # e.g. <res bla bla>, <=>, <p1>,   
+          gsub(/<#{key}\s*(\([a-zA-Z .,!?]+\))\s*([a-zA-ZÀ-ÿ .,¡!¿?]*)/, replacement[locale.to_sym] || replacement[:de])  # e.g. <(n)(1977)>, <s(lachend) bla bla>, 
+      end
+    end
+    text_enciphered 
+
+      #gsub(/<res .*>/, text_replacements[:res][:locale]).
+      #gsub(/<an .*>/, text_replacements[:an][:locale]).
+
+
+    #text("#{locale}-original") && text("#{locale}-original").
+      #gsub(/\/\([\w=?]+\)[\\$]/, '').                                                 # e.g. /(p1)\  => ''
+      #gsub(/\/\([\w+=?]\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1').                         # e.g. /(o) bla bla\  => bla bla 
+      #gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\)[\\$]/, '').                         # e.g. /(o) (bla bla)\  =>  ''
+      #gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1')  # e.g. /(o) (bla bla) bla bla\  => bla bla 
+  end
+
+  def update_original_and_write_other_versions(params)
+    # original  version with all ciphers
     opts = params.to_h.select{|k,v| attribute_names.include?(k.to_s)} # || k == :locale
     opts.update(locale: "#{params[:locale]}-original")
     update_attributes(opts)
     #
-    # now write the public version
-    opts.update(text: public_text(params[:locale]), locale: "#{params[:locale]}-public")
-    update_attributes(opts)
+    # now write other versions
+    text_replacements.keys.each do |version|
+      opts.update(text: enciphered_text(version, params[:locale]), locale: "#{params[:locale]}-#{version}")
+      update_attributes(opts)
+    end
   end
 
   private
