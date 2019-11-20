@@ -99,7 +99,7 @@ class Project < ApplicationRecord
     Rails.cache.fetch("#{cache_key_prefix}-#{updated_at}-#{metadata_fields.maximum(:updated_at)}-search-facets-hash") do
       search_facets.inject({}) do |mem, facet|
         case facet["source"]
-        when "RegistryEntry", "RegistryReference_type"
+        when "RegistryEntry", "RegistryReferenceType"
           rr = facet.source.classify.constantize.find_by_code(facet.name)
           mem[facet.name.to_sym] = ::FacetSerializer.new(rr).as_json if rr
         when "Person", "Interview"
