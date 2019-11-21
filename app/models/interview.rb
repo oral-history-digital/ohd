@@ -169,8 +169,9 @@ class Interview < ActiveRecord::Base
     # in order to find pseudonyms with fulltextsearch (dg)
     #(text :pseudonym_string, :stored => true) if project.identifier == 'dg'
     
-    # in order to fast access a list of titles for the name autocomplete:
+    # in order to fast access a list of titles for the name and alias_names autocomplete:
     string :title, :stored => true
+    string :alias_names, :stored => true
 
     # in order to fast access places of birth for all interviews
     # string :birth_location, :stored => true
@@ -330,8 +331,8 @@ class Interview < ActiveRecord::Base
     archive_id
   end
 
-  def pseudonym_string(locale = I18n.locale)
-    (self.respond_to? :pseudonym) ? pseudonym.map{|p| RegistryEntry.find(p).registry_names.first.descriptor locale}.join("; ") : nil
+  def alias_names(locale = I18n.locale)
+    (interviewees.first.respond_to? :alias_names) ? interviewees.first.alias_names : nil
   end
 
   def to_s(locale = I18n.locale)
@@ -796,7 +797,7 @@ class Interview < ActiveRecord::Base
 
   class << self
     # https://github.com/sunspot/sunspot#stored-fields
-    # in order to being able to get a dropdown list in search field
+    # in order to get a dropdown list in search field
     def dropdown_search_values(project, user_account)
       Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{Interview.maximum(:updated_at)}") do
         search = Interview.search do
@@ -811,9 +812,7 @@ class Interview < ActiveRecord::Base
         # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
         #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
         #    ...]
-        all_interviews_pseudonyms = search.hits.map do 
-          |hit| {:de => RegistryEntry.find(hit.stored :pseudonym ).first.registry_names.first.try(:descriptor)} if hit.stored(:pseudonym).try(:first)
-        end.compact
+        all_interviews_pseudonyms = search.hits.map{ |hit| hit.stored(:alias_names) }
         all_interviews_birth_locations = search.hits.map {|hit| hit.stored(:birth_location) }
 
         {
