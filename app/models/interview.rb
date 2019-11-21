@@ -331,8 +331,11 @@ class Interview < ActiveRecord::Base
     archive_id
   end
 
-  def alias_names(locale = I18n.locale)
-    (interviewees.first.respond_to? :alias_names) ? interviewees.first.alias_names : nil
+  def alias_names
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = (interviewees.first.respond_to? :alias_names) ? interviewees.first.alias_names(locale) : nil
+      mem
+    end
   end
 
   def to_s(locale = I18n.locale)
