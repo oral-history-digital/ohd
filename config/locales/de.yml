@@ -891,3 +891,7 @@ de:
           attributes:
             description:
               too_long: Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.
+
+  interview_title_patterns:
+    lastname_with_birthname: '%{lastname} (%{birthname})'
+    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'

@@ -909,3 +909,7 @@ el:
   translated_typology: Είδος εμπειρίας
   indexation: Ιστορική επεξεργασία
   annotation_for_interview: Παρατηρήσεις πάνω στη συνέντευξη
+
+  interview_title_patterns:
+    lastname_with_birthname: '%{lastname} (%{birthname})'
+    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'
