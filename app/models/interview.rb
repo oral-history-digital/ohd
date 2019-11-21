@@ -226,6 +226,15 @@ class Interview < ActiveRecord::Base
         full_title(locale)
       end
     end
+
+    I18n.available_locales.each do |locale|
+      string :"alias_names_#{locale}", :stored => true do
+        alias_names[locale]
+      end
+      text :"alias_names_#{locale}", :stored => true, :boost => 20 do
+        alias_names[locale]
+      end
+    end
     
     # contributions
     # find them through fulltext search 
