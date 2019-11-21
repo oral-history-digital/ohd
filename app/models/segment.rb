@@ -241,8 +241,12 @@ class Segment < ActiveRecord::Base
   after_initialize do
     (project.available_locales + [:orig]).each do |locale|
       define_singleton_method "text_#{locale}" do
-        translations = translations.where("locale LIKE :locale", locale: "%#{locale}%")
-        translations.try(:first) ? translations.first.text : nil
+        if translations
+          transl = translations.where("locale LIKE :locale", locale: "%#{locale}%")
+          transl.try(:first) ? transl.first.text : nil
+        else
+          nil
+        end
       end
     end
   end
