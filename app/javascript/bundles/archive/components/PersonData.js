@@ -58,7 +58,7 @@ export default class PersonData extends React.Component {
         let interviewee = getInterviewee(_this.props);
         return this.props.detailViewFields.map(function(datum, i){
             // exclude registryReference type metadata
-            if (!datum.ref_object_type){
+            if (datum.source !== "RegistryReferenceType"){
                 let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
                 let value = ''
                 if (datum.source === 'Person') {

@@ -146,15 +146,15 @@ module UserContentsHelper
     biographic << content_tag(:li, label_tag(:collection, Interview.human_attribute_name('collection')) \
                   + content_tag(:p, interview.collection))
     # TODO: Distinguish more generically between historical contexts.
-    if interview.respond_to?(:forced_labor_groups)
+    if interview.respond_to?(:forced_labor_group)
       # forced labor groups
-      biographic << content_tag(:li, label_tag(:forced_labor_groups, Interview.human_attribute_name(:forced_labor_groups)) \
-                    + content_tag(:p, interview.forced_labor_groups.join(', ')))
+      biographic << content_tag(:li, label_tag(:forced_labor_group, Interview.human_attribute_name(:forced_labor_group)) \
+                    + content_tag(:p, interview.forced_labor_group.join(', ')))
     end
-    if interview.respond_to?(:forced_labor_habitations)
+    if interview.respond_to?(:forced_labor_habitation)
       # habitations
-      biographic << content_tag(:li, label_tag(:forced_labor_habitations, Interview.human_attribute_name(:forced_labor_habitations)) \
-                    + content_tag(:p, interview.forced_labor_habitations.join(', ')))
+      biographic << content_tag(:li, label_tag(:forced_labor_habitation, Interview.human_attribute_name(:forced_labor_habitation)) \
+                    + content_tag(:p, interview.forced_labor_habitation.join(', ')))
     end
     content_tag(:div, html, :class => 'image-link') + content_tag(:ul, biographic)
   end

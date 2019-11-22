@@ -407,17 +407,17 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  after_initialize do 
-    project.registry_entry_metadata_fields.each do |facet|
-      define_singleton_method facet.name do 
-        if project.identifier.to_sym == :mog
-          segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id).uniq 
-        else
-          registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
-        end
-      end
-    end
-  end
+  # after_initialize do 
+  #   project.registry_entry_metadata_fields.each do |facet|
+  #     define_singleton_method facet.name do 
+  #       if project.identifier.to_sym == :mog
+  #         segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id).uniq 
+  #       else
+  #         registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
+  #       end
+  #     end
+  #   end
+  # end
 
   after_initialize do 
     project.registry_reference_type_metadata_fields.each do |field|
@@ -740,8 +740,8 @@ class Interview < ActiveRecord::Base
       "Erfahrungen: #{self.typology.map{|t| I18n.t(t.gsub(' ', '_').downcase, scope: 'search_facets')}.join(', ')}"
     else
       [
-        "Gruppe: #{self.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}",
-        "Lager und Einsatzorte: #{self.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}"
+        "Gruppe: #{self.forced_labor_group.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}",
+        "Lager und Einsatzorte: #{self.forced_labor_field.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}"
       ].join(';')
     end
   end

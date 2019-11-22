@@ -74,7 +74,8 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_details_view: true)
   end
 
-  %w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
+  # %w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
+  %w(RegistryReferenceType Person Interview).each do |m|
     define_method "#{m.underscore}_search_facets" do
       metadata_fields.where(use_as_facet: true, source: m)
     end
@@ -99,7 +100,7 @@ class Project < ApplicationRecord
     Rails.cache.fetch("#{cache_key_prefix}-#{updated_at}-#{metadata_fields.maximum(:updated_at)}-search-facets-hash") do
       search_facets.inject({}) do |mem, facet|
         case facet["source"]
-        when "RegistryEntry", "RegistryReferenceType"
+        when "RegistryReferenceType"
           rr = facet.source.classify.constantize.find_by_code(facet.name)
           mem[facet.name.to_sym] = ::FacetSerializer.new(rr).as_json if rr
         when "Person", "Interview"
