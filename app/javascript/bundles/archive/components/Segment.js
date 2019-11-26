@@ -217,8 +217,11 @@ export default class Segment extends React.Component {
                         <div className='content-trans-text'
                              onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
                             <div className={this.css()}
-                                 dangerouslySetInnerHTML={{__html: text}}
-                            />
+                                 // TODO: clean mog segment-texts from html in db
+                                 //dangerouslySetInnerHTML={{__html: text}}
+                            >
+                                {text}
+                            </div>
                         </div>
                         {this.renderLinks(this.props.contentLocale)}
                         <div className={contentOpenClass}>
