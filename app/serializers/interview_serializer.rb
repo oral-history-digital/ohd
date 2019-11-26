@@ -10,8 +10,6 @@ class InterviewSerializer < ApplicationSerializer
     :duration,
     :translated,
     :interview_date,
-    :forced_labor_group,
-    :forced_labor_field,
     #:inferior_quality,
     #:original_citation,
     #:translated_citation,
