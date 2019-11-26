@@ -10,8 +10,8 @@ class InterviewSerializer < ApplicationSerializer
     :duration,
     :translated,
     :interview_date,
-    :forced_labor_group,
-    :forced_labor_field,
+    # :forced_labor_group,
+    # :forced_labor_field,
     #:inferior_quality,
     #:original_citation,
     #:translated_citation,
@@ -124,33 +124,6 @@ class InterviewSerializer < ApplicationSerializer
 
   def observations
     object.localized_hash_for(:observations)
-  end
-
-  def forced_labor_group
-    # if object.respond_to? :
-    #   RegistryEntry.find(object.forced_labor_group).map{|r| r.to_s}.join(', ')
-    # else
-    #   ''
-    # end
-    if object.respond_to? :forced_labor_group
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.forced_labor_group.map { |f| RegistryEntry.find(f).to_s(locale) }
-        mem
-      end
-    else
-      ""
-    end
-  end
-
-  def forced_labor_field
-    if object.respond_to? :forced_labor_field
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.forced_labor_field.map { |f| RegistryEntry.find(f).to_s(locale) }
-        mem
-      end
-    else
-      ""
-    end
   end
 
   def video

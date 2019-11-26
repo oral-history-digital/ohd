@@ -254,7 +254,7 @@ class Segment < ActiveRecord::Base
   def transcripts(allowed_to_see_all=false)
     translations.inject({}) do |mem, translation|
       # TODO: rm Nokogiri parser after segment sanitation
-      mem[translation.locale.to_s] = translation.text ? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : nil
+      mem[translation.locale.to_s] = translation.text #? Nokogiri::HTML.parse(translation.text).text.sub(/^:[\S ]/, "").sub(/\*[A-Z]{1,3}:\*[\S ]/, '') : nil
       mem
     end
   end
@@ -385,120 +385,39 @@ class Segment < ActiveRecord::Base
     'dummy'
   end
 
-  def text_replacements
-    {
-      subtitle: {
-        # <res>
-        "res": {
-          "de": "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz (xy Minuten) nicht veröffentlicht"
-        },
-        # <an>
-        "an": {
-          "de": "XXX"
-        },
-        # <n>
-        "n": {
-          "de": ""
-        },
-        # <i>
-        "i": {
-          "de": "(Schnitt)"
-        },
-        # <p1>, <p2>, ...
-        "p\d*": {
-          "de": ""
-        },
-        # <? xyz>, <?1>, <?2>, ...
-        "\?": {             
-          "de": '(\1?)'
-        },
-        # <=>
-        "=": {
-          "de": ""
-        },
-        # <l(es) en este tiempo>
-        "l": {
-          "de": '\2'    # \1 == es
-        },
-        # <ld Ick kanns nich globen>
-        "ld": {
-          "de": '\1' 
-        },
-        # <v(Lachen)>
-        "v": {
-          "de": ""
-        },
-        # <s(Sprechweise) xyz>
-        "s": {
-          "de": '\2'    # \1 == Sprechweise
-        },
-        # <sim ....> TODO!!
-        # <nl(Geräusch) xyz>
-        "nl": {
-          "de": '\2'    # \1 == Geräusch
-        },
-        # <g(Gestikart) xyz>
-        "g": {
-          "de": '\2'    # \1 == Gestikart
-        },
-        # <m(Art derMimik) xyz>
-        "m": {
-          "de": '\2'    # \1 == Art der Mimik
-        },
-      },
-      public: {
-        "res": {
-          "de": "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz (xy Minuten) nicht veröffentlicht"
-        },
-        "an": {
-          "de": "XXX"
-        },
-        "n": {
-          "de": '\1'
-        },
-        "i": {
-          "de": "<c(Pause)>"
-        },
-        # <p1>, <p2>, ...              stays
-        # <? xyz>, <?1>, <?2>, ...     stays
-        # <=>                          stays
-        # <l(es) en este tiempo>       stays
-        # <ld Ick kanns nich globen>   stays
-        # <v(Lachen)>                  stays
-        # <s(Sprechweise) xyz>         stays
-        # <sim ....> TODO!!
-        # <nl(Geräusch) xyz>           stays
-        # <g(Gestikart) xyz>           stays
-        # <m(Art derMimik) xyz>        stays
-      }
-    }
-  end
-
   def enciphered_text(version, locale)
+    # TODO: replace with utf8 À
     if text("#{locale}-original")
-      text_enciphered = text("#{locale}-original")
-      text_replacements[version].each do |key, replacement|
-        #text_enciphered = text_enciphered.gsub(/<#{key}\s*(.*)>/, replacement[locale])
-        binding.pry
-        text_enciphered = text_enciphered.
-          # TODO: replace with utf8 À
-          #gsub(/<#{key}\s*([a-zA-ZÀ-ÿ .,¡!¿?]*)>/, replacement[locale.to_sym] || replacement[:de]).                            # e.g. <res bla bla>, <=>, <p1>,   
-          #gsub(/<#{key}\s*(\([a-zA-ZÀ-ÿ .,¡!¿?]+\))\s*([a-zA-ZÀ-ÿ .,¡!¿?]*)/, replacement[locale.to_sym] || replacement[:de])  # e.g. <(n)(1977)>, <s(lachend) bla bla>, 
-          gsub(/<#{key}\s*([a-zA-Z .,!?]*)>/, replacement[locale.to_sym] || replacement[:de]).                            # e.g. <res bla bla>, <=>, <p1>,   
-          gsub(/<#{key}\s*(\([a-zA-Z .,!?]+\))\s*([a-zA-ZÀ-ÿ .,¡!¿?]*)/, replacement[locale.to_sym] || replacement[:de])  # e.g. <(n)(1977)>, <s(lachend) bla bla>, 
-      end
+      text_original = text("#{locale}-original")
+      text_enciphered = 
+        case version
+        when :subtitle
+          text_original.
+            gsub(/<res\s+(.*)>/, "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz (xy Minuten) nicht veröffentlicht").  # e.g. <res bla bla>
+            gsub(/<an\s+(.*)>/, "XXX").                                                                                                             # e.g. <an bla bla>
+            gsub(/\s*<n\(([^>]*)\)>/, "").                                                                                                             # <n(1977)>
+            gsub(/<i\((.*)\)>/, "(Schnitt)").                                                                                                       # <i(Batteriewechsel)>
+            gsub(/<p\d+>/, "").                                                                                                                     # <p1>, <p2>, ...
+            gsub(/<\?\s+(.*)>/, '(\1?)').                                                                                                           # e.g. <? bla bla>
+            gsub(/<\?\d+>/, "(...?)").                                                                                                              # <?1>, <?2>, ...
+            gsub(/<=>/, " ").                                                                                                                       # <=>
+            gsub(/<l\((.+)\)\s+(.*)>/, '\2').                                                                                                       # e.g. <l(es) bla bla> 
+            gsub(/<ld\((.+)\)\s+(.*)>/, '\2').                                                                                                      # e.g. <ld(Dialekt) bla bla> 
+            gsub(/<v\((.+)\)>/, '').                                                                                                                # e.g. <v(bla bla)> 
+            gsub(/<s\((.+)\)\s+(.*)>/, '\2').                                                                                                       # e.g. <s(lachend) bla bla> 
+            gsub(/<sim\s+(.*)>/, '\1').                                                                                                             # e.g. <sim bla bla> 
+            gsub(/<nl\((.+)\)\s+(.*)>/, '\2').                                                                                                      # e.g. <nl(Geräusch) bla bla> 
+            gsub(/<g\((.+)\)\s+(.*)>/, '\2').                                                                                                       # e.g. <g(Gestik) bla bla> 
+            gsub(/<m\((.+)\)\s+(.*)>/, '\2')                                                                                                        # e.g. <m(Mimik) bla bla> 
+        when :public
+          text_original.
+            gsub(/<res\s+(.*)>/, "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz (xy Minuten) nicht veröffentlicht").  # e.g. <res bla bla>
+            gsub(/<an\s+(.*)>/, "XXX").                                                                                                             # e.g. <an bla bla>
+            gsub(/<n\(([^>]*)\)>/, '(\1)').                                                                                                        # <n(1977)>
+            gsub(/<i\((.*)\)>/, "<c(Pause)>")                                                                                                       # <i(Batteriewechsel)>
+        end
     end
     text_enciphered 
-
-      #gsub(/<res .*>/, text_replacements[:res][:locale]).
-      #gsub(/<an .*>/, text_replacements[:an][:locale]).
-
-
-    #text("#{locale}-original") && text("#{locale}-original").
-      #gsub(/\/\([\w=?]+\)[\\$]/, '').                                                 # e.g. /(p1)\  => ''
-      #gsub(/\/\([\w+=?]\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1').                         # e.g. /(o) bla bla\  => bla bla 
-      #gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\)[\\$]/, '').                         # e.g. /(o) (bla bla)\  =>  ''
-      #gsub(/\/\([\w=?]+\) \([a-zA-ZÀ-ÿ .,¡!¿?]+\) ([a-zA-ZÀ-ÿ .,¡!¿?]*)[\\$]/, '\1')  # e.g. /(o) (bla bla) bla bla\  => bla bla 
   end
 
   def update_original_and_write_other_versions(params)
@@ -508,7 +427,7 @@ class Segment < ActiveRecord::Base
     update_attributes(opts)
     #
     # now write other versions
-    text_replacements.keys.each do |version|
+    [:public, :subtitle].each do |version|
       opts.update(text: enciphered_text(version, params[:locale]), locale: "#{params[:locale]}-#{version}")
       update_attributes(opts)
     end

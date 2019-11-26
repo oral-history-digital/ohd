@@ -424,11 +424,13 @@ class Interview < ActiveRecord::Base
       define_singleton_method field.name do
         case field["ref_object_type"]
         when "Person"
-          interviewees.first && interviewees.first.registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: field.name).first.id).map(&:registry_entry_id)
+          interviewees.first && interviewees.first.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
         when "Interview"
-          registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: field.name).first.id).map(&:registry_entry_id)
+          registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
         when "Segment"
-          segment_registry_references.where(registry_reference_type_id: RegistryReferenceType.where(code: field.name).first.id).map(&:registry_entry_id).uniq 
+          segment_registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq 
+        else
+          []
         end
       end
     end
