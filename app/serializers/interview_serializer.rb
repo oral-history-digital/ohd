@@ -72,18 +72,18 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  # Project.current.registry_entry_metadata_fields.each do |m|
-  #   define_method m.name do
-  #     if !object.send(m.name).empty?
-  #       I18n.available_locales.inject({}) do |mem, locale|
-  #         mem[locale] = object.send(m.name).map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
-  #         mem
-  #       end
-  #     else
-  #       {}
-  #     end
-  #   end
-  # end
+  Project.current.registry_reference_type_metadata_fields.each do |m|
+    define_method m.name do
+      if !object.send(m.name).empty?
+        I18n.available_locales.inject({}) do |mem, locale|
+          mem[locale] = object.send(m.name).map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+          mem
+        end
+      else
+        {}
+      end
+    end
+  end
 
   def country_of_birth
     interviewee = object.interviewees.first
@@ -98,9 +98,9 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def interview_location
-    (!object.interview_location.empty? && object.interview_location.first.localized_hash) || {}
-  end
+  # def interview_location
+  #   (!object.interview_location.empty? && object.interview_location.first.localized_hash) || {}
+  # end
 
   def interviewee_id
     object.interviewees.first && object.interviewees.first.id
@@ -159,7 +159,7 @@ class InterviewSerializer < ApplicationSerializer
 
   def lang
     # return only the first language code in cases like 'slk/ces'
-    object.language && ISO_639.find(object.language.first_code).alpha2
+    object.language && ( ISO_639.find(object.language.first_code).try(:alpha2) || object.language.first_code )
   end
 
   def language
