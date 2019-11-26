@@ -58,7 +58,7 @@ var Loader = {
     submit: function(req, url, params, dispatch, successCallback, errorCallback) {
         let scope = Object.keys(params)[0];
         Object.keys(params[scope]).map((param, index) => {
-            if (params[scope][param]) {
+            if (params[scope][param] !== undefined && params[scope][param] !== null) {
                 if (param === 'data') {
                     // like this it is possible to upload one file through a file-input called data.
                     // you need more file-inputs? change the implementation here!

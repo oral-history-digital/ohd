@@ -54,6 +54,7 @@ export default class Input extends React.Component {
             defaultChecked: this.props.value,
             defaultValue: this.props.value,
             onChange: this.handleChange,
+            onClick: this.handleChange, // otherwise checkboxes would not fire 
         };
 
         return props;
