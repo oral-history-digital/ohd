@@ -58,11 +58,11 @@ export default class PersonData extends React.Component {
         let interviewee = getInterviewee(_this.props);
         return this.props.detailViewFields.map(function(datum, i){
             // exclude registryReference type metadata
-            if (!datum.ref_object_type){
+            if (datum.source !== "RegistryReferenceType"){
                 let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
                 let value = ''
                 if (datum.source === 'Person') {
-                    value = interviewee[datum.name]
+                    value = interviewee[datum.name][_this.props.locale] || interviewee[datum.name]
                 } else {
                     // TODO: this is the PersonData-component!! So is it right to show metadataFields whithout source === 'Person' here?
                     value = _this.props.interview[datum.name] && _this.props.interview[datum.name][_this.props.locale] || _this.props.interview[datum.name]
@@ -105,9 +105,9 @@ export default class PersonData extends React.Component {
                     {contentField(t(this.props, 'activerecord.attributes.person.alias_names'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes' || this.props.projectId === 'dg')}
                     {/* {this.history()} */}
                     {this.detailViewFields()}
-                    {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
+                    {/* {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId === 'campscapes')}
-                    {contentField(t(this.props, 'search_facets.group_details'), this.props.interview.group_details && this.props.interview.group_details[this.props.locale], "", this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'search_facets.group_details'), this.props.interview.group_details && this.props.interview.group_details[this.props.locale], "", this.props.projectId === 'campscapes')} */}
                     {contentField(t(this.props, 'activerecord.models.biographical_entry.one'), biographicalEntry && biographicalEntry.text[this.props.locale], '', this.props.projectId === 'campscapes')}
                 </div>
             );

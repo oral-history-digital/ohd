@@ -170,7 +170,8 @@ export default class FlyoutTabs extends React.Component {
     }
 
     assignSpeakersForm() {
-        if (admin(this.props, {type: 'Interview', action: 'update_speakers'})) {
+        // speakers assignment does not work for dg at the moment, but we don't need it either
+        if (admin(this.props, {type: 'Interview', action: 'update_speakers'}) && this.props.projectId !== 'dg') {
             return <InterviewDataContainer
                 title={t(this.props, 'assign_speakers')}
                 content={<AssignSpeakersFormContainer interview={this.props.interview} />}
@@ -181,7 +182,7 @@ export default class FlyoutTabs extends React.Component {
     }
      
     markTextForm() {
-        if (admin(this.props, {type: 'Interview', action: 'mark_texts'})) {
+        if (admin(this.props, {type: 'Interview', action: 'mark_texts'}) && this.props.projectId !== 'dg') {
             return <InterviewDataContainer
                 title={t(this.props, 'mark_texts')}
                 content={<MarkTextFormContainer interview={this.props.interview} />}
@@ -353,7 +354,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     renderMap() {
-        if (loggedIn(this.props)) {
+        if (loggedIn(this.props) && this.props.projectId !== 'dg') {
             return <InterviewDataContainer
                 title={t(this.props, 'map')}
                 open={true}

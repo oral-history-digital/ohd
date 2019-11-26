@@ -893,3 +893,7 @@ en:
     Okkupation in Griechenland beinhaltet. "Erinnerungen an die Okkupation in Griechenland"
     ist ein Projekt der Freien Universität Berlin in Kooperation mit der nationalen
     und Kapodistrias-Universität Athen.
+  
+  interview_title_patterns:
+    lastname_with_birthname: '%{lastname} (%{birthname})'
+    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'

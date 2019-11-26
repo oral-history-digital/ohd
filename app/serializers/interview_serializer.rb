@@ -10,8 +10,8 @@ class InterviewSerializer < ApplicationSerializer
     :duration,
     :translated,
     :interview_date,
-    :forced_labor_groups,
-    :forced_labor_fields,
+    :forced_labor_group,
+    :forced_labor_field,
     #:inferior_quality,
     #:original_citation,
     #:translated_citation,
@@ -56,7 +56,7 @@ class InterviewSerializer < ApplicationSerializer
   #:citation_timecode,
   #:indexed_at,
   #:src,
-  ] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_entry_metadata_fields.map(&:name)
+  ] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) # | Project.current.registry_entry_metadata_fields.map(&:name)
 
   #belongs_to :colletion, serializer: CollectionSerializer
 
@@ -72,7 +72,7 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  Project.current.registry_entry_metadata_fields.each do |m|
+  Project.current.registry_reference_type_metadata_fields.each do |m|
     define_method m.name do
       if !object.send(m.name).empty?
         I18n.available_locales.inject({}) do |mem, locale|
@@ -98,9 +98,9 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def interview_location
-    (!object.interview_location.empty? && object.interview_location.first.localized_hash) || {}
-  end
+  # def interview_location
+  #   (!object.interview_location.empty? && object.interview_location.first.localized_hash) || {}
+  # end
 
   def interviewee_id
     object.interviewees.first && object.interviewees.first.id
@@ -126,15 +126,15 @@ class InterviewSerializer < ApplicationSerializer
     object.localized_hash_for(:observations)
   end
 
-  def forced_labor_groups
-    # if object.respond_to? :forced_labor_groups
-    #   RegistryEntry.find(object.forced_labor_groups).map{|r| r.to_s}.join(', ')
+  def forced_labor_group
+    # if object.respond_to? :
+    #   RegistryEntry.find(object.forced_labor_group).map{|r| r.to_s}.join(', ')
     # else
     #   ''
     # end
-    if object.respond_to? :forced_labor_groups
+    if object.respond_to? :forced_labor_group
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.forced_labor_groups.map { |f| RegistryEntry.find(f).to_s(locale) }
+        mem[locale] = object.forced_labor_group.map { |f| RegistryEntry.find(f).to_s(locale) }
         mem
       end
     else
@@ -142,10 +142,10 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def forced_labor_fields
-    if object.respond_to? :forced_labor_fields
+  def forced_labor_field
+    if object.respond_to? :forced_labor_field
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.forced_labor_fields.map { |f| RegistryEntry.find(f).to_s(locale) }
+        mem[locale] = object.forced_labor_field.map { |f| RegistryEntry.find(f).to_s(locale) }
         mem
       end
     else
@@ -159,7 +159,7 @@ class InterviewSerializer < ApplicationSerializer
 
   def lang
     # return only the first language code in cases like 'slk/ces'
-    object.language && ISO_639.find(object.language.first_code).alpha2
+    object.language && ( ISO_639.find(object.language.first_code).try(:alpha2) || object.language.first_code )
   end
 
   def language
@@ -188,8 +188,8 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def anonymous_title
-    if Project.fullname_on_landing_page
-      short_title
+    if Project.current.fullname_on_landing_page
+      object.localized_hash
     else
       I18n.available_locales.inject({}) do |mem, locale|
         mem[locale] = object.anonymous_title(locale)

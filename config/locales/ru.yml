@@ -1314,3 +1314,7 @@ ru:
       no_interviews_found: интервью&nbsp;не&nbsp;найдено
   user_account_mailer:
     subject: Ваш доступ к архиву '%{project_name}'
+
+  interview_title_patterns:
+    lastname_with_birthname: '%{lastname} (%{birthname})'
+    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'

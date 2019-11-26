@@ -215,7 +215,7 @@ export default class ArchiveSearch extends React.Component {
     }
 
     exportSearchLink() {
-        if(Object.keys(this.props.query).length > 0) {
+        if(Object.keys(this.props.query).length > 0 && this.props.projectId !== "dg") {
             return (
                 <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'export_search_results'),

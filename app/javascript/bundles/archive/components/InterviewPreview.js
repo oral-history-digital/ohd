@@ -46,7 +46,7 @@ export default class InterviewPreview extends React.Component {
     }
 
     facetToClass(facetname) {
-        // e.g. "forced-labor-groups" => "forced_labor_groups[]"
+        // e.g. "forced-labor-group" => "forced_labor_group[]"
         let query = facetname.replace(/-/g, '_') + '[]';
         return (this.props.query[query] && this.props.query[query].length > 0) ? '' : 'hidden';
     }
@@ -107,11 +107,11 @@ export default class InterviewPreview extends React.Component {
         if (this.props.projectId === 'zwar') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
-                    <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration[this.props.locale]}</span><br/>
+                    <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration}</span><br/>
                     <span>{this.props.interview.language[this.props.locale]}</span>
-                    <small className={this.facetToClass("forced-labor-groups")}><br/>{this.props.interview.forced_labor_groups[this.props.locale].join(', ')}</small>
+                    <small className={this.facetToClass("forced-labor-group")}><br/>{this.props.interview.forced_labor_group[this.props.locale].join(', ')}</small>
                     <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>
-                    <small className={this.facetToClass("forced-labor-fields")}><br/>{this.props.interview.forced_labor_fields[this.props.locale].join(', ')}</small>
+                    <small className={this.facetToClass("forced-labor-field")}><br/>{this.props.interview.forced_labor_field[this.props.locale].join(', ')}</small>
                 </div>
             );
         }

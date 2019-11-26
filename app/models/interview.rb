@@ -169,8 +169,9 @@ class Interview < ActiveRecord::Base
     # in order to find pseudonyms with fulltextsearch (dg)
     #(text :pseudonym_string, :stored => true) if project.identifier == 'dg'
     
-    # in order to fast access a list of titles for the name autocomplete:
+    # in order to fast access a list of titles for the name and alias_names autocomplete:
     string :title, :stored => true
+    string :alias_names, :stored => true
 
     # in order to fast access places of birth for all interviews
     # string :birth_location, :stored => true
@@ -223,6 +224,15 @@ class Interview < ActiveRecord::Base
       end
       text :"person_name_#{locale}", :stored => true, :boost => 20 do
         full_title(locale)
+      end
+    end
+
+    I18n.available_locales.each do |locale|
+      string :"alias_names_#{locale}", :stored => true do
+        alias_names[locale]
+      end
+      text :"alias_names_#{locale}", :stored => true, :boost => 20 do
+        alias_names[locale]
       end
     end
     
@@ -330,8 +340,11 @@ class Interview < ActiveRecord::Base
     archive_id
   end
 
-  def pseudonym_string(locale = I18n.locale)
-    (self.respond_to? :pseudonym) ? pseudonym.map{|p| RegistryEntry.find(p).registry_names.first.descriptor locale}.join("; ") : nil
+  def alias_names
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = (interviewees.first.respond_to? :alias_names) ? interviewees.first.alias_names(locale) : nil
+      mem
+    end
   end
 
   def to_s(locale = I18n.locale)
@@ -394,17 +407,17 @@ class Interview < ActiveRecord::Base
     end
   end
 
-  after_initialize do 
-    project.registry_entry_metadata_fields.each do |facet|
-      define_singleton_method facet.name do 
-        if project.identifier.to_sym == :mog
-          segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id).uniq 
-        else
-          registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
-        end
-      end
-    end
-  end
+  # after_initialize do 
+  #   project.registry_entry_metadata_fields.each do |facet|
+  #     define_singleton_method facet.name do 
+  #       if project.identifier.to_sym == :mog
+  #         segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id).uniq 
+  #       else
+  #         registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
+  #       end
+  #     end
+  #   end
+  # end
 
   after_initialize do 
     project.registry_reference_type_metadata_fields.each do |field|
@@ -436,7 +449,7 @@ class Interview < ActiveRecord::Base
     if segments.first
       segments.first.translations.map{|t| t.locale.to_s.split('-').first}.uniq
     elsif language
-      [ISO_639.find(language.first_code).alpha2]
+      [ISO_639.find(language.first_code).try(:alpha2) || language.first_code]
     else
       []
     end
@@ -727,8 +740,8 @@ class Interview < ActiveRecord::Base
       "Erfahrungen: #{self.typology.map{|t| I18n.t(t.gsub(' ', '_').downcase, scope: 'search_facets')}.join(', ')}"
     else
       [
-        "Gruppe: #{self.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}",
-        "Lager und Einsatzorte: #{self.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}"
+        "Gruppe: #{self.forced_labor_group.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}",
+        "Lager und Einsatzorte: #{self.forced_labor_field.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}"
       ].join(';')
     end
   end
@@ -796,7 +809,7 @@ class Interview < ActiveRecord::Base
 
   class << self
     # https://github.com/sunspot/sunspot#stored-fields
-    # in order to being able to get a dropdown list in search field
+    # in order to get a dropdown list in search field
     def dropdown_search_values(project, user_account)
       Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{Interview.maximum(:updated_at)}") do
         search = Interview.search do
@@ -811,9 +824,7 @@ class Interview < ActiveRecord::Base
         # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
         #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
         #    ...]
-        all_interviews_pseudonyms = search.hits.map do 
-          |hit| {:de => RegistryEntry.find(hit.stored :pseudonym ).first.registry_names.first.try(:descriptor)} if hit.stored(:pseudonym).try(:first)
-        end.compact
+        all_interviews_pseudonyms = search.hits.map{ |hit| eval hit.stored(:alias_names) }
         all_interviews_birth_locations = search.hits.map {|hit| hit.stored(:birth_location) }
 
         {

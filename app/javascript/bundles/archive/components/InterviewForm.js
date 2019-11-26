@@ -27,19 +27,22 @@ export default class InterviewForm extends React.Component {
 
     render() {
         let elements = [
-            {
-                elementType: 'select',
-                attribute: 'collection_id',
-                values: this.props.collections,
-                value: this.props.interview && this.props.interview.collection_id,
-                withEmpty: true,
-                validate: function(v){return /^\d+$/.test(v)},
-                individualErrorMsg: 'empty'
-            },
             { 
                 attribute: 'archive_id',
                 value: this.props.interview && this.props.interview.archive_id,
-                validate: function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}
+                validate: function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)},
+            },
+            { 
+                attribute: 'interview_date',
+                value: this.props.interview && this.props.interview.interview_date,
+                elementType: 'input',
+            },
+            { 
+                attribute: 'media_type',
+                value: this.props.interview && this.props.interview.media_type,
+                optionsScope: 'search_facets',
+                elementType: 'select',
+                values: ['video', 'audio']
             },
             {
                 elementType: 'select',
@@ -49,35 +52,32 @@ export default class InterviewForm extends React.Component {
                 withEmpty: true,
                 validate: function(v){return /^\d+$/.test(v)},
             },
-            { 
-                attribute: 'interview_date',
-                value: this.props.interview && this.props.interview.interview_date,
-                elementType: 'input',
+            {
+                elementType: 'select',
+                attribute: 'collection_id',
+                values: this.props.collections,
+                value: this.props.interview && this.props.interview.collection_id,
+                withEmpty: true,
+                validate: function(v){return /^\d+$/.test(v)},
+                individualErrorMsg: 'empty'
             },
-            { 
-                attribute: 'tape_count',
-                value: this.props.interview && this.props.interview.tape_count,
-                elementType: 'input',
-                validate: function(v){return /^\d+$/.test(v)}
-            },
+            // { 
+            //     attribute: 'tape_count',
+            //     value: this.props.interview && this.props.interview.tape_count,
+            //     elementType: 'input',
+            //     validate: function(v){return /^\d+$/.test(v)}
+            // },
             { 
                 attribute: 'observations',
                 value: this.props.interview && this.props.interview.observations && this.props.interview.observations[this.props.locale],
                 elementType: 'textarea',
             },
-            { 
-                attribute: 'media_type',
-                value: this.props.interview && this.props.interview.media_type,
-                optionsScope: 'search_facets',
-                elementType: 'select',
-                values: ['video', 'audio']
-            },
-            { 
-                attribute: 'translated',
-                value: this.props.interview && this.props.interview.translated,
-                elementType: 'input',
-                type: 'checkbox'
-            },
+            // { 
+            //     attribute: 'translated',
+            //     value: this.props.interview && this.props.interview.translated,
+            //     elementType: 'input',
+            //     type: 'checkbox'
+            // },
         ]
 
         if (this.props.interview) {

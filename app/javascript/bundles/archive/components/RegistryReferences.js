@@ -70,6 +70,11 @@ export default class RegistryReferences extends React.Component {
                     usedRegistryEntryIds.push(registryEntry.id);
                 }
             }
+            if(registryReferences.length < 1) {
+                registryReferences.push(
+                    <span>---</span>
+                )
+            }
         } 
         return registryReferences;
     }
