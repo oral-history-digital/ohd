@@ -24,7 +24,7 @@ class RegistryReference < BaseRegistryReference
         }
 
   def touch_objects
-    registry_entry.touch
+    RegistryEntry.find(registry_entry_id).touch
     ref_object_type.constantize.find(ref_object_id).touch
   end
 end

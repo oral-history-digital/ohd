@@ -23,9 +23,9 @@ class FacetSerializer < ApplicationSerializer
         mem
       end
     when "RegistryReferenceType"
-      object.registry_references.inject({}) do |mem, ref|
-        mem[ref.registry_entry_id.to_s] = {
-          name: ref.registry_entry.localized_hash,
+      object.registry_entry.children.inject({}) do |mem, child|
+        mem[child.id.to_s] = {
+          name: child.localized_hash,
           count: 0,
         }
         mem
