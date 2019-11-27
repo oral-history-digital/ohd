@@ -288,7 +288,11 @@ export default class RegistryEntry extends React.Component {
                 </div>
             )
         } else {
-            return null;
+            return (
+            <div className='show-hide-children'>
+                    <i className={`fa fa-square`} />
+            </div>
+            )
         }
     }
 
