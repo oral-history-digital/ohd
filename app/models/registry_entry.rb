@@ -72,10 +72,18 @@ class RegistryEntry < ActiveRecord::Base
   WORKFLOW_STATES = [:preliminary, :public, :hidden, :rejected]
   validates_inclusion_of :workflow_state, :in => WORKFLOW_STATES.map(&:to_s)
 
+  after_update :touch_objects
+  after_create :touch_objects
+
   # A registry entry may not be deleted if it still has children or
   # references pointing to it.
   def before_destroy
+    touch_objects
     children.count == 0 and registry_references.count == 0
+  end
+
+  def touch_objects
+    parents && parents.map(&:touch)
   end
 
   searchable do
