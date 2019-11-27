@@ -89,11 +89,14 @@ class PersonSerializer < ApplicationSerializer
     object.registry_references && object.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
   end
 
-  def gender
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = I18n.translate("genders.#{object.gender}", locale: locale)
-      mem
-    end
-  end
+  # The follwing disables person-editing. Please do not translate everything in serializer. 
+  # It crashes with all the update functionalities!!
+  #
+  #def gender
+    #I18n.available_locales.inject({}) do |mem, locale|
+      #mem[locale] = I18n.translate("genders.#{object.gender}", locale: locale)
+      #mem
+    #end
+  #end
 
 end
