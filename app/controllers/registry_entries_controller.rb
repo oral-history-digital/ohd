@@ -10,6 +10,7 @@ class RegistryEntriesController < ApplicationController
     @registry_entry = RegistryEntry.create_with_parent_and_names(registry_entry_params[:parent_id], "#{locale}::#{registry_entry_params[:descriptor]}")
     @registry_entry.reload.update_attributes registry_entry_params.slice(:latitude, :longitude, :notes)
     clear_cache @registry_entry.parents.first
+    current_project.touch
 
     respond_to do |format|
       format.json do
@@ -47,6 +48,7 @@ class RegistryEntriesController < ApplicationController
     @registry_entry.update_attributes registry_entry_params.slice(:descriptor, :notes, :latitude, :longitude, :parent_id)
     @registry_entry.touch
     @registry_entry.parents.each(&:touch)
+    current_project.touch
 
     respond_to do |format|
       format.json do
@@ -102,6 +104,7 @@ class RegistryEntriesController < ApplicationController
     authorize @registry_entry
     #policy_scope RegistryEntry
     RegistryEntry.merge({id: params[:id], ids: params[:merge_registry_entry][:ids]})
+    current_project.touch
 
     respond_to do |format|
       format.json do
@@ -119,6 +122,7 @@ class RegistryEntriesController < ApplicationController
 
     parent = @registry_entry.parents.first
     @registry_entry.destroy
+    current_project.touch
 
     clear_cache parent
     parent.touch
