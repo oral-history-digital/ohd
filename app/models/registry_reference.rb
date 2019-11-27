@@ -3,9 +3,7 @@ class RegistryReference < BaseRegistryReference
   belongs_to :ref_object, polymorphic: true
   belongs_to :registry_reference_type
 
-  after_update :touch_objects
-  before_destroy :touch_objects
-  after_create :touch_objects
+  after_commit :touch_objects, on: [:create, :update, :destroy]
 
   scope :for_interview, ->(interview_id) {
           where(interview_id: interview_id)
