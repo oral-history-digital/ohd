@@ -34,7 +34,7 @@ export default class RegistryReference extends React.Component {
             // refObject.type === Person || Interview
             this.props.deleteData(
                 this.props, pluralize(toUnderscoreCase(this.props.refObject.type)), 
-                this.props.refObject.archiveId || this.props.refObject.id, 
+                this.props.refObject.archiveId || this.props.refObject.archive_id || this.props.refObject.id, 
                 'registry_references', 
                 this.props.registryReference.id
             );
