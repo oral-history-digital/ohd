@@ -37,7 +37,7 @@ export default class SubmitOnBlurForm extends React.Component {
     value() {
         if (this.props.locale) {
             //return this.translation()[this.props.attribute];
-            return this.props.data[this.props.attribute][`${this.props.locale}-original`] || ''
+            return this.props.data[this.props.attribute][`${this.props.locale}-original`] || this.props.data[this.props.attribute][`${this.props.locale}-public`] || ''
         } else {
             return this.props.data[this.props.attribute];
         }
