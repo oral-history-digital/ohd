@@ -78,8 +78,8 @@ class RegistryEntry < ActiveRecord::Base
   # A registry entry may not be deleted if it still has children or
   # references pointing to it.
   def before_destroy
-    children.count == 0 and registry_references.count == 0
     touch_objects
+    children.count == 0 and registry_references.count == 0
   end
 
   def touch_objects
