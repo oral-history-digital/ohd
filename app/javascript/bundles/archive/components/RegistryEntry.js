@@ -76,15 +76,17 @@ export default class RegistryEntry extends React.Component {
     }
 
     ellipsis() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'more')}
-                onClick={() => this.setState({ editButtonsVisible: !this.state.editButtonsVisible })}
-            >
-                <i className="fa fa-ellipsis-v" />
-            </div>
-        )
+        if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'more')}
+                    onClick={() => this.setState({ editButtonsVisible: !this.state.editButtonsVisible })}
+                >
+                    <i className="fa fa-ellipsis-v" />
+                </div>
+            )
+        }
     }
 
     destroy() {
