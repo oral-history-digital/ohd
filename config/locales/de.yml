@@ -516,6 +516,11 @@ de:
       university_teaching: universitäre Lehre
       scientific_paper: wissenschaftliche Publikation
       other: Sonstige
+  # this is needed for PersonData.js:66
+  gender:
+    female: weiblich
+    male: männlich
+  # this is needed for forms
   genders:
     female: weiblich
     male: männlich

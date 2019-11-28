@@ -549,6 +549,9 @@ ru:
       university_teaching: Университетское преподавание
       scientific_paper: Научная публикация
       other: Прочее
+  gender:
+    female: женщина
+    male: мужчина
   genders:
     female: weiblich
     male: männlich

@@ -506,6 +506,9 @@ el:
       university_teaching: Πανεπιστημιακή διδασκαλία
       scientific_paper: Επιστημονικές δημοσιεύσεις
       other: Άλλο
+  gender:
+    female: θήλυ
+    male: άρρεν
   genders:
     female: weiblich
     male: männlich
