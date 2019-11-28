@@ -844,6 +844,7 @@ de:
         last_name: Nachname
         birth_name: Geburtsname
         alias_names: Weitere Namen
+        pseudonym: Pseudonym
         other_first_names: Weitere Vornamen
         date_of_birth: Geburtsdatum
         typology: Erfahrungen
