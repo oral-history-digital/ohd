@@ -298,8 +298,8 @@ export default class VideoPlayer extends React.Component {
         if (this.props.project) {
             return (
                 <div className='wrapper-video'>
-                    <i className="fa fa-expand expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
-                    <i className="fa fa-compress compress" aria-hidden="true" onClick={() => this.compressVideo()} />
+                    <i className="fa fa-angle-double-down expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
+                    <i className="fa fa-angle-double-up compress" aria-hidden="true" onClick={() => this.compressVideo()} />
                     {this.enableInterviewEditViewButton()}
                     {this.selectInterviewEditViewColumns()}
                     <div className={"video-title-container"}>
