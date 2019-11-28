@@ -95,10 +95,15 @@ export default class WrappedDataList extends React.Component {
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
-                    <h1>{t(this.props, `activerecord.models.${this.props.scope}.other`)}</h1>
-                    {this.data()}
-                    {this.add()}
-                    {this.renderScrollObserver()}
+                    <div className='wrapper-content register'>
+                        <h1 className='registry-entries-title'>
+                            {t(this.props, `activerecord.models.${this.props.scope}.other`)}
+                        </h1>
+                        {this.add()}
+                        {this.data()}
+                        {this.add()}
+                        {this.renderScrollObserver()}
+                    </div>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true}>
                     {t(this.props, 'devise.failure.unauthenticated')}
