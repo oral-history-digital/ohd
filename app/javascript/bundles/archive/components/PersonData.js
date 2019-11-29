@@ -62,10 +62,10 @@ export default class PersonData extends React.Component {
                 let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
                 let value = ''
                 if (datum.source === 'Person') {
-                    value = interviewee[datum.name];
+                    value = t(_this.props, `${datum.name}.${interviewee[datum.name]}`);
                 } else {
                     // TODO: this is the PersonData-component!! So is it right to show metadataFields whithout source === 'Person' here?
-                    value = _this.props.interview[datum.name];
+                    t(_this.props, `${datum.name}.${_this.props.interview[datum.name]}`);
                 }
                 if (typeof value === 'object' && value !== null)
                     value = value[_this.props.locale]
@@ -104,7 +104,8 @@ export default class PersonData extends React.Component {
                     <AuthShowContainer ifLoggedOut={true}>
                         {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
                     </AuthShowContainer>
-                    {contentField(t(this.props, 'activerecord.attributes.person.alias_names'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes' || this.props.projectId === 'dg')}
+                    {contentField(t(this.props, 'activerecord.attributes.person.alias_names'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes')}
+                    {contentField(t(this.props, 'activerecord.attributes.person.pseudonym'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'dg')}
                     {/* {this.history()} */}
                     {this.detailViewFields()}
                     {/* {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}

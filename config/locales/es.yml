@@ -505,6 +505,9 @@ es:
       university_teaching: universitäre Lehre
       scientific_paper: wissenschaftliche Publikation
       other: Sonstige
+  gender:
+    female: weiblich
+    male: männlich
   genders:
     female: weiblich
     male: männlich
