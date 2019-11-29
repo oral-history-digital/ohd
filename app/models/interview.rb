@@ -815,7 +815,7 @@ class Interview < ActiveRecord::Base
     # https://github.com/sunspot/sunspot#stored-fields
     # in order to get a dropdown list in search field
     def dropdown_search_values(project, user_account)
-      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{Interview.maximum(:updated_at)}") do
+      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{Interview.maximum(:updated_at)}-#{Project.current.updated_at}") do
         search = Interview.search do
           adjust_solr_params do |params|
             params[:rows] = project.interviews.size
