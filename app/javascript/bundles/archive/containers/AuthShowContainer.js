@@ -6,7 +6,8 @@ import { getCookie, getProject } from '../../../lib/utils';
 const mapStateToProps = (state) => {
     let project = getProject(state);
     return {
-        authStatus: state.account,
+        isLoggedIn: state.account.isLoggedIn,
+        isLoggedOut: state.account.isLoggedOut,
         account: state.data.accounts.current,
         accountsStatus: state.data.statuses.accounts,
         editView: state.archive.editView,

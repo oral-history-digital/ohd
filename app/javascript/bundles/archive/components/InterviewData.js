@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { loggedIn } from '../../../lib/utils';
 
 export default class InterviewData extends React.Component {
 
@@ -12,7 +11,7 @@ export default class InterviewData extends React.Component {
         super(props, context);
         this.handleClick = this.handleClick.bind(this);
         this.state = {
-            open: !loggedIn(this.props) || this.props.open
+            open: !this.props.isLoggedIn || this.props.open
         };
 
     }

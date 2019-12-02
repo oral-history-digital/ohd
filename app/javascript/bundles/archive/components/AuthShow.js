@@ -11,7 +11,7 @@ export default class AuthShow extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if (!prevProps.authStatus.isLoggedIn && this.props.authStatus.isLoggedIn) {
+        if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
             this.loadAccount();
         }
     }
@@ -21,11 +21,11 @@ export default class AuthShow extends React.Component {
     }
 
     content() {
-        if (!this.props.authStatus.isLoggedOut && this.props.account.email && !this.props.account.error && this.props.ifLoggedIn) {
+        if (this.props.isLoggedIn && this.props.ifLoggedIn) {
             return this.props.children;
-        } else if (!this.props.authStatus.isLoggedOut && this.props.account.email && this.props.account.admin && this.props.editView  && this.props.ifAdmin) {
+        } else if (this.props.isLoggedIn && this.props.editView && this.props.ifAdmin) {
             return this.props.children;
-        } else if ((this.props.authStatus.isLoggedOut || !this.props.account.email || this.props.account.error) && this.props.ifLoggedOut) {
+        } else if (!this.props.isLoggedIn && this.props.ifLoggedOut) {
             return this.props.children;
         } else {
             return null;

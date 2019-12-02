@@ -5,7 +5,7 @@ import LoginFormContainer from '../containers/LoginFormContainer'
 import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
 import {Link} from 'react-router-dom';
 
-import { t, loggedIn, pathBase } from '../../../lib/utils';
+import { t, pathBase } from '../../../lib/utils';
 
 export default class Account extends React.Component {
 
@@ -69,12 +69,20 @@ export default class Account extends React.Component {
         }
     }
 
+    errorMsg() {
+        if (this.props.error) {
+            return <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.error)}}/>;
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <div className={'flyout-login-container'}>
                 <AuthShowContainer ifLoggedIn={true}>
                     <div className='info'>
-                        {`${t(this.props, 'logged_in_as')} ${this.props.account && this.props.account.first_name} ${this.props.account && this.props.account.last_name}`}
+                        {`${t(this.props, 'logged_in_as')} ${this.props.firstName} ${this.props.lastName}`}
                     </div>
                     {this.changeToEditView()}
                     <div
@@ -85,12 +93,12 @@ export default class Account extends React.Component {
                     </div>
                 </AuthShowContainer>
 
-                <div className='error' dangerouslySetInnerHTML={{__html: t(this.props, this.props.authStatus.error)}}/>
+                {this.errorMsg()}
 
                 <AuthShowContainer ifLoggedOut={true}>
                     <p>
                         {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
-                        {(this.props.authStatus.error || this.props.projectId === 'campscapes') ? '' : t(this.props, 'registration_needed')}
+                        {(this.props.error || this.props.projectId === 'campscapes') ? '' : t(this.props, 'registration_needed')}
                     </p>
                     <LoginFormContainer/>
                     <div className={'register-link'}>

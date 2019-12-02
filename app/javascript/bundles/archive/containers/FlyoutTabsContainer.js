@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         editView: state.archive.editView,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        authStatus: state.account,
+        isLoggedIn: state.account.isLoggedIn,
         interview: getInterview(state),
         interviewee: getInterviewee({interview: getInterview(state), people: state.data.people}),
         showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree

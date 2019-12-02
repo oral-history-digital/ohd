@@ -45,7 +45,7 @@ export default class FlyoutTabs extends React.Component {
     handleTabClick(tabIndex) {
         if (tabIndex === 0) {
             // account
-            loggedIn(this.props) && this.context.router.history.push(`${pathBase(this.props)}/accounts/current`);
+            this.props.isLoggedIn && this.context.router.history.push(`${pathBase(this.props)}/accounts/current`);
         } else if (tabIndex > 0 && tabIndex < this.props.locales.length + 1) {
             // locales (language switchers)
             this.switchLocale(this.props.locales[tabIndex - 1]);
@@ -76,7 +76,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     loginTab() {
-        let text = loggedIn(this.props) ? 'account_page' : 'login_page';
+        let text = this.props.isLoggedIn ? 'account_page' : 'login_page';
         return <Tab className='flyout-top-nav' key='account'>{t(this.props, text)}</Tab>
     }
 
@@ -309,7 +309,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     registryEntriesTab() {
-        let css = loggedIn(this.props) ? 'flyout-tab' : 'hidden';
+        let css = this.props.isLoggedIn ? 'flyout-tab' : 'hidden';
         return (
             <Tab className={css} key='registry'>
                 {t(this.props, (this.props.projectId === 'mog') ? 'registry_mog' : 'registry')}
@@ -338,7 +338,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     userContentTab() {
-        let css = loggedIn(this.props) ? 'flyout-tab' : 'hidden';
+        let css = this.props.isLoggedIn ? 'flyout-tab' : 'hidden';
         return <Tab className={css} key='user-content'>{t(this.props, 'user_content')}</Tab>;
     }
 
@@ -354,7 +354,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     renderMap() {
-        if (loggedIn(this.props) && this.props.projectId !== 'dg') {
+        if (this.props.isLoggedIn && this.props.projectId !== 'dg') {
             return <InterviewDataContainer
                 title={t(this.props, 'map')}
                 open={true}
@@ -363,7 +363,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     renderPhotos() {
-        if (loggedIn(this.props)) {
+        if (this.props.isLoggedIn) {
             return <InterviewDataContainer
                 title={t(this.props, 'photos')}
                 open={true}

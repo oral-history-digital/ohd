@@ -170,10 +170,6 @@ export function camelcase(str) {
     return str.charAt(0).toUpperCase() + str.slice(1);
 }
 
-export function loggedIn(props) {
-    return !!(!props.authStatus.isLoggedOut && props.account.email);
-}
-
 // props should contain:
 //   - account ~ state.data.accounts.current
 //   - editView ~ state.archive.editView
