@@ -34,9 +34,11 @@ export default class InterviewInfo extends React.Component {
                     {contentField(t(this.props, 'search_facets.media_type'), this.props.interview.media_type && t(this.props, `search_facets.${this.props.interview.media_type}`), "", true)}
                     {contentField(t(this.props, 'duration'), (this.props.interview.duration[this.props.locale]||this.props.interview.duration), "", true)}
                     {this.tapes()}
-                    {contentField(t(this.props, 'search_facets.accessibility'), this.props.interview.accessibility && this.props.interview.accessibility[this.props.locale], "", this.props.projectId === 'campscapes')}
+                    {/* the following is controlled via metadata_fields in project-conf *}
+                    {/*contentField(t(this.props, 'search_facets.accessibility'), this.props.interview.accessibility && this.props.interview.accessibility[this.props.locale], "", this.props.projectId === 'campscapes')*/}
                     {contentField(t(this.props, 'language'), this.props.interview.language && this.props.interview.language[this.props.locale], "", this.props.projectId !== 'mog')}
-                    {contentField(t(this.props, 'interview_location'), this.props.interview.interview_location && this.props.interview.interview_location[this.props.locale], "", (this.props.projectId !== 'mog' && this.props.projectId !== 'dg'))}
+                    {/* the following is controlled via metadata_fields in project-conf *}
+                    {/*contentField(t(this.props, 'interview_location'), this.props.interview.interview_location && this.props.interview.interview_location[this.props.locale], "", (this.props.projectId !== 'mog' && this.props.projectId !== 'dg'))*/}
                     {contentField(t(this.props, 'activerecord.models.collection.one'), this.props.interview.collection && this.props.interview.collection[this.props.locale], "", this.props.projectId !== 'mog', this.props.collections[this.props.interview.collection_id] )}
 
                     {/*contentField(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "", true)*/}
