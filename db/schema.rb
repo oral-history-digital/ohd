@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_11_27_152639) do
+ActiveRecord::Schema.define(version: 2019_12_02_115303) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -384,9 +384,7 @@ ActiveRecord::Schema.define(version: 2019_11_27_152639) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.text "notes", limit: 4294967295
-    t.index ["descriptor"], name: "index_registry_name_translations_on_descriptor", length: 255
-    t.index ["registry_name_id", "locale"], name: "index_registry_name_translations_on_registry_name_id_and_locale", unique: true
-    t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
+    t.index ["descriptor"], name: "index_registry_name_translations_on_descriptor", length: 191
   end
 
   create_table "registry_name_types", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -541,7 +539,7 @@ ActiveRecord::Schema.define(version: 2019_11_27_152639) do
     t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "text", limit: 16777215
+    t.text "text", limit: 4294967295
     t.index ["locale"], name: "index_text_translations_on_locale"
     t.index ["text_id"], name: "index_text_translations_on_text_id"
   end
