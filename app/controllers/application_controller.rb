@@ -146,7 +146,7 @@ class ApplicationController < ActionController::Base
   end
 
   def initial_search_redux_state
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-search-#{params}-#{Interview.maximum(:updated_at)}-#{Project.current.updated_at}") do
+    Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-search-#{params}-#{Interview.maximum(:updated_at)}-#{Project.current.updated_at}-#{current_user_account && current_user_account.admin? ? 'admin' : 'public'}") do
       search = Interview.archive_search(current_user_account, current_project, locale, params)
       dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
       {
