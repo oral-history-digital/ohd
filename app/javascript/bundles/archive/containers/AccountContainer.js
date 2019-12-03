@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         translations: state.archive.translations,
+        isLoggedIn: state.account.isLoggedIn,
         firstName: state.account.firstName,
         lastName: state.account.lastName,
         error: state.account.error,

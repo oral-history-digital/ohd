@@ -11,11 +11,11 @@ class AccountsController < ApplicationController
       format.html {}
       #format.json { render json: current_user_account && ::UserAccountSerializer.new(current_user_account).to_json || {} }
       format.json do
-        render json: current_user_account && {
+        render json: {
           id: 'current',
           data_type: 'accounts',
-          data: ::UserAccountSerializer.new(current_user_account)
-        } || {} 
+          data: current_user_account && ::UserAccountSerializer.new(current_user_account)
+        } 
       end
     end
   end

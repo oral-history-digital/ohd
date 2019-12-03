@@ -35,7 +35,8 @@ export default class Account extends React.Component {
     loadAccount() {
         if (
             !this.props.accountsStatus.current ||
-            this.props.accountsStatus.current.split('-')[0] === 'reload'
+            this.props.accountsStatus.current.split('-')[0] === 'reload' ||
+            (this.props.isLoggedIn && !this.props.account.email && this.props.accountsStatus.current.split('-')[0] === 'fetched')
         ) {
             this.props.fetchData(this.props, 'accounts', 'current');
         }
