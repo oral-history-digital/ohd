@@ -9,7 +9,7 @@ import {
     UPDATE_DATA,
     //ADD_DATA,
     REMOVE_DATA,
-    DELETE_PROCESS_MSG,
+    DELETE_STATUS_MSG,
 } from '../constants/archiveConstants';
 
 //const addData = (params) => ({
@@ -58,11 +58,6 @@ const receiveData = (json) => ({
     msg: json.msg, 
     page: json.page,
     resultPagesCount: json.result_pages_count,
-});
-
-const deleteProcessMsg = (dataType) => ({
-    type: DELETE_PROCESS_MSG,
-    dataType: dataType,
 });
 
 export function fetchData(props, dataType, id, nestedDataType, extraParams) {
@@ -115,9 +110,15 @@ export function deleteData(props, dataType, id, nestedDataType, nestedId, skipRe
     }
 }
 
-export function returnToForm(dataType) {
+export function cleanStatusMsg(dataType, msgOrIndex) {
     return dispatch => {
-        dispatch(deleteProcessMsg(dataType))
+        dispatch(deleteStatusMsg(dataType, msgOrIndex))
     }
 };
+
+const deleteStatusMsg = (dataType, msgOrIndex) => ({
+    type: DELETE_STATUS_MSG,
+    dataType: dataType,
+    msgOrIndex: msgOrIndex
+});
 

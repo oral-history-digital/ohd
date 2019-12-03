@@ -4,7 +4,7 @@ import {
     REMOVE_DATA,
     REQUEST_DATA,
     RECEIVE_DATA,
-    DELETE_PROCESS_MSG,
+    DELETE_STATUS_MSG,
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -40,11 +40,11 @@ const initialState = {
 
 const data = (state = initialState, action) => {
     switch (action.type) {
-        case DELETE_PROCESS_MSG:
+        case DELETE_STATUS_MSG:
             return Object.assign({}, state, {
                 statuses: Object.assign({}, state.statuses, {
                     [action.dataType]: Object.keys(state.statuses[action.dataType]).reduce((acc, key) => {
-                        if ('processing' !== key && 'processed' !== key) {
+                        if (action.msgOrIndex !== key) {
                             return {...acc, [key]: state.statuses[action.dataType][key]}
                         }
                         return acc;
