@@ -231,6 +231,8 @@ class InterviewSerializer < ApplicationSerializer
         mem[locale] = object.interviewees.first.year_of_birth
         mem
       end
+    else
+      {}
     end
   end
 
