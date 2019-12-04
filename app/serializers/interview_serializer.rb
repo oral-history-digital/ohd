@@ -72,7 +72,8 @@ class InterviewSerializer < ApplicationSerializer
 
   Project.current.registry_reference_type_metadata_fields.each do |m|
     define_method m.name do
-      if !object.send(m.name).empty?
+      # can handle object.send(m.name) = nil
+      if !!object.send(m.name).try("any?")
         I18n.available_locales.inject({}) do |mem, locale|
           mem[locale] = object.send(m.name).map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
           mem
@@ -230,6 +231,8 @@ class InterviewSerializer < ApplicationSerializer
         mem[locale] = object.interviewees.first.year_of_birth
         mem
       end
+    else
+      {}
     end
   end
 

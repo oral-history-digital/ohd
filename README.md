@@ -1,6 +1,6 @@
-# CeDiS Archive 2.0+
+# Interview Archive
 
-This is the web application for CeDiS-Archiv 2.0.
+This is the Interview Archive Web Application
 
 ## Application Setup
 
@@ -22,20 +22,14 @@ This is the web application for CeDiS-Archiv 2.0.
 3. create initial admin users: `bundle exec rake users:init_admins`
    (have a look in lib/tasks/users.rb after l.34 to add other users)
 
-4. (not necessary for MOG and future versions) Mount **//eaz-diga.cedis.fu-berlin.de/data** to **/mnt/eaz-diga.cedis.fu-berlin.de/data** as described in **project.yml**
-
-5. (not necessary for MOG and future versions) Import interviews 
-    ```bash
-    bundle exec rake import:interviews:full
-    ```
-6. To use node.js (at the moment version 8.x) for webpacker run:
+4. To use node.js (at the moment version 8.x) for webpacker run:
 
     ```bash
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     sudo apt-get install -y nodejs
     ```
     
-7. install yarn ( as well to run webpacker )
+5. install yarn ( as well to run webpacker )
 
     ```bash
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -52,6 +46,8 @@ To prevent you having to manage all this stuff in three different terminals, jus
 ```bash
 foreman start
 ```
+
+Foreman will run every command from **Procfile**.
 
 ## Solr Setup and Indexing
 
@@ -73,7 +69,7 @@ In case of problems, there's a test rake task for starting up the Solr server wi
 bundle exec rake solr:start
 ```
 
-Before indexing (mog only!!) run rake task to validate the presence of periods:
+MOG only: Before indexing run rake task to validate the presence of periods:
 
 ```bash
 bundle exec rake dedalo:validate_periods
@@ -93,7 +89,6 @@ sudo apt-get install texlive-base
 sudo apt-get install texlive-xetex 
 ``` 
 The font FiraSans-Regular.ttf is used and should be installed as well. 
-
 
 
 ## Switch project in development
@@ -133,21 +128,6 @@ Example: Switch from `mog` to `zwar`:
     ```
 
 ## Deployment
-
-1. Copy project file to shared/config/project.yml in initial setup or if the project file was updated:
-
-    ```bash
-    cp current/config/projects/zwar.yml shared/config/project.yml
-    ```
-
-2. If you changed JS-code after the last deploy, you need to commit the re-packed javascript before deployment. On your locale machine do:
-
-    ```bash
-    RAILS_ENV=production rake webpacker:compile
-    git add public/packs/
-    git commit -m "fresh compile"
-    git push
-    ```
 
 3. Deploy the code with
     ```bash
