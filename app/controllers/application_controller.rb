@@ -83,7 +83,7 @@ class ApplicationController < ActionController::Base
       },
       data: {
         statuses: {
-          accounts: {current: current_user_account && 'fetched'},
+          accounts: {current: 'fetched'},
           interviews: {},
           segments: {},
           doi_contents: {},
