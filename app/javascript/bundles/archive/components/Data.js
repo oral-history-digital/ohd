@@ -8,7 +8,7 @@ export default class Data extends React.Component {
         if (this.props.data.archive_domain) {
             return (
                 <div className='base-data box'>
-                    <p className='link'><a href={'https://' + this.props.data.archive_domain}>{this.props.data.title || this.props.data.name}</a></p>
+                    <p className='link'><a href={this.props.data.archive_domain}>{this.props.data.title || this.props.data.name}</a></p>
                 </div>
             )
         } else {
