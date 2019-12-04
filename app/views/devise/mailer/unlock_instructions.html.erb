@@ -1,5 +1,5 @@
 <% 
-  uri = Uri.parse(@resource.user_registration.projects.last.archive_domain)
+  uri = URI.parse(@resource.user_registration.projects.last.archive_domain)
   case I18n.locale
   when :en 
 -%>

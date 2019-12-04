@@ -4,8 +4,8 @@ class AdminMailer < ApplicationMailer
     registration = params[:registration]
     @project = params[:project]
     @user_name = registration.full_name
-    uri = Uri.parse(@project.archive_domain)
-    @url = user_registrations_url(protocol: uri.scheme, host: uri.host, project_id: @project.identifier, locale: 'de')
+    uri = URI.parse(@project.archive_domain)
+    @url = user_registrations_url(protocol: uri.scheme, host: uri.host, project_id: @project.identifier, locale: @project.available_locales.first)
 
     mail(
       subject: "new registration for #{@project.shortname}",
