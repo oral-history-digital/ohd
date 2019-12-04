@@ -57,10 +57,14 @@ const mapStateToProps = (state) => {
                 //attribute: "primary_color_rgb",
             //},
             {
-                attribute: "domain"
+                attribute: "domain",
+                validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
+                help: "This has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
             },
             {
-                attribute: "archive_domain"
+                attribute: "archive_domain",
+                validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
+                help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
             },
             {
                 attribute: "doi"
