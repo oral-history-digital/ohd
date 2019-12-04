@@ -29,6 +29,7 @@ const mapStateToProps = (state) => {
         detailViewFields: project && project.detail_view_fields,
         editView: state.archive.editView,
         account: state.data.accounts.current,
+        isLoggedIn: state.account.isLoggedIn,
     }
 }
 

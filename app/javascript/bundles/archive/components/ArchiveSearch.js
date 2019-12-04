@@ -23,6 +23,12 @@ export default class ArchiveSearch extends React.Component {
         window.scrollTo(0, 1);
     }
 
+    componentDidUpdate(prevProps, prevState) {
+        if (prevProps.isLoggedIn !== this.props.isLoggedIn) {
+            this.search()
+        }
+    }
+
     content(displayType) {
         if (this.props.isArchiveSearching && this.props.query['page'] === 1) { 
             return <img src={spinnerSrc} className="archive-search-spinner"/>;
@@ -98,12 +104,16 @@ export default class ArchiveSearch extends React.Component {
 
     handleScroll(inView) {
         if(inView){
-            let query = this.props.query;
-            query['page'] = (this.props.query['page'] || 1) + 1;
-            let url = `${pathBase(this.props)}/searches/archive`;
-            //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
-            this.props.searchInArchive(url, query);
+            this.search()
         }
+    }
+
+    search() {
+        let query = this.props.query;
+        query['page'] = (this.props.query['page'] || 1) + 1;
+        let url = `${pathBase(this.props)}/searches/archive`;
+        //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+        this.props.searchInArchive(url, query);
     }
 
     handleTabClick(tabIndex) {
