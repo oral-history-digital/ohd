@@ -2,24 +2,6 @@ import React from 'react';
 
 export default class AuthShow extends React.Component {
 
-    componentDidMount() {
-        if (
-            !this.props.accountsStatus.current 
-        ) {
-            this.loadAccount()
-        }
-    }
-
-    componentDidUpdate(prevProps) {
-        if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
-            this.loadAccount();
-        }
-    }
-
-    loadAccount() {
-        this.props.fetchData(this.props, 'accounts', 'current');
-    }
-
     content() {
         if (this.props.isLoggedIn && this.props.ifLoggedIn) {
             return this.props.children;
