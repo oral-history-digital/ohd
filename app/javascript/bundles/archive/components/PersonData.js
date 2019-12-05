@@ -94,7 +94,6 @@ export default class PersonData extends React.Component {
     info() {
         let interviewee = getInterviewee(this.props);
         if (interviewee) {
-            let biographicalEntry = interviewee.biographical_entries[Object.keys(interviewee.biographical_entries)[0]];
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
@@ -111,7 +110,6 @@ export default class PersonData extends React.Component {
                     {/* {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'search_facets.group_details'), this.props.interview.group_details && this.props.interview.group_details[this.props.locale], "", this.props.projectId === 'campscapes')} */}
-                    {contentField(t(this.props, 'activerecord.models.biographical_entry.one'), biographicalEntry && biographicalEntry.text[this.props.locale], '', this.props.projectId === 'campscapes')}
                 </div>
             );
         } else {
@@ -120,11 +118,11 @@ export default class PersonData extends React.Component {
     }
 
     render() {
-        if (admin(this.props, {type: 'BiographicalEntry', action: 'update'})) {
+        if (admin(this.props, {type: 'BiographicalEntry', action: 'update'}) || this.props.projectId === 'campscapes') {
             return (
                 <div>
-                    {this.biographical_entries()}
                     {this.info()}
+                    {this.biographical_entries()}
                 </div>
             );
         } else {
