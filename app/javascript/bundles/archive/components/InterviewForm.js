@@ -61,12 +61,13 @@ export default class InterviewForm extends React.Component {
                 validate: function(v){return /^\d+$/.test(v)},
                 individualErrorMsg: 'empty'
             },
-            // { 
-            //     attribute: 'tape_count',
-            //     value: this.props.interview && this.props.interview.tape_count,
-            //     elementType: 'input',
-            //     validate: function(v){return /^\d+$/.test(v)}
-            // },
+            { 
+                // tape_count is important to calculate the video-path
+                attribute: 'tape_count',
+                value: this.props.interview && this.props.interview.tape_count,
+                elementType: 'input',
+                validate: function(v){return /^\d+$/.test(v)}
+            },
             { 
                 attribute: 'observations',
                 value: this.props.interview && this.props.interview.observations && this.props.interview.observations[this.props.locale],
