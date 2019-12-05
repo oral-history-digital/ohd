@@ -19,7 +19,12 @@ class AdminMailer < ApplicationMailer
     @receiver = params[:receiver]
     @type = params[:type]
     @file = params[:file]
-    mail(subject: 'finished job',to: @receiver.email)
+    mail(
+      subject: 'finished job',
+      from: "no-reply@cedis.fu-berlin.de",
+      to: @receiver.email,
+      date: Time.now
+    )
   end
 
 end
