@@ -173,7 +173,7 @@ export default class Segment extends React.Component {
                     title={t(this.props, 'edit.segment.edit')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.segment.edit'),
-                        content: <SegmentFormContainer segment={this.props.data} contentLocale={contentLocale} />
+                        content: <SegmentFormContainer segment={this.props.data} contentLocale={this.props.contentLocale} />
                     })}
                 >
                     <i className="fa fa-pencil"></i>
@@ -192,7 +192,7 @@ export default class Segment extends React.Component {
                     title={t(this.props, 'edit.segment.edit_heading')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.segment.edit_heading'),
-                        content: <SegmentHeadingFormContainer segment={this.props.data} contentLocale={contentLocale} />
+                        content: <SegmentHeadingFormContainer segment={this.props.data} contentLocale={this.props.contentLocale} />
                     })}
                 >
                     <i className="fa fa-pencil"></i>
