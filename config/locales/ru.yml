@@ -502,7 +502,7 @@ ru:
         Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
         Unterstützt werden .ods, .odt, .vtt, .srt.
-        Die Spaltenüberschriften bei .ods-Dateien müssen (exakt) 'Timecode' und 'Transkript' heißen. .odt-Text-Dateien sollten nur der Transkripttext (inkl. Srecherauszeichnungen) ohne Header, Footer oder anderen Text (z.B. Erklärungen) enthalten.
+        Die Spaltenüberschriften bei .ods-Dateien müssen 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' heißen. .odt-Text-Dateien sollten nur der Transkripttext (inkl. Srecherauszeichnungen) ohne Header, Footer oder anderen Text (z.B. Erklärungen) enthalten.
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
