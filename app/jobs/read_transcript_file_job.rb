@@ -14,7 +14,7 @@ class ReadTranscriptFileJob < ApplicationJob
     end
     File.delete(file_path) if File.exist?(file_path)
     logger.info "*** created  segments for #{interview.archive_id}"
-    clear_cache interview
+    interview.touch
 
     #WebNotificationsChannel.broadcast_to(
       #receiver,
