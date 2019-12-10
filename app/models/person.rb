@@ -77,6 +77,11 @@ class Person < ApplicationRecord
     end
   end
 
+  def full_name(locale)
+    binding.pry
+    "#{last_name(locale)}, #{first_name(locale)}"
+  end
+
   def identifier
     id
   end

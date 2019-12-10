@@ -477,10 +477,10 @@ class Interview < ActiveRecord::Base
 
   def to_ods(locale, tape_number=1)
     CSV.generate(headers: true, col_sep: ";", row_sep: :auto, quote_char: "\x00") do |csv|
-      csv << %w(Timecode Transkript)
+      csv << %w(Timecode Speaker Transkript)
 
       tapes[tape_number.to_i - 1].segments.each do |segment|
-        csv << [segment.timecode, segment.text(locale)]
+        csv << [segment.timecode, segment.speaking_person && segment.speaking_person.full_name(locale), segment.text("#{locale}-original") || segment.text("#{locale}-public")]
       end
     end
   end
