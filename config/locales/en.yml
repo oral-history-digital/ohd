@@ -191,7 +191,7 @@ en:
   typology: Experience background
   typologies: Erfahrungen
   history: Short biography
-  biographical_entries_from: Biografische Einträge von
+  biographical_entries_from: Short biography
   interview_info: About the interview
   place: Place
   duration: Duration
@@ -627,7 +627,7 @@ en:
         punishment: Art der Mißhandlung
         liberation_date: Befreiungsdatum
       biographical_entry:
-        text: Ereignis
+        text: Text
         start_date: Beginn
         end_date: Ende
         workflow_state: 'Status ändern zu:'
