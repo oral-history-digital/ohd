@@ -58,6 +58,9 @@ export default class UploadTranscript extends React.Component {
                     <p className='explanation'>
                         {t(this.props, `upload.explanation.transcript`)}
                     </p>
+
+                    <a href={`/transcript-import-template.ods`} download>{`transcript-import-template.ods`}</a>
+
                     <Form 
                         scope='transcript'
                         onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}

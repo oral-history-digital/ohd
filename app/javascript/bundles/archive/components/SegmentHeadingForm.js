@@ -20,11 +20,11 @@ export default class SegmentHeadingForm extends React.Component {
                     elements={[
                         {
                             attribute: 'mainheading',
-                            value: this.props.segment && this.props.segment.mainheading[`${this.props.contentLocale}-original`],
+                            value: this.props.segment && this.props.segment.mainheading[`${this.props.contentLocale}-original`] || this.props.segment.mainheading[`${this.props.contentLocale}-public`],
                         },
                         {
                             attribute: 'subheading',
-                            value: this.props.segment && this.props.segment.subheading[`${this.props.contentLocale}-original`],
+                            value: this.props.segment && this.props.segment.subheading[`${this.props.contentLocale}-original`] || this.props.segment.subheading[`${this.props.contentLocale}-public`],
                         },
                     ]}
                 />

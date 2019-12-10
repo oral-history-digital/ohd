@@ -447,7 +447,7 @@ en:
         must be like ArchiveId_type_Language.ext, where type is 'bg' for biographies and 'prot' for protocolls. E.g. za123_prot_de.rtf or za007_bg_de.odt.
       transcript:
         Unterstützt werden .ods, .odt, .vtt, .srt.
-        Die Spaltenüberschriften bei .ods-Dateien müssen (exakt) 'Timecode' und 'Transkript' heißen. .odt-Text-Dateien sollten nur der Transkripttext (inkl. Srecherauszeichnungen) ohne Header, Footer oder anderen Text (z.B. Erklärungen) enthalten.
+        Die Spaltenüberschriften bei .ods-Dateien müssen 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' heißen. .odt-Text-Dateien sollten nur der Transkripttext (inkl. Srecherauszeichnungen) ohne Header, Footer oder anderen Text (z.B. Erklärungen) enthalten.
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht

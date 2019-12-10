@@ -17,16 +17,13 @@ export default class Transcript extends React.Component {
     componentDidMount() {
         this.loadSegments();
         window.addEventListener('wheel', this.handleScroll);
-        let currentSegment = activeSegment(this.props.transcriptTime, this.props);
-        let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
-        if (activeSegmentElement) {
-            let offset = activeSegmentElement.offsetTop;
-            if (offset > 450) {
-                (window.innerHeight < 900) && this.handleScroll();
-                this.props.transcriptScrollEnabled && window.scrollTo(0, offset - 400);
-            } else {
-                window.scrollTo(0, 1);
-            }
+        this.scrollToActiveSegment();
+    }
+
+    componentDidUpdate(prevProps) {
+        this.loadSegments();
+        if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
+            this.scrollToActiveSegment();
         }
     }
 
@@ -43,19 +40,16 @@ export default class Transcript extends React.Component {
         }
     }
 
-    componentDidUpdate(prevProps) {
-        this.loadSegments();
-        if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
-            let currentSegment = activeSegment(this.props.transcriptTime, this.props);
-            let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
-            if (activeSegmentElement) {
-                let offset = activeSegmentElement.offsetTop;
-                if (offset > 450) {
-                    (window.innerHeight < 900) && this.handleScroll();
-                    window.scrollTo(0, offset - 400);
-                } else {
-                    window.scrollTo(0, 1);
-                }
+    scrollToActiveSegment() {
+        let currentSegment = activeSegment(this.props.transcriptTime, this.props);
+        let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
+        if (activeSegmentElement) {
+            let offset = activeSegmentElement.offsetTop;
+            if (offset > 450) {
+                (window.innerHeight < 900) && this.handleScroll();
+                this.props.transcriptScrollEnabled && window.scrollTo(0, offset - 400);
+            } else {
+                window.scrollTo(0, 1);
             }
         }
     }
