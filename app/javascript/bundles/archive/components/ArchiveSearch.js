@@ -104,13 +104,13 @@ export default class ArchiveSearch extends React.Component {
 
     handleScroll(inView) {
         if(inView){
-            this.search()
+            let query = this.props.query;
+            query['page'] = (this.props.query['page'] || 0) + 1;
+            this.search(query)
         }
     }
 
-    search() {
-        let query = this.props.query;
-        query['page'] = (this.props.query['page'] || 1) + 1;
+    search(query={}) {
         let url = `${pathBase(this.props)}/searches/archive`;
         //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
         this.props.searchInArchive(url, query);
