@@ -43,9 +43,9 @@ export default class WrappedDataList extends React.Component {
         let sorted = [];
         if (this.props.data) {
             if (this.props.sortAttribute) { 
-                sorted = Object.keys(this.props.data).sort(function(a, b){
-                    let aa = _this.props.sortAttributeTranslated ? _this.props.data[a][_this.props.sortAttribute][_this.props.locale] : _this.props.data[a][_this.props.sortAttribute]
-                    let bb = _this.props.sortAttributeTranslated ? _this.props.data[b][_this.props.sortAttribute][_this.props.locale] : _this.props.data[b][_this.props.sortAttribute]
+                sorted = Object.values(this.props.data).sort(function(a, b){
+                    let aa = _this.props.sortAttributeTranslated ? a[_this.props.sortAttribute][_this.props.locale] : a[_this.props.sortAttribute]
+                    let bb = _this.props.sortAttributeTranslated ? b[_this.props.sortAttribute][_this.props.locale] : b[_this.props.sortAttribute]
                     if (aa < bb)
                         return -1;
                     if ( aa > bb)
@@ -53,24 +53,24 @@ export default class WrappedDataList extends React.Component {
                     return 0;
                 })
             } else {
-                sorted = Object.keys(this.props.data)
+                sorted = Object.values(this.props.data)
             }
         }
         return sorted;
     }
 
     data() {
-        return this.sortedData().map((c, index) => {
+        return this.sortedData().map((data, index) => {
             return (
                 <DataContainer 
-                    data={this.props.data[c]} 
+                    data={data} 
                     scope={this.props.scope}
                     detailsAttributes={this.props.detailsAttributes}
                     joinedData={this.props.joinedData}
                     form={this.form}
                     hideEdit={this.props.hideEdit}
                     hideDelete={this.props.hideDelete}
-                    key={`${this.props.scope}-${c}`} 
+                    key={`${this.props.scope}-${data.id}`} 
                 />
             )
         })
