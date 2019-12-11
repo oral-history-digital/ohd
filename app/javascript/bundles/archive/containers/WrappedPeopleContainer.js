@@ -19,6 +19,8 @@ const mapStateToProps = (state) => {
         resultPagesCount: state.data.statuses.people.resultPagesCount,
         query: state.search.people.query,
         scope: 'person',
+        sortAttribute: 'name',
+        sortAttributeTranslated: true,
         baseTabIndex: 4,
         //detailsAttributes: ['name'],
         detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth', 'typology'],

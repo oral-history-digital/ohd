@@ -38,25 +38,42 @@ export default class WrappedDataList extends React.Component {
         }
     }
 
-    data() {
+    sortedData() {
+        let _this = this;
+        let sorted = [];
         if (this.props.data) {
-            return Object.keys(this.props.data).map((c, index) => {
-                return (
-                    <DataContainer 
-                        data={this.props.data[c]} 
-                        scope={this.props.scope}
-                        detailsAttributes={this.props.detailsAttributes}
-                        joinedData={this.props.joinedData}
-                        form={this.form}
-                        hideEdit={this.props.hideEdit}
-                        hideDelete={this.props.hideDelete}
-                        key={`${this.props.scope}-${c}`} 
-                    />
-                )
-            })
-        } else {
-            return null;
+            if (this.props.sortAttribute) { 
+                sorted = Object.keys(this.props.data).sort(function(a, b){
+                    let aa = _this.props.sortAttributeTranslated ? _this.props.data[a][_this.props.sortAttribute][_this.props.locale] : _this.props.data[a][_this.props.sortAttribute]
+                    let bb = _this.props.sortAttributeTranslated ? _this.props.data[b][_this.props.sortAttribute][_this.props.locale] : _this.props.data[b][_this.props.sortAttribute]
+                    if (aa < bb)
+                        return -1;
+                    if ( aa > bb)
+                        return 1;
+                    return 0;
+                })
+            } else {
+                sorted = Object.keys(this.props.data)
+            }
         }
+        return sorted;
+    }
+
+    data() {
+        return this.sortedData().map((c, index) => {
+            return (
+                <DataContainer 
+                    data={this.props.data[c]} 
+                    scope={this.props.scope}
+                    detailsAttributes={this.props.detailsAttributes}
+                    joinedData={this.props.joinedData}
+                    form={this.form}
+                    hideEdit={this.props.hideEdit}
+                    hideDelete={this.props.hideDelete}
+                    key={`${this.props.scope}-${c}`} 
+                />
+            )
+        })
     }
 
     form(data) {
