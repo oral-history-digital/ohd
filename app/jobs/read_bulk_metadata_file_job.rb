@@ -56,6 +56,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
               interview = Interview.create interview_data
             end
 
+            # create default tape 
+            Tape.create interview_id: interview.id, media_id: "#{interview.archive_id.upcase}_01_01", workflow_state: "digitized", time_shift: 0, number: 1 
+
             # cleanup missleading contributions
             Contribution.where(interview_id: interview.id, contribution_type: 'interviewee').destroy_all
             Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
