@@ -13,8 +13,7 @@ class TranscriptsController < ApplicationController
   def create
     authorize :upload, :create?
     file = params[:transcript].delete(:data)
-    file_path = File.join(Rails.root, 'tmp', file.original_filename)
-    File.open(file_path, 'wb') {|f| f.write(file.read) }
+    file_path = create_tmp_file(file)
 
     if params[:transcript].delete(:tape_and_archive_id_from_file)
       archive_id, tape_media_id = extract_archive_id_and_tape_media_id(file)

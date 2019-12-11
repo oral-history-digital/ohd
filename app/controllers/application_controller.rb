@@ -268,4 +268,11 @@ class ApplicationController < ActionController::Base
     Rails.cache.delete "#{Project.current.cache_key_prefix}-#{ref_object.class.name.underscore}-#{ref_object.id}-#{ref_object.updated_at}"
   end
 
+  def create_tmp_file(file)
+    dir_path = File.join(Rails.root, 'tmp', 'files')
+    Dir.mkdir(dir_path) unless File.exists?(dir_path)
+    file_path = File.join(dir_path, file.original_filename)
+    File.open(file_path, 'wb') {|f| f.write(file.read) }
+    file_path
+  end
 end

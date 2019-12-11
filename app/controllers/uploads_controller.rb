@@ -15,8 +15,7 @@ class UploadsController < ApplicationController
     # write a tmp-file to be processed in bg-job later
     #
     file = params[:upload].delete(:data)
-    file_path = File.join(Rails.root, 'tmp', file.original_filename)
-    File.open(file_path, 'wb') {|f| f.write(file.read) }
+    file_path = create_tmp_file(file)
 
     current_locale ||= (params[:locale] || current_project.default_locale).to_sym
     "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user_account, current_project, current_locale.to_s)
