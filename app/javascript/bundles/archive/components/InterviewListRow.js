@@ -76,7 +76,7 @@ export default class InterviewListRow extends React.Component {
                         element='tr'
                     >
                         <AuthShowContainer ifLoggedIn={true}>
-                            {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
+                            {this.props.interview.short_title && this.props.interview.title[this.props.locale]}
                         </AuthShowContainer>
                         <AuthShowContainer ifLoggedOut={true}>
                             {this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}
