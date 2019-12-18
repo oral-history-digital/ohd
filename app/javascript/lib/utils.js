@@ -263,9 +263,11 @@ export function getCookie(cname) {
 }
 
 export function getInterviewArchiveIdWithOffset(archiveId, list, offset=1) {
-    let offsetItem = list[list.findIndex(i => i.archive_id === archiveId)+offset]
-    if (list.length > 1 && offsetItem){
-        return offsetItem.archive_id
+    if (list) {
+        let offsetItem = list[list.findIndex(i => i === archiveId)+offset]
+        if (list.length > 1 && offsetItem){
+            return offsetItem
+        }
     }
 }
 

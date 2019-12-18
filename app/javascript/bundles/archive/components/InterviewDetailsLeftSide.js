@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
-import { t, contentField } from '../../../lib/utils';
+import { 
+    t,
+    contentField,
+    getInterviewArchiveIdWithOffset 
+} from '../../../lib/utils';
 
 export default class InterviewDetailsLeftSide extends React.Component {
 
@@ -31,21 +35,23 @@ export default class InterviewDetailsLeftSide extends React.Component {
 
     footerNavigation() {
         {/* TODO: this div is needs to get a better structure, and inline styles have to be removed */}
+        let prevArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.sortedArchiveIds, -1);
+        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.sortedArchiveIds, 1);
         return (
             <div style={{ padding: "5%" }} >
                 <Link
-                    className={`search-result-link ${!!this.props.prevArchiveId || "hidden"}`}
-                    to={ "/" + this.props.locale + "/interviews/" + this.props.prevArchiveId }
+                    className={`search-result-link ${!!prevArchiveId || "hidden"}`}
+                    to={ "/" + this.props.locale + "/interviews/" + prevArchiveId }
                     style={{ "margin-right": "10%" }}
                 >
                     <i className={"fa fa-chevron-left"} />
-                    {this.props.prevArchiveId}
+                    {prevArchiveId}
                 </Link>
                 <Link
-                    className={`search-result-link ${!!this.props.nextArchiveId || "hidden"}`}
-                    to={ "/" + this.props.locale + "/interviews/" + this.props.nextArchiveId }
+                    className={`search-result-link ${!!nextArchiveId || "hidden"}`}
+                    to={ "/" + this.props.locale + "/interviews/" + nextArchiveId }
                 >
-                    {this.props.nextArchiveId}
+                    {nextArchiveId}
                     <i
                         className={"fa fa-chevron-right"}
                         style={{ "margin-left": 10 }}
