@@ -20,6 +20,16 @@ namespace :cache do
     end
   end
 
+  desc 'clear project cache'
+  task :clear, [:shortname] => :environment do |t, args|
+    project = Project.where(shortname: args.shortname).first
+    if project
+      Rails.cache.redis.keys("#{project.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
+    else
+      puts "no project with shortname #{args.shortname} found"
+    end
+  end
+
   desc 'visit start page'
   task :start => :environment do
     p "*** Getting start page"
