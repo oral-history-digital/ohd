@@ -324,7 +324,7 @@ class Segment < ActiveRecord::Base
 
   def as_vtt_subtitles(lang)
     # TODO: rm strip
-    raw_segment_text = text("#{lang}-subtitle")
+    raw_segment_text = text("#{lang}-subtitle") || text("#{lang}-public")
     segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
     end_time = self.next.try(:time) || 9999
     "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
