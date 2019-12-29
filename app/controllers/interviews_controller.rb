@@ -129,10 +129,12 @@ class InterviewsController < ApplicationController
         render plain: vtt
       end
       format.pdf do
-        @lang = params[:lang].to_sym
-        @orig_lang = interview_locale
-        pdf =   render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
-        send_data pdf, filename: "#{@interview.archive_id}_transcript_#{@lang}.pdf", :type => "application/pdf"#, :disposition => "attachment"
+        @lang = "#{params[:lang]}-public"
+        @orig_lang = "#{interview_locale}-public"
+        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-pdf-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}" do
+          render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
+        end
+        send_data pdf, filename: "#{@interview.archive_id}_transcript_#{params[:lang]}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
       format.ods do
         send_data @interview.to_ods(interview_locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet" #, :disposition => "attachment"
