@@ -83,7 +83,7 @@ export default class Transcript extends React.Component {
     }
 
     transcript(){
-        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
+        let locale = this.props.originalLocale ? this.props.interview.lang : this.props.interview.languages.filter(l => l !== this.props.interview.lang)[0];
         let activeId = activeSegment(this.props.transcriptTime, this.props).id;
         let shownSegments = this.props.transcriptScrollEnabled ?
             segments(this.props) :
