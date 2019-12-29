@@ -37,7 +37,7 @@ export default class InterviewListRow extends React.Component {
 
     columns(){
         let props = this.props
-        return props.listColumns.map(function(column, i){
+        return props.project.list_columns.map(function(column, i){
             let value = props.interview[column.name];
             if (typeof value === 'object' && value !== null)
                 value = value[props.locale]
@@ -62,6 +62,23 @@ export default class InterviewListRow extends React.Component {
         }
     }
 
+    title() {
+        if (this.props.project.is_catalog) {
+            return this.props.interview.title && this.props.interview.title[this.props.locale];
+        } else {
+            return (
+                <div>
+                    <AuthShowContainer ifLoggedIn={true}>
+                        {this.props.interview.title && this.props.interview.title[this.props.locale]}
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut={true}>
+                        {this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}
+                    </AuthShowContainer>
+                </div>
+            )
+        }
+    }
+
     render() {
         return (
             <tr>
@@ -75,12 +92,7 @@ export default class InterviewListRow extends React.Component {
                         to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                         element='tr'
                     >
-                        <AuthShowContainer ifLoggedIn={true}>
-                            {this.props.interview.short_title && this.props.interview.title[this.props.locale]}
-                        </AuthShowContainer>
-                        <AuthShowContainer ifLoggedOut={true}>
-                            {this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}
-                        </AuthShowContainer>
+                        {this.title()}
                     </Link>
                 </td>
                 {this.columns()}
