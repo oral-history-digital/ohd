@@ -13,7 +13,7 @@ const mapStateToProps = (state, ownProps) => {
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         translations: state.archive.translations,
-        listColumns: project && project.list_columns,
+        project: project,
         editView: state.archive.editView,
         account: state.data.accounts.current,
         selectedArchiveIds: state.archive.selectedArchiveIds,
