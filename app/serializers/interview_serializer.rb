@@ -54,7 +54,7 @@ class InterviewSerializer < ApplicationSerializer
   #:citation_timecode,
   #:indexed_at,
   #:src,
-  ] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) # | Project.current.registry_entry_metadata_fields.map(&:name)
+  ] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_reference_type_metadata_fields.map(&:name)
 
   #belongs_to :colletion, serializer: CollectionSerializer
 
