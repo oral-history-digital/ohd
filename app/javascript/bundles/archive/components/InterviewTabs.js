@@ -46,16 +46,26 @@ export default class InterviewTabs extends React.Component {
             >
                 <div className='content-tabs'>
                     <TabList className={'content-tabs-nav'}>
-                        <Tab className={'content-tabs-nav-link'}><i
-                            className="fa fa-file-text-o"></i><span>{t(this.props, 'transcript')}</span></Tab>
-                        <Tab className={`content-tabs-nav-link ${this.props.interview.lang === 'de' ? 'hidden' : ''}`}><i
-                            className="fa fa-clone"></i><span>{t(this.props, 'translation')}</span></Tab>
-                        <Tab className={`content-tabs-nav-link ${this.props.project == 'dg' ? 'hidden' : ''}`}><i
-                            className="fa fa-list"></i><span>{t(this.props, 'table_of_contents')}</span></Tab>
-                        <Tab className={'content-tabs-nav-link'}><i
-                            className="fa fa-search"></i><span>{t(this.props, 'interview_search')}</span></Tab>
-                        <Tab className={'content-tabs-nav-link'}><i
-                            className="fa fa-tags"></i><span>{t(this.props, (this.props.project === 'mog') ? 'keywords_mog' : 'keywords')}</span></Tab>
+                        <Tab className={'content-tabs-nav-link'}>
+                            <i className="fa fa-file-text-o"/>
+                            <span>{t(this.props, 'transcript')}</span>
+                        </Tab>
+                        <Tab className={`content-tabs-nav-link ${this.props.interview.lang === 'de' ? 'hidden' : ''}`}>
+                            <i className="fa fa-clone"/>
+                            <span>{t(this.props, 'translation')}</span>
+                        </Tab>
+                        <Tab className={`content-tabs-nav-link ${this.props.project == 'dg' ? 'hidden' : ''}`}>
+                            <i className="fa fa-list"/>
+                            <span>{t(this.props, 'table_of_contents')}</span>
+                        </Tab>
+                        <Tab className={'content-tabs-nav-link'}>
+                            <i className="fa fa-search"/>
+                            <span>{t(this.props, 'interview_search')}</span>
+                        </Tab>
+                        <Tab className={'content-tabs-nav-link'}>
+                            <i className="fa fa-tags"/>
+                            <span>{t(this.props, (this.props.project === 'mog') ? 'keywords_mog' : 'keywords')}</span>
+                        </Tab>
                     </TabList>
                 </div>
 
