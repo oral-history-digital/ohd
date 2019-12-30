@@ -636,6 +636,7 @@ en:
         speaker_designation: speaker designation (e.g. *CG:*)
       collection:
         project_id: Projekt
+        homepage: Website
         name: Name
         countries: Interviews in
         institution: Durchgeführt von

@@ -687,6 +687,7 @@ ru:
         speaker_designation: Sprecherauszeichnung (z.B. *CG:*)
       collection:
         project_id: Projekt
+        homepage: Website
         name: Имя
         countries: Страна
         institution: Организация

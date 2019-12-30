@@ -645,6 +645,7 @@ el:
         speaker_designation: Sprecherauszeichnung (z.B. *CG:*)
       collection:
         project_id: Projekt
+        homepage: Website
         name: Name
         countries: Interviews in
         institution: Durchgeführt von
