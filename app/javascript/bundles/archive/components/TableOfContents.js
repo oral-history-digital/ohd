@@ -56,10 +56,17 @@ export default class TableOfContents extends React.Component {
         let lastMainheading = '';
 
         if (this.props.interview && this.props.interview.headings) {
-            Object.values(this.props.interview.headings).sort(function(a, b) {a.time - b.time}).map((segment, index) => {
+            Object.values(this.props.interview.headings).sort(function(a, b) {return a.tape_nbr - b.tape_nbr || a.time - b.time}).map((segment, index) => {
                 mainheading = segment.mainheading[`${this.props.locale}-original`] || segment.mainheading[`${this.props.locale}-public`];
                 subheading = segment.subheading[`${this.props.locale}-original`] || segment.subheading[`${this.props.locale}-public`];
-                if (mainheading && /\w+/.test(mainheading) && mainheading !== lastMainheading) {
+                //
+                // if the table of content looks different in languages with different alphabets, have a look to the following and extend the regexp: 
+                // https://stackoverflow.com/questions/18471159/regular-expression-with-the-cyrillic-alphabet
+                //
+                // JavaScript (at least the versions most widely used) does not fully support Unicode. 
+                // That is to say, \w matches only Latin letters, decimal digits, and underscores ([a-zA-Z0-9_])
+                //
+                if (mainheading && /[\w\u0430-\u044f0-9]+/.test(mainheading) && mainheading !== lastMainheading) {
                     mainIndex += 1;
                     subIndex = 0;
                     lastMainheading = mainheading;
@@ -68,18 +75,19 @@ export default class TableOfContents extends React.Component {
                         chapter: mainIndex + '.',
                         heading: mainheading,
                         time: segment.time,
-                        time: segment.time,
                         tape_nbr: segment.tape_nbr,
                         interview_duration_seconds: this.props.interview.duration_seconds,
                         subheadings: []
                     });
                     if (headings.length > 1) {
                         if (index < this.props.interview.headings.length) {
+                            // set previous heading's next_time attribute to this segment's time
                             if (headings[headings.length - 2].tape_nbr == segment.tape_nbr) {
                                 headings[headings.length - 2].next_time = segment.time;
                             }
                         }
                         if (headings[headings.length - 2].subheadings.length > 0) {
+                            // set previous subheading's next_time attribute to this segment's time
                             if (!headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_time) {
                                 if (headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].tape_nbr == segment.tape_nbr) {
                                     headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_time = segment.time;
@@ -88,14 +96,13 @@ export default class TableOfContents extends React.Component {
                         }
                     }
                 }
-                if (subheading && /\w+/.test(subheading)) {
+                if (subheading && /[\w\u0430-\u044f0-9]+/.test(subheading)) {
                     subIndex += 1;
                     if (headings[mainIndex - 1]) {
                         headings[mainIndex - 1].subheadings.push({
                             main: false,
                             heading: subheading,
                             chapter: mainIndex + '.' + subIndex + '.',
-                            time: segment.time,
                             time: segment.time,
                             tape_nbr: segment.tape_nbr,
                             interview_duration_seconds: this.props.interview.duration_seconds

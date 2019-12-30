@@ -26,7 +26,7 @@ class HeadingSerializer < ApplicationSerializer
   %w(mainheading subheading).each do |m|
     define_method m do
       object.translations.inject({}) do |mem, t|
-        mem[t.locale] = t.send(m)
+        mem[t.locale] = t.send(m) || ''
         mem
       end
     end
