@@ -20,7 +20,7 @@ export default class InterviewSearchForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
-        this.props.searchInInterview(`${pathBase(props)}/searches/interview`, {fulltext: this.state.value, id: this.props.archiveId});
+        this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.state.value, id: this.props.archiveId});
     }
 
     loader(){

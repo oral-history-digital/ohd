@@ -86,7 +86,7 @@ export default class InterviewListRow extends React.Component {
                 <td>
                     <Link className={'search-result-link'}
                         onClick={() => {
-                            this.props.searchInInterview(`${pathBase(props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                            this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
                             this.props.setTapeAndTime(1, 0);
                         }}
                         to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
