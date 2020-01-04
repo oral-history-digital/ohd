@@ -41,6 +41,7 @@ export default class InterviewPreview extends React.Component {
         if(this.props.fulltext) {
             this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
         } else {
+            // Is there any reason to run the empty search and thus drag down performance?
             //this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: '', id: this.props.interview.archive_id});
         }
     }
