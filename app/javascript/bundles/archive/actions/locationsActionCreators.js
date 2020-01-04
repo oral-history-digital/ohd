@@ -17,7 +17,7 @@ function receiveLocations(json){
     type: RECEIVE_LOCATIONS,
     archiveId: json.archive_id,
     segmentRefLocations: json.segment_ref_locations,
-    refLocations: json.ref_locations,
+    interviewRefLocations: json.interview_ref_locations,
     receivedAt: Date.now()
   }
 }
