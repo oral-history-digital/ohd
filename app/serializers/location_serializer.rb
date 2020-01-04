@@ -9,7 +9,7 @@ class LocationSerializer < ApplicationSerializer
   belongs_to :ref_object, serializer: LastHeadingSerializer
 
   def desc
-    object.registry_entry && object.registry_entry.localized_hash
+    object.registry_entry && object.registry_entry.localized_hash(:descriptor)
     #object.registry_entry.name(:all)
   end
 

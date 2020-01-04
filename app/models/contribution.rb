@@ -1,4 +1,4 @@
-class Contribution < ActiveRecord::Base
+class Contribution < ApplicationRecord
 
   # This class joins contributors and interviews, defining
   # a contribution to the Archive in a specific area (contribution_type)

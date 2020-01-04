@@ -1,4 +1,4 @@
-class WorkflowComment < ActiveRecord::Base
+class WorkflowComment < ApplicationRecord
 
   belongs_to :interview
   belongs_to :user

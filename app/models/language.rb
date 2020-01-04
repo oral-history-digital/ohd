@@ -1,6 +1,6 @@
 require 'globalize'
 
-class Language < ActiveRecord::Base
+class Language < ApplicationRecord
 
   RTL_LANGUAGES = %w( Hebräisch Arabisch )
 
@@ -36,13 +36,6 @@ class Language < ActiveRecord::Base
 
   def to_s(locale = I18n.locale)
     name(locale)
-  end
-
-  def localized_hash
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = name(locale) 
-      mem
-    end
   end
 
   def direction

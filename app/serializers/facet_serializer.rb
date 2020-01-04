@@ -5,9 +5,9 @@ class FacetSerializer < ApplicationSerializer
 
   def name
     if object.is_a? RegistryEntry
-      object.localized_hash
+      object.localized_hash(:descriptor)
     else
-      MetadataField.find_by_name(object.code).localized_hash
+      MetadataField.find_by_name(object.code).localized_hash(:label)
     end
   end
 
@@ -16,7 +16,7 @@ class FacetSerializer < ApplicationSerializer
     when "RegistryEntry"
       object.children.inject({}) do |mem, child|
         mem[child.id.to_s] = {
-          name: child.localized_hash,
+          name: child.localized_hash(:descriptor),
           count: 0,
           priority: child.list_priority,
         }
@@ -27,7 +27,7 @@ class FacetSerializer < ApplicationSerializer
       method = object.try(:children_only) ? "children" : "descendants"
       object.registry_entry.send(method).inject({}) do |mem, child|
         mem[child.id.to_s] = {
-          name: child.localized_hash,
+          name: child.localized_hash(:descriptor),
           count: 0,
         }
         mem

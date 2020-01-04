@@ -41,10 +41,10 @@ class PersonSerializer < ApplicationSerializer
     end
   end
 
-  MetadataField.where(source: "registry_reference_type", ref_object_type: "Person").each do |f|
+  MetadataField.where(source: "RegistryReferenceType", ref_object_type: "Person").each do |f|
     define_method f.name do
       registry_entry = object.send(f.name)
-      registry_entry && registry_entry.localized_hash || {}
+      registry_entry && registry_entry.localized_hash(:descriptor) || {}
     end
   end
 

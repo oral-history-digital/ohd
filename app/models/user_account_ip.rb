@@ -1,4 +1,4 @@
-class UserAccountIp < ActiveRecord::Base
+class UserAccountIp < ApplicationRecord
 
   belongs_to :user_account
 

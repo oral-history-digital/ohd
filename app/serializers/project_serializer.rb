@@ -51,7 +51,7 @@ class ProjectSerializer < ActiveModel::Serializer
   
   def detail_view_fields
     #object.detail_view_fields.inject({}) { |mem, field| mem[field.name] = MetadataFieldSerializer.new(MetadataField.find_by_name(field.name)).as_json; mem }
-    object.detail_view_fields.map{|field| field['label'] = field.localized_hash; field}
+    object.detail_view_fields.map{|field| field['label'] = field.localized_hash(:label); field}
   end
 
 end

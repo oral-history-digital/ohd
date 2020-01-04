@@ -11,13 +11,6 @@ class MetadataField < ApplicationRecord
 
   before_destroy :touch_project #in order to generate a new cache key
 
-  def localized_hash
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = label(locale) || I18n.t(".#{name}")
-      mem
-    end
-  end
-
   def touch_project
     project.touch
   end

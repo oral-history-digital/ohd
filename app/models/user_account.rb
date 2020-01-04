@@ -1,6 +1,6 @@
 require 'devise'
 
-class UserAccount < ActiveRecord::Base
+class UserAccount < ApplicationRecord
 
   devise :database_authenticatable,
          :confirmable,

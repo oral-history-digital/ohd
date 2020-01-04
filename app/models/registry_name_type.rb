@@ -1,4 +1,4 @@
-class RegistryNameType < ActiveRecord::Base
+class RegistryNameType < ApplicationRecord
   has_many :registry_names
 
   def to_s

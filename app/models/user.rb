@@ -1,4 +1,4 @@
-class User < ActiveRecord::Base
+class User < ApplicationRecord
 
   require 'user_account'
   #require 'archive-authorization'

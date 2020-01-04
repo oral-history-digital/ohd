@@ -1,4 +1,4 @@
-class UsageReport < ActiveRecord::Base
+class UsageReport < ApplicationRecord
 
   belongs_to :user_account
 

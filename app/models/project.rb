@@ -104,7 +104,7 @@ class Project < ApplicationRecord
           rr = facet.source.classify.constantize.find_by_code(facet.name)
           mem[facet.name.to_sym] = ::FacetSerializer.new(rr).as_json if rr
         when "Person", "Interview"
-          facet_label_hash = facet.localized_hash
+          facet_label_hash = facet.localized_hash(:label)
           name = facet_label_hash || localized_hash_for("search_facets", facet.name)
           if facet.name == "year_of_birth"
             mem[facet.name.to_sym] = {
@@ -140,23 +140,35 @@ class Project < ApplicationRecord
                   count: 0,
                 }
                 subfacets
-              end,
+              end
             }
           end
-        when "Collection", "Language"
-          facet_label_hash = facet.localized_hash
+        when "Language"
+          facet_label_hash = facet.localized_hash(:label)
           mem[facet.name.to_sym] = {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: facet.source.classify.constantize.all.inject({}) do |subfacets, sf|
               subfacets[sf.id.to_s] = {
-                name: sf.localized_hash,
-                count: 0,
-                homepage: sf.try(:homepage),
-                institution: sf.try(:institution),
-                notes: sf.try(:notes),
+                name: sf.localized_hash(:name),
+                count: 0
               }
               subfacets
-            end,
+            end
+          }
+        when "Collection"
+          facet_label_hash = facet.localized_hash(:label)
+          mem[facet.name.to_sym] = {
+            name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+            subfacets: facet.source.classify.constantize.all.inject({}) do |subfacets, sf|
+              subfacets[sf.id.to_s] = {
+                name: sf.localized_hash(:name),
+                count: 0,
+                homepage: sf.try(:localized_hash, :homepage),
+                institution: sf.try(:localized_hash, :institution),
+                notes: sf.try(:localized_hash, :notes),
+              }
+              subfacets
+            end
           }
         end
         mem.with_indifferent_access

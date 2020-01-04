@@ -1,6 +1,6 @@
 require 'globalize'
 
-class RegistryName < ActiveRecord::Base
+class RegistryName < ApplicationRecord
 
   belongs_to :registry_entry
   belongs_to :registry_name_type

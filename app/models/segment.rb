@@ -1,6 +1,6 @@
 require 'globalize'
 
-class Segment < ActiveRecord::Base
+class Segment < ApplicationRecord
   include IsoHelpers
 
   belongs_to :interview#, inverse_of: :segments

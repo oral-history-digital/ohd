@@ -59,7 +59,7 @@ class InterviewSerializer < ApplicationSerializer
   #belongs_to :colletion, serializer: CollectionSerializer
 
   def collection
-    object.collection && object.collection.localized_hash || {}
+    object.collection && object.collection.localized_hash(:name) || {}
   end
 
   def gender
@@ -122,7 +122,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def observations
-    object.localized_hash_for(:observations)
+    object.localized_hash(:observations)
   end
 
   def video
@@ -156,17 +156,14 @@ class InterviewSerializer < ApplicationSerializer
   #end
 
   def short_title
-    object.localized_hash
+    object.localized_hash(:reverted_short_title)
   end
 
   def anonymous_title
     if Project.current.fullname_on_landing_page
-      object.localized_hash
+      object.localized_hash(:full_title)
     else
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.anonymous_title(locale)
-        mem
-      end
+      object.localized_hash(:anonymous_title)
     end
   end
 
@@ -197,7 +194,7 @@ class InterviewSerializer < ApplicationSerializer
     object.segment_registry_references.with_locations.map do |ref|
       {
         archive_id: object.archive_id,
-        desc: ref.registry_entry.localized_hash,
+        desc: ref.registry_entry.localized_hash(:descriptor),
         # exclude dedalo default location (Valencia)
         latitude: ref.registry_entry.latitude == "39.462571" ? nil : ref.registry_entry.latitude.to_f,
         longitude: ref.registry_entry.longitude == "-0.376295" ? nil : ref.registry_entry.longitude.to_f,

@@ -5,7 +5,7 @@ class LanguageSerializer < ApplicationSerializer
     :locale
 
   def name
-    object.localized_hash
+    object.localized_hash(:name)
   end
 
   def locale

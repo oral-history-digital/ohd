@@ -1,6 +1,6 @@
 require 'globalize'
 
-class Photo < ActiveRecord::Base
+class Photo < ApplicationRecord
   include Workflow
 
   belongs_to :interview

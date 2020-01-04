@@ -1,4 +1,4 @@
-class Import < ActiveRecord::Base
+class Import < ApplicationRecord
 
   CONTENT_ITEMS = %w(tapes segments annotations contributions photos text_materials registry_entries registry_references)
 

@@ -14,7 +14,7 @@ class RegistryEntrySerializer < ApplicationSerializer
              :ancestors
 
   def name
-    object.localized_hash
+    object.localized_hash(:descriptor)
   end
 
   def notes
@@ -55,7 +55,7 @@ class RegistryEntrySerializer < ApplicationSerializer
 
   def ancestors
     # ancestors = object.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
-    object.ancestors.inject({}){|mem, a| mem[a.id] = {id: a.id, name: a.localized_hash}.as_json; mem }
+    object.ancestors.inject({}){|mem, a| mem[a.id] = {id: a.id, name: a.localized_hash(:descriptor)}.as_json; mem }
   end
 
 end

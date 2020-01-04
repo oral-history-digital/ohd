@@ -1,4 +1,4 @@
-class UserContent < ActiveRecord::Base
+class UserContent < ApplicationRecord
 
   # TODO: this gem is to old: should be replaced by sth. else
   #acts_as_taggable

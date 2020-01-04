@@ -1,7 +1,9 @@
 class CollectionSerializer < ApplicationSerializer
   attributes :id, :name, :institution, :homepage, :notes
 
-  def name
-    object.localized_hash
+  %w(name homepage).each do |m|
+    define_method m do
+      object.localized_hash(m)
+    end
   end
 end

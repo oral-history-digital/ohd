@@ -1,6 +1,6 @@
 require 'acts-as-dag'
 
-class RegistryHierarchy < ActiveRecord::Base
+class RegistryHierarchy < ApplicationRecord
   acts_as_dag_links :node_class_name => 'RegistryEntry'
 
   after_create :touch_objects

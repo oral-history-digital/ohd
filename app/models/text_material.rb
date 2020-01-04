@@ -1,4 +1,4 @@
-class TextMaterial < ActiveRecord::Base
+class TextMaterial < ApplicationRecord
 
   belongs_to :interview
 

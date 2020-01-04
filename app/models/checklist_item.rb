@@ -1,4 +1,4 @@
-class ChecklistItem < ActiveRecord::Base
+class ChecklistItem < ApplicationRecord
 
   belongs_to :interview
   belongs_to :user

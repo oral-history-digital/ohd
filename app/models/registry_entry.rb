@@ -2,7 +2,7 @@ require 'acts-as-dag'
 require 'tsort'
 # require 'i18n/core_ext/string/interpolate'
 
-class RegistryEntry < ActiveRecord::Base
+class RegistryEntry < ApplicationRecord
   include IsoHelpers
 
   ROOT_NODE_ID = 1
@@ -1028,13 +1028,6 @@ class RegistryEntry < ActiveRecord::Base
   def parent_id=(pid)
     unless parent_ids.include? pid.to_i
       parents << RegistryEntry.find(pid)
-    end
-  end
-
-  def localized_hash
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = descriptor(locale)
-      mem
     end
   end
 

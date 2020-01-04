@@ -2,7 +2,7 @@ class AnnotationSerializer < ApplicationSerializer
   attributes :id, :text, :author_id, :author
 
   def text
-    object.localized_hash
+    object.localized_hash(:text)
   end
 
   def author

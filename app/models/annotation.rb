@@ -1,6 +1,6 @@
 require 'globalize'
 
-class Annotation < ActiveRecord::Base
+class Annotation < ApplicationRecord
   include IsoHelpers
 
   belongs_to :interview
@@ -20,12 +20,5 @@ class Annotation < ActiveRecord::Base
                             :allow_nil => true,
                             :less_than => 0,
                             :unless => Proc.new{|i| i.interview_id.nil?}
-
-  def localized_hash
-    translations.inject({}) do |mem, translation|
-      mem[translation.locale] = translation.text
-      mem
-    end
-  end
 
 end

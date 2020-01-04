@@ -1,6 +1,6 @@
 require 'globalize'
 
-class RegistryReferenceType < ActiveRecord::Base
+class RegistryReferenceType < ApplicationRecord
 
   translates :name, fallbacks_for_empty_translations: true, touch: true
 
@@ -29,11 +29,4 @@ class RegistryReferenceType < ActiveRecord::Base
     }
   end
 
-  def localized_hash
-    translations.inject({}) do |mem, t|
-      mem[t.locale[0..1]] = t.name  if I18n.available_locales.include?( t.locale[0..1] ) || I18n.available_locales.include?( t.locale )
-      mem
-    end
-  end
-  
 end

@@ -1,4 +1,4 @@
-class Tape < ActiveRecord::Base
+class Tape < ApplicationRecord
   include Workflow
 
   belongs_to :interview, inverse_of: :tapes

@@ -1,6 +1,6 @@
 # require 'i18n/core_ext/string/interpolate'
 
-class BaseRegistryReference < ActiveRecord::Base
+class BaseRegistryReference < ApplicationRecord
   self.abstract_class = true
 
   belongs_to :ref_object, :polymorphic => true

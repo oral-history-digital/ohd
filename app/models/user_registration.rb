@@ -1,4 +1,4 @@
-class UserRegistration < ActiveRecord::Base
+class UserRegistration < ApplicationRecord
   include Workflow
   include ActionView::Helpers::TextHelper
 

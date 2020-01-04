@@ -3,7 +3,7 @@ require 'webvtt'
 require "#{Rails.root}/lib/reference_tree.rb"
 require "#{Rails.root}/lib/timecode.rb"
 
-class Interview < ActiveRecord::Base
+class Interview < ApplicationRecord
   include IsoHelpers
   include Workflow
   include OaiRepository::Set
@@ -356,32 +356,8 @@ class Interview < ActiveRecord::Base
      ref && ref.registry_entry
    end
 
-  def localized_hash(use_full_title=false)
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = use_full_title ? full_title(locale) : reverted_short_title(locale)  
-      mem
-    end
-  end
-
-  def localized_hash_for(method)
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = self.send(method, locale)
-      mem
-    end
-  end
-
-  def localized_hash_for_country_of_birth
-    I18n.available_locales.inject({}) do |mem, locale|
-      if(interviewees && interviewees.first && interviewees.first.birth_location)
-        translation = interviewees.first.birth_location.parents.first.registry_names.first.translations.where(locale: locale)
-        translation[0]&& translation[0]['descriptor'] && mem[locale] =translation[0]['descriptor']
-      end
-      mem
-    end
-  end
-
   def title
-    localized_hash(true)
+    localized_hash(:full_title)
   end
 
   # this method is only used for the first version of the map atm.
