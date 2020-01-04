@@ -78,8 +78,8 @@ class CollectionsController < ApplicationController
   def collection_params
     params.require(:collection).
       permit(
-        'project_id', 'hompage', 
-        translations_attributes: [:locale, :id, :name, :institution, :responsibles, :notes, :countries]
+        'project_id', 
+        translations_attributes: [:locale, :id, :name, :institution, :responsibles, :notes, :countries, :homepage, :interviewers]
     )
   end
 
