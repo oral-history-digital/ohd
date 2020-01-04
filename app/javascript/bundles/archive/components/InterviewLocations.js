@@ -23,22 +23,6 @@ export default class InterviewLocations extends React.Component {
         return this.props.locations[this.props.archiveId] && this.props.archiveId === this.context.router.route.match.params.archiveId
     }
 
-    handleClick(segmentId, archiveId) {
-        let segment = this.getSegment(segmentId);
-        this.props.handleSegmentClick(segment.tape_nbr, segment.time);
-    }
-
-    //handleClick(tape_nbr, time) {
-    //this.props.handleSegmentClick(tape_nbr, time);
-    //}
-
-    getSegment(segmentId) {
-        let segments = this.props.segments.filter(function (segment) {
-            return segment.id === segmentId;
-        });
-        return segments[0];
-    }
-
     birthLocation(ref) {
         if (ref.name[this.props.locale]) {
             return (
@@ -51,17 +35,14 @@ export default class InterviewLocations extends React.Component {
 
     popupContent(ref) {
         if (ref.ref_object) {
+            //let segment = this.getSegment(ref.ref_object_id);
             return (
-                <div>
+                <div onClick={() => this.props.handleSegmentClick(ref.ref_object.tape_number, ref.ref_object.time)}>
                     <p>
                         <em className='place'>
                             {ref.desc[this.props.locale]}
                         </em>
-                        {t(this.props, 'interview_location_desc_one')}
-                        <em className='chapter'>
-                            {ref.ref_object.last_heading[this.props.locale]}
-                        </em>
-                        {t(this.props, 'interview_location_desc_two')}
+                        {t(this.props, 'interview_location_desc', {chapter: ref.ref_object.last_heading[this.props.locale]})}
                     </p>
                 </div>
             )
@@ -98,7 +79,6 @@ export default class InterviewLocations extends React.Component {
                     <LocationsContainer
                         data={locations}
                         loaded={this.locationsLoaded()}
-                        handleClick={this.handleClick.bind(this)}
                         popupContent={this.popupContent.bind(this)}
                     />
                 </div>

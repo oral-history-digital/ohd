@@ -34,21 +34,21 @@ class Segment < ApplicationRecord
 
   scope :mainheadings_until, ->(segment_id, interview_id) { 
     joins(:translations).
+    includes(:translations).
     where("(segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')").
     #where("(segment_translations.subheading IS NULL OR segment_translations.subheading = '')").
     where("segments.id <= ?", segment_id).
     where(interview_id: interview_id).
-    includes(:tape, :translations).
-    order(:id)}
+    order(:timecode)}
 
   scope :subheadings_until, ->(segment_id, interview_id, mainheading_id) { 
     joins(:translations).
+    includes(:translations).
     where("(segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')").
     where("segments.id <= ?", segment_id).
     where("segments.id >= ?", mainheading_id).
     where(interview_id: interview_id).
-    includes(:tape, :translations).
-    order(:id)}
+    order(:timecode)}
 
   scope :for_media_id, ->(mid) {
     where("segments.media_id < ?", Segment.media_id_successor(mid))
@@ -341,25 +341,25 @@ class Segment < ApplicationRecord
   end
 
   def last_heading
-    #mainheadings = Segment.mainheadings_until(id, interview_id)
-    #if mainheadings.count > 0
-      #mainheadings_count = mainheadings.map{|mh| mh.mainheading(interview.languages.first)}.uniq.count
-      #subheadings = Segment.subheadings_until(id, interview_id, mainheadings.last.id)
+    mainheadings = Segment.mainheadings_until(id, interview_id)
+    if mainheadings.count > 0
+      mainheadings_count = mainheadings.map{|mh| mh.mainheading(interview.languages.first)}.uniq.count
+      subheadings = Segment.subheadings_until(id, interview_id, mainheadings.last.id)
       
-      #if subheadings.count > 0
-        #I18n.available_locales.inject({}) do |mem, locale|
-          #mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheadings.last.subheading(locale)}"
-          #mem
-        #end
-      #else
-        #I18n.available_locales.inject({}) do |mem, locale|
-          #mem[locale] = "#{mainheadings_count}. #{mainheadings.last.mainheading(locale)}"
-          #mem
-        #end
-      #end
-    #else
+      if subheadings.count > 0
+        I18n.available_locales.inject({}) do |mem, locale|
+          mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheadings.last.subheading(locale)}"
+          mem
+        end
+      else
+        I18n.available_locales.inject({}) do |mem, locale|
+          mem[locale] = "#{mainheadings_count}. #{mainheadings.last.mainheading(locale)}"
+          mem
+        end
+      end
+    else
       {}
-    #end
+    end
   end
 
   def has_heading?

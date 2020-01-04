@@ -35,9 +35,7 @@ export default class Locations extends React.Component {
                         markers.push(
                             <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}`} >
                                 <Popup>
-                                    <div onClick={() => this.props.handleClick(ref.ref_object_id, ref.archive_id)}>
-                                        {this.props.popupContent(ref)}
-                                    </div>
+                                    {this.props.popupContent(ref)}
                                 </Popup>
                             </Marker>
                         )
