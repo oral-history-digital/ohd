@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
         scope: 'collection',
         baseTabIndex: 4,
         //detailsAttributes: ['name'],
-        detailsAttributes: ['project_id', 'hompage', 'name', 'institution', 'responsibles', 'notes', 'countries'],
+        detailsAttributes: ['project_id', 'name', 'homepage', 'institution', 'responsibles', 'notes', 'countries'],
         formElements: [
             {
                 elementType: 'select',
@@ -32,12 +32,14 @@ const mapStateToProps = (state) => {
                 //validate: function(v){return v !== ''} 
             },
             {
-                attribute: 'homepage',
-            },
-            {
                 attribute: 'name',
                 elementType: 'multiLocaleInput',
                 //validate: function(v){return v.length > 1} 
+            },
+            {
+                attribute: 'homepage',
+                elementType: 'multiLocaleInput',
+                //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
             },
             {
                 attribute: 'institution',

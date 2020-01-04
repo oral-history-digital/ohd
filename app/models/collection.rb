@@ -1,11 +1,11 @@
 require 'globalize'
 
-class Collection < ActiveRecord::Base
+class Collection < ApplicationRecord
 
   has_many :interviews
   belongs_to :project
 
-  translates :name, :institution, :countries, :interviewers, :responsibles, :notes, fallbacks_for_empty_translations: true, touch: true
+  translates :name, :homepage, :institution, :countries, :interviewers, :responsibles, :notes, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
   validates_presence_of :name#, :project_id
@@ -16,13 +16,6 @@ class Collection < ActiveRecord::Base
 
   def self.human_name
     I18n.t(:collection)
-  end
-
-  def localized_hash
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = name(locale) 
-      mem
-    end
   end
 
 end
