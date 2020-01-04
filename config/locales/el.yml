@@ -90,8 +90,7 @@ el:
     σελίδα.
   interviews: Συνεντεύξεις
   places: Τόποι γέννησης
-  interview_location_desc_one: " αναφέρεται στο κεφάλαιο "
-  interview_location_desc_two: "."
+  interview_location_desc: " αναφέρεται στο κεφάλαιο %{chapter}."
   archive_map_explanation: Ο χάρτης παρουσιάζει τους τόπους γέννησης των συνεντευξιαζόμενων
   interview_map_explanation: Παρουσίαση των τόπων που αναφέρονται στη συνέντευξη
   interview_gallery_explanation: Η φωτογραφική συλλογή αποτελείται από φωτογραφίες

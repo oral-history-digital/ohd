@@ -87,8 +87,7 @@ de:
   noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
   interviews: Interviews
   places: Geburtsorte
-  interview_location_desc_one: " wird in Kapitel "
-  interview_location_desc_two: " erwähnt."
+  interview_location_desc: " wird in Kapitel %{chapter} erwähnt."
   archive_map_explanation: Die Karte stellt die Geburtsorte der Interviewten dar.
   interview_map_explanation: Darstellung der im Interview erwähnten Orte
   interview_gallery_explanation: Die Bildergalerie zeigt Fotos von der Interviewsituation
