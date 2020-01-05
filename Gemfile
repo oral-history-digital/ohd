@@ -43,7 +43,6 @@ gem 'slim-rails'
 gem 'iso-639'
 gem 'countries'
 gem 'font-awesome-rails'
-gem 'paperclip'
 
 # Gems specific to public archive app:
 gem 'sunspot_rails'
