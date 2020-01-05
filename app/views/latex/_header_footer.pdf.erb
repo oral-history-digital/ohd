@@ -10,7 +10,7 @@
 <%
   interviewee_name = @interview && @interview.interviewees.last.name(true)[@locale.to_sym]
   footer_text = ""
-  footer_text += "#{I18n.t(@template == '/latex/biographical_entries.pdf.erb' ? 'biographical_entries_from' : 'interview_with', locale: @locale)} #{interviewee_name}" if @interview
+  footer_text += "#{I18n.t(@biography ? 'biographical_entries_from' : 'interview_with', locale: @locale)} #{interviewee_name}" if @interview
   footer_text += ", Interview #{@interview.archive_id}, Interviewdatum #{@interview.interview_date && Date.parse(@interview.interview_date).strftime("%d.%m.%Y") rescue @interview.interview_date}" if @interview
   footer_text += ", Interview-Archiv \"#{current_project.name(@locale)}\""
   footer_text += ", #{Project.archive_domain}"

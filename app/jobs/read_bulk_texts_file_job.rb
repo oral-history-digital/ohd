@@ -6,11 +6,12 @@ class ReadBulkTextsFileJob < ApplicationJob
     zip_content = []
     Zip::File.open(file_path) do |zip_file|
       zip_file.each do |entry|
-        if entry.name.split('.').last == 'xlsx' 
-          #File.open(File.join(Rails.root, 'tmp', entry.name), 'wb') {|f| entry.get_input_stream.read) }
-          #zip_content['xlsx'] = File.join(Rails.root, 'tmp', entry.name)
-        else
-          text_file_name = File.join(Rails.root, 'tmp', entry.name)
+        entry_name = entry.name.split('/').last
+        if entry_name.split('.').last == 'xlsx' 
+          #File.open(File.join(Rails.root, 'tmp', 'files', entry_name), 'wb') {|f| entry.get_input_stream.read) }
+          #zip_content['xlsx'] = File.join(Rails.root, 'tmp', 'files', entry_name)
+        elsif entry.ftype != :directory
+          text_file_name = File.join(Rails.root, 'tmp', 'files', entry_name)
           zip_content << text_file_name
           File.open(text_file_name, 'wb') {|f| f.write entry.get_input_stream.read }
         end 
@@ -32,18 +33,32 @@ class ReadBulkTextsFileJob < ApplicationJob
         when 'protocoll', 'pk', 'prot'
           interview.update_attributes observations: text, locale: locale
         when 'bg'
+          text = text.sub(/[^\n]*\(#{archive_id.upcase}\)\n+/, '')
+          bg = BiographicalEntry.find_or_create_by(person_id: interview.interviewees.first.id)
+          bg.update_attributes(locale: locale, text: text)
+          #
+          # the following is a more complex trial:
+          #
           # do not append biographical entries again and again
-          if interview.interviewees.first.biographical_entries.empty?
-            text = text.sub(/Kurzbiografie.*\n+/, '')
-            text_parts = text.split(/\n+/)
-            is_text_with_dates = check_for_dates(text_parts)
-            date = nil
-            while !text_parts.empty? && !text_parts.first.match(/Zwangsarbeit 1939-1945\S*/)
-              date = text_parts.shift if is_text_with_dates
-              entry = text_parts.shift
-              BiographicalEntry.create(person_id: interview.interviewees.first.id, locale: locale, text: entry, start_date: date)
-            end
-          end
+          #if interview.interviewees.first.biographical_entries.where(localeempty?
+            #text = text.sub(/Kurzbiografie.*\n+/, '')
+            #text_parts = text.split(/\n+/)
+            #while !text_parts.empty? && !text_parts.first.match(/Zwangsarbeit 1939-1945\S*/)
+              #part = text_parts.shift 
+              ##
+              ## if this (text-) part is short and contains number(s) it is possibly a line containing something like a date
+              ## e.g. 'summer 1945'
+              ##
+              #if part.length < 25 && part =~ /\d+/
+                #date = part
+                #entry = text_parts.shift
+              #else
+                #date = nil
+                #entry = part
+              #end
+              #BiographicalEntry.create(person_id: interview.interviewees.first.id, locale: locale, text: entry, start_date: date)
+            #end
+          #end
         else
           logger.info "*** DON'T KNOW WHAT TO DO WITH #{File.basename(text_file_name)}!!!"
         end
@@ -64,12 +79,4 @@ class ReadBulkTextsFileJob < ApplicationJob
     AdminMailer.with(receiver: receiver, type: 'read_protokolls', file: file_path).finished_job.deliver_now
   end
 
-  def check_for_dates(text_parts)
-    # collect the uneven numbered parts of text (1st, 2nd, 3rd, ...)
-    # as they might be dates
-    possible_dates = 0.step(text_parts.size - 1, 2).map { |i| text_parts[i] }
-
-    # if these  possible date strings are short they might really be dates
-    possible_dates.select{|d| d.length > 25}.empty?
-  end
 end

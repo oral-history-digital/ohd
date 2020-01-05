@@ -105,7 +105,7 @@ export default class PersonData extends React.Component {
                     </AuthShowContainer>
                     {contentField(t(this.props, 'activerecord.attributes.person.alias_names'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'activerecord.attributes.person.pseudonym'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'dg')}
-                    {/* {this.history()} */}
+                    {this.history()}
                     {this.detailViewFields()}
                     {/* {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId === 'campscapes')}

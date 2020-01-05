@@ -21,6 +21,7 @@ class BiographicalEntriesController < ApplicationController
     authorize BiographicalEntry
     @interview = Interview.find_by_archive_id params[:id]
     @alpha2_locale = params[:lang]
+    @biography = true
     respond_to do |format|
       format.pdf do
         @locale = ISO_639.find(params[:locale]).send(Project.alpha).to_sym
