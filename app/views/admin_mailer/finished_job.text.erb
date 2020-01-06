@@ -1,6 +1,10 @@
 Dear <%= @receiver.user %>,
 
+<% if @file %>
 the file <%= @file && @file.split('/').last %> has been processed. 
+<% elsif @interview %>
+  <%= @interview.archive_id %> has been processed. 
+<% end %>
 
 Best regards,
 

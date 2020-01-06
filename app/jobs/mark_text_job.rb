@@ -20,6 +20,7 @@ class MarkTextJob < ApplicationJob
       #archive_id: interview.archive_id
     #)
 
+    AdminMailer.with(interview: interview, receiver: receiver, type: 'mark_text').finished_job.deliver_now
   end
 
 end

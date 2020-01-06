@@ -18,6 +18,7 @@ class AdminMailer < ApplicationMailer
   def finished_job
     @receiver = params[:receiver]
     @type = params[:type]
+    @interview = params[:interview]
     @file = params[:file]
     mail(
       subject: 'finished job',

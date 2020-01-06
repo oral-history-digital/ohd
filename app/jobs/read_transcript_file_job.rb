@@ -23,7 +23,7 @@ class ReadTranscriptFileJob < ApplicationJob
       #archive_id: interview.archive_id
     #)
 
-    AdminMailer.with(receiver: receiver, type: 'read_protokolls', file: file_path).finished_job.deliver_now
+    AdminMailer.with(interview: interview, receiver: receiver, type: 'read_protokolls', file: file_path).finished_job.deliver_now
   end
 
 end
