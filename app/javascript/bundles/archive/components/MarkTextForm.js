@@ -32,7 +32,7 @@ export default class MarkTextForm extends React.Component {
             return (
                 <Form 
                     scope='mark_text'
-                    onSubmit={function(params){_this.props.submitData(_this.props, params)}}
+                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
                     values={{
                         id: this.props.interview && this.props.interview.archive_id
                     }}
@@ -56,21 +56,19 @@ export default class MarkTextForm extends React.Component {
     }
 
     msg() {
+        let text = this.props.markTextStatus[`for_interviews_${this.props.archiveId}`] ? 
+            t(this.props, 'edit.text.' + this.props.markTextStatus[`for_interviews_${this.props.archiveId}`]) : 
+            t(this.props, 'edit.mark_text.explanation')  
         if (
             //this.props.markTextStatus[`for_interviews_${this.props.archiveId}`]
-            !this.state.showForm
+            //!this.state.showForm
+            true
         ) {
             return (
                 <div>
                     <p>
-                        {t(this.props, 'edit.text.' + this.props.markTextStatus[`for_interviews_${this.props.archiveId}`])}
+                        {text}
                     </p>
-                    <button 
-                        className='return-to-upload'
-                        onClick={() => this.returnToForm()}
-                    >
-                        {t(this.props, 'edit.upload.return')}
-                    </button>
                 </div>
             )
         }

@@ -80,7 +80,7 @@ el:
         Ergänzungen, wie Aliasname oder Aufschlüsselung eines Akronyms;
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
-  mark_texts: Text chiffrieren
+  mark_texts: Replace text 
   interview_with: Συνέντευξη με
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
@@ -333,6 +333,8 @@ el:
       processing: Die Sprecher werden zugeordnet
       processed: 'Die Sprecher für %{archiveId} sind nun zugeordnet.'
       no_speaker_designations_found: In dem Transkript wurden keine versteckten, nicht zugeordneten Sprecherbezeichnungen gefunden
+    mark_text:
+      explanation: Ersetzt wird in der Origianlversion. Wenn der Ersetzungstext Transkriptionszeichen enthält wird in der öffentlichen Version entsprechend z.B. anonymisiert.
     photo:
       new: Foto hinzufügen
       edit: Foto bearbeiten
