@@ -1,3 +1,4 @@
+Rails.configuration.after_initialize do
 OaiRepository.setup do |config|
 
   config.repository_name = '' #Project.project_name[Project.default_locale]
@@ -6,7 +7,7 @@ OaiRepository.setup do |config|
   # If you're deploying to different hostnames (e.g. development, QA and
   # production environments, each with different hostnames), you could
   # dynamically set this.
-  config.repository_url = ''#Project.archive_domain
+  config.repository_url = Project.current.archive_domain
 
   # By default the (unique) identifier of each record will be composed as
   # #{record_prefix}/#{record.id}
@@ -33,7 +34,7 @@ OaiRepository.setup do |config|
   config.models = [ ]
   # TODO: reuse the following line after having run project-migrations
   # and created a project
-  #config.models = [ Interview ]
+  config.models = [ Interview ]
 
   # List the sets (and the ActiveRecord model they belong to). E.g.
   #
@@ -54,13 +55,13 @@ OaiRepository.setup do |config|
   config.sets = []
   # TODO: reuse the following line after having run project-migrations
   # and created a project
-  #config.sets = [
-     #{
-       #spec: 'class:interview',
-       #name: 'Interviews',
-       #model: Interview,
-     #}
-  #]
+  config.sets = [
+     {
+       spec: 'class:interview',
+       name: 'Interviews',
+       model: Interview,
+     }
+  ]
 
   # By default, an OAI repository must emit its records in OAI_DC (Dublin Core)
   # format. If you want to provide other output formats for your repository
@@ -74,4 +75,5 @@ OaiRepository.setup do |config|
   # ]
   config.additional_formats = []
 
+end
 end
