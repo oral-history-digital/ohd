@@ -79,7 +79,8 @@ class InterviewsController < ApplicationController
     # speakers are people designated through column speaker in segment.
     # contributors (update_speakers_params[:contributions]) are people designated through column speaker_id
     #
-    AssignSpeakersJob.perform_later(@interview, speakers, update_speakers_params[:contributions_attributes], current_user_account)
+    contributors = update_speakers_params[:contributions_attributes] && update_speakers_params[:contributions_attributes].map(&:to_h)
+    AssignSpeakersJob.perform_later(@interview, speakers, contributors, current_user_account)
 
     respond_to do |format|
       format.json do

@@ -61,10 +61,11 @@ export default class AssignSpeakersForm extends React.Component {
 
     form() {
         if (this.state.showForm) {
+            let _this = this;
             return (
                 <Form 
                     scope='update_speaker'
-                    onSubmit={this.props.submitData}
+                    onSubmit={function(params){_this.props.submitData(_this.props, params);_this.setState({showForm: false})}}
                     values={{
                         id: this.props.interview.archive_id
                     }}
@@ -79,7 +80,8 @@ export default class AssignSpeakersForm extends React.Component {
     }
 
     msg() {
-        if (!this.state.showForm) {
+        //if (!this.state.showForm) {
+        if (true) {
             return (
                 <div>
                     <p>

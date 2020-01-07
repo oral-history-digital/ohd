@@ -3,9 +3,9 @@ class AssignSpeakersJob < ApplicationJob
   queue_as :default
 
   def perform(interview, speakers, contribution_data, receiver)
-    if speakers.length > 0
+    if !contribution_data && speakers.length > 0
       interview.segments.each do |segment|
-        segment.update_attribute :speaker_id, speakers[segment.speaker] if segment.speaker
+        segment.update_attribute :speaker_id, speakers[segment.speaker] if segment.speaker && speakers[segment.speaker]
       end
     else
       interview.segments.each do |segment|
@@ -20,7 +20,7 @@ class AssignSpeakersJob < ApplicationJob
             next_timecode: next_timecode,
             contribution_data: contribution_data
           }
-          Segment.assign_speakers_and_update_text(segment, opts)
+          Segment.assign_speakers_and_update_text(segment, opts) if translation.text
         end
       end
     end
@@ -32,6 +32,7 @@ class AssignSpeakersJob < ApplicationJob
       #archive_id: interview.archive_id
     #)
 
+    AdminMailer.with(interview: interview, receiver: receiver, type: 'assign_speakers').finished_job.deliver_now
   end
 
 end

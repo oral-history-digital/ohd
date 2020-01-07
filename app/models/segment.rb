@@ -105,7 +105,7 @@ class Segment < ApplicationRecord
       # 
       # splitted_text is an array containing [speaker_designation1, text_of_speaker1, speaker_designation2, text_of_speaker2, etc.]
       #
-      splitted_text = opts[:contribution_data].empty? ? [opts[:text]] : opts[:text].split(all_speakers_regexp).reject(&:empty?)  
+      splitted_text = opts[:contribution_data].empty? ? [opts[:text]] : opts[:text] && opts[:text].split(all_speakers_regexp).reject(&:empty?)  
       time_per_char = calculate_time_per_char(speaker_designations, opts)
 
       # clean erraneously added blanks
@@ -113,14 +113,19 @@ class Segment < ApplicationRecord
         splitted_text.shift
       end
 
-      while !splitted_text.empty?
+      while splitted_text && !splitted_text.empty?
+        atts = {locale: opts[:locale]}
         if splitted_text.length.even?
           speaker_designation = splitted_text.shift
-          text = splitted_text.shift.gsub(/\n+/, '')
-          segment.update_original_and_write_other_versions text: text, locale: opts[:locale], speaker_id: opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
+          atts[:text] = splitted_text.shift.gsub(/\n+/, '')
+          person_id = opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
+          atts[:speaker_id] = person_id if person_id
+          segment.update_attributes atts
         else
-          text = splitted_text.shift.gsub(/\n+/, '')
-          segment.update_original_and_write_other_versions text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
+          atts[:text] = splitted_text.shift.gsub(/\n+/, '')
+          atts[:speaker_id] = segment.prev && segment.prev.speaker_id if segment.prev && segment.prev.speaker_id
+          segment.update_attributes atts
+          #segment.update_attributes text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
         end
 
         # if there is another speaker_designation in the text
@@ -128,7 +133,7 @@ class Segment < ApplicationRecord
         # or create it
         #
         unless splitted_text.empty?
-          next_time = Timecode.new(segment.timecode).time + text.length * time_per_char
+          next_time = Timecode.new(segment.timecode).time + atts[:text].length * time_per_char
           if segment.next && segment.next.timecode < opts[:next_timecode]
             segment = segment.next 
           else
@@ -136,7 +141,7 @@ class Segment < ApplicationRecord
             # associate to the next tape
             # set time  of next segment to zero or a given shift
             #
-            if next_time > tape.duration
+            if (next_time.to_f > tape.duration.to_f) && tape.next
               tape = tape.next
               next_time = tape.time_shift
             end
@@ -423,12 +428,13 @@ class Segment < ApplicationRecord
   def update_original_and_write_other_versions(params)
     # original  version with all ciphers
     opts = params.to_h.select{|k,v| attribute_names.include?(k.to_s)} # || k == :locale
-    opts.update(locale: "#{params[:locale]}-original")
+    locale = params[:locale][0..1] # be sure not to add version-specification over and over again
+    opts.update(locale: "#{locale}-original")
     update_attributes(opts)
     #
     # now write other versions
     [:public, :subtitle].each do |version|
-      opts.update(text: enciphered_text(version, params[:locale]), locale: "#{params[:locale]}-#{version}")
+      opts.update(text: enciphered_text(version, locale), locale: "#{locale}-#{version}")
       update_attributes(opts)
     end
   end
