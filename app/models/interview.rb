@@ -115,9 +115,7 @@ class Interview < ApplicationRecord
            :through => :registry_references
 
   has_many :segments,
-           # be careful here! segments from different tapes may be mixed.
-           # to really have segments ordered do sth. like tape.segments ...
-           -> { includes(:translations).order(:timecode) },
+           -> { includes(:translations).order(:tape_number, :timecode) },
            dependent: :destroy
            #inverse_of: :interview
 
