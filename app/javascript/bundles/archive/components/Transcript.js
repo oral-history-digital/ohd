@@ -88,6 +88,7 @@ export default class Transcript extends React.Component {
 
     transcript(){
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
+        let tabIndex = this.props.originalLocale ? 0 : 1;
         let activeId = activeSegment(this.props.transcriptTime, this.props).id;
         let shownSegments = this.props.transcriptScrollEnabled ?
             segments(this.props) :
@@ -117,6 +118,7 @@ export default class Transcript extends React.Component {
                     <SegmentContainer
                         data={segment}
                         contentLocale={locale}
+                        tabIndex={tabIndex}
                         active={parseInt(segmentId) === activeId}
                         key={"segment-" + segment.id}
                     />
