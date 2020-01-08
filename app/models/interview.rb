@@ -829,5 +829,12 @@ class Interview < ApplicationRecord
         paginate page: params[:page] || 1, per_page: per_page
       end
     end
+
+    def archive_ids_by_alphabetical_order
+      joins(contributions: {person: :translations}).
+        where("contributions.contribution_type = ?", "interviewee").
+        order("person_translations.last_name", "person_translations.first_name").
+        map(&:archive_id).uniq
+    end
   end
 end
