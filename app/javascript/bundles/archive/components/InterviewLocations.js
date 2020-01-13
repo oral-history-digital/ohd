@@ -42,7 +42,12 @@ export default class InterviewLocations extends React.Component {
                         <em className='place'>
                             {ref.desc[this.props.locale]}
                         </em>
-                        {t(this.props, 'interview_location_desc', {chapter: ref.ref_object.last_heading[this.props.locale]})}
+                        {t(this.props, 'interview_location_desc_one')}
+                        <em className='chapter'>
+                            {ref.ref_object.last_heading[this.props.locale]}
+                        </em>
+                        {t(this.props, 'interview_location_desc_two')}
+
                     </p>
                 </div>
             )
