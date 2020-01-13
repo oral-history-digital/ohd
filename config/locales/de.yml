@@ -871,7 +871,7 @@ de:
       mark_text:
         locale: Sprache
       text:
-        text_to_mark: zu chiffrierender Text
+        text_to_mark: zu ersetzender Text
     errors:
       default:
         select: Bitte auswählen
