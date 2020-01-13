@@ -30,25 +30,27 @@ class Segment < ApplicationRecord
     joins(:translations).
     where("((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))").
     includes(:tape, :translations).
-    order(:id)}
+    order(:tape_number, :timecode)}
 
-  scope :mainheadings_until, ->(segment_id, interview_id) { 
+  scope :mainheadings_until, ->(segment) { 
     joins(:translations).
     includes(:translations).
     where("(segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')").
     #where("(segment_translations.subheading IS NULL OR segment_translations.subheading = '')").
-    where("segments.id <= ?", segment_id).
-    where(interview_id: interview_id).
-    order(:timecode)}
+    where("segments.timecode <= ?", segment.timecode).
+    where("segments.tape_number <= ?", segment.tape_number).
+    where(interview_id: segment.interview_id).
+    order(:tape_number, :timecode)}
 
-  scope :subheadings_until, ->(segment_id, interview_id, mainheading_id) { 
+  scope :subheadings_until, ->(segment, mainheading_timecode) { 
     joins(:translations).
     includes(:translations).
     where("(segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')").
-    where("segments.id <= ?", segment_id).
-    where("segments.id >= ?", mainheading_id).
-    where(interview_id: interview_id).
-    order(:timecode)}
+    where("segments.timecode <= ?", segment.timecode).
+    where("segments.timecode >= ?", mainheading_timecode).
+    where("segments.tape_number <= ?", segment.tape_number).
+    where(interview_id: segment.interview_id).
+    order(:tape_number, :timecode)}
 
   scope :for_media_id, ->(mid) {
     where("segments.media_id < ?", Segment.media_id_successor(mid))
@@ -346,10 +348,10 @@ class Segment < ApplicationRecord
   end
 
   def last_heading
-    mainheadings = Segment.mainheadings_until(id, interview_id)
+    mainheadings = Segment.mainheadings_until(self)
     if mainheadings.count > 0
       mainheadings_count = mainheadings.map{|mh| mh.mainheading(interview.languages.first)}.uniq.count
-      subheadings = Segment.subheadings_until(id, interview_id, mainheadings.last.id)
+      subheadings = Segment.subheadings_until(self, mainheadings.last.timecode)
       
       if subheadings.count > 0
         I18n.available_locales.inject({}) do |mem, locale|
