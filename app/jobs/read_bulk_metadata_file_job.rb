@@ -38,7 +38,6 @@ class ReadBulkMetadataFileJob < ApplicationJob
             short_bio.update_attributes text: data[11]
 
             interview = Interview.find_by_archive_id(data[0]) || Interview.find_by_signature_original(data[14])
-            binding.pry
 
             interview_data = {
               project_id: project.id,
@@ -48,7 +47,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
               duration: data[21],
               media_type: data[15],
               archive_id: data[0],
-              properties: {interviewer: data[23], signature_original: data[14], link: data[27], subcollection: data[13]}
+              signature_original: data[14], 
+              properties: {interviewer: data[23], link: data[27], subcollection: data[13]}
             }
 
             if interview
@@ -176,7 +176,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     if ref_type_id
       ref_object.registry_references.destroy_all(registry_reference_type_id: ref_type_id) 
     else
-      parent = RegistryEntry.find_by_code parent_iregistry_entry_code
+      parent = RegistryEntry.find_by_code parent_registry_entry_code
       ref_object.registry_references.each do |rr|
         rr.destroy if rr.registry_entry.parent_ids.include?(parent.id)
       end
