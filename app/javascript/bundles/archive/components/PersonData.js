@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, fullname, admin, getInterviewee, contentField, pathBase } from '../../../lib/utils';
+import { t, fullname, getInterviewee, contentField, pathBase } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
@@ -38,19 +38,36 @@ export default class PersonData extends React.Component {
 
     history() { 
         return (
-          <AuthShowContainer ifLoggedIn={true}>
             <p>
-              <span className="flyout-content-label">
-                {t(this.props, "history")}:
-              </span>
-              {this.download(this.props.interview.lang)}
-              {this.download(
-                this.props.locale,
-                this.props.interview.lang === this.props.locale
-              )}
+                <span className="flyout-content-label">
+                    {t(this.props, "history")}:
+                </span>
+                <AuthShowContainer ifAdmin={true} obj={{type: 'BiographicalEntry', action: 'update'}}>
+                    {this.biographicalEntries()}
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedIn={true}>
+                    {this.download(this.props.interview.lang) || '---'}
+                    {this.download(
+                        this.props.locale,
+                        this.props.interview.lang === this.props.locale
+                    )}
+                </AuthShowContainer>
             </p>
-          </AuthShowContainer>
         );
+    }
+
+    biographicalEntries() {
+        if(this.props.projectId !== 'dg')
+        {
+            let interviewee = getInterviewee(this.props);
+            return (
+                <div>
+                    <BiographicalEntriesContainer person={interviewee} />
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     detailViewFields(){
@@ -76,21 +93,6 @@ export default class PersonData extends React.Component {
         })
     }
 
-    biographical_entries() {
-        if(this.props.projectId !== 'dg')
-        {
-            let interviewee = getInterviewee(this.props);
-            return (
-                <div>
-                    {contentField(t(this.props, 'biographical_entries_from'), fullname(this.props, interviewee, true), "")}
-                    <BiographicalEntriesContainer person={interviewee} />
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
-
     info() {
         let interviewee = getInterviewee(this.props);
         if (interviewee) {
@@ -105,7 +107,6 @@ export default class PersonData extends React.Component {
                     </AuthShowContainer>
                     {contentField(t(this.props, 'activerecord.attributes.person.alias_names'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'activerecord.attributes.person.pseudonym'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'dg')}
-                    {this.history()}
                     {this.detailViewFields()}
                     {/* {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
                     {contentField(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId === 'campscapes')}
@@ -118,17 +119,12 @@ export default class PersonData extends React.Component {
     }
 
     render() {
-        if (admin(this.props, {type: 'BiographicalEntry', action: 'update'}) || this.props.projectId === 'campscapes') {
-            return (
-                <div>
-                    {this.info()}
-                    {this.biographical_entries()}
-                </div>
-            );
-        } else {
-            return this.info();
-        }
-
+        return (
+            <div>
+                {this.info()}
+                {this.history()}
+            </div>
+        );
     }
 }
 
