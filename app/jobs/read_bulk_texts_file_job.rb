@@ -34,6 +34,12 @@ class ReadBulkTextsFileJob < ApplicationJob
           interview.update_attributes observations: text, locale: locale
         when 'bg'
           text = text.sub(/[^\n]*\(#{archive_id.upcase}\)\n+/, '')
+          #
+          # split text and remove header/footer if present
+          # than join the text again
+          #
+          text_parts = text.split(/\n\n/)
+          text = text_parts[0..(text_parts.length - 2)].join("\n\n") if text_parts.last =~ /www.zwangsarbeit-archiv.de/
           bg = BiographicalEntry.find_or_create_by(person_id: interview.interviewees.first.id)
           bg.update_attributes(locale: locale, text: text)
           #
