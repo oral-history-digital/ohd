@@ -16,14 +16,14 @@ export default class PersonData extends React.Component {
     //     }
     // }
 
-    existsPublicBiography(lang) {
+    existsPublicBiography() {
         let firstKey = Object.keys(getInterviewee(this.props).biographical_entries)[0];
         let firstEntry = getInterviewee(this.props).biographical_entries[firstKey];
-        return !!firstKey && !!firstEntry.text[lang] && firstEntry.workflow_state === 'public';
+        return !!firstKey && firstEntry.workflow_state === 'public' && firstEntry;
     }
 
     download(lang, condition) {
-        if (!condition && this.existsPublicBiography(lang)) {
+        if (!condition) {
             return (
                 <a className='flyout-download-link-lang'
                     href={pathBase(this.props) + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
@@ -33,6 +33,23 @@ export default class PersonData extends React.Component {
             )
         } else {
             return null;
+        }
+    }
+
+    downloads(){
+        let publicBioEntry = this.existsPublicBiography();
+        if (publicBioEntry) {
+            return (
+                <span>
+                    {publicBioEntry.text[this.props.interview.lang] && this.download(this.props.interview.lang)}
+                    {publicBioEntry.text[this.props.locale] && this.download(
+                        this.props.locale,
+                        this.props.interview.lang === this.props.locale
+                    )}
+                </span>
+            )
+        } else {
+            return '---';
         }
     }
 
@@ -46,11 +63,7 @@ export default class PersonData extends React.Component {
                     {this.biographicalEntries()}
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedIn={true}>
-                    {this.download(this.props.interview.lang) || '---'}
-                    {this.download(
-                        this.props.locale,
-                        this.props.interview.lang === this.props.locale
-                    )}
+                    {this.downloads()}
                 </AuthShowContainer>
             </p>
         );
@@ -79,7 +92,8 @@ export default class PersonData extends React.Component {
                 let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
                 let value = ''
                 if (datum.source === 'Person') {
-                    value = t(_this.props, `${datum.name}.${interviewee[datum.name]}`);
+                    value = interviewee[datum.name] || '---';
+                    //value = t(_this.props, `${datum.name}.${interviewee[datum.name]}`);
                 } else {
                     // TODO: this is the PersonData-component!! So is it right to show metadataFields whithout source === 'Person' here?
                     t(_this.props, `${datum.name}.${_this.props.interview[datum.name]}`);
