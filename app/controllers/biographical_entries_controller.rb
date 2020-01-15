@@ -37,7 +37,6 @@ class BiographicalEntriesController < ApplicationController
     authorize @biographical_entry
     updated_at = @biographical_entry.updated_at
     @biographical_entry.update_attributes(biographical_entry_params)
-    clear_biographical_entry_cache @biographical_entry.id, updated_at
 
     respond_to do |format|
       format.json do
@@ -69,10 +68,6 @@ class BiographicalEntriesController < ApplicationController
 
   def biographical_entry_params
     params.require(:biographical_entry).permit(:person_id, :text, :start_date, :end_date, :workflow_state)
-  end
-
-  def clear_biographical_entry_cache id, updated_at
-    Rails.cache.delete "#{current_project.cache_key_prefix}-biographical_entry-#{id}-#{updated_at}"
   end
 
 end
