@@ -29,26 +29,24 @@ class Segment < ApplicationRecord
   scope :with_heading, -> { 
     joins(:translations).
     where("((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))").
-    includes(:tape, :translations).
+    includes(:translations).
     order(:tape_number, :timecode)}
 
   scope :mainheadings_until, ->(segment) { 
     joins(:translations).
     includes(:translations).
     where("(segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')").
-    #where("(segment_translations.subheading IS NULL OR segment_translations.subheading = '')").
-    where("segments.timecode <= ?", segment.timecode).
-    where("segments.tape_number <= ?", segment.tape_number).
+    where("(timecode <= ? AND tape_number = ?) OR (tape_number < ?)", segment.timecode, segment.tape_number, segment.tape_number).
     where(interview_id: segment.interview_id).
     order(:tape_number, :timecode)}
 
-  scope :subheadings_until, ->(segment, mainheading_timecode) { 
+  scope :subheadings_until, ->(segment, mainheading) { 
     joins(:translations).
     includes(:translations).
     where("(segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')").
-    where("segments.timecode <= ?", segment.timecode).
-    where("segments.timecode >= ?", mainheading_timecode).
-    where("segments.tape_number <= ?", segment.tape_number).
+    where("(timecode <= ? AND tape_number = ?) OR (tape_number < ?)", segment.timecode, segment.tape_number, segment.tape_number).
+    where("timecode >= ?", mainheading.timecode).
+    where("tape_number >= ?", mainheading.tape_number).
     where(interview_id: segment.interview_id).
     order(:tape_number, :timecode)}
 
@@ -350,17 +348,19 @@ class Segment < ApplicationRecord
   def last_heading
     mainheadings = Segment.mainheadings_until(self)
     if mainheadings.count > 0
-      mainheadings_count = mainheadings.map{|mh| mh.mainheading(interview.languages.first)}.uniq.count
-      subheadings = Segment.subheadings_until(self, mainheadings.last.timecode)
+      mainheadings_count = mainheadings.map{|mh| mh.mainheading("#{interview.languages.first}-public") || mh.mainheading("#{interview.languages.first}-original")}.count
+      subheadings = Segment.subheadings_until(self, mainheadings.last)
       
       if subheadings.count > 0
         I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheadings.last.subheading(locale)}"
+          subheading = subheadings.last.subheading("#{locale}-public") || subheadings.last.subheading("#{locale}-original")
+          mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheading}"
           mem
         end
       else
         I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = "#{mainheadings_count}. #{mainheadings.last.mainheading(locale)}"
+          mainheading = mainheadings.last.mainheading("#{locale}-public") || mainheadings.last.mainheading("#{locale}-original")
+          mem[locale] = "#{mainheadings_count}. #{mainheading}"
           mem
         end
       end
