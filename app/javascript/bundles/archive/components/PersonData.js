@@ -17,8 +17,9 @@ export default class PersonData extends React.Component {
     // }
 
     existsPublicBiography() {
-        let firstKey = Object.keys(getInterviewee(this.props).biographical_entries)[0];
-        let firstEntry = getInterviewee(this.props).biographical_entries[firstKey];
+        let interviewee = getInterviewee(this.props);
+        let firstKey = interviewee && Object.keys(interviewee.biographical_entries)[0];
+        let firstEntry = interviewee && interviewee.biographical_entries[firstKey];
         return !!firstKey && firstEntry.workflow_state === 'public' && firstEntry;
     }
 
