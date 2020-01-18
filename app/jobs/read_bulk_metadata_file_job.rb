@@ -64,33 +64,10 @@ class ReadBulkMetadataFileJob < ApplicationJob
             Contribution.where(interview_id: interview.id, contribution_type: 'interviewee').destroy_all
             Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
 
-            # create accesibility and reference it
-            if data[22]
-              accessibility = data[22] && RegistryEntry.find_or_create_descendant('accessibility', "#{I18n.locale}::#{data[22]}")
-              destroy_reference(interview, nil, 'accessibility')
-              create_reference(accessibility.id, interview, interview) if accessibility
-            end
-
-            # create camp and reference it
-            if data[28]
-              camp = data[28] && RegistryEntry.find_or_create_descendant('camps', "#{I18n.locale}::#{data[28]}")
-              destroy_reference(interview, nil, 'camps')
-              create_reference(camp.id, interview, interview) if camp
-            end
-
-            # create group and reference it
-            if data[7]
-              group = data[7] && RegistryEntry.find_or_create_descendant('groups', "#{I18n.locale}::#{data[7]}")
-              destroy_reference(interview, nil, 'groups')
-              create_reference(group.id, interview, interview) if group
-            end
-
-            # create group_details and reference it
-            if data[8]
-              group_details = data[8] && RegistryEntry.find_or_create_descendant('group_details', "#{I18n.locale}::#{data[8]}")
-              destroy_reference(interview, nil, 'group_details')
-              create_reference(group_details.id, interview, interview) if group_details
-            end
+            reference(interview, data[22], 'accessibility')
+            reference(interview, data[28], 'camp')
+            reference(interview, data[7], 'group')
+            reference(interview, data[8], 'group_detail')
 
             # create birth location and reference it
             if data[9] || data[10]
@@ -162,9 +139,18 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_place(name, country_name)
-    country = country_name && RegistryEntry.find_or_create_descendant('places', "#{I18n.locale}::#{country_name}")
-    place = name && RegistryEntry.find_or_create_descendant(country ? country.code : 'places', "#{I18n.locale}::#{name}")
+    country = country_name && RegistryEntry.find_or_create_descendant('place', "#{I18n.locale}::#{country_name}")
+    place = name && RegistryEntry.find_or_create_descendant(country ? country.code : 'place', "#{I18n.locale}::#{name}")
     place
+  end
+
+  def reference(interview, data, code)
+    if data
+      registry_reference_type = RegistryReferenceType.find_by_code(code)
+      registry_entry = data && RegistryEntry.find_or_create_descendant(code, "#{I18n.locale}::#{data}")
+      destroy_reference(interview, registry_reference_type && registry_reference_type.id, code)
+      create_reference(registry_entry.id, interview, interview, registry_reference_type && registry_reference_type.id) if registry_entry
+    end
   end
 
   def create_reference(registry_entry_id, interview, ref_object, ref_type_id=nil)
@@ -174,7 +160,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
   def destroy_reference(ref_object, ref_type_id=nil, parent_registry_entry_code=nil)
     if ref_type_id
-      ref_object.registry_references.destroy_all(registry_reference_type_id: ref_type_id) 
+      ref_object.registry_references.where(registry_reference_type_id: ref_type_id).destroy_all
     else
       parent = RegistryEntry.find_by_code parent_registry_entry_code
       ref_object.registry_references.each do |rr|
