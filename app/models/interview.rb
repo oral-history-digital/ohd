@@ -181,6 +181,13 @@ class Interview < ApplicationRecord
       end.join(' ')
     end
     
+    text :headings, :boost => 10 do
+      segments.with_heading.inject([]) do |all, segment|
+        all << segment.translations.inject([]){|mem, t| mem << "#{t.mainheading} #{t.subheading}"; mem}.join(' ')
+        all
+      end.join(' ')
+    end
+    
     #dynamic_integer :registry_entry_and_registry_reference_type_search_facets do
       #(project.registry_entry_search_facets + project.registry_reference_type_search_facets).inject({}) do |mem, facet|
         #mem[facet.name.to_sym] = facet.name.to_sym#, :multiple => true, :stored => true, :references => RegistryEntry
