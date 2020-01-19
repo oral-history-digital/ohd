@@ -253,10 +253,6 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  # def duration
-  #   object.duration.timecode
-  # end
-
   def segments
     # this is a dummy! It will be filled later.
     {}
