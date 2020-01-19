@@ -292,7 +292,7 @@ class RegistryEntry < ApplicationRecord
     end
 
     def root_node
-      @root_node ||= find(RegistryEntry::ROOT_NODE_ID)
+      @root_node ||= RegistryEntry.first #find(RegistryEntry::ROOT_NODE_ID)
     end
 
     STOP_IF_PATHS_EXCEED = 20
