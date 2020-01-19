@@ -4,11 +4,11 @@ class UpdateRegistryReferenceTypeIds < ActiveRecord::Migration[5.2]
     #RegistryReferenceType.find_by_code('group').update_attributes code: 'groups'
     #RegistryReferenceType.find_by_code('group_detail').update_attributes code: 'group_details'
     RegistryEntry.root_node.children.each do |r|
-      r.update_attributes code: r.code[0..(r.code.length - 2)] if r.code[r.code.length - 1] == 's'
+      r.update_attributes code: r.code[0..(r.code.length - 2)] if r.code && r.code[r.code.length - 1] == 's'
     end
 
     RegistryReference.where(registry_reference_type_id: nil).find_each do |rr|
-      rrt = RegistryReferenceType.find_by_code(rr.registry_entry.parents.first.code)
+      rrt = RegistryReferenceType.find_by_code(rr.registry_entry.parents.first && rr.registry_entry.parents.first.code)
       rr.update_attributes registry_reference_type_id: rrt.id if rrt
     end
   end
