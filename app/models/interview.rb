@@ -565,10 +565,10 @@ class Interview < ApplicationRecord
 
   # add the duration of all existing tapes
   def recalculate_duration!
-    # unless tapes.blank? || tapes.empty? || (tapes.select{|t| t.duration.nil? }.size > 0)
-    new_duration = tapes.inject(0){|dur, t| dur += t.duration.nil? ? t.estimated_duration.time : Timecode.new(t.duration).time }
-    update_attribute(:duration, new_duration) unless new_duration == self[:duration]
-    # end
+    unless segments.blank? || tapes.blank? || tapes.empty? || (tapes.select{|t| t.duration.nil? }.size > 0)
+      new_duration = tapes.inject(0){|dur, t| dur += (t.duration == 0 || t.duration.nil?) ? t.estimated_duration.time : Timecode.new(t.duration).time }
+      update_attribute(:duration, new_duration) unless new_duration == self[:duration]
+    end
   end
 
   def build_full_title_from_name_parts(locale)
