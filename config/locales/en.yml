@@ -506,12 +506,12 @@ en:
     language: Language
     collection: Collection
     accessibility: Accessibility
-    groups: Group
-    group_details: Group Details
+    group: Group
+    group_detail: Group Details
     camps: Camp
     country_of_birth: Country Of Birth
-    forced_labor_fields: Deployment Area
-    forced_labor_groups: Forced Labor Group
+    forced_labor_field: Deployment Area
+    forced_labor_group: Forced Labor Group
     periods: Time periods
     fulltext: search keyword
     gender: gender

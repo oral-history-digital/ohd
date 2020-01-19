@@ -557,9 +557,9 @@ ru:
     female: weiblich
     male: männlich
   search_facets:
-    forced_labor_fields: Сфера деятельности
-    forced_labor_groups: Группа
-    periods: Zeitperioden
+    forced_labor_field: Сфера деятельности
+    forced_labor_group: Группа
+    period: Zeitperioden
     fulltext: Suchbegriff
     gender: Пол
     Man: männlich

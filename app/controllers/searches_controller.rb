@@ -125,12 +125,12 @@ class SearchesController < ApplicationController
       format.csv do
         search = Interview.archive_search(current_user_account, current_project, locale, params, 999999)
         desired_columns = current_project.list_columns.map(&:name)
-        options = {}
+        options = {col_sep: ";"}
         csv = CSV.generate(options) do |csv|
           csv << (desired_columns.map { |c| t("search_facets.#{c}") }).insert(0, t("title"))
           interviews = search.results.map { |i| cache_single(i) }
           interviews.each do |interview|
-            values = (desired_columns.map { |c| interview[c][locale.to_s] }).insert(0, interview["short_title"][locale.to_s])
+            values = (desired_columns.map { |c| interview[c].class == Hash ? interview[c][locale.to_s] : interview[c] }).insert(0, interview["short_title"][locale.to_s])
             csv << values
           end
         end

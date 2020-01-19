@@ -513,9 +513,9 @@ es:
     female: weiblich
     male: männlich
   search_facets:
-    forced_labor_fields: Einsatzbereich
-    forced_labor_groups: Gruppe
-    periods: Zeitperioden
+    forced_labor_field: Einsatzbereich
+    forced_labor_group: Gruppe
+    period: Zeitperioden
     fulltext: Suchbegriff
     gender: Geschlecht
     Man: männlich
