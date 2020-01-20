@@ -1,6 +1,6 @@
 import React from 'react';
 import SegmentEditViewContainer from '../containers/SegmentEditViewContainer';
-import { t, segments, activeSegment, getInterviewee } from '../../../lib/utils';
+import { t, segments, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 import {
     SEGMENTS_AFTER,
@@ -15,7 +15,7 @@ export default class InterviewEditView extends React.Component {
 
     componentDidMount() {
         this.loadSegments();
-        let currentSegment = activeSegment(this.props.transcriptTime, this.props);
+        let currentSegment = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props)[0];
         let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
         if (activeSegmentElement) {
             let offset = activeSegmentElement.offsetTop;

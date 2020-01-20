@@ -1,6 +1,6 @@
 import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
-import { t, segments, activeSegment, getInterviewee } from '../../../lib/utils';
+import { t, segments, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 import {
     SEGMENTS_AFTER,
@@ -41,7 +41,7 @@ export default class Transcript extends React.Component {
     }
 
     scrollToActiveSegment() {
-        let currentSegment = activeSegment(this.props.transcriptTime, this.props);
+        let currentSegment = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props)[0];
         let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
         if (activeSegmentElement) {
             let offset = activeSegmentElement.offsetTop;
@@ -59,19 +59,10 @@ export default class Transcript extends React.Component {
             this.props.handleTranscriptScroll(true)
     }
 
-    shownSegmentsAround(segmentId) {
-        if (segmentId > this.props.interview.last_segments_ids[this.props.tape] - SEGMENTS_AFTER)
-            segmentId = this.props.interview.last_segments_ids[this.props.tape] - SEGMENTS_AFTER;
-
-        if (segmentId < this.props.interview.first_segments_ids[this.props.tape] + SEGMENTS_BEFORE)
-            segmentId = this.props.interview.first_segments_ids[this.props.tape] + SEGMENTS_BEFORE;
-
-        let shownSegments = {};
-        for (var i = -SEGMENTS_BEFORE; i < SEGMENTS_AFTER; i++) {
-            shownSegments[segmentId + i] = segments(this.props)[segmentId + i];
-        } 
-
-        return shownSegments;
+    shownSegmentsAround(sortedWithIndex) {
+        let start = sortedWithIndex[2] >= SEGMENTS_BEFORE ? sortedWithIndex[2] - SEGMENTS_BEFORE : 0
+        let end = sortedWithIndex[2] + SEGMENTS_AFTER
+        return sortedWithIndex[1] ? sortedWithIndex[1].slice(start, end) : [];
     }
 
     firstSegment() {
@@ -83,49 +74,47 @@ export default class Transcript extends React.Component {
     }
 
     transcripted(locale) {
-        return this.firstSegment() && (this.firstSegment().text.hasOwnProperty(`${locale}-original`) || this.firstSegment().text.hasOwnProperty(`${locale}-public`));
+        let first = this.firstSegment();
+        return first && (first.text.hasOwnProperty(`${locale}-original`) || first.text.hasOwnProperty(`${locale}-public`));
     }
 
     transcript(){
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
         let tabIndex = this.props.originalLocale ? 0 : 1;
-        let activeId = activeSegment(this.props.transcriptTime, this.props).id;
+        let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props);
         let shownSegments = this.props.transcriptScrollEnabled ?
-            segments(this.props) :
-            this.shownSegmentsAround(activeId);
+            sortedWithIndex[1] :
+            this.shownSegmentsAround(sortedWithIndex);
 
         let speaker, speakerId;
         let transcript = [];
 
-        for (var segmentId in shownSegments) {
-            let segment = shownSegments[segmentId];
+        return shownSegments.map((segment, index) => {
             let interviewee = getInterviewee(this.props);
-            if (segment) {
-                segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
-                if (
-                    (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
-                    (speaker !== segment.speaker && segment.speaker_id === null) 
-                ) {
-                    segment.speakerIdChanged = true;
-                    speakerId = segment.speaker_id;
-                    speaker = segment.speaker;
-                }
-                let active = false;
-                if (segment.time <= this.props.transcriptTime + 10 && segment.time >= this.props.transcriptTime - 5) {
-                    active = true;
-                }
-                transcript.push(
-                    <SegmentContainer
-                        data={segment}
-                        contentLocale={locale}
-                        tabIndex={tabIndex}
-                        active={parseInt(segmentId) === activeId}
-                        key={"segment-" + segment.id}
-                    />
-                )
+            segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
+            if (
+                (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
+                (speaker !== segment.speaker && segment.speaker_id === null) 
+            ) {
+                segment.speakerIdChanged = true;
+                speakerId = segment.speaker_id;
+                speaker = segment.speaker;
             }
-        }
-        return transcript;
+            let active = false;
+            //if (index <= sortedWithIndex[2] + 1 && index >= sortedWithIndex[2] - 1) {
+            if (index === sortedWithIndex[2]) {
+                active = true;
+            }
+            return (
+                <SegmentContainer
+                    data={segment}
+                    contentLocale={locale}
+                    tabIndex={tabIndex}
+                    active={active}
+                    key={"segment-" + segment.id}
+                />
+            )
+        })
     }
 
     render () {

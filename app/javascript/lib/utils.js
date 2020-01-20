@@ -32,10 +32,10 @@ export function segments(props) {
     return props.interview && props.interview.segments && props.interview.segments[props.tape] || {};
 }
 
-export function activeSegment(time, props) {
+export function sortedSegmentsWithActiveIndex(time, props) {
 
     let found = false;
-    let sortedSegments = Object.values(segments(props)).sort(function(a, b) {a.time - b.time})
+    let sortedSegments = Object.values(segments(props)).sort(function(a, b) {return a.time - b.time})
     //
     // aproximation based on the asumption that the mean or median segment duration is 7s
     //
@@ -44,11 +44,11 @@ export function activeSegment(time, props) {
     let lastSegment = sortedSegments[sortedSegments.length - 1];
 
     if(!firstSegment){
-        return null;
+        return [null, sortedSegments, 0];
     }
 
     if (index === 0) {
-        return firstSegment;
+        return [firstSegment, sortedSegments, index];
     }
 
     if (index >= sortedSegments.length) {
@@ -79,7 +79,7 @@ export function activeSegment(time, props) {
         }
     }
 
-    return sortedSegments[index];
+    return [sortedSegments[index], sortedSegments, index];
 }
 
 export function getInterviewee(props) {
