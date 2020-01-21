@@ -40,6 +40,9 @@ class Admin::UserStatisticsController < Admin::BaseController
 
     categories = { 'Beruf' => 'job_description', 'Recherche-Anliegen' => 'research_intentions', 'Land' => 'country' }
     categories.each do |category, field_name|
+      #inserts title row
+      @list << "'=== #{categories[category]} ==='"
+      #
       list = [ category.to_s ]
       category_results = User.group(field_name).count.sort_by { |group| -group.last }
       category_results.each do |category_result|
@@ -60,8 +63,6 @@ class Admin::UserStatisticsController < Admin::BaseController
           @rows[label] = { :label => row_title, :sum => sum, :cols => {} }
         end
       end
-      #inserts an empty row
-      @list << [ nil ]
     end
 
     date_pattern = "%m / %Y"
@@ -110,6 +111,7 @@ class Admin::UserStatisticsController < Admin::BaseController
               @rows[label][:cols][month_label] = value
             end
           else
+            # binding.pry
             @errors << "#{label} mit Wert '#{value}' nicht berücksichtigt."
           end
         end
