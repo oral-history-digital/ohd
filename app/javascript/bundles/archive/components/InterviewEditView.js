@@ -48,19 +48,16 @@ export default class InterviewEditView extends React.Component {
 
     tableRows() {
         let rows = [];
-        let shownSegments = segments(this.props);
         let translationLocale = this.props.interview.languages.filter(locale => locale !== this.props.interview.lang)[0]
 
-        for (var segmentId in shownSegments) {
-            let segment = shownSegments[segmentId];
-            rows.push(<SegmentEditViewContainer 
+        return sortedSegmentsWithActiveIndex(0, this.props)[1].map((segment, index) => {
+            return (<SegmentEditViewContainer 
                 segment={segment} 
                 originalLocale={this.props.interview.lang}
                 translationLocale={translationLocale}
-                key={`segment-edit-view-${segmentId}`} 
+                key={`segment-edit-view-${segment.id}`} 
             />);
-        }
-        return rows;
+        })
     }
 
     render () {

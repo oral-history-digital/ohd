@@ -32,33 +32,45 @@ export function segments(props) {
     return props.interview && props.interview.segments && props.interview.segments[props.tape] || {};
 }
 
+
+export function sortedSegments(props) {
+    let all = [];
+    if (props.interview && Object.keys(props.interview.segments).length > 0) {
+        for (var i=1; i<= parseInt(props.interview.tape_count); i++) { 
+            all = all.concat(Object.values(props.interview.segments[i]).sort((a, b) =>{return a.time - b.time}))
+        }
+    }
+    return all;
+}
+
 export function sortedSegmentsWithActiveIndex(time, props) {
 
     let found = false;
-    let sortedSegments = Object.values(segments(props)).sort(function(a, b) {return a.time - b.time})
+    //let sortedSegments = Object.values(segments(props)).sort(function(a, b) {return a.time - b.time})
+    let sorted = sortedSegments(props);
     //
     // aproximation based on the asumption that the mean or median segment duration is 7s
     //
     let index = Math.round(time/7);
-    let firstSegment = sortedSegments[0];
-    let lastSegment = sortedSegments[sortedSegments.length - 1];
+    let firstSegment = sorted[0];
+    let lastSegment = sorted[sorted.length - 1];
 
     if(!firstSegment){
-        return [null, sortedSegments, 0];
+        return [null, sorted, 0];
     }
 
     if (index === 0) {
-        return [firstSegment, sortedSegments, index];
+        return [firstSegment, sorted, index];
     }
 
-    if (index >= sortedSegments.length) {
-        index = sortedSegments.length - 1;
+    if (index >= sorted.length) {
+        index = sorted.length - 1;
     }
 
-    if (sortedSegments[index].time > time) {
+    if (sorted[index].time > time && sorted[index].tape_nbr === props.tape) {
         while (!found) {
             if (
-                sortedSegments[index].time <= time ||
+                (sorted[index].time <= time && sorted[index].tape_nbr === props.tape) ||
                 index === 0
             ) {
                 found = true;
@@ -66,11 +78,11 @@ export function sortedSegmentsWithActiveIndex(time, props) {
             }
             index--;
         }
-    } else if (sortedSegments[index].time < time) {
+    } else if (sorted[index].time < time && sorted[index].tape_nbr === props.tape) {
         while (!found) {
             if (
-                sortedSegments[index].time >= time ||
-                index === sortedSegments.length - 1
+                (sorted[index].time >= time && sorted[index].tape_nbr === props.tape) ||
+                index === sorted.length - 1
             ) {
                 found = true;
                 break;
@@ -79,7 +91,7 @@ export function sortedSegmentsWithActiveIndex(time, props) {
         }
     }
 
-    return [sortedSegments[index], sortedSegments, index];
+    return [sorted[index], sorted, index];
 }
 
 export function getInterviewee(props) {
