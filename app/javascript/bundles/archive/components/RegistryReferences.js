@@ -54,6 +54,7 @@ export default class RegistryReferences extends React.Component {
 
                 if (
                     registryEntry && 
+                    registryEntry.name[this.props.locale] && 
                     usedRegistryEntryIds.indexOf(registryEntry.id) === -1 && 
                     registryReference.registry_reference_type_id == this.props.registryReferenceTypeId
                 ) {
