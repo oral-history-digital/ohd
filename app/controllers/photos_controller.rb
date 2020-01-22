@@ -71,9 +71,7 @@ class PhotosController < ApplicationController
     params.require(:photo).permit(
       :interview_id, 
       :workflow_state,
-      :caption
-      # somehow translations_attributes is not present in photo
-      #translations_attributes: [:locale, :id, :caption]
+      translations_attributes: [:locale, :id, :caption]
     )
   end
 

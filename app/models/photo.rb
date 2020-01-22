@@ -41,6 +41,19 @@ class Photo < ApplicationRecord
     ['public', 'unshared']
   end
 
+  # this method should be present through 'translates: ....'
+  # But it isn't. Therefore:
+  #
+  def translations_attributes=(atts)
+    atts.each do |t|
+      if t[:id] 
+        translations.find(t[:id]).update_attributes locale: t[:locale], caption: t[:caption]
+      else
+        update_attributes t
+      end
+    end
+  end
+
   def write_iptc_metadata(metadata)
     file = MiniExiftool.new file_path
     metadata.each do |k,v|
