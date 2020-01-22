@@ -81,22 +81,6 @@ export default class Segment extends React.Component {
                        locale={locale} 
                        setOpenReference={this.setOpenReference}
                    />
-            //return this.props.data.references.map((reference, index) => {
-                //if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
-                    //return (
-                        //<span 
-                            //id={`reference_${reference.id}`} 
-                            //className='scope-note-link'
-                            //key={"reference-" + index} 
-                            //onClick={() => this.setOpenReference(reference)}
-                        //>
-                            //{reference.desc_with_note[locale].title}
-                        //</span>
-                    //)
-                //} else {
-                    //return <span id={`reference_${reference.id}`} key={"reference-" + index}>{reference.desc_with_note[locale].title}</span>
-                //}
-            //})
         }
     }
 
