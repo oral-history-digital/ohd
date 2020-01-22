@@ -11,7 +11,6 @@ const mapStateToProps = (state) => {
         editView: state.archive.editView,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        project: project && project.identifier,
     }
 }
 
