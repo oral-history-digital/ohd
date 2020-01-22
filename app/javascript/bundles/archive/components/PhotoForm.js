@@ -8,8 +8,6 @@ export default class PhotoForm extends React.Component {
         let elements = [
             {
                 attribute: 'caption',
-                //value: this.props.photo && this.props.photo.captions && this.props.photo.captions[this.props.locale]
-                // does not work for photo because of missing method translations_attributes=
                 elementType: 'multiLocaleInput',
             },
             {
