@@ -57,8 +57,14 @@ export default class TableOfContents extends React.Component {
 
         if (this.props.interview && this.props.interview.headings) {
             Object.values(this.props.interview.headings).sort(function(a, b) {return a.tape_nbr - b.tape_nbr || a.time - b.time}).map((segment, index) => {
-                mainheading = segment.mainheading[`${this.props.locale}-original`] || segment.mainheading[`${this.props.locale}-public`];
-                subheading = segment.subheading[`${this.props.locale}-original`] || segment.subheading[`${this.props.locale}-public`];
+                mainheading = segment.mainheading[`${this.props.locale}-original`] || 
+                    segment.mainheading[`${this.props.locale}-public`] ||
+                    segment.mainheading['de-original'] ||
+                    segment.mainheading['de-public'];
+                subheading = segment.subheading[`${this.props.locale}-original`] || 
+                    segment.subheading[`${this.props.locale}-public`] ||
+                    segment.subheading['de-original'] ||
+                    segment.subheading['de-public'];
                 //
                 // if the table of content looks different in languages with different alphabets, have a look to the following and extend the regexp: 
                 // https://stackoverflow.com/questions/18471159/regular-expression-with-the-cyrillic-alphabet
@@ -129,6 +135,16 @@ export default class TableOfContents extends React.Component {
             if (this.props.translations !== undefined) {
                 return t(this.props, 'without_index');
             }
+        } else if (this.props.interview && this.props.interview.headings) {
+            let first = this.props.interview.headings[0];
+            if (
+                !first.mainheading[`${this.props.locale}-public`] && 
+                !first.mainheading[`${this.props.locale}-original`] && 
+                !first.subheading[`${this.props.locale}-public`] &&
+                !first.subheading[`${this.props.locale}-original`]
+            ) {
+                return t(this.props, 'without_index_locale');
+            }
         }
     }
 
@@ -140,7 +156,9 @@ export default class TableOfContents extends React.Component {
             let headings = this.prepareHeadings();
             return (
                 <div className={'content-index'}>
-                    {this.emptyHeadingsNote(headings)}
+                    <p>
+                        {this.emptyHeadingsNote(headings)}
+                    </p>
                     {headings.map((heading, index) => {
                         return <HeadingContainer
                             key={'mainheading-' + index}

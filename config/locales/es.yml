@@ -100,7 +100,8 @@ es:
   tapes: Bänder
   without_translation: Dieses Interview wurde noch nicht ins Deutsche übersetzt.
   without_transcript: Dieses Interview wurde noch nicht transkribiert.
-  without_index: Für dieses Interview gibt es noch kein deutschsprachiges Inhaltsverzeichnis.
+  without_index: No table of contents was created for this interview.
+  without_index_locale: The table of contents of this interview has not been translated into English. 
   without_ref_tree: Dieses Interviews wurde noch nicht verschlagwortet.
   private: Privat
   proposed: In Prüfung zur Veröffentlichung
