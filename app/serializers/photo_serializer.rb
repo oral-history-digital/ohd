@@ -7,15 +7,12 @@ class PhotoSerializer < ApplicationSerializer
              :thumb_src,
              :text,
              :workflow_state,
-             :transitions_to
-
-  def transitions_to
-    object.current_state.events.map{|e| e.first}
-  end
+             :workflow_states
 
   def captions
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = ActionView::Base.full_sanitizer.sanitize(object.caption(locale))
+      t = object.translations.where(locale: locale).first
+      mem[locale] = ActionView::Base.full_sanitizer.sanitize(t && t.caption)
       mem
     end
   end

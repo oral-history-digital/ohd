@@ -897,6 +897,7 @@ ru:
         caption: Fotobeschreibung
         data: Fotodatei
         workflow_state: 'Status ändern zu:'
+        caption_explanation: Описание фотографии доступно только на немецком языке. 
       mark_text:
         locale: Sprache
       text:

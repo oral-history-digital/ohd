@@ -853,6 +853,7 @@ es:
         caption: Fotobeschreibung
         data: Fotodatei
         workflow_state: 'Status ändern zu:'
+        caption_explanation: This photo caption is only available in German.
       mark_text:
         locale: Sprache
       text:
