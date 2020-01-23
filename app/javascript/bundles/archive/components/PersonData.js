@@ -88,17 +88,10 @@ export default class PersonData extends React.Component {
         let _this = this;
         let interviewee = getInterviewee(_this.props);
         return this.props.detailViewFields.map(function(datum, i){
-            // exclude registryReference type metadata
-            if (datum.source !== "RegistryReferenceType"){
+            // This is the PersonData-component!! So is it right to show metadataFields whithout source === 'Person' here?
+            if (datum.source === 'Person'){
                 let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
-                let value = ''
-                if (datum.source === 'Person') {
-                    value = interviewee[datum.name] || '---';
-                    //value = t(_this.props, `${datum.name}.${interviewee[datum.name]}`);
-                } else {
-                    // TODO: this is the PersonData-component!! So is it right to show metadataFields whithout source === 'Person' here?
-                    t(_this.props, `${datum.name}.${_this.props.interview[datum.name]}`);
-                }
+                let value = interviewee[datum.name] || '---';
                 if (typeof value === 'object' && value !== null)
                     value = value[_this.props.locale]
                 if (Array.isArray(value)){ value = value.join(", ") } //this is needed for mog and probably all other projects
