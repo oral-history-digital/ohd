@@ -430,6 +430,11 @@ class Interview < ApplicationRecord
     #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(code)).map(&:registry_entry_id)
   #end
 
+  def lang
+    # return only the first language code in cases like 'slk/ces'
+    language && ( ISO_639.find(language.first_code).try(:alpha2) || language.first_code )
+  end
+
   def languages
     if segments.first
       segments.first.translations.map{|t| t.locale.to_s.split('-').first}.uniq

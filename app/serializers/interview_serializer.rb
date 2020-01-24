@@ -129,11 +129,6 @@ class InterviewSerializer < ApplicationSerializer
     object.video? ? true : false
   end
 
-  def lang
-    # return only the first language code in cases like 'slk/ces'
-    object.language && ( ISO_639.find(object.language.first_code).try(:alpha2) || object.language.first_code )
-  end
-
   def language
     if object.language
       I18n.available_locales.inject({}) do |mem, locale|

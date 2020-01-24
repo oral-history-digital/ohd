@@ -74,7 +74,7 @@ export default class Segment extends React.Component {
     }
 
     references(locale) {
-        if (this.state.contentType == 'references') {
+        if (this.state.contentType == 'references' && this.props.data.references_count[locale] > 0) {
             return <RegistryReferencesContainer 
                        refObject={this.props.data} 
                        parentEntryId={1}
@@ -85,7 +85,7 @@ export default class Segment extends React.Component {
     }
 
     annotations(locale) {
-        if (this.state.contentType == 'annotations') {
+        if (this.state.contentType == 'annotations' && this.props.data.references_count[locale] > 0) {
             return <AnnotationsContainer segment={this.props.data} locale={locale} />
         }
     }
@@ -124,11 +124,18 @@ export default class Segment extends React.Component {
     renderLinks(locale) {
         if (
             admin(this.props, {type: 'RegistryReference', action: 'update'}) || 
-            (Object.values(this.props.data.annotations).length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length)
+            this.props.data.annotations_count[this.props.contentLocale] > 0 || 
+            this.props.data.references_count[this.props.contentLocale] > 0 || 
+            this.props.data.user_annotation_ids.length
         ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = admin(this.props, {type: 'Annotation', action: 'update'}) || Object.values(this.props.data.annotations).length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-            let referenceCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) || this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let annotionCss = admin(this.props, {type: 'Annotation', action: 'update'}) || 
+                this.props.data.annotations_count[this.props.contentLocale] > 0 || 
+                this.props.data.user_annotation_ids.length > 0 ? 
+                'content-trans-text-ico-link' : 'hidden';
+            let referenceCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) || 
+                this.props.data.references_count[this.props.contentLocale] > 0 ? 
+                'content-trans-text-ico-link' : 'hidden';
 
             return (
                 <div className={icoCss}>
