@@ -85,7 +85,7 @@ export default class Segment extends React.Component {
     }
 
     annotations(locale) {
-        if (this.state.contentType == 'annotations' && this.props.data.references_count[locale] > 0) {
+        if (this.state.contentType == 'annotations' && this.props.data.annotations_count[locale] > 0) {
             return <AnnotationsContainer segment={this.props.data} locale={locale} />
         }
     }
