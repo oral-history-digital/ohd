@@ -1,12 +1,11 @@
 class Tape < ApplicationRecord
   include Workflow
 
-  belongs_to :interview, inverse_of: :tapes
+  belongs_to :interview
 
   has_many  :segments,
             -> { order('timecode ASC')},
-           :dependent => :destroy,
-           inverse_of: :tape
+           :dependent => :destroy
 
   #has_many :captions_segments,
             #-> { order('timecode ASC')},
