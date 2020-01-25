@@ -26,7 +26,6 @@ class InterviewSerializer < ApplicationSerializer
     :anonymous_title,
     :still_url,
     :src_base,
-    :references,
     :duration_seconds,
     #  :place_of_interview,
     :year_of_birth,
@@ -155,7 +154,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def anonymous_title
-    if Project.current.fullname_on_landing_page
+    if object.project.fullname_on_landing_page
       object.localized_hash(:full_title)
     else
       object.localized_hash(:anonymous_title)
@@ -163,7 +162,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def still_url
-    case Project.current.identifier.to_sym
+    case object.project.identifier.to_sym
     when :cdoh
       "https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{object.archive_id}/#{object.archive_id}_2.jpg"
     when :mog
@@ -185,17 +184,17 @@ class InterviewSerializer < ApplicationSerializer
     format("%02d", object.tapes.count)
   end
 
-  def references
-    object.segment_registry_references.with_locations.map do |ref|
-      {
-        archive_id: object.archive_id,
-        desc: ref.registry_entry.localized_hash(:descriptor),
-        # exclude dedalo default location (Valencia)
-        latitude: ref.registry_entry.latitude == "39.462571" ? nil : ref.registry_entry.latitude.to_f,
-        longitude: ref.registry_entry.longitude == "-0.376295" ? nil : ref.registry_entry.longitude.to_f,
-      }
-    end
-  end
+  #def references
+    #object.segment_registry_references.with_locations.map do |ref|
+      #{
+        #archive_id: object.archive_id,
+        #desc: ref.registry_entry.localized_hash(:descriptor),
+        ## exclude dedalo default location (Valencia)
+        #latitude: ref.registry_entry.latitude == "39.462571" ? nil : ref.registry_entry.latitude.to_f,
+        #longitude: ref.registry_entry.longitude == "-0.376295" ? nil : ref.registry_entry.longitude.to_f,
+      #}
+    #end
+  #end
 
   # def place_of_interview
   #   RegistryEntrySerializer.new(object.place_of_interview) if object.place_of_interview
