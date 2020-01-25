@@ -79,16 +79,16 @@ export default class RegistryEntryShow extends React.Component {
                     } 
                 } 
             default:
-                this.fetchInterview(rr.ref_interview_archive_id)
-                if(this.interviewIsFetched(rr.ref_interview_archive_id)) {
-                    ref_object_string = `${this.props.interviews[rr.ref_interview_archive_id].short_title[this.props.locale]} (${this.props.interviews[rr.ref_interview_archive_id].archive_id})`
+                this.fetchInterview(rr.archive_id)
+                if(this.interviewIsFetched(rr.archive_id)) {
+                    ref_object_string = `${this.props.interviews[rr.archive_id].short_title[this.props.locale]} (${this.props.interviews[rr.ref_interview_archive_id].archive_id})`
                     return (
                         <Link className={'search-result-link'}
                         onClick={() => {
                             this.props.closeArchivePopup();
-                            this.props.setArchiveId(rr.ref_interview_archive_id);
+                            this.props.setArchiveId(rr.archive_id);
                         }}
-                        to={pathBase(this.props) + '/interviews/' + rr.ref_interview_archive_id}
+                        to={pathBase(this.props) + '/interviews/' + rr.archive_id}
                         >
                             {`${ref_object_string}`}
                         </Link>
