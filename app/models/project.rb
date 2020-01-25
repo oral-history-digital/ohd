@@ -59,7 +59,8 @@ class Project < ApplicationRecord
   end
 
   def search_facets
-    metadata_fields.where(use_as_facet: true)
+    metadata_fields.where(use_as_facet: true).
+      includes(:translations, :registry_reference_type, registry_entry: {registry_names: :translations})
   end
 
   def search_facets_names
