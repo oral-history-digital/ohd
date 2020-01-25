@@ -152,7 +152,7 @@ class Project < ApplicationRecord
         mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-language-search-facets-#{Language.maximum(:updated_at)}-") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: facet.source.classify.constantize.all.inject({}) do |subfacets, sf|
+            subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
               subfacets[sf.id.to_s] = {
                 name: sf.localized_hash(:name),
                 count: 0
@@ -166,7 +166,7 @@ class Project < ApplicationRecord
         mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-collection-search-facets-#{Collection.maximum(:updated_at)}-") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: facet.source.classify.constantize.all.inject({}) do |subfacets, sf|
+            subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
               subfacets[sf.id.to_s] = {
                 name: sf.localized_hash(:name),
                 count: 0,
