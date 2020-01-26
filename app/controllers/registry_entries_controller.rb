@@ -71,14 +71,22 @@ class RegistryEntriesController < ApplicationController
           registry_entries, extra_params =
             if params[:children_for_entry]
               [
-                RegistryEntry.find(params[:children_for_entry]).children.
-                includes(registry_names: :translations),
+                RegistryEntry.find(params[:children_for_entry]).children.includes([
+                  :registry_references,
+                  :parent_registry_hierarchies,
+                  {registry_names: :translations},
+                  {ancestors: {registry_names: :translations}} 
+                ]),
                 "children_for_entry_#{params[:children_for_entry]}",
               ]
             elsif params[:ref_object_type]
               [
-                params[:ref_object_type].classify.constantize.find(params[:ref_object_id]).registry_entries.
-                includes(registry_names: :translations),
+                params[:ref_object_type].classify.constantize.find(params[:ref_object_id]).registry_entries.includes([
+                  :registry_references,
+                  :parent_registry_hierarchies,
+                  {registry_names: :translations},
+                  {ancestors: {registry_names: :translations}} 
+                ]),
                 "ref_object_type_#{params[:ref_object_type]}_ref_object_id_#{params[:ref_object_id]}",
               ]
             end
