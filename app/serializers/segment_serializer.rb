@@ -51,7 +51,7 @@ class SegmentSerializer < ApplicationSerializer
 
   def annotations_count
     (object.project.available_locales + [object.interview.lang]).inject({}) do |mem, locale|
-      mem[locale] = object.annotations.where("annotation_translations.locale": locale).count
+      mem[locale] = object.annotations.includes(:translations).where("annotation_translations.locale": locale).count
       mem
     end
   end
