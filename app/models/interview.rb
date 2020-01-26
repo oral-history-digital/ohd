@@ -259,8 +259,8 @@ class Interview < ApplicationRecord
     #
     I18n.available_locales.each do |locale|
       text :"biography_#{locale}" do
-        if interviewees.first
-          interviewees.first.biographical_entries.map{|b| b.text(locale)}.join(' ')
+        if interviewee
+          interviewee.biographical_entries.map{|b| b.text(locale)}.join(' ')
         else
           ''
         end
@@ -347,13 +347,19 @@ class Interview < ApplicationRecord
 
   def alias_names
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = (interviewees.first.respond_to? :alias_names) ? interviewees.first.alias_names(locale) : nil
+      mem[locale] = (interviewee.respond_to? :alias_names) ? interviewee.alias_names(locale) : nil
       mem
     end
   end
 
   def to_s(locale = I18n.locale)
     short_title(locale)
+  end
+
+  def interviewee
+    Rails.cache.fetch("#{project.cache_key_prefix}-interviewee-for-#{id}-#{updated_at}") do
+      interviewees.first
+    end
   end
 
    def place_of_interview
@@ -380,7 +386,7 @@ class Interview < ApplicationRecord
   # end
 
   def reverted_short_title(locale)
-    interviewee = interviewees.first
+    interviewee = interviewee
     begin
       [interviewee.last_name(locale) || interviewee.last_name(I18n.defaut_locale), interviewee.first_name(locale) || interviewee.first_name(I18n.default_locale)].join(', ')
     rescue
@@ -405,7 +411,7 @@ class Interview < ApplicationRecord
       define_singleton_method field.name do
         case field["ref_object_type"]
         when "Person"
-          (interviewees.first && interviewees.first.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
+          (interviewee && interviewee.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
         when "Interview"
           registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
         when "Segment"
@@ -422,7 +428,7 @@ class Interview < ApplicationRecord
     project.person_metadata_fields.each do |facet|
       define_singleton_method facet.name do 
         # TODO: what if there are more intervviewees?
-        interviewees.first && interviewees.first.send(facet.name.to_sym) ? interviewees.first.send(facet.name.to_sym).try(:split, ',') : ''
+        interviewee && interviewee.send(facet.name.to_sym) ? interviewee.send(facet.name.to_sym).try(:split, ',') : ''
       end
     end
   end
@@ -577,7 +583,7 @@ class Interview < ApplicationRecord
   end
 
   def build_full_title_from_name_parts(locale)
-    first_interviewee = interviewees.first
+    first_interviewee = interviewee
     if first_interviewee
 
       # Check whether we've got the requested locale. If not fall back to the
@@ -620,7 +626,7 @@ class Interview < ApplicationRecord
 
   def short_title(locale)
     begin
-      [interviewees.first.first_name(locale), interviewees.first.last_name(locale)].join(' ')
+      [interviewee.first_name(locale), interviewee.last_name(locale)].join(' ')
     rescue
       "Interviewee might not be in DB, interview-id = #{id}"
     end
@@ -629,8 +635,8 @@ class Interview < ApplicationRecord
   def anonymous_title(locale=project.default_locale)
     name_parts = []
     unless interviewees.blank?
-      name_parts << interviewees.first.first_name(locale) unless interviewees.first.first_name(locale).blank?
-      name_parts << "#{(interviewees.first.last_name(locale).blank? ? '' : interviewees.first.last_name(locale)).strip.chars.first}."
+      name_parts << interviewee.first_name(locale) unless interviewee.first_name(locale).blank?
+      name_parts << "#{(interviewee.last_name(locale).blank? ? '' : interviewee.last_name(locale)).strip.chars.first}."
     end
     name_parts.join(' ')
   end

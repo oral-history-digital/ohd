@@ -41,8 +41,8 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def gender
-    if object.interviewees.first
-      Project.localized_hash_for("search_facets", object.interviewees.first.gender)
+    if object.interviewee
+      Project.localized_hash_for("search_facets", object.interviewee.gender)
     else
       {}
     end
@@ -63,7 +63,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def country_of_birth
-    interviewee = object.interviewees.first
+    interviewee = object.interviewee
     country = interviewee && interviewee.country_of_birth
     if country
       I18n.available_locales.inject({}) do |mem, locale|
@@ -80,7 +80,7 @@ class InterviewSerializer < ApplicationSerializer
   # end
 
   def interviewee_id
-    object.interviewees.first && object.interviewees.first.id
+    object.interviewee && object.interviewee.id
   end
 
   def transitions_to
@@ -198,9 +198,9 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def year_of_birth
-    if object.interviewees.first
+    if object.interviewee
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.interviewees.first.year_of_birth
+        mem[locale] = object.interviewee.year_of_birth
         mem
       end
     else
@@ -209,9 +209,9 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def typology
-    if object.interviewees.first
+    if object.interviewee
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.interviewees.first.typology && object.interviewees.first.typology.split(",").map { |t| I18n.t(t, scope: "search_facets", locale: locale) }.join(", ")
+        mem[locale] = object.interviewee.typology && object.interviewee.typology.split(",").map { |t| I18n.t(t, scope: "search_facets", locale: locale) }.join(", ")
         mem
       end
     end
