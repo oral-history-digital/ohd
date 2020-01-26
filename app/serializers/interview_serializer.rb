@@ -10,12 +10,6 @@ class InterviewSerializer < ApplicationSerializer
     :duration,
     :translated,
     :interview_date,
-    #:inferior_quality,
-    #:original_citation,
-    #:translated_citation,
-    #:citation_media_id,
-    #:citation_timecode,
-    #:indexed_at,
     :language,
     :interviewee_id,
     :languages,
@@ -27,10 +21,8 @@ class InterviewSerializer < ApplicationSerializer
     :still_url,
     :src_base,
     :duration_seconds,
-    #  :place_of_interview,
     :year_of_birth,
     :typology,
-    # :country_of_birth,
     :segments,
     :last_segments_ids,
     :first_segments_ids,
@@ -42,20 +34,7 @@ class InterviewSerializer < ApplicationSerializer
     :observations,
     :doi_status,
     :properties,
-  #:updated_at,
-  #:segmented,
-  #:researched,
-  #:proofread,
-  #:inferior_quality,
-  #:original_citation,
-  #:translated_citation,
-  #:citation_media_id,
-  #:citation_timecode,
-  #:indexed_at,
-  #:src,
   ] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_reference_type_metadata_fields.map(&:name)
-
-  #belongs_to :colletion, serializer: CollectionSerializer
 
   def collection
     object.collection && object.collection.localized_hash(:name) || {}
