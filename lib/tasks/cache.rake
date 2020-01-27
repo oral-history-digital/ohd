@@ -21,12 +21,12 @@ namespace :cache do
   end
 
   desc 'clear project cache'
-  task :clear, [:shortname] => :environment do |t, args|
-    project = Project.where(shortname: args.shortname).first
+  task :clear, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     if project
       Rails.cache.redis.keys("#{project.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
     else
-      puts "no project with shortname #{args.shortname} found"
+      puts "no project with cache_key_prefix #{args.cache_key_prefix} found"
     end
   end
 
