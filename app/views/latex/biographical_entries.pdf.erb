@@ -1,7 +1,7 @@
 <% 
-  interviewee_name = @interview.interviewees.last.name(true)[@locale]
-  title = "#{I18n.t('biographical_entries_from', locale: @locale)} #{interviewee_name}"
-  header_text = "#{I18n.t('biographical_entries_from', locale: @locale)} #{interviewee_name}"
+  interviewee_name = "#{@interview.interviewees.last.first_name(@locale)} #{@interview.interviewees.last.last_name(@locale)}"
+  title = "#{I18n.t('biographical_entries_title', locale: @locale)} #{interviewee_name}"
+  header_text = "#{I18n.t('biographical_entries_header', locale: @locale)} #{interviewee_name}, #{@interview.archive_id}"
 %>
 
 \title{<%= title %>}
@@ -18,12 +18,12 @@
                    title: title,
                    space_above: 0.4,
                    space_below: 0.4,
-                   font_size: 18,
+                   font_size: 14,
                } %>
 
 <% @interview.interviewees.first.biographical_entries.with_public_state.each do |biographical_entry| %>
-  <% start_date = Date.parse(biographical_entry.translations.where(locale: @project_locale).first.start_date).strftime("%d.%m.%Y") rescue nil %>
-  <% end_date = Date.parse(biographical_entry.translations.where(locale: @project_locale).first.end_date).strftime("%d.%m.%Y") rescue nil %>
+  <% start_date = Date.parse(biographical_entry.translations.where(locale: @locale).first.start_date).strftime("%d.%m.%Y") rescue nil %>
+  <% end_date = Date.parse(biographical_entry.translations.where(locale: @locale).first.end_date).strftime("%d.%m.%Y") rescue nil %>
   <% title = [start_date, end_date].compact.join(' - ') || '' %>
   <%= render partial: "./latex/title",
              locals:
@@ -31,9 +31,9 @@
                      title: latex_escape(title),
                      space_above: 0.4,
                      space_below: 0,
-                     font_size: 13,
+                     font_size: 12,
                  } %>
-  <% text = biographical_entry.translations.where(locale: @project_locale).first.text %>
+  <% text = biographical_entry.translations.where(locale: @locale).first.text %>
   \par{<%= latex_escape(ActionView::Base.full_sanitizer.sanitize(text).gsub("&amp;", "&")) %>}
 <% end %>
 

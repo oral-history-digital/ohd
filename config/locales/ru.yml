@@ -185,7 +185,9 @@ ru:
   typology: Erfahrung
   typologies: Erfahrungen
   history: Краткая биография
-  biographical_entries_from: Biografische Einträge von
+  biographical_entries_header: 'Краткая биография:'
+  biographical_entries_title: 'Краткая биография:'
+  biographical_entries_footer: 'Метод цитирования: Краткая биография,'
   interview_info: об интервью
   place: Ort
   duration: Продолжительность интервью

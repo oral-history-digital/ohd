@@ -77,7 +77,6 @@ en:
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Archiv-ID
-  biographical_entries_of: Kurzbiografie von
   noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
   interviews: Interviews
   places: Birth places
@@ -191,7 +190,9 @@ en:
   typology: Experience background
   typologies: Erfahrungen
   history: Short biography
-  biographical_entries_from: Short biography
+  biographical_entries_header: 'Short biography:'
+  biographical_entries_title: 'Short biography of'
+  biographical_entries_footer: 'Citation: Short biography of'
   interview_info: About the interview
   place: Place
   duration: Duration

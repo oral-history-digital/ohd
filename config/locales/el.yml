@@ -85,7 +85,6 @@ el:
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Κωδικός συνέντευξης
-  biographical_entries_of: Kurzbiografie von
   noscript: Παρακαλώ ενεργοποιήστε το Javascript για να μπορέσετε να δείτε αυτή τη
     σελίδα.
   interviews: Συνεντεύξεις
@@ -198,7 +197,9 @@ el:
   typology: Εμπειρία
   typologies: Εμπειρία
   history: Σύντομο βιογραφικό
-  biographical_entries_from: Biografische Einträge von
+  biographical_entries_header: 'Kurzbiografie:'
+  biographical_entries_title: 'Kurzbiografie von'
+  biographical_entries_footer: 'Zitiervorgabe: Kurzbiografie von'
   interview_info: Σχετικά με τη συνέντευξη
   place: Τόπος
   duration: Διάρκεια
