@@ -34,6 +34,11 @@ const mapStateToProps = (state) => {
             },
             {
                 elementType: 'input',
+                attribute: 'facet_order',
+                validate: function(v){return /\d+\.*\d+/.test(v)} 
+            },
+            {
+                elementType: 'input',
                 attribute: 'use_in_results_table',
                 type: 'checkbox',
             },
