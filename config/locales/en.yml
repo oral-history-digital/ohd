@@ -725,7 +725,9 @@ en:
         name: Name
         locale: Sprache
         use_as_facet: als Facette benutzen
+        facet_order: Reihenfolge in den Suchfacetten
         use_in_results_table: als Suchergebnis zeigen
+        list_columns_order: Reihenfolge in den Suchergebnissen
         use_in_details_view: in der Detailansicht zeigen
         display_on_landing_page: Auf der Landing-Page zeigen
         ref_object_type: RefObjectType

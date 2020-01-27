@@ -16,11 +16,12 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :translations
 
   serialize :view_modes, Array
-  serialize :available_locales
-  serialize :upload_types
-  serialize :name
-  serialize :hidden_registry_entry_ids
-  serialize :pdf_registry_entry_codes
+  serialize :available_locales, Array
+  serialize :upload_types, Array
+  #serialize :name, Array
+  serialize :funder_names, Array
+  serialize :hidden_registry_entry_ids, Array
+  serialize :pdf_registry_entry_codes, Array
   # serialize :fullname_on_landing_page
 
   class << self
@@ -60,7 +61,8 @@ class Project < ApplicationRecord
 
   def search_facets
     metadata_fields.where(use_as_facet: true).
-      includes(:translations, :registry_reference_type, registry_entry: {registry_names: :translations})
+      includes(:translations, :registry_reference_type, registry_entry: {registry_names: :translations}).
+      order(:facet_order)
   end
 
   def search_facets_names
@@ -68,7 +70,7 @@ class Project < ApplicationRecord
   end
 
   def list_columns
-    metadata_fields.where(use_in_results_table: true)
+    metadata_fields.where(use_in_results_table: true).order(:list_columns_order)
   end
 
   def detail_view_fields
@@ -89,8 +91,8 @@ class Project < ApplicationRecord
 
   def min_to_max_birth_year_range
     Rails.cache.fetch("#{cache_key_prefix}-min_to_max_birth_year") do
-      first = (interviews.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
-      last = (interviews.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
+      first = (interviews.map { |i| i.interviewee.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
+      last = (interviews.map { |i| i.interviewee.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
       (first..last)
     end
   end
@@ -203,4 +205,5 @@ class Project < ApplicationRecord
     end
     facets
   end
+
 end
