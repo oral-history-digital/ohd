@@ -386,7 +386,7 @@ class Interview < ApplicationRecord
   # end
 
   def reverted_short_title(locale)
-    interviewee = interviewee
+    binding.pry
     begin
       [interviewee.last_name(locale) || interviewee.last_name(I18n.defaut_locale), interviewee.first_name(locale) || interviewee.first_name(I18n.default_locale)].join(', ')
     rescue
