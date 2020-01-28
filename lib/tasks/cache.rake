@@ -135,7 +135,8 @@ namespace :cache do
     'cache:interviews',
     'cache:interview_data',
     'cache:other_data',
-    'cache:interview_downloads',
+    # TODO: fix this
+    #'cache:interview_downloads',
     'cache:locations',
     'cache:registry_entries'
   ] do
