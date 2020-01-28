@@ -17,7 +17,8 @@ const mapStateToProps = (state) => {
         tape: state.interview.tape,
         transcriptTime: state.interview.transcriptTime,
         transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
-        segmentsStatus: state.data.statuses.segments
+        segmentsStatus: state.data.statuses.segments,
+        userContentsStatus: state.data.statuses.user_contents.all,
     }
 }
 

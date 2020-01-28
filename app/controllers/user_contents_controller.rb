@@ -6,6 +6,7 @@ class UserContentsController < ApplicationController
     @user_content.user_id = current_user_account.user.id
     @user_content.save
     @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
+    @user_content.reference.touch if @user_content.type == 'UserAnnotation'
 
     respond_to do |format|
       format.json do

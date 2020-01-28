@@ -16,6 +16,9 @@ export default class Transcript extends React.Component {
 
     componentDidMount() {
         this.loadSegments();
+        if (!this.props.userContentsStatus) {
+            this.props.fetchData(this.props, 'user_contents');
+        }
         window.addEventListener('wheel', this.handleScroll);
         this.scrollToActiveSegment();
     }
