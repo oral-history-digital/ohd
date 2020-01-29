@@ -33,9 +33,9 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project
-    Rails.cache.fetch("project") do
+    #Rails.cache.fetch("project") do
       Project.first
-    end
+    #end
     #Rails.cache.fetch("params[:project_id]-#{Project.maximum(:updated_at)}") do
     #  Project.where(shortname: params[:project_id].upcase).first
     #end
