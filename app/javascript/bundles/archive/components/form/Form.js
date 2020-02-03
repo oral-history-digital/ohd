@@ -23,7 +23,7 @@ export default class Form extends React.Component {
     }
 
     componentDidMount() {
-        this.initErrors();
+        //this.initErrors();
         this.initValues();
     }
 
@@ -82,7 +82,8 @@ export default class Form extends React.Component {
             }
             errors[element.attribute] = error;
         })
-        this.setState({ errors: errors });
+        //this.setState({ errors: errors });
+        return errors;
     }
 
     handleErrors(name, bool) {
@@ -92,13 +93,14 @@ export default class Form extends React.Component {
     }
 
     valid() {
-        let errors = false;
-        Object.keys(this.state.errors).map((name, index) => {
+        let errors = this.initErrors();
+        let showErrors = false;
+        Object.keys(errors).map((name, index) => {
             let hidden = this.props.elements.filter(element => element.attribute === name)[0] && this.props.elements.filter(element => element.attribute === name)[0].hidden;
-            errors = (!hidden && this.state.errors[name]) || errors;
+            showErrors = (!hidden && errors[name]) || showErrors;
         })
-        this.setState({showErrors: errors});
-        return !errors;
+        this.setState({showErrors: showErrors, errors: errors});
+        return !showErrors;
     }
 
     deleteSubScopeValue(index) {
