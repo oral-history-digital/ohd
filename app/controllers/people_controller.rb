@@ -40,7 +40,8 @@ class PeopleController < ApplicationController
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{params}-#{Person.maximum(:updated_at)}" do
           if params.keys.include?("all")
             people = Person.all.
-              includes(:translations, :histories, biographical_entries: [:translations], registry_references: {registry_entry: {registry_names: :translations}})
+              includes(:translations, :histories, biographical_entries: [:translations], registry_references: {registry_entry: {registry_names: :translations}}).
+              order("person_translations.last_name ASC")
             extra_params = "all"
           elsif params[:contributors_for_interview]
             people = Person.
