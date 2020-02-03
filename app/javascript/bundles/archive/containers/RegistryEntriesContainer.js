@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import RegistryEntries from '../components/RegistryEntries';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
-import { getCookie } from '../../../lib/utils';
+import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,
         registryEntriesStatus: state.data.statuses.registry_entries,
-        hiddenRegistryEntryIds: state.archive.hiddenRegistryEntryIds,
+        project: getProject(state),
         account: state.data.accounts.current,
         editView: state.archive.editView,
     }
