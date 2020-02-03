@@ -9,7 +9,7 @@ import { getCookie, getProject } from '../../../lib/utils';
 const mapStateToProps = (state, ownProps) => {
     let project = getProject(state);
     return {
-        fulltext: state.search.query && state.search.query.fulltext || '',
+        fulltext: state.search.archive.query.fulltext,
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         translations: state.archive.translations,
