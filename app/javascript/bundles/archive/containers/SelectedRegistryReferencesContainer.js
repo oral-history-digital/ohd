@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         editView: state.archive.editView,
         interview: getInterview(state),
         project: getProject(state),
-        account: state.data.accounts.current,
+        account: state.account,
     }
 }
 

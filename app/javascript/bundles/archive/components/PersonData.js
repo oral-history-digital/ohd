@@ -92,6 +92,8 @@ export default class PersonData extends React.Component {
             if (datum.source === 'Person'){
                 let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
                 let value = interviewee[datum.name] || '---';
+                if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
+                    value = t(_this.props, `${datum.name}.${value}`)
                 if (typeof value === 'object' && value !== null)
                     value = value[_this.props.locale]
                 if (Array.isArray(value)){ value = value.join(", ") } //this is needed for mog and probably all other projects
