@@ -3,7 +3,7 @@ class SegmentSerializer < ApplicationSerializer
 
   attributes :id,
              :interview_id,
-             :interview_archive_id,
+             :archive_id,
              :sort_key,
              :time,
              :tape_nbr,
@@ -24,10 +24,6 @@ class SegmentSerializer < ApplicationSerializer
              :speaker
              #:speaker_is_interviewee
 
-  def interview_archive_id
-    object.interview.archive_id
-  end  
-  
   def speaker_changed
    object.speaker_changed
   end
