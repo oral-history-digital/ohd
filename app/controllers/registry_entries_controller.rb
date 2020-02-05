@@ -67,21 +67,31 @@ class RegistryEntriesController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        registry_entries, extra_params =
-          if params[:children_for_entry]
-            [
-              RegistryEntry.find(params[:children_for_entry]).children,
-              "children_for_entry_#{params[:children_for_entry]}",
-            ]
-          elsif params[:ref_object_type]
-            [
-              params[:ref_object_type].classify.constantize.find(params[:ref_object_id]).registry_entries,
-              "ref_object_type_#{params[:ref_object_type]}_ref_object_id_#{params[:ref_object_id]}",
-            ]
-          end
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-#{params}-#{RegistryEntry.maximum(:updated_at)}" do
+          registry_entries, extra_params =
+            if params[:children_for_entry]
+              [
+                RegistryEntry.find(params[:children_for_entry]).children.includes([
+                  :registry_references,
+                  :parent_registry_hierarchies,
+                  {registry_names: :translations},
+                  {ancestors: {registry_names: :translations}} 
+                ]),
+                "children_for_entry_#{params[:children_for_entry]}",
+              ]
+            elsif params[:ref_object_type]
+              [
+                params[:ref_object_type].classify.constantize.find(params[:ref_object_id]).registry_entries.includes([
+                  :registry_references,
+                  :parent_registry_hierarchies,
+                  {registry_names: :translations},
+                  {ancestors: {registry_names: :translations}} 
+                ]),
+                "ref_object_type_#{params[:ref_object_type]}_ref_object_id_#{params[:ref_object_id]}",
+              ]
+            end
 
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-#{extra_params}-#{RegistryEntry.maximum(:updated_at)}" do
-          registry_entries = registry_entries.includes(registry_names: :translations)
+          #registry_entries = registry_entries.includes(registry_names: :translations)
           {
             data: registry_entries.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: "registry_entries",

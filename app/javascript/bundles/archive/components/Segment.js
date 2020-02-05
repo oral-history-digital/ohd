@@ -42,8 +42,6 @@ export default class Segment extends React.Component {
     }
 
     transcript() {
-        //let locale = this.props.originalLocale ? this.props.interview.lang : this.props.locale;
-        //return (this.props.data.text) ? (this.props.data.text[`${locale}-original`] || this.props.data.text['de-original']) : ''
         return admin(this.props, this.props.data) ? (this.props.data.text[`${this.props.contentLocale}-original`] || this.props.data.text[`${this.props.contentLocale}-public`]) : 
                (this.props.data.text[`${this.props.contentLocale}-public`] || '')
     }
@@ -76,48 +74,30 @@ export default class Segment extends React.Component {
     }
 
     references(locale) {
-        if (this.state.contentType == 'references') {
+        if (this.state.contentType == 'references' && this.props.data.references_count[locale] > 0) {
             return <RegistryReferencesContainer 
                        refObject={this.props.data} 
                        parentEntryId={1}
                        locale={locale} 
                        setOpenReference={this.setOpenReference}
                    />
-            //return this.props.data.references.map((reference, index) => {
-                //if (reference.desc_with_note[locale] && reference.desc_with_note[locale].note) {
-                    //return (
-                        //<span 
-                            //id={`reference_${reference.id}`} 
-                            //className='scope-note-link'
-                            //key={"reference-" + index} 
-                            //onClick={() => this.setOpenReference(reference)}
-                        //>
-                            //{reference.desc_with_note[locale].title}
-                        //</span>
-                    //)
-                //} else {
-                    //return <span id={`reference_${reference.id}`} key={"reference-" + index}>{reference.desc_with_note[locale].title}</span>
-                //}
-            //})
         }
     }
 
     annotations(locale) {
-        if (this.state.contentType == 'annotations') {
+        if (this.state.contentType == 'annotations' && this.props.data.annotations_count[locale] > 0) {
             return <AnnotationsContainer segment={this.props.data} locale={locale} />
         }
     }
 
     userAnnotations() {
-        if (this.state.contentType == 'annotations') {
-            return this.props.data.user_annotation_ids.map((uId, index) => {
-                    if(this.props.userContents && this.props.userContents[uId] && this.props.userContents[uId].description) {
-                        return  <p className='content-trans-text-element-data' key={"userAnnotation-" + index}>
-                                {this.props.userContents[uId].description}
-                            </p>
-                    }
-            })
-        }
+        return this.props.data.user_annotation_ids.map((uId, index) => {
+                if(this.props.userContents && this.props.userContents[uId] && this.props.userContents[uId].description) {
+                    return  <p className='content-trans-text-element-data' key={"userAnnotation-" + index}>
+                            {this.props.userContents[uId].description}
+                        </p>
+                }
+        }).filter((a) => a )
     }
 
     speakerChanged() {
@@ -139,14 +119,21 @@ export default class Segment extends React.Component {
         }
     }
 
-    renderLinks(locale) {
+    renderLinks(locale, userAnnotations) {
         if (
             admin(this.props, {type: 'RegistryReference', action: 'update'}) || 
-            (Object.values(this.props.data.annotations).length > 0 || this.props.data.references_count > 0 || this.props.data.user_annotation_ids.length)
+            this.props.data.annotations_count[this.props.contentLocale] > 0 || 
+            this.props.data.references_count[this.props.contentLocale] > 0 || 
+            userAnnotations.length > 0
         ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = admin(this.props, {type: 'Annotation', action: 'update'}) || Object.values(this.props.data.annotations).length > 0 || this.props.data.user_annotation_ids.length > 0 ? 'content-trans-text-ico-link' : 'hidden';
-            let referenceCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) || this.props.data.references_count > 0 ? 'content-trans-text-ico-link' : 'hidden';
+            let annotionCss = admin(this.props, {type: 'Annotation', action: 'update'}) || 
+                this.props.data.annotations_count[this.props.contentLocale] > 0 || 
+                userAnnotations.length > 0 ? 
+                'content-trans-text-ico-link' : 'hidden';
+            let referenceCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) || 
+                this.props.data.references_count[this.props.contentLocale] > 0 ? 
+                'content-trans-text-ico-link' : 'hidden';
 
             return (
                 <div className={icoCss}>
@@ -206,6 +193,8 @@ export default class Segment extends React.Component {
         let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
         let contentTransRowCss = this.speakerChanged() ? 'content-trans-row speaker-change' : 'content-trans-row';
         let text = this.transcript();
+        let uAnnotations = this.userAnnotations();
+
         if (text) {
             return (
                     <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
@@ -221,11 +210,11 @@ export default class Segment extends React.Component {
                                 {text}
                             </div>
                         </div>
-                        {this.renderLinks(this.props.contentLocale)}
+                        {this.renderLinks(this.props.contentLocale, uAnnotations)}
                         <div className={contentOpenClass}>
                             <div>
                                 {this.annotations(this.props.contentLocale)}
-                                {this.userAnnotations()}
+                                {uAnnotations}
                             </div>
                             <div className='content-trans-text-element-data'>
                                 {this.references(this.props.contentLocale)}

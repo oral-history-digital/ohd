@@ -55,9 +55,7 @@ export default class Gallery extends React.Component {
                  onClick={() => this.props.openArchivePopup({
                      title: null,
                      big: true,
-                     content: <CarouselContainer
-                                n={n}
-                                />,
+                     content: <CarouselContainer n={n} />
                  })}
 
             >

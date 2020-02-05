@@ -16,12 +16,28 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :translations
 
   serialize :view_modes, Array
-  serialize :available_locales
-  serialize :upload_types
-  serialize :name
-  serialize :hidden_registry_entry_ids
-  serialize :pdf_registry_entry_codes
+  serialize :available_locales, Array
+  serialize :upload_types, Array
+  #serialize :name, Array
+  serialize :funder_names, Array
+  serialize :hidden_registry_entry_ids, Array
+  serialize :pdf_registry_entry_codes, Array
   # serialize :fullname_on_landing_page
+
+  #
+  # define pseudo-methods for serialized attributes
+  # 
+  # if params[:available_locales] = "de,en,ru" (a string!!) it can not be serialized
+  # therefore the string-values from the params-hash are splitted  first
+  # 
+  [:view_modes, :available_locales, :upload_types, :funder_names, :hidden_registry_entry_ids, :pdf_registry_entry_codes].each do |m|
+    define_method "pseudo_#{m}=" do |string|
+      write_attribute(m, string.split(','))
+    end
+    define_method "pseudo_#{m}" do
+      read_attribute m
+    end
+  end
 
   class << self
     def config
@@ -59,7 +75,9 @@ class Project < ApplicationRecord
   end
 
   def search_facets
-    metadata_fields.where(use_as_facet: true)
+    metadata_fields.where(use_as_facet: true).
+      includes(:translations, :registry_reference_type, registry_entry: {registry_names: :translations}).
+      order(:facet_order)
   end
 
   def search_facets_names
@@ -67,7 +85,7 @@ class Project < ApplicationRecord
   end
 
   def list_columns
-    metadata_fields.where(use_in_results_table: true)
+    metadata_fields.where(use_in_results_table: true).order(:list_columns_order)
   end
 
   def detail_view_fields
@@ -88,8 +106,8 @@ class Project < ApplicationRecord
 
   def min_to_max_birth_year_range
     Rails.cache.fetch("#{cache_key_prefix}-min_to_max_birth_year") do
-      first = (interviews.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
-      last = (interviews.map { |i| i.interviewees.first.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
+      first = (interviews.map { |i| i.interviewee.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.first || 1900
+      last = (interviews.map { |i| i.interviewee.try(:year_of_birth).try(:to_i) } - [nil, 0]).sort.last || DateTime.now.year
       (first..last)
     end
   end
@@ -151,7 +169,7 @@ class Project < ApplicationRecord
         mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-language-search-facets-#{Language.maximum(:updated_at)}-") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: facet.source.classify.constantize.all.inject({}) do |subfacets, sf|
+            subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
               subfacets[sf.id.to_s] = {
                 name: sf.localized_hash(:name),
                 count: 0
@@ -165,7 +183,7 @@ class Project < ApplicationRecord
         mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-collection-search-facets-#{Collection.maximum(:updated_at)}-") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: facet.source.classify.constantize.all.inject({}) do |subfacets, sf|
+            subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
               subfacets[sf.id.to_s] = {
                 name: sf.localized_hash(:name),
                 count: 0,
@@ -202,4 +220,5 @@ class Project < ApplicationRecord
     end
     facets
   end
+
 end

@@ -29,14 +29,6 @@ class ReadBulkMetadataFileJob < ApplicationJob
       unless index == 0
         begin
           unless data[0].blank? && data[1].blank? && data[2].blank?
-            interviewee = Person.find_or_create_by(first_name: data[1], last_name: data[2], alias_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6])
-
-            #interviewer_names = data[18] && data[18].split(/[ ,]/).reject(&:blank?)
-            #interviewer = find_or_create_person(first_name: interviewer_names[0], last_name: interviewer_names[1]) if interviewer_names
-
-            short_bio = BiographicalEntry.find_or_create_by(person_id: interviewee.id)
-            short_bio.update_attributes text: data[11]
-
             interview = Interview.find_by_archive_id(data[0]) || Interview.find_by_signature_original(data[14])
 
             interview_data = {
@@ -48,21 +40,31 @@ class ReadBulkMetadataFileJob < ApplicationJob
               media_type: data[15],
               archive_id: data[0],
               signature_original: data[14], 
-              properties: {interviewer: data[23], link: data[27], subcollection: data[13]}
             }
 
+            properties = {interviewer: data[23], link: data[27], subcollection: data[13]}.select{|k,v| v != nil}
+
             if interview
-              interview.update_attributes interview_data
+              interview_properties = interview.properties.update(properties)
+              interview.update_attributes interview_data.select{|k,v| v != nil}.update(properties: interview_properties)
             else
-              interview = Interview.create interview_data
+              interview = Interview.create interview_data.update(properties: properties)
             end
 
             # create default tape 
-            Tape.create interview_id: interview.id, media_id: "#{interview.archive_id.upcase}_01_01", workflow_state: "digitized", time_shift: 0, number: 1 
+            Tape.find_or_create_by interview_id: interview.id, media_id: "#{interview.archive_id.upcase}_01_01", workflow_state: "digitized", time_shift: 0, number: 1 
 
-            # cleanup missleading contributions
-            Contribution.where(interview_id: interview.id, contribution_type: 'interviewee').destroy_all
-            Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
+            interviewee_data = {first_name: data[1], last_name: data[2], alias_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6]}.select{|k,v| v != nil}
+
+            if interview.interviewee
+              interview.interviewee.update_attributes interviewee_data
+            else
+              interviewee = Person.find_or_create_by(first_name: data[1], last_name: data[2], alias_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6])
+              Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
+            end
+
+            short_bio = BiographicalEntry.find_or_create_by(person_id: interview.interviewee.id)
+            short_bio.update_attributes text: data[11]
 
             reference(interview, data[22], 'accessibility')
             reference(interview, data[28], 'camp')

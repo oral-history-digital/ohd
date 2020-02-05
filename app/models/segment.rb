@@ -58,7 +58,7 @@ class Segment < ApplicationRecord
 
 
   # ZWAR_MIGRATE: uncomment this in between migrations (after  20170710104214_make_segment_speaker_associated)
-  translates :mainheading, :subheading, :text, :spec
+  translates :mainheading, :subheading, :text, :spec, touch: true
   accepts_nested_attributes_for :translations
 
   validates_presence_of :timecode#, :media_id

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import SelectInterviewEditViewColumnsFormContainer from '../containers/SelectInterviewEditViewColumnsFormContainer';
-import { t, admin, fullname, segments, activeSegment, getInterviewee } from '../../../lib/utils';
+import { t, admin, fullname, segments, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
 import moment from 'moment';
 
 import { MISSING_STILL } from '../constants/archiveConstants'
@@ -135,7 +135,7 @@ export default class VideoPlayer extends React.Component {
             <div className="video-text-note" onClick={() => this.props.openArchivePopup({
                 title: t(this.props, 'save_user_annotation'),
                 content: this.annotateOnSegmentForm(
-                    activeSegment(this.video.currentTime, this.props).id
+                    sortedSegmentsWithActiveIndex(this.video.currentTime, this.props)[0]
                 )
             })}>
                 <i className="fa fa-pencil"></i>
@@ -144,21 +144,20 @@ export default class VideoPlayer extends React.Component {
         );
     }
 
-    annotateOnSegmentForm(segmentIndex) {
-        let segment = segments(this.props)[segmentIndex];
+    annotateOnSegmentForm(segment) {
         return <UserContentFormContainer
             title={this.defaultTitle()}
             description=''
             properties={{
                 time: segment.time,
                 tape_nbr: segment.tape_nbr,
-                segmentIndex: segmentIndex,
+                segmentIndex: segment.id,
                 interview_archive_id: this.props.interview.archive_id
             }}
             reference_id={segment.id}
             reference_type='Segment'
             media_id={segment.media_id}
-            segmentIndex={segmentIndex}
+            segmentIndex={segment.id}
             type='UserAnnotation'
             workflow_state='private'
         />

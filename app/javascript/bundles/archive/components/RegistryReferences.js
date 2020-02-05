@@ -54,6 +54,7 @@ export default class RegistryReferences extends React.Component {
 
                 if (
                     registryEntry && 
+                    registryEntry.name[this.props.locale] && 
                     usedRegistryEntryIds.indexOf(registryEntry.id) === -1 && 
                     registryReference.registry_reference_type_id == this.props.registryReferenceTypeId
                 ) {
@@ -69,11 +70,6 @@ export default class RegistryReferences extends React.Component {
                     );
                     usedRegistryEntryIds.push(registryEntry.id);
                 }
-            }
-            if(registryReferences.length < 1) {
-                registryReferences.push(
-                    <span>---</span>
-                )
             }
         } 
         return registryReferences;

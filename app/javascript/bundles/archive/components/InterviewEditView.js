@@ -1,6 +1,6 @@
 import React from 'react';
 import SegmentEditViewContainer from '../containers/SegmentEditViewContainer';
-import { t, segments, activeSegment, getInterviewee } from '../../../lib/utils';
+import { t, segments, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 import {
     SEGMENTS_AFTER,
@@ -15,7 +15,7 @@ export default class InterviewEditView extends React.Component {
 
     componentDidMount() {
         this.loadSegments();
-        let currentSegment = activeSegment(this.props.transcriptTime, this.props);
+        let currentSegment = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props)[0];
         let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
         if (activeSegmentElement) {
             let offset = activeSegmentElement.offsetTop;
@@ -48,19 +48,16 @@ export default class InterviewEditView extends React.Component {
 
     tableRows() {
         let rows = [];
-        let shownSegments = segments(this.props);
         let translationLocale = this.props.interview.languages.filter(locale => locale !== this.props.interview.lang)[0]
 
-        for (var segmentId in shownSegments) {
-            let segment = shownSegments[segmentId];
-            rows.push(<SegmentEditViewContainer 
+        return sortedSegmentsWithActiveIndex(0, this.props)[1].map((segment, index) => {
+            return (<SegmentEditViewContainer 
                 segment={segment} 
                 originalLocale={this.props.interview.lang}
                 translationLocale={translationLocale}
-                key={`segment-edit-view-${segmentId}`} 
+                key={`segment-edit-view-${segment.id}`} 
             />);
-        }
-        return rows;
+        })
     }
 
     render () {

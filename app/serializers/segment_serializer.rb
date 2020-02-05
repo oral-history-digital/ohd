@@ -3,7 +3,7 @@ class SegmentSerializer < ApplicationSerializer
 
   attributes :id,
              :interview_id,
-             :interview_archive_id,
+             :archive_id,
              :sort_key,
              :time,
              :tape_nbr,
@@ -15,6 +15,7 @@ class SegmentSerializer < ApplicationSerializer
              :user_annotation_ids,
              :references_count,
              :registry_references,
+             :annotations_count,
              #:references,
              :media_id,
              :timecode,
@@ -23,10 +24,6 @@ class SegmentSerializer < ApplicationSerializer
              :speaker
              #:speaker_is_interviewee
 
-  def interview_archive_id
-    object.interview.archive_id
-  end  
-  
   def speaker_changed
    object.speaker_changed
   end
@@ -48,8 +45,18 @@ class SegmentSerializer < ApplicationSerializer
     object.annotations.inject({}){|mem, c| mem[c.id] = ::AnnotationSerializer.new(c); mem}
   end
 
+  def annotations_count
+    (object.project.available_locales + [object.interview.lang]).inject({}) do |mem, locale|
+      mem[locale] = object.annotations.includes(:translations).where("annotation_translations.locale": locale).count
+      mem
+    end
+  end
+
   def references_count
-    object.registry_references.count
+    (object.project.available_locales + [object.interview.lang]).inject({}) do |mem, locale|
+      mem[locale] = object.registry_references.where("registry_name_translations.locale": locale).count
+      mem
+    end
   end
 
   def registry_references

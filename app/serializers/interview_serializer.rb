@@ -10,12 +10,6 @@ class InterviewSerializer < ApplicationSerializer
     :duration,
     :translated,
     :interview_date,
-    #:inferior_quality,
-    #:original_citation,
-    #:translated_citation,
-    #:citation_media_id,
-    #:citation_timecode,
-    #:indexed_at,
     :language,
     :interviewee_id,
     :languages,
@@ -26,12 +20,9 @@ class InterviewSerializer < ApplicationSerializer
     :anonymous_title,
     :still_url,
     :src_base,
-    :references,
     :duration_seconds,
-    #  :place_of_interview,
     :year_of_birth,
     :typology,
-    # :country_of_birth,
     :segments,
     :last_segments_ids,
     :first_segments_ids,
@@ -43,28 +34,15 @@ class InterviewSerializer < ApplicationSerializer
     :observations,
     :doi_status,
     :properties,
-  #:updated_at,
-  #:segmented,
-  #:researched,
-  #:proofread,
-  #:inferior_quality,
-  #:original_citation,
-  #:translated_citation,
-  #:citation_media_id,
-  #:citation_timecode,
-  #:indexed_at,
-  #:src,
   ] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_reference_type_metadata_fields.map(&:name)
-
-  #belongs_to :colletion, serializer: CollectionSerializer
 
   def collection
     object.collection && object.collection.localized_hash(:name) || {}
   end
 
   def gender
-    if object.interviewees.first
-      Project.localized_hash_for("search_facets", object.interviewees.first.gender)
+    if object.interviewee
+      Project.localized_hash_for("search_facets", object.interviewee.gender)
     else
       {}
     end
@@ -85,7 +63,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def country_of_birth
-    interviewee = object.interviewees.first
+    interviewee = object.interviewee
     country = interviewee && interviewee.country_of_birth
     if country
       I18n.available_locales.inject({}) do |mem, locale|
@@ -102,7 +80,7 @@ class InterviewSerializer < ApplicationSerializer
   # end
 
   def interviewee_id
-    object.interviewees.first && object.interviewees.first.id
+    object.interviewee && object.interviewee.id
   end
 
   def transitions_to
@@ -127,11 +105,6 @@ class InterviewSerializer < ApplicationSerializer
 
   def video
     object.video? ? true : false
-  end
-
-  def lang
-    # return only the first language code in cases like 'slk/ces'
-    object.language && ( ISO_639.find(object.language.first_code).try(:alpha2) || object.language.first_code )
   end
 
   def language
@@ -160,7 +133,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def anonymous_title
-    if Project.current.fullname_on_landing_page
+    if object.project.fullname_on_landing_page
       object.localized_hash(:full_title)
     else
       object.localized_hash(:anonymous_title)
@@ -168,7 +141,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def still_url
-    case Project.current.identifier.to_sym
+    case object.project.identifier.to_sym
     when :cdoh
       "https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{object.archive_id}/#{object.archive_id}_2.jpg"
     when :mog
@@ -190,17 +163,17 @@ class InterviewSerializer < ApplicationSerializer
     format("%02d", object.tapes.count)
   end
 
-  def references
-    object.segment_registry_references.with_locations.map do |ref|
-      {
-        archive_id: object.archive_id,
-        desc: ref.registry_entry.localized_hash(:descriptor),
-        # exclude dedalo default location (Valencia)
-        latitude: ref.registry_entry.latitude == "39.462571" ? nil : ref.registry_entry.latitude.to_f,
-        longitude: ref.registry_entry.longitude == "-0.376295" ? nil : ref.registry_entry.longitude.to_f,
-      }
-    end
-  end
+  #def references
+    #object.segment_registry_references.with_locations.map do |ref|
+      #{
+        #archive_id: object.archive_id,
+        #desc: ref.registry_entry.localized_hash(:descriptor),
+        ## exclude dedalo default location (Valencia)
+        #latitude: ref.registry_entry.latitude == "39.462571" ? nil : ref.registry_entry.latitude.to_f,
+        #longitude: ref.registry_entry.longitude == "-0.376295" ? nil : ref.registry_entry.longitude.to_f,
+      #}
+    #end
+  #end
 
   # def place_of_interview
   #   RegistryEntrySerializer.new(object.place_of_interview) if object.place_of_interview
@@ -225,9 +198,9 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def year_of_birth
-    if object.interviewees.first
+    if object.interviewee
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.interviewees.first.year_of_birth
+        mem[locale] = object.interviewee.year_of_birth
         mem
       end
     else
@@ -236,9 +209,9 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def typology
-    if object.interviewees.first
+    if object.interviewee
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.interviewees.first.typology && object.interviewees.first.typology.split(",").map { |t| I18n.t(t, scope: "search_facets", locale: locale) }.join(", ")
+        mem[locale] = object.interviewee.typology && object.interviewee.typology.split(",").map { |t| I18n.t(t, scope: "search_facets", locale: locale) }.join(", ")
         mem
       end
     end

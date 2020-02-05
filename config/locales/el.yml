@@ -85,7 +85,6 @@ el:
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Κωδικός συνέντευξης
-  biographical_entries_of: Kurzbiografie von
   noscript: Παρακαλώ ενεργοποιήστε το Javascript για να μπορέσετε να δείτε αυτή τη
     σελίδα.
   interviews: Συνεντεύξεις
@@ -198,7 +197,9 @@ el:
   typology: Εμπειρία
   typologies: Εμπειρία
   history: Σύντομο βιογραφικό
-  biographical_entries_from: Biografische Einträge von
+  biographical_entries_header: 'Kurzbiografie:'
+  biographical_entries_title: 'Kurzbiografie von'
+  biographical_entries_footer: 'Zitiervorgabe: Kurzbiografie von'
   interview_info: Σχετικά με τη συνέντευξη
   place: Τόπος
   duration: Διάρκεια
@@ -742,7 +743,9 @@ el:
         name: Name
         locale: Sprache
         use_as_facet: als Facette benutzen
+        facet_order: Reihenfolge in den Suchfacetten
         use_in_results_table: als Suchergebnis zeigen
+        list_columns_order: Reihenfolge in den Suchergebnissen
         use_in_details_view: in der Detailansicht zeigen
         display_on_landing_page: Auf der Landing-Page zeigen
         ref_object_type: RefObjectType
@@ -877,6 +880,7 @@ el:
         caption: Fotobeschreibung
         data: Fotodatei
         workflow_state: 'Status ändern zu:'
+        caption_explanation: This photo caption is only available in German.
       mark_text:
         locale: Sprache
       text:

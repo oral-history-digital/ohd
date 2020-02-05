@@ -1,8 +1,6 @@
 require 'globalize'
 
 class Photo < ApplicationRecord
-  include Workflow
-
   belongs_to :interview
   has_one_attached :photo
 
@@ -12,7 +10,7 @@ class Photo < ApplicationRecord
                     #:url => (ApplicationController.relative_url_root || '') + "/interviews/:interview/photos/:basename_:style.:extension",
                     #:path => ":rails_root/assets/archive_images/gallery/:basename_:style.:extension"
 
-  translates :caption, fallbacks_for_empty_translations: true, touch: true
+  translates :caption, fallbacks_for_empty_translations: false, touch: true
 
   scope :for_file, -> (filename) { where('photo_file_name LIKE ?', (filename || '').sub(/([^.]+)_\w+(\.\w{3,4})?$/,'\1\2') + '%') }
 
@@ -39,17 +37,21 @@ class Photo < ApplicationRecord
     end
   end
 
-  workflow do
-    state :unshared do
-      event :publish, transition_to: :public
-    end
-    state :public do
-      event :unpublish, transitions_to: :unshared
-    end
+  def workflow_states
+    ['public', 'unshared']
   end
 
-  def workflow_state=(change)
-    self.send("#{change}!")
+  # this method should be present through 'translates: ....'
+  # But it isn't. Therefore:
+  #
+  def translations_attributes=(atts)
+    atts.each do |t|
+      if t[:id] 
+        translations.find(t[:id]).update_attributes locale: t[:locale], caption: t[:caption]
+      else
+        update_attributes t
+      end
+    end
   end
 
   def write_iptc_metadata(metadata)

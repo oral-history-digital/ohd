@@ -33,8 +33,12 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project
-    Project.first
-    #Project.where(shortname: params[:project_id].upcase).first
+    #Rails.cache.fetch("project") do
+      Project.first
+    #end
+    #Rails.cache.fetch("params[:project_id]-#{Project.maximum(:updated_at)}") do
+    #  Project.where(shortname: params[:project_id].upcase).first
+    #end
   end
   helper_method :current_project
 
@@ -109,13 +113,15 @@ class ApplicationController < ActionController::Base
           languages: {all: 'fetched'},
         },
         collections: Rails.cache.fetch("#{current_project.cache_key_prefix}-collections-collections_for_project_#{current_project.identifier}-#{Collection.maximum(:updated_at)}") do
-          current_project.collections.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+          current_project.collections.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
-          Project.all.inject({}) { |mem, s| mem[s.id] = cache_single(s, nil, "metadata_fields"); mem }
+          Project.all.
+            includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
+            inject({}) { |mem, s| mem[s.id] = cache_single(s, nil, "metadata_fields"); mem }
         end,
         languages: Rails.cache.fetch("#{current_project.cache_key_prefix}-languages-#{Language.maximum(:updated_at)}") do 
-          Language.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+          Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         accounts: {
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || {}

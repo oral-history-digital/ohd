@@ -32,23 +32,31 @@ class PeopleController < ApplicationController
   end
 
   def index
-    if params.keys.include?("all")
-      people = policy_scope(Person).all
-      extra_params = "all"
-    elsif params[:contributors_for_interview]
-      people = policy_scope(Person).where(id: Interview.find(params[:contributors_for_interview]).contributions.map(&:person_id))
-      extra_params = "contributors_for_interview_#{params[:contributors_for_interview]}"
-    else
-      page = params[:page] || 1
-      people = policy_scope(Person).includes(:translations).where(search_params).order("person_translations.last_name ASC").paginate page: page
-      extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
-    end
+    policy_scope Person
 
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{extra_params ? extra_params : "all"}-#{Person.maximum(:updated_at)}" do
-          people = people.includes(:translations, :histories, :biographical_entries, :registry_references)
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{params}-#{Person.maximum(:updated_at)}" do
+          if params.keys.include?("all")
+            people = Person.all.
+              includes(:translations, :histories, biographical_entries: [:translations], registry_references: {registry_entry: {registry_names: :translations}}).
+              order("person_translations.last_name ASC")
+            extra_params = "all"
+          elsif params[:contributors_for_interview]
+            people = Person.
+              includes(:translations, :histories, biographical_entries: [:translations], registry_references: {registry_entry: {registry_names: :translations}}).
+              where(id: Interview.find(params[:contributors_for_interview]).contributions.map(&:person_id))
+            extra_params = "contributors_for_interview_#{params[:contributors_for_interview]}"
+          else
+            page = params[:page] || 1
+            people = Person.
+              includes(:translations, :histories, biographical_entries: [:translations], registry_references: {registry_entry: {registry_names: :translations}}).
+              where(search_params).order("person_translations.last_name ASC").
+              paginate page: page
+            extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
+          end
+          
           {
             data: people.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: "people",

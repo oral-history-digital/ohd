@@ -83,7 +83,6 @@ es:
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Archiv-ID
-  biographical_entries_of: Kurzbiografie von
   noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
   interviews: Interviews
   places: Geburtsorte
@@ -100,7 +99,8 @@ es:
   tapes: Bänder
   without_translation: Dieses Interview wurde noch nicht ins Deutsche übersetzt.
   without_transcript: Dieses Interview wurde noch nicht transkribiert.
-  without_index: Für dieses Interview gibt es noch kein deutschsprachiges Inhaltsverzeichnis.
+  without_index: No table of contents was created for this interview.
+  without_index_locale: The table of contents of this interview has not been translated into English. 
   without_ref_tree: Dieses Interviews wurde noch nicht verschlagwortet.
   private: Privat
   proposed: In Prüfung zur Veröffentlichung
@@ -194,7 +194,9 @@ es:
   typology: Erfahrung
   typologies: Erfahrungen
   history: Kurzbiografie
-  biographical_entries_from: Kurzbiografie von
+  biographical_entries_header: 'Kurzbiografie:'
+  biographical_entries_title: 'Kurzbiografie von'
+  biographical_entries_footer: 'Zitiervorgabe: Kurzbiografie von'
   interview_info: Zum Interview
   place: Ort
   duration: Dauer
@@ -731,7 +733,9 @@ es:
         name: Name
         locale: Sprache
         use_as_facet: als Facette benutzen
+        facet_order: Reihenfolge in den Suchfacetten
         use_in_results_table: als Suchergebnis zeigen
+        list_columns_order: Reihenfolge in den Suchergebnissen
         use_in_details_view: in der Detailansicht zeigen
         display_on_landing_page: Auf der Landing-Page zeigen
         ref_object_type: RefObjectType
@@ -853,6 +857,7 @@ es:
         caption: Fotobeschreibung
         data: Fotodatei
         workflow_state: 'Status ändern zu:'
+        caption_explanation: This photo caption is only available in German.
       mark_text:
         locale: Sprache
       text:

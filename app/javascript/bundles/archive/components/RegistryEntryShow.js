@@ -14,9 +14,9 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     fetchInterview(archiveId) {
-        if(!this.props.interviewsStatus || !this.props.interviewsStatus[archiveId]) {
+        if(archiveId && (!this.props.interviewsStatus || !this.props.interviewsStatus[archiveId])) {
             this.props.fetchData(this.props, 'interviews', archiveId)
-        }
+        } 
     }
 
     interviewIsFetched(archiveId) {
@@ -24,7 +24,7 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     fetchSegment(id) {
-        if(!this.props.segmentsStatus || !this.props.segmentsStatus[id]) {
+        if(id && (!this.props.segmentsStatus || !this.props.segmentsStatus[id])) {
             this.props.fetchData(this.props, 'segments', id)
         }
     }
@@ -39,8 +39,8 @@ export default class RegistryEntryShow extends React.Component {
         }
     }
 
-    loader(){
-        if(!this.registryReferences() || ( Object.keys(this.registryReferences()).length !== Object.keys(this.props.registryEntry.registry_references).length ) ){
+    loader(references){
+        if(!references || ( Object.keys(references).length !== Object.keys(this.props.registryEntry.registry_references).length ) ){
             return <PixelLoader/>
         }
     }
@@ -58,42 +58,47 @@ export default class RegistryEntryShow extends React.Component {
         let ref_object_string = ''
         switch (rr.ref_object_type.toLowerCase()) {
             case 'segment':
-                this.fetchSegment(rr.ref_object_id)
                 if(this.segmentIsFetched(rr.ref_object_id)) {
-                    let interview_id = this.props.segments[rr.ref_object_id].interview_archive_id
-                    this.fetchInterview(interview_id)
+                    let interview_id = this.props.segments[rr.ref_object_id].archive_id
                     if (this.interviewIsFetched(interview_id)) {
                         ref_object_string = `${this.props.segments[rr.ref_object_id].timecode} ${this.tape(this.props.segments[rr.ref_object_id])} ${t(this.props, 'in')} ${this.props.interviews[interview_id].short_title[this.props.locale]} (${this.props.interviews[interview_id].archive_id})`
                         return (
                             <Link className={'search-result-link'}
                             onClick={() => {
                                 this.props.closeArchivePopup();
-                                this.props.setArchiveId(this.props.segments[rr.ref_object_id].interview_archive_id);
+                                this.props.setArchiveId(this.props.segments[rr.ref_object_id].archive_id);
                                 this.props.setTapeAndTime(this.props.segments[rr.ref_object_id].tape_nbr, this.props.segments[rr.ref_object_id].time)
                             }}
-                            to={pathBase(this.props) + '/interviews/' + this.props.segments[rr.ref_object_id].interview_archive_id}
+                            to={pathBase(this.props) + '/interviews/' + this.props.segments[rr.ref_object_id].archive_id}
                             >
                                 {`${ref_object_string}`}
                             </Link>
                         )
-                    } 
-                } 
+                    } else if (interview_id) {
+                        this.fetchInterview(interview_id)
+                    }
+                } else if (rr.ref_object_id) {
+                    this.fetchSegment(rr.ref_object_id)
+                }
+                break;
             default:
-                this.fetchInterview(rr.ref_interview_archive_id)
-                if(this.interviewIsFetched(rr.ref_interview_archive_id)) {
-                    ref_object_string = `${this.props.interviews[rr.ref_interview_archive_id].short_title[this.props.locale]} (${this.props.interviews[rr.ref_interview_archive_id].archive_id})`
+                if(this.interviewIsFetched(rr.archive_id)) {
+                    ref_object_string = `${this.props.interviews[rr.archive_id].short_title[this.props.locale]} (${this.props.interviews[rr.archive_id].archive_id})`
                     return (
                         <Link className={'search-result-link'}
                         onClick={() => {
                             this.props.closeArchivePopup();
-                            this.props.setArchiveId(rr.ref_interview_archive_id);
+                            this.props.setArchiveId(rr.archive_id);
                         }}
-                        to={pathBase(this.props) + '/interviews/' + rr.ref_interview_archive_id}
+                        to={pathBase(this.props) + '/interviews/' + rr.archive_id}
                         >
                             {`${ref_object_string}`}
                         </Link>
                     )
+                } else if (rr.archive_id) {
+                    this.fetchInterview(rr.archive_id)
                 }
+                break;
         }
     }
 
@@ -103,8 +108,9 @@ export default class RegistryEntryShow extends React.Component {
             for (var r in this.props.registryEntry.registry_references) {
                 let rr = this.props.registryEntry.registry_references[r]
                 let rr_type = this.props.registryReferenceTypes[rr.registry_reference_type_id]
+                let ro = this.refObject(rr);
                 
-                if (this.refObject(rr)) {
+                if (ro) {
                     references.push(
                         <li
                             key={`this.props.registryEntry.registry_reference-${r}`} 
@@ -113,7 +119,7 @@ export default class RegistryEntryShow extends React.Component {
                                 {rr_type && `${rr_type.name[this.props.locale]} `}
                             </strong>
                             {`${t(this.props, 'in')} ${t(this.props, rr.ref_object_type.toLowerCase())} `}
-                            {this.refObject(rr)}
+                            {ro}
                         </li>
                     );
                 }
@@ -180,6 +186,7 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     render() {
+        let references = this.registryReferences();
         return (
             <div>
                 <div>
@@ -200,9 +207,9 @@ export default class RegistryEntryShow extends React.Component {
                 </h4>
                 <br/>
                 <ul>
-                    {this.registryReferences()}
+                    {references}
                 </ul>
-                {this.loader()}
+                {this.loader(references)}
 
             </div>
         );

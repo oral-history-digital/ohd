@@ -28,7 +28,7 @@ class PhotosController < ApplicationController
     authorize @photo
     @photo.update_attributes(photo_params)
     WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]}) 
-    clear_cache @photo.interview
+    @photo.interview.touch
 
     respond_to do |format|
       format.json do
@@ -68,7 +68,11 @@ class PhotosController < ApplicationController
   private
 
   def photo_params
-    params.require(:photo).permit(:interview_id, :caption, :workflow_state)
+    params.require(:photo).permit(
+      :interview_id, 
+      :workflow_state,
+      translations_attributes: [:locale, :id, :caption]
+    )
   end
 
   def deliver file_name

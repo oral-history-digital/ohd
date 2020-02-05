@@ -12,4 +12,10 @@ class Contribution < ApplicationRecord
   validates :contribution_type, inclusion: %w(interviewee interviewer transcriptor translator segmentator cinematographer quality_manager proofreader)
   validates_uniqueness_of :person_id, :scope => [ :interview_id, :contribution_type ]
 
+  around_save :touch_interview
+  around_destroy :touch_interview
+
+  def touch_interview
+    interview.touch
+  end
 end

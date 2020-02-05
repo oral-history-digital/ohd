@@ -69,7 +69,7 @@ export default class InterviewListRow extends React.Component {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
-                        {this.props.interview.title && this.props.interview.title[this.props.locale]}
+                        {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
                         {this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}
@@ -90,7 +90,6 @@ export default class InterviewListRow extends React.Component {
                             this.props.setTapeAndTime(1, 0);
                         }}
                         to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
-                        element='tr'
                     >
                         {this.title()}
                     </Link>

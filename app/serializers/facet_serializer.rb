@@ -5,16 +5,16 @@ class FacetSerializer < ApplicationSerializer
 
   def name
     if object.is_a? RegistryEntry
-      object.localized_hash(:descriptor)
+      object.includes(registry_names: :translations).localized_hash(:descriptor)
     else
-      MetadataField.find_by_name(object.code).localized_hash(:label)
+      MetadataField.includes(:translations).find_by_name(object.code).localized_hash(:label)
     end
   end
 
   def subfacets
     case object.class.name
     when "RegistryEntry"
-      object.children.inject({}) do |mem, child|
+      object.children.includes(registry_names: :translations).inject({}) do |mem, child|
         mem[child.id.to_s] = {
           name: child.localized_hash(:descriptor),
           count: 0,
@@ -25,7 +25,7 @@ class FacetSerializer < ApplicationSerializer
     when "RegistryReferenceType"
       # object.registry_entry.children.inject({}) do |mem, child|
       method = object.try(:children_only) ? "children" : "descendants"
-      object.registry_entry.send(method).inject({}) do |mem, child|
+      object.registry_entry.send(method).includes(registry_names: :translations).inject({}) do |mem, child|
         mem[child.id.to_s] = {
           name: child.localized_hash(:descriptor),
           count: 0,

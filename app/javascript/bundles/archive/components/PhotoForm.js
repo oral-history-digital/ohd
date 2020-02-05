@@ -8,14 +8,13 @@ export default class PhotoForm extends React.Component {
         let elements = [
             {
                 attribute: 'caption',
-                value: this.props.photo && this.props.photo.captions && this.props.photo.captions[this.props.locale]
+                elementType: 'multiLocaleInput',
             },
             {
                 elementType: 'select',
                 attribute: 'workflow_state',
-                values: this.props.photo && Object.values(this.props.photo.transitions_to),
+                values: this.props.photo && Object.values(this.props.photo.workflow_states),
                 optionsScope: 'workflow_states',
-                withEmpty: true,
             },
         ]
 
@@ -37,6 +36,7 @@ export default class PhotoForm extends React.Component {
             <Form 
                 scope='photo'
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                data={this.props.photo}
                 values={{
                     interview_id: this.props.interview && this.props.interview.id,
                     id: this.props.photo && this.props.photo.id

@@ -96,10 +96,13 @@ class ProjectsController < ApplicationController
     def project_params
       params.require(:project).
         permit(
-          "available_locales",
+          "pseudo_available_locales",
+          "pseudo_view_modes",
+          "pseudo_upload_types",
+          "pseudo_funder_names",
+          "pseudo_hidden_registry_entry_ids",
+          "pseudo_pdf_registry_entry_codes",
           "default_locale",
-          "view_modes",
-          "upload_types",
           "primary_color_rgb",
           "shortname",
           "initials",
@@ -110,12 +113,9 @@ class ProjectsController < ApplicationController
           "leader",
           "manager",
           "hosting_institution",
-          "funder_names",
           "contact_email",
           "smtp_server",
           "has_newsletter",
-          "hidden_registry_entry_ids",
-          "pdf_registry_entry_codes",
           "is_catalog",
           translations_attributes: [:locale, :name, :id]
       )

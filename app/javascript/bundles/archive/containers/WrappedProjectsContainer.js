@@ -40,10 +40,10 @@ const mapStateToProps = (state) => {
                 validate: function(v){return /^[a-z]{2}$/.test(v)}
             },
             {
-                attribute: "available_locales",
+                attribute: "pseudo_available_locales",
             },
             {
-                attribute: "view_modes",
+                attribute: "pseudo_view_modes",
             },
             {
                 attribute: "fullname_on_landing_page",
@@ -51,7 +51,7 @@ const mapStateToProps = (state) => {
                 type: "checkbox",
             },
             {
-                attribute: "upload_types",
+                attribute: "pseudo_upload_types",
             },
             //{
                 //attribute: "primary_color_rgb",
@@ -82,7 +82,7 @@ const mapStateToProps = (state) => {
                 attribute: "hosting_institution"
             },
             {
-                attribute: "funder_names"
+                attribute: "pseudo_funder_names"
             },
             {
                 attribute: "contact_email"
@@ -91,10 +91,10 @@ const mapStateToProps = (state) => {
                 attribute: "smtp_server"
             },
             {
-                attribute: "hidden_registry_entry_ids"
+                attribute: "pseudo_hidden_registry_entry_ids"
             },
             {
-                attribute: "pdf_registry_entry_codes"
+                attribute: "pseudo_pdf_registry_entry_codes"
             },
             {
                 elementType: 'input',
