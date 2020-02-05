@@ -31,20 +31,22 @@ class Admin::UserStatisticsController < Admin::BaseController
     mapping_file = File.join(Rails.root, 'config', 'statistics_mappings.yml')
     mappings = YAML::load_file(mapping_file)
 
+    countries = params[:countries] || User.all.map{|u|u.country}.sort.uniq
+
     @list = [ :header, :count ]
     @rows = {
             :header => { :label => "Benutzerstatistik vom #{Time.now.strftime("%d.%m.%Y")}", :sum => "Gesamt-Zeitraum", :cols => {} },
-            :count => { :label => nil, :sum => User.count, :cols => {} }
+            :count => { :label => nil, :sum => User.where(country: countries).count, :cols => {} }
     }
     @errors = []
 
     categories = { 'Beruf' => 'job_description', 'Recherche-Anliegen' => 'research_intentions', 'Land' => 'country' }
     categories.each do |category, field_name|
       #inserts title row
-      @list << "'=== #{categories[category]} ==='"
+      @list << "'=== #{category} ==='"
       #
       list = [ category.to_s ]
-      category_results = User.group(field_name).count.sort_by { |group| -group.last }
+      category_results = User.where(country: countries).group(field_name).count.sort_by { |group| -group.last }
       category_results.each do |category_result|
         label = category_result.first
         label = "k. A. (#{category})" if label.blank?
@@ -93,7 +95,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       @rows[:header][:cols][month_label] = month_label
 
       categories.each do |category, field_name|
-        results = User.where(conditions).group(field_name).count
+        results = User.where(country: countries).where(conditions).group(field_name).count
         results.each do |label, value|
           label = "k. A. (#{category})" if label.blank?
 
@@ -140,7 +142,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       end
     end
 
-    send_data(content, filename: "#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{Project.project_shortname}-Benutzerstatistik.csv")
+    send_data(content, filename: "#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{Project.project_shortname}-Benutzerstatistik-#{params[:countries].try(:join, '-') || "gesamt"}.csv")
   end
 
 end
