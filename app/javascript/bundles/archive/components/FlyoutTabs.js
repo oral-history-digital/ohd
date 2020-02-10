@@ -27,6 +27,7 @@ import CitationInfoContainer from '../containers/CitationInfoContainer';
 import AdminActionsContainer from '../containers/AdminActionsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import { t, admin, loggedIn, pathBase } from '../../../lib/utils';
+import Select from 'react-select'
 
 export default class FlyoutTabs extends React.Component {
 
@@ -38,8 +39,10 @@ export default class FlyoutTabs extends React.Component {
     constructor(props, context) {
         super(props, context);
         this.state = {
-            tabIndex: this.props.tabIndex
+            tabIndex: this.props.tabIndex,
+            selectedCountriesForUserStatistics: [],
         }
+        this.onCountrySelectorChange = this.onCountrySelectorChange.bind(this);
     }
 
     handleTabClick(tabIndex) {
@@ -264,6 +267,44 @@ export default class FlyoutTabs extends React.Component {
         return <Tab className={css} key='administration'>{t(this.props, 'edit.administration')}</Tab>;
     }
 
+    countryKeys() {
+        let countryKeys = [];
+        this.props.countryKeys[this.props.locale].map((x, i) => {
+            countryKeys[i] = {'label': this.props.translations[this.props.locale]["countries"][x], 'value': x}
+        })
+        return countryKeys;
+    }
+
+    onCountrySelectorChange(value, action) {
+        let array = []
+        for(var o in value) {
+            array.push(value[o]['value'])
+        }
+        this.setState({
+            ['selectedCountriesForUserStatistics']: array
+        });
+    }
+
+    userStatisticsPath () {
+        let path = `${pathBase(this.props)}/admin/user_statistics.csv`
+        if(this.state.selectedCountriesForUserStatistics.length > 0){
+            path = path + "?countries[]="
+            path = path + this.state.selectedCountriesForUserStatistics.join("&countries[]=")
+        }
+        return path
+    }
+
+    countrySelectorStyle = {
+        placeholder: (provided, state) => {
+            let cursor = 'text';
+            return Object.assign(Object.assign({}, provided), { cursor });
+        },
+        menu: (provided, state) => {
+            let position = 'relative';
+            return Object.assign(Object.assign({}, provided), { position });
+        },
+    }
+
     usersAdminTabPanel() {
         if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
             return (
@@ -273,11 +314,21 @@ export default class FlyoutTabs extends React.Component {
                         {this.subTab(
                             'edit.users.admin', 
                             <div>
-                                <UserRegistrationSearchFormContainer/>
-                                <a href={`${pathBase(this.props)}/admin/user_statistics.csv`}>
-                                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_user_statistics')}></i>
-                                    <span>{` ${t(this.props, 'download_user_statistics')}`}</span>
-                                </a>
+                                <div>
+                                    <UserRegistrationSearchFormContainer/>
+                                    <a href={this.userStatisticsPath()}>
+                                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_user_statistics')}></i>
+                                        <span>{` ${t(this.props, 'download_user_statistics')}`}</span>
+                                    </a>
+                                </div>
+                                <Select
+                                    options={this.countryKeys()} 
+                                    className="basic-multi-select"
+                                    isMulti
+                                    onChange={this.onCountrySelectorChange} 
+                                    styles={this.countrySelectorStyle}
+                                    placeholder={"Statistik nach Ländern filtern (optional)"}
+                                />
                             </div>,
                             `${pathBase(this.props)}/user_registrations`,
                             {type: 'UserRegistration', action: 'update'}

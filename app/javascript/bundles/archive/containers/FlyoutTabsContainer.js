@@ -22,7 +22,8 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.account.isLoggedIn,
         interview: getInterview(state),
         interviewee: getInterviewee({interview: getInterview(state), people: state.data.people}),
-        showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree
+        showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree,
+        countryKeys: state.archive.countryKeys,
     }
 }
 

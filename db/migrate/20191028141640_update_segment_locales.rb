@@ -10,7 +10,7 @@ class UpdateSegmentLocales < ActiveRecord::Migration[5.2]
       end
       dir.down do
         execute "UPDATE segment_translations SET locale = REGEXP_REPLACE(locale, '-public', '');"
-        add_column :segment_translations, :spec
+        add_column :segment_translations, :spec, :string
       end
     end
   end
