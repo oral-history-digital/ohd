@@ -73,7 +73,6 @@ en:
       annotation: notes by transcriptors, editors, translators; Additions like aliases or breakdown of an acronym; naming of nonverbal behavior
       tape_end: end of tape
   mark_texts: Replace text 
-  interview_with: Interview mit
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Archiv-ID
@@ -89,8 +88,6 @@ en:
     person's private collection.
   subcollection: Subcollection
   interview_empty_gallery_explanation: There are no photos available for this interview.
-  transcript_header: Transcript of the interview with
-  translation_header: Translation of the interview with
   tapes: Tapes
   without_translation: This interview has not yet been translated into German.
   without_transcript: This interview has not yet been transcribed.
@@ -190,6 +187,11 @@ en:
   typology: Experience background
   typologies: Erfahrungen
   history: Short biography
+  interview_with: Interview mit
+  transcript_header: 'Transcript (%{lang}):'
+  transcript_title: Transcript (%{lang}) of the interview with
+  translation_title: Translation (%{lang}) of the interview with
+  transcript_footer: 'Citation: Transcript of the Interview with'
   biographical_entries_header: 'Short biography:'
   biographical_entries_title: 'Short biography of'
   biographical_entries_footer: 'Citation: Short biography of'

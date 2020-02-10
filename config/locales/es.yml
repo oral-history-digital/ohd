@@ -79,7 +79,6 @@ es:
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
   mark_texts: Replace text 
-  interview_with: Interview mit
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Archiv-ID
@@ -194,6 +193,11 @@ es:
   typology: Erfahrung
   typologies: Erfahrungen
   history: Kurzbiografie
+  interview_with: Interview mit
+  transcript_header: 'Transkript (%{lang}):'
+  transcript_title: Transkript (%{lang}) des Interviews mit
+  translation_title: Übersetzung (%{lang}) des Interviews mit
+  transcript_footer: 'Zitiervorgabe: Transkript des Interviews mit'
   biographical_entries_header: 'Kurzbiografie:'
   biographical_entries_title: 'Kurzbiografie von'
   biographical_entries_footer: 'Zitiervorgabe: Kurzbiografie von'

@@ -1,7 +1,8 @@
 <% 
-  interviewee_name = @interview.interviewees.last.name(true)[@locale.to_sym]
-  title = "#{I18n.t((@orig_lang == @lang) ? 'transcript_header' : 'translation_header', locale: @locale)} #{interviewee_name}"
-  header_text = "#{I18n.t('transcript', locale: @locale)}:  #{I18n.t('interview_with', locale: @locale)} #{interviewee_name} (#{I18n.t('archive_id', locale: @locale)} #{@interview.archive_id})"
+  interviewee_name = "#{@interview.interviewees.last.first_name(@locale)} #{@interview.interviewees.last.last_name(@locale)}"
+  #interviewee_name = @interview.interviewees.last.name(true)[@locale.to_sym]
+  title = "#{I18n.t((@orig_lang == @lang) ? 'transcript_title' : 'translation_title', locale: @locale, lang: @lang_human)} #{interviewee_name}"
+  header_text = "#{I18n.t('transcript_header', locale: @locale, lang: @lang_human)} #{interviewee_name} (#{I18n.t('archive_id', locale: @locale)} #{@interview.archive_id})"
   tape = 0
   speaker_id = nil
  %>
@@ -34,8 +35,10 @@
 <%= render partial: "./latex/observation" if @interview.observations(@locale) && Project.current.identifier != 'zwar' %>
 
 <%# set title of  tableofcontents: %>
-\renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: @locale) %>}
-\tableofcontents
+<% if @lang_headings_exist %>
+  \renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: @locale) %>}
+  \tableofcontents
+<% end %>
 
 \newpage
 
@@ -56,7 +59,7 @@
 
     <% space_above = 0.4 %>
 
-    <% if !segment.mainheading.blank? %>
+    <% if !segment.mainheading(@lang).blank? %>
       \section{<%= latex_escape(CGI::unescapeHTML segment.mainheading(@lang)) %>}
       <% if tape != segment.tape.number %> 
         <% space_above = 0 %>
@@ -65,7 +68,7 @@
       <%= render partial: "./latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: space_above, space_below: 0, font_size: 10} %>
     <% end %>
 
-    <% if !segment.subheading.blank? %>
+    <% if !segment.subheading(@lang).blank? %>
       \subsection{<%= latex_escape(CGI::unescapeHTML segment.subheading(@lang)) %>}
       <%= render partial: "./latex/title", locals: {title: Time.parse(segment.timecode).strftime("%H:%M:%S"), space_above: 0.4, space_below: 0, font_size: 10} %>
     <% end %>
