@@ -11,10 +11,10 @@ export default class UserContentDelete extends React.Component {
     render() {
         return (
             <div>
-                <p>{t(this.props, 'title')}:
+                <p>{t(this.props, 'title') + ': '} 
                     <span>{this.props.title}</span>
                 </p>
-                <p>{t(this.props, 'description')}:
+                <p>{t(this.props, 'description') + ': '} 
                     <span>{this.props.description}</span>
                 </p>
                 <div className='any-button' onClick={() => this.destroy()}>
