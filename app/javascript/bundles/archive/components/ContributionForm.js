@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from '../containers/form/Form';
 import { t } from '../../../lib/utils';
+import { Link } from 'react-router-dom';
 
 export default class ContributionForm extends React.Component {
 
@@ -54,6 +55,7 @@ export default class ContributionForm extends React.Component {
     render() {
         let _this = this;
         return (
+            <div>
             <Form 
                 scope='contribution'
                 values={{
@@ -63,6 +65,14 @@ export default class ContributionForm extends React.Component {
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 elements={this.formElements()}
             />
+            <p />
+            <Link
+                to={`/${this.props.locale}/people`}
+                onClick={() => this.props.closeArchivePopup()}
+            >
+                {t(_this.props, "edit.person.admin")}
+            </Link>
+            </div>
         );
     }
 }
