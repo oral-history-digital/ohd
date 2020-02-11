@@ -283,13 +283,13 @@ export function getInterviewArchiveIdWithOffset(archiveId, list, offset=1) {
     }
 }
 
-export function contentField(label, value, className='', condition=true, collection=null) {
+export function contentField(label, value, className='', condition=true, collection=null, locale="en") {
     let collectionDetails = ''
     if (collection){
         collectionDetails = (
             <span>
                 <i className="fa fa-info-circle" aria-hidden="true" title={collection.notes}  style={{'color': 'grey'}} />
-                <a href={collection.homepage} title={collection.homepage} target='_blank'>
+                <a href={collection.homepage[locale]} title={collection.homepage[locale]} target='_blank'>
                     <i className="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
                 </a>
             </span>
