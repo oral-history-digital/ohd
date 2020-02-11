@@ -31,7 +31,7 @@ class ReferenceTree
     {
       id: node_id,
       type: 'node',
-      desc: RegistryEntry.find(node_id).localized_hash,
+      desc: RegistryEntry.find(node_id).localized_hash(:descriptor),
       children: [],
       leafe_count: 0
     }

@@ -4,6 +4,8 @@ class WriteArchiveIdToRegistryReferences < ActiveRecord::Migration[5.2]
     RegistryReference.where(archive_id: nil).find_each do |rr|
       if rr.ref_object_type == "Interview"
         rr.update_attributes archive_id: Interview.find(rr.ref_object_id).archive_id
+      elsif rr.ref_object_type == "Segment"
+        rr.update_attributes archive_id: Segment.find(rr.ref_object_id).interview.archive_id
       elsif rr.ref_object_type == "Person"
         begin
           rr.update_attributes archive_id: Person.find(rr.ref_object_id).interviews.first.archive_id

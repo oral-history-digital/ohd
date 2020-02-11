@@ -244,17 +244,18 @@ class Segment < ApplicationRecord
   end
 
   after_initialize do
-    (project.available_locales + [:orig]).each do |locale|
+    (project.available_locales).each do |locale|
       define_singleton_method "text_#{locale}" do
-        if translations
-          transl = translations.where("locale LIKE :locale", locale: "%#{locale}%")
-          transl.try(:first) ? transl.first.text : nil
-        else
-          nil
-        end
+        text("#{locale}-public") # only search in public texts 
+        # TODO: enable searching over original texts in admin-mode
       end
     end
   end
+
+  def text_orig
+    text("#{interview.lang}-public")
+  end
+
 
   def transcripts(allowed_to_see_all=false)
     translations.inject({}) do |mem, translation|
@@ -386,10 +387,6 @@ class Segment < ApplicationRecord
 
   def self.media_id_diff(mid, diff)
     mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i + diff.to_i).to_s.rjust(4,'0'))
-  end
-
-  def text_orig
-    'dummy'
   end
 
   def enciphered_text(version, locale)

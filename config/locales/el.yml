@@ -81,7 +81,6 @@ el:
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
   mark_texts: Replace text 
-  interview_with: Συνέντευξη με
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Κωδικός συνέντευξης
@@ -97,8 +96,6 @@ el:
     που αποτυπώνουν τη συνέντευξη ή στιγμιότυπα μετά το τέλος της καθώς και φωτογραφίες
     που ανήκουν στην ιδιοκτησία του συνεντευξιαζόμενου.
   interview_empty_gallery_explanation: Δεν υπάρχουν φωτογραφίες για αυτή τη συνέντευξη.
-  transcript_header: Απομαγνητοφώνηση της συνέντευξης με
-  translation_header: Übersetzung des Interviews mit
   tapes: Ταινίες
   without_translation: Αυτή η συνέντευξη δεν έχει ακόμα μεταφραστεί στα γερμανικά.
   without_transcript: Dieses Interview wurde noch nicht transkribiert.
@@ -197,6 +194,11 @@ el:
   typology: Εμπειρία
   typologies: Εμπειρία
   history: Σύντομο βιογραφικό
+  interview_with: Συνέντευξη με
+  transcript_header: Απομαγνητοφωνημένο κείμενο
+  transcript_title: Απομαγνητοφώνηση της συνέντευξης με
+  translation_title: Übersetzung des Interviews mit
+  transcript_footer: 'Zitiervorgabe: Transkript des Interviews mit'
   biographical_entries_header: 'Kurzbiografie:'
   biographical_entries_title: 'Kurzbiografie von'
   biographical_entries_footer: 'Zitiervorgabe: Kurzbiografie von'
