@@ -112,7 +112,7 @@ class SearchesController < ApplicationController
           all_interviews_pseudonyms: dropdown_values[:all_interviews_pseudonyms],
           all_interviews_birth_locations: dropdown_values[:all_interviews_birth_locations],
           all_interviews_count: search.total,
-          sorted_archive_ids: Rails.cache.fetch("sorted_archive_ids-#{current_project.cache_key_prefix}-#{Interview.maximum(:created_at)}") { Interview.archive_ids_by_alphabetical_order },
+          sorted_archive_ids: Rails.cache.fetch("sorted_archive_ids-#{current_project.cache_key_prefix}-#{Interview.maximum(:created_at)}") { Interview.archive_ids_by_alphabetical_order(locale) },
           result_pages_count: search.results.total_pages,
           results_count: search.total,
           interviews: search.results.map { |i| cache_single(i) },
