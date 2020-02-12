@@ -274,11 +274,14 @@ export function getCookie(cname) {
   return false;
 }
 
-export function getInterviewArchiveIdWithOffset(archiveId, list, offset=1) {
+export function getInterviewArchiveIdWithOffset(archiveId, list, offset = 1) {
     if (list) {
-        let offsetItem = list[list.findIndex(i => i === archiveId)+offset]
-        if (list.length > 1 && offsetItem){
+        let listOfArchiveIds = list.map(x => x.archive_id);
+        let offsetItem = listOfArchiveIds[listOfArchiveIds.findIndex(i => i === archiveId) + offset]
+        if (listOfArchiveIds.length > 1 && offsetItem) {
             return offsetItem
+        } else {
+            return false;
         }
     }
 }
