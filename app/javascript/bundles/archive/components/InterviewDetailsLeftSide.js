@@ -47,7 +47,7 @@ export default class InterviewDetailsLeftSide extends React.Component {
     footerNavigation() {
         {/* TODO: this div is needs to get a better structure, and inline styles have to be removed */}
         let prevArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, this.props.sortedArchiveIds, -1);
-        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, this.props.sortedArchiveIds, 1, true);
+        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, this.props.sortedArchiveIds, 1);
         return (
             <div style={{ padding: "5%" }} >
                 <Link

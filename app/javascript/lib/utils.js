@@ -275,7 +275,7 @@ export function getCookie(cname) {
 }
 
 export function getInterviewArchiveIdWithOffset(archiveId, foundInterviews, sortedArchiveIds, offset = 1) {
-    if (foundInterviews) {
+    if (foundInterviews && sortedArchiveIds) {
         let listOfArchiveIds = foundInterviews.map(x => x.archive_id);
         let positionInList = listOfArchiveIds.findIndex(i => i === archiveId)
         // use sortedArchiveIds if archiveId not in foundInterviews
