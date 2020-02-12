@@ -162,6 +162,7 @@ class ApplicationController < ActionController::Base
           allInterviewsTitles: dropdown_values[:all_interviews_titles],
           allInterviewsPseudonyms: dropdown_values[:all_interviews_pseudonyms],
           allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
+          sortedArchiveIds: Rails.cache.fetch("sorted_archive_ids-#{current_project.cache_key_prefix}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
           foundInterviews: search.results.map{|i| cache_single(i)},
           allInterviewsCount: search.total,
           resultPagesCount: search.results.total_pages,

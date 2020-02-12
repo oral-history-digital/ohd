@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         query: state.search.archive.query,
+        sortedArchiveIds: state.search.archive.sortedArchiveIds,
         translations: state.archive.translations,
     }
 }

@@ -25,6 +25,7 @@ const initialState = {
         allInterviewsCount: 0,
         resultPagesCount: 1,
         resultsCount: 0,
+        sortedArchiveIds: [],
     },
     interviews: {},
     registryEntries: {
@@ -113,6 +114,7 @@ const search = (state = initialState, action) => {
             }
             return Object.assign({}, state, {
                 archive: Object.assign({}, state.archive, {
+                    facets: action.facets,
                     foundInterviews: foundInterviews,
                     allInterviewsTitles: action.allInterviewsTitles,
                     allInterviewsPseudonyms: action.allInterviewsPseudonyms,
@@ -120,7 +122,7 @@ const search = (state = initialState, action) => {
                     allInterviewsCount: action.allInterviewsCount,
                     resultPagesCount: action.resultPagesCount,
                     resultsCount: action.resultsCount,
-                    facets: action.facets,
+                    sortedArchiveIds: action.sortedArchiveIds,
                 }),
                 isArchiveSearching: false,
             })

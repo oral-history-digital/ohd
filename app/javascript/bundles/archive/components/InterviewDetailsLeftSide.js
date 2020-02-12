@@ -14,10 +14,10 @@ import {
 export default class InterviewDetailsLeftSide extends React.Component {
 
     componentDidMount() {
-        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, 1);
+        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, [], 1);
         if (nextArchiveId === false) {
             let query = this.props.query
-            query['page'] = (this.props.query['page'] || 1) + 1;
+            query['page'] = (this.props.query['page'] || 0) + 1;
             let url = `${pathBase(this.props)}/searches/archive`;
             this.props.searchInArchive(url, query);
         }
@@ -46,8 +46,8 @@ export default class InterviewDetailsLeftSide extends React.Component {
 
     footerNavigation() {
         {/* TODO: this div is needs to get a better structure, and inline styles have to be removed */}
-        let prevArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, -1);
-        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, 1);
+        let prevArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, this.props.sortedArchiveIds, -1);
+        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, this.props.sortedArchiveIds, 1, true);
         return (
             <div style={{ padding: "5%" }} >
                 <Link
