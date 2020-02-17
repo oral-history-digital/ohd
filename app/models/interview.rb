@@ -520,14 +520,15 @@ class Interview < ApplicationRecord
     'header_row_not_found'
   end
 
+  # tape_id is a dummy here
   def create_or_update_segments_from_text(file_path, tape_id, locale, contribution_data)
     data = File.read file_path
     text = Yomu.read :text, data
     Segment.create_or_update_by({ 
       interview_id: id, 
-      timecode: Timecode.new(tapes.inject(0){|sum, t| sum + Timecode.new(t.time_shift).time }).timecode, 
-      next_timecode: Timecode.new(duration).timecode,
-      tape_id: tape_id,
+      timecode: Timecode.new(tapes.first.time_shift).timecode, 
+      next_timecode: Timecode.new(tapes.inject(0){|sum, t| sum += t.duration}).timecode,
+      tape_id: tapes.first.id,
       text: text, 
       locale: locale,
       contribution_data: contribution_data

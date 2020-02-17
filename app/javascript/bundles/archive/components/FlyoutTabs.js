@@ -14,6 +14,7 @@ import PermissionSearchFormContainer from '../containers/PermissionSearchFormCon
 import RegistryEntrySearchFormContainer from '../containers/RegistryEntrySearchFormContainer';
 import AllUserContentsContainer from '../containers/AllUserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
+import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 import InterviewTextMaterialsContainer from '../containers/InterviewTextMaterialsContainer';
@@ -136,6 +137,13 @@ export default class FlyoutTabs extends React.Component {
                                 open={true}
                                 content={ <div><InterviewInfoContainer/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }/>
                         </AuthShowContainer>
+                        <AuthShowContainer ifAdmin={true} obj={{type: 'Interview', action: 'update'}}>
+                            <InterviewDataContainer
+                                title={t(this.props, 'edit.upload_transcript.title')}
+                                open={false}
+                                content={ <UploadTranscriptContainer /> }
+                            />
+                        </AuthShowContainer>
                         {this.assignSpeakersForm()}
                         {this.markTextForm()}
                         {/* <InterviewDataContainer
@@ -225,7 +233,7 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-tab-title'>{t(this.props, 'edit.indexing')}</div>
                     <div className='flyout-sub-tabs-container'>
                         {this.subTab('edit.interview.new', 'description', `${pathBase(this.props)}/interviews/new`, {type: 'Interview', action: 'create'})}
-                        {this.subTab('edit.upload_transcript.title', 'description', `${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})}
+                        {/*this.subTab('edit.upload_transcript.title', 'description', `${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})*/}
                         {this.subTab('edit.upload.upload', 'description', `${pathBase(this.props)}/uploads/new`, {type: 'Interview', action: 'update'})}
                         {this.subTab( 'edit.person.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
                         {this.subTab( 'edit.collection.admin', <CollectionsSearchFormContainer/>, `${pathBase(this.props)}/collections`, {type: 'Collection', action: 'update'})}

@@ -120,12 +120,11 @@ class Segment < ApplicationRecord
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
           person_id = opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
           atts[:speaker_id] = person_id if person_id
-          segment.update_attributes atts
+          segment.update_original_and_write_other_versions atts
         else
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
           atts[:speaker_id] = segment.prev && segment.prev.speaker_id if segment.prev && segment.prev.speaker_id
-          segment.update_attributes atts
-          #segment.update_attributes text: text, locale: opts[:locale], speaker_id: segment.prev && segment.prev.speaker_id
+          segment.update_original_and_write_other_versions atts
         end
 
         # if there is another speaker_designation in the text

@@ -15,19 +15,13 @@ class TranscriptsController < ApplicationController
     file = params[:transcript].delete(:data)
     file_path = create_tmp_file(file)
 
-    if params[:transcript].delete(:tape_and_archive_id_from_file)
-      archive_id, tape_media_id = extract_archive_id_and_tape_media_id(file)
-      interview = find_or_create_interview(archive_id)
-      tape = find_or_create_tape(tape_media_id, interview)
-      tape.update_attribute :duration, transcript_params[:tape_durations]
-    else
-      archive_id = transcript_params[:archive_id].downcase
-      interview = find_or_create_interview(archive_id)
-      tape = find_or_create_tapes(interview).first
-      interview.recalculate_duration!
-    end
+    interview = Interview.find_by_archive_id(transcript_params[:archive_id])
+    tape = transcript_params[:tape_number] ? interview.tapes.find_by_media_id(
+      "#{interview.archive_id}_#{format('%02d', interview.tapes.count)}_#{format('%02d', transcript_params[:tape_number])}"
+    ) : interview.tapes.first
 
-    interview.update_attributes language_id: transcript_params[:language_id]
+    update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
+
     create_contributions(interview, transcript_params[:contributions_attributes])
     
     locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send(Project.alpha) 
@@ -51,9 +45,7 @@ class TranscriptsController < ApplicationController
     params.require(:transcript).
       permit(
         :archive_id,
-        :language_id,
         :transcript_language_id,
-        :tape_count,
         :tape_number,
         :tape_durations,
         :time_shifts,
@@ -61,37 +53,16 @@ class TranscriptsController < ApplicationController
     )
   end
 
-  def extract_archive_id_and_tape_media_id(file)
-    filename_tokens = (File.basename(file.original_filename, File.extname(file.original_filename)) || '').split('_')
-    archive_id = filename_tokens.first.downcase
-    tape_media_id = "#{filename_tokens[0]}_#{filename_tokens[1]}_#{filename_tokens[2]}".upcase
-    [archive_id, tape_media_id]
-  end
-
-  def find_or_create_interview(archive_id)
-    interview = Interview.where('lower(archive_id) = ?', archive_id.downcase).first 
-    interview ||= Interview.create archive_id: archive_id, project_id: current_project.id
-  end
-
-  def find_or_create_tape(tape_media_id, interview)
-    tape = Tape.where('lower(media_id) = ?', tape_media_id).where(interview_id: interview.id).first
-    tape || Tape.create(media_id: tape_media_id, interview_id: interview.id)
-  end
-
-  def find_or_create_tapes(interview)
-    tapes = []
+  def update_tape_durations_and_time_shifts(interview)
     tape_durations = transcript_params[:tape_durations].split(',').map{|t| Timecode.new(t).time}
     time_shifts = transcript_params[:time_shifts] ? transcript_params[:time_shifts].split(',').map{|t| Timecode.new(t).time} : tape_durations.map{|t| 0}
-    tape_count = (!transcript_params[:tape_count].blank? && transcript_params[:tape_count].to_i) || tape_durations.length
 
     tape_durations.each_with_index do |tape_duration, index|
       tape_number = (!transcript_params[:tape_number].blank? && transcript_params[:tape_number].to_i) || index + 1
-      tape_media_id = [interview.archive_id, format('%02d', tape_count), format('%02d', tape_number)].join('_')
+      tape_media_id = [interview.archive_id, format('%02d', interview.tapes.count), format('%02d', tape_number)].join('_')
       tape = Tape.find_or_create_by media_id: tape_media_id, interview_id: interview.id
       tape.update_attributes duration: tape_duration, time_shift: time_shifts[index]
-      tapes << tape
     end
-    tapes
   end
 
   def create_contributions(interview, contribution_data)

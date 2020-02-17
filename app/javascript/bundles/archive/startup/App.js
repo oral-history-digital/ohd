@@ -10,7 +10,6 @@ import archiveStore from '../store/archiveStore';
 import WrappedAccountContainer from '../containers/WrappedAccountContainer';
 import InterviewContainer from '../containers/InterviewContainer';
 import EditInterviewContainer from '../containers/EditInterviewContainer';
-import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import UploadsContainer from '../containers/UploadsContainer';
 import WrappedPeopleContainer from '../containers/WrappedPeopleContainer';
 import WrappedLanguagesContainer from '../containers/WrappedLanguagesContainer';
@@ -34,7 +33,6 @@ const App = (props) => (
                 <Route path="/:locale/accounts/current" component={props => <WrappedAccountContainer {...props} />} />
                 <Route exact path="/:locale/interviews/new" component={props => <EditInterviewContainer {...props} />} />
                 <Route exact path="/:locale/interviews/:archiveId" component={props => <InterviewContainer {...props} />} />
-                <Route path="/:locale/transcripts/new" component={props => <UploadTranscriptContainer {...props} />} />
                 <Route path="/:locale/uploads/new" component={props => <UploadsContainer {...props} />} />
                 <Route path="/:locale/registry_entries" component={props => <RegistryEntriesTreeContainer {...props} />} />
                 <Route path="/:locale/searches/archive" component={props => <ArchiveSearchContainer {...props} />} />

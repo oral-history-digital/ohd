@@ -713,9 +713,11 @@ el:
         tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
           erschliessen?
         tape_count: Geamtzahl der Tapes
-        tape_number: Nummer dieses Tapes
-        tape_durations: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden
-        time_shifts: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden
+        tape_number: Tape Nr.
+        tape_durations: Tape-Dauer
+        tape_durations_explanation: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
+        time_shifts: Sprechbeginn
+        time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
       project:
         title: Name
         name: Name
