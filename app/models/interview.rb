@@ -848,11 +848,12 @@ class Interview < ApplicationRecord
       end
     end
 
-    def archive_ids_by_alphabetical_order
-      joins(contributions: {person: :translations}).
-        where("contributions.contribution_type = ?", "interviewee").
-        order("person_translations.last_name", "person_translations.first_name").
-        map(&:archive_id).uniq
+    def archive_ids_by_alphabetical_order(locale = :en)
+      all.sort_by{ |i| i.full_title(locale) }.map(&:archive_id)
+      # joins(contributions: {person: :translations}).
+      #   where("contributions.contribution_type = ?", "interviewee").
+      #   order("person_translations.last_name", "person_translations.first_name").
+      #   map(&:archive_id).uniq
     end
   end
 end

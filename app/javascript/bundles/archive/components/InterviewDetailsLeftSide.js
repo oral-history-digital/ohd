@@ -7,10 +7,21 @@ import PersonDataContainer from '../containers/PersonDataContainer';
 import { 
     t,
     contentField,
-    getInterviewArchiveIdWithOffset 
+    getInterviewArchiveIdWithOffset,
+    pathBase,
 } from '../../../lib/utils';
 
 export default class InterviewDetailsLeftSide extends React.Component {
+
+    componentDidMount() {
+        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, [], 1);
+        if (nextArchiveId === false) {
+            let query = this.props.query
+            query['page'] = (this.props.query['page'] || 0) + 1;
+            let url = `${pathBase(this.props)}/searches/archive`;
+            this.props.searchInArchive(url, query);
+        }
+    }
 
     render() {
         return (
@@ -34,15 +45,13 @@ export default class InterviewDetailsLeftSide extends React.Component {
     }
 
     footerNavigation() {
-        {/* TODO: this div is needs to get a better structure, and inline styles have to be removed */}
-        let prevArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.sortedArchiveIds, -1);
-        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.sortedArchiveIds, 1);
+        let prevArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, this.props.sortedArchiveIds, -1);
+        let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, this.props.sortedArchiveIds, 1);
         return (
-            <div style={{ padding: "5%" }} >
+            <div className={"footer-navigation"}>
                 <Link
                     className={`search-result-link ${!!prevArchiveId || "hidden"}`}
                     to={ "/" + this.props.locale + "/interviews/" + prevArchiveId }
-                    style={{ "margin-right": "10%" }}
                 >
                     <i className={"fa fa-chevron-left"} />
                     {prevArchiveId}
@@ -52,10 +61,7 @@ export default class InterviewDetailsLeftSide extends React.Component {
                     to={ "/" + this.props.locale + "/interviews/" + nextArchiveId }
                 >
                     {nextArchiveId}
-                    <i
-                        className={"fa fa-chevron-right"}
-                        style={{ "margin-left": 10 }}
-                    />
+                    <i className={"fa fa-chevron-right"} />
                 </Link>
             </div>
         )

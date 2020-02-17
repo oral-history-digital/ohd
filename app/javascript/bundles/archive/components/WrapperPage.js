@@ -300,7 +300,7 @@ export default class WrapperPage extends React.Component {
                     <li key={'external-link-' + key}>
                         <a href={links[key].url[locale]}
                             target="_blank" rel="noopener">
-                            {t(props, links[key].name)}
+                            {links[key].name[locale]}
                         </a>
                     </li>
                 )

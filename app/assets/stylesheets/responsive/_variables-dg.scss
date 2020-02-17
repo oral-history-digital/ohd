@@ -13,6 +13,7 @@ $header-logo-padding: 0;
 .logo-img {
     background-color: #b2afa1;
     padding: 15px 0px 18px 25px;
+    max-height: inherit !important;
 }
 
 .wrapper-page header.site-header {

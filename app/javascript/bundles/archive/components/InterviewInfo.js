@@ -39,7 +39,7 @@ export default class InterviewInfo extends React.Component {
                     {contentField(t(this.props, 'language'), this.props.interview.language && this.props.interview.language[this.props.locale], "", this.props.projectId !== 'mog')}
                     {/* the following is controlled via metadata_fields in project-conf *}
                     {/*contentField(t(this.props, 'interview_location'), this.props.interview.interview_location && this.props.interview.interview_location[this.props.locale], "", (this.props.projectId !== 'mog' && this.props.projectId !== 'dg'))*/}
-                    {contentField(t(this.props, 'activerecord.models.collection.one'), this.props.interview.collection && this.props.interview.collection[this.props.locale], "", this.props.projectId !== 'mog', this.props.collections[this.props.interview.collection_id] )}
+                    {contentField(t(this.props, 'activerecord.models.collection.one'), this.props.interview.collection && this.props.interview.collection[this.props.locale], "", this.props.projectId !== 'mog', this.props.collections[this.props.interview.collection_id], this.props.locale )}
 
                     {/*contentField(t(this.props, 'observations'), this.props.interview.observations[this.props.locale], "", true)*/}
                 </div>

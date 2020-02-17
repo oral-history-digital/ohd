@@ -274,22 +274,31 @@ export function getCookie(cname) {
   return false;
 }
 
-export function getInterviewArchiveIdWithOffset(archiveId, list, offset=1) {
-    if (list) {
-        let offsetItem = list[list.findIndex(i => i === archiveId)+offset]
-        if (list.length > 1 && offsetItem){
+export function getInterviewArchiveIdWithOffset(archiveId, foundInterviews, sortedArchiveIds, offset = 1) {
+    if (foundInterviews && sortedArchiveIds) {
+        let listOfArchiveIds = foundInterviews.map(x => x.archive_id);
+        let positionInList = listOfArchiveIds.findIndex(i => i === archiveId)
+        // use sortedArchiveIds if archiveId not in foundInterviews
+        if (positionInList === -1) {
+            listOfArchiveIds = sortedArchiveIds
+            positionInList = sortedArchiveIds.findIndex(i => i === archiveId)
+        }
+        let offsetItem = listOfArchiveIds[positionInList + offset]
+        if (listOfArchiveIds.length > 1 && positionInList > -1 && offsetItem) {
             return offsetItem
+        } else {
+            return false;
         }
     }
 }
 
-export function contentField(label, value, className='', condition=true, collection=null) {
+export function contentField(label, value, className='', condition=true, collection=null, locale="en") {
     let collectionDetails = ''
     if (collection){
         collectionDetails = (
             <span>
                 <i className="fa fa-info-circle" aria-hidden="true" title={collection.notes}  style={{'color': 'grey'}} />
-                <a href={collection.homepage} title={collection.homepage} target='_blank'>
+                <a href={collection.homepage[locale]} title={collection.homepage[locale]} target='_blank'>
                     <i className="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
                 </a>
             </span>
