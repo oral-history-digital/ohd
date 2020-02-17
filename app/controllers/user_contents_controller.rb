@@ -55,7 +55,11 @@ class UserContentsController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: {status: :ok}
+        render json: {
+          data_type: 'user_contents',
+          data: ::UserContentSerializer.new(@user_content).as_json,
+          id: @user_content.id
+        }
       end
     end
   end
