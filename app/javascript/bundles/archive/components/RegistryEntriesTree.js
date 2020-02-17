@@ -3,7 +3,7 @@ import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearchResultContainer';
-import { t } from '../../../lib/utils';
+import { t, admin } from '../../../lib/utils';
 
 export default class RegistryEntriesTree extends React.Component {
 
@@ -62,23 +62,25 @@ export default class RegistryEntriesTree extends React.Component {
     }
 
     mergeRegistryEntriesConfirm() {
-        let title = t(this.props, 'activerecord.models.registry_entries.actions.merge');
-        return <div
-            className='flyout-sub-tabs-content-ico-link'
-            title={title}
-            onClick={() => this.props.openArchivePopup({
-                title: title,
-                content: (
-                    <div>
-                        <div className='any-button' onClick={() => this.mergeRegistryEntries()}>
-                            {t(this.props, 'ok')}
+        if (admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
+            let title = t(this.props, 'activerecord.models.registry_entries.actions.merge');
+            return <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={title}
+                onClick={() => this.props.openArchivePopup({
+                    title: title,
+                    content: (
+                        <div>
+                            <div className='any-button' onClick={() => this.mergeRegistryEntries()}>
+                                {t(this.props, 'ok')}
+                            </div>
                         </div>
-                    </div>
-                )
-            })}
-        >
-            {title}
-        </div>
+                    )
+                })}
+            >
+                {title}
+            </div>
+        }
     }
 
     content() {
