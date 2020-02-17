@@ -57,14 +57,14 @@ export default class PersonData extends React.Component {
     history() { 
         return (
             <p>
-                <span className="flyout-content-label">
-                    {t(this.props, "history")}:
-                </span>
+                <AuthShowContainer ifLoggedIn={true}>
+                    <span className="flyout-content-label">
+                        {t(this.props, "history")}:
+                    </span>
+                    {this.downloads()}
+                </AuthShowContainer>
                 <AuthShowContainer ifAdmin={true} obj={{type: 'BiographicalEntry', action: 'update'}}>
                     {this.biographicalEntries()}
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedIn={true}>
-                    {this.downloads()}
                 </AuthShowContainer>
             </p>
         );
