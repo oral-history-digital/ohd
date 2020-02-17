@@ -18,21 +18,23 @@ export default class Annotations extends React.Component {
     }
 
     addAnnotation() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.annotation.new')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.annotation.new'),
-                    content: <AnnotationFormContainer 
-                                 segment={this.props.segment}
-                                 locale={this.props.locale}
-                             />
-                })}
-            >
-                <i className="fa fa-plus"></i>
-            </div>
-        )
+        if (admin(this.props, {type: 'Annotation', action: 'create'})) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.annotation.new')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.annotation.new'),
+                        content: <AnnotationFormContainer 
+                                     segment={this.props.segment}
+                                     locale={this.props.locale}
+                                 />
+                    })}
+                >
+                    <i className="fa fa-plus"></i>
+                </div>
+            )
+        }
     }
 
     render() {

@@ -89,7 +89,7 @@ export default class UserContentForm extends React.Component {
     }
 
     segmentSelect() {
-        if (this.state.type === 'UserAnnotation') {
+        if (this.state.type === 'UserAnnotation' && this.segment()) {
             return <div>
                 <div className='popup-segment-nav-container'>
                     <div className='popup-segment-nav-label'>

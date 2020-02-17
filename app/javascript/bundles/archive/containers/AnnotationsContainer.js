@@ -7,6 +7,8 @@ import { fetchData } from '../actions/dataActionCreators';
 const mapStateToProps = (state) => {
     return { 
         translations: state.archive.translations,
+        account: state.data.accounts.current,
+        editView: state.archive.editView,
     }
 }
 

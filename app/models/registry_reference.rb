@@ -36,7 +36,7 @@ class RegistryReference < BaseRegistryReference
     if ref_object_type == "Interview"
       self.archive_id = Interview.find(ref_object_id).archive_id
     elsif ref_object_type == "Segment"
-      update_attributes archive_id: Segment.find(ref_object_id).archive_id
+      self.archive_id = Segment.find(ref_object_id).archive_id
     elsif ref_object_type == "Person"
       begin
         self.archive_id = Person.find(ref_object_id).interviews.first.archive_id

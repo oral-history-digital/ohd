@@ -74,7 +74,10 @@ export default class Segment extends React.Component {
     }
 
     references(locale) {
-        if (this.state.contentType == 'references' && this.props.data.references_count[locale] > 0) {
+        if (
+            this.state.contentType == 'references' && 
+            (this.props.data.references_count[locale] > 0 || admin(this.props, {type: 'RegistryReference', action: 'create'}))
+        ) {
             return <RegistryReferencesContainer 
                        refObject={this.props.data} 
                        parentEntryId={1}
@@ -85,7 +88,10 @@ export default class Segment extends React.Component {
     }
 
     annotations(locale) {
-        if (this.state.contentType == 'annotations' && this.props.data.annotations_count[locale] > 0) {
+        if (
+            this.state.contentType == 'annotations' && 
+            (this.props.data.annotations_count[locale] > 0 || admin(this.props, {type: 'Annotation', action: 'create'}))
+        ) {
             return <AnnotationsContainer segment={this.props.data} locale={locale} />
         }
     }

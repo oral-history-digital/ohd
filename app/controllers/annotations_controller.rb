@@ -9,8 +9,7 @@ class AnnotationsController < ApplicationController
     @annotation.save
     #@annotation.submit! if @annotation.private? && params[:publish]
 
-    clear_cache @annotation.segment
-    Rails.cache.delete "#{current_project.cache_key_prefix}-interview-segments-#{@annotation.interview_id}-#{@annotation.interview.segments.maximum(:updated_at)}" 
+    @annotation.segment.touch
 
     respond_to do |format|
       format.json do
