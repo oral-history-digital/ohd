@@ -119,7 +119,7 @@ ru:
   login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
   logged_in_as: Вы вошли как
   user_name: Benutzer(in)
-  notice: Merken
+  notice: сохранить
   forget_password: Восстановить пароль
   account_activation_errors: Passwort und Passwortbestätigung müssen gleich und mind.
     6 Zeichen lang sein
