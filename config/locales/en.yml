@@ -860,13 +860,13 @@ en:
         text_to_mark: zu ersetzender Text
     errors:
       default:
-        select: Bitte auswählen
-        textarea: Bitte angeben
-        checkbox_input: Bitte zustimmen
-        text_input: Bitte angeben
-        file_input: Bitte Datei auswählen
-        password_input: Bitte berichtigen Sie Ihr Passwort
-        email_input: Bitte berichtigen Sie Ihre Email
+        select: Please select
+        textarea: Please fill
+        checkbox_input: Please choose
+        text_input: Please fill
+        file_input: Please select a file
+        password_input: Please correct your password
+        email_input: Please correct your email
       template:
         header: Ihre Anfrage konnte nicht bearbeitet werden
         body: 'Folgendes Problem ist aufgetreten:'

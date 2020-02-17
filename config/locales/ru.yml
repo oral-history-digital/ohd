@@ -920,7 +920,7 @@ ru:
         checkbox_input: Bitte zustimmen
         text_input: Bitte angeben
         file_input: Bitte Datei auswählen
-        password_input: Bitte berichtigen Sie Ihr Passwort
+        password_input: пожалуйста, уточните пароль
         email_input: Bitte berichtigen Sie Ihre Email
       template:
         header: Мы не можем обработать Ваш запрос
