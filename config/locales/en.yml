@@ -221,7 +221,7 @@ en:
   save_interview_reference: Add to saved interviews
   save_user_annotation: Write an annotation
   save_search: Save search
-  call_search: Call up search
+  call_search: Show Search Results
   call_interview_reference: View interview
   call_user_annotation: View annotation
   title: Title
@@ -517,7 +517,7 @@ en:
     forced_labor_field: Deployment Area
     forced_labor_group: Forced Labor Group
     periods: Time periods
-    fulltext: search keyword
+    fulltext: Search Term
     gender: gender
     male: Male
     female: Female

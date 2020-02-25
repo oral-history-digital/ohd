@@ -94,11 +94,11 @@ ru:
   without_index: Оглавление данного интервью пока отсутствует. 
   without_index_locale: Оглавление данного интервью не переведено на русский язык.
   without_ref_tree: Dieses Interviews wurde noch nicht verschlagwortet.
-  private: Privat
+  private: личный просмотр:wa
   proposed: In Prüfung zur Veröffentlichung
   postponed: Zurückgestellt durch die Redaktion
-  shared: Veröffentlicht
-  rejected: Veröffentlichung abgelehnt
+  shared: опубликовано
+  rejected: отказано в публикации
   interview_archive: Архив интервью
   called: получен
   download: Download
@@ -268,9 +268,9 @@ ru:
   save_interview_reference: Добавить в сохраненные интервью
   save_user_annotation: Создать аннотацию
   save_search: Сохранить поиск
-  call_search: Suche aufrufen
-  call_interview_reference: Interview aufrufen
-  call_user_annotation: Stelle im Interview aufrufen
+  call_search: результаты поиска
+  call_interview_reference: перейти к интервью
+  call_user_annotation: перейти к отрывку
   title: Название
   description: Описание
   edit:
