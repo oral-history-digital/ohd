@@ -8,13 +8,17 @@ export default class InterviewTextMaterials extends React.Component {
         return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
     }
 
-    existsPublicTranscript(lang) {
-        let firstEntry = this.props.interview.segments[1] && this.props.interview.segments[1][this.props.interview.first_segments_ids[1]];
-        return !!firstEntry && !!firstEntry.text[`${lang}-public`] && this.props.interview.workflow_state === 'public';
+    firstSegment() {
+        // here the index ([1]) stands for the tape number. Therefore it is not 0-basded.
+        return this.props.interview.segments[1] && this.props.interview.segments[1][this.props.interview.first_segments_ids[1]];
+    }
+
+    existsPublicTranscript() {
+        return !!this.firstSegment() && this.props.interview.workflow_state === 'public';
     }
 
     download(lang, condition) {
-        if (condition && this.existsPublicTranscript(lang)) {
+        if (condition && this.firstSegment().text[`${lang}-public`]) {
             // let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
             return (
                 <a href={`${this.to()}.pdf?lang=${lang}`} className='flyout-content-data'>
@@ -28,7 +32,7 @@ export default class InterviewTextMaterials extends React.Component {
     }
 
     render() {
-        if (this.props.interview && this.props.interview.language && this.props.projectId !== "dg") {
+        if (this.props.interview && this.props.interview.language && this.props.projectId !== "dg" && this.existsPublicTranscript()) {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
