@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, segments } from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import moment from 'moment';
 
 export default class UserContentForm extends React.Component {
@@ -80,16 +80,16 @@ export default class UserContentForm extends React.Component {
         this.setState({errors: undefined});
     }
 
-    segment() {
-        return segments(this.props)[this.state.segmentIndex];
+    segmentTime() {
+        return moment.utc(this.props.sortedSegments[this.state.segmentIndex].time * 1000).format("HH:mm:ss");
     }
 
-    segmentTime() {
-        return moment.utc(this.segment().time * 1000).format("HH:mm:ss");
+    segmentTape() {
+        return this.props.sortedSegments[this.state.segmentIndex].tape_nbr;
     }
 
     segmentSelect() {
-        if (this.state.type === 'UserAnnotation' && this.segment()) {
+        if (this.state.type === 'UserAnnotation' && this.props.segment) {
             return <div>
                 <div className='popup-segment-nav-container'>
                     <div className='popup-segment-nav-label'>
@@ -98,14 +98,14 @@ export default class UserContentForm extends React.Component {
                     <div className='popup-segment-nav'>
                         {this.previousSegment()}
                         <div className='popup-segment-nav-data'>
-                            {this.segmentTime()}
+                            {`${this.segmentTape()} - ${this.segmentTime()}`}
                         </div>
                         {this.nextSegment()}
                     </div>
                 </div>
                 <div className='popup-segment-nav-container'>
                     <div className='popup-segment'>
-                        {this.segment().text[`${this.props.locale}-public`]}
+                        {this.props.sortedSegments[this.state.segmentIndex].text[`${this.props.locale}-public`]}
                     </div>
                 </div>
             </div>
@@ -113,7 +113,7 @@ export default class UserContentForm extends React.Component {
     }
 
     previousSegment() {
-        if (this.state.segmentIndex > this.props.interview.first_segments_ids[this.props.tape]) {
+        if (this.state.segmentIndex > 0) {
             return <i className='fa fa-arrow-left popup-segment-nav-before'
                       onClick={() => this.setSegment(this.state.segmentIndex - 1)}/>
         } else {
@@ -122,7 +122,7 @@ export default class UserContentForm extends React.Component {
     }
 
     nextSegment() {
-        if (this.state.segmentIndex < this.props.interview.last_segments_ids[this.props.tape]) {
+        if (this.state.segmentIndex < this.props.sortedSegments.length - 1) {
             return <i className='fa fa-arrow-right popup-segment-nav-after'
                       onClick={() => this.setSegment(this.state.segmentIndex + 1)}/>
         } else {
@@ -131,7 +131,7 @@ export default class UserContentForm extends React.Component {
     }
 
     setSegment(segmentIndex) {
-        let segment = segments(this.props)[segmentIndex];
+        let segment = this.props.sortedSegments[segmentIndex];
         this.setState({
             segmentIndex: segmentIndex,
             properties: {

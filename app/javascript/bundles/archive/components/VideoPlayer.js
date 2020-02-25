@@ -131,20 +131,25 @@ export default class VideoPlayer extends React.Component {
     }
 
     annotateOnSegmentLink() {
-        return (
-            <div className="video-text-note" onClick={() => this.props.openArchivePopup({
-                title: t(this.props, 'save_user_annotation'),
-                content: this.annotateOnSegmentForm(
-                    sortedSegmentsWithActiveIndex(this.video.currentTime, this.props)[0]
-                )
-            })}>
-                <i className="fa fa-pencil"></i>
-                <span>{t(this.props, 'save_user_annotation')}</span>
-            </div>
-        );
+        if (this.video) {
+            let sortedSegmentsWithIndex = sortedSegmentsWithActiveIndex(this.video.currentTime, this.props);
+            return (
+                <div className="video-text-note" onClick={() => this.props.openArchivePopup({
+                    title: t(this.props, 'save_user_annotation'),
+                    content: this.annotateOnSegmentForm(sortedSegmentsWithIndex)
+                })}>
+                    <i className="fa fa-pencil"></i>
+                    <span>{t(this.props, 'save_user_annotation')}</span>
+                </div>
+            );
+        }
     }
 
-    annotateOnSegmentForm(segment) {
+    annotateOnSegmentForm(sortedSegmentsWithIndex) {
+        let segment = sortedSegmentsWithIndex[0];
+        let sortedSegments = sortedSegmentsWithIndex[1];
+        let activeIndex =  sortedSegmentsWithIndex[2];
+
         return <UserContentFormContainer
             title={this.defaultTitle()}
             description=''
@@ -157,7 +162,9 @@ export default class VideoPlayer extends React.Component {
             reference_id={segment.id}
             reference_type='Segment'
             media_id={segment.media_id}
-            segmentIndex={segment.id}
+            segment={segment}
+            segmentIndex={activeIndex}
+            sortedSegments={sortedSegments}
             type='UserAnnotation'
             workflow_state='private'
         />

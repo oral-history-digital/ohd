@@ -51,7 +51,7 @@ export function sortedSegmentsWithActiveIndex(time, props) {
     //
     // aproximation based on the asumption that the mean or median segment duration is 7s
     //
-    let index = Math.round(time/7);
+    let index = Math.round(time/7) * props.tape;
     let firstSegment = sorted[0];
     let lastSegment = sorted[sorted.length - 1];
 
