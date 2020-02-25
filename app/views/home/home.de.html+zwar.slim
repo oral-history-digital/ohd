@@ -3,13 +3,11 @@
 
   p
     | Knapp 600 ehemalige Zwangsarbeiterinnen und Zwangsarbeiter aus 26 Ländern erzählen ihre
-      Lebensgeschichte in ausführlichen Audio- und Video-Interviews. Nach einer Anmeldung können
+      Lebensgeschichte in ausführlichen Audio- und Video-Interviews. Nach einer Registrierung können
       Sie die vollständigen Interviews anhören, Transkripte und Übersetzungen durchsuchen,
       Inhaltsverzeichnisse und Anmerkungen, Fotos und Kurzbiografien ansehen. 
-      Weitere Informationen zur NS-Zwangsarbeit, zum Projekt und zu Bildungsangeboten finden Sie 
-      auf der begleitenden 
-    a href="http://www.zwangsarbeit-archiv.de" Webseite
-    | .
+    = link_to "Registrieren Sie sich im Archiv", new_user_registration_path
+    | , um auf die Interviews und Matialien zuzugreifen!
 
 .search-results-container
   - Interview.random_featured(6).each do |interview|

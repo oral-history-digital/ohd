@@ -5,10 +5,9 @@
     | Nearly 600 former forced laborers from 26 countries tell their life stories in detailed
       audio and video interviews. After registering in the interview archive, you can search and
       listen to the complete testimonies, coming with transcripts, German translations, photos,
-      short biographies, tables of contents and annotations. Further information on Nazi forced
-      labor, the project and educational material can be found on the accompanying 
-    a href="https://www.zwangsarbeit-archiv.de/en/index.html" website
-    | .
+      short biographies, tables of contents and annotations. 
+    = link_to "Register to the archive", new_user_registration_path
+    | , to have access to the testimonies and research material. 
 
 .search-results-container
   - Interview.random_featured(6).each do |interview|
