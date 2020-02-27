@@ -51,7 +51,7 @@ export default class RegistryEntries extends React.Component {
                     return (
                         <li key={`registry_entries-li-${id}`}>
                             <RegistryEntryContainer 
-                                registryEntry={registryEntry} 
+                                data={registryEntry} 
                                 key={`registry_entries-${id}`} 
                                 registryEntryParent={this.props.registryEntryParent}
                             />

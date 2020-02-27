@@ -59,7 +59,7 @@ const search = (state = initialState, action) => {
                     [action.archiveId]: {
                         foundSegments: action.foundSegments,
                         foundPeople: action.foundPeople,
-                        foundPhotos: action.foundPhotos,
+                        foundRegistryEntries: action.foundRegistryEntries,
                         foundBiographicalEntries: action.foundBiographicalEntries,
                         fulltext: action.fulltext
                     }

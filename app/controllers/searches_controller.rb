@@ -73,6 +73,7 @@ class SearchesController < ApplicationController
       [BiographicalEntry, :start_date],
       [Photo, :id],
       [Person, "name_#{locale}".to_sym],
+      [RegistryEntry, "text_#{locale}".to_sym],
     ]
 
     models_and_order.each do |model, order|

@@ -26,10 +26,10 @@ export default class RegistryEntry extends React.Component {
 
     reloadRegistryEntry() {
         if (
-            this.props.registryEntriesStatus[this.props.registryEntry.id] &&
-            this.props.registryEntriesStatus[this.props.registryEntry.id].split('-')[0] === 'reload'
+            this.props.registryEntriesStatus[this.props.data.id] &&
+            this.props.registryEntriesStatus[this.props.data.id].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData(this.props, 'registry_entries', this.props.registryEntry.id);
+            this.props.fetchData(this.props, 'registry_entries', this.props.data.id);
         }
     }
 
@@ -41,7 +41,7 @@ export default class RegistryEntry extends React.Component {
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.registry_entry.edit'),
                     content: <RegistryEntryFormContainer 
-                        registryEntry={this.props.registryEntry} 
+                        registryEntry={this.props.data} 
                         registryEntryParent={this.props.registryEntryParent}
                         />
                 })}
@@ -53,16 +53,16 @@ export default class RegistryEntry extends React.Component {
     }
 
     show() {
-        if (Object.keys(this.props.registryEntry.registry_references).length > 0 ) {
+        if (Object.keys(this.props.data.registry_references).length > 0 ) {
 
             return (
                 <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'activerecord.models.registry_entries.actions.show')}
                 onClick={() => this.props.openArchivePopup({
-                    // title: this.props.registryEntry.name[this.props.locale],
+                    // title: this.props.data.name[this.props.locale],
                     content: <RegistryEntryShowContainer 
-                    registryEntry={this.props.registryEntry} 
+                    registryEntry={this.props.data} 
                     registryEntryParent={this.props.registryEntryParent}
                     />
                     })}
@@ -90,12 +90,12 @@ export default class RegistryEntry extends React.Component {
     }
 
     destroy() {
-        this.props.deleteData(this.props, 'registry_entries', this.props.registryEntry.id, null, null, true);
+        this.props.deleteData(this.props, 'registry_entries', this.props.data.id, null, null, true);
         this.props.closeArchivePopup();
     }
 
     delete() {
-        if (this.props.registryEntry) {
+        if (this.props.data) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'delete')}
@@ -103,7 +103,7 @@ export default class RegistryEntry extends React.Component {
                     title: t(this.props, 'delete'),
                     content: (
                         <div>
-                            <p>{this.props.registryEntry.name[this.props.locale]}</p>
+                            <p>{this.props.data.name[this.props.locale]}</p>
                             <div className='any-button' onClick={() => this.destroy()}>
                                 {t(this.props, 'delete')}
                             </div>
@@ -125,11 +125,11 @@ export default class RegistryEntry extends React.Component {
     }
 
     parentRegistryHierarchyId() {
-        return this.props.registryEntry.parent_registry_hierarchy_ids[this.props.registryEntryParent.id];
+        return this.props.data.parent_registry_hierarchy_ids[this.props.registryEntryParent.id];
     }
 
     deleteParent() {
-        if (this.props.registryEntry.parent_ids[this.props.locale].length > 1) {
+        if (this.props.data.parent_ids[this.props.locale].length > 1) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.registry_entry.delete_parent')}
@@ -161,7 +161,7 @@ export default class RegistryEntry extends React.Component {
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.registry_entry.add_parent'),
                     content: <RegistryHierarchyFormContainer 
-                                 descendantRegistryEntry={this.props.registryEntry}
+                                 descendantRegistryEntry={this.props.data}
                              />
                 })}
             >
@@ -179,7 +179,7 @@ export default class RegistryEntry extends React.Component {
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.registry_entry.new'),
                     content: <RegistryEntryFormContainer 
-                                registryEntryParent={this.props.registryEntry}
+                                registryEntryParent={this.props.data}
                             />
                 })}
             >
@@ -190,14 +190,14 @@ export default class RegistryEntry extends React.Component {
     }
 
     osmLink() {
-        if((this.props.registryEntry.latitude + this.props.registryEntry.longitude) !== 0 ) {
+        if((this.props.data.latitude + this.props.data.longitude) !== 0 ) {
             return (
                 <a 
-                    href={`https://www.openstreetmap.org/?mlat=${this.props.registryEntry.latitude}&mlon=${this.props.registryEntry.longitude}&zoom=6`}
+                    href={`https://www.openstreetmap.org/?mlat=${this.props.data.latitude}&mlon=${this.props.data.longitude}&zoom=6`}
                     target="_blank"
                     rel="noopener"
                     className="flyout-sub-tabs-content-ico-link"
-                    title={`${this.props.registryEntry.latitude}, ${this.props.registryEntry.longitude}`}
+                    title={`${this.props.data.latitude}, ${this.props.data.longitude}`}
                 >
                     <i className='fa fa-globe' />
                     &nbsp;
@@ -242,14 +242,14 @@ export default class RegistryEntry extends React.Component {
     }
 
     showChildren() {
-        if (this.props.registryEntry.child_ids[this.props.locale].length > 0) {
+        if (this.props.data.child_ids[this.props.locale].length > 0) {
              this.setState({ childrenVisible: !this.state.childrenVisible }) 
         }
     }
 
     showId() {
         if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
-            return ` (ID: ${this.props.registryEntry.id})`
+            return ` (ID: ${this.props.data.id})`
         }
     }
 
@@ -257,14 +257,14 @@ export default class RegistryEntry extends React.Component {
         let css = this.state.childrenVisible ? 'open' : '';
         return (
             <div 
-                id={`entry_${this.props.registryEntry.id}`} 
-                key={"entry-" + this.props.registryEntry.id} 
+                id={`entry_${this.props.data.id}`} 
+                key={"entry-" + this.props.data.id} 
                 className={`registry-entry-label ${css}`}
-                title={this.props.registryEntry.name[this.props.locale]}
+                title={this.props.data.name[this.props.locale]}
                 onClick={() => this.showChildren()}
             >
-                {this.props.registryEntry.name[this.props.locale]}
-                {/* {(this.props.registryEntry.child_ids[this.props.locale].length > 0) && ` (${this.props.registryEntry.child_ids[this.props.locale].length})`} */}
+                {this.props.data.name[this.props.locale]}
+                {/* {(this.props.data.child_ids[this.props.locale].length > 0) && ` (${this.props.data.child_ids[this.props.locale].length})`} */}
                 {this.showId()}
             </div>
         )
@@ -272,18 +272,18 @@ export default class RegistryEntry extends React.Component {
 
     children() {
         if (this.state.childrenVisible) {
-            return <RegistryEntriesContainer registryEntryParent={this.props.registryEntry} />;
+            return <RegistryEntriesContainer registryEntryParent={this.props.data} />;
         } 
     }
 
     showHideChildren() {
-        if (this.props.registryEntry.child_ids[this.props.locale].length > 0) {
+        if (this.props.data.child_ids[this.props.locale].length > 0) {
 
             let css = this.state.childrenVisible ? 'minus-square' : 'plus-square-o';
             return (
                 <div
                     className='show-hide-children'
-                    title={`${this.props.registryEntry.child_ids[this.props.locale].length} ${t(this.props, 'edit.registry_entry.show_children')}`}
+                    title={`${this.props.data.child_ids[this.props.locale].length} ${t(this.props, 'edit.registry_entry.show_children')}`}
                     onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
                     >
                     <i className={`fa fa-${css}`}></i>
@@ -299,9 +299,9 @@ export default class RegistryEntry extends React.Component {
     }
 
     description() {
-        if(this.props.registryEntry.desc !== ''){
+        if(this.props.data.desc !== ''){
             return (
-                <div style={{color: 'grey', marginTop: '6px' }}>{this.props.registryEntry.desc}</div>
+                <div style={{color: 'grey', marginTop: '6px' }}>{this.props.data.desc}</div>
             )
         }
     }

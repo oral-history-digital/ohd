@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
         foundSegments: data && data.foundSegments,
         foundPeople: data && data.foundPeople,
         foundBiographicalEntries: data && data.foundBiographicalEntries,
-        foundPhotos: data && data.foundPhotos,
+        foundRegistryEntries: data && data.foundRegistryEntries,
         archiveId: state.archive.archiveId,
         interview: getInterview(state),
         tape: state.interview.tape,

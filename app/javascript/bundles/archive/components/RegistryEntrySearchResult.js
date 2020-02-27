@@ -41,7 +41,7 @@ export default class RegistryEntrySearchResult extends React.Component {
         return (
             <li className={'search-result'}>
                 <RegistryEntryContainer 
-                    registryEntry={this.props.result.registry_entry} 
+                    data={this.props.result.registry_entry} 
                     key={`registry_entries-${this.props.result.registry_entry.id}`} 
                     //registryEntryParent={this.props.registryEntryParent}
                     />

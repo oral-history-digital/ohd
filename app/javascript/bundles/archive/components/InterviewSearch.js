@@ -4,6 +4,7 @@ import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import PersonContainer from '../containers/PersonContainer';
 import BiographicalEntryContainer from '../containers/BiographicalEntryContainer';
 import PhotoContainer from '../containers/PhotoContainer';
+import RegistryEntryContainer from '../containers/RegistryEntryContainer';
 import InterviewSearchFormContainer from '../containers/InterviewSearchFormContainer';
 
 export default class InterviewSearch extends React.Component {
@@ -42,6 +43,7 @@ export default class InterviewSearch extends React.Component {
             Person: PersonContainer,
             BiographicalEntry: BiographicalEntryContainer,
             Photo: PhotoContainer,
+            RegistryEntry: RegistryEntryContainer,
         }
     }
     
@@ -84,7 +86,7 @@ export default class InterviewSearch extends React.Component {
         return (
             <div>
                 <InterviewSearchFormContainer />
-                {['Segment', 'Person', 'BiographicalEntry', 'Photo'].map((model, modelIndex) => {
+                {['Segment', 'Person', 'BiographicalEntry', 'Photo', 'RegistryEntry'].map((model, modelIndex) => {
                     return this.searchResults(model, modelIndex)
                 })}
             </div>
