@@ -132,7 +132,7 @@ export default class VideoPlayer extends React.Component {
 
     annotateOnSegmentLink() {
         if (this.video) {
-            let sortedSegmentsWithIndex = sortedSegmentsWithActiveIndex(this.video.currentTime, this.props);
+            let sortedSegmentsWithIndex = sortedSegmentsWithActiveIndex(this.props.videoTime, this.props);
             return (
                 <div className="video-text-note" onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'save_user_annotation'),

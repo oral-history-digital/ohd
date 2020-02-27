@@ -25,22 +25,6 @@ export default class UserContentForm extends React.Component {
 
     }
 
-    componentWillReceiveProps(nextProps) {
-        this.setState({
-            id: nextProps.id,
-            title: nextProps.title,
-            description: nextProps.description,
-            properties: nextProps.properties,
-            reference_id: nextProps.reference_id,
-            reference_type: nextProps.reference_type,
-            media_id: nextProps.mediaId,
-            segmentIndex: nextProps.segmentIndex,
-            type: nextProps.type,
-            workflow_state: nextProps.workflow_state,
-            publish: false
-        })
-    }
-
     handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;

@@ -104,8 +104,11 @@ export default class Transcript extends React.Component {
                 speaker = segment.speaker;
             }
             let active = false;
-            //if (index <= sortedWithIndex[2] + 1 && index >= sortedWithIndex[2] - 1) {
-            if (index === sortedWithIndex[2]) {
+            if (
+                segment.time <= this.props.transcriptTime + 15 &&
+                segment.time >= this.props.transcriptTime - 15 &&
+                segment.tape_nbr === this.props.tape
+            ) {
                 active = true;
             }
             return (
