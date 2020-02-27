@@ -278,13 +278,13 @@ export default class VideoPlayer extends React.Component {
     }
 
     enableInterviewEditViewButton() {
-        //if (admin(this.props, {type: 'Interview', action: 'update'})) {
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return <i className="fa fa-edit edit" aria-hidden="true" onClick={() => this.props.changeToInterviewEditView(!this.props.interviewEditView)} />
-        //}
+        }
     }
 
     selectInterviewEditViewColumns() {
-        //if (admin(this.props, {type: 'Interview', action: 'update'})) {
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
@@ -297,9 +297,9 @@ export default class VideoPlayer extends React.Component {
                     <i className="fa fa-check-square check-square"></i>
                 </div>
             )
-        //} else {
-            //return null;
-        //}
+        } else {
+            return null;
+        }
     }
 
     render() {

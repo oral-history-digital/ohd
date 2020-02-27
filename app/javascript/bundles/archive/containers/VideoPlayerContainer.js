@@ -25,6 +25,8 @@ const mapStateToProps = (state) => {
         contributionTypes: state.archive.contributionTypes,
         mediaStreams: state.archive.mediaStreams,
         resolution: state.interview.resolution,
+        account: state.data.accounts.current,
+        editView: state.archive.editView,
         interviewEditView: getCookie('interviewEditView')
     }
 }
