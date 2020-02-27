@@ -384,8 +384,8 @@ en:
   saved_interviews: Saved interviews
   saved_annotations: Saved annotations
   text_materials: Textmaterialien
-  grid: Raster
-  list: Liste
+  grid: Grid
+  list: List
   admin_actions: Aktionen
   doi:
     title: register DOIs
