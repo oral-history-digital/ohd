@@ -35,7 +35,6 @@ export default class InterviewTabs extends React.Component {
         }
     }
 
-
     render() {
         return (
             <Tabs

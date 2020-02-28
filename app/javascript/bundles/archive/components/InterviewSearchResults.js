@@ -8,7 +8,7 @@ import PersonContainer from '../containers/PersonContainer';
 import BiographicalEntryContainer from '../containers/BiographicalEntryContainer';
 import PhotoContainer from '../containers/PhotoContainer';
 import RegistryEntryContainer from '../containers/RegistryEntryContainer';
-import { t, pluralize } from '../../../lib/utils';
+import { t, pluralize, pathBase } from '../../../lib/utils';
 
 export default class InterviewSearchResults extends React.Component {
 
@@ -52,7 +52,7 @@ export default class InterviewSearchResults extends React.Component {
                                 this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
                                 this.props.setTapeAndTime(1, 0);
                             }}
-                            to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
+                            to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                         >
                             {result}
                         </Link>

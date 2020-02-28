@@ -1,28 +1,25 @@
 import { connect } from 'react-redux';
 import InterviewSearchResults from '../components/InterviewSearchResults';
-
-//import { getInterview } from '../../../lib/utils';
+import { searchInInterview } from '../actions/searchActionCreators';
+import { setTapeAndTime } from '../actions/interviewActionCreators';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
-    //let data = state.search.interviews[state.archive.archiveId];
     return {
-        //foundSegments: data && data.foundSegments,
-        //foundPeople: data && data.foundPeople,
-        //foundBiographicalEntries: data && data.foundBiographicalEntries,
-        //foundRegistryEntries: data && data.foundRegistryEntries,
         archiveId: state.archive.archiveId,
-        //interview: getInterview(state),
         tape: state.interview.tape,
         transcriptTime: state.interview.transcriptTime,
         locale: state.archive.locale,
         translations: state.archive.translations,
         isInterviewSearching: state.search.isInterviewSearching,
+        fulltext: state.search.archive.query.fulltext,
     }
 }
 
 
 const mapDispatchToProps = (dispatch) => ({
+    searchInInterview: (url, searchQuery) => dispatch(searchInInterview(url, searchQuery)),
+    setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
 })
 
 
