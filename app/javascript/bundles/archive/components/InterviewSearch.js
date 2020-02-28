@@ -1,11 +1,7 @@
 import React from 'react';
 import { t, pluralize } from '../../../lib/utils';
-import FoundSegmentContainer from '../containers/FoundSegmentContainer';
-import PersonContainer from '../containers/PersonContainer';
-import BiographicalEntryContainer from '../containers/BiographicalEntryContainer';
-import PhotoContainer from '../containers/PhotoContainer';
-import RegistryEntryContainer from '../containers/RegistryEntryContainer';
 import InterviewSearchFormContainer from '../containers/InterviewSearchFormContainer';
+import InterviewSearchResultsContainer from '../containers/InterviewSearchResultsContainer';
 
 export default class InterviewSearch extends React.Component {
 
@@ -37,58 +33,14 @@ export default class InterviewSearch extends React.Component {
         }
     }
 
-    components() {
-        return {
-            Segment: FoundSegmentContainer,
-            Person: PersonContainer,
-            BiographicalEntry: BiographicalEntryContainer,
-            Photo: PhotoContainer,
-            RegistryEntry: RegistryEntryContainer,
-        }
-    }
-    
-    renderResults(model) {
-        if(this.props[`found${pluralize(model)}`]) {
-            let active = false;
-            return this.props[`found${pluralize(model)}`].map( (data, index) => {
-                if (model === 'Segment') {
-                    if (data.time <= this.props.transcriptTime + 10 && data.time >= this.props.transcriptTime - 5) {
-                        active = true;
-                    }
-                }
-                return (
-                    React.createElement(this.components()[model], 
-                        {
-                            data: data,
-                            key: `search-result-${model}-${data.id}`,
-                            tape_count: this.props.interview.tape_count,
-                            active: false
-                        }
-                    )
-                )
-            })
-        }
-    }
-
-    searchResults(model, modelIndex) {
-        if (!this.props.isInterviewSearching) {
-            let count = this.props[`found${pluralize(model)}`] ? this.props[`found${pluralize(model)}`].length : 0;
-            return (
-                <div key={modelIndex}>
-                    <div className="content-search-legend"><p>{count} {t(this.props, model.toLowerCase() + '_results')}</p></div>
-                    {this.renderResults(model)}
-                </div>
-            );
-        }
-    }
-
     render () {
         return (
             <div>
                 <InterviewSearchFormContainer />
-                {['Segment', 'Person', 'BiographicalEntry', 'Photo', 'RegistryEntry'].map((model, modelIndex) => {
-                    return this.searchResults(model, modelIndex)
-                })}
+                <InterviewSearchResultsContainer 
+                    interview={this.props.interviews[this.props.archiveId]}
+                    searchResults={this.props.interviewSearchResults[this.props.archiveId]} 
+                />
             </div>
         );
     }

@@ -2,10 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import { PROJECT, MISSING_STILL } from '../constants/archiveConstants'
-import FoundSegmentContainer from '../containers/FoundSegmentContainer';
-import Slider from "react-slick";
-import '../../../css/slick.css';
-import '../../../css/slick-theme.css';
+import InterviewSearchResultsContainer from '../containers/InterviewSearchResultsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 
 import { t, admin, pathBase } from '../../../lib/utils';
@@ -52,56 +49,47 @@ export default class InterviewPreview extends React.Component {
         return (this.props.query[query] && this.props.query[query].length > 0) ? '' : 'hidden';
     }
 
+    resultsCount() {
+        let count = 0; 
+        if (this.interviewSearchResults() && this.interviewSearchResults().foundSegments) {
+            count += this.interviewSearchResults().foundSegments.length + 
+                this.interviewSearchResults().foundPeople.length +
+                this.interviewSearchResults().foundRegistryEntries.length +
+                this.interviewSearchResults().foundBiographicalEntries.length;
+        }
+        return count;
+    }
+
     renderBadge() {
-        if (this.props.segments.foundSegments != undefined && this.props.segments.foundSegments.length > 0){
+        if (this.resultsCount() > 0) {
             return (
-                <div className={'badge'}  onClick={this.handleClick} title={`${t(this.props, 'segment_hits')}: ${this.props.segments.foundSegments.length}`}>
-                <i className="fa fa-align-justify" aria-hidden="true" />
-                &nbsp;
-                {this.props.segments.foundSegments.length}
+                <div className={'badge'}  onClick={this.handleClick} title={`${t(this.props, 'segment_hits')}: ${this.resultsCount()}`}>
+                    <i className="fa fa-align-justify" aria-hidden="true" />
+                    &nbsp;
+                    {this.resultsCount()}
                 </div>
             )
         }
     }
 
+    interviewSearchResults() {
+        return this.props.interviewSearchResults[this.props.interview.archive_id];
+    }
+
     renderSlider(){
-        if (this.props.segments.foundSegments != undefined && this.props.segments.foundSegments.length > 0){
-            let settings = {
-                infinite: false,
-            };
+        if (this.resultsCount()) {
             return (
                 <div className='slider'>
                     <div className={'archive-search-found-segments'}>
-                        <Slider {...settings}>
-                        { this.renderSegments() }
-                        </Slider>
+                        <InterviewSearchResultsContainer 
+                            interview={this.props.interview}
+                            searchResults={this.interviewSearchResults()}
+                            asSlideShow={true} 
+                        />
                     </div>
                 </div>
             )
         }
-    }
-
-    renderSegments() {
-        return this.props.segments.foundSegments.map( (segment, index) => {
-            return (
-                <Link 
-                    key={"segment-wrapper" + segment.id}
-                    onClick={() => {
-                        this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
-                        this.props.setTapeAndTime(1, 0);
-                    }}
-                    to={'/' + this.props.locale + '/interviews/' + this.props.interview.archive_id}
-                >
-                    <FoundSegmentContainer
-                        index={index+1}
-                        foundSegmentsAmount={this.props.segments.foundSegments.length}
-                        data={segment}
-                        key={"segment-" + segment.id}
-                        tape_count={this.props.interview.tape_count}
-                    />
-                </Link>
-            )
-        })
     }
 
     interviewDetails() {

@@ -15,7 +15,7 @@ const mapStateToProps = (state, ownProps) => {
         query: state.search.archive.query,
         selectedArchiveIds: state.archive.selectedArchiveIds,
         statuses: state.data.statuses.interviews,
-        segments: ownProps.interview && state.search.interviews[ownProps.interview.archive_id] || {},
+        interviewSearchResults: state.search.interviews,
         editView: state.archive.editView,
         account: state.data.accounts.current,
     }
