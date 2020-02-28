@@ -48,10 +48,7 @@ export default class InterviewSearchResults extends React.Component {
                     return (
                         <Link 
                             key={`search-result-link-${model}-${data.id}`}
-                            onClick={() => {
-                                this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
-                                this.props.setTapeAndTime(1, 0);
-                            }}
+                            onClick={() => { this.props.setTapeAndTime(1, 0) }}
                             to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                         >
                             {result}
