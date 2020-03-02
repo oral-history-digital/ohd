@@ -34,6 +34,12 @@
 
 <%= render partial: "./latex/observation" if @interview.observations(@locale) && Project.current.identifier != 'zwar' %>
 
+<%# set section fontsize: %>
+\titleformat{\section}
+  {\normalfont\fontsize{11}{13}\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}
+  {\normalfont\fontsize{10}{12}\bfseries}{\thesubsection}{1em}{}
+
 <%# set title of  tableofcontents: %>
 <% if @lang_headings_exist %>
   \renewcommand{\contentsname}{<%= I18n.t('table_of_contents', locale: @locale) %>}

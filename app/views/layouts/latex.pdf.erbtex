@@ -11,6 +11,8 @@
 \pagestyle{fancy}
 
 \usepackage{fontspec}
+\usepackage{titlesec}
+
 \setmainfont{FiraSans-Regular}
 
 \usepackage{setspace}
