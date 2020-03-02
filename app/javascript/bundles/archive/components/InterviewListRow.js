@@ -13,6 +13,9 @@ export default class InterviewListRow extends React.Component {
     }
 
     componentDidMount() {
+        if(this.props.fulltext) {
+            this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+        }
     }
 
     content(label, value) {
@@ -22,6 +25,21 @@ export default class InterviewListRow extends React.Component {
                 <span>{value}</span>
             </div>
         )
+    }
+
+    resultsCount() {
+        let count = 0; 
+        if (
+            this.props.interviewSearchResults && 
+            this.props.interviewSearchResults[this.props.interview.archive_id] &&
+            this.props.interviewSearchResults[this.props.interview.archive_id].foundSegments
+        ) {
+            count += this.props.interviewSearchResults[this.props.interview.archive_id].foundSegments.length + 
+                this.props.interviewSearchResults[this.props.interview.archive_id].foundPeople.length +
+                this.props.interviewSearchResults[this.props.interview.archive_id].foundRegistryEntries.length +
+                this.props.interviewSearchResults[this.props.interview.archive_id].foundBiographicalEntries.length;
+        }
+        return count;
     }
 
     typologies(){
@@ -37,7 +55,7 @@ export default class InterviewListRow extends React.Component {
 
     columns(){
         let props = this.props
-        return props.project.list_columns.map(function(column, i){
+        let cols = props.project.list_columns.map(function(column, i){
             let value = props.interview[column.name];
             if (typeof value === 'object' && value !== null)
                 value = value[props.locale]
@@ -45,6 +63,17 @@ export default class InterviewListRow extends React.Component {
                 <td key={i}>{value || '---'}</td>
             )
         })
+        if (this.props.fulltext && this.resultsCount() > 0) {
+            cols.push(
+                <Link className={'search-result-link'}
+                    onClick={() => { this.props.setTapeAndTime(1, 0) }}
+                    to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
+                >
+                    {this.resultsCount()}
+                </Link>
+            );
+        }
+        return cols;
     }
 
     renderExportCheckbox() {

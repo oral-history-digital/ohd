@@ -10,6 +10,7 @@ const mapStateToProps = (state, ownProps) => {
     let project = getProject(state);
     return {
         fulltext: state.search.archive.query.fulltext,
+        interviewSearchResults: state.search.interviews,
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         translations: state.archive.translations,

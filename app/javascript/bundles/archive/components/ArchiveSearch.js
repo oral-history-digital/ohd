@@ -51,7 +51,7 @@ export default class ArchiveSearch extends React.Component {
         let headers = [];
 
         if (admin(this.props, {type: 'Interview', action: 'update'})) {
-            headers.push(<td key={`list-header-column-selected`}><strong>{t(this.props, 'selected')}</strong></td>);
+            headers.push(<td key={'list-header-column-selected'}><strong>{t(this.props, 'selected')}</strong></td>);
         }
 
         props.listColumns.map(function(column, i){
@@ -60,6 +60,10 @@ export default class ArchiveSearch extends React.Component {
                 <td key={`list-header-column-${i}`}><strong>{label}</strong></td>
             )
         })
+
+        if (this.props.query.fulltext) {
+            headers.push(<td key={'list-header-column-count'}><strong>{t(this.props, 'archive_results')}</strong></td>);
+        }
 
         return headers;
     }
