@@ -78,7 +78,7 @@ header.site-header {
 }
 
 .flyout-is-visible {
-  .wrapper-flyout {
+  .wrapper-flyout, .scroll-flyout {
     z-index: 1000; //because of leaflet
     width: 100%;
     padding-right: 0;
@@ -99,9 +99,6 @@ header.site-header {
     top: 0;
     bottom: 0;
     right: 0;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    z-index: 1000;
     background: rgba(232,232,228, 0.95);
     @include screen-xl {
       border-left: 1px solid $gray-light;
@@ -117,13 +114,6 @@ header.site-header {
     @include screen-m {
       margin-right: -9px;
     }
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    transform: translateZ(0);
-    -webkit-transform: translateZ(0);
-    z-index: 1000;
   }
   .flyout-toggle {
     @include screen-xl {
