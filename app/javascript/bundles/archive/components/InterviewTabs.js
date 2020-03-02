@@ -16,8 +16,24 @@ export default class InterviewTabs extends React.Component {
         }
     }
 
+    resultsCount() {
+        let count = 0; 
+        if (this.props.interviewSearchResults && this.props.interviewSearchResults.foundSegments) {
+            count += this.props.interviewSearchResults.foundSegments.length + 
+                this.props.interviewSearchResults.foundPeople.length +
+                this.props.interviewSearchResults.foundRegistryEntries.length +
+                this.props.interviewSearchResults.foundBiographicalEntries.length;
+        }
+        return count;
+    }
+
     componentDidMount(){
-        if (this.props.interviewFulltext && ( this.props.interviewFulltext !== "" ) && (this.props.numberOfFoundSegments > 0)) {
+        if (
+            this.props.interviewSearchResults && 
+            this.props.interviewSearchResults.fulltext && 
+            this.props.interviewSearchResults.fulltext !== "" && 
+            this.resultsCount() > 0
+        ) {
             this.setState({['tabIndex']: 3});
         } else if(this.props.locale != this.props.interview.lang){
             this.setState({['tabIndex']: 1});
@@ -28,7 +44,12 @@ export default class InterviewTabs extends React.Component {
 
 
     componentDidUpdate(prevProps, prevState) {
-        if (!prevProps.interviewFulltext && this.props.interviewFulltext && ( this.props.interviewFulltext !== "" )) {
+        if (
+            !(prevProps.interviewSearchResults && prevProps.interviewSearchResults.fulltext) && 
+            this.props.interviewSearchResults && 
+            this.props.interviewSearchResults.fulltext && 
+            this.props.interviewSearchResults.fulltext !== ""
+        ) {
             this.setState({['tabIndex']: 3});
         } else if (prevProps.tabIndex !== this.props.tabIndex) {
             this.setState({['tabIndex']: this.props.tabIndex});
