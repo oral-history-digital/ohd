@@ -464,10 +464,10 @@ ru:
     title: Mitwirkende
     add: Mitwirkende(n) zufügen
     interviewee: интервьюируемый
-    interviewer: Interview
-    transcriptor: Transkript
-    translator: Übersetzung
-    segmentator: Segmentierung
+    interviewer: Проведение интервью
+    transcriptor: Транскрипция
+    translator: Перевод
+    segmentator: Сегментация
     cinematographer: Kamera
     proof_reading: корректура
     research: обработка
