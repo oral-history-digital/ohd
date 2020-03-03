@@ -1148,7 +1148,7 @@ class RegistryEntry < ApplicationRecord
     # NB: We always want to make the birth name available in the
     # alias representation to provide an editable placeholder (e.g.
     # in the media view).
-    if available_name_types.include? :birth_name or (pattern_name == :person and locale == :alias)
+    if I18n.available_locales.include?(locale) && (available_name_types.include? :birth_name or (pattern_name == :person and locale == :alias))
       pattern += " (#{I18n.t('activerecord.attributes.registry_entry.born', :locale => locale)} %{birth_name})"
     end
 
