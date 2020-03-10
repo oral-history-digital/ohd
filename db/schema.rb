@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_27_143851) do
+ActiveRecord::Schema.define(version: 2020_03_10_123246) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -135,6 +135,7 @@ ActiveRecord::Schema.define(version: 2020_01_27_143851) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "url"
+    t.string "name"
     t.index ["external_link_id"], name: "index_external_link_translations_on_external_link_id"
     t.index ["locale"], name: "index_external_link_translations_on_locale"
   end
@@ -144,6 +145,7 @@ ActiveRecord::Schema.define(version: 2020_01_27_143851) do
     t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "internal_name"
   end
 
   create_table "histories", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

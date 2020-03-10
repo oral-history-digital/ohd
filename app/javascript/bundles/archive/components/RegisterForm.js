@@ -119,6 +119,12 @@ export default class RegisterForm extends React.Component {
                     </a>
                 )
             },
+            {
+                elementType: 'input',
+                attribute: 'receive_newsletter',
+                type: 'checkbox',
+                help: t(this.props, 'user_registration.notes_on_receive_newsletter')
+            }
         ];
 
         if (this.props.projectId === 'mog') {
