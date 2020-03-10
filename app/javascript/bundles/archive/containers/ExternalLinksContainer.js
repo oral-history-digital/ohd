@@ -15,6 +15,9 @@ const mapStateToProps = (state) => {
         detailsAttributes: ['name', 'url'],
         formElements: [
             {
+                attribute: "internal_name"
+            },
+            {
                 elementType: 'multiLocaleInput',
                 attribute: 'name',
                 // validate: function(v){return v.length > 1} 

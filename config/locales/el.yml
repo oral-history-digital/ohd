@@ -757,6 +757,7 @@ el:
         label: Label
         values: Values
       external_link:
+        internal_name: Internal Name
         name: Name
         url: URL
         locale: Sprache

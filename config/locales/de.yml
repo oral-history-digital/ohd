@@ -763,6 +763,7 @@ de:
         label: Label
         values: Values
       external_link:
+        internal_name: Interner Name
         name: Name
         url: URL
         locale: Sprache
