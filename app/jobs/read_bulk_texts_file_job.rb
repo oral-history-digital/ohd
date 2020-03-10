@@ -40,6 +40,13 @@ class ReadBulkTextsFileJob < ApplicationJob
           #
           text_parts = text.split(/\n\n/)
           text = text_parts[0..(text_parts.length - 2)].join("\n\n") if text_parts.last =~ /www.zwangsarbeit-archiv.de/
+          text = ""
+          while !text_parts.empty? && (
+              !text_parts.first.match(/Zwangsarbeit 1939-1945\S*/) ||
+              !text_parts.first.match(/Forced Labor 1939-1945\S*/) ||
+              !text_parts.first.match(/Принудительный труд 1939-1945\S*/) 
+          )
+          end
           bg = BiographicalEntry.find_or_create_by(person_id: interview.interviewees.first.id)
           bg.update_attributes(locale: locale, text: text)
           #

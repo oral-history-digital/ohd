@@ -148,6 +148,7 @@ en:
   logout_page: Logout
   account_page: Account
   interview: Interview
+  interview_archive: Interview Archive
   user_content: Workbook
   user_content_errors: Please enter title and description (minimum 2 letters)
   archive_search: Search the archive

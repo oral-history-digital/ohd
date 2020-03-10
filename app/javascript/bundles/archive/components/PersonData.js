@@ -23,18 +23,14 @@ export default class PersonData extends React.Component {
         return !!firstKey && firstEntry.workflow_state === 'public' && firstEntry;
     }
 
-    download(lang, condition) {
-        if (!condition) {
-            return (
-                <a className='flyout-download-link-lang'
-                    href={pathBase(this.props) + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
-                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
-                    <span>{t(this.props, lang)}</span>
-                </a>
-            )
-        } else {
-            return null;
-        }
+    download(lang) {
+        return (
+            <a className='flyout-download-link-lang'
+                href={pathBase(this.props) + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
+                <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
+                <span>{t(this.props, lang)}</span>
+            </a>
+        )
     }
 
     downloads(){
@@ -43,10 +39,10 @@ export default class PersonData extends React.Component {
             return (
                 <span>
                     {publicBioEntry.text[this.props.interview.lang] && this.download(this.props.interview.lang)}
-                    {publicBioEntry.text[this.props.locale] && this.download(
-                        this.props.locale,
-                        this.props.interview.lang === this.props.locale
-                    )}
+                    {publicBioEntry.text[this.props.locale] && 
+                            this.props.interview.lang !== this.props.locale &&
+                            this.download(this.props.locale)
+                    }
                 </span>
             )
         } else {

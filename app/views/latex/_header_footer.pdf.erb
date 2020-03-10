@@ -11,9 +11,9 @@
   interviewee_name = @interview && @interview.interviewees.last.name(true)[@locale.to_sym]
   footer_text = ""
   footer_text += "#{I18n.t(@biography ? 'biographical_entries_footer' : 'transcript_footer', locale: @locale)} #{interviewee_name}" if @interview
-  footer_text += ", Interview #{@interview.archive_id}, #{@interview.interview_date && Date.parse(@interview.interview_date).strftime("%d.%m.%Y") rescue @interview.interview_date}" if @interview
-  footer_text += ", Interview-Archiv \"#{current_project.name(@locale)}\""
-  footer_text += ", #{Project.archive_domain}"
+  footer_text += ", #{I18n.t('interview', locale: @locale)} #{@interview.archive_id}, #{@interview.interview_date && Date.parse(@interview.interview_date).strftime("%d.%m.%Y") rescue @interview.interview_date}" if @interview
+  footer_text += ", #{I18n.t('interview_archive', locale: @locale)} \"#{current_project.name(@locale)}\""
+  footer_text += ", #{Project.archive_domain}/#{@locale}"
   footer_text += "."
 %>
 <%#footer_text += ", doi: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{Project.project_initials}.#{@interview.archive_id}" if @interview && @interview.doi_status == 'created'%>
