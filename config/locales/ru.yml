@@ -174,7 +174,7 @@ ru:
         так, чтобы он был виден всем пользователям архива? В таком случае, настоящим
         Вы принимаете наши <a class="conditions-link" href="%{link}"
     target="_blank">Правила публикации комментариев</a>.
-  save: speichern
+  save: сохранить
   cancel: abbrechen
   assign_speakers: Sprecher zuordnen
   person_info: О человеке
