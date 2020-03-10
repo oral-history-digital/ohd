@@ -917,9 +917,9 @@ ru:
     errors:
       default:
         select: Bitte auswählen
-        textarea: Bitte angeben
+        textarea: Введите адрес
         checkbox_input: Bitte zustimmen
-        text_input: Bitte angeben
+        text_input: Введите адрес
         file_input: Bitte Datei auswählen
         password_input: пожалуйста, уточните пароль
         email_input: Bitte berichtigen Sie Ihre Email
