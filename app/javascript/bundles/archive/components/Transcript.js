@@ -25,7 +25,10 @@ export default class Transcript extends React.Component {
 
     componentDidUpdate(prevProps) {
         this.loadSegments();
-        if (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) {
+        if (
+            (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) || 
+            prevProps.tape !== this.props.tape
+        ) {
             this.scrollToActiveSegment();
         }
     }
