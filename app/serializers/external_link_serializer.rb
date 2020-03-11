@@ -1,5 +1,6 @@
 class ExternalLinkSerializer < ApplicationSerializer
   attributes :id, 
+    :internal_name, 
     :name, 
     :url,
 
