@@ -5,6 +5,11 @@ class BiographicalEntry < ApplicationRecord
   
   translates :text, :start_date, :end_date, fallbacks_for_empty_translations: true, touch: true
 
+  after_save :touch_person
+  def touch_person
+    person.touch
+  end
+
   workflow do
     state :unshared do
       event :publish, transition_to: :public
