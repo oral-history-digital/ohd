@@ -155,17 +155,17 @@ export default class TableOfContents extends React.Component {
         ) {
             let headings = this.prepareHeadings();
             return (
-                <div className={'content-index'}>
-                    <p>
-                        {this.emptyHeadingsNote(headings)}
-                    </p>
-                    {headings.map((heading, index) => {
-                        return <HeadingContainer
-                            key={'mainheading-' + index}
-                            data={heading}
-                            nextHeading={headings[index+1]}
-                        />
-                    })}
+                <div>
+                    {this.emptyHeadingsNote(headings)}
+                    <div className={'content-index'}>
+                        {headings.map((heading, index) => {
+                            return <HeadingContainer
+                                key={'mainheading-' + index}
+                                data={heading}
+                                nextHeading={headings[index+1]}
+                            />
+                        })}
+                    </div>
                 </div>
             );
         } else {
