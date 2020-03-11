@@ -86,7 +86,7 @@ export default class RegisterForm extends React.Component {
             }
         ];
 
-        let otherElements = [
+        let countrySelect = [
             {
                 elementType: 'select',
                 attribute: 'country',
@@ -95,12 +95,18 @@ export default class RegisterForm extends React.Component {
                 withEmpty: true,
                 validate: function(v){return v !== ''} 
             },
+        ];
+
+        let newsletterElement = [
             {
                 elementType: 'input',
                 attribute: 'receive_newsletter',
                 type: 'checkbox',
                 help: t(this.props, 'user_registration.notes_on_receive_newsletter')
             },
+        ];
+
+        let otherElements = [
             {
                 elementType: 'input',
                 attribute: 'tos_agreement',
@@ -128,9 +134,11 @@ export default class RegisterForm extends React.Component {
         ];
 
         if (this.props.projectId === 'mog') {
-            return firstElements.concat(otherElements);
+            return firstElements.concat(countrySelect).concat(otherElements);
+        } else if (this.props.locale === 'de') {
+            return firstElements.concat(addressElements).concat(countrySelect).concat(newsletterElement).concat(otherElements);
         } else {
-            return firstElements.concat(addressElements).concat(otherElements);
+            return firstElements.concat(addressElements).concat(countrySelect).concat(otherElements);
         }
     }
 
