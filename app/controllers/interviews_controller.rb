@@ -135,7 +135,7 @@ class InterviewsController < ApplicationController
         @orig_lang = "#{interview_locale}-public"
         first_segment_with_heading = @interview.segments.with_heading.first
         @lang_headings_exist = first_segment_with_heading.mainheading(@lang) || first_segment_with_heading.subheading(@lang) 
-        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-pdf-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}" do
+        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-pdf-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:locale]}" do
           render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
         end
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{params[:lang]}.pdf", :type => "application/pdf"#, :disposition => "attachment"

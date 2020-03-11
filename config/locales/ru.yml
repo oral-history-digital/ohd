@@ -86,8 +86,6 @@ ru:
     семейные и другие исторические фотографии из частной коллекции интервьюируемого
     лица.
   interview_empty_gallery_explanation: Фотографии для этого интервью отсутствуют.
-  transcript_header: Транскрипт интервью
-  translation_header: Перевод интервью
   tapes: Записи
   without_translation: Это интервью не переведено на немецкий язык.
   without_transcript: Транскрипт данного интервью пока отсутствует.
@@ -187,10 +185,11 @@ ru:
   typologies: Erfahrungen
   history: Краткая биография
   interview_with: Interview mit
-  transcript_header: 'Transkript (%{lang}):'
-  transcript_title: Transkript (%{lang}) des Interviews mit
-  translation_title: Übersetzung (%{lang}) des Interviews mit
-  transcript_footer: 'Zitiervorgabe: Transkript des Interviews mit'
+  transcript_header: Транскрипт интервью
+  translation_header: Перевод интервью
+  transcript_title: Транскрипт интервью (%{lang}) 
+  translation_title: Перевод интервью (%{lang}) 
+  transcript_footer: 'Метод цитирования: Транскрипт интервью'
   biographical_entries_header: 'Краткая биография:'
   biographical_entries_title: 'Краткая биография:'
   biographical_entries_footer: 'Метод цитирования: Краткая биография,'
