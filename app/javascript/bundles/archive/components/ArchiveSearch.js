@@ -121,7 +121,7 @@ export default class ArchiveSearch extends React.Component {
     }
 
     handleTabClick(tabIndex) {
-    this.props.setViewMode(this.props.viewModes[tabIndex])
+        this.props.setViewMode(this.props.viewModes[tabIndex])
     }
 
 
@@ -301,7 +301,7 @@ export default class ArchiveSearch extends React.Component {
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        // selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
+                        selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
                         defaultIndex={0}
                         onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
