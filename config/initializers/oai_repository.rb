@@ -7,7 +7,7 @@ OaiRepository.setup do |config|
   # If you're deploying to different hostnames (e.g. development, QA and
   # production environments, each with different hostnames), you could
   # dynamically set this.
-  #config.repository_url = Project.current.archive_domain
+  config.repository_url = Project.current.archive_domain
 
   # By default the (unique) identifier of each record will be composed as
   # #{record_prefix}/#{record.id}
