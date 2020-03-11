@@ -40,17 +40,14 @@ class ReadBulkTextsFileJob < ApplicationJob
           #
           text_parts = text.split(/\n+/)
           text = ""
-            binding.pry
           while !text_parts.empty? && (
               !text_parts.first.match(/Zwangsarbeit 1939-1945\S*/) &&
               !text_parts.first.match(/Forced Labor 1939-1945\S*/) &&
               !text_parts.first.match(/Принудительный труд 1939-1945\S*/) 
           )
             part = text_parts.shift 
-            binding.pry
             text << "\n\n#{part}"
           end
-            binding.pry
           bg = BiographicalEntry.find_or_create_by(person_id: interview.interviewees.first.id)
           bg.update_attributes(locale: locale, text: text)
           #
