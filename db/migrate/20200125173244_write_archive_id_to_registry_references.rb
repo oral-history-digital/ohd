@@ -1,18 +1,8 @@
 class WriteArchiveIdToRegistryReferences < ActiveRecord::Migration[5.2]
   def change
     add_column :registry_references, :archive_id, :string
-    RegistryReference.where(archive_id: nil).find_each do |rr|
-      if rr.ref_object_type == "Interview"
-        rr.update_attributes archive_id: Interview.find(rr.ref_object_id).archive_id
-      elsif rr.ref_object_type == "Segment"
-        rr.update_attributes archive_id: Segment.find(rr.ref_object_id).interview.archive_id
-      elsif rr.ref_object_type == "Person"
-        begin
-          rr.update_attributes archive_id: Person.find(rr.ref_object_id).interviews.first.archive_id
-        rescue
-          nil
-        end
-      end
-    end
+    Interview.all.each{|i| i.registry_references.update_all(archive_id: i.archive_id)}
+    Interview.all.each{|i| i.segment_registry_references.update_all(archive_id: i.archive_id)}
+    Person.all.each{|i| i.interviews.first && i.registry_references.update_all(archive_id: i.interviews.first.archive_id)}
   end
 end
