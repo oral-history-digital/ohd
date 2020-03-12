@@ -118,7 +118,7 @@ class ApplicationController < ActionController::Base
         projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
           Project.all.
             includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
-            inject({}) { |mem, s| mem[s.id] = cache_single(s, nil, "metadata_fields"); mem }
+            inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
         languages: Rails.cache.fetch("#{current_project.cache_key_prefix}-languages-#{Language.maximum(:updated_at)}") do 
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
