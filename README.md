@@ -18,18 +18,24 @@ This is the Interview Archive Web Application
     # or for a new empty project
     ln -s projects/empty.yml project.yml
     ```
+    
+3. Create datacite.yml:
 
-3. create initial admin users: `bundle exec rake users:init_admins`
+   ```bash
+   cp config/datacite.example.yml config/datacite.yml
+   ```
+
+4. create initial admin users: `bundle exec rake users:init_admins`
    (have a look in lib/tasks/users.rb after l.34 to add other users)
 
-4. To use node.js (at the moment version 8.x) for webpacker run:
+5. To use node.js (at the moment version 8.x) for webpacker run:
 
     ```bash
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     sudo apt-get install -y nodejs
     ```
     
-5. install yarn ( as well to run webpacker )
+6. install yarn ( as well to run webpacker )
 
     ```bash
     curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
@@ -37,6 +43,20 @@ This is the Interview Archive Web Application
     sudo apt-get update && sudo apt-get install yarn
     yarn install
     ```
+7. Install Java
+   
+   [https://wiki.ubuntuusers.de/Java/Installation/](https://wiki.ubuntuusers.de/Java/Installation/)
+   
+   e.g.:
+   ```bash
+   sudo apt install openjdk-13-jre
+   ```
+   
+8. Install redis
+   
+   ```bash
+   sudo apt-get install redis-server 
+   ```
     
 ## Start app using foreman
 
