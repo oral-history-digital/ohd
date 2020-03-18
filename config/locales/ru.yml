@@ -687,7 +687,7 @@ ru:
         punishment: Art der Mißhandlung
         liberation_date: Befreiungsdatum
       biographical_entry:
-        text: Ereignis
+        text: событие
         start_date: Beginn
         end_date: Ende
         workflow_state: 'Status ändern zu:'
@@ -888,7 +888,7 @@ ru:
         first_name: Vorname
         last_name: Nachname
         birth_name: Geburtsname
-        date_of_birth: Geburtsdatum
+        date_of_birth: дата рождения
         alias_names: Alias Names
         other_first_names: Other First Names
         typology: Erfahrungen
