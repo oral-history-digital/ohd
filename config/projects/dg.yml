@@ -19,7 +19,8 @@ default: &default
     defaults:
       audio: 480p
     audio:
-      480p: https://medien.cedis.fu-berlin.de/zwar/hagen/#{archive_id}_#{tape_count}_0#{tape_number}.mp3
+      # 480p: https://medien.cedis.fu-berlin.de/zwar/hagen/#{archive_id}_#{tape_count}_0#{tape_number}.mp3
+      480p: https://thigrandi.fernuni-hagen.de:8443/geschichte/ArchivDeutschesGedaechtnis/OnlineArchiv/#{archive_id}_#{tape_count}_0#{tape_number}.mp3
 
 
   contribution_types:
@@ -72,8 +73,6 @@ default: &default
   repository_dir: '/mnt/hagen.cedis.fu-berlin.de/data/archiv_backup/archiv_dis'
 
   streaming_server: 'rtmp://stream03.cedis.fu-berlin.de/zwangsarbeit-archiv'
-
-  video_src_base: "https://medien.cedis.fu-berlin.de/zwar/hagen"
 
   meta_keywords:
     de: ''
