@@ -43,6 +43,9 @@ This is the Interview Archive Web Application
     sudo apt-get update && sudo apt-get install yarn
     yarn install
     ```
+7. Install Java
+   
+   [https://wiki.ubuntuusers.de/Java/Installation/](https://wiki.ubuntuusers.de/Java/Installation/)
     
 ## Start app using foreman
 
