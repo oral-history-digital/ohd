@@ -18,6 +18,12 @@ This is the Interview Archive Web Application
     # or for a new empty project
     ln -s projects/empty.yml project.yml
     ```
+    
+3. Create datacite.yml:
+
+   ```bash
+   cp config/datacite.example.yml config/datacite.yml
+   ```
 
 3. create initial admin users: `bundle exec rake users:init_admins`
    (have a look in lib/tasks/users.rb after l.34 to add other users)
