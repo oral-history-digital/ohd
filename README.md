@@ -51,6 +51,12 @@ This is the Interview Archive Web Application
    ```bash
    sudo apt install openjdk-13-jre
    ```
+   
+8. Install redis
+   
+   ```bash
+   sudo apt-get install redis-server 
+   ```
     
 ## Start app using foreman
 
