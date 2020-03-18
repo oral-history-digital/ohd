@@ -46,6 +46,11 @@ This is the Interview Archive Web Application
 7. Install Java
    
    [https://wiki.ubuntuusers.de/Java/Installation/](https://wiki.ubuntuusers.de/Java/Installation/)
+   
+   e.g.:
+   ```bash
+   sudo apt install openjdk-13-jre
+   ```
     
 ## Start app using foreman
 
