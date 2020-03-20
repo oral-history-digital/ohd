@@ -57,6 +57,13 @@ This is the Interview Archive Web Application
    ```bash
    sudo apt-get install redis-server 
    ```
+   
+9. Recommended: Activate caching in deployment (depending on what you are about to work on):
+
+   ```bash
+   touch tmp/caching-dev.txt
+   ```
+    
     
 ## Start app using foreman
 
