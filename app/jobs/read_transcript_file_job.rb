@@ -13,7 +13,7 @@ class ReadTranscriptFileJob < ApplicationJob
       interview.create_or_update_segments_from_vtt(file_path, tape_id, locale, contribution_data)
     end
     File.delete(file_path) if File.exist?(file_path)
-    logger.info "*** created  segments for #{interview.archive_id}"
+    jobs_logger.info "*** created  segments for #{interview.archive_id}"
     interview.touch
 
     #WebNotificationsChannel.broadcast_to(

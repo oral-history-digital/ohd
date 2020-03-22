@@ -74,13 +74,13 @@ class ReadBulkTextsFileJob < ApplicationJob
             #end
           #end
         else
-          logger.info "*** DON'T KNOW WHAT TO DO WITH #{File.basename(text_file_name)}!!!"
+          jobs_logger.info "*** DON'T KNOW WHAT TO DO WITH #{File.basename(text_file_name)}!!!"
         end
       end
 
       File.delete(text_file_name) if File.exist?(text_file_name)
     rescue StandardError => e
-      logger.info("*** #{archive_id}: #{e.message}!!!")
+      jobs_logger.info("*** #{archive_id}: #{e.message}!!!")
     end
     File.delete(file_path) if File.exist?(file_path)
 
