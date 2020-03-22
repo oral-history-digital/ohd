@@ -120,7 +120,7 @@ class Project < ApplicationRecord
       when "RegistryReferenceType"
         rr = facet.source.classify.constantize.find_by_code(facet.name)
         if rr
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-#{facet.name}-#{rr.id}-#{rr.updated_at}-registry_reference_type-search-facets") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-#{facet.name}-#{rr.id}-#{rr.updated_at}-#{facet.updated_at}-registry_reference_type-search-facets") do
             ::FacetSerializer.new(rr).as_json
           end
         end
@@ -166,7 +166,7 @@ class Project < ApplicationRecord
         end
       when "Language"
         facet_label_hash = facet.localized_hash(:label)
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-language-search-facets-#{Language.maximum(:updated_at)}-") do
+        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-language-search-facets-#{Language.maximum(:updated_at)}-#{facet.updated_at}") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
@@ -180,7 +180,7 @@ class Project < ApplicationRecord
         end
       when "Collection"
         facet_label_hash = facet.localized_hash(:label)
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-collection-search-facets-#{Collection.maximum(:updated_at)}-") do
+        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-collection-search-facets-#{Collection.maximum(:updated_at)}-#{facet.updated_at}") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
