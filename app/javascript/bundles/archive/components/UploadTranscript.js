@@ -84,6 +84,11 @@ export default class UploadTranscript extends React.Component {
                                 validate: function(v){return /^\d{1,2}$/.test(v)}
                             },
                             { 
+                                elementType: 'input',
+                                attribute: 'delete_existing',
+                                type: 'checkbox'
+                            },
+                            { 
                                 attribute: 'tape_durations',
                                 help: t(this.props, 'activerecord.attributes.transcript.tape_durations_explanation'),
                                 hidden: !this.state.isOdt,

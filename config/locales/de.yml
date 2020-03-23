@@ -724,6 +724,7 @@ de:
         tape_durations_explanation: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         time_shifts: Sprechbeginn
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
+        delete_existing: existierendes Transkript (für dieses Tape) löschen
       project:
         title: Name
         name: Name

@@ -21,6 +21,7 @@ class TranscriptsController < ApplicationController
     ) : interview.tapes.first
 
     update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
+    tape.segments.destroy_all if transcript_params[:delete_existing]
 
     create_contributions(interview, transcript_params[:contributions_attributes])
     
@@ -49,6 +50,7 @@ class TranscriptsController < ApplicationController
         :tape_number,
         :tape_durations,
         :time_shifts,
+        :delete_existing,
         contributions_attributes: [:person_id, :contribution_type, :speaker_designation]
     )
   end
