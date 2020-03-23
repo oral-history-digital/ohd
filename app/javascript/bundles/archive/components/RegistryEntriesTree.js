@@ -32,7 +32,7 @@ export default class RegistryEntriesTree extends React.Component {
 
     foundRegistryEntries() {
         if (this.props.foundRegistryEntries.results.length == 0 && !this.props.isRegistryEntriesSearching) {
-            return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
+            return <div className={'search-result'}>{`0 ${t(this.props, 'registryentry_results')}`}</div>
         } else {
             return (
                 this.props.foundRegistryEntries.results.map((result, index) => {
