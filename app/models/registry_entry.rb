@@ -178,7 +178,7 @@ class RegistryEntry < ApplicationRecord
 
   def self.merge(opts={})
     merge_to_id = opts[:id]
-    where(id: JSON.parse(opts[:ids])).each do |registry_entry|
+    where(id: opts[:ids]).each do |registry_entry|
       registry_entry.move_associated_to(merge_to_id)
       registry_entry.destroy
     end

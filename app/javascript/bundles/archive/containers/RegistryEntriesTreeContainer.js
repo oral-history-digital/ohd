@@ -15,6 +15,10 @@ const mapStateToProps = (state) => {
         registryEntries: state.data.registry_entries,
         registryEntriesStatus: state.data.statuses.registry_entries,
         foundRegistryEntries: state.search.registryEntries,
+        editView: state.archive.editView,
+        account: state.data.accounts.current,
+        isLoggedIn: state.account.isLoggedIn,
+        selectedRegistryEntryIds: state.archive.selectedRegistryEntryIds,
     }
 }
 
@@ -22,6 +26,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     submitData: (props, params) => dispatch(submitData(props, params)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
+    closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntriesTree);

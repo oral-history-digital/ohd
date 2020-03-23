@@ -70,6 +70,7 @@ class ApplicationController < ActionController::Base
         editView: !!cookies["editView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],
+        selectedRegistryEntryIds: ['dummy'],
         selectedInterviewEditViewColumns: ['text_orig', 'text_translated'],
         translations: translations,
         countryKeys: country_keys,

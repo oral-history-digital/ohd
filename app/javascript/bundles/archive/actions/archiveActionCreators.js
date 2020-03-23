@@ -16,7 +16,8 @@ import {
 
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS,
-    SET_SELECTED_ARCHIVE_IDS
+    SET_SELECTED_ARCHIVE_IDS,
+    UPDATE_SELECTED_REGISTRY_ENTRY_IDS
 } from '../constants/archiveConstants';
 
 export const setLocale = (locale) => ({
@@ -116,6 +117,17 @@ const updateSelectedArchiveIds = (archiveId) => ({
 export function addRemoveArchiveId(archiveId) {
     return dispatch => {
         dispatch(updateSelectedArchiveIds(archiveId))
+    }
+};
+
+const updateSelectedRegistryEntryIds = (rid) => ({
+    type: UPDATE_SELECTED_REGISTRY_ENTRY_IDS,
+    rid: rid
+});
+
+export function addRemoveRegistryEntryId(rid) {
+    return dispatch => {
+        dispatch(updateSelectedRegistryEntryIds(rid))
     }
 };
 

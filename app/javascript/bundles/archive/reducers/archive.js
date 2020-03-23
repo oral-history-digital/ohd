@@ -14,7 +14,8 @@ import {
     //EXPORT_DOI,
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS,
-    SET_SELECTED_ARCHIVE_IDS
+    SET_SELECTED_ARCHIVE_IDS,
+    UPDATE_SELECTED_REGISTRY_ENTRY_IDS
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -64,6 +65,14 @@ const archive = (state = initialState, action) => {
                 return Object.assign({}, state, { selectedArchiveIds: [...state.selectedArchiveIds, action.archiveId] })
             } else {
                 return Object.assign({}, state, { selectedArchiveIds: state.selectedArchiveIds.filter(archiveId => archiveId !== action.archiveId) })
+            }
+        case UPDATE_SELECTED_REGISTRY_ENTRY_IDS:
+            if(action.rid === -1) {
+                return Object.assign({}, state, { selectedRegistryEntryIds: ['dummy'] })
+            } else if(state.selectedRegistryEntryIds.indexOf(action.rid) === -1) {
+                return Object.assign({}, state, { selectedRegistryEntryIds: [...state.selectedRegistryEntryIds, action.rid] })
+            } else {
+                return Object.assign({}, state, { selectedRegistryEntryIds: state.selectedRegistryEntryIds.filter(rid => rid !== action.rid) })
             }
         case REQUEST_STATIC_CONTENT:
             return Object.assign({}, state, {

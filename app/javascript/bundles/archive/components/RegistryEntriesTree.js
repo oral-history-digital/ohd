@@ -51,14 +51,15 @@ export default class RegistryEntriesTree extends React.Component {
     mergeRegistryEntries() {
         let id;
         let ids = [];
-        this.props.foundRegistryEntries.results.map((result, index) => {
+        this.props.selectedRegistryEntryIds.filter(i => i !== 'dummy').map((rid, index) => {
             if (index === 0) {
-                id = result.registry_entry.id;
+                id = rid;
             } else {
-                ids.push(result.registry_entry.id);
+                ids.push(rid);
             }
         })
         this.props.submitData(this.props, {merge_registry_entry: {id: id, ids: ids}});
+        this.props.closeArchivePopup();
     }
 
     mergeRegistryEntriesConfirm() {
