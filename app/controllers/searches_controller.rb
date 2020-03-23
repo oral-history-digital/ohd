@@ -34,8 +34,8 @@ class SearchesController < ApplicationController
           results_count: search.total,
           registry_entries: search.results.map do |result|
             Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do
-              registry_entry = ::RegistryEntrySerializer.new(result).as_json
-              ancestors = result.ancestors.inject({}) { |mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
+              registry_entry = cache_single(result) 
+              ancestors = result.ancestors.inject({}) { |mem, a| mem[a.id] = cache_single(a); mem }
               { registry_entry: registry_entry, ancestors: ancestors, bread_crumb: result.bread_crumb }
             end
           end,
