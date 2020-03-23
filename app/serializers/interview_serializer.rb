@@ -19,7 +19,6 @@ class InterviewSerializer < ApplicationSerializer
     :short_title,
     :anonymous_title,
     :still_url,
-    :src_base,
     :duration_seconds,
     :year_of_birth,
     :typology,
@@ -153,10 +152,6 @@ class InterviewSerializer < ApplicationSerializer
         "https://medien.cedis.fu-berlin.de/zwar/stills/missing_still.jpg"
       end
     end
-  end
-
-  def src_base
-    Project.video_src_base
   end
 
   def tape_count
