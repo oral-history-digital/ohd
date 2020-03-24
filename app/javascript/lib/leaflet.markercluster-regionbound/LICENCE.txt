@@ -1,0 +1,29 @@
+/*
+RegionBound v2.0.2 -- region-aware marker clustering for Leaflet
+
+Adds cluster tooltips, heuristic hull hover, cluster aggregation functions
+and clusters of one.
+
+Copyright 2014-2017 Rik de Boer. Proprietry software. All rights reserved.
+Copy and distribution of this software is prohibited.
+For info and map projects email us at regionbound@gmail.com 
+
+This software is based on the work by David Leaver,
+https://github.com/Leaflet/Leaflet.markercluster, released under the MIT 
+Licence, repeated below.
+
+Copyright 2012 David Leaver
+
+MIT LICENCE
+
+Permission is hereby granted, free of charge, to any person obtaining
+a copy of this software and associated documentation files (the
+"Software"), to deal in the Software without restriction, including
+without limitation the rights to use, copy, modify, merge, publish,
+distribute, sublicense, and/or sell copies of the Software, and to
+permit persons to whom the Software is furnished to do so, subject to
+the following conditions:
+
+The above copyright notice and this permission notice shall be
+included in all copies or substantial portions of the Software.
+*/
