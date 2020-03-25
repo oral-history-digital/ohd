@@ -89,6 +89,7 @@ export default class RegistryEntries extends React.Component {
                 <ul className={'registry-entries-ul'}>
                     {this.registryEntries()}
                 </ul>
+                {this.addRegistryEntry()}
             </div>
         )
     }
