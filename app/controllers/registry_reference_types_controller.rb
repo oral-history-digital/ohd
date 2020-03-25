@@ -50,9 +50,9 @@ class RegistryReferenceTypesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{RegistryReferenceType.maximum(:updated_at)}-#{current_project.metadatafield.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{RegistryReferenceType.maximum(:updated_at)}-#{current_project.metadata_fields.maximum(:updated_at)}" do
           {
-            data: @registry_reference_types.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{s.id}-#{s.updated_at}-#{current_project.metadatafield.maximum(:updated_at)}"){::RegistryReferenceTypeSerializer.new(s).as_json}; mem},
+            data: @registry_reference_types.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{s.id}-#{s.updated_at}-#{current_project.metadata_fields.maximum(:updated_at)}"){::RegistryReferenceTypeSerializer.new(s).as_json}; mem},
             data_type: 'registry_reference_types',
         }
         end.to_json
