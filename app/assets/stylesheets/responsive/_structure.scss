@@ -757,6 +757,10 @@ ul.registry-entries-ul {
   }
   li {
     padding-bottom: 6px;
+    input[type=checkbox] {
+      float: left;
+      margin-top: 5px;
+    }
   }
   .search-result {
     padding-bottom: 0;

@@ -306,9 +306,25 @@ export default class RegistryEntry extends React.Component {
         }
     }
 
+    renderCheckbox() {
+        if (admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
+            return (
+                <input 
+                    type='checkbox' 
+                    className='select-checkbox' 
+                    checked={this.props.selectedRegistryEntryIds.indexOf(this.props.data.id) > 0} 
+                    onChange={() => {this.props.addRemoveRegistryEntryId(this.props.data.id)}}
+                />
+            )
+        } else {
+            return null;
+        }
+    }
+
     render() {
         return (
             <div>
+                {this.renderCheckbox()}
                 {this.showHideChildren()}
                 {this.entry()}
                 {this.buttons()}
