@@ -38,13 +38,16 @@ export default class RegistryEntry extends React.Component {
             <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.registry_entry.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_entry.edit'),
-                    content: <RegistryEntryFormContainer 
-                        registryEntry={this.props.data} 
-                        registryEntryParent={this.props.registryEntryParent}
-                        />
-                })}
+                onClick={() => {
+                    this.setState({ editButtonsVisible: false }); 
+                    this.props.openArchivePopup({
+                        title: t(this.props, 'edit.registry_entry.edit'),
+                        content: <RegistryEntryFormContainer 
+                            registryEntry={this.props.data} 
+                            registryEntryParent={this.props.registryEntryParent}
+                            />
+                    })
+                }}
             >
                 <i className="fa fa-pencil" />
                 {t(this.props, 'edit.registry_entry.edit')}
@@ -99,17 +102,20 @@ export default class RegistryEntry extends React.Component {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'delete')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'delete'),
-                    content: (
-                        <div>
-                            <p>{this.props.data.name[this.props.locale]}</p>
-                            <div className='any-button' onClick={() => this.destroy()}>
-                                {t(this.props, 'delete')}
+                onClick={() => {
+                    this.setState({ editButtonsVisible: false }); 
+                    this.props.openArchivePopup({
+                        title: t(this.props, 'delete'),
+                        content: (
+                            <div>
+                                <p>{this.props.data.name[this.props.locale]}</p>
+                                <div className='any-button' onClick={() => this.destroy()}>
+                                    {t(this.props, 'delete')}
+                                </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })
+                }}
             >
                 <i className="fa fa-trash-o" />
                 {t(this.props, 'delete')}
@@ -133,17 +139,20 @@ export default class RegistryEntry extends React.Component {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.registry_entry.delete_parent')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_entry.delete_parent'),
-                    content: (
-                        <div>
-                            <p>{this.props.registryEntryParent.name[this.props.locale]}</p>
-                            <div className='any-button' onClick={() => this.rmParent()}>
-                                {t(this.props, 'delete')}
+                onClick={() => {
+                    this.setState({ editButtonsVisible: false }); 
+                    this.props.openArchivePopup({
+                        title: t(this.props, 'edit.registry_entry.delete_parent'),
+                        content: (
+                            <div>
+                                <p>{this.props.registryEntryParent.name[this.props.locale]}</p>
+                                <div className='any-button' onClick={() => this.rmParent()}>
+                                    {t(this.props, 'delete')}
+                                </div>
                             </div>
-                        </div>
-                    )
-                })}
+                        )
+                    })
+                }}
             >
                 <i className="fa fa-minus-circle" />
                 {t(this.props, 'edit.registry_entry.delete_parent')}
@@ -158,12 +167,15 @@ export default class RegistryEntry extends React.Component {
             <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.registry_entry.add_parent')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_entry.add_parent'),
-                    content: <RegistryHierarchyFormContainer 
-                                 descendantRegistryEntry={this.props.data}
-                             />
-                })}
+                onClick={() => {
+                    this.setState({ editButtonsVisible: false }); 
+                    this.props.openArchivePopup({
+                        title: t(this.props, 'edit.registry_entry.add_parent'),
+                        content: <RegistryHierarchyFormContainer 
+                                     descendantRegistryEntry={this.props.data}
+                                 />
+                    })
+                }}
             >
                 <i className="fa fa-sitemap" style={{'transform': 'rotate(180deg)'}} />
                 {t(this.props, 'edit.registry_entry.add_parent')}
@@ -176,12 +188,15 @@ export default class RegistryEntry extends React.Component {
             <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.registry_entry.new')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_entry.new'),
-                    content: <RegistryEntryFormContainer 
-                                registryEntryParent={this.props.data}
-                            />
-                })}
+                onClick={() => {
+                    this.setState({ editButtonsVisible: false }); 
+                    this.props.openArchivePopup({
+                        title: t(this.props, 'edit.registry_entry.new'),
+                        content: <RegistryEntryFormContainer 
+                                    registryEntryParent={this.props.data}
+                                />
+                    })
+                }}
             >
                 <i className="fa fa-sitemap" />
                 {t(this.props, 'edit.registry_entry.new')}
@@ -228,7 +243,8 @@ export default class RegistryEntry extends React.Component {
                     <i 
                         className='fa-times fa'
                         style={{'position': 'absolute', 'color': '#8b8b7a', 'cursor': 'pointer'}}
-                        onClick={() => this.setState({ editButtonsVisible: !this.state.editButtonsVisible })}></i>
+                        onClick={() => this.setState({ editButtonsVisible: !this.state.editButtonsVisible })}
+                    />
                     <ul>
                         <li>{this.edit()}</li>
                         <li>{this.delete()}</li>
