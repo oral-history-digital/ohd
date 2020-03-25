@@ -63,7 +63,7 @@ export default class RegistryEntriesTree extends React.Component {
     }
 
     mergeRegistryEntriesConfirm() {
-        if (admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
+        if (admin(this.props, {type: 'RegistryEntry', action: 'update'}) && this.props.selectedRegistryEntryIds.length > 2) {
             let title = t(this.props, 'activerecord.models.registry_entries.actions.merge');
             return <div
                 className='flyout-sub-tabs-content-ico-link'
@@ -90,7 +90,6 @@ export default class RegistryEntriesTree extends React.Component {
         } else {
             return (
                 <div>
-                    {this.mergeRegistryEntriesConfirm()}
                     <ul className={'registry-entries-ul'}>
                         {this.foundRegistryEntries()}
                     </ul>
@@ -109,6 +108,7 @@ export default class RegistryEntriesTree extends React.Component {
                             <h1 className='registry-entries-title'>
                                 {t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry')}
                             </h1>
+                            {this.mergeRegistryEntriesConfirm()}
                             {this.content()}
                         </div>
                     </AuthShowContainer>

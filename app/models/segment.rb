@@ -123,7 +123,7 @@ class Segment < ApplicationRecord
           segment.update_original_and_write_other_versions atts
         else
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
-          atts[:speaker_id] = segment.prev && segment.prev.speaker_id if segment.prev && segment.prev.speaker_id
+          atts[:speaker_id] = segment.prev && segment.prev.speaker_id if !segment.speaker_id && segment.prev && segment.prev.speaker_id
           segment.update_original_and_write_other_versions atts
         end
 
