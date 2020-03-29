@@ -35,7 +35,7 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'input',
                 attribute: 'facet_order',
-                validate: function(v){return /\d+\.*\d+/.test(v)} 
+                validate: function(v){return /\d+\.*\d*/.test(v)} 
             },
             {
                 elementType: 'input',
@@ -45,7 +45,7 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'input',
                 attribute: 'list_columns_order',
-                validate: function(v){return /\d+\.*\d+/.test(v)} 
+                validate: function(v){return /\d+\.*\d*/.test(v)} 
             },
             {
                 elementType: 'input',
