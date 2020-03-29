@@ -2,6 +2,7 @@ class ReadTranscriptFileJob < ApplicationJob
   queue_as :default
 
   def perform(interview, file_path, tape_id, locale, receiver, contribution_data, tape_shifts=[])
+    jobs_logger.info "*** uploading #{file_path} to interview #{interview.archive_id} and tape #{tape_id}"
     extension = File.extname(file_path).strip.downcase[1..-1]
     case extension
     # only ods is tested
