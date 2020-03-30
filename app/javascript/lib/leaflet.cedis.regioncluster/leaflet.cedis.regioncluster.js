@@ -1,3 +1,7 @@
+
+
+import jQuery from 'jquery';
+
 (function ($) {
 
     window.SucheKarte = {settings: [], MarkerClusterGroups: [], clusteringEnabled: true, allMarkers: [], ClusterGroupsActiveState: []};
@@ -70,7 +74,8 @@
                             markerColor: markers_data[0].icon_color,
                             shape: 'circle',
                             prefix: markers_data[0].icon_prefix,
-                            number: mymarkers.length
+                            number: mymarkers.length,
+                            svg: true
 
                         });
                     },
@@ -96,7 +101,8 @@
                         icon: marker_data.icon,
                         markerColor: marker_data.icon_color,
                         shape: 'square',
-                        prefix: markers_data[0].icon_prefix
+                        prefix: markers_data[0].icon_prefix,
+                        svg: true
 
                     });
 
@@ -121,7 +127,10 @@
 
                 });
 
-                var iconHTML = '<div class=\"legend leaflet-marker-icon extra-marker-square-' + marker_color + ' extra-marker leaflet-zoom-animated leaflet-interactive\" tabindex=\"0\"><i style=\"color: #fff\" class=\"  ' + marker_icon_prefix + ' ' + marker_icon_class + '\"></i></div>';
+                //var svg = '<svg width="33" height="44" viewBox="0 0 35 45" xmlns="http://www.w3.org/2000/svg"><path d="M28.205 3.217H6.777c-2.367 0-4.286 1.87-4.286 4.179v19.847c0 2.308 1.919 4.179 4.286 4.179h5.357l5.337 13.58 5.377-13.58h5.357c2.366 0 4.285-1.87 4.285-4.179V7.396c0-2.308-1.919-4.179-4.285-4.179" fill="' + marker_color + '"></path><g opacity=".15" transform="matrix(1.0714 0 0 -1.0714 -233.22 146.783)"><path d="M244 134h-20c-2.209 0-4-1.746-4-3.9v-18.525c0-2.154 1.791-3.9 4-3.9h5L233.982 95 239 107.675h5c2.209 0 4 1.746 4 3.9V130.1c0 2.154-1.791 3.9-4 3.9m0-1c1.654 0 3-1.301 3-2.9v-18.525c0-1.599-1.346-2.9-3-2.9h-5.68l-.25-.632-4.084-10.318-4.055 10.316-.249.634H224c-1.654 0-3 1.301-3 2.9V130.1c0 1.599 1.346 2.9 3 2.9h20" fill="#231f20"></path></g></svg>';
+                var svg = '<svg width="25" height="33" viewBox="0 0 50 50" xmlns="http://www.w3.org/2000/svg"><path d="M28.205 3.217H6.777c-2.367 0-4.286 1.87-4.286 4.179v19.847c0 2.308 1.919 4.179 4.286 4.179h5.357l5.337 13.58 5.377-13.58h5.357c2.366 0 4.285-1.87 4.285-4.179V7.396c0-2.308-1.919-4.179-4.285-4.179" fill="' + marker_color + '"></path><g opacity=".15" transform="matrix(1.0714 0 0 -1.0714 -233.22 146.783)"><path d="M244 134h-20c-2.209 0-4-1.746-4-3.9v-18.525c0-2.154 1.791-3.9 4-3.9h5L233.982 95 239 107.675h5c2.209 0 4 1.746 4 3.9V130.1c0 2.154-1.791 3.9-4 3.9m0-1c1.654 0 3-1.301 3-2.9v-18.525c0-1.599-1.346-2.9-3-2.9h-5.68l-.25-.632-4.084-10.318-4.055 10.316-.249.634H224c-1.654 0-3 1.301-3 2.9V130.1c0 1.599 1.346 2.9 3 2.9h20" fill="#231f20"></path></g></svg>';
+                var  iconHTML = '<div class="legend leaflet-marker-icon extra-marker extra-marker-svg leaflet-zoom-animated leaflet-interactive" style="margin-left: -17px; margin-top: -42px; width: 35px; height: 45px; z-index: 1625; opacity: 1; outline: currentcolor none medium;" tabindex="0">' + svg + '<i style="color:#fff;" class="' + marker_icon_prefix + ' '  + marker_icon_class +'"></i></div>';
+                //var iconHTML = '<div class=\"legend leaflet-marker-icon extra-marker-square-' + marker_color + ' extra-marker leaflet-zoom-animated leaflet-interactive\" tabindex=\"0\"><i style=\"color: #fff\" class=\"  ' + marker_icon_prefix + ' ' + marker_icon_class + '\"></i></div>';
 
                 if (SucheKarte.ClusterGroupsActiveState[group_title] == 'active' || SucheKarte.ClusterGroupsActiveState[group_title] == undefined) {
                     mrkClusterGroup.addTo(SucheKarte.map);
@@ -171,8 +180,8 @@
 
         //set class inactive for all inactive clustergroups
         $(".leaflet-control-layers-selector").each(function(index, elem) {
-            var html = $(this).next().outerHTML();
-            test = html.split('</div>');
+            var html = $(this).next().html();
+            var test = html.split('</div>');
             var title = test[1].replace('</span>', '');
             if (SucheKarte.ClusterGroupsActiveState[title] == 'inactive')
            $(this).next().addClass('inactive');
@@ -181,8 +190,8 @@
         /*add or remove class inactive on checkbox changed and add settings to SucheKarte.ClusterGroupsActiveState*/
         $(".leaflet-control-layers-selector").change(function () {
 
-            var html = $(this).next().outerHTML();
-            test = html.split('</div>');
+            var html = $(this).next().html();
+            var test = html.split('</div>');
             var title = test[1].replace('</span>', '');
 
             if ($(this).next().hasClass('inactive')) {

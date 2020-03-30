@@ -1,2 +1,33 @@
-.extra-marker{background-image: url("icons/markers_default.png");}
-.extra-marker-shadow{background:url("icons/markers_shadow.png");}
+.leaflet-interactive {
+    stroke-width: 1px;
+    stroke: #191970;
+}
+.inactive .legend.leaflet-marker-icon.extra-marker.leaflet-zoom-animated.leaflet-interactive {filter: grayscale(90%);}
+.legend.extra-marker i{
+    font-size: 7px;
+    top: -5px;
+    position: relative;
+}
+.leaflet-control-layers-overlays input[type=checkbox] {
+    margin-right: 8px;
+}
+.leaflet-control-layers-expanded .inactive{color: #b2afa1;}
+.leaflet-control-layers .mapHelp{width: 200px; margin-bottom: 15px;}
+
+#legend{border-radius: 5px; border: 2px solid rgba(0,0,0,0.2); cursor: pointer;}
+.legend.extra-marker.extra-marker-svg i {
+    position: absolute;
+    top: -1px;
+    left: -4px;
+}
+.legend.leaflet-marker-icon.extra-marker.leaflet-zoom-animated.leaflet-interactive {
+    position: relative;
+    left: 8px;
+    float: left;
+    height: 24px;
+    width: 18px;
+    top: 38px;
+}
+.leaflet-control-layers-expanded .inactive {
+    color: #b2afa1;
+}
