@@ -4,11 +4,7 @@ class FacetSerializer < ApplicationSerializer
              :subfacets
 
   def name
-    if object.is_a? RegistryEntry
-      object.includes(registry_names: :translations).localized_hash(:descriptor)
-    else
-      MetadataField.includes(:translations).find_by_name(object.code).localized_hash(:label)
-    end
+    MetadataField.includes(:translations).find_by_name(object.code).localized_hash(:label)
   end
 
   def subfacets

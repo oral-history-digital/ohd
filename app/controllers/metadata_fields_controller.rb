@@ -101,6 +101,8 @@ class MetadataFieldsController < ApplicationController
         "source",
         "label",
         "values",
+        "registry_entry_id",
+        "registry_reference_type_id",
         translations_attributes: [:locale, :label, :id]
       )
     end

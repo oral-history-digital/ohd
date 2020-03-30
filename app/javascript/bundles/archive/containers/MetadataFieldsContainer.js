@@ -12,6 +12,8 @@ const mapStateToProps = (state) => {
         editView: true,
         //
         scope: 'metadata_field',
+        joinDataStatus: state.data.statuses.registry_reference_types,
+        joinDataScope: 'registry_reference_types',
         detailsAttributes: [
             "name", 
             "use_as_facet",
@@ -26,6 +28,10 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'name',
                 validate: function(v){return v.length > 1} 
+            },
+            {
+                attribute: 'label',
+                elementType: 'multiLocaleInput',
             },
             {
                 elementType: 'input',
@@ -64,10 +70,18 @@ const mapStateToProps = (state) => {
                 attribute: 'source',
             },
             {
-                attribute: 'label',
-                elementType: 'multiLocaleInput',
+                elementType: 'select',
+                attribute: 'registry_reference_type_id',
+                values: state.data.registry_reference_types,
+                withEmpty: true,
+                //validate: function(v){return v.length > 0} 
             },
-        ]
+            {
+                elementType: 'input',
+                attribute: 'registry_entry_id',
+                //validate: function(v){return /\d+/.test(v)} 
+            },
+        ],
     }
 }
 
