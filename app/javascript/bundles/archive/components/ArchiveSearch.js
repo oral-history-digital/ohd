@@ -69,7 +69,7 @@ export default class ArchiveSearch extends React.Component {
     }
 
     foundInterviews(displayType) {
-        if (this.props.foundInterviews.length == 0 && !this.props.isArchiveSearching) {
+        if (this.props.foundInterviews && this.props.foundInterviews.length == 0 && !this.props.isArchiveSearching) {
             return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
         }
         else {

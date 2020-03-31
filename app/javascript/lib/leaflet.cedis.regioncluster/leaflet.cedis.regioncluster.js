@@ -1,3 +1,7 @@
+
+
+import jQuery from 'jquery';
+
 (function ($) {
 
     window.SucheKarte = {settings: [], MarkerClusterGroups: [], clusteringEnabled: true, allMarkers: [], ClusterGroupsActiveState: [], borderShape : {}} ;
@@ -174,8 +178,8 @@
 
         //set class inactive for all inactive clustergroups
         $(".leaflet-control-layers-selector").each(function(index, elem) {
-            var html = $(this).next().outerHTML();
-            test = html.split('</div>');
+            var html = $(this).next().html();
+            var test = html.split('</div>');
             var title = test[1].replace('</span>', '');
             if (SucheKarte.ClusterGroupsActiveState[title] == 'inactive')
            $(this).next().addClass('inactive');
@@ -184,8 +188,8 @@
         /*add or remove class inactive on checkbox changed and add settings to SucheKarte.ClusterGroupsActiveState*/
         $(".leaflet-control-layers-selector").change(function () {
 
-            var html = $(this).next().outerHTML();
-            test = html.split('</div>');
+            var html = $(this).next().html();
+            var test = html.split('</div>');
             var title = test[1].replace('</span>', '');
 
             if ($(this).next().hasClass('inactive')) {

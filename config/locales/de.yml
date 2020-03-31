@@ -763,6 +763,8 @@ de:
         source: Source
         label: Label
         values: Values
+        registry_entry_id: Registereintrag-Id
+        registry_reference_type_id: Referenztyp
       external_link:
         internal_name: Interner Name
         name: Name

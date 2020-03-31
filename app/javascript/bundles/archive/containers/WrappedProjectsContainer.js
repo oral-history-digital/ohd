@@ -105,7 +105,7 @@ const mapStateToProps = (state) => {
                 elementType: 'input',
                 attribute: "is_catalog",
                 type: "checkbox"
-}
+            }
         ],
         joinedData: {
             metadata_field: MetadataFieldsContainer,

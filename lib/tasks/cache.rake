@@ -20,6 +20,7 @@ namespace :cache do
     end
   end
 
+  # rake cache:clear[cdoh]
   desc 'clear project cache'
   task :clear, [:cache_key_prefix] => :environment do |t, args|
     project = Project.where(cache_key_prefix: args.cache_key_prefix).first

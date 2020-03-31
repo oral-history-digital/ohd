@@ -1,6 +1,6 @@
 <% 
-  interviewee_name = "#{@interview.interviewees.last.first_name(@locale)} #{@interview.interviewees.last.last_name(@locale)}"
-  #interviewee_name = @interview.interviewees.last.name(true)[@locale.to_sym]
+  interviewee_name = "#{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}"
+  #interviewee_name = @interview.interviewees.first.name(true)[@locale.to_sym]
   title = "#{I18n.t((@orig_lang == @lang) ? 'transcript_title' : 'translation_title', locale: @locale, lang: @lang_human)} #{interviewee_name}"
   header_text = "#{I18n.t('transcript_header', locale: @locale, lang: @lang_human)} #{interviewee_name} (#{I18n.t('archive_id', locale: @locale)} #{@interview.archive_id})"
   tape = 0

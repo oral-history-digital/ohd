@@ -112,7 +112,7 @@ export default class UploadTranscript extends React.Component {
     }
 
     handleFileChange(name, file) {
-        if (name === 'data' && /\.odt$/.test(file.name)) {
+        if (name === 'data' && file && /\.odt$/.test(file.name)) {
             this.setState({
                 isOdt: true
             })

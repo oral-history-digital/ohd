@@ -741,6 +741,8 @@ en:
         source: Source
         label: Label
         values: Values
+        registry_entry_id: Registry-Entry-Id
+        registry_reference_type_id: Reference-Type
       external_link:
         internal_name: Internal Name
         name: Name

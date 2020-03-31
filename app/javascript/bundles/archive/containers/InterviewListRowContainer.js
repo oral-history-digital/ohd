@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import InterviewListRow from '../components/InterviewListRow';
 import { searchInInterview } from '../actions/searchActionCreators';
 import { setTapeAndTime } from '../actions/interviewActionCreators';
-import { addRemoveArchiveId } from '../actions/archiveActionCreators';
+import { setArchiveId, addRemoveArchiveId } from '../actions/archiveActionCreators';
 import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state, ownProps) => {
@@ -23,6 +23,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
     setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
+    setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
     searchInInterview: (url, searchQuery) => dispatch(searchInInterview(url, searchQuery)),
     addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),
 })
