@@ -1,13 +1,23 @@
 Rails.configuration.after_initialize do
 OaiRepository.setup do |config|
 
-  config.repository_name = '' #Project.project_name[Project.default_locale]
+  begin
+    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
+      config.repository_name = Project.project_name[Project.default_locale]
+    end
+  rescue ActiveRecord::NoDatabaseError
+  end
 
   # The URL from which this OAI Repository is served.
   # If you're deploying to different hostnames (e.g. development, QA and
   # production environments, each with different hostnames), you could
   # dynamically set this.
-  config.repository_url = Project.current.archive_domain
+  begin
+    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
+      config.repository_url = Project.current.archive_domain
+    end
+  rescue ActiveRecord::NoDatabaseError
+  end
 
   # By default the (unique) identifier of each record will be composed as
   # #{record_prefix}/#{record.id}
@@ -16,12 +26,22 @@ OaiRepository.setup do |config|
   #
   # Most probably you'll create an oai_dc_identifier attribute or method in
   # the AR models you intend to serve. That value will supplant the default.
-  config.record_prefix = ''#Project.archive_domain
+  begin
+    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
+      config.record_prefix = Project.archive_domain
+    end
+  rescue ActiveRecord::NoDatabaseError
+  end
 
   # This is your repository administrator's email address.
   # This will appear in the information returned from an "Identify" call to
   # your repository
-  config.admin_email = ''#Project.contact_email
+  begin
+    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
+      config.admin_email = Project.contact_email
+    end
+  rescue ActiveRecord::NoDatabaseError
+  end
 
   # The number of records shown at a time (when doing a ListRecords)
   config.limit = 100

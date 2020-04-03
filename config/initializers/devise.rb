@@ -12,7 +12,12 @@ Devise.setup do |config|
   # Configure the e-mail address which will be shown in Devise::Mailer,
   # note that it will be overwritten if you use your own mailer class
   # with default "from" parameter.
-  config.mailer_sender =  Project.current.try(:contact_email) || 'mail@zwangsarbeit-archiv.de'
+  begin
+    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
+      config.mailer_sender =  Project.current.try(:contact_email) || 'mail@zwangsarbeit-archiv.de'
+    end
+  rescue ActiveRecord::NoDatabaseError
+  end
 
   # Configure the class responsible to send e-mails.
   # config.mailer = 'Devise::Mailer'
