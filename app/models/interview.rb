@@ -151,6 +151,7 @@ class Interview < ApplicationRecord
   validates_associated :collection
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
+  validates :media_type, inclusion: {in: %w(video audio)}
 
   #has_one_attached :still_image
 
