@@ -119,7 +119,7 @@ export default class UserContent extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className='flyout-content-item'>
                 <h3><span className='flyout-content-data'>{this.props.data.title}</span></h3>
                 <p>
                     <span className='flyout-content-label'>{t(this.props, 'description')}:</span>
