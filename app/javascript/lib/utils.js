@@ -104,7 +104,7 @@ export function sortedSegmentsWithActiveIndex(time, props) {
                 index = sortedSegments.length + sortedWActiveAIndex[2];
                 sortedSegments = sortedSegments.concat(sortedWActiveAIndex[1]);
                 activeSegment = sortedWActiveAIndex[0];
-            } else {
+            } else if (props.interview.segments[i]) {
                 sortedSegments = sortedSegments.concat(Object.values(props.interview.segments[i]).sort((a, b) =>{return a.time - b.time}))
             }
         }
