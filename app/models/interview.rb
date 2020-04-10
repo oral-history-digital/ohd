@@ -296,6 +296,8 @@ class Interview < ApplicationRecord
   end
 
   def find_or_create_tapes(d)
+    tapes.where.not("media_id LIKE ?", "#{archive_id.upcase}_#{format('%02d', d)}_%").destroy_all
+
     (1..d.to_i).each do |t|
       Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', t)}", number: t, interview_id: id)
     end
