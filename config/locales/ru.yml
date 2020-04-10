@@ -460,6 +460,10 @@ ru:
     postponed: zurückgestellt
     rejected: abgelehnt
     registered: registriert
+    created: angelegt
+    started: begonnen
+    answered: beantwortet
+    question_to_supervisor: Frage an Supervisor gestellt
   contributions:
     title: Mitwirkende
     add: Mitwirkende(n) zufügen
@@ -690,7 +694,7 @@ ru:
         text: событие
         start_date: Beginn
         end_date: Ende
-        workflow_state: 'Status ändern zu:'
+        workflow_state: 'Status'
       contribution:
         contribution_type: Art des Beitrags
         person_id: Person
@@ -739,7 +743,7 @@ ru:
         language_id: Originalsprache
         media_type: Media Typ
         translated: ist das Interview bereits übersetzt?
-        workflow_state: 'Status ändern zu:'
+        workflow_state: 'Status'
         observations: Protokoll
         collection: Частичное собрание
       transcript:
@@ -857,7 +861,7 @@ ru:
         priv_agreement: Hinweise zum Datenschutz
         register: Отправить регистрацию
         workflow_state: Status
-        transition_to: 'Status ändern zu:'
+        transition_to: 'Status'
       user_role:
         role_id: Rolle
       role:
@@ -880,7 +884,7 @@ ru:
       task:
         authorized_id: ID oder Archiv ID
         authorized_type: Typ
-        transition_to: 'Status ändern zu:'
+        workflow_state: 'Status'
         name: Name
         desc: Beschreibung
       person:
@@ -909,8 +913,8 @@ ru:
       photo:
         caption: Fotobeschreibung
         data: Fotodatei
-        workflow_state: 'Status ändern zu:'
         caption_explanation: Описание фотографии доступно только на немецком языке. 
+        workflow_state: 'Status'
       mark_text:
         locale: Sprache
       text:

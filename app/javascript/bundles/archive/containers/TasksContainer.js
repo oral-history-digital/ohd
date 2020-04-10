@@ -44,7 +44,6 @@ const mapStateToProps = (state) => {
                 attribute: 'workflow_state',
                 elementType: 'select',
                 optionsScope: 'workflow_states',
-                withEmpty: true,
             },
         ]
     }

@@ -33,10 +33,10 @@ export default class UserRegistrationForm extends React.Component {
                     {
                         elementType: 'select',
                         attribute: 'workflow_state',
-                        label: t(this.props, 'activerecord.attributes.user_registration.transition_to'),
-                        values: this.props.userRegistration && Object.values(this.props.userRegistration.transitions_to),
+                        values: this.props.userRegistration && Object.values(this.props.userRegistration.workflow_states),
+                        value: this.props.userRegistration.workflow_state,
                         optionsScope: 'workflow_states',
-                        withEmpty: true,
+                        withEmpty: true
                     },
                     {
                         elementType: 'textarea',

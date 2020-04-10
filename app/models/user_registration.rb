@@ -189,6 +189,10 @@ EVAL
     end
   end
 
+  def workflow_states
+    current_state.events.map{|e| e.first}
+  end
+
   def workflow_state=(change)
     self.send("#{change}!")
   end

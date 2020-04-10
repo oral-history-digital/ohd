@@ -8,6 +8,7 @@ class UserRegistrationSerializer < ApplicationSerializer
     :tos_agreement,
     :application_info,
     :workflow_state,
+    :workflow_states,
     :created_at,
     :activated_at,
     :admin_comments,
@@ -30,7 +31,6 @@ class UserRegistrationSerializer < ApplicationSerializer
     :city,
     :state,
     :country,
-    :transitions_to,
     :user_roles,
     :tasks
 
@@ -45,10 +45,6 @@ class UserRegistrationSerializer < ApplicationSerializer
           firstname: i.first_name,
           lastname: i.last_name
         } if I18n.available_locales.include?( alpha2_locale )}
-  end
-
-  def transitions_to
-    object.current_state.events.map{|e| e.first}
   end
 
   def user_roles

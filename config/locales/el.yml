@@ -419,6 +419,10 @@ el:
     postponed: zurückgestellt
     rejected: abgelehnt
     registered: registriert
+    created: angelegt
+    started: begonnen
+    answered: beantwortet
+    question_to_supervisor: Frage an Supervisor gestellt
   contributions:
     title: Mitwirkende
     add: Mitwirkende(n) zufügen
@@ -643,7 +647,7 @@ el:
         text: Ereignis
         start_date: Beginn
         end_date: Ende
-        workflow_state: 'Status ändern zu:'
+        workflow_state: 'Status'
       contribution:
         contribution_type: Art des Beitrags
         person_id: Person
@@ -692,7 +696,7 @@ el:
         language_id: Sprache
         media_type: Media Typ
         translated: ist das Interview bereits übersetzt?
-        workflow_state: 'Status ändern zu:'
+        workflow_state: 'Status'
         observations: Protokoll
         collection: Teilsammlung
         data: Transkriptdatei
@@ -820,8 +824,7 @@ el:
         tos_agreement: Προϋποθέσεις χρήσης
         priv_agreement: Υποδείξεις για την προστασία δεδομένων
         register: Registrierung senden
-        workflow_state: Status
-        transition_to: 'Status ändern zu:'
+        workflow_state: Status ändern zu
         registration: Εγγραφή
         registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών
           "Μνήμες από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα
@@ -856,7 +859,7 @@ el:
       task:
         authorized_id: ID oder Archiv ID
         authorized_type: Typ
-        transition_to: 'Status ändern zu:'
+        workflow_state: 'Status'
         name: Name
         desc: Beschreibung
       person:
@@ -885,8 +888,8 @@ el:
       photo:
         caption: Fotobeschreibung
         data: Fotodatei
-        workflow_state: 'Status ändern zu:'
         caption_explanation: This photo caption is only available in German.
+        workflow_state: 'Status'
       mark_text:
         locale: Sprache
       text:

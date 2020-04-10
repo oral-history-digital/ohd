@@ -414,6 +414,10 @@ en:
     postponed: zurückgestellt
     rejected: abgelehnt
     registered: registriert
+    created: angelegt
+    started: begonnen
+    answered: beantwortet
+    question_to_supervisor: Frage an Supervisor gestellt
   contributions:
     title: Contributors
     add: Add Contributor
@@ -637,7 +641,7 @@ en:
         text: Text
         start_date: Beginn
         end_date: Ende
-        workflow_state: 'Status ändern zu:'
+        workflow_state: 'Status'
       contribution:
         contribution_type: Art des Beitrags
         person_id: Person
@@ -686,7 +690,7 @@ en:
         language_id: Originalsprache
         media_type: Media Typ
         translated: ist das Interview bereits übersetzt?
-        workflow_state: 'Status ändern zu:'
+        workflow_state: 'Status'
         observations: Protokoll
       transcript:
         collection_id: Sammlung
@@ -805,8 +809,7 @@ en:
         tos_agreement: Tos Agreement
         priv_agreement: Priv Agreement
         register: Register
-        workflow_state: Workflow State
-        transition_to: Transition To
+        workflow_state: Change workflow state to
       user_role:
         role_id: Rolle
       role:
@@ -829,7 +832,7 @@ en:
       task:
         authorized_id: ID oder Archiv ID
         authorized_type: Typ
-        transition_to: 'Status ändern zu:'
+        workflow_state: 'Status'
         name: Name
         desc: Beschreibung
       person:
@@ -858,8 +861,8 @@ en:
       photo:
         caption: Fotobeschreibung
         data: Fotodatei
-        workflow_state: 'Status ändern zu:'
         caption_explanation: This photo caption is only available in German.
+        workflow_state: 'Status'
       mark_text:
         locale: Sprache
       text:

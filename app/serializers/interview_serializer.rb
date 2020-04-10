@@ -26,7 +26,7 @@ class InterviewSerializer < ApplicationSerializer
     :last_segments_ids,
     :first_segments_ids,
     :workflow_state,
-    :transitions_to,
+    :workflow_states,
     :contributions,
     :registry_references,
     :photos,
@@ -80,10 +80,6 @@ class InterviewSerializer < ApplicationSerializer
 
   def interviewee_id
     object.interviewee && object.interviewee.id
-  end
-
-  def transitions_to
-    object.current_state.events.map { |e| e.first }
   end
 
   def contributions

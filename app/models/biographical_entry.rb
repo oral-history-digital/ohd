@@ -1,5 +1,4 @@
 class BiographicalEntry < ApplicationRecord
-  include Workflow
 
   belongs_to :person, touch: true
   
@@ -8,19 +7,6 @@ class BiographicalEntry < ApplicationRecord
   after_save :touch_person
   def touch_person
     person.touch
-  end
-
-  workflow do
-    state :unshared do
-      event :publish, transition_to: :public
-    end
-    state :public do
-      event :unpublish, transitions_to: :unshared
-    end
-  end
-
-  def workflow_state=(change)
-    self.send("#{change}!")
   end
 
   searchable do

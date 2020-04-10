@@ -435,6 +435,10 @@ de:
     postponed: zurückgestellt
     rejected: abgelehnt
     registered: registriert
+    created: angelegt
+    started: begonnen
+    answered: beantwortet
+    question_to_supervisor: Frage an Supervisor gestellt
   contributions:
     title: Mitwirkende
     add: Mitwirkende(n) zufügen
@@ -659,7 +663,7 @@ de:
         text: Ereignis
         start_date: Beginn
         end_date: Ende
-        workflow_state: 'Status ändern zu:'
+        workflow_state: 'Status'
       contribution:
         contribution_type: Art des Beitrags
         person_id: Person
@@ -827,8 +831,7 @@ de:
         tos_agreement: Nutzungsbedingungen
         priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
-        workflow_state: Status
-        transition_to: 'Status ändern zu:'
+        workflow_state: Status ändern zu
       user_role:
         role_id: Rolle
       role:
@@ -851,7 +854,7 @@ de:
       task:
         authorized_id: ID oder Archiv ID
         authorized_type: Typ
-        transition_to: 'Status ändern zu:'
+        workflow_state: 'Status'
         name: Name
         desc: Beschreibung
       person:
@@ -881,8 +884,8 @@ de:
       photo:
         caption: Fotobeschreibung
         data: Fotodatei
-        workflow_state: 'Status ändern zu:'
         caption_explanation: Die Beschreibung gibt es nur auf deutsch.
+        workflow_state: 'Status'
       mark_text:
         locale: Sprache
       text:

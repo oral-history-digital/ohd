@@ -83,7 +83,7 @@ export default class Select extends React.Component {
                 })
             }
         } else if (this.props.data && this.props.attribute === 'workflow_state') {
-            values = this.props.data.transitions_to;
+            values = this.props.data.workflow_states;
         }
 
         if (values) {

@@ -788,7 +788,7 @@ class Interview < ApplicationRecord
           adjust_solr_params do |params|
             params[:rows] = project.interviews.size
           end
-          with(:workflow_state, (user_account && user_account.admin?) ? Interview.workflow_spec.states.keys : 'public')
+          with(:workflow_state, (user_account && user_account.admin?) ? ["public", "unshared"] : 'public')
           with(:project_id, project.id)
         end
 
@@ -810,7 +810,7 @@ class Interview < ApplicationRecord
     def archive_search(user_account, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, user_account && (user_account.admin? || user_account.user.permissions?('Interview', :update)) ? Interview.workflow_spec.states.keys : "public")
+        with(:workflow_state, user_account && (user_account.admin? || user_account.user.permissions?('Interview', :update)) ? ["public", "unshared"] : "public")
         with(:project_id, project.id)
         dynamic :search_facets do
           facet *project.search_facets_names

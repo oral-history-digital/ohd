@@ -23,6 +23,10 @@ class Task < ApplicationRecord
     end
   end
 
+  def workflow_states
+    Task.workflow_spec.states.keys
+  end
+
   def workflow_state=(change)
     self.send("#{change}!")
   end
