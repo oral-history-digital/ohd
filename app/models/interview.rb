@@ -5,7 +5,6 @@ require "#{Rails.root}/lib/timecode.rb"
 
 class Interview < ApplicationRecord
   include IsoHelpers
-  include Workflow
   include OaiRepository::Set
 
   belongs_to :project
@@ -283,33 +282,10 @@ class Interview < ApplicationRecord
   scope :researched, -> {where(researched: true)}
   scope :with_still_image, -> {where.not(still_image_file_name: nil)}
 
-  workflow do
-    state :unshared do
-      event :publish, transition_to: :public
-      event :unpublish, transitions_to: :unshared
-    end
-    state :public do
-      event :unpublish, transitions_to: :unshared
-      event :publish, transition_to: :public
-    end
-  end
-
-  def workflow_state=(change)
-    case change
-    when "public"
-      verb = "publish"
-    when "unshared"
-      verb = "unpublish"
-    else
-      verb = change
-  end
-    self.try(:send, "#{verb}!")
-  end
-
   def biographies_workflow_state=(change)
     interviewees.each do |interviewee|
       interviewee.biographical_entries.each do |bio|
-        bio.send("#{change}!")
+        bio.update_attribute :workflow_state, change
       end
     end
   end

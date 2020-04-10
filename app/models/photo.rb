@@ -37,10 +37,6 @@ class Photo < ApplicationRecord
     end
   end
 
-  def workflow_states
-    ['public', 'unshared']
-  end
-
   # this method should be present through 'translates: ....'
   # But it isn't. Therefore:
   #

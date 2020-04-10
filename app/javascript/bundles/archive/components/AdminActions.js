@@ -154,10 +154,10 @@ export default class AdminActions extends React.Component {
                 {this.doiButton()}
                 {this.messages()}
                 {this.deleteButton()}
-                {this.updateButton({workflow_state: 'publish'}, 'publish')}
-                {this.updateButton({workflow_state: 'unpublish'}, 'unpublish')}
-                {this.updateButton({biographies_workflow_state: 'publish'}, 'publish_biographies')}
-                {this.updateButton({biographies_workflow_state: 'unpublish'}, 'unpublish_biographies')}
+                {this.updateButton({workflow_state: 'public'}, 'publish')}
+                {this.updateButton({workflow_state: 'unshared'}, 'unpublish')}
+                {this.updateButton({biographies_workflow_state: 'public'}, 'publish_biographies')}
+                {this.updateButton({biographies_workflow_state: 'unshared'}, 'unpublish_biographies')}
                 {this.reset()}
                 {this.setAll()}
             </div>
