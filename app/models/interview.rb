@@ -501,13 +501,14 @@ class Interview < ApplicationRecord
 
   # tape_id is a dummy here
   def create_or_update_segments_from_text(file_path, tape_id, locale, contribution_data)
+    tape = Tape.find(tape_id)
     data = File.read file_path
     text = Yomu.read :text, data
     Segment.create_or_update_by({ 
       interview_id: id, 
-      timecode: Timecode.new(tapes.first.time_shift).timecode, 
-      next_timecode: Timecode.new(tapes.inject(0){|sum, t| sum += t.duration}).timecode,
-      tape_id: tapes.first.id,
+      timecode: Timecode.new(tape.time_shift).timecode, 
+      next_timecode: Timecode.new(tape.duration).timecode,
+      tape_id: tape_id,
       text: text, 
       locale: locale,
       contribution_data: contribution_data

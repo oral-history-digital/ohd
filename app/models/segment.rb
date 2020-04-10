@@ -109,9 +109,9 @@ class Segment < ApplicationRecord
       time_per_char = calculate_time_per_char(speaker_designations, opts)
 
       # clean erraneously added blanks
-      while splitted_text.first =~ /^[\n+|\s+]$/
-        splitted_text.shift
-      end
+      #while splitted_text.first =~ /^[\n+|\s+]$/
+        #splitted_text.shift
+      #end
 
       while splitted_text && !splitted_text.empty?
         atts = {locale: opts[:locale]}
