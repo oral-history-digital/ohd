@@ -55,6 +55,9 @@
     //margin-bottom: 5px;
     color: $primary-color;
   }
+  .flyout-content-item:not(:last-child) {
+    margin-bottom: 20px;
+  }
   .flyout-content-data {
     display: inline-block;
   }
