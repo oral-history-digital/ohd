@@ -7,8 +7,16 @@ export default class InterviewForm extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            showForm: true
+        };
+        this.returnToForm = this.returnToForm.bind(this);
         this.showContribution = this.showContribution.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    returnToForm() {
+        this.setState({showForm: true});
     }
 
     showContribution(value) {
@@ -21,11 +29,12 @@ export default class InterviewForm extends React.Component {
     }
 
     onSubmit(params){
+        this.setState({showForm: false});
         this.props.submitData(this.props, params);
-        if (typeof this.props.onSubmitCallback === "function") {this.props.onSubmitCallback()}
+        //if (typeof this.props.onSubmitCallback === "function") {this.props.onSubmitCallback()}
     }
 
-    render() {
+    form() {
         let elements = [
             { 
                 attribute: 'archive_id',
@@ -114,4 +123,25 @@ export default class InterviewForm extends React.Component {
 
         return React.createElement(Form, props)
     }
+
+    render() {
+        if (this.state.showForm) {
+            return this.form();
+        } else {
+            return (
+                <div>
+                    <p>
+                        {t(this.props, 'edit.interview.processing')}
+                    </p>
+                    <button 
+                        className='return-to-upload'
+                        onClick={() => this.returnToForm()}
+                    >
+                        {t(this.props, 'edit.interview.edit')}
+                    </button>
+                </div>
+            )
+        }
+    }
+
 }
