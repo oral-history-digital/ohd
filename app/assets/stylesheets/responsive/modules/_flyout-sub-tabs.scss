@@ -5,6 +5,12 @@
   @include screen-l {
     padding: 0 40px 0 20px;
   }
+  button.return-to-form {
+    color: $flyout-tab-title-text-color;
+    background-color: $secondary-color;
+    margin-bottom: 20px;
+    padding: 10px;
+  }
 }
 
 .flyout-sub-tabs-label {

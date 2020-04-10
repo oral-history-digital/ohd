@@ -134,7 +134,7 @@ export default class InterviewForm extends React.Component {
                         {t(this.props, 'edit.interview.processing')}
                     </p>
                     <button 
-                        className='return-to-upload'
+                        className='return-to-form'
                         onClick={() => this.returnToForm()}
                     >
                         {t(this.props, 'edit.interview.edit')}
