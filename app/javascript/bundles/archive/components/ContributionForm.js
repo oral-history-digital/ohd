@@ -43,6 +43,13 @@ export default class ContributionForm extends React.Component {
                 withEmpty: true,
                 validate: function(v){return v !== ''} 
             },
+            {
+                elementType: 'select',
+                attribute: 'workflow_state',
+                values: ["unshared", "public"],
+                value: this.props.contribution && this.props.contribution.workflow_state,
+                optionsScope: 'workflow_states',
+            }
         ]
         if (this.props.withSpeakerDesignation) {
             elements.push({ 

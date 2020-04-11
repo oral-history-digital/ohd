@@ -46,7 +46,7 @@ class ContributionsController < ApplicationController
   private
 
   def contribution_params
-    params.require(:contribution).permit(:contribution_type, :interview_id, :person_id)
+    params.require(:contribution).permit(:contribution_type, :interview_id, :person_id, :workflow_state)
   end
 
 end

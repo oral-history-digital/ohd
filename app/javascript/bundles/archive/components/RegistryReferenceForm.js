@@ -69,6 +69,13 @@ export default class RegistryReferenceForm extends React.Component {
                 validate: function(v){return v !== ''},
                 individualErrorMsg: 'empty',
                 handlechangecallback: _this.handleSelectedRegistryEntry
+            },
+            {
+                elementType: 'select',
+                attribute: 'workflow_state',
+                values: ["unshared", "public"],
+                value: this.props.registry_reference && this.props.registry_reference.workflow_state,
+                optionsScope: 'workflow_states',
             }
         ]
         if (!_this.props.registryReferenceTypeId) {

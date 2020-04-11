@@ -32,8 +32,8 @@ export default class BiographicalEntryForm extends React.Component {
                     {
                         elementType: 'select',
                         attribute: 'workflow_state',
-                        values: this.props.biographicalEntry && Object.values(this.props.biographicalEntry.workflow_states),
-                        value: this.props.biographicalEntry.workflow_state,
+                        values: ["unshared", "public"],
+                        value: this.props.biographicalEntry && this.props.biographicalEntry.workflow_state,
                         optionsScope: 'workflow_states',
                     },
                 ]}

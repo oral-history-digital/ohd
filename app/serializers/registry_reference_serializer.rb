@@ -6,6 +6,8 @@ class RegistryReferenceSerializer < ApplicationSerializer
              :registry_reference_type_id,
              :archive_id,
              :ref_info,
-             :ref_details
+             :ref_details,
+             :workflow_states,
+             :workflow_state
 
 end
