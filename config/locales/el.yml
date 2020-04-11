@@ -361,18 +361,15 @@ el:
       edit: Erlaubnis bearbeiten
       delete: Erlaubnis löschen
       admin: Erlaubnisse bearbeiten
-    user_role:
-      show: Beschreibung
-      edit: Bearbeiten
-      new: Hinzufügen
-    task:
-      show: Beschreibung
-      edit: Bearbeiten
-      new: Hinzufügen
     upload_transcript: 
       title: Transkript hochladen
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört, aus dem Dateinamen erschlossen werden. Dabei steht gg für die Gesamtzahl der Tapes und aa für die Nummer des aktuellen Tapes.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
+    default:
+      show: Beschreibung
+      edit: Bearbeiten
+      new: Hinzufügen
+      return: Weiter
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
     downloads:
       title: Downloads
@@ -725,8 +722,6 @@ el:
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         delete_existing: delete existing transcript (for this tape)
       project:
-        title: Name
-        name: Name
         available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
         view_modes: Ansichten
@@ -750,8 +745,6 @@ el:
         pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
       metadata_field:
-        name: Name
-        locale: Sprache
         use_as_facet: als Facette benutzen
         facet_order: Reihenfolge in den Suchfacetten
         use_in_results_table: als Suchergebnis zeigen
@@ -764,9 +757,6 @@ el:
         values: Values
       external_link:
         internal_name: Internal Name
-        name: Name
-        url: URL
-        locale: Sprache
       upload:
         type: Art des Uploads
         data: Datei
@@ -795,12 +785,10 @@ el:
       user_account:
         login: Όνομα σύνδεσης
         password: Κωδικός
-        email: Ηλεκτρονική διεύθυνση
       account:
         gender: Geschlecht
         first_name: Vorname
         last_name: Nachname
-        email: Email
       user_registration:
         created_at: Erstellt am
         activated_at: Aktiviert am
@@ -810,7 +798,6 @@ el:
         appellation: Προσφώνηση
         first_name: Όνομα
         last_name: Επώνυμο
-        email: Ηλεκτρονική διεύθυνση
         job_description: Επάγγελμα
         research_intentions: Ερευνητικά ενδιαφέροντα
         comments: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
@@ -885,21 +872,23 @@ el:
       registry_hierarchy:
         ancestor_id: ID des Elternknoten
       annotation:
-        text: Text
       photo:
         caption: Fotobeschreibung
         data: Fotodatei
         caption_explanation: This photo caption is only available in German.
         workflow_state: 'Status'
       mark_text:
-        locale: Sprache
       text:
         text_to_mark: zu ersetzender Text
-      general:
+      default:
         name: Name
+        title: Name
         workflow_state: Status
         locale: Sprache
         desc: Beschreibung
+        text: Text
+        email: Ηλεκτρονική διεύθυνση
+        url: URL
     errors:
       default:
         select: Παρακαλώ δώστε

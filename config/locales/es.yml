@@ -345,7 +345,6 @@ es:
       delete: Foto löschen
     user_registration:
       show: 'Details'
-      edit: 'Bearbeiten'
     role: 
       new: 'Rolle hinzufügen'
       edit: 'Rolle bearbeiten'
@@ -360,24 +359,15 @@ es:
       edit: 'Berechtigung bearbeiten'
       delete: 'Berechtigung löschen'
       admin: 'Berechtigungen bearbeiten'
-    user_role:
-      show: Beschreibung
-      edit: Bearbeiten
-      new: Hinzufügen
-    task:
-      show: Beschreibung
-      edit: Bearbeiten
-      new: Hinzufügen
     upload_transcript: 
       title: Transkript hochladen
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden. 
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
-      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
-    upload_bulk_photo:
-      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
-    upload_bulk_texts:
-      processed: 'Die Datei %{file} ist nun fertig eingelesen: '
-    upload_bulk_metadata:
+    default:
+      show: Beschreibung
+      edit: Bearbeiten
+      new: Hinzufügen
+      return: Weiter
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
     downloads:
       title: Downloads
@@ -658,7 +648,6 @@ es:
       collection:
         project_id: Projekt
         homepage: Website
-        name: Name
         countries: Interviews in
         institution: Durchgeführt von
         responsibles: Verantwortliche
@@ -668,7 +657,6 @@ es:
         interviews: Interviewte
       language:
         code: Code
-        name: Name
       interview:
         person_name: Name
         collection_id: Sammlung
@@ -717,8 +705,6 @@ es:
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         delete_existing: delete existing transcript (for this tape)
       project:
-        title: Name
-        name: Name
         available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
         view_modes: Ansichten
@@ -742,8 +728,6 @@ es:
         pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
       metadata_field:
-        name: Name
-        locale: Sprache
         use_as_facet: als Facette benutzen
         facet_order: Reihenfolge in den Suchfacetten
         use_in_results_table: als Suchergebnis zeigen
@@ -756,9 +740,6 @@ es:
         values: Values
       external_link:
         internal_name: Internal Name
-        name: Name
-        url: URL
-        locale: Sprache
       upload:
         type: Art des Uploads
         data: Datei
@@ -791,7 +772,6 @@ es:
         gender: Geschlecht
         first_name: Vorname
         last_name: Nachname
-        email: Email
       user_registration:
         created_at: Erstellt am
         activated_at: Aktiviert am
@@ -801,7 +781,6 @@ es:
         appellation: Anrede
         first_name: Vorname
         last_name: Nachname
-        email: E-Mail
         job_description: Beruf
         research_intentions: Rechercheanliegen
         comments: Präzisierung des Anliegens
@@ -821,27 +800,18 @@ es:
         role_id: Rolle
       role:
         created_at: angelegt
-        name: Name
-        desc: Beschreibung
       role_permission:
-        name: 'Name'
-        desc: 'Beschreibung'
         permission_id: 'Berechtigung'
         controller: 'Controller'
         action: 'Action'
         created_at: 'angelegt'
       permission:
-        name: Name
-        desc: Beschreibung
         controller: Controller
         action: Action
         created_at: angelegt
       task:
         authorized_id: ID oder Archiv ID
         authorized_type: Typ
-        workflow_state: 'Status'
-        name: Name
-        desc: Beschreibung
       person:
         gender: Geschlecht
         first_name: Vorname
@@ -871,14 +841,17 @@ es:
         caption_explanation: This photo caption is only available in German.
         workflow_state: 'Status'
       mark_text:
-        locale: Sprache
       text:
         text_to_mark: zu ersetzender Text
-      general:
+      default:
         name: Name
+        title: Name
         workflow_state: Status
         locale: Sprache
         desc: Beschreibung
+        text: Text
+        email: E-Mail
+        url: URL
     errors:
       default:
         select: Bitte auswählen

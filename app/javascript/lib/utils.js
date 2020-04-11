@@ -124,13 +124,13 @@ export function getInterviewee(props) {
 }
 
 export function t(props, key, params) {
-    let text, generalKey;
+    let text, defaultKey;
     let keyArray = key.split('.');
     let productionFallback = keyArray[keyArray.length - 1];
 
     if (keyArray.length > 2) { 
-        keyArray[keyArray.length - 2] = 'general';
-        generalKey = keyArray.join('.');
+        keyArray[keyArray.length - 2] = 'default';
+        defaultKey = keyArray.join('.');
     }
 
     try {
@@ -139,8 +139,7 @@ export function t(props, key, params) {
         } catch (e) {
         } finally {
             if (typeof(text) !== 'string') {
-                eval(`text = props.translations.${props.locale}.${generalKey}`);
-                //return text;
+                eval(`text = props.translations.${props.locale}.${defaultKey}`);
             }
         }
     } catch (e) {
