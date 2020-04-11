@@ -874,6 +874,11 @@ es:
         locale: Sprache
       text:
         text_to_mark: zu ersetzender Text
+      general:
+        name: Name
+        workflow_state: Status
+        locale: Sprache
+        desc: Beschreibung
     errors:
       default:
         select: Bitte auswählen

@@ -124,18 +124,26 @@ export function getInterviewee(props) {
 }
 
 export function t(props, key, params) {
-    let text;
-    let keyArray;
-    let cmd = `text = props.translations.${props.locale}.${key}`
-    try{
-        eval(cmd);
-    } catch (e) {
-        if (developmentMode === 'true') {
-            text = `translation for ${props.locale}.${key} is missing!`;
-        } else {
-            keyArray = key.split('.')
-            text = keyArray[keyArray.length - 1]
+    let text, generalKey;
+    let keyArray = key.split('.');
+    let productionFallback = keyArray[keyArray.length - 1];
+
+    if (keyArray.length > 2) { 
+        keyArray[keyArray.length - 2] = 'general';
+        generalKey = keyArray.join('.');
+    }
+
+    try {
+        try {
+            eval(`text = props.translations.${props.locale}.${key}`);
+        } catch (e) {
+        } finally {
+            if (typeof(text) !== 'string') {
+                eval(`text = props.translations.${props.locale}.${generalKey}`);
+                //return text;
+            }
         }
+    } catch (e) {
     } finally {
         if (typeof(text) === 'string') {
             if(params) {
@@ -148,9 +156,7 @@ export function t(props, key, params) {
             if (developmentMode === 'true') {
                 return `translation for ${props.locale}.${key} is missing!`;
             } else {
-                keyArray = key ? key.split('.') : [];
-                text = keyArray[keyArray.length - 1];
-                return text;
+                return productionFallback;
             }
         }
     }

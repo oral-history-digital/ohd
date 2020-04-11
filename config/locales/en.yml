@@ -868,6 +868,11 @@ en:
         locale: Sprache
       text:
         text_to_mark: zu ersetzender Text
+      general:
+        name: Name
+        workflow_state: State
+        locale: Language
+        desc: Description
     errors:
       default:
         select: Please select
