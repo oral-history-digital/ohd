@@ -9,32 +9,7 @@ class RegistryReferencesController < ApplicationController
     authorize RegistryReference
     @registry_reference = RegistryReference.create(registry_reference_params)
 
-    @registry_reference.ref_object.touch
-
-    respond_to do |format|
-      format.json do
-        json = {}
-        if @registry_reference.ref_object_type == 'Interview' || @registry_reference.ref_object_type == 'Person'
-          json = {
-            data_type: @registry_reference.ref_object_type.underscore.pluralize,
-            "#{@registry_reference.ref_object.identifier_method}": @registry_reference.ref_object.identifier,
-            nested_data_type: 'registry_references',
-            nested_id: @registry_reference.id,
-            data: ::RegistryReferenceSerializer.new(@registry_reference).as_json
-          }
-        elsif @registry_reference.ref_object_type == 'Segment'
-          json = {
-            archive_id: @registry_reference.ref_object.interview.archive_id,
-            data_type: 'interviews',
-            nested_data_type: 'segments',
-            nested_id: @registry_reference.ref_object.id,
-            extra_id: @registry_reference.ref_object.tape.number,
-            data: ::SegmentSerializer.new(@registry_reference.ref_object).as_json
-          }
-        end
-        render json: json
-      end
-    end
+    respond @registry_reference
   end
 
   def update
@@ -42,19 +17,7 @@ class RegistryReferencesController < ApplicationController
     authorize @registry_reference
     @registry_reference.update_attributes registry_reference_params
 
-    @registry_reference.ref_object.touch
-
-    respond_to do |format|
-      format.json do
-        render json: {
-          data_type: @registry_reference.ref_object_type.underscore.pluralize,
-          "#{@registry_reference.ref_object.identifier_method}": @registry_reference.ref_object.identifier,
-          nested_data_type: 'registry_references',
-          nested_id: @registry_reference.id,
-          data: ::RegistryReferenceSerializer.new(@registry_reference).as_json
-        }
-      end
-    end
+    respond @registry_reference
   end
 
   def destroy 
@@ -218,6 +181,35 @@ class RegistryReferencesController < ApplicationController
 
 
   private
+
+  def respond registry_reference
+    registry_reference.ref_object.touch
+
+    respond_to do |format|
+      format.json do
+        json = {}
+        if registry_reference.ref_object_type == 'Interview' || registry_reference.ref_object_type == 'Person'
+          json = {
+            data_type: registry_reference.ref_object_type.underscore.pluralize,
+            "#{registry_reference.ref_object.identifier_method}": registry_reference.ref_object.identifier,
+            nested_data_type: 'registry_references',
+            nested_id: registry_reference.id,
+            data: ::RegistryReferenceSerializer.new(registry_reference).as_json
+          }
+        elsif registry_reference.ref_object_type == 'Segment'
+          json = {
+            archive_id: registry_reference.ref_object.interview.archive_id,
+            data_type: 'interviews',
+            nested_data_type: 'segments',
+            nested_id: registry_reference.ref_object.id,
+            extra_id: registry_reference.ref_object.tape.number,
+            data: ::SegmentSerializer.new(registry_reference.ref_object).as_json
+          }
+        end
+        render json: json
+      end
+    end
+  end
 
   def registry_reference_params
     params.require(:registry_reference).permit(:registry_reference_type_id, :ref_object_id, :ref_object_type, :registry_entry_id, :ref_position, :workflow_state, :interview_id)
