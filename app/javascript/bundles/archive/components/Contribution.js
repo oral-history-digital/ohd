@@ -11,7 +11,7 @@ export default class Contribution extends React.Component {
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.contribution.edit')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.contribution'),
+                    title: t(this.props, 'edit.contribution.edit'),
                     content: <ContributionFormContainer contribution={this.props.contribution} submitData={this.props.submitData} />
                 })}
             >
