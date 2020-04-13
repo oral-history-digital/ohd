@@ -408,6 +408,7 @@ en:
     expire: zurückgestellt
     all: Alle
     unchecked: unbeantwortet
+    preliminary: preliminary
     checked: geprüft
     postponed: zurückgestellt
     rejected: abgelehnt

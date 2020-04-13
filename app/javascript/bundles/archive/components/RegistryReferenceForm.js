@@ -64,7 +64,7 @@ export default class RegistryReferenceForm extends React.Component {
                 elementType: 'select',
                 attribute: 'registry_entry_id',
                 values: this.registryEntries(),
-                value: this.props.registry_reference && this.props.registry_reference.registry_entry_id,
+                value: this.props.registryReference && this.props.registryReference.registry_entry_id,
                 withEmpty: true,
                 validate: function(v){return v !== ''},
                 individualErrorMsg: 'empty',
@@ -73,8 +73,8 @@ export default class RegistryReferenceForm extends React.Component {
             {
                 elementType: 'select',
                 attribute: 'workflow_state',
-                values: ["unshared", "public"],
-                value: this.props.registry_reference && this.props.registry_reference.workflow_state,
+                values: ['preliminary', 'checked', 'rejected'],
+                value: this.props.registryReference && this.props.registryReference.workflow_state,
                 optionsScope: 'workflow_states',
             }
         ]
@@ -84,7 +84,7 @@ export default class RegistryReferenceForm extends React.Component {
                     elementType: 'select',
                     attribute: 'registry_reference_type_id',
                     values: this.props.registryReferenceTypesStatus && this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched' && Object.values(this.props.registryReferenceTypes),
-                    value: this.props.registry_reference && this.props.registry_reference.registry_reference_type_id || this.props.refTypeId,
+                    value: this.props.registryReference && this.props.registryReference.registry_reference_type_id || this.props.refTypeId,
                     withEmpty: false,
                 }
             )
@@ -117,7 +117,7 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     selectedRegistryEntry() {
-        if (this.state.parentEntryId !== this.props.parentEntryId) {
+        if (this.registryEntryParent() && this.state.parentEntryId !== this.props.parentEntryId) {
             return (
                 <div>
                     <span><b>{t(this.props, 'selected_registry_entry') + ': '}</b></span>
@@ -155,8 +155,8 @@ export default class RegistryReferenceForm extends React.Component {
                 {this.goUp()}
                 <Form 
                     scope='registry_reference'
-                    values={{
-                        //id: this.props.registry_reference && this.props.registry_reference.id,
+                    data={this.props.registryReference}
+                    values={!this.props.registryReference && {
                         ref_object_id: this.props.refObject.id,
                         ref_object_type: this.props.refObject.type,
                         interview_id: this.props.interview.id,

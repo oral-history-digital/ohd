@@ -413,6 +413,7 @@ el:
     expire: zurückgestellt
     all: Alle
     unchecked: unbeantwortet
+    preliminary: vorläufig
     checked: geprüft
     postponed: zurückgestellt
     rejected: abgelehnt

@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
+        registryEntries: state.data.registry_entries,
         account: state.data.accounts.current,
         editView: state.archive.editView,
         projectId: state.archive.projectId,

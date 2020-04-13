@@ -1,14 +1,14 @@
 import React from 'react';
-import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
+import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
 import { t, pluralize, toUnderscoreCase, admin } from '../../../lib/utils';
 
 export default class RegistryReference extends React.Component {
 
     edit() {
         if (
-            this.props.registryEntry &&
+            this.props.registryReference &&
             !this.props.hideEdit &&
-            admin(this.props, this.props.registryEntry)
+            admin(this.props, this.props.registryReference)
         ) {
             return (
                 <div
@@ -16,7 +16,13 @@ export default class RegistryReference extends React.Component {
                     title={t(this.props, 'edit.registry_entry.edit')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.registry_entry.edit'),
-                        content: <RegistryEntryFormContainer registryEntry={this.props.registryEntry} />
+                        content: (
+                            <RegistryReferenceFormContainer 
+                                registryReference={this.props.registryReference} 
+                                locale={this.props.locale} 
+                                parentEntryId={this.props.registryEntries[this.props.registryReference.registry_entry_id].parent_ids[this.props.locale][0]}
+                            />
+                        )
                     })}
                 >
                     <i className="fa fa-pencil"></i>
@@ -73,7 +79,7 @@ export default class RegistryReference extends React.Component {
     buttons() {
         return (
             <span className={'flyout-sub-tabs-content-ico'}>
-                {/* {this.edit()} */}
+                {this.edit()}
                 {this.delete()}
             </span>
         )
