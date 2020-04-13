@@ -28,7 +28,7 @@ Rails.application.routes.draw do
       resources :metadata_fields
       resources :external_links
 
-      resources :contributions, only: [:create, :destroy]
+      resources :contributions, only: [:create, :update, :destroy]
       #resources :histories, only: [:create, :update, :destroy]
       resources :biographical_entries, only: [:create, :show, :update]
       resources :photos, only: [:create, :update, :destroy]

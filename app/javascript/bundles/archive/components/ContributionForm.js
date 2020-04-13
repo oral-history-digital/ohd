@@ -6,15 +6,11 @@ import { Link } from 'react-router-dom';
 export default class ContributionForm extends React.Component {
 
     componentDidMount() {
-        //if (admin(this.props, {type: 'Contribution', action: 'create'})) {
-            this.loadAllPeople();
-        //}
+        this.loadAllPeople();
     }
 
     componentDidUpdate() {
-        //if (admin(this.props, {type: 'Contribution', action: 'create'})) {
-            this.loadAllPeople();
-        //}
+        this.loadAllPeople();
     }
 
     loadAllPeople() {
