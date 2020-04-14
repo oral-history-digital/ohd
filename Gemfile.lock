@@ -8,13 +8,6 @@ GIT
       request_store (~> 1.0)
 
 GIT
-  remote: https://github.com/grgr/acts-as-dag
-  revision: d6d6c33a51a42f04165909dd52e60c68eddae68b
-  specs:
-    acts-as-dag (4.0.0)
-      activemodel
-
-GIT
   remote: https://github.com/grgr/oai_repository
   revision: cc0b6f4b13314da58db67370d67ccab8d13f05cc
   specs:
@@ -502,7 +495,6 @@ DEPENDENCIES
   RedCloth
   active_model_serializers (~> 0.10.0)
   activemodel-serializers-xml
-  acts-as-dag!
   acts_as_taggable_on_steroids
   capistrano (= 3.11.0)
   capistrano-passenger

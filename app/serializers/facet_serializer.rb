@@ -19,9 +19,7 @@ class FacetSerializer < ApplicationSerializer
         mem
       end
     when "RegistryReferenceType"
-      # object.registry_entry.children.inject({}) do |mem, child|
-      method = object.try(:children_only) ? "children" : "descendants"
-      object.registry_entry.send(method).includes(registry_names: :translations).inject({}) do |mem, child|
+      object.registry_entry.children.includes(registry_names: :translations).inject({}) do |mem, child|
         mem[child.id.to_s] = {
           name: child.localized_hash(:descriptor),
           count: 0,

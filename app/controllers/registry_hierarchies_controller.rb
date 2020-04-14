@@ -30,7 +30,7 @@ class RegistryHierarchiesController < ApplicationController
     descendant = @registry_hierarchy.descendant
     ancestor = @registry_hierarchy.ancestor
 
-    @registry_hierarchy.destroy_or_make_indirect
+    @registry_hierarchy.destroy
 
     clear_cache descendant
     clear_cache ancestor

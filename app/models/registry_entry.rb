@@ -32,6 +32,12 @@ class RegistryEntry < ApplicationRecord
            foreign_key: :ancestor_id,
            class_name: 'RegistryHierarchy'
 
+  has_many :ancestors,
+           through: :parent_registry_hierarchies
+
+  has_many :descendants,
+           through: :child_registry_hierarchies
+
   has_many :registry_entry_relations
   has_many :related_registry_entries, 
            through: :registry_entry_relations,
@@ -46,11 +52,8 @@ class RegistryEntry < ApplicationRecord
   has_many :registry_reference_types,
            :dependent => :destroy
 
-  # Registry entries are modeled as a directed acyclic graph.
-  has_dag_links :link_class_name => 'RegistryHierarchy'
-
   has_many :main_registers,
-    -> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1 AND parents.direct = 1)') },
+    -> { where('EXISTS (SELECT * FROM registry_hierarchies parents WHERE parents.descendant_id = registry_hierarchies.ancestor_id AND parents.ancestor_id = 1') },
     :through => :links_as_descendant,
     :source => :ancestor
 
@@ -75,6 +78,14 @@ class RegistryEntry < ApplicationRecord
   after_update :touch_objects
   after_create :touch_objects
 
+  def parents
+    ancestors
+  end
+
+  def children 
+    descendants
+  end
+    
   # A registry entry may not be deleted if it still has children or
   # references pointing to it.
   def before_destroy
@@ -190,7 +201,7 @@ class RegistryEntry < ApplicationRecord
 
     child_registry_hierarchies.each do |rh| 
       if RegistryHierarchy.where(ancestor_id: merge_to_id, descendant_id: rh.descendant_id).exists?
-        rh.destroy_or_make_indirect
+        rh.destroy 
       else
         rh.update_attribute(:ancestor_id, merge_to_id) 
       end
@@ -198,7 +209,7 @@ class RegistryEntry < ApplicationRecord
 
     parent_registry_hierarchies.each do |rh| 
       if RegistryHierarchy.where(ancestor_id: rh.ancestor_id, descendant_id: merge_to_id).exists?
-        rh.destroy_or_make_indirect
+        rh.destroy
       else
         rh.update_attribute(:descendant_id, merge_to_id) 
       end
@@ -230,7 +241,7 @@ class RegistryEntry < ApplicationRecord
 
   def alphanum_sorted_children_ids(locale)
     # registry_names of children 
-    RegistryName.where(registry_entry_id: RegistryHierarchy.select('descendant_id').where(ancestor_id: self.id, direct: true)).
+    RegistryName.where(registry_entry_id: RegistryHierarchy.select('descendant_id').where(ancestor_id: self.id)).
       # select only local name and order by it
       joins(:translations).
       where("registry_name_translations.locale": locale).
@@ -254,7 +265,7 @@ class RegistryEntry < ApplicationRecord
   class << self
     def descendant_ids(code, entry_dedalo_code=nil)
       entry = entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code) : find_by_code(code)
-      entry ? entry.descendants.map(&:id) : []
+      entry ? entry.child_registry_hierarchies.map(&:decendant_id) : []
     end
 
     #
@@ -266,7 +277,7 @@ class RegistryEntry < ApplicationRecord
     #
     def create_with_parent_and_names(parent_id, names_w_locales, code=nil)
       registry_entry = RegistryEntry.create code: code, desc: code, workflow_state: "public", list_priority: false
-      RegistryHierarchy.create(ancestor_id: parent_id, descendant_id: registry_entry.id, direct: true) if parent_id
+      RegistryHierarchy.create(ancestor_id: parent_id, descendant_id: registry_entry.id) if parent_id
 
       names_w_locales.gsub("\"", '').split('#').each do |name_w_locale| 
         locale, names = name_w_locale.split('::')
@@ -390,8 +401,7 @@ class RegistryEntry < ApplicationRecord
         frontier_ids = frontier.map { |path| path.last }.uniq
         new_frontier = []
         now_visited = []
-        RegistryHierarchy.where(:ancestor_id => frontier_ids).where(:descendant_id => not_yet_visited).where(:direct => true).each do |rh|
-        #RegistryHierarchy.all(:conditions => {:ancestor_id => frontier_ids, :descendant_id => not_yet_visited, :direct => true}).each do |rh|
+        RegistryHierarchy.where(:ancestor_id => frontier_ids).where(:descendant_id => not_yet_visited).each do |rh|
           frontier.select { |path| path.last == rh.ancestor_id }.each do |path|
             now_visited << rh.descendant_id
             new_path = (path.dup << rh.descendant_id)
@@ -808,7 +818,6 @@ class RegistryEntry < ApplicationRecord
           "SELECT ancestor_id AS id, COUNT(*) AS child_count
            FROM registry_hierarchies
            WHERE ancestor_id IN (#{ActiveRecord::Base.quote_bound_value(registry_entry_ids)})
-             AND direct = 1
            GROUP BY ancestor_id"
       )
 
@@ -1166,19 +1175,6 @@ class RegistryEntry < ApplicationRecord
     pattern % names
   end
 
-  # We implement a delta update to efficiently maintain huge collections.
-  # In principle this could better be done through a registry hierarchies
-  # controller. The problem is that the dag module does some extra magic on
-  # updating link associations like parents or children. We therefore have
-  # to update the associations of RegistryEntry rather than adding/deleting
-  # RegistryHierarchy instances directly.
-  def parents_delta=(delta_records)
-    deltahandling(:parents, delta_records)
-  end
-  def children_delta=(delta_records)
-    deltahandling(:children, delta_records)
-  end
-
   def paginated_children(filter = {}, page = 1, per_page = 25)
     filter = filter.clone()
     filter.delete('registry_entry.id')
@@ -1364,45 +1360,5 @@ class RegistryEntry < ApplicationRecord
   end
 
   private
-
-  def deltahandling(association_name, delta_records)
-    delta_records.each do |delta_record|
-      registry_entry = RegistryEntry.find(delta_record[:id])
-      association = self.send(association_name)
-      raise 'Missing delta action.' if delta_record[:action].blank?
-      existing_link = if association_name == :parents
-                        links_as_descendant.find_by_ancestor_id(registry_entry.id)
-                      else
-                        links_as_ancestor.find_by_descendant_id(registry_entry.id)
-                      end
-      case delta_record[:action]
-      when 'add'
-        # When the link already exists we make it direct, otherwise we add a new link.
-        if existing_link.nil?
-          association << registry_entry
-        else
-          existing_link.make_direct
-          existing_link.save!
-        end
-
-      when 'remove'
-        raise(ActiveRecord::RecordNotFound) if existing_link.nil?
-        # When the link is destroyable then destroy it, otherwise make it indirect.
-        if (existing_link.destroyable?)
-          # We cannot use the association.delete() method as
-          # this won't trigger the destroy callback on the link
-          # which leaves the DAG in an inconsistent state.
-          existing_link.destroy
-        else
-          existing_link.make_indirect
-          existing_link.save!
-        end
-
-      else
-        raise "Unknown delta action: #{delta_record[:action]}"
-      end
-    end
-  end
-
 
 end
