@@ -2,6 +2,8 @@ import React from 'react';
 import InputContainer from '../../containers/form/InputContainer';
 import MultiLocaleInputContainer from '../../containers/form/MultiLocaleInputContainer';
 import MultiLocaleTextareaContainer from '../../containers/form/MultiLocaleTextareaContainer';
+import MultiLocaleRichTextEditorContainer from '../../containers/form/MultiLocaleRichTextEditorContainer';
+import RichTextEditor from 'react-rte';
 import TextareaContainer from '../../containers/form/TextareaContainer';
 import SelectContainer from '../../containers/form/SelectContainer';
 import { t, pluralize } from '../../../../lib/utils';
@@ -50,24 +52,57 @@ export default class Form extends React.Component {
     }
 
     handleSubmit(event) {
+        let _this = this;
         event.preventDefault();
         if(this.valid()) {
+            //
+            // for RichTextEditor (react rte) it is more performant to do the 'toString calculution only once, before submit
+            //
+            this.props.elements.filter(element => element.elementType === 'richTextEditor').map((element,index) => {
+                _this.setState({
+                    values: Object.assign({}, _this.state.values, {[element.attribute]: _this.state.values[element.attribute].toString('html')})
+                })
+            })
+            this.props.elements.filter(element => element.elementType === 'multiLocaleRichTextEditor').map((element,index) => {
+                _this.setState({
+                    values: Object.assign({}, this.state.values, {
+                        translations_attributes: Object.assign([], 
+                            this.state.values.translations_attributes, 
+                            this.state.values.translations_attributes.map((t,i) => {
+                                return t[element.attribute] = t[element.attribute].toString('html');
+                            })
+                        )
+                    })
+                })
+            })
+
             this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
         } 
     }
 
     initValues() {
         let values = this.state.values;
-        if (this.props.data)
+        if (this.props.data) {
             values.id = this.props.data.id
+            values.translations_attributes = this.props.data.translations;
+        } else {
+            values.translations_attributes = [];
+        }
+
         this.props.elements.map((element, index) => {
-            if (element.elementType === 'multiLocaleInput') {
-                this.props.locales.map((locale, index) => {
-                    values.translations_attributes = (this.props.data && this.props.data.translations) || [];
-                })
-            } else {
+            //if (element.elementType === 'multiLocaleRichTextEditor') {
+                //values.translations_attributes.map((t,i) => {
+                    //return t[element.attribute] = t[element.attribute] ?
+                        //RichTextEditor.createValueFromString(t[element.attribute], 'html') : 
+                        //RichTextEditor.createEmptyValue()
+                //})
+            //} else if (element.elementType === 'richTextEditor') {
+                //values[element.attribute] = (this.props.data && this.props.data[element.attribute]) ?
+                    //RichTextEditor.createValueFromString(this.props.data[element.attribute], 'html') : 
+                    //RichTextEditor.createEmptyValue()
+            //} else {
                 values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
-            }
+            //}
         })
         this.setState({ values: values });
     }
@@ -180,7 +215,9 @@ export default class Form extends React.Component {
             input: InputContainer,
             multiLocaleInput: MultiLocaleInputContainer,
             multiLocaleTextarea: MultiLocaleTextareaContainer,
-            textarea: TextareaContainer 
+            multiLocaleRichTextEditor: MultiLocaleRichTextEditorContainer,
+            richTextEditor: RichTextEditor,
+            textarea: TextareaContainer
         }
     }
 

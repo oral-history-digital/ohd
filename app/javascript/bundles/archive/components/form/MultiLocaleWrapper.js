@@ -1,4 +1,5 @@
 import React from 'react';
+import RichTextEditor from 'react-rte';
 import { t } from '../../../../lib/utils';
 
 export default class MultiLocaleWrapper extends React.Component {
@@ -9,10 +10,22 @@ export default class MultiLocaleWrapper extends React.Component {
         return `${label} (${locale})`;
     }
 
+    value(translation) {
+        let val; 
+        //if (this.props.elementType === 'multiLocaleRichTextEditor') {
+            //val = (translation && translation[this.props.attribute]) ? 
+                //RichTextEditor.createValueFromString(translation[this.props.attribute], 'html') : 
+                //RichTextEditor.createEmptyValue()
+        //} else {
+            val = translation && translation[this.props.attribute];
+        //}
+        return val;
+    }
+
     // the (perhaps given) attribute-value is fetched from serialized translations
     // than the new value is send back in a stringified JSON-hash in the scope of the form and further scoped with 'translations_attributes'
     //
-    // like this resource.update_attributes(resource_params) needs only to JSON.parse(translations_attributes)
+    // like this resource.update_attributes(resource_params) is directly possible
     //
     // so to update a persons translated first_name
     // the transmitted params would be:
@@ -26,7 +39,7 @@ export default class MultiLocaleWrapper extends React.Component {
 
         let props = Object.assign({}, this.props, {
             attribute: `translations_attributes-${locale}-${this.props.attribute}-${(translation && translation.id) ? translation.id : ''}`,
-            value: translation && translation[this.props.attribute],
+            value: this.value(translation),
             label: this.label(locale),
             key: `${this.props.attribute}-${locale}`
         })
