@@ -1,6 +1,7 @@
 class ProjectSerializer < ActiveModel::Serializer
   attributes :id,
     :name,
+    :more_text,
     :shortname,
     :title,
     :available_locales,

@@ -280,8 +280,12 @@ class Interview < ApplicationRecord
     end
   end
 
-  scope :researched, -> {where(researched: true)}
-  scope :with_still_image, -> {where.not(still_image_file_name: nil)}
+  scope :shared, -> {where(workflow_state: 'public')}
+  scope :with_media_type, -> {where.not(media_type: nil)}
+
+  # TODO: remove or replace this
+  #scope :researched, -> {where(researched: true)}
+  #scope :with_still_image, -> {where.not(still_image_file_name: nil)}
 
   def biographies_workflow_state=(change)
     interviewees.each do |interviewee|
@@ -305,9 +309,9 @@ class Interview < ApplicationRecord
 
   def self.random_featured(n = 1)
     if n == 1
-      researched.with_still_image.order(Arel.sql('RAND()')).first || first
+      shared.with_media_type.order(Arel.sql('RAND()')).first || first
     else
-      researched.with_still_image.order(Arel.sql('RAND()')).first(n) || first(n)
+      shared.with_media_type.order(Arel.sql('RAND()')).first(n) || first(n)
     end
   end
 
@@ -646,6 +650,7 @@ class Interview < ApplicationRecord
     }
   end
 
+  # TODO: remove or replace this
   # segmented, researched, proofread
   def set_workflow_flags!
     if segments.size > 0
@@ -660,6 +665,7 @@ class Interview < ApplicationRecord
     end
   end
 
+  # TODO: remove or replace this
   # Creates a task that marks the interview as prepared for research
   # Also set the segmentation_state and workflow_state on the Segmentation task
   def prepare!

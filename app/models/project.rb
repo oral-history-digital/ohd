@@ -1,6 +1,7 @@
 require "globalize"
 
 class Project < ApplicationRecord
+
   has_many :interviews
   has_many :collections
   has_many :metadata_fields
@@ -12,7 +13,7 @@ class Project < ApplicationRecord
   has_many :user_registrations,
     through: :user_registration_projects
 
-  translates :name, fallbacks_for_empty_translations: true, touch: true
+  translates :name, :introduction, :more_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
   serialize :view_modes, Array

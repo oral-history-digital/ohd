@@ -105,6 +105,7 @@ class ProjectsController < ApplicationController
           "default_locale",
           "primary_color_rgb",
           "shortname",
+          "more_text",
           "initials",
           "domain",
           "archive_domain",
@@ -117,7 +118,7 @@ class ProjectsController < ApplicationController
           "smtp_server",
           "has_newsletter",
           "is_catalog",
-          translations_attributes: [:locale, :name, :id]
+          translations_attributes: [:locale, :name, :id, :introduction]
       )
     end
 

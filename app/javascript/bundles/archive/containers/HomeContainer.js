@@ -9,9 +9,9 @@ const mapStateToProps = (state) => {
 
     return {
         account: state.data.accounts.current,
-        homeContent: state.archive.homeContent[state.archive.locale],
+        randomFeaturedInterviews: state.archive.randomFeaturedInterviews,
         locale: state.archive.locale,
-        project: project && project.identifier,
+        project: getProject(state),
         translations: state.archive.translations,
     }
 }

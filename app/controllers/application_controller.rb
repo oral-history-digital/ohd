@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
         viewModes: current_project.view_modes,
         viewMode: current_project.view_modes.first,
         listColumns: current_project.list_columns,
-        homeContent: home_content,
+        randomFeaturedInterviews: Interview.random_featured(6).inject({}){|mem, s| mem[s.archive_id] = cache_single(s); mem},
         editView: !!cookies["editView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],
@@ -204,16 +204,6 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch("#{current_project.cache_key_prefix}-country-keys") do
       current_project.available_locales.inject({}) do |mem, locale|
         mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
-        mem
-      end
-    end
-  end
-
-  def home_content
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-home-content") do
-      current_project.available_locales.inject({}) do |mem, locale|
-        template = "/home/home.#{locale}.html+#{current_project.identifier}"
-        mem[locale] = render_to_string(template: template, layout: false)
         mem
       end
     end

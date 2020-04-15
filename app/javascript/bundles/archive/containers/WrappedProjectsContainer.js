@@ -29,6 +29,15 @@ const mapStateToProps = (state) => {
                 elementType: 'multiLocaleInput'
             },
             {
+                attribute: 'introduction',
+                elementType: 'multiLocaleTextarea'
+                //elementType: 'multiLocaleRichTextEditor'
+            },
+            {
+                attribute: 'more_text',
+                elementType: 'textarea'
+            },
+            {
                 attribute: 'shortname',
                 validate: function(v){return v.length > 1} 
             },
