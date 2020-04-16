@@ -175,7 +175,7 @@ ru:
     target="_blank">Правила публикации комментариев</a>.
   save: сохранить
   cancel: abbrechen
-  assign_speakers: Sprecher zuordnen
+  assign_speakers: Sprecher*innen zuordnen
   person_info: О человеке
   date_of_birth: Дата рождения
   year_of_birth: Год рождения
@@ -305,7 +305,7 @@ ru:
     segment:
       edit: Segment bearbeiten
       edit_heading: Überschriften bearbeiten
-      speaker_string: Sprecher (als String)
+      speaker_string: Sprecher*in (als String)
     person:
       admin: Personen bearbeiten
       new: Person hinzufügen
@@ -371,14 +371,14 @@ ru:
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
       return: Weiterer Upload
     update_speaker:
-      first_step_explanation: 'Es wurden Segmente mit Sprecherbezeichnungen aber ohne eindeutige Sprecherzuweisung gefunden: '
-      second_step_explanation: Sind noch weitere Sprecherauszeichnungen im Transkript? 
-        Durch Eingabe dieser Auszeichnungen (z.B. *CG:*) und eindeutige Zuweisung zu eine[r|m] Mitwirkenden können sie herausgeschnitten werden. 
-        Zudem werden Segmente mit Sprecherwechsel gespalten. 
-      speaker_for_speaker_designation: 'Sprecher für: '
-      processing: Die Sprecher werden zugeordnet
-      processed: 'Die Sprecher für %{archiveId} sind nun zugeordnet.'
-      no_speaker_designations_found: In dem Transkript wurden keine versteckten, nicht zugeordneten Sprecherbezeichnungen gefunden
+      first_step_explanation: 'Es wurden Segmente mit Sprecher*innenbezeichnungen aber ohne eindeutige Zuweisung gefunden: '
+      second_step_explanation: Sind noch weitere Sprecher*innenauszeichnungen im Transkript?
+        Durch Zuweisung dieser Auszeichnungen (z.B. *CG:*) zu einer*m spezifischen Mitwirkenden werden sie entfernt und den Symbolen zugeordnet.
+        Segmente mit Sprecher*innenwechsel werden dadurch geteilt.
+      speaker_for_speaker_designation: 'Sprecher*in für: '
+      processing: Die Sprecher*innen werden zugeordnet
+      processed: 'Die Sprecher*innen für %{archiveId} sind nun zugeordnet.'
+      no_speaker_designations_found: In dem Transkript wurden keine versteckten, nicht zugeordneten Sprecher*innenbezeichnungen gefunden
     mark_text:
       explanation: Ersetzt wird in der Origianlversion. Wenn der Ersetzungstext Transkriptionszeichen enthält wird in der öffentlichen Version entsprechend z.B. anonymisiert.
     photo:
@@ -465,7 +465,7 @@ ru:
     question_to_supervisor: Frage an Supervisor gestellt
   contributions:
     title: Mitwirkende
-    add: Mitwirkende(n) zufügen
+    add: Mitwirkende*n hinzufügen
     interviewee: интервьюируемый
     interviewer: Проведение интервью
     transcriptor: Транскрипция
@@ -697,7 +697,7 @@ ru:
       contribution:
         contribution_type: Art des Beitrags
         person_id: Person
-        speaker_designation: Sprecherauszeichnung (z.B. *CG:*)
+        speaker_designation: Sprecher*innenauszeichnung (z.B. *CG:*)
       collection:
         project_id: Projekt
         homepage: Website
