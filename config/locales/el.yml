@@ -199,6 +199,7 @@ el:
   transcript_title: Απομαγνητοφώνηση της συνέντευξης με
   translation_title: Übersetzung des Interviews mit
   transcript_footer: 'Zitiervorgabe: Transkript des Interviews mit'
+  transcript_template: Vorlage für den Import von .ods Dateien
   biographical_entries_header: 'Kurzbiografie:'
   biographical_entries_title: 'Kurzbiografie von'
   biographical_entries_footer: 'Zitiervorgabe: Kurzbiografie von'
@@ -461,8 +462,9 @@ el:
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
         Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
-        Unterstützt werden .ods, .odt, .vtt, .srt.
-        Die Spaltenüberschriften bei .ods-Dateien müssen 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' heißen. .odt-Text-Dateien sollten nur der Transkripttext (inkl. Srecherauszeichnungen) ohne Header, Footer oder anderen Text (z.B. Erklärungen) enthalten.
+        Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
+        Im .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
+        Dateien im .odt-Format sollten nur den Transkripttext (inkl. Sprecher/innenauszeichnungen) ohne Header, Footer oder anderen Text enthalten.
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
