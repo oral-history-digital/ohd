@@ -55,7 +55,10 @@ export default class UploadTranscript extends React.Component {
                         {t(this.props, `upload.explanation.transcript`)}
                     </p>
 
-                    <a href={`/transcript-import-template.ods`} download>{`transcript-import-template.ods`}</a>
+                    <a href={`/transcript-import-template.ods`} download>
+                       <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
+		       <span>{t(this.props, 'transcript_template')}</span>
+		    </a>
 
                     <Form 
                         scope='transcript'
