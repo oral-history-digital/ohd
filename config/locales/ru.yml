@@ -618,6 +618,12 @@ ru:
       photo:
         one: Фотография
         other: Фотографии
+      logo:
+        one: Logo
+        other: Logos
+      sponsor_logo:
+        one: Sponsor Logo
+        other: Sponsor Logos
       user_content:
         one: Контент
         other: Контенты
@@ -919,6 +925,7 @@ ru:
         text: Text
         email: Электр. адрес
         url: URL
+        file: Datei
     errors:
       default:
         select: Bitte auswählen

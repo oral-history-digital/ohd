@@ -59,7 +59,7 @@ var Loader = {
         let scope = Object.keys(params)[0];
         Object.keys(params[scope]).map((param, index) => {
             if (params[scope][param] !== undefined && params[scope][param] !== null) {
-                if (param === 'data') {
+                if ((params[scope][param]) instanceof File) {
                     // like this it is possible to upload one file through a file-input called data.
                     // you need more file-inputs? change the implementation here!
                     req.attach(`${scope}[${param}]`, params[scope][param]);

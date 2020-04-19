@@ -571,6 +571,12 @@ el:
       photo:
         one: Bild
         other: Bilder
+      logo:
+        one: Logo
+        other: Logos
+      sponsor_logo:
+        one: Sponsor Logo
+        other: Sponsor Logos
       user_content:
         one: Inhalt
         other: Inhalte
@@ -890,6 +896,7 @@ el:
         text: Text
         email: Ηλεκτρονική διεύθυνση
         url: URL
+        file: Datei
     errors:
       default:
         select: Παρακαλώ δώστε

@@ -2,6 +2,9 @@ require "globalize"
 
 class Project < ApplicationRecord
 
+  has_many :logos, as: :ref
+  has_many :sponsor_logos, as: :ref
+
   has_many :interviews
   has_many :collections
   has_many :metadata_fields

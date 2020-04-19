@@ -579,6 +579,12 @@ de:
       photo:
         one: Bild
         other: Bilder
+      logo:
+        one: Logo
+        other: Logos
+      sponsor_logo:
+        one: Sponsor Logo
+        other: Sponsor Logos
       user_content:
         one: Inhalt
         other: Inhalte
@@ -870,6 +876,7 @@ de:
         text: Text
         email: E-Mail
         url: URL
+        file: Datei
     errors:
       default:
         select: Bitte auswählen

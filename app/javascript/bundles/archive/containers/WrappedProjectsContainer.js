@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import WrappedDataList from '../components/WrappedDataList';
 import MetadataFieldsContainer from '../containers/MetadataFieldsContainer';
 import ExternalLinksContainer from '../containers/ExternalLinksContainer';
+import UploadedFileContainer from '../containers/UploadedFileContainer';
 import { setQueryParams } from '../actions/searchActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
@@ -119,6 +120,8 @@ const mapStateToProps = (state) => {
         joinedData: {
             metadata_field: MetadataFieldsContainer,
             external_link: ExternalLinksContainer,
+            logo: UploadedFileContainer,
+            sponsor_logo: UploadedFileContainer,
         },
     }
 }

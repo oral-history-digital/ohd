@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { t, admin, pluralize } from '../../../lib/utils';
+import { t, admin, pluralize, camelcase } from '../../../lib/utils';
 
 export default class Data extends React.Component {
 
@@ -42,12 +42,16 @@ export default class Data extends React.Component {
             <div className='details'>
                 {
                     this.props.detailsAttributes.map((detail, index) => {
-                        return (
-                            <p className='detail'>
-                                <span className='name'>{t(this.props, `activerecord.attributes.${this.props.scope}.${detail}`) + ': '}</span>
-                                <span className='content'>{this.values(detail)}</span>
-                            </p>
-                        )
+                        if (detail === 'src') {
+                            return <img src={ this.props.data.src } />
+                        } else {
+                            return (
+                                <p className='detail'>
+                                    <span className='name'>{t(this.props, `activerecord.attributes.${this.props.scope}.${detail}`) + ': '}</span>
+                                    <span className='content'>{this.values(detail)}</span>
+                                </p>
+                            )
+                        }
                     })
                 }
             </div>
@@ -129,7 +133,17 @@ export default class Data extends React.Component {
             return Object.keys(this.props.joinedData).map((joined_model_name_underscore, index) => {
                 let props = {
                     data: this.props.data[pluralize(joined_model_name_underscore)], 
-                    initialFormValues: {[`${this.props.scope}_id`]: this.props.data.id}
+                    initialFormValues: {
+                        [`${this.props.scope}_id`]: this.props.data.id,
+                        //
+                        // the following could be generalized better
+                        // at the moment it is ment to get the polymorphic association 'ref'
+                        // and multiple possible types of uploaded_file into the form
+                        //
+                        ref_id: this.props.data.id,
+                        ref_type: this.props.data.type,
+                        type: camelcase(joined_model_name_underscore)
+                    }
                 }
                 return (
                     <div className={`${pluralize(joined_model_name_underscore)} box`} key={`${joined_model_name_underscore}-box`}>

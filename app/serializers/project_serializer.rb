@@ -1,4 +1,4 @@
-class ProjectSerializer < ActiveModel::Serializer
+class ProjectSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :more_text,
@@ -33,9 +33,10 @@ class ProjectSerializer < ActiveModel::Serializer
     :pseudo_pdf_registry_entry_codes,
     :metadata_fields,
     :external_links,
+    :logos,
+    :sponsor_logos,
     :detail_view_fields,
-    :list_columns,
-    :translations
+    :list_columns
 
   def title
     object.shortname
@@ -47,6 +48,14 @@ class ProjectSerializer < ActiveModel::Serializer
 
   def external_links
     object.external_links.inject({}) { |mem, c| mem[c.id] = ExternalLinkSerializer.new(c); mem }
+  end
+
+  def logos
+    object.logos.inject({}) { |mem, c| mem[c.id] = UploadedFileSerializer.new(c); mem }
+  end
+
+  def sponsor_logos
+    object.sponsor_logos.inject({}) { |mem, c| mem[c.id] = UploadedFileSerializer.new(c); mem }
   end
 
   def name

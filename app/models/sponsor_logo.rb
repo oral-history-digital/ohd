@@ -1,0 +1,2 @@
+class SponsorLogo < UploadedFile
+end
