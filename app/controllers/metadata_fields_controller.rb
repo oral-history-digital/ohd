@@ -58,14 +58,16 @@ class MetadataFieldsController < ApplicationController
 
   def destroy 
     @metadata_field = MetadataField.find(params[:id])
+    project = @metadata_field.project
     @metadata_field.destroy
+    project.touch
 
     respond_to do |format|
       format.html do
         render :action => 'index'
       end
       format.js
-      format.json { render json: {}, status: :ok }
+      format.json { render json: data_json(project, msg: 'processed') }
     end
   end
 

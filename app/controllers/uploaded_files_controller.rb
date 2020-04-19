@@ -20,14 +20,15 @@ class UploadedFilesController < ApplicationController
   def destroy 
     @uploaded_file = UploadedFile.find(params[:id])
     authorize @uploaded_file
+    ref = @uploaded_file.ref
     @uploaded_file.destroy
-    clear_cache @uploaded_file.interview
+    ref.touch
 
     respond_to do |format|
       format.html do
         render :action => 'index'
       end
-      format.json { render json: {}, status: :ok }
+      format.json { render json: data_json(ref, msg: 'processed') }
     end
   end
 
