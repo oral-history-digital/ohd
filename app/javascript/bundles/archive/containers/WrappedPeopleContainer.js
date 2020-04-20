@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'select',
                 attribute: 'gender',
-                values: ['male', 'female'],
+                values: ['male', 'female', 'diverse'],
                 optionsScope: 'genders',
                 withEmpty: true,
                 //validate: function(v){return v !== ''} 

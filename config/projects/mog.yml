@@ -135,10 +135,11 @@ default: &default
       values: 
         female: Woman
         male: Man
+        diverse: Diverse
       values: 
         female: female
         male: male
-        other: other
+        diverse: diverse
     - 
       name: year_of_birth
       source: person
