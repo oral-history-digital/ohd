@@ -1,4 +1,3 @@
-require 'acts-as-dag'
 require 'tsort'
 # require 'i18n/core_ext/string/interpolate'
 
