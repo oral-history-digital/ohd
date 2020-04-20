@@ -243,51 +243,20 @@ export default class WrapperPage extends React.Component {
         return css;
     }
 
+
     renderLogos() {
-        //
-        // TODO: fit this to uploadable project-logos
-        //
-        switch(this.props.project && this.props.project.identifier) {
-            case 'zwar':
-                return (
-                    <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
-                        <a className='fu-logo' href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
-                            <img src="/packs/fu-logo-3x.png" />
+        return (
+            <div className='home-content-logos'>
+                {Object.keys(this.props.project.sponsor_logos).map((k, index) => {
+                    let logo = this.props.project.sponsor_logos[k];
+                    return (
+                        <a href={logo.href} target='_blank' rel='noopener' title={logo.titel} key={`sponsor-logo-${k}`} >
+                            <img src={ logo.src } />
                         </a>
-                        <a href="https://www.stiftung-evz.de/start.html" target="_blank" title="Stiftung Erinnerung, Verantwortung und Zukunft" rel="noopener">
-                            <img src="/packs/evz-off-co-d-hd-s.jpg" />
-                        </a>
-                    </div>
-                )
-                break;
-            case 'campscapes':
-                return (
-                    <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
-                        <a className='fu-logo' href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
-                            <img src="/packs/fu-logo-3x.png" />
-                        </a>
-                        <a href="http://heranet.info/" target="_blank" title="Humanities in the European Research Area" rel="noopener">
-                            <img src="/packs/heralogot.png" />
-                        </a>
-                        <a  href="https://ec.europa.eu/programmes/horizon2020/en">
-                            <img src="/packs/EU-logo.jpg" alt="Logo eu" style={{maxHeight: 66, maxWidth: 100}}/>
-                        </a>
-                    </div>
-                )
-                break;
-            case 'cdoh':
-                return (
-                    <div className='home-content-logos' style={{paddingLeft: 0, paddingTop: 10}}>
-                        <a className='fu-logo' href="https://www.fu-berlin.de/" target="_blank" title="Freie Universität Berlin" rel="noopener">
-                            <img src="/packs/fu-logo-3x.png" />
-                        </a>
-                        <a href="https://www.auswaertiges-amt.de" target="_blank" title="Auswärtiges Amt" rel="noopener">
-                            <img src="/packs/auswaertiges-amt-logo.png" />
-                        </a>
-                    </div>
-                )
-                break;
-        }
+                    )
+                })}
+            </div>
+        )
     }
 
     renderExternalLinks() {
@@ -403,9 +372,7 @@ export default class WrapperPage extends React.Component {
                     <div className={this.css()}>
                         <header className='site-header'>
                             <a className="logo-link" href={`/${this.props.locale}`} onClick={(e) => this.handleLogoClick(e)} title={t(this.props, 'home')}>
-                                <img className="logo-img" src={logoSrc}>
-                                </img>
-                                {/* <span className="logo-text">{this.props.project}</span> */}
+                                <img className="logo-img" src={logoSrc} />
                             </a>
                         </header>
 

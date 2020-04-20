@@ -28,6 +28,12 @@ const mapStateToProps = (state) => {
                 validate: function(v){return v instanceof File},
             },
             {
+                attribute: 'href',
+            },
+            {
+                attribute: 'title',
+            },
+            {
                 attribute: 'type',
                 hidden: true,
             },

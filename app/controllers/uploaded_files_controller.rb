@@ -57,7 +57,9 @@ class UploadedFilesController < ApplicationController
       :ref_id, 
       :ref_type,
       :locale,
-      :file
+      :file,
+      :href,
+      :title
     )
   end
 

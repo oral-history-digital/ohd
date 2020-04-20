@@ -203,8 +203,8 @@ export function pluralize(word) {
 }
 
 export function camelcase(str) {
-    str.replace(/_([a-z])/g, function (g) { return g[1].toUpperCase(); });
-    return str.charAt(0).toUpperCase() + str.slice(1);
+    let s = str.replace(/_([a-z])/g, function (g) { return g[1].toUpperCase(); });
+    return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 // props should contain:

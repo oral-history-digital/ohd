@@ -864,6 +864,8 @@ de:
         data: Fotodatei
         caption_explanation: Die Beschreibung gibt es nur auf deutsch.
         workflow_state: 'Status'
+      uploaded_file:
+        title: Title (hover)
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
@@ -876,6 +878,7 @@ de:
         text: Text
         email: E-Mail
         url: URL
+        href: Href
         file: Datei
     errors:
       default:

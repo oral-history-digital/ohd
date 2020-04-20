@@ -913,6 +913,8 @@ ru:
         data: Fotodatei
         caption_explanation: Описание фотографии доступно только на немецком языке. 
         workflow_state: 'Status'
+      uploaded_file:
+        title: Title (hover)
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
@@ -925,6 +927,7 @@ ru:
         text: Text
         email: Электр. адрес
         url: URL
+        href: Href
         file: Datei
     errors:
       default:

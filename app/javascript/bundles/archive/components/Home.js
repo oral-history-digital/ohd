@@ -45,6 +45,7 @@ export default class Home extends React.Component {
              )
         }
     }
+
     textOrFeaturedInterviews(moreText) {
         if (moreText) {
             return (<div dangerouslySetInnerHTML={{__html: moreText}} />)
@@ -60,7 +61,6 @@ export default class Home extends React.Component {
             )
         }
     }
-
 
     content() {
         if (this.props.project) {

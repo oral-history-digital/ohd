@@ -4,7 +4,9 @@ class UploadedFileSerializer < ApplicationSerializer
              :locale,
              :ref_id,
              :ref_type,
-             :name
+             :name, 
+             :title,
+             :href
 
   def name
     I18n.available_locales.inject({}) do |mem, locale|
