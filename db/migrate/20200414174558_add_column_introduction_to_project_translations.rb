@@ -12,8 +12,8 @@ class AddColumnIntroductionToProjectTranslations < ActiveRecord::Migration[5.2]
 
     if Project.first.shortname.downcase.to_sym == :mog
       Project.first.update_attributes(
-        introduction: "Das Archiv „Erinnerungen an die Okkupation in Griechenland“ umfasst 90 Erinnerungsberichte von Zeitzeuginnen und Zeitzeugen der deutschen Besatzung Griechenlands während des Nationalsozialismus. Das Online-Archiv bewahrt diese Zeugnisse für die Zukunft und stellt sie für Bildung und Wissenschaft zur Verfügung.
-        <p><a href='http://www.occupation-memories.org/de/project/index.html' target='_blank'>Mehr Informationen über das Projekt</a></p>",
+        introduction: "Das Archiv „Erinnerungen an die Okkupation in Griechenland“ umfasst 90 Erinnerungsberichte von Zeitzeuginnen und Zeitzeugen der deutschen Besatzung Griechenlands während des Nationalsozialismus. Das Online-Archiv bewahrt diese Zeugnisse für die Zukunft und stellt sie für Bildung und Wissenschaft zur Verfügung.",
+        more_text: "<p><a href='http://www.occupation-memories.org/de/project/index.html' target='_blank'>Mehr Informationen über das Projekt</a></p>",
         name: "Erinnerungen an die Okkupation in Griechenland",
         locale: :de
       )
