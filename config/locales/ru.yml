@@ -431,6 +431,8 @@ ru:
   saved_interviews: Сохраненные интервью
   saved_annotations: Сохраненные комментарии
   text_materials: текстовые материалы
+  download_registry_entries: Gesamtes Register als pdf herunterladen
+  search_registry_entry: Registereintrag suchen
   grid: Вид на сетку
   list: Вид списка
   admin_actions: Aktionen
