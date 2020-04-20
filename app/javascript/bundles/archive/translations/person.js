@@ -10,5 +10,10 @@ export const person = {
     'Woman': {
         'de': 'weiblich',
         'el': 'weiblich'
+    },
+    'Diverse': {
+        'de': 'divers',
+        'el': 'divers'
+
     }
 }

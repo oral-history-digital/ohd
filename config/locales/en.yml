@@ -512,9 +512,11 @@ en:
   gender:
     female: female
     male: male
+    diverse: diverse
   genders:
     female: female
     male: male
+    diverse: diverse
   search_facets:
     language: Language
     collection: Collection
@@ -530,6 +532,7 @@ en:
     gender: gender
     male: Male
     female: Female
+    diverse: Diverse
     video: Video
     audio: Audio
     born: born

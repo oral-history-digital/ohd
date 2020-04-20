@@ -101,7 +101,14 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
   def gender(name)
     if name
-      %w(m male man männlich mann).include?(name.downcase) ? 'male' : 'female'
+      case name.downcase
+      when 'm', 'male', 'man', 'männlich', 'mann'
+        'male'
+      when 'f', 'female', 'woman', 'weiblich', 'frau'
+        'female'
+      else
+        'diverse'
+      end
     end
   end
    

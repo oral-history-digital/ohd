@@ -52,7 +52,7 @@ de:
     title: Legende der Transkriptionszeichen
     mog:
       missed: unverständliche, vergessene, fehlende und vermutete Wörter/Silben, Erklärung von Dialekt
-      comment: Kommentare des/der Transkriptors/in, Übersetzungen fremdsprachlicher Wörter/Passagen
+      comment: Kommentare des*der Transkriptor*in, Übersetzungen fremdsprachlicher Wörter/Passagen
       pause_1: kurze Pause bis 1 Sekunde
       pause_2: mittlere Pause bis 2 Sekunden
       pause_3: längere Pause bis 3 Sekunden
@@ -60,21 +60,21 @@ de:
       assert: Markiert den kompletten Abbruch eines Gedankengangs / einer Formulierung / einer Satzstruktur.
       omission: Apostroph markiert die Verschmelzung von zwei Wörtern, wenn dabei Buchstaben wegfallen
     zwar:
-      address: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
+      address: ersetzt Angaben über die aktuelle Wohnanschrift des*der Interviewten bzw. Telefonnummer
       broken_word: abgebrochenes Wort oder abgebrochener Satz, meist mit einer kurzen Sprechpause verbunden
-      silence: langes Schweigen der Interviewpartnerin / des Interviewpartners (ohne Unterbrechung durch den Interviewer / die Interviewerin)
+      silence: langes Schweigen des*der Interviewpartner*in (ohne Unterbrechung durch den*die Interviewer*in)
       unclear: unverständliche Aussage
       unsure: unsichere Transkription eines Wortes
-      break: Unterbrechung der Aufnahme (z.B. auf Wunsch der Interviewpartner/- innen, technische Pausen, aufgrund von Störungen von außen)
+      break: Unterbrechung der Aufnahme (z.B. auf Wunsch der Interviewpartner*innen, technische Pausen, aufgrund von Störungen von außen)
       italic: Aussagen im Interview auf Deutsch oder in einer Sprachvariante,
-        welche die Interviewpartner/-innen für Deutsch hielten; Aussagen in
+        welche die Interviewpartner*innen für Deutsch hielten; Aussagen in
         weiteren Sprachen, die nicht (Haupt-)Sprache des Interviews sind
         (betrifft nicht zweisprachige Interviews), allerdings ohne Benennung
         der Originalsprache
       quote: Zitate, wörtliche Rede, Buch- und sonstige Titel werden in
         Anführungszeichen gemäß den in den Originalsprachen geltenden
         Regeln gesetzt
-      annotation: Anmerkungen der Transkribierenden, Lektoren, Übersetzer/-innen;
+      annotation: Anmerkungen der Transkribierenden, Lektor*innen, Übersetzer*innen;
         Ergänzungen, wie Aliasname oder Aufschlüsselung eines Akronyms;
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
@@ -123,7 +123,7 @@ de:
   logout: Abmelden
   login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
   logged_in_as: Angemeldet als
-  user_name: Benutzer(in)
+  user_name: Benutzer*in
   notice: Merken
   forget_password: Passwort wiederherstellen
   account_activation_errors: Passwort und Passwortbestätigung müssen gleich und mind.
@@ -143,7 +143,7 @@ de:
   registryentry_results: Suchergebnisse im Register
   biographicalentry_results: Suchergebnisse in biografischen Einträgen
   person_results: Suchergebnisse für Personen
-  user_registration_results: Suchergebnisse für Benutzer
+  user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: Treffer im Transkript
   no_interviews_results: Keine Interviews gefunden.
   interview_id: Interview-ID
@@ -154,7 +154,7 @@ de:
   account_page: Konto
   interview: Interview
   interview_archive: Interview Archiv
-  person: Interviewte(r)
+  person: Interviewte*r
   user_content: Arbeitsmappe
   user_content_errors: Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)
   archive_search: Suche im Archiv
@@ -180,7 +180,7 @@ de:
   max_300: 300 verfügbare Zeichen
   annotation_explanation: Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.
   annotation_confirmation: Ich möchte, dass diese Anmerkung veröffentlicht und allen
-    angemeldeten Archivnutzerinenn und -nutzern angezeigt wird. Hiermit stimme ich
+    angemeldeten Archivnutzer*innen und angezeigt wird. Hiermit stimme ich
     den den <a class="conditions-link" href="%{link}"
     target="_blank">Richtlinien für Anmerkungen</a> zu.
   save: speichern
@@ -309,7 +309,7 @@ de:
       processed: 'Externer Link angelegt: '
       return: Weiteren Externen Link anlegen
     contribution:
-      new: Mitwirkende/n hinzufügen
+      new: Mitwirkende*n hinzufügen
     registry_reference:
       new: Erwähnung hinzufügen
       delete: Erwähnung löschen
@@ -324,7 +324,7 @@ de:
     registry_entries:
       edit: Registereinträge bearbeiten
     users:
-      admin: Benutzer verwalten
+      admin: Benutzer*innen verwalten
     history:
       new: lebensgeschichtl. Ereignis hinzufügen
       edit: lebensgeschichtl. Ereignis bearbeiten
@@ -433,11 +433,11 @@ de:
     created: angelegt
     started: begonnen
     answered: beantwortet
-    question_to_supervisor: Frage an Supervisor gestellt
+    question_to_supervisor: Frage an Supervisor*in gestellt
   contributions:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen
-    interviewee: Interviewte(r)
+    interviewee: Interviewte*r
     interviewer: Interview
     transcriptor: Transkript
     translator: Übersetzung
@@ -475,7 +475,7 @@ de:
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
         Im .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
-        Dateien im .odt-Format sollten nur den Transkripttext (inkl. Sprecher/innenauszeichnungen) ohne Header, Footer oder anderen Text enthalten.
+        Dateien im .odt-Format sollten nur den Transkripttext (inkl. Sprecher*innenauszeichnungen) ohne Header, Footer oder anderen Text enthalten.
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
@@ -503,13 +503,13 @@ de:
       mr_dr: Herr Dr.
       mr_prof: Herr Prof.
     job_description:
-      researcher: Dozent(in)/Forscher(in)
-      filmmaker: Filmemacher(in)
-      journalist: Journalist(in)
-      teacher: Lehrer(in)
-      memorial_staff: Mitarbeiter(in) (Museen /Gedenkstätten)
-      pupil: Schüler(in)
-      student: Student(in)
+      researcher: Dozent*in/Forscher*in
+      filmmaker: Filmemacher*in
+      journalist: Journalist*in
+      teacher: Lehrer*in
+      memorial_staff: Mitarbeiter*in (Museen /Gedenkstätten)
+      pupil: Schüler*in
+      student: Student*in
       other: Sonstige
     research_intentions:
       exhibition: Ausstellung
@@ -527,10 +527,12 @@ de:
   gender:
     female: weiblich
     male: männlich
+    diverse: divers
   # this is needed for forms
   genders:
     female: weiblich
     male: männlich
+    diverse: divers
   search_facets:
     accessibility: Zugänglichkeit
     forced_labor_field: Einsatzbereich
@@ -540,10 +542,13 @@ de:
     gender: Geschlecht
     Man: männlich
     Woman: weiblich
+    Diverse: divers
     man: männlich
     woman: weiblich
+    diverse: divers
     male: männlich
     female: weiblich
+    diverse: divers
     video: Video
     audio: Audio
     born: geb.
@@ -599,7 +604,7 @@ de:
         one: Anmerkung
         other: Anmerkungen
       contributions:
-        one: Mitwirkende/r
+        one: Mitwirkende*r
         other: Mitwirkende
       registry_references:
         one: Erwähnung
@@ -617,8 +622,8 @@ de:
         one: Kurzbiographie
         other: Kurzbiographien
       user_registration:
-        one: Benutzer/ Registrierung
-        other: Benutzer/ Registrierung
+        one: Benutzer*in/ Registrierung
+        other: Benutzer*innen/ Registrierung
       user_account:
         one: Benutzerkonto
         other: Benutzerkonten
@@ -771,7 +776,7 @@ de:
         mainheading: Überschrift
         subheading: Unter-Überschrift
         text: Text
-        speaker_id: Sprecher
+        speaker_id: Sprecher*in
       user_content:
         title: Titel
         description: Notiz

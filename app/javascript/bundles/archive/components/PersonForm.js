@@ -22,7 +22,7 @@ export default class PersonForm extends React.Component {
                     {
                         elementType: 'select',
                         attribute: 'gender',
-                        values: ['male', 'female'],
+                        values: ['male', 'female', 'diverse'],
                         value: this.props.person && this.props.person.gender,
                         optionsScope: 'genders',
                         withEmpty: true,
