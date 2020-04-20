@@ -163,6 +163,7 @@ default: &default
       values:
         female: 'female'
         male: 'male'
+        diverse: 'diverse'
     - name: 'collection_id'
       source: 'collection'
       use_as_facet: true 

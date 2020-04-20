@@ -175,7 +175,7 @@ ru:
     target="_blank">Правила публикации комментариев</a>.
   save: сохранить
   cancel: abbrechen
-  assign_speakers: Sprecher zuordnen
+  assign_speakers: Sprecher*innen zuordnen
   person_info: О человеке
   date_of_birth: Дата рождения
   year_of_birth: Год рождения
@@ -190,6 +190,7 @@ ru:
   transcript_title: Транскрипт интервью (%{lang}) 
   translation_title: Перевод интервью (%{lang}) 
   transcript_footer: 'Метод цитирования: Транскрипт интервью'
+  transcript_template: Vorlage für den Import von .ods Dateien
   biographical_entries_header: 'Краткая биография:'
   biographical_entries_title: 'Краткая биография:'
   biographical_entries_footer: 'Метод цитирования: Краткая биография,'
@@ -305,7 +306,7 @@ ru:
     segment:
       edit: Segment bearbeiten
       edit_heading: Überschriften bearbeiten
-      speaker_string: Sprecher (als String)
+      speaker_string: Sprecher*in (als String)
     person:
       admin: Personen bearbeiten
       new: Person hinzufügen
@@ -371,14 +372,14 @@ ru:
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
       return: Weiterer Upload
     update_speaker:
-      first_step_explanation: 'Es wurden Segmente mit Sprecherbezeichnungen aber ohne eindeutige Sprecherzuweisung gefunden: '
-      second_step_explanation: Sind noch weitere Sprecherauszeichnungen im Transkript? 
-        Durch Eingabe dieser Auszeichnungen (z.B. *CG:*) und eindeutige Zuweisung zu eine[r|m] Mitwirkenden können sie herausgeschnitten werden. 
-        Zudem werden Segmente mit Sprecherwechsel gespalten. 
-      speaker_for_speaker_designation: 'Sprecher für: '
-      processing: Die Sprecher werden zugeordnet
-      processed: 'Die Sprecher für %{archiveId} sind nun zugeordnet.'
-      no_speaker_designations_found: In dem Transkript wurden keine versteckten, nicht zugeordneten Sprecherbezeichnungen gefunden
+      first_step_explanation: 'Es wurden Segmente mit Sprecher*innenbezeichnungen aber ohne eindeutige Zuweisung gefunden: '
+      second_step_explanation: Sind noch weitere Sprecher*innenauszeichnungen im Transkript?
+        Durch Zuweisung dieser Auszeichnungen (z.B. *CG:*) zu einer*m spezifischen Mitwirkenden werden sie entfernt und den Symbolen zugeordnet.
+        Segmente mit Sprecher*innenwechsel werden dadurch geteilt.
+      speaker_for_speaker_designation: 'Sprecher*in für: '
+      processing: Die Sprecher*innen werden zugeordnet
+      processed: 'Die Sprecher*innen für %{archiveId} sind nun zugeordnet.'
+      no_speaker_designations_found: In dem Transkript wurden keine versteckten, nicht zugeordneten Sprecher*innenbezeichnungen gefunden
     mark_text:
       explanation: Ersetzt wird in der Origianlversion. Wenn der Ersetzungstext Transkriptionszeichen enthält wird in der öffentlichen Version entsprechend z.B. anonymisiert.
     photo:
@@ -430,6 +431,8 @@ ru:
   saved_interviews: Сохраненные интервью
   saved_annotations: Сохраненные комментарии
   text_materials: текстовые материалы
+  download_registry_entries: Gesamtes Register als pdf herunterladen
+  search_registry_entry: Registereintrag suchen
   grid: Вид на сетку
   list: Вид списка
   admin_actions: Aktionen
@@ -465,7 +468,7 @@ ru:
     question_to_supervisor: Frage an Supervisor gestellt
   contributions:
     title: Mitwirkende
-    add: Mitwirkende(n) zufügen
+    add: Mitwirkende*n hinzufügen
     interviewee: интервьюируемый
     interviewer: Проведение интервью
     transcriptor: Транскрипция
@@ -513,8 +516,9 @@ ru:
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
         Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
-        Unterstützt werden .ods, .odt, .vtt, .srt.
-        Die Spaltenüberschriften bei .ods-Dateien müssen 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' heißen. .odt-Text-Dateien sollten nur der Transkripttext (inkl. Srecherauszeichnungen) ohne Header, Footer oder anderen Text (z.B. Erklärungen) enthalten.
+        Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
+        Im .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
+        Dateien im .odt-Format sollten nur den Transkripttext (inkl. Sprecher/innenauszeichnungen) ohne Header, Footer oder anderen Text enthalten.
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
@@ -564,9 +568,11 @@ ru:
   gender:
     female: женщина
     male: мужчина
+    diverse: divers
   genders:
     female: weiblich
     male: männlich
+    diverse: divers
   search_facets:
     forced_labor_field: Сфера деятельности
     forced_labor_group: Группа
@@ -575,10 +581,13 @@ ru:
     gender: Пол
     Man: männlich
     Woman: weiblich
+    Diverse: divers
     man: männlich
     woman: weiblich
+    diverse: divers
     male: " мужчина"
     female: женщина
+    diverse: divers
     video: Видео
     audio: Аудио
     born: geb.
@@ -703,7 +712,7 @@ ru:
       contribution:
         contribution_type: Art des Beitrags
         person_id: Person
-        speaker_designation: Sprecherauszeichnung (z.B. *CG:*)
+        speaker_designation: Sprecher*innenauszeichnung (z.B. *CG:*)
       collection:
         project_id: Projekt
         homepage: Website
@@ -1189,6 +1198,7 @@ ru:
     gender: gender
     male: муж.
     female: жен.
+    diverse: divers
     born: рожд.
   user_annotations:
     workflow_states:

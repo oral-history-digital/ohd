@@ -173,7 +173,7 @@ default: &default
       values: 
         female: female
         male: male
-        other: other
+        diverse: diverse
     - 
       name: collection_id
       source: collection
