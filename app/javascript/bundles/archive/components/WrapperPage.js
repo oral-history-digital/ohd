@@ -8,15 +8,6 @@ import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 
 import ResizeAware from 'react-resize-aware';
 
-import deLogoSrc from '../../../images/mog-archiv-logo_de.svg'
-import elLogoSrc from '../../../images/mog-archiv-logo_el.svg'
-import zwarLogoEn from '../../../images/zwar-logo-red_en.png'
-import zwarLogoDe from '../../../images/zwar-logo-red_de.svg'
-import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
-import zwarLogoRu from '../../../images/zwar-logo-red_ru.png'
-import dgLogo from '../../../images/dg-logo.gif'
-import campscapesLogo from '../../../images/campscapes.png'
-
 import { t } from '../../../lib/utils';
 import '../css/wrapper_page'
 
@@ -338,33 +329,17 @@ export default class WrapperPage extends React.Component {
         }
     }
 
-    render() {
-        let logoSrc = '';
-        switch(this.props.project && this.props.project.identifier){
-            case 'mog':
-                logoSrc = this.props.locale == "de" ? deLogoSrc : elLogoSrc;
-                break;
-            case 'zwar':
-                switch(this.props.locale) {
-                    case 'de':
-                        logoSrc = zwarLogoDe;
-                        break;
-                    case 'en':
-                        logoSrc = zwarLogoEn;
-                        break;
-                    case 'ru':
-                        logoSrc = zwarLogoRu;
-                        break;
-                }
-                break;
-            case 'dg':
-                logoSrc = dgLogo;
-                break;
-            case 'campscapes':
-            logoSrc = campscapesLogo;
-            break;
-        }
+    logoSrc() {
+        let src;
+        Object.keys(this.props.project.logos).map((k,i) => {
+            if (this.props.project.logos[k].locale === this.props.locale) {
+                src = this.props.project.logos[k].src
+            }
+        })
+        return src || (this.props.project.logos[0] && this.props.project.logos[0].src);
+    }
 
+    render() {
         return (
             <ResizeAware onResize={this.onResize}>
                 {/* <div className="layout-indicator" style={{display: 'block'}}>{this.state.currentMQ}</div> */}
@@ -372,7 +347,7 @@ export default class WrapperPage extends React.Component {
                     <div className={this.css()}>
                         <header className='site-header'>
                             <a className="logo-link" href={`/${this.props.locale}`} onClick={(e) => this.handleLogoClick(e)} title={t(this.props, 'home')}>
-                                <img className="logo-img" src={logoSrc} />
+                                <img className="logo-img" src={this.logoSrc()} />
                             </a>
                         </header>
 
