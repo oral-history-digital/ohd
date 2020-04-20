@@ -8,6 +8,7 @@ import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 
 import ResizeAware from 'react-resize-aware';
 
+import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
 import { t } from '../../../lib/utils';
 import '../css/wrapper_page'
 
