@@ -124,7 +124,7 @@ export default class FlyoutTabs extends React.Component {
                                     <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />
                                 </div>
                             }
-                        /> 
+                        />
                         <AuthShowContainer ifLoggedOut={this.props.projectId !== "campscapes"}>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
@@ -149,7 +149,7 @@ export default class FlyoutTabs extends React.Component {
                         {/* <InterviewDataContainer
                                 title={t(this.props, 'activerecord.models.registry_references.other')}
                                 content={ <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />}
-                            /> 
+                            />
                         */}
                         <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
                             {this.renderPhotos()}
@@ -175,7 +175,7 @@ export default class FlyoutTabs extends React.Component {
             return <InterviewDataContainer
                 title={t(this.props, 'admin_actions')}
                 content={<AdminActionsContainer archiveIds={archiveIds} />}
-            /> 
+            />
         } else {
             return null;
         }
@@ -192,7 +192,7 @@ export default class FlyoutTabs extends React.Component {
             return null;
         }
     }
-     
+
     markTextForm() {
         if (admin(this.props, {type: 'Interview', action: 'mark_texts'}) && this.props.projectId !== 'dg') {
             return <InterviewDataContainer
@@ -203,7 +203,7 @@ export default class FlyoutTabs extends React.Component {
             return null;
         }
     }
-     
+
     subTab(title, content, url, obj, condition=true) {
         if (admin(this.props, obj) && condition) {
             return (
@@ -213,7 +213,7 @@ export default class FlyoutTabs extends React.Component {
                         content={content}
                         url={url}
                         open={false}
-                    /> 
+                    />
                 </div>
             )
         } else {
@@ -320,7 +320,7 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-tab-title'>{t(this.props, 'edit.administration')}</div>
                     <div className='flyout-sub-tabs-container'>
                         {this.subTab(
-                            'edit.users.admin', 
+                            'edit.users.admin',
                             <div>
                                 <div>
                                     <UserRegistrationSearchFormContainer/>
@@ -330,10 +330,10 @@ export default class FlyoutTabs extends React.Component {
                                     </a>
                                 </div>
                                 <Select
-                                    options={this.countryKeys()} 
+                                    options={this.countryKeys()}
                                     className="basic-multi-select"
                                     isMulti
-                                    onChange={this.onCountrySelectorChange} 
+                                    onChange={this.onCountrySelectorChange}
                                     styles={this.countrySelectorStyle}
                                     placeholder={"Statistik nach Ländern filtern (optional)"}
                                 />
@@ -342,19 +342,19 @@ export default class FlyoutTabs extends React.Component {
                             {type: 'UserRegistration', action: 'update'}
                         )}
                         {this.subTab(
-                            'edit.role.admin', 
+                            'edit.role.admin',
                             <RoleSearchFormContainer/>,
                             `${pathBase(this.props)}/roles`,
                             {type: 'Role', action: 'update'}
                         )}
                         {this.subTab(
-                            'edit.permission.admin', 
+                            'edit.permission.admin',
                             <PermissionSearchFormContainer/>,
                             `${pathBase(this.props)}/permissions`,
                             {type: 'Permission', action: 'update'}
                         )}
                         {this.subTab(
-                            'edit.project.admin', 
+                            'edit.project.admin',
                             <ProjectSearchFormContainer/>,
                             `${pathBase(this.props)}/projects`,
                             {type: 'Project', action: 'update'}
@@ -382,11 +382,11 @@ export default class FlyoutTabs extends React.Component {
                 <div className='flyout-tab-title'>{t(this.props, (this.props.projectId === 'mog') ? 'registry_mog' : 'registry')}</div>
                 <div className='flyout-sub-tabs-container'>
                     <RegistryEntrySearchFormContainer />
-                    <div>
-                        <button onClick={() => this.props.changeRegistryEntriesViewMode(!this.props.showRegistryEntriesTree)}>
+                    <p>
+                      <button onClick={() => this.props.changeRegistryEntriesViewMode(!this.props.showRegistryEntriesTree)}>
                             {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
-                        </button>
-                    </div>
+                      </button>
+                    </p>
                     {this.downloadRegistryEntriesPDF()}
                 </div>
             </TabPanel>
@@ -397,8 +397,8 @@ export default class FlyoutTabs extends React.Component {
         if (this.props.projectId === 'mog' || admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
             return (
                 <a href={`${pathBase(this.props)}/registry_entries.pdf`}>
-                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
-                    <span>{` ${t(this.props, 'download')}`}</span>
+                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_registry_entries')}></i>
+                    <span>{` ${t(this.props, 'download_registry_entries')}`}</span>
                 </a>
             )
         } else {
@@ -466,7 +466,7 @@ export default class FlyoutTabs extends React.Component {
                         {this.interviewTab()}
                         {this.registryEntriesTab()}
                         {this.indexingTab()}
-                        {this.usersAdminTab()} 
+                        {this.usersAdminTab()}
                         {this.userContentTab()}
                     </TabList>
 
@@ -484,7 +484,7 @@ export default class FlyoutTabs extends React.Component {
                     {this.interviewTabPanel()}
                     {this.registryEntriesTabPanel()}
                     {this.indexingTabPanel()}
-                    {this.usersAdminTabPanel()} 
+                    {this.usersAdminTabPanel()}
                     {this.userContentTabPanel()}
                 </div>
             </Tabs>

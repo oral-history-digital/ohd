@@ -385,6 +385,8 @@ en:
   saved_interviews: Saved interviews
   saved_annotations: Saved annotations
   text_materials: Textmaterialien
+  download_registry_entries: Gesamtes Register als pdf herunterladen
+  search_registry_entry: Registereintrag suchen
   grid: Grid
   list: List
   admin_actions: Aktionen
