@@ -17,6 +17,7 @@ export default class Input extends React.Component {
         super(props);
         this.state = {
             valid: this.props.validate === undefined,
+            changeFile: false
         };
                 
         this.handleChange = this.handleChange.bind(this);
@@ -60,6 +61,19 @@ export default class Input extends React.Component {
         return props;
     }
 
+    inputOrImg() {
+        if (this.props.type === 'file' && this.props.data && this.props.data.src && !this.state.changeFile) {
+            return (
+                <div>
+                    <img src={this.props.data.thumb_src} />
+                    <i className="fa fa-pencil" onClick={() => this.setState({changeFile: true})} ></i>
+                </div>
+            )
+        } else {
+            return React.createElement('input', this.cleanProps());
+        }
+    }
+
     render() {
         return (
             <ElementContainer
@@ -74,7 +88,7 @@ export default class Input extends React.Component {
                 elementType={`${this.props.type}_input`}
                 individualErrorMsg={this.props.individualErrorMsg}
             >
-                {React.createElement('input', this.cleanProps())}
+                {this.inputOrImg()}
                 <p className='help-block'>
                     {this.props.help}
                 </p>

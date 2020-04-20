@@ -1,6 +1,7 @@
 class UploadedFileSerializer < ApplicationSerializer
 
   attributes :src, 
+             :thumb_src,
              :locale,
              :ref_id,
              :ref_type,
@@ -17,6 +18,10 @@ class UploadedFileSerializer < ApplicationSerializer
 
   def src
     Rails.application.routes.url_helpers.rails_blob_path(object.file, only_path: true) if object.file.attachment
+  end
+
+  def thumb_src
+    Rails.application.routes.url_helpers.rails_representation_url(object.file.variant(resize: "200x200").processed, only_path: true)
   end
 
 end
