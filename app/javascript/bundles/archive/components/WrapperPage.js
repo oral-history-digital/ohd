@@ -33,10 +33,6 @@ export default class WrapperPage extends React.Component {
         if(this.props.locale !== this.context.router.route.match.params.locale) {
             this.props.setLocale(this.context.router.route.match.params.locale);
         }
-        if(!this.props.translations) {
-            let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}`;
-            this.props.fetchStaticContent(url);
-        }
         this.loadCollections();
         this.loadProjects();
         //this.setProjectId();
