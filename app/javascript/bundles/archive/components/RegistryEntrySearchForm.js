@@ -25,7 +25,7 @@ export default class RegistryEntrySearchForm extends React.Component {
     }
 
     loader(){
-        if (this.props.isRegistryEntrySearching) { 
+        if (this.props.isRegistryEntrySearching) {
             return <PixelLoader />
         }
     }
@@ -39,7 +39,7 @@ export default class RegistryEntrySearchForm extends React.Component {
                                className="search-input"
                                value={this.state.value}
                                onChange={this.handleChange}
-                               placeholder={t(this.props, 'enter_search_field')}/>
+                               placeholder={t(this.props, 'search_registry_entry')}/>
                     </label>
                     <input type="submit" value="" className={'search-button'}/>
                 </form>
@@ -48,4 +48,3 @@ export default class RegistryEntrySearchForm extends React.Component {
         );
     }
 }
-

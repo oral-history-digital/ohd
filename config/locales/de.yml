@@ -63,7 +63,7 @@ de:
       address: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
       broken_word: abgebrochenes Wort oder abgebrochener Satz, meist mit einer kurzen Sprechpause verbunden
       silence: langes Schweigen der Interviewpartnerin / des Interviewpartners (ohne Unterbrechung durch den Interviewer / die Interviewerin)
-      unclear: unverständliche Aussage 
+      unclear: unverständliche Aussage
       unsure: unsichere Transkription eines Wortes
       break: Unterbrechung der Aufnahme (z.B. auf Wunsch der Interviewpartner/- innen, technische Pausen, aufgrund von Störungen von außen)
       italic: Aussagen im Interview auf Deutsch oder in einer Sprachvariante,
@@ -253,16 +253,16 @@ de:
       processing: Das Interview wurde bearbeitet
       return: Weiteres Interview anlegen
     interviews:
-      publish: 
+      publish:
         title: Interviews publizieren
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich publiziert werden?"
-      unpublish: 
+      unpublish:
         title: Interviews nicht mehr öffentlich setzen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich nicht mehr öffentlich sein?"
-      publish_biographies: 
+      publish_biographies:
         title: Biographien publizieren
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich publiziert werden?"
-      unpublish_biographies: 
+      unpublish_biographies:
         title: Biographien nicht mehr öffentlich setzen
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich nicht mehr öffentlich sein?"
       delete:
@@ -357,23 +357,23 @@ de:
       delete: Foto löschen
     user_registration:
       show: 'Details'
-    role: 
+    role:
       new: 'Rolle hinzufügen'
       edit: 'Rolle bearbeiten'
       delete: 'Rolle löschen'
       admin: 'Rollen bearbeiten'
-    role_permission: 
+    role_permission:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
       delete: 'Berechtigung löschen'
-    permission: 
+    permission:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
       delete: 'Berechtigung löschen'
       admin: 'Berechtigungen bearbeiten'
-    upload_transcript: 
+    upload_transcript:
       title: Transkript hochladen
-      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden. 
+      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
     downloads:
       title: Downloads
@@ -399,13 +399,15 @@ de:
   saved_interviews: Gespeicherte Interviews
   saved_annotations: Gespeicherte Anmerkungen
   text_materials: Textmaterialien
+  download_registry_entries: Gesamtes Register als pdf herunterladen
+  search_registry_entry: Registereintrag suchen
   grid: Raster
   list: Liste
   admin_actions: Aktionen
   doi:
     title: DOI registrieren
-    text1: Die Interviews  
-    text2:  werden bei Datacite registriert. 
+    text1: Die Interviews
+    text2:  werden bei Datacite registriert.
     ok: Bestätigen
     name: DOI
     created: Erfolgreich veröffentlicht!
@@ -466,9 +468,9 @@ de:
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
         sowie Feldart bei. Sprachbeschreibungen sollten entweder in Englisch oder im Alpha2- oder Alpha3-Code erfolgen.
-        Delimiter sollten entweder Semikolon oder Tab sein. 
-      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien 
-        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
+        Delimiter sollten entweder Semikolon oder Tab sein.
+      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
+        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
         Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
@@ -741,7 +743,7 @@ de:
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
-        hidden_registry_entry_ids: versteckte Registereinträge (IDs) 
+        hidden_registry_entry_ids: versteckte Registereinträge (IDs)
         pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
       metadata_field:
