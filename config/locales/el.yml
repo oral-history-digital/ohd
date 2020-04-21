@@ -62,21 +62,21 @@ el:
       assert: Διακοπή μιας σκέψης, πρότασης, λέξης, έκφρασης.
       omission: Η απόστροφος σηματοδοτεί την ένωση δύο λέξεων, όταν λείπουν συλλαβές
     zwar:
-      address: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
+      address: ersetzt Angaben über die aktuelle Wohnanschrift des*der Interviewten bzw. Telefonnummer
       broken_word: abgebrochenes Wort oder abgebrochener Satz, meist mit einer kurzen Sprechpause verbunden
-      silence: langes Schweigen der Interviewpartnerin / des Interviewpartners (ohne Unterbrechung durch den Interviewer / die Interviewerin)
+      silence: langes Schweigen des*der Interviewpartner*in (ohne Unterbrechung durch den*die Interviewer*in)
       unclear: unverständliche Aussage 
       unsure: unsichere Transkription eines Wortes
-      break: Unterbrechung der Aufnahme (z.B. auf Wunsch der Interviewpartner/- innen, technische Pausen, aufgrund von Störungen von außen)
+      break: Unterbrechung der Aufnahme (z.B. auf Wunsch der Interviewpartner*innen, technische Pausen, aufgrund von Störungen von außen)
       italic: Aussagen im Interview auf Deutsch oder in einer Sprachvariante,
-        welche die Interviewpartner/-innen für Deutsch hielten; Aussagen in
+        welche die Interviewpartner*innen für Deutsch hielten; Aussagen in
         weiteren Sprachen, die nicht (Haupt-)Sprache des Interviews sind
         (betrifft nicht zweisprachige Interviews), allerdings ohne Benennung
         der Originalsprache
       quote: Zitate, wörtliche Rede, Buch- und sonstige Titel werden in
         Anführungszeichen gemäß den in den Originalsprachen geltenden
         Regeln gesetzt
-      annotation: Anmerkungen der Transkribierenden, Lektoren, Übersetzer/-innen;
+      annotation: Anmerkungen der Transkribierenden, Lektor*innen, Übersetzer*innen;
         Ergänzungen, wie Aliasname oder Aufschlüsselung eines Akronyms;
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
@@ -145,7 +145,7 @@ el:
   photo_results: Suchergebnisse in Fotos
   biographicalentry_results: Suchergebnisse in biografischen Einträgen
   person_results: Suchergebnisse für Personen
-  user_registration_results: Suchergebnisse für Benutzer
+  user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: Treffer im Transkript
   no_interviews_results: Δε βρέθηκαν συνεντεύξεις.
   interview_id: Κωδικός συνέντευξης
@@ -299,7 +299,7 @@ el:
       processed: 'Person angelegt: '
       return: Weitere Person anlegen
     contribution:
-      new: Mitwirkende/n hinzufügen
+      new: Mitwirkende*n hinzufügen
     registry_reference:
       new: Erwähnung hinzufügen
       delete: Erwähnung löschen
@@ -333,7 +333,7 @@ el:
     update_speaker:
       first_step_explanation: 'Es wurden Segmente mit Sprecher*innenbezeichnungen aber ohne eindeutige Zuweisung gefunden: '
       second_step_explanation: Sind noch weitere Sprecher*innenauszeichnungen im Transkript?
-        Durch Zuweisung dieser Auszeichnungen (z.B. *CG:*) zu einer*m spezifischen Mitwirkenden werden sie entfernt und den Symbolen zugeordnet.
+        Durch Zuweisung dieser Auszeichnungen (z.B. *CG:*) zu einem*einer spezifischen Mitwirkenden werden sie entfernt und den Symbolen zugeordnet.
         Segmente mit Sprecher*innenwechsel werden dadurch geteilt.
       speaker_for_speaker_designation: 'Sprecher*in für: '
       processing: Die Sprecher*innen werden zugeordnet
@@ -424,11 +424,11 @@ el:
     created: angelegt
     started: begonnen
     answered: beantwortet
-    question_to_supervisor: Frage an Supervisor gestellt
+    question_to_supervisor: Frage an Supervisor*in gestellt
   contributions:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen
-    interviewee: Interviewte(r)
+    interviewee: Interviewte*r
     interviewer: Συνέντευξη
     transcriptor: Απομαγνητοφώνηση
     translator: Μετάφραση
@@ -466,7 +466,7 @@ el:
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
         Im .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
-        Dateien im .odt-Format sollten nur den Transkripttext (inkl. Sprecher/innenauszeichnungen) ohne Header, Footer oder anderen Text enthalten.
+        Dateien im .odt-Format sollten nur den Transkripttext (inkl. Sprecher*innenauszeichnungen) ohne Header, Footer oder anderen Text enthalten.
   admin:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
@@ -602,7 +602,7 @@ el:
         one: Anmerkung
         other: Anmerkungen
       contributions:
-        one: Mitwirkende/r
+        one: Mitwirkende*r
         other: Mitwirkende
       registry_references:
         one: Erwähnung
@@ -620,8 +620,8 @@ el:
         one: Kurzbiographie
         other: Kurzbiographien
       user_registration:
-        one: Benutzer/ Registrierung
-        other: Benutzer/ Registrierung
+        one: Benutzer*in/ Registrierung
+        other: Benutzer*innen/ Registrierung
       user_account:
         one: Benutzerkonto
         other: Benutzerkonten

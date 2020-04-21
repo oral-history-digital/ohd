@@ -138,7 +138,7 @@ en:
   registryentry_results: Search results in registry
   biographicalentry_results: Search results in biographical entries
   person_results: Search results for persons
-  user_registration_results: Suchergebnisse für Benutzer
+  user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: Number of search hits
   no_interviews_results: No interviews found.
   interview_id: Interview ID
@@ -309,7 +309,7 @@ en:
     registry_entries:
       edit: Registereinträge bearbeiten
     users:
-      admin: Benutzer verwalten
+      admin: Benutzer*innen verwalten
     history:
       new: lebensgeschichtl. Ereignis hinzufügen
       edit: lebensgeschichtl. Ereignis bearbeiten
@@ -612,8 +612,8 @@ en:
         one: Short Biography
         other: Short Biographies
       user_registration:
-        one: Benutzer/ Registrierung
-        other: Benutzer/ Registrierung
+        one: Benutzer*in/ Registrierung
+        other: Benutzer*innen/ Registrierung
       user_account:
         one: Benutzerkonto
         other: Benutzerkonten

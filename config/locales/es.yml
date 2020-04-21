@@ -125,7 +125,7 @@ es:
   logout: Abmelden
   login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
   logged_in_as: Angemeldet als
-  user_name: Benutzer(in)
+  user_name: Benutzer*in
   notice: Merken
   forget_password: Passwort wiederherstellen
   account_activation_errors: Passwort und Passwortbestätigung müssen gleich und mind.
@@ -144,7 +144,7 @@ es:
   photo_results: Suchergebnisse in Fotos
   biographicalentry_results: Suchergebnisse in biografischen Einträgen
   person_results: Suchergebnisse für Personen
-  user_registration_results: Suchergebnisse für Benutzer
+  user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: Treffer im Transkript
   no_interviews_results: Keine Interviews gefunden.
   interview_id: Interview-ID
@@ -313,7 +313,7 @@ es:
     registry_entries:
       edit: Registereinträge bearbeiten
     users:
-      admin: Benutzer verwalten
+      admin: Benutzer*innen verwalten
     history:
       new: lebensgeschichtl. Ereignis hinzufügen
       edit: lebensgeschichtl. Ereignis bearbeiten
@@ -614,8 +614,8 @@ es:
         one: Kurzbiographie
         other: Kurzbiographien
       user_registration:
-        one: Benutzer/ Registrierung
-        other: Benutzer/ Registrierung
+        one: Benutzer*in/ Registrierung
+        other: Benutzer*innen/ Registrierung
       user_account:
         one: Benutzerkonto
         other: Benutzerkonten

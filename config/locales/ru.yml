@@ -116,7 +116,7 @@ ru:
   logout: Выйти
   login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
   logged_in_as: Вы вошли как
-  user_name: Benutzer(in)
+  user_name: Benutzer*in
   notice: сохранить
   forget_password: Восстановить пароль
   account_activation_errors: Passwort und Passwortbestätigung müssen gleich und mind.
@@ -136,7 +136,7 @@ ru:
   registryentry_results: Результаты поиска Регистр
   biographicalentry_results: Результаты поиска в биографических данных
   person_results: Результаты поиска для людей
-  user_registration_results: Suchergebnisse für Benutzer
+  user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: Результаты в тексте
   no_interviews_results: Keine Interviews gefunden.
   interview_id: Interview-ID
@@ -355,7 +355,7 @@ ru:
     registry_entries:
       edit: Registereinträge bearbeiten
     users:
-      admin: Benutzer verwalten
+      admin: Benutzer*innen verwalten
     history:
       new: lebensgeschichtl. Ereignis hinzufügen
       edit: lebensgeschichtl. Ereignis bearbeiten
@@ -667,8 +667,8 @@ ru:
         one: Краткая биография
         other: Краткие биографии
       user_registration:
-        one: Benutzer/ Registrierung
-        other: Benutzer/ Registrierung
+        one: Benutzer*in/ Registrierung
+        other: Benutzer*innen/ Registrierung
       user_account:
         one: Benutzerkonto
         other: Benutzerkonten
