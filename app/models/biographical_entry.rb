@@ -4,6 +4,8 @@ class BiographicalEntry < ApplicationRecord
   
   translates :text, :start_date, :end_date, fallbacks_for_empty_translations: true, touch: true
 
+  scope :with_public_state, ->{ where(workflow_state: 'public') }
+
   after_save :touch_person
   def touch_person
     person.touch
