@@ -14,7 +14,7 @@ OaiRepository.setup do |config|
   # dynamically set this.
   begin
     if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.repository_url = Project.current.archive_domain
+      config.repository_url = Project.archive_domain
     end
   rescue ActiveRecord::NoDatabaseError
   end

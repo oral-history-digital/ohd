@@ -1,4 +1,4 @@
-class AddWorkflowToTapes < ActiveRecord::Migration
+class AddWorkflowToTapes < ActiveRecord::Migration[5.2]
 
   def self.up
 
