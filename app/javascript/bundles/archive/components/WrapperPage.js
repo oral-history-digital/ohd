@@ -327,15 +327,15 @@ export default class WrapperPage extends React.Component {
     }
 
     logoSrc() {
-        let src;
         if (this.props.project.logos) {
+            let src;
             Object.keys(this.props.project.logos).map((k,i) => {
                 if (this.props.project.logos[k].locale === this.props.locale) {
                     src = this.props.project.logos[k].src
                 }
             })
+            return src || (this.props.project.logos[0] && this.props.project.logos[0].src);
         }
-        return src || (this.props.project.logos[0] && this.props.project.logos[0].src);
     }
 
     render() {
