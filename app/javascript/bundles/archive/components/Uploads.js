@@ -101,12 +101,15 @@ export default class Uploads extends React.Component {
         let tabIndex = this.props.locales.length + 4;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
-                <AuthShowContainer ifLoggedIn={true}>
-                    {this.content()}
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true}>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
+                <div className='wrapper-content register'>
+                    <AuthShowContainer ifLoggedIn={true}>
+		        <h1 className='registry-entry-title'>{t(this.props, `edit.upload.upload`)}</h1>
+                        {this.content()}
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut={true}>
+                        {t(this.props, 'devise.failure.unauthenticated')}
+                    </AuthShowContainer>
+                </div>
             </WrapperPageContainer>
         );
     }
