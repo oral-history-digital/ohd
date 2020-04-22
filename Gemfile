@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby '2.5.3'
 
 gem 'rdoc'
-gem 'rails', '~>5.2.0'
+gem 'rails', '~>5.2.4'
 gem 'mysql2'
 gem "redis", "~> 4.0"
 gem 'exception_notification'
