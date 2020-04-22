@@ -117,7 +117,7 @@ el:
     labels:
       send_now: Jetzt zuschicken
     authentication_keys:
-      login: Benutzer(in)
+      login: Benutzer*in
       email: E-Mail
       password: Passwort
     workflow_states:
@@ -132,28 +132,28 @@ el:
       all: alle
     workflow_events:
       register: registrieren
-      register_info: Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
+      register_info: Der*die Nutzer*in erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
       reject: ablehnen
       reject_info: Die Anfrage wird dauerhaft abgelehnt (es wird keine E-Mail gesendet).
       resend_info: Daten erneut senden
-      resend_info_info: Der Link für die Zugangsaktivierung wird dem Benutzer erneut
+      resend_info_info: Der Link für die Zugangsaktivierung wird dem*der Benutzer*in erneut
         zugesandt (per E-Mail).
       deactivate: deaktivieren
-      deactivate_info: Der Zugang des Nutzers wird deaktiviert (der Nutzer erhält
+      deactivate_info: Der Zugang des*der Nutzer*in wird deaktiviert (der*die Nutzer*in erhält
         keine E-Mail und kann sich nicht mehr einloggen).
       reactivate: wiederaufnehmen
-      reactivate_info: Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
+      reactivate_info: Der*die Nutzer*in erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
       postpone: zurückstellen
       postpone_info: Die Anfrage wird zurückgestellt bis etwas geklärt wurde (bitte
         separate E-Mail und Anmerkung schreiben).
       activate: aktivieren
-      activate_info: Der Zugang des Nutzers wird direkt aktiviert (bitte den Nutzer
-        separat über seine Zugangsdaten informieren).
+      activate_info: Der Zugang des*der Nutzer*in wird direkt aktiviert (bitte den*die Nutzer*in
+        separat über seine*ihre Zugangsdaten informieren).
       expire: verfallen lassen
-      expire_info: Die Anfrage zurückstellen, da der Nutzer nicht reagiert und seinen
+      expire_info: Die Anfrage zurückstellen, da der*die Nutzer*in nicht reagiert und seinen*ihren
         Zugang nicht aktiviert (keine E-Mail).
       remove: deaktivieren
-      remove_info: Der Zugang des Nutzers wird deaktiviert (bitte den Nutzer in einer
+      remove_info: Der Zugang des*der Nutzer*in wird deaktiviert (bitte den*die Nutzer*in in einer
         separaten E-Mail informieren).
     registration_fields:
       fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
@@ -212,44 +212,44 @@ el:
         Herr Pro: Herr Prof
         Prof: Prof
       job_description:
-        Dozentin/Dozent: Dozent(in)/Forscher(in)
-        Dozent(in)/Forscher(in): Dozent(in)/Forscher(in)
-        Dozent: Dozent(in)/Forscher(in)
-        Wissenschaftlerin/Wissenschaftler: Dozent(in)/Forscher(in)
-        Lecturer/Researcher: Dozent(in)/Forscher(in)
-        Lecturer: Dozent(in)/Forscher(in)
-        Filmemacherin/Filmemacher: Filmemacher(in)
-        Filmemacher(in): Filmemacher(in)
-        Filmmaker: Filmemacher(in)
-        Journalistin/Journalist: Journalist(in)
-        Journalist(in): Journalist(in)
-        Journalist: Journalist(in)
-        Lehrerin/Lehrer: Lehrer(in)
-        Lehrer(in): Lehrer(in)
-        Teacher: Lehrer(in)
-        Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Dozentin/Dozent: Dozent*in/Forscher*in
+        Dozent(in)/Forscher(in): Dozent*in/Forscher*in
+        Dozent: Dozent*in/Forscher*in
+        Wissenschaftlerin/Wissenschaftler: Dozent*in/Forscher*in
+        Lecturer/Researcher: Dozent*in/Forscher*in
+        Lecturer: Dozent*in/Forscher*in
+        Filmemacherin/Filmemacher: Filmemacher*in
+        Filmemacher(in): Filmemacher*in
+        Filmmaker: Filmemacher*in
+        Journalistin/Journalist: Journalist*in
+        Journalist(in): Journalist*in
+        Journalist: Journalist*in
+        Lehrerin/Lehrer: Lehrer*in
+        Lehrer(in): Lehrer*in
+        Teacher: Lehrer*in
+        Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
+        Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten): Mitarbeiter*in (Museen/Gedenkstätten)
+        Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
+        Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
+        Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Mitarbeiter*in (Museen/Gedenkstätten)
         Mitarbeiter(in) (Museen/Gedenkstatten): 
-        Mitarbeiter(in) (Museen/Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Staff Member (museums/memorial sites): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Staff Member (Museums/Memorial Sites): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Mitarbeit: Mitarbeiter(in) (Museen/Gedenkstätten)
+        Mitarbeiter(in) (Museen/Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
+        Staff Member (museums/memorial sites): Mitarbeiter*in (Museen/Gedenkstätten)
+        Staff Member (Museums/Memorial Sites): Mitarbeiter*in (Museen/Gedenkstätten)
+        Mitarbeit: Mitarbeiter*in (Museen/Gedenkstätten)
         Projektmitarbeiter: Mitarbeit
         Mitarbeiterin: Mitarbeit
-        Schülerin/Schüler: Schüler(in)
-        Sch?lerin/Sch?ler: Schüler(in)
-        Sch\xC3\xBClerin/Sch\xC3\xBCler: Schüler(in)
-        Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n: Schüler(in)
-        Sch\xC3\xBCler(in): Schüler(in)
-        Schüler(in): Schüler(in)
-        Sch?ler(in): Schüler(in)
-        School Student: Schüler(in)
-        Studentin/Student: Student(in)
-        Student(in): Student(in)
-        University Student: Student(in)
+        Schülerin/Schüler: Schüler*in
+        Sch?lerin/Sch?ler: Schüler*in
+        Sch\xC3\xBClerin/Sch\xC3\xBCler: Schüler*in
+        Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n: Schüler*in
+        Sch\xC3\xBCler(in): Schüler*in
+        Schüler(in): Schüler*in
+        Sch?ler(in): Schüler*in
+        School Student: Schüler*in
+        Studentin/Student: Student*in
+        Student(in): Student*in
+        University Student: Student*in
         Sonstiges: Sonstiges
         k.A.: Sonstiges
         '': Sonstiges
