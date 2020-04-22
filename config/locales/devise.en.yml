@@ -210,44 +210,44 @@ en:
         Prof: Prof
       job_description:
         Dozentin/Dozent: Lecturer/Researcher
-        Dozent(in)/Forscher(in): Dozent(in)/Forscher(in)
-        Dozent: Dozent(in)/Forscher(in)
-        Wissenschaftlerin/Wissenschaftler: Dozent(in)/Forscher(in)
-        Lecturer/Researcher: Dozent(in)/Forscher(in)
-        Lecturer: Dozent(in)/Forscher(in)
+        Dozent(in)/Forscher(in): Dozent*in/Forscher*in
+        Dozent: Dozent*in/Forscher*in
+        Wissenschaftlerin/Wissenschaftler: Dozent*in/Forscher*in
+        Lecturer/Researcher: Dozent*in/Forscher*in
+        Lecturer: Dozent*in/Forscher*in
         Filmemacherin/Filmemacher: Filmmaker
-        Filmemacher(in): Filmemacher(in)
-        Filmmaker: Filmemacher(in)
+        Filmemacher(in): Filmemacher*in
+        Filmmaker: Filmemacher*in
         Journalistin/Journalist: Journalist
-        Journalist(in): Journalist(in)
-        Journalist: Journalist(in)
+        Journalist(in): Journalist*in
+        Journalist: Journalist*in
         Lehrerin/Lehrer: Teacher
-        Lehrer(in): Lehrer(in)
-        Teacher: Lehrer(in)
+        Lehrer(in): Lehrer*in
+        Teacher: Lehrer*in
         Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten): Staff Member (museums/memorial
           sites)
-        Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Mitarbeiter(in) (Museen/Gedenkstätten)
+        Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten): Mitarbeiter*in (Museen/Gedenkstätten)
+        Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
+        Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
+        Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Mitarbeiter*in (Museen/Gedenkstätten)
         Mitarbeiter(in) (Museen/Gedenkstatten): 
-        Mitarbeiter(in) (Museen/Gedenkstätten): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Staff Member (museums/memorial sites): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Staff Member (Museums/Memorial Sites): Mitarbeiter(in) (Museen/Gedenkstätten)
-        Mitarbeit: Mitarbeiter(in) (Museen/Gedenkstätten)
+        Mitarbeiter(in) (Museen/Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
+        Staff Member (museums/memorial sites): Mitarbeiter*in (Museen/Gedenkstätten)
+        Staff Member (Museums/Memorial Sites): Mitarbeiter*in (Museen/Gedenkstätten)
+        Mitarbeit: Mitarbeiter*in (Museen/Gedenkstätten)
         Projektmitarbeiter: Mitarbeit
         Mitarbeiterin: Mitarbeit
         Schülerin/Schüler: School Student
-        Sch?lerin/Sch?ler: Schüler(in)
-        Sch\xC3\xBClerin/Sch\xC3\xBCler: Schüler(in)
-        Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n: Schüler(in)
-        Sch\xC3\xBCler(in): Schüler(in)
-        Schüler(in): Schüler(in)
-        Sch?ler(in): Schüler(in)
-        School Student: Schüler(in)
+        Sch?lerin/Sch?ler: Schüler*in
+        Sch\xC3\xBClerin/Sch\xC3\xBCler: Schüler*in
+        Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n: Schüler*in
+        Sch\xC3\xBCler(in): Schüler*in
+        Schüler(in): Schüler*in
+        Sch?ler(in): Schüler*in
+        School Student: Schüler*in
         Studentin/Student: University Student
-        Student(in): Student(in)
-        University Student: Student(in)
+        Student(in): Student*in
+        University Student: Student*in
         Sonstiges: Other
         k.A.: Sonstiges
         '': Sonstiges
