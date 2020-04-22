@@ -233,18 +233,20 @@ export default class WrapperPage extends React.Component {
 
 
     renderLogos() {
-        return (
-            <div className='home-content-logos'>
-                {Object.keys(this.props.project.sponsor_logos).map((k, index) => {
-                    let logo = this.props.project.sponsor_logos[k];
-                    return (
-                        <a href={logo.href} target='_blank' rel='noopener' title={logo.title} key={`sponsor-logo-${k}`} >
-                            <img src={ logo.src } />
-                        </a>
-                    )
-                })}
-            </div>
-        )
+        if (this.props.project.sponsor_logos) {
+            return (
+                <div className='home-content-logos'>
+                    {Object.keys(this.props.project.sponsor_logos).map((k, index) => {
+                        let logo = this.props.project.sponsor_logos[k];
+                        return (
+                            <a href={logo.href} target='_blank' rel='noopener' title={logo.title} key={`sponsor-logo-${k}`} >
+                                <img src={ logo.src } />
+                            </a>
+                        )
+                    })}
+                </div>
+            )
+        }
     }
 
     renderExternalLinks() {
