@@ -12,7 +12,7 @@ Spork.prefork do
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
   # require 'rspec/autorun' # deprecated
-  require 'capybara/rspec'
+  # require 'capybara/rspec'
 
   #testing multiple locales is useful to get translation errors
   TEST_LOCALES = %w(en de)
@@ -26,7 +26,7 @@ Spork.prefork do
   ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 end
 
-Capybara.javascript_driver = :selenium
+#Capybara.javascript_driver = :selenium
 
 # --- Instructions ---
 # Sort the contents of this file into a Spork.prefork and a Spork.each_run
