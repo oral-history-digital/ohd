@@ -87,8 +87,8 @@ end
 
 group :test do
   # Fixtures replacement:
-  gem 'factory_girl'
-  gem 'factory_girl_rails'
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
   gem 'rspec-activemodel-mocks'
   # Integration tests:
   gem 'capybara'

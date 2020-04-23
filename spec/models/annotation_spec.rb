@@ -9,14 +9,14 @@ describe Annotation, 'upon creation' do
 
   #let(:interview) do
     ##Interview.with_locales(:de) do
-      #FactoryGirl.create :interview, :archive_id => 'za907', :first_name => 'Abraham', :last_name => 'Lincoln'
+      #FactoryBot.create :interview, :archive_id => 'za907', :first_name => 'Abraham', :last_name => 'Lincoln'
     ##end
   #end
 
-  #let(:tape) { FactoryGirl.create :tape, :interview => interview }
+  #let(:tape) { FactoryBot.create :tape, :interview => interview }
 
   #let(:segment1) do
-    #FactoryGirl.create :segment,
+    #FactoryBot.create :segment,
         #media_id: 'ZA907_01_01_0001',
         #timecode: '00:00:04.12',
         #transcript: 'Räusper!',
@@ -26,7 +26,7 @@ describe Annotation, 'upon creation' do
   #end
 
   #let(:segment2) do
-    #FactoryGirl.create :segment,
+    #FactoryBot.create :segment,
         #media_id: 'ZA907_01_01_0003',
         #timecode: '00:00:12.05',
         #transcript: 'Am Anfang, also das war...',
@@ -36,7 +36,7 @@ describe Annotation, 'upon creation' do
   #end
 
   #let(:segment3) do
-    #FactoryGirl.create :segment,
+    #FactoryBot.create :segment,
         #media_id: 'ZA907_01_01_0007',
         #timecode: '00:00:21.03',
         #transcript: 'Wie gesagt, (...)',
