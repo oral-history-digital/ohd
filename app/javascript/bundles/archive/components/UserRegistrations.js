@@ -48,13 +48,16 @@ export default class UserRegistrations extends React.Component {
         let tabIndex = this.props.locales.length + 5;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
-                <AuthShowContainer ifLoggedIn={true}>
+                <div className='wrapper-content register'>
+                    <AuthShowContainer ifLoggedIn={true}>
+		        <h1 className='registry-entry-title'>{t(this.props, `edit.users.admin`)}</h1>
                         {this.userRegistrations()}
                         {this.renderScrollObserver()}
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true}>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut={true}>
+                        {t(this.props, 'devise.failure.unauthenticated')}
+                    </AuthShowContainer>
+		</div>
             </WrapperPageContainer>
         );
     }
