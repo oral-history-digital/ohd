@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe UserAccount, 'with a password' do
 
   #let :account do
-    #FactoryGirl.create :user_account, :password => 'mein-passwort', :password_confirmation => 'mein-passwort'
+    #FactoryBot.create :user_account, :password => 'mein-passwort', :password_confirmation => 'mein-passwort'
   #end
 
   #it 'should generate encrypted password and salt while setting password' do
@@ -38,7 +38,7 @@ end
 describe UserAccount, 'without a password' do
 
   #let :account do
-    #FactoryGirl.create :user_account
+    #FactoryBot.create :user_account
   #end
 
   #it 'should not be confirmable without password' do
