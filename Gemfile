@@ -75,28 +75,22 @@ group :development do
 end
 
 #
-group :development, :test do
+group :test do
   gem 'rspec'
   gem 'rspec-rails'
   # Faster tests:
   gem 'spork'
-  gem 'rest-client'
-  gem 'json'
-  gem 'pry'
-end
-
-group :test do
-  # Fixtures replacement:
-  gem 'factory_girl'
-  gem 'factory_girl_rails'
+  #gem 'rest-client'
+  #gem 'json'
+  #gem 'pry'
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
   gem 'rspec-activemodel-mocks'
   # Integration tests:
-  gem 'capybara'
-  gem 'cucumber'
-  gem 'cucumber-rails'
-  gem 'selenium-webdriver'
-  gem 'database_cleaner'
-  gem 'email_spec'
+  #gem 'capybara'
+  #gem 'selenium-webdriver'
+  #gem 'database_cleaner'
+  #gem 'email_spec'
 end
 
 group :production do

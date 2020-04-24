@@ -3,7 +3,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 describe UserRegistration, 'when newly created' do
 
   #let :registration do
-    #FactoryGirl.create :user_registration_with_projects
+    #FactoryBot.create :user_registration_with_projects
   #end
 
   #let :mandatory_registration_fields do
@@ -36,7 +36,7 @@ describe UserRegistration, 'when newly created' do
   #end
 
   #it 'should not be created with an invalid email' do
-    #registration = FactoryGirl.build :user_registration, :email => 'invalid.email.de'
+    #registration = FactoryBot.build :user_registration, :email => 'invalid.email.de'
     #registration.save
     #expect(registration).to be_new_record
     #expect(registration).not_to be_valid
@@ -68,7 +68,7 @@ end
 describe UserRegistration, 'on registration' do
 
   #let :registration do
-    #registration = FactoryGirl.create :user_registration_with_projects
+    #registration = FactoryBot.create :user_registration_with_projects
     #registration.register!
     #registration
   #end
@@ -126,7 +126,7 @@ end
 describe UserRegistration, 'on activation after account activation' do
 
   #let :registration do
-    #registration = FactoryGirl.create :user_registration_with_projects
+    #registration = FactoryBot.create :user_registration_with_projects
     #registration.register!
     #registration.user_account.confirm!('password', 'password')
     #registration
@@ -157,7 +157,7 @@ end
 describe UserRegistration, 'on removal' do
 
   #let :registration do
-    #registration = FactoryGirl.create :user_registration_with_projects
+    #registration = FactoryBot.create :user_registration_with_projects
     #registration.register!
     #registration.user_account.confirm!('password', 'password')
     #registration.remove!
@@ -182,7 +182,7 @@ end
 describe UserRegistration, 'on postponing' do
 
   #let :registration do
-    #registration = FactoryGirl.create :user_registration_with_projects
+    #registration = FactoryBot.create :user_registration_with_projects
     #registration.postpone!
     #registration
   #end
@@ -212,7 +212,7 @@ end
 describe UserRegistration, 'on reactivation after postponing' do
 
   #let :registration do
-    #registration = FactoryGirl.create :user_registration_with_projects
+    #registration = FactoryBot.create :user_registration_with_projects
     #registration.postpone!
     #registration.reactivate!
     #registration
@@ -240,7 +240,7 @@ end
 describe UserRegistration, 'on reactivation after rejecting' do
 
   #let :registration do
-    #registration = FactoryGirl.create :user_registration_with_projects
+    #registration = FactoryBot.create :user_registration_with_projects
     #registration.reject!
     #registration.reactivate!
     #registration
@@ -271,7 +271,7 @@ end
 describe UserRegistration, 'on reactivation after removing' do
 
   #let :registration do
-    #registration = FactoryGirl.create :user_registration_with_projects
+    #registration = FactoryBot.create :user_registration_with_projects
     #registration.register!
     #registration.user_account.confirm!('password', 'password')
     #registration.remove!
