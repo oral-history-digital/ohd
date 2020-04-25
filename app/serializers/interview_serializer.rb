@@ -113,7 +113,10 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  #def media_type
+  def media_type
+    object.media_type && object.media_type.downcase
+  end
+
   #if object.media_type
   ## add 'default' to have available the string 'audio' or 'video'
   #(I18n.available_locales + [:default]).inject({}) do |mem, locale|
