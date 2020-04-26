@@ -1,0 +1,43 @@
+/*
+ *= require font-awesome
+ */
+
+$primary-color: <%= current_project.primary_color %> !default;
+$secondary-color: <%= current_project.secondary_color %> !default;
+
+<% stylesheets_path = File.join(Rails.root, "app", "assets", "stylesheets") %>
+
+// Variables and mixins
+<%= raw File.read(File.join(stylesheets_path, "responsive/_variables.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/_mixins.scss")) %>
+
+// Normalize
+<%= raw File.read(File.join(stylesheets_path, "responsive/_normalize.scss")) %>
+
+// Partials
+<%= raw File.read(File.join(stylesheets_path, "responsive/_dev.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/_fonts.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/_structure.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/_content.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/_utils.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/_nav.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/_grid.scss")) %>
+
+// Modules
+<%= raw File.read(File.join(stylesheets_path, "responsive/modules/_header.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/modules/_content-tabs.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/modules/_flyout-sub-tabs.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/modules/_flyout-nav-tabs.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/modules/_flyout-login.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/modules/_accordion.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/modules/_popup.scss")) %>
+<%= raw File.read(File.join(stylesheets_path, "responsive/modules/_form-default.scss")) %>
+
+// Icons
+<%= raw File.read(File.join(stylesheets_path, "responsive/cds-icons/_cds-icons.scss")) %>
+
+// Print
+<%= raw File.read(File.join(stylesheets_path, "responsive/_print.scss")) %>
+
+// Project-specific
+<%= raw File.read(File.join(stylesheets_path, "responsive/_customization.scss")) %>
