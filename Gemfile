@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 ruby '2.5.3'
 
 gem 'rdoc'
-gem 'rails', '~>5.2.0'
+gem 'rails', '~>5.2.4'
 gem 'mysql2'
 gem "redis", "~> 4.0"
 gem 'exception_notification'
@@ -37,7 +37,7 @@ gem 'rails-latex'
 gem 'RedCloth'
 gem 'sass-rails'
 gem 'webpacker', '>= 4.0.x'
-gem 'react_on_rails', '~> 9.0.1'
+gem 'react_on_rails', '~> 11.3.0'
 gem 'slim-rails'
 gem 'iso-639'
 gem 'countries'
@@ -75,28 +75,22 @@ group :development do
 end
 
 #
-group :development, :test do
+group :test do
   gem 'rspec'
   gem 'rspec-rails'
   # Faster tests:
   gem 'spork'
-  gem 'rest-client'
-  gem 'json'
-  gem 'pry'
-end
-
-group :test do
-  # Fixtures replacement:
-  gem 'factory_girl'
-  gem 'factory_girl_rails'
+  #gem 'rest-client'
+  #gem 'json'
+  #gem 'pry'
+  gem 'factory_bot'
+  gem 'factory_bot_rails'
   gem 'rspec-activemodel-mocks'
   # Integration tests:
-  gem 'capybara'
-  gem 'cucumber'
-  gem 'cucumber-rails'
-  gem 'selenium-webdriver'
-  gem 'database_cleaner'
-  gem 'email_spec'
+  #gem 'capybara'
+  #gem 'selenium-webdriver'
+  #gem 'database_cleaner'
+  #gem 'email_spec'
 end
 
 group :production do

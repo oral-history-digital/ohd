@@ -2,8 +2,8 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe UserAnnotation, 'when first created by user' do
 
-  #let!(:segment){FactoryGirl.create(:segment)}
-  #let!(:user_annotation){FactoryGirl.create(:user_annotation, reference_id: segment.id, media_id: segment.media_id)}
+  #let!(:segment){FactoryBot.create(:segment)}
+  #let!(:user_annotation){FactoryBot.create(:user_annotation, reference_id: segment.id, media_id: segment.media_id)}
 
   #it "should not be published on create" do
     #expect(user_annotation.private?).to be_truthy
@@ -31,8 +31,8 @@ end
 
 describe UserAnnotation, 'when a submittal for publishing is accepted' do
 
-  #let!(:segment){FactoryGirl.create(:segment)}
-  #let!(:user_annotation){FactoryGirl.create(:user_annotation, reference_id: segment.id, media_id: segment.media_id)}
+  #let!(:segment){FactoryBot.create(:segment)}
+  #let!(:user_annotation){FactoryBot.create(:user_annotation, reference_id: segment.id, media_id: segment.media_id)}
 
   #before(:each) do
     #user_annotation.submit!
@@ -83,8 +83,8 @@ end
 
 describe UserAnnotation, "when postponed by moderation" do
 
-  #let!(:segment){FactoryGirl.create(:segment)}
-  #let!(:user_annotation){FactoryGirl.create(:user_annotation, reference_id: segment.id, media_id: segment.media_id)}
+  #let!(:segment){FactoryBot.create(:segment)}
+  #let!(:user_annotation){FactoryBot.create(:user_annotation, reference_id: segment.id, media_id: segment.media_id)}
 
   #before(:each) do
     #user_annotation.submit!

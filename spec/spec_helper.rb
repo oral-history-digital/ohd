@@ -11,8 +11,8 @@ Spork.prefork do
   ENV["RAILS_ENV"] ||= 'test'
   require File.expand_path("../../config/environment", __FILE__)
   require 'rspec/rails'
-  require 'rspec/autorun'
-  require 'capybara/rspec'
+  # require 'rspec/autorun' # deprecated
+  # require 'capybara/rspec'
 
   #testing multiple locales is useful to get translation errors
   TEST_LOCALES = %w(en de)
@@ -26,7 +26,7 @@ Spork.prefork do
   ActiveRecord::Migration.check_pending! if defined?(ActiveRecord::Migration)
 end
 
-Capybara.javascript_driver = :selenium
+#Capybara.javascript_driver = :selenium
 
 # --- Instructions ---
 # Sort the contents of this file into a Spork.prefork and a Spork.each_run
@@ -71,9 +71,6 @@ Spork.each_run do
     # config.mock_with :mocha
     # config.mock_with :flexmock
     # config.mock_with :rr
-
-    # allow for metadata flags
-    config.treat_symbols_as_metadata_keys_with_true_values = true
 
     # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
     config.fixture_path = "#{::Rails.root}/spec/fixtures"
