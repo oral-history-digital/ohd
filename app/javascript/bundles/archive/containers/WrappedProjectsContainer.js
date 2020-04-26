@@ -36,7 +36,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'more_text',
-                elementType: 'textarea'
+                elementType: 'multiLocaleTextarea'
             },
             {
                 attribute: 'shortname',
@@ -63,9 +63,12 @@ const mapStateToProps = (state) => {
             {
                 attribute: "pseudo_upload_types",
             },
-            //{
-                //attribute: "primary_color_rgb",
-            //},
+            {
+                attribute: "primary_color",
+            },
+            {
+                attribute: "secondary_color",
+            },
             {
                 attribute: "domain",
                 validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},

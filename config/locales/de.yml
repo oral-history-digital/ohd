@@ -735,12 +735,14 @@ de:
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         delete_existing: existierendes Transkript (für dieses Tape) löschen
       project:
-        available_locales: verfügbare Sprachcodes (alpha2)
+        pseudo_available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
-        view_modes: Ansichten
-        fullname_on_landing_page: Zeige vollständigen Interviewtitel ohne Login
-        upload_types: UploadTypen
-        primary_color_rgb: Primary Color RGB
+        introduction: Einführung Startseite
+        more_text: Weiterer Text Startseite
+        landing_page_text: Landingpage Text 
+        pseudo_view_modes: Ansichten
+        fullname_on_landing_page: Show full name on landing page
+        pseudo_upload_types: UploadTypen
         shortname: Kürzel
         initials: Initialen
         domain: Projektdomain
@@ -750,13 +752,15 @@ de:
         leader: Projektleiter
         manager: Projektmanager
         hosting_institution: Institution
-        funder_names: Finanzierung
+        pseudo_funder_names: Finanzierung
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
-        hidden_registry_entry_ids: versteckte Registereinträge (IDs)
-        pdf_registry_entry_codes: Codes der Registereinträge für PDF
+        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs) 
+        pseudo_pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
+        primary_color: Primary color
+        secondary_color: Secondary color
       metadata_field:
         use_as_facet: als Facette benutzen
         facet_order: Reihenfolge in den Suchfacetten
