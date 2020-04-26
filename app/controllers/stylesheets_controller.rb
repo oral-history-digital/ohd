@@ -8,7 +8,7 @@ class StylesheetsController < ApplicationController
     respond_to do |format|
       format.css do
         css = Rails.cache.fetch "#{current_project.cache_key_prefix}-stylesheets-#{current_project.updated_at}" do
-          pre = render_to_string(template: 'stylesheets/responsive.scss.erb', layout: false)
+          pre = render_to_string(template: 'stylesheets/master.scss.erb', layout: false)
           Sass.compile(pre)
         end
         render body: css, content_type: 'text/css'
