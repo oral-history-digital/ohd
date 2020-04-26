@@ -91,7 +91,6 @@ class ApplicationController < ActionController::Base
           accounts: {current: 'fetched'},
           interviews: {},
           segments: {},
-          doi_contents: {},
           headings: {},
           ref_tree: {},
           registry_references: {},

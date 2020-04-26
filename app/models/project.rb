@@ -16,7 +16,7 @@ class Project < ApplicationRecord
   has_many :user_registrations,
     through: :user_registration_projects
 
-  translates :name, :introduction, :more_text, fallbacks_for_empty_translations: true, touch: true
+  translates :name, :introduction, :more_text, :landing_page_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
   serialize :view_modes, Array

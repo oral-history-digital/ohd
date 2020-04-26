@@ -16,14 +16,12 @@ export default class Interview extends React.Component {
         this.setArchiveId();
         this.loadInterview();
         this.loadContributors();
-        this.loadDoiContent();
     }
 
     componentDidUpdate() {
         this.setArchiveId();
         this.loadInterview();
         this.loadContributors();
-        this.loadDoiContent();
     }
 
     setArchiveId() {
@@ -60,17 +58,6 @@ export default class Interview extends React.Component {
         return this.interviewLoaded() ? this.props.interviews[this.props.match.params.archiveId] : {};
     }
 
-    loadDoiContent() {
-        if (!this.props.doiContentsStatus[`for_interviews_${this.props.match.params.archiveId}`]) {
-            this.props.fetchData(this.props, 'interviews', this.props.match.params.archiveId, 'doi_contents');
-        }
-    }
-
-    doiContentLoaded() {
-        return this.props.doiContentsStatus[`for_interviews_${this.props.match.params.archiveId}`] && 
-               this.props.doiContentsStatus[`for_interviews_${this.props.match.params.archiveId}`].split('-')[0] === 'fetched';
-    }
-
     loggedOutContent() {
         if (this.interviewLoaded() && this.props.interviews) {
             return (
@@ -85,7 +72,7 @@ export default class Interview extends React.Component {
                             <img src={this.interview().still_url}/>
                         </div>
                     </div>
-                    {this.doiContent()}
+                    {this.landingPageText()}
                 </div>
             )
         } else {
@@ -93,16 +80,12 @@ export default class Interview extends React.Component {
         }
     }
 
-    doiContent() {
-        if (this.doiContentLoaded()) {
-            return (
-                <div className='wrapper-content'
-                     dangerouslySetInnerHTML={{__html: this.interview().doi_contents[this.props.locale]}}
-                />
-            )
-        } else {
-            return null;
-        }
+    landingPageText() {
+        return (
+            <div className='wrapper-content'
+                 dangerouslySetInnerHTML={{__html: this.interview().landing_page_texts[this.props.locale]}}
+            />
+        )
     }
 
     content() {

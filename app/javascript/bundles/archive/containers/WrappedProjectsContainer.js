@@ -39,6 +39,10 @@ const mapStateToProps = (state) => {
                 elementType: 'multiLocaleTextarea'
             },
             {
+                attribute: 'landing_page_text',
+                elementType: 'multiLocaleTextarea'
+            },
+            {
                 attribute: 'shortname',
                 validate: function(v){return v.length > 1} 
             },

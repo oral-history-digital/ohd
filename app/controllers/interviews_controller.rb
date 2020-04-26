@@ -2,9 +2,9 @@ class InterviewsController < ApplicationController
   include IsoHelpers
   layout "responsive"
 
-  skip_before_action :authenticate_user_account!, only: [:show, :doi_contents]
-  skip_after_action :verify_authorized, only: [:show, :doi_contents, :metadata]
-  skip_after_action :verify_policy_scoped, only: [:show, :doi_contents, :metadata]
+  skip_before_action :authenticate_user_account!, only: [:show]
+  skip_after_action :verify_authorized, only: [:show, :metadata]
+  skip_after_action :verify_policy_scoped, only: [:show, :metadata]
 
   def new
     authorize Interview
@@ -206,29 +206,6 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       format.json do
         render json: results
-      end
-    end
-  end
-
-  def doi_contents
-    json = {}
-    unless params[:id] == "new"
-      @interview = Interview.find_by_archive_id(params[:id])
-      json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-doi-contents-#{@interview.archive_id}-#{@interview.updated_at}" do
-        locales = current_project.available_locales.reject{|locale| locale == 'alias'}
-        doi_contents = locales.inject({}){|mem, locale| mem[locale] = doi_content(locale, @interview); mem}
-        {
-          archive_id: params[:id],
-          data_type: "interviews",
-          nested_data_type: "doi_contents",
-          data: doi_contents,
-        }
-      end
-    end
-
-    respond_to do |format|
-      format.json do
-        render json: json, status: :ok
       end
     end
   end

@@ -119,7 +119,7 @@ class ProjectsController < ApplicationController
           "smtp_server",
           "has_newsletter",
           "is_catalog",
-          translations_attributes: [:locale, :name, :id, :introduction]
+          translations_attributes: [:locale, :name, :id, :introduction, :more_text, :landing_page_text]
       )
     end
 

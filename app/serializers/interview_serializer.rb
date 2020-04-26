@@ -32,6 +32,7 @@ class InterviewSerializer < ApplicationSerializer
     :photos,
     :observations,
     :doi_status,
+    :landing_page_texts,
     :properties,
   ] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_reference_type_metadata_fields.map(&:name)
 
@@ -71,6 +72,14 @@ class InterviewSerializer < ApplicationSerializer
       end
     else
       {}
+    end
+  end
+
+  def landing_page_texts
+    interviewee = object.interviewee
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.project.landing_page_text(locale).gsub('INTERVIEWEE', object.anonymous_title(locale))
+      mem
     end
   end
 

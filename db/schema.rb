@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_04_25_122722) do
+ActiveRecord::Schema.define(version: 2020_04_26_165036) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -317,6 +317,7 @@ ActiveRecord::Schema.define(version: 2020_04_25_122722) do
     t.string "name"
     t.text "introduction"
     t.text "more_text"
+    t.text "landing_page_text"
     t.index ["locale"], name: "index_project_translations_on_locale"
     t.index ["project_id"], name: "index_project_translations_on_project_id"
   end
