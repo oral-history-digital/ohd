@@ -101,7 +101,6 @@ class MetadataFieldsController < ApplicationController
         "display_on_landing_page",
         "ref_object_type",
         "source",
-        "label",
         "values",
         "registry_entry_id",
         "registry_reference_type_id",
