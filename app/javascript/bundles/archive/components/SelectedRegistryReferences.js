@@ -10,25 +10,25 @@ export default class SelectedRegistryReferences extends React.Component {
             for (let r in this.props.project.metadata_fields) {
                 let metadataField = this.props.project.metadata_fields[r];
                 if (
-                    metadataField.registry_entry_id && 
+                    metadataField.registry_entry_id &&
                     ((metadataField.use_in_details_view && this.props.account.isLoggedIn) || metadataField.display_on_landing_page) &&
-                    metadataField.ref_object_type === this.props.refObject.type 
+                    metadataField.ref_object_type === this.props.refObject.type
                 ) {
                     registryReferences.push(
-                        <p>
+                        <div key={`labeled-interview-registry-references-for-metadata-field-${r}`}>
                             <span className={'flyout-content-label'}>
-                                {metadataField.label[this.props.locale] || 
+                                {metadataField.label[this.props.locale] ||
                                     t(this.props, `activerecord.attributes.${toUnderscoreCase(this.props.refObject.type)}.${metadataField.name}`)}
                                 :
                             </span>
-                            <RegistryReferencesContainer 
-                                refObject={this.props.refObject} 
+                            <RegistryReferencesContainer
+                                refObject={this.props.refObject}
                                 parentEntryId={metadataField.registry_entry_id}
                                 registryReferenceTypeId={metadataField.registry_reference_type_id}
-                                locale={this.props.locale} 
+                                locale={this.props.locale}
                                 key={`interview-registry-references-for-metadata-field-${r}`}
                             />
-                        </p>
+                        </div>
                     )
                 }
             }
@@ -44,4 +44,3 @@ export default class SelectedRegistryReferences extends React.Component {
         }
     }
 }
-

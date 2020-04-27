@@ -296,13 +296,12 @@ export default class ArchiveSearch extends React.Component {
                         </AuthShowContainer>
                         {this.renderArchiveResultsCount()}
                     </div>
-                    
+
                     <Tabs
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
                         selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
-                        defaultIndex={0}
                         onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
                         <TabList className={'search-results-tabs'}>
