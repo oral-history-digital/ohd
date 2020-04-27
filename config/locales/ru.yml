@@ -568,11 +568,11 @@ ru:
   gender:
     female: женщина
     male: мужчина
-    diverse: divers
+    diverse: другие
   genders:
     female: weiblich
     male: männlich
-    diverse: divers
+    diverse: другие
   search_facets:
     forced_labor_field: Сфера деятельности
     forced_labor_group: Группа
@@ -581,13 +581,13 @@ ru:
     gender: Пол
     Man: männlich
     Woman: weiblich
-    Diverse: divers
+    Diverse: другие
     man: männlich
     woman: weiblich
-    diverse: divers
+    diverse: другие
     male: " мужчина"
     female: женщина
-    diverse: divers
+    diverse: другие
     video: Видео
     audio: Аудио
     born: geb.
@@ -1201,7 +1201,7 @@ ru:
     gender: gender
     male: муж.
     female: жен.
-    diverse: divers
+    diverse: другие
     born: рожд.
   user_annotations:
     workflow_states:
