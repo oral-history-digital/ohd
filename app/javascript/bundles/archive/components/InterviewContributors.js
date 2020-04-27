@@ -49,7 +49,7 @@ export default class InterviewContributors extends React.Component {
             if (contributionTypes[key]) {
                 return (
                   <div key={`contribution-${index}`}>
-                    <p>{contributionTypes[key]}</p>
+                    <div>{contributionTypes[key]}</div>
                   </div>
                 );
             } else {

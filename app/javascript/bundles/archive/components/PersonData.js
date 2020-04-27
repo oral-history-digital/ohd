@@ -39,7 +39,7 @@ export default class PersonData extends React.Component {
             return (
                 <span>
                     {publicBioEntry.text[this.props.interview.lang] && this.download(this.props.interview.lang)}
-                    {publicBioEntry.text[this.props.locale] && 
+                    {publicBioEntry.text[this.props.locale] &&
                             this.props.interview.lang !== this.props.locale &&
                             this.download(this.props.locale)
                     }
@@ -50,9 +50,9 @@ export default class PersonData extends React.Component {
         }
     }
 
-    history() { 
+    history() {
         return (
-            <p>
+            <div>
                 <AuthShowContainer ifLoggedIn={true}>
                     <span className="flyout-content-label">
                         {t(this.props, "history")}:
@@ -62,7 +62,7 @@ export default class PersonData extends React.Component {
                 <AuthShowContainer ifAdmin={true} obj={{type: 'BiographicalEntry', action: 'update'}}>
                     {this.biographicalEntries()}
                 </AuthShowContainer>
-            </p>
+            </div>
         );
     }
 
@@ -133,4 +133,3 @@ export default class PersonData extends React.Component {
         );
     }
 }
-
