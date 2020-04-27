@@ -10,7 +10,7 @@ import ResizeAware from 'react-resize-aware';
 
 import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
 import { t } from '../../../lib/utils';
-import '../css/wrapper_page'
+import '../css/wrapper_page.css'
 
 export default class WrapperPage extends React.Component {
 
@@ -384,4 +384,3 @@ export default class WrapperPage extends React.Component {
         )
     }
 }
-
