@@ -28,7 +28,7 @@ export default class SelectInterviewEditViewColumnsForm extends React.Component 
                 elementType: 'input',
                 type: 'checkbox',
                 attribute: column,
-                label: t(this.props, `edit_column_header.${column}`),
+                labelKey: `edit_column_header.${column}`,
             })
         })
     }

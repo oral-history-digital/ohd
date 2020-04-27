@@ -76,7 +76,6 @@ export default class UploadTranscript extends React.Component {
                             {
                                 elementType: 'select',
                                 attribute: 'transcript_language_id',
-                                label: t(this.props, 'activerecord.attributes.transcript.transcript_language_id'),
                                 values: this.props.languages,
                                 withEmpty: true,
                                 validate: function(v){return v !== ''} 
@@ -93,13 +92,13 @@ export default class UploadTranscript extends React.Component {
                             },
                             { 
                                 attribute: 'tape_durations',
-                                help: t(this.props, 'activerecord.attributes.transcript.tape_durations_explanation'),
+                                help: 'activerecord.attributes.transcript.tape_durations_explanation',
                                 hidden: !this.state.isOdt,
                                 validate: function(v){return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v)}
                             },
                             { 
                                 attribute: 'time_shifts',
-                                help: t(this.props, 'activerecord.attributes.transcript.time_shifts_explanation'),
+                                help: 'activerecord.attributes.transcript.time_shifts_explanation',
                                 hidden: !this.state.isOdt,
                                 validate: function(v){return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v)}
                             },

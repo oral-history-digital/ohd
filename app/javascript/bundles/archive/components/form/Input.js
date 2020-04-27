@@ -80,6 +80,7 @@ export default class Input extends React.Component {
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 label={this.props.label}
+                labelKey={this.props.labelKey}
                 showErrors={this.props.showErrors}
                 css={this.props.css}
                 hidden={this.props.hidden}
@@ -87,11 +88,9 @@ export default class Input extends React.Component {
                 mandatory={this.props.validate !== undefined}
                 elementType={`${this.props.type}_input`}
                 individualErrorMsg={this.props.individualErrorMsg}
+                help={this.props.help}
             >
                 {this.inputOrImg()}
-                <p className='help-block'>
-                    {this.props.help}
-                </p>
             </ElementContainer>
         );
     }

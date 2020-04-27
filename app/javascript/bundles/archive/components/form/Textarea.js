@@ -49,6 +49,7 @@ export default class Textarea extends React.Component {
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 label={this.props.label}
+                labelKey={this.props.labelKey}
                 showErrors={this.props.showErrors}
                 css={this.props.css}
                 hidden={this.props.hidden}
@@ -56,6 +57,7 @@ export default class Textarea extends React.Component {
                 mandatory={this.props.validate !== undefined}
                 elementType='textarea'
                 individualErrorMsg={this.props.individualErrorMsg}
+                help={this.props.help}
             >
                 <textarea 
                     name={this.props.attribute}
@@ -63,7 +65,6 @@ export default class Textarea extends React.Component {
                     defaultValue={this.props.value}
                     onChange={this.handleChange}
                 />
-                {this.props.help}
             </ElementContainer>
         );
     }

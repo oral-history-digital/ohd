@@ -11,10 +11,19 @@ export default class Element extends React.Component {
 
     label() {
         let mandatory = this.props.mandatory ? ' *' : '';
+        let l; 
+        if (this.props.label) {
+            l = this.props.label;
+        } else  if (this.props.labelKey) {
+            l = t(this.props, this.props.labelKey);
+        } else {
+            l = t(this.props, `activerecord.attributes.${this.props.scope}.${this.props.attribute}`);
+        }
+
         // scope is equivalent to model here
         return (
             <label htmlFor={`${this.props.scope}_${this.props.attribute}`}>
-                {(this.props.label ? this.props.label : t(this.props, `activerecord.attributes.${this.props.scope}.${this.props.attribute}`)) + mandatory}
+                {l + mandatory}
             </label>
         );
     }
@@ -50,6 +59,9 @@ export default class Element extends React.Component {
                 </div>
                 <div className='form-input'>
                     {this.props.children}
+                    <p className='help-block'>
+                        {typeof(this.props.help) === 'string' ? t(this.props, this.props.help) : this.props.help}
+                    </p>
                 </div>
                 {this.error()}
             </div>

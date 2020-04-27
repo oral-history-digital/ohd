@@ -40,7 +40,8 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'landing_page_text',
-                elementType: 'multiLocaleTextarea'
+                elementType: 'multiLocaleTextarea',
+                help: 'activerecord.attributes.project.landing_page_edit_help'
             },
             {
                 attribute: 'shortname',

@@ -122,6 +122,7 @@ export default class Select extends React.Component {
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 label={this.props.label}
+                labelKey={this.props.labelKey}
                 showErrors={this.props.showErrors}
                 css={this.props.css}
                 hidden={this.props.hidden}
@@ -129,6 +130,7 @@ export default class Select extends React.Component {
                 mandatory={this.props.validate !== undefined}
                 elementType='select'
                 individualErrorMsg={this.props.individualErrorMsg}
+                help={this.props.help}
             >
                 <select 
                     name={this.props.attribute}
@@ -138,9 +140,6 @@ export default class Select extends React.Component {
                 >
                     {this.options()}
                 </select>
-                <p className='help-block'>
-                    {this.props.help}
-                </p>
             </ElementContainer>
         );
     }

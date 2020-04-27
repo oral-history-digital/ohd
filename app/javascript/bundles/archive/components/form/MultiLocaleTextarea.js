@@ -11,6 +11,7 @@ export default class MultiLocaleTextarea extends React.Component {
                 data={this.props.data}
                 scope={this.props.scope}
                 attribute={this.props.attribute}
+                help={this.props.help}
             >
                 <TextareaContainer handleChange={this.props.handleChange}/>
             </MultiLocaleWrapperContainer>
