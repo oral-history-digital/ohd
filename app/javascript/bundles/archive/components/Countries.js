@@ -1,7 +1,7 @@
 import React from 'react';
 import { render } from 'react-dom';
 import { Map, Marker, Popup, TileLayer, GeoJSON } from 'react-leaflet';
-import '../css/locations'
+import '../css/locations.css'
 import i1 from '../../../images/layers.png';
 import i2 from '../../../images/layers-2x.png';
 import i3 from '../../../images/marker-icon.png';
@@ -32,8 +32,7 @@ export default class Countries extends React.Component {
   render() {
     return <div>
              {this.map(this.props.position, this.props.zoom)}
-           </div>; 
+           </div>;
   }
 
 }
-
