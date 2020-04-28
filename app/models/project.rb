@@ -43,6 +43,11 @@ class Project < ApplicationRecord
     end
   end
 
+  before_save :touch_interviews
+  def touch_interviews
+    interviews.each(&:touch) if landing_page_text_changed?
+  end
+
   class << self
     def config
       @config ||= Rails.configuration.project
