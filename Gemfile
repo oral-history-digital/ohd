@@ -72,6 +72,7 @@ group :development do
   gem 'foreman'
   gem 'progress_bar'
   gem 'rb-readline'
+  gem 'pry'
 end
 
 #

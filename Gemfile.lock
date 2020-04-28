@@ -498,6 +498,7 @@ DEPENDENCIES
   oai_repository!
   open4
   progress_bar
+  pry
   puma
   pundit
   rack-maintenance
