@@ -51,24 +51,27 @@ export default class PersonData extends React.Component {
     }
 
     history() {
-        return (
-            <div>
-                <AuthShowContainer ifLoggedIn={true}>
-                    <span className="flyout-content-label">
-                        {t(this.props, "history")}:
-                    </span>
-                    {this.downloads()}
-                </AuthShowContainer>
-                <AuthShowContainer ifAdmin={true} obj={{type: 'BiographicalEntry', action: 'update'}}>
-                    {this.biographicalEntries()}
-                </AuthShowContainer>
-            </div>
-        );
+        if(this.props.projectId !== 'dg') {
+            return (
+                <div>
+                    <AuthShowContainer ifLoggedIn={true}>
+                        <span className="flyout-content-label">
+                            {t(this.props, "history")}:
+                        </span>
+                        {this.downloads()}
+                    </AuthShowContainer>
+                    <AuthShowContainer ifAdmin={true} obj={{type: 'BiographicalEntry', action: 'update'}}>
+                        {this.biographicalEntries()}
+                    </AuthShowContainer>
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 
     biographicalEntries() {
-        if(this.props.projectId !== 'dg')
-        {
+        if(this.props.projectId !== 'dg') {
             let interviewee = getInterviewee(this.props);
             return (
                 <div>
