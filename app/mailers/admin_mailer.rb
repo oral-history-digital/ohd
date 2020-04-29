@@ -10,7 +10,7 @@ class AdminMailer < ApplicationMailer
     mail(
       subject: "new registration for #{@project.shortname}",
       from: "no-reply@cedis.fu-berlin.de",
-      to: Project.contact_email,
+      to: @project.contact_email,
       date: Time.now
     )
   end
