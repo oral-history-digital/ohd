@@ -112,7 +112,7 @@ header.site-header {
     overflow-y: auto;
     height:100%;
     @include screen-m {
-      margin-right: -9px;
+      //margin-right: -9px;
     }
   }
   .flyout-toggle {
