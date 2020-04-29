@@ -51,7 +51,6 @@ namespace :cache do
   task :interview_data => :environment do
     Interview.all.each do |interview|
       [
-        :doi_contents,
         :segments,
         :headings,
         #:references,
