@@ -12,6 +12,14 @@ import { t, pluralize, pathBase } from '../../../lib/utils';
 
 export default class InterviewSearchResults extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.handleClick = this.handleClick.bind(this);
+        this.state = {
+            open: Array(5).fill(false)
+        }
+    }
+
     components() {
         return {
             Segment: FoundSegmentContainer,
@@ -21,7 +29,15 @@ export default class InterviewSearchResults extends React.Component {
             RegistryEntry: RegistryEntryContainer,
         }
     }
-    
+
+    handleClick(event, count, i) {
+      if (count > 0) {
+        let open = this.state.open.slice();
+        open[i] = !open[i]
+        this.setState({open: open})
+      }
+    }
+
     renderResults(model) {
         if(this.props.searchResults[`found${pluralize(model)}`]) {
             let active = false;
@@ -67,10 +83,14 @@ export default class InterviewSearchResults extends React.Component {
     searchResults(model, modelIndex) {
         if (!this.props.isInterviewSearching && this.props.searchResults) {
             let count = this.props.searchResults[`found${pluralize(model)}`] ? this.props.searchResults[`found${pluralize(model)}`].length : 0;
+            let iconCss = this.state.open[modelIndex] || count === 0 ? 'heading-ico active' : 'heading-ico inactive';
+            let expandedCss = this.state.open[modelIndex] ? 'expanded' : 'collapsed'
+
             return (
-                <div key={modelIndex}>
-                    <div className="content-search-legend"><p>{count} {t(this.props, model.toLowerCase() + '_results')}</p></div>
-                    {this.renderResults(model)}
+                <div className='heading' key={modelIndex} >
+                    <div className={iconCss} onClick={() => this.handleClick(event, count, modelIndex)}></div>
+                    <div className='mainheading' onClick={() => this.handleClick(event, count, modelIndex)}>{count} {t(this.props, model.toLowerCase() + '_results')}</div>
+                    <div className={expandedCss}>{this.renderResults(model)}</div>
                 </div>
             );
         }
@@ -90,7 +110,7 @@ export default class InterviewSearchResults extends React.Component {
             )
         } else {
             return (
-                <div>
+                <div className='content-index content-search-entries'>
                     {['Segment', 'Person', 'BiographicalEntry', 'Photo', 'RegistryEntry'].map((model, modelIndex) => {
                         return this.searchResults(model, modelIndex)
                     })}
