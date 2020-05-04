@@ -4,10 +4,10 @@ es:
   bs: bosnisch
   ca: katalanisch
   cs: tschechisch
-  de: deutsch
+  de: alemán
   el: griechisch
-  en: englisch
-  es: spanisch
+  en: inglés
+  es: español
   fr: französisch
   he: hebräisch
   hr: kroatisch
@@ -24,16 +24,16 @@ es:
   sl: slowenisch
   sr: serbisch
   uk: ukrainisch
-  in: in
-  not_your_project: You are not registered for this project.
-  registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
-    Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
+  in: en
+  not_your_project: No está registrado para este proyecto.
+  registration_needed: Para garantizar la protección de datos personales, usted se tiene que registrar.
+    Después de haberse registrado, usted tendrá acceso a las entrevistas completas.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
     Bitte klicken Sie auf den Link "<a href="/de/user_accounts/password/new">Passwort
     wiederherstellen</a>", um ein neues Passwort zu kreieren oder das alte wiederherzustellen.
     Vielen Dank für Ihr Verständnis.
-  observation: Interviewsituation
-  tape: Band
+  observation: Situación de la entrevista
+  tape: Cinta
   word: Wort
   italic: kursiv
   text: Text
@@ -49,7 +49,7 @@ es:
     registry_references: Erwähnungen
     annotations: Anmerkungen
   legend:
-    title: Legende der Transkriptionszeichen
+    title: Leyenda de los signos de transcripción
     mog:
       missed: unverständliche, vergessene, fehlende und vermutete Wörter/Silben, Erklärung von Dialekt
       comment: Kommentare des/der Transkriptors/in, Übersetzungen fremdsprachlicher Wörter/Passagen
@@ -63,7 +63,7 @@ es:
       address: ersetzt Angaben über die aktuelle Wohnanschrift des/der Interviewten bzw. Telefonnummer
       broken_word: abgebrochenes Wort oder abgebrochener Satz, meist mit einer kurzen Sprechpause verbunden
       silence: langes Schweigen der Interviewpartnerin / des Interviewpartners (ohne Unterbrechung durch den Interviewer / die Interviewerin)
-      unclear: unverständliche Aussage 
+      unclear: unverständliche Aussage
       unsure: unsichere Transkription eines Wortes
       break: Unterbrechung der Aufnahme (z.B. auf Wunsch der Interviewpartner/- innen, technische Pausen, aufgrund von Störungen von außen)
       italic: Aussagen im Interview auf Deutsch oder in einer Sprachvariante,
@@ -78,161 +78,154 @@ es:
         Ergänzungen, wie Aliasname oder Aufschlüsselung eines Akronyms;
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
-  mark_texts: Replace text 
+  mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
-  selected: Selected
-  archive_id: Archiv-ID
-  noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
-  interviews: Interviews
-  places: Geburtsorte
-  interview_location_desc_one: " wird in Kapitel "
-  interview_location_desc_two: " erwähnt."
-  archive_map_explanation: Die Karte stellt die Geburtsorte der Interviewten dar.
-  interview_map_explanation: Darstellung der im Interview erwähnten Orte
-  interview_gallery_explanation: Die Bildergalerie zeigt Fotos von der Interviewsituation
-    sowie Familienfotos und andere historische Fotos aus dem Besitz der interviewten
-    Person.
-  interview_empty_gallery_explanation: Zu diesem Interview sind keine Fotos vorhanden.
-  transcript_header: Transkript des Interviews mit
-  translation_header: Übersetzung des Interviews mit
-  tapes: Bänder
-  without_translation: Dieses Interview wurde noch nicht ins Deutsche übersetzt.
-  without_transcript: Dieses Interview wurde noch nicht transkribiert.
-  without_index: No table of contents was created for this interview.
-  without_index_locale: The table of contents of this interview has not been translated into English. 
-  without_ref_tree: Dieses Interview wurde noch nicht verschlagwortet.
-  private: Privat
-  proposed: In Prüfung zur Veröffentlichung
-  postponed: Zurückgestellt durch die Redaktion
-  shared: Veröffentlicht
-  rejected: Veröffentlichung abgelehnt
-  interview_archive: Interview-Archiv
-  called: Abruf
-  download: Download
+  selected: seleccionado
+  archive_id: ID de archivo
+  noscript: Por favor, active JavaScript para garantizar la plena funcionalidad de la página web.
+  interviews: Entrevistas
+  places: Lugares de nacimiento
+  interview_location_desc_one: " se menciona en capítulo "
+  interview_location_desc_two: " ."
+  archive_map_explanation: El mapa muestra los lugares de nacimiento de las personas entrevistadas.
+  interview_map_explanation: Presentación de los lugares que se mencionan en la entrevista.
+  interview_gallery_explanation: La galería de imágenes muestra fotos de la entrevista, fotos familiares y otras fotos históricas, propiedad de la persona entrevistada
+  interview_empty_gallery_explanation: No hay fotos relacionadas con esta entrevista.
+  transcript_header: Transcripción de la entrevsita con
+  translation_header: Traducción de la entrevista con
+  tapes: Cintas
+  without_translation: Esta entrevista todavía no se ha traducido al alemán.
+  without_transcript: Esta entrevista todavía no ha sido transcrito.
+  without_index: No se ha elaborado una tabla de contenido para esta entrevista.
+  without_index_locale: La tabla de contenido no ha sido traducido al español.
+  without_ref_tree: Esta entrevista todavía no ha sido indexada.
+  private: Privado
+  proposed: En revisión para la publicación
+  postponed: Aplazado por la redacción
+  shared: Publicado
+  rejected: Publicación negada
+  interview_archive: Archivo de entrevistas
+  called: Consultado
+  download: Descarga
   download_user_statistics: Benutzerstatistik herunterladen
-  back: Zurück
-  export_search_results: Suchergebnisse exportieren
-  language_de: Deutsch
-  language_elde: Griechisch mit deutscher Übersetzung
-  language_eldeen: Griechisch mit deutscher Übersetzung
+  back: atrás
+  export_search_results: Exportar los resultados de la búsqueda
+  language_de: alemán
+  language_esde: Español con traducción al alemán
+  language_dees: Alemán con traducción al español
   language_rude: Russisch mit deutscher Übersetzung
   language_el: Griechisch
-  more: mehr erfahren
-  segment: Ausschnitt
-  publish: An die Redaktion zur Veröffentlichung absenden
-  login: Anmelden
-  login_name: Login
-  logout: Abmelden
-  login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
-  logged_in_as: Angemeldet als
-  user_name: Benutzer*in
-  notice: Merken
-  forget_password: Passwort wiederherstellen
-  account_activation_errors: Passwort und Passwortbestätigung müssen gleich und mind.
-    6 Zeichen lang sein
-  submit: Absenden
-  platform: Eine Plattform der
-  cooperation: in Kooperation mit
-  promoted: gefördert durch
-  forget_password_question: Passwort wiederherstellen
-  enter_email: Bitte geben Sie die E-Mail Adresse an, mit der Sie sich in dem Archiv
-    registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.
-  email: E-Mail
-  change_password: Passwort ändern
-  archive_results: Suchergebnisse
-  segment_results: Suchergebnisse im Transkript
-  photo_results: Suchergebnisse in Fotos
-  biographicalentry_results: Suchergebnisse in biografischen Einträgen
-  person_results: Suchergebnisse für Personen
-  user_registration_results: Suchergebnisse für Benutzer*innen
-  segment_hits: Treffer im Transkript
-  no_interviews_results: Keine Interviews gefunden.
-  interview_id: Interview-ID
-  interview_duration: Interviewdauer
-  home: Startseite
-  login_page: Login
-  logout_page: Logout
-  account_page: Konto
-  interview: Interview
-  user_content: Arbeitsmappe
-  user_content_errors: Bitte geben Sie Titel und Beschreibung ein (mind. 2 Buchstaben)
-  archive_search: Suche im Archiv
-  search: Suchen
-  interviewee_name: Name
-  periods: Zeitperioden
-  keywords: Registereinträge
-  keywords_mog: Schlagworte
-  registry: Register
-  registry_mog: Thesaurus
-  annotations: Anmerkungen
-  reset: zurücksetzen
-  set_all: Alle checken
-  transcript: Transkript
-  translation: Übersetzung
-  segmentation: Segmentierung
-  table_of_contents: Inhaltsverzeichnis
-  interview_search: Suche im Interview
-  write_annotation: Anmerkung schreiben
-  read_annotation: Anmerkung lesen
-  annotation_for: 'Anmerkung zu '
-  annotation_for_chapter: Ihre Anmerkung zum Kapitel
-  max_300: 300 verfügbare Zeichen
-  annotation_explanation: Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.
-  annotation_confirmation: Ich möchte, dass diese Anmerkung veröffentlicht und allen
-    angemeldeten Archivnutzerinenn und -nutzern angezeigt wird. Hiermit stimme ich
-    den den <a class="conditions-link" href="%{link}"
-    target="_blank">Richtlinien für Anmerkungen</a> zu.
-  save: speichern
-  cancel: abbrechen
-  assign_speakers: Sprecher*innen zuordnen
-  person_info: Zur Person
-  date_of_birth: Geburtsdatum
-  year_of_birth: Jahrgang
-  place_of_birth: Geburtsort
-  # place_of_interview: Interviewort
-  typology: Erfahrung
-  typologies: Erfahrungen
-  history: Kurzbiografie
-  interview_with: Interview mit
-  transcript_header: 'Transkript (%{lang}):'
-  transcript_title: Transkript (%{lang}) des Interviews mit
-  translation_title: Übersetzung (%{lang}) des Interviews mit
-  transcript_footer: 'Zitiervorgabe: Transkript des Interviews mit'
-  transcript_template: Vorlage für den Import von .ods Dateien
-  biographical_entries_header: 'Kurzbiografie:'
-  biographical_entries_title: 'Kurzbiografie von'
-  biographical_entries_footer: 'Zitiervorgabe: Kurzbiografie von'
-  interview_info: Zum Interview
-  place: Ort
-  duration: Dauer
+  more: más
+  segment: Fragmento
+  publish: Enviar a la redacción para la publicación
+  login: Iniciar sesión
+  login_name: Usuaria/o
+  logout: Cerrar sesión
+  login_errors: Por favor corrija su dirección de correo electrónico y/o su contraseña.
+  logged_in_as: Sesión iniciado como
+  user_name: Usuaria/o
+  notice: Recordar
+  forget_password: Recuperar contraseña
+  account_activation_errors: La contraseña y la confirmación de la contraseña deben ser iguales y tener un mínimo de 6 carácteres
+  submit: Enviar
+  platform: Una plataforma de
+  cooperation: en cooperación con
+  promoted: financiado por
+  forget_password_question: Recuperar contraseña
+  enter_email: Por favor introduzca la dirección de correo electrónico, que usó para registrarse en el archivo. Recibirá un correo electrónico con el enlace para recuperar su contraseña.
+  email: Correo electrónico
+  change_password: Cambiar contraseña
+  archive_results: Resultados de búsqueda
+  segment_results: Resultados de búsqueda en la transcripción
+  photo_results: Resultados de búsqueda en imágenes
+  registryentry_results: Resultatdos de búsqueda en el índice
+  biographicalentry_results: Resultados de búsqueda en entradas biográficas
+  person_results: Resultados de búsqueda para personas
+  user_registration_results: Resultados de búsqueda para usuaria/os
+  segment_hits: Resultados en la transcripción
+  no_interviews_results: No se encontraron entrevistas.
+  interview_id: ID de la entrevista
+  interview_duration: Duración de la entrevista
+  home: Página de inicio
+  login_page: Usuaria/o
+  logout_page: Cerrar sesión
+  account_page: Cuenta
+  interview: Entrevista
+  user_content: Carpeta
+  user_content_errors: Por favor, introduzca el título y la descripción (mínimo 2 letras)
+  archive_search: Búsqueda en el archivo
+  search: Buscar
+  interviewee_name: Apellido
+  periods: Períodos de tiempo
+  keywords: Entredas en el índice
+  keywords_mog: Palabras claves
+  registry: Índice
+  registry_mog: Tesauro
+  annotations: Anotaciones
+  reset: restablecer
+  set_all: revisar todos
+  transcript: Transcripción
+  translation: Traducción
+  segmentation: Segmentación
+  table_of_contents: Tabla de contenido
+  interview_search: Búsqueda en la entrevista
+  write_annotation: Escribir una anotación
+  read_annotation: Leer anotación
+  annotation_for: 'ánotación sobre '
+  annotation_for_chapter: Su anotación sobre capítulo
+  max_300: 300 carácteres disponibles
+  annotation_explanation: Puede revisar las anotaciones en esta carpeta.
+  annotation_confirmation: Yo deseo que se publique esta anotación y que sea visible para toda/os la/os usuaria/os registrada/os. Con esto confirma las <a class="conditions-link" href="%{link}" target="_blank">pautas para anotaciones</a>.
+  save: guardar
+  cancel: cancelar
+  assign_speakers: Asignar hablantes
+  person_info: Sobre la persona
+  date_of_birth: Fecha de nacimiento
+  year_of_birth: Año de nacimiento
+  place_of_birth: Lugar de nacimiento
+  # place_of_interview: Lugar de entrevista
+  typology: Experiencia
+  typologies: Experiencias
+  history: Biografía breve
+  interview_with: Entrevista con
+  transcript_header: 'Transcripción (%{lang}):'
+  transcript_title: Transcripción (%{lang}) de la entrevista con
+  translation_title: Traducción (%{lang}) de la entrevista con
+  transcript_footer: 'Cómo citar: Transcripción de la entrevista con'
+  transcript_template: Modelo para la importación de archivos .ods
+  biographical_entries_header: 'Biografía breve:'
+  biographical_entries_title: 'Biografía breve de'
+  biographical_entries_footer: 'Cómo citar: Biografía breve de'
+  interview_info: Ir a la entrevista
+  place: Lugar
+  duration: Duración
   id: ID
-  map: Karte
+  map: Mapa
   photos: Fotos
-  citation: Zitierweise
-  date: Datum
-  interview_type: 'Art: Video'
-  language: Sprache
-  camera: Kamera
-  order_new_password: Passwort wiederherstellen
-  ordered_new_password: Ihnen wurde eine Email mit Anleitungen zur Änderung Ihres
-    Passwortes geschickt.
-  conditions: Nutzungsbedingungen
-  privacy_protection: Datenschutz
-  legal_info: Impressum
-  request_for_use: Herausgabe von Archivmaterial
-  annotation_guidelines: Anmerkungsrichtlinien
-  team: Team
-  contact: Kontakt
-  help: Hilfe
-  usage_application: Nutzungsantrag
-  save_interview_reference: Interview merken
-  save_user_annotation: Anmerkung verfassen
-  save_search: Suche speichern
-  call_search: Suche aufrufen
-  call_interview_reference: Interview aufrufen
-  call_user_annotation: Stelle im Interview aufrufen
-  title: Titel
-  description: Beschreibung
+  citation: Cómo citar
+  date: Fecha
+  interview_type: 'Tipo: video'
+  language: Idioma
+  camera: Camera
+  order_new_password: Recuperar contraseña
+  ordered_new_password: Le enviamos instrucciones sobre cómo cambiar su contraseña.
+  conditions: Términos de uso
+  privacy_protection: Proteccion de datos
+  legal_info: Aviso legal
+  request_for_use: Entrega de material de archivo
+  annotation_guidelines: Pautas sobre elaborar anotaciones
+  team: Equipo
+  contact: Contacto
+  help: Ayuda
+  usage_application: Solicitud de uso
+  save_interview_reference: Recordar entrevistar
+  save_user_annotation: Redactar una anotación
+  save_search: Guardar búsqueda
+  call_search: Abrir búsqueda
+  call_interview_reference: Abrir entrevista
+  call_user_annotation: Ir a un punto en la entrevista
+  title: Título
+  description: Descripción
   edit:
     text:
       new: Text auswählen
@@ -246,16 +239,16 @@ es:
       processing: Das Interview wurde bearbeitet
       return: Weiteres Interview anlegen
     interviews:
-      publish: 
+      publish:
         title: Interviews publizieren
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich publiziert werden?"
-      unpublish: 
+      unpublish:
         title: Interviews nicht mehr öffentlich setzen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich nicht mehr öffentlich sein?"
-      publish_biographies: 
+      publish_biographies:
         title: Biographien publizieren
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich publiziert werden?"
-      unpublish_biographies: 
+      unpublish_biographies:
         title: Biographien nicht mehr öffentlich setzen
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich nicht mehr öffentlich sein?"
       delete:
@@ -346,23 +339,23 @@ es:
       delete: Foto löschen
     user_registration:
       show: 'Details'
-    role: 
+    role:
       new: 'Rolle hinzufügen'
       edit: 'Rolle bearbeiten'
       delete: 'Rolle löschen'
       admin: 'Rollen bearbeiten'
-    role_permission: 
+    role_permission:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
       delete: 'Berechtigung löschen'
-    permission: 
+    permission:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
       delete: 'Berechtigung löschen'
       admin: 'Berechtigungen bearbeiten'
-    upload_transcript: 
+    upload_transcript:
       title: Transkript hochladen
-      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden. 
+      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
     default:
       show: Beschreibung
@@ -374,29 +367,29 @@ es:
       title: Downloads
     administration: Verwaltung
     indexing: Erschliessung
-  edit_interview_reference: Gespeichertes Interview Bearbeiten
-  edit_user_annotation: Gespeicherte Anmerkung bearbeiten
-  edit_search: Gespeicherte Suche bearbeiten
-  query: Suchkriterien
-  delete: Löschen
-  delete_user_content: Aus Arbeitsmappe entfernen
-  choose: Bitte auswählen
-  enter_search_field: Bitte Suchbegriff eingeben ...
-  enter_field: Name, Suchbegriff, ...
-  enter_field_dg: Name, Pseudonym, Suchbegriff, ...
-  saved_searches: Gespeicherte Suchergebnisse
-  saved_interviews: Gespeicherte Interviews
-  saved_annotations: Gespeicherte Anmerkungen
-  text_materials: Textmaterialien
-  download_registry_entries: Gesamtes Register als pdf herunterladen
-  search_registry_entry: Registereintrag suchen
-  grid: Raster
-  list: Liste
+  edit_interview_reference: Editar una entrevista guardada
+  edit_user_annotation: Editar una anotación guardada
+  edit_search: Editar una búsqueda guardada
+  query: Criterios de búsqueda
+  delete: Borrar
+  delete_user_content: Eliminar de la carpeta
+  choose: Seleccione por favor
+  enter_search_field: Introduzca término de búsqueda por favor ...
+  enter_field: Apellido, término de búsqueda, ...
+  enter_field_dg: Apellido, Seudónimo, Término de búsqueda, ...
+  saved_searches: Resultados de búsqueda guardados
+  saved_interviews: Entrevistas guardadas
+  saved_annotations: Anotaciones guardadas
+  text_materials: Textos
+  download_registry_entries: Desgargar el índice completo como pdf
+  search_registry_entry: Buscar entrada en el índice
+  grid: Cuadrícula
+  list: Lista
   admin_actions: Aktionen
   doi:
     title: DOI registrieren
-    text1: Die Interviews  
-    text2:  werden bei Datacite registriert. 
+    text1: Die Interviews
+    text2:  werden bei Datacite registriert.
     ok: Bestätigen
     name: doi
     created: Erfolgreich veröffentlicht!
@@ -424,31 +417,31 @@ es:
     answered: beantwortet
     question_to_supervisor: Frage an Supervisor gestellt
   contributions:
-    title: Mitwirkende
-    add: Mitwirkende*n hinzufügen
-    interviewee: Interviewte(r)
-    interviewer: Interview
-    transcriptor: Transkript
-    translator: Übersetzung
-    segmentator: Segmentierung
-    cinematographer: Kamera
-    proof_reading: Lektorat
-    research: Erschließung
-    quality_manager_translation: Qualitätsmangement Übersetzung
-    quality_manager_transcription: Qualitätsmangement Transkription
-    quality_manager_interviewing: Qualitätsmangement Interview
-    quality_manager_research: Qualitätsmangement Erschließung
+    title: Colaborador/a
+    add: Añadir colaborador/a
+    interviewee: Entrevistada/o
+    interviewer: Entrevistador/a
+    transcriptor: Transcripción
+    translator: Traducción
+    segmentator: Segmentación
+    cinematographer: Camera
+    proof_reading: Revisión
+    research: Edición científica
+    quality_manager_translation: Gestión de calidad Traducción
+    quality_manager_transcription: Gestión de calidad Transcripción
+    quality_manager_interviewing: Gestión de calidad Entrevista
+    quality_manager_research: Gestión de calidad Edición científica
   texts:
-    add: Text hinzufügen
-    title: Ausgewählete Textpassagen
+    add: Añadir texto
+    title: Pasaje de texto seleccionado
   tasks:
-    Interview: Interview
-    BiographicalEntry: Biographie
-    RegistryReference: Nennungen / Referenzen
-    Contribution: Beiträge
+    Interview: Entrevista
+    BiographicalEntry: Biografía
+    RegistryReference: Menciones / Referencias
+    Contribution: Contribuciones
     Photo: Fotos
   status:
-    translated: mit dt. Übersetzung
+    translated: con traducción al alemán
   upload:
     type:
       bulk_metadata: Massenimport von Metadaten
@@ -457,9 +450,9 @@ es:
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
         sowie Feldart bei. Sprachbeschreibungen sollten entweder in Englisch oder im Alpha2- oder Alpha3-Code erfolgen.
-        Delimiter sollten entweder Semikolon oder Tab sein. 
-      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien 
-        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
+        Delimiter sollten entweder Semikolon oder Tab sein.
+      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
+        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
         Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
@@ -469,91 +462,91 @@ es:
     change_to_normal_view: Nutzeransicht
     change_to_edit_view: Redaktionsansicht
   user_registration:
-    registration: Registrierung
-    registration_text_one: 'Um die Interviews im Archiv ansehen zu können ist eine
-      Registrierung notwendig. Die '
-    registration_text_two: " erklären, für wen und für welche Zwecke das Archiv nutzbar
-      ist. Die "
-    registration_text_three: " erläutern, warum wir welche Daten verarbeiten und wofür
-      wir sie nutzen. Innerhalb von zwei Werktagen nach dem Absenden Ihrer Registrierung
-      erhalten Sie Ihre Zugangsdaten bzw. eine Rückmeldung."
-    tos_agreement: Nutzungsbedingungen
-    priv_agreement: Hinweise zum Datenschutz
-    notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes abonnieren.
-    notes_on_tos_agreement: Ich stimme den Nutzungsbedingungen zu.
-    priv_agreement_alias: Datenschutzbestimmungen
-    notes_on_priv_agreement: Ich stimme der  Datenschutzpraxis zu.
-    register: Registrierung senden
+    registration: Registro
+    registration_text_one: 'Para ver las entrevistas en el archivo, es
+        necesario registrarse. La '
+    registration_text_two: " declarar, para quién y con qué fines se puede usar el archivo.
+        La "
+    registration_text_three: " explicar, porque procesamos cuales datos y para que
+        los usamos. Dentro de dos días hábiles después de registrarse
+        recibirá sus datos de acceso o una respuesta."
+    tos_agreement: Términos de uso
+    priv_agreement: Indicaciones sobre la política de privacidad
+    notes_on_receive_newsletter: Sí, me gustaría recibir el boletín del proyecto.
+    notes_on_tos_agreement: Acepto los términos de uso.
+    priv_agreement_alias: Política de privacidad
+    notes_on_priv_agreement: Acepto la política de privacidad.
+    register: Enviar registro
     appellation:
-      ms: Frau
-      ms_dr: Frau Dr.
-      ms_prof: Frau Prof.
-      mr: Herr
-      mr_dr: Herr Dr.
-      mr_prof: Herr Prof.
+      ms: Sra.
+      ms_dr: Dra.
+      ms_prof: Profa.
+      mr: Sr.
+      mr_dr: Dr.
+      mr_prof: Prof.
     job_description:
-      researcher: Dozent(in)/Forscher(in)
-      filmmaker: Filmemacher(in)
-      journalist: Journalist(in)
-      teacher: Lehrer(in)
-      memorial_staff: Mitarbeiter(in) (Museen /Gedenkstätten)
-      pupil: Schüler(in)
-      student: Student(in)
-      other: Sonstige
+      researcher: Docente/Investigador/a
+      filmmaker: Director/a de cine
+      journalist: Periodista
+      teacher: Profesor/a
+      memorial_staff: Empleada/o (Museos /Memoriales)
+      pupil: Estudiante de primaria o secundaria
+      student: Estudiante universitaria/o
+      other: Otras/os
     research_intentions:
-      exhibition: Ausstellung
-      education: Bildungsarbeit
-      film: Dokumentarfilm
-      genealogy: Familienforschung
-      art: Kunstprojekt
-      personal_interest: Persönliches Interesse
-      press_publishing: Pressepublikation
-      school_project: Schulprojekt /Referat
-      university_teaching: universitäre Lehre
-      scientific_paper: wissenschaftliche Publikation
-      other: Sonstige
+      exhibition: Exposición
+      education: Trabajo educativo
+      film: Película documental
+      genealogy: Investigación genealógica
+      art: Proyecto de arte
+      personal_interest: Interés personal
+      press_publishing: Publicación en la prensa
+      school_project: Proyecto de escuela /Ponencia
+      university_teaching: Enseñanza universitaria
+      scientific_paper: Públicación científica
+      other: Otros
   gender:
-    female: weiblich
-    male: männlich
-    diverse: divers
+    female: feminino
+    male: masculino
+    diverse: diverso
   genders:
-    female: weiblich
-    male: männlich
-    diverse: divers
+    female: feminino
+    male: masculino
+    diverse: diverso
   search_facets:
-    forced_labor_field: Einsatzbereich
-    forced_labor_group: Gruppe
-    period: Zeitperioden
-    fulltext: Suchbegriff
-    gender: Geschlecht
-    Man: männlich
-    Woman: weiblich
-    Diverse: divers
-    man: männlich
-    woman: weiblich
-    diverse: divers
-    male: männlich
-    female: weiblich
-    diverse: divers
+    forced_labor_field: Area de trabajo
+    forced_labor_group: Grupo
+    period: Períodos de tiempo
+    fulltext: Término de búsqueda
+    gender: Género
+    Man: masculino
+    Woman: feminino
+    Diverse: diverso
+    man: masculino
+    woman: feminino
+    diverse: diverso
+    male: masculino
+    female: feminino
+    diverse: diverso
     video: Video
     audio: Audio
-    born: geb.
-    typology: Erfahrungen
-    resistance: Widerstand
-    occupation: Besatzungsalltag
-    flight: Flucht
-    concentration_camp: Konzentrationslager
-    persecution_of_jews: Judenverfolgung
-    retaliation: Vergeltungsaktionen und Massenhinrichtungen
-    collaboration: Kollaboration
-    interview_id: Interviews
-    archive_id: Name
-    collection_id: Teilsammlung
-    media_type: Medientyp
-    language_id: Sprache
-    age: Alter
-    year_of_birth: Geburtsjahr
-    interview_date: Entstehungszeit
+    born: nacido
+    typology: Experiencias
+    resistance: Resistencia
+    occupation: Vida cotidiana bajo la ocupación
+    flight: Fuga
+    concentration_camp: Campo de concentración
+    persecution_of_jews: Persecución de la/os judía/os
+    retaliation: Represalías y ejecuciones en masa
+    collaboration: Colaboración
+    interview_id: Entrevistas
+    archive_id: Apellido
+    collection_id: Colección parcial
+    media_type: Fórmato de medios
+    language_id: Idioma
+    age: Edad
+    year_of_birth: Año de nacimiento
+    interview_date: Fecha de origen
   activerecord:
     models:
       interview:
@@ -647,64 +640,64 @@ es:
 
     attributes:
       history:
-        forced_labor_details: Zwangsarbeitdetails
-        return_date: Rückkehrdatum
-        deportation_date: Verschleppungsdatum
-        punishment: Art der Mißhandlung
-        liberation_date: Befreiungsdatum
+        forced_labor_details: Detalles sobre trabajador/as forzoza/os
+        return_date: Fecha de regreso
+        deportation_date: Fecha de deportación
+        punishment: Tipo de maltrato
+        liberation_date: Fecha de liberación
       biographical_entry:
-        text: Ereignis
-        start_date: Beginn
-        end_date: Ende
-        workflow_state: 'Status'
+        text: Evento
+        start_date: Inicio
+        end_date: Fin
+        workflow_state: 'estatus'
       contribution:
-        contribution_type: Art des Beitrags
-        person_id: Person
-        speaker_designation: Sprecher*innenauszeichnung (z.B. *CG:*)
+        contribution_type: Tipo de la contribución
+        person_id: persona
+        speaker_designation: Especificación del/la hablante (p.ej. *CG:*)
       collection:
-        project_id: Projekt
-        homepage: Website
-        countries: Interviews in
-        institution: Durchgeführt von
-        responsibles: Verantwortliche
-        interviewers: Interviewende
-        homepage: Homepage
-        notes: Weitere Anmerkungen
-        interviews: Interviewte
+        project_id: Proyecto
+        homepage: Página web
+        countries: Entrevistas en
+        institution: Realizado por
+        responsibles: Responsables
+        interviewers: Entrevistador/as
+        homepage: Página web
+        notes: Otras anotaciones
+        interviews: Entrevistada/os
       language:
-        code: Code
+        code: Código
       interview:
-        person_name: Name
-        collection_id: Sammlung
-        archive_id: Archiv-ID
-        forced_labor_groups: Gruppe
-        forced_labor_fields: Einsatzbereich
-        forced_labor_habitations: Unterbringung / Inhaftierung
-        forced_labor_locations: Lager und Einsatzorte
-        forced_labor_details: Angaben zum Einsatz
-        birth_date: Geboren am
-        birth_locations: Geburtsort (heutiger Name)
-        deportation: Deportationsort (heutiger Name), Jahr
-        punishment: Strafmaßnamen
-        liberation_date: Datum der Befreiung
-        return_locations: Wohnorte ab 1945
-        return_date: Datum der Rückkehr
-        home_locations: Wohnort
-        duration: Art und Länge des Interviews
-        interview_date: geführt am
-        tape_count: Anzahl der Tapes
-        interviewers: Interviewführung
-        transcriptors: Transkription
-        translators: Übersetzung
-        researchers: Erschließung
-        proofreaders: Lektorat
-        segmentators: Segmentierung
-        language: Sprache
-        language_id: Originalsprache
-        media_type: Media Typ
-        translated: ist das Interview bereits übersetzt?
-        workflow_state: 'Status'
-        observations: Protokoll
+        person_name: Apellido
+        collection_id: Colección
+        archive_id: ID de archivo
+        forced_labor_groups: Grupo
+        forced_labor_fields: Área de trabajo
+        forced_labor_habitations: Internamiento / Detención
+        forced_labor_locations: Campos y lugares de trabajo
+        forced_labor_details: Detalles sobre el trabajo
+        birth_date: Nacido el
+        birth_locations: Lugar de nacimiento (nombre actual)
+        deportation: Lugar de deportación (nombre actual), año
+        punishment: Castigos
+        liberation_date: Fecha de liberación
+        return_locations: Lugares de residencia a partir de 1945
+        return_date: Fecha de retorno
+        home_locations: Lugar de residencia
+        duration: Tipo y duración de la entrevista
+        interview_date: realizada el
+        tape_count: Número de cintas
+        interviewers: Realización de la entrevista
+        transcriptors: Transcripción
+        translators: Traducción
+        researchers: Edición científica
+        proofreaders: Revisión
+        segmentators: Segmentación
+        language: Idioma
+        language_id: Idioma original
+        media_type: Fórmato de medios
+        translated: se ha traducido la entrevista?
+        workflow_state: 'estatus'
+        observations: Protócolo
       transcript:
         collection_id: Sammlung
         archive_id: Archiv-ID
@@ -721,33 +714,28 @@ es:
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         delete_existing: delete existing transcript (for this tape)
       project:
-        pseudo_available_locales: verfügbare Sprachcodes (alpha2)
+        available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
-        introduction: Einführung Startseite
-        more_text: Weiterer Text Startseite
-        landing_page_text: Landingpage Text 
-        pseudo_view_modes: Ansichten
+        view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
-        pseudo_upload_types: UploadTypen
+        upload_types: UploadTypen
+        primary_color_rgb: Primary Color RGB
         shortname: Kürzel
         initials: Initialen
         domain: Projektdomain
         archive_domain: Archivdomain
         doi: DOI
-        cooperation_partner: Kooperationspartner
-        leader: Projektleiter
-        manager: Projektmanager
-        hosting_institution: Institution
-        pseudo_funder_names: Finanzierung
-        contact_email: Kontaktemail
-        smtp_server: SMTP-Server
+        cooperation_partner: colaborador/a
+        leader: Director/a del proyecto
+        manager: Coordinador/a del proyecto
+        hosting_institution: Institución
+        funder_names: Financiamiento
+        contact_email: Correo electrónico de contacto
+        smtp_server: Servidor SMTP
         has_newsletter: Newsletter
-        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs) 
-        pseudo_pdf_registry_entry_codes: Codes der Registereinträge für PDF
+        hidden_registry_entry_ids: versteckte Registereinträge (IDs)
+        pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
-        primary_color: Primary color
-        secondary_color: Secondary color
-        landing_page_edit_help: INTERVIEWEE wird durch den Namen des/der Interviewten ersetzt.
       metadata_field:
         use_as_facet: als Facette benutzen
         facet_order: Reihenfolge in den Suchfacetten
@@ -765,58 +753,58 @@ es:
         type: Art des Uploads
         data: Datei
       segment:
-        media_id: Segment-ID
-        transcript: Transkription
-        translation: Transkription (übersetzt)
-        mainheading: Überschrift
-        subheading: Unter-Überschrift
-        text: Text
-        speaker_id: Sprecher
+        media_id: ID de segmento
+        transcript: Transripción
+        translation: Transcripción (traducida)
+        mainheading: Encabezado
+        subheading: Encabezado secundario
+        text: Texto
+        speaker_id: Hablante
       user_content:
-        title: Titel
-        description: Notiz
-        query: Suchkriterien
+        title: Título
+        description: Anotación
+        query: Criterios de búsqueda
       user_annotation:
-        author: Autor
-        archive_id: Archiv-ID
-        timecode_string: Timecode
-        submitted_at: Einreichung am
-        description: Anmerkung
-        link_url: Link
-        workflow_state: Veröffentlichungsstatus
-        heading: Kapitel
-        media_id: Medien ID
+        author: Autor/a
+        archive_id: ID de archivo
+        timecode_string: Código de tiemo
+        submitted_at: Entregado el
+        description: Anotación
+        link_url: Enlace
+        workflow_state: Estado de publicación
+        heading: Capítulo
+        media_id: ID de medio
       user_account:
-        login: Login
-        password: Passwort
+        login: Iniciar sesión
+        password: Contraseña
       account:
-        gender: Geschlecht
-        first_name: Vorname
-        last_name: Nachname
+        gender: Género
+        first_name: Nombre
+        last_name: Apellido
       user_registration:
-        created_at: Erstellt am
-        activated_at: Aktiviert am
-        processed_at: Bearbeitet am
-        admin_comments: Kommentar
-        default_locale: Standart Locale
-        appellation: Anrede
-        first_name: Vorname
-        last_name: Nachname
-        job_description: Beruf
-        research_intentions: Rechercheanliegen
-        comments: Präzisierung des Anliegens
-        organization: Institution
-        homepage: Homepage der Institution
-        address: Adresse
-        street: Straße
-        zipcode: PLZ
-        city: Ort
-        country: Land
-        receive_newsletter: Newsletter
-        tos_agreement: Nutzungsbedingungen
-        priv_agreement: Hinweise zum Datenschutz
-        register: Registrierung senden
-        workflow_state: Status ändern zu
+        created_at: Creado el
+        activated_at: Activado el
+        processed_at: Editado el
+        admin_comments: Comentario
+        default_locale: Idioma por defecto
+        appellation: Título
+        first_name: Nombre
+        last_name: Apellido
+        job_description: Profesión
+        research_intentions: Tema de investigación
+        comments: Detalle del tema de investigación
+        organization: Institución
+        homepage: Página web de la institución
+        address: Dirección
+        street: Calle
+        zipcode: Código postal
+        city: Lugar
+        country: País
+        receive_newsletter: Boletín
+        tos_agreement: Términos de uso
+        priv_agreement: Indicaciones sobre la política de privacidad
+        register: Enviar registro
+        workflow_state: Cambiar estado a
       user_role:
         role_id: Rolle
       role:
@@ -834,14 +822,14 @@ es:
         authorized_id: ID oder Archiv ID
         authorized_type: Typ
       person:
-        gender: Geschlecht
-        first_name: Vorname
-        last_name: Nachname
-        birth_name: Geburtsname
-        date_of_birth: Geburtsdatum
-        alias_names: Alias Names
-        other_first_names: Other First Names
-        typology: Erfahrungen
+        gender: Género
+        first_name: Nombre
+        last_name: Apellido
+        birth_name: Nombre de nacimiento
+        date_of_birth: Fecha de nacimiento
+        alias_names: Alias Names (?)
+        other_first_names: Otros nombres
+        typology: Experiencias
       registry_entry:
         descriptor: Name
         notes: Anmerkungen
@@ -855,12 +843,12 @@ es:
       registry_hierarchy:
         ancestor_id: ID des Elternknoten
       annotation:
-        text: Text
+        text: Texto
       photo:
-        caption: Fotobeschreibung
-        data: Fotodatei
-        caption_explanation: This photo caption is only available in German.
-        workflow_state: 'Status'
+        caption: Descripción de la foto
+        data: Archivo de la foto
+        caption_explanation: Este pie de foto sólo está disponible en alemán.
+        workflow_state: 'estatus'
       uploaded_file:
         title: Title (hover)
       mark_text:
@@ -879,16 +867,16 @@ es:
         file: Dato
     errors:
       default:
-        select: Bitte auswählen
-        textarea: Bitte angeben
-        checkbox_input: Bitte zustimmen
-        text_input: Bitte angeben
-        file_input: Bitte Datei auswählen
-        password_input: Bitte berichtigen Sie Ihr Passwort
-        email_input: Bitte berichtigen Sie Ihre Email
+        select: Seleccionar
+        textarea: Indicar
+        checkbox_input: Aceptar
+        text_input: Indicar
+        file_input: Seleccionar archivo
+        password_input: Por favor corrija su contraseña
+        email_input: Por favor corrija su dirección de correo electrónico
       template:
-        header: Ihre Anfrage konnte nicht bearbeitet werden
-        body: 'Folgendes Problem ist aufgetreten:'
+        header: Su solicitud no se ha podido procesar
+        body: 'Se ha presentado el siguiente problema:'
       models:
         interview:
           attributes:
@@ -897,13 +885,13 @@ es:
         user_annotation:
           attributes:
             description:
-              too_long: Anmerkungen dürfen eine Länge von 300 Zeichen nicht überschreiten.
-              modification_not_allowed: Überarbeitung des Anmerkungstextes ist nach
-                Veröffentlichung nicht mehr gestattet.
+              too_long: Anotaciones no deben exceder el límite de 300 carácteres.
+              modification_not_allowed: No se permite editar el texto de la anotación
+                después de su publicación.
         user_content:
           attributes:
             description:
-              too_long: Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.
+              too_long: Sus notas no deben exceder el límite de 300 carácteres.
 
   interview_title_patterns:
     lastname_with_birthname: '%{lastname} (%{birthname})'
