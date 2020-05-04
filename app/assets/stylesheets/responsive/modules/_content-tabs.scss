@@ -422,6 +422,10 @@ div.mainheading + div {
 
 // Tab Content: Search / Suche im Interview
 
+.content-search-row {
+  display: inline-block;
+}
+
 .content-search-legend {
   margin-bottom: 20px;
   font-size: $font-size-medium;
