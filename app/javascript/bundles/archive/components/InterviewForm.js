@@ -116,7 +116,7 @@ export default class InterviewForm extends React.Component {
 
         if (this.props.withContributions) {
             props['subForm'] = ContributionFormContainer;
-            props['subFormProps'] = {};
+            props['subFormProps'] = {withSpeakerDesignation: true};
             props['subFormScope'] = 'contribution';
             props['subScopeRepresentation'] = this.showContribution;
         }
