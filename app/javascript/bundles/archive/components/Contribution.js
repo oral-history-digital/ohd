@@ -12,7 +12,11 @@ export default class Contribution extends React.Component {
                 title={t(this.props, 'edit.contribution.edit')}
                 onClick={() => this.props.openArchivePopup({
                     title: t(this.props, 'edit.contribution.edit'),
-                    content: <ContributionFormContainer contribution={this.props.contribution} submitData={this.props.submitData} />
+                    content: <ContributionFormContainer 
+                        contribution={this.props.contribution} 
+                        submitData={this.props.submitData} 
+                        withSpeakerDesignation={this.props.withSpeakerDesignation}
+                    />
                 })}
             >
                 <i className="fa fa-pencil"></i>
@@ -56,10 +60,17 @@ export default class Contribution extends React.Component {
         }
     }
 
+    speakerDesignation() {
+        if (this.props.withSpeakerDesignation) {
+            return <span>{`: ${this.props.contribution.speaker_designation || t(this.props, 'edit.update_speaker.no_speaker_designation')}`}</span>;
+        }
+    }
+
     render() {
         return (
             <span className="flyout-content-data">
                 {fullname(this.props, this.props.person)}
+                {this.speakerDesignation()}
                 {this.buttons()}
             </span>
         );

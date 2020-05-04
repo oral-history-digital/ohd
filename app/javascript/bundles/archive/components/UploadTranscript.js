@@ -1,6 +1,5 @@
 import React from 'react';
 import Form from '../containers/form/Form';
-import ContributionFormContainer from '../containers/ContributionFormContainer';
 import { t, fullname } from '../../../lib/utils';
 
 export default class UploadTranscript extends React.Component {
@@ -12,18 +11,7 @@ export default class UploadTranscript extends React.Component {
             showForm: true
         };
 
-        this.showContribution = this.showContribution.bind(this);
         this.handleFileChange = this.handleFileChange.bind(this);
-    }
-
-    showContribution(value) {
-        return (
-            <span>
-                <span>{fullname(this.props, this.props.people[parseInt(value.person_id)]) + ', '}</span>
-                <span>{t(this.props, `contributions.${value.contribution_type}`) + ', '}</span>
-                <span>{value.speaker_designation}</span>
-            </span>
-        )
     }
 
     returnToForm() {
@@ -64,7 +52,10 @@ export default class UploadTranscript extends React.Component {
                         scope='transcript'
                         onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
                         submitText='edit.upload_transcript.title'
-                        values={{archive_id: this.props.archiveId }}
+                        values={{
+                            archive_id: this.props.archiveId,
+                            contributions_attributes: this.props.interview.contributions
+                        }}
                         elements={[
                             { 
                                 attribute: 'data',
@@ -103,10 +94,6 @@ export default class UploadTranscript extends React.Component {
                                 validate: function(v){return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v)}
                             },
                         ]}
-                        subForm={ContributionFormContainer}
-                        subFormProps={{withSpeakerDesignation: true}}
-                        subFormScope='contribution'
-                        subScopeRepresentation={this.showContribution}
                     />
                 </div>
             )

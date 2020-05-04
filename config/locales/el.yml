@@ -336,6 +336,7 @@ el:
         Durch Zuweisung dieser Auszeichnungen (z.B. *CG:*) zu einem*einer spezifischen Mitwirkenden werden sie entfernt und den Symbolen zugeordnet.
         Segmente mit Sprecher*innenwechsel werden dadurch geteilt.
       speaker_for_speaker_designation: 'Sprecher*in für: '
+      no_speaker_designation: 'nicht geg.'
       processing: Die Sprecher*innen werden zugeordnet
       processed: 'Die Sprecher*innen für %{archiveId} sind nun zugeordnet.'
       no_speaker_designations_found: In dem Transkript wurden keine versteckten, nicht zugeordneten Sprecher*innenbezeichnungen gefunden

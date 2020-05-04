@@ -478,13 +478,13 @@ class Interview < ApplicationRecord
     language && language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, contribution_data)
+  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
       parsed_sheet.each_with_index do |row, index|
-        contribution = contribution_data.select{|c| c['speaker_designation'] ==  row[:speaker]}.first
-        speaker_id = contribution && contribution['person_id']
+        contribution = contributions.select{|c| c.speaker_designation ==  row[:speaker]}.first
+        speaker_id = contribution && contribution.person_id
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
           Segment.create_or_update_by({ 
             interview_id: id, 
@@ -493,7 +493,6 @@ class Interview < ApplicationRecord
             tape_id: tape_id,
             text: row[:transcript] || '', 
             locale: locale,
-            contribution_data: contribution_data, 
             speaker_id: speaker_id
           })
         end
@@ -504,7 +503,7 @@ class Interview < ApplicationRecord
   end
 
   # tape_id is a dummy here
-  def create_or_update_segments_from_text(file_path, tape_id, locale, contribution_data)
+  def create_or_update_segments_from_text(file_path, tape_id, locale)
     tape = Tape.find(tape_id)
     data = File.read file_path
     text = Yomu.read :text, data
@@ -514,12 +513,11 @@ class Interview < ApplicationRecord
       next_timecode: Timecode.new(tape.duration).timecode,
       tape_id: tape_id,
       text: text, 
-      locale: locale,
-      contribution_data: contribution_data
+      locale: locale
     })
   end
 
-  def create_or_update_segments_from_vtt(file_path, tape_id, locale, contribution_data)
+  def create_or_update_segments_from_vtt(file_path, tape_id, locale)
     extension = File.extname(file_path).strip.downcase[1..-1]
     webvtt = extension == 'vtt' ? ::WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
     webvtt.cues.each do |cue|
@@ -530,7 +528,6 @@ class Interview < ApplicationRecord
         tape_id: tape_id,
         text: cue.text, 
         locale: locale,
-        contribution_data: contribution_data
       })
     end
   end

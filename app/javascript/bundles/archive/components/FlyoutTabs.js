@@ -129,19 +129,21 @@ export default class FlyoutTabs extends React.Component {
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
-                                content={ <InterviewInfoContainer/> }/>
+                                content={ <InterviewInfoContainer/> }
+                            />
                         </AuthShowContainer>
                         <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
-                                content={ <div><InterviewInfoContainer/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }/>
+                                content={ <div><InterviewInfoContainer/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }
+                            />
                         </AuthShowContainer>
                         <AuthShowContainer ifAdmin={true} obj={{type: 'Interview', action: 'update'}}>
                             <InterviewDataContainer
                                 title={t(this.props, 'edit.upload_transcript.title')}
                                 open={false}
-                                content={ <UploadTranscriptContainer /> }
+                                content={ <div><UploadTranscriptContainer /><InterviewContributorsContainer withSpeakerDesignation={true}/></div> }
                             />
                         </AuthShowContainer>
                         {this.assignSpeakersForm()}
@@ -158,7 +160,8 @@ export default class FlyoutTabs extends React.Component {
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}
                                 open={true}
-                                content={<CitationInfoContainer/>}/>
+                                content={<CitationInfoContainer/>}
+                            />
                             {this.renderAdminActions([this.props.archiveId])}
                         </AuthShowContainer>
                     </div>

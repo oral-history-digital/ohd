@@ -23,11 +23,9 @@ class TranscriptsController < ApplicationController
     update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
     tape.segments.destroy_all if transcript_params[:delete_existing]
 
-    create_contributions(interview, transcript_params[:contributions_attributes])
-    
     locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send(Project.alpha) 
 
-    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account, transcript_params[:contributions_attributes].map(&:to_h))
+    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account) 
 
     respond_to do |format|
       format.json do
@@ -66,12 +64,5 @@ class TranscriptsController < ApplicationController
       tape.update_attributes duration: tape_duration, time_shift: time_shifts[index]
     end
   end
-
-  def create_contributions(interview, contribution_data)
-    contribution_data && contribution_data.each do |c|
-      Contribution.create interview_id: interview.id, contribution_type: c['contribution_type'], person_id: c['person_id']
-    end
-  end
-
 
 end

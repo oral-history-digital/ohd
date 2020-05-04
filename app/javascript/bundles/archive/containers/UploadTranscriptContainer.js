@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import UploadTranscript from '../components/UploadTranscript';
 import { submitData } from '../actions/dataActionCreators';
-import { getProject } from '../../../lib/utils';
+import { getProject, getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         locales: (project && project.available_locales) || state.archive.locales,
+        interview: getInterview(state),
         archiveId: state.archive.archiveId,
         translations: state.archive.translations,
         collections: state.data.collections,

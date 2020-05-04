@@ -96,7 +96,7 @@ class Segment < ApplicationRecord
     def assign_speakers_and_update_text(segment, opts)
       tape = Tape.find opts[:tape_id]
 
-      speaker_designations = opts[:contribution_data].map{|d| d['speaker_designation']}
+      speaker_designations = interview.contributions.map{|d| d.speaker_designation}
       #
       # regexps with capture groups, e.g. /(speaker one:)|(speaker two:)/
       #
@@ -105,7 +105,7 @@ class Segment < ApplicationRecord
       # 
       # splitted_text is an array containing [speaker_designation1, text_of_speaker1, speaker_designation2, text_of_speaker2, etc.]
       #
-      splitted_text = opts[:contribution_data].empty? ? [opts[:text]] : opts[:text] && opts[:text].split(all_speakers_regexp).reject(&:empty?)  
+      splitted_text = interview.contributions.empty? ? [opts[:text]] : opts[:text] && opts[:text].split(all_speakers_regexp).reject(&:empty?)  
       time_per_char = calculate_time_per_char(speaker_designations, opts)
 
       # clean erraneously added blanks
@@ -118,7 +118,7 @@ class Segment < ApplicationRecord
         if splitted_text.length.even?
           speaker_designation = splitted_text.shift
           atts[:text] = splitted_text.shift.gsub(/\n+/, '')
-          person_id = opts[:contribution_data].select{|c| c['speaker_designation'] ==  speaker_designation}.first['person_id']
+          person_id = interview.contributions.select{|c| c.speaker_designation ==  speaker_designation}.first['person_id']
           atts[:speaker_id] = person_id if person_id
           segment.update_original_and_write_other_versions atts
         else

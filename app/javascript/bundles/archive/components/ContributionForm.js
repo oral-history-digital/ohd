@@ -50,6 +50,7 @@ export default class ContributionForm extends React.Component {
         if (this.props.withSpeakerDesignation) {
             elements.push({ 
                 attribute: 'speaker_designation',
+                value: this.props.contribution && this.props.contribution.speaker_designation,
             });
         }
         return elements;

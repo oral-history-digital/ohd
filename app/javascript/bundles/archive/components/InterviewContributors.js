@@ -20,7 +20,7 @@ export default class InterviewContributors extends React.Component {
         ) {
             for (var c in this.props.interview.contributions) {
                 let contribution = this.props.interview.contributions[c];
-                if (contribution !== 'fetched' && contribution.contribution_type !== 'interviewee') {
+                if (this.props.withSpeakerDesignation || contribution.contribution_type !== 'interviewee') {
                     if (!contributionTypes[contribution.contribution_type]) {
                         contributionTypes[contribution.contribution_type] = [
                             <span className='flyout-content-label' key={`contribution-label-${contribution.id}`}>
@@ -29,13 +29,18 @@ export default class InterviewContributors extends React.Component {
                         ];
                     }
                     contributionTypes[contribution.contribution_type].push(
-                        <ContributionContainer person={this.props.people[contribution.person_id]} contribution={contribution} key={`contribution-person-${contribution.id}`} />
+                        <ContributionContainer 
+                            person={this.props.people[contribution.person_id]} 
+                            contribution={contribution} key={`contribution-person-${contribution.id}`} 
+                            withSpeakerDesignation={this.props.withSpeakerDesignation}
+                        />
                     )
                 }
             }
         } 
         //return Object.keys(contributionTypes).map((key, index) => {
         return [
+            'interviewee', 
             'interviewer', 
             'cinematographer', 
             'transcriptor', 
@@ -66,7 +71,11 @@ export default class InterviewContributors extends React.Component {
                     title={t(this.props, 'edit.contribution.new')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.contribution.new'),
-                        content: <ContributionFormContainer interview={this.props.interview} submitData={this.props.submitData} />
+                        content: <ContributionFormContainer 
+                            interview={this.props.interview} 
+                            submitData={this.props.submitData} 
+                            withSpeakerDesignation={this.props.withSpeakerDesignation}
+                        />
                     })}
                 >
                     <i className="fa fa-plus"></i> {t(this.props, 'edit.contribution.new')}
