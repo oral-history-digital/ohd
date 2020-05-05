@@ -193,7 +193,7 @@ class ApplicationController < ActionController::Base
   private
 
   def search_query
-    current_project.search_facets_names.inject({}) do |mem, facet|
+    current_project.search_facets_names.inject({page: 1}) do |mem, facet|
       mem["#{facet}[]"] = params[facet] if params[facet]
       mem
     end
