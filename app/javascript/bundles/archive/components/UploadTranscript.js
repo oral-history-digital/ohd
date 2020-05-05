@@ -54,7 +54,7 @@ export default class UploadTranscript extends React.Component {
                         submitText='edit.upload_transcript.title'
                         values={{
                             archive_id: this.props.archiveId,
-                            contributions_attributes: this.props.interview.contributions
+                            contributions_attributes: this.props.interview && this.props.interview.contributions
                         }}
                         elements={[
                             { 
