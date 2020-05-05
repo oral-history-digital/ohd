@@ -14,7 +14,7 @@ export default class BiographicalEntry extends React.Component {
 
     edit() {
         return (
-            <div
+            <span
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.biographical_entry.edit')}
                 onClick={() => this.props.openArchivePopup({
@@ -23,7 +23,7 @@ export default class BiographicalEntry extends React.Component {
                 })}
             >
                 <i className="fa fa-pencil"></i>
-            </div>
+            </span>
         )
     }
 
@@ -33,7 +33,7 @@ export default class BiographicalEntry extends React.Component {
     }
 
     delete() {
-        return <div
+        return <span
             className='flyout-sub-tabs-content-ico-link'
             title={t(this.props, 'delete')}
             onClick={() => this.props.openArchivePopup({
@@ -50,29 +50,29 @@ export default class BiographicalEntry extends React.Component {
             })}
         >
             <i className="fa fa-trash-o"></i>
-        </div>
+        </span>
     }
 
     toggle() {
         return (
-            <div
+            <span
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
                 onClick={() => this.setState({ collapsed: !this.state.collapsed })}
             >
                 <i className={`fa fa-angle-${this.state.collapsed ? 'down' : 'up'}`}></i>
-            </div>
+            </span>
         )
     }
 
     buttons() {
         if (admin(this.props, {type: 'BiographicalEntry', action: 'create'})) {
             return (
-                <div className={'flyout-sub-tabs-content-ico'}>
+                <span className={'flyout-sub-tabs-content-ico'}>
                     {this.toggle()}
                     {this.edit()}
                     {this.delete()}
-                </div>
+                </span>
             )
         }
     }
@@ -95,19 +95,28 @@ export default class BiographicalEntry extends React.Component {
 
     preview() {
         return (
-            <div className={'flyout-sub-tabs-content-ico'}>
+            <span className={'flyout-content-data'}>
                 {this.props.data.text[this.props.locale].substring(0,15)}
-            </div>
+            </span>
         )
     }
 
     render() {
-        return (
-            <div>
-                {this.state.collapsed ? this.preview() : this.entries()}
-                {this.buttons()}
-            </div>
-        )
+        if (this.state.collapsed) {
+            return (
+                <p>
+                    {this.preview()}
+                    {this.buttons()}
+                </p>
+            )
+        } else {
+            return (
+                <div>
+                    {this.entries()}
+                    {this.buttons()}
+                </div>
+            )
+        }
     }
 }
 

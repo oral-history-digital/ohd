@@ -19,7 +19,7 @@ export default class BiographicalEntries extends React.Component {
     addBiographicalEntry() {
         if (admin(this.props, {type: 'BiographicalEntry', action: 'create'})) {
             return (
-                <div
+                <span
                     className='flyout-sub-tabs-content-ico-link'
                     title={t(this.props, 'edit.biographical_entry.new')}
                     onClick={() => this.props.openArchivePopup({
@@ -27,8 +27,8 @@ export default class BiographicalEntries extends React.Component {
                         content: <BiographicalEntryFormContainer person={this.props.person} />
                     })}
                 >
-                    <i className="fa fa-plus"></i>
-                </div>
+                    <i className="fa fa-plus"></i> {t(this.props, 'edit.biographical_entry.new')}
+                </span>
             )
         }
     }
@@ -38,7 +38,7 @@ export default class BiographicalEntries extends React.Component {
             return (
                 <div>
                     {this.biographicalEntries()}
-                    {this.addBiographicalEntry()}
+                    <p>{this.addBiographicalEntry()}</p>
                 </div>
             );
         } else {

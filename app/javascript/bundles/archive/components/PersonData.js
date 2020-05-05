@@ -25,8 +25,7 @@ export default class PersonData extends React.Component {
 
     download(lang) {
         return (
-            <a className='flyout-download-link-lang'
-                href={pathBase(this.props) + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
+            <a href={pathBase(this.props) + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
                 <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                 <span>{t(this.props, lang)}</span>
             </a>
@@ -55,10 +54,12 @@ export default class PersonData extends React.Component {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
-                        <span className="flyout-content-label">
-                            {t(this.props, "history")}:
-                        </span>
-                        {this.downloads()}
+                        <p>
+                            <span className="flyout-content-label">
+                                {t(this.props, "history")}:
+                            </span>
+                            {this.downloads()}
+                        </p>
                     </AuthShowContainer>
                     <AuthShowContainer ifAdmin={true} obj={{type: 'BiographicalEntry', action: 'update'}}>
                         {this.biographicalEntries()}
