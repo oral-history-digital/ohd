@@ -38,6 +38,8 @@ de:
   italic: kursiv
   text: Text
   or: oder
+  show: Zeigen
+  hide: Weniger
   edit_column_header:
     select_columns: Zu bearbeitende Daten auswählen
     text_orig: Transkript

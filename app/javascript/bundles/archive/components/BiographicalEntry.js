@@ -5,6 +5,13 @@ import { t, admin } from '../../../lib/utils';
 
 export default class BiographicalEntry extends React.Component {
 
+    constructor(props, context) {
+        super(props, context);
+        this.state = {
+            collapsed: true
+        }
+    }
+
     edit() {
         return (
             <div
@@ -46,10 +53,23 @@ export default class BiographicalEntry extends React.Component {
         </div>
     }
 
+    toggle() {
+        return (
+            <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
+                onClick={() => this.setState({ collapsed: !this.state.collapsed })}
+            >
+                <i className={`fa fa-angle-${this.state.collapsed ? 'down' : 'up'}`}></i>
+            </div>
+        )
+    }
+
     buttons() {
         if (admin(this.props, {type: 'BiographicalEntry', action: 'create'})) {
             return (
                 <div className={'flyout-sub-tabs-content-ico'}>
+                    {this.toggle()}
                     {this.edit()}
                     {this.delete()}
                 </div>
@@ -73,10 +93,18 @@ export default class BiographicalEntry extends React.Component {
         })
     }
 
+    preview() {
+        return (
+            <div className={'flyout-sub-tabs-content-ico'}>
+                {this.props.data.text[this.props.locale].substring(0,15)}
+            </div>
+        )
+    }
+
     render() {
         return (
             <div>
-                {this.entries()}
+                {this.state.collapsed ? this.preview() : this.entries()}
                 {this.buttons()}
             </div>
         )

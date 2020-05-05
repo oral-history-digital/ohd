@@ -38,6 +38,8 @@ ru:
   italic: italic
   text: text
   or: or
+  show: Zeigen
+  hide: Weniger
   edit_column_header:
     select_columns: Zu bearbeitende Daten auswählen
     text_orig: Transkript
