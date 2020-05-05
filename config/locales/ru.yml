@@ -359,11 +359,11 @@ ru:
     users:
       admin: Benutzer*innen verwalten
     history:
-      new: lebensgeschichtl. Ereignis hinzufügen
-      edit: lebensgeschichtl. Ereignis bearbeiten
+      new: Kurzbiografie/ Ereignis hinzufügen
+      edit: Kurzbiografie/ Ereignis bearbeiten
     biographical_entry:
-      new: lebensgeschichtl. Ereignis hinzufügen
-      edit: lebensgeschichtl. Ereignis bearbeiten
+      new: Kurzbiografie/ Ereignis hinzufügen
+      edit: Kurzbiografie/ Ereignis bearbeiten
     annotation:
       new: Anmerkung hinzufügen
       edit: Anmerkung bearbeiten
