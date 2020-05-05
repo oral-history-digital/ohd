@@ -7,7 +7,7 @@ export default class Contribution extends React.Component {
 
     edit() {
         return (
-            <div
+            <span
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.contribution.edit')}
                 onClick={() => this.props.openArchivePopup({
@@ -20,7 +20,7 @@ export default class Contribution extends React.Component {
                 })}
             >
                 <i className="fa fa-pencil"></i>
-            </div>
+            </span>
         )
     }
 

@@ -11,7 +11,7 @@ export default class RegistryReference extends React.Component {
             admin(this.props, this.props.registryReference)
         ) {
             return (
-                <div
+                <span
                     className='flyout-sub-tabs-content-ico-link'
                     title={t(this.props, 'edit.registry_entry.edit')}
                     onClick={() => this.props.openArchivePopup({
@@ -26,7 +26,7 @@ export default class RegistryReference extends React.Component {
                     })}
                 >
                     <i className="fa fa-pencil"></i>
-                </div>
+                </span>
             )
         } else {
             return null;
@@ -54,7 +54,7 @@ export default class RegistryReference extends React.Component {
             !this.props.hideEdit &&
             admin(this.props, this.props.registryReference)
         ) {
-            return <div
+            return <span
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.registry_reference.delete')}
                 onClick={() => this.props.openArchivePopup({
@@ -70,7 +70,7 @@ export default class RegistryReference extends React.Component {
                 })}
             >
                 <i className="fa fa-trash-o"></i>
-            </div>
+            </span>
         } else {
             return null;
         }

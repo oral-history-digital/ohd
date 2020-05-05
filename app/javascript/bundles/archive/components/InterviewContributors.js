@@ -53,9 +53,9 @@ export default class InterviewContributors extends React.Component {
         ].map((key, index) => {
             if (contributionTypes[key]) {
                 return (
-                  <div key={`contribution-${index}`}>
-                    <div>{contributionTypes[key]}</div>
-                  </div>
+                  <p key={`contribution-${index}`}>
+                    {contributionTypes[key]}
+                  </p>
                 );
             } else {
                 return null;
@@ -66,20 +66,22 @@ export default class InterviewContributors extends React.Component {
     addContribution() {
         if (admin(this.props, {type: 'Contribution', action: 'create'})) {
             return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.contribution.new')}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.contribution.new'),
-                        content: <ContributionFormContainer 
-                            interview={this.props.interview} 
-                            submitData={this.props.submitData} 
-                            withSpeakerDesignation={this.props.withSpeakerDesignation}
-                        />
-                    })}
-                >
-                    <i className="fa fa-plus"></i> {t(this.props, 'edit.contribution.new')}
-                </div>
+                <p>
+                    <span
+                        className='flyout-sub-tabs-content-ico-link'
+                        title={t(this.props, 'edit.contribution.new')}
+                        onClick={() => this.props.openArchivePopup({
+                            title: t(this.props, 'edit.contribution.new'),
+                            content: <ContributionFormContainer 
+                                interview={this.props.interview} 
+                                submitData={this.props.submitData} 
+                                withSpeakerDesignation={this.props.withSpeakerDesignation}
+                            />
+                        })}
+                    >
+                        <i className="fa fa-plus"></i> {t(this.props, 'edit.contribution.new')}
+                    </span>
+                </p>
             )
         }
     }

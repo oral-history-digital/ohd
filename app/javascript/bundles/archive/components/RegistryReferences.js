@@ -83,7 +83,7 @@ export default class RegistryReferences extends React.Component {
         // TODO: fit this for MOG - id of root entry will be different
         if (admin(this.props, {type: 'RegistryReference', action: 'create'}) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
             return (
-                <div
+                <span
                     className='flyout-sub-tabs-content-ico-link'
                     title={t(this.props, 'edit.registry_reference.new')}
                     onClick={() => this.props.openArchivePopup({
@@ -99,7 +99,7 @@ export default class RegistryReferences extends React.Component {
                     })}
                 >
                     <i className="fa fa-plus"></i>
-                </div>
+                </span>
             )
         } else {
             return null;

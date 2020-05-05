@@ -15,7 +15,7 @@ export default class SelectedRegistryReferences extends React.Component {
                     metadataField.ref_object_type === this.props.refObject.type
                 ) {
                     registryReferences.push(
-                        <div key={`labeled-interview-registry-references-for-metadata-field-${r}`}>
+                        <p key={`labeled-interview-registry-references-for-metadata-field-${r}`}>
                             <span className={'flyout-content-label'}>
                                 {metadataField.label[this.props.locale] ||
                                     t(this.props, `activerecord.attributes.${toUnderscoreCase(this.props.refObject.type)}.${metadataField.name}`)}
@@ -28,7 +28,7 @@ export default class SelectedRegistryReferences extends React.Component {
                                 locale={this.props.locale}
                                 key={`interview-registry-references-for-metadata-field-${r}`}
                             />
-                        </div>
+                        </p>
                     )
                 }
             }
