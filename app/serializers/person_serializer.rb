@@ -5,11 +5,10 @@ class PersonSerializer < ApplicationSerializer
                :name,
                :names,
                :text,
-               :typology,
                :registry_references,
              # :histories
              ] |
-             MetadataField.where(ref_object_type: "Person", source: "registry_reference_type").inject([]) { |mem, i| mem << i.name } |
+             MetadataField.where(ref_object_type: "Person", source: "RegistryReferenceType").inject([]) { |mem, i| mem << i.name } |
              MetadataField.where(source: "Person").inject([]) { |mem, i| mem << i.name }
 
   def names
@@ -48,55 +47,21 @@ class PersonSerializer < ApplicationSerializer
     end
   end
 
-  Person.translated_attribute_names.each do |name|
-    define_method name do
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.send(name, locale)
-        mem
-      end
-    end
-  end
-
-  def typology
-    if object.typology
-      facets = object.typology.split(",")
-      object.translations.each_with_object({}) { |i, hsh|
-        alpha2_locale = ISO_639.find(i.locale.to_s).alpha2
-        if I18n.available_locales.include?(alpha2_locale.to_sym)
-          hsh[alpha2_locale] = facets.map { |typology|
-            I18n.translate("search_facets.#{typology.parameterize(separator: "_")}", locale: alpha2_locale.to_sym)
-          }
-        end
-      }
-    end
-  end
-
-  def histories
-    object.histories.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.current.cache_key_prefix}-history-#{c.id}-#{c.updated_at}") { HistorySerializer.new(c) }; mem }
-  end
+  # TODO: check whether the following or the previous fits better to our needs
+  # having both would be redundandant
+  #
+  #Project.current.registry_reference_type_metadata_fields.select { |f| f["ref_object_type"] == "Person" }.each do |f|
+    #define_method f["name"] do
+      #RegistryEntrySerializer.new(object.send(f["name"])) if object.send(f["name"])
+    #end
+  #end
 
   def biographical_entries
     object.biographical_entries.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.current.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}") { BiographicalEntrySerializer.new(c) }; mem }
   end
 
-  Project.current.registry_reference_type_metadata_fields.select { |f| f["ref_object_type"] == "person" }.each do |f|
-    define_method f["name"] do
-      RegistryEntrySerializer.new(object.send(f["name"])) if object.send(f["name"])
-    end
-  end
-
   def registry_references
     object.registry_references && object.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
   end
-
-  # The follwing disables person-editing. Please do not translate everything in serializer. 
-  # It crashes with all the update functionalities!!
-  #
-  #def gender
-    #I18n.available_locales.inject({}) do |mem, locale|
-      #mem[locale] = I18n.translate("genders.#{object.gender}", locale: locale)
-      #mem
-    #end
-  #end
 
 end

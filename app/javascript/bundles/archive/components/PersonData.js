@@ -7,15 +7,6 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class PersonData extends React.Component {
 
-    // typologies(){
-    //     let interviewee = getInterviewee(this.props);
-    //     if (interviewee.typology && interviewee.typology[this.props.locale]){
-    //         return contentField(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '),"" );
-    //     } else {
-    //         return "";
-    //     }
-    // }
-
     existsPublicBiography() {
         let interviewee = getInterviewee(this.props);
         let firstKey = interviewee && Object.keys(interviewee.biographical_entries)[0];
@@ -94,10 +85,6 @@ export default class PersonData extends React.Component {
                 let value = interviewee[datum.name] || '---';
                 if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
                     value = t(_this.props, `${datum.name}.${value}`)
-                if (typeof value === 'object' && value !== null)
-                    value = value[_this.props.locale]
-                if (Array.isArray(value)){ value = value.join(", ") } //this is needed for mog and probably all other projects
-                if (typeof value === "object" || typeof value === "undefined"){ value = "" } //this is needed for mog and probably all other projects
                 return contentField(label, value)
             }
         })
