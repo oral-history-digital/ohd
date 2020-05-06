@@ -409,10 +409,14 @@ footer {
   margin-bottom: 25px;
 }
 
+h1.registry-entries-title {
+  margin-top: 0;
+  margin-bottom: 25px;
+}
 
 /* Search-Result */
 
-h1.search-results-title, h1.registry-entries-title {
+h1.search-results-title {
   margin-top: 0;
   //float: left;
   //margin-right: 30px;
