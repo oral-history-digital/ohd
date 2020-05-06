@@ -47,15 +47,6 @@ class PersonSerializer < ApplicationSerializer
     end
   end
 
-  # TODO: check whether the following or the previous fits better to our needs
-  # having both would be redundandant
-  #
-  #Project.current.registry_reference_type_metadata_fields.select { |f| f["ref_object_type"] == "Person" }.each do |f|
-    #define_method f["name"] do
-      #RegistryEntrySerializer.new(object.send(f["name"])) if object.send(f["name"])
-    #end
-  #end
-
   def biographical_entries
     object.biographical_entries.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.current.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}") { BiographicalEntrySerializer.new(c) }; mem }
   end
