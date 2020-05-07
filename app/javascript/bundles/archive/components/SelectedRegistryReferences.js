@@ -1,6 +1,6 @@
 import React from 'react';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
-import { t, admin, toUnderscoreCase } from '../../../lib/utils';
+import { t, admin, underscore } from '../../../lib/utils';
 
 export default class SelectedRegistryReferences extends React.Component {
 
@@ -18,7 +18,7 @@ export default class SelectedRegistryReferences extends React.Component {
                         <p key={`labeled-interview-registry-references-for-metadata-field-${r}`}>
                             <span className={'flyout-content-label'}>
                                 {metadataField.label[this.props.locale] ||
-                                    t(this.props, `activerecord.attributes.${toUnderscoreCase(this.props.refObject.type)}.${metadataField.name}`)}
+                                    t(this.props, `activerecord.attributes.${underscore(this.props.refObject.type)}.${metadataField.name}`)}
                                 :
                             </span>
                             <RegistryReferencesContainer

@@ -207,6 +207,10 @@ export function camelcase(str) {
     return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
+export function underscore(str) {
+    return str.split(/(?=[A-Z])/).join('_').toLowerCase();
+}
+
 // props should contain:
 //   - account ~ state.data.accounts.current
 //   - editView ~ state.archive.editView
@@ -342,6 +346,3 @@ export function contentField(label, value, className='', condition=true, collect
     }
 }
 
-export function toUnderscoreCase(str) {
-    return str.split(/(?=[A-Z])/).join('_').toLowerCase();
-}

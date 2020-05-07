@@ -1,6 +1,6 @@
 import React from 'react';
 import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
-import { t, pluralize, toUnderscoreCase, admin } from '../../../lib/utils';
+import { t, pluralize, underscore, admin } from '../../../lib/utils';
 
 export default class RegistryReference extends React.Component {
 
@@ -39,7 +39,7 @@ export default class RegistryReference extends React.Component {
         } else {
             // refObject.type === Person || Interview
             this.props.deleteData(
-                this.props, pluralize(toUnderscoreCase(this.props.refObject.type)), 
+                this.props, pluralize(underscore(this.props.refObject.type)), 
                 this.props.refObject.archiveId || this.props.refObject.archive_id || this.props.refObject.id, 
                 'registry_references', 
                 this.props.registryReference.id
