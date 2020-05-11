@@ -50,7 +50,7 @@ export default class UserRegistrations extends React.Component {
             <WrapperPageContainer tabIndex={tabIndex}>
                 <div className='wrapper-content register'>
                     <AuthShowContainer ifLoggedIn={true}>
-		        <h1 className='registry-entry-title'>{t(this.props, `edit.users.admin`)}</h1>
+		        <h1 className='registry-entries-title'>{t(this.props, `edit.users.admin`)}</h1>
                         {this.userRegistrations()}
                         {this.renderScrollObserver()}
                     </AuthShowContainer>
