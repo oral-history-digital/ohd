@@ -60,21 +60,22 @@ class SegmentsController < ApplicationController
     policy_scope(Segment)
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch("#{current_project.cache_key_prefix}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
-          {
-            data: @interview.tapes.inject({}) do |tapes, tape|
-              segments_for_tape = tape.segments.
-                includes(:translations, :registry_references, :user_annotations, annotations: [:translations], speaking_person: [:translations]).
-                where.not(timecode: '00:00:00.000').order(:timecode)#.first(20)
+        data = Rails.cache.fetch("#{current_project.cache_key_prefix}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
+          @interview.tapes.inject({}) do |tapes, tape|
+            segments_for_tape = tape.segments.
+              includes(:translations, :registry_references, :user_annotations, annotations: [:translations], speaking_person: [:translations]).
+              where.not(timecode: '00:00:00.000').order(:timecode)#.first(20)
 
-              tapes[tape.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-              tapes
-            end,
-            nested_data_type: 'segments',
-            data_type: 'interviews',
-            archive_id: params[:interview_id]
-          }
+            tapes[tape.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+            tapes
+          end
         end
+        json = {
+          data: data,
+          nested_data_type: 'segments',
+          data_type: 'interviews',
+          archive_id: params[:interview_id]
+        }
         render json: json
       end
     end
