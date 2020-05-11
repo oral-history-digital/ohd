@@ -136,7 +136,7 @@ en:
   segment_results: Search results in transcript
   photo_results: Search results in photos
   registryentry_results: Search results in registry
-  biographicalentry_results: Search results in biographical entries
+  biographicalentry_results: Search results in the short biography
   person_results: Search results for persons
   user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: Number of search hits
@@ -651,7 +651,7 @@ en:
         punishment: Art der Mißhandlung
         liberation_date: Befreiungsdatum
       biographical_entry:
-        text: Text
+        text: Event
         start_date: Beginn
         end_date: Ende
         workflow_state: 'Status'
