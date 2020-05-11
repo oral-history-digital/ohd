@@ -141,21 +141,23 @@ export default class WrappedAccount extends React.Component {
     render() {
         return (
             <WrapperPageContainer tabIndex={0}>
-                <AuthShowContainer ifLoggedIn={true}>
-                    <h1>{t(this.props, `activerecord.models.user_account.one`)}</h1>
-                    <div className='user-registration boxes'>
-                        {this.details()}
-                        {this.buttons()}
-                    </div>
-                    <div className='user-registration boxes'>
-                        {this.roles()}
-                        {this.tasks()}
-                        {this.supervisedTasks()}
-                    </div>
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true}>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
+                <div className='wrapper-content register'>
+                    <AuthShowContainer ifLoggedIn={true}>
+                        <h1>{t(this.props, `activerecord.models.user_account.one`)}</h1>
+                        <div className='user-registration boxes'>
+                            {this.details()}
+                            {this.buttons()}
+                        </div>
+                        <div className='user-registration boxes'>
+                            {this.roles()}
+                            {this.tasks()}
+                            {this.supervisedTasks()}
+                        </div>
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut={true}>
+                        {t(this.props, 'devise.failure.unauthenticated')}
+                    </AuthShowContainer>
+                </div>
             </WrapperPageContainer>
         );
     }
