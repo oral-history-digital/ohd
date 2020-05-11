@@ -37,9 +37,9 @@ default: &default
     transcriptor: 'transcript'
     translator: 'translation'
     segmentator: 'segmentation'
-    cinematographer: 'Camera recorder'
-    quality_manager: 'Quality management interviewing'
-    proofreader: 'proof_reading' 
+    cinematographer: 'cinematographer'
+    quality_manager_interviewing: 'quality_manager_interviewing'
+    proofreader: 'proofreader'
 
   upload_types:
     - bulk_metadata
