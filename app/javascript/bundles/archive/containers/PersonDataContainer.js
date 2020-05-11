@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import PersonData from '../components/PersonData';
 import { getInterview, getCookie, getProject } from '../../../lib/utils';
+import { submitData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
     let interview = getInterview(state);
@@ -19,5 +20,8 @@ const mapStateToProps = (state) => {
     }
 }
 
+const mapDispatchToProps = (dispatch) => ({
+    submitData: (props, params) => dispatch(submitData(props, params)),
+})
 
 export default connect(mapStateToProps)(PersonData);

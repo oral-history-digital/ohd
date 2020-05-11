@@ -1,8 +1,11 @@
 import React from 'react';
-import { t, fullname, getInterviewee, contentField, pathBase } from '../../../lib/utils';
+import { t, fullname, getInterviewee, pathBase } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import PersonFormContainer from '../containers/PersonFormContainer';
+import ContentFieldContainer from '../containers/ContentFieldContainer';
+//import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
+import ArchivePopupButtonContainer from '../containers/ArchivePopupButtonContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
+import ContributionFormContainer from '../containers/ContributionFormContainer';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class PersonData extends React.Component {
@@ -65,11 +68,7 @@ export default class PersonData extends React.Component {
     biographicalEntries() {
         if(this.props.projectId !== 'dg') {
             let interviewee = getInterviewee(this.props);
-            return (
-                <div>
-                    <BiographicalEntriesContainer person={interviewee} />
-                </div>
-            )
+            return <BiographicalEntriesContainer person={interviewee} />;
         } else {
             return null;
         }
@@ -77,17 +76,31 @@ export default class PersonData extends React.Component {
 
     detailViewFields(){
         let _this = this;
-        let interviewee = getInterviewee(_this.props);
-        return this.props.detailViewFields.map(function(datum, i){
-            // This is the PersonData-component!! So is it right to show metadataFields whithout source === 'Person' here?
-            if (datum.source === 'Person'){
-                let label = datum.label && datum.label[_this.props.locale] || t(_this.props, datum.name);
-                let value = interviewee[datum.name] || '---';
+        let interviewee = getInterviewee(this.props);
+        return this.props.detailViewFields.map(function(metadataField, i){
+            if (metadataField.source === 'Person'){
+                let label = metadataField.label && metadataField.label[_this.props.locale] || t(_this.props, metadataField.name);
+                let value = interviewee[metadataField.name] || '---';
                 if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
-                    value = t(_this.props, `${datum.name}.${value}`)
-                return contentField(label, value)
+                    value = t(_this.props, `${metadataField.name}.${value}`)
+                return <ContentFieldContainer label={label} value={value} />
+                //return (
+                    //<SingleValueWithFormContainer
+                        //metadataField={metadataField}
+                        //obj={interviewee}
+                    ///>
+                //)
             }
         })
+    }
+
+    contributionForm() {
+        return (
+            <ContributionFormContainer 
+                contribution={Object.values(this.props.interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]} 
+                submitData={this.props.submitData} 
+            />
+        )
     }
 
     info() {
@@ -96,18 +109,20 @@ export default class PersonData extends React.Component {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
-                        {contentField(t(this.props, 'interviewee_name'), fullname(this.props, interviewee, true), "")}
-                        {/* {this.typologies()} */}
+                        <ContentFieldContainer label={t(this.props, 'interviewee_name')} value={fullname(this.props, interviewee, true)} >
+                            <AuthShowContainer ifAdmin={true} obj={interviewee}>
+                                <ArchivePopupButtonContainer
+                                    titleKey='edit.contribution.edit'
+                                    buttonFaKey='pencil'
+                                    content={this.contributionForm()}
+                                />
+                            </AuthShowContainer>
+                         </ContentFieldContainer>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
-                        {contentField(t(this.props, 'interviewee_name'), this.props.interview.anonymous_title[this.props.locale], "")}
+                        <ContentFieldContainer label={t(this.props, 'interviewee_name')} value={this.props.interview.anonymous_title[this.props.locale]} />
                     </AuthShowContainer>
-                    {contentField(t(this.props, 'activerecord.attributes.person.alias_names'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'campscapes')}
-                    {contentField(t(this.props, 'activerecord.attributes.person.pseudonym'), interviewee.names[this.props.locale] && interviewee.names[this.props.locale].aliasname, '', this.props.projectId === 'dg')}
                     {this.detailViewFields()}
-                    {/* {contentField(t(this.props, 'search_facets.camps'), this.props.interview.camps && this.props.interview.camps[this.props.locale], "", this.props.projectId === 'campscapes')}
-                    {contentField(t(this.props, 'search_facets.groups'), this.props.interview.groups && this.props.interview.groups[this.props.locale], "", this.props.projectId === 'campscapes')}
-                    {contentField(t(this.props, 'search_facets.group_details'), this.props.interview.group_details && this.props.interview.group_details[this.props.locale], "", this.props.projectId === 'campscapes')} */}
                 </div>
             );
         } else {

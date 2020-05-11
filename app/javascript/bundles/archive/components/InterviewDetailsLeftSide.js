@@ -3,10 +3,10 @@ import { Link } from 'react-router-dom';
 
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
+import ContentFieldContainer from '../containers/ContentFieldContainer';
 import PersonDataContainer from '../containers/PersonDataContainer';
 import { 
     t,
-    contentField,
     getInterviewArchiveIdWithOffset,
     pathBase,
 } from '../../../lib/utils';
@@ -34,10 +34,10 @@ export default class InterviewDetailsLeftSide extends React.Component {
                     </div>
                     <h3>{t(this.props, "interview_info")}</h3>
                     {<InterviewInfoContainer />}
-                    {contentField(t(this.props, 'subcollection'), this.props.interview && this.props.interview.properties && this.props.interview.properties.subcollection)}
-                    {contentField(t(this.props, 'contributions.interviewer'), this.props.interview && this.props.interview.properties && this.props.interview.properties.interviewer)}
-                    {contentField('Link', this.props.interview && this.props.interview.properties && <a href={this.props.interview.properties.link} target='_blank'>{this.props.interview.properties.link}</a>)}
-                    {contentField('Signature', this.props.interview && this.props.interview.properties && this.props.interview.properties.signature_original)}
+                    <ContentFieldContainer label={t(this.props, 'subcollection')} value={this.props.interview && this.props.interview.properties && this.props.interview.properties.subcollection} />
+                    <ContentFieldContainer label={t(this.props, 'contributions.interviewer')} value={this.props.interview && this.props.interview.properties && this.props.interview.properties.interviewer} />
+                    <ContentFieldContainer label={'Link'} value={this.props.interview && this.props.interview.properties && <a href={this.props.interview.properties.link} target='_blank'>{this.props.interview.properties.link}</a>} />
+                    <ContentFieldContainer label={'Signature'} value={this.props.interview && this.props.interview.properties && this.props.interview.properties.signature_original} />
                     {this.footerNavigation()}
                 </div>
             </div>
