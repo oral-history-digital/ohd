@@ -39,7 +39,7 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id params[:id]
     authorize @interview
     @interview.update_attributes interview_params
-    @interview.find_or_create_tapes(interview_params[:tape_count])
+    @interview.find_or_create_tapes(interview_params[:tape_count]) if interview_params[:tape_count]
 
     respond_to do |format|
       format.json do
