@@ -37,8 +37,10 @@ default: &default
     translator: 'translator'
     segmentator: 'segmentator'
     cinematographer: 'cinematographer'
-    quality_manager: 'quality_manager'
-    proofreader: 'proofreader' 
+    quality_manager_interviewing: 'quality_manager_interviewing'
+    proofreader: 'proofreader'
+
+
 
   upload_types:
     - bulk_metadata
