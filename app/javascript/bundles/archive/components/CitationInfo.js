@@ -15,7 +15,7 @@ export default class CitationInfoInfo extends React.Component {
 
     project(){
         if (this.props.projectName && this.props.archiveDomain){
-            return `${t(this.props, 'interview_archive')} "${this.props.projectName[this.props.locale]}", ${this.props.archiveDomain}`;
+            return `${this.props.projectName[this.props.locale]}, ${this.props.archiveDomain}`;
         }
         return "";
     }
@@ -33,9 +33,9 @@ export default class CitationInfoInfo extends React.Component {
     render() {
         if (this.props.interview) {
             let citation = `${this.props.interview.short_title && this.props.interview.short_title[this.props.locale]},
-            ${t(this.props, 'interview')} 
-            ${this.props.interview.archive_id},  
-            ${this.props.interview.interview_date}, 
+            ${t(this.props, 'interview')}
+            ${this.props.interview.archive_id},
+            ${this.props.interview.interview_date},
             ${this.project()}${this.doi(true)}`
 
             return (
@@ -48,4 +48,3 @@ export default class CitationInfoInfo extends React.Component {
         }
     }
 }
-
