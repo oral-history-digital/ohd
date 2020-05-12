@@ -39,14 +39,19 @@ export default class InterviewContributors extends React.Component {
             }
         }
         //return Object.keys(contributionTypes).map((key, index) => {
+
         return [
             'interviewee',
             'interviewer',
             'cinematographer',
+            'sound',
+            'producer',
+            'other_attender',
             'transcriptor',
             'translator',
             'segmentator',
             'proofreader',
+            'research',
             'quality_manager_interviewing',
             'quality_manager_transcription',
             'quality_manager_translation',

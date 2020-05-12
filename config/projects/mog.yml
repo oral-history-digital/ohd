@@ -34,6 +34,10 @@ default: &default
     transcriptor: 'transcriptor'
     translator: 'translator'
     segmentator: 'segmentator'
+    research: 'research'
+    sound: 'sound'
+    other_attender: 'other_attender'
+    producer: 'producer'
 
   upload_types:
     - bulk_metadata

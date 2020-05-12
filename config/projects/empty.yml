@@ -24,6 +24,10 @@ default: &default
     transcriptor: 'transcript'
     translator: 'translation'
     segmentator: 'segmentation'
+    research: 'research'
+    sound: 'sound'
+    other_attender: 'other_attender'
+    producer: 'producer'
 
   upload_types:
     - campscape

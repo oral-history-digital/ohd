@@ -36,6 +36,10 @@ default: &default
     cinematographer: 'cinematographer'
     quality_manager_interviewing: 'quality_manager_interviewing'
     proofreader: 'proofreader'
+    research: 'research'
+    sound: 'sound'
+    other_attender: 'other_attender'
+    producer: 'producer'
 
   project_name:
     de: 'Deutsches Gedächtnis'

@@ -437,6 +437,9 @@ el:
     cinematographer: Κάμερα
     proofreader: Lektorat
     research: Erschließung
+    sound: Ton
+    other_attender: Sonstige Anwesende
+    producer: Produktion
     quality_manager_translation: Ποιοτικός έλεγχος της μετάφρασης
     quality_manager_transcription: Ποιοτικός έλεγχος της απομαγνητοφώνησης
     quality_manager_interviewing: Ποιοτικός έλεγχος της συνέντευξης
