@@ -4,7 +4,7 @@ FactoryBot.define do
     available_locales { ["de", "es"] }
     default_locale { "de" }
     view_modes { ["grid", "list"] }
-    upload_types { ["bulk_metadata", "bulk_protocols"] }
+    upload_types { ["bulk_metadata", "bulk_texts"] }
     primary_color_rgb { "0.560784314, 0.125490196, 0.109803922" }
     shortname { "CDOH" }
     initials { "CD" }
