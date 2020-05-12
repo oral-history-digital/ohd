@@ -22,7 +22,6 @@ class InterviewSerializer < ApplicationSerializer
     :anonymous_title,
     :still_url,
     :year_of_birth,
-    :typology,
     :segments,
     :last_segments_ids,
     :first_segments_ids,
@@ -35,7 +34,8 @@ class InterviewSerializer < ApplicationSerializer
     :doi_status,
     :landing_page_texts,
     :properties,
-  ] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_reference_type_metadata_fields.map(&:name)
+  ] | Project.current.metadata_fields.map(&:name)
+  #] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_reference_type_metadata_fields.map(&:name)
 
   def collection
     object.collection && object.collection.localized_hash(:name) || {}
@@ -52,9 +52,26 @@ class InterviewSerializer < ApplicationSerializer
   Project.current.registry_reference_type_metadata_fields.each do |m|
     define_method m.name do
       # can handle object.send(m.name) = nil
-      if !!object.send(m.name).try("any?")
+      json = Rails.cache.fetch("#{object.project.cache_key_prefix}-#{m.name}-#{object.id}-#{object.updated_at}-#{m.updated_at}") do
+        if !!object.send(m.name).try("any?")
+          I18n.available_locales.inject({}) do |mem, locale|
+            mem[locale] = object.send(m.name).map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+            mem
+          end
+        else
+          {}
+        end
+      end
+    end
+  end
+
+  def country_of_birth
+    interviewee = object.interviewee
+    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-country-of-birth-#{interviewee.id}-#{interviewee.updated_at}") do
+      country = interviewee && interviewee.country_of_birth
+      if country
         I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = object.send(m.name).map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+          mem[locale] = country.to_s(locale)
           mem
         end
       else
@@ -63,45 +80,36 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def country_of_birth
-    interviewee = object.interviewee
-    country = interviewee && interviewee.country_of_birth
-    if country
+  def landing_page_texts
+    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-landing-page-texts-#{object.project.updated_at}") do
+      interviewee = object.interviewee
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = country.to_s(locale)
+        mem[locale] = object.project.landing_page_text(locale).gsub('INTERVIEWEE', object.anonymous_title(locale))
         mem
       end
-    else
-      {}
     end
   end
-
-  def landing_page_texts
-    interviewee = object.interviewee
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = object.project.landing_page_text(locale).gsub('INTERVIEWEE', object.anonymous_title(locale))
-      mem
-    end
-  end
-
-  # def interview_location
-  #   (!object.interview_location.empty? && object.interview_location.first.localized_hash) || {}
-  # end
 
   def interviewee_id
     object.interviewee && object.interviewee.id
   end
 
   def contributions
-    object.contributions.inject({}) { |mem, c| mem[c.id] = ContributionSerializer.new(c); mem }
+    json =  Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-contributions-#{object.id}-#{object.contributions.maximum(:updated_at)}") do
+      object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+    end
   end
 
   def registry_references
-    object.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
+    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-registry_references-#{object.id}-#{object.registry_references.maximum(:updated_at)}") do
+      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(c).to_json; mem }
+    end
   end
 
   def photos
-    object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = PhotoSerializer.new(c); mem }
+    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-photos-#{object.id}-#{object.photos.maximum(:updated_at)}") do
+      object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(c).to_json; mem }
+    end
   end
 
   def observations
@@ -126,15 +134,6 @@ class InterviewSerializer < ApplicationSerializer
   def media_type
     object.media_type && object.media_type.downcase
   end
-
-  #if object.media_type
-  ## add 'default' to have available the string 'audio' or 'video'
-  #(I18n.available_locales + [:default]).inject({}) do |mem, locale|
-  #mem[locale] = (locale == :default) ? object.media_type : I18n.t("search_facets.#{object.media_type}", locale: locale)
-  #mem
-  #end
-  #end
-  #end
 
   def short_title
     object.localized_hash(:reverted_short_title)
@@ -215,15 +214,6 @@ class InterviewSerializer < ApplicationSerializer
       end
     else
       {}
-    end
-  end
-
-  def typology
-    if object.interviewee
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.interviewee.typology && object.interviewee.typology.split(",").map { |t| I18n.t(t, scope: "search_facets", locale: locale) }.join(", ")
-        mem
-      end
     end
   end
 
