@@ -8,6 +8,8 @@ class InterviewSerializer < ApplicationSerializer
     :video,
     :media_type,
     :duration,
+    :duration_seconds,
+    :duration_human,
     :translated,
     :interview_date,
     :language,
@@ -19,7 +21,6 @@ class InterviewSerializer < ApplicationSerializer
     :short_title,
     :anonymous_title,
     :still_url,
-    :duration_seconds,
     :year_of_birth,
     :typology,
     :segments,
@@ -186,13 +187,19 @@ class InterviewSerializer < ApplicationSerializer
   #   self.place_of_interview
   # end
 
-  def duration_seconds
-    if object.duration
-      object.duration
-    end
+  def duration
+    # interview can update duration with a timecode. 
+    # Therefore duration as timecode can be duration's value in a form.
+    # Further a timecode is human readable sth like 14785 not so.
+    #
+    Timecode.new(object.duration).timecode
   end
 
-  def duration
+  def duration_seconds
+    object.duration
+  end
+
+  def duration_human
     if object.duration && object.duration > 0
       Time.at(object.duration).utc.strftime("%-H h %M min")
     else
