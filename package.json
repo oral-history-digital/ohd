@@ -77,7 +77,6 @@
   "devDependencies": {
     "babel-eslint": "^10.0.1",
     "eslint": "^6.2.2",
-    "jest": "^26.0.0",
     "regenerator-runtime": "^0.13.5",
     "webpack-dev-server": "^3.8.0"
   },
