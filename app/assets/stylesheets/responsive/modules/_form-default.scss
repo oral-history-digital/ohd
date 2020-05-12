@@ -42,7 +42,7 @@ form.default {
     outline: 0;
     border-color: $primary-color;
   }
-  input[type=submit] {
+  input[type=submit], input[type=button] {
     margin-left: 0;
     width: 100%;
     background-color: $gray-warm;
@@ -57,6 +57,12 @@ form.default {
     &:hover {
       background-color: lighten($gray-warm, 10%);
     }
+    &.single-value {
+      width: 48%;
+    }
+  }
+  input[type=button] {
+    background-color: $gray-medium;
   }
   input[type=checkbox] {
     width:100%;
@@ -167,4 +173,3 @@ form.default {
     color: red;
   }
 }
-

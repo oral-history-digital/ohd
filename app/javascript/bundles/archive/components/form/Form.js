@@ -239,6 +239,18 @@ export default class Form extends React.Component {
         return React.createElement(this.components()[props.elementType], props);
     }
 
+    cancelButton() {
+        if (typeof(this.props.cancel) === 'function') {
+            return (
+                <input 
+                    type='button' 
+                    value={t(this.props, 'cancel')} 
+                    onClick={() => this.props.cancel()} 
+                />
+            )
+        }
+    }
+
     render() {
         return (
             <form 
@@ -257,6 +269,7 @@ export default class Form extends React.Component {
                 {this.openSubForm()}
 
                 <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
+                {this.cancelButton()}
             </form>
         );
     }

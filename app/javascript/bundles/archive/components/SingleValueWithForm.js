@@ -1,5 +1,6 @@
 import React from 'react';
 import Form from '../containers/form/Form';
+import ContentFieldContainer from '../containers/ContentFieldContainer';
 import { t, admin, underscore } from '../../../lib/utils';
 
 export default class SingleValueWithForm extends React.Component {
@@ -51,6 +52,8 @@ export default class SingleValueWithForm extends React.Component {
             <Form 
                 scope={underscore(this.props.obj.type)}
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setEditing()}}
+                cancel={_this.setEditing}
+                formClasses='default single-value'
                 values={{id: this.props.obj.type === 'Interview' ? this.props.obj.archive_id : this.props.obj.id}}
                 elements={[
                     {
@@ -84,22 +87,20 @@ export default class SingleValueWithForm extends React.Component {
             value = value.substring(0,25)
 
         return (
-            <span>
-                <span className="flyout-content-label">{label}:</span>
-                <span className={"flyout-content-data " + this.props.className}>{value}</span>
-            </span>
+            <ContentFieldContainer label={label} value={value} >
+                {this.toggle()}
+                {this.props.children}
+                {this.editButton()}
+            </ContentFieldContainer>
         )
     }
 
     render() {
         let edit = admin(this.props, this.props.obj) && this.state.editing
         return (
-            <p className={this.props.className} key={`content-field-${this.props.label}-${this.props.value}`}>
+            <div>
                 {edit ? this.form() : this.show()}
-                {this.toggle()}
-                {this.props.children}
-                {this.editButton()}
-            </p>
+            </div>
         )
     }
 
