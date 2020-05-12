@@ -38,7 +38,11 @@ default: &default
     segmentator: 'segmentation'
     cinematographer: 'cinematographer'
     quality_manager_interviewing: 'quality_manager_interviewing'
-    proofreader: 'proofreader' 
+    proofreader: 'proofreader'
+    research: 'research'
+    sound: 'sound'
+    other_attender: 'other_attender'
+    producer: 'producer'
 
   upload_types:
     - bulk_metadata
