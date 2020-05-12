@@ -237,7 +237,7 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-sub-tabs-container'>
                         {this.subTab('edit.interview.new', 'description', `${pathBase(this.props)}/interviews/new`, {type: 'Interview', action: 'create'})}
                         {/*this.subTab('edit.upload_transcript.title', 'description', `${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})*/}
-                        {this.subTab('edit.upload.upload', 'description', `${pathBase(this.props)}/uploads/new`, {type: 'Interview', action: 'update'})}
+                        {this.subTab('edit.upload.upload', '', `${pathBase(this.props)}/uploads/new`, {type: 'Interview', action: 'update'})}
                         {this.subTab( 'edit.person.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
                         {this.subTab( 'edit.collection.admin', <CollectionsSearchFormContainer/>, `${pathBase(this.props)}/collections`, {type: 'Collection', action: 'update'})}
                         {this.subTab( 'edit.language.admin', <LanguagesSearchFormContainer/>, `${pathBase(this.props)}/languages`, {type: 'Language', action: 'update'})}

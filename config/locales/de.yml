@@ -465,8 +465,8 @@ de:
     translated: mit dt. Übersetzung
   upload:
     type:
-      bulk_metadata: Massenimport von Metadaten
-      bulk_texts: Massenimport von Textdateien (Protokolle oder Biografien)
+      bulk_metadata: Import von Metadaten
+      bulk_texts: Import von Textdateien (Protokolle oder Biografien)
     explanation:
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
@@ -540,6 +540,7 @@ de:
     accessibility: Zugänglichkeit
     forced_labor_field: Einsatzbereich
     forced_labor_group: Gruppe
+    group: Gruppe
     periods: Zeitperioden
     fulltext: Suchbegriff
     gender: Geschlecht
