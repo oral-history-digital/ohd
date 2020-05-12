@@ -18,10 +18,12 @@ const mapStateToProps = (state) => {
         interview: getInterview(state),
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
+        collections: state.data.collections,
         // the following is just a trick to force rerender after deletion
         contributionsLastModified: state.data.statuses.contributions.lastModified,
         contributionTypes: state.archive.contributionTypes,
         account: state.data.accounts.current,
+        languages: state.data.languages,
     }
 }
 
