@@ -52,11 +52,13 @@ export default class InterviewInfo extends React.Component {
                         optionsScope={'search_facets'}
                         elementType={'select'}
                         values={['video', 'audio']}
+                        value={t(this.props, `search_facets.${this.props.interview.media_type}`)}
                     />
                     <SingleValueWithFormContainer
                         attribute='duration'
                         obj={this.props.interview}
-                        validate={function(v){return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v)}}
+                        value={this.props.interview.duration_human}
+                        validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
                     />
                     <SingleValueWithFormContainer
                         attribute={'tape_count'}
@@ -94,7 +96,7 @@ export default class InterviewInfo extends React.Component {
                             obj={this.props.interview}
                             attribute={'workflow_state'}
                             values={['public', 'unshared']}
-                            value={this.props.interview.workflow_state}
+                            value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
                             optionsScope={'workflow_states'}
                         /> 
                     </AuthShowContainer>

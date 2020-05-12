@@ -285,6 +285,7 @@ class InterviewsController < ApplicationController
       "language_id",
       "interview_date",
       "tape_count",
+      "duration",
       "video",
       "translated",
       "observations",
