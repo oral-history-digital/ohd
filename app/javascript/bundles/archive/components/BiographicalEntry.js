@@ -94,11 +94,15 @@ export default class BiographicalEntry extends React.Component {
     }
 
     preview() {
-        return (
-            <span className={'flyout-content-data'}>
-                {this.props.data.text[this.props.locale].substring(0,15)}
-            </span>
-        )
+        if (this.props.data.text[this.props.locale]) {
+            return (
+                <span className={'flyout-content-data'}>
+                    {this.props.data.text[this.props.locale].substring(0,15)}
+                </span>
+            )
+        } else {
+            return "---";
+        }
     }
 
     render() {
