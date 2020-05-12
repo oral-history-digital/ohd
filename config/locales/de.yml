@@ -324,7 +324,7 @@ de:
     registry_entries:
       edit: Registereinträge bearbeiten
     users:
-      admin: Benutzer*innen verwalten
+      admin: Benutzer*innen
     history:
       new: lebensgeschichtl. Ereignis hinzufügen
       edit: lebensgeschichtl. Ereignis bearbeiten
@@ -336,10 +336,10 @@ de:
       edit: Anmerkung bearbeiten
       delete: Anmerkung löschen
     upload:
-      upload: Upload
+      upload: Import
       processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
-      return: Weiterer Upload
+      return: Weiterer Import
     update_speaker:
       first_step_explanation: 'Es wurden Segmente mit Sprecher*innenbezeichnungen aber ohne eindeutige Zuweisung gefunden: '
       second_step_explanation: Sind noch weitere Sprecher*innenauszeichnungen im Transkript?
@@ -779,7 +779,7 @@ de:
       external_link:
         internal_name: Interner Name
       upload:
-        type: Art des Uploads
+        type: Art des Imports
         data: Datei
       segment:
         media_id: Segment-ID
@@ -815,7 +815,7 @@ de:
         activated_at: Aktiviert am
         processed_at: Bearbeitet am
         admin_comments: Kommentar
-        default_locale: Standart Locale
+        default_locale: Sprache
         appellation: Anrede
         first_name: Vorname
         last_name: Nachname
