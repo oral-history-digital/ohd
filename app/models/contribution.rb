@@ -9,7 +9,7 @@ class Contribution < ApplicationRecord
 
   validates_associated :interview, :person
   validates_presence_of :contribution_type
-  validates :contribution_type, inclusion: %w(interviewee interviewer transcriptor translator segmentator cinematographer quality_manager_interviewing proofreader)
+  validates :contribution_type, inclusion: %w(interviewee interviewer transcriptor translator segmentator research sound cinematographer other_attender quality_manager_interviewing producer proofreader)
   validates_uniqueness_of :person_id, :scope => [ :interview_id, :contribution_type ]
 
   after_save :touch_interview
