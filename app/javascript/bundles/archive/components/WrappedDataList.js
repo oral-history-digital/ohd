@@ -111,8 +111,8 @@ export default class WrappedDataList extends React.Component {
         let tabIndex = this.props.locales.length + this.props.baseTabIndex;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
-                <AuthShowContainer ifLoggedIn={true}>
-                    <div className='wrapper-content register'>
+                <div className='wrapper-content register'>
+                    <AuthShowContainer ifLoggedIn={true}>
                         <h1 className='registry-entries-title'>
                             {t(this.props, `activerecord.models.${this.props.scope}.other`)}
                         </h1>
@@ -120,11 +120,11 @@ export default class WrappedDataList extends React.Component {
                         {this.data()}
                         {this.add()}
                         {this.renderScrollObserver()}
-                    </div>
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true}>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut={true}>
+                        {t(this.props, 'devise.failure.unauthenticated')}
+                    </AuthShowContainer>
+                </div>
             </WrapperPageContainer>
         );
     }

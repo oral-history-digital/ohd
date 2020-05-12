@@ -141,7 +141,7 @@ es:
   segment_results: Resultados de búsqueda en la transcripción
   photo_results: Resultados de búsqueda en imágenes
   registryentry_results: Resultatdos de búsqueda en el índice
-  biographicalentry_results: Resultados de búsqueda en entradas biográficas
+  biographicalentry_results: Resultados de búsqueda en la biografía breve
   person_results: Resultados de búsqueda para personas
   user_registration_results: Resultados de búsqueda para usuaria/os
   segment_hits: Resultados en la transcripción
@@ -293,7 +293,7 @@ es:
       processed: 'Externer Link angelegt: '
       return: Weiteren Externen Link anlegen
     contribution:
-      new: Mitwirkende/n hinzufügen
+      new: Mitwirkende*n hinzufügen
     registry_reference:
       new: Erwähnung hinzufügen
       delete: Erwähnung löschen
@@ -308,7 +308,7 @@ es:
     registry_entries:
       edit: Registereinträge bearbeiten
     users:
-      admin: Benutzer*innen verwalten
+      admin: Benutzer*innen
     history:
       new: Kurzbiografie/ Ereignis hinzufügen
       edit: Kurzbiografie/ Ereignis bearbeiten
@@ -320,10 +320,10 @@ es:
       edit: Anmerkung bearbeiten
       delete: Anmerkung löschen
     upload:
-      upload: Upload
+      upload: Import
       processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
-      return: Weiterer Upload
+      return: Weiterer Import
     update_speaker:
       first_step_explanation: 'Es wurden Segmente mit Sprecher*innenbezeichnungen aber ohne eindeutige Zuweisung gefunden: '
       second_step_explanation: Sind noch weitere Sprecher*innenauszeichnungen im Transkript?
@@ -428,7 +428,7 @@ es:
     translator: Traducción
     segmentator: Segmentación
     cinematographer: Camera
-    proof_reading: Revisión
+    proofreader: Revisión
     research: Edición científica
     quality_manager_translation: Gestión de calidad Traducción
     quality_manager_transcription: Gestión de calidad Transcripción
@@ -592,7 +592,7 @@ es:
         one: Anmerkung
         other: Anmerkungen
       contributions:
-        one: Mitwirkende/r
+        one: Mitwirkende*r
         other: Mitwirkende
       registry_references:
         one: Erwähnung
@@ -753,7 +753,7 @@ es:
       external_link:
         internal_name: Internal Name
       upload:
-        type: Art des Uploads
+        type: Art des Imports
         data: Datei
       segment:
         media_id: ID de segmento

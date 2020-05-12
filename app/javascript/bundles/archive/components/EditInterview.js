@@ -57,7 +57,7 @@ export default class EditInterview extends React.Component {
             <WrapperPageContainer tabIndex={tabIndex}>
                 <div className='wrapper-content register'>
                     <AuthShowContainer ifLoggedIn={true}>
-		        <h1 className='registry-entry-title'>{t(this.props, `edit.interview.new`)}</h1>
+		        <h1 className='registry-entries-title'>{t(this.props, `edit.interview.new`)}</h1>
 		        {this.content()}
 	            </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>

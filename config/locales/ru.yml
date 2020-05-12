@@ -136,7 +136,7 @@ ru:
   segment_results: Результаты поиска транскриптов
   photo_results: Результаты поиска на фотографиях
   registryentry_results: Результаты поиска Регистр
-  biographicalentry_results: Результаты поиска в биографических данных
+  biographicalentry_results: Результаты поиска в Краткой биографии
   person_results: Результаты поиска для людей
   user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: Результаты в тексте
@@ -342,7 +342,7 @@ ru:
       processed: 'Externer Link angelegt: '
       return: Weiteren Externen Link anlegen
     contribution:
-      new: Mitwirkende/n hinzufügen
+      new: Mitwirkende*n hinzufügen
     registry_reference:
       new: Erwähnung hinzufügen
       delete: Erwähnung löschen
@@ -357,7 +357,7 @@ ru:
     registry_entries:
       edit: Registereinträge bearbeiten
     users:
-      admin: Benutzer*innen verwalten
+      admin: Benutzer*innen
     history:
       new: Kurzbiografie/ Ereignis hinzufügen
       edit: Kurzbiografie/ Ereignis bearbeiten
@@ -369,10 +369,10 @@ ru:
       edit: Anmerkung bearbeiten
       delete: Anmerkung löschen
     upload:
-      upload: Upload
+      upload: Import
       processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
-      return: Weiterer Upload
+      return: Weiterer Import
     update_speaker:
       first_step_explanation: 'Es wurden Segmente mit Sprecher*innenbezeichnungen aber ohne eindeutige Zuweisung gefunden: '
       second_step_explanation: Sind noch weitere Sprecher*innenauszeichnungen im Transkript?
@@ -478,7 +478,7 @@ ru:
     translator: Перевод
     segmentator: Сегментация
     cinematographer: Kamera
-    proof_reading: корректура
+    proofreader: корректура
     research: обработка
     quality_manager_translation: Qualitätsmangement Übersetzung
     quality_manager_transcription: Qualitätsmangement Transkription
@@ -652,7 +652,7 @@ ru:
         one: Комментарий
         other: Комментарии
       contributions:
-        one: Mitwirkende/r
+        one: Mitwirkende*r
         other: Mitwirkende
       registry_references:
         one: Упоминание
@@ -819,7 +819,7 @@ ru:
       external_link:
         internal_name: Internal Name
       upload:
-        type: Art des Uploads
+        type: Art des Imports
         data: Datei
       segment:
         media_id: Номер сегмента
@@ -855,7 +855,7 @@ ru:
         activated_at: Aktiviert am
         processed_at: Bearbeitet am
         admin_comments: Kommentar
-        default_locale: Standart Locale
+        default_locale: Sprache
         appellation: Обращение
         first_name: Имя
         last_name: Фамилия

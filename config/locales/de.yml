@@ -143,7 +143,7 @@ de:
   segment_results: Suchergebnisse im Transkript
   photo_results: Suchergebnisse in Fotos
   registryentry_results: Suchergebnisse im Register
-  biographicalentry_results: Suchergebnisse in biografischen Einträgen
+  biographicalentry_results: Einträge in der Kurzbiografie
   person_results: Suchergebnisse für Personen
   user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: Treffer im Transkript
@@ -326,7 +326,7 @@ de:
     registry_entries:
       edit: Registereinträge bearbeiten
     users:
-      admin: Benutzer*innen verwalten
+      admin: Benutzer*innen
     history:
       new: Kurzbiografie/ Ereignis hinzufügen
       edit: Kurzbiografie/ Ereignis bearbeiten
@@ -338,10 +338,10 @@ de:
       edit: Anmerkung bearbeiten
       delete: Anmerkung löschen
     upload:
-      upload: Upload
+      upload: Import
       processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
-      return: Weiterer Upload
+      return: Weiterer Import
     update_speaker:
       first_step_explanation: 'Es wurden Segmente mit Sprecher*innenbezeichnungen aber ohne eindeutige Zuweisung gefunden: '
       second_step_explanation: Sind noch weitere Sprecher*innenauszeichnungen im Transkript?
@@ -441,12 +441,12 @@ de:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen
     interviewee: Interviewte*r
-    interviewer: Interview
-    transcriptor: Transkript
+    interviewer: Interviewführung
+    transcriptor: Transkription
     translator: Übersetzung
     segmentator: Segmentierung
     cinematographer: Kamera
-    proof_reading: Lektorat
+    proofreader: Lektorat
     research: Erschließung
     quality_manager_translation: Qualitätsmanagement Übersetzung
     quality_manager_transcription: Qualitätsmanagement Transkription
@@ -781,7 +781,7 @@ de:
       external_link:
         internal_name: Interner Name
       upload:
-        type: Art des Uploads
+        type: Art des Imports
         data: Datei
       segment:
         media_id: Segment-ID
@@ -817,7 +817,7 @@ de:
         activated_at: Aktiviert am
         processed_at: Bearbeitet am
         admin_comments: Kommentar
-        default_locale: Standart Locale
+        default_locale: Sprache
         appellation: Anrede
         first_name: Vorname
         last_name: Nachname

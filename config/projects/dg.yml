@@ -34,7 +34,7 @@ default: &default
     translator: 'translator'
     segmentator: 'segmentator'
     cinematographer: 'cinematographer'
-    quality_manager: 'quality_manager'
+    quality_manager_interviewing: 'quality_manager_interviewing'
     proofreader: 'proofreader'
 
   project_name:
