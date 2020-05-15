@@ -8,17 +8,19 @@ default: &default
       480p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_480p.mp4
       720p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_720p.mp4
 
-  # 'Informants' and 'Interviewer' are specific for Dédalo, zwar-default is 'interviewee' and 'interview'
   contribution_types:
     interviewee: 'interviewee'
     interviewer: 'interviewer'
-    transcriptor: 'transcriptor'
-    translator: 'translator'
-    segmentator: 'segmentator'
-    research: 'research'
+    cinematographer: 'cinematographer'
     sound: 'sound'
-    other_attender: 'other_attender'
     producer: 'producer'
+    other_attender: 'other_attender'
+    quality_manager_interviewing: 'quality_manager_interviewing'
+    transcriptor: 'transcriptor'
+    segmentator: 'segmentator'
+    translator: 'translator'
+    proofreader: 'proofreader'
+    research: 'research'
 
 development:
   <<: *default
@@ -31,4 +33,3 @@ staging:
 
 test:
   <<: *default
-
