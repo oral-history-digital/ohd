@@ -5,19 +5,19 @@ default: &default
     - en
     - ru
     # - alias
-  
+
   # grid, list and/or map
   view_modes:
     - grid
     - list
-    
+
   default_locale: de
 
   # use 2- or 3-letter country-code
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha2'
   # alpha: 'alpha3_terminologic'
-  
+
   media_streams:
     defaults:
       video: 480p
@@ -33,17 +33,17 @@ default: &default
 
   contribution_types:
     interviewee: 'interviewee'
-    interviewer: 'interview'
-    transcriptor: 'transcript'
-    translator: 'translation'
-    segmentator: 'segmentation'
+    interviewer: 'interviewer'
     cinematographer: 'cinematographer'
+    sound: 'sound'
+    producer: 'producer'
+    other_attender: 'other_attender'
     quality_manager_interviewing: 'quality_manager_interviewing'
+    transcriptor: 'transcriptor'
+    segmentator: 'segmentator'
+    translator: 'translator'
     proofreader: 'proofreader'
     research: 'research'
-    sound: 'sound'
-    other_attender: 'other_attender'
-    producer: 'producer'
 
   upload_types:
     - bulk_metadata
@@ -75,7 +75,7 @@ default: &default
   leader: "Apostolopoulos, Nicolas; Pickhan, Gertrud"
   manager: "Tausendfreund, Doris; Pagenstecher, Cord"
   hosting_institution: "Freie Universität Berlin, Universitätsbibliothek/Center für Digitale Systeme"
-  funder_names: 
+  funder_names:
     - "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
 
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
@@ -170,7 +170,7 @@ default: &default
         diverse: 'diverse'
     - name: 'collection_id'
       source: 'collection'
-      use_as_facet: true 
+      use_as_facet: true
     - name: 'media_type'
       source: 'interview'
       use_as_facet: true
@@ -222,4 +222,3 @@ staging:
 
 test:
   <<: *default
-

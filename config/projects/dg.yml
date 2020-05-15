@@ -26,20 +26,19 @@ default: &default
       480p: https://thigrandi.fernuni-hagen.de:8443/geschichte/ArchivDeutschesGedaechtnis/OnlineArchiv/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4
       720p: https://thigrandi.fernuni-hagen.de:8443/geschichte/ArchivDeutschesGedaechtnis/OnlineArchiv/#{archive_id}_#{tape_count}_0#{tape_number}_sd720p.mp4
 
-
   contribution_types:
     interviewee: 'interviewee'
     interviewer: 'interviewer'
-    transcriptor: 'transcriptor'
-    translator: 'translator'
-    segmentator: 'segmentator'
     cinematographer: 'cinematographer'
+    sound: 'sound'
+    producer: 'producer'
+    other_attender: 'other_attender'
     quality_manager_interviewing: 'quality_manager_interviewing'
+    transcriptor: 'transcriptor'
+    segmentator: 'segmentator'
+    translator: 'translator'
     proofreader: 'proofreader'
     research: 'research'
-    sound: 'sound'
-    other_attender: 'other_attender'
-    producer: 'producer'
 
   project_name:
     de: 'Deutsches Gedächtnis'
@@ -124,7 +123,7 @@ default: &default
       use_as_facet: true
     # - name: 'collection_id'
     #   source: 'collection'
-    #   use_as_facet: true 
+    #   use_as_facet: true
     # - name: 'industry'
     #   source: 'registry_entry' #name: 8
     #   descriptor: 'Wirtschaftsbereich'
@@ -150,4 +149,3 @@ staging:
 
 test:
   <<: *default
-
