@@ -31,17 +31,17 @@ default: &default
 
   contribution_types:
     interviewee: 'interviewee'
-    interviewer: 'interview'
-    transcriptor: 'transcript'
-    translator: 'translation'
-    segmentator: 'segmentation'
+    interviewer: 'interviewer'
     cinematographer: 'cinematographer'
+    sound: 'sound'
+    producer: 'producer'
+    other_attender: 'other_attender'
     quality_manager_interviewing: 'quality_manager_interviewing'
+    transcriptor: 'transcriptor'
+    segmentator: 'segmentator'
+    translator: 'translator'
     proofreader: 'proofreader'
     research: 'research'
-    sound: 'sound'
-    other_attender: 'other_attender'
-    producer: 'producer'
 
   upload_types:
     - bulk_metadata
@@ -128,44 +128,44 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  metadata_fields: 
-    - 
+  metadata_fields:
+    -
       name: camps
       source: registry_entry
-      label: 
+      label:
         de: Lager
         en: Camp
       display_on_landing_page: true
       use_in_results_table: true
       use_as_facet: true
-    - 
+    -
       name: language
       source: language
       use_in_results_table: true
-      label: 
+      label:
         de: Sprache
         en: Language
-    - 
+    -
       name: language_id
       source: language
       use_as_facet: true
-      label: 
+      label:
         de: Sprache
         en: Language
-    - 
+    -
       name: groups
       source: registry_entry
       display_on_landing_page: true
       use_in_results_table: true
       use_as_facet: true
-      label: 
+      label:
         de: Gruppe
         en: Group
-    - 
+    -
       name: media_type
       source: interview
       use_as_facet: false
-    - 
+    -
       name: gender
       source: person
       use_as_facet: false
@@ -174,11 +174,11 @@ default: &default
       label:
         de: Geschlecht
         en: Gender
-      values: 
+      values:
         female: female
         male: male
         diverse: diverse
-    - 
+    -
       name: date_of_birth
       source: person
       use_as_facet: false
@@ -187,7 +187,7 @@ default: &default
       label:
         de: Geburtsdatum
         en: Date of Birth
-    - 
+    -
       name: year_of_birth
       source: person
       use_as_facet: false
@@ -196,38 +196,38 @@ default: &default
       label:
         de: Geburtsjahr
         en: Year of Birth
-    - 
+    -
       name: country_of_birth
       source: person
       use_as_facet: false
       use_in_results_table: false
       use_in_details_view: true
-      label: 
+      label:
         de: Herkunftsland
         en: Country of Birth
-    - 
+    -
       name: birth_location
       source: registry_reference_type
       ref_object_type: person
       display_on_landing_page: true
       use_as_facet: false
-      label: 
+      label:
         de: Geburtsort
         en: Place of Birth
-    - 
+    -
       name: collection_id
       source: collection
-      label: 
+      label:
         de: Sammlung
         en: Collection
       use_in_results_table: true
       use_as_facet: true
-    - 
+    -
       name: group_details
       source: registry_entry
       display_on_landing_page: true
       use_as_facet: false
-    - 
+    -
       name: interview_location
       source: registry_reference_type
       ref_object_type: interview
@@ -237,7 +237,7 @@ default: &default
       label:
         de: Ort des Interviews
         en: Interview location
-    - 
+    -
       name: accessibility
       source: registry_entry
       use_as_facet: true

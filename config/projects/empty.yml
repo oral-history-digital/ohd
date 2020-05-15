@@ -20,14 +20,17 @@ default: &default
 
   contribution_types:
     interviewee: 'interviewee'
-    interviewer: 'interview'
-    transcriptor: 'transcript'
-    translator: 'translation'
-    segmentator: 'segmentation'
-    research: 'research'
+    interviewer: 'interviewer'
+    cinematographer: 'cinematographer'
     sound: 'sound'
-    other_attender: 'other_attender'
     producer: 'producer'
+    other_attender: 'other_attender'
+    quality_manager_interviewing: 'quality_manager_interviewing'
+    transcriptor: 'transcriptor'
+    segmentator: 'segmentator'
+    translator: 'translator'
+    proofreader: 'proofreader'
+    research: 'research'
 
   upload_types:
     - campscape
@@ -141,7 +144,7 @@ default: &default
       use_as_facet: true
     - name: 'collection_id'
       source: 'collection'
-      use_as_facet: true 
+      use_as_facet: true
 
   # NB: The map has not yet been generalized to work for all historical
   # contexts. It relies on ZWAR-specific registry data structures (i.e. a
@@ -171,4 +174,3 @@ staging:
 
 test:
   <<: *default
-

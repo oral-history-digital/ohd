@@ -33,10 +33,10 @@ default: &default
 
   contribution_types:
     interviewee: 'interviewee'
-    interviewer: 'interview'
-    transcriptor: 'transcript'
-    translator: 'translation'
-    segmentator: 'segmentation'
+    interviewer: 'interviewer'
+    transcriptor: 'transcriptor'
+    translator: 'translator'
+    segmentator: 'segmentator'
     cinematographer: 'cinematographer'
     quality_manager_interviewing: 'quality_manager_interviewing'
     proofreader: 'proofreader'
@@ -48,6 +48,7 @@ default: &default
   upload_types:
     - bulk_metadata
     - bulk_texts
+    - bulk_photo
 
   project_name: # Will be used in titles, emails, etc.
     de: 'Zwangsarbeit 1939-1945. Erinnerungen und Geschichte'

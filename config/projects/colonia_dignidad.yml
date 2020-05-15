@@ -9,14 +9,14 @@ default: &default
   view_modes:
     - grid
     - list
-  
+
   default_locale: de
 
   # use 2- or 3-letter country-code
   # have a look at https://github.com/alphabetum/iso-639 for possible methods
   alpha: 'alpha2'
   # alpha: 'alpha3_terminologic'
-  
+
   media_streams:
     defaults:
       video: 480p
@@ -33,18 +33,16 @@ default: &default
   contribution_types:
     interviewee: 'interviewee'
     interviewer: 'interviewer'
-    transcriptor: 'transcriptor'
-    translator: 'translator'
-    segmentator: 'segmentator'
     cinematographer: 'cinematographer'
+    sound: 'sound'
+    producer: 'producer'
+    other_attender: 'other_attender'
     quality_manager_interviewing: 'quality_manager_interviewing'
+    transcriptor: 'transcriptor'
+    segmentator: 'segmentator'
+    translator: 'translator'
     proofreader: 'proofreader'
     research: 'research'
-    sound: 'sound'
-    other_attender: 'other_attender'
-    producer: 'producer'
-
-
 
   upload_types:
     - bulk_metadata
@@ -75,7 +73,7 @@ default: &default
   leader: "Apostolopoulos, Nicolas; Pickhan, Gertrud"
   manager: "Tausendfreund, Doris; Pagenstecher, Cord"
   hosting_institution: "Freie Universität Berlin, Universitätsbibliothek/Center für Digitale Systeme"
-  funder_names: 
+  funder_names:
     - "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
 
   # TODO: Umstellen russ. Links, s. kommentierte Links unten.
@@ -129,20 +127,20 @@ default: &default
   #   entries is significant to determine in which order entries appear in the "search facet" section.
   # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
 
-  metadata_fields: 
-    - 
+  metadata_fields:
+    -
       name: person_reference
       source: registry_entry
-    - 
+    -
       name: forced_labor_groups
       source: registry_entry
       display_on_landing_page: true
       use_as_facet: true
-    - 
+    -
       name: forced_labor_fields
       source: registry_entry
       use_as_facet: true
-    - 
+    -
       name: language
       source: language
       use_in_results_table: true
@@ -150,7 +148,7 @@ default: &default
         de: Sprache
         en: Language
         ru: Язык
-    - 
+    -
       name: language_id
       source: language
       use_as_facet: true
@@ -165,23 +163,23 @@ default: &default
       label:
         de: Geburtsdatum
         en: Date of Birth
-    - 
+    -
       name: year_of_birth
       source: person
       use_as_facet: true
-    - 
+    -
       name: gender
       source: person
       use_as_facet: true
-      values: 
+      values:
         female: female
         male: male
         diverse: diverse
-    - 
+    -
       name: collection_id
       source: collection
       use_as_facet: true
-    - 
+    -
       name: media_type
       source: interview
       use_in_results_table: true
@@ -190,7 +188,7 @@ default: &default
         de: Medientyp
         en: Media Type
         ru: Аудио/Видео
-    - 
+    -
       name: birth_location
       source: registry_reference_type
       ref_object_type: person
@@ -199,10 +197,10 @@ default: &default
       label:
         de: Geburtsort
         en: Place of Birth
-    - 
+    -
       name: forced_labor_habitations
       source: registry_entry
-    - 
+    -
       name: home_location
       source: registry_reference_type
       ref_object_type: person
@@ -211,15 +209,15 @@ default: &default
       label:
         de: Herkunftsort
         en: Home Location
-    - 
+    -
       name: forced_labor_location
       source: registry_reference_type
       use_as_facet: false
-    - 
+    -
       name: deportation_location
       source: registry_reference_type
       use_as_facet: false
-    - 
+    -
       name: return_location
       source: registry_reference_type
       use_as_facet: false
@@ -252,4 +250,3 @@ staging:
 
 test:
   <<: *default
-
