@@ -113,7 +113,13 @@ export function sortedSegmentsWithActiveIndex(time, props) {
 }
 
 export function getInterviewee(props) {
-    return props.people[props.interview.interviewee_id];
+    if (props.interview && props.people) {
+        return props.people[props.interview.interviewee_id];
+        //for(var c in props.interview.contributions) {
+            //if (props.interview.contributions[c].contribution_type === 'interviewee')
+                //return props.people[props.interview.contributions[c].person_id];
+        //}
+    }
 }
 
 export function t(props, key, params) {
