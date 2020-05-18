@@ -16,14 +16,16 @@ class CreateBiographicalEntries < ActiveRecord::Migration[5.2]
     end
 
     if Project.name.to_sym == :mog
-      raise "*** Check histories first!!"
       History.find_each do |history|
-        BiographicalEntry.create( 
-          text: history.forced_labor_details, 
-          start_date: history.deportation_date,
-          end_date: history.return_date,
-          person_id: history.person_id
-        )
+        history.translations.each do |t|
+          BiographicalEntry.create( 
+            text: Nokogiri::HTML.parse(t.forced_labor_details),
+            start_date: Nokogiri::HTML.parse(t.deportation_date),
+            end_date: Nokogiri::HTML.parse(t.return_date),
+            person_id: history.person_id
+            locale: t.locale[0..1]
+          )
+        end
       end
       #History.destroy_all
     end
