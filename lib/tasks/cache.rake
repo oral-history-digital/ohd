@@ -2,10 +2,12 @@ require "open-uri"
 
 namespace :cache do
 
-  if Rails.env.development?
-    BASE_URL = 'http://localhost:3000'
-  else
-    BASE_URL = Project.first.domain
+  def base_url
+    if Rails.env.development?
+      'http://localhost:3000'
+    else
+      Project.first.domain
+    end
   end
 
   # rake cache:clear[cdoh]
@@ -22,7 +24,7 @@ namespace :cache do
   desc 'visit start page'
   task :start => :environment do
     p "*** Getting start page"
-    uri = URI.parse("#{BASE_URL}/#{I18n.default_locale}/")
+    uri = URI.parse("#{base_url}/#{I18n.default_locale}/")
     get uri
   end
 
@@ -30,7 +32,7 @@ namespace :cache do
   task :interviews => :environment do
     Interview.all.each do |interview|
       p "*** Getting #{interview.archive_id}"
-      uri = URI.parse("#{BASE_URL}/#{I18n.default_locale}/interviews/#{interview.archive_id}.json")
+      uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{interview.archive_id}.json")
       get uri
     end
   end
@@ -45,7 +47,7 @@ namespace :cache do
         :ref_tree
       ].each do |data_type|
         p "*** Getting #{data_type} for #{interview.archive_id}"
-        uri = URI.parse("#{BASE_URL}/#{I18n.default_locale}/interviews/#{interview.archive_id}/#{data_type}.json")
+        uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{interview.archive_id}/#{data_type}.json")
         get uri
       end
     end
@@ -57,7 +59,7 @@ namespace :cache do
       :people
     ].each do |data_type|
       p "*** Getting #{data_type}"
-      uri = URI.parse("#{BASE_URL}/#{I18n.default_locale}/#{data_type}.json")
+      uri = URI.parse("#{base_url}/#{I18n.default_locale}/#{data_type}.json")
       get uri
     end
   end
@@ -71,7 +73,7 @@ namespace :cache do
       ].each do |kind|
         Project.available_locales.each do |locale|
           p "*** Getting download #{kind} in #{locale} for #{interview.archive_id}"
-          uri = URI.parse("#{BASE_URL}/#{I18n.default_locale}/interviews/#{interview.archive_id}.pdf?lang=#{locale}&kind=#{kind}")
+          uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{interview.archive_id}.pdf?lang=#{locale}&kind=#{kind}")
           get uri
         end
       end
@@ -82,7 +84,7 @@ namespace :cache do
   task :locations => :environment do
     Interview.all.each do |interview|
       p "*** Getting locations for #{interview.archive_id}"
-      uri = URI.parse("#{BASE_URL}/#{I18n.default_locale}/locations.json?archive_id=#{interview.archive_id}")
+      uri = URI.parse("#{base_url}/#{I18n.default_locale}/locations.json?archive_id=#{interview.archive_id}")
       get uri
     end
   end
@@ -92,7 +94,7 @@ namespace :cache do
     pages_count = Interview.count / 12
     (1..pages_count).each do |i|
       p "*** Getting search page #{i}"
-      uri = URI.parse("#{BASE_URL}/#{I18n.default_locale}/searches/archive.json?page=#{i}")
+      uri = URI.parse("#{base_url}/#{I18n.default_locale}/searches/archive.json?page=#{i}")
       get uri
     end
   end
@@ -101,7 +103,7 @@ namespace :cache do
   task :name_searches => :environment do
     Interview.all.each  do |i|
       p "*** Getting search for #{i.title[:de]}"
-      uri = URI.parse("#{BASE_URL}/#{I18n.default_locale}/searches/archive.json?fulltext=#{ERB::Util.url_encode(i.title[:de])}&page=1")
+      uri = URI.parse("#{base_url}/#{I18n.default_locale}/searches/archive.json?fulltext=#{ERB::Util.url_encode(i.title[:de])}&page=1")
       get uri
     end
   end
@@ -110,7 +112,7 @@ namespace :cache do
   task :registry_entries => :environment do
     RegistryEntry.all.each do |registry_entry|
       p "*** Getting registry_entry #{registry_entry.id}"
-      uri = URI.parse("#{BASE_URL}/#{I18n.default_locale}/registry_entries/#{registry_entry.id}.json")
+      uri = URI.parse("#{base_url}/#{I18n.default_locale}/registry_entries/#{registry_entry.id}.json")
       get uri
     end
   end
