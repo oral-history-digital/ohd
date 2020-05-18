@@ -5,19 +5,7 @@ namespace :cache do
   if Rails.env.development?
     BASE_URL = 'http://localhost:3000'
   else
-    project = Archive::Application.config.project["project_id"]
-    case project.to_sym
-      when :zwar
-        BASE_URL = 'https://archiv.zwangsarbeit-archiv.de'
-      when :dg
-        BASE_URL = 'http://da03.cedis.fu-berlin.de:81'
-      when :mog
-        BASE_URL = 'https://archive.occupation-memories.org'
-      when :campscapes
-        BASE_URL = 'http://testimonies.campscapes.org'
-      when :cdoh
-        BASE_URL = 'http://da03.cedis.fu-berlin.de:86'
-    end
+    BASE_URL = Project.first.domain
   end
 
   # rake cache:clear[cdoh]
