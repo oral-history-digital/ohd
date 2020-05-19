@@ -84,7 +84,7 @@ class InterviewSerializer < ApplicationSerializer
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-landing-page-texts-#{object.archive_id}-#{object.project.updated_at}") do
       interviewee = object.interviewee
       I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.project.landing_page_text(locale).gsub('INTERVIEWEE', object.anonymous_title(locale))
+        mem[locale] = object.project.landing_page_text(locale) && object.project.landing_page_text(locale).gsub('INTERVIEWEE', object.anonymous_title(locale))
         mem
       end
     end
