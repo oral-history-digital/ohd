@@ -15,17 +15,17 @@ default: &default
 
   contribution_types:
     interviewee: 'interviewee'
-    interviewer: 'interview'
-    transcriptor: 'transcript'
-    translator: 'translation'
-    segmentator: 'segmentation'
+    interviewer: 'interviewer'
     cinematographer: 'cinematographer'
+    sound: 'sound'
+    producer: 'producer'
+    other_attender: 'other_attender'
     quality_manager_interviewing: 'quality_manager_interviewing'
+    transcriptor: 'transcriptor'
+    segmentator: 'segmentator'
+    translator: 'translator'
     proofreader: 'proofreader'
     research: 'research'
-    sound: 'sound'
-    other_attender: 'other_attender'
-    producer: 'producer'
 
 development:
   <<: *default
@@ -38,4 +38,3 @@ staging:
 
 test:
   <<: *default
-
