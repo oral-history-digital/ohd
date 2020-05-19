@@ -26,7 +26,7 @@ module Archive
     config.i18n.available_locales = config.project["available_locales"]
     #config.i18n.available_locales = [:en, :de, :ru]
     #config.i18n.default_locale = :de
-    config.i18n.default_locale = config.project["default_locale"].try(:to_sym) || config.i18n.default_locale
+    config.i18n.default_locale = config.project["default_locale"].try(:to_sym) || :de || config.i18n.default_locale
     config.i18n.fallbacks = config.project["available_locales"] #[I18n.default_locale]
 
   end
