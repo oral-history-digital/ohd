@@ -83,7 +83,7 @@ export default class PersonData extends React.Component {
                 let value = interviewee[metadataField.name] || '---';
                 if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
                     value = t(_this.props, `${metadataField.name}.${value}`)
-                return <ContentFieldContainer label={label} value={value} />
+                return <ContentFieldContainer label={label} value={value} key={`detail-${i}`} />
                 //return (
                     //<SingleValueWithFormContainer
                         //metadataField={metadataField}

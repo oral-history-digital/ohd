@@ -1,5 +1,3 @@
-import React from 'react';
-
 export function pathBase(props) {
     //return `/${props.projectId}/${props.locale}`;
     return `/${props.locale}`;
@@ -116,10 +114,11 @@ export function sortedSegmentsWithActiveIndex(time, props) {
 
 export function getInterviewee(props) {
     if (props.interview && props.people) {
-        for(var c in props.interview.contributions) {
-            if (props.interview.contributions[c].contribution_type === 'interviewee')
-                return props.people[props.interview.contributions[c].person_id];
-        }
+        return props.people[props.interview.interviewee_id];
+        //for(var c in props.interview.contributions) {
+            //if (props.interview.contributions[c].contribution_type === 'interviewee')
+                //return props.people[props.interview.contributions[c].person_id];
+        //}
     }
 }
 

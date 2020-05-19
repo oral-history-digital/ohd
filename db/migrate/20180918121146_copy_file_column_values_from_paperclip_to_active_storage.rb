@@ -42,6 +42,7 @@ class CopyFileColumnValuesFromPaperclipToActiveStorage < ActiveRecord::Migration
             model.find_each.each do |instance|
               attachments.each do |attachment|
                 if !instance.send("#{attachment}_file_name").blank?
+                  binding.pry
                   active_storage_blob_statement.execute(
                     key(instance, attachment),
                     instance.send("#{attachment}_file_name"),

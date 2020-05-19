@@ -3,7 +3,7 @@ OaiRepository.setup do |config|
 
   begin
     if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.repository_name = Project.project_name[Project.default_locale]
+      #config.repository_name = Project.first.name[Project.first.default_locale]
     end
   rescue ActiveRecord::NoDatabaseError
   end
@@ -14,7 +14,7 @@ OaiRepository.setup do |config|
   # dynamically set this.
   begin
     if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.repository_url = Project.archive_domain
+      config.repository_url = Project.first.archive_domain
     end
   rescue ActiveRecord::NoDatabaseError
   end
@@ -28,7 +28,7 @@ OaiRepository.setup do |config|
   # the AR models you intend to serve. That value will supplant the default.
   begin
     if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.record_prefix = Project.archive_domain
+      config.record_prefix = Project.first.archive_domain
     end
   rescue ActiveRecord::NoDatabaseError
   end
@@ -38,7 +38,7 @@ OaiRepository.setup do |config|
   # your repository
   begin
     if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.admin_email = Project.contact_email
+      config.admin_email = Project.first.contact_email
     end
   rescue ActiveRecord::NoDatabaseError
   end

@@ -1,24 +1,5 @@
 default: &default
 
-  react_locales:
-    - deu
-    - ell
-
-  available_locales:
-    - de
-    - el
-    #- alias
-
-  # grid, list and/or map
-  view_modes:
-    - grid
-
-  default_locale: de
-
-  # use 2- or 3-letter country-code
-  # have a look at https://github.com/alphabetum/iso-639 for possible methods
-  alpha: 'alpha3_terminologic'
-
   media_streams:
     defaults:
       video: 480p
@@ -26,7 +7,6 @@ default: &default
       240p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_240p.mp4
       480p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_480p.mp4
       720p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_720p.mp4
-
 
   contribution_types:
     interviewee: 'interviewee'
@@ -41,144 +21,6 @@ default: &default
     translator: 'translator'
     proofreader: 'proofreader'
     research: 'research'
-
-  upload_types:
-    - bulk_metadata
-    - bulk_texts
-    - bulk_photo
-
-  project_name: # Will be used in titles, emails, etc.
-    de: 'Erinnerungen an die Okkupation in Griechenland'
-    en: 'Memories of the Occupation of Greece'
-    el: 'Μνήμες από την Κατοχή στην Ελλάδα'
-
-  project_domain: 'www.occupation-memories.org'
-  # el: 'www.occupation-memories.org'
-  # de: 'www.occupation-memories.org/de'
-  # en: 'www.occupation-memories.org/en'
-
-  archive_domain: 'archive.occupation-memories.org'
-
-  project_id: 'mog'
-
-  # used in PDFs
-  # give the color code as fractions of 255
-  # e.g. '143, 32, 28' ==> '0.560784314, 0.125490196, 0.109803922'
-  primary_color_rgb: '0,0.43529411764705883,0.7176470588235294'
-
-  project_shortname: 'MOG'
-
-  project_initials: 'mog' # Use two upper case initials. These will be used for file names, interview id's, etc. So please choose carefully. This cannot be changed later.
-
-  project_doi: '10.17169/mog.'
-
-  cooperation_partner: "Nationale Kapodistrias-Universität Athen"
-  leader: "Apostolopoulos, Nicolas; Fleischer, Hagen"
-  manager: "Athanasiadou, Ozeni; Droumpouki, Anna Maria; Nägel, Verena"
-  hosting_institution: "Freie Universität Berlin, Universitätsbibliothek/Center für Digitale Systeme"
-  funder_names:
-    - "Auswärtiges Amt der Bundesrepublik Deutschland"
-    - "Stavros Niarchos Foundation"
-    - "Stiftung 'Erinnerung, Verantwortung und Zukunft'"
-
-  # TODO: Umstellen russ. Links, s. kommentierte Links unten.
-  external_links:
-    conditions:
-      de: 'http://www.occupation-memories.org/de/archive/terms'
-      el: 'http://www.occupation-memories.org/archive/terms'
-    privacy_protection:
-      de: 'http://www.occupation-memories.org/de/archive/privacy'
-      el: 'http://www.occupation-memories.org/archive/privacy'
-    team:
-      de: 'http://www.occupation-memories.org/de/project/team/index.html'
-      el: 'http://www.occupation-memories.org/de/project/team/index.html'
-    contact:
-      de: 'http://www.occupation-memories.org/de/contact/index.html'
-      el: 'http://www.occupation-memories.org/contact/index.html'
-    legal_info:
-      de: 'http://www.occupation-memories.org/de/imprint/index.html'
-      el: 'http://www.occupation-memories.org/de/imprint/index.html'
-    help:
-      de: 'http://www.occupation-memories.org/de/archive/help'
-      el: 'http://www.occupation-memories.org/archive/help'
-
-  meta_keywords:
-    de: 'Speer, Befreiung, Zwangsarbeit, Sklavenarbeit, Geschichte, Nationalsozialismus, Hitler, Sauckel, Oral History, biographisch, Archiv, Gedenken, Literatur, Quellen, Interviews, Erinnerungen, Stimmen, Fotografien, Entschädigung, Konzentrationslager, KZ, Ukrainerinnen, Tschechen, Polen, Ostarbeiter, Ostarbeiterinnen, Stiftung EVZ, audiovisuelle Archive, multimedial, Inventarisierung, Museum, Universität, Digitalisierung, Segmentierung, Übersetzung, STO, IMI, Militärinternierte, Auschwitz, Buchenwald, Flossenbürg, Zigeuner, Roma, Sinti, Displaced Person, Zwangsarbeiterlager, Zweiter Weltkrieg, Drittes Reich, 1939, 1940, 1941, 1942, 1943, 1944, 1945, Ghetto, Arbeitserziehungslager, Vernichtung, Verfolgung, Widerstand, Litauen, Moldawien, Ukraine, Polen, Italien, Norwegen, vergessene Opfer, Kriegskinder, Germanisierung, Deportation, Platoprojekt, Alexander von Plato, Fernuniversität, Hitlers Sklaven, SS, Gestapo, Wehrmacht'
-    en: 'audiovisual oral history archive, forced labor, 1939-1945, 3rd Reich'
-    ru: '##ru##'
-
-  contact_email: 'registration@occupation-memories.org'
-
-  smtp_server: 'mail.fu-berlin.de'
-
-  # Thematic Descriptors: entry_dedalo_code: "hierarchy1_1", name: 637084(changes wwhen publish)
-  # Thematic: entry_dedalo_code: "ts1_1", name: 637018(changes when publish)
-  # because thematic id changes: RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id is now used in InterviewController
-  ref_tree_nodes:
-    thematic:
-      #name: 639654 #not used any more
-      entry_dedalo_code: "ts1_1"
-    centers_of_deprevation_of_liberty:
-      name:
-      entry_dedalo_code: "on1_1129"
-
-  # Interview partner properties usually depend on the historical context and must therefore be configured
-  # on a per-project basis:
-  # - To create a property from sub-entries of a registry entry, use the (default language) descriptor to identify the
-  #   entry. The ID of the property will define the internal property name.
-  # - To create a property from references of a certain reference type, use the registry reference code
-  #   as ID. The clear name will be retrieved from the registry reference type table.
-  # - Interview partner properties will be used as search facets when setting the facet property to 'true'. The order of
-  #   entries is significant to determine in which order entries appear in the "search facet" section.
-  # NB: Only properties from a 'registry entry' or 'registry reference type' source can be used as facet entries.
-  metadata_fields:
-    -
-      name: person_reference
-      source: registry_entry
-    -
-      name: gender
-      source: person
-      use_as_facet: true
-      values:
-        female: Woman
-        male: Man
-        diverse: Diverse
-      values:
-        female: female
-        male: male
-        diverse: diverse
-    -
-      name: year_of_birth
-      source: person
-      use_as_facet: true
-      label:
-        de: Geburtsjahr
-        en: Year of Birth
-    -
-      name: typology
-      source: person
-      use_as_facet: true
-      values:
-        collaboration: Collaboration
-        concentration_camp: "Concentration camp"
-        flight: Flight
-        occupation: Occupation
-        persecution_of_jews: "Persecution of Jews"
-        resistance: Resistance
-        retaliation: Retaliation
-    -
-      name: periods
-      source: registry_entry
-      entry_dedalo_code: hierarchy1_246
-      use_as_facet: true
-
-
-  pdf_registry_entry_codes:
-    - 'thematic'
-    - 'centers_of_depriviation_of_liberty'
-    - 'organizations'
-    - 'places'
-    - 'periods'
 
 development:
   <<: *default
