@@ -72,30 +72,34 @@ export default class SingleValueWithForm extends React.Component {
     }
 
     show() {
-        //let label = this.props.metadataField.label && this.props.metadataField.label[this.props.locale] || t(this.props, this.props.metadataField.name);
-        //let value = this.props.obj[this.props.metadataField.name] || '---';
-        //if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
-            //value = t(this.props, `${this.props.metadataField.name}.${value}`)
+        if (!this.props.criterionForExclusion) {
+            //let label = this.props.metadataField.label && this.props.metadataField.label[this.props.locale] || t(this.props, this.props.metadataField.name);
+            //let value = this.props.obj[this.props.metadataField.name] || '---';
+            //if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
+                //value = t(this.props, `${this.props.metadataField.name}.${value}`)
 
-        let label = this.props.label || t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.props.attribute}`);
-        let value = this.props.value || this.props.obj[this.props.attribute] || '---';
+            let label = this.props.label || t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.props.attribute}`);
+            let value = this.props.value || this.props.obj[this.props.attribute] || '---';
 
-        if (typeof value === 'object' && value !== null)
-            value = value[this.props.locale]
+            if (typeof value === 'object' && value !== null)
+                value = value[this.props.locale]
 
-        if (typeof value === 'string' && this.state.collapsed) 
-            value = value.substring(0,25)
+            if (typeof value === 'string' && this.state.collapsed) 
+                value = value.substring(0,25)
 
-        if (/\w+_id/.test(this.props.attribute) && this.props.attribute !== 'archive_id') // get corresponding name from e.g. collection_id
-            value = this.props.values[this.props.obj[this.props.attribute]].name[this.props.locale]
+            if (/\w+_id/.test(this.props.attribute) && this.props.attribute !== 'archive_id') // get corresponding name from e.g. collection_id
+                value = this.props.values[this.props.obj[this.props.attribute]].name[this.props.locale]
 
-        return (
-            <ContentFieldContainer label={label} value={value} >
-                {this.toggle()}
-                {this.props.children}
-                {this.editButton()}
-            </ContentFieldContainer>
-        )
+            return (
+                <ContentFieldContainer label={label} value={value} >
+                    {this.toggle()}
+                    {this.props.children}
+                    {this.editButton()}
+                </ContentFieldContainer>
+            )
+        } else {
+            return null;
+        }
     }
 
     render() {

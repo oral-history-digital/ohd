@@ -81,6 +81,7 @@ export default class InterviewInfo extends React.Component {
                         withEmpty={true}
                         validate={function(v){return /^\d+$/.test(v)}}
                         individualErrorMsg={'empty'}
+                        criterionForExclusion={this.props.projectId === 'mog'}
                     >
                         {this.collection()}
                     </SingleValueWithFormContainer>
