@@ -22,6 +22,8 @@ class Person < ApplicationRecord
   translates :first_name, :last_name, :birth_name, :other_first_names, :alias_names, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
+  serialize :properties
+
   searchable do
     string :archive_id, :multiple => true, :stored => true do
       contributions.map { |c| c.interview && c.interview.archive_id }.compact
