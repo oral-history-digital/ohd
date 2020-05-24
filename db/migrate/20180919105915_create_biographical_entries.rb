@@ -17,12 +17,12 @@ class CreateBiographicalEntries < ActiveRecord::Migration[5.2]
 
     if Project.name.to_sym == :mog
       History.find_each do |history|
+        bio = BiographicalEntry.create(person_id: history.person_id)
         history.translations.each do |t|
-          BiographicalEntry.create( 
-            text: Nokogiri::HTML.parse(t.forced_labor_details),
-            start_date: Nokogiri::HTML.parse(t.deportation_date),
-            end_date: Nokogiri::HTML.parse(t.return_date),
-            person_id: history.person_id
+          bio.update_attributes( 
+            text: Nokogiri::HTML.parse(t.forced_labor_details).text,
+            start_date: Nokogiri::HTML.parse(t.deportation_date).text,
+            end_date: Nokogiri::HTML.parse(t.return_date).text,
             locale: t.locale[0..1]
           )
         end
