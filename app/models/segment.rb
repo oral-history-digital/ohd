@@ -195,7 +195,7 @@ class Segment < ApplicationRecord
     # TODO: replace the following occurences of I18n.available_locales with project.available_locales 
     # or do sth. resulting in the same (e.g. reset I18n.available_locales in application_controller after having seen params[:project])
     #
-    (I18n.available_locales + [:orig]).each do |locale|
+    (Project.current.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true
     end
     #dynamic_string :transcripts, stored: true  do # needs to be stored to enable highlighting
@@ -352,13 +352,13 @@ class Segment < ApplicationRecord
       subheadings = Segment.subheadings_until(self, mainheadings.last)
       
       if subheadings.count > 0
-        I18n.available_locales.inject({}) do |mem, locale|
+        Project.current.available_locales.inject({}) do |mem, locale|
           subheading = subheadings.last.subheading("#{locale}-public") || subheadings.last.subheading("#{locale}-original")
           mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheading}"
           mem
         end
       else
-        I18n.available_locales.inject({}) do |mem, locale|
+        Project.current.available_locales.inject({}) do |mem, locale|
           mainheading = mainheadings.last.mainheading("#{locale}-public") || mainheadings.last.mainheading("#{locale}-original")
           mem[locale] = "#{mainheadings_count}. #{mainheading}"
           mem
