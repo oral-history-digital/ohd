@@ -12,6 +12,7 @@ export default class Home extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 1);
+        this.loadRandomFeaturedInterviews();
     }
 
     componentDidUpdate(prevProps) {
@@ -21,6 +22,16 @@ export default class Home extends React.Component {
             this.props.account.email && !this.props.account.error) {
             const url = "/" + this.props.locale + "/searches/archive";
             this.context.router.history.push(url);
+        } else {
+            this.loadRandomFeaturedInterviews();
+        }
+    }
+
+    loadRandomFeaturedInterviews() {
+        if (
+            !this.props.randomFeaturedInterviewsStatus.all
+        ) {
+            this.props.fetchData(this.props, 'random_featured_interviews');
         }
     }
 
@@ -42,7 +53,7 @@ export default class Home extends React.Component {
     textOrFeaturedInterviews(moreText) {
         if (moreText) {
             return (<div dangerouslySetInnerHTML={{__html: moreText}} />)
-        } else {
+        } else if (this.props.randomFeaturedInterviewsStatus.all && this.props.randomFeaturedInterviewsStatus.all.split('-')[0] === 'fetched') {
             return (
                 Object.keys(this.props.randomFeaturedInterviews).map((i, index) => {
                     let interview = this.props.randomFeaturedInterviews[i];

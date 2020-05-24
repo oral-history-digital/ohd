@@ -25,6 +25,7 @@ Rails.application.routes.draw do
     end
 
     localized do
+      get "random_featured_interviews", to: "interviews#random_featured"
       resources :texts
       resources :projects
       resources :languages

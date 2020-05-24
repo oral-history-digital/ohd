@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import Home from '../components/Home';
 import { getProject } from '../../../lib/utils';
+import { fetchData } from '../actions/dataActionCreators';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
@@ -9,7 +10,8 @@ const mapStateToProps = (state) => {
 
     return {
         account: state.data.accounts.current,
-        randomFeaturedInterviews: state.archive.randomFeaturedInterviews,
+        randomFeaturedInterviews: state.data.random_featured_interviews,
+        randomFeaturedInterviewsStatus: state.data.statuses.random_featured_interviews,
         locale: state.archive.locale,
         project: getProject(state),
         translations: state.archive.translations,
@@ -17,6 +19,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
 })
 
 // Don't forget to actually use connect!

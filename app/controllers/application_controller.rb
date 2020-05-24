@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
         viewModes: current_project.view_modes,
         viewMode: current_project.view_modes.first,
         listColumns: current_project.list_columns,
-        randomFeaturedInterviews: Interview.random_featured(6).inject({}){|mem, s| mem[s.archive_id] = cache_single(s); mem},
+        randomFeaturedInterviews: {},
         editView: !!cookies["editView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],
@@ -90,6 +90,7 @@ class ApplicationController < ActionController::Base
         statuses: {
           accounts: {current: 'fetched'},
           interviews: {},
+          random_featured_interviews: {},
           segments: {},
           headings: {},
           ref_tree: {},

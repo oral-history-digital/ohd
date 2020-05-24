@@ -2,9 +2,9 @@ class InterviewsController < ApplicationController
   include IsoHelpers
   layout "responsive"
 
-  skip_before_action :authenticate_user_account!, only: [:show]
-  skip_after_action :verify_authorized, only: [:show, :metadata]
-  skip_after_action :verify_policy_scoped, only: [:show, :metadata]
+  skip_before_action :authenticate_user_account!, only: [:show, :random_featured]
+  skip_after_action :verify_authorized, only: [:show, :metadata, :random_featured]
+  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :random_featured]
 
   def new
     authorize Interview
@@ -243,6 +243,20 @@ class InterviewsController < ApplicationController
             nested_data_type: "ref_tree",
             data_type: "interviews",
             archive_id: params[:id],
+          }
+        end.to_json
+        render plain: json
+      end
+    end
+  end
+
+  def random_featured
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch("#{current_project.cache_key_prefix}-interview-random-featured", expires_in: 30.minutes) do
+          {
+            data: Interview.random_featured(6).inject({}){|mem, s| mem[s.archive_id] = cache_single(s); mem},
+            data_type: "random_featured_interviews",
           }
         end.to_json
         render plain: json

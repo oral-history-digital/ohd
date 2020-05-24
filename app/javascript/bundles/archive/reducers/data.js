@@ -13,6 +13,7 @@ const initialState = {
     statuses: {
         accounts: {},
         interviews: {},
+        random_featured_interviews: {},
         segments: {},
         doi_contents: {},
         headings: {},
