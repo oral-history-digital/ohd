@@ -871,6 +871,7 @@ es:
         url: URL
         href: Href
         file: Dato
+        publish: Público
     errors:
       default:
         select: Seleccionar

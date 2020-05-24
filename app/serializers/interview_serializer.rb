@@ -256,4 +256,9 @@ class InterviewSerializer < ApplicationSerializer
       end
     end
   end
+
+  def properties
+    object.properties || {}
+  end
+
 end

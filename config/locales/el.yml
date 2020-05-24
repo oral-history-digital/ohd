@@ -920,6 +920,7 @@ el:
         url: URL
         href: Href
         file: Datei
+        publish: Öffentlich
     errors:
       default:
         select: Παρακαλώ δώστε

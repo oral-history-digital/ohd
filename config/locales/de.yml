@@ -901,6 +901,7 @@ de:
         url: URL
         href: Href
         file: Datei
+        publish: Öffentlich
     errors:
       default:
         select: Bitte auswählen

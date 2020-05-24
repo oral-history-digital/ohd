@@ -66,13 +66,26 @@ export default class SingleValueWithForm extends React.Component {
                         individualErrorMsg: this.props.individualErrorMsg,
                         optionsScope: this.props.optionsScope
                     },
+                    {
+                        elementType: 'input',
+                        attribute: `properties[public_attributes][${this.props.attribute}]`,
+                        value: this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.props.attribute],
+                        labelKey: 'activerecord.attributes.default.publish',
+                        type: 'checkbox',
+                    },
                 ]}
             />
         )
     }
 
     show() {
-        if (!this.props.criterionForExclusion) {
+        if (
+            !this.props.criterionForExclusion && 
+            (
+                admin(this.props, this.props.obj) ||
+                (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.props.attribute])
+            )
+        ) {
             //let label = this.props.metadataField.label && this.props.metadataField.label[this.props.locale] || t(this.props, this.props.metadataField.name);
             //let value = this.props.obj[this.props.metadataField.name] || '---';
             //if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates

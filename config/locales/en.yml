@@ -892,6 +892,7 @@ en:
         url: URL
         href: Href
         file: File
+        publish: Public
     errors:
       default:
         select: Please select
