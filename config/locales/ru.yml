@@ -808,6 +808,8 @@ ru:
         primary_color: Primary color
         secondary_color: Secondary color
         landing_page_edit_help: INTERVIEWEE wird durch den Namen des/der Interviewten ersetzt.
+        domain_help: "This has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
       metadata_field:
         use_as_facet: als Facette benutzen
         facet_order: Reihenfolge in den Suchfacetten

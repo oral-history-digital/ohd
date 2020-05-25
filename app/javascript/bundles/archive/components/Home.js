@@ -36,7 +36,8 @@ export default class Home extends React.Component {
     }
 
     startVideo() {
-        if (this.props.project.idenifier === 'mog') {
+        // TODO: put the 'if' to project-conf
+        if (this.props.project.identifier === 'mog') {
              return (
                  <div className='video-element home-video'>
                      <video 
@@ -50,10 +51,14 @@ export default class Home extends React.Component {
         }
     }
 
-    textOrFeaturedInterviews(moreText) {
-        if (moreText) {
-            return (<div dangerouslySetInnerHTML={{__html: moreText}} />)
-        } else if (this.props.randomFeaturedInterviewsStatus.all && this.props.randomFeaturedInterviewsStatus.all.split('-')[0] === 'fetched') {
+    featuredInterviews() {
+        if (
+            // TODO: put the first two lines to project-conf
+            this.props.project.identifier !== 'mog' && 
+            this.props.project.identifier !== 'campscapes' && 
+            this.props.randomFeaturedInterviewsStatus.all && 
+            this.props.randomFeaturedInterviewsStatus.all.split('-')[0] === 'fetched'
+        ) {
             return (
                 Object.keys(this.props.randomFeaturedInterviews).map((i, index) => {
                     let interview = this.props.randomFeaturedInterviews[i];
@@ -63,6 +68,14 @@ export default class Home extends React.Component {
                     />;
                 })
             )
+        }
+    }
+
+    moreText(text) {
+        if (text) {
+            return <p dangerouslySetInnerHTML={{__html: text}} />
+        } else {
+            return null;
         }
     }
 
@@ -78,10 +91,11 @@ export default class Home extends React.Component {
                             {this.startVideo()}
                             <div  className='home-text'>
                                 <h1>{projectTranslation.name}</h1>
-                                <p dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
+                                <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
                             </div>
                             <div className={'search-results-container'}>
-                                {this.textOrFeaturedInterviews()}
+                                {this.moreText(projectTranslation.more_text)}
+                                {this.featuredInterviews()}
                             </div>
                         </div>
                     </WrapperPageContainer>

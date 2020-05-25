@@ -742,6 +742,8 @@ es:
         hidden_registry_entry_ids: versteckte Registereinträge (IDs)
         pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
+        domain_help: "This has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
+        archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
       metadata_field:
         use_as_facet: als Facette benutzen
         facet_order: Reihenfolge in den Suchfacetten

@@ -106,7 +106,6 @@ class ProjectsController < ApplicationController
           "primary_color",
           "secondary_color",
           "shortname",
-          "more_text",
           "initials",
           "domain",
           "archive_domain",
