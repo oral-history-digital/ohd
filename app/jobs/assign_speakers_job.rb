@@ -1,5 +1,4 @@
 class AssignSpeakersJob < ApplicationJob
-  include IsoHelpers
   queue_as :default
 
   def perform(interview, speakers, contribution_data, receiver)

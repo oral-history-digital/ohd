@@ -1,7 +1,6 @@
 require 'globalize'
 
 class Segment < ApplicationRecord
-  include IsoHelpers
 
   belongs_to :interview#, inverse_of: :segments
   has_one :project, through: :interview

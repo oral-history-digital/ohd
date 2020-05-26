@@ -1,7 +1,7 @@
 \fancyhead{}
 \fancyfoot{}
 \fancyhead[L]{
-  \includegraphics[height=12mm]{<%= "#{Project.project_shortname}-Archiv-PDF-Logo-#{@locale}.png" %>}
+  \includegraphics[height=12mm]{<%= "#{current_project.shortname}-Archiv-PDF-Logo-#{@locale}.png" %>}
   \vspace*{0.2cm}
   \newline{\fontsize{9}{11}\selectfont{\textcolor{primaryColor} {<%= header_text %> }}}
   \vspace*{0.1cm}
@@ -13,10 +13,10 @@
   footer_text += "#{I18n.t(@biography ? 'biographical_entries_footer' : 'transcript_footer', locale: @locale)} #{interviewee_name}" if @interview
   footer_text += ", #{I18n.t('interview', locale: @locale)} #{@interview.archive_id}, #{@interview.interview_date && Date.parse(@interview.interview_date).strftime("%d.%m.%Y") rescue @interview.interview_date}" if @interview
   footer_text += ", #{I18n.t('interview_archive', locale: @locale)} \"#{current_project.name(@locale)}\""
-  footer_text += ", #{Project.archive_domain}/#{@locale}"
+  footer_text += ", #{current_project.archive_domain}/#{@locale}"
   footer_text += "."
 %>
-<%#footer_text += ", doi: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{Project.project_initials}.#{@interview.archive_id}" if @interview && @interview.doi_status == 'created'%>
+<%#footer_text += ", doi: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{current_project.initials}.#{@interview.archive_id}" if @interview && @interview.doi_status == 'created'%>
 
 \fancyfoot[L]{
   \fontsize{9}{11}

@@ -40,7 +40,7 @@ namespace :web_statistics do
     # a resource path / url - use the 2nd match term!
     r_path = /(:|"|')\/{1,2}([-\w\d_.]+\/([-\w\d_]+\/)*[-\w\d_\.]+)/
     # path prefixes to remove from absolute urls
-    r_path_prefix = Regexp.new("/?(#{Project.project_domain}|archiv)")
+    r_path_prefix = Regexp.new("/?(#{Project.first.domain}|archiv)")
     # an action token
     r_action = /[\w_]+#[\w_]+/
     # requester IP

@@ -28,12 +28,12 @@ class TextMaterial < ApplicationRecord
     return if filename.blank?
     filename = (filename || '').sub!(/\w{3,4}$/,'pdf')
     if !defined?(@assigned_filename) || @assigned_filename != filename
-      archive_id = ((filename || '')[Regexp.new("^#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
+      archive_id = ((filename || '')[Regexp.new("^#{Project.current.initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
       @assigned_filename = filename
       # Construct the import file path.
       filepath = if !interview.nil? and interview.quality < 2.0
         # use the original text materials
-        versions_dir = File.join(Project.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[Regexp.new("#{Project.project_initials.downcase}\\d{3}_\\w+/")])
+        versions_dir = File.join(Project.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[Regexp.new("#{Project.current.initials.downcase}\\d{3}_\\w+/")])
         ctime = Time.now
         original_file = nil
         Dir.glob(versions_dir + '*.pdf').each do |file|

@@ -6,7 +6,7 @@ namespace :cache do
     if Rails.env.development?
       'http://localhost:3000'
     else
-      Project.first.domain
+      Project.first.archive_domain
     end
   end
 

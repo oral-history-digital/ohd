@@ -2,7 +2,7 @@ xml.instruct!
 xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://schema.datacite.org/meta/kernel-4/metadata.xsd", xmlns: "http://datacite.org/schema/kernel-4", "xmlns:xsi": "http://www.w3.org/2001/XMLSchema-instance" do
 
   xml.identifier identifierType: "DOI" do 
-    xml.text! "#{Rails.configuration.datacite['prefix']}/#{Project.current.identifier}.#{@interview.archive_id}"
+    xml.text! "#{Rails.configuration.datacite['prefix']}/#{current_project.identifier}.#{@interview.archive_id}"
   end
 
   #xml.AlternateIdentifier AlternateIdentifierType: "URL" do
@@ -23,7 +23,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
     xml.title "Lebensgeschichtliches Interview mit #{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}, interviewt von #{@interview.interviewers.first.first_name(@locale)}, #{@interview.interviewers.first.last_name(@locale)} am #{@interview.interview_date && Date.parse(@interview.interview_date).strftime('%d.%m.%Y')}"
   end
 
-  xml.publisher "Interview-Archiv \"#{Project.project_name['de']}\""
+  xml.publisher "Interview-Archiv \"#{current_project.name['de']}\""
   xml.publicationYear DateTime.now.year
 
   xml.contributors do
@@ -40,19 +40,19 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
         end
       end
     end
-    if !Project.cooperation_partner.blank?
+    if !current_project.cooperation_partner.blank?
       xml.contributor contributorType: "DataCollector" do 
-        xml.contributorName "#{Project.cooperation_partner} (Kooperationspartner)"
+        xml.contributorName "#{current_project.cooperation_partner} (Kooperationspartner)"
       end
     end
     xml.contributor contributorType: "ProjectLeader" do 
-      xml.contributorName Project.leader
+      xml.contributorName current_project.leader
     end
     xml.contributor contributorType: "ProjectManager" do 
-      xml.contributorName Project.manager
+      xml.contributorName current_project.manager
     end
     xml.contributor contributorType: "HostingInstitution" do 
-      xml.contributorName Project.hosting_institution
+      xml.contributorName current_project.hosting_institution
     end
   end
 
@@ -86,13 +86,13 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.rightsList do
-    xml.rights rightsURI: "#{Project.external_links['conditions']['de']}" do 
-      xml.text! "Nutzungsbedingungen des Interview-Archivs \"#{Project.project_name['de']}\""
+    xml.rights rightsURI: "#{current_project.external_links['conditions']['de']}" do 
+      xml.text! "Nutzungsbedingungen des Interview-Archivs \"#{current_project.name['de']}\""
     end
   end
 
   xml.fundingReferences do
-    Project.funder_names.each do |funder|
+    current_project.funder_names.each do |funder|
       xml.fundingReference do
         xml.funderName funder
       end

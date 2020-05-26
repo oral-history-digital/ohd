@@ -4,7 +4,6 @@ require "#{Rails.root}/lib/reference_tree.rb"
 require "#{Rails.root}/lib/timecode.rb"
 
 class Interview < ApplicationRecord
-  include IsoHelpers
   include OaiRepository::Set
 
   belongs_to :project

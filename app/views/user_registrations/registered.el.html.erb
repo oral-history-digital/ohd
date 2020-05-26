@@ -1,7 +1,7 @@
 <h1>Η ηλεκτρονική διεύθυνση <span><%= @user_registration.email %></span>  έχει ήδη καταχωρηθεί.</h1>
 
 <p>Η ηλεκτρονική διεύθυνση που χρησιμοποιείτε έχει ήδη καταχωρηθεί για το
-Αρχείο "<%= Project.project_name['el'] %>".</p>
+Αρχείο "<%= current_project.name['el'] %>".</p>
 
 <% case @user_registration.workflow_state
     when 'checked' %>

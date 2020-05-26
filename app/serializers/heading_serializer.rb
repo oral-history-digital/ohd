@@ -1,5 +1,4 @@
 class HeadingSerializer < ApplicationSerializer
-  include IsoHelpers
 
   attributes :id,
              :interview_id,

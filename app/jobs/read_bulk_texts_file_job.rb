@@ -1,5 +1,4 @@
 class ReadBulkTextsFileJob < ApplicationJob
-  include IsoHelpers
   queue_as :default
 
   def perform(file_path, receiver, project, locale)

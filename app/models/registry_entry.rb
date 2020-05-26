@@ -2,7 +2,6 @@ require 'tsort'
 # require 'i18n/core_ext/string/interpolate'
 
 class RegistryEntry < ApplicationRecord
-  include IsoHelpers
 
   ROOT_NODE_ID = 1
 

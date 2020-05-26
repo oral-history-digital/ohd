@@ -1,5 +1,4 @@
 class InterviewsController < ApplicationController
-  include IsoHelpers
   layout "responsive"
 
   skip_before_action :authenticate_user_account!, only: [:show, :random_featured]

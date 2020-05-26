@@ -1,5 +1,4 @@
 class PhotoSerializer < ApplicationSerializer
-  include IsoHelpers
 
   attributes :id, 
              :captions, 

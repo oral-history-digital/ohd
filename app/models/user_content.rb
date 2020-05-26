@@ -74,7 +74,7 @@ class UserContent < ApplicationRecord
 
   def interview_references=(list_of_archive_ids)
     if list_of_archive_ids.is_a?(String)
-      list_of_archive_ids = list_of_archive_ids.scan(Regexp.new("#{Project.project_initials}\\d{3}", Regexp::IGNORECASE)).map{|id| id.downcase }
+      list_of_archive_ids = list_of_archive_ids.scan(Regexp.new("#{Project.current.initials}\\d{3}", Regexp::IGNORECASE)).map{|id| id.downcase }
     end
     write_attribute :interview_references, list_of_archive_ids.to_yaml
   end

@@ -16,7 +16,7 @@ html
     == javascript_include_tag 'responsive'
 
     /<link rel="shortcut icon" href="/favicon.ico" />
-    title == Project.project_name[I18n.locale.to_s]
+    title == current_project.name[I18n.locale.to_s]
 
   body
     .layout-indicator style="display: block;"

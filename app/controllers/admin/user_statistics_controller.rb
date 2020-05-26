@@ -142,7 +142,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       end
     end
 
-    send_data(content, filename: "#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{Project.project_shortname}-Benutzerstatistik-#{params[:countries].try(:join, '-') || "gesamt"}.csv")
+    send_data(content, filename: "#{Time.now.strftime("%Y-%m-%d-%H%M")}-#{current_project.shortname}-Benutzerstatistik-#{params[:countries].try(:join, '-') || "gesamt"}.csv")
   end
 
 end

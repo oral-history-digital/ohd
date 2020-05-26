@@ -1,5 +1,4 @@
 class SegmentSerializer < ApplicationSerializer
-  include IsoHelpers
 
   attributes :id,
              :interview_id,

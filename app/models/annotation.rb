@@ -1,7 +1,6 @@
 require 'globalize'
 
 class Annotation < ApplicationRecord
-  include IsoHelpers
 
   belongs_to :interview
   belongs_to :user_content
