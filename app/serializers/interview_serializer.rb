@@ -41,14 +41,6 @@ class InterviewSerializer < ApplicationSerializer
     object.collection && object.collection.localized_hash(:name) || {}
   end
 
-  def gender
-    if object.interviewee
-      Project.localized_hash_for("search_facets", object.interviewee.gender)
-    else
-      {}
-    end
-  end
-
   Project.current.registry_reference_type_metadata_fields.each do |m|
     define_method m.name do
       # can handle object.send(m.name) = nil
