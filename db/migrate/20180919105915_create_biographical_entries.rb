@@ -17,7 +17,7 @@ class CreateBiographicalEntries < ActiveRecord::Migration[5.2]
 
     if Project.name.to_sym == :mog
       History.find_each do |history|
-        bio = BiographicalEntry.create(person_id: history.person_id)
+        bio = BiographicalEntry.create(person_id: history.person_id, workflow_state: 'public')
         history.translations.each do |t|
           bio.update_attributes( 
             text: Nokogiri::HTML.parse(t.forced_labor_details).text,
