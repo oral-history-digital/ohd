@@ -57,7 +57,7 @@ export default class SingleValueWithForm extends React.Component {
                 values={{id: this.props.obj.type === 'Interview' ? this.props.obj.archive_id : this.props.obj.id}}
                 elements={[
                     {
-                        elementType: this .props.elementType,
+                        elementType: this.props.elementType,
                         attribute: this.props.attribute || this.props.metadataField.name,
                         validate: this.props.validate,
                         value: this.props.obj[this.props.attribute],
@@ -92,7 +92,7 @@ export default class SingleValueWithForm extends React.Component {
                 //value = t(this.props, `${this.props.metadataField.name}.${value}`)
 
             let label = this.props.label || t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.props.attribute}`);
-            let translation = this.props.obj.translations && this.props.data.translations.find(t => t.locale === this.props.locale)
+            let translation = this.props.obj.translations && this.props.obj.translations.find(t => t.locale === this.props.locale)
             let value = this.props.value || this.props.obj[this.props.attribute] || (translation && translation[this.props.attribute]) || '---';
 
             if (typeof value === 'object' && value !== null)
