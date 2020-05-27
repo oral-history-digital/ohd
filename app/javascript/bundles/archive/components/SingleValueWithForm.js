@@ -92,7 +92,8 @@ export default class SingleValueWithForm extends React.Component {
                 //value = t(this.props, `${this.props.metadataField.name}.${value}`)
 
             let label = this.props.label || t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.props.attribute}`);
-            let value = this.props.value || this.props.obj[this.props.attribute] || '---';
+            let translation = this.props.obj.translations && this.props.data.translations.find(t => t.locale === this.props.locale)
+            let value = this.props.value || this.props.obj[this.props.attribute] || (translation && translation[this.props.attribute]) || '---';
 
             if (typeof value === 'object' && value !== null)
                 value = value[this.props.locale]

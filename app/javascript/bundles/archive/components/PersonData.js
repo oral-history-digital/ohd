@@ -79,10 +79,14 @@ export default class PersonData extends React.Component {
         let interviewee = getInterviewee(this.props);
         return this.props.detailViewFields.map(function(metadataField, i){
             if (metadataField.source === 'Person'){
+
                 let label = metadataField.label && metadataField.label[_this.props.locale] || t(_this.props, metadataField.name);
-                let value = interviewee[metadataField.name] || '---';
+                let translation = interviewee.translations.find(t => t.locale === _this.props.locale)
+                let value = interviewee[metadataField.name] || (translation && translation[metadataField.name]) || '---';
+
                 if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
                     value = t(_this.props, `${metadataField.name}.${value}`)
+
                 return <ContentFieldContainer label={label} value={value} key={`detail-${i}`} />
                 //return (
                     //<SingleValueWithFormContainer
