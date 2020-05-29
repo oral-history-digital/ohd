@@ -1,0 +1,35 @@
+default: &default
+
+  media_streams:
+    defaults:
+      video: 480p
+    video:
+      240p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_240p.mp4
+      480p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_480p.mp4
+      720p: https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{archive_id}/#{archive_id}_01_01_720p.mp4
+
+  contribution_types:
+    interviewee: 'interviewee'
+    interviewer: 'interviewer'
+    cinematographer: 'cinematographer'
+    sound: 'sound'
+    producer: 'producer'
+    other_attender: 'other_attender'
+    quality_manager_interviewing: 'quality_manager_interviewing'
+    transcriptor: 'transcriptor'
+    segmentator: 'segmentator'
+    translator: 'translator'
+    proofreader: 'proofreader'
+    research: 'research'
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+staging:
+  <<: *default
+
+test:
+  <<: *default
