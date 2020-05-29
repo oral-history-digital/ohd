@@ -6,7 +6,7 @@ class TransformTypologiesToRegistryEntries < ActiveRecord::Migration[5.2]
       typology_re = RegistryEntry.create_with_parent_and_names(1, "de::Typologie#el::Εμπειρία", 'typology')
 
       %w(resistance occupation flight concentration_camp persecution_of_jews retaliation collaboration).each do |typology|
-        RegistryEntry.create_with_parent_and_names(typology_re.id, "de::#{I18n.t(typology, :de, scope: 'search_facets')}#el::#{I18n.t(typology, :el, scope: 'search_facets')}", typology)
+        RegistryEntry.create_with_parent_and_names(typology_re.id, "de::#{I18n.t(typology, locale: :de, scope: 'search_facets')}#el::#{I18n.t(typology, locale: :el, scope: 'search_facets')}", typology)
       end
 
       Person.all.each do |person|
