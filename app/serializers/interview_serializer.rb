@@ -34,7 +34,8 @@ class InterviewSerializer < ApplicationSerializer
     :doi_status,
     :landing_page_texts,
     :properties,
-  ] | Project.current.metadata_fields.map(&:name)
+  ] | Project.first.metadata_fields.where("source='Interview' OR ref_object_type='Interview'")
+  #] | Project.current.metadata_fields.map(&:name)
   #] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_reference_type_metadata_fields.map(&:name)
 
   def collection
