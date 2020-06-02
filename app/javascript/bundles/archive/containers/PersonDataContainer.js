@@ -24,4 +24,4 @@ const mapDispatchToProps = (dispatch) => ({
     submitData: (props, params) => dispatch(submitData(props, params)),
 })
 
-export default connect(mapStateToProps)(PersonData);
+export default connect(mapStateToProps, mapDispatchToProps)(PersonData);
