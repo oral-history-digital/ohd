@@ -13,7 +13,6 @@ class InterviewSerializer < ApplicationSerializer
     :translated,
     :interview_date,
     :language,
-    :interviewee_id,
     :languages,
     :language_id,
     :lang,
