@@ -83,10 +83,6 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def interviewee_id
-    object.interviewee && object.interviewee.id
-  end
-
   def contributions
     json =  Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-contributions-#{object.id}-#{object.contributions.maximum(:updated_at)}") do
       object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }

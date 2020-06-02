@@ -114,11 +114,7 @@ export function sortedSegmentsWithActiveIndex(time, props) {
 
 export function getInterviewee(props) {
     if (props.interview && props.people) {
-        return props.people[props.interview.interviewee_id];
-        //for(var c in props.interview.contributions) {
-            //if (props.interview.contributions[c].contribution_type === 'interviewee')
-                //return props.people[props.interview.contributions[c].person_id];
-        //}
+        return props.people[Object.values(props.interview.contributions).find(c => c.contribution_type === 'interviewee').person_id]
     }
 }
 
