@@ -75,7 +75,7 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
     }
 }
 
-export function submitData(props, params) {
+export function submitData(props, params, opts={}) {
     let dataType = Object.keys(params)[0]; 
     let pluralizedDataType = pluralize(dataType);
 
@@ -83,7 +83,8 @@ export function submitData(props, params) {
         let id = params[dataType].id;
         delete params[dataType].id;
         return dispatch => {
-            dispatch(updateData(pluralizedDataType, id, Object.values(params)[0]));
+            if (opts.updateStateBeforeSubmit) 
+                dispatch(updateData(pluralizedDataType, id, Object.values(params)[0]));
             Loader.put(`${pathBase(props)}/${pluralizedDataType}/${id}`, params, dispatch, receiveData);
         }
     } else {
