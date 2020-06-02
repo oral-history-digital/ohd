@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params))
+    submitData: (props, params, opts) => dispatch(submitData(props, params, opts))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleValueWithForm);
