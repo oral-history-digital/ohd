@@ -25,7 +25,6 @@ const mapStateToProps = (state) => {
         viewModes: project && project.view_modes,
         viewMode: state.archive.viewMode,
         listColumns: project && project.list_columns,
-        detailViewFields: project && project.detail_view_fields,
         editView: state.archive.editView,
         account: state.data.accounts.current,
         isLoggedIn: state.account.isLoggedIn,
