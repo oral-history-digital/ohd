@@ -74,27 +74,32 @@ export default class PersonData extends React.Component {
         }
     }
 
-    detailViewFields(){
+    personMetadataFields(){
         let _this = this;
         let interviewee = getInterviewee(this.props);
-        return this.props.detailViewFields.map(function(metadataField, i){
-            if (metadataField.source === 'Person'){
 
-                let label = metadataField.label && metadataField.label[_this.props.locale] || t(_this.props, metadataField.name);
-                let translation = interviewee.translations.find(t => t.locale === _this.props.locale)
-                let value = interviewee[metadataField.name] || (translation && translation[metadataField.name]) || '---';
+        return Object.values(this.props.project.metadata_fields).filter(m => {
+            return (m.source === 'Person' &&
+                (
+                    (_this.props.account.email && m.use_in_details_view) ||
+                    (!_this.props.account.email && m.display_on_landing_page) 
+                )
+            )
+        }).map(function(metadataField, i){
+            let label = metadataField.label && metadataField.label[_this.props.locale] || t(_this.props, metadataField.name);
+            let translation = interviewee.translations.find(t => t.locale === _this.props.locale)
+            let value = interviewee[metadataField.name] || (translation && translation[metadataField.name]) || '---';
 
-                if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
-                    value = t(_this.props, `${metadataField.name}.${value}`)
+            if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
+                value = t(_this.props, `${metadataField.name}.${value}`)
 
-                return <ContentFieldContainer label={label} value={value} key={`detail-${i}`} />
-                //return (
-                    //<SingleValueWithFormContainer
-                        //metadataField={metadataField}
-                        //obj={interviewee}
-                    ///>
-                //)
-            }
+            return <ContentFieldContainer label={label} value={value} key={`detail-${i}`} />
+            //return (
+                //<SingleValueWithFormContainer
+                    //metadataField={metadataField}
+                    //obj={interviewee}
+                ///>
+            //)
         })
     }
 
@@ -126,7 +131,7 @@ export default class PersonData extends React.Component {
                     <AuthShowContainer ifLoggedOut={true}>
                         <ContentFieldContainer label={t(this.props, 'interviewee_name')} value={this.props.interview.anonymous_title[this.props.locale]} />
                     </AuthShowContainer>
-                    {this.detailViewFields()}
+                    {this.personMetadataFields()}
                 </div>
             );
         } else {

@@ -36,7 +36,6 @@ class ProjectSerializer < ApplicationSerializer
     :external_links,
     :logos,
     :sponsor_logos,
-    :detail_view_fields,
     :list_columns
 
   def title
@@ -66,9 +65,4 @@ class ProjectSerializer < ApplicationSerializer
     end
   end
   
-  def detail_view_fields
-    #object.detail_view_fields.inject({}) { |mem, field| mem[field.name] = MetadataFieldSerializer.new(MetadataField.find_by_name(field.name)).as_json; mem }
-    object.detail_view_fields.map{|field| field['label'] = field.localized_hash(:label); field}
-  end
-
 end

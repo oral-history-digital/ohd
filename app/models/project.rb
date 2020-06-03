@@ -97,10 +97,6 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_results_table: true).order(:list_columns_order)
   end
 
-  def detail_view_fields
-    metadata_fields.where(use_in_details_view: true)
-  end
-
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
   %w(RegistryReferenceType Person Interview).each do |m|
     define_method "#{m.underscore}_search_facets" do
