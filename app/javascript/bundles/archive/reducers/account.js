@@ -47,10 +47,10 @@ const account = (state = {isLoggedIn: false}, action) => {
             return Object.assign({}, state, {
                 isLoggedIn: false,
                 isLoggedOut: true,
-                loggedInAt: 'no',
-                firstName: 'no',
-                lastName: 'no',
-                email: 'no',
+                loggedInAt: false,
+                firstName: false,
+                lastName: false,
+                email: false,
             })
         case REGISTER:
             return Object.assign({}, state, {

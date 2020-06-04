@@ -16,10 +16,7 @@ export default class Home extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        if ((prevProps.account.isFetchingAccount === undefined || prevProps.account.isFetchingAccount === false) &&
-            (this.props.account.isFetchingAccount === undefined || this.props.account.isFetchingAccount === false) &&
-            prevProps.account.email === undefined &&
-            this.props.account.email && !this.props.account.error) {
+        if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
             const url = "/" + this.props.locale + "/searches/archive";
             this.context.router.history.push(url);
         } else {

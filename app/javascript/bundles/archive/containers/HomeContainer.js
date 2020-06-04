@@ -9,7 +9,7 @@ const mapStateToProps = (state) => {
     let project = getProject(state);
 
     return {
-        account: state.data.accounts.current,
+        isLoggedIn: state.account.isLoggedIn,
         randomFeaturedInterviews: state.data.random_featured_interviews,
         randomFeaturedInterviewsStatus: state.data.statuses.random_featured_interviews,
         locale: state.archive.locale,

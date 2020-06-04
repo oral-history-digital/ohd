@@ -4,7 +4,7 @@ import Account from '../components/Account';
 import { submitLogout } from '../actions/accountActionCreators';
 import { changeToEditView } from '../actions/archiveActionCreators';
 import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData, deleteData } from '../actions/dataActionCreators';
 import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
         projectId: state.archive.projectId,
         translations: state.archive.translations,
         isLoggedIn: state.account.isLoggedIn,
+        isLoggedOut: state.account.isLoggedOut,
         firstName: state.account.firstName,
         lastName: state.account.lastName,
         error: state.account.error,
@@ -29,6 +30,7 @@ const mapDispatchToProps = (dispatch) => ({
     changeToEditView: (bool) => dispatch(changeToEditView(bool)),
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
+    deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove, onlyRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove, onlyRemove)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

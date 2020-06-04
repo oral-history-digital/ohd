@@ -36,9 +36,11 @@ export default class Account extends React.Component {
         if (
             !this.props.accountsStatus.current ||
             this.props.accountsStatus.current.split('-')[0] === 'reload' ||
-            (this.props.isLoggedIn && !this.props.account.email && this.props.accountsStatus.current.split('-')[0] === 'fetched')
+            (this.props.isLoggedIn && !this.props.account && this.props.accountsStatus.current.split('-')[0] === 'fetched')
         ) {
             this.props.fetchData(this.props, 'accounts', 'current');
+        } else if (this.props.isLoggedOut && this.props.account) {
+            this.props.deleteData(this.props, 'accounts', 'current', null, null, false, true)
         }
     }
 

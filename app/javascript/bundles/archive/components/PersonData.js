@@ -81,8 +81,8 @@ export default class PersonData extends React.Component {
         return Object.values(this.props.project.metadata_fields).filter(m => {
             return (m.source === 'Person' &&
                 (
-                    (_this.props.account.email && m.use_in_details_view) ||
-                    (!_this.props.account.email && m.display_on_landing_page) 
+                    (_this.props.isLoggedIn && m.use_in_details_view) ||
+                    (!_this.props.isLoggedIn && m.display_on_landing_page) 
                 )
             )
         }).map(function(metadataField, i){

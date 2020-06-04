@@ -15,18 +15,22 @@ export default class WrappedAccount extends React.Component {
     }
 
     details() {
-        return (
-            <div className='details box'>
-                {['first_name', 'last_name', 'email'].map((detail, index) => {
-                        return (
-                            <p className='detail' key={`${detail}-detail`}>
-                                <span className='name'>{t(this.props, `activerecord.attributes.account.${detail}`) + ': '}</span>
-                                <span className='content'>{this.props.account[detail]}</span>
-                            </p>
-                        )
-                })}
-            </div>
-        )
+        if (this.props.account) {
+            return (
+                <div className='details box'>
+                    {['first_name', 'last_name', 'email'].map((detail, index) => {
+                            return (
+                                <p className='detail' key={`${detail}-detail`}>
+                                    <span className='name'>{t(this.props, `activerecord.attributes.account.${detail}`) + ': '}</span>
+                                    <span className='content'>{this.props.account[detail]}</span>
+                                </p>
+                            )
+                    })}
+                </div>
+            )
+        } else {
+            return null;
+        }
     }
 
     edit() {
@@ -81,7 +85,7 @@ export default class WrappedAccount extends React.Component {
     }
 
     roles() {
-        if (this.props.account.user_roles && Object.keys(this.props.account.user_roles).length > 0) {
+        if (this.props.account && this.props.account.user_roles && Object.keys(this.props.account.user_roles).length > 0) {
             return (
                 <div className={'roles box'}>
                     <h4 className='title'>{t(this.props, 'activerecord.models.role.other')}</h4>
@@ -99,7 +103,7 @@ export default class WrappedAccount extends React.Component {
     }
 
     tasks() {
-        if (this.props.account.tasks && Object.keys(this.props.account.tasks).length > 0) {
+        if (this.props.account && this.props.account.tasks && Object.keys(this.props.account.tasks).length > 0) {
             return (
                 <div className={'tasks box'}>
                     <h4 className='title'>{t(this.props, 'activerecord.models.task.other')}</h4>
@@ -118,7 +122,7 @@ export default class WrappedAccount extends React.Component {
     }
 
     supervisedTasks() {
-        if (this.props.account.supervised_tasks && Object.keys(this.props.account.supervised_tasks).length > 0) {
+        if (this.props.account && this.props.account.supervised_tasks && Object.keys(this.props.account.supervised_tasks).length > 0) {
             return (
                 <div className={'tasks box'}>
                     <h4 className='title'>{t(this.props, 'activerecord.models.task.supervised_other')}</h4>
