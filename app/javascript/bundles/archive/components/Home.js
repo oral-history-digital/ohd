@@ -42,8 +42,8 @@ export default class Home extends React.Component {
                  <div className='video-element home-video'>
                      <video 
                          poster="https://medien.cedis.fu-berlin.de/eog/interviews/mog/home/still-home-video.jpg" 
-                         controls="false" 
-                         playsinline="true"
+                         controls={false} 
+                         playsInline={true}
                          src={`https://medien.cedis.fu-berlin.de/eog/interviews/mog/home/mog_home_movie_${this.props.locale}_1803.mp4`}
                      />
                  </div>
