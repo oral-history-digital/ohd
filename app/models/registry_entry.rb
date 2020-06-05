@@ -260,6 +260,34 @@ class RegistryEntry < ApplicationRecord
     end
   end
 
+    # e.g. <RegistryEntry id: 213> (Misk, Belarus):
+    # > RegistryEntry.find(213).regions
+    # => ["Belarus", "Stadt Minsk"]
+    # e.g. <RegistryEntry id: 523> (Brandenburg an der Havel):
+    # > RegistryEntry.find(523).regions
+    # => ["Deutschland", "Brandenburg"]
+    # TODO: add multi-locale-support
+    def regions
+    bc = bread_crumb
+    bc && parent_key = bc.keys.select{ |key|
+      parent = RegistryEntry.find(key)
+      key if parent.try(:code) =="place" || (bc[key].keys.size < 2 && parent.try(:ancestors) && parent.ancestors[-2].try(:code) == "place")
+    }[0]
+    if parent_key
+      h = bc[parent_key]
+      r = RegistryEntry.find(parent_key)
+      regions = [r.localized_hash(:descriptor)[:de]]
+      while h.class == Hash do
+        r = RegistryEntry.find(h.keys[0])
+        regions.push(r.localized_hash(:descriptor)[:de])
+        h = h.flatten[-1]
+      end
+      regions.reverse - ["Register", "Orte"]
+    else
+      []
+    end
+  end
+
   class << self
     def descendant_ids(code, entry_dedalo_code=nil)
       entry = entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code) : find_by_code(code)
