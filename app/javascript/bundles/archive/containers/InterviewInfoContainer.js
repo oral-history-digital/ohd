@@ -22,7 +22,6 @@ const mapStateToProps = (state) => {
         contributionsLastModified: state.data.statuses.contributions.lastModified,
         contributionTypes: state.archive.contributionTypes,
         languages: state.data.languages,
-        isLoggedIn: state.account.isLoggedIn,
     }
 }
 

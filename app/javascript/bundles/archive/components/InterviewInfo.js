@@ -21,93 +21,61 @@ export default class InterviewInfo extends React.Component {
     }
 
     render() {
-        // It could be good to replace all the <SingleValueWithFormContainer ... /> stuff with sth like the following
-        //
-        //return this.props.detailViewFields.map(function(metadataField, i){
-            //if (metadataField.source === 'Interview'){
-                //return (
-                    //<SingleValueWithFormContainer
-                        //metadataField={metadataField}
-                        //obj={interviewee}
-                    ///>
-                //)
-             //}
-        //})
-
-        let _this = this;
-        let interviewMetadataFieldNames = Object.values(this.props.project.metadata_fields).filter(m => {
-            return (m.source === 'Interview' &&
-                (
-                    (_this.props.isLoggedIn && m.use_in_details_view) ||
-                    (!_this.props.isLoggedIn && m.display_on_landing_page) 
-                )
-            )
-        }).map(m => m.name);
-
         if (this.props.interview && this.props.interview.language) {
             return (
                 <div>
                     <SingleValueWithFormContainer
-                        attribute={'archive_id'}
                         obj={this.props.interview}
                         validate={function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}}
-                        criterionForExclusion={interviewMetadataFieldNames.indexOf('archive_id') === -1}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'archive_id')}
                     />
                     <SingleValueWithFormContainer
-                        attribute={'interview_date'}
                         obj={this.props.interview}
-                        criterionForExclusion={interviewMetadataFieldNames.indexOf('interview_date') === -1}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'interview_date')}
                     />
                     <SingleValueWithFormContainer
-                        attribute={'media_type'}
                         obj={this.props.interview}
                         optionsScope={'search_facets'}
                         elementType={'select'}
                         values={['video', 'audio']}
                         value={t(this.props, `search_facets.${this.props.interview.media_type}`)}
-                        criterionForExclusion={interviewMetadataFieldNames.indexOf('media_type') === -1}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'media_type')}
                     />
                     <SingleValueWithFormContainer
-                        attribute='duration'
                         obj={this.props.interview}
                         value={this.props.interview.duration_human}
                         validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
-                        criterionForExclusion={interviewMetadataFieldNames.indexOf('duration') === -1}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'duration')}
                     />
                     <SingleValueWithFormContainer
-                        attribute={'tape_count'}
                         obj={this.props.interview}
                         validate={function(v){return /^\d+$/.test(v)}}
-                        criterionForExclusion={interviewMetadataFieldNames.indexOf('tape_count') === -1}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'tape_count')}
                     />
                     <SingleValueWithFormContainer
                         elementType={'select'}
-                        attribute={'language_id'}
                         obj={this.props.interview}
                         values={this.props.languages}
                         withEmpty={true}
                         validate={function(v){return /^\d+$/.test(v)}}
-                        criterionForExclusion={interviewMetadataFieldNames.indexOf('language_id') === -1}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'language_id')}
                     />
                     <SingleValueWithFormContainer
                         elementType={'select'}
-                        attribute={'collection_id'}
                         obj={this.props.interview}
                         values={this.props.collections}
                         withEmpty={true}
                         validate={function(v){return /^\d+$/.test(v)}}
                         individualErrorMsg={'empty'}
-                        criterionForExclusion={interviewMetadataFieldNames.indexOf('collection_id') === -1}
-                        //criterionForExclusion={this.props.projectId === 'mog'}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'collection_id')}
                     >
                         {this.collection()}
                     </SingleValueWithFormContainer>
                     <SingleValueWithFormContainer
-                        attribute={'observations'}
                         obj={this.props.interview}
                         collapse={true}
                         elementType={'textarea'}
-                        criterionForExclusion={interviewMetadataFieldNames.indexOf('observations') === -1}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations')}
                     />
                     <AuthShowContainer ifAdmin={true} obj={this.props.interview}>
                         <SingleValueWithFormContainer

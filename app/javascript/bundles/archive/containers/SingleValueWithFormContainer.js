@@ -8,6 +8,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         account: state.data.accounts.current,
         editView: state.archive.editView,
+        isLoggedIn: state.account.isLoggedIn,
         translations: state.archive.translations,
     }
 }

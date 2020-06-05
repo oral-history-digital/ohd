@@ -46,6 +46,15 @@ export default class SingleValueWithForm extends React.Component {
         }
     }
 
+    label() {
+        return this.props.metadataField && this.props.metadataField.label && this.props.metadataField.label[this.props.locale] || 
+            t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.attribute()}`);
+    }
+    
+    attribute() {
+        return (this.props.metadataField && this.props.metadataField.name) || this.props.attribute;
+    }
+
     form() {
         let _this = this;
         return (
@@ -58,9 +67,10 @@ export default class SingleValueWithForm extends React.Component {
                 elements={[
                     {
                         elementType: this.props.elementType,
-                        attribute: this.props.attribute || this.props.metadataField.name,
+                        attribute: this.attribute(),
+                        label: this.label(),
                         validate: this.props.validate,
-                        value: this.props.obj[this.props.attribute],
+                        value: this.props.obj[this.attribute()],
                         values: this.props.values,
                         withEmpty: this.props.withEmpty,
                         individualErrorMsg: this.props.individualErrorMsg,
@@ -68,8 +78,8 @@ export default class SingleValueWithForm extends React.Component {
                     },
                     {
                         elementType: 'input',
-                        attribute: `properties[public_attributes][${this.props.attribute}]`,
-                        value: this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.props.attribute],
+                        attribute: `properties[public_attributes][${this.attribute()}]`,
+                        value: this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.attribute()],
                         labelKey: 'activerecord.attributes.default.publish',
                         type: 'checkbox',
                     },
@@ -82,20 +92,18 @@ export default class SingleValueWithForm extends React.Component {
         if (
             admin(this.props, this.props.obj) ||
             (
-                !this.props.criterionForExclusion && 
-                (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.props.attribute])
+                (
+                    (this.props.isLoggedIn && this.props.metadataField.use_in_details_view) ||
+                    (!this.props.isLoggedIn && this.props.metadataField.display_on_landing_page) 
+                ) && 
+                (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.attribute()])
             )
         ) {
-            //let label = this.props.metadataField.label && this.props.metadataField.label[this.props.locale] || t(this.props, this.props.metadataField.name);
-            //let value = this.props.obj[this.props.metadataField.name] || '---';
-            //if (typeof value === 'string' && !/\d{2,4}/.test(value)) // try to not translate dates
-                //value = t(this.props, `${this.props.metadataField.name}.${value}`)
 
-            let label = this.props.label || t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.props.attribute}`);
             let translation = this.props.obj.translations && this.props.obj.translations.find(t => t.locale === this.props.locale)
-            let value = this.props.value || this.props.obj[this.props.attribute] || (translation && translation[this.props.attribute]) || '---';
+            let value = this.props.value || this.props.obj[this.attribute()] || (translation && translation[this.attribute()]) || '---';
 
-            if (/\w+_id/.test(this.props.attribute) && this.props.attribute !== 'archive_id') // get corresponding name from e.g. collection_id
+            if (/\w+_id/.test(this.attribute()) && this.attribute() !== 'archive_id') // get corresponding name from e.g. collection_id
                 value = this.props.values[value] && this.props.values[value].name
 
             if (typeof value === 'object' && value !== null)
@@ -105,7 +113,7 @@ export default class SingleValueWithForm extends React.Component {
                 value = value.substring(0,25)
 
             return (
-                <ContentFieldContainer label={label} value={value} >
+                <ContentFieldContainer label={this.label()} value={value} >
                     {this.toggle()}
                     {this.props.children}
                     {this.editButton()}
