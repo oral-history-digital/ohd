@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, admin } from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
@@ -34,6 +34,16 @@ export default class InterviewInfo extends React.Component {
              //}
         //})
 
+        let _this = this;
+        let interviewMetadataFieldNames = Object.values(this.props.project.metadata_fields).filter(m => {
+            return (m.source === 'Interview' &&
+                (
+                    (_this.props.isLoggedIn && m.use_in_details_view) ||
+                    (!_this.props.isLoggedIn && m.display_on_landing_page) 
+                )
+            )
+        }).map(m => m.name);
+
         if (this.props.interview && this.props.interview.language) {
             return (
                 <div>
@@ -41,10 +51,12 @@ export default class InterviewInfo extends React.Component {
                         attribute={'archive_id'}
                         obj={this.props.interview}
                         validate={function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}}
+                        criterionForExclusion={interviewMetadataFieldNames.indexOf('archive_id') === -1}
                     />
                     <SingleValueWithFormContainer
                         attribute={'interview_date'}
                         obj={this.props.interview}
+                        criterionForExclusion={interviewMetadataFieldNames.indexOf('interview_date') === -1}
                     />
                     <SingleValueWithFormContainer
                         attribute={'media_type'}
@@ -53,17 +65,20 @@ export default class InterviewInfo extends React.Component {
                         elementType={'select'}
                         values={['video', 'audio']}
                         value={t(this.props, `search_facets.${this.props.interview.media_type}`)}
+                        criterionForExclusion={interviewMetadataFieldNames.indexOf('media_type') === -1}
                     />
                     <SingleValueWithFormContainer
                         attribute='duration'
                         obj={this.props.interview}
                         value={this.props.interview.duration_human}
                         validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
+                        criterionForExclusion={interviewMetadataFieldNames.indexOf('duration') === -1}
                     />
                     <SingleValueWithFormContainer
                         attribute={'tape_count'}
                         obj={this.props.interview}
                         validate={function(v){return /^\d+$/.test(v)}}
+                        criterionForExclusion={interviewMetadataFieldNames.indexOf('tape_count') === -1}
                     />
                     <SingleValueWithFormContainer
                         elementType={'select'}
@@ -72,6 +87,7 @@ export default class InterviewInfo extends React.Component {
                         values={this.props.languages}
                         withEmpty={true}
                         validate={function(v){return /^\d+$/.test(v)}}
+                        criterionForExclusion={interviewMetadataFieldNames.indexOf('language_id') === -1}
                     />
                     <SingleValueWithFormContainer
                         elementType={'select'}
@@ -81,7 +97,8 @@ export default class InterviewInfo extends React.Component {
                         withEmpty={true}
                         validate={function(v){return /^\d+$/.test(v)}}
                         individualErrorMsg={'empty'}
-                        criterionForExclusion={this.props.projectId === 'mog'}
+                        criterionForExclusion={interviewMetadataFieldNames.indexOf('collection_id') === -1}
+                        //criterionForExclusion={this.props.projectId === 'mog'}
                     >
                         {this.collection()}
                     </SingleValueWithFormContainer>
@@ -90,6 +107,7 @@ export default class InterviewInfo extends React.Component {
                         obj={this.props.interview}
                         collapse={true}
                         elementType={'textarea'}
+                        criterionForExclusion={interviewMetadataFieldNames.indexOf('observations') === -1}
                     />
                     <AuthShowContainer ifAdmin={true} obj={this.props.interview}>
                         <SingleValueWithFormContainer

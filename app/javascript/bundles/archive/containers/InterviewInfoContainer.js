@@ -14,7 +14,6 @@ const mapStateToProps = (state) => {
         projectId: state.archive.projectId,
         project: project,
         collections: state.data.collections,
-        editView: state.archive.editView,
         interview: getInterview(state),
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
@@ -22,8 +21,8 @@ const mapStateToProps = (state) => {
         // the following is just a trick to force rerender after deletion
         contributionsLastModified: state.data.statuses.contributions.lastModified,
         contributionTypes: state.archive.contributionTypes,
-        account: state.data.accounts.current,
         languages: state.data.languages,
+        isLoggedIn: state.account.isLoggedIn,
     }
 }
 

@@ -80,9 +80,9 @@ export default class SingleValueWithForm extends React.Component {
 
     show() {
         if (
-            !this.props.criterionForExclusion && 
+            admin(this.props, this.props.obj) ||
             (
-                admin(this.props, this.props.obj) ||
+                !this.props.criterionForExclusion && 
                 (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.props.attribute])
             )
         ) {
@@ -95,14 +95,14 @@ export default class SingleValueWithForm extends React.Component {
             let translation = this.props.obj.translations && this.props.obj.translations.find(t => t.locale === this.props.locale)
             let value = this.props.value || this.props.obj[this.props.attribute] || (translation && translation[this.props.attribute]) || '---';
 
+            if (/\w+_id/.test(this.props.attribute) && this.props.attribute !== 'archive_id') // get corresponding name from e.g. collection_id
+                value = this.props.values[value] && this.props.values[value].name
+
             if (typeof value === 'object' && value !== null)
                 value = value[this.props.locale]
 
             if (typeof value === 'string' && this.state.collapsed) 
                 value = value.substring(0,25)
-
-            if (/\w+_id/.test(this.props.attribute) && this.props.attribute !== 'archive_id') // get corresponding name from e.g. collection_id
-                value = this.props.values[this.props.obj[this.props.attribute]].name[this.props.locale]
 
             return (
                 <ContentFieldContainer label={label} value={value} >
