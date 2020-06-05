@@ -63,6 +63,11 @@ This is the Interview Archive Web Application
    ```bash
    touch tmp/caching-dev.txt
    ```
+   In order to delete all cache kay-value-pairs for the current project, you can do the following:
+
+   ```bash
+   redis-cli --raw keys "zwar-*" | sed -e 's/$/"/' | sed -e 's/^/"/' | xargs redis-cli del
+   ```
     
     
 ## Start app using foreman

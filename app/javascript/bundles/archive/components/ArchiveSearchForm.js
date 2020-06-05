@@ -17,9 +17,14 @@ export default class ArchiveSearchForm extends React.Component {
 
     componentDidMount() {
         if (!this.facetsLoaded()) {
-            //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
-            let url = `${pathBase(this.props)}/searches/archive`;
-            this.props.searchInArchive(url, {});
+            if(this.props.map){
+                let url = `${pathBase(this.props)}/searches/map`;
+                this.props.searchInMap(url, {});
+            } else {
+                let url = `${pathBase(this.props)}/searches/archive`;
+                this.props.searchInArchive(url, {});
+            }
+
         }
     }
 
@@ -30,15 +35,26 @@ export default class ArchiveSearchForm extends React.Component {
     handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
-        this.props.setQueryParams('archive', {[name]: value});
+        if(this.props.map){
+            this.props.setQueryParams('map', {[name]: value});
+        } else {
+            this.props.setQueryParams('archive', {[name]: value});
+        }
     }
 
     handleReset(event) {
         this.form.reset();
-        this.props.resetQuery('archive');
-        //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
-        let url = `${pathBase(this.props)}/searches/archive`;
-        this.props.searchInArchive(url, {});
+        if(this.props.map){
+            this.props.resetQuery('map');
+            let url = `${pathBase(this.props)}/searches/map`;
+            this.props.searchInMap(url, {});
+        } else {
+            this.props.resetQuery('archive');
+            //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+            let url = `${pathBase(this.props)}/searches/archive`;
+            this.props.searchInArchive(url, {});
+
+        }
     }
 
     handleSubmit(event) {
@@ -94,8 +110,11 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     submit(params) {
-        if (!this.props.isArchiveSearching) {
-            //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
+        if(this.props.map && !this.props.isMapSearching ) {      
+            let url = `${pathBase(this.props)}/searches/map`;
+            this.props.searchInMap(url, params);
+            this.context.router.history.push(url);
+        } else if (!this.props.map && !this.props.isArchiveSearching) {
             let url = `${pathBase(this.props)}/searches/archive`;
             this.props.searchInArchive(url, params);
             this.context.router.history.push(url);
@@ -117,28 +136,32 @@ export default class ArchiveSearchForm extends React.Component {
 
     renderInputField() {
         let fulltext = this.props.query.fulltext ? this.props.query.fulltext : "";
-        return (
-            <div>
-                <input 
-                    className="search-input" 
-                    type="text" 
-                    name="fulltext" 
-                    value={fulltext}
-                    placeholder={t(this.props, (this.props.projectId === 'dg' ? 'enter_field_dg' : 'enter_field'))}
-                    onChange={this.handleChange}
-                    list='allInterviewTitles' 
-                    autoFocus
-                    />
-                {this.renderDataList()}
-                <input 
-                    className="search-button" 
-                    id="search-button"
-                    title={t(this.props, 'archive_search')} 
-                    type="submit" 
-                    value=""
-                    />
-            </div>
-        )
+        if(this.props.map !== true) {
+            return (
+                <div>
+                    <input 
+                        className="search-input" 
+                        type="text" 
+                        name="fulltext" 
+                        value={fulltext}
+                        placeholder={t(this.props, (this.props.projectId === 'dg' ? 'enter_field_dg' : 'enter_field'))}
+                        onChange={this.handleChange}
+                        list='allInterviewTitles' 
+                        autoFocus
+                        />
+                    {this.renderDataList()}
+                    <input 
+                        className="search-button" 
+                        id="search-button"
+                        title={t(this.props, 'archive_search')} 
+                        type="submit" 
+                        value=""
+                        />
+                </div>
+            )
+        } else {
+            return fulltext;
+        }
     }
 
     searchform(){
@@ -202,6 +225,7 @@ export default class ArchiveSearchForm extends React.Component {
                         sliderMax={this.yearRange(facet)[1]}
                         currentMin={this.currentYearRange()[0] || this.yearRange(facet)[0]}
                         currentMax={this.currentYearRange()[1] || this.yearRange(facet)[1]}
+                        map={this.props.map}
                     />
                 )
             })
