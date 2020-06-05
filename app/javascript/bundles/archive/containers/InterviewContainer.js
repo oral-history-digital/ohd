@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         isCatalog: project && project.is_catalog,
+        project: project,
         interviewEditView: state.archive.interviewEditView,
         translations: state.archive.translations,
         account: state.data.accounts.current,

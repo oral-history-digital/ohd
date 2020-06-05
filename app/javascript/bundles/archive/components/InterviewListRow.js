@@ -104,7 +104,7 @@ export default class InterviewListRow extends React.Component {
                         {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
-                        {this.props.interview.anonymous_title && this.props.interview.anonymous_title[this.props.locale]}
+                        {this.props.project.fullname_on_landing_page ? this.props.interview.title[this.props.locale] : this.props.interview.anonymous_title[this.props.locale]} 
                     </AuthShowContainer>
                 </div>
             )

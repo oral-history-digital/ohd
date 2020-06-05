@@ -102,6 +102,7 @@ class ProjectsController < ApplicationController
           "pseudo_funder_names",
           "pseudo_hidden_registry_entry_ids",
           "pseudo_pdf_registry_entry_codes",
+          "fullname_on_landing_page",
           "default_locale",
           "primary_color",
           "secondary_color",
