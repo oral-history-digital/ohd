@@ -11,9 +11,6 @@ import {
 
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
-
-    REQUEST_MAP_SEARCH,
-    RECEIVE_MAP_SEARCH,
 } from '../constants/archiveConstants';
 
 const initialState = {
@@ -22,18 +19,13 @@ const initialState = {
         query:{},
         allInterviewsTitles: [],
         allInterviewsPseudonyms: [],
-        allInterviewsPARCHIVElacesOfBirth: [],
+        allInterviewsPlacesOfBirth: [],
         foundInterviews: [],
         //foundSegmentsForInterviews: {},
         allInterviewsCount: 0,
         resultPagesCount: 1,
         resultsCount: 0,
         sortedArchiveIds: [],
-    },
-    map: {
-        facets: null,
-        query: {},
-        foundMarkers: {},
     },
     interviews: {},
     registryEntries: {
@@ -55,9 +47,6 @@ const initialState = {
 }
 
 const search = (state = initialState, action) => {
-    console.log("---")
-    console.log(state)
-    console.log("---")
     switch (action.type) {
         case REQUEST_INTERVIEW_SEARCH:
             return Object.assign({}, state, {
@@ -137,20 +126,6 @@ const search = (state = initialState, action) => {
                 }),
                 isArchiveSearching: false,
             })
-            case REQUEST_MAP_SEARCH:
-            return Object.assign({}, state, {
-                isMapSearching: true,
-                map: Object.assign({}, state.map, {
-                    query: Object.assign({}, state.map.query, action.searchQuery)
-                })
-            })
-            case RECEIVE_MAP_SEARCH:
-                return Object.assign({}, state, {
-                    map: Object.assign({}, state.map, {
-                        foundMarkers: action.foundMarkers
-                    }),
-                    isMapSearching: false,
-                })
 
         default:
             return state;

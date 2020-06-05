@@ -23,11 +23,7 @@ export default class Facet extends React.Component {
     }
 
     checkedFacets() {
-        if(this.props.map){
-            return this.props.mapSearchQuery[`${this.props.facet}[]`];
-        } else {
-            return this.props.query[`${this.props.facet}[]`];
-        }
+        return this.props.query[`${this.props.facet}[]`];
     }
 
     handleChange(event) {

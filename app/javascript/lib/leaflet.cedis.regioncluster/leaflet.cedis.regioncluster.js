@@ -1,7 +1,6 @@
 
 
 import jQuery from 'jquery';
-import 'leaflet.markercluster.freezable';
 
 (function ($) {
 
@@ -26,7 +25,7 @@ import 'leaflet.markercluster.freezable';
             defaultZoom: 5,
             maxClusterRadius: 2000,
             defaultCenter: [51.582275, 10.653294],
-            regionLevels : [0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,1]  // Associate each of the available zoom levels (0-18) with a region level
+            regionLevels : [0,0,0,0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1]  // Associate each of the available zoom levels (0-18) with a region level
         };
 
         var options = $.extend({}, defaults, options || {});
@@ -83,7 +82,7 @@ import 'leaflet.markercluster.freezable';
                     maxClusterRadius: options.maxClusterRadius,
                     addRegionToolTips: 'without subregions',
                     regionLevels: options.regionLevels,
-                    disableClusteringAtZoom: 9,
+                    disableClusteringAtZoom: 11,
                     allowClustersOfOne: options.allowClustersOfOne
 
                 });
@@ -226,7 +225,7 @@ import 'leaflet.markercluster.freezable';
             SucheKarte.settings['zoom'] = e.target._animateToZoom;
             //if we show borders, we hide them if zoomfactor >= 9 because our shapefile is not exact
             //enough and you start to see that here.
-            if (options.showBorders !== false) {
+            if (options.showBorders) {
                 var zoomfactor = SucheKarte.map.getZoom();
                 if (zoomfactor >= 9) {
                     SucheKarte.borderShape.removeFrom(SucheKarte.map);

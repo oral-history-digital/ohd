@@ -58,7 +58,7 @@ ActiveRecord::Schema.define(version: 2020_06_04_140041) do
     t.index ["section_id"], name: "section_id"
   end
 
-  create_table "biographical_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "biographical_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -77,7 +77,7 @@ ActiveRecord::Schema.define(version: 2020_06_04_140041) do
     t.index ["locale"], name: "index_biographical_entry_translations_on_locale", length: 191
   end
 
-  create_table "checklist_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "checklist_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "interview_id", null: false
     t.integer "user_id", null: false
     t.string "item_type", limit: 255, null: false
@@ -132,7 +132,7 @@ ActiveRecord::Schema.define(version: 2020_06_04_140041) do
     t.index ["person_id"], name: "index_contributions_on_person_id", length: 191
   end
 
-  create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", limit: 4294967295, null: false
@@ -758,8 +758,8 @@ ActiveRecord::Schema.define(version: 2020_06_04_140041) do
     t.integer "user_account_id"
     t.integer "user_registration_id"
     t.datetime "data_changed_at"
-    t.index ["first_name", "last_name"], name: "index_users_on_first_name_and_last_name", length: 191
-    t.index ["status"], name: "index_users_on_status", length: 191
+    t.index ["first_name", "last_name"], name: "index_users_on_first_name_and_last_name"
+    t.index ["status"], name: "index_users_on_status"
     t.index ["user_account_id"], name: "index_users_on_user_account_id"
   end
 

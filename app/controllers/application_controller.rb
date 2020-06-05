@@ -169,11 +169,6 @@ class ApplicationController < ActionController::Base
           resultPagesCount: search.results.total_pages,
           resultsCount: search.total,
         },
-        map: {
-          facets: current_project.updated_search_facets(search),
-          query: search_query,
-          foundMarkers: {},
-        },
         interviews: {},
         registryEntries: {
           showRegistryEntriesTree: true,

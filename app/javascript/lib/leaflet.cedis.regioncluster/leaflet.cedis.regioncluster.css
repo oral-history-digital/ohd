@@ -24,7 +24,7 @@
     left: -4px;
 }
 .leaflet-control-layers-expanded  .grouptitle{
-    margin-left: 40px;
+    margin-left: 35px;
     cursor: pointer;
 }
 .leaflet-control-layers-expanded .mapLegendClustering{cursor: pointer;}
@@ -35,9 +35,6 @@
     height: 24px;
     width: 35px;
     top: 38px;
-}
-.extra-marker.extra-marker-svg i {
-    width: 26px;
 }
 .leaflet-control-layers-expanded .inactive {
     color: #b2afa1;

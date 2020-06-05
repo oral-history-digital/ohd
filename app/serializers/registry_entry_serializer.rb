@@ -11,9 +11,7 @@ class RegistryEntrySerializer < ApplicationSerializer
              :registry_references,
              :parent_registry_hierarchy_ids,
              :bread_crumb,
-             :ancestors,
-             :regions,
-             :code,
+             :ancestors
 
   def name
     object.localized_hash(:descriptor)
@@ -57,7 +55,7 @@ class RegistryEntrySerializer < ApplicationSerializer
 
   def ancestors
     # ancestors = object.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
-    object.ancestors.includes(registry_names: :translations).inject({}){|mem, a| mem[a.id] = {id: a.id, code: a.code, name: a.localized_hash(:descriptor)}.as_json; mem }
+    object.ancestors.includes(registry_names: :translations).inject({}){|mem, a| mem[a.id] = {id: a.id, name: a.localized_hash(:descriptor)}.as_json; mem }
   end
 
 end

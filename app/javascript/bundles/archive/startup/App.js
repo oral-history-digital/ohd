@@ -16,7 +16,6 @@ import WrappedLanguagesContainer from '../containers/WrappedLanguagesContainer';
 import WrappedCollectionsContainer from '../containers/WrappedCollectionsContainer';
 import RegistryEntriesTreeContainer from '../containers/RegistryEntriesTreeContainer';
 import ArchiveSearchContainer from '../containers/ArchiveSearchContainer';
-import MapSearchContainer from '../containers/MapSearchContainer';
 import RegisterContainer from '../containers/RegisterContainer';
 import WrappedProjectsContainer from '../containers/WrappedProjectsContainer';
 import UserRegistrationsContainer from '../containers/UserRegistrationsContainer';
@@ -37,7 +36,6 @@ const App = (props) => (
                 <Route path="/:locale/uploads/new" component={props => <UploadsContainer {...props} />} />
                 <Route path="/:locale/registry_entries" component={props => <RegistryEntriesTreeContainer {...props} />} />
                 <Route path="/:locale/searches/archive" component={props => <ArchiveSearchContainer {...props} />} />
-                <Route path="/:locale/searches/map" component={props => <MapSearchContainer {...props} />} />
                 <Route path="/:locale/projects" component={props => <WrappedProjectsContainer {...props} />} />
                 <Route path="/:locale/people" component={props => <WrappedPeopleContainer {...props} />} />
                 <Route path="/:locale/languages" component={props => <WrappedLanguagesContainer {...props} />} />
