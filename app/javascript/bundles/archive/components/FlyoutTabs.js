@@ -62,7 +62,7 @@ export default class FlyoutTabs extends React.Component {
         } else if (tabIndex === this.props.locales.length + 3) {
              // registry entries
             this.context.router.history.push(`${pathBase(this.props)}/registry_entries`);
-        } else if (this.props.projectId === 'zwar' && tabIndex === this.props.locales.length + 4) {
+        } else if (tabIndex === this.props.locales.length + 4) {
             // map
            this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
         }
@@ -507,7 +507,7 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
                     {this.interviewTabPanel()}
                     {this.registryEntriesTabPanel()}
-                    {this.props.projectId === 'zwar' && this.mapTabPanel()}
+                    {this.mapTabPanel()}
                     {this.indexingTabPanel()}
                     {this.usersAdminTabPanel()}
                     {this.userContentTabPanel()}
