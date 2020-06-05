@@ -33,7 +33,7 @@ class InterviewSerializer < ApplicationSerializer
     :doi_status,
     :landing_page_texts,
     :properties,
-  ] | Project.first.metadata_fields.where("source='Interview' OR ref_object_type='Interview'").map(&:name)
+  ] | Project.first.metadata_fields.map(&:name)
 
   def collection
     object.collection && object.collection.localized_hash(:name) || {}
@@ -88,13 +88,13 @@ class InterviewSerializer < ApplicationSerializer
 
   def registry_references
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-registry_references-#{object.id}-#{object.registry_references.maximum(:updated_at)}") do
-      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(c).to_json; mem }
+      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
     end
   end
 
   def photos
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-photos-#{object.id}-#{object.photos.maximum(:updated_at)}") do
-      object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(c).to_json; mem }
+      object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
     end
   end
 
