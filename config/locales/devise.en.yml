@@ -161,6 +161,7 @@ en:
       last_name: Last name
       job_description: Occupation
       email: Email
+      gender: Gender
       research_intentions: Research objectives
       comments: Specification of research objectives
       organization: Institution
@@ -191,23 +192,13 @@ en:
       created_at: Date of Registration
     registration_values:
       appellation:
-        Frau: Ms.
-        Ms.: Frau
-        Ms: Frau
-        Herr: Mr.
-        Mr.: Herr
-        Mr: Herr
-        Frau Dr: Dr. PhD
-        Herr Dr: Dr. PhD
         Dr: Dr
-        Dr PhD: Dr
-        Frau PD Dr: Private lecturer
-        Herr PD Dr: Private lecturer
-        PD Dr: PD Dr
-        Frau Prof: Professor
-        Herr Prof: Professor
-        Herr Pro: Herr Prof
         Prof: Prof
+      gender:
+        female: female
+        male: male
+        diverse: diverse
+        not_specified: not specified
       job_description:
         Dozentin/Dozent: Lecturer/Researcher
         Dozent(in)/Forscher(in): Dozent*in/Forscher*in
@@ -230,7 +221,7 @@ en:
         Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
         Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
         Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Mitarbeiter*in (Museen/Gedenkstätten)
-        Mitarbeiter(in) (Museen/Gedenkstatten): 
+        Mitarbeiter(in) (Museen/Gedenkstatten):
         Mitarbeiter(in) (Museen/Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
         Staff Member (museums/memorial sites): Mitarbeiter*in (Museen/Gedenkstätten)
         Staff Member (Museums/Memorial Sites): Mitarbeiter*in (Museen/Gedenkstätten)

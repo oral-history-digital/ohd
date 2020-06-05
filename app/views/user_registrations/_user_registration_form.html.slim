@@ -4,16 +4,12 @@ form#new_user_registration.user_registration.default accept-charset="UTF-8" acti
 
   .form-group
     .form-label
-      label for="user_registration_appellation" = I18n.backend.translate(locale, 'registration_title') + "*"
+      label for="user_registration_appellation" = I18n.backend.translate(locale, 'registration_title')
     .form-input
       select#user_registration_appellation name="user_registration[appellation]"
         option value="" = I18n.backend.translate(locale, 'choose')
-        option value="#{I18n.backend.translate(locale, 'ms')}"  = I18n.backend.translate(locale, 'ms')
-        option value="#{I18n.backend.translate(locale, 'ms_dr')}"  = I18n.backend.translate(locale, 'ms_dr')
-        option value="#{I18n.backend.translate(locale, 'ms_prof')}"  = I18n.backend.translate(locale, 'ms_prof')
-        option value="#{I18n.backend.translate(locale, 'mr')}"  = I18n.backend.translate(locale, 'mr')
-        option value="#{I18n.backend.translate(locale, 'mr_dr')}"  = I18n.backend.translate(locale, 'mr_dr')
-        option value="#{I18n.backend.translate(locale, 'mr')}"  = I18n.backend.translate(locale, 'mr_prof')
+        option value="#{I18n.backend.translate(locale, 'dr')}"  = I18n.backend.translate(locale, 'dr')
+        option value="#{I18n.backend.translate(locale, 'prof')}"  = I18n.backend.translate(locale, 'prof')
   .form-group
     .form-label
       label for="user_registration_first_name" = I18n.backend.translate(locale, 'first_name') + "*"
@@ -29,6 +25,16 @@ form#new_user_registration.user_registration.default accept-charset="UTF-8" acti
       label for="user_registration_email" = I18n.backend.translate(locale, 'email') + "*"
     .form-input
       input#user_registration_email name="user_registration[email]" type="text"
+  .form-group
+    .form-label
+      label for="user_registration_gender" = I18n.backend.translate(locale, 'gender') + "*"
+    .form-input
+      select#user_registration_gender="user_registration[gender]"
+        option value="" = I18n.backend.translate(locale, 'choose')
+        option value="#{I18n.backend.translate(locale, 'female')}"  = I18n.backend.translate(locale, 'female')
+        option value="#{I18n.backend.translate(locale, 'male')}"  = I18n.backend.translate(locale, 'male')
+        option value="#{I18n.backend.translate(locale, 'diverse')}"  = I18n.backend.translate(locale, 'diverse')
+        option value="#{I18n.backend.translate(locale, 'not_specified')}"  = I18n.backend.translate(locale, 'not_specified')
   .form-group
     .form-label
       label for="user_registration_job_description" = I18n.backend.translate(locale, 'profession')
@@ -147,6 +153,3 @@ form#new_user_registration.user_registration.default accept-charset="UTF-8" acti
   .form-group
     input data-disable-with=("Registrierung senden") name="commit" type="submit" value=("#{I18n.backend.translate(locale, 'send_registration')}")
     input#user_registration_default_locale name="user_registration[default_locale]" type="hidden" value="de"
-
-
-

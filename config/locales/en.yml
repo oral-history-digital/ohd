@@ -74,7 +74,7 @@ en:
       quote: quotations, direct speech, book and other titles are in quotation marks in accordance with the rules applicable in the original languages
       annotation: notes by transcriptors, editors, translators; Additions like aliases or breakdown of an acronym; naming of nonverbal behavior
       tape_end: end of tape
-  mark_texts: Replace text 
+  mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Archiv-ID
@@ -94,7 +94,7 @@ en:
   without_translation: This interview has not yet been translated into German.
   without_transcript: This interview has not yet been transcribed.
   without_index: No table of contents was created for this interview.
-  without_index_locale: The table of contents of this interview has not been translated into English. 
+  without_index_locale: The table of contents of this interview has not been translated into English.
   without_ref_tree: This interview has not yet been indexed.
   private: Privat
   proposed: In Prüfung zur Veröffentlichung
@@ -244,16 +244,16 @@ en:
       processing: Das Interview wurde bearbeitet
       return: Weiteres Interview anlegen
     interviews:
-      publish: 
+      publish:
         title: Interviews publizieren
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich publiziert werden?"
-      unpublish: 
+      unpublish:
         title: Interviews nicht mehr öffentlich setzen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich nicht mehr öffentlich sein?"
-      publish_biographies: 
+      publish_biographies:
         title: Biographien publizieren
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich publiziert werden?"
-      unpublish_biographies: 
+      unpublish_biographies:
         title: Biographien nicht mehr öffentlich setzen
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich nicht mehr öffentlich sein?"
       delete:
@@ -360,7 +360,7 @@ en:
       edit: Erlaubnis bearbeiten
       delete: Erlaubnis löschen
       admin: Erlaubnisse bearbeiten
-    upload_transcript: 
+    upload_transcript:
       title: Transkript hochladen
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört, aus dem Dateinamen erschlossen werden. Dabei steht gg für die Gesamtzahl der Tapes und aa für die Nummer des aktuellen Tapes.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
@@ -395,8 +395,8 @@ en:
   admin_actions: Aktionen
   doi:
     title: register DOIs
-    text1: The interviews  
-    text2:  will be registered on Datacite. 
+    text1: The interviews
+    text2:  will be registered on Datacite.
     ok: Confirm
     name: DOI
     created: Created!
@@ -488,12 +488,13 @@ en:
     notes_on_priv_agreement: I agree to the Privacy Policy.
     register: Registrierung senden
     appellation:
-      ms: Ms
-      ms_dr: Ms Dr
-      ms_prof: Ms Prof
-      mr: Mr
-      mr_dr: Mr Dr
-      mr_prof: Mr Prof
+      dr: Dr
+      prof: Prof
+    gender:
+      female: female
+      male: male
+      diverse: diverse
+      not_specified: not specified
     job_description:
       researcher: Researcher
       filmmaker: Filmmaker
@@ -730,7 +731,7 @@ en:
         default_locale: default Sprachcode (alpha2)
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
-        landing_page_text: Landingpage Text 
+        landing_page_text: Landingpage Text
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: UploadTypen
@@ -747,7 +748,7 @@ en:
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
-        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs) 
+        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
         primary_color: Primary color
@@ -808,9 +809,10 @@ en:
         processed_at: Processed At
         admin_comments: Admin Comments
         default_locale: Default Locale
-        appellation: Appellation
+        appellation: Title
         first_name: First Name
         last_name: Last Name
+        gender: Gender
         job_description: Job Description
         research_intentions: Research Intentions
         comments: Comments
@@ -944,7 +946,7 @@ en:
     Okkupation in Griechenland beinhaltet. "Erinnerungen an die Okkupation in Griechenland"
     ist ein Projekt der Freien Universität Berlin in Kooperation mit der nationalen
     und Kapodistrias-Universität Athen.
-  
+
   interview_title_patterns:
     lastname_with_birthname: '%{lastname} (%{birthname})'
     lastname_firstname: '%{lastname_with_birthname}, %{first_names}'

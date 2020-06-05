@@ -32,6 +32,7 @@ export default class UserRegistration extends React.Component {
                         'first_name',
                         'last_name',
                         'email',
+                        'gender',
                         'job_description',
                         'research_intentions',
                         'comments',
@@ -103,14 +104,14 @@ export default class UserRegistration extends React.Component {
     roles() {
         if (
             this.props.userRegistration.user_id &&
-            admin(this.props, {type: 'UserRole', action: 'create'}) 
+            admin(this.props, {type: 'UserRole', action: 'create'})
         ) {
             return (
                 <div className={'roles box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
-                    <UserRolesContainer 
-                        userRoles={this.props.userRegistration.user_roles || []} 
-                        userId={this.props.userRegistration.user_id} 
+                    <UserRolesContainer
+                        userRoles={this.props.userRegistration.user_roles || []}
+                        userId={this.props.userRegistration.user_id}
                         hideEdit={false}
                     />
                 </div>
@@ -123,14 +124,14 @@ export default class UserRegistration extends React.Component {
     tasks() {
         if (
             this.props.userRegistration.user_id &&
-            admin(this.props, {type: 'Task', action: 'create'}) 
+            admin(this.props, {type: 'Task', action: 'create'})
         ) {
             return (
                 <div className={'tasks box'}>
                     <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
-                    <TasksContainer 
-                        data={this.props.userRegistration.tasks} 
-                        initialFormValues={{user_id: this.props.userRegistration.user_id}} 
+                    <TasksContainer
+                        data={this.props.userRegistration.tasks}
+                        initialFormValues={{user_id: this.props.userRegistration.user_id}}
                         hideEdit={false}
                     />
                 </div>
@@ -155,4 +156,3 @@ export default class UserRegistration extends React.Component {
         }
     }
 }
-
