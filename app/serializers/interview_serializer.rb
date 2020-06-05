@@ -34,8 +34,6 @@ class InterviewSerializer < ApplicationSerializer
     :landing_page_texts,
     :properties,
   ] | Project.first.metadata_fields.where("source='Interview' OR ref_object_type='Interview'").map(&:name)
-  #] | Project.current.metadata_fields.map(&:name)
-  #] | Project.current.list_columns.map(&:name) | Project.current.detail_view_fields.map(&:name) | Project.current.registry_reference_type_metadata_fields.map(&:name)
 
   def collection
     object.collection && object.collection.localized_hash(:name) || {}
@@ -202,15 +200,6 @@ class InterviewSerializer < ApplicationSerializer
       end
     else
       {}
-    end
-  end
-
-  def periods
-    if object.periods
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.periods.map{|p| RegistryEntry.find(p).descriptor(locale)}
-        mem
-      end
     end
   end
 
