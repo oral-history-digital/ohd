@@ -218,7 +218,7 @@ class Interview < ApplicationRecord
     #
     # Create localized attributes so that we can order
     # interviews in all languages.
-    I18n.available_locales.each do |locale|
+    Project.current.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
         if full_title(locale)
           title = full_title(locale).mb_chars.normalize(:kd)
@@ -231,7 +231,7 @@ class Interview < ApplicationRecord
       end
     end
 
-    I18n.available_locales.each do |locale|
+    Project.current.available_locales.each do |locale|
       string :"alias_names_#{locale}", :stored => true do
         alias_names[locale]
       end
@@ -244,7 +244,7 @@ class Interview < ApplicationRecord
     # find them through fulltext search 
     # e.g.: 'Kamera Hans Peter'
     #
-    I18n.available_locales.each do |locale|
+    Project.current.available_locales.each do |locale|
       text :"contributions_#{locale}" do
         contributions.map do |c| 
           if c.person
@@ -256,7 +256,7 @@ class Interview < ApplicationRecord
 
     # biographical entries texts
     #
-    I18n.available_locales.each do |locale|
+    Project.current.available_locales.each do |locale|
       text :"biography_#{locale}" do
         if interviewee
           interviewee.biographical_entries.map{|b| b.text(locale)}.join(' ')
@@ -272,7 +272,7 @@ class Interview < ApplicationRecord
 
     # photo caption texts
     #
-    I18n.available_locales.each do |locale|
+    Project.current.available_locales.each do |locale|
       text :"photo_captions_#{locale}" do
         photos.map{|p| p.caption(locale)}.join(' ')
       end
@@ -299,7 +299,9 @@ class Interview < ApplicationRecord
   end
 
   def find_or_create_tapes(d)
-    tapes.where.not("media_id LIKE ?", "#{archive_id.upcase}_#{format('%02d', d)}_%").destroy_all
+    tapes.where.not("media_id LIKE ?", "#{archive_id.upcase}_#{format('%02d', d)}_%").each do |tape|
+      tape.destroy if tape.segments.count == 0
+    end
 
     (1..d.to_i).each do |t|
       Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', t)}", number: t, interview_id: id)
@@ -328,7 +330,7 @@ class Interview < ApplicationRecord
   end
 
   def alias_names
-    I18n.available_locales.inject({}) do |mem, locale|
+    project.available_locales.inject({}) do |mem, locale|
       mem[locale] = (interviewee.respond_to? :alias_names) ? interviewee.alias_names(locale) : nil
       mem
     end
@@ -356,7 +358,7 @@ class Interview < ApplicationRecord
   # this method is only used for the first version of the map atm.
   # for other purposes, use the person model
   # def birth_location
-  #   localized_hash = interviewees[0].try(:birth_location).try(:localized_hash) || Hash[I18n.available_locales.collect { |i| [i, ""] } ]
+  #   localized_hash = interviewees[0].try(:birth_location).try(:localized_hash) || Hash[Project.current.available_locales.collect { |i| [i, ""] } ]
   #   return localized_hash.merge ({
   #     descriptor: interviewees[0].try(:birth_location).try(:localized_hash),
   #     id: interviewees[0].try(:birth_location).try(:id),
@@ -789,7 +791,7 @@ class Interview < ApplicationRecord
     # https://github.com/sunspot/sunspot#stored-fields
     # in order to get a dropdown list in search field
     def dropdown_search_values(project, user_account)
-      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{Interview.maximum(:updated_at)}-#{Project.current.updated_at}") do
+      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{Interview.maximum(:updated_at)}-#{project.updated_at}") do
         search = Interview.search do
           adjust_solr_params do |params|
             params[:rows] = project.interviews.size
