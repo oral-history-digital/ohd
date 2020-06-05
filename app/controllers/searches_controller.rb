@@ -129,7 +129,7 @@ class SearchesController < ApplicationController
 
         interviews.each do |interview|
           # go through the registry_references of each interview and its interviewee
-          interviewee = cache_single(Person.find(interview["interviewee_id"]))
+          interviewee = cache_single(Interview.find(interview["id"]).interviewee)
           (interview["registry_references"].merge interviewee["registry_references"]).each do |key, rr|
             if rr["registry_reference_type_id"] 
               rrt = cache_single(RegistryReferenceType.find(rr["registry_reference_type_id"]))
