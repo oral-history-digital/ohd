@@ -9,6 +9,9 @@ import {
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
 
+    REQUEST_MAP_SEARCH,
+    RECEIVE_MAP_SEARCH,
+
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
@@ -37,6 +40,11 @@ const requestArchiveSearch = (searchQuery) => ({
     searchQuery: searchQuery,
 });
 
+const requestMapSearch = (searchQuery) => ({
+    type: REQUEST_MAP_SEARCH,
+    searchQuery: searchQuery,
+});
+
 function receiveArchiveSearchResults(json){
     return {
         type: RECEIVE_ARCHIVE_SEARCH,
@@ -54,10 +62,24 @@ function receiveArchiveSearchResults(json){
     }
 }
 
+function receiveMapSearchResults(json){
+    return {
+        type: RECEIVE_MAP_SEARCH,
+        foundMarkers: json.markers
+    }
+}
+
 export function searchInArchive(url, searchQuery) {
     return dispatch => {
         dispatch(requestArchiveSearch(searchQuery))
         Loader.getJson(url, searchQuery, dispatch, receiveArchiveSearchResults);
+    }
+}
+
+export function searchInMap(url, searchQuery) {
+    return dispatch => {
+        dispatch(requestMapSearch(searchQuery))
+        Loader.getJson(url, searchQuery, dispatch, receiveMapSearchResults);
     }
 }
 
