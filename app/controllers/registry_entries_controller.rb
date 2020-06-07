@@ -101,9 +101,11 @@ class RegistryEntriesController < ApplicationController
         render plain: json
       end
       format.pdf do
-        @registry_entries = RegistryEntry.where(code: current_project.pdf_registry_entry_codes).map { |e| e.descendants.includes(registry_names: :translations) }.flatten.sort { |a, b| a.descriptor <=> b.descriptor }
-        @locale = params[:locale]
-        pdf = render_to_string(:template => "/registry_entries/index.pdf.erb", :layout => "latex.pdf.erbtex")
+        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[locale]}-#{RegistryEntry.maximum(:updated_at)}" do
+          @registry_entries = RegistryEntry.pdf_entries(current_project)
+          @locale = params[:locale]
+          render_to_string(:template => "/registry_entries/index.pdf.erb", :layout => "latex.pdf.erbtex")
+        end
         send_data pdf, filename: "registry_entries_#{@locale}.pdf", :type => "application/pdf" #, :disposition => "attachment"
       end
     end

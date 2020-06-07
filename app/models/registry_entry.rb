@@ -254,6 +254,18 @@ class RegistryEntry < ApplicationRecord
       map(&:registry_entry_id)
   end
 
+  def self.pdf_entries(project)
+    where(code: project.pdf_registry_entry_codes).includes(registry_names: :translations).map{|e| e.all_descendants}.flatten.sort{|a, b| a.descriptor <=> b.descriptor}
+  end
+
+  def all_descendants
+    all = [descendants.includes(registry_names: :translations)]
+    descendants.each do |d|
+      all |= d.all_descendants
+    end
+    all
+  end
+
   def bread_crumb
     if parents.count > 0
       parents.inject({}){|mem, parent| mem[parent.id] = parent.bread_crumb; mem} 
