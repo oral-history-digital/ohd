@@ -14,27 +14,33 @@ export default class RegisterForm extends React.Component {
             {
                 elementType: 'select',
                 attribute: 'appellation',
-                values: ['ms', 'ms_dr', 'ms_prof', 'mr', 'mr_dr', 'mr_prof'],
+                values: ['dr', 'prof'],
                 withEmpty: true,
-                validate: function(v){return v !== ''} 
             },
             {
                 elementType: 'input',
                 attribute: 'first_name',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'last_name',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'email',
                 type: 'email',
                 validate: function(v){return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)}
+            },
+            {
+                elementType: 'select',
+                attribute: 'gender',
+                values: ['female', 'male', 'diverse', 'not_specified'],
+                withEmpty: true,
+                validate: function(v){return v !== ''}
             },
             {
                 elementType: 'select',
@@ -51,7 +57,7 @@ export default class RegisterForm extends React.Component {
             {
                 elementType: 'textarea',
                 attribute: 'comments',
-                validate: function(v){return v && v.length > 10} 
+                validate: function(v){return v && v.length > 10}
             },
             {
                 elementType: 'input',
@@ -70,19 +76,19 @@ export default class RegisterForm extends React.Component {
                 elementType: 'input',
                 attribute: 'street',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'zipcode',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             }
         ];
 
@@ -93,7 +99,7 @@ export default class RegisterForm extends React.Component {
                 optionsScope: 'countries',
                 values: this.props.countryKeys && this.props.countryKeys[this.props.locale],
                 withEmpty: true,
-                validate: function(v){return v !== ''} 
+                validate: function(v){return v !== ''}
             },
         ];
 
@@ -145,7 +151,7 @@ export default class RegisterForm extends React.Component {
     render() {
         let _this = this;
         return (
-            <Form 
+            <Form
                 scope='user_registration'
                 onSubmit={function(params){_this.props.submitRegister(`${pathBase(_this.props)}/user_registrations`, params)}}
                 submitText='user_registration.register'

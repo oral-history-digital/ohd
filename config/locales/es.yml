@@ -484,12 +484,13 @@ es:
     notes_on_priv_agreement: Acepto la política de privacidad.
     register: Enviar registro
     appellation:
-      ms: Sra.
-      ms_dr: Dra.
-      ms_prof: Profa.
-      mr: Sr.
-      mr_dr: Dr.
-      mr_prof: Prof.
+      dr: Dra./Dr.
+      prof: Profa./Prof.
+    gender:
+      female: feminino
+      male: masculino
+      diverse: diverso
+      not_specified: not specified
     job_description:
       researcher: Docente/Investigador/a
       filmmaker: Director/a de cine
@@ -798,6 +799,7 @@ es:
         appellation: Título
         first_name: Nombre
         last_name: Apellido
+        gender: Género
         job_description: Profesión
         research_intentions: Tema de investigación
         comments: Detalle del tema de investigación

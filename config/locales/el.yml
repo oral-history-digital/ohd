@@ -67,7 +67,7 @@ el:
       address: ersetzt Angaben über die aktuelle Wohnanschrift des*der Interviewten bzw. Telefonnummer
       broken_word: abgebrochenes Wort oder abgebrochener Satz, meist mit einer kurzen Sprechpause verbunden
       silence: langes Schweigen des*der Interviewpartner*in (ohne Unterbrechung durch den*die Interviewer*in)
-      unclear: unverständliche Aussage 
+      unclear: unverständliche Aussage
       unsure: unsichere Transkription eines Wortes
       break: Unterbrechung der Aufnahme (z.B. auf Wunsch der Interviewpartner*innen, technische Pausen, aufgrund von Störungen von außen)
       italic: Aussagen im Interview auf Deutsch oder in einer Sprachvariante,
@@ -82,7 +82,7 @@ el:
         Ergänzungen, wie Aliasname oder Aufschlüsselung eines Akronyms;
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
-  mark_texts: Replace text 
+  mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Κωδικός συνέντευξης
@@ -249,16 +249,16 @@ el:
       processing: Das Interview wurde bearbeitet
       return: Weiteres Interview anlegen
     interviews:
-      publish: 
+      publish:
         title: Interviews publizieren
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich publiziert werden?"
-      unpublish: 
+      unpublish:
         title: Interviews nicht mehr öffentlich setzen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich nicht mehr öffentlich sein?"
-      publish_biographies: 
+      publish_biographies:
         title: Biographien publizieren
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich publiziert werden?"
-      unpublish_biographies: 
+      unpublish_biographies:
         title: Biographien nicht mehr öffentlich setzen
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich nicht mehr öffentlich sein?"
       delete:
@@ -365,7 +365,7 @@ el:
       edit: Erlaubnis bearbeiten
       delete: Erlaubnis löschen
       admin: Erlaubnisse bearbeiten
-    upload_transcript: 
+    upload_transcript:
       title: Transkript hochladen
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört, aus dem Dateinamen erschlossen werden. Dabei steht gg für die Gesamtzahl der Tapes und aa für die Nummer des aktuellen Tapes.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
@@ -400,8 +400,8 @@ el:
   admin_actions: Aktionen
   doi:
     title: DOI registrieren
-    text1: Die Interviews  
-    text2:  werden bei Datacite registriert. 
+    text1: Die Interviews
+    text2:  werden bei Datacite registriert.
     ok: Bestätigen
     name: DOI
     created: Created!
@@ -465,9 +465,9 @@ el:
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
         sowie Feldart bei. Sprachbeschreibungen sollten entweder in Englisch oder im Alpha2- oder Alpha3-Code erfolgen.
-        Delimiter sollten entweder Semikolon oder Tab sein. 
-      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien 
-        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
+        Delimiter sollten entweder Semikolon oder Tab sein.
+      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
+        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
         Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
@@ -497,12 +497,13 @@ el:
     notes_on_priv_agreement: Συμφωνώ με την προστασία δεδομένων
     register: Αποστολή εγγραφής
     appellation:
-      ms: Κυρία
-      ms_dr: Κυρία Δρ.
-      ms_prof: Καθηγήτρια
-      mr: Κύριος
-      mr_dr: Κύριος Δρ.
-      mr_prof: Καθηγητής
+      dr: Δρ.
+      prof: Καθηγήτρια/Καθηγητής
+    gender:
+      female: θήλυ
+      male: άρρεν
+      diverse: Άλλοe
+      not_specified: not specified
     job_description:
       researcher: Λέκτορας/ ερευνητής
       filmmaker: Σκηνοθέτης/τρια, δημοσιογράφος, δάσκαλος/λα
@@ -748,7 +749,7 @@ el:
         default_locale: default Sprachcode (alpha2)
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
-        landing_page_text: Landingpage Text 
+        landing_page_text: Landingpage Text
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: UploadTypen
@@ -765,7 +766,7 @@ el:
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
-        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs) 
+        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
         primary_color: Primary color
@@ -828,6 +829,7 @@ el:
         first_name: Όνομα
         last_name: Επώνυμο
         job_description: Επάγγελμα
+        gender: Geschlecht
         research_intentions: Ερευνητικά ενδιαφέροντα
         comments: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
         organization: Ίδρυμα
