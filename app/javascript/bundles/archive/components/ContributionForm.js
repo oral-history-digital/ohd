@@ -36,8 +36,9 @@ export default class ContributionForm extends React.Component {
                 values: this.props.contributionTypes && Object.values(this.props.contributionTypes),
                 value: this.props.contribution && this.props.contribution.contribution_type,
                 optionsScope: 'contributions',
+                keepOrder: true,
                 withEmpty: true,
-                validate: function(v){return v !== ''} 
+                validate: function(v){return v !== ''}
             },
             {
                 elementType: 'select',
@@ -48,7 +49,7 @@ export default class ContributionForm extends React.Component {
             }
         ]
         if (this.props.withSpeakerDesignation) {
-            elements.push({ 
+            elements.push({
                 attribute: 'speaker_designation',
                 value: this.props.contribution && this.props.contribution.speaker_designation,
             });
@@ -60,7 +61,7 @@ export default class ContributionForm extends React.Component {
         let _this = this;
         return (
             <div>
-            <Form 
+            <Form
                 scope='contribution'
                 values={{
                     id: this.props.contribution && this.props.contribution.id,
