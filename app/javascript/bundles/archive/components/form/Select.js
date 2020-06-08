@@ -45,7 +45,7 @@ export default class Select extends React.Component {
 
     selectTextAndValueFunction(value, props) {
         if (typeof value === 'string') {
-            if (props.optionsScope) { 
+            if (props.optionsScope) {
                 return function(value, props) {
                     return {
                         text: t(props, `${props.optionsScope}.${value}`),
@@ -89,12 +89,16 @@ export default class Select extends React.Component {
         if (values) {
             let getTextAndValue = this.selectTextAndValueFunction(values[0], this.props);
             let _this = this;
-            opts = values.
+            if (!this.props.keepOrder === true) {
+                values.
                 sort(function(a,b){
-                    let textA = getTextAndValue(a, _this.props).text;
-                    let textB = getTextAndValue(b, _this.props).text;
-                    return((textA > textB) - (textA < textB))
-                }).
+                  let textA = getTextAndValue(a, _this.props).text;
+                  let textB = getTextAndValue(b, _this.props).text;
+                  return((textA > textB) - (textA < textB))
+             })
+           }
+
+            opts = values.
                 map((value, index) => {
                     let textAndValue = getTextAndValue(value, this.props);
                     return (
@@ -132,7 +136,7 @@ export default class Select extends React.Component {
                 individualErrorMsg={this.props.individualErrorMsg}
                 help={this.props.help}
             >
-                <select 
+                <select
                     name={this.props.attribute}
                     value={this.props.value}
                     onChange={this.handleChange}

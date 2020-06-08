@@ -15,6 +15,7 @@ export default class RegisterForm extends React.Component {
                 elementType: 'select',
                 attribute: 'appellation',
                 values: ['dr', 'prof'],
+                keepOrder: true,
                 withEmpty: true,
             },
             {
@@ -39,6 +40,7 @@ export default class RegisterForm extends React.Component {
                 elementType: 'select',
                 attribute: 'gender',
                 values: ['female', 'male', 'diverse', 'not_specified'],
+                keepOrder: true,
                 withEmpty: true,
                 validate: function(v){return v !== ''}
             },
@@ -46,12 +48,14 @@ export default class RegisterForm extends React.Component {
                 elementType: 'select',
                 attribute: 'job_description',
                 values: ['researcher', 'filmmaker', 'journalist', 'teacher', 'memorial_staff', 'pupil', 'student', 'other'],
+                keepOrder: true,
                 withEmpty: true,
             },
             {
                 elementType: 'select',
                 attribute: 'research_intentions',
                 values: ['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other'],
+                keepOrder: true,
                 withEmpty: true,
             },
             {
