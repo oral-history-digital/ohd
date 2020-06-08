@@ -293,9 +293,9 @@ class RegistryEntry < ApplicationRecord
       names_w_locales.gsub("\"", '').split('#').each do |name_w_locale| 
         locale, names = name_w_locale.split('::')
         names.split(';').each_with_index do |name, index|
-          name = registry_entry.registry_names.find_by_name_position index
-          if name
-            name.update_attributes descriptor: name, locale: locale
+          registry_name = registry_entry.registry_names.find_by_name_position index
+          if registry_name
+            registry_name.update_attributes descriptor: name, locale: locale
           else
             RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: index, descriptor: name, locale: locale
           end
