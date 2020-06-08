@@ -34,14 +34,14 @@ class UserRegistrationsController < ApplicationController
     end
   end
 
-  # GET 
+  # GET
   def activate
     # here the confirmation_token is passed as :id
     account_for_token(params[:id])
     @project = current_project
 
     if !@user_account.nil? && @user_account.errors.empty?
-      @login = @user_account.login 
+      @login = @user_account.login
       @display_name = @user_account.display_name
       @active = @user_account.active?
     else
@@ -49,7 +49,7 @@ class UserRegistrationsController < ApplicationController
     end
   end
 
-  # POST 
+  # POST
   def confirm
     # don't clear the confirmation_token until we have successfully
     # submitted the password
@@ -109,7 +109,7 @@ class UserRegistrationsController < ApplicationController
             data: @user_registrations.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'user_registrations',
             extra_params: extra_params,
-            page: params[:page], 
+            page: params[:page],
             result_pages_count: @user_registrations.total_pages
           }
       end
@@ -137,9 +137,9 @@ class UserRegistrationsController < ApplicationController
   def initial_user_registration_redux_state
     initial_redux_state.update(
       account: initial_redux_state[:account].update(
-        login: @login, 
-        display_name: @display_name, 
-        registration_status: @registration_status, 
+        login: @login,
+        display_name: @display_name,
+        registration_status: @registration_status,
         active: @active
       )
     )
@@ -161,6 +161,7 @@ class UserRegistrationsController < ApplicationController
       :first_name,
       :last_name,
       :email,
+      :gender,
       :job_description,
       :research_intentions,
       :comments,

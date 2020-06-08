@@ -502,12 +502,13 @@ de:
     notes_on_priv_agreement: Ich stimme der  Datenschutzpraxis zu.
     register: Registrierung senden
     appellation:
-      ms: Frau
-      ms_dr: Frau Dr.
-      ms_prof: Frau Prof.
-      mr: Herr
-      mr_dr: Herr Dr.
-      mr_prof: Herr Prof.
+      dr: Dr.
+      prof: Prof.
+    gender:
+      female: weiblich
+      male: männlich
+      diverse: divers
+      not_specified: keine Angabe
     job_description:
       researcher: Dozent*in/Forscher*in
       filmmaker: Filmemacher*in
@@ -746,7 +747,7 @@ de:
         default_locale: default Sprachcode (alpha2)
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
-        landing_page_text: Landingpage Text 
+        landing_page_text: Landingpage Text
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: UploadTypen
@@ -763,7 +764,7 @@ de:
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
-        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs) 
+        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
         primary_color: Primary color
@@ -824,9 +825,10 @@ de:
         processed_at: Bearbeitet am
         admin_comments: Kommentar
         default_locale: Sprache
-        appellation: Anrede
+        appellation: Titel
         first_name: Vorname
         last_name: Nachname
+        gender: Geschlecht
         job_description: Beruf
         research_intentions: Rechercheanliegen
         comments: Präzisierung des Anliegens

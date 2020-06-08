@@ -7,8 +7,8 @@ class Admin::UsersController < Admin::BaseController
     @user = User.find(params[:id])
     authorize @user
     respond_to do |format|
-      format.html 
-      format.js 
+      format.html
+      format.js
     end
   end
 
@@ -42,7 +42,7 @@ class Admin::UsersController < Admin::BaseController
 
 
     respond_to do |format|
-      format.html 
+      format.html
     end
   end
 
@@ -67,7 +67,7 @@ class Admin::UsersController < Admin::BaseController
   private
 
   def user_params
-    params.require(:user).permit(:first_name, :last_name, :appellation, :street, :zipcity, :country, :job_description, :email, :organization, :homepage)
+    params.require(:user).permit(:first_name, :last_name, :appellation, :street, :zipcity, :country, :job_description, :gender, :email, :organization, :homepage)
   end
 
 
