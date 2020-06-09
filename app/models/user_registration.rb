@@ -85,6 +85,7 @@ EVAL
                                  'first_name',
                                  'last_name',
                                  'email',
+                                 'gender',
                                  { :name => 'job_description',
                                    :values => [  'Dozentin/Dozent',
                                                  'Filmemacherin/Filmemacher',
@@ -173,7 +174,7 @@ EVAL
     end
     state :checked do
       event :activate,  :transitions_to => :registered do
-        halt if self.user_account.nil? || self.user_account.encrypted_password.blank? 
+        halt if self.user_account.nil? || self.user_account.encrypted_password.blank?
       end
       event :expire,    :transitions_to => :postponed
     end

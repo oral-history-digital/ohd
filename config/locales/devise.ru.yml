@@ -159,6 +159,7 @@ ru:
       first_name: Имя
       last_name: Фамилия
       job_description: Профессия
+      gender: Пол
       email: Электр. адрес
       research_intentions: Цель изысканий
       comments: Уточнение цели
@@ -189,23 +190,13 @@ ru:
       created_at: Дата регистрации
     registration_values:
       appellation:
-        Frau: Госпожа
-        Ms.: Госпожа
-        Ms: Госпожа
-        Herr: Господин
-        Mr.: Господин
-        Mr: Господин
-        Frau Dr: Госпожа др.
-        Herr Dr: Господин др.
         Dr: Др.
-        Dr PhD: Др.
-        Frau PD Dr: Госпожа ПД др.
-        Herr PD Dr: Господин ПД др.
-        PD Dr: ПД др.
-        Frau Prof: Госпожа проф.
-        Herr Prof: Господин проф.
-        Herr Pro: Господин проф.
         Prof: Проф.
+      gender:
+        female: женщина
+        male: мужчина
+        diverse: другие
+        not_specified: not specified
       job_description:
         Dozentin/Dozent: Доцент/Научный сотрудник
         Dozent(in)/Forscher(in): Доцент/Научный сотрудник
@@ -227,7 +218,7 @@ ru:
         Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Сотрудник (Музеи/Мемориалы)
         Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Сотрудник (Музеи/Мемориалы)
         Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Сотрудник (Музеи/Мемориалы)
-        Mitarbeiter(in) (Museen/Gedenkstatten): 
+        Mitarbeiter(in) (Museen/Gedenkstatten):
         Mitarbeiter(in) (Museen/Gedenkstätten): Сотрудник (Музеи/Мемориалы)
         Staff Member (museums/memorial sites): Сотрудник (Музеи/Мемориалы)
         Staff Member (Museums/Memorial Sites): Сотрудник (Музеи/Мемориалы)

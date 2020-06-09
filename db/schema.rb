@@ -702,6 +702,7 @@ ActiveRecord::Schema.define(version: 2020_06_07_150302) do
     t.integer "user_account_id"
     t.integer "user_registration_id"
     t.datetime "data_changed_at"
+    t.string "gender", default: ""
     t.index ["first_name", "last_name"], name: "index_users_on_first_name_and_last_name", length: 191
     t.index ["status"], name: "index_users_on_status", length: 191
     t.index ["user_account_id"], name: "index_users_on_user_account_id"
