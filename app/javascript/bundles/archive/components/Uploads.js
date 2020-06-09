@@ -16,24 +16,21 @@ export default class Uploads extends React.Component {
     }
 
     handleUploadTypeChange(name, value) {
-        this.setState({ 
+        this.setState({
             explanation: value
         })
     }
 
     explanations() {
-        if (this.state.explanation) {
+        let explanation = this.state.explanation || 'introduction'
             return (
                 <div>
                     <p className='explanation'>
-                        {t(this.props, `upload.explanation.${this.state.explanation}`)}
+                        {t(this.props, `upload.explanation.${explanation}`)}
                     </p>
                     {this.downloadLink()}
                 </div>
             )
-        } else {
-            return null;
-        }
     }
 
     downloadLink() {
@@ -57,7 +54,7 @@ export default class Uploads extends React.Component {
                     <p>
                         {t(this.props, 'edit.upload.processing')}
                     </p>
-                    <button 
+                    <button
                         className='return-to-upload'
                         onClick={() => this.returnToForm()}
                     >
@@ -70,7 +67,7 @@ export default class Uploads extends React.Component {
             return (
                 <div>
                     {this.explanations()}
-                    <Form 
+                    <Form
                         scope='upload'
                         onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
                         submitText='edit.upload.upload'
@@ -84,7 +81,7 @@ export default class Uploads extends React.Component {
                                 validate: function(v){return v !== ''},
                                 individualErrorMsg: 'empty'
                             },
-                            { 
+                            {
                                 attribute: 'data',
                                 elementType: 'input',
                                 type: 'file',
