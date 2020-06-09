@@ -1063,7 +1063,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   def parent_id=(pid)
-    unless parent_ids.include? pid.to_i
+    unless parents.map(&:id).include? pid.to_i
       parents << RegistryEntry.find(pid)
     end
   end
