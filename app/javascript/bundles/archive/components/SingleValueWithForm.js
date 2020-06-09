@@ -63,14 +63,14 @@ export default class SingleValueWithForm extends React.Component {
                 onSubmit={function(params){_this.props.submitData(_this.props, params, {updateStateBeforeSubmit: true}); _this.setEditing()}}
                 cancel={_this.setEditing}
                 formClasses='default single-value'
-                values={{id: this.props.obj.type === 'Interview' ? this.props.obj.archive_id : this.props.obj.id}}
+                data={this.props.obj}
                 elements={[
                     {
                         elementType: this.props.elementType,
                         attribute: this.attribute(),
                         label: this.label(),
                         validate: this.props.validate,
-                        value: this.props.obj[this.attribute()],
+                        data: this.props.obj,
                         values: this.props.values,
                         withEmpty: this.props.withEmpty,
                         individualErrorMsg: this.props.individualErrorMsg,
