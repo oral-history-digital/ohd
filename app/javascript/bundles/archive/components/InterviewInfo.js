@@ -74,7 +74,7 @@ export default class InterviewInfo extends React.Component {
                     <SingleValueWithFormContainer
                         obj={this.props.interview}
                         collapse={true}
-                        elementType={'textarea'}
+                        elementType={'multiLocaleTextarea'}
                         metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations')}
                     />
                     <AuthShowContainer ifAdmin={true} obj={this.props.interview}>
