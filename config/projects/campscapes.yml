@@ -1,5 +1,7 @@
 default: &default
 
+  default_locale: 'en'
+
   media_streams:
     defaults:
       video: 480p
