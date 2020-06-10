@@ -147,13 +147,11 @@ export default class UserContentForm extends React.Component {
 
     annotationConfirmation() {
         if (this.state.type === 'UserAnnotation') {
-            if (this.props.locale && this.props.externalLinks) {
-                let links = this.props.externalLinks;
-                let locale = this.props.locale;
-                let key = 'conditions';
-                let link = links[key][locale];
-                return <div className={'annotation-confirmation-text help-block'}
-                            dangerouslySetInnerHTML={{__html: t(this.props, 'annotation_confirmation', {link: this.props.externalLinks.annotation_guidelines[this.props.locale]})}}>
+            if (this.props.locale && this.props.project.external_links) {
+                let guidelines = Object.values(this.props.project.external_links).filter(link => link.internal_name === 'annotation_guidelines')[0] || {};
+                let link = Object.values(guidelines.translations).filter(link => link.locale === this.props.locale)[0]
+                return <div className={'annotation-confirmation-text'}
+                            dangerouslySetInnerHTML={{__html: t(this.props, 'annotation_confirmation', {link: link.url})}}>
                 </div>
             }
         }
