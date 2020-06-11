@@ -231,7 +231,7 @@ es:
   edit:
     text:
       new: Text auswählen
-      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhältst du eine Email.
+      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhalten Sie eine Email.
       processed: Die Verarbeitung ist abgeschlossen.
       return: Weitere Textpassage auswählen
     interview:
@@ -321,7 +321,7 @@ es:
       delete: Anmerkung löschen
     upload:
       upload: Import
-      processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhältst du eine Email.
+      processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhalten Sie eine Email.
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
       return: Weiterer Import
     update_speaker:
@@ -359,7 +359,7 @@ es:
     upload_transcript:
       title: Transkript hochladen
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden.
-      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhältst du eine Email.'
+      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhalten Sie eine Email.'
     default:
       show: Beschreibung
       edit: Bearbeiten
