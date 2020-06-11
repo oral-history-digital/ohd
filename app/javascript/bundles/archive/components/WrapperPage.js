@@ -195,6 +195,9 @@ export default class WrapperPage extends React.Component {
         } else {
             // window.scrollTo(0, 1); // ACHIM?
         }
+        if (!this.props.visible) {
+            css.push("fullscreen");
+        }
         return css.join(' ');
     }
 
