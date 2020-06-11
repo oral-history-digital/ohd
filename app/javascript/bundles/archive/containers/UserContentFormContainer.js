@@ -4,11 +4,12 @@ import UserContentForm from '../components/UserContentForm';
 import { submitData } from '../actions/dataActionCreators';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         archiveId: state.archive.archiveId,
+        project: getProject(state),
         interview: getInterview(state),
         tape: state.interview.tape,
         locale: state.archive.locale,
