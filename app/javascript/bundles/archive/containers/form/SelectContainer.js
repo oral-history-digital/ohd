@@ -6,7 +6,7 @@ import Select from '../../components/form/Select';
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
-        translations: state.archive.translations,
+        translations: state.archive.translations
     }
 }
 

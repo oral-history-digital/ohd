@@ -126,11 +126,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def anonymous_title
-    if object.project.fullname_on_landing_page
-      object.localized_hash(:full_title)
-    else
-      object.localized_hash(:anonymous_title)
-    end
+    object.localized_hash(:anonymous_title)
   end
 
   def still_url

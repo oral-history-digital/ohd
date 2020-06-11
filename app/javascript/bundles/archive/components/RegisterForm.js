@@ -14,21 +14,21 @@ export default class RegisterForm extends React.Component {
             {
                 elementType: 'select',
                 attribute: 'appellation',
-                values: ['ms', 'ms_dr', 'ms_prof', 'mr', 'mr_dr', 'mr_prof'],
+                values: ['dr', 'prof'],
+                keepOrder: true,
                 withEmpty: true,
-                validate: function(v){return v !== ''} 
             },
             {
                 elementType: 'input',
                 attribute: 'first_name',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'last_name',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
@@ -38,20 +38,30 @@ export default class RegisterForm extends React.Component {
             },
             {
                 elementType: 'select',
+                attribute: 'gender',
+                values: ['female', 'male', 'diverse', 'not_specified'],
+                keepOrder: true,
+                withEmpty: true,
+                validate: function(v){return v !== ''}
+            },
+            {
+                elementType: 'select',
                 attribute: 'job_description',
                 values: ['researcher', 'filmmaker', 'journalist', 'teacher', 'memorial_staff', 'pupil', 'student', 'other'],
+                keepOrder: true,
                 withEmpty: true,
             },
             {
                 elementType: 'select',
                 attribute: 'research_intentions',
                 values: ['exhibition', 'education', 'film', 'genealogy', 'art', 'personal_interest', 'press_publishing', 'school_project', 'university_teaching', 'scientific_paper', 'other'],
+                keepOrder: true,
                 withEmpty: true,
             },
             {
                 elementType: 'textarea',
                 attribute: 'comments',
-                validate: function(v){return v && v.length > 10} 
+                validate: function(v){return v && v.length > 10}
             },
             {
                 elementType: 'input',
@@ -70,19 +80,19 @@ export default class RegisterForm extends React.Component {
                 elementType: 'input',
                 attribute: 'street',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'zipcode',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: function(v){return v && v.length > 1} 
+                validate: function(v){return v && v.length > 1}
             }
         ];
 
@@ -93,7 +103,7 @@ export default class RegisterForm extends React.Component {
                 optionsScope: 'countries',
                 values: this.props.countryKeys && this.props.countryKeys[this.props.locale],
                 withEmpty: true,
-                validate: function(v){return v !== ''} 
+                validate: function(v){return v !== ''}
             },
         ];
 
@@ -145,7 +155,7 @@ export default class RegisterForm extends React.Component {
     render() {
         let _this = this;
         return (
-            <Form 
+            <Form
                 scope='user_registration'
                 onSubmit={function(params){_this.props.submitRegister(`${pathBase(_this.props)}/user_registrations`, params)}}
                 submitText='user_registration.register'

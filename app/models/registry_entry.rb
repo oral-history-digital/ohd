@@ -217,24 +217,25 @@ class RegistryEntry < ApplicationRecord
   # method should be one of 'children' or 'parents'
   #
   def alphanum_sorted_ids(method, locale)
-    self.send(method).includes(registry_names: :translations).map{|c| 
-      #
-      # replace e.g. ö with o - than remove all non alphanumeric chars
-      #
-      translation = c.registry_names.first && c.registry_names.first.translations.where(locale: locale).first 
-      if translation
-        local_name = translation.descriptor.mb_chars.normalize(:kd)
-        Rails.configuration.mapping_to_ascii.each{|k,v| local_name = local_name.gsub(k,v)}
-        local_name.downcase.to_s
-      else
-        local_name = 'no names given'
-      end
+    self.send(method).includes(registry_names: :translations).order("registry_name_translations.descriptor").map(&:id)
+    #self.send(method).includes(registry_names: :translations).map{|c| 
+      ##
+      ## replace e.g. ö with o - than remove all non alphanumeric chars
+      ##
+      #translation = c.registry_names.first && c.registry_names.first.translations.where(locale: locale).first 
+      #if translation && translation.descriptor
+        #local_name = translation.descriptor.mb_chars.normalize(:kd)
+        #Rails.configuration.mapping_to_ascii.each{|k,v| local_name = local_name.gsub(k,v)}
+        #local_name.downcase.to_s
+      #else
+        #local_name = 'no names given'
+      #end
 
-      [
-        c.id, 
-        local_name
-      ]
-    }.sort{|a,b| a[1] <=> b[1]}.map{|a| a[0]}
+      #[
+        #c.id, 
+        #local_name
+      #]
+    #}.sort{|a,b| a[1] <=> b[1]}.map{|a| a[0]}
   end
 
   def alphanum_sorted_children_ids(locale)
@@ -252,6 +253,18 @@ class RegistryEntry < ApplicationRecord
       select("registry_name_translations.descriptor AS name, registry_entry_id").
       order("registry_name_translations.descriptor").
       map(&:registry_entry_id)
+  end
+
+  def self.pdf_entries(project)
+    where(code: project.pdf_registry_entry_codes).includes(registry_names: :translations).map{|e| e.all_descendants}.flatten.sort{|a, b| a.descriptor <=> b.descriptor}
+  end
+
+  def all_descendants
+    all = [descendants.includes(registry_names: :translations)]
+    descendants.each do |d|
+      all |= d.all_descendants
+    end
+    all
   end
 
   def bread_crumb
@@ -308,9 +321,9 @@ class RegistryEntry < ApplicationRecord
       names_w_locales.gsub("\"", '').split('#').each do |name_w_locale| 
         locale, names = name_w_locale.split('::')
         names.split(';').each_with_index do |name, index|
-          name = registry_names.find_by_name_position index
-          if name
-            name.update_attributes descriptor: name, locale: locale
+          registry_name = registry_entry.registry_names.find_by_name_position index
+          if registry_name
+            registry_name.update_attributes descriptor: name, locale: locale
           else
             RegistryName.create registry_entry_id: registry_entry.id, registry_name_type_id: 1, name_position: index, descriptor: name, locale: locale
           end
@@ -1078,7 +1091,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   def parent_id=(pid)
-    unless parent_ids.include? pid.to_i
+    unless parents.map(&:id).include? pid.to_i
       parents << RegistryEntry.find(pid)
     end
   end

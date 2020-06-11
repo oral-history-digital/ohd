@@ -11,6 +11,7 @@ class ProjectSerializer < ApplicationSerializer
     :pseudo_view_modes,
     :upload_types,
     :pseudo_upload_types,
+    :fullname_on_landing_page,
     :primary_color,
     :secondary_color,
     :initials,

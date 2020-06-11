@@ -55,7 +55,7 @@
 <% @registry_entries.each do |registry_entry| %>
   <% unless registry_entry.descriptor(@locale).blank? %>
     <%# get first char for table of contents %>
-    <% if last_entry && last_entry.descriptor(@locale)[0] != registry_entry.descriptor(@locale)[0] %>
+    <% if !last_entry || last_entry.descriptor(@locale)[0] != registry_entry.descriptor(@locale)[0] %>
       \section*{<%= registry_entry.descriptor(@locale)[0].upcase %>}
       \addcontentsline{toc}{section}{<%= registry_entry.descriptor(@locale)[0].upcase %>}
     <% end %>

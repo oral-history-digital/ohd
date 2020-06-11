@@ -72,7 +72,7 @@ ru:
       quote: цитае́ ты, прямае́ я речь, название книги и т.п. в кавые́ чках
       annotation: примечае́ ния редае́ ктора и перевое́ дчика; добавлее́ ния, pасшифровка аббревиатур; невербальные жесты
       tape_end: конец кассеты
-  mark_texts: Replace text 
+  mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
   archive_id: Archiv-ID
@@ -91,7 +91,7 @@ ru:
   tapes: Записи
   without_translation: Это интервью не переведено на немецкий язык.
   without_transcript: Транскрипт данного интервью пока отсутствует.
-  without_index: Оглавление данного интервью пока отсутствует. 
+  without_index: Оглавление данного интервью пока отсутствует.
   without_index_locale: Оглавление данного интервью не переведено на русский язык.
   without_ref_tree: Данное интервью пока не обеспечено тэгами.
   private: личный просмотр:wa
@@ -189,8 +189,8 @@ ru:
   interview_with: Interview mit
   transcript_header: Транскрипт интервью
   translation_header: Перевод интервью
-  transcript_title: Транскрипт интервью (%{lang}) 
-  translation_title: Перевод интервью (%{lang}) 
+  transcript_title: Транскрипт интервью (%{lang})
+  translation_title: Перевод интервью (%{lang})
   transcript_footer: 'Метод цитирования: Транскрипт интервью'
   transcript_template: Vorlage für den Import von .ods Dateien
   biographical_entries_header: 'Краткая биография:'
@@ -280,7 +280,7 @@ ru:
   edit:
     text:
       new: Text auswählen
-      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
+      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhalten Sie eine Email.
       processed: Die Verarbeitung ist abgeschlossen.
       return: Weitere Textpassage auswählen
     interview:
@@ -290,16 +290,16 @@ ru:
       processing: Das Interview wurde bearbeitet
       return: Weiteres Interview anlegen
     interviews:
-      publish: 
+      publish:
         title: Interviews publizieren
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich publiziert werden?"
-      unpublish: 
+      unpublish:
         title: Interviews nicht mehr öffentlich setzen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich nicht mehr öffentlich sein?"
-      publish_biographies: 
+      publish_biographies:
         title: Biographien publizieren
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich publiziert werden?"
-      unpublish_biographies: 
+      unpublish_biographies:
         title: Biographien nicht mehr öffentlich setzen
         confirm_text: "Sollen die Biografieen der Interviewten von %{archive_ids} wirklich nicht mehr öffentlich sein?"
       delete:
@@ -370,7 +370,7 @@ ru:
       delete: Anmerkung löschen
     upload:
       upload: Import
-      processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
+      processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhalten Sie eine Email.
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
       return: Weiterer Import
     update_speaker:
@@ -406,10 +406,10 @@ ru:
       edit: Erlaubnis bearbeiten
       delete: Erlaubnis löschen
       admin: Erlaubnisse bearbeiten
-    upload_transcript: 
+    upload_transcript:
       title: Transkript hochladen
-      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden. 
-      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
+      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden.
+      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhalten Sie eine Email.'
     default:
       show: Beschreibung
       edit: Bearbeiten
@@ -441,8 +441,8 @@ ru:
   admin_actions: Aktionen
   doi:
     title: DOI registrieren
-    text1: Die Interviews  
-    text2:  werden bei Datacite registriert. 
+    text1: Die Interviews
+    text2:  werden bei Datacite registriert.
     ok: Bestätigen
     name: doi
     created: Erfolgreich veröffentlicht!
@@ -515,11 +515,14 @@ ru:
       bulk_metadata: Import von Metadaten
       bulk_texts: Import von Textdateien (Protokolle oder Biografien)
     explanation:
+      introduction: "Für einen erfolgreichen Import der Textdateien müssen diese in einer zip-Datei ohne Unterordner komprimiert werden.
+        Die Dateinamen müssen dem Muster Archiv-ID_Typ_Sprache.ext folgen, wobei der Typ für Biographien 'bg' und für Protokolle 'prot' lautet.
+        Beispiel: za123_prot_de.rtf oder za007_bg_de.odt."
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
         sowie Feldart.
-      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien 
-        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!). 
+      bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
+        in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
         Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
@@ -544,12 +547,13 @@ ru:
     notes_on_priv_agreement: Я принимаю Правила пользования сайтом.
     register: Отправить регистрацию
     appellation:
-      ms: Госпожа
-      ms_dr: Госпожа др.
-      ms_prof: Госпожа проф.
-      mr: Господин
-      mr_dr: Господин др.
-      mr_prof: Господин проф.
+      dr: др.
+      prof: проф.
+    gender:
+      female: женщина
+      male: мужчина
+      diverse: другие
+      not_specified: not specified
     job_description:
       researcher: Доцент/Научный сотрудник
       filmmaker: Автор фильмов
@@ -785,7 +789,7 @@ ru:
         default_locale: default Sprachcode (alpha2)
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
-        landing_page_text: Landingpage Text 
+        landing_page_text: Landingpage Text
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: UploadTypen
@@ -802,7 +806,7 @@ ru:
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
-        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs) 
+        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
         primary_color: Primary color
@@ -864,6 +868,7 @@ ru:
         appellation: Обращение
         first_name: Имя
         last_name: Фамилия
+        gender: Пол
         job_description: Профессия
         research_intentions: Цель изысканий
         comments: Уточнение цели
@@ -931,7 +936,7 @@ ru:
       photo:
         caption: Fotobeschreibung
         data: Fotodatei
-        caption_explanation: Описание фотографии доступно только на немецком языке. 
+        caption_explanation: Описание фотографии доступно только на немецком языке.
         workflow_state: 'Status'
       uploaded_file:
         title: Title (hover)
@@ -967,6 +972,10 @@ ru:
           attributes:
             collection_id:
               empty: Bitte Teilsammlung auswählen
+        upload:
+          attributes:
+            type:
+              empty: Bitte Art des Imports auswählen
         user_annotation:
           attributes:
             description:
@@ -1068,7 +1077,7 @@ ru:
   please_select: Пожалуйста, выберите...
   person_name: Имя
   user_interface:
-    labels: 
+    labels:
     actions:
       edit: правка
       update: обновить

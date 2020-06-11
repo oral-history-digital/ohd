@@ -25,7 +25,7 @@ const mapStateToProps = (state) => {
                 attribute: 'file',
                 elementType: 'input',
                 type: 'file',
-                validate: function(v){return v instanceof File},
+                //validate: function(v){return v instanceof File},
             },
             {
                 attribute: 'href',

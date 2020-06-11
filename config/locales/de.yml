@@ -245,7 +245,7 @@ de:
   edit:
     text:
       new: Text auswählen
-      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
+      processing: Die Daten werden nun bearbeitet. Bei Fertigstellung erhalten Sie eine Email.
       processed: Die Verarbeitung ist abgeschlossen.
       return: Weitere Textpassage auswählen
     interview:
@@ -338,8 +338,8 @@ de:
       edit: Anmerkung bearbeiten
       delete: Anmerkung löschen
     upload:
-      upload: Import
-      processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhälst du eine Email.
+      upload: Importieren
+      processing: Die Datei wird nun bearbeitet. Bei Fertigstellung erhalten Sie eine Email.
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '
       return: Weiterer Import
     update_speaker:
@@ -377,7 +377,7 @@ de:
     upload_transcript:
       title: Transkript hochladen
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden.
-      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhälst du eine Email.'
+      processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist, erhalten Sie eine Email.'
     downloads:
       title: Downloads
     administration: Verwaltung
@@ -471,6 +471,9 @@ de:
       bulk_metadata: Import von Metadaten
       bulk_texts: Import von Textdateien (Protokolle oder Biografien)
     explanation:
+      introduction: "Für einen erfolgreichen Import der Textdateien müssen diese in einer zip-Datei ohne Unterordner komprimiert werden.
+        Die Dateinamen müssen dem Muster Archiv-ID_Typ_Sprache.ext folgen, wobei der Typ für Biographien 'bg' und für Protokolle 'prot' lautet.
+        Beispiel: za123_prot_de.rtf oder za007_bg_de.odt."
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
         sowie Feldart bei. Sprachbeschreibungen sollten entweder in Englisch oder im Alpha2- oder Alpha3-Code erfolgen.
@@ -502,12 +505,13 @@ de:
     notes_on_priv_agreement: Ich stimme der  Datenschutzpraxis zu.
     register: Registrierung senden
     appellation:
-      ms: Frau
-      ms_dr: Frau Dr.
-      ms_prof: Frau Prof.
-      mr: Herr
-      mr_dr: Herr Dr.
-      mr_prof: Herr Prof.
+      dr: Dr.
+      prof: Prof.
+    gender:
+      female: weiblich
+      male: männlich
+      diverse: divers
+      not_specified: keine Angabe
     job_description:
       researcher: Dozent*in/Forscher*in
       filmmaker: Filmemacher*in
@@ -746,7 +750,7 @@ de:
         default_locale: default Sprachcode (alpha2)
         introduction: Einführung Startseite
         more_text: Weiterer Text Startseite
-        landing_page_text: Landingpage Text 
+        landing_page_text: Landingpage Text
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: UploadTypen
@@ -763,7 +767,7 @@ de:
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
-        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs) 
+        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
         primary_color: Primary color
@@ -824,9 +828,10 @@ de:
         processed_at: Bearbeitet am
         admin_comments: Kommentar
         default_locale: Sprache
-        appellation: Anrede
+        appellation: Titel
         first_name: Vorname
         last_name: Nachname
+        gender: Geschlecht
         job_description: Beruf
         research_intentions: Rechercheanliegen
         comments: Präzisierung des Anliegens
@@ -921,6 +926,10 @@ de:
           attributes:
             collection_id:
               empty: Bitte Teilsammlung auswählen
+        upload:
+          attributes:
+            type:
+              empty: Bitte Art des Imports auswählen
         user_annotation:
           attributes:
             description:

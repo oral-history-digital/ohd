@@ -83,7 +83,7 @@ export default class Form extends React.Component {
     initValues() {
         let values = this.state.values;
         if (this.props.data) {
-            values.id = this.props.data.id
+            values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id
             values.translations_attributes = this.props.data.translations;
         } else {
             values.translations_attributes = [];

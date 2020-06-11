@@ -21,6 +21,7 @@ class UserRegistrationSerializer < ApplicationSerializer
     :newsletter_signup,
     :priv_agreement,
     :appellation,
+    :gender,
     :job_description,
     :research_intentions,
     :comments,
@@ -81,6 +82,7 @@ class UserRegistrationSerializer < ApplicationSerializer
 
   [
     :appellation,
+    :gender,
     :job_description,
     :research_intentions,
     :comments,

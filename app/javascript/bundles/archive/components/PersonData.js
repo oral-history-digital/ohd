@@ -129,7 +129,10 @@ export default class PersonData extends React.Component {
                          </ContentFieldContainer>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
-                        <ContentFieldContainer label={t(this.props, 'interviewee_name')} value={this.props.interview.anonymous_title[this.props.locale]} />
+                        <ContentFieldContainer 
+                            label={t(this.props, 'interviewee_name')} 
+                            value={this.props.project.fullname_on_landing_page ? fullname(this.props, interviewee) : this.props.interview.anonymous_title[this.props.locale]} 
+                        />
                     </AuthShowContainer>
                     {this.personMetadataFields()}
                 </div>

@@ -115,16 +115,14 @@ header.site-header {
       //margin-right: -9px;
     }
   }
-  .flyout-toggle {
-    @include screen-xl {
-      display: none;
-    }
-  }
 }
 
 .flyout-is-hidden {
   .wrapper-flyout{
     display: none;
+  }
+  .fullscreen {
+    width: 90%;
   }
   &.fix-video {
     .flyout-toggle {
@@ -443,7 +441,7 @@ h1.search-results-title {
   }
   @include screen-m {
     float: left;
-    margin-bottom: 0; 
+    margin-bottom: 0;
     margin-right: 1em;
   }
 }
@@ -863,7 +861,7 @@ $color4 : lightgrey;
   28%{
     opacity:1;
   }
-  30% {   
+  30% {
     background: $color2;
     box-shadow: 0 -1px 0px $color2;
   }
@@ -887,14 +885,14 @@ $color4 : lightgrey;
   100%{
     opacity:0;
     background: $color1;
-   
+
   }
 }
 
 .container{
   height : 100% ;
   width : 100% ;
-  position: relative ; 
+  position: relative ;
   .loaderPixel{
     display: flex;
     margin:auto;
@@ -905,7 +903,7 @@ $color4 : lightgrey;
       text-align: center;
     }
     .pixels{
-      float: left; 
+      float: left;
       box-shadow: 0 -1px 0px $color1;
       margin-top:0;
       margin-bottom:0;
@@ -914,10 +912,10 @@ $color4 : lightgrey;
       width: 50px;
       // height: calc(100vw / 49) ;
       // width : calc(100vw / 50);
-    } 
+    }
   }
 }
-  
+
 .notifications{
   border: 1px solid red;
   margin: 10px;
@@ -926,7 +924,7 @@ $color4 : lightgrey;
     color: red;
   }
 }
-  
+
 .footer-navigation {
   padding: 5%
   a {

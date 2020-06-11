@@ -157,6 +157,7 @@ es:
       last_name: Nachname
       job_description: Beruf
       email: E-Mail
+      gender: Género
       research_intentions: Recherche-Anliegen
       comments: Präzisierung des Anliegens
       organization: Institution
@@ -188,23 +189,13 @@ es:
       created_at: Datum der Registrierung
     registration_values:
       appellation:
-        Frau: Frau
-        Ms.: Frau
-        Ms: Frau
-        Herr: Herr
-        Mr.: Herr
-        Mr: Herr
-        Frau Dr: Frau Dr
-        Herr Dr: Herr Dr
         Dr: Dr
-        Dr PhD: Dr
-        Frau PD Dr: Frau PD Dr
-        Herr PD Dr: Herr PD Dr
-        PD Dr: PD Dr
-        Frau Prof: Frau Prof
-        Herr Prof: Herr Prof
-        Herr Pro: Herr Prof
         Prof: Prof
+      gender:
+        female: feminino
+        male: masculino
+        diverse: diverso
+        not_specified: not specified
       job_description:
         Dozentin/Dozent: Dozent*in/Forscher*in
         Dozent(in)/Forscher(in): Dozent*in/Forscher*in
