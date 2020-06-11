@@ -103,13 +103,14 @@ Rails.application.routes.draw do
         end
       end
 
-      resources :searches, only: [:new, :facets, :archive, :interview] do
+      resources :searches, only: [:new, :facets, :archive, :interview, :map] do
         collection do
           get :facets
           get :archive
           get :export_archive_search
           get :interview
           get :registry_entry
+          get :map
         end
       end
     end
