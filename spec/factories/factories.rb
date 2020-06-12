@@ -5,7 +5,9 @@ FactoryBot.define do
     default_locale { "de" }
     view_modes { ["grid", "list"] }
     upload_types { ["bulk_metadata", "bulk_texts"] }
-    primary_color_rgb { "0.560784314, 0.125490196, 0.109803922" }
+    primary_color { "#006169" }
+    secondary_color { "#efae0f"}
+    editorial_color { "#0ea6b3" }
     shortname { "CDOH" }
     initials { "CD" }
     domain { "http://da03.cedis.fu-berlin.de:86" }

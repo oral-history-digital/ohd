@@ -729,7 +729,9 @@ es:
         view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
         upload_types: UploadTypen
-        primary_color_rgb: Primary Color RGB
+        primary_color: Primary color
+        secondary_color: Secondary color
+        editorial_color: Editorial color
         shortname: Kürzel
         initials: Initialen
         domain: Projektdomain
