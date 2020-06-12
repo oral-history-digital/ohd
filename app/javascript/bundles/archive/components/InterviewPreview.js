@@ -50,9 +50,9 @@ export default class InterviewPreview extends React.Component {
     }
 
     resultsCount() {
-        let count = 0; 
+        let count = 0;
         if (this.interviewSearchResults() && this.interviewSearchResults().foundSegments) {
-            count += this.interviewSearchResults().foundSegments.length + 
+            count += this.interviewSearchResults().foundSegments.length +
                 this.interviewSearchResults().foundPeople.length +
                 this.interviewSearchResults().foundRegistryEntries.length +
                 this.interviewSearchResults().foundBiographicalEntries.length;
@@ -81,16 +81,23 @@ export default class InterviewPreview extends React.Component {
             return (
                 <div className='slider'>
                     <div className={'archive-search-found-segments'}>
-                        <InterviewSearchResultsContainer 
+                        <InterviewSearchResultsContainer
                             interview={this.props.interview}
                             searchResults={this.interviewSearchResults()}
-                            asSlideShow={true} 
+                            asSlideShow={true}
                         />
                     </div>
                 </div>
             )
         }
     }
+
+    unsharedIcon() {
+        if (this.props.interview.workflow_state === 'unshared') {
+            return(<i className="fa fa-eye-slash  fa-lg"  aria-hidden="true"></i>)
+        }
+    }
+
 
     interviewDetails() {
         if (this.props.projectId === 'zwar') {
@@ -121,7 +128,7 @@ export default class InterviewPreview extends React.Component {
                     <small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>
                 </div>
             )
-        } else { 
+        } else {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
                     <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>
@@ -143,10 +150,10 @@ export default class InterviewPreview extends React.Component {
     renderExportCheckbox() {
         if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return <div>
-                <input 
-                    type='checkbox' 
-                    className='export-checkbox' 
-                    checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0} 
+                <input
+                    type='checkbox'
+                    className='export-checkbox'
+                    checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0}
                     onChange={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}
                 />
             </div>
@@ -161,26 +168,30 @@ export default class InterviewPreview extends React.Component {
                 <div className={this.state.divClass}>
                     {this.renderBadge()}
                     <Link className={'search-result-link'}
-                        onClick={() => { 
-                            this.props.setArchiveId(this.props.interview.archive_id); 
-                            this.props.setTapeAndTime(1, 0) 
+                        onClick={() => {
+                            this.props.setArchiveId(this.props.interview.archive_id);
+                            this.props.setTapeAndTime(1, 0)
                         }}
                         to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                     >
                         <div className="search-result-img">
-                            <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                          <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
                         </div>
-                        
+
                         <AuthShowContainer ifLoggedIn={true}>
-                            <p className={'search-result-name'}>{this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}</p>
+                            <p className={'search-result-name'}>
+                                {this.unsharedIcon()}
+                                {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
+                            </p>
                         </AuthShowContainer>
                         <AuthShowContainer ifLoggedOut={true}>
                             <p className={'search-result-name'}>
-                                {this.props.project.fullname_on_landing_page ? this.props.interview.title[this.props.locale] : this.props.interview.anonymous_title[this.props.locale]} 
+                                {this.unsharedIcon()}
+                                {this.props.project.fullname_on_landing_page ? this.props.interview.title[this.props.locale] : this.props.interview.anonymous_title[this.props.locale]}
                             </p>
-                        </AuthShowContainer> 
-                        
-                        {this.interviewDetails()} 
+                        </AuthShowContainer>
+
+                        {this.interviewDetails()}
                     </Link>
                     {this.renderSlider()}
                     {this.renderExportCheckbox()}
@@ -191,4 +202,3 @@ export default class InterviewPreview extends React.Component {
         }
     }
 }
-

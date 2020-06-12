@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_07_150302) do
+ActiveRecord::Schema.define(version: 2020_06_12_095209) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -54,7 +54,7 @@ ActiveRecord::Schema.define(version: 2020_06_07_150302) do
     t.index ["segment_id"], name: "index_annotations_on_segment_id"
   end
 
-  create_table "biographical_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "biographical_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "person_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -73,7 +73,7 @@ ActiveRecord::Schema.define(version: 2020_06_07_150302) do
     t.index ["locale"], name: "index_biographical_entry_translations_on_locale", length: 191
   end
 
-  create_table "checklist_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "checklist_items", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "interview_id", null: false
     t.integer "user_id", null: false
     t.string "item_type", limit: 255, null: false
@@ -116,7 +116,7 @@ ActiveRecord::Schema.define(version: 2020_06_07_150302) do
     t.index ["interview_id"], name: "index_contributions_on_interview_id"
   end
 
-  create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "priority", default: 0, null: false
     t.integer "attempts", default: 0, null: false
     t.text "handler", limit: 4294967295, null: false
@@ -351,6 +351,7 @@ ActiveRecord::Schema.define(version: 2020_06_07_150302) do
     t.boolean "fullname_on_landing_page"
     t.string "primary_color"
     t.string "secondary_color"
+    t.string "editorial_color"
   end
 
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -552,7 +553,7 @@ ActiveRecord::Schema.define(version: 2020_06_07_150302) do
     t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "text", limit: 16777215
+    t.text "text", limit: 4294967295
     t.index ["locale"], name: "index_text_translations_on_locale"
     t.index ["text_id"], name: "index_text_translations_on_text_id"
   end
@@ -702,6 +703,7 @@ ActiveRecord::Schema.define(version: 2020_06_07_150302) do
     t.integer "user_account_id"
     t.integer "user_registration_id"
     t.datetime "data_changed_at"
+    t.string "gender", default: ""
     t.index ["first_name", "last_name"], name: "index_users_on_first_name_and_last_name", length: 191
     t.index ["status"], name: "index_users_on_status", length: 191
     t.index ["user_account_id"], name: "index_users_on_user_account_id"

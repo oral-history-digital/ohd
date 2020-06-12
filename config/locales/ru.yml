@@ -811,6 +811,7 @@ ru:
         is_catalog: Ist das Projekt ein Katalog
         primary_color: Primary color
         secondary_color: Secondary color
+        editorial_color: Editorial color
         landing_page_edit_help: INTERVIEWEE wird durch den Namen des/der Interviewten ersetzt.
         domain_help: "This has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
         archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
