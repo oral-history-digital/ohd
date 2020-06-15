@@ -265,6 +265,7 @@ header.site-header {
   height: auto;
   background: $gray-darker;
   color: #fff;
+  z-index: 100;
   // -webkit-transition: max-height 1s;
   // transition: max-height 1s;
   @include screen-m {

@@ -42,7 +42,7 @@ export default class Segment extends React.Component {
     }
 
     transcript() {
-        return admin(this.props, this.props.data) ? (this.props.data.text[`${this.props.contentLocale}-original`] || this.props.data.text[`${this.props.contentLocale}-public`]) : 
+        return admin(this.props, this.props.data) ? (this.props.data.text[`${this.props.contentLocale}-original`] || this.props.data.text[`${this.props.contentLocale}-public`]) :
                (this.props.data.text[`${this.props.contentLocale}-public`] || '')
     }
 
@@ -75,13 +75,13 @@ export default class Segment extends React.Component {
 
     references(locale) {
         if (
-            this.state.contentType == 'references' && 
+            this.state.contentType == 'references' &&
             (this.props.data.references_count[locale] > 0 || admin(this.props, {type: 'RegistryReference', action: 'create'}))
         ) {
-            return <RegistryReferencesContainer 
-                       refObject={this.props.data} 
+            return <RegistryReferencesContainer
+                       refObject={this.props.data}
                        parentEntryId={1}
-                       locale={locale} 
+                       locale={locale}
                        setOpenReference={this.setOpenReference}
                    />
         }
@@ -89,7 +89,7 @@ export default class Segment extends React.Component {
 
     annotations(locale) {
         if (
-            this.state.contentType == 'annotations' && 
+            this.state.contentType == 'annotations' &&
             (this.props.data.annotations_count[locale] > 0 || admin(this.props, {type: 'Annotation', action: 'create'}))
         ) {
             return <AnnotationsContainer segment={this.props.data} locale={locale} />
@@ -120,8 +120,8 @@ export default class Segment extends React.Component {
         if (this.speakerChanged()) {
             let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
             return (
-                <div 
-                    className="content-trans-speaker-link" 
+                <div
+                    className="content-trans-speaker-link"
                     title={(this.props.people && this.props.data.speaker_id) ? fullname(this.props, this.props.people[this.props.data.speaker_id]) : this.props.data.speaker}
                     onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, this.props.tabIndex)}
                 >
@@ -133,18 +133,18 @@ export default class Segment extends React.Component {
 
     renderLinks(locale, userAnnotations) {
         if (
-            admin(this.props, {type: 'RegistryReference', action: 'update'}) || 
-            this.props.data.annotations_count[this.props.contentLocale] > 0 || 
-            this.props.data.references_count[this.props.contentLocale] > 0 || 
+            admin(this.props, {type: 'RegistryReference', action: 'update'}) ||
+            this.props.data.annotations_count[this.props.contentLocale] > 0 ||
+            this.props.data.references_count[this.props.contentLocale] > 0 ||
             userAnnotations.length > 0
         ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = admin(this.props, {type: 'Annotation', action: 'update'}) || 
-                this.props.data.annotations_count[this.props.contentLocale] > 0 || 
-                userAnnotations.length > 0 ? 
+            let annotionCss = admin(this.props, {type: 'Annotation', action: 'update'}) ||
+                this.props.data.annotations_count[this.props.contentLocale] > 0 ||
+                userAnnotations.length > 0 ?
                 'content-trans-text-ico-link' : 'hidden';
-            let referenceCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) || 
-                this.props.data.references_count[this.props.contentLocale] > 0 ? 
+            let referenceCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) ||
+                this.props.data.references_count[this.props.contentLocale] > 0 ?
                 'content-trans-text-ico-link' : 'hidden';
 
             return (
@@ -193,7 +193,13 @@ export default class Segment extends React.Component {
                         content: <SegmentHeadingFormContainer segment={this.props.data} contentLocale={this.props.contentLocale} />
                     })}
                 >
-                    <i className="fa fa-pencil"></i>
+                    <span class="fa-stack fa-lg">
+                        <i className="fa fa-pencil fa-stack-1x fa-stack-first-custom"></i>
+                        <i className="fa fa-header fa-stack-1x fa-stack-second-custom"></i>
+                    </span>
+
+
+
                 </div>
             )
         } else {
@@ -240,4 +246,3 @@ export default class Segment extends React.Component {
         }
     }
 }
-
