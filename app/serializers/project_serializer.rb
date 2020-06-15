@@ -14,6 +14,7 @@ class ProjectSerializer < ApplicationSerializer
     :fullname_on_landing_page,
     :primary_color,
     :secondary_color,
+    :editorial_color,
     :initials,
     :identifier,
     :is_catalog,
@@ -65,5 +66,5 @@ class ProjectSerializer < ApplicationSerializer
       mem
     end
   end
-  
+
 end
