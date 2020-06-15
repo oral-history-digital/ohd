@@ -26,6 +26,8 @@ class UploadedFileSerializer < ApplicationSerializer
     else
       Rails.application.routes.url_helpers.rails_blob_path(object.file, only_path: true) if object.file.attachment
     end
+  rescue
+    nil
   end
 
 end
