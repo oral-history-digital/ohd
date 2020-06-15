@@ -111,8 +111,8 @@ class SearchesController < ApplicationController
 
         # scaffold hash structure to build on
         hash = Rails.cache.fetch("#{current_project.cache_key_prefix}-registry-reference-types-for-map-#{RegistryReferenceType.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
-          entries = RegistryEntry.root_node.children.select{ |child| child if child.code.in?(codes) }
-          types = current_project.metadata_fields.where(use_in_details_view: true).map{|mf|mf.registry_reference_type}.select{|rrt| rrt if rrt && rrt.code.in?(codes)}
+          entries = RegistryEntry.root_node.children.where(code: codes) 
+          types = RegistryReferenceType.where(code: codes).joins(:metadata_fields).where(use_in_details_view: true, project_id: current_project.id)
           (entries + types).inject({}){|mem, et|
             mem[et.code] = {
               title: "<strong>#{name(et)[:de]}</strong>",
