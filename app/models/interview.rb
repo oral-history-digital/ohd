@@ -208,7 +208,7 @@ class Interview < ApplicationRecord
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
       project.search_facets.inject({}) do |mem, facet|
-        mem[facet.name] = self.respond_to?(facet.name) ? self.send(facet.name) : (interviewee && interviewee.send(facet.name))
+        mem[facet.name] = (self.respond_to?(facet.name) ? self.send(facet.name) : (interviewee && interviewee.send(facet.name))) || ''
         mem
       end
     end
@@ -233,10 +233,10 @@ class Interview < ApplicationRecord
 
     Project.current.available_locales.each do |locale|
       string :"alias_names_#{locale}", :stored => true do
-        interviewee && interviewee.alias_names(locale)
+        (interviewee && interviewee.alias_names(locale)) || ''
       end
       text :"alias_names_#{locale}", :stored => true, :boost => 20 do
-        interviewee && interviewee.alias_names(locale)
+        (interviewee && interviewee.alias_names(locale)) || ''
       end
     end
     
