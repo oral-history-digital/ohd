@@ -23,7 +23,7 @@ class ProjectsController < ApplicationController
             data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'projects',
             extra_params: extra_params,
-            page: params[:page], 
+            page: params[:page],
             result_pages_count: projects.respond_to?(:total_pages) ? projects.total_pages : nil
           }
         end
@@ -106,6 +106,7 @@ class ProjectsController < ApplicationController
           "default_locale",
           "primary_color",
           "secondary_color",
+          "editorial_color",
           "shortname",
           "initials",
           "domain",

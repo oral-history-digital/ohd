@@ -2,6 +2,7 @@
 
 .content-tabs {
   margin: 0;
+  z-index: 100;
 }
 
 .content-tabs-nav {
@@ -177,7 +178,7 @@
 .content-trans-text-ico {
   display: block;
   text-align: right;
-  width: 50%;
+  width: 65%;
   float: right;
   @include pie-clearfix;
   padding: 0;

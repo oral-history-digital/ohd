@@ -11,7 +11,7 @@ import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
@@ -45,7 +45,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'shortname',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v.length > 1}
             },
             {
                 attribute: "initials"
@@ -73,6 +73,9 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: "secondary_color",
+            },
+            {
+                attribute: "editorial_color",
             },
             {
                 attribute: "domain",

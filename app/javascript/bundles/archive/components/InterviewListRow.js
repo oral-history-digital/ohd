@@ -28,13 +28,13 @@ export default class InterviewListRow extends React.Component {
     }
 
     resultsCount() {
-        let count = 0; 
+        let count = 0;
         if (
-            this.props.interviewSearchResults && 
+            this.props.interviewSearchResults &&
             this.props.interviewSearchResults[this.props.interview.archive_id] &&
             this.props.interviewSearchResults[this.props.interview.archive_id].foundSegments
         ) {
-            count += this.props.interviewSearchResults[this.props.interview.archive_id].foundSegments.length + 
+            count += this.props.interviewSearchResults[this.props.interview.archive_id].foundSegments.length +
                 this.props.interviewSearchResults[this.props.interview.archive_id].foundPeople.length +
                 this.props.interviewSearchResults[this.props.interview.archive_id].foundRegistryEntries.length +
                 this.props.interviewSearchResults[this.props.interview.archive_id].foundBiographicalEntries.length;
@@ -66,9 +66,9 @@ export default class InterviewListRow extends React.Component {
         if (this.props.fulltext && this.resultsCount() > 0) {
             cols.push(
                 <Link className={'search-result-link'}
-                    onClick={() => { 
-                        this.props.setArchiveId(this.props.interview.archive_id); 
-                        this.props.setTapeAndTime(1, 0) 
+                    onClick={() => {
+                        this.props.setArchiveId(this.props.interview.archive_id);
+                        this.props.setTapeAndTime(1, 0)
                     }}
                     to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                 >
@@ -82,15 +82,21 @@ export default class InterviewListRow extends React.Component {
     renderExportCheckbox() {
         if (admin(this.props, {type: 'Interview', action: 'update'})) {
             return <td>
-                <input 
-                    type='checkbox' 
-                    className='export-checkbox' 
-                    checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0} 
+                <input
+                    type='checkbox'
+                    className='export-checkbox'
+                    checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0}
                     onChange={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}
                 />
             </td>
         } else {
             return null;
+        }
+    }
+
+    unsharedIcon() {
+        if (this.props.interview.workflow_state === 'unshared') {
+            return(<i className="fa fa-eye-slash"  aria-hidden="true"></i>)
         }
     }
 
@@ -101,10 +107,10 @@ export default class InterviewListRow extends React.Component {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
-                        {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
+                        {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}{this.unsharedIcon()}
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
-                        {this.props.project.fullname_on_landing_page ? this.props.interview.title[this.props.locale] : this.props.interview.anonymous_title[this.props.locale]} 
+                        {this.props.project.fullname_on_landing_page ? this.props.interview.title[this.props.locale] : this.props.interview.anonymous_title[this.props.locale]}
                     </AuthShowContainer>
                 </div>
             )
@@ -118,7 +124,7 @@ export default class InterviewListRow extends React.Component {
                 <td>
                     <Link className={'search-result-link'}
                         onClick={() => {
-                            this.props.setArchiveId(this.props.interview.archive_id); 
+                            this.props.setArchiveId(this.props.interview.archive_id);
                             this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
                             this.props.setTapeAndTime(1, 0);
                         }}
@@ -132,4 +138,3 @@ export default class InterviewListRow extends React.Component {
         );
     }
 }
-
