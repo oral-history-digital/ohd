@@ -14,6 +14,8 @@ class RegistryReferenceType < ApplicationRecord
   # types actually in use to define the type of a reference.
   has_many :registry_references, :dependent => :nullify
 
+  has_many :metadata_fields
+
   def to_s(locale = I18n.locale)
     name(locale)
   end
