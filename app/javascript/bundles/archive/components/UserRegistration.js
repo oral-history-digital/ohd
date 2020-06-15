@@ -70,7 +70,7 @@ export default class UserRegistration extends React.Component {
                     content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
                 })}
             >
-                <i className="fa fa-eye"></i>
+                <i className="fa fa-pencil"></i>
             </div>
         )
     }

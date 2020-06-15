@@ -138,6 +138,9 @@
     border-bottom: 1px solid $gray-dark;
     border-left: 1px solid $gray-dark;
     background-color: $gray-paler;
+    @include screen-xs-m {
+      margin-bottom: 0px;
+    }
   }
   ::placeholder {
     color: $primary-color;
@@ -178,4 +181,3 @@
     }
   }
 }
-

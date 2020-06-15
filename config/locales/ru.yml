@@ -24,6 +24,11 @@ ru:
   sl: словенский
   sr: сербский
   uk: украинский
+  default_locales:
+    de: deutsch
+    el: griechisch
+    en: englisch
+    es: spanisch
   in: В
   not_your_project: You are not registered for this project.
   registration_needed: В целях защиты персональных данных тех, чьи истории жизни представлены
