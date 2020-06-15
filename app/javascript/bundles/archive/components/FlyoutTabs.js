@@ -488,7 +488,7 @@ export default class FlyoutTabs extends React.Component {
                         <Tab className='flyout-tab' key='archive-search'>{this.renderSearchTheArchiveButton()}</Tab>
                         {this.interviewTab()}
                         {this.registryEntriesTab()}
-                        {this.props.projectId === 'zwar' && this.mapTabPanel()}
+                        {/*this.props.projectId === 'zwar' && this.mapTabPanel()*/}
                         {this.indexingTab()}
                         {this.usersAdminTab()}
                         {this.userContentTab()}
