@@ -151,7 +151,7 @@
 			:MG => "Madagascar",
 			:MH => "Marshall Islands",
 			:MI => "Midway Islands",
-			:MK => "Macedonia",
+			:MK => "North Macedonia",
 			:ML => "Mali",
 			:MM => "Myanmar",
 			:MN => "Mongolia",
