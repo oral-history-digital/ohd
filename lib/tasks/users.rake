@@ -31,7 +31,7 @@ namespace :users do
   desc "Initialize admins"
   task :init_admins => :environment do
 
-    admins = { 
+    admins = {
       'jmb@cedis.fu-berlin.de' => %w(Herr Michael Baur),
       'rico.simke@cedis.fu-berlin.de' => %w(Herr Rico Simke),
       'cord.pagenstecher@cedis.fu-berlin.de' => %w(Herr Cord Pagenstecher),
@@ -50,8 +50,8 @@ namespace :users do
       reg.login = account.login
       reg.tos_agreement = true
       reg.priv_agreement = true
-      reg.job_description = 'Projektmitarbeiter'
-      reg.research_intentions = 'Projektmitarbeit'
+      reg.job_description = 'other'
+      reg.research_intentions = 'other'
       reg.comments = 'keine Angaben'
       reg.organization = 'CeDiS FU-Berlin'
       reg.homepage = "www.#{Project.first.domain}"
