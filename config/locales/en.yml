@@ -24,6 +24,11 @@ en:
   sl: Slovenian
   sr: Serbian
   uk: Ukrainian
+  default_locales:
+    de: German
+    el: Greek
+    en: English
+    es: Spanish
   in: in
   not_your_project: You are not registered for this project.
   registration_needed: For reasons of privacy you have to register. After registration
