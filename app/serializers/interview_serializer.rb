@@ -55,21 +55,6 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def country_of_birth
-    interviewee = object.interviewee
-    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-country-of-birth-#{interviewee.id}-#{interviewee.updated_at}") do
-      country = interviewee && interviewee.country_of_birth
-      if country
-        I18n.available_locales.inject({}) do |mem, locale|
-          mem[locale] = country.to_s(locale)
-          mem
-        end
-      else
-        {}
-      end
-    end
-  end
-
   def landing_page_texts
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-landing-page-texts-#{object.archive_id}-#{object.project.updated_at}") do
       interviewee = object.interviewee
@@ -148,26 +133,6 @@ class InterviewSerializer < ApplicationSerializer
     format("%02d", object.tapes.count)
   end
 
-  #def references
-    #object.segment_registry_references.with_locations.map do |ref|
-      #{
-        #archive_id: object.archive_id,
-        #desc: ref.registry_entry.localized_hash(:descriptor),
-        ## exclude dedalo default location (Valencia)
-        #latitude: ref.registry_entry.latitude == "39.462571" ? nil : ref.registry_entry.latitude.to_f,
-        #longitude: ref.registry_entry.longitude == "-0.376295" ? nil : ref.registry_entry.longitude.to_f,
-      #}
-    #end
-  #end
-
-  # def place_of_interview
-  #   RegistryEntrySerializer.new(object.place_of_interview) if object.place_of_interview
-  # end
-
-  # def interview_location
-  #   self.place_of_interview
-  # end
-
   def duration
     # interview can update duration with a timecode. 
     # Therefore duration as timecode can be duration's value in a form.
@@ -185,17 +150,6 @@ class InterviewSerializer < ApplicationSerializer
       Time.at(object.duration).utc.strftime("%-H h %M min")
     else
       "---"
-    end
-  end
-
-  def year_of_birth
-    if object.interviewee
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.interviewee.year_of_birth
-        mem
-      end
-    else
-      {}
     end
   end
 

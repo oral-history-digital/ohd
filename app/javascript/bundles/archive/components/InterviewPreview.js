@@ -5,7 +5,7 @@ import { PROJECT, MISSING_STILL } from '../constants/archiveConstants'
 import InterviewSearchResultsContainer from '../containers/InterviewSearchResultsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 
-import { t, admin, pathBase } from '../../../lib/utils';
+import { t, admin, pathBase, getInterviewee } from '../../../lib/utils';
 
 export default class InterviewPreview extends React.Component {
 
@@ -106,7 +106,7 @@ export default class InterviewPreview extends React.Component {
                     <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>
                     <span>{this.props.interview.language[this.props.locale]}</span>
                     <small className={this.facetToClass("forced-labor-group")}><br/>{this.props.interview.forced_labor_group[this.props.locale]}</small>
-                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>
+                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {getInterviewee(this.props).year_of_birth}</small>
                     <small className={this.facetToClass("forced-labor-field")}><br/>{this.props.interview.forced_labor_field[this.props.locale]}</small>
                 </div>
             );

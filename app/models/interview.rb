@@ -168,7 +168,7 @@ class Interview < ApplicationRecord
     
     # in order to fast access a list of titles for the name and alias_names autocomplete:
     string :title, :stored => true
-    string :alias_names, :stored => true
+    #string :alias_names, :stored => true
 
     # in order to fast access places of birth for all interviews
     # string :birth_location, :stored => true
@@ -208,7 +208,7 @@ class Interview < ApplicationRecord
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
       project.search_facets.inject({}) do |mem, facet|
-        mem[facet.name] = self.send(facet.name) 
+        mem[facet.name] = self.respond_to?(facet.name) ? self.send(facet.name) : (interviewee && interviewee.send(facet.name))
         mem
       end
     end
@@ -233,10 +233,10 @@ class Interview < ApplicationRecord
 
     Project.current.available_locales.each do |locale|
       string :"alias_names_#{locale}", :stored => true do
-        alias_names[locale]
+        interviewee && interviewee.alias_names(locale)
       end
       text :"alias_names_#{locale}", :stored => true, :boost => 20 do
-        alias_names[locale]
+        interviewee && interviewee.alias_names(locale)
       end
     end
     
@@ -405,19 +405,6 @@ class Interview < ApplicationRecord
       end
     end
   end
-
-  # ZWAR_MIGRATE: Uncomment this after migrating zwar
-  after_initialize do 
-    project.person_metadata_fields.each do |facet|
-      define_singleton_method facet.name do 
-        # TODO: what if there are more intervviewees?
-        interviewee && interviewee.send(facet.name.to_sym) ? interviewee.send(facet.name.to_sym).try(:split, ',') : ''
-      end
-    end
-  end
-  #def facet_category_ids(code)
-    #segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(code)).map(&:registry_entry_id)
-  #end
 
   def lang
     # return only the first language code in cases like 'slk/ces'
