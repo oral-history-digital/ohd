@@ -137,7 +137,17 @@ a.flyout-download-link-lang {
   text-align: right;
   padding: 0;
 }
-
+.fa-stack {
+  margin-right: 10px;
+}
+.fa-stack-first-custom {
+  margin-top: -3px;
+}
+.fa-stack-second-custom {
+    text-align: right;
+    margin-left: -15px;
+    font-size: 14px !important;
+}
 .registry-entry-edit-buttons {
   background: #fff;
   border: 1px solid black;
