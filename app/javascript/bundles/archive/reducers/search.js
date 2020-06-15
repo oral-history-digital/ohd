@@ -22,7 +22,7 @@ const initialState = {
         query:{},
         allInterviewsTitles: [],
         allInterviewsPseudonyms: [],
-        allInterviewsPARCHIVElacesOfBirth: [],
+        allInterviewsPlacesOfBirth: [],
         foundInterviews: [],
         //foundSegmentsForInterviews: {},
         allInterviewsCount: 0,
