@@ -20,7 +20,6 @@ class InterviewSerializer < ApplicationSerializer
     :short_title,
     :anonymous_title,
     :still_url,
-    :year_of_birth,
     :segments,
     :last_segments_ids,
     :first_segments_ids,
@@ -33,7 +32,8 @@ class InterviewSerializer < ApplicationSerializer
     :doi_status,
     :landing_page_texts,
     :properties,
-  ] | Project.first.metadata_fields.map(&:name)
+  #] | Project.first.metadata_fields.map(&:name)
+  ] | Project.first.metadata_fields.where("source='Interview' OR ref_object_type='Interview'").map(&:name)
 
   def collection
     object.collection && object.collection.localized_hash(:name) || {}
