@@ -177,8 +177,6 @@ ru:
       priv_agreement_explanation: Я принимаю %{privacy_policy}.
       agreed: приняты
       not_agreed: не приняты
-      send_newsletter: Рассылка
-      send_newsletter_explanation: Я хочу подписаться на рассылку проекта "%{project_name}".
       receive_newsletter: Рассылка
       newsletter_signup: Подписка на рассылку
       receive_newsletter_explanation: Я хочу подписаться на рассылку проекта "%{project_name}".
@@ -188,126 +186,6 @@ ru:
       workflow_state: Статус регистрации
       login: Имя пользователя
       created_at: Дата регистрации
-    registration_values:
-      appellation:
-        Dr: Др.
-        Prof: Проф.
-      gender:
-        female: женщина
-        male: мужчина
-        diverse: другие
-        not_specified: not specified
-      job_description:
-        Dozentin/Dozent: Доцент/Научный сотрудник
-        Dozent(in)/Forscher(in): Доцент/Научный сотрудник
-        Dozent: Доцент/Научный сотрудник
-        Wissenschaftlerin/Wissenschaftler: Доцент/Научный сотрудник
-        Lecturer/Researcher: Доцент/Научный сотрудник
-        Lecturer: Доцент/Научный сотрудник
-        Filmemacherin/Filmemacher: Автор фильмов
-        Filmemacher(in): Автор фильмов
-        Filmmaker: Автор фильмов
-        Journalistin/Journalist: Журналист
-        Journalist(in): Журналист
-        Journalist: Журналист
-        Lehrerin/Lehrer: Учитель
-        Lehrer(in): Учитель
-        Teacher: Учитель
-        Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten): Сотрудник (Музеи/Мемориалы)
-        Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten): Сотрудник(Музеи/Мемориалы)
-        Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Сотрудник (Музеи/Мемориалы)
-        Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Сотрудник (Музеи/Мемориалы)
-        Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Сотрудник (Музеи/Мемориалы)
-        Mitarbeiter(in) (Museen/Gedenkstatten):
-        Mitarbeiter(in) (Museen/Gedenkstätten): Сотрудник (Музеи/Мемориалы)
-        Staff Member (museums/memorial sites): Сотрудник (Музеи/Мемориалы)
-        Staff Member (Museums/Memorial Sites): Сотрудник (Музеи/Мемориалы)
-        Mitarbeit: Сотрудник (Музеи/Мемориалы)
-        Projektmitarbeiter: Сотрудничество
-        Mitarbeiterin: Сотрудничество
-        Schülerin/Schüler: Учащийся
-        Sch?lerin/Sch?ler: Учащийся
-        Sch\xC3\xBClerin/Sch\xC3\xBCler: Учащийся
-        Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n: Учащийся
-        Sch\xC3\xBCler(in): Учащийся
-        Schüler(in): Учащийся
-        Sch?ler(in): Учащийся
-        School Student: Учащийся
-        Studentin/Student: Студент
-        Student(in): Студент
-        University Student: Студент
-        Sonstiges: Прочее
-        k.A.: Прочее
-        '': Прочее
-        Other: Прочее
-      research_intentions:
-        Ausstellung: Выставка
-        Exhibition: Выставка
-        Bildungsarbeit: Просветительная работа
-        Teaching: Просветительная работа
-        Educational Work: Просветительная работа
-        Schulunterricht: Просветительная работа
-        Dissertation: Диссертация
-        Dissertation/Habilitation: Диссертация
-        Dokumentarfilm: Документальный фильм
-        Documentary Film: Документальный фильм
-        Documentary: Документальный фильм
-        Familienforschung: Семейные исследования
-        Genealogy: Семейные исследования
-        Genealogical Research: Семейные исследования
-        Kunstprojekt: Проект в области искусства
-        Art Project: Проект в области искусства
-        Persönliches Interesse: Личный интерес
-        Pers\xC3\xB6nliches Interesse: Личный интерес
-        Pers?nliches Interesse: Личный интерес
-        Pers?ches Interesse: Личный интерес
-        Private Interest/Other: Личный интерес
-        Personal Interest: Личный интерес
-        Personliches Interesse: Личный интерес
-        Schulprojekt/Referat: Школьный проект/реферат
-        School Project/Presentation: Школьный проект/реферат
-        Universitäre Lehre: Университетское преподавание
-        Universitäre Lehre/Studium: Университетское преподавание
-        University Teaching/Studies: Университетское преподавание
-        Universit\xC3\xA4re Lehre: Университетское преподавание
-        Universit?re Lehre: Университетское преподавание
-        Universit\xC3\xA4re Lehre/Studium: Университетское преподавание
-        University Course/Lecture: Университетское преподавание
-        Wissenschaftliche Publikation: Научная публикация
-        Scholarly Publication: Научная публикация
-        Publikation: Научная публикация
-        Publication: Научная публикация
-        Pressepublikation: Публикация в прессе
-        Publication in Press: Публикация в прессе
-        Press Publication: Публикация в прессе
-        Sonstiges: Прочее
-        Mitarbeit: Прочее
-        Projektmitarbeit: Прочее
-        Other: Прочее
-      state:
-        Bayern: Бавария
-        Baden-Württemberg: Баден-Вюртемберг
-        Baden-W?rttemberg: Баден-Вюртемберг
-        Saarland: Саар
-        Hessen: Гессен
-        Rheinland-Pfalz: Рейнланд-Пфальц
-        Nordrhein-Westfalen: Северный Рейн-Вестфалия
-        Niedersachsen: Нижняя Саксония
-        Thüringen: Тюрингия
-        Th?ringen: Тюрингия
-        Sachsen-Anhalt: Саксония-Анхальт
-        Sachsen: Саксония
-        Brandenburg: Бранденбург
-        Berlin: Берлин
-        Mecklenburg-Vorpommern: Мекленбург-Передняя Померания
-        Hamburg: Гамбург
-        Bremen: Бремен
-        Schleswig-Holstein: Шлезвиг-Гольштейн
-        außerhalb Deutschlands: за пределами Германии
-        au?erhalb Deutschlands: за пределами Германии
-        au?rhalb Deutschlands: за пределами Германии
-        Outside Germany: за пределами ФРГ
-        outside Germany: за пределами ФРГ
   activerecord:
     errors:
       models:
