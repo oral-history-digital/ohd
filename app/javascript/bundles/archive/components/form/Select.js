@@ -94,7 +94,7 @@ export default class Select extends React.Component {
                 sort(function(a,b){
                   let textA = getTextAndValue(a, _this.props).text;
                   let textB = getTextAndValue(b, _this.props).text;
-                  return((textA > textB) - (textA < textB))
+                  return(new Intl.Collator(_this.props.locale).compare(textA, textB))
              })
            }
 
