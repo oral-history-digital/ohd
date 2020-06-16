@@ -100,13 +100,16 @@ export default class InterviewPreview extends React.Component {
 
 
     interviewDetails() {
+        let interviewee = getInterviewee(this.props);
+        let yearOfBirth = interviewee && interviewee.year_of_birth;
+
         if (this.props.projectId === 'zwar') {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
                     <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>
                     <span>{this.props.interview.language[this.props.locale]}</span>
                     <small className={this.facetToClass("forced-labor-group")}><br/>{this.props.interview.forced_labor_group[this.props.locale]}</small>
-                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {getInterviewee(this.props).year_of_birth}</small>
+                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {yearOfBirth}</small>
                     <small className={this.facetToClass("forced-labor-field")}><br/>{this.props.interview.forced_labor_field[this.props.locale]}</small>
                 </div>
             );
@@ -116,8 +119,7 @@ export default class InterviewPreview extends React.Component {
                 <div className={'search-result-data'} lang={this.props.locale}>
                     {this.content( t(this.props, 'duration'), this.props.interview.duration_human)}
                     {this.content(t(this.props, 'typologies'), this.props.interview.typology && this.props.interview.typology[this.props.locale])}
-                    <small className={this.facetToClass("year-of-birth")}>{this.content( t(this.props, 'year_of_birth'), this.props.interview.year_of_birth[this.props.locale])}</small>
-                {/*<small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>*/}
+                    <small className={this.facetToClass("year-of-birth")}>{this.content( t(this.props, 'year_of_birth'), yearOfBirth)}</small>
                 </div>
             )
         }
@@ -125,7 +127,7 @@ export default class InterviewPreview extends React.Component {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
                     <span>{this.props.interview.duration_human}</span><br/>
-                    <small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {this.props.interview.year_of_birth[this.props.locale]}</small>
+                    <small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {yearOfBirth}</small>
                 </div>
             )
         } else {
