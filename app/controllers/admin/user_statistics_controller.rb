@@ -27,11 +27,7 @@ class Admin::UserStatisticsController < Admin::BaseController
   private
 
   def csv_export
-
-    mapping_file = File.join(Rails.root, 'config', 'statistics_mappings.yml')
-    mappings = YAML::load_file(mapping_file)
-
-    countries = params[:countries] || User.all.map{|u|u.country}.sort.uniq
+    countries = params[:countries] || User.all.map{|u|u.country}.uniq.sort
 
     @list = [ :header, :count ]
     @rows = {
@@ -45,24 +41,23 @@ class Admin::UserStatisticsController < Admin::BaseController
       #inserts title row
       @list << "'=== #{category} ==='"
       #
-      list = [ category.to_s ]
       category_results = User.where(country: countries).group(field_name).count.sort_by { |group| -group.last }
-      category_results.each do |category_result|
-        label = category_result.first
-        label = "k. A. (#{category})" if label.blank?
-        if mappings.keys.include?(field_name)
-          category_mappings = mappings[field_name]
-          if category_mappings.keys.include?(label)
-            label = category_mappings[label]
-          end
+
+      category_results.each do |entry, count|
+        if category == 'Land'
+          label = I18n.t(entry, :scope => :countries, :locale => :de)
+        elsif entry.blank?
+          label = "k. A. (#{category})"
+        elsif entry == 'other'
+          label = I18n.t("user_registration.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
+        else
+          label = I18n.t("user_registration.#{field_name}.#{entry}", :locale => :de)
         end
-        sum = category_result.last
-        row_title = category == 'Land' ? I18n.t(label, :scope => :countries, :locale => :de) : label
         if @rows.include?(label)
-          @rows[label][:sum] += sum
+          @rows[label][:sum] += count
         else
           @list << label
-          @rows[label] = { :label => row_title, :sum => sum, :cols => {} }
+          @rows[label] = { :label => label, :sum => count, :cols => {} }
         end
       end
     end
@@ -96,25 +91,25 @@ class Admin::UserStatisticsController < Admin::BaseController
 
       categories.each do |category, field_name|
         results = User.where(country: countries).where(conditions).group(field_name).count
-        results.each do |label, value|
-          label = "k. A. (#{category})" if label.blank?
-
-          if mappings.keys.include?(field_name)
-            category_mappings = mappings[field_name]
-            if category_mappings.keys.include?(label)
-              label = category_mappings[label]
-            end
+        results.each do |entry, count|
+          if category == 'Land'
+            label = I18n.t(entry, :scope => :countries, :locale => :de)
+          elsif entry.blank?
+            label = "k. A. (#{category})"
+          elsif entry == 'other'
+            label = I18n.t("user_registration.#{field_name}.#{entry}", :locale => :de) + " (#{category})"
+          else
+            label = I18n.t("user_registration.#{field_name}.#{entry}", :locale => :de)
           end
 
           if @rows[label]
             unless @rows[label][:cols][month_label] == nil
-              @rows[label][:cols][month_label] = @rows[label][:cols][month_label] + value
+              @rows[label][:cols][month_label] = @rows[label][:cols][month_label] + count
             else
-              @rows[label][:cols][month_label] = value
+              @rows[label][:cols][month_label] = count
             end
           else
-            # binding.pry
-            @errors << "#{label} mit Wert '#{value}' nicht berücksichtigt."
+            @errors << "#{label} mit Wert '#{count}' nicht berücksichtigt."
           end
         end
       end
