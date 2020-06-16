@@ -20,7 +20,11 @@ export default class InterviewContributors extends React.Component {
         ) {
             for (var c in this.props.interview.contributions) {
                 let contribution = this.props.interview.contributions[c];
-                if (this.props.withSpeakerDesignation || contribution.contribution_type !== 'interviewee') {
+                if (
+                    this.props.withSpeakerDesignation || 
+                    admin(this.props, this.props.interview) ||
+                    contribution.contribution_type !== 'interviewee' 
+                ) {
                     if (!contributionTypes[contribution.contribution_type]) {
                         contributionTypes[contribution.contribution_type] = [
                             <span className='flyout-content-label' key={`contribution-label-${contribution.id}`}>
