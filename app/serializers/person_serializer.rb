@@ -6,6 +6,7 @@ class PersonSerializer < ApplicationSerializer
                :names,
                :text,
                :registry_references,
+               :date_of_birth,
              # :histories
              ] |
              MetadataField.where(ref_object_type: "Person", source: "RegistryReferenceType").inject([]) { |mem, i| mem << i.name } |
