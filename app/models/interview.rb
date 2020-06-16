@@ -791,13 +791,17 @@ class Interview < ApplicationRecord
         # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
         #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
         #    ...]
-        all_interviews_pseudonyms = search.hits.map{ |hit| eval hit.stored(:alias_names) }
-        all_interviews_birth_locations = search.hits.map {|hit| hit.stored(:birth_location) }
-
+        all_interviews_pseudonyms = search.hits.map do |hit| 
+          project.available_locales.inject({}) do |mem, locale| 
+            mem[locale] = hit.stored("alias_names_#{locale}") 
+            mem
+          end
+        end
+        #all_interviews_birth_locations = search.hits.map {|hit| hit.stored(:birth_location) }
         {
           all_interviews_titles: all_interviews_titles,
-          all_interviews_pseudonyms: all_interviews_pseudonyms,
-          all_interviews_birth_locations: all_interviews_birth_locations
+          all_interviews_pseudonyms: all_interviews_pseudonyms#,
+          #all_interviews_birth_locations: all_interviews_birth_locations
         }
       end
     end
