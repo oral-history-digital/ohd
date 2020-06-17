@@ -104,7 +104,7 @@ es:
   without_translation: Esta entrevista todavía no se ha traducido al alemán.
   without_transcript: Esta entrevista todavía no ha sido transcrito.
   without_index: No se ha elaborado una tabla de contenido para esta entrevista.
-  without_index_locale: La tabla de contenido no ha sido traducido al español.
+  without_index_locale: La tabla de contenido no ha sido traducida al español.
   without_ref_tree: Esta entrevista todavía no ha sido indexada.
   private: Privado
   proposed: En revisión para la publicación
@@ -145,7 +145,7 @@ es:
   archive_results: Resultados de búsqueda
   segment_results: Resultados de búsqueda en la transcripción
   photo_results: Resultados de búsqueda en imágenes
-  registryentry_results: Resultatdos de búsqueda en el índice
+  registryentry_results: Resultados de búsqueda en el índice
   biographicalentry_results: Resultados de búsqueda en la biografía breve
   person_results: Resultados de búsqueda para personas
   user_registration_results: Resultados de búsqueda para usuaria/os
@@ -162,9 +162,9 @@ es:
   user_content_errors: Por favor, introduzca el título y la descripción (mínimo 2 letras)
   archive_search: Búsqueda en el archivo
   search: Buscar
-  interviewee_name: Apellido
+  interviewee_name: Nombre
   periods: Períodos de tiempo
-  keywords: Entredas en el índice
+  keywords: Entradas en el índice
   keywords_mog: Palabras claves
   registry: Índice
   registry_mog: Tesauro
@@ -203,7 +203,7 @@ es:
   biographical_entries_header: 'Biografía breve:'
   biographical_entries_title: 'Biografía breve de'
   biographical_entries_footer: 'Cómo citar: Biografía breve de'
-  interview_info: Ir a la entrevista
+  interview_info: Sobre la entrevista
   place: Lugar
   duration: Duración
   id: ID
@@ -213,7 +213,7 @@ es:
   date: Fecha
   interview_type: 'Tipo: video'
   language: Idioma
-  camera: Camera
+  camera: Cámara
   order_new_password: Recuperar contraseña
   ordered_new_password: Le enviamos instrucciones sobre cómo cambiar su contraseña.
   conditions: Términos de uso
@@ -225,7 +225,7 @@ es:
   contact: Contacto
   help: Ayuda
   usage_application: Solicitud de uso
-  save_interview_reference: Recordar entrevistar
+  save_interview_reference: Recordar entrevista
   save_user_annotation: Redactar una anotación
   save_search: Guardar búsqueda
   call_search: Abrir búsqueda
@@ -432,7 +432,7 @@ es:
     transcriptor: Transcripción
     translator: Traducción
     segmentator: Segmentación
-    cinematographer: Camera
+    cinematographer: Cámara
     proofreader: Revisión
     research: Edición científica
     sound: Sonido
@@ -557,7 +557,7 @@ es:
     interview_id: Entrevistas
     archive_id: Apellido
     collection_id: Colección parcial
-    media_type: Fórmato de medios
+    media_type: Formato de medio
     language_id: Idioma
     age: Edad
     year_of_birth: Año de nacimiento
@@ -616,8 +616,8 @@ es:
           show: Registereintrag anzeigen
           index: Registereinträge anzeigen
           merge: Registereinträge zusammenführen
-          show_tree: Alle Einträge zeigen
-          show_search_results: Suchergebnisse zeigen
+          show_tree: Mostrar todas las entradas
+          show_search_results: Mostrar resultados de búsqueda
       biographical_entry:
         one: Kurzbiographie
         other: Kurzbiographien
@@ -699,7 +699,7 @@ es:
         return_date: Fecha de retorno
         home_locations: Lugar de residencia
         duration: Tipo y duración de la entrevista
-        interview_date: realizada el
+        interview_date: Realizada el
         tape_count: Número de cintas
         interviewers: Realización de la entrevista
         transcriptors: Transcripción
@@ -709,7 +709,7 @@ es:
         segmentators: Segmentación
         language: Idioma
         language_id: Idioma original
-        media_type: Fórmato de medios
+        media_type: Formato de medio
         translated: se ha traducido la entrevista?
         workflow_state: 'estatus'
         observations: Protócolo
