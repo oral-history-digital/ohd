@@ -12,7 +12,7 @@ class RegistryEntrySerializer < ApplicationSerializer
              :parent_registry_hierarchy_ids,
              :bread_crumb,
              :ancestors,
-             :regions,
+             #:regions,
              :code,
 
   def name
