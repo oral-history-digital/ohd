@@ -507,7 +507,7 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
                     {this.interviewTabPanel()}
                     {this.registryEntriesTabPanel()}
-                    {this.props.projectId === 'zwar' && this.mapTabPanel()}
+                    {/*this.props.projectId === 'zwar' && this.mapTabPanel()*/}
                     {this.indexingTabPanel()}
                     {this.usersAdminTabPanel()}
                     {this.userContentTabPanel()}
