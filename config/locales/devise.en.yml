@@ -178,8 +178,6 @@ en:
       priv_agreement_explanation: I agree to the %{privacy_policy}.
       agreed: zugestimmt
       not_agreed: keine Zustimmung
-      send_newsletter: Newsletter
-      send_newsletter_explanation: I subscribe to the newsletter of the project "%{project_name}".
       receive_newsletter: Newsletter
       newsletter_signup: Newsletter subscription
       receive_newsletter_explanation: I subscribe to the newsletter of the project
@@ -190,127 +188,6 @@ en:
       workflow_state: Registration status
       login: Username
       created_at: Date of Registration
-    registration_values:
-      appellation:
-        Dr: Dr
-        Prof: Prof
-      gender:
-        female: female
-        male: male
-        diverse: diverse
-        not_specified: not specified
-      job_description:
-        Dozentin/Dozent: Lecturer/Researcher
-        Dozent(in)/Forscher(in): Dozent*in/Forscher*in
-        Dozent: Dozent*in/Forscher*in
-        Wissenschaftlerin/Wissenschaftler: Dozent*in/Forscher*in
-        Lecturer/Researcher: Dozent*in/Forscher*in
-        Lecturer: Dozent*in/Forscher*in
-        Filmemacherin/Filmemacher: Filmmaker
-        Filmemacher(in): Filmemacher*in
-        Filmmaker: Filmemacher*in
-        Journalistin/Journalist: Journalist
-        Journalist(in): Journalist*in
-        Journalist: Journalist*in
-        Lehrerin/Lehrer: Teacher
-        Lehrer(in): Lehrer*in
-        Teacher: Lehrer*in
-        Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten): Staff Member (museums/memorial
-          sites)
-        Mitarbeiterin/Mitarbeiter (Museen/Gedenkst?tten): Mitarbeiter*in (Museen/Gedenkstätten)
-        Mitarbeiterin/Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
-        Mitarbeiterin /Mitarbeiter (Museen / Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
-        Mitarbeiterin /Mitarbeiter (Museen / Gedenkst?tten): Mitarbeiter*in (Museen/Gedenkstätten)
-        Mitarbeiter(in) (Museen/Gedenkstatten):
-        Mitarbeiter(in) (Museen/Gedenkstätten): Mitarbeiter*in (Museen/Gedenkstätten)
-        Staff Member (museums/memorial sites): Mitarbeiter*in (Museen/Gedenkstätten)
-        Staff Member (Museums/Memorial Sites): Mitarbeiter*in (Museen/Gedenkstätten)
-        Mitarbeit: Mitarbeiter*in (Museen/Gedenkstätten)
-        Projektmitarbeiter: Mitarbeit
-        Mitarbeiterin: Mitarbeit
-        Schülerin/Schüler: School Student
-        Sch?lerin/Sch?ler: Schüler*in
-        Sch\xC3\xBClerin/Sch\xC3\xBCler: Schüler*in
-        Sch?/Sch?Sch\xC3\xBClerin/Sch\xC3\xBCler</option>\r\n: Schüler*in
-        Sch\xC3\xBCler(in): Schüler*in
-        Schüler(in): Schüler*in
-        Sch?ler(in): Schüler*in
-        School Student: Schüler*in
-        Studentin/Student: University Student
-        Student(in): Student*in
-        University Student: Student*in
-        Sonstiges: Other
-        k.A.: Sonstiges
-        '': Sonstiges
-        Other: Sonstiges
-      research_intentions:
-        Ausstellung: Exhibition
-        Exhibition: Ausstellung
-        Bildungsarbeit: Educational Work
-        Teaching: Bildungsarbeit
-        Educational Work: Bildungsarbeit
-        Schulunterricht: Bildungsarbeit
-        Dissertation: Dissertation/Habilitation
-        Dissertation/Habilitation: Dissertation
-        Dokumentarfilm: Documentary Film
-        Documentary Film: Dokumentarfilm
-        Documentary: Dokumentarfilm
-        Familienforschung: Genealogical Research
-        Genealogy: Familienforschung
-        Genealogical Research: Familienforschung
-        Kunstprojekt: Art Project
-        Art Project: Kunstprojekt
-        Persönliches Interesse: Personal Interest
-        Pers\xC3\xB6nliches Interesse: Persönliches Interesse
-        Pers?nliches Interesse: Persönliches Interesse
-        Pers?ches Interesse: Persönliches Interesse
-        Private Interest/Other: Persönliches Interesse
-        Personal Interest: Persönliches Interesse
-        Personliches Interesse: Persönliches Interesse
-        Schulprojekt/Referat: School Project/Presentation
-        School Project/Presentation: Schulprojekt/Referat
-        Universitäre Lehre: University Course/Lecture
-        Universitäre Lehre/Studium: Universitäre Lehre
-        University Teaching/Studies: Universitäre Lehre
-        Universit\xC3\xA4re Lehre: Universitäre Lehre
-        Universit?re Lehre: Universitäre Lehre
-        Universit\xC3\xA4re Lehre/Studium: Universitäre Lehre
-        University Course/Lecture: Universitäre Lehre
-        Wissenschaftliche Publikation: Scholarly Publication
-        Scholarly Publication: Wissenschaftliche Publikation
-        Publikation: Wissenschaftliche Publikation
-        Publication: Wissenschaftliche Publikation
-        Pressepublikation: Press Publication
-        Publication in Press: Pressepublikation
-        Press Publication: Pressepublikation
-        Sonstiges: Other
-        Mitarbeit: Sonstiges
-        Projektmitarbeit: Sonstiges
-        Other: Sonstiges
-      state:
-        Bayern: Bayern
-        Baden-Württemberg: Baden-Württemberg
-        Baden-W?rttemberg: Baden-Württemberg
-        Saarland: Saarland
-        Hessen: Hessen
-        Rheinland-Pfalz: Rheinland-Pfalz
-        Nordrhein-Westfalen: Nordrhein-Westfalen
-        Niedersachsen: Niedersachsen
-        Thüringen: Thüringen
-        Th?ringen: Thüringen
-        Sachsen-Anhalt: Sachsen-Anhalt
-        Sachsen: Sachsen
-        Brandenburg: Brandenburg
-        Berlin: Berlin
-        Mecklenburg-Vorpommern: Mecklenburg-Vorpommern
-        Hamburg: Hamburg
-        Bremen: Bremen
-        Schleswig-Holstein: Schleswig-Holstein
-        außerhalb Deutschlands: Outside Germany
-        au?erhalb Deutschlands: außerhalb Deutschlands
-        au?rhalb Deutschlands: außerhalb Deutschlands
-        Outside Germany: außerhalb Deutschlands
-        outside Germany: außerhalb Deutschlands
   activerecord:
     errors:
       models:

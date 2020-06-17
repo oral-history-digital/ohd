@@ -25,6 +25,9 @@ class UserRegistration < ApplicationRecord
 
   scope :unchecked, -> { where('workflow_state IS NULL OR workflow_state = ?', 'unchecked') }
 
+  scope :legit, -> { where('workflow_state = "checked" OR workflow_state = "registered"') }
+  scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
+
   # fields expected for the user registration
   def self.define_registration_fields(fields)
     @@registration_fields = {}
@@ -35,19 +38,11 @@ class UserRegistration < ApplicationRecord
         when Hash
           name = field[:name].to_s.to_sym
           @@registration_field_names << name
-          @@registration_fields[name] = { :position => index,
-                                          :mandatory => field[:mandatory].nil? ? true : field[:mandatory],
-                                          :type => field[:type] || :string,
-                                          :translate => field[:translate].nil? ? true : field[:translate],
-                                          :values => field[:values] || [] }
+          @@registration_fields[name] = { :mandatory => field[:mandatory].nil? ? true : field[:mandatory]}
         else
           name = field.to_s.to_sym
           @@registration_field_names << name
-          @@registration_fields[name] = { :position => index,
-                                          :mandatory => true,
-                                          :translate => true,
-                                          :type => :string,
-                                          :values => [] }
+          @@registration_fields[name] = { :mandatory => true }
       end
     end
     @@registration_field_names.each do |field|
@@ -73,73 +68,27 @@ EVAL
   end
 
   define_registration_fields [
-                                 { :name => 'appellation',
-                                   :values => [  'Frau',
-                                                 'Herr',
-                                                 'Frau Dr.',
-                                                 'Herr Dr.',
-                                                 'Frau PD Dr.',
-                                                 'Herr PD Dr.',
-                                                 'Frau Prof.',
-                                                 'Herr Prof.' ] },
-                                 'first_name',
-                                 'last_name',
-                                 'email',
-                                 'gender',
-                                 { :name => 'job_description',
-                                   :values => [  'Dozentin/Dozent',
-                                                 'Filmemacherin/Filmemacher',
-                                                 'Journalistin/Journalist',
-                                                 'Lehrerin/Lehrer',
-                                                 'Mitarbeiterin/Mitarbeiter (Museen/Gedenkstätten)',
-                                                 'Schülerin/Schüler',
-                                                 'Studentin/Student',
-                                                 'Sonstiges'],
-                                   :mandatory => false },
-                                 { :name => 'research_intentions',
-                                   :values => [ 'Ausstellung',
-                                                'Bildungsarbeit',
-                                                'Dissertation',
-                                                'Dokumentarfilm',
-                                                'Familienforschung',
-                                                'Kunstprojekt',
-                                                'Persönliches Interesse',
-                                                'Schulprojekt/Referat',
-                                                'Universitäre Lehre',
-                                                'Wissenschaftliche Publikation',
-                                                'Pressepublikation',
-                                                'Sonstiges' ] },
-                                 { :name => 'comments',
-                                   :type => :text },
-                                 { :name => 'organization',
-                                   :mandatory => false },
-                                 { :name => 'homepage',
-                                   :mandatory => false },
-                                 'street',
-                                 'zipcode',
-                                 'city',
-                                 { :name => 'state',
-                                   :mandatory => false,
-                                   :values => [  'Bayern',
-                                                 'Baden-Württemberg',
-                                                 'Saarland',
-                                                 'Hessen',
-                                                 'Rheinland-Pfalz',
-                                                 'Nordrhein-Westfalen',
-                                                 'Niedersachsen',
-                                                 'Thüringen',
-                                                 'Sachsen-Anhalt',
-                                                 'Sachsen',
-                                                 'Brandenburg',
-                                                 'Berlin',
-                                                 'Mecklenburg-Vorpommern',
-                                                 'Hamburg',
-                                                 'Bremen',
-                                                 'Schleswig-Holstein',
-                                                 'außerhalb Deutschlands' ]},
-                                 { :name => 'country',
-                                   :type => :country }
-                             ] + (Project.has_newsletter ? [{ :name => 'receive_newsletter', :mandatory => false, :type => :boolean }] : [])
+                               { :name => 'appellation',
+                                 :mandatory => false },
+                               'first_name',
+                               'last_name',
+                               'email',
+                               'gender',
+                               { :name => 'job_description',
+                                 :mandatory => false },
+                               { :name => 'research_intentions',
+                                 :mandatory => false },
+                               { :name => 'comments',
+                                 :mandatory => false },
+                               { :name => 'organization',
+                                 :mandatory => false },
+                               { :name => 'homepage',
+                                 :mandatory => false },
+                               'street',
+                               'zipcode',
+                               'city',
+                               'country'
+                             ] + (Project.has_newsletter ? [{ :name => 'receive_newsletter', :mandatory => false}] :[])
 
   def after_initialize
     (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
@@ -267,28 +216,6 @@ EVAL
 
   def email=(mail)
     write_attribute :email, mail.to_s.strip.downcase
-  end
-
-  # fix for attribute name mismatch in registration info... *sigh*
-  def send_newsletter=(flag)
-    write_attribute :receive_newsletter, flag
-  end
-
-  def send_newsletter
-    read_attribute :receive_newsletter
-  end
-
-  def receive_newsletter?
-    case receive_newsletter
-      when true, false
-        receive_newsletter
-      when String
-        receive_newsletter.to_i > 0
-      when Numeric
-        receive_newsletter > 0
-      else
-        false
-    end
   end
 
   private
