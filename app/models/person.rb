@@ -51,7 +51,7 @@ class Person < ApplicationRecord
     #
     I18n.available_locales.each do |locale|
       text :"contributions_#{locale}", stored: true do
-        contributions.map(&:contribution_type).uniq.map { |c| [I18n.t(c, locale: locale), first_name(locale), last_name(locale)] }.flatten.join(" ")
+        contributions.map(&:contribution_type).uniq.map { |c| [I18n.t(c, locale: locale), first_name(locale), last_name(locale)] }.flatten.join(" ") rescue nil
       end
     end
   end
