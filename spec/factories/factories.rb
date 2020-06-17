@@ -74,7 +74,7 @@ FactoryBot.define do
     zipcode { '29094' }
     street { 'R. Victor Igreja' }
 
-    research_intentions { 'Sonstiges' }
+    research_intentions { 'other' }
     comments { 'Der Proggi...' }
 
     tos_agreement { true }
