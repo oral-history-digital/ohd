@@ -1,26 +1,33 @@
 namespace :users do
 
+  require 'csv'
+
   desc 'exports a CSV for newsletter'
-  task :newsletter_export => :environment do export_users(['receive_newsletter = ?', true], 'newsletter recipients') end
+  task :newsletter_export => :environment do export_users('wants_newsletter', 'newsletter_recipients') end
 
   desc 'exports all users'
-  task :export_all => :environment do export_users(['workflow_state IN (?)', ['checked', 'registered']], 'legit users') end
+  task :export_all => :environment do export_users('legit', 'legit_users') end
 
-  def export_users(conditions, what)
 
-    require 'yaml'
+  def export_users(scope, what)
 
-    total = UserRegistration.count(:conditions => conditions)
-    puts "\n#{total} Registrations to write as CSV."
+    csv_file = Time.now.strftime("#{what}-export-%d.%m.%Y.csv")
 
-    csv_file = Time.now.strftime('user-export-%d.%m.%Y.csv')
-    FasterCSV.open(csv_file, 'w', {:col_sep => "\t", :force_quotes => true}) do |csv|
-      csv << ['Anrede', 'Vorname', 'Nachname', 'E-Mail Adresse', 'Beruf', 'Institution', 'Rechercheanliegen', 'Bundesland', 'Bevorzugte Sprache']
+    registrations = UserRegistration.send(scope)
+    puts "\n#{registrations.count} Registrations to write as CSV."
 
-      UserRegistration.find_each(:conditions => conditions, :include => :user) do |r|
-        appellation = YAML::load(r.application_info)[:appellation]
-        u = r.user || User.new
-        csv << [ appellation, r.first_name.strip, r.last_name.strip, r.email.strip, u.job_description, (u.organization || '').strip, (u.research_intentions || '').strip, u.state, r.default_locale || I18n.default_locale ]
+    CSV.open(csv_file, 'w', { col_sep: ";", force_quotes: true }) do |csv|
+      csv << ['Vorname', 'Nachname', 'E-Mail Adresse', 'Beruf', 'Institution', 'Rechercheanliegen', 'Bevorzugte Sprache', 'Workflow State']#, 'Letztes Login', 'Anzahl Logins'] # more fields for testing
+
+      registrations.each do |r|
+          u = r.user || User.new
+          content = [r.first_name.strip, r.last_name.strip, r.email.strip, u.job_description, (u.organization || '').strip, (u.research_intentions || '').strip, r.default_locale || I18n.default_locale, r.workflow_state ]
+          # more fields for testing
+          if r.user
+          #  account = UserAccount.find_by id: r.user.user_account_id
+          #  content += [account.last_sign_in_at, account.sign_in_count] if account
+          end
+          csv << content
       end
     end
 
@@ -32,10 +39,10 @@ namespace :users do
   task :init_admins => :environment do
 
     admins = {
-      'jmb@cedis.fu-berlin.de' => %w(Herr Michael Baur),
-      'rico.simke@cedis.fu-berlin.de' => %w(Herr Rico Simke),
-      'cord.pagenstecher@cedis.fu-berlin.de' => %w(Herr Cord Pagenstecher),
-      'chrgregor@googlemail.com' => %w(Herr Christian Gregor)
+      'jmb@cedis.fu-berlin.de' => %w(Michael Baur),
+      'cord.pagenstecher@cedis.fu-berlin.de' => %w(Cord Pagenstecher),
+      'chrgregor@googlemail.com' => %w(Christian Gregor),
+      'doris.maassen@cedis.fu-berlin.de' => %w(Doris Maassen)
     }
 
     admins.each do |login, name_parts|
@@ -43,9 +50,8 @@ namespace :users do
       account.skip_confirmation!
       #next if account.nil?
       reg = account.build_user_registration
-      reg.appellation = name_parts[0]
-      reg.first_name = name_parts[1]
-      reg.last_name = name_parts[2]
+      reg.first_name = name_parts[0]
+      reg.last_name = name_parts[1]
       reg.email = account.email
       reg.login = account.login
       reg.tos_agreement = true

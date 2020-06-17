@@ -25,6 +25,9 @@ class UserRegistration < ApplicationRecord
 
   scope :unchecked, -> { where('workflow_state IS NULL OR workflow_state = ?', 'unchecked') }
 
+  scope :legit, -> { where('workflow_state = "checked" OR workflow_state = "registered"') }
+  scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
+
   # fields expected for the user registration
   def self.define_registration_fields(fields)
     @@registration_fields = {}
