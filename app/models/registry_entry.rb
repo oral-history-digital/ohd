@@ -273,14 +273,14 @@ class RegistryEntry < ApplicationRecord
     end
   end
 
-    # e.g. <RegistryEntry id: 213> (Misk, Belarus):
-    # > RegistryEntry.find(213).regions
-    # => ["Belarus", "Stadt Minsk"]
-    # e.g. <RegistryEntry id: 523> (Brandenburg an der Havel):
-    # > RegistryEntry.find(523).regions
-    # => ["Deutschland", "Brandenburg"]
-    # TODO: add multi-locale-support
-    def regions
+  # e.g. <RegistryEntry id: 213> (Misk, Belarus):
+  # > RegistryEntry.find(213).regions
+  # => ["Belarus", "Stadt Minsk"]
+  # e.g. <RegistryEntry id: 523> (Brandenburg an der Havel):
+  # > RegistryEntry.find(523).regions
+  # => ["Deutschland", "Brandenburg"]
+  # TODO: add multi-locale-support
+  def regions
     bc = bread_crumb
     bc && parent_key = bc.keys.select{ |key|
       parent = RegistryEntry.find(key)
