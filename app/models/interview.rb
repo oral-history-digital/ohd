@@ -817,7 +817,7 @@ class Interview < ApplicationRecord
             with(facet.to_sym).any_of(params[facet]) if params[facet]
           end
         end
-        order_by("person_name_#{locale}".to_sym, :asc) #if params[:fulltext].blank?
+        order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
         # TODO: sort linguistically
         paginate page: params[:page] || 1, per_page: per_page
       end
