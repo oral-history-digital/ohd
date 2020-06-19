@@ -146,7 +146,7 @@ a.flyout-download-link-lang {
 .fa-stack-second-custom {
     text-align: right;
     margin-left: -15px;
-    font-size: 14px !important;
+    font-size: 10px !important;
 }
 .registry-entry-edit-buttons {
   background: #fff;
@@ -179,6 +179,9 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
   cursor: pointer;
   &:last-child {
     margin-right: 0;
+  }
+ .fa {
+      color: $editorial-color;
   }
   &.active {
     background-color: $gray-lighter;
