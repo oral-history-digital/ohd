@@ -23,13 +23,12 @@ class UserRegistrationsController < ApplicationController
     if @user_registration.save
       UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id
       AdminMailer.with(registration: @user_registration, project: current_project).new_registration_info.deliver
-      render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
-    elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
-      @user_registration = UserRegistration.where(email: @user_registration.email).first
-      if @user_registration.checked?
-        # re-send the activation instructions
-        @user_registration.user_account.resend_confirmation_instructions
-      end
+      @user_registration.register!
+      render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)} # do we need this?
+    else
+      # TODO: keep legacy registering methods to allow registrations for pending users
+      @email = @user_registration.email
+      @user_registration = nil
       render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     end
   end
@@ -63,6 +62,7 @@ class UserRegistrationsController < ApplicationController
     if @user_account.errors.empty?
       @user_account.reset_password_token = nil
       flash[:alert] = t('welcome', :scope => 'devise.registrations')
+      # FIXME: no sign in for newly registered users
       sign_in(:user_account, @user_account)
       respond_with @user_account, location: after_sign_in_path_for(@user_account)
     end
