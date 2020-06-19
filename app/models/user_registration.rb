@@ -91,6 +91,10 @@ EVAL
       event :expire,    :transitions_to => :postponed
     end
     state :registered do
+      event :activate_project, :transitions_to => :active_project
+      event :remove,      :transitions_to => :rejected
+    end
+    state :active_project do # FIXME: will remove access to all projects (remove only project access if user has access to other projects)
       event :remove,      :transitions_to => :rejected
     end
     state :postponed do
@@ -121,6 +125,11 @@ EVAL
 
   def activate
     self.user_account.update_attribute :confirmed_at, Time.now
+  end
+
+  def activate_project
+    current_project = Project.first # FIXME: get project from params
+    self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, Time.now)
   end
 
   # Flags the account as deactivated

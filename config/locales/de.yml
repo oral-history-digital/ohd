@@ -442,6 +442,8 @@ de:
     created: angelegt
     started: begonnen
     answered: beantwortet
+    active_project: aktives Projekt
+    activate_project: Projekt aktivieren
     question_to_supervisor: Frage an Supervisor*in gestellt
   contributions:
     title: Mitwirkende
