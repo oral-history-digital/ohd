@@ -460,6 +460,7 @@ en:
   upload:
     type:
       bulk_metadata: Bulk Metadata Import
+      bulk_registry_entries: Bulk Registry Entry Import
       introduction: "Für einen erfolgreichen Import der Textdateien müssen diese in einer zip-Datei ohne Unterordner komprimiert werden.
         Die Dateinamen müssen dem Muster Archiv-ID_Typ_Sprache.ext folgen, wobei der Typ für Biographien 'bg' und für Protokolle 'prot' lautet.
         Beispiel: za123_prot_de.rtf oder za007_bg_de.odt."

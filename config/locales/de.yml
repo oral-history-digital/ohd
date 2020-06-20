@@ -474,6 +474,7 @@ de:
   upload:
     type:
       bulk_metadata: Import von Metadaten
+      bulk_registry_entries: Bulk Register Import
       bulk_texts: Import von Textdateien (Protokolle oder Biografien)
     explanation:
       introduction: "Für einen erfolgreichen Import der Textdateien müssen diese in einer zip-Datei ohne Unterordner komprimiert werden.
