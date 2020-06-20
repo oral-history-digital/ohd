@@ -1072,7 +1072,8 @@ class RegistryEntry < ApplicationRecord
   #end
 
   def descriptor=(descriptor)
-    registry_names.first.update_attribute :descriptor, descriptor
+    name = registry_names.first
+    name && name.update_attributes(descriptor: descriptor)
   end
 
   def descriptor(locale = I18n.default_locale)
