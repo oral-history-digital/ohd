@@ -43,6 +43,7 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
               code: name && name.downcase.gsub(/\s+/, "_"),
               latitude: latitude,
               longitude: longitude,
+              notes: description,
               workflow_state: 'public',
               list_priority: false
             }
