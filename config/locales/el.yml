@@ -398,7 +398,7 @@ el:
   saved_interviews: Αποθηκευμένες συνεντεύξεις
   saved_annotations: Αποθηκευμένες σημειώσεις
   text_materials: Textmaterialien
-  download_registry_entries: Gesamtes Register als pdf herunterladen
+  download_registry_entries: 'Gesamtes Register als %{format} herunterladen'
   search_registry_entry: Registereintrag suchen
   grid: Raster
   list: Liste

@@ -393,19 +393,22 @@ export default class FlyoutTabs extends React.Component {
                             {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                       </button>
                     </p>
-                    {this.downloadRegistryEntriesPDF()}
+                    {this.downloadRegistryEntries('pdf')}
+                    {this.downloadRegistryEntries('csv')}
                 </div>
             </TabPanel>
         )
     }
 
-    downloadRegistryEntriesPDF() {
+    downloadRegistryEntries(format) {
         if (this.props.projectId === 'mog' || admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
             return (
-                <a href={`${pathBase(this.props)}/registry_entries.pdf`}>
-                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_registry_entries')}></i>
-                    <span>{` ${t(this.props, 'download_registry_entries')}`}</span>
-                </a>
+                <p>
+                    <a href={`${pathBase(this.props)}/registry_entries.${format}`}>
+                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_registry_entries')}></i>
+                        <span>{` ${t(this.props, 'download_registry_entries', {format: format})}`}</span>
+                    </a>
+                </p>
             )
         } else {
             return null;

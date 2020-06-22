@@ -407,7 +407,7 @@ de:
   saved_interviews: Gespeicherte Interviews
   saved_annotations: Gespeicherte Anmerkungen
   text_materials: Textmaterialien
-  download_registry_entries: Gesamtes Register als pdf herunterladen
+  download_registry_entries: 'Gesamtes Register als %{format} herunterladen'
   search_registry_entry: Registereintrag suchen
   grid: Raster
   list: Liste
