@@ -17,7 +17,7 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
   def read_file(file_path, project, locale)
     I18n.locale = locale
 
-    csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00", encoding: "windows-1251:utf-8" }
+    csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00"}
     csv = Roo::CSV.new(file_path, csv_options: csv_options)
     if csv.first.length == 1
       csv_options.update(col_sep: "\t")
@@ -58,7 +58,7 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
               entry.update_attributes(entry_attributes)
             else
               entry = RegistryEntry.create(entry_attributes)
-              RegistryName.create registry_entry_id: entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name, locale: locale
+              RegistryName.create registry_entry_id: entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name, notes: description, locale: locale
             end
 
             #

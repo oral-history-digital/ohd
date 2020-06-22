@@ -1103,7 +1103,8 @@ class RegistryEntry < ApplicationRecord
   end
 
   def notes=(notes)
-    registry_names.first.update_attribute :notes, notes
+    name = registry_names.first
+    name && name.update_attributes(notes: notes)
   end
 
   def parent_id=(pid)
