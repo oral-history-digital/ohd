@@ -86,20 +86,6 @@ class UserRegistrationsController < ApplicationController
     end
   end
 
-  #def subscribe
-    #@user_registration = UserRegistration.find(params[:id])
-    #authorize @user_registration
-    #@user_registration.newsletter_signup = true
-    #@user_registration.save
-  #end
-
-  #def unsubscribe
-    #@user_registration = UserRegistration.find(params[:id])
-    #authorize @user_registration
-    #@user_registration.newsletter_signup = false
-    #@user_registration.save
-  #end
-
   def index
     respond_to do |format|
       format.html { render 'react/app' }
@@ -117,7 +103,7 @@ class UserRegistrationsController < ApplicationController
         response.headers['Pragma'] = 'no-cache'
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
         response.headers['Content-Type'] = 'text/comma-separated-values'
-        fields = %w(appellation first_name last_name email job_description organization country state street zipcode city workflow_state created_at newsletter_signup)
+        fields = %w(appellation first_name last_name email job_description organization country state street zipcode city workflow_state created_at)
         csv = [fields.map{|f| translate_field_or_value(f) }.join("\t")]
         @user_registrations.each do |r|
           r_csv = []

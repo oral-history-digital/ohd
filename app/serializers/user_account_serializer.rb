@@ -13,7 +13,6 @@ class UserAccountSerializer < ApplicationSerializer
     #:state,
     #:country,
     #:receive_newsletter,
-    #:newsletter_signup,
     :admin,
     :tasks,
     :supervised_tasks,

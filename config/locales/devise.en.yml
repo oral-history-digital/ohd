@@ -179,7 +179,6 @@ en:
       agreed: zugestimmt
       not_agreed: keine Zustimmung
       receive_newsletter: Newsletter
-      newsletter_signup: Newsletter subscription
       receive_newsletter_explanation: I subscribe to the newsletter of the project
         "%{project_name}".
       requested_at: Request date
