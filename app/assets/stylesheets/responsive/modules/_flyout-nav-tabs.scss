@@ -57,6 +57,9 @@
   &:hover {
     background-color: $secondary-color; //rgba(255,250,129,0.5);
     color: $flyout-tab-title-text-color;
+    &.admin {
+      background-color: $editorial-color;
+    }
   }
   animation-name: fade-in;
   animation-duration: 1s;
@@ -112,6 +115,9 @@
   cursor: auto;
   animation-name: move-down;
   animation-duration: 1s;
+  &.admin {
+    background: $editorial-color;
+  }
 }
 
 .flyout-search {

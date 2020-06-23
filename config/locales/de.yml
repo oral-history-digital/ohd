@@ -187,7 +187,7 @@ de:
   max_300: 300 verfügbare Zeichen
   annotation_explanation: Anmerkungen können Sie in Ihrer Arbeitsmappe einsehen.
   annotation_confirmation: Ich möchte, dass diese Anmerkung veröffentlicht und allen
-    angemeldeten Archivnutzer*innen und angezeigt wird. Hiermit stimme ich
+    angemeldeten Archivnutzer*innen angezeigt wird. Hiermit stimme ich
     den den <a class="conditions-link" href="%{link}"
     target="_blank">Richtlinien für Anmerkungen</a> zu.
   save: speichern
