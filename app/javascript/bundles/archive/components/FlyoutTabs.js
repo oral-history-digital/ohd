@@ -62,9 +62,9 @@ export default class FlyoutTabs extends React.Component {
         } else if (tabIndex === this.props.locales.length + 3) {
              // registry entries
             this.context.router.history.push(`${pathBase(this.props)}/registry_entries`);
-        } else if (this.props.projectId === 'zwar' && tabIndex === this.props.locales.length + 4) {
-            // map
-           this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
+        //} else if (this.props.projectId === 'zwar' && tabIndex === this.props.locales.length + 4) {
+            //// map
+           //this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
         }
         if (tabIndex === 0 || tabIndex >= this.props.locales.length + 1) {
             this.setState({tabIndex: tabIndex});
@@ -393,19 +393,22 @@ export default class FlyoutTabs extends React.Component {
                             {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                       </button>
                     </p>
-                    {this.downloadRegistryEntriesPDF()}
+                    {this.downloadRegistryEntries('pdf')}
+                    {this.downloadRegistryEntries('csv')}
                 </div>
             </TabPanel>
         )
     }
 
-    downloadRegistryEntriesPDF() {
+    downloadRegistryEntries(format) {
         if (this.props.projectId === 'mog' || admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
             return (
-                <a href={`${pathBase(this.props)}/registry_entries.pdf`}>
-                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_registry_entries')}></i>
-                    <span>{` ${t(this.props, 'download_registry_entries')}`}</span>
-                </a>
+                <p>
+                    <a href={`${pathBase(this.props)}/registry_entries.${format}`}>
+                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_registry_entries')}></i>
+                        <span>{` ${t(this.props, 'download_registry_entries', {format: format})}`}</span>
+                    </a>
+                </p>
             )
         } else {
             return null;

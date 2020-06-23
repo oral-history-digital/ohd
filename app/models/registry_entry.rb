@@ -259,12 +259,23 @@ class RegistryEntry < ApplicationRecord
     where(code: project.pdf_registry_entry_codes).includes(registry_names: :translations).map{|e| e.all_descendants}.flatten.sort{|a, b| a.descriptor <=> b.descriptor}
   end
 
+  def self.csv_entries(project)
+    project.registry_entries.includes(registry_names: :translations).map{|e| e.all_descendants}
+  end
+
   def all_descendants
     all = [descendants.includes(registry_names: :translations)]
     descendants.each do |d|
       all |= d.all_descendants
     end
     all
+  end
+
+  def on_all_descendants(&block)
+    descendants.each do |d|
+      block.call d
+      d.on_all_descendants(&block)
+    end
   end
 
   def bread_crumb
@@ -1072,7 +1083,8 @@ class RegistryEntry < ApplicationRecord
   #end
 
   def descriptor=(descriptor)
-    registry_names.first.update_attribute :descriptor, descriptor
+    name = registry_names.first
+    name && name.update_attributes(descriptor: descriptor)
   end
 
   def descriptor(locale = I18n.default_locale)
@@ -1086,8 +1098,13 @@ class RegistryEntry < ApplicationRecord
     end
   end
 
+  def notes
+    registry_names.first.notes
+  end
+
   def notes=(notes)
-    registry_names.first.update_attribute :notes, notes
+    name = registry_names.first
+    name && name.update_attributes(notes: notes)
   end
 
   def parent_id=(pid)

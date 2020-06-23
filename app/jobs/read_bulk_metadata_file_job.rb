@@ -13,6 +13,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     #)
 
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
+    File.delete(file_path) if File.exist?(file_path)
   end
 
   def read_file(file_path, project, locale)

@@ -108,6 +108,18 @@ class RegistryEntriesController < ApplicationController
         end
         send_data pdf, filename: "registry_entries_#{@locale}.pdf", :type => "application/pdf" #, :disposition => "attachment"
       end
+      format.csv do
+        csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{params[locale]}-#{RegistryName.maximum(:updated_at)}-#{RegistryEntry.maximum(:updated_at)}" do
+          CSV.generate(col_sep: "\t") do |row|
+            row << %w(parent_name, parent_id, name, id, description, latitude, longitude)
+            current_project.registry_entries.where(code: 'root').first.on_all_descendants do |entry| 
+              parent = entry.parents.first
+              row << [parent && parent.descriptor, parent && parent.id, entry.descriptor, entry.id, entry.notes, entry.latitude, entry.longitude]
+            end
+          end
+        end
+        send_data csv, filename: "registry_entries_#{@locale}.csv"
+      end
     end
   end
 

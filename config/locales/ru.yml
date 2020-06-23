@@ -439,7 +439,7 @@ ru:
   saved_interviews: Сохраненные интервью
   saved_annotations: Сохраненные комментарии
   text_materials: текстовые материалы
-  download_registry_entries: Gesamtes Register als pdf herunterladen
+  download_registry_entries: 'Gesamtes Register als %{format} herunterladen'
   search_registry_entry: Registereintrag suchen
   grid: Вид на сетку
   list: Вид списка
@@ -518,6 +518,7 @@ ru:
   upload:
     type:
       bulk_metadata: Import von Metadaten
+      bulk_registry_entries: Bulk Registry Entry Import
       bulk_texts: Import von Textdateien (Protokolle oder Biografien)
     explanation:
       introduction: "Für einen erfolgreichen Import der Textdateien müssen diese in einer zip-Datei ohne Unterordner komprimiert werden.

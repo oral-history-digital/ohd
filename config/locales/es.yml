@@ -389,7 +389,7 @@ es:
   saved_interviews: Entrevistas guardadas
   saved_annotations: Anotaciones guardadas
   text_materials: Textos
-  download_registry_entries: Descargar el índice completo como pdf
+  download_registry_entries: 'Desgargar el índice completo como %{format}'
   search_registry_entry: Buscar entrada en el índice
   grid: Cuadrícula
   list: Lista
@@ -456,6 +456,7 @@ es:
   upload:
     type:
       bulk_metadata: Import von Metadaten
+      bulk_registry_entries: Bulk Registry Entry Import
       bulk_texts: Import von Textdateien (Protokolle oder Biografien)
     explanation:
       introduction: "Für einen erfolgreichen Import der Textdateien müssen diese in einer zip-Datei ohne Unterordner komprimiert werden.
