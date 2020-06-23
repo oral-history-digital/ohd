@@ -193,7 +193,7 @@ export default class Segment extends React.Component {
                         content: <SegmentHeadingFormContainer segment={this.props.data} contentLocale={this.props.contentLocale} />
                     })}
                 >
-                    <span className="fa-stack fa-lg">
+                    <span className="fa-stack fa-1x">
                         <i className="fa fa-pencil fa-stack-1x fa-stack-first-custom"></i>
                         <i className="fa fa-header fa-stack-1x fa-stack-second-custom"></i>
                     </span>
