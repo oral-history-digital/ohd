@@ -31,6 +31,22 @@ class PeopleController < ApplicationController
     end
   end
 
+  def show
+    @person = Person.find params[:id]
+    authorize @person
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          id: @person.id,
+          data_type: 'people',
+          data: params[:with_associations] ? cache_single(@person, 'PersonWithAssociations') : cache_single(@person)
+          #data: params[:with_associations] ? ::PersonWithAssociationsSerializer.new(@person).as_json : ::PersonSerializer.new(@person).as_json,
+        }
+      end
+    end
+  end
+
   def index
     policy_scope Person
 

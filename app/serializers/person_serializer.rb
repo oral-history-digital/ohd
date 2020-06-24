@@ -1,24 +1,20 @@
 class PersonSerializer < ApplicationSerializer
   attributes [
-               :id,
-               :biographical_entries,
-               :name,
-               :names,
-               :text,
-               :registry_references,
-               :date_of_birth,
-             # :histories
-             ] |
-             MetadataField.where(ref_object_type: "Person", source: "RegistryReferenceType").inject([]) { |mem, i| mem << i.name } |
-             MetadataField.where(source: "Person").inject([]) { |mem, i| mem << i.name }
+    :id, 
+    :names, 
+    :name,
+    :text,
+    :date_of_birth,
+    :associations_loaded
+  ]
 
   def names
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale] = {
-        firstname: object.first_name(locale) || object.first_name(I18n.default_locale), 
-        lastname: object.last_name(locale) || object.last_name(I18n.default_locale), 
-        aliasname: object.alias_names(locale) || object.alias_names(I18n.default_locale), 
-        birthname: object.birth_name(locale) || object.birth_name(I18n.default_locale), 
+    object.translations.inject({}) do |mem, translation|
+      mem[translation.locale] = {
+        firstname: translation.first_name || object.first_name(I18n.default_locale), 
+        lastname: translation.last_name || object.last_name(I18n.default_locale), 
+        aliasname: translation.alias_names || object.alias_names(I18n.default_locale), 
+        birthname: translation.birth_name || object.birth_name(I18n.default_locale), 
       }
       mem
     end
@@ -41,19 +37,11 @@ class PersonSerializer < ApplicationSerializer
     end
   end
 
-  MetadataField.where(source: "RegistryReferenceType", ref_object_type: "Person").each do |f|
-    define_method f.name do
-      registry_entry = object.send(f.name)
-      registry_entry && registry_entry.localized_hash(:descriptor) || {}
-    end
-  end
-
-  def biographical_entries
-    object.biographical_entries.inject({}) { |mem, c| mem[c.id] = Rails.cache.fetch("#{Project.current.cache_key_prefix}-biographical_entry-#{c.id}-#{c.updated_at}") { BiographicalEntrySerializer.new(c) }; mem }
-  end
-
-  def registry_references
-    object.registry_references && object.registry_references.inject({}) { |mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem }
+  #
+  # this method is to determine in react whether a person serialized with PersonSerializerWithAssociations has to be loaded
+  #
+  def associations_loaded
+    false
   end
 
 end

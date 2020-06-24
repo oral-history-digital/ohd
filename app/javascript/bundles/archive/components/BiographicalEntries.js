@@ -36,7 +36,7 @@ export default class BiographicalEntries extends React.Component {
     }
 
     render() {
-        if (this.props.person) {
+        if (this.props.person && this.props.person.associations_loaded) {
             return (
                 <div>
                     {this.biographicalEntries()}

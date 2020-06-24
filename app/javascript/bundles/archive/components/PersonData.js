@@ -10,11 +10,30 @@ import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class PersonData extends React.Component {
 
+    componentDidMount() {
+        this.loadWithAssociations();
+    }
+
+    componentDidUpdate() {
+        this.loadWithAssociations();
+    }
+
+    loadWithAssociations() {
+        let interviewee = getInterviewee(this.props);
+        if (!interviewee.associations_loaded) {
+            this.props.fetchData(this.props, 'people', interviewee.id, null, 'with_associations=true');
+        }
+    }
+
     existsPublicBiography() {
         let interviewee = getInterviewee(this.props);
-        let firstKey = interviewee && Object.keys(interviewee.biographical_entries)[0];
-        let firstEntry = interviewee && interviewee.biographical_entries[firstKey];
-        return !!firstKey && firstEntry.workflow_state === 'public' && firstEntry;
+        if (interviewee.associations_loaded) {
+            let firstKey = interviewee && Object.keys(interviewee.biographical_entries)[0];
+            let firstEntry = interviewee && interviewee.biographical_entries[firstKey];
+            return !!firstKey && firstEntry.workflow_state === 'public' && firstEntry;
+        } else {
+            return false;
+        }
     }
 
     download(lang) {
@@ -77,31 +96,33 @@ export default class PersonData extends React.Component {
     personMetadataFields(){
         let _this = this;
         let interviewee = getInterviewee(this.props);
+        if (interviewee.associations_loaded) {
 
-        return Object.values(this.props.project.metadata_fields).filter(m => {
-            return (m.source === 'Person' &&
-                (
-                    (_this.props.isLoggedIn && m.use_in_details_view) ||
-                    (!_this.props.isLoggedIn && m.display_on_landing_page) 
+            return Object.values(this.props.project.metadata_fields).filter(m => {
+                return (m.source === 'Person' &&
+                    (
+                        (_this.props.isLoggedIn && m.use_in_details_view) ||
+                        (!_this.props.isLoggedIn && m.display_on_landing_page) 
+                    )
                 )
-            )
-        }).map(function(metadataField, i){
-            let label = metadataField.label && metadataField.label[_this.props.locale] || t(_this.props, metadataField.name);
-            let translation = interviewee.translations.find(t => t.locale === _this.props.locale)
-            let value = interviewee[metadataField.name] || (translation && translation[metadataField.name]) || '---';
+            }).map(function(metadataField, i){
+                let label = metadataField.label && metadataField.label[_this.props.locale] || t(_this.props, metadataField.name);
+                let translation = interviewee.translations.find(t => t.locale === _this.props.locale)
+                let value = interviewee[metadataField.name] || (translation && translation[metadataField.name]) || '---';
 
-            let translationsScope = _this.props.translations[_this.props.locale][metadataField.name];
-            if (typeof value === 'string' && translationsScope && translationsScope[value])
-                value = t(_this.props, `${metadataField.name}.${value}`)
+                let translationsScope = _this.props.translations[_this.props.locale][metadataField.name];
+                if (typeof value === 'string' && translationsScope && translationsScope[value])
+                    value = t(_this.props, `${metadataField.name}.${value}`)
 
-            return <ContentFieldContainer label={label} value={value} key={`detail-${i}`} />
-            //return (
-                //<SingleValueWithFormContainer
-                    //metadataField={metadataField}
-                    //obj={interviewee}
-                ///>
-            //)
-        })
+                return <ContentFieldContainer label={label} value={value} key={`detail-${i}`} />
+                //return (
+                    //<SingleValueWithFormContainer
+                        //metadataField={metadataField}
+                        //obj={interviewee}
+                    ///>
+                //)
+            })
+        }
     }
 
     contributionForm() {
