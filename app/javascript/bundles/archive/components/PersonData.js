@@ -20,14 +20,14 @@ export default class PersonData extends React.Component {
 
     loadWithAssociations() {
         let interviewee = getInterviewee(this.props);
-        if (!interviewee.associations_loaded) {
+        if (interviewee && !interviewee.associations_loaded) {
             this.props.fetchData(this.props, 'people', interviewee.id, null, 'with_associations=true');
         }
     }
 
     existsPublicBiography() {
         let interviewee = getInterviewee(this.props);
-        if (interviewee.associations_loaded) {
+        if (interviewee && interviewee.associations_loaded) {
             let firstKey = interviewee && Object.keys(interviewee.biographical_entries)[0];
             let firstEntry = interviewee && interviewee.biographical_entries[firstKey];
             return !!firstKey && firstEntry.workflow_state === 'public' && firstEntry;
@@ -96,7 +96,7 @@ export default class PersonData extends React.Component {
     personMetadataFields(){
         let _this = this;
         let interviewee = getInterviewee(this.props);
-        if (interviewee.associations_loaded) {
+        if (interviewee && interviewee.associations_loaded) {
 
             return Object.values(this.props.project.metadata_fields).filter(m => {
                 return (m.source === 'Person' &&
