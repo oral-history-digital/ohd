@@ -160,6 +160,7 @@ class Interview < ApplicationRecord
     string :archive_id, :stored => true, :references => Interview
     # in order to be able to search for archive_id with fulltextsearch
     text :archive_id, :stored => true
+    integer :interviewee_id, :stored => true#, :references => Person
     integer :collection_id, :stored => true, :references => Collection
     string :workflow_state
 
@@ -285,6 +286,10 @@ class Interview < ApplicationRecord
   # TODO: remove or replace this
   #scope :researched, -> {where(researched: true)}
   #scope :with_still_image, -> {where.not(still_image_file_name: nil)}
+
+  def interviewee_id
+    interviewees.first.id
+  end
 
   def biographies_workflow_state=(change)
     interviewees.each do |interviewee|

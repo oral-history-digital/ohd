@@ -107,68 +107,52 @@ class SearchesController < ApplicationController
       end
       format.json do
         # define marker types
-        codes = %w(birth_location deportation_location camp companie return_location)
+        registry_reference_type_codes = %w(birth_location deportation_location camp companie return_location)
+        selected_registry_reference_types = RegistryReferenceType.
+          where(code: registry_reference_type_codes).
+          joins(:metadata_fields).
+          where("metadata_fields.use_in_details_view": true, "metadata_fields.project_id": current_project.id)
 
-        # scaffold hash structure to build on
-        hash = Rails.cache.fetch("#{current_project.cache_key_prefix}-registry-reference-types-for-map-#{RegistryReferenceType.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
-          entries = RegistryEntry.root_node.children.where(code: codes) 
-          types = RegistryReferenceType.where(code: codes).joins(:metadata_fields).where(use_in_details_view: true, project_id: current_project.id)
-          (entries + types).inject({}){|mem, et|
-            mem[et.code] = {
-              title: "<strong>#{name(et)[:de]}</strong>",
-              data:  [], 
-            }
-            mem
-          }
-        end
-
-        # do the search and get the interviews
+        # all registry_references with the defined registry_reference_type_codes have 'Person' as ref_object_type
+        # so it is the interviewee
+        #
         search = Interview.archive_search(current_user_account, current_project, locale, params, 1000)
-        interviews = search.results.map { |i| cache_single(i)}
+        interviewees_ids = search.results.map(&:interviewee_id)
 
+        markers = selected_registry_reference_types.inject({}) do |mem, registry_reference_type|
 
-        interviews.each do |interview|
-          # go through the registry_references of each interview and its interviewee
-          interviewee = cache_single(Interview.find(interview["id"]).interviewee)
-          (interview["registry_references"].merge interviewee["registry_references"]).each do |key, rr|
-            if rr["registry_reference_type_id"] 
-              rrt = cache_single(RegistryReferenceType.find(rr["registry_reference_type_id"]))
-              r = cache_single(RegistryEntry.find(rr["registry_entry_id"]))
-              regions_string = r["regions"].size > 0 ? "(#{r["regions"].try(:reverse).try(:join, ", ")})" : ""
-              
-              # what code should we use?
-              if rrt["code"].in?(codes) # = registry reference type
-                code = rrt["code"]
-              elsif (r["ancestors"].map{|a|a[1]["code"]} & codes).size > 0 # = registry entry
-                code = (r["ancestors"].map{|a|a[1]["code"]} & codes)[0]
-              end
+          data = registry_reference_type.registry_references.includes(:registry_entry, interview: {language: :translations}).
+            where.not("registry_entries.latitude": nil).
+            where(ref_object_id: interviewees_ids).
+            group_by(&:registry_entry_id).map do |registry_entry_id, registry_references|
 
-              # fill the hash
-              if code && r["latitude"] && r["latitude"].to_i != 0
-                if hash[code][:data].select{|h| h[:id] == r["id"]}.size > 0
-                  popup_text = hash[code][:data].select{|h| h[:id] == r["id"]}[0][:popup_text]
-                  new_popup_text = link_element(interview, rrt)
-                  new_popup_text.in?(popup_text) || popup_text = popup_text + "<br/>" + new_popup_text
-                  hash[code][:data].select{|h| h[:id] == r["id"]}[0][:popup_text] = popup_text
-                else
-                  hash[code][:data] = hash[code][:data].push({
-                    id: r["id"],
-                    lat: r["latitude"],
-                    lon: r["longitude"],
-                    regions:r["regions"],
-                    popup_text: "<strong title='#{r["id"]}'>#{r["name"]["de"]} #{regions_string}</strong><br/>#{link_element(interview, rrt)}",
-                    icon: "fa-#{icon(code) && icon(code)[0]}",
-                    icon_prefix: "fa",
-                    icon_color: icon(code) && icon(code)[1],
-                  })
-                end
-              end
-            end
+            links = registry_references.map{|rr| link_element(rr.interview, registry_reference_type, locale)}.join('<br/>') 
+
+            registry_entry = RegistryEntry.find(registry_entry_id)
+            regions = registry_entry.regions(locale)
+            regions_string = regions.size > 0 ? "(#{regions.try(:reverse).try(:join, ", ")})" : ""
+            {
+              id: registry_entry_id,
+              lat: registry_entry.latitude,
+              lon: registry_entry.longitude,
+              regions: regions,
+              popup_text: "<strong title='#{registry_entry_id}'>#{registry_entry.descriptor(locale)} #{regions_string}</strong><br/>#{links}",
+              icon: "fa-#{icon(registry_reference_type.code) && icon(registry_reference_type.code)[0]}",
+              icon_prefix: "fa",
+              icon_color: icon(registry_reference_type.code) && icon(registry_reference_type.code)[1],
+            }
           end
+
+          mem[registry_reference_type.code] = {
+            title: "<strong>#{registry_reference_type.to_s(locale)}</strong>",
+            data: data
+          }
+          mem
         end
-        # render json: hash
+
+        # render json: markers
         render json: {
-          markers: hash,
+          markers: markers,
           facets: current_project.updated_search_facets(search),
         }
       end
@@ -229,7 +213,7 @@ class SearchesController < ApplicationController
   end
 
   def icon(code)
-    iconhash = {
+    @iconhash ||= {
       # interview_location: ["microphone", "#98d441"],
       camp: ["circle-o", "#8b0f09"], # Lager und Haftstätten
       companie: ["industry", "#19196e"], # Firmen und Einsatzstellen
@@ -239,22 +223,11 @@ class SearchesController < ApplicationController
       # place_of_death: ["bullseye", "#59b4db"],
       # home_location: ["home", "#59b4db"],
     }
-    iconhash[code.to_sym]
+    @iconhash[code.to_sym]
   end
 
-  def name(category)
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-name-for-map-#{category.class.to_s}-#{category.id}-#{category.updated_at}-#{MetadataField.maximum(:updated_at)}") do
-      case category.class.to_s
-      when "RegistryEntry"
-        category.try(:localized_hash, :descriptor)
-      when "RegistryReferenceType"
-        MetadataField.where(name: category.code, source: 'RegistryReferenceType').first.try(:localized_hash, :label) || category.try(:localized_hash, :name)
-      end
-    end
-  end
-
-  def link_element(interview, rrt)
-    "<a href='/de/interviews/#{interview["archive_id"]}'>#{rrt["name"]["de"]} - #{interview["short_title"]["de"]} (#{interview["archive_id"]})<br/><small>#{interview["language"]["de"]}</small></a>"
+  def link_element(interview, rrt, locale)
+    "<a href='/de/interviews/#{interview.archive_id}'>#{rrt.to_s(locale)} - #{interview.short_title(locale)} (#{interview.archive_id})<br/><small>#{interview.language.name(locale)}</small></a>"
   end
 
 end

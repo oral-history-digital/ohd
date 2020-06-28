@@ -291,7 +291,7 @@ class RegistryEntry < ApplicationRecord
   # > RegistryEntry.find(523).regions
   # => ["Deutschland", "Brandenburg"]
   # TODO: add multi-locale-support
-  def regions
+  def regions(locale)
     bc = bread_crumb
     bc && parent_key = bc.keys.select{ |key|
       parent = RegistryEntry.find(key)
@@ -300,13 +300,13 @@ class RegistryEntry < ApplicationRecord
     if parent_key
       h = bc[parent_key]
       r = RegistryEntry.find(parent_key)
-      regions = [r.localized_hash(:descriptor)[:de]]
+      regions = [r.descriptor(locale)]
       while h.class == Hash do
         r = RegistryEntry.find(h.keys[0])
-        regions.push(r.localized_hash(:descriptor)[:de])
+        regions.push(r.descriptor(locale))
         h = h.flatten[-1]
       end
-      regions.reverse - ["Register", "Orte"]
+      regions.reverse - %w(registry places).map{|name| I18n.t(name, locale: locale)}
     else
       []
     end
