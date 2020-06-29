@@ -72,8 +72,8 @@ class RegistryEntry < ApplicationRecord
 
   WORKFLOW_STATES = [:preliminary, :public, :hidden, :rejected]
   validates_inclusion_of :workflow_state, :in => WORKFLOW_STATES.map(&:to_s)
-  validates :latitude, numericality: true, allow_nil: true
-  validates :longitude, numericality: true, allow_nil: true
+  validates :latitude, numericality: true, allow_blank: true
+  validates :longitude, numericality: true, allow_blank: true
 
   after_update :touch_objects
   after_create :touch_objects
