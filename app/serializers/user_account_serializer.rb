@@ -4,13 +4,12 @@ class UserAccountSerializer < ApplicationSerializer
     :login,
     :first_name,
     :last_name,
-    :user_id,
+    :user_account_id,
     #:organization,
     #:homepage,
     #:street,
     #:zipcode,
     #:city,
-    #:state,
     #:country,
     #:receive_newsletter,
     :admin,
@@ -19,36 +18,24 @@ class UserAccountSerializer < ApplicationSerializer
     :user_roles,
     :permissions
 
-  def first_name
-    object.user && object.user.first_name
-  end
-
-  def last_name
-    object.user && object.user.last_name
-  end
-
-  def admin
-    object.user && object.user.admin
-  end
-
-  def user_id
-    object.user.id
+  def user_account_id
+    object.id
   end
 
   def user_roles
-    object.user ? object.user.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem} : {}
+    object.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem}
   end
 
   def tasks
-    object.user ? object.user.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
+    object.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem}
   end
 
   def supervised_tasks
-    object.user ? object.user.supervised_tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
+    object.supervised_tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem}
   end
 
   def permissions
-    object.user ? object.user.permissions.inject({}){|mem, c| mem[c.id] = PermissionSerializer.new(c); mem} : {}
+    object.permissions.inject({}){|mem, c| mem[c.id] = PermissionSerializer.new(c); mem}
   end
 
 end

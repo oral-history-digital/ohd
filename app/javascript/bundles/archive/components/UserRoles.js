@@ -10,9 +10,9 @@ export default class UserRoles extends React.Component {
         return Object.keys(this.props.userRoles).map((id, index) => {
             return (
                 <li key={`user-role-li-${id}`}>
-                    <UserRoleContainer 
-                        userRole={this.props.userRoles[id]} 
-                        key={`userRole-${id}`} 
+                    <UserRoleContainer
+                        userRole={this.props.userRoles[id]}
+                        key={`userRole-${id}`}
                         hideEdit={this.props.hideEdit}
                     />
                 </li>
@@ -31,8 +31,8 @@ export default class UserRoles extends React.Component {
                     title={t(this.props, 'edit.user_role.new')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.user_role.new'),
-                        content: <UserRoleFormContainer 
-                                    userId={this.props.userId}
+                        content: <UserRoleFormContainer
+                                    userAccountId={this.props.userAccountId}
                                 />
                     })}
                 >
@@ -53,4 +53,3 @@ export default class UserRoles extends React.Component {
         )
     }
 }
-

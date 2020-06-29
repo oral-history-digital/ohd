@@ -3,12 +3,12 @@ class TasksController < ApplicationController
   def create
     authorize Task
     @task = Task.create task_params
-    @task.update_attributes(supervisor_id: current_user_account.user.id)
-    @task.user.user_registration.touch
+    @task.update_attributes(supervisor_id: current_user_account.id)
+    @task.user_account.user_registration.touch
 
     respond_to do |format|
       format.json do
-        render json: data_json(@task.user.user_registration, 
+        render json: data_json(@task.user_account.user_registration,
                                msg: 'processed',
                                reload_data_type: 'accounts',
                                reload_id: "current"
@@ -21,7 +21,7 @@ class TasksController < ApplicationController
     @task = Task.find params[:id]
     authorize @task
     @task.update_attributes task_params
-    @task.user.user_registration.touch
+    @task.user_account.user_registration.touch
 
     respond_to do |format|
       format.json do
@@ -30,7 +30,7 @@ class TasksController < ApplicationController
           data_type: 'accounts',
           data: ::UserAccountSerializer.new(current_user_account),
           msg: 'processed'
-        } || {} 
+        } || {}
       end
     end
   end
@@ -51,16 +51,16 @@ class TasksController < ApplicationController
     end
   end
 
-  def destroy 
+  def destroy
     @task = Task.find(params[:id])
     authorize @task
-    user_registration = @task.user.user_registration
+    user_registration = @task.user_account.user_registration
     @task.destroy
     user_registration.touch
 
     respond_to do |format|
-      format.json { 
-        render json: data_json(@task.user.user_registration, 
+      format.json {
+        render json: data_json(@task.user_account.user_registration,
                                msg: 'processed',
                                reload_data_type: 'accounts',
                                reload_id: "current"
@@ -78,7 +78,7 @@ class TasksController < ApplicationController
         :desc,
         :authorized_type,
         :authorized_id,
-        :user_id,
+        :user_account_id,
         :supervisor_id,
         :workflow_state
     )

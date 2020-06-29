@@ -103,7 +103,7 @@ export default class UserRegistration extends React.Component {
 
     roles() {
         if (
-            this.props.userRegistration.user_id &&
+            this.props.userRegistration.user_account_id &&
             admin(this.props, {type: 'UserRole', action: 'create'})
         ) {
             return (
@@ -111,7 +111,7 @@ export default class UserRegistration extends React.Component {
                     <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
                     <UserRolesContainer
                         userRoles={this.props.userRegistration.user_roles || []}
-                        userId={this.props.userRegistration.user_id}
+                        userAccountId={this.props.userRegistration.user_account_id}
                         hideEdit={false}
                     />
                 </div>
@@ -123,7 +123,7 @@ export default class UserRegistration extends React.Component {
 
     tasks() {
         if (
-            this.props.userRegistration.user_id &&
+            this.props.userRegistration.user_account_id &&
             admin(this.props, {type: 'Task', action: 'create'})
         ) {
             return (
@@ -131,7 +131,7 @@ export default class UserRegistration extends React.Component {
                     <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
                     <TasksContainer
                         data={this.props.userRegistration.tasks}
-                        initialFormValues={{user_id: this.props.userRegistration.user_id}}
+                        initialFormValues={{user_account_id: this.props.userRegistration.user_account_id}}
                         hideEdit={false}
                     />
                 </div>

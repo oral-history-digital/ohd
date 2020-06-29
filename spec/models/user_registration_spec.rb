@@ -18,10 +18,6 @@ describe UserRegistration, 'when newly created' do
     expect(registration.user_account).to be_nil
   end
 
-  it 'should not have a user associated with it' do
-    expect(registration.user).to be_nil
-  end
-
   it 'should not be created if any of the required fields are missing' do
     pending "undefined method attributes_for"
     attributes = attributes_for(:user_registration)
@@ -82,11 +78,6 @@ describe UserRegistration, 'on registration' do
     expect(registration.processed_at).to be < (Time.now + 1.minute)
   end
 
-  it 'should generate a user object' do
-     #or should this happen on confirmation?
-    expect(registration.user).not_to be_nil
-  end
-
   it "should move on to the 'checked' state" do
     expect(registration).to be_checked
   end
@@ -136,10 +127,6 @@ describe UserRegistration, 'on activation after account activation' do
 
   it 'should have an active user account associated' do
     expect(registration.user_account).to be_active
-  end
-
-  it 'should have a valid user object associated' do
-    expect(registration.user).to be_valid
   end
 
   it 'should have the same email as the user account' do
@@ -260,10 +247,6 @@ describe UserRegistration, 'on reactivation after rejecting' do
     expect(registration.user_account.confirmation_token).not_to be_nil
   end
 
-  it 'should have a valid user associated' do
-    expect(registration.user).to be_valid
-  end
-
 end
 
 describe UserRegistration, 'on reactivation after removing' do
@@ -291,10 +274,6 @@ describe UserRegistration, 'on reactivation after removing' do
 
   it 'should have a confirmation code set' do
     expect(registration.user_account.confirmation_token).not_to be_nil
-  end
-
-  it 'should have a valid user associated' do
-    expect(registration.user).to be_valid
   end
 
 end

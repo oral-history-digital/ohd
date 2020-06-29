@@ -80,7 +80,7 @@ class UsageReport < ApplicationRecord
   end
 
   def facets
-    @facets ||= read_attribute(:facets) && (read_attribute(:facets) =~ /=>/)  ? 
+    @facets ||= read_attribute(:facets) && (read_attribute(:facets) =~ /=>/)  ?
        JSON.parse(read_attribute(:facets).gsub('=>', ':')) : {}
   end
 
@@ -90,12 +90,12 @@ class UsageReport < ApplicationRecord
     require 'uri'
     @@geolocation_base ||= 'http://freegeoip.net/csv'
     @@resolved_ips ||= {}
-    # check user country or IP geolocation
+    # check user_account country or IP geolocation
     # add to country row and specific_range column
     # use freegeoip.net/csv/{ip} - "ip","DE","Germany"
     country = nil
-    if self.user_account && self.user_account.user
-      country = self.user_account.user.country.upcase
+    if self.user_account
+      country = self.user_account.country.upcase
     else
       if @@resolved_ips.keys.include?(self.ip)
         country = @@resolved_ips[self.ip]

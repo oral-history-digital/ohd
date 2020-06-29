@@ -12,30 +12,8 @@ class User < ApplicationRecord
 
   #acts_as_authorized_user
 
-  has_many :user_roles
-  has_many :roles, through: :user_roles
-  has_many :permissions, through: :roles
-
-  has_many :tasks
-  has_many :supervised_tasks,
-           class_name: 'Task',
-           foreign_key: :supervisor_id
-
   delegate :email, :login,
            :to => :user_account
-
-  def tasks?(record)
-    !tasks.where(authorized: record).where.not(workflow_state: 'finished').blank? #||
-    #!supervised_tasks.where(authorized: record).blank?
-  end
-
-  def permissions?(klass, action_name)
-    !permissions.where(klass: klass, action_name: action_name).blank?
-  end
-
-  def roles?(klass, action_name)
-    !roles.joins(:permissions).where("permissions.klass": klass, "permissions.action_name": action_name).blank?
-  end
 
   def to_s
     [ first_name, last_name ].compact.join(' ')
@@ -59,10 +37,6 @@ class User < ApplicationRecord
 
   def admin?
     read_attribute(:admin) == true
-  end
-
-  def tags
-    Tag.for_user(self) unless Tag.nil?
   end
 
   # Authenticate a user based on configured attribute keys. Returns the

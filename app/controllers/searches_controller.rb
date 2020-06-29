@@ -34,7 +34,7 @@ class SearchesController < ApplicationController
           results_count: search.total,
           registry_entries: search.results.map do |result|
             Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{result.id}-#{result.updated_at}-#{params[:fulltext]}") do
-              registry_entry = cache_single(result) 
+              registry_entry = cache_single(result)
               ancestors = result.ancestors.inject({}) { |mem, a| mem[a.id] = cache_single(a); mem }
               { registry_entry: registry_entry, ancestors: ancestors, bread_crumb: result.bread_crumb }
             end
@@ -53,7 +53,7 @@ class SearchesController < ApplicationController
         end
       end
       with(:archive_id, params[:id])
-      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.user.roles?(Interview, :update))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
+      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.roles?(Interview, :update))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
       order_by(order, :asc)
       paginate page: params[:page] || 1, per_page: 2000
     end
@@ -111,12 +111,12 @@ class SearchesController < ApplicationController
 
         # scaffold hash structure to build on
         hash = Rails.cache.fetch("#{current_project.cache_key_prefix}-registry-reference-types-for-map-#{RegistryReferenceType.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
-          entries = RegistryEntry.root_node.children.where(code: codes) 
+          entries = RegistryEntry.root_node.children.where(code: codes)
           types = RegistryReferenceType.where(code: codes).joins(:metadata_fields).where(use_in_details_view: true, project_id: current_project.id)
           (entries + types).inject({}){|mem, et|
             mem[et.code] = {
               title: "<strong>#{name(et)[:de]}</strong>",
-              data:  [], 
+              data:  [],
             }
             mem
           }
@@ -131,11 +131,11 @@ class SearchesController < ApplicationController
           # go through the registry_references of each interview and its interviewee
           interviewee = cache_single(Interview.find(interview["id"]).interviewee)
           (interview["registry_references"].merge interviewee["registry_references"]).each do |key, rr|
-            if rr["registry_reference_type_id"] 
+            if rr["registry_reference_type_id"]
               rrt = cache_single(RegistryReferenceType.find(rr["registry_reference_type_id"]))
               r = cache_single(RegistryEntry.find(rr["registry_entry_id"]))
               regions_string = r["regions"].size > 0 ? "(#{r["regions"].try(:reverse).try(:join, ", ")})" : ""
-              
+
               # what code should we use?
               if rrt["code"].in?(codes) # = registry reference type
                 code = rrt["code"]

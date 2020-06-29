@@ -25,11 +25,11 @@ export default class UserRoleForm extends React.Component {
         let _this = this;
         return (
             <div>
-                <Form 
+                <Form
                     scope='user_role'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     values={{
-                        user_id: this.props.userId,
+                        user_account_id: this.props.userAccountId,
                     }}
                     elements={[
                         {
@@ -37,7 +37,7 @@ export default class UserRoleForm extends React.Component {
                             attribute: 'role_id',
                             values: this.props.roles,
                             withEmpty: true,
-                            validate: function(v){return v !== ''} 
+                            validate: function(v){return v !== ''}
                         },
                     ]}
                 />

@@ -1,4 +1,4 @@
-# ecoding: utf-8
+# encoding: utf-8
 #
 class UserRegistrationSerializer < ApplicationSerializer
   attributes :id,
@@ -13,7 +13,6 @@ class UserRegistrationSerializer < ApplicationSerializer
     #:activated_at,
     :admin_comments,
     :user_account_id,
-    :user_id,
     :processed_at,
     :default_locale,
     :receive_newsletter,
@@ -33,8 +32,8 @@ class UserRegistrationSerializer < ApplicationSerializer
     :user_roles,
     :tasks
 
-  def user_id
-    object.user && object.user.id
+  def user_account_id
+    object.user_account && object.user_account.id
   end
 
   def names
@@ -47,15 +46,11 @@ class UserRegistrationSerializer < ApplicationSerializer
   end
 
   def user_roles
-    object.user ? object.user.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem} : {}
+    object.user_account ? object.user_account.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem} : {}
   end
 
-  #def roles
-    #object.user ? object.user.roles.inject({}){|mem, c| mem[c.id] = RoleSerializer.new(c); mem} : {}
-  #end
-
   def tasks
-    object.user ? object.user.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
+    object.user_account ? object.user_account.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
   end
 
   def created_at
