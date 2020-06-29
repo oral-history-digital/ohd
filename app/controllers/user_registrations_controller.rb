@@ -103,7 +103,7 @@ class UserRegistrationsController < ApplicationController
         response.headers['Pragma'] = 'no-cache'
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
         response.headers['Content-Type'] = 'text/comma-separated-values'
-        fields = %w(appellation first_name last_name email job_description organization country state street zipcode city workflow_state created_at)
+        fields = %w(appellation first_name last_name email job_description organization country street zipcode city workflow_state created_at)
         csv = [fields.map{|f| translate_field_or_value(f) }.join("\t")]
         @user_registrations.each do |r|
           r_csv = []
@@ -135,10 +135,7 @@ class UserRegistrationsController < ApplicationController
   private
 
   def account_for_token(confirmation_token)
-    # do not accidently return first user with confirmation_token == nil !!!
-    unless confirmation_token.blank?
-      @user_account = UserAccount.where(confirmation_token: confirmation_token).includes(:user_registration).first
-    end
+    @user_account = UserAccount.includes(:user_registration).find_by(confirmation_token: confirmation_token)
   end
 
   def user_registration_params
@@ -203,7 +200,7 @@ class UserRegistrationsController < ApplicationController
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
-    @user_registrations = policy_scope(UserRegistration).includes(user: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1
+    @user_registrations = policy_scope(UserRegistration).includes(user_account: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1
   end
 
   def translate_field_or_value(field, value=nil)

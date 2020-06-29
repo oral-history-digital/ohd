@@ -6,8 +6,6 @@ class UserRegistration < ApplicationRecord
 
   belongs_to :user_account
 
-  has_one :user, :dependent => :destroy
-
   has_many :user_registration_projects
   has_many :projects,
     through: :user_registration_projects
@@ -17,9 +15,6 @@ class UserRegistration < ApplicationRecord
                       :on => :create
 
   validates_uniqueness_of :email, :on => :create
-
-  validates_acceptance_of :tos_agreement, :accept => true
-  validates_acceptance_of :priv_agreement, :accept => true
 
   before_create :serialize_form_parameters
 
@@ -32,18 +27,10 @@ class UserRegistration < ApplicationRecord
   def self.define_registration_fields(fields)
     @@registration_fields = {}
     @@registration_field_names = []
-    raise "Invalid user_registration_fields for User: type #{fields.class.name}, expected Array" unless fields.is_a?(Array)
     fields.each_with_index do |field, index|
-      case field
-        when Hash
-          name = field[:name].to_s.to_sym
-          @@registration_field_names << name
-          @@registration_fields[name] = { :mandatory => field[:mandatory].nil? ? true : field[:mandatory]}
-        else
-          name = field.to_s.to_sym
-          @@registration_field_names << name
-          @@registration_fields[name] = { :mandatory => true }
-      end
+      name = field.to_sym
+      @@registration_field_names << name
+      @@registration_fields[name] = { :mandatory => true }
     end
     @@registration_field_names.each do |field|
       next if [:email, :first_name, :last_name, :tos_agreement, :priv_agreement].include?(field)
@@ -68,51 +55,27 @@ EVAL
   end
 
   define_registration_fields [
-                               { :name => 'appellation',
-                                 :mandatory => false },
+                               'appellation',
                                'first_name',
                                'last_name',
                                'email',
                                'gender',
-                               { :name => 'job_description',
-                                 :mandatory => false },
-                               { :name => 'research_intentions',
-                                 :mandatory => false },
-                               { :name => 'comments',
-                                 :mandatory => false },
-                               { :name => 'organization',
-                                 :mandatory => false },
-                               { :name => 'homepage',
-                                 :mandatory => false },
+                               'job_description',
+                               'research_intentions',
+                               'comments',
+                               'organization',
+                               'homepage',
                                'street',
                                'zipcode',
                                'city',
                                'country'
-                             ] + (Project.has_newsletter ? [{ :name => 'receive_newsletter', :mandatory => false}] :[])
+                             ] + (Project.has_newsletter ? ['receive_newsletter'] :[])
 
   def after_initialize
     (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
       self.send(attr.to_s + "=", value)
     end
     @skip_mail_delivery = false
-  end
-
-  def validate
-    unless registered?
-      # Sadly, people were registered even without matching the minimum required fields...
-      # ... so we need to cease checking for already registered people.
-      self.class.registration_field_names.select{|f| self.class.registration_fields[f.to_sym][:mandatory] }.each do |field|
-        if self.send(field).blank?
-          errors.add(field, "Angaben zu #{field} fehlen.")
-        end
-      end
-    end
-    if unchecked?
-      missing_fields = self.class.registration_field_names - self.class.registration_field_names.compact
-      unless missing_fields.empty?
-        errors.add_to_base("Angaben zu #{missing_fields.join(', ')} fehlen.")
-      end
-    end
   end
 
   workflow do
@@ -151,10 +114,9 @@ EVAL
   def register
     create_account
     raise "Could not create a valid account for #{self.inspect}" unless self.user_account.valid?
-    initialize_user
-    raise "Could not create a valid user for #{self.inspect}" unless self.user.valid?
     self.processed_at = Time.now
     save
+    save_registration_data_and_user_data_to_user_account # TMP_TRANSITION: copies all attributes to user_account
   end
 
   def activate
@@ -163,13 +125,13 @@ EVAL
 
   # Flags the account as deactivated
   def deactivate
-    self.user.update_attribute(:admin, nil)
+    self.user_account.update_attribute(:admin, nil)
     self.user_account.deactivate!
   end
 
   # Flags the account as deactivated
   def remove
-    self.user.update_attribute(:admin, nil)
+    self.user_account.update_attribute(:admin, nil)
     self.user_account.deactivate!
   end
 
@@ -201,7 +163,7 @@ EVAL
   end
 
   def updated_at
-    (user && user.updated_at) || created_at
+    (user_account && user_account.updated_at) || created_at
   end
 
   def form_parameters
@@ -218,52 +180,41 @@ EVAL
     write_attribute :email, mail.to_s.strip.downcase
   end
 
+  def user_attributes
+    require 'yaml'
+    YAML.load(read_attribute(:application_info)).stringify_keys
+  end
+
   private
 
   def serialize_form_parameters
     serialized_form_params = {}
-    (UserRegistration.registration_field_names - [:email, :first_name, :last_name, :tos_agreement, :priv_agreement]).each do |field|
-      serialized_form_params[field.to_sym] = self.send(field)
+    yaml_fields = [:appellation, :gender, :job_description, :research_intentions, :comments, :organization, :homepage, :street, :zipcode, :city, :country]
+    yaml_fields.each do |field|
+      serialized_form_params[field] = self.send(field)
     end
     require 'yaml'
     self.application_info = serialized_form_params.to_yaml
   end
 
   def create_account
-    #self.user_account = UserAccount.find_or_initialize_by(email: self.email)
     self.user_account = UserAccount.where(email: self.email).first_or_initialize
     self.user_account.login = create_login if self.user_account.login.blank?
     self.user_account.generate_confirmation_token if self.user_account.confirmation_token.blank?
     self.user_account.save
   end
 
-  def initialize_user
-    if self.user.blank?
-      user = self.build_user
-      user.attributes = user_attributes
-      user.first_name = self.first_name
-      user.last_name = self.last_name
-      user.user_account_id = self.user_account.id
-      user.tos_agreed_at = self.created_at || Time.now if User.content_columns.map(&:name).include?('tos_agreed_at')
-      user.save!
-    elsif !self.user_account.nil?
-      self.user.update_attributes(user_attributes)
-      self.user.user_account = self.user_account
-      self.user.save
-    end
-  end
-
-  def user_attributes
-    require 'yaml'
-    attr = YAML.load(read_attribute(:application_info)).stringify_keys
-    user_columns = User.content_columns.map(&:name) & attr.keys
-    attr.delete_if{|k,v| !user_columns.include?(k) }
-    # make sure each field is short enough for the DB columns (240 char limit)
-    user_attr = {}
-    attr.each_pair do |k,v|
-      user_attr[k] = truncate(v, :length => 240)
-    end
-    user_attr
+  def save_registration_data_and_user_data_to_user_account
+    reg_attrs = self.attributes
+    reg_attrs.delete('id')
+    reg_attrs.delete('email') # user account already contains the email
+    reg_attrs.delete('application_info') # we do not need the YAML field
+    self.user_account.update_attributes(reg_attrs)
+    user_attrs = user_attributes
+    user_attrs.delete('id')
+    user_attrs.delete('first_name') # names were taken from registrsation attrs
+    user_attrs.delete('last_name')
+    self.user_account.update_attributes(user_attrs)
   end
 
   def create_login

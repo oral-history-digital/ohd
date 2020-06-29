@@ -14,7 +14,7 @@ class ApplicationController < ActionController::Base
   layout 'responsive'
 
   def pundit_user
-    current_user_account && current_user_account.user
+    current_user_account
   end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
@@ -45,7 +45,7 @@ class ApplicationController < ActionController::Base
   #def set_variant
     #request.variant = current_project.identifier.to_sym
   #end
-  
+
   def not_found
     raise ActionController::RoutingError.new('Not Found')
   end
@@ -81,10 +81,10 @@ class ApplicationController < ActionController::Base
         isLoggingIn: false,
         isLoggedIn: !!current_user_account,
         isLoggedOut: !current_user_account,
-        firstName: current_user_account && current_user_account.user.first_name,
-        lastName: current_user_account && current_user_account.user.last_name,
-        email: current_user_account && current_user_account.user.email,
-        admin: current_user_account && current_user_account.user.admin,
+        firstName: current_user_account && current_user_account.first_name,
+        lastName: current_user_account && current_user_account.last_name,
+        email: current_user_account && current_user_account.email,
+        admin: current_user_account && current_user_account.admin,
       },
       data: {
         statuses: {
@@ -121,7 +121,7 @@ class ApplicationController < ActionController::Base
             includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
             inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
-        languages: Rails.cache.fetch("#{current_project.cache_key_prefix}-languages-#{Language.maximum(:updated_at)}") do 
+        languages: Rails.cache.fetch("#{current_project.cache_key_prefix}-languages-#{Language.maximum(:updated_at)}") do
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         accounts: {

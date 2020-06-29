@@ -1,15 +1,15 @@
 class UserContentSerializer < ApplicationSerializer
   attributes :id,
     :description,
-    :user_id,
+    :user_account_id,
     :title,
     :media_id,
     :interview_references,
     :properties,
-    :reference_id, 
-    :reference_type, 
+    :reference_id,
+    :reference_type,
     :type,
-    :workflow_state 
+    :workflow_state
 
   def reference_id
     if object.is_a? UserAnnotation
@@ -19,5 +19,5 @@ class UserContentSerializer < ApplicationSerializer
       object.reference_id
     end
   end
-    
+
 end
