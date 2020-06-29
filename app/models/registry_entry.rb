@@ -72,6 +72,8 @@ class RegistryEntry < ApplicationRecord
 
   WORKFLOW_STATES = [:preliminary, :public, :hidden, :rejected]
   validates_inclusion_of :workflow_state, :in => WORKFLOW_STATES.map(&:to_s)
+  validates :latitude, numericality: true, allow_nil: true
+  validates :longitude, numericality: true, allow_nil: true
 
   after_update :touch_objects
   after_create :touch_objects
@@ -256,19 +258,20 @@ class RegistryEntry < ApplicationRecord
   end
 
   def self.pdf_entries(project)
-    where(code: project.pdf_registry_entry_codes).includes(registry_names: :translations).map{|e| e.all_descendants}.flatten.sort{|a, b| a.descriptor <=> b.descriptor}
+    where(code: project.pdf_registry_entry_codes).includes(registry_names: :translations).map{|e| e.all_relatives}.flatten.sort{|a, b| a.descriptor <=> b.descriptor}
   end
 
   def self.csv_entries(project)
-    project.registry_entries.includes(registry_names: :translations).map{|e| e.all_descendants}
+    project.registry_entries.includes(registry_names: :translations).map{|e| e.all_relatives}
   end
 
-  def all_descendants
-    all = [descendants.includes(registry_names: :translations)]
-    descendants.each do |d|
-      all |= d.all_descendants
+  def all_relatives(descending=true)
+    method = descending ? :descendants : :ancestors
+    all = [send(method).includes(registry_names: [:translations, :registry_name_type])]
+    send(method).each do |d|
+      all << d.all_relatives(descending)
     end
-    all
+    all.flatten
   end
 
   def on_all_descendants(&block)
@@ -290,26 +293,10 @@ class RegistryEntry < ApplicationRecord
   # e.g. <RegistryEntry id: 523> (Brandenburg an der Havel):
   # > RegistryEntry.find(523).regions
   # => ["Deutschland", "Brandenburg"]
-  # TODO: add multi-locale-support
+  #
   def regions(locale)
-    bc = bread_crumb
-    bc && parent_key = bc.keys.select{ |key|
-      parent = RegistryEntry.find(key)
-      key if parent.try(:code) =="place" || (bc[key].keys.size < 2 && parent.try(:ancestors) && parent.ancestors[-2].try(:code) == "place")
-    }[0]
-    if parent_key
-      h = bc[parent_key]
-      r = RegistryEntry.find(parent_key)
-      regions = [r.descriptor(locale)]
-      while h.class == Hash do
-        r = RegistryEntry.find(h.keys[0])
-        regions.push(r.descriptor(locale))
-        h = h.flatten[-1]
-      end
-      regions.reverse - %w(registry places).map{|name| I18n.t(name, locale: locale)}
-    else
-      []
-    end
+    places = all_relatives(false).map{|r| r.descriptor(locale)}
+    places[0..(places.length - 3)]
   end
 
   class << self

@@ -106,55 +106,59 @@ class SearchesController < ApplicationController
         render :template => "/react/app.html"
       end
       format.json do
-        # define marker types
-        registry_reference_type_codes = %w(birth_location deportation_location camp companie return_location)
-        selected_registry_reference_types = RegistryReferenceType.
-          where(code: registry_reference_type_codes).
-          joins(:metadata_fields).
-          where("metadata_fields.use_in_details_view": true, "metadata_fields.project_id": current_project.id)
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{params}-#{RegistryEntry.maximum(:updated_at)}-#{Interview.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}" do
+          # define marker types
+          registry_reference_type_codes = %w(birth_location deportation_location return_location company camp)
+          #registry_reference_type_codes = %w(birth_location deportation_location camp company return_location)
+          selected_registry_reference_types = RegistryReferenceType.
+            where(code: registry_reference_type_codes).
+            joins(:metadata_fields).
+            where("metadata_fields.use_in_map_search": true, "metadata_fields.project_id": current_project.id)
 
-        # all registry_references with the defined registry_reference_type_codes have 'Person' as ref_object_type
-        # so it is the interviewee
-        #
-        search = Interview.archive_search(current_user_account, current_project, locale, params, 1000)
-        interviewees_ids = search.results.map(&:interviewee_id)
+          # all registry_references with the defined registry_reference_type_codes have 'Person' as ref_object_type
+          # so it is the interviewee
+          #
+          search = Interview.archive_search(current_user_account, current_project, locale, params, 1000)
+          interviewees_ids = search.hits.map{|hit| hit.stored(:interviewee_id)}
 
-        markers = selected_registry_reference_types.inject({}) do |mem, registry_reference_type|
+          markers = selected_registry_reference_types.inject({}) do |mem, registry_reference_type|
 
-          data = registry_reference_type.registry_references.includes(:registry_entry, interview: {language: :translations}).
-            where.not("registry_entries.latitude": nil).
-            where(ref_object_id: interviewees_ids).
-            group_by(&:registry_entry_id).map do |registry_entry_id, registry_references|
+            data = registry_reference_type.registry_references.includes(:registry_entry, interview: {language: :translations}).
+              where.not("registry_entries.latitude": [nil, '']).
+              where.not("registry_entries.longitude": [nil, '']).
+              where(ref_object_id: interviewees_ids).
+              group_by(&:registry_entry_id).map do |registry_entry_id, registry_references|
 
-            links = registry_references.map{|rr| link_element(rr.interview, registry_reference_type, locale)}.join('<br/>') 
+              links = registry_references.map{|rr| link_element(rr.interview, registry_reference_type, locale)}.join('<br/>') 
 
-            registry_entry = RegistryEntry.find(registry_entry_id)
-            regions = registry_entry.regions(locale)
-            regions_string = regions.size > 0 ? "(#{regions.try(:reverse).try(:join, ", ")})" : ""
-            {
-              id: registry_entry_id,
-              lat: registry_entry.latitude,
-              lon: registry_entry.longitude,
-              regions: regions,
-              popup_text: "<strong title='#{registry_entry_id}'>#{registry_entry.descriptor(locale)} #{regions_string}</strong><br/>#{links}",
-              icon: "fa-#{icon(registry_reference_type.code) && icon(registry_reference_type.code)[0]}",
-              icon_prefix: "fa",
-              icon_color: icon(registry_reference_type.code) && icon(registry_reference_type.code)[1],
+              registry_entry = RegistryEntry.find(registry_entry_id)
+              regions = registry_entry.regions(locale)
+              {
+                id: registry_entry_id,
+                lat: registry_entry.latitude,
+                lon: registry_entry.longitude,
+                regions: regions,
+                popup_text: "<strong title='#{registry_entry_id}'>#{registry_entry.descriptor(locale)} #{regions.reverse.join(', ')}</strong><br/>#{links}",
+                icon: "fa-#{icon(registry_reference_type.code) && icon(registry_reference_type.code)[0]}",
+                icon_prefix: "fa",
+                icon_color: icon(registry_reference_type.code) && icon(registry_reference_type.code)[1],
+              }
+            end
+
+            mem[registry_reference_type.code] = {
+              title: "<strong>#{registry_reference_type.to_s(locale)}</strong>",
+              data: data
             }
+            mem
           end
 
-          mem[registry_reference_type.code] = {
-            title: "<strong>#{registry_reference_type.to_s(locale)}</strong>",
-            data: data
+          {
+            markers: markers,
+            facets: current_project.updated_search_facets(search),
           }
-          mem
         end
 
-        # render json: markers
-        render json: {
-          markers: markers,
-          facets: current_project.updated_search_facets(search),
-        }
+        render json: json
       end
     end
   end

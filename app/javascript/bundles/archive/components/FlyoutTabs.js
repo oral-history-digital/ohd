@@ -437,15 +437,17 @@ export default class FlyoutTabs extends React.Component {
     }
 
     mapTabPanel() {
-        return (
-            <TabPanel key='map'>
-                <div className='flyout-tab-title'>{t(this.props, 'map')}</div>
-                <ArchiveSearchFormContainer map={true}/>
-                <div className='flyout-sub-tabs-container flyout-video'>
-                    {this.renderAdminActions(this.props.selectedArchiveIds)}
-                </div>
-            </TabPanel>
-        )
+        if (this.props.isLoggedIn && this.props.projectId !== 'dg') {
+            return (
+                <TabPanel key='map'>
+                    <div className='flyout-tab-title'>{t(this.props, 'map')}</div>
+                    <ArchiveSearchFormContainer map={true}/>
+                    <div className='flyout-sub-tabs-container flyout-video'>
+                        {this.renderAdminActions(this.props.selectedArchiveIds)}
+                    </div>
+                </TabPanel>
+            )
+        }
     }
 
     renderMap() {

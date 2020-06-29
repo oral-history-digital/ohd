@@ -98,6 +98,7 @@ class MetadataFieldsController < ApplicationController
         "use_in_results_table",
         "list_columns_order",
         "use_in_details_view",
+        "use_in_map_search",
         "display_on_landing_page",
         "ref_object_type",
         "source",
