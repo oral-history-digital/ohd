@@ -4,11 +4,13 @@ class AddUseInMapSearchToMetadataFields < ActiveRecord::Migration[5.2]
 
     if Project.first.identifier.to_sym == 'zwar'
 
+      RegistryEntry.where(latitude: '').update_all(latitude: nil, longitude: nil)
       RegistryReferenceType.find_by_code('companie').update_attributes code: 'company'
       RegistryEntry.find_by_code('companie').update_attributes code: 'company'
 
-      %w(camp company).each do |code|
+      {camp: 'Lager und Haftstätten', company: 'Firmen und Einsatzstellen'}.each do |code, label|
         MetadataField.create(name: code, 
+                             label: label,
                              use_in_map_search: true, 
                              ref_object_type: "Person", 
                              source: "RegistryReferenceType", 
