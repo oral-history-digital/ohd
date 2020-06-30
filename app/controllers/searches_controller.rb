@@ -138,7 +138,7 @@ class SearchesController < ApplicationController
                 lat: registry_entry.latitude,
                 lon: registry_entry.longitude,
                 regions: regions,
-                popup_text: "<strong title='#{registry_entry_id}'>#{registry_entry.descriptor(locale)} #{regions.reverse.join(', ')}</strong><br/>#{links}",
+                popup_text: "<strong title='#{registry_entry_id}'>#{registry_entry.descriptor(locale)}, #{regions.join(', ')}</strong><br/>#{links}",
                 icon: "fa-#{icon(registry_reference_type.code) && icon(registry_reference_type.code)[0]}",
                 icon_prefix: "fa",
                 icon_color: icon(registry_reference_type.code) && icon(registry_reference_type.code)[1],
