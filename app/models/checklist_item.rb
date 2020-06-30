@@ -1,8 +1,8 @@
 class ChecklistItem < ApplicationRecord
 
   belongs_to :interview
-  belongs_to :user
-
+  belongs_to :user_account
+  belongs_to :user # FIXME: remove when migration 20200624144556 is merged
   scope :checked, -> { where(checked: true) }
 
   TYPES = %w(data speakers media photos text_materials team)
@@ -13,8 +13,8 @@ class ChecklistItem < ApplicationRecord
   before_save :set_checked_at
   after_save :check_editorial_task_completed
 
-  def current_user=(user)
-    write_attribute(:user_id, user.id) if user.is_a?(User)
+  def current_user=(user_account)
+    write_attribute(:user_account_id, user_account.id) if user_account.is_a?(UserAccount)
   end
 
   private

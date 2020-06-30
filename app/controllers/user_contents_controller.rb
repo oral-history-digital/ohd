@@ -3,7 +3,7 @@ class UserContentsController < ApplicationController
   def create
     authorize(UserContent)
     @user_content = UserContent.new(user_content_params)
-    @user_content.user_id = current_user_account.user.id
+    @user_content.user_account_id = current_user_account.id
     @user_content.save
     @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
     @user_content.reference.touch if @user_content.type == 'UserAnnotation'
@@ -19,7 +19,7 @@ class UserContentsController < ApplicationController
     end
   end
 
-  def destroy 
+  def destroy
     authorize(UserContent)
     @user_content = UserContent.find(params[:id])
     @user_content.destroy
@@ -33,11 +33,11 @@ class UserContentsController < ApplicationController
     end
   end
 
-  def index 
+  def index
     user_contents = policy_scope(UserContent)
     respond_to do |format|
-      format.html 
-      format.js 
+      format.html
+      format.js
       format.json do
         render json: {
             data: user_contents.inject({}){|mem, s| mem[s.id] = ::UserContentSerializer.new(s).as_json; mem},
@@ -73,8 +73,8 @@ class UserContentsController < ApplicationController
              :title,
              :media_id,
              :interview_references,
-             :reference_id, 
-             :reference_type, 
+             :reference_id,
+             :reference_type,
              :type,
              :link_url,
              :persistent).

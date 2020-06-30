@@ -10,7 +10,8 @@ class UserContent < ApplicationRecord
 
   ANNOTATION_LIMIT = 300
 
-  belongs_to :user
+  belongs_to :user # FIXME: remove when migration 20200624144556 is merged
+  belongs_to :user_account
   belongs_to :reference, :polymorphic => true
 
   #before_validation :compile_id_hash, :on => :create
@@ -19,22 +20,12 @@ class UserContent < ApplicationRecord
   #after_validation :check_persistence, :set_link_url, :on => :create
 
 
-  validates_presence_of :user_id
+  validates_presence_of :user_account_id
 
   validates_acceptance_of :reference_type, :accept => 'Interview', :if => Proc.new{|content| content.type == InterviewReference }
   #validates_associated :reference, :if => Proc.new{|content| content.type != Search }
-  #validates_uniqueness_of :id_hash, :scope => :user_id
+  #validates_uniqueness_of :id_hash, :scope => :user_account_id
   validates_length_of :description, :maximum => ANNOTATION_LIMIT
-
-  # dummy to bridge to old acts_as_taggable-gem
-  def tag_list
-    []
-  end
-
-  # dummy to bridge to old acts_as_taggable-gem
-  def tags
-    []
-  end
 
   def after_initialize
     get_properties

@@ -4,7 +4,7 @@ class TaskSerializer < ApplicationSerializer
     :desc,
     :authorized_type,
     :authorized_id,
-    :user_id,
+    :user_account_id,
     :supervisor_id,
     :workflow_state,
     :workflow_states

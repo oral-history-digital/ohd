@@ -9,7 +9,7 @@ class UserAnnotation < UserContent
   has_one :annotation, :dependent => :destroy, :foreign_key => :user_content_id
 
   scope :for_interview, -> (interview) { where('reference_type = ?', 'Segment').where('interview_references LIKE ?', "%#{interview.archive_id}%") }
-  scope :for_user, -> (user) { where('user_id = ?', user.id) }
+  scope :for_user_account, -> (user_account) { where('user_account_id = ?', user_account.id) } # FIXME: remove - unused?
   # Note: I'm leaving a LIKE operator here instead of identity comparison to ensure full
   # compatibility to previous, property-based implementation (could be optimized later if not needed)
   scope :for_media_id, -> (m_id) { where('reference_type = ?', 'Segment').where('media_id LIKE ?', "%#{m_id}") }
@@ -49,7 +49,7 @@ class UserAnnotation < UserContent
   #attr_accessible :description, :title, :position
 
   #validates_format_of :reference_type, :with => /\ASegment\z/
-  #validates_uniqueness_of :reference_id, :scope => :user_id
+  #validates_uniqueness_of :reference_id, :scope => :user_account_id
 
   # 1. validates for existing media_id
   # 2. disable changes to description if not private or proposed
@@ -84,11 +84,12 @@ class UserAnnotation < UserContent
     write_property :translated, trans
   end
 
+  # FIXME: had to comment this out to make migration 20200624144556 work. Why that?
   # does the annotation refer to the original or translated transcript?
-  def translated?
-    trans = read_property :translated
-    trans.nil? ? true : trans
-  end
+  #def translated?
+  #  trans = read_property :translated
+  #  trans.nil? ? true : trans
+  #end
 
   def heading
     read_property :heading
@@ -109,7 +110,7 @@ class UserAnnotation < UserContent
     attr = {}
     attr[:interview_references] = reference.interview.archive_id
     @properties ||= {}
-    @properties[:author] ||= [user.first_name, user.last_name].join(' ')
+    @properties[:author] ||= [user_account.first_name, user_account.last_name].join(' ')
     heading_segment = Segment.with_heading.for_media_id(reference.media_id).first
     unless heading_segment.nil?
       @properties[:heading] = [heading_segment.section, heading_segment.subheading(I18n.locale).blank? ? heading_segment.mainheading(I18n.locale) : heading_segment.subheading(I18n.locale)].join(' ')

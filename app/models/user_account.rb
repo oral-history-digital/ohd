@@ -4,20 +4,26 @@ class UserAccount < ApplicationRecord
 
   devise :database_authenticatable,
          :confirmable,
-         :rememberable,
          :recoverable,
          :trackable
 
   has_one :user
   has_many :tasks, through: :user
   has_many :supervised_tasks, through: :user
-  has_many :permissions, through: :user
-  has_many :roles, through: :user
 
   has_one :user_registration
 
   has_many :user_account_ips,
            :class_name => 'UserAccountIp'
+
+  has_many :user_roles
+  has_many :roles, through: :user_roles
+  has_many :permissions, through: :roles
+
+  has_many :tasks
+  has_many :supervised_tasks,
+           class_name: 'Task',
+           foreign_key: :supervisor_id
 
   validates_uniqueness_of :login
   validates_presence_of :login
@@ -26,9 +32,41 @@ class UserAccount < ApplicationRecord
   validates_format_of :email, :with => Devise.email_regexp
   validates_length_of :password, :within => 5..50, :allow_blank => true
 
+  def tasks?(record)
+    !tasks.where(authorized: record).where.not(workflow_state: 'finished').blank? #||
+    #!supervised_tasks.where(authorized: record).blank?
+  end
+
+  def permissions?(klass, action_name)
+    !permissions.where(klass: klass, action_name: action_name).blank?
+  end
+
+  def roles?(klass, action_name)
+    !roles.joins(:permissions).where("permissions.klass": klass, "permissions.action_name": action_name).blank?
+  end
+
   # NOTE: validates_confirmation_of won't work on virtual attributes!
   # This is why we add a custom validation method later.
   # validates_confirmation_of :password
+
+  # we need something like that here....
+  #workflow do
+  #  state :unchecked do
+  #    event :register,  :transitions_to => :registered
+  #  end
+  #  state :registered do
+  #    event :activate,  :transitions_to => :active_project
+  #    event :reject,    :transitions_to => :rejected
+  #    event :postpone,  :transitions_to => :postponed
+  #  end
+  #  state :active_project do
+  #    event :remove,      :transitions_to => :rejected
+  #  end
+  #  state :postponed do
+  #    event :reactivate,  :transitions_to => :active_project
+  #    event :reject,      :transitions_to => :rejected
+  #  end
+  #end
 
   # password confirmation validation
   def validate
@@ -47,25 +85,12 @@ class UserAccount < ApplicationRecord
     self.confirmation_sent_at = Time.now.utc
   end
 
+  def full_name
+    [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
+  end
+
   def display_name
-    self.reload.user_registration.nil? ? self.login : [self.user_registration.appellation, self.user_registration.full_name].compact.join(' ')
-  end
-
-  def first_name=(name)
-    user.update_attribute :first_name, name
-  end
-
-  def last_name=(name)
-    user.update_attribute :last_name, name
-  end
-
-  def tags
-    #user.tags
-    []
-  end
-
-  def admin?
-    !self.user.blank? && self.user.admin?
+    [self.appellation, self.user_registration.full_name].compact.join(' ')
   end
 
   # METHODS FROM CONFIRMABLE:

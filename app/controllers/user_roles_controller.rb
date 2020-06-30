@@ -3,24 +3,24 @@ class UserRolesController < ApplicationController
   def create
     authorize UserRole
     @user_role = UserRole.create user_role_params
-    @user_role.user.touch
+    @user_role.user_account.touch
 
     respond_to do |format|
       format.json do
-        render json: data_json(@user_role.user.user_registration, msg: 'processed')
+        render json: data_json(@user_role.user_account.user_registration, msg: 'processed')
       end
     end
   end
 
-  def destroy 
+  def destroy
     @user_role = UserRole.find(params[:id])
     authorize @user_role
-    user_registration = @user_role.user.user_registration
+    user_registration = @user_role.user_account.user_registration
     @user_role.destroy
-    user_registration.user.touch
+    user_registration.user_account.touch
 
     respond_to do |format|
-      format.json { 
+      format.json {
         render json: data_json(user_registration, msg: 'processed')
       }
     end
@@ -31,7 +31,7 @@ class UserRolesController < ApplicationController
   def user_role_params
     params.require(:user_role).
       permit(
-        :user_id,
+        :user_account_id,
         :role_id
     )
   end
