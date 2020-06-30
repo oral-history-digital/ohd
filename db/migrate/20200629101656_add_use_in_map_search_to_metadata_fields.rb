@@ -20,5 +20,6 @@ class AddUseInMapSearchToMetadataFields < ActiveRecord::Migration[5.2]
                             )
       end
       MetadataField.where(name: %w(birth_location deportation_location return_location)).each{|m| m.update_attributes(use_in_map_search: true)}
+    end
   end
 end
