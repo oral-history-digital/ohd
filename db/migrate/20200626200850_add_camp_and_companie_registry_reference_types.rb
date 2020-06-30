@@ -7,8 +7,8 @@ class AddCampAndCompanieRegistryReferenceTypes < ActiveRecord::Migration[5.2]
       camp_type = RegistryReferenceType.create code: 'camp', registry_entry_id: camp.id
       companie_type = RegistryReferenceType.create code: 'companie', registry_entry_id: companie.id
 
-      RegistryReference.where(registry_entry_id: camp.all_descendants.map(&:ids).flatten).update_all(registry_reference_type_id: camp_type.id)
-      RegistryReference.where(registry_entry_id: companie.all_descendants.map(&:ids).flatten).update_all(registry_reference_type_id: companie_type.id)
+      RegistryReference.where(registry_entry_id: camp.all_relatives.map(&:ids).flatten).update_all(registry_reference_type_id: camp_type.id)
+      RegistryReference.where(registry_entry_id: companie.all_relatives.map(&:ids).flatten).update_all(registry_reference_type_id: companie_type.id)
     end
   end
 end
