@@ -17,7 +17,8 @@ class RegistryReferenceType < ApplicationRecord
   has_many :metadata_fields
 
   def to_s(locale = I18n.locale)
-    name(locale)
+    m = MetadataField.where(name: code, source: 'RegistryReferenceType').first
+    (m && m.label(locale)) || name(locale)
   end
 
   def to_sym

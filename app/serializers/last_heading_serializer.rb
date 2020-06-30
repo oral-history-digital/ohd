@@ -6,7 +6,7 @@ class LastHeadingSerializer < ApplicationSerializer
              :tape_number,
              :last_heading
 
-  belongs_to :speaking_person, serializer: PersonSerializer
+  #belongs_to :speaking_person, serializer: PersonSerializer
 
   def time
     # timecode as seconds 

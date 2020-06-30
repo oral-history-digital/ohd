@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
             "use_as_facet",
             "use_in_results_table",
             "use_in_details_view",
+            "use_in_map_search",
             "display_on_landing_page",
             "ref_object_type",
             "source",
@@ -56,6 +57,11 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'input',
                 attribute: 'use_in_details_view',
+                type: 'checkbox',
+            },
+            {
+                elementType: 'input',
+                attribute: 'use_in_map_search',
                 type: 'checkbox',
             },
             {

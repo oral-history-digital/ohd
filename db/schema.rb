@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_24_144556) do
+ActiveRecord::Schema.define(version: 2020_06_29_101656) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -260,6 +260,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_144556) do
     t.integer "registry_reference_type_id"
     t.float "list_columns_order", default: 1.0
     t.float "facet_order", default: 1.0
+    t.boolean "use_in_map_search"
   end
 
   create_table "people", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -364,6 +365,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_144556) do
     t.boolean "list_priority"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.index ["code"], name: "index_registry_entries_on_code"
   end
 
   create_table "registry_entry_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -433,6 +435,7 @@ ActiveRecord::Schema.define(version: 2020_06_24_144556) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "children_only", default: false
+    t.index ["code"], name: "index_registry_reference_types_on_code"
   end
 
   create_table "registry_references", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

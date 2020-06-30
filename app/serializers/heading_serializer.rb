@@ -10,7 +10,7 @@ class HeadingSerializer < ApplicationSerializer
              :media_id,
              :timecode
 
-  belongs_to :speaking_person, serializer: LightPersonSerializer
+  #belongs_to :speaking_person, serializer: PersonSerializer
 
   def time
     # timecode as seconds 
