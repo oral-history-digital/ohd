@@ -6,11 +6,19 @@ import { t, admin } from '../../../lib/utils';
 export default class RegistryEntrySearchResult extends React.Component {
 
     show(id, key) {
+        if (this.props.result.ancestors[id]) {
+            return (
+                <span className={'breadcrumb'} key={key}>
+                    {this.props.result.ancestors[id].name[this.props.locale]}
+                    {` (ID: ${id})`}
+                </span>
+            )
+        }
+    }
+
+    spacer() {
         return (
-            <span className={'breadcrumb'} key={key}>
-                {this.props.result.ancestors[id].name[this.props.locale]}
-                {/* {` (ID: ${id})`} */}
-            </span>
+            <span> &rarr; </span>
         )
     }
 
@@ -55,7 +63,7 @@ export default class RegistryEntrySearchResult extends React.Component {
     render() {
         return (
             <li className={'search-result'}>
-                {this.renderCheckbox()}
+                {/*this.renderCheckbox()*/}
                 <RegistryEntryContainer 
                     data={this.props.result.registry_entry} 
                     key={`registry_entries-${this.props.result.registry_entry.id}`} 
