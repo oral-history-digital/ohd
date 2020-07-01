@@ -287,18 +287,6 @@ class RegistryEntry < ApplicationRecord
     end
   end
 
-  # e.g. <RegistryEntry id: 213> (Misk, Belarus):
-  # > RegistryEntry.find(213).regions
-  # => ["Belarus", "Stadt Minsk"]
-  # e.g. <RegistryEntry id: 523> (Brandenburg an der Havel):
-  # > RegistryEntry.find(523).regions
-  # => ["Deutschland", "Brandenburg"]
-  #
-  def regions(locale)
-    places = all_relatives(false).map{|r| r.descriptor(locale)}
-    places[0..(places.length - 3)]
-  end
-
   class << self
     def descendant_ids(code, entry_dedalo_code=nil)
       entry = entry_dedalo_code ? find_by_entry_dedalo_code(entry_dedalo_code) : find_by_code(code)

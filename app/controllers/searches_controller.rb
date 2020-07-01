@@ -115,6 +115,8 @@ class SearchesController < ApplicationController
             joins(:metadata_fields).
             where("metadata_fields.use_in_map_search": true, "metadata_fields.project_id": current_project.id)
 
+          top_registry_entries = RegistryEntry.where(code: %w(root)) | selected_registry_reference_types.map(&:registry_entry)
+
           # all registry_references with the defined registry_reference_type_codes have 'Person' as ref_object_type
           # so it is the interviewee
           #
@@ -132,7 +134,7 @@ class SearchesController < ApplicationController
               links = registry_references.map{|rr| link_element(rr.interview, registry_reference_type, locale)}.join('<br/>') 
 
               registry_entry = RegistryEntry.find(registry_entry_id)
-              regions = registry_entry.regions(locale)
+              regions = (registry_entry.all_relatives(false) - top_registry_entries).map{|re| re.descriptor(locale)}
               {
                 id: registry_entry_id,
                 lat: registry_entry.latitude,
