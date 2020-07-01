@@ -2,7 +2,7 @@ class AddUseInMapSearchToMetadataFields < ActiveRecord::Migration[5.2]
   def change
     add_column :metadata_fields, :use_in_map_search, :boolean
 
-    if Project.first.identifier.to_sym == 'zwar'
+    if Project.first.identifier.to_sym == :zwar
 
       RegistryEntry.where(latitude: '').update_all(latitude: nil, longitude: nil)
       RegistryReferenceType.find_by_code('companie').update_attributes code: 'company'
