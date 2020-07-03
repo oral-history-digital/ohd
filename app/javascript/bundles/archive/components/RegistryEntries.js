@@ -13,17 +13,30 @@ export default class RegistryEntries extends React.Component {
     }
 
     componentDidMount() {
+        this.loadWithAssociations();
         this.loadRegistryEntries();
     }
 
     componentDidUpdate() {
+        this.loadWithAssociations();
         this.loadRegistryEntries();
+    }
+
+    loadWithAssociations() {
+        if (
+            this.props.registryEntryParent && 
+            !this.props.registryEntryParent.associations_loaded &&
+            this.props.registryEntriesStatus[this.props.registryEntryParent.id] !== 'fetching'
+        ) {
+            this.props.fetchData(this.props, 'registry_entries', this.props.registryEntryParent.id, null, 'with_associations=true');
+        }
     }
 
     loadRegistryEntries() {
         if (
             this.props.projectId &&
             this.props.registryEntryParent &&
+            this.props.registryEntryParent.associations_loaded &&
             !this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`]
         ) {
             this.props.fetchData(this.props, 'registry_entries', null, null, `children_for_entry=${this.props.registryEntryParent.id}`);

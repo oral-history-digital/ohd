@@ -34,7 +34,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: "registry_entries",
-          data: cache_single(@registry_entry),
+          data: params[:with_associations] ? cache_single(@registry_entry, 'RegistryEntryWithAssociations') : cache_single(@registry_entry)
         }
       end
     end
@@ -72,28 +72,24 @@ class RegistryEntriesController < ApplicationController
             if params[:children_for_entry]
               [
                 RegistryEntry.find(params[:children_for_entry]).children.includes([
-                  :registry_references,
                   :parent_registry_hierarchies,
-                  {registry_names: :translations},
-                  {ancestors: {registry_names: :translations}} 
-                ]),
+                  {registry_names: :translations}
+                ]).inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
                 "children_for_entry_#{params[:children_for_entry]}",
               ]
             elsif params[:ref_object_type]
               [
                 params[:ref_object_type].classify.constantize.find(params[:ref_object_id]).registry_entries.includes([
-                  :registry_references,
                   :parent_registry_hierarchies,
-                  {registry_names: :translations},
-                  {ancestors: {registry_names: :translations}} 
-                ]),
+                  {registry_names: :translations}
+                ]).inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
                 "ref_object_type_#{params[:ref_object_type]}_ref_object_id_#{params[:ref_object_id]}",
               ]
             end
 
           #registry_entries = registry_entries.includes(registry_names: :translations)
           {
-            data: registry_entries.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data: registry_entries,
             data_type: "registry_entries",
             extra_params: extra_params,
           }

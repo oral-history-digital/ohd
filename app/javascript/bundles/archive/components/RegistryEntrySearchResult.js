@@ -5,6 +5,24 @@ import { t, admin } from '../../../lib/utils';
 
 export default class RegistryEntrySearchResult extends React.Component {
 
+    componentDidMount() {
+        this.loadWithAssociations();
+    }
+
+    componentDidUpdate() {
+        this.loadWithAssociations();
+    }
+
+    loadWithAssociations() {
+        if (
+            this.props.result && 
+            !this.props.result.associations_loaded &&
+            this.props.registryEntriesStatus[this.props.result.id] !== 'fetching'
+        ) {
+            this.props.fetchData(this.props, 'registry_entries', this.props.result.id, null, 'with_associations=true');
+        }
+    }
+
     show(id, key) {
         if (this.props.result.ancestors[id]) {
             return (

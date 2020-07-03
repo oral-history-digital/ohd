@@ -6,11 +6,23 @@ import PixelLoader from '../../../lib/PixelLoader'
 export default class RegistryEntryShow extends React.Component {
 
     componentDidMount() {
+        this.loadWithAssociations();
         this.loadRegistryReferenceTypes()
     }
 
     componentDidUpdate() {
+        this.loadWithAssociations();
         this.loadRegistryReferenceTypes()
+    }
+
+    loadWithAssociations() {
+        if (
+            this.props.registryEntry && 
+            !this.props.registryEntry.associations_loaded &&
+            this.props.registryEntriesStatus[this.props.registryEntry.id] !== 'fetching'
+        ) {
+            this.props.fetchData(this.props, 'registry_entries', this.props.registryEntry.id, null, 'with_associations=true');
+        }
     }
 
     fetchInterview(archiveId) {
@@ -103,7 +115,11 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     registryReferences() {
-        if (this.props.registryReferenceTypesStatus && this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched') {
+        if (
+            this.props.registryEntry.associations_loaded &&
+            this.props.registryReferenceTypesStatus && 
+            this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched'
+        ) {
             let references = []
             for (var r in this.props.registryEntry.registry_references) {
                 let rr = this.props.registryEntry.registry_references[r]

@@ -56,7 +56,7 @@ export default class RegistryEntry extends React.Component {
     }
 
     show() {
-        if (Object.keys(this.props.data.registry_references).length > 0 ) {
+        if (this.props.data.registry_references_count > 0) {
 
             return (
                 <div
@@ -125,7 +125,7 @@ export default class RegistryEntry extends React.Component {
         }
     }
 
-    rmParent(parentId) {
+    rmParent() {
         this.props.deleteData(this.props, 'registry_hierarchies', this.parentRegistryHierarchyId(), null, null, true);
         this.props.closeArchivePopup();
     }
@@ -135,7 +135,7 @@ export default class RegistryEntry extends React.Component {
     }
 
     deleteParent() {
-        if (this.props.data.parent_ids[this.props.locale].length > 1) {
+        if (this.props.registryEntryParent) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'edit.registry_entry.delete_parent')}
@@ -258,7 +258,7 @@ export default class RegistryEntry extends React.Component {
     }
 
     showChildren() {
-        if (this.props.data.child_ids[this.props.locale].length > 0) {
+        if (this.props.data.children_count > 0) {
              this.setState({ childrenVisible: !this.state.childrenVisible }) 
         }
     }
@@ -293,13 +293,13 @@ export default class RegistryEntry extends React.Component {
     }
 
     showHideChildren() {
-        if (this.props.data.child_ids[this.props.locale].length > 0) {
+        if (this.props.data.children_count > 0) {
 
             let css = this.state.childrenVisible ? 'minus-square' : 'plus-square-o';
             return (
                 <div
                     className='show-hide-children'
-                    title={`${this.props.data.child_ids[this.props.locale].length} ${t(this.props, 'edit.registry_entry.show_children')}`}
+                    title={`${this.props.data.children_count} ${t(this.props, 'edit.registry_entry.show_children')}`}
                     onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
                     >
                     <i className={`fa fa-${css}`}></i>

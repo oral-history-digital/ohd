@@ -5,15 +5,12 @@ class RegistryEntrySerializer < ApplicationSerializer
              :desc,
              :name,
              :notes,
-             :parent_ids,
-             :child_ids,
              :workflow_state,
-             :registry_references,
-             :parent_registry_hierarchy_ids,
-             :bread_crumb,
-             :ancestors,
-             #:regions,
              :code,
+             :parent_registry_hierarchy_ids,
+             :children_count,
+             :registry_references_count,
+             :associations_loaded
 
   def name
     object.localized_hash(:descriptor)
@@ -33,31 +30,23 @@ class RegistryEntrySerializer < ApplicationSerializer
     object.longitude == '-0.376295' ? nil : object.longitude.to_f
   end
 
-  def registry_references
-    object.registry_references.inject({}){|mem, c| mem[c.id] = RegistryReferenceSerializer.new(c); mem}
+  def children_count
+    object.children.count
   end
 
-  def child_ids
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale.to_s] = object.alphanum_sorted_ids(:children, locale)
-      mem
-    end
-  end
-
-  def parent_ids
-    I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale.to_s] = object.alphanum_sorted_ids(:parents, locale)
-      mem
-    end
+  def registry_references_count
+    object.registry_references.count
   end
 
   def parent_registry_hierarchy_ids
     object.parent_registry_hierarchies.inject({}){|mem, h| mem[h.ancestor_id] = h.id; mem}
   end
 
-  def ancestors
-    # ancestors = object.ancestors.inject({}){|mem, a| mem[a.id] = ::RegistryEntrySerializer.new(a).as_json; mem }
-    object.ancestors.includes(registry_names: :translations).inject({}){|mem, a| mem[a.id] = {id: a.id, code: a.code, name: a.localized_hash(:descriptor)}.as_json; mem }
+  #
+  # this method is to determine in react whether a person serialized with PersonSerializerWithAssociations has to be loaded
+  #
+  def associations_loaded
+    false
   end
 
 end
