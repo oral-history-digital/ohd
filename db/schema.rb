@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_06_29_101656) do
+ActiveRecord::Schema.define(version: 2020_07_03_113853) do
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
     t.bigint "record_id", null: false
@@ -22,11 +22,11 @@ ActiveRecord::Schema.define(version: 2020_06_29_101656) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "key", limit: 255, null: false
     t.string "filename", limit: 255, null: false
     t.string "content_type", limit: 255
-    t.text "metadata", limit: 16777215
+    t.text "metadata"
     t.bigint "byte_size", null: false
     t.string "checksum", limit: 255, null: false
     t.datetime "created_at", null: false
@@ -270,6 +270,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_101656) do
     t.datetime "updated_at", null: false
     t.string "typology", limit: 255
     t.string "properties"
+    t.integer "project_id"
   end
 
   create_table "permissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -392,14 +393,15 @@ ActiveRecord::Schema.define(version: 2020_06_29_101656) do
     t.index ["descendant_id"], name: "index_registry_hierarchies_on_descendant_id"
   end
 
-  create_table "registry_name_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "registry_name_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin", force: :cascade do |t|
     t.integer "registry_name_id", null: false
     t.string "locale", limit: 255, null: false
-    t.text "descriptor", limit: 16777215
+    t.text "descriptor"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text "notes", limit: 16777215
+    t.text "notes"
     t.index ["descriptor"], name: "index_registry_name_translations_on_descriptor", length: 191
+    t.index ["registry_name_id", "locale"], name: "index_registry_name_translations_on_registry_name_id_and_locale", unique: true
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
   end
 
@@ -434,7 +436,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_101656) do
     t.string "code", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "children_only", default: false
+    t.boolean "children_only", default: true
     t.index ["code"], name: "index_registry_reference_types_on_code"
   end
 
@@ -543,7 +545,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_101656) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
-  create_table "text_materials", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "text_materials", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.integer "interview_id"
     t.string "document_type", limit: 255
     t.string "document_file_name", limit: 255
@@ -558,7 +560,7 @@ ActiveRecord::Schema.define(version: 2020_06_29_101656) do
     t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "text", limit: 4294967295
+    t.text "text", limit: 16777215
     t.index ["locale"], name: "index_text_translations_on_locale"
     t.index ["text_id"], name: "index_text_translations_on_text_id"
   end

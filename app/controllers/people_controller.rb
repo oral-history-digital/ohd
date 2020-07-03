@@ -53,32 +53,37 @@ class PeopleController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
+        paginate = false
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{params}-#{Person.maximum(:updated_at)}" do
           if params.keys.include?("all")
-            people = Person.all.
-              includes(:translations, :histories, biographical_entries: [:translations], registry_references: {registry_entry: {registry_names: :translations}}).
-              order("person_translations.last_name ASC")
+            data = Person.all.
+              includes(:translations, :project).
+              order("person_translations.last_name ASC").
+              inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
             extra_params = "all"
           elsif params[:contributors_for_interview]
-            people = Person.
-              includes(:translations, :histories, biographical_entries: [:translations], registry_references: {registry_entry: {registry_names: :translations}}).
-              where(id: Interview.find(params[:contributors_for_interview]).contributions.map(&:person_id))
+            data = Person.
+              includes(:translations, :project).
+              where(id: Interview.find(params[:contributors_for_interview]).contributions.map(&:person_id)).
+              inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
             extra_params = "contributors_for_interview_#{params[:contributors_for_interview]}"
           else
             page = params[:page] || 1
-            people = Person.
-              includes(:translations, :histories, biographical_entries: [:translations], registry_references: {registry_entry: {registry_names: :translations}}).
+            data = Person.
+              includes(:translations, :project).
               where(search_params).order("person_translations.last_name ASC").
-              paginate page: page
+              paginate(page: page).
+              inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
+            paginate = true
             extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
           end
           
           {
-            data: people.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data: data,
             data_type: "people",
             extra_params: extra_params,
             page: params[:page] || 1,
-            result_pages_count: people.respond_to?(:total_pages) ? people.total_pages : 1,
+            result_pages_count: paginate ? people.total_pages : 1,
           }
         end
         render json: json
