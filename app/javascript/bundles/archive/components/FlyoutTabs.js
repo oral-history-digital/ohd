@@ -432,8 +432,10 @@ export default class FlyoutTabs extends React.Component {
     }
 
     mapTab() {
-        let css = this.props.isLoggedIn ? 'flyout-tab' : 'hidden';
-        return <Tab className={css} key='map'>{t(this.props, 'map')}</Tab>;
+        if (this.props.isLoggedIn && this.props.projectId !== 'dg') {
+            let css = this.props.isLoggedIn ? 'flyout-tab' : 'hidden';
+            return <Tab className={css} key='map'>{t(this.props, 'map')}</Tab>;
+        }
     }
 
     mapTabPanel() {
