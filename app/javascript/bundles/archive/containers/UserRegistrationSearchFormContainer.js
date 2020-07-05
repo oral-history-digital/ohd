@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
 import DataSearchForm from '../components/DataSearchForm';
-import { 
-    resetQuery, 
-    setQueryParams, 
+import {
+    resetQuery,
+    setQueryParams,
 } from '../actions/searchActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 import { getProject } from '../../../lib/utils';
@@ -17,15 +17,15 @@ const mapStateToProps = (state) => {
         dataStatus: state.data.statuses.user_registrations,
         scope: 'user_registration',
         searchableAttributes: [
-            {attributeName: 'first_name'}, 
-            {attributeName: 'last_name'}, 
-            {attributeName: 'email'}, 
+            {attributeName: 'first_name'},
+            {attributeName: 'last_name'},
+            {attributeName: 'email'},
             {
-                attributeName: 'default_locale', 
+                attributeName: 'default_locale',
                 type: 'select',
                 values: (project && project.available_locales) || state.archive.locales,
             },
-            {attributeName: 'workflow_state', type: 'select', values: ['all', 'unchecked', 'checked', 'registered', 'postponed', 'rejected']}
+            {attributeName: 'workflow_state', type: 'select', values: ['all', 'account_confirmed', 'project_access_granted', 'project_access_postponed', 'rejected', 'account_deactivated']}
         ]
     }
 }

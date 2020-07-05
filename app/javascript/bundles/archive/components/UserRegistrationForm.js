@@ -7,7 +7,7 @@ export default class UserRegistrationForm extends React.Component {
     render() {
         let _this = this;
         return (
-            <Form 
+            <Form
                 scope='user_registration'
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 values={{
@@ -21,20 +21,20 @@ export default class UserRegistrationForm extends React.Component {
                         //attribute: 'first_name',
                         //value: this.props.userRegistration && this.props.userRegistration.first_name,
                         //type: 'text',
-                        //validate: function(v){return v.length > 1} 
+                        //validate: function(v){return v.length > 1}
                     //},
                     //{
                         //elementType: 'input',
                         //attribute: 'last_name',
                         //value: this.props.userRegistration && this.props.userRegistration.last_name,
                         //type: 'text',
-                        //validate: function(v){return v.length > 1} 
+                        //validate: function(v){return v.length > 1}
                     //},
                     {
                         elementType: 'select',
                         attribute: 'workflow_state',
                         values: this.props.userRegistration && Object.values(this.props.userRegistration.workflow_states),
-                        value: this.props.userRegistration.workflow_state,
+                        value: this.props.userRegistration && this.props.userRegistration.workflow_state,
                         optionsScope: 'workflow_states',
                         withEmpty: true
                     },

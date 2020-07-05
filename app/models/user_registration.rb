@@ -2,7 +2,8 @@ class UserRegistration < ApplicationRecord
   include Workflow
   include ActionView::Helpers::TextHelper
 
-  STATES = %w(unchecked checked registered postponed rejected)
+  # do we need this constant?
+  STATES = %w(new account_created account_confirmed project_access_granted project_access_postponed rejected account_deactivated)
 
   belongs_to :user_account
 
@@ -78,32 +79,71 @@ EVAL
     @skip_mail_delivery = false
   end
 
+    #   former workflow:
+    # 1. user fills out registration form => :unchecked
+    # 2. admin registers the user which leads to the state 'checked'  => Welcome+Activation-Email
+    #     admin rejects => Rejection-Email
+    # 3. user clicks on activation link which leads to the state 'registered'
+
+    # new workflow
+    # 1. user fills out registration form => :account_created => Activation-Email
+    # 2. user opts in => :account_confirmed
+    # 3. admin activates_project => :project_access_granted  => Welcome-Email
+    #     admin rejects => Rejection-Email
+
+    # revoking access
+    # a) remove access to project (can be granted again) => TOS-Violation-EMAIL
+    # b) deactivate account (can be reactivated) => Account-Deactivated-EMAIL
+    # c) delete account (only Super-Admin?) => Account-Deleted-EMAIL?
+
+    # legacy data
+    # 1. registered accounts are migrated to :project_access_granted
+    #    accounts should be validated and fixed
+    #   (we have 1900 UserAccounts which are registered but not activated,
+    #    1965 confirmation tokens which did not expire properly)
+    # 2. all other accounts are :deleted (anonymized).
+    #    We keep the following data:
+    #     - for statistics: job_description, research_intentions, country, gender
+    #     - [for admin purposes (security, trolling): email, admin_comments] to be discussed
+    #    Users accounts checked or unchecked in the last 7 days are asked to register again due to changed registration process
+    # associated data: ip, usage report
+    # TODO: remove roles / permissions / workflow comments / tasks etc.
+
   workflow do
-    state :unchecked do
-      event :register,  :transitions_to => :checked
-      event :reject,    :transitions_to => :rejected
-      event :postpone,  :transitions_to => :postponed
+    # new self-service registration process
+    # cannot be changed by admin - should be invisible in UI! (becacuse no user account exists)
+    state :new do
+      event :register,  :transitions_to => :account_created
     end
-    state :checked do
-      event :activate,  :transitions_to => :registered do
-        halt if self.user_account.nil? || self.user_account.encrypted_password.blank?
-      end
-      event :expire,    :transitions_to => :postponed
+    # cannot be changed by admin - should be read only in UI!
+    state :account_created do
+      event :confirm_account, :transition_to => :account_confirmed
+      event :expire_confirmation_token, :transition_to => :confirmation_token_expired
     end
-    state :registered do
-      event :activate_project, :transitions_to => :active_project
-      event :remove,      :transitions_to => :rejected
+    state :account_confirmed do
+      event :grant_project_access, :transitions_to => :project_access_granted
+      event :reject_project_access,    :transitions_to => :project_access_rejected
+      event :postpone_project_access,  :transitions_to => :project_access_postponed
     end
-    state :active_project do # FIXME: will remove access to all projects (remove only project access if user has access to other projects)
-      event :remove,      :transitions_to => :rejected
+    state :project_access_granted do
+      event :reject_project_access,    :transitions_to => :project_access_rejected
+      event :postpone_project_access,  :transitions_to => :project_access_postponed
+      event :deactivate_account,    :transitions_to => :account_deactivated
     end
-    state :postponed do
-      event :reactivate,  :transitions_to => :checked
-      event :reject,      :transitions_to => :rejected
+    state :project_access_postponed do
+      event :grant_project_access,      :transitions_to => :project_access_granted
+      event :reject_project_access,    :transitions_to => :project_access_rejected
+      event :deactivate_account,    :transitions_to => :account_deactivated
     end
-    state :rejected do
-      event :reactivate,  :transitions_to => :checked
+    state :project_access_rejected do
+      event :grant_project_access,      :transitions_to => :project_access_granted
+      event :postpone_project_access,  :transitions_to => :project_access_postponed
+      event :deactivate_account,        :transitions_to => :account_deactivated
     end
+    state :account_deactivated do
+      event :reactivate_account, :transitions_to => :account_created
+    end
+
   end
 
   def workflow_states
@@ -115,6 +155,7 @@ EVAL
   end
 
   # Registers a UserAccount by generating a confirmation token
+  # additionally copies registration data to user account (during transition to new registration process)
   def register
     create_account
     raise "Could not create a valid account for #{self.inspect}" unless self.user_account.valid?
@@ -123,47 +164,44 @@ EVAL
     save_registration_data_and_user_data_to_user_account # TMP_TRANSITION: copies all attributes to user_account
   end
 
-  def activate
+  def confirm_account
     self.user_account.update_attribute :confirmed_at, Time.now
-  end
-
-  def activate_project
-    current_project = Project.first # FIXME: get project from params
-    self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, Time.now)
-  end
-
-  # Flags the account as deactivated
-  def deactivate
-    self.user_account.update_attribute(:admin, nil)
-    self.user_account.deactivate!
-  end
-
-  # Flags the account as deactivated
-  def remove
-    self.user_account.update_attribute(:admin, nil)
-    self.user_account.deactivate!
-  end
-
-  def reactivate
-    if self.user_account.nil?
-      # perform the usual registration
-      self.register
-    else
-      self.user_account.reactivate!
-      user_account.resend_confirmation_instructions
-    end
-  end
-
-  # Expires the confirmation token
-  def expire
+    # remove confirmation token after activation - do we have to do it manually or is there some devise magic?
     self.user_account.update_attribute(:confirmation_token, nil)
   end
 
-  # Resends the E-Mail with the account information
-  def resend_info
-    unless checked?
-      raise "Dieser Zugang ist nicht freigegeben worden (aktueller Stand: '#{I18n.t(workflow_state, :scope => 'workflow_states')}')"
+  # TODO: this has to be triggered by a timeout as well
+  def expire_confirmation_token
+    self.user_account.update_attribute(:confirmation_token, nil)
+  end
+
+  def grant_project_access
+    self.update_attribute(:activated_at, Time.now) # TODO: not sure if we should keep this.
+    self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, Time.now)
+    # TODO: send email to user
+  end
+
+  def revoke_project_access
+    self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, nil)
+    # TODO: send email to user
+  end
+
+  def reject_project_access
+    # TODO: send email to user
+  end
+
+  # Flags the account as deactivated and removes project access
+  def deactivate_account
+    if project_access_granted?
+      self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, nil)
     end
+    self.user_account.update_attribute(:admin, nil)
+    self.user_account.deactivate!
+    # TODO: send email to user (or does this already happen?)
+  end
+
+  def reactivate_account
+    self.user_account.reactivate!
     user_account.resend_confirmation_instructions
   end
 
@@ -195,6 +233,11 @@ EVAL
   end
 
   private
+
+  # FIXME: get project from params instead
+  def current_project
+    Project.first
+  end
 
   def serialize_form_parameters
     serialized_form_params = {}

@@ -91,7 +91,7 @@ class UserAccount < ApplicationRecord
       self.deactivated_at = nil
 
       unless self.user_registration.nil?
-        self.user_registration.activate! if self.user_registration.checked? || self.user_registration.postponed?
+        self.user_registration.confirm_account! if self.user_registration.account_created?
       end
       save(validate: false)
     end
