@@ -64,9 +64,9 @@ export default class UserRegistration extends React.Component {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.user_registration.show')}
+                title={t(this.props, 'edit.user_registration.edit')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.user_registration.show'),
+                    title: t(this.props, 'edit.user_registration.edit'),
                     content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
                 })}
             >

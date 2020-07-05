@@ -49,6 +49,7 @@ class UserRegistrationsController < ApplicationController
   end
 
   # POST
+  # is this used only for password change???
   def confirm
     # don't clear the confirmation_token until we have successfully
     # submitted the password
@@ -198,6 +199,11 @@ class UserRegistrationsController < ApplicationController
       end
     end
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
+    # the first workflow steps are self service steps.
+    # the admin is involved in the workflow starting from 'account_confirmed'
+    # if the user does not confirm the account, it will expire and vanish
+    # TODO: show information about unconfirmed accounts - either in workflow view or elsewhere (read only)
+    conditionals << "workflow_state NOT in ('new', 'account_created')"
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
     @user_registrations = policy_scope(UserRegistration).includes(user_account: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1

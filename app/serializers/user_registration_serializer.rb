@@ -10,7 +10,7 @@ class UserRegistrationSerializer < ApplicationSerializer
     :workflow_state,
     :workflow_states,
     :created_at,
-    #:activated_at,
+    #:activated_at, # why comment out?
     :admin_comments,
     :user_account_id,
     :processed_at,
