@@ -7,7 +7,6 @@ class UserAccount < ApplicationRecord
          :recoverable,
          :trackable
 
-  has_one :user
   has_many :tasks, through: :user
   has_many :supervised_tasks, through: :user
 
@@ -24,6 +23,9 @@ class UserAccount < ApplicationRecord
   has_many :supervised_tasks,
            class_name: 'Task',
            foreign_key: :supervisor_id
+
+  has_many :user_contents
+  has_many :searches
 
   validates_uniqueness_of :login
   validates_presence_of :login
