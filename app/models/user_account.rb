@@ -51,25 +51,6 @@ class UserAccount < ApplicationRecord
   # This is why we add a custom validation method later.
   # validates_confirmation_of :password
 
-  # we need something like that here....
-  #workflow do
-  #  state :unchecked do
-  #    event :register,  :transitions_to => :registered
-  #  end
-  #  state :registered do
-  #    event :activate,  :transitions_to => :active_project
-  #    event :reject,    :transitions_to => :rejected
-  #    event :postpone,  :transitions_to => :postponed
-  #  end
-  #  state :active_project do
-  #    event :remove,      :transitions_to => :rejected
-  #  end
-  #  state :postponed do
-  #    event :reactivate,  :transitions_to => :active_project
-  #    event :reject,      :transitions_to => :rejected
-  #  end
-  #end
-
   # password confirmation validation
   def validate
     unless password.blank?
