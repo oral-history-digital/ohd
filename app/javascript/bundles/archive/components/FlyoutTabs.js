@@ -418,7 +418,7 @@ export default class FlyoutTabs extends React.Component {
     userContentTab() {
         return (
             <AuthShowContainer ifLoggedIn={true}>
-                <Tab className='flyout-tab' key='user-content'>{t(this.props, 'user_content')}</Tab>;
+                <Tab className='flyout-tab' key='user-content'>{t(this.props, 'user_content')}</Tab>
             </AuthShowContainer>
         )
     }
@@ -439,7 +439,7 @@ export default class FlyoutTabs extends React.Component {
     mapTab() {
         return (
             <AuthShowContainer ifLoggedIn={this.props.projectId === "zwar"}>
-                <Tab className='flyout-tab' key='map'>{t(this.props, 'map')}</Tab>;
+                <Tab className='flyout-tab' key='map'>{t(this.props, 'map')}</Tab>
             </AuthShowContainer>
         )
     }
