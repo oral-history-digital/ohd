@@ -683,6 +683,7 @@ ActiveRecord::Schema.define(version: 2020_07_03_113853) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_account_id"
+    t.datetime "activated_at"
   end
 
   create_table "user_registrations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

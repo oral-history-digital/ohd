@@ -416,31 +416,37 @@ export default class FlyoutTabs extends React.Component {
     }
 
     userContentTab() {
-        let css = this.props.isLoggedIn ? 'flyout-tab' : 'hidden';
-        return <Tab className={css} key='user-content'>{t(this.props, 'user_content')}</Tab>;
+        return (
+            <AuthShowContainer ifLoggedIn={true}>
+                <Tab className='flyout-tab' key='user-content'>{t(this.props, 'user_content')}</Tab>;
+            </AuthShowContainer>
+        )
     }
 
     userContentTabPanel() {
         return (
-            <TabPanel key='user-content'>
-                <div className='flyout-tab-title'>{t(this.props, 'user_content')}</div>
-                <div className='flyout-sub-tabs-container flyout-folder'>
-                    <AllUserContentsContainer />
-                </div>
-            </TabPanel>
+            <AuthShowContainer ifLoggedIn={true}>
+                <TabPanel key='user-content'>
+                    <div className='flyout-tab-title'>{t(this.props, 'user_content')}</div>
+                    <div className='flyout-sub-tabs-container flyout-folder'>
+                        <AllUserContentsContainer />
+                    </div>
+                </TabPanel>
+            </AuthShowContainer>
         )
     }
 
     mapTab() {
-        if (this.props.isLoggedIn && this.props.projectId !== 'dg') {
-            let css = this.props.isLoggedIn ? 'flyout-tab' : 'hidden';
-            return <Tab className={css} key='map'>{t(this.props, 'map')}</Tab>;
-        }
+        return (
+            <AuthShowContainer ifLoggedIn={this.props.projectId === "zwar"}>
+                <Tab className='flyout-tab' key='map'>{t(this.props, 'map')}</Tab>;
+            </AuthShowContainer>
+        )
     }
 
     mapTabPanel() {
-        if (this.props.isLoggedIn && this.props.projectId !== 'dg') {
-            return (
+        return (
+            <AuthShowContainer ifLoggedIn={this.props.projectId === "zwar"}>
                 <TabPanel key='map'>
                     <div className='flyout-tab-title'>{t(this.props, 'map')}</div>
                     <ArchiveSearchFormContainer map={true}/>
@@ -448,26 +454,32 @@ export default class FlyoutTabs extends React.Component {
                         {this.renderAdminActions(this.props.selectedArchiveIds)}
                     </div>
                 </TabPanel>
-            )
-        }
+            </AuthShowContainer>
+        )
     }
 
     renderMap() {
-        if (this.props.isLoggedIn && this.props.projectId !== 'dg') {
-            return <InterviewDataContainer
-                title={t(this.props, 'map')}
-                open={true}
-                content={<InterviewLocationsContainer/>}/>
-        }
+        return (
+            <AuthShowContainer ifLoggedIn={this.props.projectId === "zwar"}>
+                <InterviewDataContainer
+                    title={t(this.props, 'map')}
+                    open={true}
+                    content={<InterviewLocationsContainer/>}
+                />
+            </AuthShowContainer>
+        )
     }
 
     renderPhotos() {
-        if (this.props.isLoggedIn) {
-            return <InterviewDataContainer
-                title={t(this.props, 'photos')}
-                open={true}
-                content={<GalleryContainer/>}/>
-        }
+        return (
+            <AuthShowContainer ifLoggedIn={this.props.projectId === "zwar"}>
+                <InterviewDataContainer
+                    title={t(this.props, 'photos')}
+                    open={true}
+                    content={<GalleryContainer/>}
+                />
+            </AuthShowContainer>
+        )
     }
 
     renderSearchTheArchiveButton() {
