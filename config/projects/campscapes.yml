@@ -1,6 +1,8 @@
 default: &default
 
   default_locale: 'en'
+  available_locales: 
+    - en
 
   media_streams:
     defaults:
