@@ -93,8 +93,8 @@ export default class SingleValueWithForm extends React.Component {
             admin(this.props, this.props.obj) ||
             (
                 (
-                    (this.props.isLoggedIn && this.props.metadataField.use_in_details_view) ||
-                    (!this.props.isLoggedIn && this.props.metadataField.display_on_landing_page) 
+                    (this.props.isLoggedIn && this.props.metadataField && this.props.metadataField.use_in_details_view) ||
+                    (!this.props.isLoggedIn && this.props.metadataField && this.props.metadataField.display_on_landing_page) 
                 ) && 
                 (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.attribute()])
             )
