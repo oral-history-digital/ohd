@@ -123,7 +123,7 @@ class InterviewsController < ApplicationController
         render json: data_json(@interview)
       end
       format.vtt do
-        vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:tape_number]}" do
+        vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{params[:lang]}-#{params[:tape_number]}" do
           @interview.to_vtt(params[:lang] || interview_locale, params[:tape_number])
         end
         render plain: vtt
