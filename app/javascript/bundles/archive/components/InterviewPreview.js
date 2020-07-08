@@ -49,7 +49,8 @@ export default class InterviewPreview extends React.Component {
     }
 
     loadWithAssociations() {
-        let intervieweeId = Object.values(this.props.interview.contributions).find(c => c.contribution_type === 'interviewee').person_id;
+        let intervieweeContribution = Object.values(this.props.interview.contributions).find(c => c.contribution_type === 'interviewee');
+        let intervieweeId = intervieweeContribution.person_id;
         let interviewee = this.props.people[intervieweeId]
         if (
                (interviewee && !interviewee.associations_loaded) ||
