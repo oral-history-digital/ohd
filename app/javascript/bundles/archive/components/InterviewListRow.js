@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { t, admin, pathBase } from '../../../lib/utils';
+import { t, admin, pathBase, getInterviewee } from '../../../lib/utils';
 
 import AuthShowContainer from '../containers/AuthShowContainer';
 
@@ -13,8 +13,24 @@ export default class InterviewListRow extends React.Component {
     }
 
     componentDidMount() {
+        this.loadWithAssociations();
         if(this.props.fulltext) {
             this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+        }
+    }
+
+    componentDidUpdate() {
+        this.loadWithAssociations();
+    }
+
+    loadWithAssociations() {
+        let intervieweeId = Object.values(this.props.interview.contributions).find(c => c.contribution_type === 'interviewee').person_id;
+        let interviewee = this.props.people[intervieweeId]
+        if (
+               (interviewee && !interviewee.associations_loaded) ||
+               !interviewee
+        ) {
+            this.props.fetchData(this.props, 'people', intervieweeId, null, 'with_associations=true');
         }
     }
 
@@ -43,7 +59,7 @@ export default class InterviewListRow extends React.Component {
     }
 
     typologies(){
-        let interviewee =  this.props.interview.interviewees && this.props.interview.interviewees[0];
+        let interviewee =  getInterviewee(this.props);
         if (interviewee && interviewee.typology && interviewee.typology[this.props.locale]) {
             //if (interviewee.typology[this.props.locale] && interviewee.typology[this.props.locale].length > 1) {
                 return this.content(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '), "");
@@ -54,9 +70,10 @@ export default class InterviewListRow extends React.Component {
     }
 
     columns(){
-        let props = this.props
-        let cols = props.project.list_columns.map(function(column, i){
-            let value = props.interview[column.name];
+        let interviewee = getInterviewee(this.props);
+        let props = this.props;
+        let cols = this.props.project.list_columns.map(function(column, i){
+            let value = (column.ref_object_type === 'Interview' || column.source === 'Interview') ? props.interview[column.name] : (interviewee && interviewee[column.name]);
             if (typeof value === 'object' && value !== null)
                 value = value[props.locale]
             return (

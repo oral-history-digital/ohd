@@ -35,11 +35,27 @@ export default class InterviewPreview extends React.Component {
     }
 
     componentDidMount() {
+        this.loadWithAssociations();
         if(this.props.fulltext) {
             this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
         } else {
             // Is there any reason to run the empty search and thus drag down performance?
             //this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: '', id: this.props.interview.archive_id});
+        }
+    }
+
+    componentDidUpdate() {
+        this.loadWithAssociations();
+    }
+
+    loadWithAssociations() {
+        let intervieweeId = Object.values(this.props.interview.contributions).find(c => c.contribution_type === 'interviewee').person_id;
+        let interviewee = this.props.people[intervieweeId]
+        if (
+               (interviewee && !interviewee.associations_loaded) ||
+               !interviewee
+        ) {
+            this.props.fetchData(this.props, 'people', intervieweeId, null, 'with_associations=true');
         }
     }
 
@@ -101,44 +117,46 @@ export default class InterviewPreview extends React.Component {
 
     interviewDetails() {
         let interviewee = getInterviewee(this.props);
-        let yearOfBirth = interviewee && interviewee.year_of_birth;
-        let forcedLaborGroup = interviewee && interviewee.forced_labor_group[this.props.locale];
-        let forcedLaborField = interviewee && interviewee.forced_labor_field[this.props.locale];
+        if (interviewee && interviewee.associations_loaded) { 
+            let yearOfBirth = interviewee.year_of_birth;
 
-        if (this.props.projectId === 'zwar') {
-            return (
-                <div className={'search-result-data'} lang={this.props.locale}>
-                    <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>
-                    <span>{this.props.interview.language[this.props.locale]}</span>
-                    <small className={this.facetToClass("forced-labor-group")}><br/>{forcedLaborGroup}</small>
-                    <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {yearOfBirth}</small>
-                    <small className={this.facetToClass("forced-labor-field")}><br/>{forcedLaborField}</small>
-                </div>
-            );
-        }
-        else if (this.props.projectId === 'mog') {
-            return (
-                <div className={'search-result-data'} lang={this.props.locale}>
-                    {this.content( t(this.props, 'duration'), this.props.interview.duration_human)}
-                    {this.content(t(this.props, 'typologies'), this.props.interview.typology && this.props.interview.typology[this.props.locale])}
-                    <small className={this.facetToClass("year-of-birth")}>{this.content( t(this.props, 'year_of_birth'), yearOfBirth)}</small>
-                </div>
-            )
-        }
-        else if (this.props.projectId === 'dg') {
-            return (
-                <div className={'search-result-data'} lang={this.props.locale}>
-                    <span>{this.props.interview.duration_human}</span><br/>
-                    <small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {yearOfBirth}</small>
-                </div>
-            )
-        } else {
-            return (
-                <div className={'search-result-data'} lang={this.props.locale}>
-                    <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>
-                    <span>{this.props.interview.language[this.props.locale]}</span>
-                </div>
-            );
+            if (this.props.projectId === 'zwar') {
+                let forcedLaborGroup = interviewee.forced_labor_group[this.props.locale];
+                let forcedLaborField = interviewee.forced_labor_field[this.props.locale];
+                return (
+                    <div className={'search-result-data'} lang={this.props.locale}>
+                        <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>
+                        <span>{this.props.interview.language[this.props.locale]}</span>
+                        <small className={this.facetToClass("forced-labor-group")}><br/>{forcedLaborGroup}</small>
+                        <small className={this.facetToClass("year-of-birth")}><br/>{t(this.props, 'year_of_birth')} {yearOfBirth}</small>
+                        <small className={this.facetToClass("forced-labor-field")}><br/>{forcedLaborField}</small>
+                    </div>
+                );
+            }
+            else if (this.props.projectId === 'mog') {
+                return (
+                    <div className={'search-result-data'} lang={this.props.locale}>
+                        {this.content( t(this.props, 'duration'), this.props.interview.duration_human)}
+                        {this.content(t(this.props, 'typologies'), this.props.interview.typology && this.props.interview.typology[this.props.locale])}
+                        <small className={this.facetToClass("year-of-birth")}>{this.content( t(this.props, 'year_of_birth'), yearOfBirth)}</small>
+                    </div>
+                )
+            }
+            else if (this.props.projectId === 'dg') {
+                return (
+                    <div className={'search-result-data'} lang={this.props.locale}>
+                        <span>{this.props.interview.duration_human}</span><br/>
+                        <small className={this.facetToClass("year-of-birth")}>{t(this.props, 'year_of_birth')} {yearOfBirth}</small>
+                    </div>
+                )
+            } else {
+                return (
+                    <div className={'search-result-data'} lang={this.props.locale}>
+                        <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>
+                        <span>{this.props.interview.language[this.props.locale]}</span>
+                    </div>
+                );
+            }
         }
     }
 
