@@ -25,7 +25,7 @@ export default class InterviewListRow extends React.Component {
 
     loadWithAssociations() {
         let intervieweeContribution = Object.values(this.props.interview.contributions).find(c => c.contribution_type === 'interviewee');
-        let intervieweeId = intervieweeContribution.person_id;
+        let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;
         let interviewee = this.props.people[intervieweeId]
         if (
                (interviewee && !interviewee.associations_loaded) ||
