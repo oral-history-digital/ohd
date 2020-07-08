@@ -24,9 +24,8 @@ class UserRegistrationsController < ApplicationController
       UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id
       AdminMailer.with(registration: @user_registration, project: current_project).new_registration_info.deliver
       @user_registration.register!
-      render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)} # do we need this?
+      render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
     else
-      # TODO: keep legacy registering methods to allow registrations for pending users
       @email = @user_registration.email
       @user_registration = nil
       render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}

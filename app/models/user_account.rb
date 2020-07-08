@@ -80,16 +80,17 @@ class UserAccount < ApplicationRecord
 
   # self.confirm_by_token: not used.
 
-  # Confirm a user by setting it's confirmed_at to current time. If the user
-  # is already confirmed, add en error to email field.
-  # Additionally, we require passwords for confirming the account.
+  # Cornfirms the password in two cases:
+  # - for newly registered users
+  # - when resetting the password
+  # For newly registered user, we store the confirmation time and perform a workflow step in the registration workflow
   def confirm_with_password!(password, password_confirmation)
     reset_password(password, password_confirmation)
     unless_confirmed do
       self.confirmation_token = nil
       self.confirmed_at = Time.now
       self.deactivated_at = nil
-
+      # theoretically we do not need this check, but unfortunately we have some legacy accounts without UserRegistration
       unless self.user_registration.nil?
         self.user_registration.confirm_account! if self.user_registration.account_created?
       end

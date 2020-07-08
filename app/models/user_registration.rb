@@ -161,16 +161,16 @@ EVAL
     raise "Could not create a valid account for #{self.inspect}" unless self.user_account.valid?
     self.processed_at = Time.now
     save
-    save_registration_data_and_user_data_to_user_account # TMP_TRANSITION: copies all attributes to user_account
+    # FIXME: copies all attributes to user_account. this duplicates data and has to be removed after the new registration process is finished
+    save_registration_data_and_user_data_to_user_account
   end
 
   def confirm_account
     self.user_account.update_attribute :confirmed_at, Time.now
-    # remove confirmation token after activation - do we have to do it manually or is there some devise magic?
     self.user_account.update_attribute(:confirmation_token, nil)
   end
 
-  # TODO: this has to be triggered by a timeout as well
+  # TODO: check how the token expires
   def expire_confirmation_token
     self.user_account.update_attribute(:confirmation_token, nil)
   end
