@@ -1,8 +1,7 @@
 class Task < ApplicationRecord
 
-  belongs_to :user # FIXME: remove when migration 20200624144556 is merged
   belongs_to :user_account
-  belongs_to :supervisor, class_name: 'User'
+  belongs_to :supervisor, class_name: 'UserAccount'
   belongs_to :authorized, polymorphic: true
 
   include Workflow
