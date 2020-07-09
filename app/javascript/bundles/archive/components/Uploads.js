@@ -36,6 +36,8 @@ export default class Uploads extends React.Component {
     downloadLink() {
         if (this.state.explanation === 'bulk_metadata') {
             return (<a href={`/metadata-import-template.csv`} download>{`metadata-import-template.csv`}</a>);
+        } else if (this.state.explanation === 'bulk_registry_entries') {
+            return (<a href={`/registry-entries-import-template.csv`} download>{`registry-entries-import-template.csv`}</a>);
         } else {
             return null;
         }
