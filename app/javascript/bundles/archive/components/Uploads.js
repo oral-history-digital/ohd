@@ -84,6 +84,13 @@ export default class Uploads extends React.Component {
                                 individualErrorMsg: 'empty'
                             },
                             {
+                                elementType: 'select',
+                                attribute: 'lang',
+                                values: this.props.locales,
+                                withEmpty: true,
+                                validate: function(v){return /\w{2}/.test(v)},
+                            },
+                            {
                                 attribute: 'data',
                                 elementType: 'input',
                                 type: 'file',

@@ -905,6 +905,7 @@ en:
         title: Name
         workflow_state: State
         locale: Language
+        lang: Language
         desc: Description
         text: Text
         email: Email

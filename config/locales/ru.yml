@@ -959,6 +959,7 @@ ru:
         title: Name
         workflow_state: Status
         locale: Sprache
+        lang: Sprache
         desc: Beschreibung
         text: Text
         email: Электр. адрес
