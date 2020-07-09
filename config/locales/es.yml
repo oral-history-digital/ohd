@@ -390,7 +390,7 @@ es:
   saved_interviews: Entrevistas guardadas
   saved_annotations: Anotaciones guardadas
   text_materials: Textos
-  download_registry_entries: 'Desgargar el índice completo como %{format}'
+  download_registry_entries: 'Descargar el índice completo como %{format}'
   search_registry_entry: Buscar entrada en el índice
   grid: Cuadrícula
   list: Lista
