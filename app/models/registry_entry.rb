@@ -1073,8 +1073,8 @@ class RegistryEntry < ApplicationRecord
     end
   end
 
-  def notes
-    registry_names.first.notes
+  def notes(locale)
+    registry_names.first.notes(locale)
   end
 
   def notes=(notes)
