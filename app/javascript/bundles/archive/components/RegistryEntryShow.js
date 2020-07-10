@@ -17,11 +17,11 @@ export default class RegistryEntryShow extends React.Component {
 
     loadWithAssociations() {
         if (
-            this.props.registryEntry && 
-            !this.props.registryEntry.associations_loaded &&
-            this.props.registryEntriesStatus[this.props.registryEntry.id] !== 'fetching'
+            this.registryEntry() && 
+            !this.registryEntry().associations_loaded &&
+            this.props.registryEntriesStatus[this.props.registryEntryId] !== 'fetching'
         ) {
-            this.props.fetchData(this.props, 'registry_entries', this.props.registryEntry.id, null, 'with_associations=true');
+            this.props.fetchData(this.props, 'registry_entries', this.props.registryEntryId, null, 'with_associations=true');
         }
     }
 
@@ -52,9 +52,13 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     loader(references){
-        if(!references || ( Object.keys(references).length !== Object.keys(this.props.registryEntry.registry_references).length ) ){
+        if(!references || ( Object.keys(references).length !== Object.keys(this.registryEntry().registry_references).length ) ){
             return <PixelLoader/>
         }
+    }
+
+    registryEntry() {
+        return this.props.registryEntries[this.props.registryEntryId];
     }
 
     tape(segment) {
@@ -116,20 +120,20 @@ export default class RegistryEntryShow extends React.Component {
 
     registryReferences() {
         if (
-            this.props.registryEntry.associations_loaded &&
+            this.registryEntry().associations_loaded &&
             this.props.registryReferenceTypesStatus && 
             this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched'
         ) {
             let references = []
-            for (var r in this.props.registryEntry.registry_references) {
-                let rr = this.props.registryEntry.registry_references[r]
+            for (var r in this.registryEntry().registry_references) {
+                let rr = this.registryEntry().registry_references[r]
                 let rr_type = this.props.registryReferenceTypes[rr.registry_reference_type_id]
                 let ro = this.refObject(rr);
                 
                 if (ro) {
                     references.push(
                         <li
-                            key={`this.props.registryEntry.registry_reference-${r}`} 
+                            key={`this.registryEntry().registry_reference-${r}`} 
                         >
                             <strong>
                                 {rr_type && `${rr_type.name[this.props.locale]} `}
@@ -145,10 +149,10 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     show(id, key) {
-        if(this.props.registryEntry.ancestors[id]){
+        if(this.registryEntry().ancestors[id]){
             return (
                 <span className={'breadcrumb'} key={key}>
-                    {this.props.registryEntry.ancestors[id].name[this.props.locale]}
+                    {this.registryEntry().ancestors[id].name[this.props.locale]}
                     {/* {` (ID: ${id})`} */}
                 </span>
             )
@@ -159,7 +163,7 @@ export default class RegistryEntryShow extends React.Component {
 
     breadCrumb() {
         let paths = []
-        let bread_crumbs = this.props.registryEntry.bread_crumb;
+        let bread_crumbs = this.registryEntry().bread_crumb;
         if (bread_crumbs) {
             Object.keys(bread_crumbs).map((id, key) => {
                 let breadCrumbPath = [];
@@ -181,17 +185,17 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     osmLink() {
-        if((this.props.registryEntry.latitude + this.props.registryEntry.longitude) !== 0 ) {
+        if((this.registryEntry().latitude + this.registryEntry().longitude) !== 0 ) {
             return(
                 <small style={{float: 'right'}}>
                     <i className='fa fa-globe' />
                     &nbsp;    
                     <a 
-                        href={`https://www.openstreetmap.org/?mlat=${this.props.registryEntry.latitude}&mlon=${this.props.registryEntry.longitude}&zoom=6`}
+                        href={`https://www.openstreetmap.org/?mlat=${this.registryEntry().latitude}&mlon=${this.registryEntry().longitude}&zoom=6`}
                         target="_blank"
                         rel="noopener"
                         >
-                        {`${this.props.registryEntry.latitude}, ${this.props.registryEntry.longitude}`}
+                        {`${this.registryEntry().latitude}, ${this.registryEntry().longitude}`}
                         &nbsp;
                     </a>
                 </small> 
@@ -210,16 +214,16 @@ export default class RegistryEntryShow extends React.Component {
                 {this.breadCrumb()}
                 </div>
                 <h3>
-                    {this.props.registryEntry.name[this.props.locale]}
+                    {this.registryEntry().name[this.props.locale]}
                 </h3>
                 {/* <p>
-                    {this.props.registryEntry.desc} 
+                    {this.registryEntry().desc} 
                 </p> */}
                 <h4>
-                    {Object.keys(this.props.registryEntry.registry_references).length}
+                    {this.registryEntry().registry_references_count}
                     &nbsp;
-                    {(Object.keys(this.props.registryEntry.registry_references).length === 1) ? t(this.props, 'activerecord.models.registry_references.one') : t(this.props, 'activerecord.models.registry_references.other')}
-                    {(Object.keys(this.props.registryEntry.registry_references).length > 0) ? ':' : ''}
+                    {(this.registryEntry().registry_references_count === 1) ? t(this.props, 'activerecord.models.registry_references.one') : t(this.props, 'activerecord.models.registry_references.other')}
+                    {(this.registryEntry().registry_references_count > 0) ? ':' : ''}
                 </h4>
                 <br/>
                 <ul>
