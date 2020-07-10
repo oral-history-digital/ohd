@@ -1,6 +1,6 @@
 class AdminMailer < ApplicationMailer
 
-  def new_registration_info 
+  def new_registration_info
     registration = params[:registration]
     @project = params[:project]
     @user_name = registration.full_name
@@ -28,4 +28,15 @@ class AdminMailer < ApplicationMailer
     )
   end
 
+  def project_access_granted
+    @user_account = params[:user_account]
+    @project = params[:project]
+
+    mail(
+      subject: "Freischaltung Ihres Zugangs zu dem Archiv #{@project.shortname}", # TODO: translate
+      from: "no-reply@cedis.fu-berlin.de", # TODO: change?
+      to: @user_account.email,
+      date: Time.now
+    )
+  end
 end

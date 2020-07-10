@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_08_075649) do
+ActiveRecord::Schema.define(version: 2020_07_08_184912) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -633,15 +633,12 @@ ActiveRecord::Schema.define(version: 2020_07_08_075649) do
     t.string "country"
     t.datetime "tos_agreed_at"
     t.string "gender"
-    t.integer "user_registration_id"
-    t.integer "user_account_id"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "priv_agreement"
     t.boolean "tos_agreement"
     t.boolean "receive_newsletter"
     t.string "default_locale"
-    t.string "workflow_state"
     t.text "admin_comments"
     t.datetime "processed_at"
     t.datetime "activated_at"
@@ -683,6 +680,7 @@ ActiveRecord::Schema.define(version: 2020_07_08_075649) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_account_id"
+    t.datetime "activated_at"
   end
 
   create_table "user_registrations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

@@ -1,0 +1,12 @@
+<%
+  case @user_account.user_registration.default_locale
+  when :en
+-%>
+  TBD
+  <% when :ru -%>
+  TBD
+  <% else -%>
+   TBD
+    <p>Mit freundlichen Grüßen,</p>
+    <p>Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
+<% end -%>

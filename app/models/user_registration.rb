@@ -2,8 +2,7 @@ class UserRegistration < ApplicationRecord
   include Workflow
   include ActionView::Helpers::TextHelper
 
-  # do we need this constant?
-  STATES = %w(new account_created account_confirmed project_access_granted project_access_postponed rejected account_deactivated)
+  STATES = %w(account_confirmed project_access_granted project_access_postponed rejected account_deactivated)
 
   belongs_to :user_account
 
@@ -17,11 +16,14 @@ class UserRegistration < ApplicationRecord
 
   validates_uniqueness_of :email, :on => :create
 
+  validates_acceptance_of :tos_agreement, :accept => true
+  validates_acceptance_of :priv_agreement, :accept => true
+
   before_create :serialize_form_parameters
 
-  scope :unchecked, -> { where('workflow_state IS NULL OR workflow_state = ?', 'unchecked') }
+  #scope :unchecked, -> { where('workflow_state IS NULL OR workflow_state = ?', 'unchecked') }
 
-  scope :legit, -> { where('workflow_state = "checked" OR workflow_state = "registered"') }
+  scope :legit, -> { where('workflow_state = "project_access_granted"') }
   scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
 
   # fields expected for the user registration
@@ -110,16 +112,13 @@ EVAL
     # TODO: remove roles / permissions / workflow comments / tasks etc.
 
   workflow do
-    # new self-service registration process
-    # cannot be changed by admin - should be invisible in UI! (becacuse no user account exists)
-    state :new do
-      event :register,  :transitions_to => :account_created
-    end
-    # cannot be changed by admin - should be read only in UI!
+
+    # self-service step - not visible in UI
     state :account_created do
       event :confirm_account, :transition_to => :account_confirmed
       event :expire_confirmation_token, :transition_to => :confirmation_token_expired
     end
+    # admin workflow
     state :account_confirmed do
       event :grant_project_access, :transitions_to => :project_access_granted
       event :reject_project_access,    :transitions_to => :project_access_rejected
@@ -166,8 +165,8 @@ EVAL
   end
 
   def confirm_account
-    self.user_account.update_attribute :confirmed_at, Time.now
-    self.user_account.update_attribute(:confirmation_token, nil)
+    # this is triggered from user account to update the workflow state
+    AdminMailer.with(registration: self, project: current_project).new_registration_info.deliver
   end
 
   # TODO: check how the token expires
@@ -178,7 +177,8 @@ EVAL
   def grant_project_access
     self.update_attribute(:activated_at, Time.now) # TODO: not sure if we should keep this.
     self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, Time.now)
-    # TODO: send email to user
+    # TODO: check if mail is sent - and use another mailer
+    AdminMailer.with(user_account: self.user_account, project: current_project).project_access_granted.deliver
   end
 
   def revoke_project_access

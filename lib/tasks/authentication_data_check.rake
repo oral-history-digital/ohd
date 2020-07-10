@@ -5,10 +5,7 @@ namespace :authentication do
   desc 'all'
   task :all => [
     'authentication:registrationless_accounts',
-    'authentication:accountless_registrations',
-    'authentication:userless_accounts',
-    'authentication:accountless_users',
-    'authentication:userless_accounts_without_registrations'
+    'authentication:accountless_registrations'
   ] do
     puts 'complete.'
   end
@@ -17,13 +14,6 @@ namespace :authentication do
   task :registrationless_accounts => :environment do registrationless_accounts('user_accounts_without_registration') end
   desc 'export accountless registrations'
   task :accountless_registrations=> :environment do accountless_registrations('registrations_without_user_accounts') end
-  desc 'export userless accounts'
-  task :userless_accounts=> :environment do userless_accounts('accounts_without_users') end
-  desc 'export accountless users'
-  task :accountless_users=> :environment do accountless_users('users_without_accounts') end
-  # still missing:
-  # task :registrationless_users
-  # task :userless_registrations
   # see authentication_data.rake for an attempt to 'repair' inconsitent authentication data
   #
   desc 'authentication userless accounts without registrations'
@@ -52,39 +42,6 @@ namespace :authentication do
     end
     write_csv(what, results)
   end
-
-  def userless_accounts(what)
-    results = []
-    UserAccount.all.each do |account|
-      if User.find_by(user_account_id: account.id) == nil
-        results.push(account)
-      end
-    end
-    write_csv(what, results)
-  end
-
-  # those users should not exist
-  def accountless_users(what)
-    results = []
-    User.all.each do |account|
-      if UserAccount.find_by(id: account.user_account_id) == nil
-        results.push(account)
-      end
-    end
-    write_csv(what, results)
-  end
-
-  # those accounts - mostly from 2010 - have been mainly created by script or other batch processes
-  def userless_accounts_without_registrations(what)
-    results = []
-    UserAccount.all.each do |account|
-      if User.find_by(user_account_id: account.id) == nil && UserRegistration.find_by(user_account_id: account.id) == nil
-        results.push(account)
-      end
-    end
-    write_csv(what, results)
-  end
-
 
   def write_csv(what, results)
     unless results.empty?

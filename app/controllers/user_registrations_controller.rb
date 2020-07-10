@@ -22,8 +22,7 @@ class UserRegistrationsController < ApplicationController
     @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
       UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id
-      AdminMailer.with(registration: @user_registration, project: current_project).new_registration_info.deliver
-      @user_registration.register!
+      @user_registration.register
       render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
     else
       @email = @user_registration.email
@@ -198,11 +197,6 @@ class UserRegistrationsController < ApplicationController
       end
     end
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
-    # the first workflow steps are self service steps.
-    # the admin is involved in the workflow starting from 'account_confirmed'
-    # if the user does not confirm the account, it will expire and vanish
-    # TODO: show information about unconfirmed accounts - either in workflow view or elsewhere (read only)
-    conditionals << "workflow_state NOT in ('new', 'account_created')"
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
     @user_registrations = policy_scope(UserRegistration).includes(user_account: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1
