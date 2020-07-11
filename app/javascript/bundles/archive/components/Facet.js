@@ -163,7 +163,7 @@ export default class Facet extends React.Component {
             return (
                 <span>
                     <i className="fa fa-info-circle" aria-hidden="true" title={subfacet.notes[this.props.locale]}  style={{'color': 'grey'}} />
-                    {this.collectionLink()}
+                    {this.collectionLink(subfacet)}
                 </span>
             )
         }
