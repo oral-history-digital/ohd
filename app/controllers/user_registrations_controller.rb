@@ -24,6 +24,14 @@ class UserRegistrationsController < ApplicationController
       UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id
       @user_registration.register
       render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
+    elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      @user_registration = UserRegistration.where(email: @user_registration.email).first
+      if @user_registration.account_created?
+        # re-send the activation instructions
+        @user_registration.user_account.resend_confirmation_instructions
+        @email = @user_registration.email
+        render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
+      end
     else
       @email = @user_registration.email
       @user_registration = nil
@@ -197,6 +205,10 @@ class UserRegistrationsController < ApplicationController
       end
     end
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
+     # the first workflow steps are self service steps.
+     # the admin is involved in the workflow starting from 'account_confirmed'
+     # if the user does not confirm the account, it will expire and vanish
+    conditionals << "workflow_state NOT in ('account_created')"
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
     @user_registrations = policy_scope(UserRegistration).includes(user_account: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1
