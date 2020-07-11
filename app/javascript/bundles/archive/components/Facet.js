@@ -159,7 +159,7 @@ export default class Facet extends React.Component {
     }
 
     renderCollectionInfo(subfacet) {
-        if(this.props.facet === 'collection_id') {
+        if(this.props.facet === 'collection_id' && (subfacet.notes || subfacet.homepage)) {
             return (
                 <span>
                     <i className="fa fa-info-circle" aria-hidden="true" title={subfacet.notes[this.props.locale]}  style={{'color': 'grey'}} />
