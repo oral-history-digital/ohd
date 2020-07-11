@@ -146,16 +146,24 @@ export default class Facet extends React.Component {
         }
     }
 
-    renderCollectionInfo(subfacet) {
-        if(this.props.facet === 'collection_id') {
+    collectionLink(subfacet) {
+        if (subfacet.homepage && subfacet.homepage[this.props.locale]) {
             // apend 'http://' to homepage if not present
             let href = /^http/.test(subfacet.homepage[this.props.locale]) ? subfacet.homepage[this.props.locale] : `http://${subfacet.homepage[this.props.locale]}`
             return (
+                <a href={href} title={subfacet.homepage[this.props.locale]} target='_blank' rel="noopener">
+                    <i className="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
+                </a>
+            )
+        }
+    }
+
+    renderCollectionInfo(subfacet) {
+        if(this.props.facet === 'collection_id') {
+            return (
                 <span>
                     <i className="fa fa-info-circle" aria-hidden="true" title={subfacet.notes[this.props.locale]}  style={{'color': 'grey'}} />
-                    <a href={href} title={subfacet.homepage[this.props.locale]} target='_blank' rel="noopener">
-                        <i className="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
-                    </a>
+                    {this.collectionLink()}
                 </span>
             )
         }
