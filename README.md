@@ -18,7 +18,7 @@ This is the Interview Archive Web Application
     # or for a new empty project
     ln -s projects/empty.yml project.yml
     ```
-    
+
 3. Create datacite.yml:
 
    ```bash
@@ -34,7 +34,7 @@ This is the Interview Archive Web Application
     curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -
     sudo apt-get install -y nodejs
     ```
-    
+
 6. install yarn ( as well to run webpacker )
 
     ```bash
@@ -44,20 +44,20 @@ This is the Interview Archive Web Application
     yarn install
     ```
 7. Install Java
-   
+
    [https://wiki.ubuntuusers.de/Java/Installation/](https://wiki.ubuntuusers.de/Java/Installation/)
-   
+
    e.g.:
    ```bash
    sudo apt install openjdk-13-jre
    ```
-   
+
 8. Install redis
-   
+
    ```bash
-   sudo apt-get install redis-server 
+   sudo apt-get install redis-server
    ```
-   
+
 9. Recommended: Activate caching in deployment (depending on what you are about to work on):
 
    ```bash
@@ -68,8 +68,8 @@ This is the Interview Archive Web Application
    ```bash
    redis-cli --raw keys "zwar-*" | sed -e 's/$/"/' | sed -e 's/^/"/' | xargs redis-cli del
    ```
-    
-    
+
+
 ## Start app using foreman
 
 Normally you would have to start solr (`bundle exec rake solr:start`), rails server (`bundle exec rails s`) and a webpack dev server (`./bin/webpack-dev-server`) to compile js-resources.
@@ -118,9 +118,9 @@ rails-latex.gem is used for generating pdfs.
 Make sure that textlive-base and texlive-xetex is installed.
 ```bash
 sudo apt-get install texlive-base
-sudo apt-get install texlive-xetex 
-``` 
-The font FiraSans-Regular.ttf is used and should be installed as well. 
+sudo apt-get install texlive-xetex
+```
+The font FiraSans-Regular.ttf is used and should be installed as well.
 
 
 ## Switch project in development
@@ -132,15 +132,15 @@ Example: Switch from `mog` to `zwar`:
     ```xml
     <core name="default" instanceDir="." dataDir="data/mog"/>
     ```
-    
+
     to
-    
+
     ```xml
     <core name="default" instanceDir="." dataDir="data/zwar"/>
     ```
-    
+
 2. In **database.yml** switch to zwar database:
-    
+
     ```yml
     ...
     development:
@@ -187,3 +187,10 @@ Example: Switch from `mog` to `zwar`:
     ```bash
     redis-cli --raw keys "mog-*" | sed -e 's/$/"/' | sed -e 's/^/"/' | xargs redis-cli del
     ```
+
+
+## Running integration tests
+
+1. Start Cypress: ```yarn cypress:open``` - if it does not start, run ```yarn install``` first. (For more information about Cypress see https://docs.cypress.io/)
+
+Optional: setting the environment variable (for expamle in your ~/.bashrc file) ```export CYPRESS_CRASH_REPORTS=0``` prevents Cypres from sending error reports to the company.
