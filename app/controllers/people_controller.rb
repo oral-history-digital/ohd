@@ -1,5 +1,5 @@
 class PeopleController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: :index
+  skip_before_action :authenticate_user_account!, only: [:index, :show]
 
   def new
     authorize Person

@@ -259,6 +259,8 @@ EVAL
   def save_registration_data_and_user_data_to_user_account
     reg_attrs = self.attributes
     reg_attrs.delete('id')
+    reg_attrs.delete('workflow_state')
+    reg_attrs.delete('user_account_id')
     reg_attrs.delete('email') # user account already contains the email
     reg_attrs.delete('application_info') # we do not need the YAML field
     reg_attrs.delete('user_account_id')

@@ -65,7 +65,7 @@ export default class RegistryEntry extends React.Component {
                 onClick={() => this.props.openArchivePopup({
                     // title: this.props.data.name[this.props.locale],
                     content: <RegistryEntryShowContainer 
-                    registryEntry={this.props.data} 
+                    registryEntryId={this.props.data.id} 
                     registryEntryParent={this.props.registryEntryParent}
                     />
                     })}

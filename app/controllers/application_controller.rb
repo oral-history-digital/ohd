@@ -126,7 +126,8 @@ class ApplicationController < ActionController::Base
         end,
         accounts: {
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || {}
-        }
+        },
+        people: {}
       },
       popup: {
         show: false,

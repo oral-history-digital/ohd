@@ -408,7 +408,7 @@ de:
   saved_interviews: Gespeicherte Interviews
   saved_annotations: Gespeicherte Anmerkungen
   text_materials: Textmaterialien
-  download_registry_entries: 'Gesamtes Register als %{format} herunterladen'
+  download_registry_entries: 'Gesamtes Register als %{format} herunterladen (%{locale})'
   search_registry_entry: Registereintrag suchen
   grid: Raster
   list: Liste
@@ -475,15 +475,17 @@ de:
   upload:
     type:
       bulk_metadata: Import von Metadaten
-      bulk_registry_entries: Bulk Register Import
+      bulk_registry_entries: Import von Registereinträgen
       bulk_texts: Import von Textdateien (Protokolle oder Biografien)
     explanation:
-      introduction: "Für einen erfolgreichen Import der Textdateien müssen diese in einer zip-Datei ohne Unterordner komprimiert werden.
-        Die Dateinamen müssen dem Muster Archiv-ID_Typ_Sprache.ext folgen, wobei der Typ für Biographien 'bg' und für Protokolle 'prot' lautet.
-        Beispiel: za123_prot_de.rtf oder za007_bg_de.odt."
+      introduction: Wähle zuerst was du  importieren möchtest.
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
         sowie Feldart bei. Sprachbeschreibungen sollten entweder in Englisch oder im Alpha2- oder Alpha3-Code erfolgen.
+        Delimiter sollten entweder Semikolon oder Tab sein.
+      bulk_registry_entries: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
+        als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
+        sowie Feldart bei. 
         Delimiter sollten entweder Semikolon oder Tab sein.
       bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
@@ -911,6 +913,7 @@ de:
         title: Name
         workflow_state: Status
         locale: Sprache
+        lang: Sprache
         desc: Beschreibung
         text: Text
         email: E-Mail

@@ -17,8 +17,8 @@ class UploadsController < ApplicationController
     file = params[:upload].delete(:data)
     file_path = create_tmp_file(file)
 
-    current_locale ||= (params[:locale] || current_project.default_locale).to_sym
-    "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user_account, current_project, current_locale.to_s)
+    locale = upload_params[:lang]
+    "read_#{upload_params[:type]}_file_job".classify.constantize.perform_later(file_path, current_user_account, current_project, locale)
 
     respond_to do |format|
       format.html { render 'react/app' }
@@ -35,7 +35,7 @@ class UploadsController < ApplicationController
   private
 
   def upload_params
-    params.require(:upload).permit(:type)
+    params.require(:upload).permit(:type, :lang)
   end
 
 end
