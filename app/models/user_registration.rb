@@ -209,10 +209,6 @@ EVAL
     [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
   end
 
-  def updated_at
-    (user_account && user_account.updated_at) || created_at
-  end
-
   def form_parameters
     require 'yaml'
     form_parameters = YAML.load read_attribute(:application_info)
