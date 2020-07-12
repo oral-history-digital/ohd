@@ -68,6 +68,7 @@ FactoryBot.define do
     appellation { 'Herr' }
     first_name { 'Florian' }
     last_name { 'Grandel' }
+    gender {'not_specified'}
 
     country { 'BR' }
     city { 'Cabo Frio' }

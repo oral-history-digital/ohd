@@ -55,6 +55,11 @@ gem 'celluloid'
 gem 'sunspot_solr', '2.1.0' # A simple Solr installation with good defaults for development and testing.
 
 
+group :test, :development do
+  gem 'cypress-on-rails', '~> 1.0'
+  gem "byebug", "~> 11.1"
+end
+
 group :development do
   # Automatic tests
   gem 'rails-erd'
@@ -100,5 +105,3 @@ group :production do
 end
 
 gem 'mini_racer', platforms: :ruby
-
-gem "byebug", "~> 11.1", :groups => [:development, :test]
