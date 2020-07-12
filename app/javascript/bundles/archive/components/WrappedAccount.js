@@ -146,7 +146,7 @@ export default class WrappedAccount extends React.Component {
         return (
             <WrapperPageContainer tabIndex={0}>
                 <div className='wrapper-content register'>
-                    <AuthShowContainer ifLoggedIn={true}>
+                    <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
                         <h1>{t(this.props, `activerecord.models.user_account.one`)}</h1>
                         <div className='user-registration boxes'>
                             {this.details()}
