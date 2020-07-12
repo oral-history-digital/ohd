@@ -52,7 +52,7 @@ export default class EditPerson extends React.Component {
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <AuthShowContainer ifLoggedIn={true}>
-		  <h1 className='registry-entries-title'>{t(this.props, `edit.person.new`)}</h1>
+                    <h1 className='registry-entries-title'>{t(this.props, `edit.person.new`)}</h1>
                     {this.content()}
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true}>
