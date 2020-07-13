@@ -42,7 +42,7 @@ const initialState = {
     },
     user_registrations: {
         query: {
-            workflow_state: 'unchecked',
+            workflow_state: 'account_confirmed',
             page: 1,
         },
     },
