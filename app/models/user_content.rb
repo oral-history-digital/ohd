@@ -10,6 +10,7 @@ class UserContent < ApplicationRecord
 
   ANNOTATION_LIMIT = 300
 
+  belongs_to :user # FIXME: remove when migration 20200624144556 is merged
   belongs_to :user_account
   belongs_to :reference, :polymorphic => true
 
