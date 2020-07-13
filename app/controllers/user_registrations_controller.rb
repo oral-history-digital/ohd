@@ -178,9 +178,9 @@ class UserRegistrationsController < ApplicationController
     conditionals = []
     condition_args = []
     # workflow state
-    @filters['workflow_state'] = params['workflow_state'] || 'unchecked'
+    @filters['workflow_state'] = params['workflow_state'] || 'account_confirmed'
     unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
-      conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL)" : ")")
+      conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "account_confirmed" ? " OR workflow_state IS NULL)" : ")")
     end
     # other attributes
     %w(email default_locale).each do |att|
@@ -207,10 +207,6 @@ class UserRegistrationsController < ApplicationController
       end
     end
     @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
-     # the first workflow steps are self service steps.
-     # the admin is involved in the workflow starting from 'account_confirmed'
-     # if the user does not confirm the account, it will expire and vanish
-    conditionals << "workflow_state NOT in ('account_created')"
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
     @user_registrations = policy_scope(UserRegistration).includes(user_account: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1

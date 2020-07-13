@@ -827,7 +827,7 @@ es:
         tos_agreement: Términos de uso
         priv_agreement: Indicaciones sobre la política de privacidad
         register: Enviar registro
-        workflow_state: Cambiar estado a
+        workflow_state: Estado
       user_role:
         role_id: Rolle
       role:

@@ -61,18 +61,23 @@ export default class UserRegistration extends React.Component {
     }
 
     show() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.user_registration.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.user_registration.edit'),
-                    content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
-                })}
-            >
-                <i className="fa fa-pencil"></i>
-            </div>
-        )
+        if (this.props.userRegistration.workflow_state != 'account_created') {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.user_registration.edit')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.user_registration.edit'),
+                        content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
+                    })}
+                >
+                    <i className="fa fa-pencil"></i>
+                </div>
+            )
+        }
+        else {
+          return ''
+        }
     }
 
     // edit() {

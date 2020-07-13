@@ -868,7 +868,7 @@ de:
         tos_agreement: Nutzungsbedingungen
         priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
-        workflow_state: Status ändern zu
+        workflow_state: Status
       user_role:
         role_id: Rolle
       role:

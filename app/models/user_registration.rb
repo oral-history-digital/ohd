@@ -2,7 +2,7 @@ class UserRegistration < ApplicationRecord
   include Workflow
   include ActionView::Helpers::TextHelper
 
-  STATES = %w(account_confirmed project_access_granted project_access_postponed rejected account_deactivated)
+  STATES = %w(account_created account_confirmed project_access_granted project_access_postponed rejected account_deactivated)
 
   belongs_to :user_account
 
@@ -109,11 +109,10 @@ EVAL
     #     - [for admin purposes (security, trolling): email, admin_comments] to be discussed
     #    Users accounts checked or unchecked in the last 7 days are asked to register again due to changed registration process
     # associated data: ip, usage report
-    # TODO: remove roles / permissions / workflow comments / tasks etc.
 
   workflow do
 
-    # self-service step - not visible in UI
+    # self-service step - not editable in UI
     state :account_created do
       event :confirm_account, :transition_to => :account_confirmed
       event :expire_confirmation_token, :transition_to => :confirmation_token_expired
