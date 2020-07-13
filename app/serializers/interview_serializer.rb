@@ -32,6 +32,7 @@ class InterviewSerializer < ApplicationSerializer
     :doi_status,
     :landing_page_texts,
     :properties,
+    :signature_original
   #] | Project.first.metadata_fields.map(&:name)
   ] | Project.first.metadata_fields.where("source='Interview' OR ref_object_type='Interview'").map(&:name)
 
