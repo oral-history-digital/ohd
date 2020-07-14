@@ -4,7 +4,7 @@ describe('User Registration', () => {
    const user = {
      "first_name": "Sura",
      "last_name": "Norda",
-     "email": "taest22@deleteme.org",
+     "email": "taaest44@deleteme.org",
      "gender": "not_specified",
      "street": "Milchstraße 2",
      "city": "Berlin",
@@ -19,7 +19,6 @@ describe('User Registration', () => {
       cy.visit('/de/user_registrations/new')
 
       cy.get('input[name=first_name]').type(user.first_name)
-      cy.get('input[name=last_name]').type(user.last_name)
       cy.get('input[name=last_name]').type(user.last_name)
       cy.get('input[name=email]').type(user.email)
       cy.get('select[name=gender]').select(user.gender)

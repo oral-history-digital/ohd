@@ -3,8 +3,10 @@ describe('The Home Page', () => {
   //  cy.visit('/')
   //})
   it('logs in', function () {
-      const login = 'sur@nord.eu'
-      const password = 'test1234'
+
+      //cy.appFixtures()
+      const login = 'christian.gregor@googlemail.com'
+      const password = 'bla4bla'
 
       cy.visit('/')
       //cy.wait(2000)
