@@ -55,7 +55,6 @@ class UserRegistrationsController < ApplicationController
   end
 
   # POST
-  # is this used only for password change???
   def confirm
     # don't clear the confirmation_token until we have successfully
     # submitted the password

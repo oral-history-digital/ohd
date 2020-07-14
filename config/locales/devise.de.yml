@@ -129,18 +129,6 @@ de:
       postponed: zurückgestellt
       rejected: abgelehnt
       all: alle
-      confirm_account: Account bestätigen
-      activate_account: Account aktivieren
-      reactivate_account: Account reaktivieren
-      grant_project_access: freischalten
-      reject_project_access: ablehnen
-      postpone_project_access: zurückstellen
-      account_created: Account angelegt
-      account_confirmed: Account bestätigt
-      account_deactivated: Account deaktiviert
-      project_access_granted: registriert
-      project_access_rejected: zurückgewiesen
-      project_access_postponed: zurückgestellt
     workflow_events:
       register: registrieren
       register_info: Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
