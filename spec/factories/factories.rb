@@ -68,6 +68,7 @@ FactoryBot.define do
     appellation { 'Herr' }
     first_name { 'Florian' }
     last_name { 'Grandel' }
+    gender {'not_specified'}
 
     country { 'BR' }
     city { 'Cabo Frio' }
@@ -91,4 +92,10 @@ FactoryBot.define do
     end
   end
 
+  factory :user_registration_project do
+    user_registration
+    user_account
+    project
+    activated_at { Time.now - 1.day }
+  end
 end

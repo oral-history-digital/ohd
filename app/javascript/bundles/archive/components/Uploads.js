@@ -109,10 +109,10 @@ export default class Uploads extends React.Component {
             <WrapperPageContainer tabIndex={tabIndex}>
                 <div className='wrapper-content register'>
                     <AuthShowContainer ifLoggedIn={true}>
-		        <h1 className='registry-entries-title'>{t(this.props, `edit.upload.upload`)}</h1>
+                        <h1 className='registry-entries-title'>{t(this.props, `edit.upload.upload`)}</h1>
                         {this.content()}
                     </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
+                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                         {t(this.props, 'devise.failure.unauthenticated')}
                     </AuthShowContainer>
                 </div>

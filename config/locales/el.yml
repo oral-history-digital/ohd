@@ -857,7 +857,7 @@ el:
         tos_agreement: Προϋποθέσεις χρήσης
         priv_agreement: Υποδείξεις για την προστασία δεδομένων
         register: Registrierung senden
-        workflow_state: Status ändern zu
+        workflow_state: Status
         registration: Εγγραφή
         registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών
           "Μνήμες από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα

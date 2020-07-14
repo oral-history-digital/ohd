@@ -83,7 +83,7 @@ export default class Account extends React.Component {
     render() {
         return (
             <div className={'flyout-login-container'}>
-                <AuthShowContainer ifLoggedIn={true}>
+                <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
                     <div className='info'>
                         {`${t(this.props, 'logged_in_as')} ${this.props.firstName} ${this.props.lastName}`}
                     </div>

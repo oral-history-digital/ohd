@@ -182,7 +182,7 @@ class ApplicationController < ActionController::Base
         },
         user_registrations: {
           query: {
-            workflow_state: 'unchecked',
+            workflow_state: 'account_confirmed',
             page: 1,
           },
         },

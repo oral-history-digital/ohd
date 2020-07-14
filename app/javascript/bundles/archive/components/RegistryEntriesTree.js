@@ -112,7 +112,7 @@ export default class RegistryEntriesTree extends React.Component {
                             {this.content()}
                         </div>
                     </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
+                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                         {t(this.props, 'devise.failure.unauthenticated')}
                     </AuthShowContainer>
                 </WrapperPageContainer>

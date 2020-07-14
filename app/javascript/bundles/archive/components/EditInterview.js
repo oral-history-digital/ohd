@@ -60,9 +60,9 @@ export default class EditInterview extends React.Component {
 		        <h1 className='registry-entries-title'>{t(this.props, `edit.interview.new`)}</h1>
 		        {this.content()}
 	            </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
-                        {t(this.props, 'devise.failure.unauthenticated')}
-                    </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                    {t(this.props, 'devise.failure.unauthenticated')}
+                </AuthShowContainer>
 	        </div>
             </WrapperPageContainer>
         );

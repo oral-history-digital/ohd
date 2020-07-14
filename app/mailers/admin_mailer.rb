@@ -1,6 +1,6 @@
 class AdminMailer < ApplicationMailer
 
-  def new_registration_info 
+  def new_registration_info
     registration = params[:registration]
     @project = params[:project]
     @user_name = registration.full_name
@@ -27,5 +27,4 @@ class AdminMailer < ApplicationMailer
       date: Time.now
     )
   end
-
 end
