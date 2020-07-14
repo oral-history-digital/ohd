@@ -69,7 +69,6 @@ class UserRegistrationsController < ApplicationController
     if @user_account.errors.empty?
       @user_account.reset_password_token = nil
       flash[:alert] = t('welcome', :scope => 'devise.registrations')
-      # FIXME: no sign in for newly registered users
       sign_in(:user_account, @user_account)
       respond_with @user_account, location: after_sign_in_path_for(@user_account)
     end

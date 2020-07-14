@@ -1,0 +1,20 @@
+<%
+  contact_email = @user_account.user_registration.projects.last.contact_email
+  case I18n.locale
+  when :en
+-%>
+Your account has been deactivated.
+
+<% when :ru -%>
+TBD
+<% else -%>
+Sehr geehrte/r<%= @user_account.display_name %>,
+
+Ihr Zugang wurde gesperrt.
+
+Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.
+
+Mit freundlichen Grüßen,
+
+Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"
+<% end -%>

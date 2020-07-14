@@ -27,16 +27,4 @@ class AdminMailer < ApplicationMailer
       date: Time.now
     )
   end
-
-  def project_access_granted
-    @user_account = params[:user_account]
-    @project = params[:project]
-
-    mail(
-      subject: "Freischaltung Ihres Zugangs zu dem Archiv #{@project.shortname}", # TODO: translate
-      from: "no-reply@cedis.fu-berlin.de", # TODO: change?
-      to: @user_account.email,
-      date: Time.now
-    )
-  end
 end

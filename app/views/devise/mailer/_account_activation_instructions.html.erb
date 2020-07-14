@@ -20,12 +20,11 @@
     <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% else -%>
     <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
-    <p>Sie haben sich für das <%= @user_account.user_registration.projects.last.name('de') %> registriert.</p>
+    <p>Sie haben sich für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>
     <p>Bitte bestätigen Sie Ihre Registrierung innerhalb der kommenden 14 Tage hier:</p>
     <p><%= link_to 'Registrierung bestätigen', url %></p>
-    <p>Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktagen dauern. Nach dieser Überprüfung wird Ihr Zugang zum '<%= @user_account.user_registration.projects.last.name('de') %>' aktiviert und Sie erhalten Ihre Zugangsdaten.</p>
-    <p>Sollten Sie sich nicht für das <%= @user_account.user_registration.projects.last.name('de') %> registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
-    <br/>
+    <p>Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktagen dauern. Nach dieser Überprüfung wird Ihr Zugang zu dem Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" aktiviert und Sie erhalten Ihre Zugangsdaten.</p>
+    <p>Sollten Sie sich nicht für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
     <p>Mit freundlichen Grüßen,</p>
     <p>Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>

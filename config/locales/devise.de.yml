@@ -30,6 +30,8 @@ de:
         subject: Ihre Registrierung für das Archiv '%{project_name}'
       project_access_granted_instructions:
         subject: Freischaltung Ihres Zugangs zu dem Archiv '%{project_name}'
+      project_access_rejected_instructions:
+        subject: Ihre Registrierung für das Archiv '%{project_name}'
       reset_password_instructions:
         subject: Schritte für die Wiederherstellung Ihres Passwortes
       unlock_instructions:

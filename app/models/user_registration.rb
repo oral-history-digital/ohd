@@ -21,8 +21,6 @@ class UserRegistration < ApplicationRecord
 
   before_create :serialize_form_parameters
 
-  #scope :unchecked, -> { where('workflow_state IS NULL OR workflow_state = ?', 'unchecked') }
-
   scope :legit, -> { where('workflow_state = "project_access_granted"') }
   scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
 
@@ -174,19 +172,13 @@ EVAL
   end
 
   def grant_project_access
-    self.update_attribute(:activated_at, Time.now) # TODO: not sure if we should keep this.
+    self.update_attribute(:activated_at, Time.now)
     self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, Time.now)
-    # TODO: check if mail is sent - and use another mailer
-    AdminMailer.with(user_account: self.user_account, project: current_project).project_access_granted.deliver
-  end
-
-  def revoke_project_access
-    self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, nil)
-    # TODO: send email to user
+    CustomDeviseMailer.project_access_granted(self.user_account, {}).deliver_now
   end
 
   def reject_project_access
-    # TODO: send email to user
+    CustomDeviseMailer.project_access_rejected(self.user_account, {}).deliver_now
   end
 
   # Flags the account as deactivated and removes project access
@@ -196,7 +188,7 @@ EVAL
     end
     self.user_account.update_attribute(:admin, nil)
     self.user_account.deactivate!
-    # TODO: send email to user (or does this already happen?)
+    CustomDeviseMailer.account_deactivated(self.user_account, {}).deliver_now
   end
 
   def reactivate_account
