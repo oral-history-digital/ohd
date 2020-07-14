@@ -12,12 +12,12 @@ export default class OrderNewPasswordForm extends React.Component {
     constructor(props, context) {
         super(props);
         this.state = {
-            showErrors: false, 
+            showErrors: false,
             values: {
-                email: this.props.account.email && this.props.account.email.includes('@') ? this.props.account.email : null
+                email: this.props.account && this.props.account.email && this.props.account.email.includes('@') ? this.props.account.email : null
             },
             errors: {
-                email: !(this.props.account.email && this.props.account.email.includes('@'))
+                email: !(this.props.account && this.props.account.email && this.props.account.email.includes('@'))
             }
         };
 
@@ -27,7 +27,7 @@ export default class OrderNewPasswordForm extends React.Component {
     }
 
     handleChange(name, value) {
-        this.setState({ 
+        this.setState({
             values: Object.assign({}, this.state.values, {[name]: value})
         })
     }
@@ -36,11 +36,11 @@ export default class OrderNewPasswordForm extends React.Component {
         event.preventDefault();
         if(this.valid()) {
             this.props.submitOrderNewPassword(`${pathBase(this.props)}/user_accounts/password`, {user_account: this.state.values});
-        } 
+        }
     }
 
     handleErrors(name, bool) {
-        this.setState({ 
+        this.setState({
             errors: Object.assign({}, this.state.errors, {[name]: bool})
         })
     }
@@ -68,13 +68,13 @@ export default class OrderNewPasswordForm extends React.Component {
     render() {
         return (
             <form className='default' onSubmit={this.handleSubmit}>
-                <InputContainer 
-                    scope='user_registration' 
-                    attribute='email' 
+                <InputContainer
+                    scope='user_registration'
+                    attribute='email'
                     value={this.props.account.email && this.props.account.email.includes('@') ? this.props.account.email : ''}
-                    type='text' 
+                    type='text'
                     showErrors={this.state.showErrors}
-                    validate={function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/.test(v)}} 
+                    validate={function(v){return /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,5})+$/.test(v)}}
                     handleChange={this.handleChange}
                     handleErrors={this.handleErrors}
                 />
