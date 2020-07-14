@@ -55,9 +55,6 @@ const initialState = {
 }
 
 const search = (state = initialState, action) => {
-    console.log("---")
-    console.log(state)
-    console.log("---")
     switch (action.type) {
         case REQUEST_INTERVIEW_SEARCH:
             return Object.assign({}, state, {

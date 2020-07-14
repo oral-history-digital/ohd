@@ -393,20 +393,26 @@ export default class FlyoutTabs extends React.Component {
                             {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                       </button>
                     </p>
-                    {this.downloadRegistryEntries('pdf')}
-                    {this.downloadRegistryEntries('csv')}
+                    {this.props.locales.map((locale, index) => {
+                        return (
+                            <div>
+                                {this.downloadRegistryEntries('pdf', locale)}
+                                {this.downloadRegistryEntries('csv', locale)}
+                            </div>
+                        )
+                    })}
                 </div>
             </TabPanel>
         )
     }
 
-    downloadRegistryEntries(format) {
+    downloadRegistryEntries(format, locale) {
         if (this.props.projectId === 'mog' || admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
             return (
                 <p>
-                    <a href={`${pathBase(this.props)}/registry_entries.${format}`}>
-                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_registry_entries')}></i>
-                        <span>{` ${t(this.props, 'download_registry_entries', {format: format})}`}</span>
+                    <a href={`${pathBase(this.props)}/registry_entries.${format}?lang=${locale}`}>
+                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_registry_entries', {format: format, locale: locale})}></i>
+                        <span>{` ${t(this.props, 'download_registry_entries', {format: format, locale: locale})}`}</span>
                     </a>
                 </p>
             )

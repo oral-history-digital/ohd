@@ -105,3 +105,5 @@ group :production do
 end
 
 gem 'mini_racer', platforms: :ruby
+
+gem "byebug", "~> 11.1", :groups => [:development, :test]

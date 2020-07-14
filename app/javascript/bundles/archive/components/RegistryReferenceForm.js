@@ -25,8 +25,10 @@ export default class RegistryReferenceForm extends React.Component {
     loadRegistryEntries() {
         if (
             !this.props.registryEntriesStatus[`children_for_entry_${this.state.parentEntryId}`] ||
-            (this.props.registryEntriesStatus[this.state.parentEntryId] &&
-                this.props.registryEntriesStatus[this.state.parentEntryId].split('-')[0] === 'reload')
+            (
+                this.props.registryEntriesStatus[this.state.parentEntryId] &&
+                this.props.registryEntriesStatus[this.state.parentEntryId].split('-')[0] === 'reload'
+            )
         ) {
             this.props.fetchData(this.props, 'registry_entries', null, null, `children_for_entry=${this.state.parentEntryId}`);
         }
@@ -41,15 +43,16 @@ export default class RegistryReferenceForm extends React.Component {
     loadParentEntry() {
         if (
             (
-                this.props.parentEntryId && 
-                !this.props.registryEntriesStatus[this.props.parentEntryId]
+                this.registryEntryParent() && 
+                !this.registryEntryParent().associations_loaded &&
+                this.props.registryEntriesStatus[this.props.parentEntryId] !== 'fetching'
             ) ||
             (
                 this.props.registryEntriesStatus[this.props.parentEntryId] &&
                 this.props.registryEntriesStatus[this.props.parentEntryId].split('-')[0] === 'reload'
             )
         ) {
-            this.props.fetchData(this.props, 'registry_entries', this.props.parentEntryId);
+            this.props.fetchData(this.props, 'registry_entries', this.props.parentEntryId, null, 'with_associations=true');
         }
     }
 
@@ -95,7 +98,8 @@ export default class RegistryReferenceForm extends React.Component {
     registryEntries() {
         if (
             // check whether parentEntry is loaded
-            this.props.registryEntriesStatus[this.props.parentEntryId] &&
+            this.registryEntryParent() && 
+            this.registryEntryParent().associations_loaded &&
             this.props.registryEntriesStatus[this.props.parentEntryId].split('-')[0] === 'fetched' &&
 
             // check whether childEntries are loaded
@@ -112,6 +116,8 @@ export default class RegistryReferenceForm extends React.Component {
 
     handleSelectedRegistryEntry(name, value) {
         if (this.props.goDeeper) {
+            if (!this.props.registryEntries[value] || !this.props.registryEntries[value].associations_loaded)
+                this.props.fetchData(this.props, 'registry_entries', value, null, 'with_associations=true');
             this.setState({parentEntryId: value});
         }
     }
@@ -130,7 +136,7 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     goUp() {
-        if (this.state.parentEntryId !== this.props.parentEntryId) {
+        if (this.registryEntryParent().associations_loaded && this.state.parentEntryId !== this.props.parentEntryId) {
             let parentRegistryEntryId = this.registryEntryParent().parent_ids[this.props.locale][0] === this.props.parentEntryId ?
                 this.props.parentEntryId :
                 this.registryEntryParent().parent_ids[this.props.locale][0]

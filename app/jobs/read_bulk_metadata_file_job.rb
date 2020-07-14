@@ -38,7 +38,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
               collection_id: data[12] && find_or_create_collection(data[12]).id,
               language_id: (language = find_or_create_language(data[16]); language ? language.id : nil),
               duration: data[21],
-              media_type: data[15],
+              media_type: data[15] && data[15].downcase,
               archive_id: data[0],
               signature_original: data[14], 
             }

@@ -130,8 +130,8 @@ describe UserRegistration, 'on registration after account activation' do
     expect(registration).to be_account_confirmed
   end
 
-  it 'should have an active user account associated' do
-    expect(registration.user_account).to be_active
+  it 'should not have an active user account associated' do
+    expect(registration.user_account).not_to be_active
   end
 
   it 'should have the same email as the user account' do

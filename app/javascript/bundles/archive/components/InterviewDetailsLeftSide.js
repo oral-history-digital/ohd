@@ -37,7 +37,7 @@ export default class InterviewDetailsLeftSide extends React.Component {
                     <ContentFieldContainer label={t(this.props, 'subcollection')} value={this.props.interview && this.props.interview.properties && this.props.interview.properties.subcollection} />
                     <ContentFieldContainer label={t(this.props, 'contributions.interviewer')} value={this.props.interview && this.props.interview.properties && this.props.interview.properties.interviewer} />
                     <ContentFieldContainer label={'Link'} value={this.props.interview && this.props.interview.properties && <a href={this.props.interview.properties.link} target='_blank'>{this.props.interview.properties.link}</a>} />
-                    <ContentFieldContainer label={'Signature'} value={this.props.interview && this.props.interview.properties && this.props.interview.properties.signature_original} />
+                    <ContentFieldContainer label={'Signature'} value={this.props.interview && this.props.interview.signature_original} />
                     {this.footerNavigation()}
                 </div>
             </div>

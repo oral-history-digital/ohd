@@ -1,4 +1,4 @@
-<p>Dear <%= @receiver.user %>,</p>
+<p>Dear <%= @receiver.display_name %>,</p>
 
 <% if @file %>
   <p>the file <%= @file && @file.split('/').last %> has been processed.</p> 

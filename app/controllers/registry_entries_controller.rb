@@ -97,24 +97,24 @@ class RegistryEntriesController < ApplicationController
         render plain: json
       end
       format.pdf do
-        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[locale]}-#{RegistryName.maximum(:updated_at)}-#{RegistryEntry.maximum(:updated_at)}" do
+        @locale = params[:lang]
+        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{RegistryName.maximum(:updated_at)}-#{RegistryEntry.maximum(:updated_at)}" do
           @registry_entries = RegistryEntry.pdf_entries(current_project)
-          @locale = params[:locale]
           render_to_string(:template => "/registry_entries/index.pdf.erb", :layout => "latex.pdf.erbtex")
         end
-        send_data pdf, filename: "registry_entries_#{@locale}.pdf", :type => "application/pdf" #, :disposition => "attachment"
+        send_data pdf, filename: "registry_entries_#{params[:lang]}.pdf", :type => "application/pdf" #, :disposition => "attachment"
       end
       format.csv do
-        csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{params[locale]}-#{RegistryName.maximum(:updated_at)}-#{RegistryEntry.maximum(:updated_at)}" do
+        csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{params[:lang]}-#{RegistryName.maximum(:updated_at)}-#{RegistryEntry.maximum(:updated_at)}" do
           CSV.generate(col_sep: "\t") do |row|
-            row << %w(parent_name, parent_id, name, id, description, latitude, longitude)
+            row << %w(parent_name parent_id name id description latitude, longitude)
             current_project.registry_entries.where(code: 'root').first.on_all_descendants do |entry| 
               parent = entry.parents.first
-              row << [parent && parent.descriptor, parent && parent.id, entry.descriptor, entry.id, entry.notes, entry.latitude, entry.longitude]
+              row << [parent && parent.descriptor(params[:lang]), parent && parent.id, entry.descriptor(params[:lang]), entry.id, entry.notes(params[:lang]), entry.latitude, entry.longitude]
             end
           end
         end
-        send_data csv, filename: "registry_entries_#{@locale}.csv"
+        send_data csv, filename: "registry_entries_#{params[:lang]}.csv"
       end
     end
   end

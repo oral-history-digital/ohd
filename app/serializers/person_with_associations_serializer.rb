@@ -4,7 +4,7 @@ class PersonWithAssociationsSerializer < PersonSerializer
                :biographical_entries,
                :registry_references,
              ] |
-             MetadataField.where(ref_object_type: "Person", source: "RegistryReferenceType").map(&:name)
+             MetadataField.where(ref_object_type: "Person", source: "RegistryReferenceType").map(&:name) |
              MetadataField.where(source: "Person").map(&:name)
 
   #
