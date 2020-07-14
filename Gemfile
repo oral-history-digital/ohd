@@ -58,6 +58,8 @@ gem 'sunspot_solr', '2.1.0' # A simple Solr installation with good defaults for 
 group :test, :development do
   gem 'cypress-on-rails', '~> 1.0'
   gem "byebug", "~> 11.1"
+  gem 'bcrypt_pbkdf'
+  gem 'ed25519'
 end
 
 group :development do
@@ -105,5 +107,3 @@ group :production do
 end
 
 gem 'mini_racer', platforms: :ruby
-
-gem "byebug", "~> 11.1", :groups => [:development, :test]
