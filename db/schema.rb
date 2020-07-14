@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_12_114042) do
+ActiveRecord::Schema.define(version: 2020_07_14_095209) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -366,7 +366,7 @@ ActiveRecord::Schema.define(version: 2020_07_12_114042) do
     t.boolean "list_priority"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["code"], name: "index_registry_entries_on_code"
+    t.index ["code"], name: "index_registry_entries_on_code", length: 50
   end
 
   create_table "registry_entry_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -436,7 +436,7 @@ ActiveRecord::Schema.define(version: 2020_07_12_114042) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "children_only", default: false
-    t.index ["code"], name: "index_registry_reference_types_on_code"
+    t.index ["code"], name: "index_registry_reference_types_on_code", length: 50
   end
 
   create_table "registry_references", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -623,7 +623,7 @@ ActiveRecord::Schema.define(version: 2020_07_12_114042) do
     t.string "appellation"
     t.string "job_description"
     t.string "research_intentions"
-    t.text "comments"
+    t.text "comments", limit: 16777215
     t.string "organization"
     t.string "homepage"
     t.string "street"
@@ -639,7 +639,7 @@ ActiveRecord::Schema.define(version: 2020_07_12_114042) do
     t.boolean "tos_agreement"
     t.boolean "receive_newsletter"
     t.string "default_locale"
-    t.text "admin_comments"
+    t.text "admin_comments", limit: 16777215
     t.datetime "processed_at"
     t.datetime "activated_at"
     t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true
@@ -679,8 +679,8 @@ ActiveRecord::Schema.define(version: 2020_07_12_114042) do
     t.integer "user_registration_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "user_account_id"
     t.datetime "activated_at"
+    t.integer "user_account_id"
   end
 
   create_table "user_registrations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
