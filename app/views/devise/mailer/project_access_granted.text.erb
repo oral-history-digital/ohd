@@ -1,0 +1,21 @@
+<%
+  url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}"
+  case @user_account.user_registration.default_locale
+  when :en
+-%>
+TBD
+<% when :ru -%>
+TBD
+<% else -%>
+Sehr geehrte/r <%= @user_account.display_name %>,
+
+hiermit bestätigen wir Ihren Zugang für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>".
+
+Mit Ihrem Account: <%= @user_account.email %>
+
+können Sie sich nun unter <%= url %> anmelden und auf alle Funktionen des Archivs "<%= @user_account.user_registration.projects.last.name('de') %>" zugreifen.
+
+Mit freundlichen Grüßen,
+
+Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"
+<% end -%>

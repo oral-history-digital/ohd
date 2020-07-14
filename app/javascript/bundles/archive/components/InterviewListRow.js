@@ -127,7 +127,7 @@ export default class InterviewListRow extends React.Component {
                     <AuthShowContainer ifLoggedIn={true}>
                         {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}{this.unsharedIcon()}
                     </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
+                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                         {this.props.project.fullname_on_landing_page ? this.props.interview.title[this.props.locale] : this.props.interview.anonymous_title[this.props.locale]}
                     </AuthShowContainer>
                 </div>

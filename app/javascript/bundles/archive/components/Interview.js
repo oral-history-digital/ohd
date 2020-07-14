@@ -88,26 +88,26 @@ export default class Interview extends React.Component {
         )
     }
 
+    innerContent() {
+        if (this.props.interviewEditView) {
+            return (
+                <InterviewEditViewContainer
+                    interview={this.interview()}
+                />
+            )
+        } else {
+            return (
+                <InterviewTabsContainer
+                    interview={this.interview()}
+                />
+            )
+        }
+    }
+
     content() {
         if (this.interviewLoaded()){
             if (this.props.isCatalog) {
                 return (<InterviewDetailsLeftSideContainer interview={this.interview()} />);
-            } else if (this.props.interviewEditView) {
-                return (
-                    <div>
-                        <AuthShowContainer ifLoggedIn={true}>
-                            <VideoPlayerContainer
-                                interview={this.interview()}
-                            />
-                            <InterviewEditViewContainer
-                                interview={this.interview()}
-                            />
-                        </AuthShowContainer>
-                        <AuthShowContainer ifLoggedOut={true}>
-                            {this.loggedOutContent()}
-                        </AuthShowContainer>
-                    </div>
-                )
             } else {
                 return (
                     <div>
@@ -115,11 +115,9 @@ export default class Interview extends React.Component {
                             <VideoPlayerContainer
                                 interview={this.interview()}
                             />
-                            <InterviewTabsContainer
-                                interview={this.interview()}
-                            />
+                            {this.innerContent()}
                         </AuthShowContainer>
-                        <AuthShowContainer ifLoggedOut={true}>
+                        <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                             {this.loggedOutContent()}
                         </AuthShowContainer>
                     </div>

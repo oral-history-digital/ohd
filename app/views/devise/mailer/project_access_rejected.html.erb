@@ -1,0 +1,19 @@
+<%
+  contact_email = @user_account.user_registration.projects.last.contact_email
+  case @user_account.user_registration.default_locale
+  when :en
+-%>
+    <p>Dear <%= @user_account.display_name %>,</p>
+    <p>Best regards,</p>
+    <p>The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
+  <% when :ru -%>
+    <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
+    <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <% else -%>
+    <p>Sehr geehrte/r<%= @user_account.display_name %>,</p>
+    <p>Sie haben versucht sich für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" zu registrieren.</p>
+    <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs entsprechen.</p>
+    <p>Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.</p>
+    <p>Mit freundlichen Grüßen,</p>
+    <p>Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
+<% end -%>

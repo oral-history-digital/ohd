@@ -4,6 +4,7 @@ class UserRolesController < ApplicationController
     authorize UserRole
     @user_role = UserRole.create user_role_params
     @user_role.user_account.touch
+    @user_role.user_account.user_registration.touch
 
     respond_to do |format|
       format.json do
@@ -18,6 +19,7 @@ class UserRolesController < ApplicationController
     user_registration = @user_role.user_account.user_registration
     @user_role.destroy
     user_registration.user_account.touch
+    user_registration.touch
 
     respond_to do |format|
       format.json {

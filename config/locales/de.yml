@@ -432,6 +432,19 @@ de:
     postpone: zurückgestellt
     activate: aktiviert
     expire: zurückgestellt
+    confirm_account: Account bestätigen
+    activate_account: Account aktivieren
+    deactivate_account: Account deaktivieren
+    reactivate_account: Account reaktivieren
+    grant_project_access: freischalten
+    reject_project_access: ablehnen
+    postpone_project_access: zurückstellen
+    account_created: Account angelegt
+    account_confirmed: Account bestätigt
+    account_deactivated: Account deaktiviert
+    project_access_granted: registriert
+    project_access_rejected: zurückgewiesen
+    project_access_postponed: zurückgestellt
     all: Alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -857,7 +870,7 @@ de:
         tos_agreement: Nutzungsbedingungen
         priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
-        workflow_state: Status ändern zu
+        workflow_state: Status
       user_role:
         role_id: Rolle
       role:

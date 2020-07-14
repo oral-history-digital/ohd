@@ -144,6 +144,8 @@ GEM
     cucumber-expressions (6.0.1)
     cucumber-tag_expressions (1.1.1)
     cucumber-wire (0.0.1)
+    cypress-on-rails (1.7.0)
+      rack
     cyrillizer (0.2.3)
     daemons (1.2.6)
     debase (0.2.2)
@@ -467,6 +469,7 @@ DEPENDENCIES
   capistrano3-delayed-job (~> 1.0)
   celluloid
   countries
+  cypress-on-rails (~> 1.0)
   cyrillizer
   daemons
   debase

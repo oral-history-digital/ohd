@@ -11,7 +11,7 @@ describe UserRegistration, 'when newly created' do
   end
 
   it 'should have the new state' do
-    expect(registration).to be_new
+    expect(registration).to be_account_created
   end
 
   it 'should not have a user account associated with it' do
@@ -39,12 +39,12 @@ describe UserRegistration, 'when newly created' do
   end
 
   it 'should respond to the register event' do
-    expect{registration.register!}.not_to raise_exception
+    expect{registration.register}.not_to raise_exception
   end
 
   it 'should send an email to the user on a register event' do
     previous_deliveries = ApplicationMailer.deliveries.size
-    registration.register!
+    registration.register
     expect(ApplicationMailer.deliveries.size).to eq(previous_deliveries+1)
     expect(ApplicationMailer.deliveries.last.to).to eq([registration.email])
   end
@@ -55,7 +55,7 @@ describe UserRegistration, 'on registration' do
 
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
-    registration.register!
+    registration.register
     registration
   end
 
@@ -70,12 +70,6 @@ describe UserRegistration, 'on registration' do
     expect(registration.processed_at).to be_a(Time)
     expect(registration.processed_at).to be > (Time.now - 1.minute)
     expect(registration.processed_at).to be < (Time.now + 1.minute)
-  end
-
-  it 'should set activated_at on registration' do
-    expect(registration.activated_at).to be_a(Time)
-    expect(registration.activated_at).to be > (Time.now - 1.minute)
-    expect(registration.activated_at).to be < (Time.now + 1.minute)
   end
 
   it "should move on to the 'account_created' state" do
@@ -93,6 +87,8 @@ describe UserRegistration, 'on registration' do
 
   it 'should not have a confirmation token after activation' do
     registration.confirm_account!
+    # this fails because in real life the confirmation token is deleted
+    # by user_accounts confirm_with_password function which calls confirm_account! afterwards
     expect(registration.user_account.confirmation_token).to be_nil
   end
 
@@ -102,7 +98,7 @@ describe UserRegistration, 'on registration' do
 
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
-    registration.register!
+    registration.register
     registration
   end
 
@@ -124,8 +120,9 @@ describe UserRegistration, 'on registration after account activation' do
 
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
-    registration.register!
-    registration.confirm_account!
+    registration.register
+    registration.user_account.confirm_with_password!('password', 'password')
+    #registration.confirm_account!
     registration
   end
 
@@ -133,8 +130,8 @@ describe UserRegistration, 'on registration after account activation' do
     expect(registration).to be_account_confirmed
   end
 
-  it 'should have an active user account associated' do
-    expect(registration.user_account).to be_active
+  it 'should not have an active user account associated' do
+    expect(registration.user_account).not_to be_active
   end
 
   it 'should have the same email as the user account' do
@@ -147,7 +144,7 @@ describe UserRegistration, 'on account deactivation' do
 
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
-    registration.register!
+    registration.register
     registration.user_account.confirm_with_password!('password', 'password')
     registration.grant_project_access!
     registration.deactivate_account!
@@ -173,8 +170,8 @@ describe UserRegistration, 'on postponing' do
 
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
-    registration.register!
-    registration.confirm_account!
+    registration.register
+    registration.user_account.confirm_with_password!('password', 'password')
     registration.postpone_project_access!
     registration
   end
@@ -198,7 +195,7 @@ describe UserRegistration, 'on granting access after postponing' do
 
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
-    registration.register!
+    registration.register
     registration.confirm_account!
     registration.postpone_project_access!
     registration.grant_project_access!
@@ -218,6 +215,12 @@ describe UserRegistration, 'on granting access after postponing' do
     expect(registration.user_account).to be_active
   end
 
+  it 'should set activated_at when granting access' do
+    expect(registration.activated_at).to be_a(Time)
+    expect(registration.activated_at).to be > (Time.now - 1.minute)
+    expect(registration.activated_at).to be < (Time.now + 1.minute)
+  end
+
   it 'should not have a confirmation token set' do
     expect(registration.user_account.confirmation_token).to be_nil
   end
@@ -228,7 +231,7 @@ describe UserRegistration, 'on reactivation after deactivation' do
 
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
-    registration.register!
+    registration.register
     registration.confirm_account!
     registration.reject_project_access!
     registration.deactivate_account!
@@ -258,7 +261,7 @@ describe UserRegistration, 'on reactivation after account deactivation' do
 
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
-    registration.register!
+    registration.register
     registration.user_account.confirm_with_password!('password', 'password')
     registration.reject_project_access!
     registration.deactivate_account!
