@@ -579,6 +579,8 @@ el:
     age: Alter
     year_of_birth: Έτος γέννησης
     interview_date: Entstehungszeit
+    public: öffentlich
+    unshared: nicht öffentlich
   activerecord:
     models:
       interview:

@@ -162,7 +162,7 @@ class Interview < ApplicationRecord
     text :archive_id, :stored => true
     integer :interviewee_id, :stored => true#, :references => Person
     integer :collection_id, :stored => true, :references => Collection
-    string :workflow_state
+    string :workflow_state, stored: true
 
     # in order to find pseudonyms with fulltextsearch (dg)
     #(text :pseudonym_string, :stored => true) if project.identifier == 'dg'
@@ -288,7 +288,7 @@ class Interview < ApplicationRecord
   #scope :with_still_image, -> {where.not(still_image_file_name: nil)}
 
   def interviewee_id
-    interviewees.first.id
+    interviewees.first && interviewees.first.id
   end
 
   def biographies_workflow_state=(change)
@@ -814,7 +814,7 @@ class Interview < ApplicationRecord
     def archive_search(user_account, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, user_account && (user_account.admin? || user_account.permissions?('Interview', :update)) ? ["public", "unshared"] : "public")
+        with(:workflow_state, user_account && (user_account.admin? || user_account.permissions?('Interview', :update)) ? ['public', 'unshared'] : 'public')
         with(:project_id, project.id)
         dynamic :search_facets do
           facet *project.search_facets_names

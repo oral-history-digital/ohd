@@ -573,6 +573,8 @@ en:
     age: Age
     year_of_birth: Year of birth
     interview_date: Date of Interview
+    public: öffentlich
+    unshared: nicht öffentlich
   activerecord:
     models:
       interview:

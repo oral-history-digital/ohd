@@ -626,6 +626,8 @@ ru:
     age: Возраст
     year_of_birth: Год рождения
     interview_date: Entstehungszeit
+    public: öffentlich
+    unshared: nicht öffentlich
   activerecord:
     models:
       interview:

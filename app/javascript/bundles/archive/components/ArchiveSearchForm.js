@@ -4,7 +4,7 @@ import serialize from 'form-serialize';
 import {Navigation} from 'react-router-dom'
 import FacetContainer from '../containers/FacetContainer';
 import spinnerSrc from '../../../images/large_spinner.gif'
-import { t, iOS, pathBase } from '../../../lib/utils';
+import { t, iOS, pathBase, admin } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 
 export default class ArchiveSearchForm extends React.Component {
@@ -226,6 +226,7 @@ export default class ArchiveSearchForm extends React.Component {
                         currentMin={this.currentYearRange()[0] || this.yearRange(facet)[0]}
                         currentMax={this.currentYearRange()[1] || this.yearRange(facet)[1]}
                         map={this.props.map}
+                        show={(facet === 'workflow_state' && admin(this.props, {type: 'Interview', action: 'update'})) || (facet !== 'workflow_state')}
                     />
                 )
             })
