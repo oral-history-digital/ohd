@@ -157,9 +157,10 @@ class ApplicationController < ActionController::Base
     Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-search-#{params}-#{Interview.maximum(:updated_at)}-#{current_project.updated_at}-#{current_user_account && current_user_account.admin? ? 'admin' : 'public'}") do
       search = Interview.archive_search(current_user_account, current_project, locale, params)
       dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
+      facets = current_project.updated_search_facets(search)
       {
         archive: {
-          facets: current_project.updated_search_facets(search),
+          facets: facets,
           query: search_query,
           allInterviewsTitles: dropdown_values[:all_interviews_titles],
           allInterviewsPseudonyms: dropdown_values[:all_interviews_pseudonyms],
@@ -171,7 +172,7 @@ class ApplicationController < ActionController::Base
           resultsCount: search.total,
         },
         map: {
-          facets: current_project.updated_search_facets(search),
+          facets: facets,
           query: search_query,
           foundMarkers: {},
         },
