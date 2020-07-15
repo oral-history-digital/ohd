@@ -15,4 +15,8 @@ class DeviseMailerPreview < ActionMailer::Preview
   def project_access_rejected
     CustomDeviseMailer.project_access_rejected(UserAccount.first, "faketoken", {})
   end
+
+  def account_deactivated
+    CustomDeviseMailer.account_deactivated(UserAccount.first, "faketoken", {})
+  end
 end
