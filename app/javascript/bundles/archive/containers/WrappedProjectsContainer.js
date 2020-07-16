@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import WrappedDataList from '../components/WrappedDataList';
 import MetadataFieldsContainer from '../containers/MetadataFieldsContainer';
+import TaskTypesContainer from '../containers/TaskTypesContainer';
 import ExternalLinksContainer from '../containers/ExternalLinksContainer';
 import UploadedFileContainer from '../containers/UploadedFileContainer';
 import { setQueryParams } from '../actions/searchActionCreators';
@@ -130,6 +131,7 @@ const mapStateToProps = (state) => {
         ],
         joinedData: {
             metadata_field: MetadataFieldsContainer,
+            task_type: TaskTypesContainer,
             external_link: ExternalLinksContainer,
             logo: UploadedFileContainer,
             sponsor_logo: UploadedFileContainer,

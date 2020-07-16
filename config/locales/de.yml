@@ -662,6 +662,9 @@ de:
         one: Aufgabe
         other: Aufgaben
         supervised_other: Betreute Aufgaben
+      task_type:
+        one: Aufgabenart
+        other: Aufgabenarten
       permission:
         one: 'Berechtigung'
         other: 'Berechtigungen'
@@ -910,9 +913,12 @@ de:
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
+      task_type:
+        use: in der Übersicht zeigen
       default:
         name: Name
         title: Name
+        label: Label
         workflow_state: Status
         locale: Sprache
         lang: Sprache
@@ -923,6 +929,8 @@ de:
         href: Href
         file: Datei
         publish: Öffentlich
+        project_id: Projekt
+        key: Schlüssel
     errors:
       default:
         select: Bitte auswählen

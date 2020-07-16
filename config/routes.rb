@@ -29,6 +29,7 @@ Rails.application.routes.draw do
       resources :projects
       resources :languages
       resources :metadata_fields
+      resources :task_types
       resources :external_links
 
       resources :contributions, only: [:create, :update, :destroy]

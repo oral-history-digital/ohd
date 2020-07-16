@@ -9,50 +9,34 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        //
-        // editView should always be true on tasks
-        // because tasks can be seen only in the own account
-        // or if editView == true in some user administration area
-        //
         editView: true,
         //
-        scope: 'task',
-        detailsAttributes: ['name', 'desc', 'workflow_state', 'authorized_id', 'authorized_type'],
+        scope: 'task_type',
+        detailsAttributes: [
+            "key", 
+            "project_id",
+        ],
         formElements: [
             {
-                attribute: 'name',
+                attribute: 'label',
+                elementType: 'multiLocaleInput',
+            },
+            {
+                attribute: 'key',
                 validate: function(v){return v.length > 1} 
             },
             {
-                attribute: 'desc',
-                elementType: 'textarea',
-                validate: function(v){return v.length > 1} 
+                elementType: 'input',
+                attribute: 'use',
+                type: 'checkbox',
             },
             {
-                attribute: 'authorized_type',
                 elementType: 'select',
-                values: ['Interview', 'BiographicalEntry', 'RegistryReference', 'Contribution', 'Photo'],
-                optionsScope: 'tasks',
+                attribute: 'project_id',
+                values: state.data.projects,
                 withEmpty: true,
-                validate: function(v){return v !== ''} 
             },
-            {
-                attribute: 'task_type_id',
-                elementType: 'select',
-                values: state.data.task_types,
-                withEmpty: true,
-                validate: function(v){return /\d+/.test(v)} 
-            },
-            {
-                attribute: 'authorized_id',
-                validate: function(v){return v.length > 1} 
-            },
-            {
-                attribute: 'workflow_state',
-                elementType: 'select',
-                optionsScope: 'workflow_states',
-            },
-        ]
+        ],
     }
 }
 

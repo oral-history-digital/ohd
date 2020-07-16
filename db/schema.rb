@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_15_170436) do
+ActiveRecord::Schema.define(version: 2020_07_16_122732) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -529,6 +529,24 @@ ActiveRecord::Schema.define(version: 2020_07_15_170436) do
     t.index ["workflow_state"], name: "index_tapes_on_workflow_state", length: 191
   end
 
+  create_table "task_type_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "task_type_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "label"
+    t.index ["locale"], name: "index_task_type_translations_on_locale"
+    t.index ["task_type_id"], name: "index_task_type_translations_on_task_type_id"
+  end
+
+  create_table "task_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "key"
+    t.boolean "use"
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "authorized_type", limit: 255
     t.string "authorized_id", limit: 255
@@ -540,6 +558,7 @@ ActiveRecord::Schema.define(version: 2020_07_15_170436) do
     t.datetime "updated_at", null: false
     t.string "name", limit: 255
     t.integer "user_account_id"
+    t.integer "task_type_id"
     t.index ["supervisor_id"], name: "index_tasks_on_supervisor_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end

@@ -647,6 +647,9 @@ en:
         one: Aufgabe
         other: Aufgaben
         supervised_other: supervised tasks
+      task_type:
+        one: Task Type
+        other: Task Types
       permission:
         one: Erlaubnis
         other: Erlaubnisse
@@ -902,9 +905,12 @@ en:
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
+      task_type:
+        use: in der Übersicht zeigen
       default:
         name: Name
         title: Name
+        label: Label
         workflow_state: State
         locale: Language
         lang: Language
@@ -915,6 +921,8 @@ en:
         href: Href
         file: File
         publish: Public
+        project_id: Project
+        key: Schlüssel
     errors:
       default:
         select: Please select

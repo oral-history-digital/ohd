@@ -35,6 +35,7 @@ class ProjectSerializer < ApplicationSerializer
     :pdf_registry_entry_codes,
     :pseudo_pdf_registry_entry_codes,
     :metadata_fields,
+    :task_types,
     :external_links,
     :logos,
     :sponsor_logos,
@@ -44,12 +45,10 @@ class ProjectSerializer < ApplicationSerializer
     object.shortname
   end
 
-  def metadata_fields
-    object.metadata_fields.inject({}) { |mem, c| mem[c.id] = MetadataFieldSerializer.new(c); mem }
-  end
-
-  def external_links
-    object.external_links.inject({}) { |mem, c| mem[c.id] = ExternalLinkSerializer.new(c); mem }
+  %w(metadata_fields task_types external_links).each do |m|
+    define_method m do
+      object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
+    end
   end
 
   def logos

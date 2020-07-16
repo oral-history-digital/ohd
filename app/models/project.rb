@@ -8,6 +8,7 @@ class Project < ApplicationRecord
   has_many :interviews
   has_many :collections
   has_many :metadata_fields
+  has_many :task_types
   has_many :external_links
   has_many :registry_entry_projects
   has_many :registry_entries,

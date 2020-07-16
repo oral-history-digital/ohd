@@ -3,6 +3,7 @@ class Task < ApplicationRecord
   belongs_to :user_account
   belongs_to :supervisor, class_name: 'UserAccount'
   belongs_to :authorized, polymorphic: true
+  belongs_to :task_type
 
   include Workflow
 
