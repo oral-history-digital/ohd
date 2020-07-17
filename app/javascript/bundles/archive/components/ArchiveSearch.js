@@ -6,6 +6,7 @@ import Observer from 'react-intersection-observer'
 import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import InterviewListRowContainer from '../containers/InterviewListRowContainer';
+import InterviewWorkflowRowContainer from '../containers/InterviewWorkflowRowContainer';
 import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
@@ -68,6 +69,29 @@ export default class ArchiveSearch extends React.Component {
         return headers;
     }
 
+    box(value) {
+        return (
+            <div className='box-eighth header'>
+                {t(this.props, value)}
+            </div>
+        )
+    }
+
+    workflowHeader() {
+        return (
+            <div className='data boxes' key='header-boxes'>
+                {this.box('interview')}
+                {this.box('id')}
+                {this.box('media_type')}
+                {this.box('duration')}
+                {this.box('language')}
+                {this.box('sub_collection')}
+                {this.box('workflow_state')}
+                {this.box('workflow_state')}
+            </div>
+        )
+    }
+
     foundInterviews(displayType) {
         if (this.props.foundInterviews && this.props.foundInterviews.length == 0 && !this.props.isArchiveSearching) {
             return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
@@ -82,8 +106,7 @@ export default class ArchiveSearch extends React.Component {
                         />;
                     })
                 )
-            }
-            else if (displayType === 'list') {
+            } else if (displayType === 'list') {
                 return (
                     <table style={{padding: '0 20px', width: '100%'}}>
                         <thead>
@@ -101,6 +124,18 @@ export default class ArchiveSearch extends React.Component {
                             })}
                         </tbody>
                     </table>
+                )
+            } else if (displayType === 'workflow') {
+                return (
+                    <div className=''>
+                        {this.workflowHeader()}
+                        {this.props.foundInterviews.map((interview, index) => {
+                            return <InterviewWorkflowRowContainer
+                                interview={interview}
+                                key={"interview-row-" + interview.archive_id + "-" + index}
+                            />;
+                        })}
+                    </div>
                 )
             }
         }   

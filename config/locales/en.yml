@@ -398,6 +398,7 @@ en:
   search_registry_entry: Registereintrag suchen
   grid: Grid
   list: List
+  workflow: Workflow
   admin_actions: Aktionen
   doi:
     title: register DOIs

@@ -394,6 +394,7 @@ es:
   search_registry_entry: Buscar entrada en el índice
   grid: Cuadrícula
   list: Lista
+  workflow: Workflow
   admin_actions: Aktionen
   doi:
     title: DOI registrieren

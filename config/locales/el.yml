@@ -403,6 +403,7 @@ el:
   search_registry_entry: Registereintrag suchen
   grid: Raster
   list: Liste
+  workflow: Workflow
   admin_actions: Aktionen
   doi:
     title: DOI registrieren
