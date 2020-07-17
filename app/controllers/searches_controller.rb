@@ -109,7 +109,6 @@ class SearchesController < ApplicationController
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{params}-#{RegistryEntry.maximum(:updated_at)}-#{Interview.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}" do
           # define marker types
           registry_reference_type_codes = %w(birth_location deportation_location return_location company camp)
-          #registry_reference_type_codes = %w(birth_location deportation_location camp company return_location)
           selected_registry_reference_types = RegistryReferenceType.
             where(code: registry_reference_type_codes).
             joins(:metadata_fields).
@@ -209,12 +208,16 @@ class SearchesController < ApplicationController
 
   def highlighted_text(hit)
     (current_project.available_locales + [:orig]).inject({}) do |mem, locale|
-      # locale = hit.instance.orig_lang if locale == :orig
-      mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
-        highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
-        m << highlighted.sub(/:/, "").strip()
-        m
-      end.join(" ").gsub("&nbsp;", " ").strip
+      if hit.instance.translations.where(locale: locale)
+        mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
+          highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
+          m << highlighted.sub(/:/, "").strip()
+          m
+        end.join(" ").gsub("&nbsp;", " ").strip
+        mem
+      else
+        mem
+      end
     end
   end
 
