@@ -83,15 +83,17 @@ export default class InterviewListRow extends React.Component {
         })
         if (this.props.fulltext && this.resultsCount() > 0) {
             cols.push(
-                <Link className={'search-result-link'}
-                    onClick={() => {
-                        this.props.setArchiveId(this.props.interview.archive_id);
-                        this.props.setTapeAndTime(1, 0)
-                    }}
-                    to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
-                >
-                    {this.resultsCount()}
-                </Link>
+                <td>
+                    <Link className={'search-result-link'}
+                        onClick={() => {
+                            this.props.setArchiveId(this.props.interview.archive_id);
+                            this.props.setTapeAndTime(1, 0)
+                        }}
+                        to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
+                    >
+                        {this.resultsCount()}
+                    </Link>
+                </td>
             );
         }
         return cols;
