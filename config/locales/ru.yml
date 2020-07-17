@@ -783,6 +783,7 @@ ru:
         media_type: Media Typ
         translated: ist das Interview bereits übersetzt?
         workflow_state: 'Status'
+        tasks_states: Bearbeitungsstand
         observations: Protokoll
         collection: Частичное собрание
       transcript:

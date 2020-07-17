@@ -730,7 +730,7 @@ de:
         return_locations: Wohnorte ab 1945
         return_date: Datum der Rückkehr
         home_locations: Wohnort
-        duration: Art und Länge des Interviews
+        duration: Dauer
         interview_date: geführt am
         tape_count: Anzahl der Tapes
         interviewers: Interviewführung
@@ -744,6 +744,7 @@ de:
         media_type: Media Typ
         translated: ist das Interview bereits übersetzt?
         workflow_state: Status
+        tasks_states: Bearbeitungsstand
         observations: Protokoll
       transcript:
         collection_id: Sammlung

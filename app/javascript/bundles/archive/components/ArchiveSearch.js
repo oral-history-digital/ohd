@@ -82,12 +82,12 @@ export default class ArchiveSearch extends React.Component {
             <div className='data boxes' key='header-boxes'>
                 {this.box('interview')}
                 {this.box('id')}
-                {this.box('media_type')}
-                {this.box('duration')}
-                {this.box('language')}
-                {this.box('sub_collection')}
-                {this.box('workflow_state')}
-                {this.box('workflow_state')}
+                {this.box('activerecord.attributes.interview.media_type')}
+                {this.box('activerecord.attributes.interview.duration')}
+                {this.box('activerecord.attributes.interview.language')}
+                {this.box('activerecord.attributes.interview.collection')}
+                {this.box('activerecord.attributes.interview.tasks_states')}
+                {this.box('activerecord.attributes.interview.workflow_state')}
             </div>
         )
     }

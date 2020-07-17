@@ -708,7 +708,7 @@ es:
         return_locations: Lugares de residencia a partir de 1945
         return_date: Fecha de retorno
         home_locations: Lugar de residencia
-        duration: Tipo y duración de la entrevista
+        duration: Duración de la entrevista
         interview_date: Realizada el
         tape_count: Número de cintas
         interviewers: Realización de la entrevista
@@ -722,6 +722,7 @@ es:
         media_type: Formato de medio
         translated: se ha traducido la entrevista?
         workflow_state: 'estatus'
+        tasks_states: Bearbeitungsstand
         observations: Protócolo
       transcript:
         collection_id: Sammlung
