@@ -11,7 +11,7 @@
   <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
   <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
 <% else -%>
-  <p>Sehr geehrte/r<%= @user_account.display_name %>,</p>
+  <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
   <p>Ihr Zugang wurde gesperrt.</p>
   <p>Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.</p>
   <p>Mit freundlichen Grüßen,</p>

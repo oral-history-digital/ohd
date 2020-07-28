@@ -10,7 +10,7 @@
     <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
     <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% else -%>
-    <p>Sehr geehrte/r<%= @user_account.display_name %>,</p>
+    <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
     <p>Sie haben versucht sich für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" zu registrieren.</p>
     <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs entsprechen.</p>
     <p>Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.</p>
