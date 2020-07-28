@@ -73,7 +73,11 @@ class UserAccount < ApplicationRecord
   end
 
   def display_name
-    [self.appellation, self.user_registration.full_name].compact.join(' ')
+    if !self.user_registration.appellation.blank?
+      [I18n.t("user_registration.appellation.#{self.user_registration.appellation}"), self.user_registration.full_name].compact.join(' ')
+    else
+      self.user_registration.full_name
+    end
   end
 
   # METHODS FROM CONFIRMABLE:
