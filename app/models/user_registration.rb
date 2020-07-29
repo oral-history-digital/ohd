@@ -164,6 +164,7 @@ EVAL
   def confirm_account
     # this is triggered from user account to update the workflow state
     AdminMailer.with(registration: self, project: current_project).new_registration_info.deliver
+    self.update!
   end
 
   # TODO: check how the token expires
@@ -217,6 +218,10 @@ EVAL
   def user_attributes
     require 'yaml'
     YAML.load(read_attribute(:application_info)).stringify_keys
+  end
+
+  def update!
+    update_attribute(:updated_at, Time.now)
   end
 
   private

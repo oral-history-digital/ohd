@@ -87,6 +87,7 @@ class UserAccount < ApplicationRecord
   # Cornfirms the password in two cases:
   # - for newly registered users
   # - when resetting the password
+  # - when reactivating users
   # For newly registered user, we store the confirmation time and perform a workflow step in the registration workflow
   def confirm_with_password!(password, password_confirmation)
     reset_password(password, password_confirmation)
