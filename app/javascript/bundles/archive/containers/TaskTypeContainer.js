@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import TaskTypes from '../components/TaskTypes';
+import TaskType from '../components/TaskType';
 import { fetchData } from '../actions/dataActionCreators';
 import { getProject } from '../../../lib/utils';
 
@@ -10,6 +10,8 @@ const mapStateToProps = (state, ownProps) => {
         locale: state.archive.locale,
         translations: state.archive.translations,
         project: project,
+        tasks: state.data.tasks,
+        tasksStatus: state.data.statuses.tasks,
     }
 }
 
@@ -20,4 +22,4 @@ const mapDispatchToProps = (dispatch) => ({
 // Don't forget to actually use connect!
 // Note that we don't export Search, but the redux "connected" version of it.
 // See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
-export default connect(mapStateToProps, mapDispatchToProps)(TaskTypes);
+export default connect(mapStateToProps, mapDispatchToProps)(TaskType);

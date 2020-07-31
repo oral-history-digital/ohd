@@ -36,7 +36,7 @@ class TaskTypesController < ApplicationController
   end
 
   def index
-    task_types = policy_scope(TaskType)
+    task_types = policy_scope(TaskType).where(project_id: current_project.id)
 
     respond_to do |format|
       format.json do

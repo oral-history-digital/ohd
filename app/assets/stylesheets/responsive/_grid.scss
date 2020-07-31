@@ -9,7 +9,7 @@
   margin-bottom: 3%;
 }
 
-.box, .box-eighth {
+.box, .box-8, .box-5 {
   display: table-cell;
   /*text-align: center;*/
   vertical-align: top;
@@ -19,8 +19,12 @@
   }
 }
 
-.box-eighth {
+.box-8 {
   width: 12.5%;
+}
+
+.box-5 {
+  width: 20%;
 }
 
 @include screen-xs {

@@ -133,6 +133,8 @@ class Interview < ApplicationRecord
            -> {order('item_type ASC')},
            dependent: :destroy
 
+  has_many :tasks, as: :authorized
+
   translates :observations, fallbacks_for_empty_translations: true, touch: true
 
   serialize :properties

@@ -71,7 +71,7 @@ export default class ArchiveSearch extends React.Component {
 
     box(value) {
         return (
-            <div className='box-eighth header'>
+            <div className='box-8 header'>
                 {t(this.props, value)}
             </div>
         )
@@ -127,7 +127,7 @@ export default class ArchiveSearch extends React.Component {
                 )
             } else if (displayType === 'workflow') {
                 return (
-                    <div className=''>
+                    <AuthShowContainer ifAdmin={true} obj={{type: 'Interview', action: 'update'}}>
                         {this.workflowHeader()}
                         {this.props.foundInterviews.map((interview, index) => {
                             return <InterviewWorkflowRowContainer
@@ -135,7 +135,7 @@ export default class ArchiveSearch extends React.Component {
                                 key={"interview-row-" + interview.archive_id + "-" + index}
                             />;
                         })}
-                    </div>
+                    </AuthShowContainer>
                 )
             }
         }   
@@ -290,7 +290,7 @@ export default class ArchiveSearch extends React.Component {
         if (this.props.viewModes) {
             let _this = this;
             return _this.props.viewModes.map(function(viewMode, i) {
-                let visibility = (_this.props.viewModes.length < 2) ? 'hidden' : ''
+                let visibility = (_this.props.viewModes.length < 2 || (viewMode === 'workflow' && !admin(_this.props, {type: 'Interview', action: 'update'}))) ? 'hidden' : ''
                 return (
                     <Tab className={'search-results-tab ' + visibility} key={i}>
                         <span>{t(_this.props, viewMode)}</span>
@@ -306,11 +306,13 @@ export default class ArchiveSearch extends React.Component {
         if (this.props.viewModes) {
             let _this = this
             return this.props.viewModes.map(function(viewMode, i) {
-                return (
-                    <TabPanel key={i}>
-                        {_this.content(viewMode)}
-                    </TabPanel>
-                )
+                if (viewMode !== 'workflow' || (viewMode === 'workflow' && admin(_this.props, {type: 'Interview', action: 'update'}))) {
+                    return (
+                        <TabPanel key={i}>
+                            {_this.content(viewMode)}
+                        </TabPanel>
+                    )
+                }
             })
         } else {
             return null;

@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { t, admin, pathBase, getInterviewee } from '../../../lib/utils';
-
 import AuthShowContainer from '../containers/AuthShowContainer';
+import TaskTypesContainer from '../containers/TaskTypesContainer';
+import { t, admin, pathBase, getInterviewee } from '../../../lib/utils';
 
 export default class InterviewWorkflowRow extends React.Component {
 
@@ -12,31 +12,31 @@ export default class InterviewWorkflowRow extends React.Component {
     }
 
     componentDidMount() {
-        this.loadWithAssociations();
+        //this.loadWithAssociations();
         if(this.props.fulltext) {
             this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
         }
     }
 
     componentDidUpdate() {
-        this.loadWithAssociations();
+        //this.loadWithAssociations();
     }
 
-    loadWithAssociations() {
-        let intervieweeContribution = Object.values(this.props.interview.contributions).find(c => c.contribution_type === 'interviewee');
-        let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;
-        let interviewee = this.props.people[intervieweeId]
-        if (
-               (interviewee && !interviewee.associations_loaded) ||
-               !interviewee
-        ) {
-            this.props.fetchData(this.props, 'people', intervieweeId, null, 'with_associations=true');
-        }
-    }
+    //loadWithAssociations() {
+        //let intervieweeContribution = Object.values(this.props.interview.contributions).find(c => c.contribution_type === 'interviewee');
+        //let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;
+        //let interviewee = this.props.people[intervieweeId]
+        //if (
+               //(interviewee && !interviewee.associations_loaded) ||
+               //!interviewee
+        //) {
+            //this.props.fetchData(this.props, 'people', intervieweeId, null, 'with_associations=true');
+        //}
+    //}
 
     box(value) {
         return (
-            <div className='box-eighth'>
+            <div className='box-8'>
                 {value}
             </div>
         )
@@ -44,7 +44,7 @@ export default class InterviewWorkflowRow extends React.Component {
 
     intervieweeWithPhoto() {
         return (
-            <Link className={'search-result-link box eighth'}
+            <Link className={'search-result-link box-8'}
                 onClick={() => {
                     this.props.setArchiveId(this.props.interview.archive_id);
                     this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
@@ -69,7 +69,9 @@ export default class InterviewWorkflowRow extends React.Component {
                 {this.box(this.props.interview.duration_human)}
                 {this.box(this.props.interview.language[this.props.locale])}
                 {this.box(this.props.interview.collection[this.props.locale])}
-                {this.box(this.props.interview.workflow_state)}
+                <div className='box-8'>
+                     <TaskTypesContainer interview={this.props.interview} />
+                </div>
                 {this.box(this.props.interview.workflow_state)}
             </div>
         );

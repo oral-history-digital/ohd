@@ -109,6 +109,7 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
+          task_types: {},
           projects: {all: 'fetched'},
           collections: {"collections_for_project_#{current_project.identifier}": 'fetched'},
           languages: {all: 'fetched'},
@@ -127,7 +128,8 @@ class ApplicationController < ActionController::Base
         accounts: {
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || {}
         },
-        people: {}
+        people: {},
+        task_types: {}
       },
       popup: {
         show: false,
