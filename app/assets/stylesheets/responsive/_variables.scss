@@ -124,3 +124,10 @@ $screen-xs-max: ($screen-s-min - 1) !default;
 $screen-s-max:  ($screen-m-min - 1) !default;
 $screen-m-max:  ($screen-l-min - 1) !default;
 $screen-l-max:  ($screen-xl-min - 1) !default;
+
+// workflow-colors
+$not_started: #ddd;
+$started: #666;
+$finished: red;
+$public: green;
+

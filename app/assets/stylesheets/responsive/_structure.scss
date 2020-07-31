@@ -676,6 +676,29 @@ a.search-result-link {
   color: $gray-darkest;
 }
 
+/* workflow */
+
+.workflow-symbols {
+  font-size: $font-size-medium;
+  span {
+    padding: 2px;
+    margin: 1px;
+    float: left;
+    &.not_started {
+      background-color: $not_started;
+    }
+    &.started {
+      background-color: $started;
+    }
+    &.finished {
+      background-color: $finished;
+    }
+    &.public {
+      background-color: $public;
+    }
+  }
+}
+
 /* Home Video */
 
 .video-element.home-video {

@@ -3,6 +3,7 @@ class TaskTypeSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :key,
+    :abreviation,
     :use,
     :project_id
 

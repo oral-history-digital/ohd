@@ -85,7 +85,7 @@ export default class ArchiveSearch extends React.Component {
                 {this.box('activerecord.attributes.interview.media_type')}
                 {this.box('activerecord.attributes.interview.duration')}
                 {this.box('activerecord.attributes.interview.language')}
-                {this.box('activerecord.attributes.interview.collection')}
+                {this.box('activerecord.attributes.interview.collection_id')}
                 {this.box('activerecord.attributes.interview.tasks_states')}
                 {this.box('activerecord.attributes.interview.workflow_state')}
             </div>

@@ -541,6 +541,7 @@ ActiveRecord::Schema.define(version: 2020_07_16_122732) do
 
   create_table "task_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "key"
+    t.string "abreviation"
     t.boolean "use"
     t.integer "project_id"
     t.datetime "created_at", null: false
