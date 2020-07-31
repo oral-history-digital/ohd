@@ -1,23 +1,52 @@
 import { connect } from 'react-redux';
 
-import TaskTypes from '../components/TaskTypes';
-import { fetchData } from '../actions/dataActionCreators';
-import { getProject } from '../../../lib/utils';
+import DataList from '../components/DataList';
+import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 
-const mapStateToProps = (state, ownProps) => {
-    let project = getProject(state);
-    return {
+const mapStateToProps = (state) => {
+    return { 
         locale: state.archive.locale,
         translations: state.archive.translations,
-        project: project,
+        account: state.data.accounts.current,
+        editView: true,
+        //
+        scope: 'task_type',
+        detailsAttributes: [
+            "key", 
+            "project_id",
+        ],
+        formElements: [
+            {
+                attribute: 'label',
+                elementType: 'multiLocaleInput',
+            },
+            {
+                attribute: 'key',
+                validate: function(v){return v.length > 1} 
+            },
+            {
+                elementType: 'input',
+                attribute: 'use',
+                type: 'checkbox',
+            },
+            {
+                elementType: 'select',
+                attribute: 'project_id',
+                values: state.data.projects,
+                withEmpty: true,
+            },
+        ],
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
+    deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
+    submitData: (props, params) => dispatch(submitData(props, params)),
+    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
+    closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
-// Don't forget to actually use connect!
-// Note that we don't export Search, but the redux "connected" version of it.
-// See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
-export default connect(mapStateToProps, mapDispatchToProps)(TaskTypes);
+export default connect(mapStateToProps, mapDispatchToProps)(DataList);
+
