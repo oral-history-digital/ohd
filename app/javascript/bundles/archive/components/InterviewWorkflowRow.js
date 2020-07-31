@@ -2,13 +2,28 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import AuthShowContainer from '../containers/AuthShowContainer';
-import TaskTypesContainer from '../containers/TaskTypesContainer';
+import TaskTypeContainer from '../containers/TaskTypeContainer';
 import { t, admin, pathBase, getInterviewee } from '../../../lib/utils';
 
 export default class InterviewWorkflowRow extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            collapsed: true
+        };
+    }
+
+    toggleButton() {
+        return (
+            <span
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
+                onClick={() => this.setState({ collapsed: !this.state.collapsed })}
+            >
+                <i className={`fa fa-angle-${this.state.collapsed ? 'down' : 'up'}`}></i>
+            </span>
+        )
     }
 
     componentDidMount() {
@@ -60,19 +75,61 @@ export default class InterviewWorkflowRow extends React.Component {
         )
     }
 
+    task(taskType, interview) {
+        return Object.values(interview.tasks).filter(task => task.task_type_id === taskType.id);
+    }
+
+    symbol(taskType, interview) {
+        let task = this.task(taskType, interview);
+        let workflowState = interview.properties.public_attributes[taskType.key] ? 'public' : ((task && task.workflow_state) || 'not_started')
+        return (
+            <span className={workflowState} key={`task-symbol-${interview.archive_id}-${taskType.id}`} >
+                {taskType.abreviation}
+            </span>
+        )
+    }
+
+    symbols() {
+        return (
+            <div className='workflow-symbols'>
+                {Object.values(this.props.project.task_types).map((taskType, index) => {
+                    return this.symbol(taskType, this.props.interview);
+                })}
+                {this.toggleButton()}
+            </div>
+        );
+    }
+
+    fullView() {
+        if (!this.state.collapsed) {
+            return (
+                <div>
+                    {Object.values(this.props.project.task_types).map((taskType, index) => {
+                        return <TaskTypeContainer task={this.task(taskType, this.props.interview)} taskType={taskType} interview={this.props.interview} />
+                    })}
+                </div>
+            );
+        }
+    }
+
     render() {
         return (
-            <div className='search-result data boxes' key={`${this.props.interview.archive_id}-boxes`}>
-                {this.intervieweeWithPhoto()}
-                {this.box(this.props.interview.archive_id)}
-                {this.box(this.props.interview.media_type)}
-                {this.box(this.props.interview.duration_human)}
-                {this.box(this.props.interview.language[this.props.locale])}
-                {this.box(this.props.interview.collection[this.props.locale])}
-                <div className='box-8'>
-                     <TaskTypesContainer interview={this.props.interview} />
+            <div key={`interview-workflow-${this.props.interview.archive_id}`}>
+                <div className='search-result data boxes' key={`${this.props.interview.archive_id}-collapsed-view`}>
+                    {this.intervieweeWithPhoto()}
+                    {this.box(this.props.interview.archive_id)}
+                    {this.box(this.props.interview.media_type)}
+                    {this.box(this.props.interview.duration_human)}
+                    {this.box(this.props.interview.language[this.props.locale])}
+                    {this.box(this.props.interview.collection[this.props.locale])}
+                    <div className='box-8'>
+                        {this.symbols()}
+                    </div>
+                    {this.box(this.props.interview.workflow_state)}
                 </div>
-                {this.box(this.props.interview.workflow_state)}
+                <div className='search-result data boxes' key={`${this.props.interview.archive_id}-workflow-details`}>
+                    {this.fullView()}
+                </div>
             </div>
         );
     }

@@ -14,7 +14,11 @@ export default class TaskTypes extends React.Component {
 
     render() {
         return (
-            <div className='data boxes' key={`${this.props.interview.archive_id}-tasks-boxes`}>
+            <div className='data boxes' key={`${this.props.interview.archive_id}-${this.props.taskType.id}-tasks-boxes`}>
+                {this.box(this.props.task.name)}
+                {this.box('bla')}
+                {this.box(this.props.task.name)}
+                {this.box(this.props.task.name)}
                 {this.box(this.props.task.name)}
             </div>
         );
