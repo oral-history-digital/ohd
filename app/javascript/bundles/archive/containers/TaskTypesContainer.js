@@ -26,6 +26,10 @@ const mapStateToProps = (state) => {
                 validate: function(v){return v.length > 1} 
             },
             {
+                attribute: 'abbreviation',
+                validate: function(v){return v.length > 1} 
+            },
+            {
                 elementType: 'input',
                 attribute: 'use',
                 type: 'checkbox',

@@ -904,6 +904,7 @@ es:
         publish: Público
         project_id: Projekt
         key: Schlüssel
+        abbreviation: Abkürzung
     errors:
       default:
         select: Seleccionar

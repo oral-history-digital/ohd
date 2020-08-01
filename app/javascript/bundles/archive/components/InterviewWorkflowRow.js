@@ -84,7 +84,7 @@ export default class InterviewWorkflowRow extends React.Component {
         let workflowState = interview.properties.public_attributes[taskType.key] ? 'public' : ((task && task.workflow_state) || 'not_started')
         return (
             <span className={workflowState} key={`task-symbol-${interview.archive_id}-${taskType.id}`} >
-                {taskType.abreviation}
+                {taskType.abbreviation}
             </span>
         )
     }

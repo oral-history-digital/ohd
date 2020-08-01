@@ -952,6 +952,7 @@ el:
         publish: Öffentlich
         project_id: Projekt
         key: Schlüssel
+        abbreviation: Abkürzung
     errors:
       default:
         select: Παρακαλώ δώστε

@@ -925,6 +925,7 @@ en:
         publish: Public
         project_id: Project
         key: Schlüssel
+        abbreviation: Abkürzung
     errors:
       default:
         select: Please select

@@ -933,6 +933,7 @@ de:
         publish: Öffentlich
         project_id: Projekt
         key: Schlüssel
+        abbreviation: Abkürzung
     errors:
       default:
         select: Bitte auswählen
