@@ -2,7 +2,7 @@ class CreateTaskTypes < ActiveRecord::Migration[5.2]
   def up
     create_table :task_types do |t|
       t.string :key
-      t.string :abreviation
+      t.string :abbreviation
       t.boolean :use
       t.integer :project_id
 
@@ -29,9 +29,9 @@ class CreateTaskTypes < ActiveRecord::Migration[5.2]
       translation_register: ['Übersetzung/Register', 'Ü/Reg'],
       annotations: ['Anmerkungen', 'Anm'],
       anonymisation: ['Anonymisierung' 'Ano']
-    }.each do |key, (label, abreviation)|
+    }.each do |key, (label, abbreviation)|
       I18n.locale = Project.first.default_locale
-      TaskType.create key: key, label: label, abreviation: abreviation, project_id: Project.first.id, use: true
+      TaskType.create key: key, label: label, abbreviation: abbreviation, project_id: Project.first.id, use: true
     end
 
     add_column :tasks, :task_type_id, :integer
