@@ -9,10 +9,14 @@ class DeviseMailerPreview < ActionMailer::Preview
   end
 
   def project_access_granted
-    CustomDeviseMailer.project_access_granted(UserAccount.first, "faketoken", {})
+    CustomDeviseMailer.project_access_granted(UserAccount.first, {})
   end
 
   def project_access_rejected
-    CustomDeviseMailer.project_access_rejected(UserAccount.first, "faketoken", {})
+    CustomDeviseMailer.project_access_rejected(UserAccount.first, {})
+  end
+
+  def account_deactivated
+    CustomDeviseMailer.account_deactivated(UserAccount.first, {})
   end
 end

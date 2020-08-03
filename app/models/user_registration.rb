@@ -156,6 +156,7 @@ EVAL
     create_account
     raise "Could not create a valid account for #{self.inspect}" unless self.user_account.valid?
     self.processed_at = Time.now
+    self.default_locale = I18n.locale
     save
     # FIXME: copies all attributes to user_account. this duplicates data and has to be removed after the new registration process is finished
     save_registration_data_and_user_data_to_user_account
@@ -175,11 +176,15 @@ EVAL
   def grant_project_access
     self.update_attribute(:activated_at, Time.now)
     self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, Time.now)
-    CustomDeviseMailer.project_access_granted(self.user_account, {}).deliver_now
+    # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
+    subject = I18n.t('devise.mailer.project_access_granted.subject', project_name: current_project.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
+    CustomDeviseMailer.project_access_granted(self.user_account, {subject: subject}).deliver_now
   end
 
   def reject_project_access
-    CustomDeviseMailer.project_access_rejected(self.user_account, {}).deliver_now
+    # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
+    subject = I18n.t('devise.mailer.project_access_rejected.subject', project_name: current_project.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
+    CustomDeviseMailer.project_access_rejected(self.user_account, {subject: subject}).deliver_now
   end
 
   # Flags the account as deactivated and removes project access
@@ -189,11 +194,14 @@ EVAL
     end
     self.user_account.update_attribute(:admin, nil)
     self.user_account.deactivate!
-    CustomDeviseMailer.account_deactivated(self.user_account, {}).deliver_now
+    # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
+    subject = I18n.t('devise.mailer.account_deactivated.subject', project_name: current_project.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
+    CustomDeviseMailer.account_deactivated(self.user_account, {subject: subject}).deliver_now
   end
 
   def reactivate_account
     self.user_account.reactivate!
+    # FIXME: devise confirmation instructions uses I18n.locale for the email subject - to prevent this, we could use a custom template
     user_account.resend_confirmation_instructions
   end
 
@@ -228,7 +236,7 @@ EVAL
 
   # FIXME: get project from params instead
   def current_project
-    Project.first
+    Project.last
   end
 
   def serialize_form_parameters
@@ -246,6 +254,7 @@ EVAL
     self.user_account.login = create_login if self.user_account.login.blank?
     self.user_account.generate_confirmation_token if self.user_account.confirmation_token.blank?
     self.user_account.tos_agreed_at = DateTime.now
+    self.user_account.default_locale = I18n.locale
     self.user_account.save
   end
 
@@ -259,7 +268,7 @@ EVAL
     self.user_account.update_attributes(reg_attrs)
     user_attrs = user_attributes
     user_attrs.delete('id')
-    user_attrs.delete('first_name') # names were taken from registrsation attrs
+    user_attrs.delete('first_name') # names were taken from registration attrs
     user_attrs.delete('last_name')
     self.user_account.update_attributes(user_attrs)
   end

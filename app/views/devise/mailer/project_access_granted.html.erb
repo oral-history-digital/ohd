@@ -1,14 +1,21 @@
 <%
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}"
-  case @user_account.user_registration.default_locale
+  my_locale = @user_account.locale_with_project_fallback
+  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}"
+  case my_locale.to_sym
   when :en
 -%>
+    <p>TODO translate</p>
     <p>Dear <%= @user_account.display_name %>,</p>
     <p>Best regards,</p>
     <p>The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
   <% when :ru -%>
+    <p>TODO translate</p>
     <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
     <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <% when :es -%>
+    <p>TODO spanish translation</p>
+  <% when :el -%>
+    <p>TODO greek translation</p>
   <% else -%>
     <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
     <p>hiermit bestätigen wir Ihren Zugang für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>".</p>

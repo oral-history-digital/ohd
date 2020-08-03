@@ -68,6 +68,12 @@ class UserAccount < ApplicationRecord
     self.confirmation_sent_at = Time.now.utc
   end
 
+  # FIXME: we have legacy users which do not have a default_locale
+  # for now, fallback to project - alternatively cleanup the data
+  def locale_with_project_fallback
+    self.default_locale || self.user_registration.projects.last.default_locale
+  end
+
   def full_name
     [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
   end

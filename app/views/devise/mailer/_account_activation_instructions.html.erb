@@ -1,6 +1,7 @@
 <%
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}/user_registrations/#{@user_account.confirmation_token}/activate"
-  case @user_account.user_registration.default_locale
+  my_locale = @user_account.default_locale || I18n.locale
+  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}/user_registrations/#{@user_account.confirmation_token}/activate"
+  case my_locale.to_sym
   when :en
 -%>
     <p>Dear <%= @user_account.display_name %>,</p>
@@ -18,6 +19,9 @@
     <br/>
     <p>С уважением,</p>
     <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <% when :es -%>
+    <p>TODO: translate to Spanish</p>
+    <p><%= link_to 'Registrierung bestätigen', url %></p>
   <% else -%>
     <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
     <p>Sie haben sich für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>

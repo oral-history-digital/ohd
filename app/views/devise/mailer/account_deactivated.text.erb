@@ -1,12 +1,16 @@
 <%
   contact_email = @user_account.user_registration.projects.last.contact_email
-  case I18n.locale
+  my_locale = @user_account.locale_with_project_fallback
+  case my_locale.to_sym
   when :en
 -%>
-Your account has been deactivated.
-
+TODO english translation
+<% when :el -%>
+TODO greek translation
+<% when :es -%>
+TODO spanish translation
 <% when :ru -%>
-TBD
+TODO russian translation
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 

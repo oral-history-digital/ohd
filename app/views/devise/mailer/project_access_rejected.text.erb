@@ -1,19 +1,25 @@
 <%
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}"
-  case @user_account.user_registration.default_locale
+  contact_email = @user_account.user_registration.projects.last.contact_email
+  my_locale = @user_account.locale_with_project_fallback
+  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}"
+  case my_locale.to_sym
   when :en
 -%>
-TBD
+TODO english translation
+<% when :el -%>
+TODO greek translation
+<% when :es -%>
+TODO spanish translation
 <% when :ru -%>
-TBD
+TODO russian translation
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 
-hiermit bestätigen wir Ihren Zugang für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>".
+Sie haben versucht sich für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" zu registrieren.
 
-Mit Ihrem Account <%= @user_account.email %>
+Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs entsprechen.
 
-können Sie sich nun unter <%= url %> anmelden und auf alle Funktionen des Archivs "<%= @user_account.user_registration.projects.last.name('de') %>" zugreifen.
+Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.
 
 Mit freundlichen Grüßen,
 
