@@ -2,15 +2,14 @@ class TaskSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :desc,
-    :authorized_type,
-    :authorized_id,
     :user_account_id,
     :supervisor_id,
     :workflow_state,
-    :workflow_states
+    :workflow_states,
+    :comments
 
-  def authorized_type
-    object.authorized_type
+  def comments
+    object.comments.inject({}) { |mem, c| mem[c.id] = CommentSerializer.new(c); mem }
   end
 
 end

@@ -2,8 +2,8 @@ class Task < ApplicationRecord
 
   belongs_to :user_account
   belongs_to :supervisor, class_name: 'UserAccount'
-  belongs_to :authorized, polymorphic: true
   belongs_to :task_type
+  has_many :comments
 
   include Workflow
 
@@ -13,14 +13,12 @@ class Task < ApplicationRecord
     end
     state :started do
       event :finish, transitions_to: :finished
-      event :ask_supervisor, transition_to: :question_to_supervisor
     end
-    state :question_to_supervisor do
-      event :answer_question, transitions_to: :answered
+    state :finished do
+      event :clear, transitions_to: :cleared
     end
-    state :answered do
-      event :finish, transitions_to: :finished
-      event :ask_supervisor, transition_to: :question_to_supervisor
+    state :cleared do
+      event :restart, transitions_to: :started
     end
   end
 
