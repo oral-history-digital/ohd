@@ -6,7 +6,7 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def dois?
-    user.admin? || user.permissions?(record.class.name, :update) || user.tasks?(record) 
+    user.admin? || user.permissions?(record.class.name, :update) #|| user.tasks?(record) 
   end
 
   def doi_contents?

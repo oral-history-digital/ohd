@@ -34,10 +34,10 @@ class UserAccount < ApplicationRecord
   validates_format_of :email, :with => Devise.email_regexp
   validates_length_of :password, :within => 5..50, :allow_blank => true
 
-  def tasks?(record)
-    !tasks.where(authorized: record).where.not(workflow_state: 'finished').blank? #||
-    #!supervised_tasks.where(authorized: record).blank?
-  end
+  #def tasks?(record)
+    #!tasks.where(authorized: record).where.not(workflow_state: 'finished').blank? #||
+    ##!supervised_tasks.where(authorized: record).blank?
+  #end
 
   def permissions?(klass, action_name)
     !permissions.where(klass: klass, action_name: action_name).blank?

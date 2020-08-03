@@ -6,7 +6,7 @@ class RegistryEntryPolicy < ApplicationPolicy
   end
 
   def merge?
-    user.admin? || user.permissions?(record.class.name, :update) || user.tasks?(record) 
+    user.admin? || user.permissions?(record.class.name, :update) #|| user.tasks?(record) 
   end
 
 end
