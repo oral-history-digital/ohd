@@ -81,7 +81,7 @@ export default class InterviewWorkflowRow extends React.Component {
 
     symbol(taskType, interview) {
         let task = this.task(taskType, interview);
-        let workflowState = interview.properties.public_attributes[taskType.key] ? 'public' : ((task && task.workflow_state) || 'not_started')
+        let workflowState = interview.properties.public_attributes[taskType.key] ? 'public' : ((task && task.workflow_state) || 'not-started')
         return (
             <span className={workflowState} key={`task-symbol-${interview.archive_id}-${taskType.id}`} >
                 {taskType.abbreviation}
@@ -103,7 +103,7 @@ export default class InterviewWorkflowRow extends React.Component {
     fullView() {
         if (!this.state.collapsed) {
             return (
-                <div>
+                <div className='workflow-active'>
                     {Object.values(this.props.project.task_types).map((taskType, index) => {
                         return <TaskTypeContainer task={this.task(taskType, this.props.interview)} taskType={taskType} interview={this.props.interview} />
                     })}
@@ -122,7 +122,7 @@ export default class InterviewWorkflowRow extends React.Component {
                     {this.box(this.props.interview.duration_human)}
                     {this.box(this.props.interview.language[this.props.locale])}
                     {this.box(this.props.interview.collection[this.props.locale])}
-                    <div className='box-8'>
+                    <div className={`box-8 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
                         {this.symbols()}
                     </div>
                     {this.box(this.props.interview.workflow_state)}

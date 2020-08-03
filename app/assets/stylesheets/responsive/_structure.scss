@@ -684,8 +684,8 @@ a.search-result-link {
     padding: 2px;
     margin: 1px;
     float: left;
-    &.not_started {
-      background-color: $not_started;
+    &.not-started {
+      background-color: $not-started;
     }
     &.started {
       background-color: $started;
@@ -697,6 +697,10 @@ a.search-result-link {
       background-color: $public;
     }
   }
+}
+
+.workflow-active {
+  background-color: $gray-lightest;
 }
 
 /* Home Video */
