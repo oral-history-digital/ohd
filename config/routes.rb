@@ -31,6 +31,7 @@ Rails.application.routes.draw do
       resources :metadata_fields
       resources :task_types
       resources :external_links
+      resources :comments
 
       resources :contributions, only: [:create, :update, :destroy]
       #resources :histories, only: [:create, :update, :destroy]
