@@ -109,7 +109,7 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          task_types: {},
+          task_types: {all: 'fetched'},
           projects: {all: 'fetched'},
           collections: {"collections_for_project_#{current_project.identifier}": 'fetched'},
           languages: {all: 'fetched'},
@@ -129,7 +129,9 @@ class ApplicationController < ActionController::Base
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || {}
         },
         people: {},
-        task_types: {}
+        task_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
+          TaskType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+        end,
       },
       popup: {
         show: false,
