@@ -49,9 +49,9 @@ export default class InterviewWorkflowRow extends React.Component {
         //}
     //}
 
-    box(value) {
+    box(value, width=8) {
         return (
-            <div className='box-8'>
+            <div className={`box-${width}`}>
                 {value}
             </div>
         )
@@ -112,6 +112,20 @@ export default class InterviewWorkflowRow extends React.Component {
         }
     }
 
+    fullViewHeader() {
+        if (!this.state.collapsed) {
+            return (
+                <div className='workflow-active header'>
+                    {this.box(t(this.props, 'activerecord.attributes.task.task_type_id'), 5)}
+                    {this.box(t(this.props, 'activerecord.attributes.task.supervisor_id'), 5)}
+                    {this.box(t(this.props, 'activerecord.attributes.task.user_account_id'), 5)}
+                    {this.box(t(this.props, 'activerecord.attributes.task.comments'), 5)}
+                    {this.box(t(this.props, 'activerecord.attributes.task.workflow_state'), 5)}
+                </div>
+            );
+        }
+    }
+
     render() {
         return (
             <div key={`interview-workflow-${this.props.interview.archive_id}`}>
@@ -128,6 +142,7 @@ export default class InterviewWorkflowRow extends React.Component {
                     {this.box(this.props.interview.workflow_state)}
                 </div>
                 <div className='search-result data boxes' key={`${this.props.interview.archive_id}-workflow-details`}>
+                    {this.fullViewHeader()}
                     {this.fullView()}
                 </div>
             </div>
