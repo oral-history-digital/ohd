@@ -42,7 +42,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def tasks
-    object.tasks.inject({}) { |mem, c| mem[c.id] = TasSerializer.new(c); mem }
+    object.tasks.inject({}) { |mem, c| mem[c.id] = TaskSerializer.new(c); mem }
   end
 
   Project.current.registry_reference_type_metadata_fields.each do |m|

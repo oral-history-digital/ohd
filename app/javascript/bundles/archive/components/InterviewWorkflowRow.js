@@ -86,7 +86,7 @@ export default class InterviewWorkflowRow extends React.Component {
     symbols() {
         return (
             <div className='workflow-symbols'>
-                {this.props.interview.tasks.map((task, index) => {
+                {Object.values(this.props.interview.tasks).map((task, index) => {
                     return this.symbol(task);
                 })}
                 {this.toggleButton()}
@@ -98,7 +98,7 @@ export default class InterviewWorkflowRow extends React.Component {
         if (!this.state.collapsed) {
             return (
                 <div className='workflow-active'>
-                    {this.props.interview.tasks.map((task, index) => {
+                    {Object.values(this.props.interview.tasks).map((task, index) => {
                         return <TaskContainer task={task} interview={this.props.interview} />
                     })}
                 </div>

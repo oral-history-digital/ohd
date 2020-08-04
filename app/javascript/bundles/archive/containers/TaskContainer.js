@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import Taskfrom '../components/Task';
+import Task from '../components/Task';
 import { fetchData } from '../actions/dataActionCreators';
 import { getProject } from '../../../lib/utils';
 
