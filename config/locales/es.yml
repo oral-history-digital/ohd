@@ -422,10 +422,14 @@ es:
     postponed: zurückgestellt
     rejected: abgelehnt
     registered: registriert
-    created: angelegt
-    started: begonnen
-    answered: beantwortet
-    question_to_supervisor: Frage an Supervisor gestellt
+    created: zu bearbeiten
+    start: in Bearbeitung
+    started: in Bearbeitung
+    finish: bearbeitet
+    finished: bearbeitet
+    clear: freigegeben
+    cleared: freigegeben
+    restart: erneut öffnen
   contributions:
     title: Colaborador/a
     add: Añadir colaborador/a
@@ -447,12 +451,6 @@ es:
   texts:
     add: Añadir texto
     title: Pasaje de texto seleccionado
-  tasks:
-    Interview: Entrevista
-    BiographicalEntry: Biografía
-    RegistryReference: Menciones / Referencias
-    Contribution: Contribuciones
-    Photo: Fotos
   status:
     translated: con traducción al alemán
   upload:
@@ -851,8 +849,14 @@ es:
         action: Action
         created_at: angelegt
       task:
-        authorized_id: ID oder Archiv ID
-        authorized_type: Typ
+        user_account_id: Bearbeiter*in
+        supervisor_id: QM
+        task_type_id: Aufgabe
+        comments: Bearbeitungsvermerke
+        workflow_state: Bearbeitungsstand
+      comment:
+        author_id: Autor*in
+        receiver_id: Empfänger*in
       person:
         gender: Género
         first_name: Nombre

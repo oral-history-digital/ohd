@@ -431,10 +431,14 @@ el:
     postponed: zurückgestellt
     rejected: abgelehnt
     registered: registriert
-    created: angelegt
-    started: begonnen
-    answered: beantwortet
-    question_to_supervisor: Frage an Supervisor*in gestellt
+    created: zu bearbeiten
+    start: in Bearbeitung
+    started: in Bearbeitung
+    finish: bearbeitet
+    finished: bearbeitet
+    clear: freigegeben
+    cleared: freigegeben
+    restart: erneut öffnen
   contributions:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen
@@ -456,12 +460,6 @@ el:
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen
-  tasks:
-    Interview: Συνέντευξη
-    BiographicalEntry: Biographie
-    RegistryReference: Nennungen / Referenzen
-    Contribution: Beiträge
-    Photo: Fotos
   status:
     translated: ελληνική με γερμανική μετάφραση
   upload:
@@ -897,11 +895,14 @@ el:
         action: Action
         created_at: angelegt
       task:
-        authorized_id: ID oder Archiv ID
-        authorized_type: Typ
-        workflow_state: 'Status'
-        name: Name
-        desc: Beschreibung
+        user_account_id: Bearbeiter*in
+        supervisor_id: QM
+        task_type_id: Aufgabe
+        comments: Bearbeitungsvermerke
+        workflow_state: Bearbeitungsstand
+      comment:
+        author_id: Autor*in
+        receiver_id: Empfänger*in
       person:
         gender: Geschlecht
         first_name: Vorname
