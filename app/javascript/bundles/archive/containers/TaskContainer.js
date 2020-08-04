@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Task from '../components/Task';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData, submitData } from '../actions/dataActionCreators';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state, ownProps) => {
@@ -16,6 +16,7 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
+    submitData: (props, params) => dispatch(submitData(props, params)),
 })
 
 // Don't forget to actually use connect!

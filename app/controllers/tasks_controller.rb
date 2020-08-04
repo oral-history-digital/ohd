@@ -21,7 +21,8 @@ class TasksController < ApplicationController
     @task = Task.find params[:id]
     authorize @task
     @task.update_attributes task_params
-    @task.user_account.user_registration.touch
+    @task.user_account.user_registration.touch if @task.user_account
+    @task.supervisor.user_registration.touch if @task.supervisor
 
     respond_to do |format|
       format.json do
