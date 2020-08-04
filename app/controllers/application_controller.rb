@@ -129,6 +129,7 @@ class ApplicationController < ActionController::Base
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || {}
         },
         people: {},
+        interviews: {},
         task_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
           TaskType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,

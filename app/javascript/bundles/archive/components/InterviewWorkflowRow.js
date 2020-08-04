@@ -87,21 +87,23 @@ export default class InterviewWorkflowRow extends React.Component {
     }
 
     symbols() {
-        return (
-            <div className='workflow-symbols'>
-                {Object.values(this.props.interview.tasks).map((task, index) => {
-                    return this.symbol(task);
-                })}
-                {this.toggleButton()}
-            </div>
-        );
+        if (this.props.interviews[this.props.interview.archive_id]) {
+            return (
+                <div className='workflow-symbols'>
+                    {Object.values(this.props.interviews[this.props.interview.archive_id].tasks).map((task, index) => {
+                        return this.symbol(task);
+                    })}
+                    {this.toggleButton()}
+                </div>
+            );
+        }
     }
 
     fullView() {
-        if (!this.state.collapsed) {
+        if (!this.state.collapsed && this.props.interviews[this.props.interview.archive_id]) {
             return (
                 <div className='workflow-active'>
-                    {Object.values(this.props.interview.tasks).map((task, index) => {
+                    {Object.values(this.props.interviews[this.props.interview.archive_id].tasks).map((task, index) => {
                         return <TaskContainer task={task} interview={this.props.interview} />
                     })}
                 </div>

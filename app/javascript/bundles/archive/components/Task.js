@@ -62,7 +62,7 @@ export default class Task extends React.Component {
         let v;
         if (/^\d+$/.test(this.state[attribute])) { 
             let user = this.props.userAccounts[this.state[attribute]];
-            v = `${user.last_name}, ${user.first_name}`;
+            v = user && `${user.last_name}, ${user.first_name}` || 'NA';
         } else if (this.state[attribute]) {
             v = t(this.props, `workflow_states.${this.state[attribute]}`);
         } else {

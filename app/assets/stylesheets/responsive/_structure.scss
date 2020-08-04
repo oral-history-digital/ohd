@@ -684,7 +684,7 @@ a.search-result-link {
     padding: 2px;
     margin: 1px;
     float: left;
-    &.not-started {
+    &.created {
       background-color: $not-started;
     }
     &.started {
@@ -693,7 +693,7 @@ a.search-result-link {
     &.finished {
       background-color: $finished;
     }
-    &.public {
+    &.cleared {
       background-color: $public;
     }
   }
