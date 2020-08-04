@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import AuthShowContainer from '../containers/AuthShowContainer';
-import TaskTypeContainer from '../containers/TaskTypeContainer';
+import TaskContainer from '../containers/TaskContainer';
 import { t, admin, pathBase, getInterviewee } from '../../../lib/utils';
 
 export default class InterviewWorkflowRow extends React.Component {
@@ -75,16 +75,10 @@ export default class InterviewWorkflowRow extends React.Component {
         )
     }
 
-    task(taskType, interview) {
-        return Object.values(interview.tasks).filter(task => task.task_type_id === taskType.id);
-    }
-
-    symbol(taskType, interview) {
-        let task = this.task(taskType, interview);
-        let workflowState = interview.properties.public_attributes[taskType.key] ? 'public' : ((task && task.workflow_state) || 'not-started')
+    symbol(task) {
         return (
-            <span className={workflowState} key={`task-symbol-${interview.archive_id}-${taskType.id}`} >
-                {taskType.abbreviation}
+            <span className={task.workflowState} key={`task-symbol-${interview.archive_id}-${task.id}`} title={task.task_type.label[this.props.locale]} >
+                {task.task_type.abbreviation}
             </span>
         )
     }
@@ -92,8 +86,8 @@ export default class InterviewWorkflowRow extends React.Component {
     symbols() {
         return (
             <div className='workflow-symbols'>
-                {Object.values(this.props.project.task_types).map((taskType, index) => {
-                    return this.symbol(taskType, this.props.interview);
+                {this.props.interview.tasks.map((task, index) => {
+                    return this.symbol(task);
                 })}
                 {this.toggleButton()}
             </div>
@@ -104,8 +98,8 @@ export default class InterviewWorkflowRow extends React.Component {
         if (!this.state.collapsed) {
             return (
                 <div className='workflow-active'>
-                    {Object.values(this.props.project.task_types).map((taskType, index) => {
-                        return <TaskTypeContainer task={this.task(taskType, this.props.interview)} taskType={taskType} interview={this.props.interview} />
+                    {this.props.interview.tasks.map((task, index) => {
+                        return <TaskContainer task={task} interview={this.props.interview} />
                     })}
                 </div>
             );

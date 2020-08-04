@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { t, pathBase } from '../../../lib/utils';
 
-export default class TaskType extends React.Component {
+export default class Task extends React.Component {
 
     box(value) {
         return (
@@ -14,7 +14,7 @@ export default class TaskType extends React.Component {
 
     render() {
         return (
-            <div className='data boxes' key={`${this.props.interview.archive_id}-${this.props.taskType.id}-tasks-boxes`}>
+            <div className='data boxes' key={`${this.props.interview.archive_id}-${this.props.task.id}-tasks-boxes`}>
                 {this.box(this.props.task.name)}
                 {this.box('bla')}
                 {this.box(this.props.task.name)}

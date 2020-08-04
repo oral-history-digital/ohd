@@ -8,6 +8,8 @@ class TaskSerializer < ApplicationSerializer
     :workflow_states,
     :comments
 
+  belongs_to :task_type
+
   def comments
     object.comments.inject({}) { |mem, c| mem[c.id] = CommentSerializer.new(c); mem }
   end
