@@ -426,7 +426,7 @@ class Interview < ApplicationRecord
 
   def languages
     if segments.first
-      segments.first.translations.map{|t| t.locale.to_s.split('-').first}.uniq
+      segments.first.languages
     elsif language
       [ISO_639.find(language.first_code).try(:alpha2) || language.first_code]
     else

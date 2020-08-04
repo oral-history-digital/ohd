@@ -167,6 +167,10 @@ class Segment < ApplicationRecord
     'id'
   end
 
+  def languages
+    translations.map{|t| t.locale.to_s.split('-').first}.uniq
+  end
+
   def do_before_validation_on_create
     # Make sure we have a tape assigned.
     if self.tape.nil?
