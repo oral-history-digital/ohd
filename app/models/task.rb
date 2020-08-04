@@ -3,7 +3,8 @@ class Task < ApplicationRecord
   belongs_to :user_account
   belongs_to :supervisor, class_name: 'UserAccount'
   belongs_to :task_type
-  has_many :comments
+  belongs_to :interview
+  has_many :comments, as: :ref, dependent: :destroy
 
   include Workflow
 

@@ -27,13 +27,16 @@ const mapStateToProps = (state) => {
                 validate: function(v){return /\d+/.test(v)} 
             },
             {
-                attribute: 'desc',
-                elementType: 'textarea',
-                validate: function(v){return v.length > 1} 
+                attribute: 'interview_id',
+                elementType: 'select',
+                values: state.data.interviews,
+                withEmpty: true,
+                validate: function(v){return /^\d+$/.test(v)} 
             },
             {
                 attribute: 'workflow_state',
                 elementType: 'select',
+                values: ['start', 'finish', 'clear', 'restart'],
                 optionsScope: 'workflow_states',
             },
         ]

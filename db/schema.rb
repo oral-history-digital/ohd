@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_16_122732) do
+ActiveRecord::Schema.define(version: 2020_08_04_081220) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -104,6 +104,14 @@ ActiveRecord::Schema.define(version: 2020_07_16_122732) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "project_id"
+  end
+
+  create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "author_id"
+    t.integer "receiver_id"
+    t.integer "ref_id"
+    t.string "ref_type"
+    t.text "text"
   end
 
   create_table "contributions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -549,8 +557,6 @@ ActiveRecord::Schema.define(version: 2020_07_16_122732) do
   end
 
   create_table "tasks", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
-    t.string "authorized_type", limit: 255
-    t.string "authorized_id", limit: 255
     t.text "desc", limit: 4294967295
     t.string "workflow_state", limit: 255
     t.bigint "user_id"
@@ -560,6 +566,7 @@ ActiveRecord::Schema.define(version: 2020_07_16_122732) do
     t.string "name", limit: 255
     t.integer "user_account_id"
     t.integer "task_type_id"
+    t.integer "interview_id"
     t.index ["supervisor_id"], name: "index_tasks_on_supervisor_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end

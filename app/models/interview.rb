@@ -133,7 +133,13 @@ class Interview < ApplicationRecord
            -> {order('item_type ASC')},
            dependent: :destroy
 
-  has_many :tasks, as: :authorized
+  has_many :tasks, dependent: :destroy
+  after_create :create_tasks
+  def create_tasks
+    project.task_types.each do |task_type|
+      Task.create(interview_id: id, task_type_id: task_type.id)
+    end
+  end
 
   translates :observations, fallbacks_for_empty_translations: true, touch: true
 
