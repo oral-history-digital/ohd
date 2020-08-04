@@ -77,7 +77,7 @@ export default class InterviewWorkflowRow extends React.Component {
 
     symbol(task) {
         return (
-            <span className={task.workflowState} key={`task-symbol-${interview.archive_id}-${task.id}`} title={task.task_type.label[this.props.locale]} >
+            <span className={task.workflow_state} key={`task-symbol-${task.id}`} title={task.task_type.label[this.props.locale]} >
                 {task.task_type.abbreviation}
             </span>
         )
