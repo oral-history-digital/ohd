@@ -28,10 +28,16 @@ es:
     mailer:
       confirmation_instructions:
         subject: Instrucciones para activar su cuenta
+      project_access_granted:
+        subject: TODO translate Freischaltung Ihres Zugangs zu dem Archiv '%{project_name}'
+      project_access_rejected:
+        subject: TODO translate Ihre Registrierung für das Archiv '%{project_name}'
       reset_password_instructions:
         subject: Instrucciones para recuperar su contraseña
       unlock_instructions:
         subject: Instrucciones para reactivar su cuenta
+      account_deactivated:
+        subject: TODO translate Ihre Registrierung für das Archiv '%{project_name}'
     omniauth_callbacks:
       failure: No ha podido iniciar sesión con su cuenta %{kind}, porque '%{reason}'.
       success: Ha iniciado exitosamente la sesión con su cuenta.

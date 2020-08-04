@@ -68,12 +68,22 @@ class UserAccount < ApplicationRecord
     self.confirmation_sent_at = Time.now.utc
   end
 
+  # FIXME: we have legacy users which do not have a default_locale
+  # for now, fallback to project - alternatively cleanup the data
+  def locale_with_project_fallback
+    self.default_locale || self.user_registration.projects.last.default_locale
+  end
+
   def full_name
     [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
   end
 
   def display_name
-    [self.appellation, self.user_registration.full_name].compact.join(' ')
+    if !self.user_registration.appellation.blank?
+      [I18n.t("user_registration.appellation.#{self.user_registration.appellation}"), self.user_registration.full_name].compact.join(' ')
+    else
+      self.user_registration.full_name
+    end
   end
 
   # METHODS FROM CONFIRMABLE:
@@ -83,6 +93,7 @@ class UserAccount < ApplicationRecord
   # Cornfirms the password in two cases:
   # - for newly registered users
   # - when resetting the password
+  # - when reactivating users
   # For newly registered user, we store the confirmation time and perform a workflow step in the registration workflow
   def confirm_with_password!(password, password_confirmation)
     reset_password(password, password_confirmation)

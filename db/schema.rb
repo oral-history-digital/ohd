@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_07_14_095209) do
+ActiveRecord::Schema.define(version: 2020_08_03_183835) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -212,7 +212,7 @@ ActiveRecord::Schema.define(version: 2020_07_14_095209) do
     t.integer "language_id"
     t.string "workflow_state", limit: 255, default: "unshared"
     t.string "doi_status", limit: 255
-    t.string "properties"
+    t.text "properties", limit: 16777215
     t.string "media_type"
     t.integer "project_id"
     t.string "signature_original"
@@ -479,7 +479,7 @@ ActiveRecord::Schema.define(version: 2020_07_14_095209) do
     t.string "mainheading", limit: 255
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text "text", limit: 4294967295
+    t.text "text", limit: 16777215
     t.index ["segment_id"], name: "index_segment_translations_on_segment_id"
   end
 
@@ -679,8 +679,8 @@ ActiveRecord::Schema.define(version: 2020_07_14_095209) do
     t.integer "user_registration_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "activated_at"
     t.integer "user_account_id"
+    t.datetime "activated_at"
   end
 
   create_table "user_registrations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
