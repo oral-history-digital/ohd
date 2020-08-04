@@ -1,11 +1,16 @@
 <%
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}"
-  case @user_account.user_registration.default_locale
+  my_locale = @user_account.locale_with_project_fallback
+  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}"
+  case my_locale.to_sym
   when :en
 -%>
-TBD
+TODO english translation
+<% when :el -%>
+TODO greek translation
+<% when :es -%>
+TODO spanish translation
 <% when :ru -%>
-TBD
+TODO russian translation
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 

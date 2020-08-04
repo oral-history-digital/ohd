@@ -6,15 +6,15 @@ class CustomDeviseMailer < Devise::Mailer
   # Note that Devise passes a Devise::Mailer object to your proc, hence the parameter throwaway (*).
   #default from: ->(*) { Class.instance.email_address }
 
-  def project_access_granted(record, token, opts={})
+  def project_access_granted(record, opts={})
     devise_mail(record, :project_access_granted, opts)
   end
 
-  def project_access_rejected(record, token, opts={})
+  def project_access_rejected(record, opts={})
     devise_mail(record, :project_access_rejected, opts)
   end
 
-  def account_deactivated(record, token, opts={})
+  def account_deactivated(record, opts={})
     devise_mail(record, :account_deactivated, opts)
   end
 

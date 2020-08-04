@@ -1,29 +1,38 @@
 <%
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}/user_registrations/#{@user_account.confirmation_token}/activate"
-  case @user_account.user_registration.default_locale
+  my_locale = @user_account.default_locale || I18n.locale
+  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}/user_registrations/#{@user_account.confirmation_token}/activate"
+  case my_locale.to_sym
   when :en
 -%>
+TODO: update translation
 Dear <%= @user_account.display_name %>,
 
 we confirm your account registration to our archive. Your username is: <%= @user_account.email %>
 
 To enable your access to the new archive platform, we ask you to activate your account and choose a new password here:
 <%= url %>
-
 Best regards,
 
 The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"
 <% when :ru -%>
+TODO: update translation
 Уважаемый/ая <%= @user_account.display_name %>,
 
 настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @user_account.email %>
 
 Для получения возможности пользоваться архивной платформой просим Вас активировать Ваш доступ и выбрать новый пароль:
+
 <%= url %>
 
 С уважением,
 
 Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"
+<% when :el -%>
+TODO: greek translation
+
+<% when :es -%>
+TODO: spanish translation
+<%= url %>
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 
