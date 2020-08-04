@@ -1,7 +1,5 @@
 class TaskSerializer < ApplicationSerializer
   attributes :id,
-    :name,
-    :desc,
     :user_account_id,
     :supervisor_id,
     :workflow_state,

@@ -24,7 +24,7 @@ class Task < ApplicationRecord
   end
 
   def workflow_states
-    Task.workflow_spec.states.keys
+    current_state.events.map{|e| e.first}
   end
 
   #def workflow_state=(change)

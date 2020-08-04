@@ -74,10 +74,6 @@ class TasksController < ApplicationController
   def task_params
     params.require(:task).
       permit(
-        :name,
-        :desc,
-        :authorized_type,
-        :authorized_id,
         :task_type_id,
         :user_account_id,
         :supervisor_id,

@@ -12,6 +12,7 @@ const mapStateToProps = (state, ownProps) => {
         project: project,
         tasks: state.data.tasks,
         tasksStatus: state.data.statuses.tasks,
+        userAccounts: state.data.user_accounts
     }
 }
 
