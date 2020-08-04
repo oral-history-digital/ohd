@@ -1,8 +1,8 @@
 class AccountsController < ApplicationController
 
   skip_before_action :authenticate_user_account!, only: [:show]
-  skip_after_action :verify_authorized
-  skip_after_action :verify_policy_scoped
+  #skip_after_action :verify_authorized
+  #skip_after_action :verify_policy_scoped
 
   layout 'responsive'
 
@@ -42,6 +42,22 @@ class AccountsController < ApplicationController
       redirect_to account_url('current')
     else
       raise 'confirmation_token does not fit!!'
+    end
+  end
+
+  def index
+    accounts = policy_scope(UserAccount)
+
+    respond_to do |format|
+      format.json do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-admin-accounts-#{UserAccount.maximum(:updated_at)}" do
+          {
+            data: accounts.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            data_type: 'accounts'
+          }
+        end
+        render json: json
+      end
     end
   end
 

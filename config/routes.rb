@@ -9,7 +9,7 @@ Rails.application.routes.draw do
 
   scope "/:locale", :constraints => { :locale => /[a-z]{2}/ } do
     devise_for :user_accounts, :controllers => { sessions: "sessions", passwords: "passwords" }, skip: [:registrations]
-    resources :accounts, only: [:show, :update] do
+    resources :accounts, only: [:show, :update, :index] do
       member do
         get :confirm_new_email
       end
@@ -94,6 +94,7 @@ Rails.application.routes.draw do
         resources :photos, only: [:create, :update, :destroy]
         resources :registry_references, only: [:create, :update, :destroy]
         resources :segments, only: [:create, :update, :index, :destroy]
+        resources :tasks, only: [:update, :index]
         resources :tapes do
           collection do
             get :playlist

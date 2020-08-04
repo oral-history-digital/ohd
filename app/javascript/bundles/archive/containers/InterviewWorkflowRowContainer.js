@@ -20,6 +20,10 @@ const mapStateToProps = (state, ownProps) => {
         account: state.data.accounts.current,
         selectedArchiveIds: state.archive.selectedArchiveIds,
         people: state.data.people,
+        tasks: state.data.tasks,
+        tasksStatus: state.data.statuses.tasks,
+        userAccounts: state.data.accounts,
+        userAccountsStatus: state.data.statuses.accounts
     }
 }
 

@@ -27,27 +27,30 @@ export default class InterviewWorkflowRow extends React.Component {
     }
 
     componentDidMount() {
-        //this.loadWithAssociations();
-        if(this.props.fulltext) {
-            this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
-        }
+        this.loadUserAccounts();
+        this.loadTasks();
     }
 
     componentDidUpdate() {
-        //this.loadWithAssociations();
+        this.loadUserAccounts();
+        this.loadTasks();
     }
 
-    //loadWithAssociations() {
-        //let intervieweeContribution = Object.values(this.props.interview.contributions).find(c => c.contribution_type === 'interviewee');
-        //let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;
-        //let interviewee = this.props.people[intervieweeId]
-        //if (
-               //(interviewee && !interviewee.associations_loaded) ||
-               //!interviewee
-        //) {
-            //this.props.fetchData(this.props, 'people', intervieweeId, null, 'with_associations=true');
-        //}
-    //}
+    loadUserAccounts() {
+        if (
+            !this.props.userAccountsStatus.all
+        ) {
+            this.props.fetchData(this.props, 'accounts');
+        }
+    }
+
+    loadTasks() {
+        if (
+            !this.props.tasksStatus[`for_interviews_${this.props.interview.archive_id}`]
+        ) {
+            this.props.fetchData(this.props, 'interviews', this.props.interview.archive_id, 'tasks');
+        }
+    }
 
     box(value, width=8) {
         return (

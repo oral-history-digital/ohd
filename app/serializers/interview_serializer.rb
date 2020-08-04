@@ -41,8 +41,9 @@ class InterviewSerializer < ApplicationSerializer
     object.collection && object.collection.localized_hash(:name) || {}
   end
 
+  # dummy, will be filled later if needed
   def tasks
-    object.tasks.inject({}) { |mem, c| mem[c.id] = TaskSerializer.new(c); mem }
+    {}
   end
 
   Project.current.registry_reference_type_metadata_fields.each do |m|

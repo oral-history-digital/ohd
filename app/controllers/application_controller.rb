@@ -132,7 +132,6 @@ class ApplicationController < ActionController::Base
         task_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
           TaskType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
-        user_accounts: {}
       },
       popup: {
         show: false,
