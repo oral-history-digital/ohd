@@ -30,7 +30,7 @@ de:
     en: englisch
     es: spanisch
   in: bei
-  not_your_project: You are not registered for this project.
+  not_your_project: Sie sind für dieses Projekt nicht registriert.
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
@@ -498,7 +498,7 @@ de:
         Delimiter sollten entweder Semikolon oder Tab sein.
       bulk_registry_entries: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
-        sowie Feldart bei. 
+        sowie Feldart bei.
         Delimiter sollten entweder Semikolon oder Tab sein.
       bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
