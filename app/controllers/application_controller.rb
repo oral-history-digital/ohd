@@ -71,7 +71,7 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        selectedInterviewEditViewColumns: ['text_orig', 'text_translated'],
+        selectedInterviewEditViewColumns: ['text_orig', 'text_translated', 'mainheading_orig', 'subheading_orig', 'registry_references', 'annotations'],
         translations: translations,
         countryKeys: country_keys,
         contributionTypes: Project.contribution_types,
