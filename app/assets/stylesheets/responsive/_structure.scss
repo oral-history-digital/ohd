@@ -353,6 +353,38 @@ h1.video-title {
   }
 }
 
+table.edit_interview {
+    font-size: 80%;
+    border-spacing: 2px;
+    th  {
+      display: table-cell;
+      vertical-align: top;
+      background-color: #ddd;
+      text-align: left;
+      width: 1%;
+    }
+    td {
+      /* display: table-cell;*/
+      /*text-align: center;*/
+      vertical-align: top;
+      border: 1px solid #ddd;
+      padding: 5px;
+      input, textarea {
+        -webkit-box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        box-sizing: border-box;
+        font-size: 90%;
+        line-height: 1.5;
+        width: 100%;
+        margin: 0px;
+        padding: 0px;
+        min-height: 100px;
+        border: none;
+        size: auto;
+      }
+    }
+}
+
 footer {
   background: #fff; //$gray-dark;
   border-top: 1px solid $gray-dark;
