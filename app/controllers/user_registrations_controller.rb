@@ -30,8 +30,8 @@ class UserRegistrationsController < ApplicationController
         # re-send the activation instructions
         @user_registration.user_account.resend_confirmation_instructions
         @email = @user_registration.email
-        render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
       end
+      render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     else
       @email = @user_registration.email
       @user_registration = nil
