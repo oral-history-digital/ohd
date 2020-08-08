@@ -46,9 +46,9 @@ export default class InterviewWorkflowRow extends React.Component {
 
     loadTasks() {
         if (
-            !this.props.tasksStatus[`for_interviews_${this.props.interview.archive_id}`]
+            !this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`]
         ) {
-            this.props.fetchData(this.props, 'interviews', this.props.interview.archive_id, 'tasks');
+            this.props.fetchData(this.props, 'tasks', null, null, `for_interview=${this.props.interview.archive_id}`);
         }
     }
 
@@ -87,11 +87,14 @@ export default class InterviewWorkflowRow extends React.Component {
     }
 
     symbols() {
-        if (this.props.interviews[this.props.interview.archive_id]) {
+        if (
+            this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`] &&
+            this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`].split('-')[0] === 'fetched'
+        ) {
             return (
                 <div className='workflow-symbols'>
-                    {Object.values(this.props.interviews[this.props.interview.archive_id].tasks).map((task, index) => {
-                        return this.symbol(task);
+                    {this.props.interview.task_ids.map((taskId, index) => {
+                        return this.symbol(this.props.tasks[taskId]);
                     })}
                     {this.toggleButton()}
                 </div>
@@ -100,11 +103,15 @@ export default class InterviewWorkflowRow extends React.Component {
     }
 
     fullView() {
-        if (!this.state.collapsed && this.props.interviews[this.props.interview.archive_id]) {
+        if (
+            !this.state.collapsed && 
+            this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`] &&
+            this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`].split('-')[0] === 'fetched'
+        ) {
             return (
                 <div className='workflow-active'>
-                    {Object.values(this.props.interviews[this.props.interview.archive_id].tasks).map((task, index) => {
-                        return <TaskContainer task={task} interview={this.props.interview} />
+                    {this.props.interview.task_ids.map((taskId, index) => {
+                        return <TaskContainer task={this.props.tasks[taskId]} interview={this.props.interview} />
                     })}
                 </div>
             );

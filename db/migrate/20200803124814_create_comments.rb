@@ -6,6 +6,8 @@ class CreateComments < ActiveRecord::Migration[5.2]
       t.integer :ref_id
       t.string :ref_type
       t.text :text
+
+      t.timestamps
     end
   end
 end

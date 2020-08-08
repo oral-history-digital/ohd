@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Form from '../containers/form/Form';
+import CommentsContainer from '../containers/CommentsContainer';
 import { t, pathBase } from '../../../lib/utils';
 
 export default class Task extends React.Component {
@@ -117,7 +118,7 @@ export default class Task extends React.Component {
                 {this.box(this.props.task.task_type.name[this.props.locale])}
                 {this.box(this.valueAndForm('user_account_id', this.usersAsOptionsForSelect('user_account_id')))}
                 {this.box(this.valueAndForm('supervisor_id', this.usersAsOptionsForSelect('supervisor_id')))}
-                {this.box(this.props.task.name)}
+                {this.box(<CommentsContainer data={this.props.task.comments} initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}} />)}
                 {this.box(this.valueAndForm('workflow_state', this.workflowStatesAsOptionsForSelect()))}
             </div>
         );

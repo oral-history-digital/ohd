@@ -37,7 +37,7 @@ class TasksController < ApplicationController
   end
 
   def index
-    @interview = Interview.find_by_archive_id(params[:interview_id])
+    @interview = Interview.find_by_archive_id(params[:for_interview])
     policy_scope(Task)
     tasks = @interview.tasks
 
@@ -46,9 +46,8 @@ class TasksController < ApplicationController
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-tasks-#{@interview.id}-#{@interview.tasks.maximum(:updated_at)}" do
           {
             data: tasks.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
-            nested_data_type: 'tasks',
-            data_type: 'interviews',
-            archive_id: params[:interview_id]
+            data_type: 'tasks',
+            extra_params: "for_interview_#{params[:for_interview]}"
           }
         end
         render json: json

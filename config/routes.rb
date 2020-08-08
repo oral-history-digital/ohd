@@ -94,7 +94,6 @@ Rails.application.routes.draw do
         resources :photos, only: [:create, :update, :destroy]
         resources :registry_references, only: [:create, :update, :destroy]
         resources :segments, only: [:create, :update, :index, :destroy]
-        resources :tasks, only: [:update, :index]
         resources :tapes do
           collection do
             get :playlist

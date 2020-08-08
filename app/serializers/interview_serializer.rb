@@ -33,17 +33,12 @@ class InterviewSerializer < ApplicationSerializer
     :landing_page_texts,
     :properties,
     :signature_original,
-    :tasks
+    :task_ids
   #] | Project.first.metadata_fields.map(&:name)
   ] | Project.first.metadata_fields.where("source='Interview' OR ref_object_type='Interview'").map(&:name)
 
   def collection
     object.collection && object.collection.localized_hash(:name) || {}
-  end
-
-  # dummy, will be filled later if needed
-  def tasks
-    {}
   end
 
   Project.current.registry_reference_type_metadata_fields.each do |m|

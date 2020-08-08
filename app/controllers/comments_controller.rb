@@ -1,46 +1,35 @@
 class CommentsController < ApplicationController
-  before_action :set_comment, only: [:show, :edit, :update, :destroy]
-
-  def new
-    authorize Comment
-    respond_to do |format|
-      format.html { render "react/app" }
-      format.json { render json: {}, status: :ok }
-    end
-  end
+  before_action :set_comment, only: [:update, :destroy]
 
   def create
     authorize Comment
     @comment = Comment.create comment_params
+    @comment.update_attributes author_id: current_user_account.id
+
     respond_to do |format|
       format.json do
-        render json: data_json(@comment, msg: "processed")
+        render json: {
+          id: @comment.ref_id,
+          data_type: 'tasks',
+          nested_data_type: 'comments',
+          nested_id: @comment.id,
+          data: cache_single(@comment),
+        }
       end
     end
   end
 
   def update
-    @comment = Comment.find params[:id]
-    authorize @comment
-    @comment.update_attributes comment_params
-
-    respond_to do |format|
-      format.json do
-        render json: data_json(@comment)
-      end
-    end
-  end
-
-  def show
-    @comment = Comment.find params[:id]
-    authorize @comment
+    @comment.update_attributes(comment_params)
 
     respond_to do |format|
       format.json do
         render json: {
-          id: @comment.id,
-          data_type: 'comments',
-          data: params[:with_associations] ? cache_single(@comment, 'CommentWithAssociations') : cache_single(@comment)
+          id: @comment.ref_id,
+          data_type: 'tasks',
+          nested_data_type: 'comments',
+          nested_id: @comment.id,
+          data: cache_single(@comment),
         }
       end
     end
@@ -86,25 +75,23 @@ class CommentsController < ApplicationController
     end
   end
 
-  def destroy
-    @comment = Comment.find(params[:id])
-    authorize @comment
+  def destroy 
+    ref = @comment.ref
     @comment.destroy
 
     respond_to do |format|
       format.html do
-        render :action => "index"
+        render :action => 'index'
       end
-      format.js
-      format.json { render json: {}, status: :ok }
+      format.json { render json: data_json(ref, msg: 'processed') }
     end
   end
-
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_comment
       @comment = Comment.find(params[:id])
+      authorize @comment
     end
 
     # Only allow a trusted parameter "white list" through.

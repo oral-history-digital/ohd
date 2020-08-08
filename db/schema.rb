@@ -112,6 +112,8 @@ ActiveRecord::Schema.define(version: 2020_08_04_091822) do
     t.integer "ref_id"
     t.string "ref_type"
     t.text "text"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "contributions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
