@@ -57,7 +57,6 @@ class ExternalLinksController < ApplicationController
   end
 
   def destroy 
-    @external_link = ExternalLink.find(params[:id])
     project = @external_link.project
     @external_link.destroy
     project.touch
@@ -66,7 +65,6 @@ class ExternalLinksController < ApplicationController
       format.html do
         render :action => 'index'
       end
-      format.js
       format.json { render json: data_json(project, msg: 'processed') }
     end
   end
