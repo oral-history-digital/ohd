@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         editView: true,
         //
         scope: 'comment',
-        detailsAttributes: ['created_at', 'author_id', 'text'],
+        detailsAttributes: ['created_at', 'text'],
         formElements: [
             {
                 attribute: 'text',
