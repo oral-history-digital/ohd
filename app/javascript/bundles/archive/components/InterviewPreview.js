@@ -53,8 +53,8 @@ export default class InterviewPreview extends React.Component {
         let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;
         let interviewee = this.props.people[intervieweeId]
         if (
-               (interviewee && !interviewee.associations_loaded) ||
-               !interviewee
+               ((interviewee && !interviewee.associations_loaded) || !interviewee) &&
+               intervieweeId && !this.props.peopleStatus[intervieweeId]
         ) {
             this.props.fetchData(this.props, 'people', intervieweeId, null, 'with_associations=true');
         }

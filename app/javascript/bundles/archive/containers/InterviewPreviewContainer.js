@@ -22,6 +22,7 @@ const mapStateToProps = (state, ownProps) => {
         editView: state.archive.editView,
         account: state.data.accounts.current,
         people: state.data.people,
+        peopleStatus: state.data.statuses.people,
     }
 }
 
