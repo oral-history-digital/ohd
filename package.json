@@ -76,13 +76,16 @@
   },
   "devDependencies": {
     "babel-eslint": "^10.0.1",
+    "cypress": "^4.10.0",
     "eslint": "^6.2.2",
     "regenerator-runtime": "^0.13.5",
     "webpack-dev-server": "^3.8.0"
   },
   "scripts": {
     "test": "jest",
-    "test-watch": "jest --watch"
+    "test-watch": "jest --watch",
+    "cypress:open": "cypress open --project ./spec"
+
   },
   "jest": {
     "setupFilesAfterEnv": [

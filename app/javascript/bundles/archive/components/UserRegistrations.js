@@ -54,7 +54,7 @@ export default class UserRegistrations extends React.Component {
                         {this.userRegistrations()}
                         {this.renderScrollObserver()}
                     </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
+                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                         {t(this.props, 'devise.failure.unauthenticated')}
                     </AuthShowContainer>
 		</div>

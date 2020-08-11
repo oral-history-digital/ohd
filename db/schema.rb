@@ -222,6 +222,7 @@ ActiveRecord::Schema.define(version: 2020_08_04_091822) do
     t.integer "language_id"
     t.string "workflow_state", limit: 255, default: "unshared"
     t.string "doi_status", limit: 255
+    t.integer "project_id"
     t.text "properties"
     t.string "media_type"
     t.integer "project_id"

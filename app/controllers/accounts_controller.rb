@@ -15,13 +15,15 @@ class AccountsController < ApplicationController
           id: 'current',
           data_type: 'accounts',
           data: current_user_account && ::UserAccountSerializer.new(current_user_account)
-        } 
+        }
       end
     end
   end
 
   def update
     current_user_account.update_attributes account_params
+    # FIXME: we have to update duplicated data here
+    current_user_account.user_registration.update_attributes account_params
     respond_to do |format|
       format.html {}
       format.json do
@@ -29,7 +31,7 @@ class AccountsController < ApplicationController
           id: 'current',
           data_type: 'accounts',
           data: ::UserAccountSerializer.new(current_user_account)
-        } || {} 
+        } || {}
       end
     end
   end

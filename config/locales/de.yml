@@ -30,7 +30,7 @@ de:
     en: englisch
     es: spanisch
   in: bei
-  not_your_project: You are not registered for this project.
+  not_your_project: Sie sind für dieses Projekt nicht registriert.
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
@@ -433,6 +433,19 @@ de:
     postpone: zurückgestellt
     activate: aktiviert
     expire: zurückgestellt
+    confirm_account: Account bestätigen
+    activate_account: Account aktivieren
+    deactivate_account: Account deaktivieren
+    reactivate_account: Account reaktivieren
+    grant_project_access: freischalten
+    reject_project_access: ablehnen
+    postpone_project_access: zurückstellen
+    account_created: Account angelegt
+    account_confirmed: Account bestätigt
+    account_deactivated: Account deaktiviert
+    project_access_granted: registriert
+    project_access_rejected: zurückgewiesen
+    project_access_postponed: zurückgestellt
     all: Alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -484,7 +497,7 @@ de:
         Delimiter sollten entweder Semikolon oder Tab sein.
       bulk_registry_entries: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
-        sowie Feldart bei. 
+        sowie Feldart bei.
         Delimiter sollten entweder Semikolon oder Tab sein.
       bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
@@ -862,7 +875,7 @@ de:
         tos_agreement: Nutzungsbedingungen
         priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
-        workflow_state: Status ändern zu
+        workflow_state: Status
       user_role:
         role_id: Rolle
       role:

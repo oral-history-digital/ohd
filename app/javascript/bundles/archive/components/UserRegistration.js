@@ -17,7 +17,7 @@ export default class UserRegistration extends React.Component {
                 </p>
                 <p className='workflow-state'>
                     <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.workflow_state') + ': '}</span>
-                    <span className='content'>{`${this.props.userRegistration.workflow_state}`}</span>
+                    <span className='content'>{t(this.props,`workflow_states.${this.props.userRegistration.workflow_state}`)}</span>
                 </p>
             </div>
         )
@@ -49,7 +49,9 @@ export default class UserRegistration extends React.Component {
                         'receive_newsletter',
                     ].map((detail, index) => {
                         return (
-                            <p className='detail'>
+                            <p className="detail"
+                               key={index}
+                              >
                                 <span className='name'>{t(this.props, `activerecord.attributes.user_registration.${detail}`) + ': '}</span>
                                 <span className='content'>{this.props.userRegistration[detail]}</span>
                             </p>
@@ -61,18 +63,20 @@ export default class UserRegistration extends React.Component {
     }
 
     show() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.user_registration.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.user_registration.edit'),
-                    content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
-                })}
-            >
-                <i className="fa fa-pencil"></i>
-            </div>
-        )
+        if (this.props.userRegistration.workflow_state != 'account_created') {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, 'edit.user_registration.edit')}
+                    onClick={() => this.props.openArchivePopup({
+                        title: t(this.props, 'edit.user_registration.edit'),
+                        content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
+                    })}
+                >
+                    <i className="fa fa-pencil"></i>
+                </div>
+            )
+        }
     }
 
     // edit() {

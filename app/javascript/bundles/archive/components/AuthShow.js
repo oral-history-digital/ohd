@@ -8,18 +8,19 @@ export default class AuthShow extends React.Component {
             // admin
             return this.props.children;
         } else if (
-            (this.props.isLoggedIn && this.props.ifLoggedIn && this.props.account && this.props.account.project_ids.indexOf(this.props.projectId) > -1 ) ||
-            (this.props.project.isCatalog && this.props.ifCatalog)
-            )
-        {
             // logged in and registered for the current project
+            (this.props.isLoggedIn && this.props.ifLoggedIn && this.props.account && this.props.account.project_ids && this.props.account.project_ids.indexOf(this.props.projectId) > -1 ) ||
+            // logged in and NOT registered for the current project
+            (this.props.isLoggedIn && this.props.ifNoProject && this.props.account && this.props.account.project_ids && this.props.account.project_ids.indexOf(this.props.projectId) === -1 ) ||
+            // catalog-project
+            (this.props.project.isCatalog && this.props.ifCatalog)
+        ) {
             return this.props.children;
         } else if (
-            (
-                !this.props.isLoggedIn ||
-                (this.props.isLoggedIn && this.props.account && this.props.account.project_ids.indexOf(this.props.projectId) === -1)
-            ) &&
-            this.props.ifLoggedOut
+            // logged out
+            (!this.props.isLoggedIn && this.props.ifLoggedOut) ||
+            // logged in and NOT registered for the current project
+            (this.props.isLoggedIn && this.props.ifNoProject && this.props.account && this.props.account.project_ids && this.props.account.project_ids.indexOf(this.props.projectId) === -1 )
         ) {
             // logged out or still not registered for a project
             return this.props.children;
@@ -32,4 +33,3 @@ export default class AuthShow extends React.Component {
         return this.content();
     }
 }
-

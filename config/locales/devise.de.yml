@@ -28,10 +28,16 @@ de:
     mailer:
       confirmation_instructions:
         subject: Schritte für die Freischaltung Ihres Zugangs
+      project_access_granted:
+        subject: Freischaltung Ihres Zugangs zu dem Archiv '%{project_name}'
+      project_access_rejected:
+        subject: Ihre Registrierung für das Archiv '%{project_name}'
       reset_password_instructions:
         subject: Schritte für die Wiederherstellung Ihres Passwortes
       unlock_instructions:
         subject: Schritte für die Reaktivierung Ihres Zugangs
+      account_deactivated:
+        subject: Ihre Registrierung für das Archiv '%{project_name}'
     omniauth_callbacks:
       failure: Sie konnten nicht mit Ihrem %{kind}-Account angemeldet werden, weil '%{reason}'.
       success: Sie haben sich erfolgreich mit Ihrem Account angemeldet.
@@ -61,7 +67,7 @@ de:
       submit: Registrierung senden
       activate: 'Aktivierung des Nutzer*innen-Accounts für '
       activate_submit: absenden
-      activate_text: Um Ihren Nutzer*innen-Account zu aktivieren wählen Sie bitte
+      activate_text: Um Ihren Nutzer*innen-Account zu aktivieren, wählen Sie bitte
         ein geeignetes Passwort für Ihren Zugang.
       successful: Ihre Registrierung ist bei uns eingegangen.
       signed_up: Sie sind jetzt für die Registrierung vorgemerkt. Sobald wir Ihre

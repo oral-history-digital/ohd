@@ -847,7 +847,7 @@ en:
         tos_agreement: Tos Agreement
         priv_agreement: Priv Agreement
         register: Register
-        workflow_state: Change workflow state to
+        workflow_state: Workflow state
       user_role:
         role_id: Rolle
       role:

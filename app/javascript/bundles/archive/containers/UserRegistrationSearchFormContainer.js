@@ -25,7 +25,7 @@ const mapStateToProps = (state) => {
                 type: 'select',
                 values: (project && project.available_locales) || state.archive.locales,
             },
-            {attributeName: 'workflow_state', type: 'select', values: ['all', 'account_confirmed', 'project_access_granted', 'project_access_postponed', 'rejected', 'account_deactivated']}
+            {attributeName: 'workflow_state', type: 'select', values: ['all', 'account_created', 'account_confirmed', 'project_access_granted', 'project_access_postponed', 'project_access_rejected', 'account_deactivated']}
         ]
     }
 }

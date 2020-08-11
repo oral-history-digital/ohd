@@ -22,9 +22,16 @@ class UserRegistrationsController < ApplicationController
     @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
       UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id
-      AdminMailer.with(registration: @user_registration, project: current_project).new_registration_info.deliver
-      @user_registration.register!
+      @user_registration.register
       render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
+    elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      @user_registration = UserRegistration.where(email: @user_registration.email).first
+      if @user_registration.account_created?
+        # re-send the activation instructions
+        @user_registration.user_account.resend_confirmation_instructions
+        @email = @user_registration.email
+      end
+      render json: {registration_status: render_to_string("registered.#{params[:locale]}.html", layout: false)}
     else
       @email = @user_registration.email
       @user_registration = nil
@@ -77,6 +84,8 @@ class UserRegistrationsController < ApplicationController
     @project = current_project
     @user_registration = UserRegistration.find(params[:id])
     authorize @user_registration
+    # workflow gem uses update_column which does not update updated_at!
+    @user_registration.updated_at = DateTime.now
     @user_registration.update_attributes(user_registration_params)
 
     respond_to do |format|
@@ -169,9 +178,9 @@ class UserRegistrationsController < ApplicationController
     conditionals = []
     condition_args = []
     # workflow state
-    @filters['workflow_state'] = params['workflow_state'] || 'unchecked'
+    @filters['workflow_state'] = params['workflow_state'] || 'account_confirmed'
     unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
-      conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "unchecked" ? " OR workflow_state IS NULL)" : ")")
+      conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "account_confirmed" ? " OR workflow_state IS NULL)" : ")")
     end
     # other attributes
     %w(email default_locale).each do |att|

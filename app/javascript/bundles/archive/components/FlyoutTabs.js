@@ -114,7 +114,7 @@ export default class FlyoutTabs extends React.Component {
             return (
                 <TabPanel key='interview'>
                     <div className='flyout-tab-title'>{t(this.props, 'interview')}</div>
-                    <AuthShowContainer ifLoggedOut={this.props.projectId !== "campscapes"}>
+                    <AuthShowContainer ifLoggedOut={this.props.projectId !== "campscapes"} ifNoProject={true}>
                         <AccountContainer/>
                     </AuthShowContainer>
                     <div className={`flyout-sub-tabs-container flyout-video ${this.props.projectId === "campscapes" ? "hidden": ""}`}>
@@ -128,7 +128,7 @@ export default class FlyoutTabs extends React.Component {
                                 </div>
                             }
                         />
-                        <AuthShowContainer ifLoggedOut={this.props.projectId !== "campscapes"}>
+                        <AuthShowContainer ifLoggedOut={this.props.projectId !== "campscapes"} ifNoProject={true}>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}

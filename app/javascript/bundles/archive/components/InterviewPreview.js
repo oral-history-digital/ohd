@@ -207,7 +207,7 @@ export default class InterviewPreview extends React.Component {
                                 {this.props.interview.short_title && this.props.interview.short_title[this.props.locale]}
                             </p>
                         </AuthShowContainer>
-                        <AuthShowContainer ifLoggedOut={true}>
+                        <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                             <p className={'search-result-name'}>
                                 {this.unsharedIcon()}
                                 {this.props.project.fullname_on_landing_page ? this.props.interview.title[this.props.locale] : this.props.interview.anonymous_title[this.props.locale]}

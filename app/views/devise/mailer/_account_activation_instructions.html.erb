@@ -1,7 +1,8 @@
-<% 
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}/user_registrations/#{@user_account.confirmation_token}/activate" 
-  case @user_account.user_registration.default_locale
-  when :en 
+<%
+  my_locale = @user_account.default_locale || I18n.locale
+  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}/user_registrations/#{@user_account.confirmation_token}/activate"
+  case my_locale.to_sym
+  when :en
 -%>
     <p>Dear <%= @user_account.display_name %>,</p>
     <p>we confirm your account registration to our archive. Your username is: <%= @user_account.email %></p>
@@ -18,12 +19,16 @@
     <br/>
     <p>С уважением,</p>
     <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <% when :es -%>
+    <p>TODO: translate to Spanish</p>
+    <p><%= link_to 'Registrierung bestätigen', url %></p>
   <% else -%>
-    <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
-    <p>wir bestätigen hiermit Ihren Zugang zum Archiv. Ihr Benutzername lautet: <%= @user_account.email %></p>
-    <p>Um Ihren Zugang zur Archivplattform zu ermöglichen, bitten wir Sie Ihren Zugang hier zu aktivieren und ein neues Passwort zu wählen:</p>
-    <p><%= link_to 'Zugang jetzt aktivieren', url %></p>
-    <br/>
+    <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
+    <p>Sie haben sich für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>
+    <p>Bitte bestätigen Sie Ihre Registrierung innerhalb der kommenden 14 Tage hier:</p>
+    <p><%= link_to 'Registrierung bestätigen', url %></p>
+    <p>Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung wird Ihr Zugang zu dem Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" aktiviert und Sie erhalten Ihre Zugangsdaten.</p>
+    <p>Sollten Sie sich nicht für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
     <p>Mit freundlichen Grüßen,</p>
     <p>Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>

@@ -2,8 +2,7 @@ class UserRegistration < ApplicationRecord
   include Workflow
   include ActionView::Helpers::TextHelper
 
-  # do we need this constant?
-  STATES = %w(new account_created account_confirmed project_access_granted project_access_postponed rejected account_deactivated)
+  STATES = %w(account_created account_confirmed project_access_granted project_access_postponed rejected account_deactivated)
 
   belongs_to :user_account
 
@@ -17,11 +16,12 @@ class UserRegistration < ApplicationRecord
 
   validates_uniqueness_of :email, :on => :create
 
+  validates_acceptance_of :tos_agreement, :accept => true
+  validates_acceptance_of :priv_agreement, :accept => true
+
   before_create :serialize_form_parameters
 
-  scope :unchecked, -> { where('workflow_state IS NULL OR workflow_state = ?', 'unchecked') }
-
-  scope :legit, -> { where('workflow_state = "checked" OR workflow_state = "registered"') }
+  scope :legit, -> { where('workflow_state = "project_access_granted"') }
   scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
 
   # fields expected for the user registration
@@ -107,19 +107,15 @@ EVAL
     #     - [for admin purposes (security, trolling): email, admin_comments] to be discussed
     #    Users accounts checked or unchecked in the last 7 days are asked to register again due to changed registration process
     # associated data: ip, usage report
-    # TODO: remove roles / permissions / workflow comments / tasks etc.
 
   workflow do
-    # new self-service registration process
-    # cannot be changed by admin - should be invisible in UI! (becacuse no user account exists)
-    state :new do
-      event :register,  :transitions_to => :account_created
-    end
-    # cannot be changed by admin - should be read only in UI!
+
+    # self-service step - not editable in UI
     state :account_created do
       event :confirm_account, :transition_to => :account_confirmed
       event :expire_confirmation_token, :transition_to => :confirmation_token_expired
     end
+    # admin workflow
     state :account_confirmed do
       event :grant_project_access, :transitions_to => :project_access_granted
       event :reject_project_access,    :transitions_to => :project_access_rejected
@@ -160,14 +156,16 @@ EVAL
     create_account
     raise "Could not create a valid account for #{self.inspect}" unless self.user_account.valid?
     self.processed_at = Time.now
+    self.default_locale = I18n.locale
     save
     # FIXME: copies all attributes to user_account. this duplicates data and has to be removed after the new registration process is finished
     save_registration_data_and_user_data_to_user_account
   end
 
   def confirm_account
-    self.user_account.update_attribute :confirmed_at, Time.now
-    self.user_account.update_attribute(:confirmation_token, nil)
+    # this is triggered from user account to update the workflow state
+    AdminMailer.with(registration: self, project: current_project).new_registration_info.deliver
+    self.update!
   end
 
   # TODO: check how the token expires
@@ -176,18 +174,17 @@ EVAL
   end
 
   def grant_project_access
-    self.update_attribute(:activated_at, Time.now) # TODO: not sure if we should keep this.
+    self.update_attribute(:activated_at, Time.now)
     self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, Time.now)
-    # TODO: send email to user
-  end
-
-  def revoke_project_access
-    self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, nil)
-    # TODO: send email to user
+    # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
+    subject = I18n.t('devise.mailer.project_access_granted.subject', project_name: current_project.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
+    CustomDeviseMailer.project_access_granted(self.user_account, {subject: subject}).deliver_now
   end
 
   def reject_project_access
-    # TODO: send email to user
+    # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
+    subject = I18n.t('devise.mailer.project_access_rejected.subject', project_name: current_project.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
+    CustomDeviseMailer.project_access_rejected(self.user_account, {subject: subject}).deliver_now
   end
 
   # Flags the account as deactivated and removes project access
@@ -197,20 +194,19 @@ EVAL
     end
     self.user_account.update_attribute(:admin, nil)
     self.user_account.deactivate!
-    # TODO: send email to user (or does this already happen?)
+    # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
+    subject = I18n.t('devise.mailer.account_deactivated.subject', project_name: current_project.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
+    CustomDeviseMailer.account_deactivated(self.user_account, {subject: subject}).deliver_now
   end
 
   def reactivate_account
     self.user_account.reactivate!
+    # FIXME: devise confirmation instructions uses I18n.locale for the email subject - to prevent this, we could use a custom template
     user_account.resend_confirmation_instructions
   end
 
   def full_name
     [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
-  end
-
-  def updated_at
-    (user_account && user_account.updated_at) || created_at
   end
 
   def form_parameters
@@ -232,11 +228,15 @@ EVAL
     YAML.load(read_attribute(:application_info)).stringify_keys
   end
 
+  def update!
+    update_attribute(:updated_at, Time.now)
+  end
+
   private
 
   # FIXME: get project from params instead
   def current_project
-    Project.first
+    Project.last
   end
 
   def serialize_form_parameters
@@ -253,22 +253,22 @@ EVAL
     self.user_account = UserAccount.where(email: self.email).first_or_initialize
     self.user_account.login = create_login if self.user_account.login.blank?
     self.user_account.generate_confirmation_token if self.user_account.confirmation_token.blank?
+    self.user_account.tos_agreed_at = DateTime.now
+    self.user_account.default_locale = I18n.locale
     self.user_account.save
   end
 
   def save_registration_data_and_user_data_to_user_account
     reg_attrs = self.attributes
     reg_attrs.delete('id')
-    reg_attrs.delete('workflow_state')
-    reg_attrs.delete('user_account_id')
-    reg_attrs.delete('email') # user account already contains the email
+    reg_attrs.delete('email')
     reg_attrs.delete('application_info') # we do not need the YAML field
     reg_attrs.delete('user_account_id')
-    reg_attrs.delete('workflow_state') # don't copy because tracking all the changes would be hard
+    reg_attrs.delete('workflow_state')
     self.user_account.update_attributes(reg_attrs)
     user_attrs = user_attributes
     user_attrs.delete('id')
-    user_attrs.delete('first_name') # names were taken from registrsation attrs
+    user_attrs.delete('first_name') # names were taken from registration attrs
     user_attrs.delete('last_name')
     self.user_account.update_attributes(user_attrs)
   end
