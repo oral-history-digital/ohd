@@ -590,7 +590,7 @@ a.search-result-link {
   }
 }
 
-.search-result {
+.search-result, .search-result-workflow, .search-result-workflow-detail {
   position: relative;
   width: 100%;
   @include screen-m {
@@ -605,14 +605,6 @@ a.search-result-link {
     width: 100%;
     display: block;
   }
-  img.workflow {
-    width: 50%;
-    //display: block;
-  }
-  span.workflow {
-    font-size: $font-size-medium;
-    width: 40%;
-  }
   .badge {
     background-color: #fff;
     color: #666;
@@ -626,6 +618,25 @@ a.search-result-link {
     vertical-align: middle;
     width: 60px;
     z-index: 1;
+  }
+}
+
+.search-result-workflow {
+  margin: 0;
+  padding: 0;
+  img {
+    width: 50%;
+  }
+  span {
+    font-size: $font-size-medium;
+  }
+}
+
+.search-result-workflow-detail {
+  margin: 0;
+  padding: 0;
+  .boxes {
+    padding: 20px;
   }
 }
 
@@ -694,7 +705,7 @@ a.search-result-link {
 .workflow-symbols {
   font-size: $font-size-medium;
   span {
-    padding: 2px;
+    padding: 1px 5px;
     margin: 1px;
     float: left;
     &.created {
@@ -714,6 +725,7 @@ a.search-result-link {
 
 .workflow-active {
   background-color: $gray-lightest;
+  padding: 20px 20px 0;
 }
 
 /* Home Video */

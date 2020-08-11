@@ -122,7 +122,7 @@ export default class InterviewWorkflowRow extends React.Component {
     fullViewHeader() {
         if (!this.state.collapsed) {
             return (
-                <div className='workflow-active header'>
+                <div className='workflow-active boxes header'>
                     {this.box(t(this.props, 'activerecord.attributes.task.task_type_id'))}
                     {this.box(t(this.props, 'activerecord.attributes.task.supervisor_id'))}
                     {this.box(t(this.props, 'activerecord.attributes.task.user_account_id'))}
@@ -136,7 +136,7 @@ export default class InterviewWorkflowRow extends React.Component {
     render() {
         return (
             <div key={`interview-workflow-${this.props.interview.archive_id}`}>
-                <div className='search-result data boxes' key={`${this.props.interview.archive_id}-collapsed-view`}>
+                <div className='search-result-workflow data boxes' key={`${this.props.interview.archive_id}-collapsed-view`}>
                     {this.intervieweeWithPhoto()}
                     {this.box(this.props.interview.archive_id, '7-5')}
                     {this.box(this.props.interview.media_type, '7-5')}
@@ -148,7 +148,7 @@ export default class InterviewWorkflowRow extends React.Component {
                     </div>
                     {this.box(this.props.interview.workflow_state, '7-5')}
                 </div>
-                <div className='search-result data boxes' key={`${this.props.interview.archive_id}-workflow-details`}>
+                <div className='search-result-workflow-detail data boxes' key={`${this.props.interview.archive_id}-workflow-details`}>
                     {this.fullViewHeader()}
                     {this.fullView()}
                 </div>
