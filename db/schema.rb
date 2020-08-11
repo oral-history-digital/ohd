@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_03_183835) do
+ActiveRecord::Schema.define(version: 2020_08_07_123524) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -36,7 +36,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
   create_table "annotation_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "annotation_id"
     t.string "locale", limit: 255
-    t.text "text", limit: 4294967295
+    t.text "text", limit: 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["annotation_id"], name: "index_annotation_translations_on_annotation_id"
@@ -66,7 +66,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.string "locale", limit: 255, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "text", limit: 4294967295
+    t.text "text", limit: 16777215
     t.string "start_date", limit: 255
     t.string "end_date", limit: 255
     t.index ["biographical_entry_id"], name: "index_biographical_entry_translations_on_biographical_entry_id"
@@ -91,9 +91,9 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.string "countries", limit: 255
     t.string "institution", limit: 255
     t.string "responsibles", limit: 255
-    t.text "interviewers", limit: 4294967295
+    t.text "interviewers", limit: 16777215
     t.string "name", limit: 255
-    t.text "notes", limit: 4294967295
+    t.text "notes", limit: 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string "homepage"
@@ -163,7 +163,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.string "locale", limit: 255, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "forced_labor_details", limit: 4294967295
+    t.text "forced_labor_details", limit: 16777215
     t.string "return_date", limit: 255
     t.string "deportation_date", limit: 255
     t.string "punishment", limit: 255
@@ -184,7 +184,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
 
   create_table "interview_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "locale", limit: 255
-    t.text "observations", limit: 4294967295
+    t.text "observations", limit: 16777215
     t.integer "interview_id"
   end
 
@@ -204,17 +204,17 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.integer "still_image_file_size"
     t.datetime "still_image_updated_at"
     t.boolean "inferior_quality", default: false
-    t.text "original_citation", limit: 4294967295
-    t.text "translated_citation", limit: 4294967295
+    t.text "original_citation", limit: 16777215
+    t.text "translated_citation", limit: 16777215
     t.string "citation_media_id", limit: 255
     t.string "citation_timecode", limit: 18
     t.datetime "indexed_at"
     t.integer "language_id"
     t.string "workflow_state", limit: 255, default: "unshared"
     t.string "doi_status", limit: 255
-    t.text "properties", limit: 16777215
-    t.string "media_type"
     t.integer "project_id"
+    t.text "properties"
+    t.string "media_type"
     t.string "signature_original"
   end
 
@@ -299,7 +299,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
   create_table "photo_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "photo_id"
     t.string "locale", limit: 255
-    t.text "caption", limit: 4294967295
+    t.text "caption", limit: 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
     t.index ["photo_id"], name: "index_photo_translations_on_photo_id"
@@ -320,9 +320,9 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.text "introduction", limit: 16777215
-    t.text "more_text", limit: 16777215
-    t.text "landing_page_text", limit: 16777215
+    t.text "introduction"
+    t.text "more_text"
+    t.text "landing_page_text"
     t.index ["locale"], name: "index_project_translations_on_locale"
     t.index ["project_id"], name: "index_project_translations_on_project_id"
   end
@@ -350,8 +350,8 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.string "pdf_registry_entry_codes"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "cache_key_prefix", default: "zwar"
     t.boolean "fullname_on_landing_page"
-    t.string "cache_key_prefix", default: "cdoh"
     t.string "primary_color"
     t.string "secondary_color"
     t.string "editorial_color"
@@ -366,7 +366,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.boolean "list_priority"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.index ["code"], name: "index_registry_entries_on_code", length: 50
+    t.index ["code"], name: "index_registry_entries_on_code", length: 100
   end
 
   create_table "registry_entry_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -396,10 +396,10 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
   create_table "registry_name_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "registry_name_id", null: false
     t.string "locale", limit: 255, null: false
-    t.text "descriptor", limit: 4294967295
+    t.text "descriptor", limit: 16777215
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.text "notes", limit: 4294967295
+    t.text "notes", limit: 16777215
     t.index ["descriptor"], name: "index_registry_name_translations_on_descriptor", length: 191
     t.index ["registry_name_id"], name: "index_registry_name_translations_on_registry_name_id"
   end
@@ -436,7 +436,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean "children_only", default: false
-    t.index ["code"], name: "index_registry_reference_types_on_code", length: 50
+    t.index ["code"], name: "index_registry_reference_types_on_code", length: 100
   end
 
   create_table "registry_references", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -559,7 +559,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.string "locale", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "text", limit: 16777215
+    t.text "text", limit: 4294967295
     t.index ["locale"], name: "index_text_translations_on_locale"
     t.index ["text_id"], name: "index_text_translations_on_text_id"
   end
@@ -600,7 +600,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.index ["user_account_id", "ip"], name: "index_user_account_ips_on_user_account_id_and_ip", length: { ip: 191 }
   end
 
-  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 128, default: "", null: false
     t.string "password_salt", limit: 255, default: "", null: false
@@ -623,7 +623,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.string "appellation"
     t.string "job_description"
     t.string "research_intentions"
-    t.text "comments", limit: 16777215
+    t.text "comments"
     t.string "organization"
     t.string "homepage"
     t.string "street"
@@ -639,7 +639,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.boolean "tos_agreement"
     t.boolean "receive_newsletter"
     t.string "default_locale"
-    t.text "admin_comments", limit: 16777215
+    t.text "admin_comments"
     t.datetime "processed_at"
     t.datetime "activated_at"
     t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true
@@ -663,9 +663,9 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.integer "reference_id"
     t.string "reference_type", limit: 255
     t.integer "position", default: 1
-    t.string "workflow_state", limit: 255, default: "private"
     t.datetime "submitted_at"
     t.datetime "published_at"
+    t.string "workflow_state", limit: 255, default: "private"
     t.string "media_id", limit: 255
     t.integer "user_account_id"
     t.index ["media_id"], name: "index_user_contents_on_media_id", length: 191
@@ -688,7 +688,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.string "last_name", limit: 255
     t.string "email", limit: 255
     t.boolean "tos_agreement"
-    t.text "application_info", limit: 4294967295
+    t.text "application_info", limit: 16777215
     t.string "workflow_state", limit: 255
     t.datetime "created_at"
     t.datetime "activated_at"
@@ -718,7 +718,7 @@ ActiveRecord::Schema.define(version: 2020_08_03_183835) do
     t.string "appellation", limit: 255
     t.string "job_description", limit: 255
     t.string "research_intentions", limit: 255
-    t.text "comments", limit: 4294967295
+    t.text "comments", limit: 16777215
     t.string "organization", limit: 255
     t.string "homepage", limit: 255
     t.string "street", limit: 255
