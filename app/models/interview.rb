@@ -177,6 +177,11 @@ class Interview < ApplicationRecord
     
     # in order to fast access a list of titles for the name and alias_names autocomplete:
     string :title, :stored => true
+    string :media_type, :stored => true
+    string :duration, :stored => true
+    string :language, :stored => true do
+      language.name(:de)
+    end
     #string :alias_names, :stored => true
 
     # in order to fast access places of birth for all interviews
@@ -830,7 +835,11 @@ class Interview < ApplicationRecord
             with(facet.to_sym).any_of(params[facet]) if params[facet]
           end
         end
-        order_by("person_name_#{locale}".to_sym, :asc) if params[:fulltext].blank?
+        if params[:fulltext].blank? && params[:order].blank?
+          order_by("person_name_#{locale}".to_sym, :asc) 
+        else
+          order_by(params[:order].split('-')[0].to_sym, params[:order].split('-')[1].to_sym)
+        end
         # TODO: sort linguistically
         paginate page: params[:page] || 1, per_page: per_page
       end

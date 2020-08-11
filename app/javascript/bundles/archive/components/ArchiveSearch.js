@@ -18,6 +18,16 @@ export default class ArchiveSearch extends React.Component {
 
     constructor(props) {
         super(props);
+        this.state = {
+            sortables: {
+                title: 'asc',
+                archive_id: 'asc',
+                media_type: 'asc',
+                duration: 'asc',
+                language: 'asc',
+                workflow_state: 'asc',
+            }
+        }
     }
 
     componentDidMount() {
@@ -69,10 +79,35 @@ export default class ArchiveSearch extends React.Component {
         return headers;
     }
 
-    box(value) {
+    sort(column, direction) {
+        this.search(Object.assign({}, this.props.query, {order: `${column}-${direction}`, page: 1}));
+    }
+
+    sortButton(column) {
+        if (column) {
+            let _this = this;
+            let direction = this.state.sortables[column] === 'desc' ? 'asc' : 'desc';
+            return (
+                <span
+                    className='flyout-sub-tabs-content-ico-link'
+                    onClick={() => {
+                        _this.setState({sortables: Object.assign({}, _this.state.sortables, {[column]: direction})});
+                        _this.sort(column, direction);
+                    }}
+                >
+                    <i className={`fa fa-angle-${direction === 'desc' ? 'down' : 'up'}`}></i>
+                </span>
+            );
+        } else {
+            return null;
+        }
+    }
+
+    box(value, sortColumn) {
         return (
             <div className='box-8 header'>
                 {t(this.props, value)}
+                {this.sortButton(sortColumn)}
             </div>
         )
     }
@@ -80,14 +115,14 @@ export default class ArchiveSearch extends React.Component {
     workflowHeader() {
         return (
             <div className='data boxes' key='header-boxes'>
-                {this.box('interview')}
-                {this.box('id')}
-                {this.box('activerecord.attributes.interview.media_type')}
-                {this.box('activerecord.attributes.interview.duration')}
-                {this.box('activerecord.attributes.interview.language')}
+                {this.box('interview', 'title')}
+                {this.box('id', 'archive_id')}
+                {this.box('activerecord.attributes.interview.media_type', 'media_type')}
+                {this.box('activerecord.attributes.interview.duration', 'duration')}
+                {this.box('activerecord.attributes.interview.language', 'language')}
                 {this.box('activerecord.attributes.interview.collection_id')}
                 {this.box('activerecord.attributes.interview.tasks_states')}
-                {this.box('activerecord.attributes.interview.workflow_state')}
+                {this.box('activerecord.attributes.interview.workflow_state', 'workflow_state')}
             </div>
         )
     }
