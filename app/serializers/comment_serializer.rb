@@ -9,7 +9,11 @@ class CommentSerializer < ApplicationSerializer
     :name
 
   def name
-    "#{object.text[0..15]}... , #{object.created_at.strftime("%d.%m.%Y %H:%M")} #{object.author.full_name}"
+    "#{object.text[0..50]}... , #{object.created_at.strftime("%d.%m.%Y %H:%M")} #{object.author.full_name}"
+  end
+
+  def created_at
+    object.created_at.strftime("%d.%m.%Y %M:%H")
   end
 
 end

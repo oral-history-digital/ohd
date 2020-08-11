@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import ArchiveSearch from '../components/ArchiveSearch';
 import { searchInArchive, setQueryParams } from '../actions/searchActionCreators';
+import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { setViewMode } from '../actions/archiveActionCreators';
 import { getCookie } from '../../../lib/utils';
 import { getProject } from '../../../lib/utils';
@@ -36,6 +37,7 @@ const mapDispatchToProps = (dispatch) => ({
     searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
     setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
     setViewMode: (viewMode) => dispatch(setViewMode(viewMode)),
+    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearch);

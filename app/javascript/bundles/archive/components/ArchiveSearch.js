@@ -103,9 +103,13 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
-    box(value, sortColumn) {
+    // width is in percent - points in decimal numbers are replaced by '-'
+    // the classes have to exist in grid.scss.
+    // have a look for examples
+    //
+    box(value, width, sortColumn) {
         return (
-            <div className='box-8 header'>
+            <div className={`box-${width} header`}>
                 {t(this.props, value)}
                 {this.sortButton(sortColumn)}
             </div>
@@ -114,15 +118,15 @@ export default class ArchiveSearch extends React.Component {
 
     workflowHeader() {
         return (
-            <div className='data boxes' key='header-boxes'>
-                {this.box('interview', 'title')}
-                {this.box('id', 'archive_id')}
-                {this.box('activerecord.attributes.interview.media_type', 'media_type')}
-                {this.box('activerecord.attributes.interview.duration', 'duration')}
-                {this.box('activerecord.attributes.interview.language', 'language')}
-                {this.box('activerecord.attributes.interview.collection_id')}
-                {this.box('activerecord.attributes.interview.tasks_states')}
-                {this.box('activerecord.attributes.interview.workflow_state', 'workflow_state')}
+            <div className='data boxes workflow-header' key='header-boxes'>
+                {this.box('interview', '20', 'title')}
+                {this.box('id', '7-5', 'archive_id')}
+                {this.box('activerecord.attributes.interview.media_type', '7-5', 'media_type')}
+                {this.box('activerecord.attributes.interview.duration', '7-5', 'duration')}
+                {this.box('activerecord.attributes.interview.language', '10', 'language')}
+                {this.box('activerecord.attributes.interview.collection_id', '10')}
+                {this.box('activerecord.attributes.interview.tasks_states', '30')}
+                {this.box('activerecord.attributes.interview.workflow_state', '7-5', 'workflow_state')}
             </div>
         )
     }
@@ -192,6 +196,9 @@ export default class ArchiveSearch extends React.Component {
 
     handleTabClick(tabIndex) {
         this.props.setViewMode(this.props.viewModes[tabIndex])
+        if (this.props.viewModes[tabIndex] === 'workflow') {
+            this.props.hideFlyoutTabs();
+        }
     }
 
 

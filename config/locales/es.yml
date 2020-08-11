@@ -909,6 +909,7 @@ es:
         project_id: Projekt
         key: Schlüssel
         abbreviation: Abkürzung
+        created_at: Angelegt am
     errors:
       default:
         select: Seleccionar

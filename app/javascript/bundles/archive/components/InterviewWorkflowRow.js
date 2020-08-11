@@ -53,7 +53,7 @@ export default class InterviewWorkflowRow extends React.Component {
         }
     }
 
-    box(value, width=8) {
+    box(value, width='17-5') {
         return (
             <div className={`box-${width}`}>
                 {value}
@@ -63,7 +63,7 @@ export default class InterviewWorkflowRow extends React.Component {
 
     intervieweeWithPhoto() {
         return (
-            <Link className={'search-result-link box-8'}
+            <Link className={'search-result-link box-20'}
                 onClick={() => {
                     this.props.setArchiveId(this.props.interview.archive_id);
                     this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
@@ -71,8 +71,8 @@ export default class InterviewWorkflowRow extends React.Component {
                 }}
                 to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
             >
-                <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
-                <span>
+                <img className='workflow' src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                <span className='workflow' >
                     {this.props.interview.title[this.props.locale]}
                 </span>
             </Link>
@@ -123,11 +123,11 @@ export default class InterviewWorkflowRow extends React.Component {
         if (!this.state.collapsed) {
             return (
                 <div className='workflow-active header'>
-                    {this.box(t(this.props, 'activerecord.attributes.task.task_type_id'), 5)}
-                    {this.box(t(this.props, 'activerecord.attributes.task.supervisor_id'), 5)}
-                    {this.box(t(this.props, 'activerecord.attributes.task.user_account_id'), 5)}
-                    {this.box(t(this.props, 'activerecord.attributes.task.comments'), 5)}
-                    {this.box(t(this.props, 'activerecord.attributes.task.workflow_state'), 5)}
+                    {this.box(t(this.props, 'activerecord.attributes.task.task_type_id'))}
+                    {this.box(t(this.props, 'activerecord.attributes.task.supervisor_id'))}
+                    {this.box(t(this.props, 'activerecord.attributes.task.user_account_id'))}
+                    {this.box(t(this.props, 'activerecord.attributes.task.comments'), 30)}
+                    {this.box(t(this.props, 'activerecord.attributes.task.workflow_state'))}
                 </div>
             );
         }
@@ -138,15 +138,15 @@ export default class InterviewWorkflowRow extends React.Component {
             <div key={`interview-workflow-${this.props.interview.archive_id}`}>
                 <div className='search-result data boxes' key={`${this.props.interview.archive_id}-collapsed-view`}>
                     {this.intervieweeWithPhoto()}
-                    {this.box(this.props.interview.archive_id)}
-                    {this.box(this.props.interview.media_type)}
-                    {this.box(this.props.interview.duration_human)}
-                    {this.box(this.props.interview.language[this.props.locale])}
-                    {this.box(this.props.interview.collection[this.props.locale])}
-                    <div className={`box-8 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
+                    {this.box(this.props.interview.archive_id, '7-5')}
+                    {this.box(this.props.interview.media_type, '7-5')}
+                    {this.box(this.props.interview.duration_human, '7-5')}
+                    {this.box(this.props.interview.language[this.props.locale], '10')}
+                    {this.box(this.props.interview.collection[this.props.locale], '10')}
+                    <div className={`box-30 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
                         {this.symbols()}
                     </div>
-                    {this.box(this.props.interview.workflow_state)}
+                    {this.box(this.props.interview.workflow_state, '7-5')}
                 </div>
                 <div className='search-result data boxes' key={`${this.props.interview.archive_id}-workflow-details`}>
                     {this.fullViewHeader()}

@@ -104,9 +104,9 @@ export default class Task extends React.Component {
         )
     }
 
-    box(value) {
+    box(value, width='17-5') {
         return (
-            <div className='box-5'>
+            <div className={`box-${width}`} >
                 {value}
             </div>
         )
@@ -118,7 +118,7 @@ export default class Task extends React.Component {
                 {this.box(this.props.task.task_type.name[this.props.locale])}
                 {this.box(this.valueAndForm('user_account_id', this.usersAsOptionsForSelect('user_account_id')))}
                 {this.box(this.valueAndForm('supervisor_id', this.usersAsOptionsForSelect('supervisor_id')))}
-                {this.box(<CommentsContainer data={this.props.task.comments} initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}} />)}
+                {this.box(<CommentsContainer data={this.props.task.comments} initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}} />, '30')}
                 {this.box(this.valueAndForm('workflow_state', this.workflowStatesAsOptionsForSelect()))}
             </div>
         );

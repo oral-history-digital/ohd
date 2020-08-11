@@ -605,6 +605,14 @@ a.search-result-link {
     width: 100%;
     display: block;
   }
+  img.workflow {
+    width: 50%;
+    //display: block;
+  }
+  span.workflow {
+    font-size: $font-size-medium;
+    width: 40%;
+  }
   .badge {
     background-color: #fff;
     color: #666;
@@ -677,6 +685,11 @@ a.search-result-link {
 }
 
 /* workflow */
+
+.workflow-header {
+  background-color: $gray-light;
+  padding: 5px;
+}
 
 .workflow-symbols {
   font-size: $font-size-medium;
