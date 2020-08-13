@@ -34,12 +34,14 @@ export default class WrapperPage extends React.Component {
         if(this.props.locale !== this.context.router.route.match.params.locale) {
             this.props.setLocale(this.context.router.route.match.params.locale);
         }
+        this.loadAccount()
         this.loadCollections();
         this.loadProjects();
         //this.setProjectId();
     }
 
     componentDidUpdate(prevProps, prevState) {
+        this.loadAccount()
         if (this.props.visible && (this.state.currentMQ === 'S' || this.state.currentMQ === 'XS')) {
             if (!document.body.classList.contains('noScroll')) {
                 document.body.classList.add('noScroll');
@@ -54,6 +56,18 @@ export default class WrapperPage extends React.Component {
         this.loadProjects();
         this.loadLanguages();
         //this.setProjectId();
+    }
+
+    loadAccount() {
+        if (
+            !this.props.accountsStatus.current ||
+            this.props.accountsStatus.current.split('-')[0] === 'reload' ||
+            (this.props.isLoggedIn && !this.props.account && this.props.accountsStatus.current.split('-')[0] === 'fetched')
+        ) {
+            this.props.fetchData(this.props, 'accounts', 'current');
+        } else if (this.props.isLoggedOut && this.props.account) {
+            this.props.deleteData(this.props, 'accounts', 'current', null, null, false, true)
+        }
     }
 
     loadCollections() {

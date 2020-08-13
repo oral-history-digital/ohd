@@ -1,7 +1,15 @@
 class UserAccountPolicy < ApplicationPolicy
 
   def show?
-    user.admin?
+    user == record
+  end
+
+  def update?
+    show?
+  end
+
+  def confirm_new_email?
+    show?
   end
 
   class Scope < Scope

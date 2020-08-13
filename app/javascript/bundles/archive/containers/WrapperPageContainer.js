@@ -5,7 +5,7 @@ import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { hideFlyoutTabs, showFlyoutTabs, toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 import { changeToEditView, setLocale, setProjectId } from '../actions/archiveActionCreators';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData, deleteData } from '../actions/dataActionCreators';
 
 import { getCookie, getProject } from '../../../lib/utils';
 
@@ -30,12 +30,17 @@ const mapStateToProps = (state) => {
         project: project,
         editViewCookie: getCookie('editView'),
         editView: state.archive.editView,
+        account: state.data.accounts.current,
+        accountsStatus: state.data.statuses.accounts,
+        isLoggedIn: state.account.isLoggedIn,
+        isLoggedOut: state.account.isLoggedOut,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     fetchStaticContent:(url) => dispatch(fetchStaticContent(url)),
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
+    deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove, onlyRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove, onlyRemove)),
     setLocale: locale => dispatch(setLocale(locale)),
     setProjectId: id => dispatch(setProjectId(id)),
     closeArchivePopup: () => dispatch(closeArchivePopup()),

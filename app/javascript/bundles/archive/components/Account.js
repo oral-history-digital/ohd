@@ -22,25 +22,11 @@ export default class Account extends React.Component {
     }
 
     componentDidMount() {
-        this.loadAccount()
     }
 
     componentDidUpdate(prevProps, prevState) {
-        this.loadAccount();
         if (prevProps.editView !== this.props.editView) {
             this.setState({editView: this.props.editView})
-        }
-    }
-
-    loadAccount() {
-        if (
-            !this.props.accountsStatus.current ||
-            this.props.accountsStatus.current.split('-')[0] === 'reload' ||
-            (this.props.isLoggedIn && !this.props.account && this.props.accountsStatus.current.split('-')[0] === 'fetched')
-        ) {
-            this.props.fetchData(this.props, 'accounts', 'current');
-        } else if (this.props.isLoggedOut && this.props.account) {
-            this.props.deleteData(this.props, 'accounts', 'current', null, null, false, true)
         }
     }
 
@@ -53,23 +39,15 @@ export default class Account extends React.Component {
     }
 
     changeToEditView() {
-        if (
-            this.props.account && (
-                this.props.account.admin || 
-                (this.props.account.permissions && Object.keys(this.props.account.permissions).length > 0) || 
-                (this.props.account.tasks && Object.keys(this.props.account.tasks).length > 0)
-            )
-        ){
-            return (
+        return (
+            <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
                 <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.state.editView)}>
                     <span className={`switch-input ${this.state.editView ? 'checked' : ''}`} type="checkbox" />
                     <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span> 
                     <span className="switch-handle"></span> 
                 </div>
-            )
-        } else {
-            return null;
-        }
+            </AuthShowContainer>
+        )
     }
 
     errorMsg() {

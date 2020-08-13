@@ -1,15 +1,14 @@
 class AccountsController < ApplicationController
 
   skip_before_action :authenticate_user_account!, only: [:show]
-  #skip_after_action :verify_authorized
-  #skip_after_action :verify_policy_scoped
+  skip_after_action :verify_authorized, only: [:show]
+  skip_after_action :verify_policy_scoped, only: [:show]
 
   layout 'responsive'
 
   def show
     respond_to do |format|
       format.html {}
-      #format.json { render json: current_user_account && ::UserAccountSerializer.new(current_user_account).to_json || {} }
       format.json do
         render json: {
           id: 'current',
@@ -21,6 +20,7 @@ class AccountsController < ApplicationController
   end
 
   def update
+    authorize(current_user_account)
     current_user_account.update_attributes account_params
     # FIXME: we have to update duplicated data here
     current_user_account.user_registration.update_attributes account_params
@@ -39,6 +39,7 @@ class AccountsController < ApplicationController
   def confirm_new_email
     # perhaps one should use current_user_account here instead of the following
     user_account = UserAccount.find(params[:id])
+    authorize(user_account)
     if user_account.confirmation_token == params[:confirmation_token]
       user_account.confirm
       redirect_to account_url('current')
