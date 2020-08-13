@@ -8,13 +8,13 @@ export default class Data extends React.Component {
         if (this.props.data.archive_domain) {
             return (
                 <div className='base-data box'>
-                    <p className='link'><a href={this.props.data.archive_domain}>{this.props.data.title || this.props.data.name}</a></p>
+                    <p className='link'><a href={this.props.data.archive_domain}>{this.name()}</a></p>
                 </div>
             )
         } else {
             return (
                 <div className='base-data box'>
-                    <p className='name'>{this.props.data.title || (this.props.data.name.hasOwnProperty(this.props.locale) ? this.props.data.name[this.props.locale] : this.props.data.name)}</p>
+                    <p className='name'>{this.name()}</p>
                 </div>
             )
         }
@@ -22,6 +22,10 @@ export default class Data extends React.Component {
                     //<span className='title'>{t(this.props, `activerecord.attributes.${this.props.scope}.created_at`) + ': '}</span>
                     //<span className='content'>{this.props.data.created_at}</span>
                 //</p>
+    }
+
+    name() {
+        return this.props.data.title || (this.props.data.name.hasOwnProperty(this.props.locale) ? this.props.data.name[this.props.locale] : this.props.data.name);
     }
 
     values(detail) {
@@ -64,7 +68,7 @@ export default class Data extends React.Component {
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, `edit.${this.props.scope}.show`)}
                 onClick={() => this.props.openArchivePopup({
-                    title: this.props.data.title || this.props.data.name.hasOwnProperty(this.props.locale) ? this.props.data.name[this.props.locale] : this.props.data.name,
+                    title: this.name(),
                     content: this.details()
                 })}
             >
@@ -83,7 +87,7 @@ export default class Data extends React.Component {
                     className='flyout-sub-tabs-content-ico-link'
                     title={t(this.props, `edit.${this.props.scope}.edit`)}
                     onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, `edit.${this.props.scope}.edit`),
+                        title: `${this.name()} ${t(this.props, `edit.${this.props.scope}.edit`)}`,
                         content: this.props.form(this.props.data)
                     })}
                 >

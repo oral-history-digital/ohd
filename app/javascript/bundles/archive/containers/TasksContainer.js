@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
         editView: true,
         //
         scope: 'task',
-        detailsAttributes: ['name', 'desc', 'workflow_state', 'authorized_id', 'authorized_type'],
+        detailsAttributes: ['name', 'archive_id', 'workflow_state'],
         formElements: [
             {
                 attribute: 'task_type_id',
@@ -26,13 +26,13 @@ const mapStateToProps = (state) => {
                 withEmpty: true,
                 validate: function(v){return /\d+/.test(v)} 
             },
-            {
-                attribute: 'interview_id',
-                elementType: 'select',
-                values: state.data.interviews,
-                withEmpty: true,
-                validate: function(v){return /^\d+$/.test(v)} 
-            },
+            //{
+                //attribute: 'interview_id',
+                //elementType: 'select',
+                //values: state.data.interviews,
+                //withEmpty: true,
+                //validate: function(v){return /^\d+$/.test(v)} 
+            //},
             {
                 attribute: 'workflow_state',
                 elementType: 'select',

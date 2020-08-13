@@ -60,9 +60,16 @@ export default class Task extends React.Component {
     }
 
     value(attribute) {
-        let v;
+        let v, user;
         if (/^\d+$/.test(this.state[attribute])) { 
-            let user = this.props.userAccounts[this.state[attribute]];
+            //
+            // current_user has the key 'current' in the userAccounts-Hash
+            //
+            if (this.props.userAccounts['current'].id === parseInt(this.state[attribute])) {
+                user = this.props.userAccounts['current'];
+            } else {
+                user = this.props.userAccounts[this.state[attribute]];
+            }
             v = user && `${user.last_name}, ${user.first_name}` || 'NA';
         } else if (this.state[attribute]) {
             v = t(this.props, `workflow_states.${this.state[attribute]}`);
