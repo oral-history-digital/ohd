@@ -837,7 +837,7 @@ class Interview < ApplicationRecord
         end
         if params[:fulltext].blank? && params[:order].blank?
           order_by("person_name_#{locale}".to_sym, :asc) 
-        else
+        elsif params[:order]
           order_by(params[:order].split('-')[0].to_sym, params[:order].split('-')[1].to_sym)
         end
         # TODO: sort linguistically
