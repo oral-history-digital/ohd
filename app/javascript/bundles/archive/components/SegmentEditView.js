@@ -1,4 +1,5 @@
 import React from 'react';
+import VizSensor from 'react-visibility-sensor';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import SubmitOnBlurForm from '../containers/form/SubmitOnBlurForm';
@@ -8,7 +9,7 @@ export default class SegmentEditView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {visible:  false};
     }
 
     columnElement(columnName) {
@@ -109,16 +110,25 @@ export default class SegmentEditView extends React.Component {
         return this.props.selectedInterviewEditViewColumns.map(function(column, i){
             return (
                 <td key={`${_this.props.segment.id}-column-${i}`}>
-                    {_this.columnElement(column)}
+                    {_this.state.visible && _this.columnElement(column)}
                 </td>
             )
         })
     }
 
     render() {
-        return <tr key={`${this.props.segment.id}-row`}>
-            {this.row()}
-        </tr>
+        return (
+            <VizSensor
+                partialVisibility={true}
+                onChange={(isVisible) => {
+                    this.setState({visible: isVisible})
+                }}
+            >
+                <tr className='segment-row' key={`${this.props.segment.id}-row`}>
+                    {this.row()}
+                </tr>
+            </VizSensor>
+        )
     }
 }
 
