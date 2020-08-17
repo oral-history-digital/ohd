@@ -1,4 +1,5 @@
 import React from 'react';
+import VizSensor from 'react-visibility-sensor';
 import SegmentFormContainer from '../containers/SegmentFormContainer';
 import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
@@ -11,7 +12,8 @@ export default class Segment extends React.Component {
         super(props);
         this.state = {
             contentOpen: false,
-            contentType: 'none'
+            contentType: 'none',
+            visible: false
         };
 
         this.setOpenReference = this.setOpenReference.bind(this);
@@ -215,6 +217,12 @@ export default class Segment extends React.Component {
 
         if (text) {
             return (
+                <VizSensor
+                    partialVisibility={true}
+                    onChange={(isVisible) => {
+                        this.setState({visible: isVisible})
+                    }}
+                >
                     <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
                         <div className="content-trans-speaker-ico">
                             {this.speakerIcon()}
@@ -240,7 +248,8 @@ export default class Segment extends React.Component {
                             </div>
                         </div>
                     </div>
-                )
+                </VizSensor>
+            )
         } else {
             return null;
         }
