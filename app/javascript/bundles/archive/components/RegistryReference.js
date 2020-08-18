@@ -4,11 +4,42 @@ import { t, pluralize, underscore, admin } from '../../../lib/utils';
 
 export default class RegistryReference extends React.Component {
 
+    constructor(props, context) {
+        super(props, context);
+    }
+
+    componentDidMount() {
+        this.loadRegistryEntry();
+    }
+
+    componentDidUpdate() {
+        this.loadRegistryEntry();
+    }
+
+    loadRegistryEntry() {
+        if (
+            (
+                !this.props.registryEntriesStatus[this.props.registryReference.registry_entry_id] ||
+                this.props.registryEntriesStatus[this.props.registryReference.registry_entry_id] !== 'fetching'
+            ) && (
+                !this.props.registryEntries[this.props.registryReference.registry_entry_id] ||
+                (
+                    this.props.registryEntries[this.props.registryReference.registry_entry_id] &&
+                    !this.props.registryEntries[this.props.registryReference.registry_entry_id].associations_loaded
+                )
+            )
+        ) {
+            this.props.fetchData(this.props, 'registry_entries', this.props.registryReference.registry_entry_id, null, 'with_associations=true');
+        }
+    }
+
     edit() {
         if (
             this.props.registryReference &&
             !this.props.hideEdit &&
-            admin(this.props, this.props.registryReference)
+            admin(this.props, this.props.registryReference) &&
+            this.props.registryEntries[this.props.registryReference.registry_entry_id] &&
+            this.props.registryEntries[this.props.registryReference.registry_entry_id].associations_loaded
         ) {
             return (
                 <span

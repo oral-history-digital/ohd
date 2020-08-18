@@ -84,5 +84,4 @@ export default class SubmitOnBlurForm extends React.Component {
             </form>
         );
     }
-                //{this.props.textarea ? this.textarea() : this.input()}
 }

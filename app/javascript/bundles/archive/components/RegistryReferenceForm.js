@@ -31,8 +31,8 @@ export default class RegistryReferenceForm extends React.Component {
             )
         ) {
             this.props.fetchData(this.props, 'registry_entries', null, null, `children_for_entry=${this.state.parentEntryId}`);
-        }
     }
+}
 
     loadRegistryReferenceTypes() {
         if (!this.props.registryReferenceTypesStatus) {
@@ -42,6 +42,10 @@ export default class RegistryReferenceForm extends React.Component {
 
     loadParentEntry() {
         if (
+            (
+                !this.registryEntryParent() &&
+                this.props.registryEntriesStatus[this.props.parentEntryId] !== 'fetching'
+            ) || 
             (
                 this.registryEntryParent() && 
                 !this.registryEntryParent().associations_loaded &&
@@ -136,7 +140,7 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     goUp() {
-        if (this.registryEntryParent().associations_loaded && this.state.parentEntryId !== this.props.parentEntryId) {
+        if (this.registryEntryParent() && this.registryEntryParent().associations_loaded && this.state.parentEntryId !== this.props.parentEntryId) {
             let parentRegistryEntryId = this.registryEntryParent().parent_ids[this.props.locale][0] === this.props.parentEntryId ?
                 this.props.parentEntryId :
                 this.registryEntryParent().parent_ids[this.props.locale][0]

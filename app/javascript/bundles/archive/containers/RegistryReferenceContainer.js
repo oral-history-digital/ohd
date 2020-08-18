@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import RegistryReference from '../components/RegistryReference';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
-import { deleteData } from '../actions/dataActionCreators';
+import { deleteData, fetchData } from '../actions/dataActionCreators';
 import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
@@ -13,11 +13,14 @@ const mapStateToProps = (state) => {
         account: state.data.accounts.current,
         editView: state.archive.editView,
         projectId: state.archive.projectId,
+        registryEntries: state.data.registry_entries,
+        registryEntriesStatus: state.data.statuses.registry_entries,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
     deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
+    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
