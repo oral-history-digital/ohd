@@ -20,7 +20,7 @@
     <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
     <p>hiermit bestätigen wir Ihren Zugang für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>".</p>
     <p>Mit Ihrem Account: <%= @user_account.email %>
-    <p>können Sie sich nun unter <%= url %> anmelden und auf alle Funktionen des Archivs "<%= @user_account.user_registration.projects.last.name('de') %>" zugreifen.</p>
+    <p>können Sie sich nun hier <%= url %> anmelden und auf alle Funktionen des Archivs "<%= @user_account.user_registration.projects.last.name('de') %>" zugreifen.</p>
     <p>Mit freundlichen Grüßen,</p>
     <p>Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>
