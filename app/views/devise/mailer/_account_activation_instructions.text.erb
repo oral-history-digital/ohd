@@ -36,13 +36,13 @@ TODO: spanish translation
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 
-Sie haben sich für das <%= @user_account.user_registration.projects.last.name('de') %> registriert.
+Sie haben sich für das Interview-Archiv <%= @user_account.user_registration.projects.last.name('de') %> registriert.
 
-Bitte bestätigen Sie Ihre Registrierung innerhalb der kommenden 14 Tage hier:
+Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:
 
 <%= url %>
 
-Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung wird Ihr Zugang zu dem Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" aktiviert und Sie erhalten Ihre Zugangsdaten.
+Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" informiert.
 
 Sollten Sie sich nicht für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.
 
