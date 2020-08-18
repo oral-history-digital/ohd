@@ -43,8 +43,8 @@ export default class Account extends React.Component {
             <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
                 <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.state.editView)}>
                     <span className={`switch-input ${this.state.editView ? 'checked' : ''}`} type="checkbox" />
-                    <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span> 
-                    <span className="switch-handle"></span> 
+                    <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span>
+                    <span className="switch-handle"></span>
                 </div>
             </AuthShowContainer>
         )
@@ -58,12 +58,17 @@ export default class Account extends React.Component {
         }
     }
 
+    projectAccessAlert() {
+        return <div className='error'>{`${t(this.props, 'no_project_access_yet')}`}</div>
+    }
+
     render() {
         return (
             <div className={'flyout-login-container'}>
                 <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
                     <div className='info'>
                         {`${t(this.props, 'logged_in_as')} ${this.props.firstName} ${this.props.lastName}`}
+                        {this.projectAccessAlert()}
                     </div>
                     {this.changeToEditView()}
                     <div
