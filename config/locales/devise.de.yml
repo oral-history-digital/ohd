@@ -31,13 +31,13 @@ de:
       project_access_granted:
         subject: Freischaltung Ihres Zugangs zu dem Archiv '%{project_name}'
       project_access_rejected:
-        subject: Ihre Registrierung für das Archiv '%{project_name}'
+        subject: Ihre Registrierung für '%{project_name}'
       reset_password_instructions:
         subject: Interview-Archiv – Schritte für die Wiederherstellung Ihres Passwortes
       unlock_instructions:
         subject: Interview-Archiv – Schritte für die Reaktivierung Ihres Zugangs
       account_deactivated:
-        subject: Ihre Registrierung für das Archiv '%{project_name}'
+        subject: Ihre Registrierung für '%{project_name}'
     omniauth_callbacks:
       failure: Sie konnten nicht mit Ihrem %{kind}-Account angemeldet werden, weil '%{reason}'.
       success: Sie haben sich erfolgreich mit Ihrem Account angemeldet.
@@ -65,7 +65,7 @@ de:
       not_yet_registered: Noch nicht registriert?
       link_to: Zur Registrierung »
       submit: Registrierung senden
-      activate: Aktivierung des Nutzer*innen-Accounts für
+      activate: Aktivierung des Nutzer*innen-Accounts von
       activate_submit: absenden
       activate_text: Um Ihren Nutzer*innen-Account zu aktivieren, wählen Sie bitte
         ein geeignetes Passwort für Ihren Zugang.

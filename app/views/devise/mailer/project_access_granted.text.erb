@@ -14,7 +14,7 @@ TODO russian translation
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 
-hiermit bestätigen wir Ihren Zugang für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>".
+hiermit bestätigen wir Ihren Zugang für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>".
 
 Mit Ihrem Account: <%= @user_account.email %>
 
@@ -22,5 +22,5 @@ können Sie sich nun hier <%= url %> anmelden und auf alle Funktionen des Archiv
 
 Mit freundlichen Grüßen,
 
-Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"
+Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"
 <% end -%>

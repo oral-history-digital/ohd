@@ -18,7 +18,7 @@
 <% else -%>
   <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
   <p>Ihr Zugang wurde gesperrt.</p>
-  <p>Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.</p>
+  <p>Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
   <p>Mit freundlichen Grüßen,</p>
-  <p>Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
+  <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>
