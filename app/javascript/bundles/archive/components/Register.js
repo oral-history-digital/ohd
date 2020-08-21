@@ -13,8 +13,10 @@ export default class Register extends React.Component {
     content() {
         if (!this.props.registrationStatus) {
 
-            let conditionsLink = Object.values(this.props.externalLinks).filter(link => link.name === 'conditions')[0] || {};
-            let privacyLink = Object.values(this.props.externalLinks).filter(link => link.name === 'privacy_protection')[0] || {};
+            let conditionsLink = Object.values(this.props.externalLinks).filter(link => link.internal_name === 'conditions')[0];
+            let privacyLink = Object.values(this.props.externalLinks).filter(link => link.internal_name === 'privacy_protection')[0];
+            conditionsLink =  (conditionsLink && conditionsLink.url) || {}
+            privacyLink =  (privacyLink && privacyLink.url) || {}
 
             return (
                 <div>

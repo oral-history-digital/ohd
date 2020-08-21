@@ -24,11 +24,11 @@
     <p><%= link_to 'Registrierung bestätigen', url %></p>
   <% else -%>
     <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
-    <p>Sie haben sich für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>
+    <p>Sie haben sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>
     <p>Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:</p>
     <p><%= link_to 'Registrierung bestätigen', url %></p>
-    <p>Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" informiert.</p>
-    <p>Sollten Sie sich nicht für das Interview-Archiv "<%= @user_account.user_registration.projects.last.name('de') %>" registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
+    <p>Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert.</p>
+    <p>Sollten Sie sich nicht für das Interview-Archiv registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
     <p>Mit freundlichen Grüßen,</p>
-    <p>Das Archiv-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
+    <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>

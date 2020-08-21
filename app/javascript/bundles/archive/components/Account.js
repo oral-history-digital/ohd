@@ -58,6 +58,7 @@ export default class Account extends React.Component {
         }
     }
 
+    // FIXME: show this alert ifLoggedIn && ifNoProject
     projectAccessAlert() {
         return <div className='error'>{`${t(this.props, 'no_project_access_yet')}`}</div>
     }
@@ -68,7 +69,6 @@ export default class Account extends React.Component {
                 <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
                     <div className='info'>
                         {`${t(this.props, 'logged_in_as')} ${this.props.firstName} ${this.props.lastName}`}
-                        {this.projectAccessAlert()}
                     </div>
                     {this.changeToEditView()}
                     <div
