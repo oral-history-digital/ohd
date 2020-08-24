@@ -1,6 +1,6 @@
 class Task < ApplicationRecord
 
-  belongs_to :user_account
+  belongs_to :user_account, touch: true
   belongs_to :supervisor, class_name: 'UserAccount'
   belongs_to :task_type
   belongs_to :interview
@@ -27,8 +27,8 @@ class Task < ApplicationRecord
     current_state.events.map{|e| e.first}
   end
 
-  #def workflow_state=(change)
-    #self.send("#{change}!")
-  #end
+  def workflow_state=(change)
+    self.send("#{change}!")
+  end
 
 end

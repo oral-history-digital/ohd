@@ -26,11 +26,13 @@ class TasksController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: current_user_account && {
-          id: 'current',
-          data_type: 'accounts',
-          data: ::UserAccountSerializer.new(current_user_account),
-          msg: 'processed'
+        render json: {
+          id: @task.id,
+          data_type: 'tasks',
+          data: ::TaskSerializer.new(@task),
+          msg: 'processed',
+          reload_data_type: 'accounts',
+          reload_id: 'current' 
         } || {}
       end
     end
