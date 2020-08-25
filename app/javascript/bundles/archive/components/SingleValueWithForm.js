@@ -9,9 +9,11 @@ export default class SingleValueWithForm extends React.Component {
         super(props);
         this.state = {
             editing: false,
-            collapsed: this.props.collapse
+            collapsed: this.props.collapse,
+            value: this.props.value
         };
         this.setEditing = this.setEditing.bind(this);
+        this.handleChange = this.handleChange.bind(this);
     }
 
     setEditing() {
@@ -55,6 +57,41 @@ export default class SingleValueWithForm extends React.Component {
         return (this.props.metadataField && this.props.metadataField.name) || this.props.attribute;
     }
 
+    formElements() {
+        let elements = [
+            {
+                elementType: this.props.elementType,
+                attribute: this.attribute(),
+                label: this.label(),
+                validate: this.props.validate,
+                data: this.props.obj,
+                values: this.props.values,
+                withEmpty: this.props.withEmpty,
+                individualErrorMsg: this.props.individualErrorMsg,
+                optionsScope: this.props.optionsScope,
+                handlechangecallback: this.handleChange
+            }
+        ];
+
+        let statusCheckbox = {
+            elementType: 'input',
+            attribute: `properties[public_attributes][${this.attribute()}]`,
+            value: this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.attribute()],
+            labelKey: 'activerecord.attributes.default.publish',
+            type: 'checkbox',
+        };
+
+        if (this.props.noStatusCheckbox) {
+            return elements;
+        } else {
+            return elements.concat(statusCheckbox);
+        }
+    }
+
+    handleChange(name, value) {
+        this.setState({value: value});
+    }
+
     form() {
         let _this = this;
         return (
@@ -64,26 +101,7 @@ export default class SingleValueWithForm extends React.Component {
                 cancel={_this.setEditing}
                 formClasses='default single-value'
                 data={this.props.obj}
-                elements={[
-                    {
-                        elementType: this.props.elementType,
-                        attribute: this.attribute(),
-                        label: this.label(),
-                        validate: this.props.validate,
-                        data: this.props.obj,
-                        values: this.props.values,
-                        withEmpty: this.props.withEmpty,
-                        individualErrorMsg: this.props.individualErrorMsg,
-                        optionsScope: this.props.optionsScope
-                    },
-                    {
-                        elementType: 'input',
-                        attribute: `properties[public_attributes][${this.attribute()}]`,
-                        value: this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.attribute()],
-                        labelKey: 'activerecord.attributes.default.publish',
-                        type: 'checkbox',
-                    },
-                ]}
+                elements={_this.formElements()}
             />
         )
     }
@@ -101,7 +119,10 @@ export default class SingleValueWithForm extends React.Component {
         ) {
 
             let translation = this.props.obj.translations && this.props.obj.translations.find(t => t.locale === this.props.locale)
-            let value = this.props.value || this.props.obj[this.attribute()] || (translation && translation[this.attribute()]) || '---';
+            let value = this.state.value || this.props.obj[this.attribute()] || (translation && translation[this.attribute()]) || '---';
+
+            if (this.props.translations[this.props.locale][this.props.optionsScope] && this.props.translations[this.props.locale][this.props.optionsScope].hasOwnProperty(value)) 
+                value = t(this.props, `${this.props.optionsScope}.${value}`);
 
             if (/\w+_id/.test(this.attribute()) && this.attribute() !== 'archive_id') // get corresponding name from e.g. collection_id
                 value = this.props.values[value] && this.props.values[value].name

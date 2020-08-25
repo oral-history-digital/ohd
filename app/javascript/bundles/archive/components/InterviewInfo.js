@@ -85,6 +85,7 @@ export default class InterviewInfo extends React.Component {
                             values={['public', 'unshared']}
                             value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
                             optionsScope={'workflow_states'}
+                            noStatusCheckbox={true}
                         /> 
                     </AuthShowContainer>
                     <SelectedRegistryReferencesContainer refObject={this.props.interview} />

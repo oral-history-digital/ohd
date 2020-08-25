@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 
 import { MISSING_STILL } from '../constants/archiveConstants'
 import AuthShowContainer from '../containers/AuthShowContainer';
+import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
 import TaskContainer from '../containers/TaskContainer';
 import { t, admin, pathBase, getInterviewee } from '../../../lib/utils';
 
@@ -154,7 +155,17 @@ export default class InterviewWorkflowRow extends React.Component {
                     <div className={`box-30 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
                         {this.symbols()}
                     </div>
-                    {this.box(this.props.interview.workflow_state, '7-5')}
+                    {this.box(
+                        <SingleValueWithFormContainer
+                            elementType={'select'}
+                            obj={this.props.interview}
+                            attribute={'workflow_state'}
+                            values={['public', 'unshared']}
+                            value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
+                            optionsScope={'workflow_states'}
+                            noStatusCheckbox={true}
+                        />, '7-5'
+                    )} 
                 </div>
                 <div className='search-result-workflow-detail data boxes' key={`${this.props.interview.archive_id}-workflow-details`}>
                     {this.fullViewHeader()}
