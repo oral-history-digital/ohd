@@ -19,7 +19,7 @@ export default class InterviewWorkflowRow extends React.Component {
         return (
             <span
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
+                title={t(this.props, this.state.collapsed ? 'edit_workflow' : 'do_not_edit_workflow')}
                 onClick={() => this.setState({ collapsed: !this.state.collapsed })}
             >
                 <i className={`fa fa-angle-${this.state.collapsed ? 'down' : 'up'}`}></i>
@@ -95,7 +95,13 @@ export default class InterviewWorkflowRow extends React.Component {
             return (
                 <div className='workflow-symbols'>
                     {this.props.interview.task_ids.map((taskId, index) => {
-                        return this.symbol(this.props.tasks[taskId]);
+                        // using the slightly more complicated way to get task_types' use attribute
+                        // (this.props.tasks[taskId].task_type.use would be easier)
+                        // otherwise all tasks cache would have to be cleared on project configuration changes
+                        //
+                        if (this.props.project.task_types[this.props.tasks[taskId].task_type.id].use) {
+                            return this.symbol(this.props.tasks[taskId]);
+                        }
                     })}
                     {this.toggleButton()}
                 </div>
@@ -112,7 +118,9 @@ export default class InterviewWorkflowRow extends React.Component {
             return (
                 <div className='workflow-active'>
                     {this.props.interview.task_ids.map((taskId, index) => {
-                        return <TaskContainer task={this.props.tasks[taskId]} interview={this.props.interview} />
+                        if (this.props.project.task_types[this.props.tasks[taskId].task_type.id].use) {
+                            return <TaskContainer task={this.props.tasks[taskId]} interview={this.props.interview} />
+                        }
                     })}
                 </div>
             );
