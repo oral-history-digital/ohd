@@ -422,13 +422,13 @@ es:
     postponed: zurückgestellt
     rejected: abgelehnt
     registered: registriert
-    created: zu bearbeiten
-    start: in Bearbeitung
-    started: in Bearbeitung
-    finish: bearbeitet
-    finished: bearbeitet
-    clear: freigegeben
-    cleared: freigegeben
+    created: zur Bearbeitung zuweisen
+    start: zur Bearbeitung zugewiesen
+    started: zur Bearbeitung zugewiesen
+    finish: Bearbeitet
+    finished: Bearbeitet
+    clear: Geprüft
+    cleared: Geprüft
     restart: erneut öffnen
   contributions:
     title: Colaborador/a
