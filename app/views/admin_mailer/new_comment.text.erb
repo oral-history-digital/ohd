@@ -1,0 +1,11 @@
+Liebe/r <%= @receiver.display_name %>,
+
+<%= @author.display_name %> hat zu der Aufgabe <%= @task.name %> zum Interview <%= @task.interview.archive_id %> in der Redaktionsumgebung der Anwendung "<%= @task.interview.project.name %>" folgenden Kommentar geschrieben:
+<%= @text %>
+
+<%= @task.interview.project.archive_domain %>
+
+Viele Grüße
+
+Dein Interview-Archiv
+

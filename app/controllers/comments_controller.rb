@@ -4,7 +4,9 @@ class CommentsController < ApplicationController
   def create
     authorize Comment
     @comment = Comment.create comment_params
-    @comment.update_attributes author_id: current_user_account.id
+    receiver = @comment.ref.user_account == current_user_account ? @comment.ref.supervisor : @comment.ref.user_account
+    @comment.update_attributes author_id: current_user_account.id, receiver_id: receiver.id
+    AdminMailer.with(task: @comment.ref, receiver: receiver, author: current_user_account, text: @comment.text).new_comment.deliver_now
 
     respond_to do |format|
       format.json do

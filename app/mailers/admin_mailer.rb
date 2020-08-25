@@ -27,4 +27,51 @@ class AdminMailer < ApplicationMailer
       date: Time.now
     )
   end
+  
+  def new_comment
+    @author = params[:author]
+    @receiver = params[:receiver]
+    @task = params[:task]
+    @text = params[:text]
+    mail(
+      subject: 'Neuer Kommentar',
+      from: "no-reply@cedis.fu-berlin.de",
+      to: @receiver.email,
+      date: Time.now
+    )
+  end
+
+  def task_assigned
+    @receiver = params[:receiver]
+    @task = params[:task]
+    mail(
+      subject: 'Aufgabe zugewiesen',
+      from: "no-reply@cedis.fu-berlin.de",
+      to: @receiver.email,
+      date: Time.now
+    )
+  end
+
+  def task_finished
+    @receiver = params[:receiver]
+    @task = params[:task]
+    mail(
+      subject: 'Aufgabe abgeschlossen',
+      from: "no-reply@cedis.fu-berlin.de",
+      to: @receiver.email,
+      date: Time.now
+    )
+  end
+
+  def task_restarted
+    @receiver = params[:receiver]
+    @task = params[:task]
+    mail(
+      subject: 'Aufgabe erneut geöffnet',
+      from: "no-reply@cedis.fu-berlin.de",
+      to: @receiver.email,
+      date: Time.now
+    )
+  end
+
 end

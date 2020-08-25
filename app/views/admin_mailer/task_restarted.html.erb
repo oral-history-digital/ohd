@@ -1,0 +1,11 @@
+<p>Liebe/r <%= @receiver.display_name %>,</p>
+
+<p>die Aufgabe <%= @task.name %> zum Interview <%= @task.interview.archive_id %> in der Redaktionsumgebung der Anwendung "<%= @task.interview.project.name %>" wurde erneut geöffnet.</p>
+<p>Bitte überprüfe, was zu tun ist.</p>
+
+<p><%= @task.interview.project.archive_domain %></p>
+
+<p>Viele Grüße</p>
+
+<p>Dein Interview-Archiv</p>
+

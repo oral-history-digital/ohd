@@ -6,6 +6,8 @@ class Task < ApplicationRecord
   belongs_to :interview
   has_many :comments, as: :ref, dependent: :destroy
 
+  before_save :send_mail_to_user_account
+
   include Workflow
 
   workflow do
@@ -17,6 +19,7 @@ class Task < ApplicationRecord
     end
     state :finished do
       event :clear, transitions_to: :cleared
+      event :restart, transitions_to: :started
     end
     state :cleared do
       event :restart, transitions_to: :started
@@ -29,6 +32,20 @@ class Task < ApplicationRecord
 
   def workflow_state=(change)
     self.send("#{change}!")
+  end
+
+  def send_mail_to_user_account
+    if user_account_id_changed? && user_account_id != nil
+      AdminMailer.with(task: self, receiver: user_account).task_assigned.deliver_now
+    end
+  end
+
+  def finish
+    AdminMailer.with(task: self, receiver: supervisor).task_finished.deliver_now
+  end
+
+  def restart
+    AdminMailer.with(task: self, receiver: user_account).task_restarted.deliver_now
   end
 
 end

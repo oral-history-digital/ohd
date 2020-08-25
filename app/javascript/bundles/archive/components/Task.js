@@ -123,8 +123,8 @@ export default class Task extends React.Component {
         return (
             <div className='data boxes' key={`${this.props.interview.archive_id}-${this.props.task.id}-tasks-boxes`}>
                 {this.box(this.props.task.task_type.name[this.props.locale])}
-                {this.box(this.valueAndForm('user_account_id', this.usersAsOptionsForSelect('user_account_id')))}
                 {this.box(this.valueAndForm('supervisor_id', this.usersAsOptionsForSelect('supervisor_id')))}
+                {this.box(this.valueAndForm('user_account_id', this.usersAsOptionsForSelect('user_account_id')))}
                 {this.box(<CommentsContainer data={this.props.task.comments} initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}} />, '30')}
                 {this.box(this.valueAndForm('workflow_state', this.workflowStatesAsOptionsForSelect()))}
             </div>
