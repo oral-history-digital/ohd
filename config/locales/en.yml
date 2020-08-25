@@ -399,6 +399,8 @@ en:
   grid: Grid
   list: List
   workflow: Workflow
+  edit_workflow: Workflow bearbeiten
+  do_not_edit_workflow: Workflow nicht mehr bearbeiten
   admin_actions: Aktionen
   doi:
     title: register DOIs
