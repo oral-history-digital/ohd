@@ -8,7 +8,7 @@ class AdminMailer < ApplicationMailer
     @url = user_registrations_url(protocol: uri.scheme, host: uri.host, locale: @project.available_locales.first)
 
     mail(
-      subject: "new registration for #{@project.shortname}",
+      subject: "Neue Registrierung zur Prüfung",
       from: "no-reply@cedis.fu-berlin.de",
       to: @project.contact_email,
       date: Time.now
@@ -27,7 +27,7 @@ class AdminMailer < ApplicationMailer
       date: Time.now
     )
   end
-  
+
   def new_comment
     @author = params[:author]
     @receiver = params[:receiver]
