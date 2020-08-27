@@ -354,33 +354,41 @@ h1.video-title {
 }
 
 table.edit_interview {
-    font-size: 80%;
+    font-size: 90%;
+    margin-top: 60px;
+    border-collapse: separate;
     border-spacing: 2px;
     th  {
-      display: table-cell;
+      position: sticky;
+      top: 0;
       vertical-align: top;
       background-color: #ddd;
       text-align: left;
       width: 1%;
+      max-width: none;
+      height: 5rem;
+      padding:15px 10px;
     }
     td {
-      /* display: table-cell;*/
+      /* display: table-cell; */
       /*text-align: center;*/
-      vertical-align: top;
       border: 1px solid #ddd;
       padding: 5px;
+      margin: none;
       input, textarea {
-        -webkit-box-sizing: border-box;
-        -moz-box-sizing: border-box;
+        border: none;
+        min-height: 5rem;
         box-sizing: border-box;
-        font-size: 90%;
-        line-height: 1.5;
+        display:inline-block;
+        line-height:140%;
         width: 100%;
         margin: 0px;
-        padding: 0px;
-        min-height: 100px;
-        border: none;
-        size: auto;
+      }
+      input, textarea {
+        font-size: 90%
+      }
+      input {
+        overflow: scroll;
       }
     }
 }
