@@ -45,12 +45,14 @@ export default class UploadTranscript extends React.Component {
 
                     <p>
                         <a href={`/transcript-import-template.ods`} download>
+                          <span className="flyout-sub-tabs-content-ico-link">
                             <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
-                            <span>{t(this.props, 'transcript_template')}</span>
+                            {t(this.props, 'transcript_template')}
+                          </span>
                         </a>
                     </p>
 
-                    <Form 
+                    <Form
                         scope='transcript'
                         onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
                         submitText='edit.upload_transcript.title'
