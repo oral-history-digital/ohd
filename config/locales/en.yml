@@ -421,7 +421,18 @@ en:
     postpone: zurückgestellt
     activate: aktiviert
     expire: zurückgestellt
-    all: Alle
+    deactivate_account: sperren
+    reactivate_account: reaktivieren
+    grant_project_access: freischalten
+    reject_project_access: ablehnen
+    postpone_project_access: zurückstellen
+    account_created: angelegt
+    account_confirmed: ungeprüft
+    account_deactivated: gesperrt
+    project_access_granted: freigeschaltet
+    project_access_rejected: abgelehnt
+    project_access_postponed: zurückgestellt
+    all: alle
     unchecked: unbeantwortet
     preliminary: preliminary
     checked: geprüft
