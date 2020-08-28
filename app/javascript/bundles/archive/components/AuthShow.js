@@ -10,10 +10,13 @@ export default class AuthShow extends React.Component {
         } else if (
             // logged in and registered for the current project
             (this.props.isLoggedIn && this.props.ifLoggedIn && this.props.account && this.props.account.project_ids && this.props.account.project_ids.indexOf(this.props.projectId) > -1 ) ||
-            // logged in and NOT registered for the current project
-            (this.props.isLoggedIn && this.props.ifNoProject && this.props.account && this.props.account.project_ids && this.props.account.project_ids.indexOf(this.props.projectId) === -1 ) ||
             // catalog-project
             (this.props.project.isCatalog && this.props.ifCatalog)
+        ) {
+            return this.props.children;
+        } else if (
+            // logged in and NOT registered for the current project
+            (this.props.isLoggedIn && this.props.ifNoProject && this.props.account && this.props.account.project_ids && this.props.account.project_ids.indexOf(this.props.projectId) === -1 ) 
         ) {
             return this.props.children;
         } else if (
