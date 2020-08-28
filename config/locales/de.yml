@@ -436,20 +436,18 @@ de:
     postpone: zurückgestellt
     activate: aktiviert
     expire: zurückgestellt
-    confirm_account: Account bestätigen
-    activate_account: Account aktivieren
-    deactivate_account: Account deaktivieren
-    reactivate_account: Account reaktivieren
+    deactivate_account: sperren
+    reactivate_account: reaktivieren
     grant_project_access: freischalten
     reject_project_access: ablehnen
     postpone_project_access: zurückstellen
-    account_created: Account angelegt
-    account_confirmed: Account bestätigt
-    account_deactivated: Account deaktiviert
-    project_access_granted: registriert
-    project_access_rejected: zurückgewiesen
+    account_created: angelegt
+    account_confirmed: ungeprüft
+    account_deactivated: gesperrt
+    project_access_granted: freigeschaltet
+    project_access_rejected: abgelehnt
     project_access_postponed: zurückgestellt
-    all: Alle
+    all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
     checked: geprüft
@@ -519,7 +517,7 @@ de:
     registration_text_two: " erklären, für wen und für welche Zwecke das Archiv nutzbar
       ist. Die "
     registration_text_three: " erläutern, warum wir welche Daten verarbeiten und wofür
-      wir sie nutzen. Nachdem Sie Ihre Registrierung bestätigt haben, überprüft das Projektteam die Angaben Ihrer Registrierung  inhaltlich.
+      wir sie nutzen. Nachdem Sie Ihre Registrierung bestätigt haben, überprüft das Projektteam die Angaben Ihrer Registrierung inhaltlich.
       Binnen zwei Werktagen werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert."
     tos_agreement: Nutzungsbedingungen
     priv_agreement: Hinweise zum Datenschutz
