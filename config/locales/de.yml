@@ -959,7 +959,7 @@ de:
         checkbox_input: Bitte zustimmen
         text_input: Bitte angeben
         file_input: Bitte Datei auswählen
-        password_input: Bitte berichtigen Sie Ihr Passwort
+        password_input: Ihr Passwort muss mindestens sieben Zeichen haben. Stellen Sie sicher, dass beide Passwörter übereinstimmen.
         email_input: Bitte berichtigen Sie Ihre Email
       template:
         header: Ihre Anfrage konnte nicht bearbeitet werden
