@@ -34,8 +34,6 @@ es:
         subject: TODO translate Ihre Registrierung für das Archiv '%{project_name}'
       reset_password_instructions:
         subject: Instrucciones para recuperar su contraseña
-      unlock_instructions:
-        subject: Instrucciones para reactivar su cuenta
       account_deactivated:
         subject: TODO translate Ihre Registrierung für das Archiv '%{project_name}'
     omniauth_callbacks:
