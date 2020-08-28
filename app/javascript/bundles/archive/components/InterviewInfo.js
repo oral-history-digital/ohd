@@ -8,10 +8,11 @@ export default class InterviewInfo extends React.Component {
 
     collection() {
         let c = this.props.collections[this.props.interview.collection_id];
+        let title = c && c.notes && c.notes[this.props.locale] || ''
         if (c) {
             return (
                 <span>
-                    <i className="fa fa-info-circle" aria-hidden="true" title={c.notes[this.props.locale]}  style={{'color': 'grey'}} />
+                    <i className="fa fa-info-circle" aria-hidden="true" title={title}  style={{'color': 'grey'}} />
                     <a href={c.homepage[this.props.locale]} title={c.homepage[this.props.locale]} target='_blank'>
                         <i className="fa fa-external-link" aria-hidden="true" style={{'color': 'grey'}} />
                     </a>
