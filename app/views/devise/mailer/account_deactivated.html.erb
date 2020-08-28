@@ -17,8 +17,9 @@
   TODO spanish translation
 <% else -%>
   <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
-  <p>Ihr Zugang wurde gesperrt.</p>
-  <p>Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
+  <p>Ihr Zugang zu der Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" wurde gesperrt.</p>
+  <p>Dies geschieht, wenn Sie gegen die Nutzungsbedingungen verstoßen haben.</p>
+  <P>Wenn Sie Fragen zu diesem Vorgang haben, kontaktieren Sie uns bitte unter <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
   <p>Mit freundlichen Grüßen,</p>
   <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>
