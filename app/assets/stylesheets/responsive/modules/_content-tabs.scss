@@ -201,6 +201,9 @@
   color: $primary-color;
   transition: 0.3s;
   cursor: pointer;
+  .fa {
+    color: $editorial-color !important;
+  }
   &:last-child {
     margin-right: 0;
   }
