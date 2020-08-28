@@ -126,7 +126,7 @@ class ApplicationController < ActionController::Base
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         accounts: {
-          current: current_user_account && ::UserAccountSerializer.new(current_user_account) || {}
+          current: current_user_account && ::UserAccountSerializer.new(current_user_account) || nil #{}
         },
         people: {},
         interviews: {},

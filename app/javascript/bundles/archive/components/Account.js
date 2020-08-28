@@ -39,15 +39,26 @@ export default class Account extends React.Component {
     }
 
     changeToEditView() {
-        return (
-            <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
-                <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.state.editView)}>
-                    <span className={`switch-input ${this.state.editView ? 'checked' : ''}`} type="checkbox" />
-                    <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span>
-                    <span className="switch-handle"></span>
-                </div>
-            </AuthShowContainer>
-        )
+        if (
+            this.props.account && (
+                this.props.account.admin || 
+                Object.keys(this.props.account.tasks).length > 0 || 
+                Object.keys(this.props.account.supervised_tasks).length > 0 || 
+                Object.keys(this.props.account.permissions).length > 0 
+            )
+        ) {
+            return (
+                <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
+                    <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.state.editView)}>
+                        <span className={`switch-input ${this.state.editView ? 'checked' : ''}`} type="checkbox" />
+                        <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span>
+                        <span className="switch-handle"></span>
+                    </div>
+                </AuthShowContainer>
+            )
+        } else {
+            return null;
+        }
     }
 
     errorMsg() {
