@@ -9,6 +9,7 @@ import { getInterview, getCookie } from '../../../lib/utils';
 const mapStateToProps = (state) => {
     return { 
         transcriptTime: state.archive.transcriptTime,
+        translations: state.archive.translations,
         locale: state.archive.locale,
         tape: state.archive.tape,
         interview: getInterview(state),
