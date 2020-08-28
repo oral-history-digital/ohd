@@ -29,7 +29,7 @@ de:
       confirmation_instructions:
         subject: Interview-Archiv – Schritte für die Freischaltung Ihres Zugangs
       project_access_granted:
-        subject: Freischaltung Ihres Zugangs zu dem Archiv '%{project_name}'
+        subject: Freischaltung Ihres Zugangs zu der Anwendung '%{project_name}'
       project_access_rejected:
         subject: Ihre Registrierung für '%{project_name}'
       reset_password_instructions:
@@ -121,41 +121,6 @@ de:
       login: Benutzer*in
       email: E-Mail
       password: Passwort
-    workflow_states:
-      new_registration: Neuanmeldung
-      new_registrations: Neuanmeldungen
-      unchecked: unbeantwortet
-      checked: geprüft
-      registered: registriert
-      deactivated: deaktiviert
-      postponed: zurückgestellt
-      rejected: abgelehnt
-      all: alle
-    workflow_events:
-      register: registrieren
-      register_info: Der Nutzer erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
-      reject: ablehnen
-      reject_info: Die Anfrage wird dauerhaft abgelehnt (es wird keine E-Mail gesendet).
-      resend_info: Daten erneut senden
-      resend_info_info: Der Link für die Zugangsaktivierung wird dem*der Benutzer*in erneut
-        zugesandt (per E-Mail).
-      deactivate: deaktivieren
-      deactivate_info: Der Zugang des*der Nutzer*in wird deaktiviert (der*die Nutzer*in erhält
-        keine E-Mail und kann sich nicht mehr einloggen).
-      reactivate: wiederaufnehmen
-      reactivate_info: Der*die Nutzer*in erhält eine E-Mail mit einem Link für die Zugangsaktivierung.
-      postpone: zurückstellen
-      postpone_info: Die Anfrage wird zurückgestellt bis etwas geklärt wurde (bitte
-        separate E-Mail und Anmerkung schreiben).
-      activate: aktivieren
-      activate_info: Der Zugang des*der Nutzer*in wird direkt aktiviert (bitte den*die Nutzer*in
-        separat über seine*ihre Zugangsdaten informieren).
-      expire: verfallen lassen
-      expire_info: Die Anfrage zurückstellen, da der*die Nutzer*in nicht reagiert und seinen*ihren
-        Zugang nicht aktiviert (keine E-Mail).
-      remove: deaktivieren
-      remove_info: Der Zugang des*der Nutzer*in wird deaktiviert (bitte den*die Nutzer*in in einer
-        separaten E-Mail informieren).
     registration_fields:
       fill_out_missing_fields_message: 'Bitte ergänzen Sie die fehlenden Angaben:'
       select: Bitte auswählen

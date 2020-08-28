@@ -417,7 +417,18 @@ es:
     postpone: zurückgestellt
     activate: aktiviert
     expire: zurückgestellt
-    all: Alle
+    deactivate_account: sperren
+    reactivate_account: reaktivieren
+    grant_project_access: freischalten
+    reject_project_access: ablehnen
+    postpone_project_access: zurückstellen
+    account_created: angelegt
+    account_confirmed: ungeprüft
+    account_deactivated: gesperrt
+    project_access_granted: freigeschaltet
+    project_access_rejected: abgelehnt
+    project_access_postponed: zurückgestellt
+    all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
     checked: geprüft
@@ -468,7 +479,7 @@ es:
         Delimiter sollten entweder Semikolon oder Tab sein.
       bulk_registry_entries: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
-        sowie Feldart bei. 
+        sowie Feldart bei.
         Delimiter sollten entweder Semikolon oder Tab sein.
       bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
