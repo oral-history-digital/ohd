@@ -29,7 +29,7 @@ de:
       confirmation_instructions:
         subject: Interview-Archiv – Schritte für die Freischaltung Ihres Zugangs
       project_access_granted:
-        subject: Freischaltung Ihres Zugangs zu dem Archiv '%{project_name}'
+        subject: Freischaltung Ihres Zugangs zu der Anwendung '%{project_name}'
       project_access_rejected:
         subject: Ihre Registrierung für '%{project_name}'
       reset_password_instructions:
