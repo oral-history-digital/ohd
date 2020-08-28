@@ -11,7 +11,7 @@ export default class InterviewInfo extends React.Component {
         if (c) {
             return (
                 <span>
-                    <i className="fa fa-info-circle" aria-hidden="true" title={c.notes}  style={{'color': 'grey'}} />
+                    <i className="fa fa-info-circle" aria-hidden="true" title={c.notes[this.props.locale]}  style={{'color': 'grey'}} />
                     <a href={c.homepage[this.props.locale]} title={c.homepage[this.props.locale]} target='_blank'>
                         <i className="fa fa-external-link" aria-hidden="true" style={{'color': 'grey'}} />
                     </a>
@@ -86,7 +86,7 @@ export default class InterviewInfo extends React.Component {
                             value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
                             optionsScope={'workflow_states'}
                             noStatusCheckbox={true}
-                        /> 
+                        />
                     </AuthShowContainer>
                     <SelectedRegistryReferencesContainer refObject={this.props.interview} />
                 </div>
@@ -96,4 +96,3 @@ export default class InterviewInfo extends React.Component {
         }
     }
 }
-

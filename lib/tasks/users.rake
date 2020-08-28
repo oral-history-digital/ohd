@@ -17,13 +17,14 @@ namespace :users do
     puts "\n#{registrations.count} Registrations to write as CSV."
 
     CSV.open(csv_file, 'w', { col_sep: ";", force_quotes: true }) do |csv|
-      csv << ['Vorname', 'Nachname', 'E-Mail Adresse', 'Beruf', 'Institution', 'Rechercheanliegen', 'Bevorzugte Sprache', 'Workflow State']#, 'Letztes Login', 'Anzahl Logins'] # more fields for testing
+      #csv << ['Vorname', 'Nachname', 'E-Mail Adresse', 'Beruf', 'Institution', 'Rechercheanliegen', 'Bevorzugte Sprache', 'Workflow State']#, 'Letztes Login', 'Anzahl Logins'] # more fields for testing
+      csv << ['Vorname', 'Nachname', 'E-Mail-Adresse', 'Bevorzugte Sprache', 'Datum der Registrierung']
 
       registrations.each do |r|
-          u = r.user || User.new
-          content = [r.first_name.strip, r.last_name.strip, r.email.strip, u.job_description, (u.organization || '').strip, (u.research_intentions || '').strip, r.default_locale || I18n.default_locale, r.workflow_state ]
+          #content = [r.first_name.strip, r.last_name.strip, r.email.strip, u.job_description, (u.organization || '').strip, (u.research_intentions || '').strip, r.default_locale || I18n.default_locale, r.workflow_state ]
+          content = [r.first_name.strip, r.last_name.strip, r.email.strip, r.default_locale || I18n.default_locale, r.created_at ]
           # more fields for testing
-          if r.user
+          if r.user_account
           #  account = UserAccount.find_by id: r.user.user_account_id
           #  content += [account.last_sign_in_at, account.sign_in_count] if account
           end

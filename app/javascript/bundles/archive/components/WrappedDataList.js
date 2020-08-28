@@ -102,6 +102,7 @@ export default class WrappedDataList extends React.Component {
                     })}
                 >
                     <i className="fa fa-plus"></i>
+                    {t(this.props, `edit.${this.props.scope}.new`)}
                 </div>
             )
         }
