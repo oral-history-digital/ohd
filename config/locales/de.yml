@@ -30,7 +30,7 @@ de:
     en: englisch
     es: spanisch
   in: bei
-  not_your_project: Sie sind für dieses Projekt nicht registriert.
+  not_your_project: Ihre Registrierung wird derzeit inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktagen dauern. Erst danach wird Ihr Zugang aktiviert und Sie können auf die Inhalte des Interview-Archivs zugreifen.
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
@@ -130,7 +130,6 @@ de:
   logout: Abmelden
   login_errors: Bitte berichtigen Sie Ihre Email und/ oder Ihr Passwort
   logged_in_as: Angemeldet als
-  no_project_access_yet: Ihre Registrierung wird derzeit inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktagen dauern. Erst danach wird Ihr Zugang aktiviert und Sie können auf die Inhalte des Interview-Archivs zugreifen.
   user_name: Benutzer*in
   notice: Merken
   forget_password: Passwort wiederherstellen
