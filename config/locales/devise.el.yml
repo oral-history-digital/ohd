@@ -32,8 +32,6 @@ el:
         subject: Οδηγίες επιβεβαίωσης
       reset_password_instructions:
         subject: Οδηγίες επαναφοράς του κωδικού
-      unlock_instructions:
-        subject: Οδηγίες ενεργοποίησης
     omniauth_callbacks:
       failure: Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι "%{reason}".
       success: Επιτυχής έγκριση από το λογαριασμό %{kind}.
