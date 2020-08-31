@@ -1,5 +1,4 @@
 <% url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}" %>
-
 <% case I18n.locale
   when :en -%>
     <p>Welcome <%= @resource.display_name %>!</p>

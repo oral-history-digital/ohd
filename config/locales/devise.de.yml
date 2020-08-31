@@ -31,13 +31,11 @@ de:
       project_access_granted:
         subject: Freischaltung Ihres Zugangs zu der Anwendung '%{project_name}'
       project_access_rejected:
-        subject: Ihre Registrierung für '%{project_name}'
+        subject: Ihre Registrierung für die Anwendung '%{project_name}'
       reset_password_instructions:
         subject: Interview-Archiv – Schritte für die Wiederherstellung Ihres Passwortes
-      unlock_instructions:
-        subject: Interview-Archiv – Schritte für die Reaktivierung Ihres Zugangs
       account_deactivated:
-        subject: Ihre Registrierung für '%{project_name}'
+        subject: Ihr Zugang zu der Anwendung '%{project_name}'
     omniauth_callbacks:
       failure: Sie konnten nicht mit Ihrem %{kind}-Account angemeldet werden, weil '%{reason}'.
       success: Sie haben sich erfolgreich mit Ihrem Account angemeldet.
