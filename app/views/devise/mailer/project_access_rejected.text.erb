@@ -5,7 +5,17 @@
   case my_locale.to_sym
   when :en
 -%>
-TODO english translation
+Dear <%= @user_account.display_name %>,
+
+You have tried to register for the application "<%= @user_account.user_registration.projects.last.name('en') %>".
+
+Unfortunately, verification of your information has revealed that it is insufficient or does not comply with the archive's terms of use.
+
+If you need assistance with the registration process, please contact us at <%= contact_email %>.
+
+Yours sincerely,
+
+The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
 <% when :el -%>
 TODO greek translation
 <% when :es -%>
