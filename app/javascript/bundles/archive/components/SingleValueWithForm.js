@@ -134,7 +134,7 @@ export default class SingleValueWithForm extends React.Component {
                 value = value.substring(0,25)
 
             return (
-                <ContentFieldContainer label={this.label()} value={value} >
+                <ContentFieldContainer noLabel={this.props.noLabel} label={this.label()} value={value} >
                     {this.toggle()}
                     {this.props.children}
                     {this.editButton()}

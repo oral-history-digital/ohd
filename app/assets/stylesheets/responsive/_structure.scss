@@ -670,6 +670,9 @@ a.search-result-link {
   span {
     font-size: $font-size-medium;
   }
+  .form-label {
+    display: none;
+  }
 }
 
 .search-result-workflow-detail {

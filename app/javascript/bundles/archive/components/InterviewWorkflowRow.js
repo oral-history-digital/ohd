@@ -164,6 +164,7 @@ export default class InterviewWorkflowRow extends React.Component {
                             value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
                             optionsScope={'workflow_states'}
                             noStatusCheckbox={true}
+                            noLabel={true}
                         />, '7-5'
                     )} 
                 </div>
