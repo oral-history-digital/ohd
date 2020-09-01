@@ -682,6 +682,11 @@ a.search-result-link {
   }
   .box {
     font-size: 14px;
+    select {
+      @include screen-l {
+        width: 100%;
+      }
+    }
   }
 }
 
