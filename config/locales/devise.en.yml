@@ -30,16 +30,22 @@ en:
       last_attempt: You have one more attempt before your account is locked.
     mailer:
       confirmation_instructions:
-        subject: Confirmation instructions
+        subject: Interview Archive – Steps for the Activation of your Account
+      project_access_granted:
+        subject: Activation of your Account for the Application '%{project_name}'
+      project_access_rejected:
+        subject: Your Registration for the Application '%{project_name}'
       reset_password_instructions:
-        subject: Reset password instructions
+        subject: Interview Archive - Steps to recover your Password
+      account_deactivated:
+        subject: Your access to the application '%{project_name}'
       email_changed:
         subject: Email Changed
       password_change:
         subject: Password Changed
     omniauth_callbacks:
       failure: Could not authenticate you from %{kind} because "%{reason}".
-      success: Successfully authenticated from %{kind} account.
+      success: Successfully authenticated from your account.
     passwords:
       change: Change your password
       forgot: Forgot your password?
@@ -62,9 +68,9 @@ en:
       not_yet_registered: Not registered yet?
       link_to: Register here »
       submit: Send registration
-      activate: Activate access for
+      activate: Activation of the user account of
       activate_submit: continue
-      activate_text: Please choose a sufficiently safe password for your account.
+      activate_text: Please choose a suitable password to activate your account.
       successful: Your registration was successfully submitted.
       signed_up: You have signed up successfully. If enabled, a confirmation was sent
         to your e-mail.

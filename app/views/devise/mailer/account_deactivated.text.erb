@@ -4,7 +4,17 @@
   case my_locale.to_sym
   when :en
 -%>
-TODO english translation
+Dear <%= @user_account.display_name %>,
+
+Your access to the application "<%= @user_account.user_registration.projects.last.name('en') %>" has been blocked.
+
+This happens if you have violated the Terms of Use.
+
+If you have any questions regarding this procedure, please contact us at <%= contact_email %>.
+
+Yours sincerely,
+
+The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
 <% when :el -%>
 TODO greek translation
 <% when :es -%>

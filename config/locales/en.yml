@@ -30,7 +30,8 @@ en:
     en: English
     es: Spanish
   in: in
-  not_your_project: You are not registered for this project.
+  not_your_project: Your registration is currently being reviewed by the project team, this review may take up to two working days.
+    Only then your access will be activated and you can access the contents of the interview archive.
   registration_needed: For reasons of privacy you have to register. After registration
     you have access to all testimonies in full length.
   change_to_bcrypt: We have recently updated the way we store our passwords. Please
@@ -505,8 +506,8 @@ en:
     registration_text_two: " explain for whom and for which purposes the archive can
       be used. The "
     registration_text_three: " clarifies which personal data we process and what we
-      use it for. Within two working days of sending your data you will receive a
-      response and/or your login data."
+      use it for. After you have confirmed your registration, the project team will review your registration details.
+      Within two working days you will be informed about the activation of your account for the interview archive."
     tos_agreement: Terms of Use
     priv_agreement: Privacy Policy
     notes_on_receive_newsletter: Ich möchte den Newsletter abonnieren.
@@ -949,7 +950,7 @@ en:
         checkbox_input: Please choose
         text_input: Please fill
         file_input: Please select a file
-        password_input: Please correct your password
+        password_input: Your password has to consist of at least seven characters. Make sure that both passwords match.
         email_input: Please correct your email
       template:
         header: Ihre Anfrage konnte nicht bearbeitet werden

@@ -4,7 +4,17 @@
   case my_locale.to_sym
   when :en
 -%>
-TODO english translation
+Dear <%= @user_account.display_name %>,
+
+We hereby confirm your account for the application "<%= @user_account.user_registration.projects.last.name('en') %>".
+
+With your account: <%= @user_account.email %>
+
+you can now log in here <%= url %> and access all functions of the interview archive.
+
+Yours sincerely,
+
+The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
 <% when :el -%>
 TODO greek translation
 <% when :es -%>
@@ -18,7 +28,7 @@ hiermit bestätigen wir Ihren Zugang für die Anwendung "<%= @user_account.user_
 
 Mit Ihrem Account: <%= @user_account.email %>
 
-können Sie sich nun hier <%= url %> anmelden und auf alle Funktionen des Archivs "<%= @user_account.user_registration.projects.last.name('de') %>" zugreifen.
+können Sie sich nun hier <%= url %> anmelden und auf alle Funktionen des Interview-Archivs zugreifen.
 
 Mit freundlichen Grüßen,
 

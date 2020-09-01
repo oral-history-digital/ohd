@@ -4,10 +4,12 @@
   case my_locale.to_sym
   when :en
 -%>
-    <p>TODO translate</p>
     <p>Dear <%= @user_account.display_name %>,</p>
-    <p>Best regards,</p>
-    <p>The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
+    <p>We hereby confirm your account for the application "<%= @user_account.user_registration.projects.last.name('en') %>".</p>
+    <p>With your account: <%= @user_account.email %></p>
+    <p>you can now <%= link_to 'log in here', url %> and access all functions of the interview archive.</p>
+    <p>Yours sincerely,</p>
+    <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
   <% when :ru -%>
     <p>TODO translate</p>
     <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
