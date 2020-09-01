@@ -5,9 +5,11 @@
   when :en
 -%>
   <p>Dear <%= @user_account.display_name %>,</p>
-  <p>Your account has been locked.</p>
-  <p>Best regards,</p>
-  <p>The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
+  <p>Your access to the application "<%= @user_account.user_registration.projects.last.name('en') %>" has been blocked.</p>
+  <p>This happens if you have violated the Terms of Use.</p>
+  <p>If you have any questions regarding this procedure, please contact us at <a href="mailto:<%= contact_email %>"><%= contact_email %>.</p>
+  <p>Yours sincerely,</p>
+  <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
   <% when :ru -%>
   <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
   <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>

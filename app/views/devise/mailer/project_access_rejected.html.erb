@@ -4,21 +4,24 @@
   case my_locale.to_sym
   when :en
 -%>
-    <p>Dear <%= @user_account.display_name %>,</p>
-    <p>Best regards,</p>
-    <p>The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
-  <% when :ru -%>
-    <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
-    <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
-  <% when :el -%>
+  <p>Dear <%= @user_account.display_name %>,
+  <p>You have tried to register for the application "<%= @user_account.user_registration.projects.last.name('en') %>".</p>
+  <p>Unfortunately, verification of your information has revealed that it is insufficient or does not comply with the archive's terms of use.</p>
+  <p>If you need assistance with the registration process, please contact us at <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
+  <p>Yours sincerely,</p>
+  <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
+<% when :ru -%>
+  <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
+  <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+<% when :el -%>
   TODO greek translation
-  <% when :es -%>
+<% when :es -%>
   TODO spanish translation
-  <% else -%>
-    <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
-    <p>Sie haben versucht sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" zu registrieren.</p>
-    <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs entsprechen.</p>
-    <p>Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
-    <p>Mit freundlichen Grüßen,</p>
-    <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
+<% else -%>
+  <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
+  <p>Sie haben versucht sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" zu registrieren.</p>
+  <p>Leider hat die Überprüfung Ihrer Angaben ergeben, dass diese unzureichend sind oder nicht den Nutzungsbedingungen des Archivs entsprechen.</p>
+  <p>Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
+  <p>Mit freundlichen Grüßen,</p>
+  <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>

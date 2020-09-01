@@ -5,12 +5,13 @@
   when :en
 -%>
   <p>Dear <%= @user_account.display_name %>,</p>
-  <p>we confirm your account registration to our archive. Your username is: <%= @user_account.email %></p>
-  <p>To enable your access to the new archive platform, we ask you to activate your account and choose a new password here:</p>
-  <p><%= link_to 'Activate your access now', url %></p>
-  <br/>
-  <p>Best regards,</p>
-  <p>The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
+  <p>You have registered for the application "<%= @user_account.user_registration.projects.last.name('en') %>".</p>
+  <p>Please confirm your registration within the next 14 days by setting a password:</p>
+  <p><%= link_to 'Confirm Registration', url %></p>
+  <p>After you have confirmed your registration, the project team will review your registration details. Within two working days you will be informed about the activation of your account for the interview archive.</p>
+  <p>If you have not registered for the interview archive, you can ignore this e-mail. Your data will be deleted automatically after 14 days.</p>
+  <p>Yours sincerely,</p>
+  <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
 <% when :ru -%>
   <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
   <p>настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @user_account.email %></p>

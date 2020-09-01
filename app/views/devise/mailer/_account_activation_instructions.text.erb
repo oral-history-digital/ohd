@@ -4,16 +4,21 @@
   case my_locale.to_sym
   when :en
 -%>
-TODO: update translation
 Dear <%= @user_account.display_name %>,
 
-we confirm your account registration to our archive. Your username is: <%= @user_account.email %>
+You have registered for the application "<%= @user_account.user_registration.projects.last.name('en') %>".
 
-To enable your access to the new archive platform, we ask you to activate your account and choose a new password here:
+Please confirm your registration within the next 14 days by setting a password:
+
 <%= url %>
-Best regards,
 
-The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"
+After you have confirmed your registration, the project team will review your registration details. Within two working days you will be informed about the activation of your account for the interview archive.
+
+If you have not registered for the interview archive, you can ignore this e-mail. Your data will be deleted automatically after 14 days.
+
+Yours sincerely,
+
+The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
 <% when :ru -%>
 TODO: update translation
 Уважаемый/ая <%= @user_account.display_name %>,
