@@ -190,7 +190,7 @@ EVAL
   # Flags the account as deactivated and removes project access
   def deactivate_account
     project = self.user_registration_projects.find_by_project_id(current_project)
-    self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, nil) unless project.nil?
+    project.update_attribute(:activated_at, nil) unless project.nil?
     self.user_account.update_attribute(:admin, nil)
     self.user_account.deactivate!
     # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
