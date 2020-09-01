@@ -1,22 +1,29 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 import Form from '../containers/form/Form';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
-import { t, fullname } from '../../../lib/utils';
+import { t, fullname, pathBase } from '../../../lib/utils';
 
 export default class InterviewForm extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            showForm: true
+            showForm: true,
+            archiveId: null
         };
         this.returnToForm = this.returnToForm.bind(this);
+        this.setArchiveId = this.setArchiveId.bind(this);
         this.showContribution = this.showContribution.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
     }
 
     returnToForm() {
         this.setState({showForm: true});
+    }
+
+    setArchiveId(name, value) {
+        this.setState({archiveId: value})
     }
 
     showContribution(value) {
@@ -39,6 +46,7 @@ export default class InterviewForm extends React.Component {
             { 
                 attribute: 'archive_id',
                 value: this.props.interview && this.props.interview.archive_id,
+                handlechangecallback: this.setArchiveId,
                 validate: function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)},
             },
             { 
@@ -51,7 +59,9 @@ export default class InterviewForm extends React.Component {
                 value: this.props.interview && this.props.interview.media_type,
                 optionsScope: 'search_facets',
                 elementType: 'select',
-                values: ['video', 'audio']
+                withEmpty: true,
+                values: ['video', 'audio'],
+                validate: function(v){return /^\w+$/.test(v)},
             },
             {
                 elementType: 'select',
@@ -133,11 +143,17 @@ export default class InterviewForm extends React.Component {
                     <p>
                         {t(this.props, 'edit.interview.processing')}
                     </p>
+                    <p>
+                        <Link
+                            to={pathBase(this.props) + '/interviews/' + this.state.archiveId}>
+                            {t(this.props,  'edit.interview.edit')}
+                        </Link>
+                    </p>
                     <button 
                         className='return-to-form'
                         onClick={() => this.returnToForm()}
                     >
-                        {t(this.props, 'edit.interview.edit')}
+                        {t(this.props, 'edit.interview.return')}
                     </button>
                 </div>
             )

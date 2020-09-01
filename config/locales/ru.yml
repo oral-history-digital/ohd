@@ -295,6 +295,7 @@ ru:
       processed: 'Interview angelegt: '
       processing: Das Interview wurde bearbeitet
       return: Weiteres Interview anlegen
+      goto: Zum Interview
     interviews:
       publish:
         title: Interviews publizieren
