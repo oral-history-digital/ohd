@@ -56,7 +56,7 @@ export default class InterviewWorkflowRow extends React.Component {
 
     box(value, width='17-5') {
         return (
-            <div className={`box-${width}`}>
+            <div className={`box box-${width}`}>
                 {value}
             </div>
         )
@@ -64,7 +64,7 @@ export default class InterviewWorkflowRow extends React.Component {
 
     intervieweeWithPhoto() {
         return (
-            <Link className={'search-result-link box-20'}
+            <Link className={'search-result-link box-15'}
                 onClick={() => {
                     this.props.setArchiveId(this.props.interview.archive_id);
                     this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
@@ -74,7 +74,7 @@ export default class InterviewWorkflowRow extends React.Component {
             >
                 <img className='workflow' src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
                 <span className='workflow' >
-                    {this.props.interview.title[this.props.locale]}
+                    {this.props.interview.short_title[this.props.locale]}
                 </span>
             </Link>
         )
@@ -144,14 +144,14 @@ export default class InterviewWorkflowRow extends React.Component {
 
     render() {
         return (
-            <div key={`interview-workflow-${this.props.interview.archive_id}`}>
+            <div className='border-top' key={`interview-workflow-${this.props.interview.archive_id}`}>
                 <div className='search-result-workflow data boxes' key={`${this.props.interview.archive_id}-collapsed-view`}>
                     {this.intervieweeWithPhoto()}
                     {this.box(this.props.interview.archive_id, '7-5')}
                     {this.box(this.props.interview.media_type, '7-5')}
                     {this.box(this.props.interview.duration_human, '7-5')}
-                    {this.box(this.props.interview.language[this.props.locale], '10')}
-                    {this.box(this.props.interview.collection[this.props.locale], '10')}
+                    {this.box(this.props.interview.language[this.props.locale], '12-5')}
+                    {this.box(this.props.interview.collection[this.props.locale], '12-5')}
                     <div className={`box-30 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
                         {this.symbols()}
                     </div>

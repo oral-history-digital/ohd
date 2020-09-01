@@ -113,7 +113,7 @@ export default class Task extends React.Component {
 
     box(value, width='17-5') {
         return (
-            <div className={`box-${width}`} >
+            <div className={`box box-${width}`} >
                 {value}
             </div>
         )

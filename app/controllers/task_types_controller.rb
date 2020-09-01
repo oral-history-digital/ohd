@@ -69,6 +69,7 @@ class TaskTypesController < ApplicationController
         :key,
         :use,
         :project_id,
+        :abbreviation,
         translations_attributes: [:id, :locale, :label]
     )
   end
