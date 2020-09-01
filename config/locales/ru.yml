@@ -975,6 +975,7 @@ ru:
         name: Name
         title: Name
         label: Label
+        archive_id: Archiv ID
         workflow_state: Status
         locale: Sprache
         lang: Sprache

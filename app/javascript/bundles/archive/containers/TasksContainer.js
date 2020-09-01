@@ -26,6 +26,10 @@ const mapStateToProps = (state) => {
                 withEmpty: true,
                 validate: function(v){return /\d+/.test(v)} 
             },
+            {
+                attribute: 'archive_id',
+                validate: function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)},
+            },
             //{
                 //attribute: 'interview_id',
                 //elementType: 'select',

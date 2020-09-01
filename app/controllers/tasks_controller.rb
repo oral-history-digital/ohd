@@ -84,6 +84,7 @@ class TasksController < ApplicationController
         :user_account_id,
         :supervisor_id,
         :interview_id,
+        :archive_id,
         :workflow_state
     )
   end

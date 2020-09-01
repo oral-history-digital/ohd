@@ -929,6 +929,7 @@ en:
         name: Name
         title: Name
         label: Label
+        archive_id: Archiv ID
         workflow_state: State
         locale: Language
         lang: Language

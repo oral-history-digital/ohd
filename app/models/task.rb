@@ -6,6 +6,8 @@ class Task < ApplicationRecord
   belongs_to :interview
   has_many :comments, as: :ref, dependent: :destroy
 
+  validates_associated :interview
+
   before_save :send_mail_to_user_account
 
   include Workflow
@@ -46,6 +48,11 @@ class Task < ApplicationRecord
 
   def restart
     AdminMailer.with(task: self, receiver: user_account).task_restarted.deliver_now if user_account
+  end
+
+  def archive_id=(aid)
+    i = Interview.find_by_archive_id(aid)
+    i && self.interview_id = i.id
   end
 
 end
