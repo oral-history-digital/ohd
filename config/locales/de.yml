@@ -455,14 +455,14 @@ de:
     postponed: zurückgestellt
     rejected: abgelehnt
     registered: registriert
-    created: zur Bearbeitung zuweisen
-    start: zur Bearbeitung zugewiesen
-    started: zur Bearbeitung zugewiesen
-    finish: Bearbeitet
-    finished: Bearbeitet
+    created: zu Bearbeiten
+    start: in Bearbeitung
+    started: in Bearbeitung
+    finish: Bearbeitet/ im QM
+    finished: Bearbeitet/ im QM
     clear: Geprüft
     cleared: Geprüft
-    restart: erneut öffnen
+    restart: Erneut geöffnet
   contributions:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen

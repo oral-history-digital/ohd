@@ -41,11 +41,11 @@ class Task < ApplicationRecord
   end
 
   def finish
-    AdminMailer.with(task: self, receiver: supervisor).task_finished.deliver_now
+    AdminMailer.with(task: self, receiver: supervisor).task_finished.deliver_now if supervisor
   end
 
   def restart
-    AdminMailer.with(task: self, receiver: user_account).task_restarted.deliver_now
+    AdminMailer.with(task: self, receiver: user_account).task_restarted.deliver_now if user_account
   end
 
 end
