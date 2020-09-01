@@ -4,31 +4,31 @@
   case my_locale.to_sym
   when :en
 -%>
-    <p>Dear <%= @user_account.display_name %>,</p>
-    <p>we confirm your account registration to our archive. Your username is: <%= @user_account.email %></p>
-    <p>To enable your access to the new archive platform, we ask you to activate your account and choose a new password here:</p>
-    <p><%= link_to 'Activate your access now', url %></p>
-    <br/>
-    <p>Best regards,</p>
-    <p>The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
-  <% when :ru -%>
-    <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
-    <p>настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @user_account.email %></p>
-    <p>Для получения возможности пользоваться архивной платформой просим Вас активировать Ваш доступ и выбрать новый пароль:</p>
-    <p><%= link_to 'Активировать доступ сейчас', url %></p>
-    <br/>
-    <p>С уважением,</p>
-    <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
-  <% when :es -%>
-    <p>TODO: translate to Spanish</p>
-    <p><%= link_to 'Registrierung bestätigen', url %></p>
-  <% else -%>
-    <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
-    <p>Sie haben sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>
-    <p>Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:</p>
-    <p><%= link_to 'Registrierung bestätigen', url %></p>
-    <p>Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert.</p>
-    <p>Sollten Sie sich nicht für das Interview-Archiv registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
-    <p>Mit freundlichen Grüßen,</p>
-    <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
+  <p>Dear <%= @user_account.display_name %>,</p>
+  <p>we confirm your account registration to our archive. Your username is: <%= @user_account.email %></p>
+  <p>To enable your access to the new archive platform, we ask you to activate your account and choose a new password here:</p>
+  <p><%= link_to 'Activate your access now', url %></p>
+  <br/>
+  <p>Best regards,</p>
+  <p>The archive team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
+<% when :ru -%>
+  <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
+  <p>настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @user_account.email %></p>
+  <p>Для получения возможности пользоваться архивной платформой просим Вас активировать Ваш доступ и выбрать новый пароль:</p>
+  <p><%= link_to 'Активировать доступ сейчас', url %></p>
+  <br/>
+  <p>С уважением,</p>
+  <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+<% when :es -%>
+  <p>TODO: translate to Spanish</p>
+  <p><%= link_to 'Registrierung bestätigen', url %></p>
+<% else -%>
+  <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
+  <p>Sie haben sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>
+  <p>Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:</p>
+  <p><%= link_to 'Registrierung bestätigen', url %></p>
+  <p>Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert.</p>
+  <p>Sollten Sie sich nicht für das Interview-Archiv registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
+  <p>Mit freundlichen Grüßen,</p>
+  <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>

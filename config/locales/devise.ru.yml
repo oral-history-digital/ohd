@@ -29,8 +29,6 @@ ru:
         subject: Инструкции по подтверждению учётной записи.
       reset_password_instructions:
         subject: Инструкции по восстановлению пароля.
-      unlock_instructions:
-        subject: Инструкции по разблокировке учётной записи.
       password_change:
         subject: Пароль был изменён.
     omniauth_callbacks:
