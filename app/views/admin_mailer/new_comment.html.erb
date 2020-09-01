@@ -1,9 +1,9 @@
 <p>Liebe/r <%= @receiver.display_name %>,</p>
 
-<p><%= @author.display_name %> hat zu der Aufgabe <%= @task.task_type.label(:de) %> zum Interview <%= @task.interview.archive_id %> in der Redaktionsumgebung der Anwendung "<%= @task.interview.project.name %>" folgenden Kommentar geschrieben:</p>
+<p><%= @author.display_name %> hat zu der Aufgabe <%= @task.task_type.label(:de) %> zum Interview <%= @task.interview.archive_id %> in der Redaktionsumgebung der Anwendung <%= @task.interview.project.name %> folgenden Kommentar geschrieben:</p>
 <p><%= @text %></p>
 
-<p><%= @task.interview.project.archive_domain %></p>
+<p><%= link_to @task.interview.project.name, @task.interview.project.archive_domain %></p>
 
 <p>Viele Grüße</p>
 
