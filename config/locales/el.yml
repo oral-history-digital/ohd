@@ -446,13 +446,13 @@ el:
     rejected: abgelehnt
     registered: registriert
     created: zu Bearbeiten
-    start: in Bearbeitung
+    start: zur Bearbeitung zuweisen
     started: in Bearbeitung
-    finish: Bearbeitet/ im QM
+    finish: dem QM einreichen
     finished: Bearbeitet/ im QM
-    clear: Geprüft
+    clear: freigeben
     cleared: Geprüft
-    restart: Erneut geöffnet
+    restart: erneut öffnen
   contributions:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen
