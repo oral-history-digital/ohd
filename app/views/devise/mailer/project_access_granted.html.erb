@@ -11,9 +11,12 @@
     <p>Yours sincerely,</p>
     <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
   <% when :ru -%>
-    <p>TODO translate</p>
-    <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
-    <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+    <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
+    <p>мы подверждаем Ваш акаунт для доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>".</p>
+    <p>С Вашим аккаунтом: <%= @user_account.email %></p>
+    <p>Вы можете подтвердить регистрацию за линком: <%= url %> и получить доступ ко всем функиям интревью-архива.</p>
+    <p>С уважением,</p>
+    <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% when :es -%>
     <p>TODO spanish translation</p>
   <% when :el -%>
@@ -21,7 +24,7 @@
   <% else -%>
     <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
     <p>hiermit bestätigen wir Ihren Zugang für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>".</p>
-    <p>Mit Ihrem Account: <%= @user_account.email %>
+    <p>Mit Ihrem Account: <%= @user_account.email %></p>
     <p>können Sie sich nun <%= link_to 'hier anmelden', url %> und auf alle Funktionen des Interview-Archivs zugreifen.</p>
     <p>Mit freundlichen Grüßen,</p>
     <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>

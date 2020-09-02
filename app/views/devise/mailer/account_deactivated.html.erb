@@ -10,9 +10,13 @@
   <p>If you have any questions regarding this procedure, please contact us at <a href="mailto:<%= contact_email %>"><%= contact_email %>.</p>
   <p>Yours sincerely,</p>
   <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
-  <% when :ru -%>
-  <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
-  <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+<% when :ru -%>
+  <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
+  <p>Ваш доступ к ресурсу "<%= @user_account.user_registration.projects.last.name('ru') %>" был заблокирован.</p>
+  <p>Это произошло, если вы нарушили Условия пользовния.</p>
+  <p>Если у Вас в связи с этим возникли вопросы, пожалуйста, свяжитесь с нами: <%= contact_email %>.</p>
+  <p>С уважением,</p>
+  <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% when :el -%>
   TODO greek translation
   <% when :es -%>
@@ -21,7 +25,7 @@
   <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
   <p>Ihr Zugang zu der Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" wurde gesperrt.</p>
   <p>Dies geschieht, wenn Sie gegen die Nutzungsbedingungen verstoßen haben.</p>
-  <P>Wenn Sie Fragen zu diesem Vorgang haben, kontaktieren Sie uns bitte unter <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
+  <p>Wenn Sie Fragen zu diesem Vorgang haben, kontaktieren Sie uns bitte unter <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
   <p>Mit freundlichen Grüßen,</p>
   <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>
