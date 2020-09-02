@@ -2,14 +2,17 @@
 
 <p>Указанный Вами электронный адрес уже зарегистрирован в системе архива "<%= current_project.name('ru') %>".</p>
 
-<% case @user_registration.workflow_state
-     when 'checked' %>
-    <p>Вам нужно лишь активировать Ваш доступ. Необходимая для активации доступа информация была только что повторно выслана на Ваш электронный адрес.</p>
-<%  when 'unchecked' %>
-    <p>Ваш доступ проверяется нашими сотрудниками. Мы просим Вас подождать или обратиться с запросом по следующему электронному адресу: <a href="mailto:<%= Project.contact_email %>"><%= Project.contact_email %></a>.</p>
-<%  else %>
-    <p>Ваш доступ уже активен. Если Вы не помните Ваши данные для доступа, перейдите, пожалуйста, по следующей ссылке: <%= link_to t('devise.passwords.link'), new_password_path('user_account', :email => @user_registration.email), :class => 'new_password link' %></p>
+<% if @user_registration %>
+  <% case @user_registration.workflow_state
+     when 'account_created' %>
+  <p>Вам нужно лишь активировать Ваш доступ. Необходимая для активации доступа информация была только что повторно выслана на Ваш электронный адрес.</p>
+  <% when 'account_confirmed', 'project_access_postponed' %>
+  <p>Ваш доступ проверяется нашими сотрудниками. Мы просим Вас подождать или обратиться с запросом по следующему электронному адресу: <a href="mailto:<%= Project.contact_email %>"><%= Project.contact_email %></a>.</p>
+  <% else %>
+  <p>Ваш доступ уже активен. Если Вы не помните Ваши данные для доступа, перейдите, пожалуйста, по следующей ссылке: <%= link_to t('devise.passwords.link'), new_password_path('user_account', :email => @user_registration.email), :class => 'new_password link' %></p>
+  <% end %>
 <% end %>
+
 
 <br/>
 
