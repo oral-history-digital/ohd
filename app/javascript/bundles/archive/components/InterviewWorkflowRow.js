@@ -150,8 +150,8 @@ export default class InterviewWorkflowRow extends React.Component {
                     {this.box(this.props.interview.archive_id, '7-5')}
                     {this.box(this.props.interview.media_type, '7-5')}
                     {this.box(this.props.interview.duration_human, '7-5')}
-                    {this.box(this.props.interview.language[this.props.locale], '12-5')}
-                    {this.box(this.props.interview.collection[this.props.locale], '12-5')}
+                    {this.box(this.props.interview.language[this.props.locale], '10')}
+                    {this.box(this.props.interview.collection[this.props.locale], '10')}
                     <div className={`box-30 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
                         {this.symbols()}
                     </div>

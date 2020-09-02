@@ -701,7 +701,7 @@ a.search-result-link {
   }
   .header {
     .box {
-      font-size: 16px;
+      font-weight: bold;
     }
   }
 }
@@ -766,6 +766,7 @@ a.search-result-link {
 .workflow-header {
   background-color: $gray-light;
   padding: 5px;
+  font-weight: bold;
 }
 
 .workflow-symbols {

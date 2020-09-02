@@ -785,7 +785,7 @@ ru:
         segmentators: Сегментация
         language: Язык
         language_id: Originalsprache
-        media_type: Media Typ
+        media_type: Medientyp
         translated: ist das Interview bereits übersetzt?
         workflow_state: 'Status'
         tasks_states: Bearbeitungsstand

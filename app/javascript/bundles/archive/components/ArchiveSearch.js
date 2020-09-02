@@ -119,7 +119,7 @@ export default class ArchiveSearch extends React.Component {
     workflowHeader() {
         return (
             <div className='data boxes workflow-header' key='header-boxes'>
-                {this.box('interview', '20', 'title')}
+                {this.box('interview', '15', 'title')}
                 {this.box('id', '7-5', 'archive_id')}
                 {this.box('activerecord.attributes.interview.media_type', '7-5', 'media_type')}
                 {this.box('activerecord.attributes.interview.duration', '7-5', 'duration')}
