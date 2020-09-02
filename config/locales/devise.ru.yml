@@ -26,15 +26,19 @@ ru:
       last_attempt: У Вас осталась еще одна попытка ввести пароль до блокировки.
     mailer:
       confirmation_instructions:
-        subject: Инструкции по подтверждению учётной записи.
-      reset_password_instructions:
-        subject: Инструкции по восстановлению пароля.
-      password_change:
-        subject: Пароль был изменён.
+        subject: 'Интервью-архив: шаги по активации Вашего акаунта'
+      project_access_granted:
+        subject: Активация Вашего аканта для доступа к ресурсу '%{project_name}'
+      project_access_rejected:
+        subject: Ваша регистрация для доступа к ресурсу '%{project_name}'
+      reset_passwod_instructions:
+        subject: 'Интервью-архив: шаги по восстановлению Вашего пароля'
+      account_deactivated:
+        subject: Ваш доступ к проекту '%{project_name}'
     omniauth_callbacks:
       failure: Вы не можете войти в систему с учётной записью из %{kind}, так как
         "%{reason}".
-      success: Вход в систему выполнен с учётной записью из %{kind}.
+      success: Вы успешно вошли в Ваш аккаунт.
     passwords:
       change: Изменить пароль
       forgot: Забыли Ваш пароль?
@@ -58,7 +62,7 @@ ru:
       not_yet_registered: Ещё не зарегистрированы?
       link_to: К регистрации »
       submit: Отправить регистрацию
-      activate: Активация доступа для
+      activate: Для активации выберете, пожалуйста, соответствующий пароль
       activate_submit: отправить
       activate_text: Пожалуйста, выберите подходящий пароль для Вашего доступа.
       successful: Мы получили Вашу регистрацию.

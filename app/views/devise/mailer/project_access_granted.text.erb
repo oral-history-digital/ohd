@@ -20,7 +20,17 @@ TODO greek translation
 <% when :es -%>
 TODO spanish translation
 <% when :ru -%>
-TODO russian translation
+Уважаемый(-ая) <%= @user_account.display_name %>,
+
+мы подверждаем Ваш акаунт для доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>".
+
+С Вашим аккаунтом: <%= @user_account.email %>
+
+Вы можете подтвердить регистрацию за линком: <%= url %> и получить доступ ко всем функиям интревью-архива.
+
+С уважением,
+
+сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 
