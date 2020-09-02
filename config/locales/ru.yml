@@ -478,6 +478,7 @@ ru:
     account_deactivated: gesperrt
     project_access_granted: freigeschaltet
     project_access_rejected: abgelehnt
+    project_access_postponed: zurückgestellt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig

@@ -94,7 +94,7 @@ EVAL
     # revoking access
     # a) remove access to project (can be granted again) => TOS-Violation-EMAIL
     # b) deactivate account (can be reactivated) => Account-Deactivated-EMAIL
-    # c) delete account (only Super-Admin?) => Account-Deleted-EMAIL?
+    # c) delete account (only Super-Admin?) => not yet implemented, currently done via rails console
 
     # legacy data
     # 1. registered accounts are migrated to :project_access_granted
@@ -104,7 +104,6 @@ EVAL
     # 2. all other accounts are :deleted (anonymized).
     #    We keep the following data:
     #     - for statistics: job_description, research_intentions, country, gender
-    #     - [for admin purposes (security, trolling): email, admin_comments] to be discussed
     #    Users accounts checked or unchecked in the last 7 days are asked to register again due to changed registration process
     # associated data: ip, usage report
 
@@ -123,7 +122,6 @@ EVAL
     end
     state :project_access_granted do
       event :reject_project_access,    :transitions_to => :project_access_rejected
-      event :postpone_project_access,  :transitions_to => :project_access_postponed
       event :deactivate_account,    :transitions_to => :account_deactivated
     end
     state :project_access_postponed do
@@ -133,7 +131,6 @@ EVAL
     end
     state :project_access_rejected do
       event :grant_project_access,      :transitions_to => :project_access_granted
-      event :postpone_project_access,  :transitions_to => :project_access_postponed
       event :deactivate_account,        :transitions_to => :account_deactivated
     end
     state :account_deactivated do
