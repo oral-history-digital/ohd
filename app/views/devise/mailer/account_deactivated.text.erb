@@ -20,13 +20,25 @@ TODO greek translation
 <% when :es -%>
 TODO spanish translation
 <% when :ru -%>
-TODO russian translation
+Уважаемый(-ая) <%= @user_account.display_name %>,
+
+Ваш доступ к ресурсу "<%= @user_account.user_registration.projects.last.name('ru') %>" был заблокирован.
+
+Это произошло, если вы нарушили Условия пользовния.
+
+Если у Вас в связи с этим возникли вопросы, пожалуйста, свяжитесь с нами: <%= contact_email %>.
+
+С уважением,
+
+сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 
-Ihr Zugang wurde gesperrt.
+Ihr Zugang zu der Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" wurde gesperrt.
 
-Wenn Sie Unterstützung bei der Registrierung benötigen, kontaktieren Sie uns bitte unter <%= contact_email %>.
+Dies geschieht, wenn Sie gegen die Nutzungsbedingungen verstoßen haben.
+
+Wenn Sie Fragen zu diesem Vorgang haben, kontaktieren Sie uns bitte unter <%= contact_email %>.
 
 Mit freundlichen Grüßen,
 

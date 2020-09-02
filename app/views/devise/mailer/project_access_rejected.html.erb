@@ -11,8 +11,12 @@
   <p>Yours sincerely,</p>
   <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
 <% when :ru -%>
-  <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
-  <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
+  <p>Вы пытались зарегистрироваться для получения доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>". </p>
+  <p>К сожалению, проверка Ваших данных показала, что они неполные или не сответствуют условиям доступа.</p>
+  <p>Если Вам нужна помощь в процессе регистрации, пожалуйста, свяжитесь с нами: <%= contact_email %>.</p>
+  <p>С уважением,</p>
+  <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
 <% when :el -%>
   TODO greek translation
 <% when :es -%>

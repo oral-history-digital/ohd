@@ -30,7 +30,7 @@ ru:
     en: englisch
     es: spanisch
   in: В
-  not_your_project: You are not registered for this project.
+  not_your_project: Ваш запрос на регистрацию находится на рассмотрении сотрудников проекта, это может занять до двух рабочих дней. Только после этого Ваш акаунт будет активирован и Вы получите доступ к материалам интервью-архива.
   registration_needed: В целях защиты персональных данных тех, чьи истории жизни представлены
     в архиве, просим Вас зарегистрироваться. После регистрации Вы получите доступ
     ко всем интервью в полном объеме.
@@ -997,7 +997,7 @@ ru:
         checkbox_input: Bitte zustimmen
         text_input: Введите адрес
         file_input: Bitte Datei auswählen
-        password_input: пожалуйста, уточните пароль
+        password_input: Ваш пароль должен содержать не менее семи символов. Убедитесь, что оба пароля совпадают.
         email_input: Bitte berichtigen Sie Ihre Email
       template:
         header: Мы не можем обработать Ваш запрос
