@@ -126,7 +126,7 @@ export default class WrappedAccount extends React.Component {
             return (
                 <div className={'tasks box'}>
                     <h4 className='title'>{t(this.props, 'activerecord.models.task.supervised_other')}</h4>
-                    <TasksContainer
+                    <TasksOnlyStatusEditableContainer
                         data={this.props.account.supervised_tasks || {}}
                         initialFormValues={{user_account_id: this.props.account.user_account_id}}
                         hideEdit={false}

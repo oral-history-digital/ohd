@@ -217,7 +217,7 @@ export function underscore(str) {
 // so obj should contain a type and (id or action) 
 //
 export function admin(props, obj={}) {
-    if (props.account && props.editView) {
+    if (props.account && (props.editView || obj.type === 'Task')) {
         if (
             props.account.admin ||
             (obj.type && (obj.id || obj.action)) && (

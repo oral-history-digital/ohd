@@ -23,11 +23,11 @@ class ApplicationPolicy
   end
 
   def update?
-    user.admin? || user.permissions?(resolve_class_name(record), :update) #|| user.tasks?(record) 
+    user.admin? || user.permissions?(resolve_class_name(record), :update) || user.tasks?(record) 
   end
 
   def edit?
-    user.admin? || user.permissions?(resolve_class_name(record), :edit) #|| user.tasks?(record) 
+    user.admin? || user.permissions?(resolve_class_name(record), :edit) || user.tasks?(record) 
   end
 
   def destroy?
