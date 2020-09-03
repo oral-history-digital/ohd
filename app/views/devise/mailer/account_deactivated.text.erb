@@ -18,7 +18,17 @@ The project team "<%= @user_account.user_registration.projects.last.name('en') %
 <% when :el -%>
 TODO greek translation
 <% when :es -%>
-TODO spanish translation
+Estimada/o <%= @user_account.display_name %>,
+
+Su acceso a la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>" ha sido bloqueado.
+
+Eso sucede si ha violado los Términos de uso.
+
+Si tiene preguntas sobre el proceso, por favor contáctenos bajo <%= contact_email %>.
+
+Con saludos cordiales,
+
+El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"
 <% when :ru -%>
 Уважаемый(-ая) <%= @user_account.display_name %>,
 

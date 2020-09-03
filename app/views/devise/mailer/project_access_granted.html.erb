@@ -18,7 +18,12 @@
     <p>С уважением,</p>
     <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% when :es -%>
-    <p>TODO spanish translation</p>
+    <p>Estimada/o <%= @user_account.display_name %>,</p>
+    <p>por la presente le confirmamos su cuenta para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
+    <p>Con su cuenta: <%= @user_account.email %></p>
+    <p>puede <%= link_to 'registrarse aquí', url %> y acceder a todas las funciones del archivo de entrevistas.</p>
+    <p>Con saludos cordiales,</p>
+    <p>El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"</p>
   <% when :el -%>
     <p>TODO greek translation</p>
   <% else -%>
