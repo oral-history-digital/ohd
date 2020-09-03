@@ -19,7 +19,17 @@ when :en -%>
 
         <%= url %>
 <% when :es -%>
-        TODO: spanish translation
+Estimada/o <%= @user_account.display_name %>,
+
+Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".
+
+Por favor, confirme los cambios haciendo clic en el siguiente enlace:
+
+<%= url %>
+
+Con saludos cordiales,
+
+El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"
 <% else -%>
         Willkommen <%= @resource.display_name %>!
 

@@ -516,7 +516,7 @@ es:
       female: feminino
       male: masculino
       diverse: diverso
-      not_specified: not specified
+      not_specified: no especifica
     job_description:
       researcher: Docente/Investigador/a
       filmmaker: Director/a de cine

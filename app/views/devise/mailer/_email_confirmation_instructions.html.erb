@@ -18,7 +18,12 @@
 
         <p><%= link_to 'Zugang jetzt bestätigen', url %></p>
   <% when :es -%>
-   TODO spanish translation
+  <p>Estimada/o <%= @user_account.display_name %>,</p>
+  <p>Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
+  <p>Por favor, confirme los cambios haciendo clic en el siguiente enlace:</p>
+  <p><%= link_to 'Confirmar nuevo correo electrónico', url %></p>
+  <p>Con saludos cordiales,</p>
+  <p>El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"</p>
   <% else -%>
     <p>Willkommen <%= @resource.display_name %>!</p>
 
