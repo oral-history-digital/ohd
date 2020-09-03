@@ -20,7 +20,12 @@
   <% when :el -%>
   TODO greek translation
   <% when :es -%>
-  TODO spanish translation
+  <p>Estimada/o <%= @user_account.display_name %>,</p>
+  <p>Su acceso a la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>" ha sido bloqueado.</p>
+  <p>Eso sucede si ha violado los Términos de uso.</p>
+  <p>Si tiene preguntas sobre el proceso, por favor contáctenos bajo <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
+  <p>Con saludos cordiales,</p>
+  <p>El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"</p>
 <% else -%>
   <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
   <p>Ihr Zugang zu der Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" wurde gesperrt.</p>

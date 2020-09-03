@@ -30,7 +30,8 @@ es:
     en: englisch
     es: spanisch
   in: en
-  not_your_project: No está registrado para este proyecto.
+  not_your_project: Su registro actualmente está en revisión por el equipo del proyecto, esta revisión puede durar hasta dos días hábiles.
+    Solamente después se activará su acceso y pueda acceder al contenido del archivo de entrevistas.
   registration_needed: Para garantizar la protección de datos personales, usted se tiene que registrar.
     Después de haberse registrado, usted tendrá acceso a las entrevistas completas.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
@@ -932,7 +933,7 @@ es:
         checkbox_input: Aceptar
         text_input: Indicar
         file_input: Seleccionar archivo
-        password_input: Por favor corrija su contraseña
+        password_input: Por favor elija una contraseña adecuada para activar su cuenta.
         email_input: Por favor corrija su dirección de correo electrónico
       template:
         header: Su solicitud no se ha podido procesar
