@@ -2,17 +2,29 @@
 
 <% case I18n.locale
 when :en -%>
-        Welcome <%= @resource.display_name %>!
+Dear <%= @user_account.display_name %>,
 
-        You can confirm your new email through the link below:
+You have changed the e-mail address for your account in the application "<%= @user_account.user_registration.projects.last.name('en') %>".
 
-        <%= url %>
+Please confirm this modification by clicking the following link:
+
+<%= url %>
+
+Yours sincerely,
+
+The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
 <% when :ru -%>
-        Добро пожаловать <%= @resource.display_name %>!
+Уважаемый(-ая) <%= @user_account.display_name %>,
 
-        Вы можете подтвердить Ваш доступ, перейдя по следующей ссылке:
+Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>".
 
-        <%= url %>
+Пожалуйста, подтвердите изменение, перейдя за линком:
+
+<%= url %>
+
+С уважением,
+
+сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"
 <% when :el -%>
         Καλώς ήρθατε <%= @resource.display_name %>!
         Μπορείτε να επιβεβαιώσετε την είσοδό σας πατώντας στο παρακάτω λινκ:
@@ -31,9 +43,15 @@ Con saludos cordiales,
 
 El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"
 <% else -%>
-        Willkommen <%= @resource.display_name %>!
+Sehr geehrte/r <%= @user_account.display_name %>,
 
-        Sie können Ihre neue Email jetzt bestätigen unter dem nachfolgenden Link:
+Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" geändert.
 
-        <%= url %>
+Bitte bestätigen Sie diese Änderung mit dem folgenden Link:
+
+<%= url %>
+
+Mit freundlichen Grüßen,
+
+Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"
 <% end -%>
