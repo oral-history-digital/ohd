@@ -13,10 +13,10 @@ class CommentsController < ApplicationController
         render json: {
           id: @comment.ref_id,
           data_type: 'tasks',
-          nested_data_type: 'comments',
-          nested_id: @comment.id,
-          data: cache_single(@comment),
-        }
+          data: ::TaskSerializer.new(@comment.ref),
+          reload_data_type: 'accounts',
+          reload_id: 'current' 
+        } || {}
       end
     end
   end
@@ -26,13 +26,20 @@ class CommentsController < ApplicationController
 
     respond_to do |format|
       format.json do
+        #render json: {
+          #id: @comment.ref_id,
+          #data_type: 'tasks',
+          #nested_data_type: 'comments',
+          #nested_id: @comment.id,
+          #data: cache_single(@comment),
+        #}
         render json: {
           id: @comment.ref_id,
           data_type: 'tasks',
-          nested_data_type: 'comments',
-          nested_id: @comment.id,
-          data: cache_single(@comment),
-        }
+          data: ::TaskSerializer.new(@comment.ref),
+          reload_data_type: 'accounts',
+          reload_id: 'current' 
+        } || {}
       end
     end
   end
@@ -85,7 +92,15 @@ class CommentsController < ApplicationController
       format.html do
         render :action => 'index'
       end
-      format.json { render json: data_json(ref, msg: 'processed') }
+      format.json do
+        render json: {
+          id: ref.id,
+          data_type: 'tasks',
+          data: ::TaskSerializer.new(@comment.ref),
+          reload_data_type: 'accounts',
+          reload_id: 'current' 
+        } || {}
+      end
     end
   end
 

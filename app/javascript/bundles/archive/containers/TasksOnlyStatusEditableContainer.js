@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import DataList from '../components/DataList';
+import CommentsContainer from '../containers/CommentsContainer';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 
@@ -25,7 +26,10 @@ const mapStateToProps = (state) => {
                 optionsScope: 'workflow_states',
                 withEmpty: true,
             },
-        ]
+        ],
+        joinedData: {
+            comment: CommentsContainer,
+        },
     }
 }
 

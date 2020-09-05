@@ -687,6 +687,9 @@ el:
       external_link:
         one: Externer Link
         other: Externe Links
+      comment:
+        one: Kommentar
+        other: Kommentare
     attributes:
       history:
         forced_labor_details: Zwangsarbeitdetails
