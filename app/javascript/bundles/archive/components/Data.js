@@ -37,7 +37,11 @@ export default class Data extends React.Component {
                 </span>
             })
         } else {
-            return this.props.data[detail] || 'not defined';
+            let value = this.props.data[detail];
+            if (detail = 'workflow_state' && this.props.translations[this.props.locale]['workflow_states'].hasOwnProperty(value)) 
+                value = t(this.props, `workflow_states.${value}`);
+
+            return value || 'not defined';
         }
     }
 
