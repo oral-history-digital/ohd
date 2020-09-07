@@ -13,18 +13,25 @@
   <p>Yours sincerely,</p>
   <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
 <% when :ru -%>
-  <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
-  <p>настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @user_account.email %></p>
-  <p>Для получения возможности пользоваться архивной платформой просим Вас активировать Ваш доступ и выбрать новый пароль:</p>
-  <p><%= link_to 'Активировать доступ сейчас', url %></p>
-  <br/>
+  <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
+  <p>Вы зарегистрировались как пользователь проекта  "<%= @user_account.user_registration.projects.last.name('ru') %>".</p>
+  <p>Пожалуйста, подтвердите Вашу регистрацию в течение слудующих 14-ти дней путем введения пароля:</p>
+  <p><%= link_to 'Подтвердить регистрацию', url %></p>
+  <p>После подтверждения Вашей регистрации, Ваши данные будут проверены сотрудниками проекта. В течение двух дней Вы получите ответ об активации Вашего доступа к интервью-архиву.</p>
+  <p>Если Вы не регистрировались в интервью-архиве, можете проингорировать это сообщение. Ваш данные будут автоматически удалены в течение 14-ти дней.</p>
   <p>С уважением,</p>
-  <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
 <% when :es -%>
-  <p>TODO: translate to Spanish</p>
-  <p><%= link_to 'Registrierung bestätigen', url %></p>
+  <p>Estimada/o <%= @user_account.display_name %>,</p>
+  <p>Usted se ha registrado para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
+  <p>Por favor, confirme su registro dentro de 14 días eligiendo una contraseña:</p>
+  <p><%= link_to 'Confirmar registro', url %></p>
+  <p>Después de confirmar su registro, el equipo del proyecto revisará los detalles de su registro. Dentro de dos días hábiles será informado si se ha activado su cuenta para el archivo de entrevistas.</p>
+  <p>Si no se ha registrado para el archivo de entrevistas, puede hacer caso omiso de este mensaje. Sus datos se borrarán de manera automática después de 14 días.</p>
+  <p>Con saludos cordiales,</p>
+  <p>El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"</p>
 <% else -%>
-  <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
+  <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
   <p>Sie haben sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>
   <p>Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:</p>
   <p><%= link_to 'Registrierung bestätigen', url %></p>

@@ -11,12 +11,21 @@
   <p>Yours sincerely,</p>
   <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
 <% when :ru -%>
-  <p>Уважаемый/ая <%= @user_account.display_name %>,</p>
-  <p>Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
+  <p>Вы пытались зарегистрироваться для получения доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>". </p>
+  <p>К сожалению, проверка Ваших данных показала, что они неполные или не сответствуют условиям доступа.</p>
+  <p>Если Вам нужна помощь в процессе регистрации, пожалуйста, свяжитесь с нами: <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
+  <p>С уважением,</p>
+  <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
 <% when :el -%>
   TODO greek translation
 <% when :es -%>
-  TODO spanish translation
+  <p>Estimada/o <%= @user_account.display_name %>,</p>
+  <p>Usted ha intentado de registrarse para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
+  <p>Lamentablemente, la revisión de sus datos ha demostrado que su registro es insuficiente o no cumple con los términos de uso del archivo.</p>
+  <p>Si necesita ayuda con su registro, por favor contáctenos bajo <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
+  <p>Con saludos cordiales,</p>
+  <p>El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"</p>
 <% else -%>
   <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
   <p>Sie haben versucht sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" zu registrieren.</p>

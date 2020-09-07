@@ -20,24 +20,40 @@ Yours sincerely,
 
 The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
 <% when :ru -%>
-TODO: update translation
-Уважаемый/ая <%= @user_account.display_name %>,
+Уважаемый(-ая) <%= @user_account.display_name %>,
 
-настоящим подтверждаем предоставление Вам доступа к архиву. Ваше имя пользователя: <%= @user_account.email %>
+Вы зарегистрировались как пользователь проекта  "<%= @user_account.user_registration.projects.last.name('ru') %>".
 
-Для получения возможности пользоваться архивной платформой просим Вас активировать Ваш доступ и выбрать новый пароль:
+Пожалуйста, подтвердите Вашу регистрацию в течение слудующих 14-ти дней путем введения пароля:
 
 <%= url %>
 
+После подтверждения Вашей регистрации, Ваши данные будут проверены сотрудниками проекта. В течение двух дней Вы получите ответ об активации Вашего доступа к интервью-архиву.
+
+Если Вы не регистрировались в интервью-архиве, можете проингорировать это сообщение. Ваш данные будут автоматически удалены в течение 14-ти дней.
+
 С уважением,
 
-Команда архива "<%= @user_account.user_registration.projects.last.name('ru') %>"
+сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"
 <% when :el -%>
 TODO: greek translation
 
 <% when :es -%>
-TODO: spanish translation
+Estimada/o <%= @user_account.display_name %>,
+
+Usted se ha registrado para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".
+
+Por favor, confirme su registro dentro de 14 días eligiendo una contraseña:
+
 <%= url %>
+
+Después de confirmar su registro, el equipo del proyecto revisará los detalles de su registro. Dentro de dos días hábiles será informado si se ha activado su cuenta para el archivo de entrevistas.
+
+Si no se ha registrado para el archivo de entrevistas, puede hacer caso omiso de este mensaje. Sus datos se borrarán de manera automática después de 14 días.
+
+Con saludos cordiales,
+
+El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 

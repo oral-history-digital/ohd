@@ -27,15 +27,15 @@ es:
       unconfirmed: Tiene que confirmar su cuenta para poder continuar.
     mailer:
       confirmation_instructions:
-        subject: Instrucciones para activar su cuenta
+        subject: Archivo de entrevistas – Pasos para la activación de su cuenta
       project_access_granted:
-        subject: TODO translate Freischaltung Ihres Zugangs zu dem Archiv '%{project_name}'
+        subject: Activar su cuenta para la aplicación '%{project_name}'
       project_access_rejected:
-        subject: TODO translate Ihre Registrierung für das Archiv '%{project_name}'
+        subject: Su registro para la aplicación '%{project_name}'
       reset_password_instructions:
-        subject: Instrucciones para recuperar su contraseña
+        subject: Archivo de entrevistas – Pasos para restablecer su contraseña
       account_deactivated:
-        subject: TODO translate Ihre Registrierung für das Archiv '%{project_name}'
+        subject: Su acceso a la aplicación '%{project_name}'
     omniauth_callbacks:
       failure: No ha podido iniciar sesión con su cuenta %{kind}, porque '%{reason}'.
       success: Ha iniciado exitosamente la sesión con su cuenta.
@@ -63,10 +63,9 @@ es:
       not_yet_registered: Noch nicht registriert?
       link_to: Zur Registrierung »
       submit: Registrierung senden
-      activate: 'Activación de la cuenta de usuaria/o para'
+      activate: 'Activar la cuenta de la/del usuaria/o de'
       activate_submit: enviar
-      activate_text: Para activar su cuenta de usuaria/o, por favor elija
-        una contraseña apropiada para su acceso.
+      activate_text: Por favor elija una contraseña adecuada para activar su cuenta.
       successful: Ihre Registrierung ist bei uns eingegangen.
       signed_up: Su pre-registro ha sido exitoso. En cuanto hemos
         tramitado su registro, recibirá instrucciones sobre los próximos pasos.

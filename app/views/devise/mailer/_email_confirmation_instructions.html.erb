@@ -1,28 +1,36 @@
 <% url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}" %>
 <% case I18n.locale
   when :en -%>
-    <p>Welcome <%= @resource.display_name %>!</p>
-
-    <p>You can confirm your new email now through the link below:</p>
-
-    <p><%= link_to 'Confirm email', url %></p>
+  <p>Dear <%= @user_account.display_name %>,</p>
+  <p>You have changed the e-mail address for your account in the application "<%= @user_account.user_registration.projects.last.name('en') %>".</p>
+  <p>Please confirm this modification by clicking the following link:</p>
+  <p><%= link_to 'Confirm new e-mail address', url %></p>
+  <p>Yours sincerely,</p>
+  <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
   <% when :ru -%>
-    <p>Добро пожаловать <%= @resource.display_name %>!</p>
-
-    <p>Вы можете подтвердить Ваш доступ, перейдя по следующей ссылке:</p>
-
-    <p><%= link_to 'Подтвердить доступ сейчас', url %></p>
+  <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
+  <p>Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>".</p>
+  <p>Пожалуйста, подтвердите изменение, перейдя за линком:</p>
+  <p><%= link_to 'Подтвердить новый адрес электронной почты', url %></p>
+  <p>С уважением,</p>
+  <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% when :el -%>
         <p>Καλώς ήρθατε <%= @resource.display_name %>!</p>
         <p>Μπορείτε να επιβεβαιώσετε την είσοδό σας πατώντας στο παρακάτω λινκ:</p>
 
         <p><%= link_to 'Zugang jetzt bestätigen', url %></p>
   <% when :es -%>
-   TODO spanish translation
+  <p>Estimada/o <%= @user_account.display_name %>,</p>
+  <p>Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
+  <p>Por favor, confirme los cambios haciendo clic en el siguiente enlace:</p>
+  <p><%= link_to 'Confirmar nuevo correo electrónico', url %></p>
+  <p>Con saludos cordiales,</p>
+  <p>El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"</p>
   <% else -%>
-    <p>Willkommen <%= @resource.display_name %>!</p>
-
-    <p>Sie können Ihre neue Email jetzt bestätigen unter dem nachfolgenden Link:</p>
-
-    <p><%= link_to 'Email jetzt bestätigen', url %></p>
+  <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
+  <p>Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" geändert.</p>
+  <p>Bitte bestätigen Sie diese Änderung mit dem folgenden Link:</p>
+  <p><%= link_to 'Neue E-Mail Adresse bestätigen', url %></p>
+  <p>Mit freundlichen Grüßen,</p>
+  <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
 <% end -%>
