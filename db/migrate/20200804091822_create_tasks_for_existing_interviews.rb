@@ -25,7 +25,7 @@ class CreateTasksForExistingInterviews < ActiveRecord::Migration[5.2]
         annotations: interview.annotations.exists?,
         anonymisation: !!first_segment && first_segment.translations.count > 2
       }.each do |key, cleared|
-        Task.create(interview_id: interview.id, task_type_id: TaskType.find_by_key(key).id, workflow_state: (cleared ? 'cleared' : 'created'))
+        Task.create(interview_id: interview.id, task_type_id: TaskType.find_by_key(key).id, workflow_state: (cleared ? 'clear' : 'created'))
       end
     end
   end
