@@ -2,7 +2,7 @@ import React from 'react';
 import { t } from '../../../lib/utils';
 import moment from 'moment';
 
-export default class CitationInfoInfo extends React.Component {
+export default class CitationInfo extends React.Component {
 
     content(label, value, className) {
         return (
