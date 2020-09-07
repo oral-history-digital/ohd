@@ -156,7 +156,7 @@ export default class FlyoutTabs extends React.Component {
                                 content={ <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />}
                             />
                         */}
-                        <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
+                        <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes" || this.props.projectId !== "mog"}>
                             {this.renderPhotos()}
                             {/* {(this.props.projectId === 'mog' || this.props.projectId === 'zwar') && this.renderMap()} */}
                             {this.renderMap()}
