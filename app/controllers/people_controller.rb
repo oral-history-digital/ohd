@@ -11,6 +11,7 @@ class PeopleController < ApplicationController
 
   def create
     authorize Person
+    params[:person][:project_id] = current_project.id
     @person = Person.create person_params
     respond_to do |format|
       format.json do
@@ -114,6 +115,7 @@ class PeopleController < ApplicationController
         'birth_name',
         'gender',
         'date_of_birth',
+        'project_id',
         translations_attributes: [:locale, :id, :first_name, :last_name, :birth_name, :other_first_names, :alias_names]
     )
   end
