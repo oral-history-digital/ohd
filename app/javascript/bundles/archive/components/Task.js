@@ -86,7 +86,14 @@ export default class Task extends React.Component {
     form(attribute, options) {
         if (
             // if the task is one of this users tasks
-            (attribute === 'workflow_state' && admin(this.props, this.props.task)) ||
+            (
+                attribute === 'workflow_state' && 
+                (
+                    this.props.task.workflow_state === 'created' ||
+                    this.props.task.workflow_state === 'started'
+                ) &&
+                admin(this.props, this.props.task)
+            ) ||
             // if the user has the permission to assign tasks
             admin(this.props, {type: 'Task', action: 'assign'})
         ) {
