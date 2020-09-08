@@ -63,8 +63,9 @@ export default class InterviewWorkflowRow extends React.Component {
     }
 
     intervieweeWithPhoto() {
+        let interviewee = getInterviewee(this.props);
         return (
-            <Link className={'search-result-link box-15'}
+            <Link className={'search-result-link box-10'}
                 onClick={() => {
                     this.props.setArchiveId(this.props.interview.archive_id);
                     this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
@@ -74,7 +75,8 @@ export default class InterviewWorkflowRow extends React.Component {
             >
                 <img className='workflow' src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
                 <span className='workflow' >
-                    {this.props.interview.short_title[this.props.locale]}
+                    {interviewee && interviewee.names[this.props.locale].firstname + ', '}<br />
+                    {interviewee && interviewee.names[this.props.locale].lastname}
                 </span>
             </Link>
         )
@@ -147,9 +149,9 @@ export default class InterviewWorkflowRow extends React.Component {
             <div className='border-top' key={`interview-workflow-${this.props.interview.archive_id}`}>
                 <div className='search-result-workflow data boxes' key={`${this.props.interview.archive_id}-collapsed-view`}>
                     {this.intervieweeWithPhoto()}
-                    {this.box(this.props.interview.archive_id, '7-5')}
-                    {this.box(this.props.interview.media_type, '7-5')}
-                    {this.box(this.props.interview.duration_human, '7-5')}
+                    {this.box(this.props.interview.archive_id, '10')}
+                    {this.box(this.props.interview.media_type, '10')}
+                    {this.box(this.props.interview.duration_human, '10')}
                     {this.box(this.props.interview.language[this.props.locale], '10')}
                     {this.box(this.props.interview.collection[this.props.locale], '10')}
                     <div className={`box-30 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
@@ -165,7 +167,7 @@ export default class InterviewWorkflowRow extends React.Component {
                             optionsScope={'workflow_states'}
                             noStatusCheckbox={true}
                             noLabel={true}
-                        />, '7-5'
+                        />, '10'
                     )} 
                 </div>
                 <div className='search-result-workflow-detail data boxes' key={`${this.props.interview.archive_id}-workflow-details`}>

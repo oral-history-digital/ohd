@@ -590,6 +590,7 @@ ul.search-results-pagination {
   a:link, a:visited {
     color: $primary-color;
     transition: color 0.3s;
+    line-height: 1.2rem;
   }
   a[href]:hover, a:hover, a:active {
     text-decoration: none;
