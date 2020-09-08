@@ -34,6 +34,7 @@ class Task < ApplicationRecord
 
   def workflow_state=(change)
     self.send("#{change}!")
+    self.touch
   end
 
   def send_mail_to_user_account
