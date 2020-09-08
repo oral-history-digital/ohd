@@ -11,6 +11,8 @@ const mapStateToProps = (state, ownProps) => {
         translations: state.archive.translations,
         project: project,
         userAccounts: state.data.accounts,
+        account: state.data.accounts.current,
+        editView: state.archive.editView,
     }
 }
 

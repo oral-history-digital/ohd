@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import Form from '../containers/form/Form';
 import CommentsContainer from '../containers/CommentsContainer';
-import { t, pathBase } from '../../../lib/utils';
+import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class Task extends React.Component {
 
@@ -84,22 +84,31 @@ export default class Task extends React.Component {
     }
 
     form(attribute, options) {
-        return (
-            <form 
-                className={'task-form'} 
-                key={`form-${this.props.task.id}-${attribute}`}
-                onSubmit={() => {event.preventDefault(); this.props.submitData(this.props, {task: {id: this.props.task.id, [attribute]: this.state[attribute]}})}}
-            >
-                <select
-                    name={attribute}
-                    value={this.state[attribute] || this.props.task[attribute] || ''}
-                    onChange={() => this.setState({[event.target.name]: event.target.value})}
+        if (
+            // if the task is one of this users tasks
+            (attribute === 'workflow_state' && admin(this.props, this.props.task)) ||
+            // if the user has the permission to assign tasks
+            admin(this.props, {type: 'Task', action: 'assign'})
+        ) {
+            return (
+                <form 
+                    className={'task-form'} 
+                    key={`form-${this.props.task.id}-${attribute}`}
+                    onSubmit={() => {event.preventDefault(); this.props.submitData(this.props, {task: {id: this.props.task.id, [attribute]: this.state[attribute]}})}}
                 >
-                    {options}
-                </select>
-                <input type="submit" value={t(this.props, 'submit')}/>
-            </form>
-        )
+                    <select
+                        name={attribute}
+                        value={this.state[attribute] || this.props.task[attribute] || ''}
+                        onChange={() => this.setState({[event.target.name]: event.target.value})}
+                    >
+                        {options}
+                    </select>
+                    <input type="submit" value={t(this.props, 'submit')}/>
+                </form>
+            )
+        } else {
+            return null;
+        }
     }
 
     valueAndForm(attribute, options) {
@@ -125,7 +134,7 @@ export default class Task extends React.Component {
                 {this.box(this.props.task.task_type.name[this.props.locale])}
                 {this.box(this.valueAndForm('supervisor_id', this.usersAsOptionsForSelect('supervisor_id')))}
                 {this.box(this.valueAndForm('user_account_id', this.usersAsOptionsForSelect('user_account_id')))}
-                {this.box(<CommentsContainer data={this.props.task.comments} initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}} />, '30')}
+                {this.box(admin(this.props, this.props.task) && <CommentsContainer data={this.props.task.comments} initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}} />, '30')}
                 {this.box(this.valueAndForm('workflow_state', this.workflowStatesAsOptionsForSelect()))}
             </div>
         );
