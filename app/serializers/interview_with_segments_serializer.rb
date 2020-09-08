@@ -2,7 +2,6 @@ class InterviewWithSegmentsSerializer < InterviewSerializer
 
   def segments
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-segments-#{object.id}-#{object.segments.maximum(:updated_at)}") do
-      binding.pry
       object.tapes.inject({}) do |tapes, tape|
         segments_for_tape = tape.segments.
           includes(:translations, :registry_references, :user_annotations, annotations: [:translations], speaking_person: [:translations]).
