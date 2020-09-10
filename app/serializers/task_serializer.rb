@@ -12,7 +12,7 @@ class TaskSerializer < ApplicationSerializer
   belongs_to :task_type
 
   def name
-    "#{object.task_type.label}: #{object.interview.archive_id}"
+    "#{object.interview.archive_id}: #{object.task_type.label}"
   end
 
   def archive_id
