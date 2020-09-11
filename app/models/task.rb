@@ -8,7 +8,7 @@ class Task < ApplicationRecord
 
   validates_associated :interview
 
-  before_save :send_mail_to_user_account
+  before_save :save_dates_and_inform
 
   include Workflow
 
@@ -21,10 +21,13 @@ class Task < ApplicationRecord
     end
     state :finished do
       event :clear, transitions_to: :cleared
-      event :restart, transitions_to: :started
+      event :restart, transitions_to: :restarted
     end
     state :cleared do
-      event :restart, transitions_to: :started
+      event :restart, transitions_to: :restarted
+    end
+    state :restarted do
+      event :finish, transitions_to: :finished
     end
   end
 
@@ -37,14 +40,23 @@ class Task < ApplicationRecord
     self.touch
   end
 
-  def send_mail_to_user_account
+  def save_dates_and_inform
     if user_account_id_changed? && user_account_id != nil
       AdminMailer.with(task: self, receiver: user_account).task_assigned.deliver_now
+      self.assigned_to_user_account_at = DateTime.now
+    end
+    if supervisor_id_changed? && supervisor_id != nil
+      self.assigned_to_supervisor_at = DateTime.now
     end
   end
 
   def finish
     AdminMailer.with(task: self, receiver: supervisor).task_finished.deliver_now if supervisor
+    self.update_attributes(finished_at: DateTime.now)
+  end
+
+  def clear
+    self.update_attributes(cleared_at: DateTime.now)
   end
 
   def restart

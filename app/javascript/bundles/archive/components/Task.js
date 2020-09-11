@@ -90,7 +90,8 @@ export default class Task extends React.Component {
                 attribute === 'workflow_state' && 
                 (
                     this.props.task.workflow_state === 'created' ||
-                    this.props.task.workflow_state === 'started'
+                    this.props.task.workflow_state === 'started' ||
+                    this.props.task.workflow_state === 'restarted'
                 ) &&
                 admin(this.props, this.props.task)
             ) ||
