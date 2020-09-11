@@ -456,13 +456,14 @@ de:
     rejected: abgelehnt
     registered: registriert
     created: zu Bearbeiten
-    start: zur Bearbeitung zuweisen
     started: in Bearbeitung
-    finish: dem QM einreichen
     finished: Bearbeitet/ im QM
+    cleared: freigegeben
+    restarted: erneut in Bearbeitung 
+    start: Bearbeitung beginnen
+    finish: dem QM einreichen
     clear: freigeben
-    cleared: Geprüft
-    restart: erneut öffnen
+    restart: Bearbeitung erneut beginnen
   contributions:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen
@@ -900,6 +901,10 @@ de:
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
+        assigned_to_user_account_at: zugewiesen am
+        assigned_to_supervisor_at: zugewiesen am
+        finished_at: dem QM eingereicht am
+        cleared_at: freigegeben am
       comment:
         author_id: Autor*in
         receiver_id: Empfänger*in
