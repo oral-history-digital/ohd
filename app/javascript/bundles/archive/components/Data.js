@@ -5,7 +5,33 @@ import { t, admin, pluralize, camelcase } from '../../../lib/utils';
 export default class Data extends React.Component {
 
     baseData() {
-        if (this.props.data.archive_domain) {
+        if (this.props.data.type === 'Task') {
+            let dateAttribute;
+            if (this.props.data.user_account_id === this.props.account.id) {
+                // tasks assigned to current user
+                if (this.props.data.workflow_state === 'finished') {
+                    dateAttribute = 'finished_at';
+                } else {
+                    dateAttribute = 'assigned_to_user_account_at';
+                }
+            } else if (this.props.data.supervisor_id === this.props.account.id) {
+                // tasks assigned to current user as QM
+                if (this.props.data.workflow_state === 'cleared') {
+                    dateAttribute = 'cleared_at';
+                } else {
+                    dateAttribute = 'assigned_to_supervisor_at';
+                }
+            }
+            return (
+                <div className='base-data box'>
+                    <p className='name'>{this.name()}</p>
+                    <p className='created-at'>
+                        <span className='title'>{t(this.props, `activerecord.attributes.${this.props.scope}.${dateAttribute}`) + ': '}</span>
+                        <span className='content'>{this.props.data[dateAttribute]}</span>
+                    </p>
+                </div>
+            )
+        } else if (this.props.data.archive_domain) {
             return (
                 <div className='base-data box'>
                     <p className='link'><a href={this.props.data.archive_domain}>{this.name()}</a></p>
@@ -18,10 +44,6 @@ export default class Data extends React.Component {
                 </div>
             )
         }
-                //<p className='created-at'>
-                    //<span className='title'>{t(this.props, `activerecord.attributes.${this.props.scope}.created_at`) + ': '}</span>
-                    //<span className='content'>{this.props.data.created_at}</span>
-                //</p>
     }
 
     name() {

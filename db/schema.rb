@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_08_04_091822) do
+ActiveRecord::Schema.define(version: 2020_09_10_130234) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -222,7 +222,6 @@ ActiveRecord::Schema.define(version: 2020_08_04_091822) do
     t.integer "language_id"
     t.string "workflow_state", limit: 255, default: "unshared"
     t.string "doi_status", limit: 255
-    t.integer "project_id"
     t.text "properties"
     t.string "media_type"
     t.integer "project_id"
@@ -570,6 +569,10 @@ ActiveRecord::Schema.define(version: 2020_08_04_091822) do
     t.integer "user_account_id"
     t.integer "task_type_id"
     t.integer "interview_id"
+    t.datetime "assigned_to_user_account_at"
+    t.datetime "assigned_to_supervisor_at"
+    t.datetime "finished_at"
+    t.datetime "cleared_at"
     t.index ["supervisor_id"], name: "index_tasks_on_supervisor_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end

@@ -7,6 +7,10 @@ class TaskSerializer < ApplicationSerializer
     :archive_id,
     :workflow_state,
     :workflow_states,
+    :assigned_to_user_account_at,
+    :assigned_to_supervisor_at,
+    :finished_at,
+    :cleared_at,
     :comments
 
   belongs_to :task_type
@@ -21,6 +25,18 @@ class TaskSerializer < ApplicationSerializer
 
   def comments
     object.comments.inject({}) { |mem, c| mem[c.id] = CommentSerializer.new(c); mem }
+  end
+
+  [
+    :assigned_to_user_account_at,
+    :assigned_to_supervisor_at,
+    :finished_at,
+    :cleared_at
+  ].each do |m|
+    define_method m do
+      date = object.send(m)
+      date && date.strftime("%d.%m.%Y %H:%M")
+    end
   end
 
 end
