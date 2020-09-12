@@ -5,22 +5,29 @@ class TaskSerializer < ApplicationSerializer
     :supervisor_id,
     :interview_id,
     :archive_id,
+    :interviewee,
     :workflow_state,
     :workflow_states,
     :assigned_to_user_account_at,
     :assigned_to_supervisor_at,
+    :started_at,
     :finished_at,
     :cleared_at,
+    :restarted_at,
     :comments
 
   belongs_to :task_type
 
   def name
-    "#{object.interview.archive_id}: #{object.task_type.label}"
+    object.task_type.localized_hash(:label)
   end
 
   def archive_id
     object.interview.archive_id
+  end
+
+  def interviewee
+    object.interview.localized_hash(:reverted_short_title)
   end
 
   def comments
@@ -30,8 +37,10 @@ class TaskSerializer < ApplicationSerializer
   [
     :assigned_to_user_account_at,
     :assigned_to_supervisor_at,
+    :started_at,
     :finished_at,
-    :cleared_at
+    :cleared_at,
+    :restarted_at
   ].each do |m|
     define_method m do
       date = object.send(m)

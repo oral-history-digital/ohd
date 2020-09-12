@@ -933,13 +933,17 @@ ru:
         action: Action
         created_at: angelegt
       task:
+        name: Aufgabe
+        interviewee: Interviewte*r
         user_account_id: Bearbeiter*in
         supervisor_id: QM
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
-        assigned_to_user_account_at: zugewiesen am
-        assigned_to_supervisor_at: zugewiesen am
+        assigned_to_user_account_at: dem Bearbeiter zugewiesen am
+        assigned_to_supervisor_at: dem QM zugewiesen am
+        started_at: begonnen am
+        restarted_at: erneut geöffnet am
         finished_at: dem QM eingereicht am
         cleared_at: freigegeben am
       comment:

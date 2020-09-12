@@ -50,6 +50,10 @@ class Task < ApplicationRecord
     end
   end
 
+  def start
+    self.update_attributes(start_at: DateTime.now)
+  end
+
   def finish
     AdminMailer.with(task: self, receiver: supervisor).task_finished.deliver_now if supervisor
     self.update_attributes(finished_at: DateTime.now)
@@ -61,6 +65,7 @@ class Task < ApplicationRecord
 
   def restart
     AdminMailer.with(task: self, receiver: user_account).task_restarted.deliver_now if user_account
+    self.update_attributes(restarted_at: DateTime.now)
   end
 
   def archive_id=(aid)

@@ -571,8 +571,10 @@ ActiveRecord::Schema.define(version: 2020_09_10_130234) do
     t.integer "interview_id"
     t.datetime "assigned_to_user_account_at"
     t.datetime "assigned_to_supervisor_at"
+    t.datetime "started_at"
     t.datetime "finished_at"
     t.datetime "cleared_at"
+    t.datetime "restarted_at"
     t.index ["supervisor_id"], name: "index_tasks_on_supervisor_id"
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end

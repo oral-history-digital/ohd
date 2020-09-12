@@ -24,7 +24,7 @@ export default class Data extends React.Component {
             }
             return (
                 <div className='base-data box'>
-                    <p className='name'>{this.name()}</p>
+                    <p className='name'>{`${this.props.data.archive_id}: ${this.name()}`}</p>
                     <p className='created-at'>
                         <span className='title'>{t(this.props, `activerecord.attributes.${this.props.scope}.${dateAttribute}`) + ': '}</span>
                         <span className='content'>{this.props.data[dateAttribute]}</span>
@@ -51,19 +51,26 @@ export default class Data extends React.Component {
     }
 
     values(detail) {
-        if (this.props.data && this.props.data[detail] !== null && typeof(this.props.data[detail]) === 'object') { 
-            return Object.keys(this.props.data[detail]).map((key,index) => {
-                return <span className='content'>
-                    <br/>
-                    <b>{`${key}: `}</b>{this.props.data[detail][key]}
-                </span>
-            })
+        //if (this.props.data && this.props.data[detail] !== null && typeof(this.props.data[detail]) === 'object') { 
+            //return Object.keys(this.props.data[detail]).map((key,index) => {
+                //return <span className='content'>
+                    //<br/>
+                    //<b>{`${key}: `}</b>{this.props.data[detail][key]}
+                //</span>
+            //})
+        if (
+            this.props.data && 
+            this.props.data[detail] !== null && 
+            typeof(this.props.data[detail]) === 'object' &&
+            Object.keys(this.props.data[detail]).indexOf(this.props.locale) !== -1
+        ) { 
+            return this.props.data[detail][this.props.locale];
         } else {
             let value = this.props.data[detail];
             if (detail = 'workflow_state' && this.props.translations[this.props.locale]['workflow_states'].hasOwnProperty(value)) 
                 value = t(this.props, `workflow_states.${value}`);
 
-            return value || 'not defined';
+            return value || '---';
         }
     }
 
@@ -89,18 +96,22 @@ export default class Data extends React.Component {
     }
 
     show() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, `edit.${this.props.scope}.show`)}
-                onClick={() => this.props.openArchivePopup({
-                    title: this.name(),
-                    content: this.details()
-                })}
-            >
-                <i className="fa fa-eye"></i>
-            </div>
-        )
+        if (
+            !this.props.hideShow
+        ) {
+            return (
+                <div
+                    className='flyout-sub-tabs-content-ico-link'
+                    title={t(this.props, `edit.${this.props.scope}.show`)}
+                    onClick={() => this.props.openArchivePopup({
+                        title: this.name(),
+                        content: this.details()
+                    })}
+                >
+                    <i className="fa fa-eye"></i>
+                </div>
+            )
+        }
     }
 
     edit() {
@@ -114,7 +125,12 @@ export default class Data extends React.Component {
                     title={t(this.props, `edit.${this.props.scope}.edit`)}
                     onClick={() => this.props.openArchivePopup({
                         title: `${this.name()} ${t(this.props, `edit.${this.props.scope}.edit`)}`,
-                        content: this.props.form(this.props.data)
+                        content: (
+                            <div>
+                                {this.props.hideShow && this.details()} 
+                                {this.props.form(this.props.data)}
+                            </div>
+                        )
                     })}
                 >
                     <i className="fa fa-pencil"></i>

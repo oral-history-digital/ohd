@@ -110,6 +110,7 @@ export default class WrappedAccount extends React.Component {
                     <TasksOnlyStatusEditableContainer
                         data={this.props.account.tasks || {}}
                         initialFormValues={{user_account_id: this.props.account.id}}
+                        hideShow={true}
                         hideEdit={false}
                         hideDelete={true}
                         hideAdd={true}
@@ -129,6 +130,7 @@ export default class WrappedAccount extends React.Component {
                     <TasksOnlyStatusEditableContainer
                         data={this.props.account.supervised_tasks || {}}
                         initialFormValues={{user_account_id: this.props.account.user_account_id}}
+                        hideShow={true}
                         hideEdit={false}
                         hideAdd={true}
                         hideDelete={true}
