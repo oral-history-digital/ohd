@@ -11,7 +11,30 @@ export default class WrappedAccount extends React.Component {
 
     constructor(props) {
         super(props);
-        //this.form = this.form.bind(this);
+        this.state = {
+            showTasks: {
+                other: false,
+                supervised_other: false,
+                closed_other: false,
+                closed_supervised_other: false,
+            }
+        };
+    }
+
+    toggleTasks(header) {
+        return (
+            <span
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
+                onClick={() => this.setState({showTasks: Object.assign({}, this.state.showTasks, {[header]: !this.state.showTasks[header]})})}
+            >
+                <i className={`fa fa-angle-${this.state.showTasks[header] ? 'up' : 'down'}`}></i>
+            </span>
+        )
+    }
+
+    showTasks(header) {
+        this.setState({showTasks: Object.assign({}, this.state.showTasks, {[header]: !this.state.showTasks[header]})});
     }
 
     details() {
@@ -105,15 +128,17 @@ export default class WrappedAccount extends React.Component {
     tasks(header, data) {
         return (
             <div className={'tasks box'}>
-                <h4 className='title'>{t(this.props, `activerecord.models.task.${header}`)}</h4>
-                <TasksOnlyStatusEditableContainer
-                    data={data || {}}
-                    initialFormValues={{user_account_id: this.props.account.id}}
-                    hideShow={true}
-                    hideEdit={false}
-                    hideDelete={true}
-                    hideAdd={true}
-                />
+                <h4 className='title'>{data.length + ' ' + t(this.props, `activerecord.models.task.${header}`)}{this.toggleTasks(header)}</h4>
+                {this.state.showTasks[header] && 
+                    <TasksOnlyStatusEditableContainer
+                        data={data || {}}
+                        initialFormValues={{user_account_id: this.props.account.id}}
+                        hideShow={true}
+                        hideEdit={false}
+                        hideDelete={true}
+                        hideAdd={true}
+                    />
+                }
             </div>
         )
     }
