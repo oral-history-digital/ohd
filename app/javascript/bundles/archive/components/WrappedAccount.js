@@ -102,47 +102,21 @@ export default class WrappedAccount extends React.Component {
         }
     }
 
-    tasks() {
-        if (this.props.account && this.props.account.tasks && Object.keys(this.props.account.tasks).length > 0) {
-            return (
-                <div className={'tasks box'}>
-                    <h4 className='title'>{t(this.props, 'activerecord.models.task.other')}</h4>
-                    <TasksOnlyStatusEditableContainer
-                        data={this.props.account.tasks || {}}
-                        initialFormValues={{user_account_id: this.props.account.id}}
-                        hideShow={true}
-                        hideEdit={false}
-                        hideDelete={true}
-                        hideAdd={true}
-                    />
-                </div>
-            )
-        } else {
-            return null;
-        }
+    tasks(header, data) {
+        return (
+            <div className={'tasks box'}>
+                <h4 className='title'>{t(this.props, `activerecord.models.task.${header}`)}</h4>
+                <TasksOnlyStatusEditableContainer
+                    data={data || {}}
+                    initialFormValues={{user_account_id: this.props.account.id}}
+                    hideShow={true}
+                    hideEdit={false}
+                    hideDelete={true}
+                    hideAdd={true}
+                />
+            </div>
+        )
     }
-
-    supervisedTasks() {
-        if (this.props.account && this.props.account.supervised_tasks && Object.keys(this.props.account.supervised_tasks).length > 0) {
-            return (
-                <div className={'tasks box'}>
-                    <h4 className='title'>{t(this.props, 'activerecord.models.task.supervised_other')}</h4>
-                    <TasksOnlyStatusEditableContainer
-                        data={this.props.account.supervised_tasks || {}}
-                        initialFormValues={{user_account_id: this.props.account.user_account_id}}
-                        hideShow={true}
-                        hideEdit={false}
-                        hideAdd={true}
-                        hideDelete={true}
-                    />
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
-
-
 
     render() {
         return (
@@ -156,8 +130,16 @@ export default class WrappedAccount extends React.Component {
                         </div>
                         <div className='user-registration boxes'>
                             {this.roles()}
-                            {this.tasks()}
-                            {this.supervisedTasks()}
+                            {/* own tasks (not done)*/}
+                            {this.tasks('other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state !== 'finished' || t.workflow_state !== 'cleared'))}
+                            {/* own supervised tasks (not cleared)*/}
+                            {this.tasks('supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state !== 'cleared'))}
+                        </div>
+                        <div className='user-registration boxes'>
+                            {/* own tasks (done)*/}
+                            {this.tasks('closed_other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state === 'finished' || t.workflow_state === 'cleared'))}
+                            {/* own supervised tasks (cleared)*/}
+                            {this.tasks('closed_supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state === 'cleared'))}
                         </div>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true}>
