@@ -9,16 +9,10 @@ export default class Task extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            editing: false,
             user_account_id: this.props.task.user_account_id,
             supervisor_id: this.props.task.supervisor_id,
             workflow_state: this.props.task.workflow_state
         };
-        this.setEditing = this.setEditing.bind(this);
-    }
-
-    setEditing() {
-        this.setState({editing: !this.state.editing});
     }
 
     usersAsOptionsForSelect(attribute) {
