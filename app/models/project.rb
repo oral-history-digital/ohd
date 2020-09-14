@@ -161,6 +161,18 @@ class Project < ApplicationRecord
               #subfacets
             #end,
           #}
+        elsif %w(tasks_user_account_ids tasks_supervisor_ids).include?(facet.name)
+          # add filters for tasks
+          mem[facet.name.to_sym] = {
+            name: name,
+            subfacets: (UserAccount.joins(:user_roles) | UserAccount.where(admin: true)).inject({}) do |subfacets, user_account|
+              subfacets[user_account.id.to_s] = {
+                name: I18n.available_locales.inject({}) {|desc, locale| desc[locale] = user_account.full_name; desc},
+                count: 0,
+              }
+              subfacets
+            end
+          }
         else
           mem[facet.name.to_sym] = {
             name: name,

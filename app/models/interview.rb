@@ -170,6 +170,8 @@ class Interview < ApplicationRecord
     text :archive_id, :stored => true
     integer :interviewee_id, :stored => true#, :references => Person
     integer :collection_id, :stored => true, :references => Collection
+    integer :tasks_user_account_ids, :stored => true, :multiple => true
+    integer :tasks_supervisor_ids, :stored => true, :multiple => true
     string :workflow_state, stored: true
 
     # in order to find pseudonyms with fulltextsearch (dg)
@@ -310,6 +312,14 @@ class Interview < ApplicationRecord
         bio.update_attribute :workflow_state, change
       end
     end
+  end
+
+  def tasks_user_account_ids
+    tasks.map(&:user_account_id).compact.uniq
+  end
+
+  def tasks_supervisor_ids
+    tasks.map(&:supervisor_id).compact.uniq
   end
 
   def tape_count=(d)
