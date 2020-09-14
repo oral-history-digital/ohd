@@ -213,6 +213,7 @@ export default class ArchiveSearchForm extends React.Component {
 
     renderFacets() {
         if (this.facetsLoaded()) {
+            let adminFacets = ['workflow_state', 'tasks_user_account_ids', 'tasks_supervisor_ids'];
             return Object.keys(this.props.facets).map((facet, index) => {
                 return (
                     <FacetContainer
@@ -226,7 +227,7 @@ export default class ArchiveSearchForm extends React.Component {
                         currentMin={this.currentYearRange()[0] || this.yearRange(facet)[0]}
                         currentMax={this.currentYearRange()[1] || this.yearRange(facet)[1]}
                         map={this.props.map}
-                        show={(facet === 'workflow_state' && admin(this.props, {type: 'Interview', action: 'update'})) || (facet !== 'workflow_state')}
+                        show={(adminFacets.indexOf(facet) > -1 && admin(this.props, {type: 'Interview', action: 'update'})) || (adminFacets.indexOf(facet) === -1)}
                     />
                 )
             })
