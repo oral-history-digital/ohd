@@ -15,7 +15,7 @@ class UserAccountPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.admin? || user.user_roles.exists?
-        scope.joins(:user_roles).distinct.or(scope.joins(:user_roles).where(admin: true).distinct)
+        (UserAccount.joins(:user_roles) | UserAccount.where(admin: true))
       else
         scope.none
       end

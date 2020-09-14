@@ -55,7 +55,7 @@ class AccountsController < ApplicationController
       format.json do
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-admin-accounts-#{UserAccount.maximum(:updated_at)}" do
           {
-            data: accounts.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            data: (accounts - [current_user_account]).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'accounts'
           }
         end
