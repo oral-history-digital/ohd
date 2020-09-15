@@ -9,7 +9,7 @@ class AdminMailer < ApplicationMailer
 
     mail(
       subject: "Neue Registrierung zur Prüfung",
-      from: "no-reply@cedis.fu-berlin.de",
+      from: "info@cedis.fu-berlin.de",
       to: @project.contact_email,
       date: Time.now
     )
@@ -22,7 +22,7 @@ class AdminMailer < ApplicationMailer
     @file = params[:file]
     mail(
       subject: 'finished job',
-      from: "no-reply@cedis.fu-berlin.de",
+      from: "info@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )
@@ -34,8 +34,8 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     @text = params[:text]
     mail(
-      subject: 'Neuer Kommentar',
-      from: "no-reply@cedis.fu-berlin.de",
+      subject: 'Interview-Archiv: Neuer Kommentar',
+      from: "info@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )
@@ -45,8 +45,8 @@ class AdminMailer < ApplicationMailer
     @receiver = params[:receiver]
     @task = params[:task]
     mail(
-      subject: 'Aufgabe zugewiesen',
-      from: "no-reply@cedis.fu-berlin.de",
+      subject: 'Interview-Archiv: Aufgabe zugewiesen',
+      from: "info@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )
@@ -56,8 +56,8 @@ class AdminMailer < ApplicationMailer
     @receiver = params[:receiver]
     @task = params[:task]
     mail(
-      subject: 'Aufgabe abgeschlossen',
-      from: "no-reply@cedis.fu-berlin.de",
+      subject: 'Interview-Archiv: Aufgabe abgeschlossen',
+      from: "info@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )
@@ -67,8 +67,8 @@ class AdminMailer < ApplicationMailer
     @receiver = params[:receiver]
     @task = params[:task]
     mail(
-      subject: 'Aufgabe erneut geöffnet',
-      from: "no-reply@cedis.fu-berlin.de",
+      subject: 'Interview-Archiv: Aufgabe erneut geöffnet',
+      from: "info@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )
