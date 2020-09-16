@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from '../containers/form/Form';
 import ContentFieldContainer from '../containers/ContentFieldContainer';
-import { t, admin, underscore } from '../../../lib/utils';
+import { t, admin, underscore, humanReadable } from '../../../lib/utils';
 
 export default class SingleValueWithForm extends React.Component {
 
@@ -117,22 +117,7 @@ export default class SingleValueWithForm extends React.Component {
                 (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.attribute()])
             )
         ) {
-
-            let translation = this.props.obj.translations && this.props.obj.translations.find(t => t.locale === this.props.locale)
-            let value = this.state.value || this.props.obj[this.attribute()] || (translation && translation[this.attribute()]) || '---';
-
-            if (this.props.translations[this.props.locale][this.props.optionsScope] && this.props.translations[this.props.locale][this.props.optionsScope].hasOwnProperty(value)) 
-                value = t(this.props, `${this.props.optionsScope}.${value}`);
-
-            if (/\w+_id/.test(this.attribute()) && this.attribute() !== 'archive_id') // get corresponding name from e.g. collection_id
-                value = this.props.values[value] && this.props.values[value].name
-
-            if (typeof value === 'object' && value !== null)
-                value = value[this.props.locale]
-
-            if (typeof value === 'string' && this.state.collapsed) 
-                value = value.substring(0,25)
-
+            let value = humanReadable(this.props.obj, this.attribute(), this.props, this.state);
             return (
                 <ContentFieldContainer noLabel={this.props.noLabel} label={this.label()} value={value} >
                     {this.toggle()}

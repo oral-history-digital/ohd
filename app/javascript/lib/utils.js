@@ -26,6 +26,25 @@ export function getInterview(state) {
     return state.data.interviews && state.data.interviews[state.archive.archiveId];
 }
 
+export function humanReadable(obj, attribute, props, state) {
+    let translation = obj.translations && obj.translations.find(t => t.locale === props.locale)
+    let value = state.value || obj[attribute] || (translation && translation[attribute]);
+
+    if (props.translations[props.locale][props.optionsScope] && props.translations[props.locale][props.optionsScope].hasOwnProperty(value)) 
+        value = t(props, `${props.optionsScope}.${value}`);
+
+    if (/\w+_id/.test(attribute) && attribute !== 'archive_id') // get corresponding name from e.g. collection_id
+        value = props.values[value] && props.values[value].name
+
+    if (typeof value === 'object' && value !== null)
+        value = value[props.locale]
+
+    if (typeof value === 'string' && state.collapsed) 
+        value = value.substring(0,25)
+
+    return value || '---';
+}
+
 export function segments(props) {
     return props.interview && props.interview.segments && props.interview.segments[props.tape] || {};
 }
