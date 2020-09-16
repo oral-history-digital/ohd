@@ -39,7 +39,8 @@ class ProjectSerializer < ApplicationSerializer
     :external_links,
     :logos,
     :sponsor_logos,
-    :list_columns
+    :list_columns,
+    :grid_fields
 
   def title
     object.shortname

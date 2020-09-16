@@ -94,8 +94,12 @@ class Project < ApplicationRecord
     metadata_fields.where(use_as_facet: true).map(&:name)
   end
 
-  def list_columns
+  def grid_fields
     metadata_fields.where(use_in_results_table: true).order(:list_columns_order)
+  end
+
+  def list_columns
+    metadata_fields.where(use_in_results_list: true).order(:list_columns_order)
   end
 
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|

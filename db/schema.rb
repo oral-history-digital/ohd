@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_09_10_130234) do
+ActiveRecord::Schema.define(version: 2020_09_16_090234) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -271,6 +271,7 @@ ActiveRecord::Schema.define(version: 2020_09_10_130234) do
     t.float "list_columns_order", default: 1.0
     t.float "facet_order", default: 1.0
     t.boolean "use_in_map_search"
+    t.boolean "use_in_results_list"
   end
 
   create_table "people", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

@@ -96,6 +96,7 @@ class MetadataFieldsController < ApplicationController
         "use_as_facet",
         "facet_order",
         "use_in_results_table",
+        "use_in_results_list",
         "list_columns_order",
         "use_in_details_view",
         "use_in_map_search",
