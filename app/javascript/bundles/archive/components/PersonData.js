@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, fullname, getInterviewee, pathBase } from '../../../lib/utils';
+import { t, fullname, getInterviewee, pathBase, humanReadable } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import ContentFieldContainer from '../containers/ContentFieldContainer';
 //import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
@@ -9,6 +9,11 @@ import ContributionFormContainer from '../containers/ContributionFormContainer';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class PersonData extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = { };
+    }
 
     componentDidMount() {
         this.loadWithAssociations();
@@ -99,7 +104,7 @@ export default class PersonData extends React.Component {
         if (interviewee && interviewee.associations_loaded) {
 
             return Object.values(this.props.project.metadata_fields).filter(m => {
-                return (m.source === 'Person' &&
+                return ((m.ref_object_type === 'Person' || m.source === 'Person') &&
                     (
                         (_this.props.isLoggedIn && m.use_in_details_view) ||
                         (!_this.props.isLoggedIn && m.display_on_landing_page) 
@@ -107,12 +112,17 @@ export default class PersonData extends React.Component {
                 )
             }).map(function(metadataField, i){
                 let label = metadataField.label && metadataField.label[_this.props.locale] || t(_this.props, metadataField.name);
-                let translation = interviewee.translations.find(t => t.locale === _this.props.locale)
-                let value = interviewee[metadataField.name] || (translation && translation[metadataField.name]) || '---';
+                let value = humanReadable(interviewee, metadataField.name, _this.props, _this.state);
 
-                let translationsScope = _this.props.translations[_this.props.locale][metadataField.name];
-                if (typeof value === 'string' && translationsScope && translationsScope[value])
-                    value = t(_this.props, `${metadataField.name}.${value}`)
+                //let translation = interviewee.translations.find(t => t.locale === _this.props.locale)
+                //let value = interviewee[metadataField.name] || (translation && translation[metadataField.name]) || '---';
+
+                //let translationsScope = _this.props.translations[_this.props.locale][metadataField.name];
+                //if (typeof value === 'string' && translationsScope && translationsScope[value])
+                    //value = t(_this.props, `${metadataField.name}.${value}`)
+
+                //if (typeof value === 'object' && value !== null)
+                    //value = value[_this.props.locale]
 
                 return <ContentFieldContainer label={label} value={value} key={`detail-${i}`} />
                 //return (
