@@ -26,7 +26,7 @@ export function getInterview(state) {
     return state.data.interviews && state.data.interviews[state.archive.archiveId];
 }
 
-export function humanReadable(obj, attribute, props, state) {
+export function humanReadable(obj, attribute, props, state, none='---') {
     let translation = obj.translations && obj.translations.find(t => t.locale === props.locale)
     let value = state.value || obj[attribute] || (translation && translation[attribute]);
 
@@ -42,7 +42,7 @@ export function humanReadable(obj, attribute, props, state) {
     if (typeof value === 'string' && state.collapsed) 
         value = value.substring(0,25)
 
-    return value || '---';
+    return value || none;
 }
 
 export function segments(props) {
