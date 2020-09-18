@@ -168,7 +168,7 @@ export default class FlyoutTabs extends React.Component {
                             {this.renderAdminActions([this.props.archiveId])}
                         </AuthShowContainer>
                     </div>
-                    {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'update', id: this.props.archiveId}, this.props.archiveId && this.props.projectId !== "campscapes")}
+                    {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'download', id: this.props.archiveId}, this.props.archiveId && this.props.projectId !== "campscapes")}
                 </TabPanel>
             );
         } else {
@@ -177,7 +177,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     renderAdminActions(archiveIds) {
-        if (admin(this.props, {type: 'Interview', action: 'dois'})) {
+        if (admin(this.props, {type: 'General', action: 'edit'})) {
             return <InterviewDataContainer
                 title={t(this.props, 'admin_actions')}
                 content={<AdminActionsContainer archiveIds={archiveIds} />}
@@ -240,7 +240,7 @@ export default class FlyoutTabs extends React.Component {
                     <div className='flyout-sub-tabs-container'>
                         {this.subTab('edit.interview.new', 'description', `${pathBase(this.props)}/interviews/new`, {type: 'Interview', action: 'create'})}
                         {/*this.subTab('edit.upload_transcript.title', 'description', `${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})*/}
-                        {this.subTab('edit.upload.upload', '', `${pathBase(this.props)}/uploads/new`, {type: 'Interview', action: 'update'})}
+                        {this.subTab('edit.upload.upload', '', `${pathBase(this.props)}/uploads/new`, {type: 'General', action: 'edit'})}
                         {this.subTab( 'edit.person.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
                         {this.subTab( 'edit.collection.admin', <CollectionsSearchFormContainer/>, `${pathBase(this.props)}/collections`, {type: 'Collection', action: 'update'})}
                         {this.subTab( 'edit.language.admin', <LanguagesSearchFormContainer/>, `${pathBase(this.props)}/languages`, {type: 'Language', action: 'update'})}
@@ -254,7 +254,7 @@ export default class FlyoutTabs extends React.Component {
 
     downloads() {
         //if (this.props.archiveId && this.props.archiveId !== 'new') {
-        if (this.props.interview) {
+        if (this.props.interview && admin(this.props, {type: 'Interview', action: 'download'})) {
             let links = [];
             for (var i=1; i <= parseInt(this.props.interview.tape_count); i++) {
                 links.push(

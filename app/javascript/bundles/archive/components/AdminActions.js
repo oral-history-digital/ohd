@@ -75,68 +75,74 @@ export default class AdminActions extends React.Component {
     }
 
     deleteButton() {
-        let title = t(this.props, 'edit.interviews.delete.title');
-        return <div
-            className='flyout-sub-tabs-content-ico-link'
-            title={title}
-            onClick={() => this.props.openArchivePopup({
-                title: title,
-                content: (
-                    <div>
-                        {t(this.props, 'edit.interviews.delete.confirm_text', {archive_ids: this.selectedArchiveIds().join(', ')})}
-                        <div className='any-button' onClick={() => this.deleteInterviews()}>
-                            {t(this.props, 'submit')}
+        if (admin(this.props, {type: 'Interview', action: 'destroy'})) {
+            let title = t(this.props, 'edit.interviews.delete.title');
+            return <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={title}
+                onClick={() => this.props.openArchivePopup({
+                    title: title,
+                    content: (
+                        <div>
+                            {t(this.props, 'edit.interviews.delete.confirm_text', {archive_ids: this.selectedArchiveIds().join(', ')})}
+                            <div className='any-button' onClick={() => this.deleteInterviews()}>
+                                {t(this.props, 'submit')}
+                            </div>
                         </div>
-                    </div>
-                )
-            })}
-        >
-            {title}
-        </div>
+                    )
+                })}
+            >
+                {title}
+            </div>
+        }
     }
 
     updateButton(params, action) {
-        let title = t(this.props, `edit.interviews.${action}.title`);
-        return <div
-            className='flyout-sub-tabs-content-ico-link'
-            title={title}
-            onClick={() => this.props.openArchivePopup({
-                title: title,
-                content: (
-                    <div>
-                        {t(this.props, `edit.interviews.${action}.confirm_text`, {archive_ids: this.selectedArchiveIds().join(', ')})}
-                        <div className='any-button' onClick={() => this.updateInterviews(params)}>
-                            {t(this.props, 'submit')}
+        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+            let title = t(this.props, `edit.interviews.${action}.title`);
+            return <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={title}
+                onClick={() => this.props.openArchivePopup({
+                    title: title,
+                    content: (
+                        <div>
+                            {t(this.props, `edit.interviews.${action}.confirm_text`, {archive_ids: this.selectedArchiveIds().join(', ')})}
+                            <div className='any-button' onClick={() => this.updateInterviews(params)}>
+                                {t(this.props, 'submit')}
+                            </div>
                         </div>
-                    </div>
-                )
-            })}
-        >
-            {title}
-        </div>
+                    )
+                })}
+            >
+                {title}
+            </div>
+        }
     }
 
     doiButton() {
-        let title = t(this.props, 'doi.title');
-        return <div
-            className='flyout-sub-tabs-content-ico-link'
-            title={title}
-            onClick={() => this.props.openArchivePopup({
-                title: title,
-                content: (
-                    <div>
-                        {t(this.props, 'doi.text1') + ' '}
-                        {this.links(this.selectedArchiveIds())}
-                        {' ' + t(this.props, 'doi.text2')}
-                        <div className='any-button' onClick={() => this.exportDOI()}>
-                            {t(this.props, 'doi.ok')}
+        if (admin(this.props, {type: 'Interview', action: 'dois'})) {
+            let title = t(this.props, 'doi.title');
+            return <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={title}
+                onClick={() => this.props.openArchivePopup({
+                    title: title,
+                    content: (
+                        <div>
+                            {t(this.props, 'doi.text1') + ' '}
+                            {this.links(this.selectedArchiveIds())}
+                            {' ' + t(this.props, 'doi.text2')}
+                            <div className='any-button' onClick={() => this.exportDOI()}>
+                                {t(this.props, 'doi.ok')}
+                            </div>
                         </div>
-                    </div>
-                )
-            })}
-        >
-            {title}
-        </div>
+                    )
+                })}
+            >
+                {title}
+            </div>
+        }
     }
 
     reset() {
