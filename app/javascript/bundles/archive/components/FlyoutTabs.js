@@ -228,12 +228,12 @@ export default class FlyoutTabs extends React.Component {
     }
 
     indexingTab() {
-        let css = admin(this.props, {type: 'Interview', action: 'update'}) ? 'flyout-tab' : 'hidden';
+        let css = admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab' : 'hidden';
         return <Tab className={css} key='indexing'>{t(this.props, 'edit.indexing')}</Tab>;
     }
 
     indexingTabPanel() {
-        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+        if (admin(this.props, {type: 'General', action: 'edit'})) {
             return (
                 <TabPanel key={'tabpanel-indexing'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.indexing')}</div>
@@ -320,7 +320,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     usersAdminTabPanel() {
-        if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
+        if (admin(this.props, {type: 'General', action: 'edit'})) {
             return (
                 <TabPanel key={'tabpanel-users-admin'}>
                     <div className='flyout-tab-title'>{t(this.props, 'edit.administration')}</div>
