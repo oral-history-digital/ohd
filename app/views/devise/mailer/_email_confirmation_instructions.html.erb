@@ -15,10 +15,12 @@
   <p>С уважением,</p>
   <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% when :el -%>
-        <p>Καλώς ήρθατε <%= @resource.display_name %>!</p>
-        <p>Μπορείτε να επιβεβαιώσετε την είσοδό σας πατώντας στο παρακάτω λινκ:</p>
-
-        <p><%= link_to 'Zugang jetzt bestätigen', url %></p>
+  <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
+  <p>έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή <"<%= @user_account.user_registration.projects.last.name('el') %>".</p>
+  <p>Παρακαλώ επιβεβαιώστε την αλλαγή ακολουθώντας τον παρακάτω σύνδεσμο:</p>
+  <p><%= link_to 'Επιβεβαίωση νέας διεύθυνσης', url %></p>
+  <p>Με εκτίμηση,</p>
+  <p>Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"</p>
   <% when :es -%>
   <p>Estimada/o <%= @user_account.display_name %>,</p>
   <p>Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
