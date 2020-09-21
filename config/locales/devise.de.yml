@@ -153,39 +153,6 @@ de:
       workflow_state: Registrierungsstatus
       login: Benutzername
       created_at: Datum der Registrierung
-    registration_values:
-      appellation:
-        Dr: Dr
-        Prof: Prof
-      gender:
-        female: weiblich
-        male: männlich
-        diverse: divers
-        not_specified: keine Angabe
-      state:
-        Bayern: Bayern
-        Baden-Württemberg: Baden-Württemberg
-        Baden-W?rttemberg: Baden-Württemberg
-        Saarland: Saarland
-        Hessen: Hessen
-        Rheinland-Pfalz: Rheinland-Pfalz
-        Nordrhein-Westfalen: Nordrhein-Westfalen
-        Niedersachsen: Niedersachsen
-        Thüringen: Thüringen
-        Th?ringen: Thüringen
-        Sachsen-Anhalt: Sachsen-Anhalt
-        Sachsen: Sachsen
-        Brandenburg: Brandenburg
-        Berlin: Berlin
-        Mecklenburg-Vorpommern: Mecklenburg-Vorpommern
-        Hamburg: Hamburg
-        Bremen: Bremen
-        Schleswig-Holstein: Schleswig-Holstein
-        außerhalb Deutschlands: außerhalb Deutschlands
-        au?erhalb Deutschlands: außerhalb Deutschlands
-        au?rhalb Deutschlands: außerhalb Deutschlands
-        Outside Germany: außerhalb Deutschlands
-        outside Germany: außerhalb Deutschlands
   activerecord:
     errors:
       models:
