@@ -26,10 +26,17 @@ The project team "<%= @user_account.user_registration.projects.last.name('en') %
 
 сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"
 <% when :el -%>
-        Καλώς ήρθατε <%= @resource.display_name %>!
-        Μπορείτε να επιβεβαιώσετε την είσοδό σας πατώντας στο παρακάτω λινκ:
+Αγαπητή/-έ <%= @user_account.display_name %>,
 
-        <%= url %>
+έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή <"<%= @user_account.user_registration.projects.last.name('el') %>".
+
+Παρακαλώ επιβεβαιώστε την αλλαγή ακολουθώντας τον παρακάτω σύνδεσμο:
+
+<%= url %>
+
+Με εκτίμηση,
+
+Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"
 <% when :es -%>
 Estimada/o <%= @user_account.display_name %>,
 

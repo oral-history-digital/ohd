@@ -16,7 +16,17 @@ Yours sincerely,
 
 The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
 <% when :el -%>
-TODO greek translation
+Αγαπητή/-έ <%= @user_account.display_name %>,
+
+Η πρόσβαση σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>" αποκλείστηκε.
+
+Αυτό συμβαίνει αν παραβιάσατε τους Όροι Χρήσης.
+
+Σε περίπτωση που έχετε οποιαδήποτε απορία μπορείτε να επικοινωνήσετε μαζί μας στη διεύθυνση <%= contact_email %>.
+
+Με εκτίμηση,
+
+Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"
 <% when :es -%>
 Estimada/o <%= @user_account.display_name %>,
 
