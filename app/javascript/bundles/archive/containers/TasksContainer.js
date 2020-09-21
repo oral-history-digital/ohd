@@ -17,7 +17,18 @@ const mapStateToProps = (state) => {
         editView: true,
         //
         scope: 'task',
-        detailsAttributes: ['name', 'archive_id', 'workflow_state'],
+        detailsAttributes: [
+            'archive_id',
+            'interviewee',
+            'name',
+            'assigned_to_user_account_at',
+            'assigned_to_supervisor_at',
+            'started_at',
+            'finished_at',
+            'cleared_at',
+            'restarted_at',
+            'workflow_state'
+        ],
         formElements: [
             {
                 attribute: 'task_type_id',

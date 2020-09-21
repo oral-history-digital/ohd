@@ -7,6 +7,28 @@ import { t, fullname, admin } from '../../../lib/utils';
 
 export default class UserRegistration extends React.Component {
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            show: {
+                roles: false,
+                tasks: false
+            }
+        };
+    }
+
+    toggle(that) {
+        return (
+            <span
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, this.state.show[that] ? 'show' : 'hide')}
+                onClick={() => this.setState({show: Object.assign({}, this.state.show, {[that]: !this.state.show[that]})})}
+            >
+                <i className={`fa fa-angle-${this.state.show[that] ? 'up' : 'down'}`}></i>
+            </span>
+        )
+    }
+
     baseData() {
         return (
             <div className='user-base-data box'>
@@ -112,12 +134,14 @@ export default class UserRegistration extends React.Component {
         ) {
             return (
                 <div className={'roles box'}>
-                    <div className='title'>{t(this.props, 'activerecord.models.role.other')}</div>
-                    <UserRolesContainer
-                        userRoles={this.props.userRegistration.user_roles || []}
-                        userAccountId={this.props.userRegistration.user_account_id}
-                        hideEdit={false}
-                    />
+                    <h4 className='title'>{Object.keys(this.props.userRegistration.user_roles).length + ' ' + t(this.props, `activerecord.models.role.other`)}{this.toggle('roles')}</h4>
+                    {this.state.show.roles && 
+                        <UserRolesContainer
+                            userRoles={this.props.userRegistration.user_roles || []}
+                            userAccountId={this.props.userRegistration.user_account_id}
+                            hideEdit={false}
+                        />
+                    }
                 </div>
             )
         } else {
@@ -132,12 +156,16 @@ export default class UserRegistration extends React.Component {
         ) {
             return (
                 <div className={'tasks box'}>
-                    <div className='title'>{t(this.props, 'activerecord.models.task.other')}</div>
-                    <TasksContainer
-                        data={this.props.userRegistration.tasks}
-                        initialFormValues={{user_account_id: this.props.userRegistration.user_account_id}}
-                        hideEdit={false}
-                    />
+                    <h4 className='title'>{Object.keys(this.props.userRegistration.tasks).length + ' ' + t(this.props, `activerecord.models.task.other`)}{this.toggle('tasks')}</h4>
+                    {this.state.show.tasks && 
+                        <TasksContainer
+                            data={this.props.userRegistration.tasks}
+                            initialFormValues={{user_account_id: this.props.userRegistration.user_account_id}}
+                            hideEdit={true}
+                            hideDelete={true}
+                            hideAdd={true}
+                        />
+                    }
                 </div>
             )
         } else {
