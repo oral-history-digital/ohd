@@ -135,7 +135,7 @@ export default class UserRegistration extends React.Component {
             return (
                 <div className={'roles box'}>
                     <h4 className='title'>{Object.keys(this.props.userRegistration.user_roles).length + ' ' + t(this.props, `activerecord.models.role.other`)}{this.toggle('roles')}</h4>
-                    {this.state.show.roles && 
+                    {this.state.show.roles &&
                         <UserRolesContainer
                             userRoles={this.props.userRegistration.user_roles || []}
                             userAccountId={this.props.userRegistration.user_account_id}
@@ -157,7 +157,7 @@ export default class UserRegistration extends React.Component {
             return (
                 <div className={'tasks box'}>
                     <h4 className='title'>{Object.keys(this.props.userRegistration.tasks).length + ' ' + t(this.props, `activerecord.models.task.other`)}{this.toggle('tasks')}</h4>
-                    {this.state.show.tasks && 
+                    {this.state.show.tasks &&
                         <TasksContainer
                             data={this.props.userRegistration.tasks}
                             initialFormValues={{user_account_id: this.props.userRegistration.user_account_id}}
