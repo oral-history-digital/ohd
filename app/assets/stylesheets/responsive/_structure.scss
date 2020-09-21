@@ -606,6 +606,11 @@ a.search-result-link {
   //  opacity: 1;
   //  transition: opacity 0.3s;
   //}
+  p.search-result-name {
+    font-size: $font-size-large;
+    line-height: $line-height-large;
+    color: $primary-color;
+  }
   &:hover {
     //img {
     //  width: 110%;
@@ -615,6 +620,7 @@ a.search-result-link {
     }
   }
 }
+
 .search-result-img {
   overflow: hidden;
   img {
@@ -729,12 +735,6 @@ a.search-result-link {
 .detailed .search-result-img {
   max-height: 0;
   overflow: hidden;
-}
-
-.search-result-name {
-  font-size: $font-size-large;
-  line-height: $line-height-large;
-  color: $primary-color;
 }
 
 .detailed .search-result-name {
