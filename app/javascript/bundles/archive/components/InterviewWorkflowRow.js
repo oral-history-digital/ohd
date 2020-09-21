@@ -75,8 +75,8 @@ export default class InterviewWorkflowRow extends React.Component {
             >
                 <img className='workflow' src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
                 <span className='workflow' >
-                    {interviewee && interviewee.names[this.props.locale].firstname + ', '}<br />
-                    {interviewee && interviewee.names[this.props.locale].lastname}
+                    {interviewee && interviewee.names[this.props.locale].lastname + ', '}<br />
+                    {interviewee && interviewee.names[this.props.locale].firstname }
                 </span>
             </Link>
         )
