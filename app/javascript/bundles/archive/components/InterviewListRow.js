@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { t, admin, pathBase, getInterviewee } from '../../../lib/utils';
+import { t, admin, pathBase, getInterviewee, loadIntervieweeWithAssociations } from '../../../lib/utils';
 
 import AuthShowContainer from '../containers/AuthShowContainer';
 
@@ -13,26 +13,14 @@ export default class InterviewListRow extends React.Component {
     }
 
     componentDidMount() {
-        this.loadWithAssociations();
+        loadIntervieweeWithAssociations(this.props);
         if(this.props.fulltext) {
             this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
         }
     }
 
     componentDidUpdate() {
-        this.loadWithAssociations();
-    }
-
-    loadWithAssociations() {
-        let intervieweeContribution = Object.values(this.props.interview.contributions).find(c => c.contribution_type === 'interviewee');
-        let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;
-        let interviewee = this.props.people[intervieweeId]
-        if (
-               ((interviewee && !interviewee.associations_loaded) || !interviewee) &&
-               intervieweeId && !this.props.peopleStatus[intervieweeId]
-        ) {
-            this.props.fetchData(this.props, 'people', intervieweeId, null, 'with_associations=true');
-        }
+        loadIntervieweeWithAssociations(this.props);
     }
 
     content(label, value) {

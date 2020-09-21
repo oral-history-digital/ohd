@@ -138,6 +138,18 @@ export function getInterviewee(props) {
     }
 }
 
+export function loadIntervieweeWithAssociations(props) {
+    let intervieweeContribution = Object.values(props.interview.contributions).find(c => c.contribution_type === 'interviewee');
+    let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;
+    let interviewee = props.people[intervieweeId]
+    if (
+           ((interviewee && !interviewee.associations_loaded) || !interviewee) &&
+           intervieweeId && !props.peopleStatus[intervieweeId]
+    ) {
+        props.fetchData(props, 'people', intervieweeId, null, 'with_associations=true');
+    }
+}
+
 export function t(props, key, params) {
     let text, defaultKey;
     let keyArray = key.split('.');

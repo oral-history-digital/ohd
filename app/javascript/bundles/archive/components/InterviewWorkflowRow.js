@@ -5,7 +5,7 @@ import { MISSING_STILL } from '../constants/archiveConstants'
 import AuthShowContainer from '../containers/AuthShowContainer';
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
 import TaskContainer from '../containers/TaskContainer';
-import { t, admin, pathBase, getInterviewee } from '../../../lib/utils';
+import { t, admin, pathBase, getInterviewee, loadIntervieweeWithAssociations } from '../../../lib/utils';
 
 export default class InterviewWorkflowRow extends React.Component {
 
@@ -31,11 +31,13 @@ export default class InterviewWorkflowRow extends React.Component {
     componentDidMount() {
         this.loadUserAccounts();
         this.loadTasks();
+        loadIntervieweeWithAssociations(this.props);
     }
 
     componentDidUpdate() {
         this.loadUserAccounts();
         this.loadTasks();
+        loadIntervieweeWithAssociations(this.props);
     }
 
     loadUserAccounts() {
