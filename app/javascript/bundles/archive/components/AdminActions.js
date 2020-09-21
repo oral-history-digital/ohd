@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
-import { t } from '../../../lib/utils';
+import { t, admin } from '../../../lib/utils';
 
 export default class AdminActions extends React.Component {
 
