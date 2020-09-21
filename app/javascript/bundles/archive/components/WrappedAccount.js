@@ -25,16 +25,12 @@ export default class WrappedAccount extends React.Component {
         return (
             <span
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
+                title={t(this.props, this.state.showTasks[header] ? 'show' : 'hide')}
                 onClick={() => this.setState({showTasks: Object.assign({}, this.state.showTasks, {[header]: !this.state.showTasks[header]})})}
             >
                 <i className={`fa fa-angle-${this.state.showTasks[header] ? 'up' : 'down'}`}></i>
             </span>
         )
-    }
-
-    showTasks(header) {
-        this.setState({showTasks: Object.assign({}, this.state.showTasks, {[header]: !this.state.showTasks[header]})});
     }
 
     details() {
@@ -125,7 +121,7 @@ export default class WrappedAccount extends React.Component {
         }
     }
 
-    tasks(header, data) {
+    tasks(header, data, hideShow=true) {
         return (
             <div className={'tasks box'}>
                 <h4 className='title'>{data.length + ' ' + t(this.props, `activerecord.models.task.${header}`)}{this.toggleTasks(header)}</h4>
@@ -133,8 +129,8 @@ export default class WrappedAccount extends React.Component {
                     <TasksOnlyStatusEditableContainer
                         data={data || {}}
                         initialFormValues={{user_account_id: this.props.account.id}}
-                        hideShow={true}
-                        hideEdit={false}
+                        hideShow={hideShow}
+                        hideEdit={!hideShow}
                         hideDelete={true}
                         hideAdd={true}
                     />
@@ -156,13 +152,13 @@ export default class WrappedAccount extends React.Component {
                         <div className='user-registration boxes'>
                             {this.roles()}
                             {/* own tasks (not done)*/}
-                            {this.tasks('other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state !== 'finished' || t.workflow_state !== 'cleared'))}
+                            {this.tasks('other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state !== 'finished' && t.workflow_state !== 'cleared'))}
                             {/* own supervised tasks (not cleared)*/}
                             {this.tasks('supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state !== 'cleared'))}
                         </div>
                         <div className='user-registration boxes'>
                             {/* own tasks (done)*/}
-                            {this.tasks('closed_other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state === 'finished' || t.workflow_state === 'cleared'))}
+                            {this.tasks('closed_other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state === 'finished' || t.workflow_state === 'cleared'), false)}
                             {/* own supervised tasks (cleared)*/}
                             {this.tasks('closed_supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state === 'cleared'))}
                         </div>
