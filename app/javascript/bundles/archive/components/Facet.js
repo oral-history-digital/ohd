@@ -110,7 +110,7 @@ export default class Facet extends React.Component {
         else if (this.props.show) {
             return (
                 <div className="subfacet-container">
-                    <button className={this.state.class} lang={this.props.locale} onClick={this.handleClick}>
+                    <button className={`${this.state.class} ${this.props.admin ? 'admin' : ''}`} lang={this.props.locale} onClick={this.handleClick}>
                         {this.props.data.name[this.props.locale]}
                     </button>
                     {this.panelContent()}

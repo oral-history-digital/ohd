@@ -6,6 +6,9 @@
   button.accordion {
     background-color: transparent;
     color: $primary-color;
+    &.admin {
+      color: $editorial-color;
+    }
     cursor: pointer;
     padding: 8px 15px 8px 2px;
     width: 100%;
