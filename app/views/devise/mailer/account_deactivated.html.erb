@@ -18,7 +18,12 @@
   <p>С уважением,</p>
   <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% when :el -%>
-  TODO greek translation
+  <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
+  <p>Η πρόσβαση σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>" αποκλείστηκε.</p>
+  <p>Aυτό συμβαίνει αν παραβιάσατε τους Όροι Χρήσης.</p>
+  <p>Σε περίπτωση που έχετε οποιαδήποτε απορία μπορείτε να επικοινωνήσετε μαζί μας στη διεύθυνση <a href="mailto:<%= contact_email %>"><%= contact_email %>.</p>
+  <p>Με εκτίμηση,</p>
+  <p>Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"</p>
   <% when :es -%>
   <p>Estimada/o <%= @user_account.display_name %>,</p>
   <p>Su acceso a la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>" ha sido bloqueado.</p>

@@ -30,6 +30,15 @@
   <p>Si no se ha registrado para el archivo de entrevistas, puede hacer caso omiso de este mensaje. Sus datos se borrarán de manera automática después de 14 días.</p>
   <p>Con saludos cordiales,</p>
   <p>El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"</p>
+<% when :el -%>
+  <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
+  <p>πραγματοποιήσατε την εγγραφή σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>".</p>
+  <p>Σας παρακαλούμε να επιβεβαιώσετε την εγγραφή σας εντός 14 ημερών επιλέγοντας έναν κωδικό πρόσβασης.</p>
+  <p><%= link_to 'Επιβεβαίωση εγγραφής', url %></p>
+  <p>Mετά την επιβεβαίωση η ομάδα του προγράμματος θα ελέγξει τα στοιχεία της εγγραφής σας. Η διαδικασία ελέγχου ενδεχομένως να διαρκέσει δύο εώς τρεις ημέρες.</p>
+  <p>Μετά τον έλεγχο θα ειδοποιηθείτε για την ενεργοποίηση της πρόσβασής σας στο Αρχείο Προφορικών Μαρτυριών. Στην περίπτωση που δεν εγγραφήκατε στο Αρχείο Προφορικών Μαρτυριών, σας παρακαλούμε να αγνοήσετε αυτό το μήνυμα. Τα στοιχεία σας θα διαγραφούν αυτόματα μετά από 14 ημέρες.</p>
+  <p>Με εκτίμηση,</p>
+  <p>Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"</p>
 <% else -%>
   <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
   <p>Sie haben sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>

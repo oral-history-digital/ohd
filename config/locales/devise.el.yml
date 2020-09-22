@@ -29,12 +29,18 @@ el:
       last_attempt: Έχετε άλλη μια προσπάθεια πριν ο λογαριασμός σας κλειδωθεί.
     mailer:
       confirmation_instructions:
-        subject: Οδηγίες επιβεβαίωσης
+        subject: Αρχείο Προφορικών Μαρτυριών – Βήματα για την ενεργοποίηση του λογαριασμού σας
+      project_access_granted:
+        subject: Ενεργοποίηση του λογαριασμού σας για την εφαρμογή '%{project_name}'
+      project_access_rejected:
+        subject: Η εγγραφή σας στην εφαρμογή '%{project_name}'
       reset_password_instructions:
-        subject: Οδηγίες επαναφοράς του κωδικού
+        subject:  Αρχείο Προφορικών Μαρτυριών – Επαναφορά του κωδικού σας
+      account_deactivated:
+        subject: Η πρόσβασή σας στην εφαρμογή '%{project_name}'
     omniauth_callbacks:
       failure: Δεν επιτρέπεται να πραγματοποιήσετε %{kind} επειδή είναι "%{reason}".
-      success: Επιτυχής έγκριση από το λογαριασμό.
+      success: Επιτυχής είσοδος με το λογαριασμό σας.
     passwords:
       change: Αλλάξτε τον κωδικό σας
       forgot: Ξεχάσατε τον κωδικό σας?
@@ -58,10 +64,9 @@ el:
       not_yet_registered: Noch nicht registriert?
       link_to: Zur Registrierung »
       submit: Registrierung senden
-      activate: 'Ενεργοποίηση του λογαριασμού για '
+      activate: Ενεργοποίηση του λογαριασμού για
       activate_submit: Αποστολή
-      activate_text: Για να ενεργοποιήσετε το λογαριασμό σας παρακαλώ επιλέξτε έναν
-        κωδικό για την πρόσβασή σας.
+      activate_text: Για να ενεργοποιήσετε τον λογαριασμό σας, παρακαλώ επιλέξτε έναν κατάλληλο κωδικό πρόσβασης.
       successful: Ihre Registrierung ist bei uns eingegangen.
       signed_up: Καλωσήρθατε! Ο λογαριασμός σας δημιουργήθηκε με επιτυχία.
       updated: Ανανεώσατε το λογαριασμό σας με επιτυχία.

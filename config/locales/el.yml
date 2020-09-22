@@ -30,7 +30,8 @@ el:
     en: englisch
     es: spanisch
   in: στο
-  not_your_project: You are not registered for this project.
+  not_your_project: Η εγγραφή σας ελέγχεται από την ομάδα του προγράμματος. Αυτή η διαδικασία ενδεχόμενως να διαρκέσει δύο εώς τρεις ημέρες.
+    Στη συνέχεια θα ενεργοποιηθεί ο λογαριασμός σας και θα αποκτήσετε πρόσβαση στο Αρχείο Προφορικών Μαρτυριών.
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
@@ -128,7 +129,7 @@ el:
   segment: Απόσπασμα
   publish: Δημοσίευση
   login: Εγγραφή
-  login_name: Login
+  login_name: Χρήστης
   logout: Έξοδος
   login_errors: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
   logged_in_as: 'Εγγεγραμμένος/η ως '
@@ -449,7 +450,7 @@ el:
     started: in Bearbeitung
     finished: Bearbeitet/ im QM
     cleared: freigegeben
-    restarted: erneut in Bearbeitung 
+    restarted: erneut in Bearbeitung
     start: Bearbeitung beginnen
     finish: dem QM einreichen
     clear: freigeben
@@ -511,9 +512,8 @@ el:
     registration_text_two: " και να αποστείλετε τη φόρμα εγγραφής για να λάβετε κατόπιν
       τους κωδικούς πρόσβασης. Οι προϋποθέσεις προστασίας "
     registration_text_three: " αναλύουν, για ποιους λόγους επεξεργαζόμαστε τα δεδομένα
-      σας, και για ποιο λόγο τα αξιοποιούμε. Εντός δύο εργασιακών ημερών μετά την
-      αποστολή της εγγραφής σας, λαμβάνετε τα δεδομένα εισόδου σας και μια απάντηση
-      στο αίτημά σας."
+      σας, και για ποιο λόγο τα αξιοποιούμε. Μετά από την εγγραφή σας η ομάδα του προγράμματος θα ελέγξει τα στοιχεία σας.
+      Θα σας πληροφορήσουμε για την ενεργοποίηση του λογαριασμού σας εντός δύο εώς τριών ημερών."
     tos_agreement: Προϋποθέσεις χρήσης
     priv_agreement: Υποδείξεις για την προστασία δεδομένων
     notes_on_receive_newsletter: Θα ήθελα να εγγραφώ και να λαμβάνω το newsletter
@@ -529,7 +529,7 @@ el:
       female: θήλυ
       male: άρρεν
       diverse: Άλλοe
-      not_specified: not specified
+      not_specified: Καμία καταχώρηση
     job_description:
       researcher: Λέκτορας/ ερευνητής
       filmmaker: Σκηνοθέτης/τρια, δημοσιογράφος, δάσκαλος/λα
@@ -992,7 +992,7 @@ el:
         checkbox_input: Παρακαλώ συμπληρώστε
         text_input: Παρακαλώ συμπληρώστε
         file_input: Παρακαλώ συμπληρώστε
-        password_input: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
+        password_input: Ο κωδικός σας πρέπει να αποτελείται από τουλάχιστον επτά χαρακτήρες. Οι δύο κωδικοί πρόσβασης θα πρέπει να είναι οι ίδιοι.
         email_input: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
       template:
         header: Ihre Anfrage konnte nicht bearbeitet werden

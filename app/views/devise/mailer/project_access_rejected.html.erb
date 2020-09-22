@@ -18,7 +18,12 @@
   <p>С уважением,</p>
   <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
 <% when :el -%>
-  TODO greek translation
+  <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
+  <p>Προσπαθήσατε να εγγραφείτε στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>".</p>
+  <p>Δυστυχώς κατά τον έλεγχο των στοιχείων σας διαπιστώθηκε ότι είναι ελλιπή ή ότι δε συμβαδίζουν με τους όρους χρήσης του Αρχείου.</p>
+  <p>Αν επιθυμείτε υποστήριξη στην εγγραφή, μην διστάζετε να επικοινωνήσετε μαζί μας στο <%= @user_account.user_registration.projects.last.name('el') %>".</p>
+  <p>Με εκτίμηση,</p>
+  <p>Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"</p>
 <% when :es -%>
   <p>Estimada/o <%= @user_account.display_name %>,</p>
   <p>Usted ha intentado de registrarse para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
