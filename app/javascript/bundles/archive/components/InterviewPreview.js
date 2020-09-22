@@ -116,8 +116,8 @@ export default class InterviewPreview extends React.Component {
         if (interviewee && interviewee.associations_loaded) { 
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
-                    <span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>
-                    <span>{this.props.interview.language[this.props.locale]}</span>
+                    {/*<span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>*/}
+                    {/*<span>{this.props.interview.language[this.props.locale] + ' '}</span>*/}
                     {this.customMetadataFields(interviewee)}
                 </div>
             )
