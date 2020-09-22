@@ -28,5 +28,7 @@ module Archive
     config.i18n.default_locale = config.project["default_locale"].try(:to_sym) || :de || config.i18n.default_locale
     config.i18n.fallbacks = [:en, :de, :ru, :el, :es]
 
+    config.time_zone = "Berlin"
+    config.active_record.time_zone_aware_types = [:datetime, :time]
   end
 end
