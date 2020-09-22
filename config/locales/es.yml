@@ -50,10 +50,10 @@ es:
     select_columns: Zu bearbeitende Daten auswählen
     text_orig: Transkript
     text_translated: Übersetzung
-    mainheading_orig: Überschrift (orig.)
-    mainheading_translated: Überschrift (übers.)
-    subheading_orig: 2.Überschrift (orig.)
-    subheading_translated: 2.Überschrift (übers.)
+    mainheading_orig: Hauptüberschrift
+    mainheading_translated: Hauptüberschrift (übers.)
+    subheading_orig: Zwischenüberschrift
+    subheading_translated: Zwischenüberschrift (übers.)
     registry_references: Erwähnungen
     annotations: Anmerkungen
   legend:
