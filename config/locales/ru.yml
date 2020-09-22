@@ -55,6 +55,7 @@ ru:
     subheading_translated: Zwischenüberschrift (übers.)
     registry_references: Erwähnungen
     annotations: Anmerkungen
+    timecode: Timecode
   legend:
     title: графические oбозначения
     mog:
@@ -490,7 +491,7 @@ ru:
     started: in Bearbeitung
     finished: Bearbeitet/ im QM
     cleared: freigegeben
-    restarted: erneut in Bearbeitung 
+    restarted: erneut in Bearbeitung
     start: Bearbeitung beginnen
     finish: dem QM einreichen
     clear: freigeben

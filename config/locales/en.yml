@@ -55,6 +55,7 @@ en:
     subheading_translated: Zwischenüberschrift (übers.)
     registry_references: Erwähnungen
     annotations: Anmerkungen
+    timecode: Timecode
   legend:
     title: Glossary of Signs and Symbols
     mog:
@@ -445,7 +446,7 @@ en:
     started: in Bearbeitung
     finished: Bearbeitet/ im QM
     cleared: freigegeben
-    restarted: erneut in Bearbeitung 
+    restarted: erneut in Bearbeitung
     start: Bearbeitung beginnen
     finish: dem QM einreichen
     clear: freigeben

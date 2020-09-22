@@ -56,6 +56,7 @@ el:
     subheading_translated: Zwischenüberschrift (übers.)
     registry_references: Erwähnungen
     annotations: Anmerkungen
+    timecode: Timecode
   legend:
     title: Σύμβολα απομαγνητοφώνησης
     mog:

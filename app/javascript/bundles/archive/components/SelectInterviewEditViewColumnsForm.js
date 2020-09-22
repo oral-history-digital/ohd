@@ -19,7 +19,7 @@ export default class SelectInterviewEditViewColumnsForm extends React.Component 
 
     possibleColumns() {
         // TODO: change this to various edit views!
-        return ['text_orig', 'text_translated', 'mainheading_orig', 'mainheading_translated', 'subheading_orig', 'subheading_translated', 'registry_references', 'annotations'];
+        return ['text_orig', 'text_translated', 'mainheading_orig', 'mainheading_translated', 'subheading_orig', 'subheading_translated', 'registry_references', 'annotations', 'timecode'];
     }
 
     formElements() {
