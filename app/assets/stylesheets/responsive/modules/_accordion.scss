@@ -185,6 +185,10 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
   }
  .fa {
       color: $editorial-color;
+      margin-left: 1px;
+  }
+  .fa.heading-exists {
+    color: $primary-color;
   }
   &.active {
     background-color: $gray-lighter;
