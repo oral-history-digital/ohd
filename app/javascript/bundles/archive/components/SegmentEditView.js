@@ -14,6 +14,12 @@ export default class SegmentEditView extends React.Component {
 
     columnElement(columnName) {
         switch (columnName) {
+            case 'timecode': {
+              return (
+                <div>{this.props.segment.timecode}</div>
+              )
+              break;
+            }
             case 'text_orig': {
                 return (
                     <SubmitOnBlurForm
