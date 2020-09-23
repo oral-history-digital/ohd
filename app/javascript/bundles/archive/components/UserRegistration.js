@@ -69,6 +69,7 @@ export default class UserRegistration extends React.Component {
                         'processed_at',
                         'default_locale',
                         'receive_newsletter',
+                        'workflow_state'
                     ].map((detail, index) => {
                         return (
                             <p className="detail"
