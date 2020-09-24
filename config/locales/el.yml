@@ -301,6 +301,7 @@ el:
       return: Weiteren Externen Link anlegen
     segment:
       edit: Segment bearbeiten
+      add_heading: Überschriften hinzufügen
       edit_heading: Überschriften bearbeiten
       speaker_string: Sprecher*in (als String)
     person:

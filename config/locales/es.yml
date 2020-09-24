@@ -267,6 +267,7 @@ es:
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
     segment:
       edit: Segment bearbeiten
+      add_heading: Überschriften hinzufügen
       edit_heading: Überschriften bearbeiten
       speaker_string: Sprecher*in (als String)
     person:
@@ -849,7 +850,7 @@ es:
         organization: Institución
         homepage: Página web de la institución
         address: Dirección
-        street: Calle
+        street: Dirección
         zipcode: Código postal
         city: Lugar
         country: País
