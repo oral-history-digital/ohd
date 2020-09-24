@@ -7,7 +7,7 @@
   <p>Dear <%= @user_account.display_name %>,</p>
   <p>Your access to the application "<%= @user_account.user_registration.projects.last.name('en') %>" has been blocked.</p>
   <p>This happens if you have violated the Terms of Use.</p>
-  <p>If you have any questions regarding this procedure, please contact us at <a href="mailto:<%= contact_email %>"><%= contact_email %>.</p>
+  <p>If you have any questions regarding this procedure, please contact us at <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
   <p>Yours sincerely,</p>
   <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
 <% when :ru -%>
@@ -21,7 +21,7 @@
   <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
   <p>Η πρόσβαση σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>" αποκλείστηκε.</p>
   <p>Aυτό συμβαίνει αν παραβιάσατε τους Όροι Χρήσης.</p>
-  <p>Σε περίπτωση που έχετε οποιαδήποτε απορία μπορείτε να επικοινωνήσετε μαζί μας στη διεύθυνση <a href="mailto:<%= contact_email %>"><%= contact_email %>.</p>
+  <p>Σε περίπτωση που έχετε οποιαδήποτε απορία μπορείτε να επικοινωνήσετε μαζί μας στη διεύθυνση <a href="mailto:<%= contact_email %>"><%= contact_email %></a>.</p>
   <p>Με εκτίμηση,</p>
   <p>Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"</p>
   <% when :es -%>
