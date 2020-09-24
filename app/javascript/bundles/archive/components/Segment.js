@@ -48,6 +48,12 @@ export default class Segment extends React.Component {
                (this.props.data.text[`${this.props.contentLocale}-public`] || '')
     }
 
+    has_headings() {
+       let mainheading = this.props.data.mainheading[`${this.props.contentLocale}-original`] || this.props.data.mainheading[`${this.props.contentLocale}-public`]
+       let subheading = this.props.data.subheading[`${this.props.contentLocale}-original`] || this.props.data.subheading[`${this.props.contentLocale}-public`]
+       return  !!(mainheading || subheading)
+    }
+
     toggleAdditionalContent(type) {
         let state = this.state.contentOpen;
 
@@ -184,24 +190,38 @@ export default class Segment extends React.Component {
         }
     }
 
+    editHeadingIcon() {
+        if (this.has_headings()) {
+            return (
+                <span className="fa-stack fa-1x heading-exists">
+                    <i className="fa fa-pencil fa-stack-1x fa-stack-first-custom heading-exists"></i>
+                    <i className="fa fa-header fa-stack-1x fa-stack-second-custom heading-exists"></i>
+                </span>
+          )
+        }
+        else {
+            return (
+                <span className="fa-stack fa-1x">
+                    <i className="fa fa-pencil fa-stack-1x fa-stack-first-custom"></i>
+                    <i className="fa fa-plus fa-stack-1x fa-stack-second-custom"></i>
+                </span>
+            )
+        }
+    }
+
     editHeadings(locale) {
         if (admin(this.props, {type: 'Segment', action: 'update'})) {
+            let title = this.has_headings() ? t(this.props, 'edit.segment.edit_heading') : t(this.props, 'edit.segment.add_heading')
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.segment.edit_heading')}
+                    title={title}
                     onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.segment.edit_heading'),
+                        title: title,
                         content: <SegmentHeadingFormContainer segment={this.props.data} contentLocale={this.props.contentLocale} />
                     })}
                 >
-                    <span className="fa-stack fa-1x">
-                        <i className="fa fa-pencil fa-stack-1x fa-stack-first-custom"></i>
-                        <i className="fa fa-header fa-stack-1x fa-stack-second-custom"></i>
-                    </span>
-
-
-
+                {this.editHeadingIcon()}
                 </div>
             )
         } else {
