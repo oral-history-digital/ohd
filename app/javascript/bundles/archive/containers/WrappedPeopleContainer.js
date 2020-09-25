@@ -55,9 +55,6 @@ const mapStateToProps = (state) => {
                 attribute: 'other_first_names',
                 elementType: 'multiLocaleInput',
             },
-            {
-                attribute: 'typology',
-            },
             { 
                 attribute: 'date_of_birth',
             },
