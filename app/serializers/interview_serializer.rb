@@ -147,14 +147,6 @@ class InterviewSerializer < ApplicationSerializer
     object.duration
   end
 
-  def duration_human
-    if object.duration && object.duration > 0
-      Time.at(object.duration).utc.strftime("%-H h %M min")
-    else
-      "---"
-    end
-  end
-
   def segments
     # this is a dummy! It will be filled later.
     {}
