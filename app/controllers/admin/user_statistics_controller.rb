@@ -27,7 +27,7 @@ class Admin::UserStatisticsController < Admin::BaseController
   private
 
   def csv_export
-    countries = params[:countries] || UserAccount.all.map{|u|u.country}.compact.uniq.sort
+    countries = params[:countries] || UserAccount.where.not(country: '').map{|u|u.country}.compact.uniq.sort
 
     @list = [ :header, :count ]
     @rows = {
