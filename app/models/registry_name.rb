@@ -2,7 +2,7 @@ require 'globalize'
 
 class RegistryName < ApplicationRecord
 
-  belongs_to :registry_entry
+  belongs_to :registry_entry, touch: true
   belongs_to :registry_name_type
 
   translates :descriptor, :notes, fallbacks_for_empty_translations: true, touch: true
