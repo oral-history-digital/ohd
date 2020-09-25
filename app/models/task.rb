@@ -15,6 +15,8 @@ class Task < ApplicationRecord
   workflow do
     state :created do
       event :start, transition_to: :started
+      # FIXME: remove the following line after migration 20200804091822 CreateTasksForExistingInterviews
+      event :clear, transitions_to: :cleared
     end
     state :started do
       event :finish, transitions_to: :finished
@@ -37,7 +39,8 @@ class Task < ApplicationRecord
 
   def workflow_state=(change)
     self.send("#{change}!")
-    self.touch
+    self.save! # FIXME: replace by self.touch after migration 20200804091822 CreateTasksForExistingInterviews
+    #self.touch
   end
 
   def save_dates_and_inform
