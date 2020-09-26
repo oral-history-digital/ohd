@@ -195,7 +195,7 @@ en:
   birth_location: Place of  Birth
   interview_location: Place of Interview
   gender: Gender
-  # place_of_interview: Interviewort
+  place_of_interview: Interviewort
   typology: Experience background
   typologies: Erfahrungen
   history: Short biography

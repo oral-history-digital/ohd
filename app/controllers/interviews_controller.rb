@@ -115,7 +115,6 @@ class InterviewsController < ApplicationController
 
   def show
     @interview = Interview.find_by_archive_id(params[:id])
-    @locale = params[:locale]
     interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym 
 
     respond_to do |format|
@@ -130,6 +129,7 @@ class InterviewsController < ApplicationController
       end
       format.pdf do
         @lang = "#{params[:lang]}-public"
+        @locale = params[:lang] # change this to params[:locale] if  you want e.g. header and footer in locale
         @lang_human = I18n.t(params[:lang], locale: @locale)
         @orig_lang = "#{interview_locale}-public"
         first_segment_with_heading = @interview.segments.with_heading.first

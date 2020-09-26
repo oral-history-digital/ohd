@@ -193,7 +193,7 @@ es:
   date_of_birth: Fecha de nacimiento
   year_of_birth: Año de nacimiento
   place_of_birth: Lugar de nacimiento
-  # place_of_interview: Lugar de entrevista
+  place_of_interview: Lugar de entrevista
   typology: Experiencia
   typologies: Experiencias
   history: Biografía breve

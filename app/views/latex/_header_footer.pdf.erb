@@ -8,7 +8,7 @@
 }
 
 <%
-  interviewee_name = @interview && @interview.interviewees.first.name(true)[@locale.to_sym]
+  interviewee_name = @interview && @interview.interviewees.first.name(false)[@locale.to_sym]
   footer_text = ""
   footer_text += "#{I18n.t(@biography ? 'biographical_entries_footer' : 'transcript_footer', locale: @locale)} #{interviewee_name}" if @interview
   footer_text += ", #{I18n.t('interview', locale: @locale)} #{@interview.archive_id}, #{@interview.interview_date && Date.parse(@interview.interview_date).strftime("%d.%m.%Y") rescue @interview.interview_date}" if @interview
