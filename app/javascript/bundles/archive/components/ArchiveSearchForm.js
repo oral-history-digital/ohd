@@ -148,7 +148,7 @@ export default class ArchiveSearchForm extends React.Component {
                         onChange={this.handleChange}
                         list='allInterviewTitles' 
                         autoFocus
-                        />
+                    />
                     {this.renderDataList()}
                     <input 
                         className="search-button" 
@@ -156,7 +156,7 @@ export default class ArchiveSearchForm extends React.Component {
                         title={t(this.props, 'archive_search')} 
                         type="submit" 
                         value=""
-                        />
+                    />
                 </div>
             )
         } else {
