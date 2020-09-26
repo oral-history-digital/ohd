@@ -104,7 +104,7 @@ export default class PersonData extends React.Component {
         if (interviewee && interviewee.associations_loaded) {
 
             return Object.values(this.props.project.metadata_fields).filter(m => {
-                return ((m.ref_object_type === 'Person' || m.source === 'Person') &&
+                return (m.source === 'Person' &&
                     (
                         (_this.props.isLoggedIn && m.use_in_details_view) ||
                         (!_this.props.isLoggedIn && m.display_on_landing_page) 
