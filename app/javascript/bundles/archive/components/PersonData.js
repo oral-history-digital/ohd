@@ -98,6 +98,11 @@ export default class PersonData extends React.Component {
         }
     }
 
+    // metadata-fields with source 'Person' only here!!!
+    //
+    // metadata-fields with ref_obj_type 'Person' will be shown in <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />
+    // in FlyoutTabs
+    //
     personMetadataFields(){
         let _this = this;
         let interviewee = getInterviewee(this.props);
