@@ -114,16 +114,6 @@ export default class PersonData extends React.Component {
                 let label = metadataField.label && metadataField.label[_this.props.locale] || t(_this.props, metadataField.name);
                 let value = humanReadable(interviewee, metadataField.name, _this.props, _this.state);
 
-                //let translation = interviewee.translations.find(t => t.locale === _this.props.locale)
-                //let value = interviewee[metadataField.name] || (translation && translation[metadataField.name]) || '---';
-
-                //let translationsScope = _this.props.translations[_this.props.locale][metadataField.name];
-                //if (typeof value === 'string' && translationsScope && translationsScope[value])
-                    //value = t(_this.props, `${metadataField.name}.${value}`)
-
-                //if (typeof value === 'object' && value !== null)
-                    //value = value[_this.props.locale]
-
                 return <ContentFieldContainer label={label} value={value} key={`detail-${i}`} />
                 //return (
                     //<SingleValueWithFormContainer
