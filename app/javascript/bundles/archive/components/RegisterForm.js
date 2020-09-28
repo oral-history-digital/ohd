@@ -80,19 +80,19 @@ export default class RegisterForm extends React.Component {
                 elementType: 'input',
                 attribute: 'street',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: this.props.projectId !== 'mog' && function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'zipcode',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: this.props.projectId !== 'mog' && function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
                 attribute: 'city',
                 type: 'text',
-                validate: function(v){return v && v.length > 1}
+                validate: this.props.projectId !== 'mog' && function(v){return v && v.length > 1}
             }
         ];
 
@@ -103,7 +103,7 @@ export default class RegisterForm extends React.Component {
                 optionsScope: 'countries',
                 values: this.props.countryKeys && this.props.countryKeys[this.props.locale],
                 withEmpty: true,
-                validate: function(v){return v !== ''}
+                validate: this.props.projectId !== 'mog' && function(v){return v !== ''}
             },
         ];
 
