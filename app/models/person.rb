@@ -58,10 +58,11 @@ class Person < ApplicationRecord
     end
   end
 
-  MetadataField.where(source: 'RegistryReferenceType', ref_object_type: 'Person').each do |f|
-    define_method f.name do
-      ref = registry_references.where(registry_reference_type_id: f.registry_reference_type_id).first
-      ref && ref.registry_entry
+  after_initialize do 
+    project.registry_reference_type_metadata_fields.where(ref_object_type: 'Person').each do |field|
+      define_singleton_method field.name do
+        registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id) || []
+      end
     end
   end
 

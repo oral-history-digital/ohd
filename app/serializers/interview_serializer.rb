@@ -41,7 +41,7 @@ class InterviewSerializer < ApplicationSerializer
     object.collection && object.collection.localized_hash(:name) || {}
   end
 
-  Project.current.registry_reference_type_metadata_fields.each do |m|
+  Project.current.registry_reference_type_metadata_fields.where(ref_object_type: 'Interview').each do |m|
     define_method m.name do
       # can handle object.send(m.name) = nil
       json = Rails.cache.fetch("#{object.project.cache_key_prefix}-#{m.name}-#{object.id}-#{object.updated_at}-#{m.updated_at}") do

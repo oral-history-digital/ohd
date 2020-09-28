@@ -369,9 +369,11 @@ class Interview < ApplicationRecord
   end
 
   def interviewee
-    Rails.cache.fetch("#{project.cache_key_prefix}-interviewee-for-#{id}-#{updated_at}") do
+    # caching results in 'singleton can't be dumped'-error here. Why?
+    #
+    #Rails.cache.fetch("#{project.cache_key_prefix}-interviewee-for-#{id}-#{updated_at}") do
       interviewees.first
-    end
+    #end
   end
 
    def place_of_interview
@@ -421,8 +423,8 @@ class Interview < ApplicationRecord
     project.registry_reference_type_metadata_fields.each do |field|
       define_singleton_method field.name do
         case field["ref_object_type"]
-        when "Person"
-          (interviewee && interviewee.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
+        #when "Person"
+          #(interviewee && interviewee.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
         when "Interview"
           registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
         when "Segment"
