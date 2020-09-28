@@ -103,7 +103,7 @@ export default class RegisterForm extends React.Component {
                 optionsScope: 'countries',
                 values: this.props.countryKeys && this.props.countryKeys[this.props.locale],
                 withEmpty: true,
-                validate: this.props.projectId === 'mog' && function(v){return v !== ''}
+                validate: this.props.projectId !== 'mog' && function(v){return v !== ''}
             },
         ];
 
