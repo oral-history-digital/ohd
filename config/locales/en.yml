@@ -46,7 +46,8 @@ en:
   show: Zeigen
   hide: Weniger
   edit_column_header:
-    select_columns: Zu bearbeitende Daten auswählen
+    open_table: "Erschließungstabelle: öffnen/schließen"
+    select_columns: "Erschließungstabelle: Spalten auswählen"
     text_orig: Transkript
     text_translated: Übersetzung
     mainheading_orig: Hauptüberschrift
@@ -86,6 +87,8 @@ en:
   selected: Selected
   archive_id: Archiv-ID
   noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
+  compress_video: "Video: Ansicht verkleinern"
+  expand_video: "Video: Ansicht vergrößern"
   interviews: Interviews
   places: Birth places
   interview_location_desc_one: " wird in Kapitel "
@@ -270,6 +273,7 @@ en:
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
     segment:
       edit: Segment bearbeiten
+      add_heading: Überschriften hinzufügen
       edit_heading: Überschriften bearbeiten
       speaker_string: Sprecher*in (als String)
     person:

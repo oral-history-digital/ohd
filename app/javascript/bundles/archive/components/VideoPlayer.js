@@ -196,7 +196,7 @@ export default class VideoPlayer extends React.Component {
     subtitles() {
         return this.props.interview.languages.map((language, index) => {
             return (
-                <track 
+                <track
                     key={`subtitle-${language}-${this.props.locale}-${this.props.tape}`}
                     kind="subtitles"
                     label={t(this.props, language)}
@@ -206,7 +206,7 @@ export default class VideoPlayer extends React.Component {
             )
         })
     }
-    
+
     tapeSelector(){
         let options = [];
         for(var i = 1; i <= this.props.interview.tape_count; i++) {
@@ -279,9 +279,17 @@ export default class VideoPlayer extends React.Component {
 
     enableInterviewEditViewButton() {
         if (admin(this.props, {type: 'Interview', action: 'update'})) {
-            return <i className="fa fa-edit edit" aria-hidden="true" onClick={() => this.props.changeToInterviewEditView(!this.props.interviewEditView)} />
-        }
+          return(
+
+            <i
+              className="fa fa-edit edit"
+              aria-hidden="true"
+              title={t(this.props, 'edit_column_header.open_table')}
+              onClick={() => this.props.changeToInterviewEditView(!this.props.interviewEditView)} />
+          )
+          }
     }
+
 
     selectInterviewEditViewColumns() {
         if (admin(this.props, {type: 'Interview', action: 'update'})) {
@@ -303,11 +311,16 @@ export default class VideoPlayer extends React.Component {
     }
 
     render() {
+        let css = (admin(this.props, {type: 'Interview', action: 'update'})) ? ' editorial' : ''
         if (this.props.project) {
             return (
                 <div className='wrapper-video'>
-                    <i className="fa fa-angle-double-down expand" aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
-                    <i className="fa fa-angle-double-up compress" aria-hidden="true" onClick={() => this.compressVideo()} />
+                    <i className={`fa fa-angle-double-down expand ${css}`}
+                      title={t(this.props, 'expand_video')}
+                      aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
+                    <i className={`fa fa-angle-double-up compress ${css}`}
+                      title={t(this.props, 'compress_video')}
+                      aria-hidden="true" onClick={() => this.compressVideo()} />
                     {this.enableInterviewEditViewButton()}
                     {this.selectInterviewEditViewColumns()}
                     <div className={"video-title-container"}>

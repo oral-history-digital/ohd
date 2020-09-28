@@ -47,7 +47,8 @@ es:
   show: Zeigen
   hide: Weniger
   edit_column_header:
-    select_columns: Zu bearbeitende Daten auswählen
+    open_table: "Erschließungstabelle: öffnen/schließen"
+    select_columns: "Erschließungstabelle: Spalten auswählen"
     text_orig: Transkript
     text_translated: Übersetzung
     mainheading_orig: Hauptüberschrift
@@ -92,6 +93,8 @@ es:
   selected: seleccionado
   archive_id: ID de archivo
   noscript: Por favor, active JavaScript para garantizar la plena funcionalidad de la página web.
+  compress_video: "Video: Ansicht verkleinern"
+  expand_video: "Video: Ansicht vergrößern"
   interviews: Entrevistas
   places: Lugares de nacimiento
   interview_location_desc_one: " se menciona en capítulo "
@@ -267,6 +270,7 @@ es:
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
     segment:
       edit: Segment bearbeiten
+      add_heading: Überschriften hinzufügen
       edit_heading: Überschriften bearbeiten
       speaker_string: Sprecher*in (als String)
     person:
@@ -849,7 +853,7 @@ es:
         organization: Institución
         homepage: Página web de la institución
         address: Dirección
-        street: Calle
+        street: Dirección
         zipcode: Código postal
         city: Lugar
         country: País
