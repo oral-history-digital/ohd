@@ -201,8 +201,11 @@
   color: $primary-color;
   transition: 0.3s;
   cursor: pointer;
-  .fa {
-    color: $editorial-color !important;
+  .fa.fa-sticky-note-o, .fa.fa-tag {
+    color: $editorial-color;
+    &.exists {
+      color: $primary-color;
+    }
   }
   &:last-child {
     margin-right: 0;
