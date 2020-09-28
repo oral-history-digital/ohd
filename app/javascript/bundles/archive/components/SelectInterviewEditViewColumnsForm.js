@@ -19,7 +19,7 @@ export default class SelectInterviewEditViewColumnsForm extends React.Component 
 
     possibleColumns() {
         // TODO: change this to various edit views!
-        return ['text_orig', 'text_translated', 'mainheading_orig', 'mainheading_translated', 'subheading_orig', 'subheading_translated', 'registry_references', 'annotations', 'timecode'];
+        return ['timecode', 'text_orig', 'mainheading_orig', 'subheading_orig', 'text_translated', 'mainheading_translated', 'subheading_translated', 'registry_references', 'annotations'];
     }
 
     formElements() {
@@ -48,7 +48,7 @@ export default class SelectInterviewEditViewColumnsForm extends React.Component 
         let _this = this;
         return (
             <div>
-                <Form 
+                <Form
                     scope='select_interview_edit_columns'
                     onSubmit={function(params){_this.selectInterviewEditViewColumns(params)}}
                     values={_this.selectedValues()}

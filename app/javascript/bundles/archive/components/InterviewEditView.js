@@ -48,7 +48,8 @@ export default class InterviewEditView extends React.Component {
       }
         let count = columns.size
         let row = columns.map((column, index) => {
-              return <th key={`edit-column-header-${index}`}>{t(this.props, `edit_column_header.${column}`)}</th>
+              let className = column === 'timecode' ? 'small' : ''
+              return <th className={className} key={`edit-column-header-${index}`}>{t(this.props, `edit_column_header.${column}`)}</th>
         })
         return <tr>{row}</tr>;
     }

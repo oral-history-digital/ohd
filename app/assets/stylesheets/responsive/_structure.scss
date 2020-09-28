@@ -373,6 +373,9 @@ table.edit_interview {
       max-width: none;
       height: 5rem;
       padding:15px 10px;
+      &.small {
+        width: 0.1%;
+      }
     }
     td {
       /* display: table-cell; */
