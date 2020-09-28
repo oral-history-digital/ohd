@@ -16,7 +16,7 @@ export default class Textarea extends React.Component {
     constructor(props, context) {
         super(props);
         this.state = {
-            valid: this.props.validate === undefined,
+            valid: !this.props.validate,
         };
                 
         this.handleChange = this.handleChange.bind(this);
@@ -32,7 +32,7 @@ export default class Textarea extends React.Component {
             this.props.handlechangecallback(name, value);
         }
 
-        if (this.props.validate !== undefined) {
+        if (typeof(this.props.validate) === 'function') {
             if (this.props.validate(value)) {
                 this.props.handleErrors(name, false);
                 this.setState({valid: true})
@@ -54,7 +54,7 @@ export default class Textarea extends React.Component {
                 css={this.props.css}
                 hidden={this.props.hidden}
                 valid={this.state.valid}
-                mandatory={this.props.validate !== undefined}
+                mandatory={typeof(this.props.validate) === 'function'}
                 elementType='textarea'
                 individualErrorMsg={this.props.individualErrorMsg}
                 help={this.props.help}
