@@ -14,8 +14,8 @@ export default class CitationInfo extends React.Component {
     }
 
     project(){
-        if (this.props.projectName && this.props.archiveDomain){
-            return `${this.props.projectName[this.props.locale]}, ${this.props.archiveDomain}`;
+        if (this.props.projectName){
+            return `${this.props.projectName[this.props.locale]}`;
         }
         return "";
     }
