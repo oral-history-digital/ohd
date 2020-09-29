@@ -43,7 +43,7 @@ class RegistryEntrySerializer < ApplicationSerializer
   end
 
   #
-  # this method is to determine in react whether a person serialized with PersonSerializerWithAssociations has to be loaded
+  # this method is to determine in react whether RegistryEntryWithAssociationsSerializer has to be loaded
   #
   def associations_loaded
     false
