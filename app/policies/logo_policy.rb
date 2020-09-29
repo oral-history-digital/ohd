@@ -5,7 +5,7 @@ class LogoPolicy < ApplicationPolicy
   end
 
   def update?
-    show
+    show?
   end
 
   class Scope < Scope

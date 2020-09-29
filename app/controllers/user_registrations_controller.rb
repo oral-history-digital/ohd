@@ -211,7 +211,7 @@ class UserRegistrationsController < ApplicationController
     # the admin is involved in the workflow starting from 'account_confirmed'
     # if the user does not confirm the account, it will expire and vanish
     # TODO: show information about unconfirmed accounts - either in workflow view or elsewhere (read only)
-    conditionals << "workflow_state NOT in ('new', 'account_created')"
+    conditionals << "workflow_state NOT in ('new', 'account_created', 'checked')"
     conditions = [ conditionals.join(' AND ') ] + condition_args
     conditions = conditions.first if conditions.length == 1
     @user_registrations = policy_scope(UserRegistration).includes(user_account: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1
