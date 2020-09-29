@@ -5,9 +5,8 @@ class AddUseInMapSearchToMetadataFields < ActiveRecord::Migration[5.2]
     if Project.first.identifier.to_sym == :zwar
 
       RegistryEntry.where(latitude: '').update_all(latitude: nil, longitude: nil)
-      # not necessary for zwar live system deployment 09/2020
-      #RegistryReferenceType.find_by_code('companie').update_attributes code: 'company'
-      RegistryEntry.find_by_code('companie').update_attributes code: 'company'
+      RegistryReferenceType.where(code: 'companie').update_all code: 'company'
+      RegistryEntry.where(code: 'companie').update_all code: 'company'
 
       {camp: 'Lager und Haftstätten', company: 'Firmen und Einsatzstellen'}.each do |code, label|
         MetadataField.create(name: code,

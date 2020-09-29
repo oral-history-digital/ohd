@@ -1,5 +1,5 @@
 class CreateTasksForExistingInterviews < ActiveRecord::Migration[5.2]
-  self.up
+  def self.up
     add_column :tasks, :cleared_at, :datetime # moved here because it was added too late in 20200910130234_add_more_timestamps_to_tasks.rb
     Interview.all.each do |interview|
       interviewee = interview.interviewees.first
