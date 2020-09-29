@@ -312,7 +312,7 @@ el:
         edit: Anmerkungen bearbeiten
       references:
         new: Erwähnungen hinzufügen
-        edit: Erwähnungen bearbeiten
+        edit: Erwähnungen
       speaker_string: Sprecher*in (als String)
     person:
       admin: Personen bearbeiten
