@@ -77,7 +77,11 @@ export default class RegistryEntryShow extends React.Component {
                 if(this.segmentIsFetched(rr.ref_object_id)) {
                     let interview_id = this.props.segments[rr.ref_object_id].archive_id
                     if (this.interviewIsFetched(interview_id)) {
-                        ref_object_string = `${this.props.segments[rr.ref_object_id].timecode} ${this.tape(this.props.segments[rr.ref_object_id])} ${t(this.props, 'in')} ${this.props.interviews[interview_id].short_title[this.props.locale]} (${this.props.interviews[interview_id].archive_id})`
+                        ref_object_string = this.props.segments[rr.ref_object_id].timecode + ' ' +
+                                            this.tape(this.props.segments[rr.ref_object_id]) + ' ' +
+                                            t(this.props, 'in') + ' ' +
+                                            this.props.interviews[interview_id].short_title[this.props.locale] + ' ' +
+                                            `(${this.props.interviews[interview_id].archive_id})`
                         return (
                             <Link className={'search-result-link'}
                             onClick={() => {
