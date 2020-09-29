@@ -48,7 +48,7 @@ export default class Segment extends React.Component {
                (this.props.data.text[`${this.props.contentLocale}-public`] || '')
     }
 
-    has_headings() {
+    hasHeading() {
        let mainheading = this.props.data.mainheading[`${this.props.contentLocale}-original`] || this.props.data.mainheading[`${this.props.contentLocale}-public`]
        let subheading = this.props.data.subheading[`${this.props.contentLocale}-original`] || this.props.data.subheading[`${this.props.contentLocale}-public`]
        return  !!(mainheading || subheading)
@@ -147,24 +147,29 @@ export default class Segment extends React.Component {
             userAnnotations.length > 0
         ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
-            let annotionCss = admin(this.props, {type: 'Annotation', action: 'update'}) ||
-                this.props.data.annotations_count[this.props.contentLocale] > 0 ||
-                userAnnotations.length > 0 ?
-                'content-trans-text-ico-link' : 'hidden';
-            let referenceCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) ||
-                this.props.data.references_count[this.props.contentLocale] > 0 ?
-                'content-trans-text-ico-link' : 'hidden';
+
+
+            let hasAnnotations = this.props.data.annotations_count[this.props.contentLocale] > 0 || userAnnotations.length > 0
+            let annotationCss = admin(this.props, {type: 'Annotation', action: 'update'}) || hasAnnotations ? 'content-trans-text-ico-link' : 'hidden';
+            let hasAnnotationsCss = hasAnnotations ? 'exists' : '';
+            let annotationsTitle = hasAnnotations ? t(this.props, 'edit.segment.annotations.edit') : t(this.props, 'edit.segment.annotations.new')
+
+            let hasReferences = this.props.data.references_count[this.props.contentLocale] > 0;
+            let referencesCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) || hasReferences ? 'content-trans-text-ico-link' : 'hidden';
+            let hasReferencesCss = hasReferences ? 'exists' : '';
+            let referencesTitle = hasReferences ? t(this.props, 'edit.segment.references.edit') : t(this.props, 'edit.segment.references.new')
 
             return (
                 <div className={icoCss}>
                     {this.edit(locale)}
                     {this.editHeadings(locale)}
-                    <div className={annotionCss} title={t(this.props, 'annotations')}
+                    <div className={annotationCss} title={annotationsTitle}
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
-                        className="fa fa-sticky-note-o"></i>
+                        className={`fa fa-sticky-note-o ${hasAnnotationsCss}`}></i>
                     </div>
-                    <div className={referenceCss} title={t(this.props, (this.props.project === 'mog') ? 'keywords_mog' : 'keywords')}
-                         onClick={() => this.toggleAdditionalContent('references')}><i className="fa fa-tag"></i>
+                    <div className={referencesCss} title={(this.props.project === 'mog') ? t(this.props, 'keywords_mog') : referencesTitle}
+                         onClick={() => this.toggleAdditionalContent('references')}><i
+                         className={`fa fa-tag ${hasReferencesCss}`}></i>
                     </div>
                 </div>
             )
@@ -172,11 +177,12 @@ export default class Segment extends React.Component {
     }
 
     edit(locale) {
+        let title = this.props.tabIndex == 1 ? 'edit.segment.translation' : 'edit.segment.transcript'
         if (admin(this.props, {type: 'Segment', action: 'update'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.segment.edit')}
+                    title={t(this.props, title)}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.segment.edit'),
                         content: <SegmentFormContainer segment={this.props.data} contentLocale={this.props.contentLocale} />
@@ -190,28 +196,10 @@ export default class Segment extends React.Component {
         }
     }
 
-    editHeadingIcon() {
-        if (this.has_headings()) {
-            return (
-                <span className="fa-stack fa-1x heading-exists">
-                    <i className="fa fa-pencil fa-stack-1x fa-stack-first-custom heading-exists"></i>
-                    <i className="fa fa-header fa-stack-1x fa-stack-second-custom heading-exists"></i>
-                </span>
-          )
-        }
-        else {
-            return (
-                <span className="fa-stack fa-1x">
-                    <i className="fa fa-pencil fa-stack-1x fa-stack-first-custom"></i>
-                    <i className="fa fa-plus fa-stack-1x fa-stack-second-custom"></i>
-                </span>
-            )
-        }
-    }
-
     editHeadings(locale) {
         if (admin(this.props, {type: 'Segment', action: 'update'})) {
-            let title = this.has_headings() ? t(this.props, 'edit.segment.edit_heading') : t(this.props, 'edit.segment.add_heading')
+            let title = this.hasHeading() ? t(this.props, 'edit.segment.heading.edit') : t(this.props, 'edit.segment.heading.new')
+            let hasHeadingCss = this.hasHeading() ? "exists" : ""
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
@@ -221,7 +209,10 @@ export default class Segment extends React.Component {
                         content: <SegmentHeadingFormContainer segment={this.props.data} contentLocale={this.props.contentLocale} />
                     })}
                 >
-                {this.editHeadingIcon()}
+                    <span className="fa-stack fa-1x">
+                        <i className={`fa fa-pencil fa-stack-1x fa-stack-first-custom ${hasHeadingCss}`}></i>
+                        <i className={`fa fa-header fa-stack-1x fa-stack-second-custom ${hasHeadingCss}`}></i>
+                    </span>
                 </div>
             )
         } else {

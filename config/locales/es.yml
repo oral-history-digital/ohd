@@ -269,9 +269,17 @@ es:
         title: Interviews löschen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
     segment:
-      edit: Segment bearbeiten
-      add_heading: Überschriften hinzufügen
-      edit_heading: Überschriften bearbeiten
+      transcript: Transkript bearbeiten
+      translation: Übersetzung bearbeiten
+      heading:
+        new: Überschrift hinzufügen
+        edit: Überschrift bearbeiten
+      annotations:
+        new: Anmerkungen hinzufügen
+        edit: Anmerkungen
+      references:
+        new: Erwähnungen hinzufügen
+        edit: Erwähnungen
       speaker_string: Sprecher*in (als String)
     person:
       admin: Personen bearbeiten
