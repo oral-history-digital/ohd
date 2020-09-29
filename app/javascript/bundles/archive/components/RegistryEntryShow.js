@@ -26,23 +26,23 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     fetchInterview(archiveId) {
-        if(archiveId && (!this.props.interviewsStatus || !this.props.interviewsStatus[archiveId])) {
+        if(archiveId && !this.props.interviewsStatus[archiveId]) {
             this.props.fetchData(this.props, 'interviews', archiveId)
         } 
     }
 
     interviewIsFetched(archiveId) {
-        return this.props.interviewsStatus && this.props.interviewsStatus[archiveId] && this.props.interviewsStatus[archiveId].split('-')[0] === 'fetched'
+        return this.props.interviewsStatus[archiveId] && this.props.interviewsStatus[archiveId].split('-')[0] === 'fetched'
     }
 
     fetchSegment(id) {
-        if(id && (!this.props.segmentsStatus || !this.props.segmentsStatus[id])) {
+        if(id && !this.props.segmentsStatus[id]) {
             this.props.fetchData(this.props, 'segments', id)
         }
     }
 
     segmentIsFetched(id) {
-        return this.props.segmentsStatus && this.props.segmentsStatus[id] && this.props.segmentsStatus[id].split('-')[0] === 'fetched' 
+        return this.props.segmentsStatus[id] && this.props.segmentsStatus[id].split('-')[0] === 'fetched' 
     }
 
     loadRegistryReferenceTypes() {
@@ -72,30 +72,29 @@ export default class RegistryEntryShow extends React.Component {
 
     refObject(rr) {
         let ref_object_string = ''
-        switch (rr.ref_object_type.toLowerCase()) {
-            case 'segment':
+        switch (rr.ref_object_type) {
+            case 'Segment':
                 if(this.segmentIsFetched(rr.ref_object_id)) {
-                    let interview_id = this.props.segments[rr.ref_object_id].archive_id
-                    if (this.interviewIsFetched(interview_id)) {
+                    if (this.interviewIsFetched(rr.archive_id)) {
                         ref_object_string = this.props.segments[rr.ref_object_id].timecode + ' ' +
                                             this.tape(this.props.segments[rr.ref_object_id]) + ' ' +
                                             t(this.props, 'in') + ' ' +
-                                            this.props.interviews[interview_id].short_title[this.props.locale] + ' ' +
-                                            `(${this.props.interviews[interview_id].archive_id})`
+                                            this.props.interviews[rr.archive_id].short_title[this.props.locale] + ' ' +
+                                            `(${rr.archive_id})`
                         return (
                             <Link className={'search-result-link'}
-                            onClick={() => {
-                                this.props.closeArchivePopup();
-                                this.props.setArchiveId(this.props.segments[rr.ref_object_id].archive_id);
-                                this.props.setTapeAndTime(this.props.segments[rr.ref_object_id].tape_nbr, this.props.segments[rr.ref_object_id].time)
-                            }}
-                            to={pathBase(this.props) + '/interviews/' + this.props.segments[rr.ref_object_id].archive_id}
+                                onClick={() => {
+                                    this.props.closeArchivePopup();
+                                    this.props.setArchiveId(rr.archive_id);
+                                    this.props.setTapeAndTime(this.props.segments[rr.ref_object_id].tape_nbr, this.props.segments[rr.ref_object_id].time)
+                                }}
+                                to={pathBase(this.props) + '/interviews/' + rr.archive_id}
                             >
                                 {`${ref_object_string}`}
                             </Link>
                         )
-                    } else if (interview_id) {
-                        this.fetchInterview(interview_id)
+                    } else if (rr.archive_id) {
+                        this.fetchInterview(rr.archive_id)
                     }
                 } else if (rr.ref_object_id) {
                     this.fetchSegment(rr.ref_object_id)
@@ -103,14 +102,14 @@ export default class RegistryEntryShow extends React.Component {
                 break;
             default:
                 if(this.interviewIsFetched(rr.archive_id)) {
-                    ref_object_string = `${this.props.interviews[rr.archive_id].short_title[this.props.locale]} (${this.props.interviews[rr.archive_id].archive_id})`
+                    ref_object_string = `${this.props.interviews[rr.archive_id].short_title[this.props.locale]} (${rr.archive_id})`
                     return (
                         <Link className={'search-result-link'}
-                        onClick={() => {
-                            this.props.closeArchivePopup();
-                            this.props.setArchiveId(rr.archive_id);
-                        }}
-                        to={pathBase(this.props) + '/interviews/' + rr.archive_id}
+                            onClick={() => {
+                                this.props.closeArchivePopup();
+                                this.props.setArchiveId(rr.archive_id);
+                            }}
+                            to={pathBase(this.props) + '/interviews/' + rr.archive_id}
                         >
                             {`${ref_object_string}`}
                         </Link>
