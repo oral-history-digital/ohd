@@ -23,7 +23,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
     xml.title "Lebensgeschichtliches Interview mit #{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}, interviewt von #{@interview.interviewers.first.first_name(@locale)}, #{@interview.interviewers.first.last_name(@locale)} am #{@interview.interview_date && Date.parse(@interview.interview_date).strftime('%d.%m.%Y')}"
   end
 
-  xml.publisher "Interview-Archiv \"#{current_project.name['de']}\""
+  xml.publisher "Interview-Archiv \"#{current_project.name(@locale)}\""
   xml.publicationYear DateTime.now.year
 
   xml.contributors do
@@ -57,11 +57,8 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.subjects do
-    if @interview.respond_to?(:typology)
-      xml.subject "Erfahrungen: #{@interview.typology.map{|t| I18n.t(t.gsub(' ', '_').downcase, scope: 'search_facets')}.join(', ')}"
-    else
-      xml.subject "Gruppe: #{@interview.forced_labor_groups.map{|f| RegistryEntry.find(f).to_s(@locale)}.join(', ')}"
-      xml.subject "Lager und Einsatzorte: #{@interview.forced_labor_fields.map{|f| RegistryEntry.find(f).to_s(@locale)}.join(', ')}"
+    current_project.registry_reference_type_metadata_fields.where(use_in_results_table: true, ref_object_type: 'Interview').each do |field|
+      xml.subject "#{field.label(@locale)}: #{@interview.send(field.name).map{|f| RegistryEntry.find(f).to_s(@locale)}.join(', ')}"
     end
   end
 
@@ -86,8 +83,10 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.rightsList do
-    xml.rights rightsURI: "#{current_project.external_links['conditions']['de']}" do 
-      xml.text! "Nutzungsbedingungen des Interview-Archivs \"#{current_project.name['de']}\""
+    current_project.external_links.each do |external_link|
+      xml.rights rightsURI: "#{external_link.url}" do 
+        xml.text! "#{external_link.name(@locale)} des Interview-Archivs \"#{current_project.name(@locale)}\""
+      end
     end
   end
 
