@@ -71,7 +71,7 @@ export default class InterviewEditView extends React.Component {
     render () {
         if (this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`] && this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched') {
             return (
-                <table className='edit_interview'>
+                <table className='edit-interview'>
                     <thead>
                         {this.tableHeader()}
                     </thead>

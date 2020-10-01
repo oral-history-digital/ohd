@@ -122,7 +122,7 @@ header.site-header {
     display: none;
   }
   .fullscreen {
-    width: 90%;
+    width: 100%;
   }
   &.fix-video {
     .flyout-toggle {
@@ -358,7 +358,7 @@ h1.video-title {
   }
 }
 
-table.edit_interview {
+table.edit-interview {
     font-size: 90%;
     margin-top: 60px;
     border-collapse: separate;
@@ -397,6 +397,9 @@ table.edit_interview {
       }
       input {
         overflow: scroll;
+      }
+      textarea {
+        resize: none;
       }
     }
 }
