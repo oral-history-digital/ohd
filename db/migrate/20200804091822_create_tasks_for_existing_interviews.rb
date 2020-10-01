@@ -1,5 +1,6 @@
 class CreateTasksForExistingInterviews < ActiveRecord::Migration[5.2]
-  def change
+  def self.up
+    add_column :tasks, :cleared_at, :datetime # moved here because it was added too late in 20200910130234_add_more_timestamps_to_tasks.rb
     Interview.all.each do |interview|
       interviewee = interview.interviewees.first
       first_biographical_entry = !!interviewee && interviewee.biographical_entries.first
@@ -25,8 +26,12 @@ class CreateTasksForExistingInterviews < ActiveRecord::Migration[5.2]
         annotations: interview.annotations.exists?,
         anonymisation: !!first_segment && first_segment.translations.count > 2
       }.each do |key, cleared|
-        Task.create(interview_id: interview.id, task_type_id: TaskType.find_by_key(key).id, workflow_state: (cleared ? 'clear' : 'created'))
+        # empty string sets workflow_state to 'cleared'
+        Task.create(interview_id: interview.id, task_type_id: TaskType.find_by_key(key).id, workflow_state: (cleared ? 'clear' : ''))
       end
     end
+  end
+  def self.down
+    remove_column :tasks, :cleared_at
   end
 end
