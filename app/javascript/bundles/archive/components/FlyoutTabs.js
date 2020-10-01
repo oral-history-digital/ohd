@@ -62,9 +62,9 @@ export default class FlyoutTabs extends React.Component {
         } else if (tabIndex === this.props.locales.length + 3) {
              // registry entries
             this.context.router.history.push(`${pathBase(this.props)}/registry_entries`);
-        } else if (this.props.projectId === 'zwar' && tabIndex === this.props.locales.length + 4) {
+        //} else if (this.props.projectId === 'zwar' && tabIndex === this.props.locales.length + 4) {
             // map
-           this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
+        //   this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
         }
         if (tabIndex === 0 || tabIndex >= this.props.locales.length + 1) {
             this.setState({tabIndex: tabIndex});
@@ -513,7 +513,7 @@ export default class FlyoutTabs extends React.Component {
                         <Tab className='flyout-tab' key='archive-search'>{this.renderSearchTheArchiveButton()}</Tab>
                         {this.interviewTab()}
                         {this.registryEntriesTab()}
-                        {this.props.projectId === 'zwar' && this.mapTab()}
+                        {/*this.props.projectId === 'zwar' && this.mapTab()*/}
                         {this.indexingTab()}
                         {this.usersAdminTab()}
                         {this.userContentTab()}
@@ -532,7 +532,7 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
                     {this.interviewTabPanel()}
                     {this.registryEntriesTabPanel()}
-                    {this.props.projectId === 'zwar' && this.mapTabPanel()}
+                    {/*this.props.projectId === 'zwar' && this.mapTabPanel()*/}
                     {this.indexingTabPanel()}
                     {this.usersAdminTabPanel()}
                     {this.userContentTabPanel()}
