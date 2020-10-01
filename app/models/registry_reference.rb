@@ -24,7 +24,7 @@ class RegistryReference < BaseRegistryReference
         }
 
   def touch_objects
-    RegistryEntry.find(registry_entry_id).touch
+    registry_entry && registry_entry.touch
     ref_object_type.constantize.find(ref_object_id).touch
     # reindex interview when updated person-references
     if (ref_object_type == "Person" && ref_object_type.constantize.find(ref_object_id).respond_to?(:interviews))

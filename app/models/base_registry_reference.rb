@@ -5,16 +5,11 @@ class BaseRegistryReference < ApplicationRecord
 
   belongs_to :ref_object, :polymorphic => true
 
-
-
   belongs_to :registry_entry,
              -> { includes(:registry_names) }
              #-> { includes(:registry_names, {main_registers: :registry_names}) }
 
   belongs_to :registry_reference_type
-
-
-
 
   validates_presence_of :ref_object, :registry_entry
 
