@@ -123,10 +123,11 @@ export default class WrappedAccount extends React.Component {
 
     tasks(header, data, hideShow=true) {
         if (data) {
+            var hidden = data.length === 0 ? 'hidden' : ''
             return (
-                <div className={'tasks box'}>
+                <div className={`tasks box ${hidden}`}>
                     <h4 className='title'>{data.length + ' ' + t(this.props, `activerecord.models.task.${header}`)}{this.toggleTasks(header)}</h4>
-                    {this.state.showTasks[header] && 
+                    {this.state.showTasks[header] &&
                         <TasksOnlyStatusEditableContainer
                             data={data || {}}
                             initialFormValues={{user_account_id: this.props.account.id}}
