@@ -53,7 +53,7 @@ class Task < ApplicationRecord
   end
 
   def start
-    self.update_attributes(start_at: DateTime.now)
+    self.update_attributes(started_at: DateTime.now)
   end
 
   def finish
