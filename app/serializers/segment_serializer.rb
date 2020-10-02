@@ -45,16 +45,24 @@ class SegmentSerializer < ApplicationSerializer
   end
 
   def annotations_count
-    (object.project.available_locales + [object.interview.lang]).inject({}) do |mem, locale|
-      mem[locale] = object.annotations.includes(:translations).where("annotation_translations.locale": locale).count
-      mem
+    if object.annotations.count > 0
+      (object.project.available_locales + [object.interview.lang]).inject({}) do |mem, locale|
+        mem[locale] = object.annotations.includes(:translations).where("annotation_translations.locale": locale).count
+        mem
+      end
+    else
+      zero_counts(object)
     end
   end
 
   def references_count
-    (object.project.available_locales + [object.interview.lang]).inject({}) do |mem, locale|
-      mem[locale] = object.registry_references.where("registry_name_translations.locale": locale).count
-      mem
+    if object.registry_references.count > 0
+      (object.project.available_locales + [object.interview.lang]).inject({}) do |mem, locale|
+        mem[locale] = object.registry_references.where("registry_name_translations.locale": locale).count
+        mem
+      end
+    else
+      zero_counts(object)
     end
   end
 
@@ -78,6 +86,12 @@ class SegmentSerializer < ApplicationSerializer
 
   def text
     object.transcripts
+  end
+
+  private
+
+  def zero_counts(object)
+    object.available_locales.map{ |locale| [locale, 0] }.to_h
   end
 
 end
