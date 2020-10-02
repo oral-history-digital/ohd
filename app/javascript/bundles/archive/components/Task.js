@@ -9,9 +9,12 @@ export default class Task extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            user_account_id: this.props.task.user_account_id,
-            supervisor_id: this.props.task.supervisor_id,
-            workflow_state: this.props.task.workflow_state
+            task: {
+                id: this.props.task.id,
+                user_account_id: this.props.task.user_account_id,
+                supervisor_id: this.props.task.supervisor_id,
+                workflow_state: this.props.task.workflow_state
+            }
         };
     }
 
@@ -47,26 +50,20 @@ export default class Task extends React.Component {
         return opts;
     }
 
-    handleChange(event) {
-        const value =  event.target.value;
-        const name =  event.target.name;
-        this.setState({[name]: value});
-    }
-
     value(attribute) {
         let v, user;
-        if (/^\d+$/.test(this.state[attribute])) { 
+        if (/^\d+$/.test(this.props.task[attribute])) { 
             //
             // current_user has the key 'current' in the userAccounts-Hash
             //
-            if (this.props.userAccounts['current'].id === parseInt(this.state[attribute])) {
+            if (this.props.userAccounts['current'].id === parseInt(this.props.task[attribute])) {
                 user = this.props.userAccounts['current'];
             } else {
-                user = this.props.userAccounts[this.state[attribute]];
+                user = this.props.userAccounts[this.props.task[attribute]];
             }
             v = user && `${user.last_name}, ${user.first_name}` || 'NA';
-        } else if (this.state[attribute]) {
-            v = t(this.props, `workflow_states.${this.state[attribute]}`);
+        } else if (this.props.task[attribute]) {
+            v = t(this.props, `workflow_states.${this.props.task[attribute]}`);
         } else {
             v = 'NA';
         }
@@ -77,7 +74,7 @@ export default class Task extends React.Component {
         )
     }
 
-    form(attribute, options) {
+    select(attribute, options) {
         if (
             // if the task is one of this users tasks
             (
@@ -93,31 +90,25 @@ export default class Task extends React.Component {
             admin(this.props, {type: 'Task', action: 'assign'})
         ) {
             return (
-                <form 
-                    className={'task-form'} 
-                    key={`form-${this.props.task.id}-${attribute}`}
-                    onSubmit={() => {event.preventDefault(); this.props.submitData(this.props, {task: {id: this.props.task.id, [attribute]: this.state[attribute]}})}}
+                <select
+                    key={`select-${this.props.task.id}-${attribute}`}
+                    name={attribute}
+                    value={this.state.task[attribute] || this.props.task[attribute] || ''}
+                    onChange={() => this.setState({task: Object.assign({}, this.state.task, {[event.target.name]: event.target.value})})}
                 >
-                    <select
-                        name={attribute}
-                        value={this.state[attribute] || this.props.task[attribute] || ''}
-                        onChange={() => this.setState({[event.target.name]: event.target.value})}
-                    >
-                        {options}
-                    </select>
-                    <input type="submit" value={t(this.props, 'submit')}/>
-                </form>
+                    {options}
+                </select>
             )
         } else {
             return null;
         }
     }
 
-    valueAndForm(attribute, options) {
+    valueAndSelect(attribute, options) {
         return (
             <div>
                 {this.value(attribute)}
-                {this.form(attribute, options)}
+                {this.select(attribute, options)}
             </div>
         )
     }
@@ -133,11 +124,18 @@ export default class Task extends React.Component {
     render() {
         return (
             <div className='data boxes' key={`${this.props.interview.archive_id}-${this.props.task.id}-tasks-boxes`}>
-                {this.box(this.props.task.task_type.name[this.props.locale])}
-                {this.box(this.valueAndForm('supervisor_id', this.usersAsOptionsForSelect('supervisor_id')))}
-                {this.box(this.valueAndForm('user_account_id', this.usersAsOptionsForSelect('user_account_id')))}
+                <form 
+                    className={'task-form'} 
+                    key={`form-${this.props.task.id}`}
+                    onSubmit={() => {event.preventDefault(); this.props.submitData(this.props, {task: this.state.task})}}
+                >
+                    {this.box(this.props.task.task_type.name[this.props.locale])}
+                    {this.box(this.valueAndSelect('supervisor_id', this.usersAsOptionsForSelect('supervisor_id')))}
+                    {this.box(this.valueAndSelect('user_account_id', this.usersAsOptionsForSelect('user_account_id')))}
+                    {this.box(this.valueAndSelect('workflow_state', this.workflowStatesAsOptionsForSelect()))}
+                    <input type="submit" value={t(this.props, 'submit')}/>
+                </form>
                 {this.box(admin(this.props, this.props.task) && <CommentsContainer data={this.props.task.comments} initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}} />, '30')}
-                {this.box(this.valueAndForm('workflow_state', this.workflowStatesAsOptionsForSelect()))}
             </div>
         );
     }
