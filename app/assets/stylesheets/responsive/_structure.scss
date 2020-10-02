@@ -805,6 +805,13 @@ a.search-result-link {
 .workflow-active {
   background-color: $gray-lightest;
   padding: 20px 20px 0;
+  &.header {
+    border-bottom: 1px solid gray;
+  }
+  &.tasks {
+    height: 300px;
+    overflow-y: scroll;
+  }
 }
 
 /* Home Video */

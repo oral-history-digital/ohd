@@ -121,7 +121,7 @@ export default class InterviewWorkflowRow extends React.Component {
             this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`].split('-')[0] === 'fetched'
         ) {
             return (
-                <div className='workflow-active'>
+                <div className='workflow-active tasks'>
                     {this.props.interview.task_ids.map((taskId, index) => {
                         if (this.props.project.task_types[this.props.tasks[taskId].task_type.id].use) {
                             return <TaskContainer task={this.props.tasks[taskId]} interview={this.props.interview} />
