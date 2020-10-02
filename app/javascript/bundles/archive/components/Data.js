@@ -1,6 +1,7 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
-import { t, admin, pluralize, camelcase } from '../../../lib/utils';
+import { t, admin, pluralize, camelcase, pathBase } from '../../../lib/utils';
 
 export default class Data extends React.Component {
 
@@ -24,7 +25,17 @@ export default class Data extends React.Component {
             }
             return (
                 <div className='base-data box'>
-                    <p className='name'>{`${this.props.data.archive_id}: ${this.name()}`}</p>
+                    <p>
+                        <Link
+                            onClick={() => {
+                                this.props.setArchiveId(this.props.data.archive_id);
+                                this.props.setTapeAndTime(1, 0)
+                            }}
+                            to={pathBase(this.props) + '/interviews/' + this.props.data.archive_id}
+                        >
+                            {`${this.props.data.archive_id}: ${this.name()}`}
+                        </Link>
+                    </p>
                     <p className='created-at'>
                         <span className='title'>{t(this.props, `activerecord.attributes.${this.props.scope}.${dateAttribute}`) + ': '}</span>
                         <span className='content'>{this.props.data[dateAttribute]}</span>
