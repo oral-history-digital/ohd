@@ -44,9 +44,11 @@ class Task < ApplicationRecord
     if user_account_id_changed? && user_account_id != nil
       AdminMailer.with(task: self, receiver: user_account).task_assigned.deliver_now
       self.assigned_to_user_account_at = DateTime.now
+      interview.touch
     end
     if supervisor_id_changed? && supervisor_id != nil
       self.assigned_to_supervisor_at = DateTime.now
+      interview.touch
     end
   end
 
