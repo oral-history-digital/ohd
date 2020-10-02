@@ -11,7 +11,7 @@ class RegistryEntryWithAssociationsSerializer < RegistryEntrySerializer
 
   def child_ids
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale.to_s] = object.alphanum_sorted_ids(:children, locale)
+      mem[locale.to_s] = object.alphanum_sorted_children_ids(locale)
       mem
     end
   end
