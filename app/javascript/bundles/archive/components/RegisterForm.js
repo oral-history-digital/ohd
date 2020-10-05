@@ -122,7 +122,7 @@ export default class RegisterForm extends React.Component {
                 attribute: 'tos_agreement',
                 labelKey: 'user_registration.tos_agreement',
                 type: 'checkbox',
-                validate: function(v){return v !== false && v !== '0'},
+                validate: function(v){return v && v !== '0'},
                 help: (
                     <a href={conditionsLink[this.props.locale]} target="_blank" title="Externer Link" rel="noopener">
                         {t(this.props, 'user_registration.notes_on_tos_agreement')}
@@ -134,7 +134,7 @@ export default class RegisterForm extends React.Component {
                 attribute: 'priv_agreement' ,
                 labelKey: 'user_registration.priv_agreement',
                 type: 'checkbox',
-                validate: function(v){return v !== false && v !== '0'},
+                validate: function(v){return v && v !== '0'},
                 help: (
                     <a href={privacyLink[this.props.locale]} target="_blank" title="Externer Link" rel="noopener">
                         {t(this.props, 'user_registration.notes_on_priv_agreement')}
@@ -144,7 +144,7 @@ export default class RegisterForm extends React.Component {
         ];
 
         if (this.props.projectId === 'mog') {
-            return firstElements.concat(countrySelect).concat(otherElements);
+            return firstElements.concat(addressElements).concat(countrySelect).concat(otherElements);
         } else if (this.props.locale === 'de') {
             return firstElements.concat(addressElements).concat(countrySelect).concat(newsletterElement).concat(otherElements);
         } else {
