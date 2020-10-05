@@ -811,6 +811,10 @@ a.search-result-link {
   &.tasks {
     height: 300px;
     overflow-y: scroll;
+    input[type=submit] {
+      float: right;
+      margin-right: 7px;
+    }
   }
 }
 
