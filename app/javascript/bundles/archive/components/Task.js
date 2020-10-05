@@ -13,7 +13,7 @@ export default class Task extends React.Component {
                 id: this.props.task.id,
                 user_account_id: this.props.task.user_account_id,
                 supervisor_id: this.props.task.supervisor_id,
-                workflow_state: this.props.task.workflow_state
+                //workflow_state: this.props.task.workflow_state
             }
         };
     }
