@@ -169,6 +169,7 @@ export default class InterviewWorkflowRow extends React.Component {
                             optionsScope={'workflow_states'}
                             noStatusCheckbox={true}
                             noLabel={true}
+                            withEmpty={true}
                         />, '10'
                     )} 
                 </div>
