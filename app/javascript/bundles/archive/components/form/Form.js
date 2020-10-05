@@ -111,7 +111,7 @@ export default class Form extends React.Component {
         let errors = {};
         this.props.elements.map((element, index) => {
             let error = false;
-            let value = element.value || (this.props.data && this.props.data[element.attribute]) || '';
+            let value = element.value || (this.props.data && this.props.data[element.attribute]);
             if (typeof(element.validate) === 'function') {
                 error = !element.validate(value);
             }
@@ -227,7 +227,7 @@ export default class Form extends React.Component {
         props['handleChange'] = this.handleChange;
         props['handleErrors'] = this.handleErrors;
         props['key'] = props.attribute;
-        props['value'] = this.state.values[props.attribute] || props.value;
+        props['value'] = this.state.values[props.attribute] === 'undefined' ? props.value : this.state.values[props.attribute];
         props['data'] = this.props.data;
 
         // set defaults for the possibillity to shorten elements list
