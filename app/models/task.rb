@@ -1,6 +1,6 @@
 class Task < ApplicationRecord
 
-  belongs_to :user_account, touch: true
+  belongs_to :user_account
   belongs_to :supervisor, class_name: 'UserAccount'
   belongs_to :task_type
   belongs_to :interview
@@ -45,10 +45,12 @@ class Task < ApplicationRecord
       AdminMailer.with(task: self, receiver: user_account).task_assigned.deliver_now
       self.assigned_to_user_account_at = DateTime.now
       interview.touch
+      user_account.touch
     end
     if supervisor_id_changed? && supervisor_id != nil
       self.assigned_to_supervisor_at = DateTime.now
       interview.touch
+      supervisor.touch
     end
   end
 
