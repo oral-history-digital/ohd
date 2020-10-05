@@ -94,7 +94,11 @@ export default class Task extends React.Component {
                     key={`select-${this.props.task.id}-${attribute}`}
                     name={attribute}
                     value={this.state.task[attribute] || this.props.task[attribute] || ''}
-                    onChange={() => this.setState({task: Object.assign({}, this.state.task, {[event.target.name]: event.target.value})})}
+                    //
+                    // strange issue: state.task.id gets lost on second update
+                    // therefore it is set again here
+                    //
+                    onChange={() => this.setState({task: Object.assign({}, this.state.task, {[event.target.name]: event.target.value, id: this.props.task.id})})}
                 >
                     {options}
                 </select>
