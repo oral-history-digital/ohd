@@ -7,9 +7,6 @@ class UserAccount < ApplicationRecord
          :recoverable,
          :trackable
 
-  has_many :tasks, through: :user
-  has_many :supervised_tasks, through: :user
-
   has_one :user_registration
 
   has_many :user_account_ips,
