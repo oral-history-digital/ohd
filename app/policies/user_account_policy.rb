@@ -14,8 +14,8 @@ class UserAccountPolicy < ApplicationPolicy
 
   class Scope < Scope
     def resolve
-      if user.admin? || user.user_roles.exists?
-        (UserAccount.joins(:user_roles) | UserAccount.where(admin: true))
+      if user.admin? || user.user_roles.exists? || user.tasks.exists? || user.supervised_tasks.exists?
+        UserAccount.joins(:user_roles) | UserAccount.where(admin: true) | UserAccount.joins(:tasks) | UserAccount.joins(:supervised_tasks)
       else
         scope.none
       end
