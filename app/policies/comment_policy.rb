@@ -1,7 +1,7 @@
 class CommentPolicy < ApplicationPolicy
 
   def create?
-    user
+    user.admin? || user.permissions?('Comment', :create) || user.tasks?(record.ref)
   end
 
   def update?
