@@ -48,13 +48,11 @@ export default class Account extends React.Component {
             )
         ) {
             return (
-                <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
-                    <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.state.editView)}>
-                        <span className={`switch-input ${this.state.editView ? 'checked' : ''}`} type="checkbox" />
-                        <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span>
-                        <span className="switch-handle"></span>
-                    </div>
-                </AuthShowContainer>
+                <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.state.editView)}>
+                    <span className={`switch-input ${this.state.editView ? 'checked' : ''}`} type="checkbox" />
+                    <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span>
+                    <span className="switch-handle"></span>
+                </div>
             )
         } else {
             return null;
