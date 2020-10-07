@@ -16,7 +16,7 @@
   <p>С Вашим аккаунтом: <%= @user_account.email %></p>
   <p>Вы можете подтвердить регистрацию за линком: <%= url %> и получить доступ ко всем функиям интревью-архива.</p>
   <p>С уважением,</p>
-  <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <p>сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
 <% when :es -%>
   <p>Estimada/o <%= @user_account.display_name %>,</p>
   <p>por la presente le confirmamos su cuenta para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
