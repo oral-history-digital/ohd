@@ -94,7 +94,7 @@ en:
   interview_location_desc_one: " wird in Kapitel "
   interview_location_desc_two: " erwähnt."
   archive_map_explanation: Die Karte stellt die Geburtsorte der Interviewten dar.
-  interview_map_explanation: Darstellung der im Interview erwähnten Orte
+  interview_map_explanation: Places mentioned in the interview
   interview_gallery_explanation: The picture gallery contains photos of the interview
     situation as well as family photos and other historical photos from the interviewed
     person's private collection.
@@ -744,9 +744,9 @@ en:
         return_locations: Wohnorte ab 1945
         return_date: Datum der Rückkehr
         home_locations: Wohnort
-        duration: Dauer
-        interview_date: geführt am
-        tape_count: Anzahl der Tapes
+        duration: Duration
+        interview_date: Interview date
+        tape_count: Number of tapes
         interviewers: Interviewführung
         transcriptors: Transkription
         translators: Übersetzung
