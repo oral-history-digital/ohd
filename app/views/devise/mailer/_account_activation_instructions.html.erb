@@ -20,7 +20,7 @@
   <p>После подтверждения Вашей регистрации, Ваши данные будут проверены сотрудниками проекта. В течение двух дней Вы получите ответ об активации Вашего доступа к интервью-архиву.</p>
   <p>Если Вы не регистрировались в интервью-архиве, можете проингорировать это сообщение. Ваш данные будут автоматически удалены в течение 14-ти дней.</p>
   <p>С уважением,</p>
-  <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <p>сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
 <% when :es -%>
   <p>Estimada/o <%= @user_account.display_name %>,</p>
   <p>Usted se ha registrado para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
