@@ -72,13 +72,13 @@ export default class InterviewInfo extends React.Component {
                     >
                         {this.collection()}
                     </SingleValueWithFormContainer>
-                    <SingleValueWithFormContainer
-                        obj={this.props.interview}
-                        collapse={true}
-                        elementType={'multiLocaleTextarea'}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations')}
-                    />
                     <AuthShowContainer ifAdmin={true} obj={this.props.interview}>
+                        <SingleValueWithFormContainer
+                            obj={this.props.interview}
+                            collapse={true}
+                            elementType={'multiLocaleTextarea'}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations')}
+                        />
                         <SingleValueWithFormContainer
                             elementType={'select'}
                             obj={this.props.interview}
