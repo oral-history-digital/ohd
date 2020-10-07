@@ -187,7 +187,7 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
       color: $editorial-color;
       margin-left: 1px;
   }
-  .fa.exists {
+  .fa.exists, .archive-view {
     color: $primary-color;
   }
   &.active {
