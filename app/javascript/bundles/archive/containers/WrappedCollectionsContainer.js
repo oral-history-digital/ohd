@@ -27,9 +27,6 @@ const mapStateToProps = (state) => {
                 elementType: 'select',
                 attribute: 'project_id',
                 values: state.data.projects,
-                //optionsScope: 'genders',
-                //withEmpty: true,
-                //validate: function(v){return v !== ''} 
             },
             {
                 attribute: 'name',

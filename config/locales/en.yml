@@ -562,10 +562,6 @@ en:
     female: female
     male: male
     diverse: diverse
-  genders:
-    female: female
-    male: male
-    diverse: diverse
   search_facets:
     language: Language
     collection: Collection

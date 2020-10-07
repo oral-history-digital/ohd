@@ -556,10 +556,6 @@ es:
     female: feminino
     male: masculino
     diverse: diverso
-  genders:
-    female: feminino
-    male: masculino
-    diverse: diverso
   search_facets:
     forced_labor_field: Area de trabajo
     forced_labor_group: Grupo

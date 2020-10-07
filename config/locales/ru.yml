@@ -609,10 +609,6 @@ ru:
     female: женщина
     male: мужчина
     diverse: другие
-  genders:
-    female: weiblich
-    male: männlich
-    diverse: другие
   search_facets:
     forced_labor_field: Сфера деятельности
     forced_labor_group: Группа

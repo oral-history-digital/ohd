@@ -567,10 +567,6 @@ el:
     female: θήλυ
     male: άρρεν
     diverse: Άλλοe
-  genders:
-    female: weiblich
-    male: männlich
-    diverse: Άλλοe
   search_facets:
     forced_labor_field: Einsatzbereich
     forced_labor_group: Gruppe
