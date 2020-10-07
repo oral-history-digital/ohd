@@ -1,11 +1,11 @@
 class CreateTaskTypePermissions < ActiveRecord::Migration[5.2]
   def change
-    #create_table :task_type_permissions do |t|
-      #t.references :task_type
-      #t.references :permission
+    create_table :task_type_permissions do |t|
+      t.references :task_type
+      t.references :permission
 
-      #t.timestamps
-    #end
+      t.timestamps
+    end
 
     {
       #media_import: ['Medienimport (A/V)', 'Med'],
