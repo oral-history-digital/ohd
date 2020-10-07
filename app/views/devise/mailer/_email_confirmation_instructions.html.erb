@@ -13,7 +13,7 @@
   <p>Пожалуйста, подтвердите изменение, перейдя за линком:</p>
   <p><%= link_to 'Подтвердить новый адрес электронной почты', url %></p>
   <p>С уважением,</p>
-  <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <p>сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% when :el -%>
   <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
   <p>έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή <"<%= @user_account.user_registration.projects.last.name('el') %>".</p>

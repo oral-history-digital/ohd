@@ -16,7 +16,7 @@
   <p>Это произошло, если вы нарушили Условия пользовния.</p>
   <p>Если у Вас в связи с этим возникли вопросы, пожалуйста, свяжитесь с нами: <%= contact_email %>.</p>
   <p>С уважением,</p>
-  <p>сотрдники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <p>сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
   <% when :el -%>
   <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
   <p>Η πρόσβαση σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>" αποκλείστηκε.</p>
