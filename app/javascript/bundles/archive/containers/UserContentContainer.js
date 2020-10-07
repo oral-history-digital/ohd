@@ -7,11 +7,12 @@ import { setArchiveId } from '../actions/archiveActionCreators';
 import { searchInArchive } from '../actions/searchActionCreators';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         translations: state.archive.translations,
         facets: state.search.archive.facets,
+        editView: state.archive.editView
     }
 }
 

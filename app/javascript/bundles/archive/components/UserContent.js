@@ -39,6 +39,7 @@ export default class UserContent extends React.Component {
 
     edit() {
         let titleKey = "edit" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+        let css = this.props.editView ? "fa fa-pencil" : "fa fa-pencil archive-view"
         return <div
             className='flyout-sub-tabs-content-ico-link'
             title={t(this.props, 'edit')}
@@ -47,11 +48,12 @@ export default class UserContent extends React.Component {
                 content: this.userContentForm()
             })}
         >
-            <i className="fa fa-pencil"></i>
+            <i className={css}></i>
         </div>
     }
 
     delete() {
+        let css = this.props.editView ? "fa fa-trash-o" : "fa fa-trash-o archive-view"
         return <div
             className='flyout-sub-tabs-content-ico-link'
             title={t(this.props, 'delete')}
@@ -60,7 +62,7 @@ export default class UserContent extends React.Component {
                 content: this.userContentDelete()
             })}
         >
-            <i className="fa fa-trash-o"></i>
+            <i className={css}></i>
         </div>
     }
 
@@ -140,4 +142,3 @@ export default class UserContent extends React.Component {
         router: PropTypes.object
     }
 }
-
