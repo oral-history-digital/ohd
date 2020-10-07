@@ -14,7 +14,7 @@ class UserAccount < ApplicationRecord
 
   has_many :user_roles
   has_many :roles, through: :user_roles
-  has_many :permissions, through: :roles
+  #has_many :permissions, through: :roles
 
   has_many :tasks
   has_many :supervised_tasks,
@@ -33,6 +33,14 @@ class UserAccount < ApplicationRecord
 
   def tasks?(record)
     tasks.include?(record)
+  end
+
+  def task_type_ids
+    (tasks.pluck(&:task_type_id) | supervised_tasks.pluck(&:task_type_id)).uniq
+  end
+
+  def permissions
+    Permission.where(id: TaskTypePermission.where(task_type_id: task_type_ids).pluck(&:permission_id).uniq)
   end
 
   def permissions?(klass, action_name)

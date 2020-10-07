@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_04_093538) do
+ActiveRecord::Schema.define(version: 2020_10_06_090525) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -538,6 +538,15 @@ ActiveRecord::Schema.define(version: 2020_10_04_093538) do
     t.integer "time_shift", default: 0
     t.integer "number", default: 1
     t.index ["workflow_state"], name: "index_tapes_on_workflow_state", length: 191
+  end
+
+  create_table "task_type_permissions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.bigint "task_type_id"
+    t.bigint "permission_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["permission_id"], name: "index_task_type_permissions_on_permission_id"
+    t.index ["task_type_id"], name: "index_task_type_permissions_on_task_type_id"
   end
 
   create_table "task_type_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
