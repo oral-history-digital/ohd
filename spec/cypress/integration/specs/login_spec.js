@@ -5,7 +5,7 @@ describe('The Home Page', () => {
   it('logs in', function () {
 
       //cy.appFixtures()
-      const login = 'christian.gregor@googlemail.com'
+      const login = 'chrgregor@googlemail.com'
       const password = 'bla4bla'
 
       cy.visit('/')
@@ -20,7 +20,26 @@ describe('The Home Page', () => {
 
       // UI should reflect this user being logged in
       cy.get('.details').should('contain', login)
+      cy.get('.icon-open').click()
 
-      //cy.visit('de/interviews/cd005')
+      // toggle Redaktionsansicht
+      cy.get('.switch-label').click()
+      cy.get('.flyout').should('contain', 'Verwaltung')
+      cy.get('.flyout>li').contains('Suche im Archiv').click()
+      cy.get('li>span').contains('Workflow').click()
+      cy.get('span').contains('Abramowa').click()
+      //cy.visit('de/interviews/za466')
+      cy.get('.flyout').not('contain', 'Protokoll')
+      // archive view
+      cy.visit('/de/accounts/current')
+      cy.get('.icon-open').click()
+      cy.get('.switch-label').click()
+      cy.get('.lang').eq(1).click()
+      cy.get('.flyout').not('contain', 'administration')
+      cy.get('li>span').contains('Workflow').click()
+      cy.get('span').contains('Abramowa').click()
+      cy.visit('en/interviews/za466')
+      cy.get('.icon-open').click()
+      cy.get('.flyout-sub-tabs-container').should('contain', 'Number of tapes')
     })
 })
