@@ -122,7 +122,6 @@ describe UserRegistration, 'on registration after account activation' do
     registration = FactoryBot.create :user_registration_with_projects
     registration.register
     registration.user_account.confirm_with_password!('password', 'password')
-    #registration.confirm_account!
     registration
   end
 
@@ -130,8 +129,8 @@ describe UserRegistration, 'on registration after account activation' do
     expect(registration).to be_account_confirmed
   end
 
-  it 'should not have an active user account associated' do
-    expect(registration.user_account).not_to be_active
+  it 'should have an active user account associated' do
+    expect(registration.user_account).to be_active
   end
 
   it 'should have the same email as the user account' do
@@ -180,11 +179,11 @@ describe UserRegistration, 'on postponing' do
     expect(registration).to be_project_access_postponed
   end
 
+  # due to double opt-in accounts are active before project access is granted
   it 'should have an active user account associated' do
       expect(registration.user_account).to be_active
   end
 
-  # FIXME: fails here - do we have to test this elsewhere?
   it 'should not have a confirmation token set' do
       expect(registration.user_account.confirmation_token).to be_nil
   end
@@ -196,7 +195,7 @@ describe UserRegistration, 'on granting access after postponing' do
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
     registration.register
-    registration.confirm_account!
+    registration.user_account.confirm_with_password!('password', 'password')
     registration.postpone_project_access!
     registration.grant_project_access!
     registration
@@ -232,7 +231,7 @@ describe UserRegistration, 'on reactivation after deactivation' do
   let :registration do
     registration = FactoryBot.create :user_registration_with_projects
     registration.register
-    registration.confirm_account!
+    registration.user_account.confirm_with_password!('password', 'password')
     registration.reject_project_access!
     registration.deactivate_account!
     registration.reactivate_account!
@@ -248,6 +247,7 @@ describe UserRegistration, 'on reactivation after deactivation' do
   end
 
   it 'should not have an active user account associated' do
+    expect(registration.workflow_state).to eq('account_created')
     expect(registration.user_account).not_to be_active
   end
 
