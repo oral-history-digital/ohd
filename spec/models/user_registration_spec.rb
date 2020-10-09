@@ -86,9 +86,9 @@ describe UserRegistration, 'on registration' do
   end
 
   it 'should not have a confirmation token after activation' do
-    registration.confirm_account!
-    # this fails because in real life the confirmation token is deleted
-    # by user_accounts confirm_with_password function which calls confirm_account! afterwards
+    # the confirmation token is deleted user_accounts confirm_with_password function
+    # which calls confirm_account! afterwards
+    registration.user_account.confirm_with_password!('password', 'password')
     expect(registration.user_account.confirmation_token).to be_nil
   end
 
