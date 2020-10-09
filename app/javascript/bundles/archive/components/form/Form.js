@@ -227,7 +227,7 @@ export default class Form extends React.Component {
         props['handleChange'] = this.handleChange;
         props['handleErrors'] = this.handleErrors;
         props['key'] = props.attribute;
-        props['value'] = this.state.values[props.attribute] === 'undefined' ? props.value : this.state.values[props.attribute];
+        props['value'] = this.state.values[props.attribute] || props.value;
         props['data'] = this.props.data;
 
         // set defaults for the possibillity to shorten elements list
