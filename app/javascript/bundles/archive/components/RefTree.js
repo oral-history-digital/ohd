@@ -23,12 +23,11 @@ export default class RefTree extends React.Component {
     renderChildren(children) {
         let that = this;
         //
-        // filter to show unique results (sometimes there are doubled registry_references 
+        // filter to show unique results (sometimes there are doubled registry_references
         // i.e. Segment with id 199505 has two registry_references with registry_entry_id 12755
         //
         let usedRegistryEntryIds = [];
         let uniqueChildren = children.filter((child, index) => {
-            debugger;
             if (usedRegistryEntryIds.indexOf(child.id) === -1) {
                 usedRegistryEntryIds.push(child.id);
                 return true;
@@ -59,7 +58,7 @@ export default class RefTree extends React.Component {
 
     refTree() {
         if (
-            this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`] && 
+            this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`] &&
             this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched'
         ) {
             if (this.props.interview.ref_tree && this.props.interview.ref_tree.children) {
@@ -87,4 +86,3 @@ export default class RefTree extends React.Component {
         );
     }
 }
-
