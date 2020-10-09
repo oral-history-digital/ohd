@@ -28,7 +28,6 @@ describe('The Home Page', () => {
       cy.get('.flyout>li').contains('Suche im Archiv').click()
       cy.get('li>span').contains('Workflow').click()
       cy.get('span').contains('Abramowa').click()
-      //cy.visit('de/interviews/za466')
       cy.get('.flyout').not('contain', 'Protokoll')
       // archive view
       cy.visit('/de/accounts/current')
@@ -36,8 +35,6 @@ describe('The Home Page', () => {
       cy.get('.switch-label').click()
       cy.get('.lang').eq(1).click()
       cy.get('.flyout').not('contain', 'administration')
-      cy.get('li>span').contains('Workflow').click()
-      cy.get('span').contains('Abramowa').click()
       cy.visit('en/interviews/za466')
       cy.get('.icon-open').click()
       cy.get('.flyout-sub-tabs-container').should('contain', 'Number of tapes')
