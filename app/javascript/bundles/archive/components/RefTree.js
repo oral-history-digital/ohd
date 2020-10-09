@@ -26,7 +26,17 @@ export default class RefTree extends React.Component {
         // filter to show unique results (sometimes there are doubled registry_references 
         // i.e. Segment with id 199505 has two registry_references with registry_entry_id 12755
         //
-        return children.filter((v, i, a) => a.indexOf(v) === i).map((entry, index) => {
+        let usedRegistryEntryIds = [];
+        let uniqueChildren = children.filter((child, index) => {
+            debugger;
+            if (usedRegistryEntryIds.indexOf(child.id) === -1) {
+                usedRegistryEntryIds.push(child.id);
+                return true;
+            } else {
+                return false;
+            }
+        })
+        return uniqueChildren.map((entry, index) => {
             if (entry.type === 'leafe') {
                 return (
                     <FoundSegmentContainer
