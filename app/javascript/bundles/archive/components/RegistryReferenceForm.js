@@ -44,19 +44,19 @@ export default class RegistryReferenceForm extends React.Component {
         if (
             (
                 !this.registryEntryParent() &&
-                this.props.registryEntriesStatus[this.props.parentEntryId] !== 'fetching'
+                this.props.registryEntriesStatus[this.state.parentEntryId] !== 'fetching'
             ) || 
             (
                 this.registryEntryParent() && 
                 !this.registryEntryParent().associations_loaded &&
-                this.props.registryEntriesStatus[this.props.parentEntryId] !== 'fetching'
+                this.props.registryEntriesStatus[this.state.parentEntryId] !== 'fetching'
             ) ||
             (
-                this.props.registryEntriesStatus[this.props.parentEntryId] &&
-                this.props.registryEntriesStatus[this.props.parentEntryId].split('-')[0] === 'reload'
+                this.props.registryEntriesStatus[this.state.parentEntryId] &&
+                this.props.registryEntriesStatus[this.state.parentEntryId].split('-')[0] === 'reload'
             )
         ) {
-            this.props.fetchData(this.props, 'registry_entries', this.props.parentEntryId, null, 'with_associations=true');
+            this.props.fetchData(this.props, 'registry_entries', this.state.parentEntryId, null, 'with_associations=true');
         }
     }
 
@@ -140,7 +140,12 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     goUp() {
-        if (this.registryEntryParent() && this.registryEntryParent().associations_loaded && this.state.parentEntryId !== this.props.parentEntryId) {
+        if (
+            this.registryEntryParent() && 
+            this.registryEntryParent().code !== 'root' && 
+            this.registryEntryParent().associations_loaded //&& 
+            //this.state.parentEntryId !== this.props.parentEntryId
+        ) {
             let parentRegistryEntryId = this.registryEntryParent().parent_ids[this.props.locale][0] === this.props.parentEntryId ?
                 this.props.parentEntryId :
                 this.registryEntryParent().parent_ids[this.props.locale][0]

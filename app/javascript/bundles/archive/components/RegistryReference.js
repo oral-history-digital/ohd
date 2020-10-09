@@ -9,27 +9,41 @@ export default class RegistryReference extends React.Component {
     }
 
     componentDidMount() {
-        this.loadRegistryEntry();
+        this.loadRegistryEntry(this.props.registryReference.registry_entry_id);
+        this.loadRegistryEntry(this.parentRegistryEntryId());
     }
 
     componentDidUpdate() {
-        this.loadRegistryEntry();
+        this.loadRegistryEntry(this.props.registryReference.registry_entry_id);
+        this.loadRegistryEntry(this.parentRegistryEntryId());
     }
 
-    loadRegistryEntry() {
+    loadRegistryEntry(id) {
         if (
+            id &&
             (
-                !this.props.registryEntriesStatus[this.props.registryReference.registry_entry_id] ||
-                this.props.registryEntriesStatus[this.props.registryReference.registry_entry_id] !== 'fetching'
+                !this.props.registryEntriesStatus[id] ||
+                this.props.registryEntriesStatus[id] !== 'fetching'
             ) && (
-                !this.props.registryEntries[this.props.registryReference.registry_entry_id] ||
+                !this.props.registryEntries[id] ||
                 (
-                    this.props.registryEntries[this.props.registryReference.registry_entry_id] &&
-                    !this.props.registryEntries[this.props.registryReference.registry_entry_id].associations_loaded
+                    this.props.registryEntries[id] &&
+                    !this.props.registryEntries[id].associations_loaded
                 )
             )
         ) {
-            this.props.fetchData(this.props, 'registry_entries', this.props.registryReference.registry_entry_id, null, 'with_associations=true');
+            this.props.fetchData(this.props, 'registry_entries', id, null, 'with_associations=true');
+        }
+    }
+
+    parentRegistryEntryId() {
+        if (
+            this.props.registryEntries[this.props.registryReference.registry_entry_id] &&
+            this.props.registryEntries[this.props.registryReference.registry_entry_id].associations_loaded
+        ) {
+            return this.props.registryEntries[this.props.registryReference.registry_entry_id].parent_ids[this.props.locale][0];
+        } else {
+            return null;
         }
     }
 
@@ -51,7 +65,8 @@ export default class RegistryReference extends React.Component {
                             <RegistryReferenceFormContainer 
                                 registryReference={this.props.registryReference} 
                                 locale={this.props.locale} 
-                                parentEntryId={this.props.registryEntries[this.props.registryReference.registry_entry_id].parent_ids[this.props.locale][0]}
+                                parentEntryId={this.parentRegistryEntryId()}
+                                 goDeeper={true}
                             />
                         )
                     })}
