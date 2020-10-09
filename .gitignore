@@ -16,3 +16,4 @@ solr/pids/
 /node_modules
 yarn-debug.log*
 .yarn-integrity
+coverage
