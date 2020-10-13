@@ -122,18 +122,20 @@ export default class RegistryEntrySelect extends React.Component {
                     title={t(this.props, 'edit.registry_entry.go_up')}
                     onClick={() => this.setState({selectedRegistryEntryId: this.parentRegistryEntryId()})}
                 >
-                    go up
+                    {t(this.props, 'edit.registry_entry.go_up')}
                     <i className="fa fa-arrow-alt-up"></i>
                 </div>
             )
         }
     }
 
-    render() {
-        return (
-            <div>
-                {this.showSelectedRegistryEntry()}
-                {this.goUp()}
+    goDown() {
+        if (
+            this.selectedRegistryEntry() && 
+            this.selectedRegistryEntry().associations_loaded &&
+            this.selectedRegistryEntry().child_ids[this.props.locale].length > 0
+        ) {
+            return (
                 <Select
                     attribute={this.props.attribute}
                     scope={this.props.scope}
@@ -145,6 +147,18 @@ export default class RegistryEntrySelect extends React.Component {
                     handleChange={this.props.handleChange}
                     handleErrors={this.props.handleErrors}
                 />
+            )
+        } else {
+            return t(this.props, 'edit.registry_entry.no_more_children');
+        }
+    }
+
+    render() {
+        return (
+            <div>
+                {this.showSelectedRegistryEntry()}
+                {this.goUp()}
+                {this.goDown()}
             </div>
         );
     }

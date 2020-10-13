@@ -322,6 +322,7 @@ es:
       new: Registereintrag hinzufügen
       edit: Registereintrag bearbeiten
       go_up: Eine Ebene höher
+      no_more_children: keine weiteren Kinderknoten/-einträge mehr vorhanden
       parent: Elternknoten/-eintrag
       show_children: Kinderknoten/-einträge anzeigen
       add_parent: Elternknoten hinzufügen
