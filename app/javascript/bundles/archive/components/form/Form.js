@@ -6,6 +6,7 @@ import MultiLocaleRichTextEditorContainer from '../../containers/form/MultiLocal
 import RichTextEditor from 'react-rte';
 import TextareaContainer from '../../containers/form/TextareaContainer';
 import SelectContainer from '../../containers/form/SelectContainer';
+import RegistryEntrySelectContainer from '../../containers/form/RegistryEntrySelectContainer';
 import { t, pluralize } from '../../../../lib/utils';
 
 export default class Form extends React.Component {
@@ -212,6 +213,7 @@ export default class Form extends React.Component {
     components() {
         return {
             select: SelectContainer,
+            registryEntrySelect: RegistryEntrySelectContainer,
             input: InputContainer,
             multiLocaleInput: MultiLocaleInputContainer,
             multiLocaleTextarea: MultiLocaleTextareaContainer,
