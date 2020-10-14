@@ -58,7 +58,7 @@ export default class Data extends React.Component {
     }
 
     name() {
-        return this.props.data.title || (this.props.data.name.hasOwnProperty(this.props.locale) ? this.props.data.name[this.props.locale] : this.props.data.name);
+        return this.props.data.title || (this.props.data.name && this.props.data.name.hasOwnProperty(this.props.locale) ? this.props.data.name[this.props.locale] : this.props.data.name);
     }
 
     values(detail) {

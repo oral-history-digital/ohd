@@ -905,8 +905,9 @@ de:
         action: 'Action'
         created_at: 'angelegt'
       permission:
-        controller: Controller
-        action: Action
+        name: Name
+        klass: Class
+        action_name: Action name
         created_at: angelegt
       task:
         name: Aufgabe

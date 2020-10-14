@@ -64,6 +64,6 @@ class RolesController < ApplicationController
   end
 
   def search_params
-    params.permit(:name, :desc).to_h
+    params.permit(:name, :desc).to_h.select{|k,v| !v.blank? }
   end
 end

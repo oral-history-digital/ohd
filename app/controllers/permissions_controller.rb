@@ -64,7 +64,7 @@ class PermissionsController < ApplicationController
   def permission_params
     params.require(:permission).
       permit(
-        :name,
+        :name, 
         :desc,
         :klass,
         :action_name
@@ -72,6 +72,6 @@ class PermissionsController < ApplicationController
   end
 
   def search_params
-    params.permit(:name, :desc).to_h
+    params.permit(:name, :desc, :klass, :action_name).to_h.select{|k,v| !v.blank? }
   end
 end

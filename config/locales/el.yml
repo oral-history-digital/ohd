@@ -920,9 +920,8 @@ el:
         created_at: angelegt
       permission:
         name: Name
-        desc: Beschreibung
-        controller: Controller
-        action: Action
+        klass: Class
+        action_name: Action name
         created_at: angelegt
       task:
         name: Aufgabe

@@ -16,7 +16,6 @@ const mapStateToProps = (state) => {
         scope: 'permission',
         searchableAttributes: [
             {attributeName: 'name'}, 
-            {attributeName: 'desc'}, 
             {attributeName: 'klass'}, 
             {attributeName: 'action_name'}, 
         ]

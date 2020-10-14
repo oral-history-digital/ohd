@@ -63,7 +63,7 @@ export default class Select extends React.Component {
         } else {
             return function(value, props) {
                 return {
-                    text: value.name[props.locale] || (typeof value.name === 'string') && value.name,
+                    text: (value.name && value.name[props.locale]) || (typeof value.name === 'string') && value.name,
                     value: value.value || value.id
                 }
             }
