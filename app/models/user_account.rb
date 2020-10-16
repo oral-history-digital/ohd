@@ -39,8 +39,16 @@ class UserAccount < ApplicationRecord
     (tasks.pluck(&:task_type_id) | supervised_tasks.pluck(&:task_type_id)).uniq
   end
 
+  def task_type_permission_ids
+    TaskTypePermission.where(task_type_id: task_type_ids).pluck(&:permission_id).uniq
+  end 
+
+  def role_permission_ids
+    roles.map{|r| r.role_permissions.map(&:permission_id)}.flatten.uniq
+  end
+
   def permissions
-    Permission.where(id: TaskTypePermission.where(task_type_id: task_type_ids).pluck(&:permission_id).uniq)
+    Permission.where(id: (task_type_permission_ids | role_permission_ids))
   end
 
   def permissions?(klass, action_name)
