@@ -141,7 +141,7 @@ export default class Segment extends React.Component {
 
     renderLinks(locale, userAnnotations) {
         if (
-            admin(this.props, {type: 'RegistryReference', action: 'update'}) ||
+            admin(this.props, {type: 'General', action: 'edit'}) ||
             this.props.data.annotations_count[this.props.contentLocale] > 0 ||
             this.props.data.references_count[this.props.contentLocale] > 0 ||
             userAnnotations.length > 0
