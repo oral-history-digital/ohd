@@ -12,9 +12,9 @@
   <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
 <% when :ru -%>
   <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
-  <p>мы подверждаем Ваш акаунт для доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>".</p>
+  <p>мы подтверждаем Ваш аккаунт для доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>".</p>
   <p>С Вашим аккаунтом: <%= @user_account.email %></p>
-  <p>Вы можете подтвердить регистрацию за линком: <%= url %> и получить доступ ко всем функиям интревью-архива.</p>
+  <p>Вы можете подтвердить регистрацию за линком: <%= url %> и получить доступ ко всем функциям Архива интервью.</p>
   <p>С уважением,</p>
   <p>сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
 <% when :es -%>
