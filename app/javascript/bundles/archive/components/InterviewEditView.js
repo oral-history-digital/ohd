@@ -48,14 +48,14 @@ export default class InterviewEditView extends React.Component {
                 (window.innerHeight < 900) && this.handleScroll();
                 this.props.transcriptScrollEnabled && window.scrollTo(0, offset - 400);
             } else {
-                window.scrollTo(0, offset); // was: 1
+                window.scrollTo(0, offset);
             }
         }
     }
 
     handleScroll() {
         // no scrolling in fullscreen - because this would remove the fixed table header
-        if (!this.props.transcriptScrollEnabled && !document.getElementByClassName('fullscreen')) {
+        if (!this.props.transcriptScrollEnabled && !document.getElementsByClassName('fullscreen')) {
             this.props.handleTranscriptScroll(true)
         }
     }
