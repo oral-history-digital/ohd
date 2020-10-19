@@ -67,6 +67,7 @@ export default class RegistryReferences extends React.Component {
                             registryEntry={registryEntry} 
                             registryReference={registryReference} 
                             refObject={this.props.refObject}
+                            lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
                             locale={this.props.locale}
                             key={`registry_reference-${registryReference.id}`} 
                             setOpenReference={this.props.setOpenReference}
@@ -91,7 +92,7 @@ export default class RegistryReferences extends React.Component {
                         content: <RegistryReferenceFormContainer 
                                      refObject={this.props.refObject} 
                                      interview={this.props.interview} 
-                                     parentEntryId={this.props.parentEntryId}
+                                     lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
                                      registryReferenceTypeId={this.props.registryReferenceTypeId}
                                      locale={this.props.locale}
                                      goDeeper={true}

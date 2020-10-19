@@ -10,7 +10,7 @@ export default class RegistryEntrySelect extends React.Component {
         // TODO: 1 is the root-registry-entry now
         // fit this to possible other ids
         //
-        this.state = {selectedRegistryEntryId: (this.props.data && this.props.data[this.props.attribute]) || 1};
+        this.state = {selectedRegistryEntryId: (this.props.data && this.props.data[this.props.attribute]) || this.props.lowestAllowedRegistryEntryId || 1};
         this.handleSelectedRegistryEntry = this.handleSelectedRegistryEntry.bind(this);
     }
 
@@ -113,7 +113,7 @@ export default class RegistryEntrySelect extends React.Component {
     goUp() {
         if (
             this.selectedRegistryEntry() && 
-            this.selectedRegistryEntry().code !== 'root' && 
+            this.selectedRegistryEntry().id !== this.props.lowestAllowedRegistryEntryId && 
             this.selectedRegistryEntry().associations_loaded 
         ) {
             return (
