@@ -16,7 +16,9 @@ export default class SegmentEditView extends React.Component {
         switch (columnName) {
             case 'timecode': {
               return (
-                <div>{this.props.segment.timecode}</div>
+                // TODO: show tape number!
+                <div id={`segment_${this.props.segment.id}`} className={this.css()} onClick={() => this.props.handleSegmentClick(this.props.segment.tape_nbr, this.props.segment.time, this.props.tabIndex)}>
+                {`${this.props.segment.timecode}`}</div>
               )
               break;
             }
@@ -94,10 +96,10 @@ export default class SegmentEditView extends React.Component {
             }
             case 'registry_references': {
                 return (
-                    <RegistryReferencesContainer 
-                        refObject={this.props.segment} 
+                    <RegistryReferencesContainer
+                        refObject={this.props.segment}
                         parentEntryId={1}
-                        locale={this.props.locale} 
+                        locale={this.props.locale}
                     />
                 )
                 break;
@@ -122,6 +124,10 @@ export default class SegmentEditView extends React.Component {
         })
     }
 
+    css() {
+        return 'segment ' + (this.props.active ? 'active' : 'inactive');
+    }
+
     render() {
         return (
             <VizSensor
@@ -137,4 +143,3 @@ export default class SegmentEditView extends React.Component {
         )
     }
 }
-

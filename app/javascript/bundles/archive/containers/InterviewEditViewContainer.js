@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import InterviewEditView from '../components/InterviewEditView';
+import { handleTranscriptScroll, setActualSegment } from '../actions/interviewActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
 import { getInterview } from '../../../lib/utils';
@@ -13,12 +14,14 @@ const mapStateToProps = (state) => {
         interview: getInterview(state),
         tape: state.interview.tape,
         transcriptTime: state.interview.transcriptTime,
+        transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
         segmentsStatus: state.data.statuses.segments,
         selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
+    handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
     setActualSegment: segment => dispatch(setActualSegment(segment)),
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
 })
