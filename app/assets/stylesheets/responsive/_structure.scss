@@ -360,13 +360,12 @@ h1.video-title {
     width: 100%;
   }
 }
-
 table.edit-interview {
     font-size: 90%;
     margin-top: 60px;
     border-collapse: separate;
     border-spacing: 2px;
-    th  {
+    thead, th  {
       position: sticky;
       top: 0;
       vertical-align: top;
@@ -386,6 +385,14 @@ table.edit-interview {
       border: 1px solid #ddd;
       padding: 5px;
       margin: none;
+      .segment {
+        &.active {
+          background-color: rgba(255,250,129,0.5) !important; //lighten($secondary-color, 30%);
+        }
+        &:hover {
+          color: $primary-color;
+      }
+    }
       input, textarea {
         border: none;
         min-height: 5rem;
@@ -396,7 +403,7 @@ table.edit-interview {
         margin: 0px;
       }
       input, textarea {
-        font-size: 90%
+        font-size: 90%;
       }
       input {
         overflow: scroll;
