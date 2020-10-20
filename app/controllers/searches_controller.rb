@@ -208,16 +208,12 @@ class SearchesController < ApplicationController
 
   def highlighted_text(hit)
     (current_project.available_locales + [:orig]).inject({}) do |mem, locale|
-      if hit.respond_to?("text_#{locale}")
-        mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
-          highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
-          m << highlighted.sub(/:/, "").strip()
-          m
-        end.join(" ").gsub("&nbsp;", " ").strip
-        mem
-      else
-        mem
-      end
+      mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
+        highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
+        m << highlighted.sub(/:/, "").strip()
+        m
+      end.join(" ").gsub("&nbsp;", " ").strip
+      mem
     end
   end
 
