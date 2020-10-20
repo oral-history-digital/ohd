@@ -19,43 +19,23 @@ const mapStateToProps = (state) => {
         resultPagesCount: state.data.statuses.registry_reference_types.resultPagesCount,
         query: state.search.registry_reference_types.query,
         scope: 'registry_reference_type',
-        sortAttribute: 'name',
+        sortAttribute: 'code',
         sortAttributeTranslated: true,
-        baseTabIndex: 5,
-        detailsAttributes: ['name'],
+        baseTabIndex: 4,
+        detailsAttributes: ['code'],
         formElements: [
             {
-                elementType: 'select',
-                attribute: 'gender',
-                values: ['male', 'female', 'diverse'],
-                optionsScope: 'gender',
-                withEmpty: true,
-                //validate: function(v){return v !== ''} 
+                elementType: 'registryEntrySelect',
+                attribute: 'registry_entry_id',
+                lowestAllowedRegistryEntryId: 1,
+                goDeeper: true
             },
             {
-                attribute: 'first_name',
-                elementType: 'multiLocaleInput',
-                //validate: function(v){return v.length > 1} 
+                attribute: 'code',
             },
             {
-                attribute: 'last_name',
+                attribute: 'name',
                 elementType: 'multiLocaleInput',
-                //validate: function(v){return v.length > 1} 
-            },
-            {
-                attribute: 'birth_name',
-                elementType: 'multiLocaleInput',
-            },
-            {
-                attribute: 'alias_names',
-                elementType: 'multiLocaleInput',
-            },
-            {
-                attribute: 'other_first_names',
-                elementType: 'multiLocaleInput',
-            },
-            { 
-                attribute: 'date_of_birth',
             },
         ],
         joinedData: { },
