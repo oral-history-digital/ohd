@@ -115,7 +115,7 @@ class InterviewsController < ApplicationController
 
   def show
     @interview = Interview.find_by_archive_id(params[:id])
-    interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym 
+    interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
 
     respond_to do |format|
       format.json do
@@ -133,7 +133,7 @@ class InterviewsController < ApplicationController
         @lang_human = I18n.t(params[:lang], locale: @locale)
         @orig_lang = "#{interview_locale}-public"
         first_segment_with_heading = @interview.segments.with_heading.first
-        @lang_headings_exist = first_segment_with_heading.mainheading(@lang) || first_segment_with_heading.subheading(@lang) 
+        @lang_headings_exist = !!first_segment_with_heading && (first_segment_with_heading.mainheading(@lang) || first_segment_with_heading.subheading(@lang))
         pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-pdf-#{@interview.id}-#{@interview.updated_at}-#{params[:lang]}-#{params[:locale]}" do
           render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
         end
@@ -272,7 +272,7 @@ class InterviewsController < ApplicationController
           interviewEditView: cookies[:interviewEditView]
         ),
         data: initial_redux_state[:data].update(
-          interviews: {"#{@interview.identifier}": cache_single(@interview)}, 
+          interviews: {"#{@interview.identifier}": cache_single(@interview)},
           people: @interview.contributors.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
           statuses: initial_redux_state[:data][:statuses].update(
             interviews: {"#{@interview.identifier}": 'fetched'},
@@ -305,7 +305,7 @@ class InterviewsController < ApplicationController
       "workflow_state",
       "media_type",
       "biographies_workflow_state",
-      properties: {}, 
+      properties: {},
       contributions_attributes: [:person_id, :contribution_type, :speaker_designation]
     )
   end
