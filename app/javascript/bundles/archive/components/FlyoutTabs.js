@@ -228,8 +228,8 @@ export default class FlyoutTabs extends React.Component {
     }
 
     indexingTab() {
-        let css = admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab' : 'hidden';
-        return <Tab className={css} key='indexing'>{t(this.props, 'edit.indexing')}</Tab>;
+        let css = admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden';
+        return <Tab selectedClassName='admin' className={css} key='indexing'>{t(this.props, 'edit.indexing')}</Tab>;
     }
 
     indexingTabPanel() {
@@ -277,8 +277,8 @@ export default class FlyoutTabs extends React.Component {
     }
 
     usersAdminTab() {
-        let css = admin(this.props, {type: 'UserRegistration', action: 'update'}) ? 'flyout-tab' : 'hidden';
-        return <Tab className={css} key='administration'>{t(this.props, 'edit.administration')}</Tab>;
+        let css = admin(this.props, {type: 'UserRegistration', action: 'update'}) ? 'flyout-tab admin' : 'hidden';
+        return <Tab selectedClassName='admin' className={css} key='administration'>{t(this.props, 'edit.administration')}</Tab>;
     }
 
     countryKeys() {
@@ -498,11 +498,12 @@ export default class FlyoutTabs extends React.Component {
     }
 
     render() {
+        let css = (this.state.tabIndex === 7 || this.state.tabIndex === 6) ? 'activeadmin' : 'active'
         return (
             <Tabs
                 className='wrapper-flyout'
-                selectedTabClassName='active'
-                selectedTabPanelClassName='active'
+                selectedTabClassName={css}
+                selectedTabPanelClassName={css}
                 selectedIndex={this.state.tabIndex}
                 onSelect={tabIndex => this.handleTabClick(tabIndex)}
             >
