@@ -22,8 +22,8 @@
                } %>
 
 <% @interview.interviewees.first.biographical_entries.with_public_state.each do |biographical_entry| %>
-  <% start_date = Date.parse(biographical_entry.translations.where(locale: @locale).first.start_date).strftime("%d.%m.%Y") rescue nil %>
-  <% end_date = Date.parse(biographical_entry.translations.where(locale: @locale).first.end_date).strftime("%d.%m.%Y") rescue nil %>
+  <% start_date = Date.parse(biographical_entry.start_date(@locale)).strftime("%d.%m.%Y") rescue biographical_entry.start_date(@locale) %>
+  <% end_date = Date.parse(biographical_entry.end_date(@locale)).strftime("%d.%m.%Y") rescue biographical_entry.end_date(@locale) %>
   <% title = [start_date, end_date].compact.join(' - ') || '' %>
   <%= render partial: "./latex/title",
              locals:
