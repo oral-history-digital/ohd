@@ -210,7 +210,7 @@ el:
   transcript_header: Απομαγνητοφωνημένο κείμενο
   transcript_title: Απομαγνητοφώνηση της συνέντευξης με
   translation_title: Übersetzung des Interviews mit
-  transcript_footer: 'Zitiervorgabe: Transkript des Interviews mit'
+  transcript_footer: 'Τρόπος παραπομπής: Απομαγνητοφώνηση της συνέντευξης με τον/την'
   transcript_template: Vorlage für den Import von .ods Dateien
   biographical_entries_header: 'Kurzbiografie:'
   biographical_entries_title: 'Kurzbiografie von'
