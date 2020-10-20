@@ -526,6 +526,61 @@ div.mainheading + div {
   }
 }
 
+
+table.edit-interview {
+    font-size: 90%;
+    margin-top: 60px;
+    border-collapse: separate;
+    border-spacing: 2px;
+    thead, th  {
+      position: sticky;
+      top: 0;
+      vertical-align: top;
+      background-color: #ddd;
+      text-align: left;
+      width: 1%;
+      max-width: none;
+      height: 5rem;
+      padding:15px 10px;
+      &.small {
+        width: 0.1%;
+      }
+    }
+    td {
+      /* display: table-cell; */
+      /*text-align: center;*/
+      border: 1px solid #ddd;
+      padding: 5px;
+      margin: none;
+      .segment {
+        &.active {
+          background-color: rgba(255,250,129,0.5) !important; //lighten($secondary-color, 30%);
+        }
+        &:hover {
+          color: $primary-color;
+      }
+    }
+      input, textarea {
+        border: none;
+        min-height: 5rem;
+        box-sizing: border-box;
+        display:inline-block;
+        line-height:140%;
+        width: 100%;
+        margin: 0px;
+      }
+      input, textarea {
+        font-size: 90%;
+      }
+      input {
+        overflow: scroll;
+      }
+      textarea {
+        resize: none;
+      }
+    }
+}
+
 // Old classes tidying up later
 
 .column-content,
