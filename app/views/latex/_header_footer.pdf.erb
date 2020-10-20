@@ -14,9 +14,14 @@
   footer_text += ", #{I18n.t('interview', locale: @locale)} #{@interview.archive_id}, #{@interview.interview_date && Date.parse(@interview.interview_date).strftime("%d.%m.%Y") rescue @interview.interview_date}" if @interview
   footer_text += ", #{I18n.t('interview_archive', locale: @locale)} \"#{current_project.name(@locale)}\""
   footer_text += ", #{current_project.archive_domain}/#{@locale}"
-  footer_text += "."
 %>
-<%#footer_text += ", doi: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{current_project.initials}.#{@interview.archive_id}" if @interview && @interview.doi_status == 'created'%>
+
+<% if @interview.doi_status == 'created'
+     footer_text += ", DOI: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{current_project.initials}.#{@interview.archive_id}, (#{I18n.t('called', locale: @locale)}: #{Date.today.strftime("%d.%m.%Y")})."
+   else
+     footer_text += "."
+   end
+%>
 
 \fancyfoot[L]{
   \fontsize{9}{11}
