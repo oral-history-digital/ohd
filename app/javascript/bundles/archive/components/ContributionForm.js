@@ -73,6 +73,7 @@ export default class ContributionForm extends React.Component {
             <p />
             <Link
                 to={`/${this.props.locale}/people`}
+                className='admin'
                 onClick={() => this.props.closeArchivePopup()}
             >
                 {t(_this.props, "edit.person.admin")}
