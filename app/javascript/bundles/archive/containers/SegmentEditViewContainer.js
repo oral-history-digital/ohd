@@ -7,7 +7,7 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { getInterview, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         transcriptTime: state.archive.transcriptTime,
         locale: state.archive.locale,
         tape: state.archive.tape,
