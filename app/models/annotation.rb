@@ -4,7 +4,6 @@ class Annotation < ApplicationRecord
 
   belongs_to :interview
   belongs_to :user_content
-  belongs_to :author
 
   belongs_to :segment
 
