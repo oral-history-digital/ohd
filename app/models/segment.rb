@@ -95,7 +95,7 @@ class Segment < ApplicationRecord
     def assign_speakers_and_update_text(segment, opts)
       tape = Tape.find opts[:tape_id]
 
-      speaker_designations = segment.interview.contributions.map{|d| d.speaker_designation}
+      speaker_designations = segment.interview.contributions.map{|d| d.speaker_designation}.reject{|l| l.blank?}
       #
       # regexps with capture groups, e.g. /(speaker one:)|(speaker two:)/
       #
