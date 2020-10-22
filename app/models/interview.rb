@@ -556,7 +556,7 @@ class Interview < ApplicationRecord
 
   def duration_human
     if duration && duration > 0
-      Time.at(duration).utc.strftime("%-H h %M min")
+      Time.at(duration).utc.strftime("%-Hh %Mmin")
     else
       "---"
     end
