@@ -6,7 +6,6 @@
 const webpack = require('webpack')
 const { basename, dirname, join, relative, resolve } = require('path')
 const { sync } = require('glob')
-// const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const ManifestPlugin = require('webpack-manifest-plugin')
 const extname = require('path-complete-extname')
@@ -15,6 +14,7 @@ const { env, settings, output, loadersDir } = require('./configuration.js')
 const extensionGlob = `**/*{${settings.extensions.join(',')}}*`
 const entryPath = join(settings.source_path, settings.source_entry_path)
 const packPaths = sync(join(entryPath, extensionGlob))
+const devMode = process.env.NODE_ENV !== 'production';
 
 module.exports = {
   entry: packPaths.reduce(
@@ -38,12 +38,11 @@ module.exports = {
 
   plugins: [
     new webpack.EnvironmentPlugin(JSON.parse(JSON.stringify(env))),
-    // new ExtractTextPlugin(env.NODE_ENV === 'production' ? '[name]-[hash].css' : '[name].css'),
     new MiniCssExtractPlugin({
       // Options similar to the same options in webpackOptions.output
       // both options are optional
-      filename: "[name].css",
-      chunkFilename: "[id].css"
+      filename: devMode ? '[name].css' : '[name]-[contenthash].css',
+      chunkFilename: devMode ? '[id].css' : '[id]-[contenthash].css',
     }),
     new ManifestPlugin({
       publicPath: output.publicPath,
