@@ -19,11 +19,11 @@ export default class Segment extends React.Component {
         if (this.props.data.last_heading && this.props.data.last_heading[this.props.locale]) {
             return (
                 <span>
-                {t(this.props, 'in')}: "{this.props.data.last_heading[this.props.locale]}"
-                &nbsp;|&nbsp;
-            </span>
-        )
-    }
+                    {t(this.props, 'in')}: "{this.props.data.last_heading[this.props.locale]}"
+                    &nbsp;|&nbsp;
+                </span>
+            )
+        }
     }
 
     tape() {
