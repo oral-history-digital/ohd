@@ -67,13 +67,20 @@ export default class Contribution extends React.Component {
     }
 
     render() {
-        return (
-            <span className="flyout-content-data">
-                {fullname(this.props, this.props.person)}
-                {this.speakerDesignation()}
-                {this.buttons()}
-            </span>
-        );
+        if (
+            this.props.contribution.workflow_state === 'public' ||
+            admin(this.props, this.props.contribution) 
+        ){ 
+            return (
+                <span className="flyout-content-data">
+                    {fullname(this.props, this.props.person)}
+                    {this.speakerDesignation()}
+                    {this.buttons()}
+                </span>
+            );
+        } else {
+            return null;
+        }
     }
 }
 
