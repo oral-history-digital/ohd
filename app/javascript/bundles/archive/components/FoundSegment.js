@@ -53,9 +53,9 @@ export default class Segment extends React.Component {
         let segment = this.props.data.text[this.props.locale];
         if (!segment || segment.length === 0){
             for (let lang in this.props.data.text) {
-                if (lang != this.props.locale) {
+                if (lang !== this.props.locale) {
                     segment = this.props.data.text[lang];
-                    if (segment.length > 0) break;
+                    if (segment && segment.length > 0) break;
                 }
             }
         }

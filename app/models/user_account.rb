@@ -36,11 +36,11 @@ class UserAccount < ApplicationRecord
   end
 
   def task_type_ids
-    (tasks.pluck(&:task_type_id) | supervised_tasks.pluck(&:task_type_id)).uniq
+    (tasks.map(&:task_type_id) | supervised_tasks.map(&:task_type_id)).uniq
   end
 
   def task_type_permission_ids
-    TaskTypePermission.where(task_type_id: task_type_ids).pluck(&:permission_id).uniq
+    TaskTypePermission.where(task_type_id: task_type_ids).map(&:permission_id).uniq
   end 
 
   def role_permission_ids
