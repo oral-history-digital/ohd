@@ -219,9 +219,9 @@ export default class RegistryEntryShow extends React.Component {
                 <h3>
                     {this.registryEntry().name[this.props.locale]}
                 </h3>
-                {/* <p>
-                    {this.registryEntry().desc} 
-                </p> */}
+                <p>
+                    {this.registryEntry().notes[this.props.locale]} 
+                </p>
                 <h4>
                     {this.registryEntry().registry_references_count}
                     &nbsp;
