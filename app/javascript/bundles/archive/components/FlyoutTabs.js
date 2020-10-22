@@ -497,8 +497,13 @@ export default class FlyoutTabs extends React.Component {
         }
     }
 
+    isAdminTab(tabIndex) {
+      let adminTabs = [4, 5]
+      return adminTabs.indexOf(tabIndex + this.props.locales.length)
+    }
+
     render() {
-        let css = (this.state.tabIndex === 7 || this.state.tabIndex === 6) ? 'activeadmin' : 'active'
+        let css = this.isAdminTab(this.state.tabIndex) ? 'activeadmin' : 'active'
         return (
             <Tabs
                 className='wrapper-flyout'
