@@ -1,6 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
+import PopupMenu from './PopupMenu';
 import { t, admin, pluralize, camelcase, pathBase } from '../../../lib/utils';
 
 export default class Data extends React.Component {
@@ -62,7 +63,7 @@ export default class Data extends React.Component {
     }
 
     values(detail) {
-        //if (this.props.data && this.props.data[detail] !== null && typeof(this.props.data[detail]) === 'object') { 
+        //if (this.props.data && this.props.data[detail] !== null && typeof(this.props.data[detail]) === 'object') {
             //return Object.keys(this.props.data[detail]).map((key,index) => {
                 //return <span className='content'>
                     //<br/>
@@ -70,15 +71,15 @@ export default class Data extends React.Component {
                 //</span>
             //})
         if (
-            this.props.data && 
-            this.props.data[detail] !== null && 
+            this.props.data &&
+            this.props.data[detail] !== null &&
             typeof(this.props.data[detail]) === 'object' &&
             Object.keys(this.props.data[detail]).indexOf(this.props.locale) !== -1
-        ) { 
+        ) {
             return this.props.data[detail][this.props.locale];
         } else {
             let value = this.props.data[detail];
-            if (detail = 'workflow_state' && this.props.translations[this.props.locale]['workflow_states'].hasOwnProperty(value)) 
+            if (detail = 'workflow_state' && this.props.translations[this.props.locale]['workflow_states'].hasOwnProperty(value))
                 value = t(this.props, `workflow_states.${value}`);
 
             return value || '---';
@@ -138,7 +139,7 @@ export default class Data extends React.Component {
                         title: `${this.name()} ${t(this.props, `edit.${this.props.scope}.edit`)}`,
                         content: (
                             <div>
-                                {this.props.hideShow && this.details()} 
+                                {this.props.hideShow && this.details()}
                                 {this.props.form(this.props.data)}
                             </div>
                         )
@@ -189,7 +190,7 @@ export default class Data extends React.Component {
         if (this.props.joinedData) {
             return Object.keys(this.props.joinedData).map((joined_model_name_underscore, index) => {
                 let props = {
-                    data: this.props.data[pluralize(joined_model_name_underscore)], 
+                    data: this.props.data[pluralize(joined_model_name_underscore)],
                     initialFormValues: {
                         [`${this.props.scope}_id`]: this.props.data.id,
                         //
@@ -217,12 +218,12 @@ export default class Data extends React.Component {
     buttons() {
         if (admin(this.props, this.props.data)) {
             return (
-                <div className={'buttons box'}>
-                    {this.show()}
-                    {this.edit()}
-                    {this.delete()}
-                </div>
-            )
+                <PopupMenu translations={this.props.translations} locale={this.props.locale}>
+                    <PopupMenu.Item>{this.show()}</PopupMenu.Item>
+                    <PopupMenu.Item>{this.edit()}</PopupMenu.Item>
+                    <PopupMenu.Item>{this.delete()}</PopupMenu.Item>
+                </PopupMenu>
+            );
         }
     }
 
@@ -240,4 +241,3 @@ export default class Data extends React.Component {
         }
     }
 }
-
