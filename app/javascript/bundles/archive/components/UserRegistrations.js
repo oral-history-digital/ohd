@@ -45,7 +45,8 @@ export default class UserRegistrations extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 5;
+        let hasMap = + (this.props.projectId === 'zwar')
+        let tabIndex = this.props.locales.length + 5 + hasMap
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <div className='wrapper-content register'>

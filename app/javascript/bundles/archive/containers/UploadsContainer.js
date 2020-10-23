@@ -6,12 +6,13 @@ import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
         uploadTypes: project && project.upload_types,
         account: state.data.accounts.current,
+        projectId: state.archive.projectId,
     }
 }
 
