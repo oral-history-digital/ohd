@@ -22,36 +22,37 @@ class PopupMenu extends Component {
     }
 
     render() {
-      let { className, children } = this.props;
+        let { className, children } = this.props;
 
-      return (
-          <Fragment>
-              <div
-                  className="flyout-sub-tabs-content-ico-link"
-                  title={t(this.props, 'more')}
-                  onClick={this.toggle}
-              >
-                  <i className="fa fa-ellipsis-v" />
-              </div>
-              <div className={classNames('registry-entry-edit-buttons', {
-                    'invisible': !this.state.isOpen})}>
+        return (
+            <Fragment>
+                <div
+                    className="flyout-sub-tabs-content-ico-link"
+                    title={t(this.props, 'more')}
+                    onClick={this.toggle}
+                >
+                    <i className="fa fa-ellipsis-v" />
+                </div>
+                <div className={classNames('popup-menu', {
+                    'popup-menu--invisible': !this.state.isOpen})}>
                     <i
-                      className='fa-times fa'
-                      style={{'position': 'absolute', 'color': '#8b8b7a', 'cursor': 'pointer'}}
-                      onClick={this.toggle}
+                        className='popup-menu__close fa-times fa'
+                        onClick={this.toggle}
                     />
-                  <ul>
-                      {children}
-                  </ul>
-              </div>
-          </Fragment>
+                    <ul className="popup-menu__list">
+                        {children}
+                    </ul>
+                </div>
+            </Fragment>
       );
     }
 }
 
 function PopupMenuItem({ children }) {
     return (
-        <li>{children}</li>
+        <li className="popup-menu__item">
+            {children}
+        </li>
     );
 }
 
