@@ -5,7 +5,7 @@ class RegistryName < ApplicationRecord
   belongs_to :registry_entry, touch: true
   belongs_to :registry_name_type
 
-  translates :descriptor, :notes, fallbacks_for_empty_translations: true, touch: true
+  translates :descriptor, :notes, touch: true # , fallbacks_for_empty_translations: true
 
   scope :ordered_by_type,
               -> { joins(:registry_name_type).
