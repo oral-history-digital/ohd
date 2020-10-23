@@ -44,7 +44,7 @@ class RegistryEntriesController < ApplicationController
   def update
     @registry_entry = RegistryEntry.find params[:id]
     authorize @registry_entry
-    I18n.locale = ISO_639.find(Language.find(registry_entry_params[:lang]).code.split(/[\/-]/)[0]).alpha2
+    I18n.locale = ISO_639.find(Language.find(registry_entry_params[:lang]).code.split(/[\/-]/)[0]).alpha2 if registry_entry_params[:lang]
     @registry_entry.update_attributes registry_entry_params.slice(:descriptor, :notes, :latitude, :longitude, :parent_id)
     @registry_entry.touch
     @registry_entry.parents.each(&:touch)
