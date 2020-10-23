@@ -104,7 +104,8 @@ export default class Uploads extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 4;
+        let hasMap = + (this.props.projectId === 'zwar')
+        let tabIndex = this.props.locales.length + 4 + hasMap;
         return (
             <WrapperPageContainer tabIndex={tabIndex}>
                 <div className='wrapper-content register'>

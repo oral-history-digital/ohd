@@ -51,7 +51,7 @@
   font-size: 1.25rem;
   cursor: pointer;
   transition: 0.4s;
-  &.active, &.activeadmin {
+  &.active {
     display:none;
   }
   &:hover {
