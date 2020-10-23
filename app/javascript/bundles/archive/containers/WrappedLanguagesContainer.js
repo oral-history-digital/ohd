@@ -8,7 +8,8 @@ import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    let hasMap = + (state.archive.projectId === 'zwar')
+    return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
@@ -19,18 +20,18 @@ const mapStateToProps = (state) => {
         resultPagesCount: state.data.statuses.languages.resultPagesCount,
         query: state.search.languages.query,
         scope: 'language',
-        baseTabIndex: 4,
+        baseTabIndex: 4 + hasMap,
         //detailsAttributes: ['name'],
         detailsAttributes: ['code', 'name'],
         formElements: [
             {
                 attribute: 'code',
-                validate: function(v){return /^[a-z]+$/.test(v)} 
+                validate: function(v){return /^[a-z]+$/.test(v)}
             },
             {
                 attribute: 'name',
                 elementType: 'multiLocaleInput',
-                //validate: function(v){return v.length > 1} 
+                //validate: function(v){return v.length > 1}
             },
         ],
         joinedData: { },

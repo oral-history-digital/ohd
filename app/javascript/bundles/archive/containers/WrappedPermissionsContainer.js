@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
 import WrappedDataList from '../components/WrappedDataList';
-import { 
-    setQueryParams, 
+import {
+    setQueryParams,
 } from '../actions/searchActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
@@ -10,7 +10,8 @@ import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    let hasMap = + (state.archive.projectId === 'zwar')
+    return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
@@ -21,12 +22,12 @@ const mapStateToProps = (state) => {
         resultPagesCount: state.data.statuses.permissions.resultPagesCount,
         query: state.search.permissions.query,
         scope: 'permission',
-        baseTabIndex: 5,
+        baseTabIndex: 5 + hasMap,
         detailsAttributes: ['name', 'desc', 'klass', 'action_name'],
         formElements: [
             {
                 attribute: 'name',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v.length > 1}
             },
             {
                 elementType: 'textarea',
@@ -34,11 +35,11 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'klass',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'action_name',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v.length > 1}
             },
         ]
     }
