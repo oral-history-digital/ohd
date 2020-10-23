@@ -102,6 +102,10 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_results_list: true).order(:list_columns_order)
   end
 
+  def clear_cache(namespace)
+    Rails.cache.redis.keys("#{cache_key_prefix}-#{namespace}*").each{|k| Rails.cache.delete(k)}
+  end
+
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
   %w(RegistryReferenceType Person Interview).each do |m|
     define_method "#{m.underscore}_search_facets" do
@@ -130,7 +134,7 @@ class Project < ApplicationRecord
       when "RegistryReferenceType"
         rr = facet.registry_reference_type
         if rr
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-#{facet.name}-#{rr.id}-#{rr.updated_at}-#{facet.updated_at}-registry_reference_type-search-facets") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.name}-#{rr.id}-#{rr.updated_at}-#{facet.updated_at}-registry_reference_type-search-facets") do
             ::FacetSerializer.new(rr).as_json
           end
         end
@@ -191,7 +195,7 @@ class Project < ApplicationRecord
         end
       when "Language"
         facet_label_hash = facet.localized_hash(:label)
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-language-search-facets-#{Language.maximum(:updated_at)}-#{facet.updated_at}") do
+        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-language-search-facets-#{Language.maximum(:updated_at)}-#{facet.updated_at}") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
@@ -205,7 +209,7 @@ class Project < ApplicationRecord
         end
       when "Collection"
         facet_label_hash = facet.localized_hash(:label)
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-collection-search-facets-#{Collection.maximum(:updated_at)}-#{facet.updated_at}") do
+        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-collection-search-facets-#{Collection.maximum(:updated_at)}-#{facet.updated_at}") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
