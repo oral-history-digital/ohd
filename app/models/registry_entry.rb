@@ -1151,64 +1151,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   def to_s(locale = I18n.default_locale, with_fallback = true)
-    # Order names by type and position.
-    names_with_position = {}
-    registry_names.each do |name|
-      name_type = name.registry_name_type.to_sym
-      translated_descriptor = if with_fallback
-                                # Missing translations should be replaced by fallbacks.
-                                name.descriptor(locale)
-                              else
-                                # Missing translations should be visible.
-                                translation = name.translations.detect { |t| t.locale == locale }
-                                (translation.blank? ? nil : translation.descriptor)
-                              end
-      unless translated_descriptor.nil?
-        translated_descriptor = translated_descriptor.dup
-        translated_descriptor.gsub!(';', '/') if locale.to_sym == :alias
-        names_with_position[name_type] ||= []
-        names_with_position[name_type][name.name_position || 0] = translated_descriptor
-      end
-    end
-
-    # Join positions into a single string per name type.
-    names = {}
-    available_name_types = []
-    names_with_position.each do |name_type, positions|
-      names[name_type] = positions.compact.join(' ')
-      available_name_types << name_type
-    end
-
-    # Find a matching name pattern.
-    pattern_spec = NAME_PATTERNS.detect do |dummy, pattern_parts|
-      required_name_types = pattern_parts[1..-1]
-      (required_name_types & available_name_types).size > 0
-    end
-    return "[#{INVALID_ENTRY_TEXT}: #{id}]" if pattern_spec.blank?
-    pattern_name, pattern_parts = pattern_spec
-    pattern = pattern_parts.first
-    required_name_types = pattern_parts[1..-1]
-
-    # Add the birth name to the pattern if available.
-    # NB: We always want to make the birth name available in the
-    # alias representation to provide an editable placeholder (e.g.
-    # in the media view).
-    if I18n.available_locales.include?(locale) && (available_name_types.include? :birth_name or (pattern_name == :person and locale == :alias))
-      pattern += " (#{I18n.t('activerecord.attributes.registry_entry.born', :locale => locale)} %{birth_name})"
-    end
-
-    # Add the differentiator to the pattern if available.
-    if available_name_types.include? :differentiator
-      pattern += ' [%{differentiator}]'
-    end
-
-    # Add placeholders for required name types.
-    required_name_types.each do |required_name_type|
-      names[required_name_type] = '---' if names[required_name_type].blank?
-    end
-
-    # Apply the pattern.
-    pattern % names
+    names_w locale
   end
 
   def paginated_children(filter = {}, page = 1, per_page = 25)
