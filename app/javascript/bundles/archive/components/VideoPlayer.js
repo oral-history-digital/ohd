@@ -278,7 +278,7 @@ export default class VideoPlayer extends React.Component {
     }
 
     enableInterviewEditViewButton() {
-        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+        if (admin(this.props, {type: 'General', action: 'edit'})) {
           return(
 
             <i
@@ -292,7 +292,7 @@ export default class VideoPlayer extends React.Component {
 
 
     selectInterviewEditViewColumns() {
-        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+        if (admin(this.props, {type: 'General', action: 'edit'})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
