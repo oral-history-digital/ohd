@@ -252,6 +252,7 @@ de:
   call_user_annotation: Stelle im Interview aufrufen
   title: Titel
   description: Beschreibung
+  # TODO: cleanup this scope: redundant bearbeiten, hinzufügen, ...
   edit:
     text:
       new: Text auswählen
@@ -335,6 +336,8 @@ de:
     registry_reference:
       new: Erwähnung hinzufügen
       delete: Erwähnung löschen
+    registry_reference_type:
+      admin: Erwähnungsarten bearbeiten
     registry_entry:
       new: Neuen Untereintrag hinzufügen
       edit: Registereintrag bearbeiten
@@ -661,6 +664,9 @@ de:
       registry_references:
         one: Erwähnung
         other: Erwähnungen
+      registry_references_types:
+        one: Erwähnungsart
+        other: Erwähnungenarten
       registry_entries:
         one: Registereintrag
         other: Registereinträge
@@ -960,6 +966,9 @@ de:
         text_to_mark: zu ersetzender Text
       task_type:
         use: in der Übersicht zeigen
+      registry_reference_type:
+        code: Code
+        registry_entry_id: Registereintrag (tiefst möglicher)
       default:
         name: Name
         title: Name

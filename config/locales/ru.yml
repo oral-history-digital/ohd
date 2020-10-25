@@ -366,6 +366,8 @@ ru:
     registry_reference:
       new: Erwähnung hinzufügen
       delete: Erwähnung löschen
+    registry_reference_type:
+      admin: Erwähnungsarten bearbeiten
     registry_entry:
       new: Registereintrag hinzufügen
       edit: Registereintrag bearbeiten
@@ -693,6 +695,9 @@ ru:
       registry_references:
         one: Упоминание
         other: Упоминания
+      registry_references_types:
+        one: Erwähnungsart
+        other: Erwähnungenarten
       registry_entries:
         one: Регистр
         other: Регистр
@@ -996,6 +1001,9 @@ ru:
         text_to_mark: zu ersetzender Text
       task_type:
         use: in der Übersicht zeigen
+      registry_reference_type:
+        code: Code
+        registry_entry_id: Registereintrag (tiefst möglicher)
       default:
         name: Name
         title: Name
