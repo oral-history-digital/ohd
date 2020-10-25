@@ -79,7 +79,7 @@ export default class Data extends React.Component {
             return this.props.data[detail][this.props.locale];
         } else {
             let value = this.props.data[detail];
-            if (detail = 'workflow_state' && this.props.translations[this.props.locale]['workflow_states'].hasOwnProperty(value))
+            if (detail === 'workflow_state' && this.props.translations[this.props.locale]['workflow_states'].hasOwnProperty(value))
                 value = t(this.props, `workflow_states.${value}`);
 
             return value || '---';
