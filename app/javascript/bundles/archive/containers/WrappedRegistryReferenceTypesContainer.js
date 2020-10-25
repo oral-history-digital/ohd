@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         resultPagesCount: state.data.statuses.registry_reference_types.resultPagesCount,
         query: state.search.registry_reference_types.query,
         scope: 'registry_reference_type',
-        sortAttribute: 'code',
+        sortAttribute: 'name',
         sortAttributeTranslated: true,
         baseTabIndex: 4,
         detailsAttributes: ['code'],

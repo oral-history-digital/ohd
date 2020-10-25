@@ -3,6 +3,7 @@ require 'globalize'
 class RegistryReferenceType < ApplicationRecord
 
   translates :name, fallbacks_for_empty_translations: true, touch: true
+  accepts_nested_attributes_for :translations
 
   # The relation to a registry entry defines "allowed" registry
   # reference types for all registry entries that are descendants

@@ -7,6 +7,7 @@ import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer
 import UserRegistrationSearchFormContainer from '../containers/UserRegistrationSearchFormContainer';
 import ProjectSearchFormContainer from '../containers/ProjectSearchFormContainer';
 import PeopleSearchFormContainer from '../containers/PeopleSearchFormContainer';
+import RegistryReferenceTypesSearchFormContainer from '../containers/RegistryReferenceTypesSearchFormContainer';
 import CollectionsSearchFormContainer from '../containers/CollectionsSearchFormContainer';
 import LanguagesSearchFormContainer from '../containers/LanguagesSearchFormContainer';
 import RoleSearchFormContainer from '../containers/RoleSearchFormContainer';
@@ -242,6 +243,7 @@ export default class FlyoutTabs extends React.Component {
                         {/*this.subTab('edit.upload_transcript.title', 'description', `${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})*/}
                         {this.subTab('edit.upload.upload', '', `${pathBase(this.props)}/uploads/new`, {type: 'General', action: 'edit'})}
                         {this.subTab( 'edit.person.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
+                        {this.subTab( 'edit.registry_reference_type.admin', <RegistryReferenceTypesSearchFormContainer/>, `${pathBase(this.props)}/registry_reference_types`, {type: 'RegistryReferenceType', action: 'update'})}
                         {this.subTab( 'edit.collection.admin', <CollectionsSearchFormContainer/>, `${pathBase(this.props)}/collections`, {type: 'Collection', action: 'update'})}
                         {this.subTab( 'edit.language.admin', <LanguagesSearchFormContainer/>, `${pathBase(this.props)}/languages`, {type: 'Language', action: 'update'})}
                     </div>

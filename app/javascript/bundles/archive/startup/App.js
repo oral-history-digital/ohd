@@ -22,6 +22,7 @@ import WrappedProjectsContainer from '../containers/WrappedProjectsContainer';
 import UserRegistrationsContainer from '../containers/UserRegistrationsContainer';
 import WrappedRolesContainer from '../containers/WrappedRolesContainer';
 import WrappedPermissionsContainer from '../containers/WrappedPermissionsContainer';
+import WrappedRegistryReferenceTypesContainer from '../containers/WrappedRegistryReferenceTypesContainer';
 import ActivateAccountContainer from '../containers/ActivateAccountContainer';
 import OrderNewPasswordContainer from '../containers/OrderNewPasswordContainer';
 import HomeContainer from '../containers/HomeContainer';
@@ -40,6 +41,7 @@ const App = (props) => (
                 <Route path="/:locale/searches/map" component={props => <MapSearchContainer {...props} />} />
                 <Route path="/:locale/projects" component={props => <WrappedProjectsContainer {...props} />} />
                 <Route path="/:locale/people" component={props => <WrappedPeopleContainer {...props} />} />
+                <Route path="/:locale/registry_reference_types" component={props => <WrappedRegistryReferenceTypesContainer {...props} />} />
                 <Route path="/:locale/languages" component={props => <WrappedLanguagesContainer {...props} />} />
                 <Route path="/:locale/collections" component={props => <WrappedCollectionsContainer {...props} />} />
                 <Route path="/:locale/roles" component={props => <WrappedRolesContainer {...props} />} />

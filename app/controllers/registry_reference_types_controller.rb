@@ -1,16 +1,23 @@
 class RegistryReferenceTypesController < ApplicationController
 
   def create
-    policy_scope RegistryReferenceType
+    authorize RegistryReferenceType
     @registry_reference_type = RegistryReferenceType.create(registry_reference_type_params)
 
     respond_to do |format|
       format.json do
-        render json: {
-          data_type: 'registry_reference_types',
-          id: @registry_reference_type.id,
-          data: ::RegistryReferenceTypeSerializer.new(@registry_reference_type).as_json
-        }
+        render json: data_json(@registry_reference_type, msg: "processed")
+      end
+    end
+  end
+
+  def show
+    @registry_reference_type = RegistryReferenceType.find params[:id]
+    authorize @registry_reference_type
+
+    respond_to do |format|
+      format.json do
+        render json: data_json(@registry_reference_type)
       end
     end
   end
@@ -22,11 +29,7 @@ class RegistryReferenceTypesController < ApplicationController
 
     respond_to do |format|
       format.json do
-        render json: {
-          data_type: 'registry_reference_types',
-          id: @registry_reference_type.id,
-          data: ::RegistryReferenceTypeSerializer.new(@registry_reference_type).as_json
-        }
+        render json: data_json(@registry_reference_type, msg: "processed")
       end
     end
   end
@@ -46,17 +49,24 @@ class RegistryReferenceTypesController < ApplicationController
   end
 
   def index
-    @registry_reference_types = policy_scope(RegistryReferenceType).where(code: current_project.registry_reference_type_metadata_fields.map(&:name))
+    page = params[:page] || 1
+    registry_reference_types = policy_scope(RegistryReferenceType).where(search_params).order("created_at DESC").paginate page: page
+    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
 
     respond_to do |format|
+      format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{RegistryReferenceType.maximum(:updated_at)}-#{current_project.metadata_fields.maximum(:updated_at)}" do
+        paginate = false
+        json = #Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{params}-#{RegistryReferenceType.maximum(:updated_at)}" do
           {
-            data: @registry_reference_types.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{s.id}-#{s.updated_at}-#{current_project.metadata_fields.maximum(:updated_at)}"){::RegistryReferenceTypeSerializer.new(s).as_json}; mem},
-            data_type: 'registry_reference_types',
-        }
-        end.to_json
-        render plain: json
+            data: registry_reference_types.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data_type: "registry_reference_types",
+            extra_params: extra_params,
+            page: params[:page] || 1,
+            result_pages_count: registry_reference_types.total_pages
+          }
+        #end
+        render json: json
       end
     end
   end
@@ -64,7 +74,17 @@ class RegistryReferenceTypesController < ApplicationController
   private
 
     def registry_reference_type_params
-      params.require(:registry_reference_type).permit(:name)
+      params.require(:registry_reference_type).permit(
+        :code,
+        :registry_entry_id,
+        translations_attributes: [:locale, :id, :name]
+      )
     end
 
+    def search_params
+      params.permit(
+        :name,
+        :code
+      ).to_h
+    end
 end
