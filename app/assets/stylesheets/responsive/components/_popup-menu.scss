@@ -1,0 +1,32 @@
+/**
+ * PopupMenu component
+ */
+
+.popup-menu {
+  background: #fff;
+  border: 1px solid black;
+  padding: 0.5rem 1.5rem 0 0;
+  position: absolute;
+  text-align: initial;
+}
+
+.popup-menu__list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.popup-menu__close {
+  color: #8b8b7a;
+  cursor: pointer;
+  display: block;
+  padding: 0.25rem;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+/* Variants */
+
+.popup-menu--invisible {
+  display: none;
+}

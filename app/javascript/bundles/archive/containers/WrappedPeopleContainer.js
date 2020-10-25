@@ -8,7 +8,8 @@ import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    let hasMap = + (state.archive.projectId === 'zwar')
+    return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
@@ -21,7 +22,7 @@ const mapStateToProps = (state) => {
         scope: 'person',
         sortAttribute: 'name',
         sortAttributeTranslated: true,
-        baseTabIndex: 4,
+        baseTabIndex: 4 + hasMap,
         //detailsAttributes: ['name'],
         detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth', 'typology'],
         formElements: [
@@ -31,17 +32,17 @@ const mapStateToProps = (state) => {
                 values: ['male', 'female', 'diverse'],
                 optionsScope: 'gender',
                 withEmpty: true,
-                //validate: function(v){return v !== ''} 
+                //validate: function(v){return v !== ''}
             },
             {
                 attribute: 'first_name',
                 elementType: 'multiLocaleInput',
-                //validate: function(v){return v.length > 1} 
+                //validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'last_name',
                 elementType: 'multiLocaleInput',
-                //validate: function(v){return v.length > 1} 
+                //validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'birth_name',
@@ -55,7 +56,7 @@ const mapStateToProps = (state) => {
                 attribute: 'other_first_names',
                 elementType: 'multiLocaleInput',
             },
-            { 
+            {
                 attribute: 'date_of_birth',
             },
         ],

@@ -99,4 +99,3 @@ export default class MapSearch extends React.Component {
         router: PropTypes.object
     }
 }
-

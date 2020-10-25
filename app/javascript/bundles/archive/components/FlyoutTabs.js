@@ -63,9 +63,9 @@ export default class FlyoutTabs extends React.Component {
         } else if (tabIndex === this.props.locales.length + 3) {
              // registry entries
             this.context.router.history.push(`${pathBase(this.props)}/registry_entries`);
-        //} else if (this.props.projectId === 'zwar' && tabIndex === this.props.locales.length + 4) {
+        } else if (this.props.projectId === 'zwar' && tabIndex === this.props.locales.length + 4) {
             // map
-        //   this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
+            this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
         }
         if (tabIndex === 0 || tabIndex >= this.props.locales.length + 1) {
             this.setState({tabIndex: tabIndex});
@@ -499,13 +499,14 @@ export default class FlyoutTabs extends React.Component {
         }
     }
 
-    isAdminTab(tabIndex) {
-      let adminTabs = [4, 5]
-      return adminTabs.indexOf(tabIndex + this.props.locales.length)
-    }
+    activeCss(index) {
+        let hasMap = + (this.props.projectId === 'zwar')
+        let offset = hasMap + this.props.locales.length
+        return ((index === 4 + offset || index === 5 + offset) ? 'active activeadmin' : 'active')
+     }
 
     render() {
-        let css = this.isAdminTab(this.state.tabIndex) ? 'activeadmin' : 'active'
+        let css = this.activeCss(this.state.tabIndex)
         return (
             <Tabs
                 className='wrapper-flyout'
@@ -521,7 +522,7 @@ export default class FlyoutTabs extends React.Component {
                         <Tab className='flyout-tab' key='archive-search'>{this.renderSearchTheArchiveButton()}</Tab>
                         {this.interviewTab()}
                         {this.registryEntriesTab()}
-                        {/*this.props.projectId === 'zwar' && this.mapTab()*/}
+                        {this.props.projectId === 'zwar' && this.mapTab()}
                         {this.indexingTab()}
                         {this.usersAdminTab()}
                         {this.userContentTab()}
@@ -540,7 +541,7 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
                     {this.interviewTabPanel()}
                     {this.registryEntriesTabPanel()}
-                    {/*this.props.projectId === 'zwar' && this.mapTabPanel()*/}
+                    {this.props.projectId === 'zwar' && this.mapTabPanel()}
                     {this.indexingTabPanel()}
                     {this.usersAdminTabPanel()}
                     {this.userContentTabPanel()}
