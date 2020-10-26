@@ -45,7 +45,7 @@ h3 {
 h4 {
   margin: 13px 0 7px 0;
   @include body-font;
-  color: $primary-color;
+  color: var(--primary-color);
   font-size: $font-size-heading-h4-large;
   line-height: $line-height-heading-h4-large;
   //@include screen-l {
@@ -83,7 +83,7 @@ h6 {
 
 a {
   &:link, &:visited {
-    color: $link-color;
+    color: var(--primary-color); // formerly $link-color;
     background-color: transparent;
     text-decoration: none;
   }
@@ -91,7 +91,7 @@ a {
     text-decoration: underline;
   }
   &:hover {
-    color: $link-hover-color;
+    color: var(--primary-color); // formerly $link-hover-color;
     text-decoration: none;
     img {
       text-decoration: none;

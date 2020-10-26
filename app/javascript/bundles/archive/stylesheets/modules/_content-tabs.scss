@@ -38,12 +38,12 @@
   color: #fff;
   text-decoration: none;
   // background-color: $gray-lighter;
-  background-color: $primary-color;
+  background-color: var(--primary-color);
 }
 
 .content-tabs-nav-link.active {
   color: #fff;
-  background-color: $primary-color;
+  background-color: var(--primary-color);
 }
 
 .fix-video .content-tabs-nav-link i {
@@ -124,7 +124,7 @@
   margin-bottom: 4px;
   .fa {
     font-size: 20px;
-    color: $primary-color;
+    color: var(--primary-color);
   }
   &.speaker-change {
     margin-top: 15px;
@@ -166,11 +166,11 @@
     font-size: $font-size-large;
     line-height: $line-height-large;
     &.active {
-      background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+      background-color: rgba(255,250,129,0.5);
       color: $gray-darkest;
     }
     &:hover {
-      color: $primary-color;
+      color: var(--primary-color);
     }
   }
 }
@@ -198,13 +198,13 @@
   display: inline-block;
   margin-right: 2px;
   padding: 6px 10px 0 10px;
-  color: $primary-color;
+  color: var(--primary-color);
   transition: 0.3s;
   cursor: pointer;
   .fa.fa-sticky-note-o, .fa.fa-tag {
-    color: $editorial-color;
+    color: var(--editorial-color);
     &.exists {
-      color: $primary-color;
+      color: var(--primary-color);
     }
   }
   &:last-child {
@@ -267,7 +267,7 @@
       // }
     }
     .scope-note-link {
-      color: $link-color;
+      color: var(--primary-color); // formerly $link-color;
       cursor: pointer;
     }
     .scope-note {
@@ -324,7 +324,7 @@
       &::before {
         font-family: FontAwesome;
         content: "\f067";
-        color: $primary-color;
+        color: var(--primary-color);
         font-size: $font-size-medium;
         transition: 0.4s;
       }
@@ -348,10 +348,10 @@
       transition: 0.4s;
       transition: 0.4s;
       &:hover {
-        color: $primary-color !important;
+        color: var(--primary-color) !important;
       }
       &.active {
-        background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+        background-color: rgba(255,250,129,0.5);
         color: $gray-darkest;
       }
     }
@@ -362,10 +362,10 @@
       color: $gray-dark;
       transition: 0.4s;
       &:hover {
-        color: $primary-color;
+        color: var(--primary-color);
       }
       &.active {
-        background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+        background-color: rgba(255,250,129,0.5);
         color: $gray-darkest;
       }
     }
@@ -445,7 +445,7 @@ div.mainheading + div {
   margin: 0 0 11px 0;
   &:hover{
     p, span {
-      color: $primary-color !important;
+      color: var(--primary-color) !important;
     }
   }
   p {
@@ -457,12 +457,12 @@ div.mainheading + div {
   }
   p span.highlight {
     padding: 0 4px;
-    background-color: rgba(255,250,129,0.6); //lighten($secondary-color, 30%);
+    background-color: rgba(255,250,129,0.6);
     color: $gray-darkest;
   }
 
   &.active {
-    background-color: rgba(255,250,129,0.5); //lighten($secondary-color, 30%);
+    background-color: rgba(255,250,129,0.5);
     color: $gray-darkest;
   }
 }
@@ -489,14 +489,14 @@ div.mainheading + div {
     border-top: 2px solid $gray-light;
   }
   ::placeholder {
-    color: $primary-color;
+    color: var(--primary-color);
   }
   .search-button {
     cursor: pointer;
     width: 20%;
     font-family: FontAwesome;
     content: "\f067";
-    color: $primary-color;
+    color: var(--primary-color);
     float: right;
     transition: color 0.3s;
     padding: 10px;
@@ -554,10 +554,10 @@ table.edit-interview {
       margin: none;
       .segment {
         &.active {
-          background-color: rgba(255,250,129,0.5) !important; //lighten($secondary-color, 30%);
+          background-color: rgba(255,250,129,0.5) !important;
         }
         &:hover {
-          color: $primary-color;
+          color: var(--primary-color);
       }
     }
       input, textarea {

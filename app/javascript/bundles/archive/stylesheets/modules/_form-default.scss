@@ -40,7 +40,7 @@ form.default {
   input[type=password]:focus,
   textarea:focus {
     outline: 0;
-    border-color: $primary-color;
+    border-color: var(--primary-color);
   }
   input[type=submit], input[type=button] {
     margin-left: 0;

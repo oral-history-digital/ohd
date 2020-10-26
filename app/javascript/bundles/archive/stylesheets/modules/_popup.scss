@@ -97,7 +97,7 @@
     margin-top: 0;
   }
   .admin {
-    color: $editorial-color;
+    color: var(--editorial-color);
   }
 }
 .popup-segment-nav-container {
@@ -140,7 +140,7 @@
     float: right;
   }
   .fa {
-    color: $primary-color;
+    color: var(--primary-color);
     cursor: pointer;
     &:hover {
       color: $gray-dark;
@@ -154,7 +154,7 @@
 .popup-segment {
   margin-bottom: 10px;
   padding: 5px 10px;
-  background-color: rgba(255,250,129,0.7); //lighten($secondary-color, 30%);
+  background-color: rgba(255,250,129,0.7);
   color: $gray-darkest;
 }
 .popup-segment-nav-befor {

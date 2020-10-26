@@ -1,12 +1,12 @@
 .logo-link {
   display: block;
   margin: 0;
-  color: $primary-color;
+  color: var(--primary-color);
   overflow: hidden;
   padding: $header-logo-padding;
   &:hover {
     text-decoration: none !important;
-    color: $primary-color;
+    color: var(--primary-color);
   }
   @include screen-m {
     max-width: 305px;
@@ -22,17 +22,6 @@
   }
 }
 
-// .logo-text {
-//   display: none;
-//   margin: 26px 0 4px 0;
-//   font-size: 36px;
-//   text-transform: uppercase;
-//   color: $primary-color;
-//   @include screen-m {
-//     display: none;
-//   }
-// }
-
 .icon-open {
-  color: $primary-color;
+  color: var(--primary-color);
 }

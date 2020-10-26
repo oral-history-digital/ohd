@@ -64,8 +64,7 @@ form.flyout-login {
 	display: block;
 	height: inherit;
 	font-size: 1em;
-	// text-transform: uppercase;
-	background:$secondary-color;
+	background: var(--secondary-color);
 	border-radius: inherit;
 	box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.12), inset 0 0 2px rgba(0, 0, 0, 0.15);
 	box-sizing:content-box;
@@ -132,7 +131,7 @@ form.flyout-login {
 	left: 10px;
 	box-shadow: -1px 1px 5px rgba(0, 0, 0, 0.2);
 }
- 
+
 /* Transition
 ========================== */
 .switch-label, .switch-handle {
@@ -176,13 +175,14 @@ form.flyout-login {
 	background: #eceeef;
 }
 .switch-light .switch-input.checked ~ .switch-label {
-	background: $primary-color;
+	background: var(--primary-color);
 	border-color: #FFF;
 }
 .switch-light .switch-input.checked ~ .switch-handle {
 	left: 10px;
 	box-shadow: none;
-	background: darken($primary-color, 10%)
+	background: var(--primary-color);
+	filter: brightness(0.9);
 }
 .switch-light .switch-input.checked ~ .switch-handle:before {
 	background: rgba(255,255,255,0.7);

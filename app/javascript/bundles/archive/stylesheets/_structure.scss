@@ -32,7 +32,7 @@ body {
     width: 64%;
   }
   .fa-eye {
-    color: $primary-color !important;
+    color: var(--primary-color) !important;
   }
 }
 
@@ -60,7 +60,7 @@ header.site-header {
 }
 
 .active_map_popup_text{
-  color: $primary-color;
+  color: var(--primary-color);
   cursor: pointer;
 }
 
@@ -141,14 +141,14 @@ header.site-header {
 .expand, .compress, .edit, .check-square {
   transition: background-color 0.3s;
   &:hover {
-    background-color: $primary-color;
+    background-color: var(--primary-color);
     transition: background-color 0.3s;
   }
 }
 
 .expand.editorial, .compress.editorial, .edit, .check-square {
   &:hover {
-    background-color: $editorial-color;
+    background-color: var(--editorial-color);
   }
 }
 
@@ -383,7 +383,7 @@ footer {
   }
   a:link,
   a:visited {
-    color: $primary-color; //#fff;
+    color: var(--primary-color);
     transition: color 0.3s;
   }
   a[href]:hover, a:active {
@@ -402,7 +402,7 @@ footer {
   font-size: 26px;
   z-index: 1100; //because of leaflet
   cursor: pointer;
-  color: $gray-dark; //$primary-color;
+  color: $gray-dark;
   background: rgba(255, 255, 255, 0.5);
 }
 .fix-video {
@@ -435,7 +435,7 @@ h1.search-results-title {
 .search-results-ico-link {
   float: none;
   font-size: $font-size-large;
-  color: $primary-color;
+  color: var(--primary-color);
   transition: color 0.3s;
   cursor: pointer;
   .fa {
@@ -487,13 +487,13 @@ h1.search-results-title {
     }
   }
   &.active {
-    background-color: $primary-color;
+    background-color: var(--primary-color);
     .fa, span {
       color: #fff;
     }
   }
   &:not(.active):hover {
-    background-color: $secondary-color; //rgba(255,250,129,0.5);
+    background-color: var(--secondary-color);
     color: $flyout-tab-title-text-color;
     // .fa {
     //   color: $gray-darker;
@@ -555,7 +555,7 @@ ul.search-results-pagination {
   flex-wrap: wrap;
   align-items: stretch;
   a:link, a:visited {
-    color: $primary-color;
+    color: var(--primary-color);
     transition: color 0.3s;
     line-height: 1.2rem;
   }
@@ -576,7 +576,7 @@ a.search-result-link {
   p.search-result-name {
     font-size: $font-size-large;
     line-height: $line-height-large;
-    color: $primary-color;
+    color: var(--primary-color);
   }
   &:hover {
     //img {
@@ -779,7 +779,7 @@ a.search-result-link {
 .video-element.home-video {
   margin: 0;
   padding: 0;
-  background-color: #383838; //darken($gray-warm, 10%);
+  background-color: #383838;
   video{
     display: block;
   }
@@ -902,7 +902,7 @@ ul.registry-entries-ul {
   left: 33%;
   color: $gray-dark;
   padding: 20px;
-  border: 1px solid $secondary-color;
+  border: 1px solid var(--secondary-color);
   background: #fff;
   box-shadow: 0 3px 14px rgba(0,0,0,.4);
   -webkit-box-shadow: 0 3px 14px rgba(0,0,0,.4);
@@ -1034,5 +1034,5 @@ $color4 : lightgrey;
   }
 }
 .fa-eye-slash{
-  color: $editorial-color !important;
+  color: var(--editorial-color) !important;
 }

@@ -5,9 +5,9 @@
 .wrapper-page {
   button.accordion {
     background-color: transparent;
-    color: $primary-color;
+    color: var(--primary-color);
     &.admin {
-      color: $editorial-color;
+      color: var(--editorial-color);
     }
     cursor: pointer;
     padding: 8px 15px 8px 2px;
@@ -22,7 +22,6 @@
     //border-bottom: 1px solid $gray-warm;
     //&.active,
     &:hover {
-      //background-color: $secondary-color;
       color: $gray-dark;
     }
     &::after {
@@ -56,7 +55,7 @@
     display: inline-block;
     margin-right: 10px;
     //margin-bottom: 5px;
-    color: $primary-color;
+    color: var(--primary-color);
   }
   .flyout-content-item:not(:last-child) {
     margin-bottom: 20px;
@@ -68,14 +67,14 @@
     margin-right: 10px;
   }
   a {
-    color: $primary-color;
+    color: var(--primary-color);
     &:hover {
       color: $gray-dark;
       text-decoration: none;
     }
   }
   .fa {
-    color: $primary-color;
+    color: var(--primary-color);
     margin-left: 5px;
     margin-right: 5px;
     &:hover {
@@ -84,11 +83,11 @@
   }
   .flyout-sub-tabs-content-download {
     margin-top: 10px;
-    color: $primary-color;
+    color: var(--primary-color);
     cursor: pointer;
   }
   .leaflet-popup-content p {
-    color: $primary-color;
+    color: var(--primary-color);
   }
   .explanation {
     font-size: $font-size-medium;
@@ -121,14 +120,14 @@
     display: inline-block;
   }
   a {
-    color: $primary-color;
+    color: var(--primary-color);
   }
   .fa {
     margin-right: 10px;
   }
   .flyout-sub-tabs-content-link {
     margin: 5px 0 0 0;
-    color: $primary-color;
+    color: var(--primary-color);
     cursor: pointer;
   }
 }
@@ -163,18 +162,18 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
 .flyout-sub-tabs-content-ico-link {
   display: inline-block;
   margin: 0 2px 0 10px;
-  color: $editorial-color;
+  color: var(--editorial-color);
   transition: 0.3s;
   cursor: pointer;
   &:last-child {
     margin-right: 0;
   }
  .fa {
-      color: $editorial-color;
+      color: var(--editorial-color);
       margin-left: 1px;
   }
   .fa.exists, .archive-view {
-    color: $primary-color;
+    color: var(--primary-color);
   }
   &.active {
     background-color: $gray-lighter;
