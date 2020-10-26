@@ -17,7 +17,7 @@ export default class SegmentEditView extends React.Component {
             case 'timecode': {
               return (
                 // TODO: show tape number!
-                <div id={`segment_${this.props.segment.id}`} className={this.css()} onClick={() => this.props.handleSegmentClick(this.props.segment.tape_nbr, this.props.segment.time, this.props.tabIndex)}>
+                <div id={`segment_${this.props.segment.id}`} className={this.css()} onClick={() => this.props.setTapeAndTime(this.props.segment.tape_nbr, this.props.segment.time)}>
                 {`${this.props.segment.timecode}`}</div>
               )
               break;
