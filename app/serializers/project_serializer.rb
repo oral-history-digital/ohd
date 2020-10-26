@@ -12,10 +12,14 @@ class ProjectSerializer < ApplicationSerializer
     :upload_types,
     :pseudo_upload_types,
     :fullname_on_landing_page,
+    :has_map,
     :primary_color,
     :secondary_color,
     :editorial_color,
+    :aspect_x,
+    :aspect_y,
     :initials,
+    :archive_id_number_length,
     :identifier,
     :is_catalog,
     :domain,
@@ -67,4 +71,7 @@ class ProjectSerializer < ApplicationSerializer
     end
   end
 
+  def has_map
+    object.has_map ? 1 : 0
+  end
 end
