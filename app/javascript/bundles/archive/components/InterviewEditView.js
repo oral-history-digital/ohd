@@ -7,27 +7,16 @@ export default class InterviewEditView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.handleScroll = this.handleScroll.bind(this);
     }
 
     componentDidMount() {
         this.loadSegments();
-        window.addEventListener('wheel', this.handleScroll);
-        this.scrollToActiveSegment();
+        window.scrollTo(0, 1);
     }
 
     componentDidUpdate(prevProps) {
         this.loadSegments();
-        if (
-            (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) ||
-            prevProps.tape !== this.props.tape
-        ) {
-            this.scrollToActiveSegment();
-        }
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('wheel', this.handleScroll);
+        window.scrollTo(0, 1);
     }
 
     loadSegments() {
@@ -39,29 +28,8 @@ export default class InterviewEditView extends React.Component {
         }
     }
 
-    scrollToActiveSegment() {
-        let currentSegment = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props)[0];
-        let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
-        if (activeSegmentElement) {
-            let offset = activeSegmentElement.offsetTop;
-            if (offset > 450) {
-                (window.innerHeight < 900) && this.handleScroll();
-                this.props.transcriptScrollEnabled && window.scrollTo(0, offset - 400);
-            } else {
-                window.scrollTo(0, offset);
-            }
-        }
-    }
-
-    handleScroll() {
-        // no scrolling in fullscreen - because this would remove the fixed table header
-        if (!this.props.transcriptScrollEnabled && !document.getElementsByClassName('fullscreen')) {
-            this.props.handleTranscriptScroll(true)
-        }
-    }
-
     shownSegmentsAround(sortedWithIndex) {
-        const ROWS_BEFORE = 0;
+        const ROWS_BEFORE = 1;
         const ROWS_AFTER = 40;
         let start = sortedWithIndex[2] >= ROWS_BEFORE ? sortedWithIndex[2] - ROWS_BEFORE : 0
         let end = sortedWithIndex[2] + ROWS_AFTER
@@ -87,9 +55,7 @@ export default class InterviewEditView extends React.Component {
         let translationLocale = this.props.interview.languages.filter(locale => locale !== this.props.interview.lang)[0]
 
         let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props);
-        let shownSegments = this.props.transcriptScrollEnabled ?
-            sortedWithIndex[1] :
-            this.shownSegmentsAround(sortedWithIndex);
+        let shownSegments = this.shownSegmentsAround(sortedWithIndex);
 
 
             return shownSegments.map((segment, index) => {
