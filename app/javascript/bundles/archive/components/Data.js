@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import PopupMenu from './PopupMenu';
+import PopupMenuContainer from '../containers/PopupMenuContainer';
 import { t, admin, pluralize, camelcase, pathBase } from '../../../lib/utils';
 
 export default class Data extends React.Component {
@@ -218,11 +218,11 @@ export default class Data extends React.Component {
     buttons() {
         if (admin(this.props, this.props.data)) {
             return (
-                <PopupMenu translations={this.props.translations} locale={this.props.locale}>
-                    <PopupMenu.Item>{this.show()}</PopupMenu.Item>
-                    <PopupMenu.Item>{this.edit()}</PopupMenu.Item>
-                    <PopupMenu.Item>{this.delete()}</PopupMenu.Item>
-                </PopupMenu>
+                <PopupMenuContainer>
+                    <PopupMenuContainer.Item>{this.show()}</PopupMenuContainer.Item>
+                    <PopupMenuContainer.Item>{this.edit()}</PopupMenuContainer.Item>
+                    <PopupMenuContainer.Item>{this.delete()}</PopupMenuContainer.Item>
+                </PopupMenuContainer>
             );
         }
     }
