@@ -4,6 +4,7 @@ import RegistryReferencesContainer from '../containers/RegistryReferencesContain
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import SubmitOnBlurForm from '../containers/form/SubmitOnBlurForm';
 import { t, fullname, admin } from "../../../lib/utils";
+import moment from 'moment';
 
 export default class SegmentEditView extends React.Component {
 
@@ -12,13 +13,17 @@ export default class SegmentEditView extends React.Component {
         this.state = {visible:  false};
     }
 
+    segmentTime() {
+        return moment.utc(this.props.segment.time * 1000).format("HH:mm:ss");
+    }
+
     columnElement(columnName) {
         switch (columnName) {
             case 'timecode': {
               return (
-                // TODO: show tape number!
-                <div id={`segment_${this.props.segment.id}`} className={this.css()} onClick={() => this.props.setTapeAndTime(this.props.segment.tape_nbr, this.props.segment.time)}>
-                {`${this.props.segment.timecode}`}</div>
+                  <div id={`segment_${this.props.segment.id}`} className={this.css()} onClick={() => this.props.setTapeAndTime(this.props.segment.tape_nbr, this.props.segment.time)}>
+                      {`${this.props.segment.tape_nbr} - ${this.segmentTime()}`}
+                  </div>
               )
               break;
             }

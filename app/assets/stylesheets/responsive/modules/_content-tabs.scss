@@ -553,6 +553,7 @@ table.edit-interview {
       padding: 5px;
       margin: none;
       .segment {
+        cursor: pointer;
         &.active {
           background-color: rgba(255,250,129,0.5) !important; //lighten($secondary-color, 30%);
         }
