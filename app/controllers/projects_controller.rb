@@ -107,8 +107,11 @@ class ProjectsController < ApplicationController
           "primary_color",
           "secondary_color",
           "editorial_color",
+          "aspect_x",
+          "aspect_y",
           "shortname",
           "initials",
+          "archive_id_number_length",
           "domain",
           "archive_domain",
           "doi",
@@ -119,6 +122,7 @@ class ProjectsController < ApplicationController
           "contact_email",
           "smtp_server",
           "has_newsletter",
+          "has_map",
           "is_catalog",
           translations_attributes: [:locale, :name, :id, :introduction, :more_text, :landing_page_text]
       )

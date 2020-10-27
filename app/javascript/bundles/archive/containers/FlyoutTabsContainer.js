@@ -16,6 +16,7 @@ const mapStateToProps = (state) => {
         selectedArchiveIds: state.archive.selectedArchiveIds,
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
+        hasMap: project && project.has_map === 1,
         editView: state.archive.editView,
         translations: state.archive.translations,
         account: state.data.accounts.current,

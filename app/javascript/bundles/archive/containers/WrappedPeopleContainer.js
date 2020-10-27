@@ -8,7 +8,6 @@ import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    let hasMap = + (state.archive.projectId === 'zwar')
     return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
@@ -22,7 +21,7 @@ const mapStateToProps = (state) => {
         scope: 'person',
         sortAttribute: 'name',
         sortAttributeTranslated: true,
-        baseTabIndex: 4 + hasMap,
+        baseTabIndex: 4 + project.has_map,
         //detailsAttributes: ['name'],
         detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth', 'typology'],
         formElements: [

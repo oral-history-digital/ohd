@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
+        hasMap: project && project.has_map,
     }
 }
 
