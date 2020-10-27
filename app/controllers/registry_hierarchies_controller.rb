@@ -1,10 +1,7 @@
 class RegistryHierarchiesController < ApplicationController
-
-  layout 'responsive'
-
   def create
     authorize RegistryHierarchy
-    @registry_hierarchy = RegistryHierarchy.create(registry_hierarchy_params) 
+    @registry_hierarchy = RegistryHierarchy.create(registry_hierarchy_params)
     descendant = @registry_hierarchy.descendant
     ancestor = @registry_hierarchy.ancestor
 
@@ -19,12 +16,12 @@ class RegistryHierarchiesController < ApplicationController
           data: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{descendant.id}-#{descendant.updated_at}"){::RegistryEntrySerializer.new(descendant).as_json},
           reload_data_type: 'registry_entries',
           reload_id: ancestor.id
-        }, status: :ok 
+        }, status: :ok
       end
     end
   end
 
-  def destroy 
+  def destroy
     @registry_hierarchy = RegistryHierarchy.find(params[:id])
     authorize @registry_hierarchy
     descendant = @registry_hierarchy.descendant
@@ -46,7 +43,7 @@ class RegistryHierarchiesController < ApplicationController
           data: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_entry-#{descendant.id}-#{descendant.updated_at}"){::RegistryEntrySerializer.new(descendant).as_json},
           reload_data_type: 'registry_entries',
           reload_id: ancestor.id
-        }, status: :ok 
+        }, status: :ok
       end
     end
   end

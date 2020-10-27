@@ -1,6 +1,4 @@
 class InterviewsController < ApplicationController
-  layout "responsive"
-
   skip_before_action :authenticate_user_account!, only: [:show, :random_featured]
   skip_after_action :verify_authorized, only: [:show, :metadata, :random_featured]
   skip_after_action :verify_policy_scoped, only: [:show, :metadata, :random_featured]

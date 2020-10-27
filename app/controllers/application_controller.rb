@@ -11,8 +11,6 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, except: :index
   after_action :verify_policy_scoped, only: :index
 
-  layout 'responsive'
-
   def pundit_user
     current_user_account
   end

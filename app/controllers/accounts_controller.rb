@@ -4,8 +4,6 @@ class AccountsController < ApplicationController
   skip_after_action :verify_authorized, only: [:show]
   skip_after_action :verify_policy_scoped, only: [:show]
 
-  layout 'responsive'
-
   def show
     respond_to do |format|
       format.html {}

@@ -1,27 +1,4 @@
 class SegmentsController < ApplicationController
-
-  layout 'responsive'
-
-  #def new
-    #respond_to do |format|
-      #format.html { render 'react/app' }
-      #format.json { render json: {}, status: :ok }
-    #end
-  #end
-
-  #def create
-    #@segment = Segment.create segment_params
-    #respond_to do |format|
-      #format.json do
-        #render json: {
-          #id: @segment.id,
-          #data_type: 'segments',
-          #data: ::SegmentSerializer.new(@segment).as_json,
-        #}
-      #end
-    #end
-  #end
-
   def update
     @segment = Segment.find params[:id]
     authorize @segment
@@ -81,7 +58,7 @@ class SegmentsController < ApplicationController
     end
   end
 
-  #def destroy 
+  #def destroy
     #@segment = Segment.find(params[:id])
     #@segment.destroy
 
@@ -108,9 +85,9 @@ class SegmentsController < ApplicationController
 
   def segment_params
     params.require(:segment).permit(
-      :text, 
-      :mainheading, 
-      :subheading, 
+      :text,
+      :mainheading,
+      :subheading,
       :speaker_id,
       :locale,
       translations_attributes: [:locale, :text, :id, :mainheading, :subheading]

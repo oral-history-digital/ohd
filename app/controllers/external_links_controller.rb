@@ -1,8 +1,6 @@
 class ExternalLinksController < ApplicationController
   before_action :set_external_link, only: [:update, :destroy]
 
-  layout 'responsive'
-
   def create
     authorize ExternalLink
     @external_link = ExternalLink.create external_link_params
@@ -56,7 +54,7 @@ class ExternalLinksController < ApplicationController
     end
   end
 
-  def destroy 
+  def destroy
     project = @external_link.project
     @external_link.destroy
     project.touch
@@ -88,7 +86,7 @@ class ExternalLinksController < ApplicationController
 
     def external_link_params
       params.require(:external_link).permit(
-        :project_id, 
+        :project_id,
         :internal_name,
         translations_attributes: [:locale, :url, :name, :id]
       )
