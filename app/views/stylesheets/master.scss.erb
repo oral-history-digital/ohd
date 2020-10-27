@@ -2,6 +2,8 @@
 $primary-color: <%= current_project.primary_color %> !default;
 $secondary-color: <%= current_project.secondary_color %> !default;
 $editorial-color: <%= current_project.editorial_color %> !default;
+$aspect-x: <%= current_project.aspect_x %>;
+$aspect-y: <%= current_project.aspect_y %>;
 
 <% stylesheets_path = File.join(Rails.root, "app", "assets", "stylesheets") %>
 

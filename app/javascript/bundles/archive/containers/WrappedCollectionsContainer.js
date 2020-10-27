@@ -8,7 +8,6 @@ import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    let hasMap = + (state.archive.projectId === 'zwar')
     return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
@@ -20,7 +19,7 @@ const mapStateToProps = (state) => {
         resultPagesCount: state.data.statuses.collections.resultPagesCount,
         query: state.search.collections.query,
         scope: 'collection',
-        baseTabIndex: 4 + hasMap,
+        baseTabIndex: 4 + project.has_map,
         //detailsAttributes: ['name'],
         detailsAttributes: ['project_id', 'name', 'homepage', 'institution', 'responsibles', 'notes', 'countries'],
         formElements: [

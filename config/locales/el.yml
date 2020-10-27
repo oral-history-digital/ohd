@@ -805,7 +805,8 @@ el:
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: UploadTypen
         shortname: Kürzel
-        initials: Initialen
+        initials: Initialen (Archiv-ID)
+        archive_id_number_length: Anzahl der Zahlen (Archiv-ID)
         domain: Projektdomain
         archive_domain: Archivdomain
         doi: DOI
@@ -817,12 +818,15 @@ el:
         contact_email: Kontaktemail
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
+        has_map: Karte anzeigen
         pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color
+        aspect_x: Bildformat x-Wert
+        aspect_y: Bildformat y-Wert
         landing_page_edit_help: INTERVIEWEE wird durch den Namen des/der Interviewten ersetzt.
         domain_help: "This has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
         archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"

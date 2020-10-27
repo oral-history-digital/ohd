@@ -63,7 +63,7 @@ export default class FlyoutTabs extends React.Component {
         } else if (tabIndex === this.props.locales.length + 3) {
              // registry entries
             this.context.router.history.push(`${pathBase(this.props)}/registry_entries`);
-        } else if (this.props.projectId === 'zwar' && tabIndex === this.props.locales.length + 4) {
+        } else if (this.props.hasMap && tabIndex === this.props.locales.length + 4) {
             // map
             this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
         }
@@ -159,7 +159,6 @@ export default class FlyoutTabs extends React.Component {
                         */}
                         <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
                             {this.renderPhotos()}
-                            {/* {(this.props.projectId === 'mog' || this.props.projectId === 'zwar') && this.renderMap()} */}
                             {this.renderMap()}
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}
@@ -446,7 +445,7 @@ export default class FlyoutTabs extends React.Component {
 
     mapTab() {
         return (
-            <AuthShowContainer ifLoggedIn={this.props.projectId === "zwar"}>
+            <AuthShowContainer ifLoggedIn={this.props.hasMap}>
                 <Tab className='flyout-tab' key='map'>{t(this.props, 'map')}</Tab>
             </AuthShowContainer>
         )
@@ -454,7 +453,7 @@ export default class FlyoutTabs extends React.Component {
 
     mapTabPanel() {
         return (
-            <AuthShowContainer ifLoggedIn={this.props.projectId === "zwar"}>
+            <AuthShowContainer ifLoggedIn={this.props.hasMap}>
                 <TabPanel key='map'>
                     <div className='flyout-tab-title'>{t(this.props, 'map')}</div>
                     <ArchiveSearchFormContainer map={true}/>
@@ -468,7 +467,7 @@ export default class FlyoutTabs extends React.Component {
 
     renderMap() {
         return (
-            <AuthShowContainer ifLoggedIn={this.props.projectId === "zwar"}>
+            <AuthShowContainer ifLoggedIn={this.props.hasMap}>
                 <InterviewDataContainer
                     title={t(this.props, 'map')}
                     open={true}
@@ -500,8 +499,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     activeCss(index) {
-        let hasMap = + (this.props.projectId === 'zwar')
-        let offset = hasMap + this.props.locales.length
+        let offset = this.props.hasMap + this.props.locales.length
         return ((index === 4 + offset || index === 5 + offset) ? 'active activeadmin' : 'active')
      }
 
@@ -522,7 +520,7 @@ export default class FlyoutTabs extends React.Component {
                         <Tab className='flyout-tab' key='archive-search'>{this.renderSearchTheArchiveButton()}</Tab>
                         {this.interviewTab()}
                         {this.registryEntriesTab()}
-                        {this.props.projectId === 'zwar' && this.mapTab()}
+                        {this.props.hasMap && this.mapTab()}
                         {this.indexingTab()}
                         {this.usersAdminTab()}
                         {this.userContentTab()}
@@ -541,7 +539,7 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
                     {this.interviewTabPanel()}
                     {this.registryEntriesTabPanel()}
-                    {this.props.projectId === 'zwar' && this.mapTabPanel()}
+                    {this.props.hasMap && this.mapTabPanel()}
                     {this.indexingTabPanel()}
                     {this.usersAdminTabPanel()}
                     {this.userContentTabPanel()}

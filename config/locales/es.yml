@@ -782,8 +782,11 @@ es:
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color
+        aspect_x: Bildformat x-Wert
+        aspect_y: Bildformat y-Wert
         shortname: Kürzel
-        initials: Initialen
+        initials: Initialen (Archiv-ID)
+        archive_id_number_length: Anzahl der Zahlen (Archiv-ID)
         domain: Projektdomain
         archive_domain: Archivdomain
         doi: DOI
@@ -795,6 +798,7 @@ es:
         contact_email: Correo electrónico de contacto
         smtp_server: Servidor SMTP
         has_newsletter: Newsletter
+        has_map: Karte anzeigen
         hidden_registry_entry_ids: versteckte Registereinträge (IDs)
         pdf_registry_entry_codes: Codes der Registereinträge für PDF
         is_catalog: Ist das Projekt ein Katalog
