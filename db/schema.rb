@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_10_20_164923) do
+ActiveRecord::Schema.define(version: 2020_10_26_132241) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -366,6 +366,10 @@ ActiveRecord::Schema.define(version: 2020_10_20_164923) do
     t.string "primary_color"
     t.string "secondary_color"
     t.string "editorial_color"
+    t.boolean "has_map"
+    t.integer "aspect_x"
+    t.integer "aspect_y"
+    t.integer "archive_id_number_length"
   end
 
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

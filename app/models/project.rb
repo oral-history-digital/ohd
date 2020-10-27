@@ -44,6 +44,11 @@ class Project < ApplicationRecord
     end
   end
 
+  validates :aspect_x, numericality: { only_integer: true }
+  validates :aspect_y, numericality: { only_integer: true }
+  validates :archive_id_number_length, numericality: { only_integer: true }
+  validates :initials, format: { with: /\A[a-zA-Z]+\z/ }
+
   before_save :touch_interviews
   def touch_interviews
     interviews.each(&:touch) if landing_page_text_changed?

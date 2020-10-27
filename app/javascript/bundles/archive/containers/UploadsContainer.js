@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
         uploadTypes: project && project.upload_types,
         account: state.data.accounts.current,
         projectId: state.archive.projectId,
+        hasMap: project && project.has_map,
     }
 }
 

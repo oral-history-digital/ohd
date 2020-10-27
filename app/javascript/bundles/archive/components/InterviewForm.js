@@ -42,12 +42,16 @@ export default class InterviewForm extends React.Component {
     }
 
     form() {
+        let _this = this;
         let elements = [
             { 
                 attribute: 'archive_id',
                 value: this.props.interview && this.props.interview.archive_id,
                 handlechangecallback: this.setArchiveId,
-                validate: function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)},
+                validate: function(v){
+                    let regexp = new RegExp(`^${_this.props.project.initials}\\d{${_this.props.project.archive_id_number_length}}$`); 
+                    return regexp.test(v);
+                },
             },
             { 
                 attribute: 'interview_date',
