@@ -61,7 +61,7 @@
     "react-visibility-sensor": "^5.1.1",
     "react_ujs": "^2.5.0",
     "redux": "^4.0.1",
-    "redux-logger": "^3.0.6",
+    "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.2.0",
     "resolve-url-loader": "^3.1.0",
     "sass-loader": "^8.0.2",
