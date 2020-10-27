@@ -30,14 +30,12 @@
 @import "modules/form-default";
 
 /* Components */
+@import "components/aspect-ratio";
 @import "components/popup-menu";
 @import "components/wrapper-page";
 
 /* Print */
 @import "print";
-
-/* Project-specific */
-@import "customization";
 
 /* FontAwesome */
 @import "~font-awesome/scss/font-awesome.scss";

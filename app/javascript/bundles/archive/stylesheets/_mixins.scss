@@ -5,19 +5,19 @@
 // Media queries
 
 @mixin screen-xs-m {
-  @media only screen and (max-width: $screen-m-max) { 
+  @media only screen and (max-width: $screen-m-max) {
     @content;
   }
 }
 
 @mixin screen-xs-s {
-  @media only screen and (max-width: $screen-s-max) { 
+  @media only screen and (max-width: $screen-s-max) {
     @content;
   }
 }
 
 @mixin screen-xs {
-  @media only screen and (max-width: $screen-xs) { 
+  @media only screen and (max-width: $screen-xs) {
     @content;
   }
 }
@@ -47,7 +47,7 @@
 }
 
 @mixin screen-xl {
-  @media only screen and (min-width: $screen-xl) { 
+  @media only screen and (min-width: $screen-xl) {
     @content;
   }
 }
@@ -106,23 +106,4 @@
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-}
-
-// Aspect ratio for images
-
-@mixin aspect-ratio($width, $height) {
-  position: relative;
-  &:before {
-    display: block;
-    content: "";
-    width: 100%;
-    padding-top: ($height / $width) * 100%;
-  }
-  > img {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-  }
 }
