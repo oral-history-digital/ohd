@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import RegistryEntrySearchForm from '../components/RegistryEntrySearchForm';
 import { searchRegistryEntry } from '../actions/searchActionCreators';
+import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
@@ -17,6 +18,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     searchRegistryEntry: (url, query) => dispatch(searchRegistryEntry(url, query)),
+    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntrySearchForm);

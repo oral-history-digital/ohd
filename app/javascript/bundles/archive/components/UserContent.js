@@ -5,8 +5,20 @@ import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
 import { t, queryToText, pathBase } from '../../../lib/utils';
+import isMobile from '../../../lib/media-queries';
 
 export default class UserContent extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.hideFlyoutTabsIfMobile = this.hideFlyoutTabsIfMobile.bind(this);
+    }
+
+    hideFlyoutTabsIfMobile() {
+        if (isMobile()) {
+            this.props.hideFlyoutTabs();
+        }
+    }
 
     userContentForm() {
         return <UserContentFormContainer
@@ -73,6 +85,7 @@ export default class UserContent extends React.Component {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
+                    onClick={() => this.hideFlyoutTabsIfMobile()}
                     to={pathBase(this.props) + '/interviews/' + this.props.data.media_id}>
                     {t(this.props, callKey)}
                 </Link>
@@ -84,6 +97,7 @@ export default class UserContent extends React.Component {
                     onClick={() => {
                         this.props.setArchiveId(this.props.data.properties.interview_archive_id);
                         this.props.setTapeAndTime(this.props.data.properties.tape_nbr, this.props.data.properties.time)
+                        this.hideFlyoutTabsIfMobile();
                     }}
                     to={pathBase(this.props) + '/interviews/' + this.props.data.properties.interview_archive_id}
                 >
@@ -96,7 +110,10 @@ export default class UserContent extends React.Component {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
-                    onClick={() => this.props.searchInArchive(url, this.props.data.properties)}
+                    onClick={() => {
+                        this.props.searchInArchive(url, this.props.data.properties);
+                        this.hideFlyoutTabsIfMobile();
+                    }}
                     to={'/' + this.props.locale + '/searches/archive'}
                 >
                     {t(this.props, callKey)}

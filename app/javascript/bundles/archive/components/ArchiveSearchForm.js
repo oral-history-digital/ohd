@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
-import {Navigation} from 'react-router-dom'
 import FacetContainer from '../containers/FacetContainer';
 import spinnerSrc from '../../../images/large_spinner.gif'
 import { t, iOS, pathBase, admin } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
+import isMobile from '../../../lib/media-queries';
 
 export default class ArchiveSearchForm extends React.Component {
     constructor(props) {
@@ -44,6 +44,9 @@ export default class ArchiveSearchForm extends React.Component {
 
     handleReset(event) {
         this.form.reset();
+        if (isMobile()) {
+            this.props.hideFlyoutTabs();
+        }
         if(this.props.map){
             this.props.resetQuery('map');
             let url = `${pathBase(this.props)}/searches/map`;
@@ -63,8 +66,7 @@ export default class ArchiveSearchForm extends React.Component {
         params = this.getValueFromDataList(params, event);
         params = this.prepareQuery(params);
         params['page'] = 1;
-        // close flyout if in XS oder S resolution
-        if(window.getComputedStyle(document.body, ':after').getPropertyValue('content').includes('S')) {
+        if (isMobile()) {
             this.props.hideFlyoutTabs();
         }
         this.submit(params);
@@ -92,7 +94,7 @@ export default class ArchiveSearchForm extends React.Component {
         }
         return array;
     }
-    
+
     prepareQuery(params) {
         // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
         // Thus the last checkbox would never uncheck.
@@ -104,13 +106,13 @@ export default class ArchiveSearchForm extends React.Component {
         }
         // create list of years for year_of_birth
         if (params['year_of_birth_min']) {
-            preparedQuery['year_of_birth[]'] = this.arrayToRange( params['year_of_birth_min'], params['year_of_birth_max'] ) 
+            preparedQuery['year_of_birth[]'] = this.arrayToRange( params['year_of_birth_min'], params['year_of_birth_max'] )
         }
         return preparedQuery;
     }
 
     submit(params) {
-        if(this.props.map && !this.props.isMapSearching ) {      
+        if(this.props.map && !this.props.isMapSearching ) {
             let url = `${pathBase(this.props)}/searches/map`;
             this.props.searchInMap(url, params);
             this.context.router.history.push(url);
@@ -124,7 +126,7 @@ export default class ArchiveSearchForm extends React.Component {
     renderResetButton() {
         if(Object.keys(this.props.query).length > 0 && this.props.query['page']) {
             return (
-                <button 
+                <button
                     className={'reset'}
                     onClick={this.handleReset}>{t(this.props, 'reset')}
                 </button>
@@ -139,22 +141,22 @@ export default class ArchiveSearchForm extends React.Component {
         if(this.props.map !== true) {
             return (
                 <div>
-                    <input 
-                        className="search-input" 
-                        type="text" 
-                        name="fulltext" 
+                    <input
+                        className="search-input"
+                        type="text"
+                        name="fulltext"
                         value={fulltext}
                         placeholder={t(this.props, (this.props.projectId === 'dg' ? 'enter_field_dg' : 'enter_field'))}
                         onChange={this.handleChange}
-                        list='allInterviewTitles' 
+                        list='allInterviewTitles'
                         autoFocus
                     />
                     {this.renderDataList()}
-                    <input 
-                        className="search-button" 
+                    <input
+                        className="search-button"
                         id="search-button"
-                        title={t(this.props, 'archive_search')} 
-                        type="submit" 
+                        title={t(this.props, 'archive_search')}
+                        type="submit"
                         value=""
                     />
                 </div>
@@ -170,10 +172,10 @@ export default class ArchiveSearchForm extends React.Component {
         } else {
             return(
                 <div>
-                    <form 
-                        ref={(form) => { this.form = form; }} 
-                        id="archiveSearchForm" 
-                        className={'flyout-search'} 
+                    <form
+                        ref={(form) => { this.form = form; }}
+                        id="archiveSearchForm"
+                        className={'flyout-search'}
                         onSubmit={this.handleSubmit}
                     >
                         <AuthShowContainer ifLoggedIn={true} ifCatalog={true}>
@@ -228,7 +230,7 @@ export default class ArchiveSearchForm extends React.Component {
                         currentMax={this.currentYearRange()[1] || this.yearRange(facet)[1]}
                         map={this.props.map}
                         show={(adminFacets.indexOf(facet) > -1 && admin(this.props, {type: 'General', action: 'edit'})) || (adminFacets.indexOf(facet) === -1)}
-                        admin={(adminFacets.indexOf(facet) > -1)} 
+                        admin={(adminFacets.indexOf(facet) > -1)}
                     />
                 )
             })
@@ -249,7 +251,7 @@ export default class ArchiveSearchForm extends React.Component {
         }
     }
 
-    renderOptions() { 
+    renderOptions() {
         return (this.props.allInterviewsTitles.concat(this.props.allInterviewsPseudonyms)).map((title, index) => {
                 return (
                     <option key={"option-" + index} value={`"${title[this.props.locale]}"`} />

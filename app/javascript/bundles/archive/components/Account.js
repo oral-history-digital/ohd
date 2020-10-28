@@ -2,10 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import AuthShowContainer from '../containers/AuthShowContainer'
 import LoginFormContainer from '../containers/LoginFormContainer'
-import ChangePasswordFormContainer from '../containers/ChangePasswordFormContainer'
-import {Link} from 'react-router-dom';
-
 import { t, pathBase } from '../../../lib/utils';
+import isMobile from '../../../lib/media-queries';
 
 export default class Account extends React.Component {
 
@@ -33,7 +31,7 @@ export default class Account extends React.Component {
     openLink(path, e) {
         e.preventDefault();
         this.context.router.history.push(path);
-        if(window.getComputedStyle(document.body, ':after').getPropertyValue('content').includes('S')) {
+        if (isMobile()) {
             this.props.hideFlyoutTabs();
         }
     }
@@ -41,10 +39,10 @@ export default class Account extends React.Component {
     changeToEditView() {
         if (
             this.props.account && (
-                this.props.account.admin || 
-                Object.keys(this.props.account.tasks).length > 0 || 
-                Object.keys(this.props.account.supervised_tasks).length > 0 || 
-                Object.keys(this.props.account.permissions).length > 0 
+                this.props.account.admin ||
+                Object.keys(this.props.account.tasks).length > 0 ||
+                Object.keys(this.props.account.supervised_tasks).length > 0 ||
+                Object.keys(this.props.account.permissions).length > 0
             )
         ) {
             return (
