@@ -30,31 +30,27 @@ export default class Annotation extends React.Component {
     }
 
     delete() {
-        if (this.props.annotation) {
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.annotation.delete')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.annotation.delete'),
-                    content: (
-                        <div>
-                            <p dangerouslySetInnerHTML={{__html: this.props.annotation.text[this.props.locale]}} />
-                            <div className='any-button' onClick={() => this.destroy()}>
-                                {t(this.props, 'edit.annotation.delete')}
-                            </div>
+        return <div
+            className='flyout-sub-tabs-content-ico-link'
+            title={t(this.props, 'edit.annotation.delete')}
+            onClick={() => this.props.openArchivePopup({
+                title: t(this.props, 'edit.annotation.delete'),
+                content: (
+                    <div>
+                        <p dangerouslySetInnerHTML={{__html: this.props.annotation.text[this.props.locale]}} />
+                        <div className='any-button' onClick={() => this.destroy()}>
+                            {t(this.props, 'edit.annotation.delete')}
                         </div>
-                    )
-                })}
-            >
-                <i className="fa fa-trash-o"></i>
-            </div>
-        } else {
-            return null;
-        }
+                    </div>
+                )
+            })}
+        >
+            <i className="fa fa-trash-o"></i>
+        </div>
     }
 
     buttons() {
-        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+        if (admin(this.props, this.props.annotation)) {
             return (
                 <span className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}

@@ -18,7 +18,7 @@ export default class Annotations extends React.Component {
     }
 
     addAnnotation() {
-        if (admin(this.props, {type: 'Annotation', action: 'create'})) {
+        if (admin(this.props, {type: 'Annotation', action: 'create', interview_id: this.props.segment.interview_id})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'

@@ -189,7 +189,7 @@ export default class FlyoutTabs extends React.Component {
 
     assignSpeakersForm() {
         // speakers assignment does not work for dg at the moment, but we don't need it either
-        if (admin(this.props, {type: 'Interview', action: 'update_speakers'}) && this.props.projectId !== 'dg') {
+        if (admin(this.props, {type: 'Interview', action: 'update_speakers', interview_id: this.props.interview && this.props.interview.id}) && this.props.projectId !== 'dg') {
             return <InterviewDataContainer
                 title={t(this.props, 'assign_speakers')}
                 content={<AssignSpeakersFormContainer interview={this.props.interview} />}
@@ -200,7 +200,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     markTextForm() {
-        if (admin(this.props, {type: 'Interview', action: 'mark_texts'}) && this.props.projectId !== 'dg') {
+        if (admin(this.props, {type: 'Interview', action: 'mark_texts', interview_id: this.props.interview && this.props.interview.id}) && this.props.projectId !== 'dg') {
             return <InterviewDataContainer
                 title={t(this.props, 'mark_texts')}
                 content={<MarkTextFormContainer interview={this.props.interview} />}
@@ -278,7 +278,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     usersAdminTab() {
-        let css = admin(this.props, {type: 'UserRegistration', action: 'update'}) ? 'flyout-tab admin' : 'hidden';
+        let css = admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden';
         return <Tab selectedClassName='admin' className={css} key='administration'>{t(this.props, 'edit.administration')}</Tab>;
     }
 
@@ -408,7 +408,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     downloadRegistryEntries(format, locale) {
-        if (this.props.projectId === 'mog' || admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
+        if (this.props.projectId === 'mog' || admin(this.props, {type: 'General', action: 'edit'})) {
             return (
                 <p>
                     <a href={`${pathBase(this.props)}/registry_entries.${format}?lang=${locale}`}>

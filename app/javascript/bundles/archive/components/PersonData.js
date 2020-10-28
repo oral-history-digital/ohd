@@ -92,7 +92,7 @@ export default class PersonData extends React.Component {
     biographicalEntries() {
         if(this.props.projectId !== 'dg') {
             let interviewee = getInterviewee(this.props);
-            return <BiographicalEntriesContainer person={interviewee} />;
+            return <BiographicalEntriesContainer person={interviewee} interview={this.props.interview} />;
         } else {
             return null;
         }

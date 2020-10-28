@@ -46,7 +46,7 @@ export default class Person extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props, {type: 'Person', action: 'update'})) {
+        if (admin(this.props, this.props.data)) {
             return (
                 <span className={'flyout-sub-tabs-content-ico'}>
                     {/* {this.edit()} */}
