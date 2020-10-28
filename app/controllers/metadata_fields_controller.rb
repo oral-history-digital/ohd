@@ -1,13 +1,11 @@
 class MetadataFieldsController < ApplicationController
   before_action :set_metadata_field, only: [:update, :destroy]
 
-  layout 'responsive'
-
   def create
     authorize MetadataField
     @metadata_field = MetadataField.create metadata_field_params
     @metadata_field.project.touch
-    
+
     respond_to do |format|
       format.json do
         render json: {
@@ -56,7 +54,7 @@ class MetadataFieldsController < ApplicationController
     end
   end
 
-  def destroy 
+  def destroy
     @metadata_field = MetadataField.find(params[:id])
     project = @metadata_field.project
     @metadata_field.destroy

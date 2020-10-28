@@ -1,7 +1,4 @@
 class AnnotationsController < ApplicationController
-
-  layout 'responsive'
-
   def create
     authorize Annotation
     @annotation = Annotation.new(annotation_params)

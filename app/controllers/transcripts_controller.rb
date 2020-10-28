@@ -1,7 +1,4 @@
 class TranscriptsController < ApplicationController
-
-  layout 'responsive'
-
   def new
     authorize :upload, :new?
     respond_to do |format|
@@ -23,9 +20,9 @@ class TranscriptsController < ApplicationController
     update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
     tape.segments.destroy_all if transcript_params[:delete_existing]
 
-    locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send("alpha2") 
+    locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send("alpha2")
 
-    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account) 
+    ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account)
 
     respond_to do |format|
       format.json do

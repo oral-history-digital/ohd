@@ -1,7 +1,4 @@
 class UploadsController < ApplicationController
-
-  layout 'responsive'
-
   def new
     authorize :upload, :new?
     respond_to do |format|
@@ -22,7 +19,7 @@ class UploadsController < ApplicationController
 
     respond_to do |format|
       format.html { render 'react/app' }
-      format.json do 
+      format.json do
         render json: {
           msg: "processing",
           id: file.original_filename,

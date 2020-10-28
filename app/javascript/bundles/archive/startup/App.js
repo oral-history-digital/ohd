@@ -1,4 +1,4 @@
-import polyfills from '../../../lib/polyfills'; 
+import polyfills from '../../../lib/polyfills';
 import '@babel/polyfill';
 import 'intersection-observer';
 import 'datalist-polyfill';
@@ -26,6 +26,8 @@ import WrappedRegistryReferenceTypesContainer from '../containers/WrappedRegistr
 import ActivateAccountContainer from '../containers/ActivateAccountContainer';
 import OrderNewPasswordContainer from '../containers/OrderNewPasswordContainer';
 import HomeContainer from '../containers/HomeContainer';
+
+import '../stylesheets/main.scss';
 
 const App = (props) => (
     <Provider store={archiveStore(props)}>
@@ -57,4 +59,3 @@ const App = (props) => (
 );
 
 export default App;
-

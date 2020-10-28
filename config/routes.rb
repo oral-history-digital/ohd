@@ -3,10 +3,6 @@ Rails.application.routes.draw do
   # root :to => redirect("/zwar/de")
   root :to => redirect("/#{Project.default_locale || 'de'}")
 
-  scope "/:project_id", :constraints => {:locale => /[a-z]{2,4}/} do
-    get "stylesheet", to: "stylesheets#show", as: :stylesheets
-  end
-
   scope "/:locale", :constraints => { :locale => /[a-z]{2}/ } do
     devise_for :user_accounts, :controllers => { sessions: "sessions", passwords: "passwords" }, skip: [:registrations]
     resources :accounts, only: [:show, :update, :index] do

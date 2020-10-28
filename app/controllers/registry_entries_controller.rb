@@ -1,8 +1,6 @@
 class RegistryEntriesController < ApplicationController
   skip_before_action :authenticate_user_account!, only: [:index, :show]
 
-  layout "responsive"
-
   def create
     authorize RegistryEntry
     locale = ISO_639.find(Language.find(registry_entry_params[:lang]).code.split(/[\/-]/)[0]).alpha2
@@ -108,7 +106,7 @@ class RegistryEntriesController < ApplicationController
         csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{params[:lang]}-#{RegistryName.maximum(:updated_at)}-#{RegistryEntry.maximum(:updated_at)}" do
           CSV.generate(col_sep: "\t") do |row|
             row << %w(parent_name parent_id name id description latitude, longitude)
-            current_project.registry_entries.where(code: 'root').first.on_all_descendants do |entry| 
+            current_project.registry_entries.where(code: 'root').first.on_all_descendants do |entry|
               parent = entry.parents.first
               row << [parent && parent.descriptor(params[:lang]), parent && parent.id, entry.descriptor(params[:lang]), entry.id, entry.notes(params[:lang]), entry.latitude, entry.longitude]
             end
