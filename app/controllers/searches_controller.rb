@@ -1,6 +1,4 @@
 class SearchesController < ApplicationController
-  layout "responsive"
-
   skip_before_action :authenticate_user_account!
   skip_after_action :verify_authorized
   skip_after_action :verify_policy_scoped
@@ -130,7 +128,7 @@ class SearchesController < ApplicationController
               where(ref_object_id: interviewees_ids).
               group_by(&:registry_entry_id).map do |registry_entry_id, registry_references|
 
-              links = registry_references.map{|rr| link_element(rr.interview, registry_reference_type, locale)}.join('<br/>') 
+              links = registry_references.map{|rr| link_element(rr.interview, registry_reference_type, locale)}.join('<br/>')
 
               registry_entry = RegistryEntry.find(registry_entry_id)
               regions = (registry_entry.all_relatives(false) - top_registry_entries).map{|re| re.descriptor(locale)}

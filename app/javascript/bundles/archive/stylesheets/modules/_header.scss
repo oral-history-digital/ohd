@@ -1,0 +1,27 @@
+.logo-link {
+  display: block;
+  margin: 0;
+  color: var(--primary-color);
+  overflow: hidden;
+  padding: $header-logo-padding;
+  &:hover {
+    text-decoration: none !important;
+    color: var(--primary-color);
+  }
+  @include screen-m {
+    max-width: 305px;
+  }
+}
+
+.logo-img{
+  display: block;
+  max-width: 80%;
+  max-height: 52px;
+  @include screen-m {
+    max-width: 100%;
+  }
+}
+
+.icon-open {
+  color: var(--primary-color);
+}

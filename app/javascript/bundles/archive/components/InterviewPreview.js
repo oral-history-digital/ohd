@@ -113,7 +113,7 @@ export default class InterviewPreview extends React.Component {
 
     interviewDetails() {
         let interviewee = getInterviewee(this.props);
-        if (interviewee && interviewee.associations_loaded) { 
+        if (interviewee && interviewee.associations_loaded) {
             return (
                 <div className={'search-result-data'} lang={this.props.locale}>
                     {/*<span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>*/}
@@ -160,8 +160,10 @@ export default class InterviewPreview extends React.Component {
                         }}
                         to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                     >
-                        <div className="search-result-img">
-                          <img src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                        <div className="search-result-img aspect-ratio">
+                          <img className="aspect-ratio__inner"
+                               src={this.props.interview.still_url || 'missing_still'}
+                               onError={(e)=>{e.target.src=MISSING_STILL}}/>
                         </div>
 
                         <AuthShowContainer ifLoggedIn={true}>
