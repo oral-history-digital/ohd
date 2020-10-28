@@ -14,7 +14,8 @@ class TaskSerializer < ApplicationSerializer
     :finished_at,
     :cleared_at,
     :restarted_at,
-    :comments
+    :comments,
+    :permissions
 
   belongs_to :task_type
 
@@ -32,6 +33,19 @@ class TaskSerializer < ApplicationSerializer
 
   def comments
     object.comments.inject({}) { |mem, c| mem[c.id] = CommentSerializer.new(c); mem }
+  end
+
+  def permissions
+    object.permissions.inject({}) do |mem, p| 
+      mem[p.id] = {
+        name: p.name,
+        desc: p.desc,
+        klass: p.klass,
+        action_name: p.action_name,
+        interview_id: object.interview_id
+      }
+      mem
+    end
   end
 
   [
