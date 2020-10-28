@@ -255,19 +255,39 @@ export function underscore(str) {
 //
 export function admin(props, obj={}) {
     if (props.account && (props.editView || obj.type === 'Task')) {
+        let tasks = props.account.tasks.concat(props.account.supervised_tasks);
         if (
             props.account.admin ||
             (obj.type && (obj.id || obj.action)) && (
                 //
                 // if obj is a task of current_user_account, he/she should be able to edit it 
-                (props.account.tasks && obj.type === 'Task' && Object.values(props.account.tasks).filter(task => task.id === obj.id).length > 0) || 
-                // if obj is a supervised task of current_user_account, he/she should be able to edit it 
-                (props.account.supervised_tasks && obj.type === 'Task' && Object.values(props.account.supervised_tasks).filter(task => task.id === obj.id).length > 0) || 
+                (
+                    tasks && 
+                    obj.type === 'Task' && 
+                    Object.values(tasks).filter(task => task.id === obj.id).length > 0
+                ) || 
                 //
-                // if obj.type and/or id correspond to some role or task, current_user_account should be able to edit it
-                (props.account.permissions && Object.values(props.account.permissions).filter(permission => permission.klass === obj.type && permission.action_name === obj.action).length > 0) //||
-                // to complicated at the moment
-                //(props.account.tasks && Object.values(props.account.tasks).filter(task => task.authorized_type === obj.type && task.authorized_id === obj.id).length > 0) 
+                // if obj.type and/or id correspond to a role-permission, current_user_account should be able to edit it
+                (
+                    props.account.permissions &&
+                    Object.values(props.account.permissions).filter(permission => {
+                        permission.klass === obj.type && 
+                        permission.action_name === obj.action
+                    }).length > 0
+                ) || 
+                //
+                // if obj.type and/or id correspond to a task-permission and obj.interview_id is the same as task.interview_id, current_user_account should be able to edit it
+                (
+                    props.account.tasks && 
+                    Object.values(props.account.task_permissions).filter(permission => {
+                        permission.klass === obj.type && 
+                        permission.action_name === obj.action && (
+                            permission.interview_id &&
+                            permission.interview_id === obj.interview_id
+                        )
+                    }).length > 0
+                )
+                //task => task.authorized_type === obj.type && task.interview_id === obj.interview_id).length > 0) 
             )
         ) {
             return true;
