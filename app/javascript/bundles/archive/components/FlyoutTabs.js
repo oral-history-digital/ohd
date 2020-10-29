@@ -394,9 +394,9 @@ export default class FlyoutTabs extends React.Component {
                             {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                       </button>
                     </p>
-                    {this.props.locales.map((locale, index) => {
+                    {this.props.locales.map((locale) => {
                         return (
-                            <div>
+                            <div key={locale}>
                                 {this.downloadRegistryEntries('pdf', locale)}
                                 {this.downloadRegistryEntries('csv', locale)}
                             </div>
