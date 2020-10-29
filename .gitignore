@@ -7,9 +7,9 @@ config/project_config
 log/
 public/javascripts/translations.js
 solr/data
-solr/test/data
-solr/development/data
-solr/default/data
+solr/test/
+solr/development/
+solr/default/
 solr/pids
 tmp/
 /node_modules
