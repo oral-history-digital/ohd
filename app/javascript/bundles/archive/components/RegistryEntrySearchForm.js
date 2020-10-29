@@ -1,7 +1,7 @@
 import React from 'react';
 import { t, pathBase } from '../../../lib/utils';
 import PixelLoader from '../../../lib/PixelLoader'
-
+import isMobile from '../../../lib/media-queries';
 
 export default class RegistryEntrySearchForm extends React.Component {
     constructor(props) {
@@ -20,6 +20,9 @@ export default class RegistryEntrySearchForm extends React.Component {
 
     handleSubmit(event) {
         event.preventDefault();
+        if (isMobile()) {
+            this.props.hideFlyoutTabs();
+        }
         let url = `${pathBase(this.props)}/searches/registry_entry`;
         this.props.searchRegistryEntry(url, {fulltext: this.state.value});
     }
