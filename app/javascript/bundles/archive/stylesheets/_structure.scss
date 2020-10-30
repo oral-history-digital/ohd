@@ -156,7 +156,7 @@ header.site-header {
   display: none;
 }
 
-.compress, .edit, .check-square {
+.compress, .edit, .check-square, .list-alt {
   display: block;
   position: absolute;
   right: 0;
@@ -167,6 +167,10 @@ header.site-header {
 }
 
 .edit {
+  right: 150px;
+}
+
+.fa-list-alt {
   right: 100px;
 }
 

@@ -70,6 +70,7 @@ class ApplicationController < ActionController::Base
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
         selectedInterviewEditViewColumns: ['timecode', 'text_orig', 'mainheading_orig', 'subheading_orig', 'text_translated', 'registry_references', 'annotations'],
+        skipEmptyRows: false,
         translations: translations,
         countryKeys: country_keys,
         contributionTypes: Project.contribution_types,
