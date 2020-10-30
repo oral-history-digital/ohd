@@ -44,7 +44,7 @@ export default class RegistryReferenceForm extends React.Component {
                 {
                     elementType: 'select',
                     attribute: 'registry_reference_type_id',
-                    values: this.props.registryReferenceTypesStatus && this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched' && Object.values(this.props.registryReferenceTypes),
+                    values: this.props.registryReferenceTypes && Object.values(this.props.registryReferenceTypes),
                     value: this.props.registryReference && this.props.registryReference.registry_reference_type_id,
                     withEmpty: true,
                 }
