@@ -734,7 +734,7 @@ de:
       contribution:
         contribution_type: Art des Beitrags
         person_id: Person
-        speaker_designation: Sprecher*innenauszeichnung (z.B. *CG:*)
+        speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
         project_id: Projekt
         homepage: Website
