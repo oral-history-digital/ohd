@@ -16,7 +16,6 @@ export default class InterviewEditView extends React.Component {
 
     componentDidUpdate(prevProps) {
         this.loadSegments();
-        window.scrollTo(0, 1);
     }
 
     loadSegments() {

@@ -69,7 +69,7 @@ class ApplicationController < ActionController::Base
         doiResult: {},
         selectedArchiveIds: ['dummy'],
         selectedRegistryEntryIds: ['dummy'],
-        selectedInterviewEditViewColumns: ['timecode', 'text_orig', 'mainheading_orig', 'subheading_orig', 'text_translated', 'registry_references', 'annotations'],
+        selectedInterviewEditViewColumns: ['timecode', 'text_orig', 'text_translated', 'mainheading_orig', 'subheading_orig', 'registry_references', 'annotations'],
         skipEmptyRows: false,
         translations: translations,
         countryKeys: country_keys,
