@@ -127,11 +127,6 @@ header.site-header {
   .fullscreen {
     width: 100%;
   }
-  &.fix-video {
-    .flyout-toggle {
-      color: #fff;
-    }
-  }
 }
 
 .compensation{
@@ -403,13 +398,9 @@ footer {
   z-index: 1100; //because of leaflet
   cursor: pointer;
   color: $gray-dark;
-  background: rgba(255, 255, 255, 0.5);
+  background-color: rgba(255, 255, 255, 0.8);
 }
-.fix-video {
-  .fa-bars {
-    color: #fff;
-  }
-}
+
 .flyout-caption {
   margin-top: 0;
   margin-bottom: 25px;
