@@ -107,8 +107,9 @@ class RegistryEntriesController < ApplicationController
           CSV.generate(col_sep: "\t") do |row|
             row << %w(parent_name parent_id name id description latitude, longitude)
             current_project.registry_entries.where(code: 'root').first.on_all_descendants do |entry|
-              parent = entry.parents.first
-              row << [parent && parent.descriptor(params[:lang]), parent && parent.id, entry.descriptor(params[:lang]), entry.id, entry.notes(params[:lang]), entry.latitude, entry.longitude]
+              entry.parents.each do |parent|
+                row << [parent && parent.descriptor(params[:lang]), parent && parent.id, entry.descriptor(params[:lang]), entry.id, entry.notes(params[:lang]), entry.latitude, entry.longitude]
+              end
             end
           end
         end
