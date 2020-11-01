@@ -78,30 +78,19 @@ var Loader = {
                                     // "translations_attributes"=>[{"locale"=>"de", "id"=>"", "descriptor"=>"sdfsdfsdf"}], 
                                     // "name_position"=>"3", "registry_name_type_id"=>"4"}]}, "locale"=>"de", "id"=>"28205"}
                                     //
-                                    //if (Array.isArray(elem[e])) {
-                                        //elem[e].map((i) => {
-                                            //Object.keys(i).map((j) => {
-                                                //if (i[j] && i[j] !== '')
-                                                    //debugger
-                                                    //req.field(`${scope}[${param}][][${e}][][${j}]`, i[j]);
-                                            //})
-                                        //})
                                     if (Array.isArray(elem[e])) {
                                         elem[e].map((i, index) => {
                                             Object.keys(i).map((j) => {
                                                 if (i[j] && i[j] !== '')
-                                                    console.log(`${scope}[${param}][][${e}][${index}][${j}] = ${i[j]}`);
                                                     req.field(`${scope}[${param}][][${e}][${index}][${j}]`, i[j]);
                                             })
                                         })
                                     } else if (elem[e]) {
-                                        console.log(`${scope}[${param}][][${e}] = ${elem[e]}`);
                                         req.field(`${scope}[${param}][][${e}]`, elem[e]);
                                     }
                                 })
                             } else {
                                 // array values are some non-complex values like strings or ints
-                                console.log(`${scope}[${param}][] = ${elem}`);
                                 req.field(`${scope}[${param}][]`, elem);
                             }
                         })
