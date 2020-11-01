@@ -659,6 +659,9 @@ el:
       registry_references_types:
         one: Erwähnungsart
         other: Erwähnungenarten
+      registry_name_types:
+        one: Registernamensart
+        other: Registernamensarten
       registry_entries:
         one: Registereintrag
         other: Registereinträge
@@ -689,6 +692,9 @@ el:
       task_type:
         one: Aufgabenart
         other: Aufgabenarten
+      task_type_permission:
+        one: 'Zur Aufgabenart gehörende Berechtigung'
+        other: 'Zur Aufgabenart gehörende Berechtigungen'
       permission:
         one: Erlaubnis
         other: Erlaubnisse
@@ -968,6 +974,11 @@ el:
         latitude: Latitude
         longitude: Longitude
         lang: Sprache
+      registry_name:
+        descriptor: Name
+        notes: Anmerkungen
+        registry_name_type_id: Registernamensart
+        name_position: Position
       registry_reference:
         registry_entry_id: Registereintrag
         registry_reference_type_id: Art der Beziehung
