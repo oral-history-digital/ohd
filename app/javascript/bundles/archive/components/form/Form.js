@@ -15,6 +15,7 @@ export default class Form extends React.Component {
         super(props);
         this.state = {
             showErrors: false, 
+            showSubForm: false,
             values: this.props.values || {},
             errors: {}
         };
@@ -184,27 +185,34 @@ export default class Form extends React.Component {
         this.setState({ 
             values: Object.assign({}, this.state.values, {
                 [this.subFormScopeAsRailsAttributes()]: [...nestedValues, params[this.props.subFormScope]]
-            })
+            }),
+            showSubForm: false
         })
     }
 
-    openSubForm() {
+    toggleSubForm() {
         if (this.props.subForm) {
-            this.props.subFormProps.submitData = this.handleSubFormSubmit;
-
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
                     title={t(this.props, `edit.${this.props.subFormScope}.new`)}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, `edit.${this.props.subFormScope}.new`),
-                        content: React.createElement(this.props.subForm, this.props.subFormProps)
-                    })}
+                    onClick={() => this.setState({showSubForm: !this.state.showSubForm})}
                 >
                     <div>
                         {t(this.props, `${pluralize(this.props.subFormScope)}.add`) + '  '}
-                        <i className="fa fa-plus"></i>
+                        <i className={`fa fa-${this.state.showSubForm ? 'minus' : 'plus'}`}></i>
                     </div>
+                </div>
+            )
+        }
+    }
+
+    subForm() {
+        if (this.props.subForm && this.state.showSubForm) {
+            this.props.subFormProps.submitData = this.handleSubFormSubmit;
+            return (
+                <div>
+                    {React.createElement(this.props.subForm, this.props.subFormProps)}
                 </div>
             )
         }
@@ -255,24 +263,26 @@ export default class Form extends React.Component {
 
     render() {
         return (
-            <form 
-                id={this.props.formId || this.props.scope} 
-                className={this.props.formClasses || `${this.props.scope} default`} 
-                onSubmit={this.handleSubmit}
-            >
-
-                {this.props.elements.map((props, index) => {
-                    if(props.condition === undefined || props.condition === true) {
-                        return this.elementComponent(props);
-                    }
-                })}
-
+            <div>
                 {this.selectedSubScopeValues()}
-                {this.openSubForm()}
+                {this.subForm()}
+                {this.toggleSubForm()}
+                <form 
+                    id={this.props.formId || this.props.scope} 
+                    className={this.props.formClasses || `${this.props.scope} default`} 
+                    onSubmit={this.handleSubmit}
+                >
 
-                <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
-                {this.cancelButton()}
-            </form>
+                    {this.props.elements.map((props, index) => {
+                        if(props.condition === undefined || props.condition === true) {
+                            return this.elementComponent(props);
+                        }
+                    })}
+
+                    <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
+                    {this.cancelButton()}
+                </form>
+            </div>
         );
     }
 }
