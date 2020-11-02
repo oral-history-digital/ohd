@@ -11,13 +11,20 @@ export default class RegistryEntryForm extends React.Component {
         this.showRegistryName = this.showRegistryName.bind(this);
     }
 
+    // get registry_entry via it`s id from state.
+    // like this it will always be the newest version.
+    //
+    registryEntry() {
+        return this.props.registryEntries[this.props.registryEntryId];
+    }
+
     showRegistryName(registryName) {
         return <RegistryNameContainer registryName={registryName} />;
     }
 
     registryNames() {
-        if (this.props.registryEntry) {
-            return this.props.registryEntry.registry_names.map(registryName => {
+        if (this.registryEntry()) {
+            return this.registryEntry().registry_names.map(registryName => {
                 return <RegistryNameContainer registryName={registryName} />;
             })
         }
@@ -41,33 +48,31 @@ export default class RegistryEntryForm extends React.Component {
                 {this.parentRegistryEntry()}
                 {this.registryNames()}
                 <Form 
-                    key={`registry-entry-form-${this.props.registryEntry && this.props.registryEntry.id}`}
+                    key={`registry-entry-form-${this.props.registryEntryId}`}
                     scope='registry_entry'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                    data={this.registryEntry()}
                     values={{
-                        id: this.props.registryEntry && this.props.registryEntry.id,
                         parent_id: this.props.registryEntryParent && this.props.registryEntryParent.id,
                     }}
                     elements={[
                         {
                             attribute: 'latitude',
-                            value: this.props.registryEntry && this.props.registryEntry.latitude,
                         },
                         {
                             attribute: 'longitude',
-                            value: this.props.registryEntry && this.props.registryEntry.longitude,
                         },
                         {
                             elementType: 'select',
                             attribute: 'workflow_state',
                             values: ['preliminary', 'checked', 'rejected'],
-                            value: (this.props.registryEntry && this.props.registryEntry.workflow_state) || 'preliminary',
+                            value: (this.registryEntry() && this.registryEntry().workflow_state) || 'preliminary',
                             withEmpty: true,
                             optionsScope: 'workflow_states',
                         }
                     ]}
                     subForm={RegistryNameFormContainer}
-                    subFormProps={{registryEntryId: this.props.registryEntry && this.props.registryEntry.id}}
+                    subFormProps={{registryEntryId: this.props.registryEntryId}}
                     subFormScope='registry_name'
                     subScopeRepresentation={this.showRegistryName}
                 />
