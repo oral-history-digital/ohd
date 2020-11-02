@@ -25,7 +25,7 @@ export default class RegistryEntryForm extends React.Component {
     registryNames() {
         if (this.registryEntry()) {
             return this.registryEntry().registry_names.map(registryName => {
-                return <RegistryNameContainer registryName={registryName} />;
+                return <RegistryNameContainer registryName={registryName} key={registryName.id} />;
             })
         }
     }
