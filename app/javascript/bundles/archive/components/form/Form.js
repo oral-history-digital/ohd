@@ -209,7 +209,8 @@ export default class Form extends React.Component {
 
     subForm() {
         if (this.props.subForm && this.state.showSubForm) {
-            this.props.subFormProps.submitData = this.handleSubFormSubmit;
+            if (!this.props.data)
+                this.props.subFormProps.submitData = this.handleSubFormSubmit;
             return (
                 <div>
                     {React.createElement(this.props.subForm, this.props.subFormProps)}

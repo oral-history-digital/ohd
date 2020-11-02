@@ -41,6 +41,14 @@ export default class RegistryEntryForm extends React.Component {
         }
     }
 
+    subFormProps() {
+        if (this.props.registryEntryId) {
+            return {registryEntryId: this.props.registryEntryId, submitData: this.props.submitData};
+        } else {
+            return {registryEntryId: this.props.registryEntryId};
+        }
+    }
+
     render() {
         let _this = this;
         return (
@@ -72,7 +80,7 @@ export default class RegistryEntryForm extends React.Component {
                         }
                     ]}
                     subForm={RegistryNameFormContainer}
-                    subFormProps={{registryEntryId: this.props.registryEntryId}}
+                    subFormProps={_this.subFormProps()}
                     subFormScope='registry_name'
                     subScopeRepresentation={this.showRegistryName}
                 />
