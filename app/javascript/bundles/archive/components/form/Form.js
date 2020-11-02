@@ -103,7 +103,9 @@ export default class Form extends React.Component {
                     //RichTextEditor.createValueFromString(this.props.data[element.attribute], 'html') : 
                     //RichTextEditor.createEmptyValue()
             //} else {
-                values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
+                let isTranslationsAttribute = values.translations_attributes[0] && values.translations_attributes[0].hasOwnProperty(element.attribute);
+                if (!isTranslationsAttribute) 
+                    values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
             //}
         })
         this.setState({ values: values });
