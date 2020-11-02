@@ -4,7 +4,7 @@ import request from 'superagent';
 import Loader from '../../../lib/loader'
 import { setCookie } from '../../../lib/utils'
 
-import { 
+import {
     SET_LOCALE,
     SET_ARCHIVE_ID,
     SET_PROJECT_ID,
@@ -12,6 +12,7 @@ import {
 
     CHANGE_TO_EDIT_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
+    SET_SKIP_EMPTY_ROWS,
     SELECT_INTERVIEW_EDIT_VIEW_COLUMNS,
 
     RECEIVE_RESULT,
@@ -79,6 +80,11 @@ export function changeToInterviewEditView(bool) {
     }
 }
 
+export const setSkipEmpytRows = (bool) => ({
+    type: SET_SKIP_EMPTY_ROWS,
+    skipEmptyRows: bool,
+});
+
 const setSelectedInterviewEditViewColumns = (params) => ({
     type: SELECT_INTERVIEW_EDIT_VIEW_COLUMNS,
     interviewEditViewColumns: params
@@ -141,4 +147,3 @@ export function setArchiveIds(archiveIds) {
         dispatch(setSelectedArchiveIds(archiveIds))
     }
 };
-

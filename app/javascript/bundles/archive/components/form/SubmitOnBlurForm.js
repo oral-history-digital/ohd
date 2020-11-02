@@ -9,7 +9,7 @@ export default class SubmitOnBlurForm extends React.Component {
             valid: this.props.validate === undefined,
             value: this.value(),
         };
-                
+
         this.handleChange = this.handleChange.bind(this);
         this.submit = this.submit.bind(this);
     }
@@ -61,7 +61,7 @@ export default class SubmitOnBlurForm extends React.Component {
         if(this.state.valid) {
             //this.props.submitData(this.props, params);
             this.props.submitData(this.props, {[this.props.scope]: {id: this.props.data.id, locale: this.props.locale, [this.props.attribute]: this.state.value}});
-        } 
+        }
     }
 
     input() {
@@ -76,8 +76,8 @@ export default class SubmitOnBlurForm extends React.Component {
 
     render() {
         return (
-            <form 
-                className={'submit-on-focus-out'} 
+            <form
+                className={'submit-on-focus-out'}
                 key={this.props.key}
             >
                 {this.input()}
