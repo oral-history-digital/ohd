@@ -279,20 +279,33 @@ export default class VideoPlayer extends React.Component {
 
     enableInterviewEditViewButton() {
         if (admin(this.props, {type: 'General', action: 'edit'})) {
-          return(
-
-            <i
-              className="fa fa-edit edit"
-              aria-hidden="true"
-              title={t(this.props, 'edit_column_header.open_table')}
-              onClick={() => this.props.changeToInterviewEditView(!this.props.interviewEditView)} />
-          )
+            let title = this.props.interviewEditView ? 'close_table' : 'open_table';
+            return(
+                <i
+                    className="fa fa-edit edit"
+                    aria-hidden="true"
+                    title={t(this.props, `edit_column_header.${title}`)}
+                    onClick={() => this.props.changeToInterviewEditView(!this.props.interviewEditView)} />
+                )
           }
     }
 
+    enableSkipEmptyRowsButton() {
+        if (admin(this.props, {type: 'General', action: 'edit'}) && this.props.interviewEditView) {
+            let title = this.props.skipEmptyRows ? 'skip_rows_off' : 'skip_rows_on';
+            return(
+                <i
+                    className="fa fa-list-alt edit"
+                    aria-hidden="true"
+                    title={t(this.props, `edit_column_header.${title}`)}
+                    onClick={() => this.props.setSkipEmpytRows(!this.props.skipEmptyRows)}
+                />
+            )
+        }
+    }
 
     selectInterviewEditViewColumns() {
-        if (admin(this.props, {type: 'General', action: 'edit'})) {
+        if (admin(this.props, {type: 'General', action: 'edit'}) && this.props.interviewEditView) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
@@ -322,6 +335,7 @@ export default class VideoPlayer extends React.Component {
                       title={t(this.props, 'compress_video')}
                       aria-hidden="true" onClick={() => this.compressVideo()} />
                     {this.enableInterviewEditViewButton()}
+                    {this.enableSkipEmptyRowsButton()}
                     {this.selectInterviewEditViewColumns()}
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
