@@ -1,45 +1,88 @@
 import React from 'react';
-import Form from '../containers/form/Form';
-import { t } from '../../../lib/utils';
+import RegistryNameFormContainer from '../containers/RegistryNameFormContainer';
+import { t, admin } from '../../../lib/utils';
 
-export default class RegistryNameForm extends React.Component {
+export default class RegistryName extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            editing: false,
+        };
+        this.setEditing = this.setEditing.bind(this);
+    }
+
+    setEditing() {
+        this.setState({editing: !this.state.editing});
+    }
+
+    editButton() {
+        return (
+            <span
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, `edit.default.${this.state.editing ? 'cancel' : 'edit'}`)}
+                onClick={() => this.setEditing()}
+            >
+                <i className={`fa fa-${this.state.editing ? 'times' : 'pencil'}`}></i>
+            </span>
+        )
+    }
+
+    //destroy() {
+        //this.props.deleteData(this.props, pluralize(this.props.scope), this.props.data.id, null, null, false);
+        //this.props.closeArchivePopup();
+    //}
+
+    //delete() {
+        //if (
+            //this.props.registryName &&
+            //admin(this.props, this.props.registryName)
+        //) {
+            //return <div
+                //className='flyout-sub-tabs-content-ico-link'
+                //title={t(this.props, 'delete')}
+                //onClick={() => this.props.openArchivePopup({
+                    //title: t(this.props, 'delete'),
+                    //content: (
+                        //<div>
+                            //<div className='any-button' onClick={() => this.destroy()}>
+                                //{t(this.props, 'delete')}
+                            //</div>
+                        //</div>
+                    //)
+                //})}
+            //>
+                //<i className="fa fa-trash-o"></i>
+            //</div>
+        //} else {
+            //return null;
+        //}
+    //}
+
+    form() {
+        return (
+            <RegistryNameFormContainer 
+                registryName={this.props.registryName}
+                registryEntryId={this.props.registryEntryId}
+                submitData={this.props.submitData}
+            />
+        )
+    }
+
+    show() {
+        let translations = this.props.registryName.translations || this.props.registryName.translations_attributes;
+        let translation = translations.find(t => t.locale === this.props.locale);
+        return (
+            <span>{translation.descriptor}</span>
+        )
+    }
 
     render() {
-        let _this = this;
         return (
-            <Form 
-                scope='registry_name'
-                onSubmit={function(params){_this.props.submitData(_this.props, params);}}
-                values={{
-                    id: this.props.registry_name && this.props.registry_name.id,
-                    registry_entry_id: _this.props.registryEntryId
-                }}
-                submitText='submit'
-                elements={[
-                    {
-                        elementType: 'multiLocaleInput',
-                        attribute: 'descriptor',
-                    },
-                    {
-                        elementType: 'multiLocaleTextarea',
-                        attribute: 'notes',
-                    },
-                    {
-                        elementType: 'input',
-                        attribute: 'name_position',
-                        value: this.props.registry_name && this.props.registry_name.name_position,
-                        validate: function(v){return /^\d+$/.test(v)} 
-                    },
-                    {
-                        elementType: 'select',
-                        attribute: 'registry_name_type_id',
-                        values: this.props.registryNameTypes && Object.values(this.props.registryNameTypes),
-                        value: this.props.person && this.props.person.gender,
-                        withEmpty: true,
-                        validate: function(v){return /^\d+$/.test(v)} 
-                    },
-                ]}
-            />
-        );
+            <div>
+                {this.state.editing ? this.form() : this.show()}
+                {this.editButton()}
+            </div>
+        )
     }
 }

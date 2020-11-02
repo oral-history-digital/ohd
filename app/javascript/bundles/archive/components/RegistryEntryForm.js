@@ -1,6 +1,7 @@
 import React from 'react';
 import Form from '../containers/form/Form';
 import RegistryNameFormContainer from '../containers/RegistryNameFormContainer';
+import RegistryNameContainer from '../containers/RegistryNameContainer';
 import { t } from '../../../lib/utils';
 
 export default class RegistryEntryForm extends React.Component {
@@ -11,11 +12,15 @@ export default class RegistryEntryForm extends React.Component {
     }
 
     showRegistryName(registryName) {
-        let translations = registryName.translations || registryName.translations_attributes;
-        let translation = translations.find(t => t.locale === this.props.locale);
-        return (
-            <span>{translation.descriptor}</span>
-        )
+        return <RegistryNameContainer registryName={registryName} />;
+    }
+
+    registryNames() {
+        if (this.props.registryEntry) {
+            return this.props.registryEntry.registry_names.map(registryName => {
+                return <RegistryNameContainer registryName={registryName} />;
+            })
+        }
     }
 
     parentRegistryEntry() {
@@ -34,6 +39,7 @@ export default class RegistryEntryForm extends React.Component {
         return (
             <div>
                 {this.parentRegistryEntry()}
+                {this.registryNames()}
                 <Form 
                     key={`registry-entry-form-${this.props.registryEntry && this.props.registryEntry.id}`}
                     scope='registry_entry'

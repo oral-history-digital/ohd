@@ -200,7 +200,7 @@ export default class Form extends React.Component {
                 >
                     <div>
                         {t(this.props, `${pluralize(this.props.subFormScope)}.add`) + '  '}
-                        <i className={`fa fa-${this.state.showSubForm ? 'minus' : 'plus'}`}></i>
+                        <i className={`fa fa-${this.state.showSubForm ? 'times' : 'plus'}`}></i>
                     </div>
                 </div>
             )
