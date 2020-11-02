@@ -37,6 +37,7 @@ Rails.application.routes.draw do
       resources :segments, only: [:create, :update, :index, :destroy, :show]
       resources :registry_entries, only: [:create, :show, :update, :index, :destroy]
       resources :registry_hierarchies, only: [:create, :destroy]
+      resources :registry_names, only: [:create, :update, :destroy]
       resources :registry_references, only: [:create, :update, :destroy, :index]
       resources :registry_reference_types, only: [:create, :update, :index, :destroy]
       resources :annotations, only: [:create, :update, :destroy]
