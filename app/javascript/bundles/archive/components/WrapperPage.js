@@ -3,22 +3,16 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 import ActionCable from 'actioncable';
 
+import ResizeWatcherContainer from '../containers/ResizeWatcherContainer';
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
-
-import ResizeAware from 'react-resize-aware';
-
 import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
 import { t } from '../../../lib/utils';
 
 export default class WrapperPage extends React.Component {
-
-
     constructor(props) {
         super(props);
-        this.onResize = this.onResize.bind(this);
         this.state = {
-            currentMQ: 'unknown',
             notifications: [],
             editView: this.props.editViewCookie,
         }
@@ -114,91 +108,9 @@ export default class WrapperPage extends React.Component {
         });
     }
 
-    // Checks CSS value in active media query and syncs Javascript functionality
-    mqSync() {
-        // Fix for Opera issue when using font-family to store value
-        if (window.opera) {
-            var activeMQ = window.getComputedStyle(document.body, ':after').getPropertyValue('content');
-        }
-        // For all other modern browsers
-        else if (window.getComputedStyle) {
-            var activeMQ = window.getComputedStyle(document.head, null).getPropertyValue('font-family');
-        }
-        // For oldIE
-        else {
-            // Use .getCompStyle instead of .getComputedStyle so above check for window.getComputedStyle never fires true for old browsers
-            window.getCompStyle = function (el, pseudo) {
-                this.el = el;
-                this.getPropertyValue = function (prop) {
-                    var re = /(\-([a-z]){1})/g;
-                    if (prop == 'float') prop = 'styleFloat';
-                    if (re.test(prop)) {
-                        prop = prop.replace(re, function () {
-                            return arguments[2].toUpperCase();
-                        });
-                    }
-                    return el.currentStyle[prop] ? el.currentStyle[prop] : null;
-                }
-                return this;
-            }
-            var compStyle = window.getCompStyle(document.getElementsByTagName('head')[0], "");
-            var activeMQ = compStyle.getPropertyValue("font-family");
-        }
-
-        activeMQ = activeMQ.replace(/"/g, "");
-        activeMQ = activeMQ.replace(/'/g, "");
-
-        // Conditions for each breakpoint
-        if (activeMQ != this.state.currentMQ) {
-            if (activeMQ == 'XS') {
-                this.setState({['currentMQ']: activeMQ});
-                // Add code you want to sync with this breakpoint
-                // document.getElementById('msg').innerHTML = ('Active media query: <br><strong>' + this.currentMQ + '</strong>');
-                // console.log(this.currentMQ);
-                //RA.respondToXS();
-            }
-            if (activeMQ == 'S') {
-                if(this.state.currentMQ != 'XS') {
-                    this.props.hideFlyoutTabs();
-                }
-                this.setState({['currentMQ']: activeMQ});
-                // Add code you want to sync with this breakpoint
-                // document.getElementById('msg').innerHTML = ('Active media query: <br><strong>' + this.currentMQ + '</strong>');
-                // console.log(this.currentMQ);
-                //RA.respondToS();
-            }
-            if (activeMQ == 'M') {
-                this.setState({['currentMQ']: activeMQ});
-                // Add code you want to sync with this breakpoint
-                // document.getElementById('msg').innerHTML = ('Active media query: <br><strong>' + this.currentMQ + '</strong>');
-                // console.log(this.currentMQ);
-                //RA.respondToM();
-            }
-            if (activeMQ == 'L') {
-                this.setState({['currentMQ']: activeMQ});
-                // Add code you want to sync with this breakpoint
-                // document.getElementById('msg').innerHTML = ('Active media query: <br><strong>' + this.currentMQ + '</strong>');
-                // console.log(this.currentMQ);
-                //RA.respondToL();
-            }
-            if (activeMQ == 'XL') {
-                this.setState({['currentMQ']: activeMQ});
-                this.props.showFlyoutTabs();
-                // Add code you want to sync with this breakpoint
-                // document.getElementById('msg').innerHTML = ('Active media query: <br><strong>' + this.currentMQ + '</strong>');
-                // console.log(this.currentMQ);
-                //RA.respondToXL();
-            }
-        }
-    };
-
     handleLogoClick(e) {
         e.preventDefault();
         this.context.router.history.push(`/${this.props.locale}`);
-    }
-
-    onResize(dimensions) {
-        this.mqSync();
     }
 
     css() {
@@ -360,8 +272,7 @@ export default class WrapperPage extends React.Component {
 
     render() {
         return (
-            <ResizeAware onResize={this.onResize}>
-                {/* <div className="layout-indicator" style={{display: 'block'}}>{this.state.currentMQ}</div> */}
+            <ResizeWatcherContainer>
                 <div className={this.flyoutCss()}>
                     <div className={this.css()}>
                         <header className='site-header'>
@@ -397,7 +308,7 @@ export default class WrapperPage extends React.Component {
                     <ArchivePopupContainer/>
 
                 </div>
-            </ResizeAware>
+            </ResizeWatcherContainer>
 
         )
     }

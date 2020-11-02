@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
 import { t, queryToText, pathBase } from '../../../lib/utils';
-import isMobile from '../../../lib/media-queries';
+import { isMobile } from '../../../lib/media-queries';
 
 export default class UserContent extends React.Component {
     constructor(props) {

@@ -1,0 +1,46 @@
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ResizeAware from 'react-resize-aware';
+
+import { SCREEN_WIDTH_NARROW, SCREEN_WIDTH_WIDE, currentScreenWidth }
+    from '../../../lib/media-queries';
+
+export default class ResizeWatcher extends Component {
+    static propTypes = {
+      children: PropTypes.node.isRequired,
+      hideFlyoutTabs: PropTypes.func.isRequired,
+      showFlyoutTabs: PropTypes.func.isRequired,
+    }
+
+    constructor(props) {
+        super(props);
+        this.handleResize = this.handleResize.bind(this);
+        this.state = { screenWidth: null };
+    }
+
+    handleResize() {
+        const oldWidth = this.state.screenWidth;
+        const newWidth = currentScreenWidth();
+
+        if (oldWidth === newWidth) {
+          return;
+        }
+
+        if (newWidth === SCREEN_WIDTH_WIDE) {
+          this.props.showFlyoutTabs();
+        }
+        if (newWidth === SCREEN_WIDTH_NARROW) {
+          this.props.hideFlyoutTabs();
+        }
+
+        this.setState({ screenWidth: newWidth });
+    }
+
+    render() {
+        return (
+            <ResizeAware onResize={this.handleResize}>
+                {this.props.children}
+            </ResizeAware>
+        )
+    }
+}
