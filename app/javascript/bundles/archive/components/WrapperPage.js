@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {Link} from 'react-router-dom';
 import classNames from 'classnames';
 import ActionCable from 'actioncable';
 
@@ -8,9 +7,9 @@ import ResizeWatcherContainer from '../containers/ResizeWatcherContainer';
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import BurgerButton from './layout/BurgerButton';
+import MessagesContainer from './layout/MessagesContainer';
 import SiteHeaderContainer from './layout/SiteHeaderContainer';
-import SiteFooter from './layout/SiteFooterContainer';
-import { t } from '../../../lib/utils';
+import SiteFooter from './layout/SiteFooter';
 
 export default class WrapperPage extends React.Component {
     constructor(props) {
@@ -111,38 +110,6 @@ export default class WrapperPage extends React.Component {
         });
     }
 
-    renderLogos() {
-
-    }
-
-    messages() {
-        if (this.props.loggedInAt + 5000 > Date.now()) {
-            return (
-                <p className='messages'>
-                    {t(this.props, 'devise.omniauth_callbacks.success')}
-                </p>
-            )
-        } else if (this.state.notifications.length > 0) {
-            return (
-                <div className='notifications'>
-                    {this.state.notifications.map((notification, index) => {
-                        return (
-                            <p key={`notification-${index}`}>
-                                {t(this.props, notification.title, {file: notification.file, archiveId: notification.archive_id})}
-                                <Link
-                                    to={'/' + this.props.locale + '/interviews/' + notification.archive_id}>
-                                    {notification.archive_id}
-                                </Link>
-                            </p>
-                        )
-                    })}
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
-
     render() {
         const { visible, locale, project,children,  transcriptScrollEnabled } = this.props;
 
@@ -159,7 +126,8 @@ export default class WrapperPage extends React.Component {
                     })}>
                         <SiteHeaderContainer logos={project.logos} />
 
-                        {this.messages()}
+                        <MessagesContainer loggedInAt={this.props.loggedInAt}
+                                           notifications={this.state.notifications} />
 
                         {children}
 
