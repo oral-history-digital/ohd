@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
+import classNames from 'classnames';
 import ActionCable from 'actioncable';
 
 import ResizeWatcherContainer from '../containers/ResizeWatcherContainer';
@@ -9,6 +10,7 @@ import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import BurgerButton from './layout/BurgerButton';
 import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
 import { t } from '../../../lib/utils';
+import SiteHeaderContainer from './layout/SiteHeaderContainer';
 
 export default class WrapperPage extends React.Component {
     constructor(props) {
@@ -109,46 +111,6 @@ export default class WrapperPage extends React.Component {
         });
     }
 
-    handleLogoClick(e) {
-        e.preventDefault();
-        this.context.router.history.push(`/${this.props.locale}`);
-    }
-
-    css() {
-        let css = ["wrapper-page"];
-        if (this.props.transcriptScrollEnabled) {
-            css.push("fix-video");
-        } else {
-            // window.scrollTo(0, 1); // ACHIM?
-        }
-        if (!this.props.visible) {
-            css.push("fullscreen");
-        }
-        return css.join(' ');
-    }
-
-    flyoutCss() {
-        let css = this.props.visible ? ['flyout-is-visible'] : ['flyout-is-hidden'];
-
-        if (this.props.transcriptScrollEnabled) {
-            css.push("fix-video");
-        } else {
-            // window.scrollTo(0, 1); // ACHIM?
-        }
-        return css.join(' ');
-    }
-
-    compensationCss() {
-        let css = '';
-        // possible solution for only adding comension class if necessary
-        // (but small problems when toggeling e.g tableofcontents items)
-        // ($('.wrapper-page').height() - 500) < window.innerHeight
-        if (this.props.transcriptScrollEnabled) {
-            css = 'compensation';
-        }
-        return css;
-    }
-
     renderLogos() {
         if (this.props.project.sponsor_logos) {
             return (
@@ -247,28 +209,21 @@ export default class WrapperPage extends React.Component {
         }
     }
 
-    logoSrc() {
-        if (this.props.project.logos) {
-            let src;
-            Object.keys(this.props.project.logos).map((k,i) => {
-                if (this.props.project.logos[k].locale === this.props.locale) {
-                    src = this.props.project.logos[k].src
-                }
-            })
-            return src || (this.props.project.logos[0] && this.props.project.logos[0].src);
-        }
-    }
-
     render() {
+        const { visible, locale, project, transcriptScrollEnabled } = this.props;
+
         return (
             <ResizeWatcherContainer>
-                <div className={this.flyoutCss()}>
-                    <div className={this.css()}>
-                        <header className='site-header'>
-                            <a className="logo-link" href={`/${this.props.locale}`} onClick={(e) => this.handleLogoClick(e)} title={t(this.props, 'home')}>
-                                <img className="logo-img" src={this.logoSrc()} />
-                            </a>
-                        </header>
+                <div className={classNames({
+                    'flyout-is-visible': visible,
+                    'flyout-is-hidden': !visible,
+                    'fix-video': transcriptScrollEnabled,
+                })}>
+                    <div className={classNames('wrapper-page', {
+                        'fix-video': transcriptScrollEnabled,
+                        'fullscreen': !visible,
+                    })}>
+                        <SiteHeaderContainer logos={this.props.project.logos} />
 
                         {this.messages()}
                         {this.props.children}
@@ -276,25 +231,21 @@ export default class WrapperPage extends React.Component {
                             <ul className='footer-bottom-nav'>
                                 {this.renderExternalLinks()}
                             </ul>
-                            <p>{this.props.project && this.props.project.name[this.props.locale]}</p>
+                            <p>{project && project.name[locale]}</p>
                             { this.renderProjectSpecificFooter() }
                             {this.renderLogos()}
                         </footer>
-                        <div className={this.compensationCss()}/>
+                        <div className={classNames({ 'compensation': transcriptScrollEnabled })}/>
                     </div>
 
-                    <BurgerButton open={this.props.visible}
-                                  onClick={() => this.props.toggleFlyoutTabs(this.props.visible)}/>
+                    <BurgerButton open={visible}
+                                  onClick={() => this.props.toggleFlyoutTabs(visible)}/>
 
-                    <FlyoutTabsContainer
-                        tabIndex={this.props.tabIndex}
-                    />
+                    <FlyoutTabsContainer tabIndex={this.props.tabIndex}/>
 
                     <ArchivePopupContainer/>
-
                 </div>
             </ResizeWatcherContainer>
-
         )
     }
 }
