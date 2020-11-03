@@ -63,7 +63,7 @@ export default class DataLists extends React.Component {
 
     add() {
         if (
-            admin(this.props, {type: camelcase(this.props.scope), action: 'create'}) && 
+            admin(this.props, {type: camelcase(this.props.scope), action: 'create', interview_id: this.props.interview && this.props.interview.id}) && 
             !this.props.hideAdd
         ) {
             return (

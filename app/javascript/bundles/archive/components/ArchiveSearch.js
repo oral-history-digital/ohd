@@ -61,7 +61,7 @@ export default class ArchiveSearch extends React.Component {
         let props = this.props
         let headers = [];
 
-        if (admin(this.props, {type: 'Interview', action: 'update'})) {
+        if (admin(this.props, {type: 'General', action: 'edit'})) {
             headers.push(<td key={'list-header-column-selected'}><strong>{t(this.props, 'selected')}</strong></td>);
         }
 
@@ -164,9 +164,9 @@ export default class ArchiveSearch extends React.Component {
                         </tbody>
                     </table>
                 )
-            } else if (displayType === 'workflow') {
+            } else if (displayType === 'workflow' && admin(this.props, {type: 'General', action: 'edit'})) {
                 return (
-                    <AuthShowContainer ifAdmin={true} obj={{type: 'Interview', action: 'update'}}>
+                    <div>
                         {this.workflowHeader()}
                         {this.props.foundInterviews.map((interview, index) => {
                             return <InterviewWorkflowRowContainer
@@ -174,7 +174,7 @@ export default class ArchiveSearch extends React.Component {
                                 key={"interview-row-" + interview.archive_id + "-" + index}
                             />;
                         })}
-                    </AuthShowContainer>
+                    </div>
                 )
             }
         }   
@@ -332,7 +332,7 @@ export default class ArchiveSearch extends React.Component {
         if (this.props.viewModes) {
             let _this = this;
             return _this.props.viewModes.map(function(viewMode, i) {
-                let visibility = (_this.props.viewModes.length < 2 || (viewMode === 'workflow' && !admin(_this.props, {type: 'Interview', action: 'update'}))) ? 'hidden' : ''
+                let visibility = (_this.props.viewModes.length < 2 || (viewMode === 'workflow' && !admin(_this.props, {type: 'General', action: 'edit'}))) ? 'hidden' : ''
                 return (
                     <Tab className={'search-results-tab ' + visibility} key={i}>
                         <span>{t(_this.props, viewMode)}</span>
@@ -348,7 +348,7 @@ export default class ArchiveSearch extends React.Component {
         if (this.props.viewModes) {
             let _this = this
             return this.props.viewModes.map(function(viewMode, i) {
-                if (viewMode !== 'workflow' || (viewMode === 'workflow' && admin(_this.props, {type: 'Interview', action: 'update'}))) {
+                if (viewMode !== 'workflow' || (viewMode === 'workflow' && admin(_this.props, {type: 'General', action: 'edit'}))) {
                     return (
                         <TabPanel key={i}>
                             {_this.content(viewMode)}

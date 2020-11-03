@@ -324,7 +324,7 @@ export default class VideoPlayer extends React.Component {
     }
 
     render() {
-        let css = (admin(this.props, {type: 'Interview', action: 'update'})) ? ' editorial' : ''
+        let css = (admin(this.props, {type: 'General', action: 'edit'})) ? ' editorial' : ''
         if (this.props.project) {
             return (
                 <div className='wrapper-video'>

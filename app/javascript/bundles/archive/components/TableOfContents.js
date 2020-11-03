@@ -57,26 +57,29 @@ export default class TableOfContents extends React.Component {
 
         if (this.props.interview && this.props.interview.headings) {
             Object.values(this.props.interview.headings).sort(function(a, b) {return a.tape_nbr - b.tape_nbr || a.time - b.time}).map((segment, index) => {
-                mainheading = segment.mainheading[`${this.props.locale}-original`] || 
+                mainheading = segment.mainheading[`${this.props.locale}-original`] ||
                     segment.mainheading[`${this.props.locale}-public`] ||
                     segment.mainheading['de-original'] ||
                     segment.mainheading['de-public'];
-                subheading = segment.subheading[`${this.props.locale}-original`] || 
+                subheading = segment.subheading[`${this.props.locale}-original`] ||
                     segment.subheading[`${this.props.locale}-public`] ||
                     segment.subheading['de-original'] ||
                     segment.subheading['de-public'];
                 //
-                // if the table of content looks different in languages with different alphabets, have a look to the following and extend the regexp: 
+                // if the table of content looks different in languages with different alphabets, have a look to the following and extend the regexp:
                 // https://stackoverflow.com/questions/18471159/regular-expression-with-the-cyrillic-alphabet
                 //
-                // JavaScript (at least the versions most widely used) does not fully support Unicode. 
+                // JavaScript (at least the versions most widely used) does not fully support Unicode.
                 // That is to say, \w matches only Latin letters, decimal digits, and underscores ([a-zA-Z0-9_])
                 //
                 if (mainheading && /[\w\u0430-\u044f0-9]+/.test(mainheading) && mainheading !== lastMainheading) {
                     mainIndex += 1;
                     subIndex = 0;
                     lastMainheading = mainheading;
+                    // TODO: segment should not be part of the headings object - we need it for editing, but there
+                    // should be a leaner solution
                     headings.push({
+                        segment: segment,
                         main: true,
                         chapter: mainIndex + '.',
                         heading: mainheading,
@@ -138,8 +141,8 @@ export default class TableOfContents extends React.Component {
         } else if (this.props.interview && this.props.interview.headings) {
             let first = this.props.interview.headings[0];
             if (
-                !first.mainheading[`${this.props.locale}-public`] && 
-                !first.mainheading[`${this.props.locale}-original`] && 
+                !first.mainheading[`${this.props.locale}-public`] &&
+                !first.mainheading[`${this.props.locale}-original`] &&
                 !first.subheading[`${this.props.locale}-public`] &&
                 !first.subheading[`${this.props.locale}-original`]
             ) {
@@ -150,7 +153,7 @@ export default class TableOfContents extends React.Component {
 
     render() {
         if (
-            this.props.headingsStatus[`for_interviews_${this.props.archiveId}`] && 
+            this.props.headingsStatus[`for_interviews_${this.props.archiveId}`] &&
             this.props.headingsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched'
         ) {
             let headings = this.prepareHeadings();
@@ -173,4 +176,3 @@ export default class TableOfContents extends React.Component {
         }
     }
 }
-

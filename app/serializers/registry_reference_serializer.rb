@@ -4,7 +4,7 @@ class RegistryReferenceSerializer < ApplicationSerializer
              :ref_object_type,
              :registry_entry_id,
              :registry_reference_type_id,
-             #  :registry_reference_type,
+             :interview_id,
              :archive_id,
              :ref_info,
              :ref_details,

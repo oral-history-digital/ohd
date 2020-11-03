@@ -82,7 +82,7 @@ export default class RegistryReferences extends React.Component {
 
     addRegistryReference() {
         // TODO: fit this for MOG - id of root entry will be different
-        if (admin(this.props, {type: 'RegistryReference', action: 'create'}) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
+        if (admin(this.props, {type: 'RegistryReference', action: 'create', interview_id: this.props.interview.id}) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
             return (
                 <span
                     className='flyout-sub-tabs-content-ico-link'

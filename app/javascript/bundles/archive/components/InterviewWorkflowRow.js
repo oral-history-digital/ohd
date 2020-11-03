@@ -5,7 +5,7 @@ import { MISSING_STILL } from '../constants/archiveConstants'
 import AuthShowContainer from '../containers/AuthShowContainer';
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
 import TaskContainer from '../containers/TaskContainer';
-import { t, admin, pathBase, getInterviewee, loadIntervieweeWithAssociations } from '../../../lib/utils';
+import { t, pathBase, getInterviewee, loadIntervieweeWithAssociations } from '../../../lib/utils';
 
 export default class InterviewWorkflowRow extends React.Component {
 

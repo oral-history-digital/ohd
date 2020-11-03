@@ -10,7 +10,7 @@ export default class Photo extends React.Component {
     }
 
     delete() {
-        if (admin(this.props, {type: 'Photo', action: 'update'})) {
+        if (admin(this.props, this.props.data)) {
             return <div
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'delete')}
@@ -42,7 +42,7 @@ export default class Photo extends React.Component {
         let caption = !!(this.props.data.captions[this.props.locale] || this.props.data.captions['de']);
         let photoExplanation = this.props.data.captions[this.props.locale] ? '' : t(this.props, 'activerecord.attributes.photo.caption_explanation');
 
-        if (admin(this.props, {type: 'Photo', action: 'update'})) {
+        if (admin(this.props, this.props.data)) {
             return <PhotoFormContainer photo={this.props.data}/>;
         } else if (caption) {
             return (

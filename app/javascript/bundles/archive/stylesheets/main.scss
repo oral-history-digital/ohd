@@ -10,6 +10,9 @@
 /* Normalize */
 @import "normalize";
 
+/* Vendors */
+@import "~font-awesome/scss/font-awesome.scss";
+
 /* Partials */
 @import "dev";
 @import "fonts";
@@ -36,6 +39,3 @@
 
 /* Print */
 @import "print";
-
-/* FontAwesome */
-@import "~font-awesome/scss/font-awesome.scss";
