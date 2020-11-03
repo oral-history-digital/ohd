@@ -22,6 +22,8 @@ const mapStateToProps = (state) => {
         contributionsLastModified: state.data.statuses.contributions.lastModified,
         contributionTypes: state.archive.contributionTypes,
         languages: state.data.languages,
+        editView: state.archive.editView,
+        account: state.data.accounts.current,
     }
 }
 

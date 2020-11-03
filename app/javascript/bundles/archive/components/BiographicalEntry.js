@@ -66,7 +66,7 @@ export default class BiographicalEntry extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props, {type: 'BiographicalEntry', action: 'create'})) {
+        if (admin(this.props, this.props.data)) {
             return (
                 <span className={'flyout-sub-tabs-content-ico'}>
                     {this.toggle()}

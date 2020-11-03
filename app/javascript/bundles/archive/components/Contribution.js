@@ -50,7 +50,7 @@ export default class Contribution extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props, {type: 'Contribution', action: 'update'})) {
+        if (admin(this.props, this.props.contribution)) {
             return (
                 <span className={'flyout-sub-tabs-content-ico'}>
                     {this.edit()}

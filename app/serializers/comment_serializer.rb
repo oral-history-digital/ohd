@@ -4,6 +4,7 @@ class CommentSerializer < ApplicationSerializer
     :receiver_id,
     :ref_id,
     :ref_type,
+    :interview_id,
     :text,
     :created_at,
     :name

@@ -15,7 +15,7 @@ export default class Carousel extends React.Component {
         ) {
             for (var c in this.props.interview.photos) {
                 let photo = this.props.interview.photos[c];
-                if (photo.workflow_state === 'public' || admin(this.props, {type: 'Photo', action: 'update'})) {
+                if (photo.workflow_state === 'public' || admin(this.props, photo)) {
                     photos.push(<PhotoContainer data={photo} />);
                 }
             }
