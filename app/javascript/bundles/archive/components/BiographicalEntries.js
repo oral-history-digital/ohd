@@ -9,7 +9,7 @@ export default class BiographicalEntries extends React.Component {
         let biographicalEntries = [];
         for (var c in this.props.person.biographical_entries) {
             let biographicalEntry = this.props.person.biographical_entries[c];
-            if (biographicalEntry.workflow_state === 'public' || admin(this.props, {type: 'BiographicalEntry', action: 'create'})) {
+            if (biographicalEntry.workflow_state === 'public' || admin(this.props, biographicalEntry)) {
                 biographicalEntries.push(<BiographicalEntryContainer data={biographicalEntry} key={`biographicalEntry-${biographicalEntry.id}`} />);
             }
         }
@@ -17,7 +17,7 @@ export default class BiographicalEntries extends React.Component {
     }
 
     addBiographicalEntry() {
-        if (admin(this.props, {type: 'BiographicalEntry', action: 'create'})) {
+        if (admin(this.props, {type: 'BiographicalEntry', action: 'create', interview_id: this.props.interview.id})) {
             return (
                 <p>
                     <span

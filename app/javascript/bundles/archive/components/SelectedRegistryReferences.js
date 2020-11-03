@@ -1,6 +1,6 @@
 import React from 'react';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
-import { t, admin, underscore } from '../../../lib/utils';
+import { t, underscore } from '../../../lib/utils';
 
 export default class SelectedRegistryReferences extends React.Component {
 

@@ -3,7 +3,7 @@ import VizSensor from 'react-visibility-sensor';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import SubmitOnBlurForm from '../containers/form/SubmitOnBlurForm';
-import { t, fullname, admin } from "../../../lib/utils";
+import { t, fullname } from "../../../lib/utils";
 import moment from 'moment';
 
 export default class SegmentEditView extends React.Component {

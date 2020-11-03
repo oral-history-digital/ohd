@@ -5,6 +5,7 @@ class PhotoSerializer < ApplicationSerializer
              :src, 
              :thumb_src,
              :text,
+             :interview_id,
              :workflow_state,
              :workflow_states
 
