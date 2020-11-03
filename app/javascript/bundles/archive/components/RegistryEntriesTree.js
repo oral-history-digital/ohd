@@ -1,5 +1,4 @@
-import React from 'react';
-import WrapperPageContainer from '../containers/WrapperPageContainer';
+import React, { Fragment } from 'react';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearchResultContainer';
@@ -37,9 +36,9 @@ export default class RegistryEntriesTree extends React.Component {
             return (
                 this.props.foundRegistryEntries.results.map((result, index) => {
                     return (
-                        <RegistryEntrySearchResultContainer 
-                            result={result} 
-                            key={`registry_entries-${result.registry_entry.id}-${index}`} 
+                        <RegistryEntrySearchResultContainer
+                            result={result}
+                            key={`registry_entries-${result.registry_entry.id}-${index}`}
                             //registryEntryParent={this.props.registryEntryParent}
                         />
                     )
@@ -99,10 +98,9 @@ export default class RegistryEntriesTree extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 3;
         if (this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
             return (
-                <WrapperPageContainer tabIndex={tabIndex}>
+                <Fragment>
                     <AuthShowContainer ifLoggedIn={true}>
                         <div className='wrapper-content register'>
                             <h1 className='registry-entries-title'>
@@ -115,7 +113,7 @@ export default class RegistryEntriesTree extends React.Component {
                     <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                         {t(this.props, 'devise.failure.unauthenticated')}
                     </AuthShowContainer>
-                </WrapperPageContainer>
+                </Fragment>
             );
         } else {
             return null;

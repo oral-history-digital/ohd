@@ -107,7 +107,7 @@ export default class InterviewPreview extends React.Component {
         let _this = this;
         return this.props.project.grid_fields.map(function(field, i){
             let obj = (field.ref_object_type === 'Interview' || field.source === 'Interview') ? _this.props.interview : interviewee;
-            return <span>{humanReadable(obj, field.name, _this.props, _this.state, '') + ' '}</span>;
+            return <span key={i}>{humanReadable(obj, field.name, _this.props, _this.state, '') + ' '}</span>;
         })
     }
 

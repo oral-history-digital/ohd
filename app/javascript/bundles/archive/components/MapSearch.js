@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import 'leaflet-extra-markers'
@@ -12,7 +12,6 @@ import '../../../css/MarkerCluster.Default.css'
 import '../../../css/leaflet.extra-markers.min.css'
 import '../../../lib/leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css'
 
-import WrapperPageContainer from '../containers/WrapperPageContainer';
 import { t, pathBase } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
@@ -83,14 +82,12 @@ export default class MapSearch extends React.Component {
 
     render() {
         return (
-            <WrapperPageContainer
-                tabIndex={ this.props.locales.length + 4 }
-            >
+            <Fragment>
                 <div className='wrapper-content map'>
                 {this.spinner()}
                 <div id='map' />
                 </div>
-            </WrapperPageContainer>
+            </Fragment>
         )
     }
 

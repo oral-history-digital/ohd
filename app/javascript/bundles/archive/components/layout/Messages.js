@@ -33,7 +33,7 @@ function Messages(props) {
 }
 
 Messages.propTypes = {
-    loggedInAt: PropTypes.number.isRequired,
+    loggedInAt: PropTypes.number,
     notifications: PropTypes.array.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,

@@ -12,6 +12,14 @@ import SiteHeaderContainer from './layout/SiteHeaderContainer';
 import SiteFooter from './layout/SiteFooter';
 
 export default class WrapperPage extends React.Component {
+    static propTypes = {
+        editView: PropTypes.bool.isRequired,
+    }
+
+    static contextTypes = {
+        router: PropTypes.object
+    }
+
     constructor(props) {
         super(props);
         this.state = {
@@ -19,10 +27,6 @@ export default class WrapperPage extends React.Component {
             editView: this.props.editViewCookie,
         }
         this.props.changeToEditView(this.props.editViewCookie)
-    }
-
-    static contextTypes = {
-        router: PropTypes.object
     }
 
     componentDidMount(prevProps) {

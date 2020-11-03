@@ -1,5 +1,4 @@
 import React from 'react';
-import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import PropTypes from 'prop-types';
 
@@ -37,9 +36,9 @@ export default class Home extends React.Component {
         if (this.props.project.identifier === 'mog') {
              return (
                  <div className='video-element home-video'>
-                     <video 
-                         poster="https://medien.cedis.fu-berlin.de/eog/interviews/mog/home/still-home-video.jpg" 
-                         controls={false} 
+                     <video
+                         poster="https://medien.cedis.fu-berlin.de/eog/interviews/mog/home/still-home-video.jpg"
+                         controls={false}
                          playsInline={true}
                          src={`https://medien.cedis.fu-berlin.de/eog/interviews/mog/home/mog_home_movie_${this.props.locale}_1803.mp4`}
                      />
@@ -51,9 +50,9 @@ export default class Home extends React.Component {
     featuredInterviews() {
         if (
             // TODO: put the first two lines to project-conf
-            this.props.project.identifier !== 'mog' && 
-            this.props.project.identifier !== 'campscapes' && 
-            this.props.randomFeaturedInterviewsStatus.all && 
+            this.props.project.identifier !== 'mog' &&
+            this.props.project.identifier !== 'campscapes' &&
+            this.props.randomFeaturedInterviewsStatus.all &&
             this.props.randomFeaturedInterviewsStatus.all.split('-')[0] === 'fetched'
         ) {
             return (
@@ -80,22 +79,17 @@ export default class Home extends React.Component {
         if (this.props.project) {
             let projectTranslation = this.props.project.translations.find(t => t.locale === this.props.locale);
             return (
-                    <WrapperPageContainer
-                        // show login tab automatically, unless we're in campscapes
-                        // TODO: generalize this
-                        tabIndex={this.props.project.identifier !== 'campscapes' ? 0 : -1}>
-                        <div className='wrapper-content home-content'>
-                            {this.startVideo()}
-                            <div  className='home-text'>
-                                <h1>{projectTranslation.name}</h1>
-                                <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
-                            </div>
-                            <div className={'search-results-container'}>
-                                {this.moreText(projectTranslation.more_text)}
-                                {this.featuredInterviews()}
-                            </div>
-                        </div>
-                    </WrapperPageContainer>
+                <div className='wrapper-content home-content'>
+                    {this.startVideo()}
+                    <div  className='home-text'>
+                        <h1>{projectTranslation.name}</h1>
+                        <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
+                    </div>
+                    <div className={'search-results-container'}>
+                        {this.moreText(projectTranslation.more_text)}
+                        {this.featuredInterviews()}
+                    </div>
+                </div>
             )
         }
     }

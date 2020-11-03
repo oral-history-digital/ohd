@@ -1,14 +1,10 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 
-import WrapperPageContainer from '../containers/WrapperPageContainer';
-import InterviewDataContainer from '../containers/InterviewDataContainer';
 import InterviewEditViewContainer from '../containers/InterviewEditViewContainer';
 import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import { t } from '../../../lib/utils';
 
 export default class Interview extends React.Component {
 
@@ -40,13 +36,13 @@ export default class Interview extends React.Component {
     }
 
     interviewLoaded() {
-        return this.props.interviewsStatus[this.props.match.params.archiveId] && 
+        return this.props.interviewsStatus[this.props.match.params.archiveId] &&
             (this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'fetched' ||
             this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'processed');
     }
 
     loadContributors() {
-        if ( 
+        if (
             this.interviewLoaded() &&
             !this.props.peopleStatus[`contributors_for_interview_${this.interview().id}`]
         ) {
@@ -65,7 +61,7 @@ export default class Interview extends React.Component {
                     <div className='wrapper-video' >
                         <div className={"video-title-container"}>
                             <h1 className='video-title'>
-                                {this.props.project.fullname_on_landing_page ? this.interview().title[this.props.locale] : this.interview().anonymous_title[this.props.locale]} 
+                                {this.props.project.fullname_on_landing_page ? this.interview().title[this.props.locale] : this.interview().anonymous_title[this.props.locale]}
                             </h1>
                         </div>
                         <div className='video-element'>
@@ -129,12 +125,7 @@ export default class Interview extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 2;
-        return (
-            <WrapperPageContainer tabIndex={tabIndex}>
-                {this.content()}
-            </WrapperPageContainer>
-        )
+        return this.content();
     }
 }
 

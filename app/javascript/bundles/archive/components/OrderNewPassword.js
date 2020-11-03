@@ -1,8 +1,6 @@
 import React from 'react';
-import WrapperPageContainer from '../containers/WrapperPageContainer';
 import OrderNewPasswordFormContainer from '../containers/OrderNewPasswordFormContainer';
 import { t, pathBase } from '../../../lib/utils';
-
 
 export default class OrderNewPassword extends React.Component {
 
@@ -13,7 +11,7 @@ export default class OrderNewPassword extends React.Component {
     error() {
         if (this.props.error) {
             return <div className='errors' dangerouslySetInnerHTML={{__html: t(this.props, this.props.error)}} />;
-        } 
+        }
     }
 
     content() {
@@ -33,12 +31,9 @@ export default class OrderNewPassword extends React.Component {
 
     render() {
         return (
-                <WrapperPageContainer tabIndex={0}>
-                    <div className='wrapper-content register'>
-                        {this.content()}
-                    </div>
-                </WrapperPageContainer>
+            <div className='wrapper-content register'>
+                {this.content()}
+            </div>
         )
     }
-
 }

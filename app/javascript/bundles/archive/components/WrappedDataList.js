@@ -1,6 +1,5 @@
 import React from 'react';
 import Observer from 'react-intersection-observer'
-import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import DataContainer from '../containers/DataContainer';
 import Form from '../containers/form/Form';
@@ -18,7 +17,7 @@ export default class WrappedDataList extends React.Component {
 
     renderScrollObserver() {
         if (
-            this.props.dataStatus[statifiedQuery(this.props.query)] && 
+            this.props.dataStatus[statifiedQuery(this.props.query)] &&
             this.props.dataStatus[statifiedQuery(this.props.query)].split('-')[0] === 'fetching'
         ) {
             return <img src={spinnerSrc} className="archive-search-spinner"/>;
@@ -42,7 +41,7 @@ export default class WrappedDataList extends React.Component {
         let _this = this;
         let sorted = [];
         if (this.props.data) {
-            if (this.props.sortAttribute) { 
+            if (this.props.sortAttribute) {
                 sorted = Object.values(this.props.data).sort(function(a, b){
                     let aa = _this.props.sortAttributeTranslated ? a[_this.props.sortAttribute][_this.props.locale] : a[_this.props.sortAttribute]
                     let bb = _this.props.sortAttributeTranslated ? b[_this.props.sortAttribute][_this.props.locale] : b[_this.props.sortAttribute]
@@ -62,15 +61,15 @@ export default class WrappedDataList extends React.Component {
     data() {
         return this.sortedData().map((data, index) => {
             return (
-                <DataContainer 
-                    data={data} 
+                <DataContainer
+                    data={data}
                     scope={this.props.scope}
                     detailsAttributes={this.props.detailsAttributes}
                     joinedData={this.props.joinedData}
                     form={this.form}
                     hideEdit={this.props.hideEdit}
                     hideDelete={this.props.hideDelete}
-                    key={`${this.props.scope}-${data.id}`} 
+                    key={`${this.props.scope}-${data.id}`}
                 />
             )
         })
@@ -79,7 +78,7 @@ export default class WrappedDataList extends React.Component {
     form(data) {
         let _this = this;
         return (
-            <Form 
+            <Form
                 data={data}
                 //values={{ id: data && data.id }}
                 scope={this.props.scope}
@@ -109,24 +108,21 @@ export default class WrappedDataList extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + this.props.baseTabIndex;
         return (
-            <WrapperPageContainer tabIndex={tabIndex}>
-                <div className='wrapper-content register'>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <h1 className='registry-entries-title'>
-                            {t(this.props, `activerecord.models.${this.props.scope}.other`)}
-                        </h1>
-                        {this.add()}
-                        {this.data()}
-                        {this.add()}
-                        {this.renderScrollObserver()}
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                        {t(this.props, 'devise.failure.unauthenticated')}
-                    </AuthShowContainer>
-                </div>
-            </WrapperPageContainer>
+            <div className='wrapper-content register'>
+                <AuthShowContainer ifLoggedIn={true}>
+                    <h1 className='registry-entries-title'>
+                        {t(this.props, `activerecord.models.${this.props.scope}.other`)}
+                    </h1>
+                    {this.add()}
+                    {this.data()}
+                    {this.add()}
+                    {this.renderScrollObserver()}
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                    {t(this.props, 'devise.failure.unauthenticated')}
+                </AuthShowContainer>
+            </div>
         );
     }
 }

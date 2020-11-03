@@ -1,0 +1,17 @@
+import React from 'react';
+import { Route } from 'react-router-dom';
+
+import WrapperPageContainer from '../../containers/WrapperPageContainer';
+import Routes from './Routes';
+
+function LocaleRoute() {
+    return (
+        <Route path="/:locale">
+            <WrapperPageContainer tabIndex={0}>
+                <Routes />
+            </WrapperPageContainer>
+        </Route>
+    );
+}
+
+export default LocaleRoute;

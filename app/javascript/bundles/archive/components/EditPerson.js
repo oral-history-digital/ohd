@@ -1,5 +1,4 @@
-import React from 'react';
-import WrapperPageContainer from '../containers/WrapperPageContainer';
+import React, { Fragment } from 'react';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
 import { t } from '../../../lib/utils';
@@ -32,7 +31,7 @@ export default class EditPerson extends React.Component {
                     <p>
                         {t(this.props, 'edit.person.processed')}
                     </p>
-                    <button 
+                    <button
                         className='return-to-upload'
                         onClick={() => this.returnToForm()}
                     >
@@ -48,9 +47,8 @@ export default class EditPerson extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 4;
         return (
-            <WrapperPageContainer tabIndex={tabIndex}>
+            <Fragment>
                 <AuthShowContainer ifLoggedIn={true}>
                     <h1 className='registry-entries-title'>{t(this.props, `edit.person.new`)}</h1>
                     {this.content()}
@@ -58,7 +56,7 @@ export default class EditPerson extends React.Component {
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                     {t(this.props, 'devise.failure.unauthenticated')}
                 </AuthShowContainer>
-            </WrapperPageContainer>
+            </Fragment>
         );
     }
 }

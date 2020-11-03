@@ -1,5 +1,4 @@
 import React from 'react';
-import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
 import { t } from '../../../lib/utils';
@@ -104,19 +103,16 @@ export default class Uploads extends React.Component {
     }
 
     render() {
-        let tabIndex = this.props.locales.length + 4 + this.props.hasMap;
         return (
-            <WrapperPageContainer tabIndex={tabIndex}>
-                <div className='wrapper-content register'>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <h1 className='registry-entries-title'>{t(this.props, `edit.upload.upload`)}</h1>
-                        {this.content()}
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                        {t(this.props, 'devise.failure.unauthenticated')}
-                    </AuthShowContainer>
-                </div>
-            </WrapperPageContainer>
+            <div className='wrapper-content register'>
+                <AuthShowContainer ifLoggedIn={true}>
+                    <h1 className='registry-entries-title'>{t(this.props, `edit.upload.upload`)}</h1>
+                    {this.content()}
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                    {t(this.props, 'devise.failure.unauthenticated')}
+                </AuthShowContainer>
+            </div>
         );
     }
 }
