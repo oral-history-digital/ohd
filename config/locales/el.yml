@@ -47,8 +47,11 @@ el:
   show: Zeigen
   hide: Weniger
   edit_column_header:
-    open_table: "Erschließungstabelle: öffnen/schließen"
-    select_columns: "Erschließungstabelle: Spalten auswählen"
+    open_table: "Erschließungstabelle öffnen"
+    close_table: "Erschließungstabelle schließen"
+    skip_rows_on: "Zeilen ohne Überschriften, Anmerkungen oder Registereinträge ausblenden"
+    skip_rows_off: "Alle Zeilen anzeigen"
+    select_columns: "Spalten auswählen"
     text_orig: Transkript
     text_translated: Übersetzung
     mainheading_orig: Hauptüberschrift
@@ -722,7 +725,7 @@ el:
       contribution:
         contribution_type: Art des Beitrags
         person_id: Person
-        speaker_designation: Sprecher*innenauszeichnung (z.B. *CG:*)
+        speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
         project_id: Projekt
         homepage: Website

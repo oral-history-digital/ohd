@@ -10,11 +10,14 @@ class SegmentSerializer < ApplicationSerializer
              :text,
              :mainheading,
              :subheading,
+             :has_heading,
              :annotations,
-             :user_annotation_ids,
-             :references_count,
-             :registry_references,
              :annotations_count,
+             :annotations_total_count,
+             :user_annotation_ids,
+             :registry_references,
+             :references_count,
+             :references_total_count,
              #:references,
              :media_id,
              :timecode,
@@ -55,6 +58,10 @@ class SegmentSerializer < ApplicationSerializer
     end
   end
 
+  def annotations_total_count
+    object.annotations.count
+  end
+
   def references_count
     if object.registry_references.count > 0
       (object.project.available_locales + [object.interview.lang]).inject({}) do |mem, locale|
@@ -64,6 +71,10 @@ class SegmentSerializer < ApplicationSerializer
     else
       zero_counts(object)
     end
+  end
+
+  def references_total_count
+    object.registry_references.count
   end
 
   def registry_references
@@ -82,6 +93,10 @@ class SegmentSerializer < ApplicationSerializer
       mem[translation.locale] = translation.subheading
       mem
     end
+  end
+
+  def has_heading
+    object.has_heading?
   end
 
   def text

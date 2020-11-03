@@ -10,7 +10,7 @@ export default class SegmentEditView extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {visible:  false};
+        this.state = {visible: false};
     }
 
     segmentTime() {

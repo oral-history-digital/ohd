@@ -9,6 +9,7 @@ import {
 
     CHANGE_TO_EDIT_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
+    SET_SKIP_EMPTY_ROWS,
     SELECT_INTERVIEW_EDIT_VIEW_COLUMNS,
 
     //EXPORT_DOI,
@@ -40,7 +41,7 @@ const initialState = {
 const archive = (state = initialState, action) => {
     switch (action.type) {
         case SET_LOCALE:
-            if (state.projectName) document.title = state.projectName[action.locale] 
+            if (state.projectName) document.title = state.projectName[action.locale]
             return Object.assign({}, state, {
                 locale: action.locale
             })
@@ -98,6 +99,10 @@ const archive = (state = initialState, action) => {
         case CHANGE_TO_INTERVIEW_EDIT_VIEW:
             return Object.assign({}, state, {
                 interviewEditView: action.interviewEditView
+            })
+        case SET_SKIP_EMPTY_ROWS:
+            return Object.assign({}, state, {
+                skipEmptyRows: action.skipEmptyRows
             })
         case SELECT_INTERVIEW_EDIT_VIEW_COLUMNS:
             return Object.assign({}, state, { selectedInterviewEditViewColumns: action.interviewEditViewColumns })

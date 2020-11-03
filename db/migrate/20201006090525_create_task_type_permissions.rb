@@ -8,23 +8,77 @@ class CreateTaskTypePermissions < ActiveRecord::Migration[5.2]
     end
 
     {
-      #media_import: ['Medienimport (A/V)', 'Med'],
-      #approval: ['Einverständnis', 'EV'],
-      protocol: [{klass: 'Interview', action_name: 'update'}],
-      transcript: [{klass: 'Segment', action_name: 'create'}, {klass: 'Segment', action_name: 'update'}, {klass: 'Upload', action_name: 'create'}],
-      translation_transcript: [{klass: 'Segment', action_name: 'create'}, {klass: 'Segment', action_name: 'update'}, {klass: 'Upload', action_name: 'create'}],
-      metadata: [{klass: 'Upload', action_name: 'create'}, {klass: 'RegistryEntry', action_name: 'create'}, {klass: 'RegistryEntry', action_name: 'update'}, {klass: 'RegistryReference', action_name: 'create'}, {klass: 'RegistryReference', action_name: 'destroy'}],
-      translation_metadata: [{klass: 'Upload', action_name: 'create'}, {klass: 'RegistryEntry', action_name: 'create'}, {klass: 'RegistryEntry', action_name: 'update'}, {klass: 'RegistryReference', action_name: 'create'}, {klass: 'RegistryReference', action_name: 'destroy'}],
-      photos: [{klass: 'Upload', action_name: 'create'}, {klass: 'Photo', action_name: 'create'}, {klass: 'Photo', action_name: 'update'}, {klass: 'Photo', action_name: 'destroy'}],
-      translation_photos: [{klass: 'Upload', action_name: 'create'}, {klass: 'Photo', action_name: 'create'}, {klass: 'Photo', action_name: 'update'}, {klass: 'Photo', action_name: 'destroy'}],
-      biography: [{klass: 'BiographicalEntry', action_name: 'create'}, {klass: 'BiographicalEntry', action_name: 'update'}, {klass: 'BiographicalEntry', action_name: 'destroy'}],
-      translation_biography: [{klass: 'BiographicalEntry', action_name: 'create'}, {klass: 'BiographicalEntry', action_name: 'update'}, {klass: 'BiographicalEntry', action_name: 'destroy'}],
-      table_of_contents: [{klass: 'Segment', action_name: 'create'}, {klass: 'Segment', action_name: 'update'}],
-      translation_table_of_contents: [{klass: 'Segment', action_name: 'create'}, {klass: 'Segment', action_name: 'update'}],
-      register: [{klass: 'RegistryEntry', action_name: 'create'}, {klass: 'RegistryEntry', action_name: 'update'}, {klass: 'RegistryEntry', action_name: 'destroy'}, {klass: 'RegistryHierarchy', action_name: 'create'}, {klass: 'RegistryHierarchy', action_name: 'destroy'}],
-      translation_register: [{klass: 'RegistryEntry', action_name: 'create'}, {klass: 'RegistryEntry', action_name: 'update'}, {klass: 'RegistryEntry', action_name: 'destroy'}, {klass: 'RegistryHierarchy', action_name: 'create'}, {klass: 'RegistryHierarchy', action_name: 'destroy'}],
-      annotations: [{klass: 'Annotation', action_name: 'create'}, {klass: 'Annotation', action_name: 'update'}, {klass: 'Annotation', action_name: 'destroy'}],
-      anonymisation: [{klass: 'Segment', action_name: 'create'}, {klass: 'Segment', action_name: 'update'}]
+      protocol: [
+        {klass: 'Interview', action_name: 'update'}
+      ],
+      transcript: [
+        {klass: 'Segment', action_name: 'create'},
+        {klass: 'Segment', action_name: 'update'},
+        {klass: 'Upload', action_name: 'create'}
+      ],
+      translation_transcript: [
+        {klass: 'Segment', action_name: 'create'},
+        {klass: 'Segment', action_name: 'update'},
+        {klass: 'Upload', action_name: 'create'}
+      ],
+      metadata: [
+        {klass: 'Interview', action_name: 'update'},
+        {klass: 'Contribution', action_name: 'create'},
+        {klass: 'Contribution', action_name: 'update'},
+        {klass: 'Contribution', action_name: 'destroy'},
+      ],
+      translation_metadata: [
+        {klass: 'Interview', action_name: 'update'}
+      ],
+      photos: [
+        {klass: 'Upload', action_name: 'create'},
+        {klass: 'Photo', action_name: 'create'},
+        {klass: 'Photo', action_name: 'update'},
+        {klass: 'Photo', action_name: 'destroy'}
+      ],
+      translation_photos: [
+        {klass: 'Upload', action_name: 'create'},
+        {klass: 'Photo', action_name: 'create'},
+        {klass: 'Photo', action_name: 'update'},
+        {klass: 'Photo', action_name: 'destroy'}
+      ],
+      biography: [
+        {klass: 'BiographicalEntry', action_name: 'create'},
+        {klass: 'BiographicalEntry', action_name: 'update'},
+        {klass: 'BiographicalEntry', action_name: 'destroy'}
+      ],
+      translation_biography: [
+        {klass: 'BiographicalEntry', action_name: 'create'},
+        {klass: 'BiographicalEntry', action_name: 'update'},
+        {klass: 'BiographicalEntry', action_name: 'destroy'}
+      ],
+      table_of_contents: [
+        {klass: 'Segment', action_name: 'create'},
+        {klass: 'Segment', action_name: 'update'}
+      ],
+      translation_table_of_contents: [
+        {klass: 'Segment', action_name: 'create'},
+        {klass: 'Segment', action_name: 'update'}
+      ],
+      register: [ 
+        {klass: 'RegistryReference', action_name: 'create'},
+        {klass: 'RegistryReference', action_name: 'update'},
+        {klass: 'RegistryReference', action_name: 'destroy'}
+      ],
+      # does  not make sense:
+      # registry_entries are not per interview editable.
+      # one needs a role therefore.
+      #
+      #translation_register: [ ],
+      annotations: [
+        {klass: 'Annotation', action_name: 'create'},
+        {klass: 'Annotation', action_name: 'update'},
+        {klass: 'Annotation', action_name: 'destroy'}
+      ],
+      anonymisation: [
+        {klass: 'Segment', action_name: 'create'},
+        {klass: 'Segment', action_name: 'update'}
+      ]
     }.each do |task_type_key, permissions|
       task_type = TaskType.find_by_key task_type_key
       permissions.each do |p|

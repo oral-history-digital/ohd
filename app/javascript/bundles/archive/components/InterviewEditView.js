@@ -16,7 +16,6 @@ export default class InterviewEditView extends React.Component {
 
     componentDidUpdate(prevProps) {
         this.loadSegments();
-        window.scrollTo(0, 1);
     }
 
     loadSegments() {
@@ -26,6 +25,10 @@ export default class InterviewEditView extends React.Component {
         ) {
             this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'segments');
         }
+    }
+
+    allFilledRows(sortedWithIndex) {
+      return  sortedWithIndex[1].filter(s => { return s.has_heading || s.annotations_total_count > 0 || s.references_total_count > 0; });
     }
 
     shownSegmentsAround(sortedWithIndex) {
@@ -55,11 +58,13 @@ export default class InterviewEditView extends React.Component {
         let translationLocale = this.props.interview.languages.filter(locale => locale !== this.props.interview.lang)[0]
 
         let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props);
-        let shownSegments = this.shownSegmentsAround(sortedWithIndex);
-
-
+        let shownSegments = []
+        if (this.props.skipEmptyRows) {
+            shownSegments = this.allFilledRows(sortedWithIndex);
+        } else {
+            shownSegments = this.shownSegmentsAround(sortedWithIndex);
+        }
             return shownSegments.map((segment, index) => {
-
                 let active = false;
                 if (
                     segment.time <= this.props.transcriptTime + 15 &&

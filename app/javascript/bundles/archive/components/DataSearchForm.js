@@ -1,12 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import spinnerSrc from '../../../images/large_spinner.gif'
 import FormElement from './form/Element'
 import { t, pluralize, parametrizedQuery, statifiedQuery } from '../../../lib/utils';
-
+import isMobile from '../../../lib/media-queries';
 
 export default class DataSearchForm extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -46,6 +44,9 @@ export default class DataSearchForm extends React.Component {
 
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
+        if (isMobile()) {
+            this.props.hideFlyoutTabs();
+        }
         this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
     }
 
@@ -86,10 +87,10 @@ export default class DataSearchForm extends React.Component {
         let _this = this;
         return (
             <div>
-                <form 
-                    ref={(form) => { this.form = form; }} 
-                    id={`${this.props.scope}_search_form`} 
-                    className={'flyout-search default'} 
+                <form
+                    ref={(form) => { this.form = form; }}
+                    id={`${this.props.scope}_search_form`}
+                    className={'flyout-search default'}
                     onSubmit={this.handleSubmit}
                 >
                     {this.props.searchableAttributes.map((element, index) => {
@@ -99,10 +100,10 @@ export default class DataSearchForm extends React.Component {
                             </FormElement>
                         )
                     })}
-                    <input 
-                        className="lonely-search-button" 
+                    <input
+                        className="lonely-search-button"
                         value={t(this.props, this.props.submitText || 'search')}
-                        type="submit" 
+                        type="submit"
                     />
                 </form>
             </div>

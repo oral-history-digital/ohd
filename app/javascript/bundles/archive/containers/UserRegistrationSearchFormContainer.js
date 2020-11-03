@@ -6,6 +6,7 @@ import {
     setQueryParams,
 } from '../actions/searchActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
+import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
@@ -34,6 +35,7 @@ const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
     resetQuery: (scope) => dispatch(resetQuery(scope)),
+    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataSearchForm);
