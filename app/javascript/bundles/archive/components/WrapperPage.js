@@ -6,6 +6,7 @@ import ActionCable from 'actioncable';
 import ResizeWatcherContainer from '../containers/ResizeWatcherContainer';
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
+import BurgerButton from './layout/BurgerButton';
 import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
 import { t } from '../../../lib/utils';
 
@@ -148,18 +149,6 @@ export default class WrapperPage extends React.Component {
         return css;
     }
 
-
-    flyoutToggleCss() {
-        let css = this.props.visible ? 'icon-close' : 'icon-open';
-        return css;
-    }
-
-    flyoutButtonCss() {
-        let css = this.props.visible ? 'fa fa-close' : 'fa fa-bars';
-        return css;
-    }
-
-
     renderLogos() {
         if (this.props.project.sponsor_logos) {
             return (
@@ -294,12 +283,8 @@ export default class WrapperPage extends React.Component {
                         <div className={this.compensationCss()}/>
                     </div>
 
-                    <div className='flyout-toggle'>
-                        <div className={this.flyoutToggleCss()}
-                             onClick={() => this.props.toggleFlyoutTabs(this.props.visible)}>
-                            <i className={this.flyoutButtonCss()}/>
-                        </div>
-                    </div>
+                    <BurgerButton open={this.props.visible}
+                                  onClick={() => this.props.toggleFlyoutTabs(this.props.visible)}/>
 
                     <FlyoutTabsContainer
                         tabIndex={this.props.tabIndex}
