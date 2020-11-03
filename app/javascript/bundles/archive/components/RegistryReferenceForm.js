@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from '../containers/form/Form';
-import { t, admin } from '../../../lib/utils';
+import { t } from '../../../lib/utils';
 
 export default class RegistryReferenceForm extends React.Component {
 

@@ -22,7 +22,7 @@ export default class InterviewContributors extends React.Component {
                 let contribution = this.props.interview.contributions[c];
                 if (
                     this.props.withSpeakerDesignation || 
-                    admin(this.props, this.props.interview) ||
+                    admin(this.props, contribution) ||
                     contribution.contribution_type !== 'interviewee' 
                 ) {
                     if (!contributionTypes[contribution.contribution_type]) {
@@ -74,7 +74,7 @@ export default class InterviewContributors extends React.Component {
     }
 
     addContribution() {
-        if (admin(this.props, {type: 'Contribution', action: 'create'})) {
+        if (admin(this.props, {type: 'Contribution', action: 'create', interview_id: this.props.interview.id})) {
             return (
                 <p>
                     <span

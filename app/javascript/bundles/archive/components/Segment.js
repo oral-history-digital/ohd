@@ -84,7 +84,7 @@ export default class Segment extends React.Component {
     references(locale) {
         if (
             this.state.contentType == 'references' &&
-            (this.props.data.references_count[locale] > 0 || admin(this.props, {type: 'RegistryReference', action: 'create'}))
+            (this.props.data.references_count[locale] > 0 || admin(this.props, {type: 'RegistryReference', action: 'create', interview_id: this.props.data.interview_id}))
         ) {
             return <RegistryReferencesContainer
                        refObject={this.props.data}
@@ -98,7 +98,7 @@ export default class Segment extends React.Component {
     annotations(locale) {
         if (
             this.state.contentType == 'annotations' &&
-            (this.props.data.annotations_count[locale] > 0 || admin(this.props, {type: 'Annotation', action: 'create'}))
+            (this.props.data.annotations_count[locale] > 0 || admin(this.props, {type: 'Annotation', action: 'create', interview_id: this.props.data.interview_id}))
         ) {
             return <AnnotationsContainer segment={this.props.data} locale={locale} />
         }
@@ -150,12 +150,12 @@ export default class Segment extends React.Component {
 
 
             let hasAnnotations = this.props.data.annotations_count[this.props.contentLocale] > 0 || userAnnotations.length > 0
-            let annotationCss = admin(this.props, {type: 'Annotation', action: 'update'}) || hasAnnotations ? 'content-trans-text-ico-link' : 'hidden';
+            let annotationCss = admin(this.props, {type: 'Annotation', action: 'update', interview_id: this.props.data.interview_id}) || hasAnnotations ? 'content-trans-text-ico-link' : 'hidden';
             let hasAnnotationsCss = hasAnnotations ? 'exists' : '';
             let annotationsTitle = hasAnnotations ? t(this.props, 'edit.segment.annotations.edit') : t(this.props, 'edit.segment.annotations.new')
 
             let hasReferences = this.props.data.references_count[this.props.contentLocale] > 0;
-            let referencesCss = admin(this.props, {type: 'RegistryReference', action: 'update'}) || hasReferences ? 'content-trans-text-ico-link' : 'hidden';
+            let referencesCss = admin(this.props, {type: 'RegistryReference', action: 'update', interview_id: this.props.data.interview_id}) || hasReferences ? 'content-trans-text-ico-link' : 'hidden';
             let hasReferencesCss = hasReferences ? 'exists' : '';
             let referencesTitle = hasReferences ? t(this.props, 'edit.segment.references.edit') : t(this.props, 'edit.segment.references.new')
 
@@ -178,7 +178,7 @@ export default class Segment extends React.Component {
 
     edit(locale) {
         let title = this.props.tabIndex == 1 ? 'edit.segment.translation' : 'edit.segment.transcript'
-        if (admin(this.props, {type: 'Segment', action: 'update'})) {
+        if (admin(this.props, this.props.data)) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
@@ -197,7 +197,7 @@ export default class Segment extends React.Component {
     }
 
     editHeadings(locale) {
-        if (admin(this.props, {type: 'Segment', action: 'update'})) {
+        if (admin(this.props, this.props.data)) {
             let title = this.hasHeading() ? t(this.props, 'edit.segment.heading.edit') : t(this.props, 'edit.segment.heading.new')
             let hasHeadingCss = this.hasHeading() ? "exists" : ""
             return (

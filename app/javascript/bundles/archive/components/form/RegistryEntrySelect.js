@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from '../../containers/form/SelectContainer';
-import { t, admin } from '../../../../lib/utils';
+import { t } from '../../../../lib/utils';
 
 export default class RegistryEntrySelect extends React.Component {
 

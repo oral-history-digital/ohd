@@ -14,7 +14,7 @@ class UserAccount < ApplicationRecord
 
   has_many :user_roles
   has_many :roles, through: :user_roles
-  #has_many :permissions, through: :roles
+  has_many :permissions, through: :roles
 
   has_many :tasks
   has_many :supervised_tasks,
@@ -31,24 +31,13 @@ class UserAccount < ApplicationRecord
   validates_format_of :email, :with => Devise.email_regexp
   validates_length_of :password, :within => 5..50, :allow_blank => true
 
-  def tasks?(record)
-    tasks.include?(record)
+  def all_tasks
+    tasks | supervised_tasks
   end
 
-  def task_type_ids
-    (tasks.map(&:task_type_id) | supervised_tasks.map(&:task_type_id)).uniq
-  end
-
-  def task_type_permission_ids
-    TaskTypePermission.where(task_type_id: task_type_ids).map(&:permission_id).uniq
-  end 
-
-  def role_permission_ids
-    roles.map{|r| r.role_permissions.map(&:permission_id)}.flatten.uniq
-  end
-
-  def permissions
-    Permission.where(id: (task_type_permission_ids | role_permission_ids))
+  def task_permissions?(record, action_name)
+    record_tasks = record.is_a?(Interview) ? all_tasks.select{|t| t.interview_id == record.id} : all_tasks.select{|t| t.interview_id == record.interview_id}
+    record_tasks.map(&:permissions).flatten.uniq.find{|p| p.klass == record.class.name && p.action_name == action_name}
   end
 
   def permissions?(klass, action_name)

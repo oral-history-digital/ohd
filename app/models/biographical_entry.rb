@@ -23,4 +23,8 @@ class BiographicalEntry < ApplicationRecord
       end
     end
   end
+
+  def interview_id
+    person.interviews.first.id
+  end
 end

@@ -10,7 +10,6 @@ const mapStateToProps = (state) => {
         isLoggedOut: state.account.isLoggedOut,
         account: state.data.accounts.current,
         accountsStatus: state.data.statuses.accounts,
-        editView: state.archive.editView,
         project: project,
         projectId: state.archive.projectId,
         locale: state.archive.locale

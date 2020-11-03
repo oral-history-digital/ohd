@@ -221,7 +221,7 @@ export default class RegistryEntry extends React.Component {
     }
 
     editButtons() {
-        if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
+        if (admin(this.props, this.props.data)) {
             return (
                 <PopupMenu translations={this.props.translations} locale={this.props.locale}>
                     <PopupMenu.Item>{this.edit()}</PopupMenu.Item>
@@ -241,7 +241,7 @@ export default class RegistryEntry extends React.Component {
     }
 
     showId() {
-        if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
+        if (admin(this.props, this.props.data)) {
             return ` (ID: ${this.props.data.id})`
         }
     }
