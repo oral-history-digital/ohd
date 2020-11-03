@@ -1,5 +1,7 @@
 import React from 'react';
 import SubHeadingContainer from '../containers/SubHeadingContainer';
+import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
+import { t, admin } from '../../../lib/utils';
 
 export default class Heading extends React.Component {
 
@@ -45,11 +47,12 @@ export default class Heading extends React.Component {
         if (this.props.data.main) {
             return <div className={this.state.expanded ? 'expanded' : 'collapsed'}>
                 {this.props.data.subheadings.map((heading, index) => {
-                    return <SubHeadingContainer
+                    return <div><SubHeadingContainer
                         key={'heading-' + index}
                         data={heading}
                         nextSubHeading={this.props.data.subheadings[index+1] || this.props.nextHeading}
-                    />
+                    />{this.editHeading()}
+                    </div>
                 })}
             </div>;
         }
@@ -65,6 +68,23 @@ export default class Heading extends React.Component {
         }
     }
 
+    editHeading() {
+        if (admin(this.props, {type: 'Segment', action: 'update'})) {
+            return (
+                <span
+                    className='flyout-sub-tabs-content-ico-link'
+                    onClick={() => this.props.openArchivePopup({
+                        content: <SegmentHeadingFormContainer
+                              segment={this.props.data.segment}
+                              contentLocale={this.props.locale} />
+                    })}
+                >
+                        <i className="fa fa-pencil"/>
+                </span>
+            )
+        }
+    }
+
     render() {
         let css = 'mainheading ' + (this.state.active ? 'active' : 'inactive');
         return (
@@ -74,11 +94,12 @@ export default class Heading extends React.Component {
                     className={css}
                     onClick={() => this.handleClick(this.props.data.tape_nbr, this.props.data.time)}
                 >
-                    <div className='chapter-number'>{this.props.data.chapter}</div><div className='chapter-text' dangerouslySetInnerHTML={{__html: this.props.data.heading}} />
+                    <span className='chapter-number'>{this.props.data.chapter}</span>
+                    <span className='chapter-text' dangerouslySetInnerHTML={{__html: this.props.data.heading}} />
+                    {this.editHeading()}
                 </div>
                 {this.subHeadings()}
             </div>
         )
     }
 }
-
