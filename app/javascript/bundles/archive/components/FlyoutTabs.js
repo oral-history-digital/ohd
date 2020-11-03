@@ -143,13 +143,7 @@ export default class FlyoutTabs extends React.Component {
                                 content={ <div><InterviewInfoContainer/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }
                             />
                         </AuthShowContainer>
-                        <AuthShowContainer ifAdmin={true} obj={{type: 'Interview', action: 'update'}}>
-                            <InterviewDataContainer
-                                title={t(this.props, 'edit.upload_transcript.title')}
-                                open={false}
-                                content={ <div><UploadTranscriptContainer /><InterviewContributorsContainer withSpeakerDesignation={true}/></div> }
-                            />
-                        </AuthShowContainer>
+                        {this.transcriptAndContributions()}
                         {this.assignSpeakersForm()}
                         {this.markTextForm()}
                         {/* <InterviewDataContainer
@@ -173,6 +167,18 @@ export default class FlyoutTabs extends React.Component {
             );
         } else {
             return <TabPanel key='interview'/>;
+        }
+    }
+
+    transcriptAndContributions() {
+        if (admin(this.props, this.props.interview)) {
+            return (
+                <InterviewDataContainer
+                    title={t(this.props, 'edit.upload_transcript.title')}
+                    open={false}
+                    content={ <div><UploadTranscriptContainer /><InterviewContributorsContainer withSpeakerDesignation={true}/></div> }
+                />
+            )
         }
     }
 

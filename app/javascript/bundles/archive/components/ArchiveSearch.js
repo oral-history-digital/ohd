@@ -164,9 +164,9 @@ export default class ArchiveSearch extends React.Component {
                         </tbody>
                     </table>
                 )
-            } else if (displayType === 'workflow') {
+            } else if (displayType === 'workflow' && admin(this.props, {type: 'General', action: 'edit'})) {
                 return (
-                    <AuthShowContainer ifAdmin={true} obj={{type: 'Interview', action: 'update'}}>
+                    <div>
                         {this.workflowHeader()}
                         {this.props.foundInterviews.map((interview, index) => {
                             return <InterviewWorkflowRowContainer
@@ -174,7 +174,7 @@ export default class ArchiveSearch extends React.Component {
                                 key={"interview-row-" + interview.archive_id + "-" + index}
                             />;
                         })}
-                    </AuthShowContainer>
+                    </div>
                 )
             }
         }   

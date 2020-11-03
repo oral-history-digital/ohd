@@ -1,5 +1,5 @@
 import React from 'react';
-import { t, fullname, getInterviewee, pathBase, humanReadable } from '../../../lib/utils';
+import { t, admin, fullname, getInterviewee, pathBase, humanReadable } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import ContentFieldContainer from '../containers/ContentFieldContainer';
 //import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
@@ -79,9 +79,7 @@ export default class PersonData extends React.Component {
                             {this.downloads()}
                         </p>
                     </AuthShowContainer>
-                    <AuthShowContainer ifAdmin={true} obj={{type: 'BiographicalEntry', action: 'update'}}>
-                        {this.biographicalEntries()}
-                    </AuthShowContainer>
+                    {this.biographicalEntries()}
                 </div>
             );
         } else {
@@ -90,7 +88,7 @@ export default class PersonData extends React.Component {
     }
 
     biographicalEntries() {
-        if(this.props.projectId !== 'dg') {
+        if(admin(this.props, this.props.interview) && this.props.projectId !== 'dg') {
             let interviewee = getInterviewee(this.props);
             return <BiographicalEntriesContainer person={interviewee} interview={this.props.interview} />;
         } else {

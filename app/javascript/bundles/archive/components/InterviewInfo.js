@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import { t, admin } from '../../../lib/utils';
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
@@ -17,6 +17,30 @@ export default class InterviewInfo extends React.Component {
                         <i className="fa fa-external-link" aria-hidden="true" style={{'color': 'grey'}} />
                     </a>
                 </span>
+            )
+        }
+    }
+
+    adminOnlyValues() {
+        if (admin(this.props, this.props.interview)) {
+            return (
+                <div>
+                    <SingleValueWithFormContainer
+                        obj={this.props.interview}
+                        collapse={true}
+                        elementType={'multiLocaleTextarea'}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations')}
+                    />
+                    <SingleValueWithFormContainer
+                        elementType={'select'}
+                        obj={this.props.interview}
+                        attribute={'workflow_state'}
+                        values={['public', 'unshared']}
+                        value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
+                        optionsScope={'workflow_states'}
+                        noStatusCheckbox={true}
+                    />
+                </div>
             )
         }
     }
@@ -72,23 +96,7 @@ export default class InterviewInfo extends React.Component {
                     >
                         {this.collection()}
                     </SingleValueWithFormContainer>
-                    <AuthShowContainer ifAdmin={true} obj={this.props.interview}>
-                        <SingleValueWithFormContainer
-                            obj={this.props.interview}
-                            collapse={true}
-                            elementType={'multiLocaleTextarea'}
-                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations')}
-                        />
-                        <SingleValueWithFormContainer
-                            elementType={'select'}
-                            obj={this.props.interview}
-                            attribute={'workflow_state'}
-                            values={['public', 'unshared']}
-                            value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
-                            optionsScope={'workflow_states'}
-                            noStatusCheckbox={true}
-                        />
-                    </AuthShowContainer>
+                    {this.adminOnlyValues()}
                     <SelectedRegistryReferencesContainer refObject={this.props.interview} />
                 </div>
             );
