@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import ResizeAware from 'react-resize-aware';
 
-import { SCREEN_WIDTH_NARROW, SCREEN_WIDTH_WIDE, currentScreenWidth }
+import { SCREEN_WIDTH_BELOW_M, SCREEN_WIDTH_ABOVE_XL, currentScreenWidth }
     from '../../../lib/media-queries';
 
 export default class ResizeWatcher extends Component {
@@ -26,10 +26,10 @@ export default class ResizeWatcher extends Component {
           return;
         }
 
-        if (newWidth === SCREEN_WIDTH_WIDE) {
+        if (newWidth === SCREEN_WIDTH_ABOVE_XL) {
           this.props.showFlyoutTabs();
         }
-        if (newWidth === SCREEN_WIDTH_NARROW) {
+        if (newWidth === SCREEN_WIDTH_BELOW_M) {
           this.props.hideFlyoutTabs();
         }
 
