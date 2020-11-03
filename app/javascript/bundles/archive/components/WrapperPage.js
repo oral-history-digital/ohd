@@ -8,9 +8,9 @@ import ResizeWatcherContainer from '../containers/ResizeWatcherContainer';
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import BurgerButton from './layout/BurgerButton';
-import zwarLogoDe2 from '../../../images/zwar-logo-red_de.png'
-import { t } from '../../../lib/utils';
 import SiteHeaderContainer from './layout/SiteHeaderContainer';
+import SiteFooter from './layout/SiteFooterContainer';
+import { t } from '../../../lib/utils';
 
 export default class WrapperPage extends React.Component {
     constructor(props) {
@@ -112,40 +112,7 @@ export default class WrapperPage extends React.Component {
     }
 
     renderLogos() {
-        if (this.props.project.sponsor_logos) {
-            return (
-                <div className='home-content-logos'>
-                    {Object.keys(this.props.project.sponsor_logos).map((k, index) => {
-                        let logo = this.props.project.sponsor_logos[k];
-                        if (logo.locale === this.props.locale) {
-                            return (
-                                <a href={logo.href} target='_blank' rel='noopener' title={logo.title} key={`sponsor-logo-${k}`} >
-                                    <img src={ logo.src } />
-                                </a>
-                            )
-                        }
-                    })}
-                </div>
-            )
-        }
-    }
 
-    renderExternalLinks() {
-        if (this.props.project) {
-            let links = this.props.project.external_links;
-            let locale = this.props.locale;
-            let props = this.props;
-            return Object.keys(links).map(function (key, index) {
-                return (
-                    <li key={'external-link-' + key}>
-                        <a href={links[key].url[locale]}
-                            target="_blank" rel="noopener">
-                            {links[key].name[locale]}
-                        </a>
-                    </li>
-                )
-            })
-        }
     }
 
     messages() {
@@ -176,41 +143,8 @@ export default class WrapperPage extends React.Component {
         }
     }
 
-    renderProjectSpecificFooter() {
-        switch(this.props.project && this.props.project.identifier){
-            case 'zwar':
-                if (this.props.locale === 'de') {
-                    return (
-                        <div>
-                            <p>Weitere Angebote:</p>
-                            <div style={{display: 'inline-block'}}>
-                            {/* lieber ein div, das sich ausklappt, dann sind normale <a>-Links möglich */}
-                                <img src={zwarLogoDe2} style={{paddingRight: '10px', borderRight: '2px solid #9f403f', float: 'left', marginRight: 8, width: '36%'}} />
-                                <select style={{color: '#9f403f', marginTop: 5, fontSize: 14}} onChange={(e) => window.open(e.target.value, '_blank')}>
-                                    <option defaultValue>Archiv: Vollständige Interviews</option>
-                                    <option value="https://zwangsarbeit-archiv.de/">Infos: Geschichte und Projekt</option>
-                                    <option value="https://lernen-mit-interviews.de/">Bildung: Lernen mit Interviews</option>
-                                    <option value="https://forum.lernen-mit-interviews.de/">Forum: Für Lehrende</option>
-                                </select>
-                            </div>
-                            <p></p>
-                            <p>Eine Kooperation der Stiftung "Erinnerung, Verantwortung und Zukunft" mit der Freien Universität Berlin </p>
-                        </div>
-                    )
-                }
-            break;
-            case 'campscapes':
-                return (
-                    <div>
-                        <p>Created by Freie Universität Berlin within the HERA-funded project Accessing Campscapes. Inclusive Strategies for Using European Conflicted Heritage</p>
-                        <p><a href='https://ec.europa.eu/programmes/horizon2020/en'>This project has received funding from the European Union's Horizon 2020 research and innovation programme under grant agreement No 649307</a></p>
-                    </div>
-                )
-        }
-    }
-
     render() {
-        const { visible, locale, project, transcriptScrollEnabled } = this.props;
+        const { visible, locale, project,children,  transcriptScrollEnabled } = this.props;
 
         return (
             <ResizeWatcherContainer>
@@ -223,19 +157,15 @@ export default class WrapperPage extends React.Component {
                         'fix-video': transcriptScrollEnabled,
                         'fullscreen': !visible,
                     })}>
-                        <SiteHeaderContainer logos={this.props.project.logos} />
+                        <SiteHeaderContainer logos={project.logos} />
 
                         {this.messages()}
-                        {this.props.children}
-                        <footer>
-                            <ul className='footer-bottom-nav'>
-                                {this.renderExternalLinks()}
-                            </ul>
-                            <p>{project && project.name[locale]}</p>
-                            { this.renderProjectSpecificFooter() }
-                            {this.renderLogos()}
-                        </footer>
-                        <div className={classNames({ 'compensation': transcriptScrollEnabled })}/>
+
+                        {children}
+
+                        <SiteFooter project={project} locale={locale} />
+
+                        { transcriptScrollEnabled ? <div className="compensation" /> : null }
                     </div>
 
                     <BurgerButton open={visible}
