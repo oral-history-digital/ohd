@@ -16,7 +16,7 @@
   footer_text += ", #{current_project.archive_domain}/#{@locale}"
 %>
 
-<% if @interview.doi_status == 'created'
+<% if @interview && @interview.doi_status == 'created'
      footer_text += ", DOI: https://doi.org/#{Rails.configuration.datacite['client_id']}/#{current_project.initials}.#{@interview.archive_id}, (#{I18n.t('called', locale: @locale)}: #{Date.today.strftime("%d.%m.%Y")})."
    else
      footer_text += "."
