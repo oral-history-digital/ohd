@@ -4,17 +4,17 @@ import classNames from 'classnames';
 
 function BurgerButton({ open, onClick }) {
     return (
-        <div className='flyout-toggle'>
-            <div className={classNames({
-                'icon-close': open,
-                'icon-open': !open,
-            })} onClick={onClick}>
-                <i className={classNames('fa', {
-                    'fa-close': open,
-                    'fa-bars': !open,
-                })}/>
-            </div>
-        </div>
+        <button type="button"
+                className={classNames('BurgerButton', {
+                    'is-open': open,
+                    'is-closed': !open,
+                })}
+                onClick={onClick}>
+            <i className={classNames('BurgerButton-icon', 'fa', {
+                'fa-close': open,
+                'fa-bars': !open,
+            })}/>
+        </button>
     );
 }
 

@@ -391,20 +391,6 @@ footer {
   }
 }
 
-.flyout-toggle {
-  position: fixed;
-  top: 20px;
-  right: 22px;
-  width: 36px;
-  height: 36px;
-  padding: 4px 7px;
-  font-size: 26px;
-  z-index: 1100; //because of leaflet
-  cursor: pointer;
-  color: $gray-dark;
-  background-color: rgba(255, 255, 255, 0.8);
-}
-
 .flyout-caption {
   margin-top: 0;
   margin-bottom: 25px;
