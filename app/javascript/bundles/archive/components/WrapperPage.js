@@ -7,8 +7,8 @@ import ResizeWatcherContainer from '../containers/ResizeWatcherContainer';
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import BurgerButton from './layout/BurgerButton';
-import MessagesContainer from './layout/MessagesContainer';
-import SiteHeaderContainer from './layout/SiteHeaderContainer';
+import MessagesContainer from '../containers/layout/MessagesContainer';
+import SiteHeaderContainer from '../containers/layout/SiteHeaderContainer';
 import SiteFooter from './layout/SiteFooter';
 
 export default class WrapperPage extends React.Component {
