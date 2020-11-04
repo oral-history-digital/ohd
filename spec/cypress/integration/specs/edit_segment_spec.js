@@ -8,12 +8,12 @@ describe('Edit Segment', () => {
       // TODO: ensure that tests are only run locally
       // (maybe put into initializer)
       cy.url().should('eq', 'http://localhost:3000/de')
-      cy.get('.icon-open').click()
+      cy.get('.BurgerButton').click()
       cy.get('input[name=login]').type(login)
       cy.get('input[name=password]').type(`${password}{enter}`)
       cy.wait(1000)
       cy.visit('/de/accounts/current')
-      cy.get('.icon-open').click()
+      cy.get('.BurgerButton').click()
       cy.get('.switch-label').click() // Administration view
 
       // variant a) move to edit view via UI
