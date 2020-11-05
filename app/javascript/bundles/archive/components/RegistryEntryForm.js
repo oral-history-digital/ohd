@@ -42,11 +42,10 @@ export default class RegistryEntryForm extends React.Component {
     }
 
     subFormProps() {
-        if (this.props.registryEntryId) {
-            return {registryEntryId: this.props.registryEntryId, submitData: this.props.submitData};
-        } else {
-            return {registryEntryId: this.props.registryEntryId};
-        }
+        let props = {registryEntryId: this.props.registryEntryId};
+        if (this.props.registryEntryId)
+            props.submitData = this.props.submitData;
+        return props;
     }
 
     render() {
