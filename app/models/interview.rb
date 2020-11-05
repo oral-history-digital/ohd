@@ -816,12 +816,13 @@ class Interview < ApplicationRecord
     # https://github.com/sunspot/sunspot#stored-fields
     # in order to get a dropdown list in search field
     def dropdown_search_values(project, user_account)
-      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{Interview.maximum(:updated_at)}-#{Person.maximum(:updated_at)}-#{project.updated_at}") do
+      wf_state = user_account && (user_account.admin? || user_account.permissions?('General', 'edit')) ? ["public", "unshared"] : 'public'
+      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{wf_state}-#{Interview.maximum(:updated_at)}-#{Person.maximum(:updated_at)}-#{project.updated_at}") do
         search = Interview.search do
           adjust_solr_params do |params|
             params[:rows] = project.interviews.size
           end
-          with(:workflow_state, (user_account && user_account.admin?) ? ["public", "unshared"] : 'public')
+          with(:workflow_state, wf_state)
           with(:project_id, project.id)
         end
 
