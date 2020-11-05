@@ -79,7 +79,7 @@ export default class Form extends React.Component {
             })
 
             this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
-            if (typeof(this.props.onSubmitCallback === "function")) {
+            if (typeof(this.props.onSubmitCallback) === "function") {
                 this.props.onSubmitCallback()
             }
         } 
