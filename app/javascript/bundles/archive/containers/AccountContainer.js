@@ -9,7 +9,7 @@ import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         translations: state.archive.translations,
@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
         lastName: state.account.lastName,
         error: state.account.error,
         account: state.data.accounts.current,
-        editViewCookie: getCookie('editView'),
+        editViewCookie: getCookie('editView') === 'true',
         editView: state.archive.editView,
     }
 }

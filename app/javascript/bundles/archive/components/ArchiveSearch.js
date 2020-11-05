@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Observer from 'react-intersection-observer'
 
-import WrapperPageContainer from '../containers/WrapperPageContainer';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import InterviewListRowContainer from '../containers/InterviewListRowContainer';
 import InterviewWorkflowRowContainer from '../containers/InterviewWorkflowRowContainer';
@@ -41,7 +40,7 @@ export default class ArchiveSearch extends React.Component {
     }
 
     content(displayType) {
-        if (this.props.isArchiveSearching && this.props.query['page'] === 1) { 
+        if (this.props.isArchiveSearching && this.props.query['page'] === 1) {
             return <img src={spinnerSrc} className="archive-search-spinner"/>;
         } else {
             return (
@@ -177,7 +176,7 @@ export default class ArchiveSearch extends React.Component {
                     </div>
                 )
             }
-        }   
+        }
     }
 
     handleScroll(inView) {
@@ -294,7 +293,7 @@ export default class ArchiveSearch extends React.Component {
         for (let i = 0, len = Object.keys(query).length; i < len; i++) {
             let param = Object.keys(query)[i]
             url += (i === 0) ? '?' : '&'
-            if(query[param] && query[param].length > 0) url += `${param}=${query[param]}` 
+            if(query[param] && query[param].length > 0) url += `${param}=${query[param]}`
         }
         return (
             <ul>
@@ -337,7 +336,7 @@ export default class ArchiveSearch extends React.Component {
                     <Tab className={'search-results-tab ' + visibility} key={i}>
                         <span>{t(_this.props, viewMode)}</span>
                     </Tab>
-                )   
+                )
             })
         } else {
             return null;
@@ -363,33 +362,29 @@ export default class ArchiveSearch extends React.Component {
 
     render() {
         return (
-            <WrapperPageContainer
-                tabIndex={ this.props.locales.length + 1 }
-            >
-                <div className='wrapper-content interviews'>
-                    <h1 className="search-results-title">{t(this.props, (this.props.projectId === 'mog') ? 'archive_results' : 'interviews')}</h1>
-                    <div className="search-results-legend">
-                        <AuthShowContainer ifLoggedIn={true}>
-                            {this.saveSearchLink()}
-                            {this.exportSearchLink()}
-                        </AuthShowContainer>
-                        {this.renderArchiveResultsCount()}
-                    </div>
-
-                    <Tabs
-                        className='tabs'
-                        selectedTabClassName='active'
-                        selectedTabPanelClassName='active'
-                        selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
-                        onSelect={tabIndex => this.handleTabClick(tabIndex)}
-                    >
-                        <TabList className={'search-results-tabs'}>
-                            {this.searchResultTabs()}
-                        </TabList>
-                        {this.tabPanels()}
-                    </Tabs>
+            <div className='wrapper-content interviews'>
+                <h1 className="search-results-title">{t(this.props, (this.props.projectId === 'mog') ? 'archive_results' : 'interviews')}</h1>
+                <div className="search-results-legend">
+                    <AuthShowContainer ifLoggedIn={true}>
+                        {this.saveSearchLink()}
+                        {this.exportSearchLink()}
+                    </AuthShowContainer>
+                    {this.renderArchiveResultsCount()}
                 </div>
-            </WrapperPageContainer>
+
+                <Tabs
+                    className='tabs'
+                    selectedTabClassName='active'
+                    selectedTabPanelClassName='active'
+                    selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
+                    onSelect={tabIndex => this.handleTabClick(tabIndex)}
+                >
+                    <TabList className={'search-results-tabs'}>
+                        {this.searchResultTabs()}
+                    </TabList>
+                    {this.tabPanels()}
+                </Tabs>
+            </div>
         )
     }
 

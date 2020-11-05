@@ -1,6 +1,4 @@
 import React from 'react';
-import WrapperPageContainer from '../containers/WrapperPageContainer';
-import TasksContainer from '../containers/TasksContainer';
 import TasksOnlyStatusEditableContainer from '../containers/TasksOnlyStatusEditableContainer';
 import UserRolesContainer from '../containers/UserRolesContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
@@ -144,33 +142,31 @@ export default class WrappedAccount extends React.Component {
 
     render() {
         return (
-            <WrapperPageContainer tabIndex={0}>
-                <div className='wrapper-content register'>
-                    <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
-                        <h1>{t(this.props, `activerecord.models.user_account.one`)}</h1>
-                        <div className='user-registration boxes'>
-                            {this.details()}
-                            {this.buttons()}
-                        </div>
-                        <div className='user-registration boxes'>
-                            {this.roles()}
-                            {/* own tasks (not done)*/}
-                            {this.tasks('other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state !== 'finished' && t.workflow_state !== 'cleared'))}
-                            {/* own supervised tasks (not cleared)*/}
-                            {this.tasks('supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state !== 'cleared'))}
-                        </div>
-                        <div className='user-registration boxes'>
-                            {/* own tasks (done)*/}
-                            {this.tasks('closed_other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state === 'finished' || t.workflow_state === 'cleared'), false)}
-                            {/* own supervised tasks (cleared)*/}
-                            {this.tasks('closed_supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state === 'cleared'))}
-                        </div>
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true}>
-                        {t(this.props, 'devise.failure.unauthenticated')}
-                    </AuthShowContainer>
-                </div>
-            </WrapperPageContainer>
+            <div className='wrapper-content register'>
+                <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
+                    <h1>{t(this.props, `activerecord.models.user_account.one`)}</h1>
+                    <div className='user-registration boxes'>
+                        {this.details()}
+                        {this.buttons()}
+                    </div>
+                    <div className='user-registration boxes'>
+                        {this.roles()}
+                        {/* own tasks (not done)*/}
+                        {this.tasks('other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state !== 'finished' && t.workflow_state !== 'cleared'))}
+                        {/* own supervised tasks (not cleared)*/}
+                        {this.tasks('supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state !== 'cleared'))}
+                    </div>
+                    <div className='user-registration boxes'>
+                        {/* own tasks (done)*/}
+                        {this.tasks('closed_other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state === 'finished' || t.workflow_state === 'cleared'), false)}
+                        {/* own supervised tasks (cleared)*/}
+                        {this.tasks('closed_supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state === 'cleared'))}
+                    </div>
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut={true}>
+                    {t(this.props, 'devise.failure.unauthenticated')}
+                </AuthShowContainer>
+            </div>
         );
     }
 }

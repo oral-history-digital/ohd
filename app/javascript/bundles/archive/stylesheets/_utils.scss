@@ -26,36 +26,6 @@
   }
 }
 
-// Media Query / JS Sync
-// ------------------------------------------
-
-head { font-family:"XS"; }
-body:after { content:"XS"; display:none; }
-
-// Screen S
-@media screen and (min-width: $screen-s) {
-  head { font-family:"S"; }
-  body:after { content:"S"; }
-}
-
-// Screen M
-@media screen and (min-width: $screen-m) {
-  head { font-family:"M"; }
-  body:after { content:"M"; }
-}
-
-// Screen L
-@media screen and (min-width: $screen-l) {
-  head { font-family:"L"; }
-  body:after { content:"L"; }
-}
-
-// Screen XL
-@media screen and (min-width: $screen-xl) {  
-  head { font-family:"XL"; }
-  body:after { content:"XL"; }
-}
-
 
 // Floats
 // -------------------------
