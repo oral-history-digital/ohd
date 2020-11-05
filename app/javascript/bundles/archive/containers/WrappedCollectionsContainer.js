@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: getCookie('editView'),
+        editView: getCookie('editView') === 'true',
         data: state.data.collections,
         dataStatus: state.data.statuses.collections,
         resultPagesCount: state.data.statuses.collections.resultPagesCount,

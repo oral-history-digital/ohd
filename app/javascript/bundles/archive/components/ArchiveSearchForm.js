@@ -5,7 +5,7 @@ import FacetContainer from '../containers/FacetContainer';
 import spinnerSrc from '../../../images/large_spinner.gif'
 import { t, iOS, pathBase, admin } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import isMobile from '../../../lib/media-queries';
+import { isMobile } from '../../../lib/media-queries';
 
 export default class ArchiveSearchForm extends React.Component {
     constructor(props) {

@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
         projects: state.data.projects,
         projectsStatus: state.data.statuses.projects,
         project: project,
-        editViewCookie: getCookie('editView'),
+        editViewCookie: getCookie('editView') === 'true',
         editView: state.archive.editView,
         account: state.data.accounts.current,
         accountsStatus: state.data.statuses.accounts,

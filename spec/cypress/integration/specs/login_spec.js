@@ -10,7 +10,7 @@ describe('The Home Page', () => {
 
       cy.visit('/')
       //cy.wait(2000)
-      cy.get('.icon-open').click()
+      cy.get('.BurgerButton').click()
       cy.get('input[name=login]').type(login)
 
       // {enter} causes the form to submit
@@ -20,7 +20,7 @@ describe('The Home Page', () => {
 
       // UI should reflect this user being logged in
       cy.get('.details').should('contain', login)
-      cy.get('.icon-open').click()
+      cy.get('.BurgerButton').click()
 
       // toggle Redaktionsansicht
       cy.get('.switch-label').click()
@@ -31,12 +31,12 @@ describe('The Home Page', () => {
       cy.get('.flyout').not('contain', 'Protokoll')
       // archive view
       cy.visit('/de/accounts/current')
-      cy.get('.icon-open').click()
+      cy.get('.BurgerButton').click()
       cy.get('.switch-label').click()
       cy.get('.lang').eq(1).click()
       cy.get('.flyout').not('contain', 'administration')
       cy.visit('en/interviews/za466')
-      cy.get('.icon-open').click()
+      cy.get('.BurgerButton').click()
       cy.get('.flyout-sub-tabs-container').should('contain', 'Number of tapes')
     })
 })

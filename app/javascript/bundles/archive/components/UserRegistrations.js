@@ -1,6 +1,5 @@
 import React from 'react';
 import Observer from 'react-intersection-observer'
-import WrapperPageContainer from '../containers/WrapperPageContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import UserRegistrationContainer from '../containers/UserRegistrationContainer';
 import { t, parametrizedQuery } from '../../../lib/utils';
@@ -45,21 +44,19 @@ export default class UserRegistrations extends React.Component {
     }
 
     render() {
-        let hasMap = + (this.props.projectId === 'zwar')
-        let tabIndex = this.props.locales.length + 5 + hasMap
         return (
-            <WrapperPageContainer tabIndex={tabIndex}>
-                <div className='wrapper-content register'>
-                    <AuthShowContainer ifLoggedIn={true}>
-		        <h1 className='registry-entries-title'>{t(this.props, `edit.users.admin`)}</h1>
-                        {this.userRegistrations()}
-                        {this.renderScrollObserver()}
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                        {t(this.props, 'devise.failure.unauthenticated')}
-                    </AuthShowContainer>
-		</div>
-            </WrapperPageContainer>
+            <div className='wrapper-content register'>
+                <AuthShowContainer ifLoggedIn={true}>
+                    <h1 className='registry-entries-title'>
+                        {t(this.props, `edit.users.admin`)}
+                    </h1>
+                    {this.userRegistrations()}
+                    {this.renderScrollObserver()}
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                    {t(this.props, 'devise.failure.unauthenticated')}
+                </AuthShowContainer>
+            </div>
         );
     }
 }

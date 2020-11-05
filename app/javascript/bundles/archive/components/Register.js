@@ -1,8 +1,6 @@
 import React from 'react';
 import RegisterFormContainer from '../containers/RegisterFormContainer';
-import WrapperPageContainer from '../containers/WrapperPageContainer';
 import { t } from '../../../lib/utils';
-
 
 export default class Register extends React.Component {
 
@@ -46,12 +44,9 @@ export default class Register extends React.Component {
 
     render() {
         return (
-            <WrapperPageContainer tabIndex={1}>
-                <div className='wrapper-content register'>
-                    {this.content()}
-                </div>
-            </WrapperPageContainer>
-        )
+            <div className='wrapper-content register'>
+                {this.content()}
+            </div>
+        );
     }
-
 }
