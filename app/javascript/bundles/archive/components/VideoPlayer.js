@@ -150,24 +150,26 @@ export default class VideoPlayer extends React.Component {
         let sortedSegments = sortedSegmentsWithIndex[1];
         let activeIndex =  sortedSegmentsWithIndex[2];
 
-        return <UserContentFormContainer
-            title={this.defaultTitle()}
-            description=''
-            properties={{
-                time: segment.time,
-                tape_nbr: segment.tape_nbr,
-                segmentIndex: segment.id,
-                interview_archive_id: this.props.interview.archive_id
-            }}
-            reference_id={segment.id}
-            reference_type='Segment'
-            media_id={segment.media_id}
-            segment={segment}
-            segmentIndex={activeIndex}
-            sortedSegments={sortedSegments}
-            type='UserAnnotation'
-            workflow_state='private'
-        />
+        if (segment) {
+            return <UserContentFormContainer
+                title={this.defaultTitle()}
+                description=''
+                properties={{
+                    time: segment.time,
+                    tape_nbr: segment.tape_nbr,
+                    segmentIndex: segment.id,
+                    interview_archive_id: this.props.interview.archive_id
+                }}
+                reference_id={segment.id}
+                reference_type='Segment'
+                media_id={segment.media_id}
+                segment={segment}
+                segmentIndex={activeIndex}
+                sortedSegments={sortedSegments}
+                type='UserAnnotation'
+                workflow_state='private'
+            />
+        }
     }
 
     fullscreenChange(event) {

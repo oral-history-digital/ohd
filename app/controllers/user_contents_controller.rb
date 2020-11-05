@@ -77,6 +77,8 @@ class UserContentsController < ApplicationController
              :reference_type,
              :type,
              :link_url,
+             :workflow_state, 
+             :shared,
              :persistent).
       tap do |whitelisted|
         whitelisted[:properties] = ActionController::Parameters.new(JSON.parse(properties)).permit!

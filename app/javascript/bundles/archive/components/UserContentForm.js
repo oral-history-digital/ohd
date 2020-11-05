@@ -16,7 +16,7 @@ export default class UserContentForm extends React.Component {
             type: this.props.type,
             segmentIndex: this.props.segmentIndex,
             workflow_state: this.props.workflow_state,
-            publish: false
+            shared: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -133,7 +133,7 @@ export default class UserContentForm extends React.Component {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
             return <div className={"form-group"}>
                 {this.label('publish')}
-                <input className={'publish-input'} type='checkbox' name='publish' checked={this.state.publish}
+                <input className={'publish-input'} type='checkbox' name='shared' checked={this.state.shared}
                        onChange={this.toggleValue}/>
             </div>
         }

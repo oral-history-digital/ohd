@@ -9,6 +9,7 @@ class UserContentSerializer < ApplicationSerializer
     :reference_id,
     :reference_type,
     :type,
+    :shared,
     :workflow_state
 
   def reference_id
