@@ -65,7 +65,7 @@ export default class Gallery extends React.Component {
     }
 
     addPhoto() {
-        if (admin(this.props, {type: 'Photo', action: 'create', interview_id: this.props.interview.id})) {
+        if (admin(this.props, {type: 'Photo', action: 'create', interview_id: this.props.interview && this.props.interview.id})) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
