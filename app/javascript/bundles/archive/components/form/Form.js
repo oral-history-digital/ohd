@@ -79,6 +79,9 @@ export default class Form extends React.Component {
             })
 
             this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
+            if (typeof(this.props.onSubmitCallback === "function")) {
+                this.props.onSubmitCallback()
+            }
         } 
     }
 
@@ -211,8 +214,12 @@ export default class Form extends React.Component {
 
     subForm() {
         if (this.props.subForm && this.state.showSubForm) {
-            if (!this.props.data)
+            if (!this.props.data) {
                 this.props.subFormProps.submitData = this.handleSubFormSubmit;
+            } else {
+                let _this = this;
+                this.props.subFormProps.onSubmitCallback = function(props, params){_this.setState({showSubForm: false})};
+            }
             return (
                 <div>
                     {React.createElement(this.props.subForm, this.props.subFormProps)}
