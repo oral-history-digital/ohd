@@ -133,46 +133,6 @@ header.site-header {
   height: 400px
 }
 
-.expand, .compress, .edit, .check-square {
-  transition: background-color 0.3s;
-  &:hover {
-    background-color: var(--primary-color);
-    transition: background-color 0.3s;
-  }
-}
-
-.expand.editorial, .compress.editorial, .edit, .check-square {
-  &:hover {
-    background-color: var(--editorial-color);
-  }
-}
-
-.expand {
-  display: none;
-}
-
-.compress, .edit, .check-square, .list-alt {
-  display: block;
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  cursor: pointer;
-  padding: 20px 17px 17px 20px;
-  margin: 10px;
-}
-
-.edit {
-  right: 150px;
-}
-
-.fa-list-alt {
-  right: 100px;
-}
-
-.check-square {
-  right: 50px;
-}
-
 .fix-video {
   .wrapper-video {
     position: fixed;
@@ -182,38 +142,6 @@ header.site-header {
     height: 220px;
     @include screen-m {
       height: 160px;
-    }
-    // -webkit-transition: height 1s;
-    // -moz-transition: height 1s;
-    // -ms-transition: height 1s;
-    // -o-transition: height 1s;
-    // transition: height 1s;
-
-    //  -webkit-transition: height .1s linear;
-    // -moz-transition: height .1s linear;
-    // -ms-transition: height .1s linear;
-    // -o-transition: height .1s linear;
-    // transition: height .1s linear;
-    .expand, .edit {
-      display: block;
-      position: absolute;
-      right: 0;
-      bottom: 0;
-      cursor: pointer;
-      padding: 20px 17px 17px 20px;
-      margin: 10px;
-    }
-
-    .compress {
-      display: none;
-    }
-
-    .edit {
-      right: 100px;
-    }
-
-    .check-square {
-      right: 50px;
     }
 
     .video-element {

@@ -1,14 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
-import SelectInterviewEditViewColumnsFormContainer from '../containers/SelectInterviewEditViewColumnsFormContainer';
-import { t, admin, fullname, segments, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
+import VideoPlayerButtonsContainer from '../containers/VideoPlayerButtonsContainer';
+import { t, fullname, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
 import moment from 'moment';
 
 import { MISSING_STILL } from '../constants/archiveConstants'
 
 export default class VideoPlayer extends React.Component {
-
     constructor(props) {
         super(props);
         this.fullscreenChange = this.fullscreenChange.bind(this);
@@ -69,15 +68,6 @@ export default class VideoPlayer extends React.Component {
     setVideoStatus() {
         // let isPlaying = this.video.currentTime > 0 && !this.video.paused && !this.video.ended && this.video.readyState > 2;
         this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
-    }
-
-    reconnectVideoProgress() {
-        this.props.handleTranscriptScroll(false);
-        window.scrollTo(0, 1);
-    }
-
-    compressVideo() {
-        this.props.handleTranscriptScroll(true);
     }
 
     handleVideoEnded() {
@@ -279,66 +269,10 @@ export default class VideoPlayer extends React.Component {
         }
     }
 
-    enableInterviewEditViewButton() {
-        if (admin(this.props, {type: 'General', action: 'edit'})) {
-            let title = this.props.interviewEditView ? 'close_table' : 'open_table';
-            return(
-                <i
-                    className="fa fa-edit edit"
-                    aria-hidden="true"
-                    title={t(this.props, `edit_column_header.${title}`)}
-                    onClick={() => this.props.changeToInterviewEditView(!this.props.interviewEditView)} />
-                )
-          }
-    }
-
-    enableSkipEmptyRowsButton() {
-        if (admin(this.props, {type: 'General', action: 'edit'}) && this.props.interviewEditView) {
-            let title = this.props.skipEmptyRows ? 'skip_rows_off' : 'skip_rows_on';
-            return(
-                <i
-                    className="fa fa-list-alt edit"
-                    aria-hidden="true"
-                    title={t(this.props, `edit_column_header.${title}`)}
-                    onClick={() => this.props.setSkipEmpytRows(!this.props.skipEmptyRows)}
-                />
-            )
-        }
-    }
-
-    selectInterviewEditViewColumns() {
-        if (admin(this.props, {type: 'General', action: 'edit'}) && this.props.interviewEditView) {
-            return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit_column_header.select_columns')}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit_column_header.select_columns'),
-                        content: <SelectInterviewEditViewColumnsFormContainer />
-                    })}
-                >
-                    <i className="fa fa-check-square check-square"></i>
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
-
     render() {
-        let css = (admin(this.props, {type: 'General', action: 'edit'})) ? ' editorial' : ''
         if (this.props.project) {
             return (
                 <div className='wrapper-video'>
-                    <i className={`fa fa-angle-double-down expand ${css}`}
-                      title={t(this.props, 'expand_video')}
-                      aria-hidden="true" onClick={() => this.reconnectVideoProgress()} />
-                    <i className={`fa fa-angle-double-up compress ${css}`}
-                      title={t(this.props, 'compress_video')}
-                      aria-hidden="true" onClick={() => this.compressVideo()} />
-                    {this.enableInterviewEditViewButton()}
-                    {this.enableSkipEmptyRowsButton()}
-                    {this.selectInterviewEditViewColumns()}
                     <div className={"video-title-container"}>
                         <h1 className='video-title'>
                             {fullname(this.props, getInterviewee(this.props), true)}
@@ -355,6 +289,8 @@ export default class VideoPlayer extends React.Component {
                     <div className='video-element'>
                         {this.mediaElement(this)}
                     </div>
+
+                    <VideoPlayerButtonsContainer />
                 </div>
             );
         } else {
