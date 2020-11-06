@@ -2,9 +2,7 @@ import {connect} from 'react-redux';
 
 import VideoPlayer from '../components/VideoPlayer';
 import {handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution} from '../actions/videoPlayerActionCreators';
-import {handleTranscriptScroll} from '../actions/interviewActionCreators';
 import {openArchivePopup} from '../actions/archivePopupActionCreators';
-import { changeToInterviewEditView, setSkipEmpytRows } from '../actions/archiveActionCreators';
 
 import { getInterview, getProject, getCookie } from '../../../lib/utils';
 
@@ -27,8 +25,6 @@ const mapStateToProps = (state) => {
         resolution: state.interview.resolution,
         account: state.data.accounts.current,
         editView: state.archive.editView,
-        interviewEditView: getCookie('interviewEditView'),
-        skipEmptyRows: state.archive.skipEmptyRows
     }
 }
 
@@ -37,10 +33,7 @@ const mapDispatchToProps = (dispatch) => ({
     handleVideoEnded: () => dispatch(handleVideoEnded()),
     setNextTape: () => dispatch(setNextTape()),
     setTapeAndTimeAndResolution: (tape, time, resolution) => dispatch(setTapeAndTimeAndResolution(tape, time, resolution)),
-    handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
-    setSkipEmpytRows: bool => dispatch(setSkipEmpytRows(bool)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    changeToInterviewEditView: (bool) => dispatch(changeToInterviewEditView(bool)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayer);

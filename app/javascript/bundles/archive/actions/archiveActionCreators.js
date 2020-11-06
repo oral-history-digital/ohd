@@ -80,7 +80,7 @@ export function changeToInterviewEditView(bool) {
     }
 }
 
-export const setSkipEmpytRows = (bool) => ({
+export const setSkipEmptyRows = (bool) => ({
     type: SET_SKIP_EMPTY_ROWS,
     skipEmptyRows: bool,
 });

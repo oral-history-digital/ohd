@@ -1,0 +1,26 @@
+/**
+ * VideoPlayerButtons component
+ */
+
+.VideoPlayerButtons {
+  bottom: 0.5rem;
+  display: flex;
+  position: absolute;
+  right: 0.5rem;
+}
+
+.VideoPlayerButtons-button {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  outline: none;
+  padding: 1rem 0.5rem;
+  transition: background-color $transition-duration;
+}
+
+/* States */
+
+.VideoPlayerButtons-button:hover {
+  background-color: var(--editorial-color);
+}
