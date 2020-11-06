@@ -25,28 +25,11 @@ class InterviewEditButtons extends Component {
 
         return (
             <Fragment>
-                <button
-                    className="VideoPlayerButtons-button"
-                    type="button"
-                    title={t(this.props, `edit_column_header.${editViewEnabled ? 'close_table' : 'open_table'}`)}
-                    onClick={() => this.props.changeToInterviewEditView(!editViewEnabled)}
-                >
-                    <i className="fa fa-fw fa-edit" aria-hidden="true"/>
-                </button>
-
-                {
+               {
                     editViewEnabled ?
                         (<Fragment>
                             <button
-                                className="VideoPlayerButtons-button"
-                                type="button"
-                                title={t(this.props, `edit_column_header.${skipEmptyRows ? 'skip_rows_off' : 'skip_rows_on'}`)}
-                                onClick={() => this.props.setSkipEmptyRows(!skipEmptyRows)}
-                            >
-                                <i className="fa fa-fw fa-list-alt" aria-hidden="true"/>
-                            </button>
-                            <button
-                                className="VideoPlayerButtons-button"
+                                className="IconButton"
                                 type="button"
                                 title={t(this.props, 'edit_column_header.select_columns')}
                                 onClick={() => this.props.openArchivePopup({
@@ -54,11 +37,27 @@ class InterviewEditButtons extends Component {
                                     content: <SelectInterviewEditViewColumnsFormContainer />
                                 })}
                             >
-                                <i className="fa fa-fw fa-check-square"/>
+                                <i className="fa fa-fw fa-columns"/>
+                            </button>
+                            <button
+                                className={classNames('IconButton', { 'is-pressed': skipEmptyRows })}
+                                type="button"
+                                title={t(this.props, `edit_column_header.${skipEmptyRows ? 'skip_rows_off' : 'skip_rows_on'}`)}
+                                onClick={() => this.props.setSkipEmptyRows(!skipEmptyRows)}
+                            >
+                                <i className="fa fa-fw fa-filter" aria-hidden="true"/>
                             </button>
                         </Fragment>) :
                         null
                 }
+                <button
+                    className={classNames('IconButton', { 'is-pressed': editViewEnabled })}
+                    type="button"
+                    title={t(this.props, `edit_column_header.${editViewEnabled ? 'close_table' : 'open_table'}`)}
+                    onClick={() => this.props.changeToInterviewEditView(!editViewEnabled)}
+                >
+                    <i className="fa fa-fw fa-edit" aria-hidden="true"/>
+                </button>
             </Fragment>
         );
     }

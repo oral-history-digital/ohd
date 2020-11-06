@@ -33,7 +33,7 @@ class VideoPlayerButtons extends Component {
         const { transcriptScrollEnabled } = this.props;
 
         return (
-            <div className="VideoPlayerButtons">
+            <div className="VideoPlayer-buttons">
                 {
                     admin(this.props, {type: 'General', action: 'edit'}) ?
                         <InterviewEditButtonsContainer /> :
@@ -41,7 +41,7 @@ class VideoPlayerButtons extends Component {
                 }
 
                 <button
-                    className="VideoPlayerButtons-button"
+                    className="IconButton"
                     type="button"
                     title={t(this.props, transcriptScrollEnabled ? 'expand_video' : 'compress_video')}
                     onClick={this.toggleExpansion}
