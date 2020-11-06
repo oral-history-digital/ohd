@@ -451,6 +451,7 @@ ru:
   edit_search: Редактирование сохраненного поиска
   query: Поисковый запрос
   delete: уничтожение
+  really_destroy: Wirklich löschen?
   delete_user_content: Удалить из рабочей тетради
   choose: Пожалуйста, выберите...
   enter_search_field: Поиск в архиве
@@ -532,6 +533,10 @@ ru:
     quality_manager_transcription: Qualitätsmangement Transkription
     quality_manager_interviewing: Qualitätsmangement Interview
     quality_manager_research: Qualitätsmangement Erschließung
+  registry_names:
+    title: Registernamen
+    new: Registernamen hinzufügen
+    add: Registernamen hinzufügen
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen

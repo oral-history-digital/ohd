@@ -8,6 +8,7 @@ export default class RegistryName extends React.Component {
         super(props);
         this.state = {
             editing: false,
+            showConfirmDeleteButton: false
         };
         this.setEditing = this.setEditing.bind(this);
     }
@@ -28,36 +29,43 @@ export default class RegistryName extends React.Component {
         )
     }
 
-    //destroy() {
-        //this.props.deleteData(this.props, pluralize(this.props.scope), this.props.data.id, null, null, false);
-        //this.props.closeArchivePopup();
-    //}
+    destroy() {
+        this.props.deleteData(this.props, 'registry_names', this.props.registryName.id, null, null, false);
+    }
 
-    //delete() {
-        //if (
-            //this.props.registryName &&
-            //admin(this.props, this.props.registryName)
-        //) {
-            //return <div
-                //className='flyout-sub-tabs-content-ico-link'
-                //title={t(this.props, 'delete')}
-                //onClick={() => this.props.openArchivePopup({
-                    //title: t(this.props, 'delete'),
-                    //content: (
-                        //<div>
-                            //<div className='any-button' onClick={() => this.destroy()}>
-                                //{t(this.props, 'delete')}
-                            //</div>
-                        //</div>
-                    //)
-                //})}
-            //>
-                //<i className="fa fa-trash-o"></i>
-            //</div>
-        //} else {
-            //return null;
-        //}
-    //}
+    confirmDeleteButton() {
+        if (
+            this.props.registryName &&
+            admin(this.props, this.props.registryName) &&
+            this.state.showConfirmDeleteButton
+        ) {
+            return <div
+                className='flyout-sub-tabs-content-ico-link warn'
+                title={t(this.props, 'really_destroy')}
+                onClick={() => this.destroy()}
+            >
+                <i className="fa fa-trash-o"></i>
+            </div>
+        }
+    }
+
+    delete() {
+        if (
+            this.props.registryName &&
+            admin(this.props, this.props.registryName) &&
+            !this.state.showConfirmDeleteButton
+        ) {
+            return <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, 'delete')}
+                onClick={() => this.setState({showConfirmDeleteButton: true})}
+            >
+                <i className="fa fa-trash-o"></i>
+            </div>
+        } else {
+            return null;
+        }
+    }
 
     form() {
         let _this = this;
@@ -83,6 +91,8 @@ export default class RegistryName extends React.Component {
             <div>
                 {this.state.editing ? this.form() : this.show()}
                 {this.editButton()}
+                {this.delete()}
+                {this.confirmDeleteButton()}
             </div>
         )
     }

@@ -420,6 +420,7 @@ de:
   edit_search: Gespeicherte Suche bearbeiten
   query: Suchkriterien
   delete: Löschen
+  really_destroy: Wirklich löschen?
   delete_user_content: Aus Arbeitsmappe entfernen
   choose: Bitte auswählen
   enter_search_field: Bitte Suchbegriff eingeben ...
@@ -501,6 +502,10 @@ de:
     quality_manager_transcription: Qualitätsmanagement Transkription
     quality_manager_interviewing: Qualitätsmanagement Interview
     quality_manager_research: Qualitätsmanagement Erschließung
+  registry_names:
+    title: Registernamen
+    new: Registernamen hinzufügen
+    add: Registernamen hinzufügen
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen

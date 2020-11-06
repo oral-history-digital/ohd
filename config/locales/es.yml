@@ -402,6 +402,7 @@ es:
   edit_search: Editar una búsqueda guardada
   query: Criterios de búsqueda
   delete: Borrar
+  really_destroy: Realmente borar?
   delete_user_content: Eliminar de la carpeta
   choose: Seleccione por favor
   enter_search_field: Introduzca término de búsqueda por favor ...
@@ -483,6 +484,10 @@ es:
     quality_manager_transcription: Gestión de calidad Transcripción
     quality_manager_interviewing: Gestión de calidad Entrevista
     quality_manager_research: Gestión de calidad Edición científica
+  registry_names:
+    title: Registernamen
+    new: Registernamen hinzufügen
+    add: Registernamen hinzufügen
   texts:
     add: Añadir texto
     title: Pasaje de texto seleccionado

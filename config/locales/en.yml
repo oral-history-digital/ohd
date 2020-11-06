@@ -406,6 +406,7 @@ en:
   edit_search: Edit saved search
   query: search criteria
   delete: Delete
+  really_destroy: really delete?
   delete_user_content: Remove from workbook
   choose: Please select
   enter_search_field: Please enter search term ...
@@ -487,6 +488,10 @@ en:
     quality_manager_transcription: Qualitätsmangement Transkription
     quality_manager_interviewing: Qualitätsmangement Interview
     quality_manager_research: Qualitätsmangement Erschließung
+  registry_names:
+    title: Registernamen
+    new: Registernamen hinzufügen
+    add: Registernamen hinzufügen
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen
