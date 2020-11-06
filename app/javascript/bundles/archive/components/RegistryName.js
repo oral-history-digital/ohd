@@ -72,8 +72,7 @@ export default class RegistryName extends React.Component {
     }
 
     show() {
-        let translations = this.props.registryName.translations || this.props.registryName.translations_attributes;
-        let translation = translations.find(t => t.locale === this.props.locale);
+        let translation = this.props.registryName.translations.find(t => t.locale === this.props.locale);
         return (
             <span>{translation.descriptor}</span>
         )

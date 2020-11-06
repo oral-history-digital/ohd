@@ -19,7 +19,10 @@ export default class RegistryEntryForm extends React.Component {
     }
 
     showRegistryName(registryName) {
-        return <RegistryNameContainer registryName={registryName} />;
+        let translation = registryName.translations_attributes.find(t => t.locale === this.props.locale);
+        return (
+            <span>{translation.descriptor}</span>
+        )
     }
 
     registryNames() {
