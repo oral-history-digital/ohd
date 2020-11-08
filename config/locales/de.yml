@@ -987,6 +987,7 @@ de:
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
+        replacement: ersetzen mit
       task_type:
         use: in der Übersicht zeigen
       registry_reference_type:
