@@ -11,6 +11,7 @@ export default class RegistryNameForm extends React.Component {
                 scope='registry_name'
                 onSubmit={function(params){_this.props.submitData(_this.props, params);}}
                 onSubmitCallback={_this.props.onSubmitCallback}
+                formClasses={_this.props.formClasses}
                 data={this.props.registryName}
                 values={{
                     registry_entry_id: (_this.props.registryName && _this.props.registryName.registry_entry_id) || _this.props.registryEntryId
