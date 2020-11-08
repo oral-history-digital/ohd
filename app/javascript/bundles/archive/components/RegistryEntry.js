@@ -43,7 +43,7 @@ export default class RegistryEntry extends React.Component {
                     this.props.openArchivePopup({
                         title: t(this.props, 'edit.registry_entry.edit'),
                         content: <RegistryEntryFormContainer
-                            registryEntry={this.props.data}
+                            registryEntryId={this.props.data.id}
                             registryEntryParent={this.props.registryEntryParent}
                             />
                     })

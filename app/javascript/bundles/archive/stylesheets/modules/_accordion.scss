@@ -181,6 +181,14 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
       color: $gray-dark;
     }
   }
+  &.warn {
+    .fa {
+      color: red;
+    }
+  }
+  &.warn:hover {
+    background-color: yellow;
+  }
   &:hover {
     background-color: $gray-lighter;
     .fa {

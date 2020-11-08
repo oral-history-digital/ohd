@@ -451,6 +451,7 @@ ru:
   edit_search: Редактирование сохраненного поиска
   query: Поисковый запрос
   delete: уничтожение
+  really_destroy: Wirklich löschen?
   delete_user_content: Удалить из рабочей тетради
   choose: Пожалуйста, выберите...
   enter_search_field: Поиск в архиве
@@ -532,6 +533,10 @@ ru:
     quality_manager_transcription: Qualitätsmangement Transkription
     quality_manager_interviewing: Qualitätsmangement Interview
     quality_manager_research: Qualitätsmangement Erschließung
+  registry_names:
+    title: Registernamen
+    new: Registernamen hinzufügen
+    add: Registernamen hinzufügen
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen
@@ -701,6 +706,9 @@ ru:
       registry_references_types:
         one: Erwähnungsart
         other: Erwähnungenarten
+      registry_name_types:
+        one: Registernamensart
+        other: Registernamensarten
       registry_entries:
         one: Регистр
         other: Регистр
@@ -731,6 +739,9 @@ ru:
       task_type:
         one: Aufgabenart
         other: Aufgabenarten
+      task_type_permission:
+        one: 'Zur Aufgabenart gehörende Berechtigung'
+        other: 'Zur Aufgabenart gehörende Berechtigungen'
       permission:
         one: Erlaubnis
         other: Erlaubnisse
@@ -989,6 +1000,11 @@ ru:
         latitude: Latitude
         longitude: Longitude
         lang: Sprache
+      registry_name:
+        descriptor: Name
+        notes: Anmerkungen
+        registry_name_type_id: Registernamensart
+        name_position: Position
       registry_reference:
         registry_entry_id: Registereintrag
         registry_reference_type_id: Art der Beziehung
@@ -1006,6 +1022,7 @@ ru:
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
+        replacement: ersetzen mit
       task_type:
         use: in der Übersicht zeigen
       registry_reference_type:

@@ -420,6 +420,7 @@ de:
   edit_search: Gespeicherte Suche bearbeiten
   query: Suchkriterien
   delete: Löschen
+  really_destroy: Wirklich löschen?
   delete_user_content: Aus Arbeitsmappe entfernen
   choose: Bitte auswählen
   enter_search_field: Bitte Suchbegriff eingeben ...
@@ -501,6 +502,10 @@ de:
     quality_manager_transcription: Qualitätsmanagement Transkription
     quality_manager_interviewing: Qualitätsmanagement Interview
     quality_manager_research: Qualitätsmanagement Erschließung
+  registry_names:
+    title: Registernamen
+    new: Registernamen hinzufügen
+    add: Registernamen hinzufügen
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen
@@ -670,6 +675,9 @@ de:
       registry_references_types:
         one: Erwähnungsart
         other: Erwähnungenarten
+      registry_name_types:
+        one: Registernamensart
+        other: Registernamensarten
       registry_entries:
         one: Registereintrag
         other: Registereinträge
@@ -700,6 +708,9 @@ de:
       task_type:
         one: Aufgabenart
         other: Aufgabenarten
+      task_type_permission:
+        one: 'Zur Aufgabenart gehörende Berechtigung'
+        other: 'Zur Aufgabenart gehörende Berechtigungen'
       permission:
         one: 'Berechtigung'
         other: 'Berechtigungen'
@@ -955,6 +966,11 @@ de:
         latitude: Latitude
         longitude: Longitude
         lang: Sprache
+      registry_name:
+        descriptor: Name
+        notes: Anmerkungen
+        registry_name_type_id: Registernamensart
+        name_position: Position
       registry_reference:
         registry_entry_id: Registereintrag
         registry_reference_type_id: Art der Beziehung
@@ -971,6 +987,7 @@ de:
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
+        replacement: ersetzen mit
       task_type:
         use: in der Übersicht zeigen
       registry_reference_type:

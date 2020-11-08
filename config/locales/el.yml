@@ -410,6 +410,7 @@ el:
   edit_search: Επεξεργασία επεξεργασμένης αναζήτησης
   query: Κριτήρια αναζήτησης
   delete: Διαγραφή
+  really_destroy: Wirklich löschen?
   delete_user_content: Απομάκρυνση από τον προσωπικό φάκελο
   choose: " Παρακαλώ επιλέξτε"
   enter_search_field: Παρακαλώ δώστε τον όρο αναζήτησης ...
@@ -491,6 +492,10 @@ el:
     quality_manager_transcription: Ποιοτικός έλεγχος της απομαγνητοφώνησης
     quality_manager_interviewing: Ποιοτικός έλεγχος της συνέντευξης
     quality_manager_research: Ποιοτικός έλεγχος της ιστορικής επεξεργασίας
+  registry_names:
+    title: Registernamen
+    new: Registernamen hinzufügen
+    add: Registernamen hinzufügen
   texts:
     add: Text hinzufügen
     title: Ausgewählete Textpassagen
@@ -659,6 +664,9 @@ el:
       registry_references_types:
         one: Erwähnungsart
         other: Erwähnungenarten
+      registry_name_types:
+        one: Registernamensart
+        other: Registernamensarten
       registry_entries:
         one: Registereintrag
         other: Registereinträge
@@ -689,6 +697,9 @@ el:
       task_type:
         one: Aufgabenart
         other: Aufgabenarten
+      task_type_permission:
+        one: 'Zur Aufgabenart gehörende Berechtigung'
+        other: 'Zur Aufgabenart gehörende Berechtigungen'
       permission:
         one: Erlaubnis
         other: Erlaubnisse
@@ -968,6 +979,11 @@ el:
         latitude: Latitude
         longitude: Longitude
         lang: Sprache
+      registry_name:
+        descriptor: Name
+        notes: Anmerkungen
+        registry_name_type_id: Registernamensart
+        name_position: Position
       registry_reference:
         registry_entry_id: Registereintrag
         registry_reference_type_id: Art der Beziehung
@@ -984,6 +1000,7 @@ el:
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
+        replacement: ersetzen mit
       task_type:
         use: in der Übersicht zeigen
       registry_reference_type:

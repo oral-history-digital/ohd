@@ -402,6 +402,7 @@ es:
   edit_search: Editar una búsqueda guardada
   query: Criterios de búsqueda
   delete: Borrar
+  really_destroy: Realmente borar?
   delete_user_content: Eliminar de la carpeta
   choose: Seleccione por favor
   enter_search_field: Introduzca término de búsqueda por favor ...
@@ -483,6 +484,10 @@ es:
     quality_manager_transcription: Gestión de calidad Transcripción
     quality_manager_interviewing: Gestión de calidad Entrevista
     quality_manager_research: Gestión de calidad Edición científica
+  registry_names:
+    title: Registernamen
+    new: Registernamen hinzufügen
+    add: Registernamen hinzufügen
   texts:
     add: Añadir texto
     title: Pasaje de texto seleccionado
@@ -648,6 +653,9 @@ es:
       registry_references_types:
         one: Erwähnungsart
         other: Erwähnungenarten
+      registry_name_types:
+        one: Registernamensart
+        other: Registernamensarten
       registry_entries:
         one: Registereintrag
         other: Registereinträge
@@ -678,6 +686,9 @@ es:
       task_type:
         one: Aufgabenart
         other: Aufgabenarten
+      task_type_permission:
+        one: 'Zur Aufgabenart gehörende Berechtigung'
+        other: 'Zur Aufgabenart gehörende Berechtigungen'
       permission:
         one: 'Berechtigung'
         other: 'Berechtigungen'
@@ -928,6 +939,11 @@ es:
         latitude: Latitude
         longitude: Longitude
         lang: Sprache
+      registry_name:
+        descriptor: Name
+        notes: Anmerkungen
+        registry_name_type_id: Registernamensart
+        name_position: Position
       registry_reference:
         registry_entry_id: Registereintrag
         registry_reference_type_id: Art der Beziehung

@@ -70,8 +70,24 @@ var Loader = {
                             if (typeof(elem) === 'object') {
                                 // array elements are hashes/ objects
                                 Object.keys(elem).map((e) => {
-                                    if (elem[e]) 
+                                    //
+                                    // second layer nested e.g. registry_entry[registry_names[registry_name_translations]]
+                                    //
+                                    // Parameters: {"registry_entry"=>{"workflow_state"=>"public", 
+                                    // "registry_names_attributes"=>[{"registry_entry_id"=>"28205", 
+                                    // "translations_attributes"=>[{"locale"=>"de", "id"=>"", "descriptor"=>"sdfsdfsdf"}], 
+                                    // "name_position"=>"3", "registry_name_type_id"=>"4"}]}, "locale"=>"de", "id"=>"28205"}
+                                    //
+                                    if (Array.isArray(elem[e])) {
+                                        elem[e].map((i, index) => {
+                                            Object.keys(i).map((j) => {
+                                                if (i[j] && i[j] !== '')
+                                                    req.field(`${scope}[${param}][][${e}][${index}][${j}]`, i[j]);
+                                            })
+                                        })
+                                    } else if (elem[e]) {
                                         req.field(`${scope}[${param}][][${e}]`, elem[e]);
+                                    }
                                 })
                             } else {
                                 // array values are some non-complex values like strings or ints

@@ -171,6 +171,10 @@ class RegistryEntry < ApplicationRecord
     text :names
   end
 
+  def parent_id=(pid)
+    RegistryHierarchy.create(ancestor_id: pid, descendant_id: id)
+  end
+
   def names
     registry_names.map do |rn|
       rn.translations.map do |t|
@@ -254,7 +258,7 @@ class RegistryEntry < ApplicationRecord
       #
       select("registry_name_translations.descriptor AS name, registry_entry_id").
       order("registry_name_translations.descriptor").
-      map(&:registry_entry_id)
+      map(&:registry_entry_id).uniq
   end
 
   def self.pdf_entries(project)

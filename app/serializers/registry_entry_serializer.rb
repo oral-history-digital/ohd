@@ -12,6 +12,8 @@ class RegistryEntrySerializer < ApplicationSerializer
              :registry_references_count,
              :associations_loaded
 
+  has_many :registry_names
+
   def name
     object.localized_hash(:descriptor)
   end

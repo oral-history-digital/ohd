@@ -52,6 +52,7 @@ export default class ContributionForm extends React.Component {
             elements.push({
                 attribute: 'speaker_designation',
                 value: this.props.contribution && this.props.contribution.speaker_designation,
+                validate: function(v){return v !== ''}
             });
         }
         return elements;
@@ -68,6 +69,7 @@ export default class ContributionForm extends React.Component {
                     interview_id: this.props.interview && this.props.interview.id
                 }}
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                formClasses={_this.props.formClasses}
                 elements={this.formElements()}
             />
             <p />

@@ -130,6 +130,9 @@ class ApplicationController < ActionController::Base
         people: {},
         interviews: {},
         registry_entries: {},
+        registry_name_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_name_types-#{RegistryNameType.maximum(:updated_at)}") do
+          RegistryNameType.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+        end,
         task_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
           TaskType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
@@ -196,6 +199,7 @@ class ApplicationController < ActionController::Base
         permissions: { query: {page: 1} },
         people: { query: {page: 1} },
         registry_reference_types: { query: {page: 1} },
+        registry_name_types: { query: {page: 1} },
         projects: { query: {page: 1} },
         collections: { query: {page: 1} },
         languages: { query: {page: 1} }
