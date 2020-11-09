@@ -28,6 +28,7 @@ import AccountContainer from '../containers/AccountContainer';
 import CitationInfoContainer from '../containers/CitationInfoContainer';
 import AdminActionsContainer from '../containers/AdminActionsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
+import ArchiveSearchTabPanelContainer from '../containers/flyout-tabs/ArchiveSearchTabPanelContainer';
 import { t, admin, loggedIn, pathBase } from '../../../lib/utils';
 import Select from 'react-select'
 
@@ -45,6 +46,7 @@ export default class FlyoutTabs extends React.Component {
             selectedCountriesForUserStatistics: [],
         }
         this.onCountrySelectorChange = this.onCountrySelectorChange.bind(this);
+        this.handleTabClick = this.handleTabClick.bind(this);
     }
 
     handleTabClick(tabIndex) {
@@ -517,7 +519,7 @@ export default class FlyoutTabs extends React.Component {
                 selectedTabClassName={css}
                 selectedTabPanelClassName={css}
                 selectedIndex={this.state.tabIndex}
-                onSelect={tabIndex => this.handleTabClick(tabIndex)}
+                onSelect={this.handleTabClick}
             >
                 <div className='scroll-flyout'>
                     <TabList className='flyout'>
@@ -536,13 +538,11 @@ export default class FlyoutTabs extends React.Component {
                         <AccountContainer/>
                     </TabPanel>
                     {this.localeTabPanels()}
+
                     <TabPanel key='archive-search'>
-                        <div className='flyout-tab-title'>{t(this.props, 'archive_search')}</div>
-                        <ArchiveSearchFormContainer/>
-                        <div className='flyout-sub-tabs-container flyout-video'>
-                            {this.renderAdminActions(this.props.selectedArchiveIds)}
-                        </div>
+                        <ArchiveSearchTabPanelContainer />
                     </TabPanel>
+
                     {this.interviewTabPanel()}
                     {this.registryEntriesTabPanel()}
                     {this.props.hasMap && this.mapTabPanel()}
