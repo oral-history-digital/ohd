@@ -657,9 +657,9 @@ en:
       registry_references:
         one: Mention
         other: Mentions
-      registry_references_types:
+      registry_reference_types:
         one: Erwähnungsart
-        other: Erwähnungenarten
+        other: Erwähnungsarten
       registry_name_types:
         one: Registernamensart
         other: Registernamensarten
