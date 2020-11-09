@@ -898,8 +898,8 @@ ru:
         media_id: Номер сегмента
         transcript: Транскрипция
         translation: Транскрипция (перевод)
-        mainheading: Überschrift
-        subheading: Unter-Überschrift
+        mainheading: Hauptüberschrift
+        subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher
       user_content:
