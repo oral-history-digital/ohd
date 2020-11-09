@@ -1,5 +1,5 @@
 import React from 'react';
-import VizSensor from 'react-visibility-sensor';
+import VizSensor from 'react-visibility-sensor/visibility-sensor';
 import SegmentFormContainer from '../containers/SegmentFormContainer';
 import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
