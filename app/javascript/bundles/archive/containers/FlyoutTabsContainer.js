@@ -3,7 +3,6 @@ import { connect } from 'react-redux';
 import FlyoutTabs from '../components/FlyoutTabs';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { setLocale } from '../actions/archiveActionCreators';
-import { changeRegistryEntriesViewMode } from '../actions/searchActionCreators';
 
 import { getInterview, getInterviewee, getCookie, getProject } from '../../../lib/utils';
 
@@ -23,7 +22,6 @@ const mapStateToProps = (state) => {
         isLoggedIn: state.account.isLoggedIn,
         interview: getInterview(state),
         interviewee: getInterviewee({interview: getInterview(state), people: state.data.people}),
-        showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree,
         countryKeys: state.archive.countryKeys,
     }
 }
@@ -31,7 +29,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     setLocale: locale => dispatch(setLocale(locale)),
-    changeRegistryEntriesViewMode: bool => dispatch(changeRegistryEntriesViewMode(bool)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(FlyoutTabs);

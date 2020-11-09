@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import Select from 'react-select'
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
@@ -12,7 +13,6 @@ import CollectionsSearchFormContainer from '../containers/CollectionsSearchFormC
 import LanguagesSearchFormContainer from '../containers/LanguagesSearchFormContainer';
 import RoleSearchFormContainer from '../containers/RoleSearchFormContainer';
 import PermissionSearchFormContainer from '../containers/PermissionSearchFormContainer';
-import RegistryEntrySearchFormContainer from '../containers/RegistryEntrySearchFormContainer';
 import AllUserContentsContainer from '../containers/AllUserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
@@ -29,8 +29,9 @@ import CitationInfoContainer from '../containers/CitationInfoContainer';
 import AdminActionsContainer from '../containers/AdminActionsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import ArchiveSearchTabPanelContainer from '../containers/flyout-tabs/ArchiveSearchTabPanelContainer';
-import { t, admin, loggedIn, pathBase } from '../../../lib/utils';
-import Select from 'react-select'
+import RegistryEntriesTabPanelContainer from '../containers/flyout-tabs/RegistryEntriesTabPanelContainer';
+
+import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
 
@@ -391,45 +392,6 @@ export default class FlyoutTabs extends React.Component {
         );
     }
 
-    registryEntriesTabPanel() {
-        return (
-            <TabPanel key={'tabpanel-registry-entries'}>
-                <div className='flyout-tab-title'>{t(this.props, (this.props.projectId === 'mog') ? 'registry_mog' : 'registry')}</div>
-                <div className='flyout-sub-tabs-container'>
-                    <RegistryEntrySearchFormContainer />
-                    <p>
-                      <button onClick={() => this.props.changeRegistryEntriesViewMode(!this.props.showRegistryEntriesTree)}>
-                            {t(this.props, 'activerecord.models.registry_entries.actions.' + (this.props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
-                      </button>
-                    </p>
-                    {this.props.locales.map((locale) => {
-                        return (
-                            <div key={locale}>
-                                {this.downloadRegistryEntries('pdf', locale)}
-                                {this.downloadRegistryEntries('csv', locale)}
-                            </div>
-                        )
-                    })}
-                </div>
-            </TabPanel>
-        )
-    }
-
-    downloadRegistryEntries(format, locale) {
-        if (this.props.projectId === 'mog' || admin(this.props, {type: 'General', action: 'edit'})) {
-            return (
-                <p>
-                    <a href={`${pathBase(this.props)}/registry_entries.${format}?lang=${locale}`}>
-                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_registry_entries', {format: format, locale: locale})}></i>
-                        <span>{` ${t(this.props, 'download_registry_entries', {format: format, locale: locale})}`}</span>
-                    </a>
-                </p>
-            )
-        } else {
-            return null;
-        }
-    }
-
     userContentTab() {
         return (
             <AuthShowContainer ifLoggedIn={true}>
@@ -537,6 +499,7 @@ export default class FlyoutTabs extends React.Component {
                     <TabPanel key='account'>
                         <AccountContainer/>
                     </TabPanel>
+
                     {this.localeTabPanels()}
 
                     <TabPanel key='archive-search'>
@@ -544,7 +507,11 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
 
                     {this.interviewTabPanel()}
-                    {this.registryEntriesTabPanel()}
+
+                    <TabPanel key="tabpanel-registry-entries">
+                        <RegistryEntriesTabPanelContainer />
+                    </TabPanel>
+
                     {this.props.hasMap && this.mapTabPanel()}
                     {this.indexingTabPanel()}
                     {this.usersAdminTabPanel()}
