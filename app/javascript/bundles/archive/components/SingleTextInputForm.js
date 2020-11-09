@@ -10,6 +10,7 @@ export default class SingleTextInputForm extends React.Component {
             <Form 
                 scope='text'
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                formClasses={_this.props.formClasses}
                 elements={[
                     {attribute: 'text_to_mark'},
                     {attribute: 'replacement'}

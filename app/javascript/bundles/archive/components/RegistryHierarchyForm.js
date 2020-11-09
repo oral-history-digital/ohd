@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '../containers/form/Form';
 import { t } from '../../../lib/utils';
 
-export default class RegistryEntryForm extends React.Component {
+export default class RegistryHierarchyForm extends React.Component {
 
     constructor(props) {
         super(props);

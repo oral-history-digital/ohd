@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 import Form from '../../components/form/Form';
-import { openArchivePopup, closeArchivePopup } from '../../actions/archivePopupActionCreators';
 import { getProject } from '../../../../lib/utils';
 
 const mapStateToProps = (state) => {
@@ -14,8 +13,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup()),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Form);
