@@ -364,11 +364,6 @@ class RegistryEntry < ApplicationRecord
     registry_names.map { |n| n.translations.map{|t| t.locale[0..1]} }.flatten.uniq
   end
 
-  def descriptor=(descriptor)
-    name = registry_names.first
-    name && name.update_attributes(descriptor: descriptor)
-  end
-
   def descriptor(locale = I18n.default_locale)
     if locale == :all
       available_translations.inject({}) do |result, locale|
@@ -382,11 +377,6 @@ class RegistryEntry < ApplicationRecord
 
   def notes(locale)
     registry_names.first.notes(locale)
-  end
-
-  def notes=(notes)
-    name = registry_names.first
-    name && name.update_attributes(notes: notes)
   end
 
   def parent_id=(pid)
@@ -409,6 +399,35 @@ class RegistryEntry < ApplicationRecord
 
   def to_s(locale = I18n.default_locale, with_fallback = true)
     names_w locale
+  end
+
+  def export_names(locale)
+    registry_names.map do |name|
+      [name.id, name.descriptor(locale), name.notes(locale), name.name_position, name.registry_name_type && name.registry_name_type.code].join('=')
+    end.join('#')
+  end
+
+  def update_or_create_names(locale, names)
+    names.split('#').each do |name|
+
+      name_attributes_array = name.split('=')
+      name_id = name_attributes_array.shift
+      name_attributes = {}
+      name_attributes[:locale] = locale
+      name_attributes[:descriptor] = name_attributes_array.shift
+      name_attributes[:notes] = name_attributes_array.shift
+      name_attributes[:name_position] = name_attributes_array.shift
+      name_type_code = name_attributes_array.shift
+      name_type = RegistryNameType.find_by_code name_type_code
+      name_attributes[:registry_name_type_id] = name_type && name_type.id
+      name_attributes[:registry_entry_id] = self.id
+
+      if !name_id.blank?
+        RegistryName.find(name_id).update_attributes(name_attributes)
+      else
+        RegistryName.create(name_attributes)
+      end
+    end
   end
 
 end
