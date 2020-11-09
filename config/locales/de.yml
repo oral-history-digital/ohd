@@ -868,8 +868,8 @@ de:
         media_id: Segment-ID
         transcript: Transkription
         translation: Transkription (übersetzt)
-        mainheading: Überschrift
-        subheading: Unter-Überschrift
+        mainheading: Hauptüberschrift
+        subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher*in
       user_content:
