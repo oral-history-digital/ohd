@@ -582,6 +582,15 @@ table.edit-interview {
     }
 }
 
+.fix-video .edit-interview thead {
+  top: 220px;
+
+  @include screen-m {
+    top: 160px;
+  }
+}
+
+
 // Old classes tidying up later
 
 .column-content,
