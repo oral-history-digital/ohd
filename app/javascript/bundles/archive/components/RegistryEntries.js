@@ -56,7 +56,8 @@ export default class RegistryEntries extends React.Component {
         if (
             this.props.registryEntryParent &&
             this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`] && 
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`].split('-')[0] === 'fetched'
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`].split('-')[0] === 'fetched' &&
+            this.props.registryEntryParent.associations_loaded
         ) {
             return this.props.registryEntryParent.child_ids[this.props.locale].map((id, index) => {
                 let registryEntry = this.props.registryEntries[id] 
