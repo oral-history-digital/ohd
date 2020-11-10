@@ -672,9 +672,9 @@ de:
       registry_references:
         one: Erwähnung
         other: Erwähnungen
-      registry_references_types:
+      registry_reference_types:
         one: Erwähnungsart
-        other: Erwähnungenarten
+        other: Erwähnungsarten
       registry_name_types:
         one: Registernamensart
         other: Registernamensarten
@@ -868,8 +868,8 @@ de:
         media_id: Segment-ID
         transcript: Transkription
         translation: Transkription (übersetzt)
-        mainheading: Überschrift
-        subheading: Unter-Überschrift
+        mainheading: Hauptüberschrift
+        subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher*in
       user_content:

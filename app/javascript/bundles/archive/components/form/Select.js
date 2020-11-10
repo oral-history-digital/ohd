@@ -100,12 +100,14 @@ export default class Select extends React.Component {
 
             opts = values.
                 map((value, index) => {
-                    let textAndValue = getTextAndValue(value, this.props);
-                    return (
-                        <option value={textAndValue.value} key={`${this.props.scope}-${index}`}>
-                            {textAndValue.text}
-                        </option>
-                    )
+                    if (value) {
+                        let textAndValue = getTextAndValue(value, this.props);
+                        return (
+                            <option value={textAndValue.value} key={`${this.props.scope}-${index}`}>
+                                {textAndValue.text}
+                            </option>
+                        )
+                    }
                 }
             )
         }

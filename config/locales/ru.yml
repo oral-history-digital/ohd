@@ -703,9 +703,9 @@ ru:
       registry_references:
         one: Упоминание
         other: Упоминания
-      registry_references_types:
+      registry_reference_types:
         one: Erwähnungsart
-        other: Erwähnungenarten
+        other: Erwähnungsarten
       registry_name_types:
         one: Registernamensart
         other: Registernamensarten
@@ -898,8 +898,8 @@ ru:
         media_id: Номер сегмента
         transcript: Транскрипция
         translation: Транскрипция (перевод)
-        mainheading: Überschrift
-        subheading: Unter-Überschrift
+        mainheading: Hauptüberschrift
+        subheading: Zwischenüberschrift
         text: Text
         speaker_id: Sprecher
       user_content:
