@@ -4,10 +4,6 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
-import PeopleSearchFormContainer from '../containers/PeopleSearchFormContainer';
-import RegistryReferenceTypesSearchFormContainer from '../containers/RegistryReferenceTypesSearchFormContainer';
-import CollectionsSearchFormContainer from '../containers/CollectionsSearchFormContainer';
-import LanguagesSearchFormContainer from '../containers/LanguagesSearchFormContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
@@ -26,12 +22,16 @@ import ArchiveSearchTabPanelContainer from '../containers/flyout-tabs/ArchiveSea
 import RegistryEntriesTabPanelContainer from '../containers/flyout-tabs/RegistryEntriesTabPanelContainer';
 import UserContentTabPanelContainer from '../containers/flyout-tabs/UserContentTabPanelContainer';
 import UsersAdminTabPanelContainer from '../containers/flyout-tabs/UsersAdminTabPanelContainer';
-
+import IndexingTabPanelContainer from '../containers/flyout-tabs/IndexingTabPanelContainer';
 import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
-    constructor(props) {
-        super(props);
+    static contextTypes = {
+        router: PropTypes.object
+    }
+
+    constructor(props, context) {
+        super(props, context);
 
         this.state = { tabIndex: this.props.tabIndex }
 
@@ -229,27 +229,6 @@ export default class FlyoutTabs extends React.Component {
         return <Tab selectedClassName='admin' className={css} key='indexing'>{t(this.props, 'edit.indexing')}</Tab>;
     }
 
-    indexingTabPanel() {
-        if (admin(this.props, {type: 'General', action: 'edit'})) {
-            return (
-                <TabPanel key={'tabpanel-indexing'}>
-                    <div className='flyout-tab-title'>{t(this.props, 'edit.indexing')}</div>
-                    <div className='flyout-sub-tabs-container'>
-                        {this.subTab('edit.interview.new', 'description', `${pathBase(this.props)}/interviews/new`, {type: 'Interview', action: 'create'})}
-                        {/*this.subTab('edit.upload_transcript.title', 'description', `${pathBase(this.props)}/transcripts/new`, {type: 'Interview', action: 'update', id: this.props.archiveId})*/}
-                        {this.subTab('edit.upload.upload', '', `${pathBase(this.props)}/uploads/new`, {type: 'General', action: 'edit'})}
-                        {this.subTab( 'edit.person.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
-                        {this.subTab( 'edit.registry_reference_type.admin', <RegistryReferenceTypesSearchFormContainer/>, `${pathBase(this.props)}/registry_reference_types`, {type: 'RegistryReferenceType', action: 'update'})}
-                        {this.subTab( 'edit.collection.admin', <CollectionsSearchFormContainer/>, `${pathBase(this.props)}/collections`, {type: 'Collection', action: 'update'})}
-                        {this.subTab( 'edit.language.admin', <LanguagesSearchFormContainer/>, `${pathBase(this.props)}/languages`, {type: 'Language', action: 'update'})}
-                    </div>
-                </TabPanel>
-            )
-        } else {
-            return <TabPanel key='tabpanel-indexing'/>;
-        }
-    }
-
     downloads() {
         //if (this.props.archiveId && this.props.archiveId !== 'new') {
         if (this.props.interview && admin(this.props, {type: 'Interview', action: 'download'})) {
@@ -396,7 +375,10 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
 
                     {this.props.hasMap && this.mapTabPanel()}
-                    {this.indexingTabPanel()}
+
+                    <TabPanel key="tabpanel-indexing">
+                        <IndexingTabPanelContainer />
+                    </TabPanel>
 
                     <TabPanel key="tabpanel-users-admin">
                         <UsersAdminTabPanelContainer />

@@ -55,20 +55,16 @@ class UsersAdminTabPanel extends Component {
     }
 
     subTab(title, content, url, obj, condition = true) {
-        if (admin(this.props, obj) && condition) {
-            return (
-                <div className='flyout-sub-tabs-container flyout-video'>
-                    <InterviewDataContainer
-                        title={t(this.props, title)}
-                        content={content}
-                        url={url}
-                        open={false}
-                    />
-                </div>
-            )
-        } else {
-            return null;
-        }
+        return (admin(this.props, obj) && condition) ?
+            (<div className='flyout-sub-tabs-container flyout-video'>
+                <InterviewDataContainer
+                    title={t(this.props, title)}
+                    content={content}
+                    url={url}
+                    open={false}
+                />
+            </div>) :
+            null;
     }
 
     render() {
