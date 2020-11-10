@@ -2,20 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
-import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
-import InterviewDataContainer from '../containers/InterviewDataContainer';
-import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
-import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
-import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
-import InterviewTextMaterialsContainer from '../containers/InterviewTextMaterialsContainer';
-import AssignSpeakersFormContainer from '../containers/AssignSpeakersFormContainer';
-import MarkTextFormContainer from '../containers/MarkTextFormContainer';
-import GalleryContainer from '../containers/GalleryContainer';
-import PersonDataContainer from '../containers/PersonDataContainer';
-import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import AccountContainer from '../containers/AccountContainer';
-import CitationInfoContainer from '../containers/CitationInfoContainer';
-import AdminActionsContainer from '../containers/AdminActionsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import ArchiveSearchTabPanelContainer from '../containers/flyout-tabs/ArchiveSearchTabPanelContainer';
 import RegistryEntriesTabPanelContainer from '../containers/flyout-tabs/RegistryEntriesTabPanelContainer';
@@ -23,6 +10,7 @@ import UserContentTabPanelContainer from '../containers/flyout-tabs/UserContentT
 import UsersAdminTabPanelContainer from '../containers/flyout-tabs/UsersAdminTabPanelContainer';
 import IndexingTabPanelContainer from '../containers/flyout-tabs/IndexingTabPanelContainer';
 import MapTabPanelContainer from '../containers/flyout-tabs/MapTabPanelContainer';
+import InterviewTabPanelContainer from '../containers/flyout-tabs/InterviewTabPanelContainer';
 import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
@@ -101,156 +89,9 @@ export default class FlyoutTabs extends React.Component {
         return <Tab className={css} key='interview'>{t(this.props, 'interview')}</Tab>
     }
 
-    interviewTabPanel() {
-        if (this.props.archiveId && this.props.archiveId !== 'new') {
-            return (
-                <TabPanel key='interview'>
-                    <div className='flyout-tab-title'>{t(this.props, 'interview')}</div>
-                    <AuthShowContainer ifLoggedOut={this.props.projectId !== "campscapes"} ifNoProject={true}>
-                        <AccountContainer/>
-                    </AuthShowContainer>
-                    <div className={`flyout-sub-tabs-container flyout-video ${this.props.projectId === "campscapes" ? "hidden": ""}`}>
-                        <InterviewDataContainer
-                            title={t(this.props, 'person_info')}
-                            open={true}
-                            content={
-                                <div>
-                                    <PersonDataContainer/>
-                                    <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />
-                                </div>
-                            }
-                        />
-                        <AuthShowContainer ifLoggedOut={this.props.projectId !== "campscapes"} ifNoProject={true}>
-                            <InterviewDataContainer
-                                title={t(this.props, 'interview_info')}
-                                open={true}
-                                content={ <InterviewInfoContainer/> }
-                            />
-                        </AuthShowContainer>
-                        <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
-                            <InterviewDataContainer
-                                title={t(this.props, 'interview_info')}
-                                open={true}
-                                content={ <div><InterviewInfoContainer/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }
-                            />
-                        </AuthShowContainer>
-                        {this.transcriptAndContributions()}
-                        {this.assignSpeakersForm()}
-                        {this.markTextForm()}
-                        {/* <InterviewDataContainer
-                                title={t(this.props, 'activerecord.models.registry_references.other')}
-                                content={ <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />}
-                            />
-                        */}
-                        <AuthShowContainer ifLoggedIn={this.props.projectId !== "campscapes"}>
-                            {this.renderPhotos()}
-                            {this.renderMap()}
-                            <InterviewDataContainer
-                                title={t(this.props, 'citation')}
-                                open={true}
-                                content={<CitationInfoContainer/>}
-                            />
-                            {this.renderAdminActions([this.props.archiveId])}
-                        </AuthShowContainer>
-                    </div>
-                    {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'download', id: this.props.archiveId}, this.props.archiveId && this.props.projectId !== "campscapes")}
-                </TabPanel>
-            );
-        } else {
-            return <TabPanel key='interview'/>;
-        }
-    }
-
-    transcriptAndContributions() {
-        if (admin(this.props, this.props.interview)) {
-            return (
-                <InterviewDataContainer
-                    title={t(this.props, 'edit.upload_transcript.title')}
-                    open={false}
-                    content={ <div><UploadTranscriptContainer /><InterviewContributorsContainer withSpeakerDesignation={true}/></div> }
-                />
-            )
-        }
-    }
-
-    renderAdminActions(archiveIds) {
-        if (admin(this.props, {type: 'General', action: 'edit'})) {
-            return <InterviewDataContainer
-                title={t(this.props, 'admin_actions')}
-                content={<AdminActionsContainer archiveIds={archiveIds} />}
-            />
-        } else {
-            return null;
-        }
-    }
-
-    assignSpeakersForm() {
-        // speakers assignment does not work for dg at the moment, but we don't need it either
-        if (admin(this.props, {type: 'Interview', action: 'update_speakers', interview_id: this.props.interview && this.props.interview.id}) && this.props.projectId !== 'dg') {
-            return <InterviewDataContainer
-                title={t(this.props, 'assign_speakers')}
-                content={<AssignSpeakersFormContainer interview={this.props.interview} />}
-            />
-        } else {
-            return null;
-        }
-    }
-
-    markTextForm() {
-        if (admin(this.props, {type: 'Interview', action: 'mark_texts', interview_id: this.props.interview && this.props.interview.id}) && this.props.projectId !== 'dg') {
-            return <InterviewDataContainer
-                title={t(this.props, 'mark_texts')}
-                content={<MarkTextFormContainer interview={this.props.interview} />}
-            />
-        } else {
-            return null;
-        }
-    }
-
-    subTab(title, content, url, obj, condition=true) {
-        if (admin(this.props, obj) && condition) {
-            return (
-                <div className='flyout-sub-tabs-container flyout-video'>
-                    <InterviewDataContainer
-                        title={t(this.props, title)}
-                        content={content}
-                        url={url}
-                        open={false}
-                    />
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
-
     indexingTab() {
         let css = admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden';
         return <Tab selectedClassName='admin' className={css} key='indexing'>{t(this.props, 'edit.indexing')}</Tab>;
-    }
-
-    downloads() {
-        //if (this.props.archiveId && this.props.archiveId !== 'new') {
-        if (this.props.interview && admin(this.props, {type: 'Interview', action: 'download'})) {
-            let links = [];
-            for (var i=1; i <= parseInt(this.props.interview.tape_count); i++) {
-                links.push(
-                    <div key={`downloads-for-tape-${i}`}>
-                        <h4>{`${t(this.props, 'tape')} ${i}:`}</h4>
-                        <a href={`${pathBase(this.props)}/interviews/${this.props.archiveId}.ods?tape_number=${i}`} download>ods</a>&#44;&#xa0;
-                        <a href={`${pathBase(this.props)}/interviews/${this.props.archiveId}.vtt?tape_number=${i}`} download>vtt</a>
-                    </div>
-                );
-            }
-            return (
-                <div>
-                    <h4>{this.props.archiveId}:</h4>
-                    {links}
-                </div>
-            );
-        } else {
-            return null;
-        }
     }
 
     usersAdminTab() {
@@ -279,30 +120,6 @@ export default class FlyoutTabs extends React.Component {
         return (
             <AuthShowContainer ifLoggedIn={this.props.hasMap}>
                 <Tab className='flyout-tab' key='map'>{t(this.props, 'map')}</Tab>
-            </AuthShowContainer>
-        )
-    }
-
-    renderMap() {
-        return (
-            <AuthShowContainer ifLoggedIn={this.props.hasMap}>
-                <InterviewDataContainer
-                    title={t(this.props, 'map')}
-                    open={true}
-                    content={<InterviewLocationsContainer/>}
-                />
-            </AuthShowContainer>
-        )
-    }
-
-    renderPhotos() {
-        return (
-            <AuthShowContainer ifLoggedIn={this.props.projectId === "zwar"}>
-                <InterviewDataContainer
-                    title={t(this.props, 'photos')}
-                    open={true}
-                    content={<GalleryContainer/>}
-                />
             </AuthShowContainer>
         )
     }
@@ -350,11 +167,13 @@ export default class FlyoutTabs extends React.Component {
 
                     {this.localeTabPanels()}
 
-                    <TabPanel key='archive-search'>
+                    <TabPanel key="archive-search">
                         <ArchiveSearchTabPanelContainer />
                     </TabPanel>
 
-                    {this.interviewTabPanel()}
+                    <TabPanel key="interview">
+                        <InterviewTabPanelContainer />
+                    </TabPanel>
 
                     <TabPanel key="tabpanel-registry-entries">
                         <RegistryEntriesTabPanelContainer />
