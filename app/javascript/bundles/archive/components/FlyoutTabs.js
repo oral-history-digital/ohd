@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
-import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
@@ -23,6 +22,7 @@ import RegistryEntriesTabPanelContainer from '../containers/flyout-tabs/Registry
 import UserContentTabPanelContainer from '../containers/flyout-tabs/UserContentTabPanelContainer';
 import UsersAdminTabPanelContainer from '../containers/flyout-tabs/UsersAdminTabPanelContainer';
 import IndexingTabPanelContainer from '../containers/flyout-tabs/IndexingTabPanelContainer';
+import MapTabPanelContainer from '../containers/flyout-tabs/MapTabPanelContainer';
 import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
@@ -283,20 +283,6 @@ export default class FlyoutTabs extends React.Component {
         )
     }
 
-    mapTabPanel() {
-        return (
-            <AuthShowContainer ifLoggedIn={this.props.hasMap}>
-                <TabPanel key='map'>
-                    <div className='flyout-tab-title'>{t(this.props, 'map')}</div>
-                    <ArchiveSearchFormContainer map={true}/>
-                    <div className='flyout-sub-tabs-container flyout-video'>
-                        {this.renderAdminActions(this.props.selectedArchiveIds)}
-                    </div>
-                </TabPanel>
-            </AuthShowContainer>
-        )
-    }
-
     renderMap() {
         return (
             <AuthShowContainer ifLoggedIn={this.props.hasMap}>
@@ -374,7 +360,13 @@ export default class FlyoutTabs extends React.Component {
                         <RegistryEntriesTabPanelContainer />
                     </TabPanel>
 
-                    {this.props.hasMap && this.mapTabPanel()}
+                    {
+                        this.props.hasMap ?
+                            (<TabPanel key='map'>
+                                <MapTabPanelContainer />
+                            </TabPanel>) :
+                            null
+                    }
 
                     <TabPanel key="tabpanel-indexing">
                         <IndexingTabPanelContainer />
