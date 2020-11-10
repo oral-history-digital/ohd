@@ -142,6 +142,7 @@ class Interview < ApplicationRecord
   end
 
   translates :observations, fallbacks_for_empty_translations: true, touch: true
+  accepts_nested_attributes_for :translations
 
   serialize :properties
 
