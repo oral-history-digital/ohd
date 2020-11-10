@@ -1,19 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import Select from 'react-select'
 
 import InterviewLocationsContainer from '../containers/InterviewLocationsContainer';
 import ArchiveSearchFormContainer from '../containers/ArchiveSearchFormContainer';
-import UserRegistrationSearchFormContainer from '../containers/UserRegistrationSearchFormContainer';
-import ProjectSearchFormContainer from '../containers/ProjectSearchFormContainer';
 import PeopleSearchFormContainer from '../containers/PeopleSearchFormContainer';
 import RegistryReferenceTypesSearchFormContainer from '../containers/RegistryReferenceTypesSearchFormContainer';
 import CollectionsSearchFormContainer from '../containers/CollectionsSearchFormContainer';
 import LanguagesSearchFormContainer from '../containers/LanguagesSearchFormContainer';
-import RoleSearchFormContainer from '../containers/RoleSearchFormContainer';
-import PermissionSearchFormContainer from '../containers/PermissionSearchFormContainer';
-import AllUserContentsContainer from '../containers/AllUserContentsContainer';
 import InterviewDataContainer from '../containers/InterviewDataContainer';
 import UploadTranscriptContainer from '../containers/UploadTranscriptContainer';
 import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
@@ -30,23 +24,17 @@ import AdminActionsContainer from '../containers/AdminActionsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import ArchiveSearchTabPanelContainer from '../containers/flyout-tabs/ArchiveSearchTabPanelContainer';
 import RegistryEntriesTabPanelContainer from '../containers/flyout-tabs/RegistryEntriesTabPanelContainer';
+import UserContentTabPanelContainer from '../containers/flyout-tabs/UserContentTabPanelContainer';
+import UsersAdminTabPanelContainer from '../containers/flyout-tabs/UsersAdminTabPanelContainer';
 
 import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
+    constructor(props) {
+        super(props);
 
+        this.state = { tabIndex: this.props.tabIndex }
 
-    static contextTypes = {
-        router: PropTypes.object
-    }
-
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            tabIndex: this.props.tabIndex,
-            selectedCountriesForUserStatistics: [],
-        }
-        this.onCountrySelectorChange = this.onCountrySelectorChange.bind(this);
         this.handleTabClick = this.handleTabClick.bind(this);
     }
 
@@ -291,98 +279,6 @@ export default class FlyoutTabs extends React.Component {
         return <Tab selectedClassName='admin' className={css} key='administration'>{t(this.props, 'edit.administration')}</Tab>;
     }
 
-    countryKeys() {
-        let countryKeys = [];
-        this.props.countryKeys[this.props.locale].map((x, i) => {
-            countryKeys[i] = {'label': this.props.translations[this.props.locale]["countries"][x], 'value': x}
-        })
-        return countryKeys;
-    }
-
-    onCountrySelectorChange(value, action) {
-        let array = []
-        for(var o in value) {
-            array.push(value[o]['value'])
-        }
-        this.setState({
-            ['selectedCountriesForUserStatistics']: array
-        });
-    }
-
-    userStatisticsPath () {
-        let path = `${pathBase(this.props)}/admin/user_statistics.csv`
-        if(this.state.selectedCountriesForUserStatistics.length > 0){
-            path = path + "?countries[]="
-            path = path + this.state.selectedCountriesForUserStatistics.join("&countries[]=")
-        }
-        return path
-    }
-
-    countrySelectorStyle = {
-        placeholder: (provided, state) => {
-            let cursor = 'text';
-            return Object.assign(Object.assign({}, provided), { cursor });
-        },
-        menu: (provided, state) => {
-            let position = 'relative';
-            return Object.assign(Object.assign({}, provided), { position });
-        },
-    }
-
-    usersAdminTabPanel() {
-        if (admin(this.props, {type: 'General', action: 'edit'})) {
-            return (
-                <TabPanel key={'tabpanel-users-admin'}>
-                    <div className='flyout-tab-title'>{t(this.props, 'edit.administration')}</div>
-                    <div className='flyout-sub-tabs-container'>
-                        {this.subTab(
-                            'edit.users.admin',
-                            <div>
-                                <div>
-                                    <UserRegistrationSearchFormContainer/>
-                                    <a href={this.userStatisticsPath()}>
-                                        <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_user_statistics')}></i>
-                                        <span>{` ${t(this.props, 'download_user_statistics')}`}</span>
-                                    </a>
-                                </div>
-                                <Select
-                                    options={this.countryKeys()}
-                                    className="basic-multi-select"
-                                    isMulti
-                                    onChange={this.onCountrySelectorChange}
-                                    styles={this.countrySelectorStyle}
-                                    placeholder={"Statistik nach Ländern filtern (optional)"}
-                                />
-                            </div>,
-                            `${pathBase(this.props)}/user_registrations`,
-                            {type: 'UserRegistration', action: 'update'}
-                        )}
-                        {this.subTab(
-                            'edit.role.admin',
-                            <RoleSearchFormContainer/>,
-                            `${pathBase(this.props)}/roles`,
-                            {type: 'Role', action: 'update'}
-                        )}
-                        {this.subTab(
-                            'edit.permission.admin',
-                            <PermissionSearchFormContainer/>,
-                            `${pathBase(this.props)}/permissions`,
-                            {type: 'Permission', action: 'update'}
-                        )}
-                        {this.subTab(
-                            'edit.project.admin',
-                            <ProjectSearchFormContainer/>,
-                            `${pathBase(this.props)}/projects`,
-                            {type: 'Project', action: 'update'}
-                        )}
-                    </div>
-                </TabPanel>
-            )
-        } else {
-            return <TabPanel key='tabpanel-users-admin'/>;
-        }
-    }
-
     registryEntriesTab() {
         let css = this.props.isLoggedIn ? 'flyout-tab' : 'hidden';
         return (
@@ -396,19 +292,6 @@ export default class FlyoutTabs extends React.Component {
         return (
             <AuthShowContainer ifLoggedIn={true}>
                 <Tab className='flyout-tab' key='user-content'>{t(this.props, 'user_content')}</Tab>
-            </AuthShowContainer>
-        )
-    }
-
-    userContentTabPanel() {
-        return (
-            <AuthShowContainer ifLoggedIn={true}>
-                <TabPanel key='user-content'>
-                    <div className='flyout-tab-title'>{t(this.props, 'user_content')}</div>
-                    <div className='flyout-sub-tabs-container flyout-folder'>
-                        <AllUserContentsContainer />
-                    </div>
-                </TabPanel>
             </AuthShowContainer>
         )
     }
@@ -514,8 +397,14 @@ export default class FlyoutTabs extends React.Component {
 
                     {this.props.hasMap && this.mapTabPanel()}
                     {this.indexingTabPanel()}
-                    {this.usersAdminTabPanel()}
-                    {this.userContentTabPanel()}
+
+                    <TabPanel key="tabpanel-users-admin">
+                        <UsersAdminTabPanelContainer />
+                    </TabPanel>
+
+                    <TabPanel key="user-content">
+                        <UserContentTabPanelContainer />
+                    </TabPanel>
                 </div>
             </Tabs>
         );
