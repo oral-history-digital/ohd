@@ -5,24 +5,6 @@ import { t, admin } from '../../../lib/utils';
 
 export default class RegistryEntrySearchResult extends React.Component {
 
-    componentDidMount() {
-        this.loadWithAssociations();
-    }
-
-    componentDidUpdate() {
-        this.loadWithAssociations();
-    }
-
-    loadWithAssociations() {
-        if (
-            this.props.result && 
-            !this.props.result.associations_loaded &&
-            this.props.registryEntriesStatus[this.props.result.id] !== 'fetching'
-        ) {
-            this.props.fetchData(this.props, 'registry_entries', this.props.result.id, null, 'with_associations=true');
-        }
-    }
-
     show(id, key) {
         if (this.props.result.ancestors[id]) {
             return (
@@ -63,28 +45,12 @@ export default class RegistryEntrySearchResult extends React.Component {
         return paths;
     }
 
-    renderCheckbox() {
-        if (admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
-            return <div>
-                <input 
-                    type='checkbox' 
-                    className='select-checkbox' 
-                    checked={this.props.selectedRegistryEntryIds.indexOf(this.props.result.registry_entry.id) > 0} 
-                    onChange={() => {this.props.addRemoveRegistryEntryId(this.props.result.registry_entry.id)}}
-                />
-            </div>
-        } else {
-            return null;
-        }
-    }
-
     render() {
         return (
             <li className={'search-result'}>
-                {/*this.renderCheckbox()*/}
                 <RegistryEntryContainer 
-                    data={this.props.result.registry_entry} 
-                    key={`registry_entries-${this.props.result.registry_entry.id}`} 
+                    data={this.props.result} 
+                    key={`registry_entries-${this.props.result.id}`} 
                     //registryEntryParent={this.props.registryEntryParent}
                     />
                 {this.breadCrumb()}
