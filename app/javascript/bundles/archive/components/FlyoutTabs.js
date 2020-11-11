@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import classNames from 'classnames';
 
 import AccountContainer from '../containers/AccountContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
@@ -62,11 +63,6 @@ export default class FlyoutTabs extends React.Component {
         this.props.setLocale(locale);
     }
 
-    loginTab() {
-        let text = this.props.isLoggedIn ? 'account_page' : 'login_page';
-        return <Tab className='flyout-top-nav' key='account'>{t(this.props, text)}</Tab>
-    }
-
     localeTabs() {
         return this.props.locales.map((locale, index) => {
             let classNames = 'flyout-top-nav lang';
@@ -84,81 +80,75 @@ export default class FlyoutTabs extends React.Component {
         })
     }
 
-    interviewTab() {
-        let css = this.props.interview ? 'flyout-tab' : 'hidden';
-        return <Tab className={css} key='interview'>{t(this.props, 'interview')}</Tab>
-    }
-
-    indexingTab() {
-        let css = admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden';
-        return <Tab selectedClassName='admin' className={css} key='indexing'>{t(this.props, 'edit.indexing')}</Tab>;
-    }
-
-    usersAdminTab() {
-        let css = admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden';
-        return <Tab selectedClassName='admin' className={css} key='administration'>{t(this.props, 'edit.administration')}</Tab>;
-    }
-
-    registryEntriesTab() {
-        let css = this.props.isLoggedIn ? 'flyout-tab' : 'hidden';
-        return (
-            <Tab className={css} key='registry'>
-                {t(this.props, (this.props.projectId === 'mog') ? 'registry_mog' : 'registry')}
-            </Tab>
-        );
-    }
-
-    userContentTab() {
-        return (
-            <AuthShowContainer ifLoggedIn={true}>
-                <Tab className='flyout-tab' key='user-content'>{t(this.props, 'user_content')}</Tab>
-            </AuthShowContainer>
-        )
-    }
-
-    mapTab() {
-        return (
-            <AuthShowContainer ifLoggedIn={this.props.hasMap}>
-                <Tab className='flyout-tab' key='map'>{t(this.props, 'map')}</Tab>
-            </AuthShowContainer>
-        )
-    }
-
-    renderSearchTheArchiveButton() {
-        if (this.props.projectId === 'campscapes'&& !this.props.archiveId) {
-            return t(this.props, 'user_registration.notes_on_tos_agreement')
-        }
-        else {
-            return t(this.props, 'archive_search')
-        }
-    }
-
     activeCss(index) {
         let offset = this.props.hasMap + this.props.locales.length
         return ((index === 4 + offset || index === 5 + offset) ? 'active activeadmin' : 'active')
-     }
+    }
+
 
     render() {
-        let css = this.activeCss(this.state.tabIndex)
+        const { interview, projectId, archiveId, isLoggedIn, hasMap } = this.props;
+        const { tabIndex } = this.state;
+
         return (
             <Tabs
                 className='wrapper-flyout'
-                selectedTabClassName={css}
-                selectedTabPanelClassName={css}
-                selectedIndex={this.state.tabIndex}
+                selectedTabClassName={this.activeCss(tabIndex)}
+                selectedTabPanelClassName={this.activeCss(tabIndex)}
+                selectedIndex={tabIndex}
                 onSelect={this.handleTabClick}
             >
                 <div className='scroll-flyout'>
                     <TabList className='flyout'>
-                        {this.loginTab()}
+                        <Tab className='flyout-top-nav' key='account'>
+                            { t(this.props, isLoggedIn ? 'account_page' : 'login_page') }
+                        </Tab>
+
                         {this.localeTabs()}
-                        <Tab className='flyout-tab' key='archive-search'>{this.renderSearchTheArchiveButton()}</Tab>
-                        {this.interviewTab()}
-                        {this.registryEntriesTab()}
-                        {this.props.hasMap && this.mapTab()}
-                        {this.indexingTab()}
-                        {this.usersAdminTab()}
-                        {this.userContentTab()}
+
+                        <Tab className='flyout-tab' key='archive-search'>
+                            { t(this.props, (projectId === 'campscapes' && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search') }
+                        </Tab>
+
+                        <Tab className={interview ? 'flyout-tab' : 'hidden'} key='interview'>
+                            { t(this.props, 'interview') }
+                        </Tab>
+
+                        <Tab className={isLoggedIn ? 'flyout-tab' : 'hidden'} key='registry'>
+                            { t(this.props, projectId === 'mog' ? 'registry_mog' : 'registry') }
+                        </Tab>
+
+                        {
+                            hasMap ?
+                                (<AuthShowContainer ifLoggedIn={hasMap}>
+                                    <Tab className='flyout-tab' key='map'>
+                                        { t(this.props, 'map') }
+                                    </Tab>
+                                </AuthShowContainer>) :
+                                null
+                        }
+
+                        <Tab
+                            selectedClassName='admin'
+                            className={admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
+                            key='indexing'
+                        >
+                            { t(this.props, 'edit.indexing') }
+                        </Tab>
+
+                        <Tab
+                            selectedClassName='admin'
+                            className={admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
+                            key='administration'
+                        >
+                            { t(this.props, 'edit.administration') }
+                        </Tab>
+
+                        <AuthShowContainer ifLoggedIn>
+                            <Tab className='flyout-tab' key='user-content'>
+                                { t(this.props, 'user_content') }
+                            </Tab>
+                        </AuthShowContainer>
                     </TabList>
 
                     <TabPanel key='account'>
@@ -180,7 +170,7 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
 
                     {
-                        this.props.hasMap ?
+                        hasMap ?
                             (<TabPanel key='map'>
                                 <MapTabPanelContainer />
                             </TabPanel>) :
