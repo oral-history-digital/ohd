@@ -72,8 +72,8 @@ export default class FlyoutTabs extends React.Component {
         return (
             <Tabs
                 className='wrapper-flyout'
-                selectedTabClassName={this.activeCss(flyoutTabsIndex)}
-                selectedTabPanelClassName={this.activeCss(flyoutTabsIndex)}
+                selectedTabClassName="active"
+                selectedTabPanelClassName="active"
                 selectedIndex={flyoutTabsIndex}
                 onSelect={this.handleTabClick}
             >
