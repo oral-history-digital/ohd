@@ -19,7 +19,12 @@ Rails.application.routes.draw do
       end
     end
 
-    localized do
+    #%w{archive faq_archive_contents faq_index faq_searching faq_technical map_tutorial terms_of_use legal_notice privacy_policy}.each do |site|
+      #get site, to: "home##{site}", as: site
+      get "/", to: "home#archive", as: :home
+    #end
+
+    #localized do
       get "random_featured_interviews", to: "interviews#random_featured"
       resources :texts
       resources :projects
@@ -47,11 +52,6 @@ Rails.application.routes.draw do
         #resources :histories, only: [:create, :update, :destroy]
         resources :biographical_entries, only: [:destroy]
         resources :registry_references, only: [:create, :update, :destroy]
-      end
-
-      %w{archive faq_archive_contents faq_index faq_searching faq_technical map_tutorial terms_of_use legal_notice privacy_policy}.each do |site|
-        get site, to: "home##{site}", as: site
-        get "/", to: "home#archive", as: :home
       end
 
       #get 'map', to: 'registry_references#map', :as => :public_map
@@ -111,7 +111,7 @@ Rails.application.routes.draw do
           get :map
         end
       end
-    end
+    #end
 
     resources :user_contents do
       collection do

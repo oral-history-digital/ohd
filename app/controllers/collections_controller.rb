@@ -32,26 +32,40 @@ class CollectionsController < ApplicationController
   end
 
   def index
-    if params.keys.include?("all")
-      collections = policy_scope(Collection).all
-      extra_params = "all"
-    else
-      page = params[:page] || 1
-      collections = policy_scope(Collection).includes(:translations).where(search_params).order("collection_translations.name ASC").paginate page: page
-      extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
-    end
+    policy_scope(Collection)
 
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-collections-#{extra_params ? extra_params : "all"}-#{Collection.maximum(:updated_at)}" do
-          collections = collections.includes(:translations)
+        paginate = false
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-collections-#{params}-#{Collection.maximum(:updated_at)}" do
+          if params.keys.include?("all")
+            data = Collection.all.
+              includes(:translations).
+              order("collection_translations.name ASC")
+            extra_params = "all"
+          elsif params[:collections_for_project]
+            data = Collection.
+              includes(:translations).
+              where(project_id: current_project.id)
+            extra_params = "collections_for_project_#{}"
+          else
+            page = params[:page] || 1
+            data = Collection.
+              includes(:translations).
+              where(project_id: current_project.id).
+              where(search_params).order("collection_translations.name ASC").
+              paginate(page: page)
+            paginate = true
+            extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
+          end
+          
           {
-            data: collections.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: "collections",
             extra_params: extra_params,
             page: params[:page] || 1,
-            result_pages_count: collections.respond_to?(:total_pages) ? collections.total_pages : 1,
+            result_pages_count: paginate ? data.total_pages : 1,
           }
         end
         render json: json
