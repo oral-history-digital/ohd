@@ -142,6 +142,7 @@ class Interview < ApplicationRecord
   end
 
   translates :observations, fallbacks_for_empty_translations: true, touch: true
+  accepts_nested_attributes_for :translations
 
   serialize :properties
 
@@ -264,7 +265,7 @@ class Interview < ApplicationRecord
       text :"contributions_#{locale}" do
         contributions.map do |c| 
           if c.person
-            [I18n.t(c.contribution_type, locale: locale), c.person.first_name(locale), c.person.last_name(locale)]
+            [I18n.t("contributions.#{c.contribution_type}", locale: locale), c.person.first_name(locale), c.person.last_name(locale)]
           end
         end.flatten.join(' ')
       end

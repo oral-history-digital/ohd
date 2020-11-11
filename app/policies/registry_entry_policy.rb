@@ -1,7 +1,7 @@
 class RegistryEntryPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
-      scope.all
+      user ? scope.all : scope.none
     end
   end
 

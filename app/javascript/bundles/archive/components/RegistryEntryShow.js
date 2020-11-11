@@ -47,7 +47,7 @@ export default class RegistryEntryShow extends React.Component {
 
     loadRegistryReferenceTypes() {
         if (!this.props.registryReferenceTypesStatus) {
-            this.props.fetchData(this.props, 'registry_reference_types');
+            this.props.fetchData(this.props, 'registry_reference_types', null, null, 'all');
         }
     }
 

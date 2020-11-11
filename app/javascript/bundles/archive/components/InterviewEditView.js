@@ -19,10 +19,7 @@ export default class InterviewEditView extends React.Component {
     }
 
     loadSegments() {
-        if (
-            this.props.loadSegments &&
-            !this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`]
-        ) {
+        if (!this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`]) {
             this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'segments');
         }
     }

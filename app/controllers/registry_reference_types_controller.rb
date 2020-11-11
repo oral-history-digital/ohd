@@ -49,23 +49,36 @@ class RegistryReferenceTypesController < ApplicationController
   end
 
   def index
-    page = params[:page] || 1
-    registry_reference_types = policy_scope(RegistryReferenceType).where(search_params).order("created_at DESC").paginate page: page
-    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+    policy_scope RegistryReferenceType
 
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = #Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{params}-#{RegistryReferenceType.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{params}-#{RegistryReferenceType.maximum(:updated_at)}" do
+          if params.keys.include?("all")
+            data = RegistryReferenceType.all.
+              includes(:translations).
+              order("registry_reference_type_translations.name ASC")
+            extra_params = "all"
+          else
+            page = params[:page] || 1
+            data = RegistryReferenceType.
+              includes(:translations).
+              where(search_params).order("registry_reference_type_translations.name ASC").
+              paginate(page: page)
+            paginate = true
+            extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
+          end
+
           {
-            data: registry_reference_types.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: "registry_reference_types",
             extra_params: extra_params,
             page: params[:page] || 1,
-            result_pages_count: registry_reference_types.total_pages
+            result_pages_count: paginate ? data.total_pages : 1,
           }
-        #end
+        end
         render json: json
       end
     end

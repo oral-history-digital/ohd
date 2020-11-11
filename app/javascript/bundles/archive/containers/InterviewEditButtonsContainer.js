@@ -5,7 +5,7 @@ import { changeToInterviewEditView, setSkipEmptyRows } from '../actions/archiveA
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => ({
-    editViewEnabled: state.archive.interviewEditView,
+    editViewEnabled: !!state.archive.interviewEditView,
     skipEmptyRows: state.archive.skipEmptyRows,
     locale: state.archive.locale,
     translations: state.archive.translations,
