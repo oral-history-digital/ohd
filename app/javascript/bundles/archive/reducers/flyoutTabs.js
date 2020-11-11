@@ -1,20 +1,37 @@
 import {
     SHOW_FLYOUT_TABS,
     HIDE_FLYOUT_TABS,
+    TOGGLE_FLYOUT_TABS,
+    SET_FLYOUT_TABS_INDEX
 } from '../constants/archiveConstants';
 
 const initialState = {
     visible: false,
-    className: 'wrapper-flyout',
-}
+    index: 0,
+};
 
 const flyoutTabs = (state = initialState, action) => {
     switch (action.type) {
         case SHOW_FLYOUT_TABS:
-            return Object.assign({}, action, {visible: true})
+            return {
+                ...state,
+                visible: true,
+            };
         case HIDE_FLYOUT_TABS:
-            return Object.assign({}, state, {visible: false})
-
+            return {
+                ...state,
+                visible: false,
+            };
+        case TOGGLE_FLYOUT_TABS:
+            return {
+                ...state,
+                visible: !state.visible,
+            };
+        case SET_FLYOUT_TABS_INDEX:
+            return {
+                ...state,
+                index: action.index,
+            };
         default:
             return state;
     }

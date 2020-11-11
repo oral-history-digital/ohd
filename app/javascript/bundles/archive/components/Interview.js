@@ -12,6 +12,8 @@ export default class Interview extends React.Component {
         this.setArchiveId();
         this.loadInterview();
         this.loadContributors();
+
+        this.props.setFlyoutTabsIndex(2);
     }
 
     componentDidUpdate() {
@@ -128,4 +130,3 @@ export default class Interview extends React.Component {
         return this.content();
     }
 }
-

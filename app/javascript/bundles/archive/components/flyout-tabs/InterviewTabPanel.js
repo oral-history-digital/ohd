@@ -23,8 +23,8 @@ class InterviewTabPanel extends Component {
     static propTypes = {
         archiveId: PropTypes.string,
         projectId: PropTypes.string.isRequired,
-        interview: PropTypes.object.isRequired,
-        interviewee: PropTypes.object.isRequired,
+        interview: PropTypes.object,
+        interviewee: PropTypes.object,
         hasMap: PropTypes.bool.isRequired,
         locale: PropTypes.string.isRequired,
         translations: PropTypes.object.isRequired,

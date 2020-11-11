@@ -15,6 +15,12 @@ import LocaleButtonsContainer from '../containers/flyout-tabs/LocaleButtonsConta
 import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
+    static propTypes = {
+        visible: PropTypes.bool.isRequired,
+        flyoutTabsIndex: PropTypes.number.isRequired,
+        setFlyoutTabsIndex: PropTypes.func.isRequired,
+    }
+
     static contextTypes = {
         router: PropTypes.object
     }
@@ -22,19 +28,19 @@ export default class FlyoutTabs extends React.Component {
     constructor(props, context) {
         super(props, context);
 
-        this.state = { tabIndex: this.props.tabIndex }
-
         this.handleTabClick = this.handleTabClick.bind(this);
     }
 
-    handleTabClick(tabIndex) {
-        switch (tabIndex) {
+    handleTabClick(index) {
+        this.props.setFlyoutTabsIndex(index);
+
+        switch (index) {
         case 0:
             // account
             this.props.isLoggedIn && this.context.router.history.push(`${pathBase(this.props)}/accounts/current`);
             break;
         case 1:
-            // arrchive-search
+            // archive-search
             this.context.router.history.push(`${pathBase(this.props)}/searches/archive`);
             break;
         case 2:
@@ -53,8 +59,6 @@ export default class FlyoutTabs extends React.Component {
             break;
         default:
         }
-
-        this.setState({ tabIndex: tabIndex });
     }
 
     activeCss(index) {
@@ -63,15 +67,14 @@ export default class FlyoutTabs extends React.Component {
     }
 
     render() {
-        const { interview, projectId, archiveId, isLoggedIn, hasMap } = this.props;
-        const { tabIndex } = this.state;
+        const { flyoutTabsIndex, interview, projectId, archiveId, isLoggedIn, hasMap } = this.props;
 
         return (
             <Tabs
                 className='wrapper-flyout'
-                selectedTabClassName={this.activeCss(tabIndex)}
-                selectedTabPanelClassName={this.activeCss(tabIndex)}
-                selectedIndex={tabIndex}
+                selectedTabClassName={this.activeCss(flyoutTabsIndex)}
+                selectedTabPanelClassName={this.activeCss(flyoutTabsIndex)}
+                selectedIndex={flyoutTabsIndex}
                 onSelect={this.handleTabClick}
             >
                 <div className='scroll-flyout'>
