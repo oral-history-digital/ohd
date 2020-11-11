@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import classNames from 'classnames';
 
 import AccountContainer from '../containers/AccountContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
@@ -12,6 +11,7 @@ import UsersAdminTabPanelContainer from '../containers/flyout-tabs/UsersAdminTab
 import IndexingTabPanelContainer from '../containers/flyout-tabs/IndexingTabPanelContainer';
 import MapTabPanelContainer from '../containers/flyout-tabs/MapTabPanelContainer';
 import InterviewTabPanelContainer from '../containers/flyout-tabs/InterviewTabPanelContainer';
+import LocaleButtonsContainer from '../containers/flyout-tabs/LocaleButtonsContainer';
 import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
@@ -28,63 +28,39 @@ export default class FlyoutTabs extends React.Component {
     }
 
     handleTabClick(tabIndex) {
-        if (tabIndex === 0) {
+        switch (tabIndex) {
+        case 0:
             // account
             this.props.isLoggedIn && this.context.router.history.push(`${pathBase(this.props)}/accounts/current`);
-        } else if (tabIndex > 0 && tabIndex < this.props.locales.length + 1) {
-            // locales (language switchers)
-            this.switchLocale(this.props.locales[tabIndex - 1]);
-        } else if (tabIndex === this.props.locales.length + 1) {
+            break;
+        case 1:
             // arrchive-search
             this.context.router.history.push(`${pathBase(this.props)}/searches/archive`);
-        } else if (tabIndex === this.props.locales.length + 2) {
+            break;
+        case 2:
             // interview
             this.context.router.history.push(`${pathBase(this.props)}/interviews/${this.props.archiveId}`);
-        } else if (tabIndex === this.props.locales.length + 3) {
-             // registry entries
+            break;
+        case 3:
+            // registry entries
             this.context.router.history.push(`${pathBase(this.props)}/registry_entries`);
-        } else if (this.props.hasMap && tabIndex === this.props.locales.length + 4) {
-            // map
-            this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
+            break;
+        case 4:
+            if (this.props.hasMap) {
+                // map
+                this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
+            }
+            break;
+        default:
         }
-        if (tabIndex === 0 || tabIndex >= this.props.locales.length + 1) {
-            this.setState({tabIndex: tabIndex});
-        }
-    }
 
-    switchLocale(locale) {
-        // with projectId
-        let newPath = this.context.router.route.location.pathname.replace(/^\/[a-z]{2,4}\/[a-z]{2}\//, `/${this.props.projectId}/${locale}/`);
-        // workaround: (without projectId in path), TODO: fit this when multi-project is finished
-        if (newPath === this.context.router.route.location.pathname) {
-            newPath = this.context.router.route.location.pathname.replace(/^\/[a-z]{2}\//, `/${locale}/`);
-        }
-        this.context.router.history.push(newPath);
-        this.props.setLocale(locale);
-    }
-
-    localeTabs() {
-        return this.props.locales.map((locale, index) => {
-            let classNames = 'flyout-top-nav lang';
-            if ((index + 1) === this.props.locales.length)
-                classNames += ' top-nav-last'
-            if (locale === this.props.locale)
-                classNames += ' active'
-            return <Tab className={classNames} key={`tab-${locale}`}>{locale}</Tab>
-        })
-    }
-
-    localeTabPanels() {
-        return this.props.locales.map((locale, index) => {
-            return <TabPanel key={`tabpanel-${locale}`}/>
-        })
+        this.setState({ tabIndex: tabIndex });
     }
 
     activeCss(index) {
-        let offset = this.props.hasMap + this.props.locales.length
+        let offset = this.props.hasMap;
         return ((index === 4 + offset || index === 5 + offset) ? 'active activeadmin' : 'active')
     }
-
 
     render() {
         const { interview, projectId, archiveId, isLoggedIn, hasMap } = this.props;
@@ -104,7 +80,7 @@ export default class FlyoutTabs extends React.Component {
                             { t(this.props, isLoggedIn ? 'account_page' : 'login_page') }
                         </Tab>
 
-                        {this.localeTabs()}
+                        <LocaleButtonsContainer />
 
                         <Tab className='flyout-tab' key='archive-search'>
                             { t(this.props, (projectId === 'campscapes' && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search') }
@@ -154,8 +130,6 @@ export default class FlyoutTabs extends React.Component {
                     <TabPanel key='account'>
                         <AccountContainer/>
                     </TabPanel>
-
-                    {this.localeTabPanels()}
 
                     <TabPanel key="archive-search">
                         <ArchiveSearchTabPanelContainer />

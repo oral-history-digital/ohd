@@ -13,7 +13,6 @@
 
 .flyout-top-nav {
   float: left;
-  //display: inline;
   margin: 0;
   padding: 6px 15px 0 0;
   font-size: $font-size-large;
@@ -21,23 +20,8 @@
   transition: color 0.3s;
   cursor: pointer;
   @include clearfix;
-  &.lang {
-    border-left: 2px solid lighten($gray-warm, 10%);
-    padding-left: 6px;
-    text-transform: uppercase;
-  }
-  &:hover {
-    color: $gray-darkest;
-  }
-  &.active {
-    color: $gray-darkest;
-    cursor: default;
-  }
   &:first-child {
     margin-left: 20px;
-  }
-  &.top-nav-last {
-    margin-bottom: 30px;
   }
 }
 
