@@ -63,7 +63,7 @@ export default class FlyoutTabs extends React.Component {
 
     activeCss(index) {
         let offset = this.props.hasMap;
-        return ((index === 4 + offset || index === 5 + offset) ? 'active activeadmin' : 'active')
+        return ((index === 5 + offset || index === 6 + offset) ? 'active activeadmin' : 'active')
     }
 
     render() {
@@ -107,6 +107,12 @@ export default class FlyoutTabs extends React.Component {
                                 null
                         }
 
+                        <AuthShowContainer ifLoggedIn>
+                            <Tab className='flyout-tab' key='user-content'>
+                                { t(this.props, 'user_content') }
+                            </Tab>
+                        </AuthShowContainer>
+
                         <Tab
                             selectedClassName='admin'
                             className={admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
@@ -122,12 +128,6 @@ export default class FlyoutTabs extends React.Component {
                         >
                             { t(this.props, 'edit.administration') }
                         </Tab>
-
-                        <AuthShowContainer ifLoggedIn>
-                            <Tab className='flyout-tab' key='user-content'>
-                                { t(this.props, 'user_content') }
-                            </Tab>
-                        </AuthShowContainer>
                     </TabList>
 
                     <TabPanel key='account'>
@@ -154,16 +154,16 @@ export default class FlyoutTabs extends React.Component {
                             null
                     }
 
+                    <TabPanel key="user-content">
+                        <UserContentTabPanelContainer />
+                    </TabPanel>
+
                     <TabPanel key="tabpanel-indexing">
                         <IndexingTabPanelContainer />
                     </TabPanel>
 
                     <TabPanel key="tabpanel-users-admin">
                         <UsersAdminTabPanelContainer />
-                    </TabPanel>
-
-                    <TabPanel key="user-content">
-                        <UserContentTabPanelContainer />
                     </TabPanel>
                 </div>
             </Tabs>
