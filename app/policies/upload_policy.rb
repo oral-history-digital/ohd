@@ -6,12 +6,12 @@ class UploadPolicy < Struct.new(:user, :upload)
     @upload = upload
   end
 
-  def new?
-    user.admin?
+  def create?
+    user.admin? || user.permissions?('Upload', "create") 
   end
 
-  def create?
-    new?
+  def new?
+    create?
   end
 
 end
