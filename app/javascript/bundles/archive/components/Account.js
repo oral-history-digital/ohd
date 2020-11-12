@@ -6,7 +6,6 @@ import { t, pathBase } from '../../../lib/utils';
 import { isMobile } from '../../../lib/media-queries';
 
 export default class Account extends React.Component {
-
     static contextTypes = {
         router: PropTypes.object
     }

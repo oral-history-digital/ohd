@@ -5,15 +5,15 @@ import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLef
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
+import { INDEX_INTERVIEW } from '../constants/flyoutTabs';
 
 export default class Interview extends React.Component {
-
     componentDidMount() {
         this.setArchiveId();
         this.loadInterview();
         this.loadContributors();
 
-        this.props.setFlyoutTabsIndex(2);
+        this.props.setFlyoutTabsIndex(INDEX_INTERVIEW);
     }
 
     componentDidUpdate() {

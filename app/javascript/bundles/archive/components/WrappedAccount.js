@@ -4,9 +4,9 @@ import UserRolesContainer from '../containers/UserRolesContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
 import { t } from '../../../lib/utils';
+import { INDEX_ACCOUNT } from '../constants/flyoutTabs';
 
 export default class WrappedAccount extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -17,6 +17,10 @@ export default class WrappedAccount extends React.Component {
                 closed_supervised_other: false,
             }
         };
+    }
+
+    componentDidMount() {
+        this.props.setFlyoutTabsIndex(INDEX_ACCOUNT);
     }
 
     toggleTasks(header) {

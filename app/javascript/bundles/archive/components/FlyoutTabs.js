@@ -12,6 +12,7 @@ import IndexingTabPanelContainer from '../containers/flyout-tabs/IndexingTabPane
 import MapTabPanelContainer from '../containers/flyout-tabs/MapTabPanelContainer';
 import InterviewTabPanelContainer from '../containers/flyout-tabs/InterviewTabPanelContainer';
 import LocaleButtonsContainer from '../containers/flyout-tabs/LocaleButtonsContainer';
+import * as indexes from '../constants/flyoutTabs';
 import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class FlyoutTabs extends React.Component {
@@ -35,25 +36,20 @@ export default class FlyoutTabs extends React.Component {
         this.props.setFlyoutTabsIndex(index);
 
         switch (index) {
-        case 0:
-            // account
+        case indexes.INDEX_ACCOUNT:
             this.props.isLoggedIn && this.context.router.history.push(`${pathBase(this.props)}/accounts/current`);
             break;
-        case 1:
-            // archive-search
+        case indexes.INDEX_SEARCH:
             this.context.router.history.push(`${pathBase(this.props)}/searches/archive`);
             break;
-        case 2:
-            // interview
+        case indexes.INDEX_INTERVIEW:
             this.context.router.history.push(`${pathBase(this.props)}/interviews/${this.props.archiveId}`);
             break;
-        case 3:
-            // registry entries
+        case indexes.INDEX_REGISTRY_ENTRIES:
             this.context.router.history.push(`${pathBase(this.props)}/registry_entries`);
             break;
-        case 4:
+        case indexes.INDEX_MAP:
             if (this.props.hasMap) {
-                // map
                 this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
             }
             break;
