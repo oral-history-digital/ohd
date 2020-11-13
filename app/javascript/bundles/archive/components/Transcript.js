@@ -81,7 +81,7 @@ export default class Transcript extends React.Component {
 
     transcripted(locale) {
         let first = this.firstSegment();
-        return first && (first.text.hasOwnProperty(`${locale}-original`) || first.text.hasOwnProperty(`${locale}-public`));
+        return first && (first.text.hasOwnProperty(locale) || first.text.hasOwnProperty(`${locale}-public`));
     }
 
     transcript(){

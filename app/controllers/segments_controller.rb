@@ -2,19 +2,7 @@ class SegmentsController < ApplicationController
   def update
     @segment = Segment.find params[:id]
     authorize @segment
-    # set headings like this, because blank values won`t be transmitted in params
-    # nulling a heading therefore would not be possible
-    #
-    #@segment.mainheading = segment_params[:mainheading]
-    #@segment.subheading = segment_params[:subheading]
-    #@segment.text = segment_params[:text]
-    #@segment.speaker_id = segment_params[:speaker_id]
-    #@segment.save
-    @segment.update_original_and_write_other_versions(segment_params)
-
-    #if @segment.mainheading || @segment.subheading || segment_params[:mainheading] || segment_params[:subheading]
-      #Rails.cache.delete "#{current_project.cache_key_prefix}-headings-#{@segment.id}-#{@segment.updated_at}"
-    #end
+    @segment.update_attributes(segment_params)
 
     respond_to do |format|
       format.json do
