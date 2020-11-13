@@ -1,5 +1,8 @@
 {
   "license": "UNLICENSED",
+  "engines": {
+    "node": ">=8"
+  },
   "dependencies": {
     "@babel/preset-react": "^7.12.5",
     "@rails/webpacker": "5.2.1",
@@ -10,13 +13,10 @@
     "classnames": "^2.2.6",
     "core-js": "^3.7.0",
     "datalist-polyfill": "^1.23.3",
-    "enzyme": "^3.11.0",
-    "enzyme-adapter-react-16": "^1.15.2",
     "font-awesome": "^4.7.0",
     "form-serialize": "^0.7.2",
     "glob": "^7.1.2",
     "intersection-observer": "^0.7.0",
-    "jest-enzyme": "^7.1.2",
     "jquery": "^3.4.1",
     "js-yaml": "^3.13.0",
     "leaflet": "^1.0.3",
@@ -51,31 +51,23 @@
     "superagent-no-cache": "^0.1.1"
   },
   "devDependencies": {
-    "babel-eslint": "^10.0.1",
+    "@babel/core": "^7.12.3",
+    "@babel/eslint-parser": "^7.12.1",
+    "@babel/preset-env": "^7.12.1",
+    "babel-jest": "^26.6.3",
     "cypress": "^4.10.0",
-    "eslint": "^6.2.2",
+    "enzyme": "^3.11.0",
+    "enzyme-adapter-react-16": "^1.15.5",
+    "eslint": "^7.13.0",
+    "eslint-plugin-react": "^7.21.5",
+    "jest-enzyme": "^7.1.2",
+    "react-test-renderer": "^17.0.1",
     "webpack-dev-server": "^3.11.0"
   },
   "scripts": {
+    "cypress:open": "cypress open --project ./spec",
+    "lint": "eslint app/javascript",
     "test": "jest",
-    "test-watch": "jest --watch",
-    "cypress:open": "cypress open --project ./spec"
-  },
-  "jest": {
-    "setupFilesAfterEnv": [
-      "./node_modules/jest-enzyme/lib/index.js",
-      "./spec/javascript/setupTests.js"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/spec/javascript/__mocks__/fileMock.js",
-      "\\.(css|scss|less)$": "<rootDir>/spec/javascript/__mocks__/styleMock.js"
-    },
-    "roots": [
-      "spec/javascript"
-    ],
-    "moduleDirectories": [
-      "node_modules",
-      "app/javascript"
-    ]
+    "test-watch": "jest --watch"
   }
 }
