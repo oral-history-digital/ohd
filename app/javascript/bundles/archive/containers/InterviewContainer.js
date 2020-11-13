@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import Interview from '../components/Interview';
 import { fetchData } from '../actions/dataActionCreators';
 import { setArchiveId } from '../actions/archiveActionCreators';
+import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         projectId: state.archive.projectId,
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,
@@ -28,6 +29,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
+    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Interview);

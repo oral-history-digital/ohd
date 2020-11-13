@@ -2,19 +2,18 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Observer from 'react-intersection-observer'
+import moment from 'moment';
 
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import InterviewListRowContainer from '../containers/InterviewListRowContainer';
 import InterviewWorkflowRowContainer from '../containers/InterviewWorkflowRowContainer';
-import ArchiveLocationsContainer from '../containers/ArchiveLocationsContainer';
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import { t, admin, queryToText, pathBase } from '../../../lib/utils';
-import moment from 'moment';
 import spinnerSrc from '../../../images/large_spinner.gif'
+import { INDEX_SEARCH } from '../constants/flyoutTabs';
 
 export default class ArchiveSearch extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -31,6 +30,8 @@ export default class ArchiveSearch extends React.Component {
 
     componentDidMount() {
         window.scrollTo(0, 1);
+
+        this.props.setFlyoutTabsIndex(INDEX_SEARCH);
     }
 
     componentDidUpdate(prevProps, prevState) {
@@ -392,4 +393,3 @@ export default class ArchiveSearch extends React.Component {
         router: PropTypes.object
     }
 }
-

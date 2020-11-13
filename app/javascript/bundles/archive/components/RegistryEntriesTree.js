@@ -3,9 +3,9 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearchResultContainer';
 import { t, admin } from '../../../lib/utils';
+import { INDEX_REGISTRY_ENTRIES } from '../constants/flyoutTabs';
 
 export default class RegistryEntriesTree extends React.Component {
-
     constructor(props, context) {
         super(props, context);
     }
@@ -13,6 +13,8 @@ export default class RegistryEntriesTree extends React.Component {
     componentDidMount() {
         this.loadRootRegistryEntry();
         window.scrollTo(0, 1);
+
+        this.props.setFlyoutTabsIndex(INDEX_REGISTRY_ENTRIES);
     }
 
     componentDidUpdate() {
