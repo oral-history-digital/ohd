@@ -2,13 +2,12 @@ import { connect } from 'react-redux';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import MapSearch from '../components/MapSearch';
 import { searchInMap } from '../actions/searchActionCreators';
-import { setViewMode } from '../actions/archiveActionCreators';
-import { getCookie } from '../../../lib/utils';
+import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         foundMarkers: state.search.map.foundMarkers,
         query: state.search.map.query,
         translations: state.archive.translations,
@@ -26,8 +25,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => ({
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     searchInMap: (url, query) => dispatch(searchInMap(url, query)),
+    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapSearch);
-
-

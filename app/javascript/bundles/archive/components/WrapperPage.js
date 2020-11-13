@@ -143,7 +143,7 @@ export default class WrapperPage extends React.Component {
                     <BurgerButton open={visible}
                                   onClick={() => this.props.toggleFlyoutTabs(visible)}/>
 
-                    <FlyoutTabsContainer tabIndex={this.props.tabIndex}/>
+                    <FlyoutTabsContainer />
 
                     <ArchivePopupContainer/>
                 </div>

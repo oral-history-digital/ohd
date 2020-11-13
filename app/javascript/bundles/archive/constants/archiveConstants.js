@@ -53,6 +53,7 @@ export const CLOSE_POPUP = 'CLOSE_POPUP';
 export const SHOW_FLYOUT_TABS = 'SHOW_FLYOUT_TABS';
 export const HIDE_FLYOUT_TABS = 'HIDE_FLYOUT_TABS';
 export const TOGGLE_FLYOUT_TABS = 'TOGGLE_FLYOUT_TABS';
+export const SET_FLYOUT_TABS_INDEX = 'SET_FLYOUT_TABS_INDEX';
 
 export const LOGIN = 'LOGIN';
 export const LOGGED_IN = 'LOGGED_IN';

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import WrapperPage from '../components/WrapperPage';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
-import { hideFlyoutTabs, showFlyoutTabs, toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
+import { toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 import { changeToEditView, setLocale, setProjectId } from '../actions/archiveActionCreators';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
@@ -44,9 +44,7 @@ const mapDispatchToProps = (dispatch) => ({
     setLocale: locale => dispatch(setLocale(locale)),
     setProjectId: id => dispatch(setProjectId(id)),
     closeArchivePopup: () => dispatch(closeArchivePopup()),
-    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
-    showFlyoutTabs: () => dispatch(showFlyoutTabs()),
-    toggleFlyoutTabs: (currentState) => { currentState ? dispatch(hideFlyoutTabs()) :  dispatch(showFlyoutTabs())},
+    toggleFlyoutTabs: () => dispatch(toggleFlyoutTabs()),
     changeToEditView: (bool) => dispatch(changeToEditView(bool)),
 })
 

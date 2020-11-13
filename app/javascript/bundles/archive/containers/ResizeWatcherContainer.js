@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import ResizeWatcher from '../components/ResizeWatcher';
-import { hideFlyoutTabs, showFlyoutTabs, toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
+import { hideFlyoutTabs, showFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 
 const mapStateToProps = (state) => ({});
 

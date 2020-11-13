@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import AuthShowContainer from '../containers/AuthShowContainer'
 import LoginFormContainer from '../containers/LoginFormContainer'
@@ -6,7 +6,6 @@ import { t, pathBase } from '../../../lib/utils';
 import { isMobile } from '../../../lib/media-queries';
 
 export default class Account extends React.Component {
-
     static contextTypes = {
         router: PropTypes.object
     }
@@ -72,43 +71,48 @@ export default class Account extends React.Component {
 
     render() {
         return (
-            <div className={'flyout-login-container'}>
-                <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
-                    <div className='info'>
-                        {`${t(this.props, 'logged_in_as')} ${this.props.firstName} ${this.props.lastName}`}
-                    </div>
-                    {this.changeToEditView()}
-                    <div
-                        className='logout'
-                        onClick={() => this.props.submitLogout(`${pathBase(this.props)}/user_accounts/sign_out`)}
-                    >
-                        {t(this.props, 'logout')}
-                    </div>
-                </AuthShowContainer>
-                <AuthShowContainer ifNoProject={true}>
-                    {this.projectAccessAlert()}
-                </AuthShowContainer>
+            <Fragment>
+                <div className="flyout-tab-title">
+                    { t(this.props, this.props.isLoggedIn ? 'account_page' : 'login_page') }
+                </div>
+                <div className={'flyout-login-container'}>
+                    <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
+                        <div className='info'>
+                            {`${t(this.props, 'logged_in_as')} ${this.props.firstName} ${this.props.lastName}`}
+                        </div>
+                        {this.changeToEditView()}
+                        <div
+                            className='logout'
+                            onClick={() => this.props.submitLogout(`${pathBase(this.props)}/user_accounts/sign_out`)}
+                        >
+                            {t(this.props, 'logout')}
+                        </div>
+                    </AuthShowContainer>
+                    <AuthShowContainer ifNoProject={true}>
+                        {this.projectAccessAlert()}
+                    </AuthShowContainer>
 
-                {this.errorMsg()}
+                    {this.errorMsg()}
 
-                <AuthShowContainer ifLoggedOut={true}>
-                    <p>
-                        {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
-                        {(this.props.error || this.props.projectId === 'campscapes') ? '' : t(this.props, 'registration_needed')}
-                    </p>
-                    <LoginFormContainer/>
-                    <div className={'register-link'}>
-                        <a href='' onClick={(e) => this.openLink(pathBase(this.props) + '/user_registrations/new', e)}>
-                            {t(this.props, 'user_registration.registration')}
-                        </a>
-                    </div>
-                    <div className={'order-new-password-link'}>
-                        <a href='' onClick={(e) => this.openLink(pathBase(this.props) + '/user_accounts/password/new', e)}>
-                            {t(this.props, 'forget_password')}
-                        </a>
-                    </div>
-                </AuthShowContainer>
-            </div>
+                    <AuthShowContainer ifLoggedOut={true}>
+                        <p>
+                            {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
+                            {(this.props.error || this.props.projectId === 'campscapes') ? '' : t(this.props, 'registration_needed')}
+                        </p>
+                        <LoginFormContainer/>
+                        <div className={'register-link'}>
+                            <a href='' onClick={(e) => this.openLink(pathBase(this.props) + '/user_registrations/new', e)}>
+                                {t(this.props, 'user_registration.registration')}
+                            </a>
+                        </div>
+                        <div className={'order-new-password-link'}>
+                            <a href='' onClick={(e) => this.openLink(pathBase(this.props) + '/user_accounts/password/new', e)}>
+                                {t(this.props, 'forget_password')}
+                            </a>
+                        </div>
+                    </AuthShowContainer>
+                </div>
+            </Fragment>
         )
     }
 
