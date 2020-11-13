@@ -1,3 +1,4 @@
+export const INDEX_NONE = -1;
 export const INDEX_ACCOUNT = 0;
 export const INDEX_SEARCH = 1;
 export const INDEX_INTERVIEW = 2;

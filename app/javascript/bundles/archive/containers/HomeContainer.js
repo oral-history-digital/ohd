@@ -3,11 +3,10 @@ import { connect } from 'react-redux';
 import Home from '../components/Home';
 import { getProject } from '../../../lib/utils';
 import { fetchData } from '../actions/dataActionCreators';
+import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
 
 // Which part of the Redux global state does our component want to receive as props?
 const mapStateToProps = (state) => {
-    let project = getProject(state);
-
     return {
         isLoggedIn: state.account.isLoggedIn,
         randomFeaturedInterviews: state.data.random_featured_interviews,
@@ -20,6 +19,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
+    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
 })
 
 // Don't forget to actually use connect!

@@ -5,9 +5,11 @@ import {
     SET_FLYOUT_TABS_INDEX
 } from '../constants/archiveConstants';
 
+import { INDEX_ACCOUNT } from '../constants/flyoutTabs';
+
 const initialState = {
     visible: false,
-    index: 0,
+    index: INDEX_ACCOUNT,
 };
 
 const flyoutTabs = (state = initialState, action) => {
