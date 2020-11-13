@@ -19,8 +19,12 @@ function BurgerButton({ open, onClick }) {
 }
 
 BurgerButton.propTypes = {
-    open: PropTypes.bool.isRequired,
+    open: PropTypes.bool,
     onClick: PropTypes.func.isRequired,
+};
+
+BurgerButton.defaultProps = {
+    open: false,
 };
 
 export default BurgerButton;
