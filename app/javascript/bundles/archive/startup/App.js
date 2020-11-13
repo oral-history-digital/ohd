@@ -1,7 +1,3 @@
-import '../../../lib/polyfills';
-import '@babel/polyfill';
-import 'intersection-observer';
-import 'datalist-polyfill';
 import React from 'react';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom'
