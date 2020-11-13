@@ -4,40 +4,19 @@
   padding: 0;
 }
 
-//.flyout-top-nav-container {
-//  background: lighten($gray-warm, 30%);
-//  height: 100px;
-//  margin: 0;
-//  padding: 46px 10px 0 15px;
-//}
-
 .flyout-top-nav {
-  float: left;
-  //display: inline;
-  margin: 0;
-  padding: 6px 15px 0 0;
-  font-size: $font-size-large;
-  color: $gray-warm;
-  transition: color 0.3s;
-  cursor: pointer;
   @include clearfix;
-  &.lang {
-    border-left: 2px solid lighten($gray-warm, 10%);
-    padding-left: 6px;
-    text-transform: uppercase;
-  }
-  &:hover {
-    color: $gray-darkest;
-  }
+  color: $gray-warm;
+  cursor: pointer;
+  float: left;
+  font-size: $font-size-large;
+  margin: 0;
+  margin-left: 20px;
+  padding: 6px 15px 0 0;
+  transition: color $transition-duration;
+
   &.active {
-    color: $gray-darkest;
-    cursor: default;
-  }
-  &:first-child {
-    margin-left: 20px;
-  }
-  &.top-nav-last {
-    margin-bottom: 30px;
+    color: var(--primary-color);
   }
 }
 
@@ -51,22 +30,21 @@
   font-size: 1.25rem;
   cursor: pointer;
   transition: 0.4s;
-  &.active {
-    display:none;
-  }
+
   &:hover {
-    background-color: var(--secondary-color);
-    color: $flyout-tab-title-text-color;
-    &.admin {
-      background-color: var(--editorial-color);
-    }
+    filter: brightness(1.1);
   }
+
+  &.admin {
+    background-color: var(--editorial-color);
+  }
+
+  &.active {
+    background-color: var(--primary-color);
+  }
+
   animation-name: fade-in;
   animation-duration: 1s;
-}
-
-.activeadmin .flyout-tab-title{
-  background-color: var(--editorial-color);
 }
 
 @keyframes fade-in {
@@ -91,37 +69,13 @@
   }
 }
 
-@keyframes move-down {
-  0%  {
-    background-color: transparent;
-    color: transparent;
-    margin-top: -130px;
-  }
-  50% {
-    background-color: var(--secondary-color);
-    color: $flyout-tab-title-text-color;
-  }
-  100% {
-    background-color: var(--secondary-color);
-    color: $flyout-tab-title-text-color;
-    margin-top: 2px;
-  }
-}
-
 .flyout-tab-title {
   clear: left;
-  display: block;
-  margin: 2px 0 40px 0;
-  padding: 20px;
-  background: var(--secondary-color);
-  color: $flyout-tab-title-text-color;
-  font-size: 1.25rem;
   cursor: auto;
-  animation-name: move-down;
-  animation-duration: 1s;
-  &.admin {
-    background: var(--editorial-color);
-  }
+  display: block;
+  font-size: 1.25rem;
+  margin: 0;
+  padding: 20px;
 }
 
 .flyout-search {

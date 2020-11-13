@@ -17,6 +17,7 @@ const mapStateToProps = (state) => {
         lastName: state.account.lastName,
         error: state.account.error,
         account: state.data.accounts.current,
+        isLoggedIn: state.account.isLoggedIn,
         editViewCookie: getCookie('editView') === 'true',
         editView: state.archive.editView,
     }

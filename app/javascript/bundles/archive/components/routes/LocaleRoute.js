@@ -7,7 +7,7 @@ import Routes from './Routes';
 function LocaleRoute() {
     return (
         <Route path="/:locale">
-            <WrapperPageContainer tabIndex={0}>
+            <WrapperPageContainer>
                 <Routes />
             </WrapperPageContainer>
         </Route>

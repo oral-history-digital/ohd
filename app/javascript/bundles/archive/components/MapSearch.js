@@ -14,17 +14,18 @@ import '../../../lib/leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css
 
 import { t, pathBase } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
-
-
+import { INDEX_MAP } from '../constants/flyoutTabs';
 
 export default class MapSearch extends React.Component {
-
     constructor(props) {
         super(props);
     }
 
     componentDidMount() {
         window.scrollTo(0, 1);
+
+        this.props.setFlyoutTabsIndex(INDEX_MAP);
+
         if(this.props.foundMarkers && Object.keys(this.props.foundMarkers).length > 0){
             this.initMap()
         } else if (this.props.foundMarkers) {

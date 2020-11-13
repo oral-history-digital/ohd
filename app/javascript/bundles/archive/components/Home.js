@@ -1,10 +1,9 @@
 import React from 'react';
 import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import PropTypes from 'prop-types';
+import { INDEX_NONE } from '../constants/flyoutTabs';
 
 export default class Home extends React.Component {
-
-
     static contextTypes = {
         router: PropTypes.object
     }
@@ -12,6 +11,10 @@ export default class Home extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 1);
         this.loadRandomFeaturedInterviews();
+
+        if (this.props.project.identifier === 'campscapes') {
+            this.props.setFlyoutTabsIndex(INDEX_NONE);
+        }
     }
 
     componentDidUpdate(prevProps) {
