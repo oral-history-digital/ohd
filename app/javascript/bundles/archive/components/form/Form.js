@@ -89,10 +89,11 @@ export default class Form extends React.Component {
         let values = this.state.values;
         if (this.props.data) {
             values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id
-            values.translations_attributes = this.props.data.translations;
-        } else {
-            values.translations_attributes = [];
-        }
+            //values.translations_attributes = this.props.data.translations;
+        }// else {
+            //values.translations_attributes = [];
+        //}
+        values.translations_attributes = [];
 
         this.props.elements.map((element, index) => {
             //if (element.elementType === 'multiLocaleRichTextEditor') {
@@ -106,7 +107,7 @@ export default class Form extends React.Component {
                     //RichTextEditor.createValueFromString(this.props.data[element.attribute], 'html') : 
                     //RichTextEditor.createEmptyValue()
             //} else {
-                let isTranslationsAttribute = values.translations_attributes[0] && values.translations_attributes[0].hasOwnProperty(element.attribute);
+                let isTranslationsAttribute = this.props.data && this.props.data.translations && this.props.data.translations[0] && this.props.data.translations[0].hasOwnProperty(element.attribute);
                 if (!isTranslationsAttribute) 
                     values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
             //}
