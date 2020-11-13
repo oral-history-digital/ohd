@@ -57,13 +57,13 @@ export default class TableOfContents extends React.Component {
 
         if (this.props.interview && this.props.interview.headings) {
             Object.values(this.props.interview.headings).sort(function(a, b) {return a.tape_nbr - b.tape_nbr || a.time - b.time}).map((segment, index) => {
-                mainheading = segment.mainheading[`${this.props.locale}-original`] ||
+                mainheading = segment.mainheading[this.props.locale] ||
                     segment.mainheading[`${this.props.locale}-public`] ||
-                    segment.mainheading['de-original'] ||
+                    segment.mainheading['de'] ||
                     segment.mainheading['de-public'];
-                subheading = segment.subheading[`${this.props.locale}-original`] ||
+                subheading = segment.subheading[this.props.locale] ||
                     segment.subheading[`${this.props.locale}-public`] ||
-                    segment.subheading['de-original'] ||
+                    segment.subheading['de'] ||
                     segment.subheading['de-public'];
                 //
                 // if the table of content looks different in languages with different alphabets, have a look to the following and extend the regexp:
@@ -142,9 +142,9 @@ export default class TableOfContents extends React.Component {
             let first = this.props.interview.headings[0];
             if (
                 !first.mainheading[`${this.props.locale}-public`] &&
-                !first.mainheading[`${this.props.locale}-original`] &&
+                !first.mainheading[this.props.locale] &&
                 !first.subheading[`${this.props.locale}-public`] &&
-                !first.subheading[`${this.props.locale}-original`]
+                !first.subheading[this.props.locale]
             ) {
                 return t(this.props, 'without_index_locale');
             }
