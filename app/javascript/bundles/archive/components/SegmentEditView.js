@@ -1,5 +1,5 @@
 import React from 'react';
-import VizSensor from 'react-visibility-sensor';
+import VizSensor from 'react-visibility-sensor/visibility-sensor';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import SubmitOnBlurForm from '../containers/form/SubmitOnBlurForm';
