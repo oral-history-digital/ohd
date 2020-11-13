@@ -473,7 +473,7 @@ class Interview < ApplicationRecord
       csv << %w(Timecode Speaker Transkript)
 
       tapes[tape_number.to_i - 1].segments.each do |segment|
-        csv << [segment.timecode, segment.speaking_person && segment.speaking_person.full_name(locale), segment.text("#{locale}-original") || segment.text("#{locale}-public")]
+        csv << [segment.timecode, segment.speaking_person && segment.speaking_person.full_name(locale), segment.text(locale) || segment.text("#{locale}-public")]
       end
     end
   end

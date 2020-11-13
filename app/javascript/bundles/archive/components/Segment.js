@@ -44,13 +44,13 @@ export default class Segment extends React.Component {
     }
 
     transcript() {
-        return admin(this.props, this.props.data) ? (this.props.data.text[`${this.props.contentLocale}-original`] || this.props.data.text[`${this.props.contentLocale}-public`]) :
+        return admin(this.props, this.props.data) ? (this.props.data.text[this.props.contentLocale] || this.props.data.text[`${this.props.contentLocale}-public`]) :
                (this.props.data.text[`${this.props.contentLocale}-public`] || '')
     }
 
     hasHeading() {
-       let mainheading = this.props.data.mainheading[`${this.props.contentLocale}-original`] || this.props.data.mainheading[`${this.props.contentLocale}-public`]
-       let subheading = this.props.data.subheading[`${this.props.contentLocale}-original`] || this.props.data.subheading[`${this.props.contentLocale}-public`]
+       let mainheading = this.props.data.mainheading[this.props.contentLocale] || this.props.data.mainheading[`${this.props.contentLocale}-public`]
+       let subheading = this.props.data.subheading[this.props.contentLocale] || this.props.data.subheading[`${this.props.contentLocale}-public`]
        return  !!(mainheading || subheading)
     }
 
