@@ -44,6 +44,7 @@ export default class Textarea extends React.Component {
     }
 
     render() {
+        let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
         return (
             <ElementContainer
                 scope={this.props.scope}
@@ -62,7 +63,7 @@ export default class Textarea extends React.Component {
                 <textarea 
                     name={this.props.attribute}
                     //value={this.props.value}
-                    defaultValue={this.props.value}
+                    defaultValue={value}
                     onChange={this.handleChange}
                 />
             </ElementContainer>

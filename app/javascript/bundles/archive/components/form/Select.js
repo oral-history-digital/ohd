@@ -123,6 +123,7 @@ export default class Select extends React.Component {
     }
 
     render() {
+        let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
         return (
             <ElementContainer
                 scope={this.props.scope}
@@ -140,7 +141,7 @@ export default class Select extends React.Component {
             >
                 <select
                     name={this.props.attribute}
-                    value={this.props.value}
+                    value={value}
                     onChange={this.handleChange}
                     handlechangecallback={this.props.handlechangecallback}
                 >

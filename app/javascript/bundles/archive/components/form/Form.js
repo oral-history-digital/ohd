@@ -14,21 +14,15 @@ export default class Form extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showErrors: false, 
             showSubForm: false,
-            values: this.props.values || {},
-            errors: {}
+            values: this.initValues(),
+            errors: this.initErrors()
         };
 
         this.handleChange = this.handleChange.bind(this);
         this.handleErrors = this.handleErrors.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleSubFormSubmit = this.handleSubFormSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        //this.initErrors();
-        this.initValues();
     }
 
     handleChange(name, value) {
@@ -86,46 +80,23 @@ export default class Form extends React.Component {
     }
 
     initValues() {
-        let values = this.state.values;
-        if (this.props.data) {
-            values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id
-            //values.translations_attributes = this.props.data.translations;
-        }// else {
-            //values.translations_attributes = [];
-        //}
+        let values = this.props.values || {};
+        if (this.props.data)
+            values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id;
         values.translations_attributes = [];
-
-        this.props.elements.map((element, index) => {
-            //if (element.elementType === 'multiLocaleRichTextEditor') {
-                //values.translations_attributes.map((t,i) => {
-                    //return t[element.attribute] = t[element.attribute] ?
-                        //RichTextEditor.createValueFromString(t[element.attribute], 'html') : 
-                        //RichTextEditor.createEmptyValue()
-                //})
-            //} else if (element.elementType === 'richTextEditor') {
-                //values[element.attribute] = (this.props.data && this.props.data[element.attribute]) ?
-                    //RichTextEditor.createValueFromString(this.props.data[element.attribute], 'html') : 
-                    //RichTextEditor.createEmptyValue()
-            //} else {
-                let isTranslationsAttribute = this.props.data && this.props.data.translations && this.props.data.translations[0] && this.props.data.translations[0].hasOwnProperty(element.attribute);
-                if (!isTranslationsAttribute) 
-                    values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
-            //}
-        })
-        this.setState({ values: values });
+        return values;
     }
 
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
             let error = false;
-            let value = element.value || (this.props.data && this.props.data[element.attribute]);
             if (typeof(element.validate) === 'function') {
+                let value = element.value || (this.props.data && this.props.data[element.attribute]);
                 error = !element.validate(value);
             }
             errors[element.attribute] = error;
         })
-        //this.setState({ errors: errors });
         return errors;
     }
 
@@ -136,13 +107,11 @@ export default class Form extends React.Component {
     }
 
     valid() {
-        let errors = this.initErrors();
         let showErrors = false;
-        Object.keys(errors).map((name, index) => {
+        Object.keys(this.state.errors).map((name, index) => {
             let hidden = this.props.elements.filter(element => element.attribute === name)[0] && this.props.elements.filter(element => element.attribute === name)[0].hidden;
-            showErrors = (!hidden && errors[name]) || showErrors;
+            showErrors = (!hidden && this.state.errors[name]) || showErrors;
         })
-        this.setState({showErrors: showErrors, errors: errors});
         return !showErrors;
     }
 
@@ -151,10 +120,10 @@ export default class Form extends React.Component {
             className='flyout-sub-tabs-content-ico-link'
             title={t(this.props, 'delete')}
             onClick={() => {
-                let subScopeValues = this.state.values[`${pluralize(this.props.subFormScope)}_attributes`];
+                let subScopeValues = this.state.values[this.subFormScopeAsRailsAttributes()];
                 this.setState({ 
                     values: Object.assign({}, this.state.values, {
-                        [`${pluralize(this.props.subFormScope)}_attributes`]: subScopeValues.slice(0,index).concat(subScopeValues.slice(index+1))
+                        [this.subFormScopeAsRailsAttributes()]: subScopeValues.slice(0,index).concat(subScopeValues.slice(index+1))
                     })
                 })
             }}

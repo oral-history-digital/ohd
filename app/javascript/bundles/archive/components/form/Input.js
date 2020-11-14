@@ -49,11 +49,12 @@ export default class Input extends React.Component {
     }
 
     cleanProps() {
+        let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
         let props = {
             type: this.props.type, 
             name: this.props.attribute,
-            defaultChecked: this.props.value,
-            defaultValue: this.props.value,
+            defaultChecked: value,
+            defaultValue: value,
             onChange: this.handleChange,
             onClick: this.handleChange, // otherwise checkboxes would not fire 
         };
