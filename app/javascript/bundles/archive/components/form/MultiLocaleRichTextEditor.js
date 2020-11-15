@@ -20,8 +20,9 @@ export default class MultiLocaleRichTextEditor extends React.Component {
                 data={this.props.data}
                 scope={this.props.scope}
                 attribute={this.props.attribute}
+                onChange={this.props.handleChange}
             >
-                <RichTextEditor onChange={this.props.handleChange} value={this.state.value} />
+                <RichTextEditor value={this.state.value} />
             </MultiLocaleWrapperContainer>
         )
     }

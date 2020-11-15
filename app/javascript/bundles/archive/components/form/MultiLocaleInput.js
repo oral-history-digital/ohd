@@ -11,8 +11,9 @@ export default class MultiLocaleInput extends React.Component {
                 data={this.props.data}
                 scope={this.props.scope}
                 attribute={this.props.attribute}
+                handleChange={this.props.handleChange}
             >
-                <InputContainer handleChange={this.props.handleChange}/>
+                <InputContainer />
             </MultiLocaleWrapperContainer>
         )
     }

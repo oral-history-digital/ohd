@@ -26,7 +26,7 @@ export default class Select extends React.Component {
         const value =  event.target.value;
         const name =  event.target.name;
 
-        this.props.handleChange(name, value);
+        this.props.handleChange(name, value, this.props.data);
 
         if (typeof this.props.handlechangecallback === 'function') {
             this.props.handlechangecallback(name, value);

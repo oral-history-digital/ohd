@@ -64,6 +64,7 @@ export default class RegistryEntryForm extends React.Component {
                     data={this.registryEntry()}
                     values={{
                         parent_id: this.props.registryEntryParent && this.props.registryEntryParent.id,
+                        workflow_state: this.registryEntry() && this.registryEntry().workflow_state || 'preliminary',
                     }}
                     elements={[
                         {
