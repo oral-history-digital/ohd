@@ -14,15 +14,41 @@ export default class Form extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showSubForm: false,
+            showNestedForm: false,
             values: this.initValues(),
             errors: this.initErrors()
         };
 
-        this.handleChange = this.handleChange.bind(this);
         this.handleErrors = this.handleErrors.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleSubFormSubmit = this.handleSubFormSubmit.bind(this);
+        this.handleNestedFormSubmit = this.handleNestedFormSubmit.bind(this);
+    }
+
+    initValues() {
+        let values = this.props.values || {};
+        if (this.props.data)
+            values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id;
+        return values;
+    }
+
+    initErrors() {
+        let errors = {};
+        this.props.elements.map((element, index) => {
+            let error = false;
+            if (typeof(element.validate) === 'function') {
+                let value = element.value || (this.props.data && this.props.data[element.attribute]);
+                error = !element.validate(value);
+            }
+            errors[element.attribute] = error;
+        })
+        return errors;
+    }
+
+    handleErrors(name, bool) {
+        this.setState({ 
+            errors: Object.assign({}, this.state.errors, {[name]: bool})
+        })
     }
 
     handleChange(name, value, params, identifier) {
@@ -67,50 +93,15 @@ export default class Form extends React.Component {
         } 
     }
 
-    initValues() {
-        let values = this.props.values || {};
-        if (this.props.data)
-            values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id;
-        return values;
-    }
-
-    initErrors() {
-        let errors = {};
-        this.props.elements.map((element, index) => {
-            let error = false;
-            if (typeof(element.validate) === 'function') {
-                let value = element.value || (this.props.data && this.props.data[element.attribute]);
-                error = !element.validate(value);
-            }
-            errors[element.attribute] = error;
-        })
-        return errors;
-    }
-
-    handleErrors(name, bool) {
-        this.setState({ 
-            errors: Object.assign({}, this.state.errors, {[name]: bool})
-        })
-    }
-
-    valid() {
-        let showErrors = false;
-        Object.keys(this.state.errors).map((name, index) => {
-            let hidden = this.props.elements.filter(element => element.attribute === name)[0] && this.props.elements.filter(element => element.attribute === name)[0].hidden;
-            showErrors = (!hidden && this.state.errors[name]) || showErrors;
-        })
-        return !showErrors;
-    }
-
-    deleteSubScopeValue(index) {
+    deleteNestedObject(index) {
         return <span
             className='flyout-sub-tabs-content-ico-link'
             title={t(this.props, 'delete')}
             onClick={() => {
-                let subScopeValues = this.state.values[this.nestedRailsScopeName(this.props.subFormScope)];
+                let nestedObjects = this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)];
                 this.setState({ 
                     values: Object.assign({}, this.state.values, {
-                        [this.nestedRailsScopeName(this.props.subFormScope)]: subScopeValues.slice(0,index).concat(subScopeValues.slice(index+1))
+                        [this.nestedRailsScopeName(this.props.nestedFormScope)]: nestedObjects.slice(0,index).concat(nestedObjects.slice(index+1))
                     })
                 })
             }}
@@ -138,15 +129,15 @@ export default class Form extends React.Component {
     }
 
     showNewNestedObjects() {
-        if (this.props.subFormScope && this.state.values[this.nestedRailsScopeName(this.props.subFormScope)]) {
+        if (this.props.nestedFormScope && this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)]) {
             return (
                 <div>
-                    <h4 className='nested-value-header'>{t(this.props, `${pluralize(this.props.subFormScope)}.title`)}</h4>
-                    {this.state.values[this.nestedRailsScopeName(this.props.subFormScope)].map((value, index) => {
+                    <h4 className='nested-value-header'>{t(this.props, `${pluralize(this.props.nestedFormScope)}.title`)}</h4>
+                    {this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)].map((value, index) => {
                         return (
-                            <p key={`${this.props.scope}-${this.props.subScope}-${index}`} >
-                                <span className='flyout-content-data'>{this.props.subScopeRepresentation(value)}</span>
-                                {this.deleteSubScopeValue(index)}
+                            <p key={`${this.props.scope}-${this.props.nestedScope}-${index}`} >
+                                <span className='flyout-content-data'>{this.props.nestedScopeRepresentation(value)}</span>
+                                {this.deleteNestedObject(index)}
                             </p>
                         )
                     })}
@@ -156,40 +147,40 @@ export default class Form extends React.Component {
     }
 
     // props is a dummy here
-    handleSubFormSubmit(props, params) {
+    handleNestedFormSubmit(props, params) {
         this.writeNestedObjectToStateValues(params);
-        this.setState({ showSubForm: false });
+        this.setState({ showNestedForm: false });
     }
 
-    toggleSubForm() {
-        if (this.props.subForm) {
+    toggleNestedForm() {
+        if (this.props.nestedForm) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, `edit.${this.props.subFormScope}.new`)}
-                    onClick={() => this.setState({showSubForm: !this.state.showSubForm})}
+                    title={t(this.props, `edit.${this.props.nestedFormScope}.new`)}
+                    onClick={() => this.setState({showNestedForm: !this.state.showNestedForm})}
                 >
                     <div>
-                        {t(this.props, `${pluralize(this.props.subFormScope)}.add`) + '  '}
-                        <i className={`fa fa-${this.state.showSubForm ? 'times' : 'plus'}`}></i>
+                        {t(this.props, `${pluralize(this.props.nestedFormScope)}.add`) + '  '}
+                        <i className={`fa fa-${this.state.showNestedForm ? 'times' : 'plus'}`}></i>
                     </div>
                 </div>
             )
         }
     }
 
-    subForm() {
-        if (this.props.subForm && this.state.showSubForm) {
-            this.props.subFormProps.formClasses = 'sub-form default';
+    nestedForm() {
+        if (this.props.nestedForm && this.state.showNestedForm) {
+            this.props.nestedFormProps.formClasses = 'nested-form default';
             if (!this.props.data) {
-                this.props.subFormProps.submitData = this.handleSubFormSubmit;
+                this.props.nestedFormProps.submitData = this.handleNestedFormSubmit;
             } else {
                 let _this = this;
-                this.props.subFormProps.onSubmitCallback = function(props, params){_this.setState({showSubForm: false})};
+                this.props.nestedFormProps.onSubmitCallback = function(props, params){_this.setState({showNestedForm: false})};
             }
             return (
                 <div>
-                    {React.createElement(this.props.subForm, this.props.subFormProps)}
+                    {React.createElement(this.props.nestedForm, this.props.nestedFormProps)}
                 </div>
             )
         }
@@ -242,8 +233,8 @@ export default class Form extends React.Component {
         return (
             <div>
                 {this.showNewNestedObjects()}
-                {this.subForm()}
-                {this.toggleSubForm()}
+                {this.nestedForm()}
+                {this.toggleNestedForm()}
                 <form 
                     id={this.props.formId || this.props.scope} 
                     className={this.props.formClasses || `${this.props.scope} default`} 

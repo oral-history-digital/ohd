@@ -129,10 +129,10 @@ export default class InterviewForm extends React.Component {
         }
 
         if (this.props.withContributions) {
-            props['subForm'] = ContributionFormContainer;
-            props['subFormProps'] = {withSpeakerDesignation: true};
-            props['subFormScope'] = 'contribution';
-            props['subScopeRepresentation'] = this.showContribution;
+            props['nestedForm'] = ContributionFormContainer;
+            props['nestedFormProps'] = {withSpeakerDesignation: true};
+            props['nestedFormScope'] = 'contribution';
+            props['nestedScopeRepresentation'] = this.showContribution;
         }
 
         return React.createElement(Form, props)

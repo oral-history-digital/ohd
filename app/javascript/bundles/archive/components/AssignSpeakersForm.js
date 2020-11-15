@@ -70,10 +70,10 @@ export default class AssignSpeakersForm extends React.Component {
                         id: this.props.interview.archive_id
                     }}
                     elements={this.formElements()}
-                    subForm={this.allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer}
-                    subFormProps={{withSpeakerDesignation: true}}
-                    subFormScope='contribution'
-                    subScopeRepresentation={this.showContribution}
+                    nestedForm={this.allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer}
+                    nestedFormProps={{withSpeakerDesignation: true}}
+                    nestedFormScope='contribution'
+                    nestedScopeRepresentation={this.showContribution}
                 />
             )
         }
