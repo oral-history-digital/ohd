@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { Route } from 'react-router-dom';
+import { Route, Switch } from 'react-router-dom';
 
 import WrappedAccountContainer from '../../containers/WrappedAccountContainer';
 import InterviewContainer from '../../containers/InterviewContainer';
@@ -22,7 +22,7 @@ import OrderNewPasswordContainer from '../../containers/OrderNewPasswordContaine
 import HomeContainer from '../../containers/HomeContainer';
 
 const Routes = () => (
-    <Fragment>
+    <Switch>
         <Route exact path="/:locale" component={props => <HomeContainer {...props} />} />
         <Route path="/:locale/accounts/current" component={props => <WrappedAccountContainer {...props} />} />
         <Route exact path="/:locale/interviews/new" component={props => <EditInterviewContainer {...props} />} />
@@ -43,7 +43,7 @@ const Routes = () => (
         <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" component={props => <ActivateAccountContainer {...props} />} />
         <Route exact path="/:locale/user_registrations/new" component={props => <RegisterContainer {...props} />} />
         <Route exact path="/:locale/user_registrations" component={props => <UserRegistrationsContainer {...props} />} />
-    </Fragment>
+    </Switch>
 );
 
 export default Routes;

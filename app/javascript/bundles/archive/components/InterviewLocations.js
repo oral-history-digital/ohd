@@ -1,26 +1,22 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {render} from 'react-dom';
-import {Navigation} from 'react-router-dom'
 import LocationsContainer from '../containers/LocationsContainer'
-import moment from 'moment';
 import { t, pathBase } from '../../../lib/utils';
 
 export default class InterviewLocations extends React.Component {
-
-    static contextTypes = {
-        router: PropTypes.object
+    static propTypes = {
+        match: PropTypes.object.isRequired,
     }
 
     componentDidMount() {
         if (!this.locationsLoaded()) {
             this.props.fetchLocations(`${pathBase(this.props)}/locations`, this.props.archiveId);
-            // this.props.fetchData(this.props, 'locations', null, null, 'de', `archive_id=${this.props.archiveId}`);
         }
     }
 
     locationsLoaded() {
-        return this.props.locations[this.props.archiveId] && this.props.archiveId === this.context.router.route.match.params.archiveId
+        return this.props.locations[this.props.archiveId] &&
+            (this.props.archiveId === this.props.match.params.archiveId);
     }
 
     birthLocation(ref) {
@@ -35,7 +31,6 @@ export default class InterviewLocations extends React.Component {
 
     popupContent(ref) {
         if (ref.ref_object) {
-            //let segment = this.getSegment(ref.ref_object_id);
             return (
                 <div onClick={() => this.props.handleSegmentClick(ref.ref_object.tape_number, ref.ref_object.time)}>
                     <p>

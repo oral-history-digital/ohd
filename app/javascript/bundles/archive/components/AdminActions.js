@@ -1,12 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { t, admin } from '../../../lib/utils';
 
 export default class AdminActions extends React.Component {
-
-    static contextTypes = {
-        router: PropTypes.object
+    static propTypes = {
+        history: PropTypes.object.isRequired,
+        match: PropTypes.object.isRequired,
     }
 
     selectedArchiveIds() {
@@ -21,8 +20,8 @@ export default class AdminActions extends React.Component {
                         {`${archiveId}: ${this.props.doiResult[archiveId]}`}
                     </div>
                 )
-            }) 
-        } 
+            })
+        }
     }
 
     messages() {
@@ -42,11 +41,11 @@ export default class AdminActions extends React.Component {
             this.props.deleteData(this.props, 'interviews', archiveId);
         });
         this.props.closeArchivePopup();
-        if (this.context.router.route.match.params.archiveId === undefined) {
-            // TODO: faster aproach would be to just hide or delete the dom-elements 
+        if (this.props.match.params.archiveId === undefined) {
+            // TODO: faster aproach would be to just hide or delete the dom-elements
             location.reload();
         } else {
-            this.context.router.history.push(`/${this.props.locale}/searches/archive`);
+            this.props.history.push(`/${this.props.locale}/searches/archive`);
         }
     }
 
@@ -56,10 +55,10 @@ export default class AdminActions extends React.Component {
             this.props.submitData(this.props, {interview: updatedParams});
         });
         this.props.closeArchivePopup();
-        if (this.context.router.route.match.params.archiveId === undefined) {
-            // TODO: faster aproach would be to just hide or delete the dom-elements 
+        if (this.props.match.params.archiveId === undefined) {
+            // TODO: faster aproach would be to just hide or delete the dom-elements
             location.reload();
-        } 
+        }
     }
 
     exportDOI() {
@@ -170,4 +169,3 @@ export default class AdminActions extends React.Component {
         );
     }
 }
-
