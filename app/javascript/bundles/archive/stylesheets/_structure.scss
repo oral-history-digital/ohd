@@ -608,25 +608,12 @@ a.search-result-link {
   margin-right: 60px;
 }
 
-.search-result-data, .archive-search-found-segments .slick-slide .content-search-text p, .hits-count {
+.archive-search-found-segments .slick-slide .content-search-text p, .hits-count {
   font-size: $font-size-medium;
   line-height:$line-height-medium;
   color: $gray-dark;
   margin-bottom: 0;
-  -moz-hyphens: auto;
-  -o-hyphens: auto;
-  -webkit-hyphens: auto;
-  -ms-hyphens: auto;
   hyphens: auto;
-}
-
-.detailed .search-result-data {
-  display: none;
-}
-
-.search-result-data-inf {
-  margin-left: 10px;
-  color: $gray-darkest;
 }
 
 /* workflow */
