@@ -34,6 +34,7 @@
     "react-leaflet": "^2.2.1",
     "react-leaflet-markercluster": "^2.0.0-rc3",
     "react-on-rails": "^11.2.1",
+    "react-outside-click-handler": "^1.3.0",
     "react-redux": "^7.1.1",
     "react-resize-aware": "^2.7.0",
     "react-router-dom": "^4.3.1",
