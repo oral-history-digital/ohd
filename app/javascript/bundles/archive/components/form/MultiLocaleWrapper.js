@@ -1,5 +1,7 @@
 import React from 'react';
-import RichTextEditor from 'react-rte';
+import InputContainer from '../../containers/form/InputContainer';
+import TextareaContainer from '../../containers/form/TextareaContainer';
+import RichTextareaContainer from '../../containers/form/RichTextareaContainer';
 import { t } from '../../../../lib/utils';
 
 export default class MultiLocaleWrapper extends React.Component {
@@ -43,12 +45,20 @@ export default class MultiLocaleWrapper extends React.Component {
         })
     }
 
+    components() {
+        return {
+            input: InputContainer,
+            richTextEditor: RichTextareaContainer,
+            textarea: TextareaContainer
+        }
+    }
+
     render() {
         let _this = this;
         return (
             <div className='multi-locale-input'>
                 {this.props.locales.map((locale, index) => {
-                    return React.cloneElement(_this.props.children, _this.preparedProps(locale))
+                    return React.createElement(_this.components()[_this.props.elementType], _this.preparedProps(locale));
                 })}
             </div>
         )

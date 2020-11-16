@@ -18,13 +18,13 @@ const mapStateToProps = (state) => {
                 attribute: "internal_name"
             },
             {
-                elementType: 'multiLocaleInput',
                 attribute: 'name',
+                multiLocale: true,
                 // validate: function(v){return v.length > 1} 
             },
             {
-                elementType: 'multiLocaleInput',
                 attribute: 'url',
+                multiLocale: true,
                 //validate: function(v){return v.length > 1} 
             },
         ]

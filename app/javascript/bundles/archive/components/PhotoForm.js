@@ -8,7 +8,7 @@ export default class PhotoForm extends React.Component {
         let elements = [
             {
                 attribute: 'caption',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
             {
                 elementType: 'select',

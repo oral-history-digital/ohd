@@ -1,12 +1,10 @@
 import React from 'react';
 import InputContainer from '../../containers/form/InputContainer';
-import MultiLocaleInputContainer from '../../containers/form/MultiLocaleInputContainer';
-import MultiLocaleTextareaContainer from '../../containers/form/MultiLocaleTextareaContainer';
-import MultiLocaleRichTextEditorContainer from '../../containers/form/MultiLocaleRichTextEditorContainer';
 import RichTextEditor from 'react-rte';
 import TextareaContainer from '../../containers/form/TextareaContainer';
 import SelectContainer from '../../containers/form/SelectContainer';
 import RegistryEntrySelectContainer from '../../containers/form/RegistryEntrySelectContainer';
+import MultiLocaleWrapperContainer from '../../containers/form/MultiLocaleWrapperContainer';
 import { t, pluralize } from '../../../../lib/utils';
 
 export default class Form extends React.Component {
@@ -61,31 +59,19 @@ export default class Form extends React.Component {
         }
     }
 
+    valid() {
+        let showErrors = false;
+        Object.keys(this.state.errors).map((name, index) => {
+            let hidden = this.props.elements.filter(element => element.attribute === name)[0] && this.props.elements.filter(element => element.attribute === name)[0].hidden;
+            showErrors = (!hidden && this.state.errors[name]) || showErrors;
+        })
+        return !showErrors;
+    }
+
     handleSubmit(event) {
         let _this = this;
         event.preventDefault();
         if(this.valid()) {
-            //
-            // for RichTextEditor (react rte) it is more performant to do the 'toString calculution only once, before submit
-            //
-            this.props.elements.filter(element => element.elementType === 'richTextEditor').map((element,index) => {
-                _this.setState({
-                    values: Object.assign({}, _this.state.values, {[element.attribute]: _this.state.values[element.attribute].toString('html')})
-                })
-            })
-            this.props.elements.filter(element => element.elementType === 'multiLocaleRichTextEditor').map((element,index) => {
-                _this.setState({
-                    values: Object.assign({}, this.state.values, {
-                        translations_attributes: Object.assign([], 
-                            this.state.values.translations_attributes, 
-                            this.state.values.translations_attributes.map((t,i) => {
-                                return t[element.attribute] = t[element.attribute].toString('html');
-                            })
-                        )
-                    })
-                })
-            })
-
             this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
             if (typeof(this.props.onSubmitCallback) === "function") {
                 this.props.onSubmitCallback()
@@ -191,9 +177,6 @@ export default class Form extends React.Component {
             select: SelectContainer,
             registryEntrySelect: RegistryEntrySelectContainer,
             input: InputContainer,
-            multiLocaleInput: MultiLocaleInputContainer,
-            multiLocaleTextarea: MultiLocaleTextareaContainer,
-            multiLocaleRichTextEditor: MultiLocaleRichTextEditorContainer,
             richTextEditor: RichTextEditor,
             textarea: TextareaContainer
         }
@@ -214,7 +197,11 @@ export default class Form extends React.Component {
             props['type'] = 'text';
         }
 
-        return React.createElement(this.components()[props.elementType], props);
+        if (props.multiLocale) {
+            return React.createElement(MultiLocaleWrapperContainer, props);
+        } else {
+            return React.createElement(this.components()[props.elementType], props);
+        }
     }
 
     cancelButton() {

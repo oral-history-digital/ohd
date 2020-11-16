@@ -22,7 +22,8 @@ form.default {
     }
   }
   input,
-  textarea {
+  textarea,
+  .richtextarea {
     width: 100%;
     border: 1px solid $gray-medium;
     padding: 5px 10px;
@@ -30,6 +31,9 @@ form.default {
     @include screen-l {
       width: 72%;
     }
+  }
+  .richtextarea {
+    float: right;
   }
   textarea {
     min-height: 200px;

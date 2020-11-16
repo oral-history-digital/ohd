@@ -30,30 +30,30 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'name',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
                 //validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'homepage',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
                 //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
             },
             {
                 attribute: 'institution',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
                 //validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'responsibles',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
             {
                 attribute: 'notes',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
             {
                 attribute: 'countries',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
         ],
         joinedData: { },

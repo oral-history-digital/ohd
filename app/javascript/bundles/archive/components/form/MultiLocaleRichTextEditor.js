@@ -5,15 +5,6 @@ import { t } from '../../../../lib/utils';
 
 export default class MultiLocaleRichTextEditor extends React.Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: this.props.value ? 
-                      RichTextEditor.createValueFromString(this.props.value, 'html') : 
-                      RichTextEditor.createEmptyValue()
-        }
-    }
-
     render() {
         return (
             <MultiLocaleWrapperContainer
@@ -22,7 +13,7 @@ export default class MultiLocaleRichTextEditor extends React.Component {
                 attribute={this.props.attribute}
                 onChange={this.props.handleChange}
             >
-                <RichTextEditor value={this.state.value} />
+                <RichTextEditor />
             </MultiLocaleWrapperContainer>
         )
     }
