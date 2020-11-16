@@ -6,22 +6,20 @@ import { t, pathBase } from '../../../lib/utils';
 import { isMobile } from '../../../lib/media-queries';
 
 export default class Account extends React.Component {
-    static contextTypes = {
-        router: PropTypes.object
+    static propTypes = {
+        history: PropTypes.object.isRequired,
     }
 
     constructor(props) {
         super(props);
-        this.state = {
-            editView: this.props.editViewCookie,
-        }
-        this.props.changeToEditView(this.props.editViewCookie)
+        this.state = { editView: this.props.editViewCookie };
     }
 
     componentDidMount() {
+        this.props.changeToEditView(this.props.editViewCookie)
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         if (prevProps.editView !== this.props.editView) {
             this.setState({editView: this.props.editView})
         }
@@ -29,7 +27,7 @@ export default class Account extends React.Component {
 
     openLink(path, e) {
         e.preventDefault();
-        this.context.router.history.push(path);
+        this.props.history.push(path);
         if (isMobile()) {
             this.props.hideFlyoutTabs();
         }

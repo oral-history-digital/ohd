@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import FlyoutTabs from '../components/FlyoutTabs';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { setLocale } from '../actions/archiveActionCreators';
 import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
 import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors/flyoutTabsSelectors';
-import { getInterview, getInterviewee, getCookie, getProject } from '../../../lib/utils';
+import { getInterview, getInterviewee, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -34,4 +35,7 @@ const mapDispatchToProps = (dispatch) => ({
     setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(FlyoutTabs);
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(FlyoutTabs));

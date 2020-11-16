@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
+
 import AdminActions from '../components/AdminActions';
-import { 
-    submitDois, 
+import {
+    submitDois,
     addRemoveArchiveId,
     setArchiveIds
 } from '../actions/archiveActionCreators';
@@ -29,4 +31,7 @@ const mapDispatchToProps = (dispatch) => ({
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AdminActions);
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(AdminActions));

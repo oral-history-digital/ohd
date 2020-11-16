@@ -14,10 +14,7 @@ import SiteFooter from './layout/SiteFooter';
 export default class WrapperPage extends React.Component {
     static propTypes = {
         editView: PropTypes.bool.isRequired,
-    }
-
-    static contextTypes = {
-        router: PropTypes.object
+        match: PropTypes.object.isRequired,
     }
 
     constructor(props) {
@@ -29,17 +26,18 @@ export default class WrapperPage extends React.Component {
         this.props.changeToEditView(this.props.editViewCookie)
     }
 
-    componentDidMount(prevProps) {
-        if(this.props.locale !== this.context.router.route.match.params.locale) {
-            this.props.setLocale(this.context.router.route.match.params.locale);
+    componentDidMount() {
+        const { match } = this.props;
+
+        if(this.props.locale !== match.params.locale) {
+            this.props.setLocale(match.params.locale);
         }
         this.loadAccount()
         this.loadCollections();
         this.loadProjects();
-        //this.setProjectId();
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         this.loadAccount()
         if (this.props.visible && (this.state.currentMQ === 'S' || this.state.currentMQ === 'XS')) {
             if (!document.body.classList.contains('noScroll')) {
@@ -54,7 +52,6 @@ export default class WrapperPage extends React.Component {
         this.loadCollections();
         this.loadProjects();
         this.loadLanguages();
-        //this.setProjectId();
     }
 
     loadAccount() {
@@ -94,8 +91,10 @@ export default class WrapperPage extends React.Component {
         //
         // TODO: enable this for really multi-project use
         //
-        if (this.context.router.route.match.params.projectId !== this.props.projectId) {
-            this.props.setProjectId(this.context.router.route.match.params.projectId);
+        const { match } = this.props;
+
+        if (match.params.projectId !== this.props.projectId) {
+            this.props.setProjectId(match.params.projectId);
         }
     }
 
@@ -105,12 +104,10 @@ export default class WrapperPage extends React.Component {
         this.notifications = cable.subscriptions.create({
             channel: "WebNotificationsChannel"
         }, {
-            //connected: () => {},
             received: (data) => {
                 console.log(data);
                 this.setState({notifications: [...this.state.notifications, data]})
             },
-            //create: function(content) {}
         });
     }
 

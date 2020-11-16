@@ -20,37 +20,38 @@ export default class FlyoutTabs extends React.Component {
         visible: PropTypes.bool.isRequired,
         flyoutTabsIndex: PropTypes.number.isRequired,
         setFlyoutTabsIndex: PropTypes.func.isRequired,
+        history: PropTypes.object.isRequired,
     }
 
-    static contextTypes = {
-        router: PropTypes.object
-    }
-
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
 
         this.handleTabClick = this.handleTabClick.bind(this);
     }
 
     handleTabClick(index) {
-        this.props.setFlyoutTabsIndex(index);
+        const { history, isLoggedIn, hasMap, setFlyoutTabsIndex } = this.props;
+
+        setFlyoutTabsIndex(index);
 
         switch (index) {
         case indexes.INDEX_ACCOUNT:
-            this.props.isLoggedIn && this.context.router.history.push(`${pathBase(this.props)}/accounts/current`);
+            if (isLoggedIn) {
+                history.push(`${pathBase(this.props)}/accounts/current`);
+            }
             break;
         case indexes.INDEX_SEARCH:
-            this.context.router.history.push(`${pathBase(this.props)}/searches/archive`);
+            history.push(`${pathBase(this.props)}/searches/archive`);
             break;
         case indexes.INDEX_INTERVIEW:
-            this.context.router.history.push(`${pathBase(this.props)}/interviews/${this.props.archiveId}`);
+            history.push(`${pathBase(this.props)}/interviews/${this.props.archiveId}`);
             break;
         case indexes.INDEX_REGISTRY_ENTRIES:
-            this.context.router.history.push(`${pathBase(this.props)}/registry_entries`);
+            history.push(`${pathBase(this.props)}/registry_entries`);
             break;
         case indexes.INDEX_MAP:
-            if (this.props.hasMap) {
-                this.context.router.history.push(`${pathBase(this.props)}/searches/map`);
+            if (hasMap) {
+                history.push(`${pathBase(this.props)}/searches/map`);
             }
             break;
         default:

@@ -4,8 +4,8 @@ import PropTypes from 'prop-types';
 import { INDEX_NONE } from '../constants/flyoutTabs';
 
 export default class Home extends React.Component {
-    static contextTypes = {
-        router: PropTypes.object
+    static propTypes = {
+        history: PropTypes.object.isRequired,
     }
 
     componentDidMount() {
@@ -19,8 +19,8 @@ export default class Home extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
-            const url = "/" + this.props.locale + "/searches/archive";
-            this.context.router.history.push(url);
+            const url = `/${this.props.locale}/searches/archive`;
+            this.props.history.push(url);
         } else {
             this.loadRandomFeaturedInterviews();
         }

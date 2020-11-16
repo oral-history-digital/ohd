@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import ArchiveSearchForm from '../components/ArchiveSearchForm';
-import { 
-    resetQuery, 
-    setQueryParams, 
+import {
+    resetQuery,
+    setQueryParams,
     searchInArchive,
     searchInMap,
 } from '../actions/searchActionCreators';
@@ -36,4 +37,7 @@ const mapDispatchToProps = (dispatch) => ({
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearchForm);
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ArchiveSearchForm));

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import LocaleButtons from '../../components/flyout-tabs/LocaleButtons';
 import { setLocale } from '../../actions/archiveActionCreators';
@@ -17,4 +18,7 @@ const mapDispatchToProps = (dispatch) => ({
     setLocale: locale => dispatch(setLocale(locale)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(LocaleButtons);
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(LocaleButtons));

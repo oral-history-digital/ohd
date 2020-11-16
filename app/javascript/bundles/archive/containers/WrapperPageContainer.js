@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import WrapperPage from '../components/WrapperPage';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
@@ -48,4 +49,7 @@ const mapDispatchToProps = (dispatch) => ({
     changeToEditView: (bool) => dispatch(changeToEditView(bool)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrapperPage);
+export default withRouter(connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(WrapperPage));
