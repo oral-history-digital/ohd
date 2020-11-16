@@ -404,15 +404,6 @@ h1.search-results-title {
   &:not(.active):hover {
     background-color: var(--secondary-color);
     color: $flyout-tab-title-text-color;
-    // .fa {
-    //   color: $gray-darker;
-    // }
-  }
-  span {
-    display: none;
-    @include screen-m {
-      display: inline-block;
-    }
   }
 }
 
