@@ -1,4 +1,5 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
+import OutsideClickHandler from 'react-outside-click-handler';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -9,42 +10,50 @@ class PopupMenu extends Component {
         super(props);
 
         this.state = { isOpen: false };
+        this.open = this.open.bind(this);
         this.close = this.close.bind(this);
-        this.toggle = this.toggle.bind(this);
+    }
+
+    open() {
+        this.setState({ isOpen: true });
     }
 
     close() {
         this.setState({ isOpen: false });
     }
 
-    toggle() {
-        this.setState((prevState) => ({ isOpen: !prevState.isOpen }));
-    }
-
     render() {
-        let { className, children } = this.props;
+        const { children } = this.props;
+        const { isOpen } = this.state;
 
-        return (
-            <Fragment>
+        return isOpen ?
+            (<OutsideClickHandler onOutsideClick={this.close}>
                 <div
                     className="flyout-sub-tabs-content-ico-link"
                     title={t(this.props, 'more')}
-                    onClick={this.toggle}
+                    onClick={this.close}
                 >
                     <i className="fa fa-ellipsis-v" />
                 </div>
                 <div className={classNames('popup-menu', {
-                    'popup-menu--invisible': !this.state.isOpen})}>
+                    'popup-menu--invisible': !isOpen})}>
                     <i
                         className='popup-menu__close fa-times fa'
-                        onClick={this.toggle}
+                        onClick={this.close}
                     />
                     <ul className="popup-menu__list">
                         {children}
                     </ul>
                 </div>
-            </Fragment>
-      );
+            </OutsideClickHandler>) : (
+                <div
+                    className="flyout-sub-tabs-content-ico-link"
+                    title={t(this.props, 'more')}
+                    onClick={this.open}
+                >
+                    <i className="fa fa-ellipsis-v" />
+                </div>
+            );
     }
 }
 
