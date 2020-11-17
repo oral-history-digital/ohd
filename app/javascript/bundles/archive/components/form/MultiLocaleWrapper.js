@@ -36,7 +36,7 @@ export default class MultiLocaleWrapper extends React.Component {
     //
     preparedProps(locale) {
         let translation;
-        if (this.props.data.type === 'Segment') {
+        if (this.props.data && this.props.data.type === 'Segment') {
             translation = this.props.data && this.props.data.translations && (
                 this.props.data.translations.find(t => t.locale === locale) ||
                 // in zwar there has not been an inital original version
