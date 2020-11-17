@@ -2,6 +2,7 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [:update, :destroy]
 
   def create
+    # ref is the task to comment on 
     ref = comment_params[:ref_type].classify.constantize.find(comment_params[:ref_id])
     authorize ref, :update?
     @comment = Comment.create comment_params

@@ -1,7 +1,7 @@
 class CommentPolicy < ApplicationPolicy
 
   def create?
-    user.admin? || user.permissions?('Comment', :create) || user.all_tasks.find{|t| ref == t}
+    user.admin? || user.permissions?('Comment', :create) || user.all_tasks.find{|t| record == t}
   end
 
   def update?
