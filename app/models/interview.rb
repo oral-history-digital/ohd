@@ -323,6 +323,13 @@ class Interview < ApplicationRecord
     end
   end
 
+  def public_attributes=(hash)
+    binding.pry
+    public_atts = self.properties[:public_attributes].with_indifferent_access.update("#{hash.keys.first}": hash.values.first)
+    binding.pry
+    self[:properties] = self.properties.update(public_attributes: public_atts)
+  end
+
   def tasks_user_account_ids
     tasks.map(&:user_account_id).compact.uniq
   end
