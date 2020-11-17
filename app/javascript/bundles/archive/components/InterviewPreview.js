@@ -1,7 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
-import { PROJECT, MISSING_STILL } from '../constants/archiveConstants'
+import { MISSING_STILL } from '../constants/archiveConstants'
 import InterviewSearchResultsContainer from '../containers/InterviewSearchResultsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 
@@ -11,27 +12,14 @@ export default class InterviewPreview extends React.Component {
 
     constructor(props) {
         super(props);
+
         this.handleClick = this.handleClick.bind(this);
-        let detailedState = false;
-        this.state = {
-            open: detailedState,
-            divClass: detailedState ? "interview-preview search-result detailed" : "interview-preview search-result",
-        };
+
+        this.state = { open: false };
     }
 
-    handleClick(event) {
-        if (event !== undefined) event.preventDefault();
-        if (this.state.open) {
-            this.setState({
-                ['open']: false,
-                ['divClass']: "interview-preview search-result",
-            });
-        } else {
-            this.setState({
-                ['open']: true,
-                ['divClass']: "interview-preview search-result detailed",
-            });
-        }
+    handleClick() {
+        this.setState(prevState => ({ open: !prevState.open }));
     }
 
     componentDidMount() {
@@ -68,7 +56,7 @@ export default class InterviewPreview extends React.Component {
     renderBadge() {
         if (this.resultsCount() > 0) {
             return (
-                <div className={'badge'}  onClick={this.handleClick} title={`${t(this.props, 'segment_hits')}: ${this.resultsCount()}`}>
+                <div className={'badge'} onClick={this.handleClick} title={`${t(this.props, 'segment_hits')}: ${this.resultsCount()}`}>
                     <i className="fa fa-align-justify" aria-hidden="true" />
                     &nbsp;
                     {this.resultsCount()}
@@ -104,22 +92,25 @@ export default class InterviewPreview extends React.Component {
     }
 
     customMetadataFields(interviewee) {
-        let _this = this;
-        return this.props.project.grid_fields.map(function(field, i){
-            let obj = (field.ref_object_type === 'Interview' || field.source === 'Interview') ? _this.props.interview : interviewee;
-            return <span key={i}>{humanReadable(obj, field.name, _this.props, _this.state, '') + ' '}</span>;
-        })
+        return this.props.project.grid_fields.map((field, i) => {
+            let obj = (field.ref_object_type === 'Interview' || field.source === 'Interview') ?
+                this.props.interview :
+                interviewee;
+            return (
+                <li key={i} className="DetailList-item">
+                    {humanReadable(obj, field.name, this.props, this.state, '') + ' '}
+                </li>
+            );
+        });
     }
 
     interviewDetails() {
         let interviewee = getInterviewee(this.props);
-        if (interviewee && interviewee.associations_loaded) {
+        if (interviewee && interviewee.associations_loaded && !this.state.open) {
             return (
-                <div className={'search-result-data'} lang={this.props.locale}>
-                    {/*<span>{t(this.props, `search_facets.${this.props.interview.media_type}`)}</span> <span>{this.props.interview.duration_human}</span><br/>*/}
-                    {/*<span>{this.props.interview.language[this.props.locale] + ' '}</span>*/}
+                <ul className="DetailList" lang={this.props.locale}>
                     {this.customMetadataFields(interviewee)}
-                </div>
+                </ul>
             )
         }
     }
@@ -151,7 +142,9 @@ export default class InterviewPreview extends React.Component {
     render() {
         if (this.props.statuses && this.props.statuses[this.props.interview.archive_id] !== 'deleted') {
             return (
-                <div className={this.state.divClass}>
+                <div className={classNames('interview-preview', 'search-result', {
+                    'detailed': this.state.open,
+                })}>
                     {this.renderBadge()}
                     <Link className={'search-result-link'}
                         onClick={() => {
