@@ -273,7 +273,12 @@ export function admin(props, obj={}) {
                         return (
                             permission.klass === obj.type && 
                             permission.action_name === obj.action &&
-                            permission.interview_id === obj.interview_id
+                            (
+                                // check for interview_id only on non-interviews
+                                //
+                                (obj.type !== 'Interview' && permission.interview_id === obj.interview_id) ||
+                                (obj.type === 'Interview' && permission.interview_id === obj.id)
+                            )
                         )
                     })
                 ) ||

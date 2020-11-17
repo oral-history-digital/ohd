@@ -75,7 +75,7 @@ export default class SingleValueWithForm extends React.Component {
 
         let statusCheckbox = {
             elementType: 'input',
-            attribute: `properties[public_attributes][${this.attribute()}]`,
+            attribute: `public_attributes[${this.attribute()}]`,
             value: this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.attribute()],
             labelKey: 'activerecord.attributes.default.publish',
             type: 'checkbox',
