@@ -304,6 +304,7 @@ class InterviewsController < ApplicationController
       "media_type",
       "biographies_workflow_state",
       properties: {},
+      public_attributes: {},
       contributions_attributes: [:person_id, :contribution_type, :speaker_designation],
       translations_attributes: [:locale, :id, :observations]
     )

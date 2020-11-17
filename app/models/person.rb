@@ -26,6 +26,12 @@ class Person < ApplicationRecord
 
   serialize :properties
 
+  after_create :set_public_attributes_to_properties
+  def set_public_attributes_to_properties
+    atts = %w(first_name last_name alias_names other_first_names gender date_of_birth)
+    update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
+  end
+
   searchable do
     string :archive_id, :multiple => true, :stored => true do
       contributions.map { |c| c.interview && c.interview.archive_id }.compact

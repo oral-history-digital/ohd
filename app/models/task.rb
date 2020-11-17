@@ -4,7 +4,7 @@ class Task < ApplicationRecord
   belongs_to :supervisor, class_name: 'UserAccount'
   belongs_to :task_type
   has_many :permissions, through: :task_type
-  belongs_to :interview
+  belongs_to :interview, touch: true
   has_many :comments, as: :ref, dependent: :destroy
 
   validates_associated :interview

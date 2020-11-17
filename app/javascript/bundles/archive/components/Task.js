@@ -139,7 +139,7 @@ export default class Task extends React.Component {
                     {this.box(this.valueAndSelect('workflow_state', this.workflowStatesAsOptionsForSelect()))}
                     <input type="submit" value={t(this.props, 'submit')}/>
                 </form>
-                {this.box(admin(this.props, this.props.task) && <CommentsContainer data={this.props.task.comments} initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}} />, '30')}
+                {this.box(admin(this.props, this.props.task) && <CommentsContainer data={this.props.task.comments} task={this.props.task} initialFormValues={{ref_id: this.props.task.id, ref_type: 'Task'}} />, '30')}
             </div>
         );
     }

@@ -127,30 +127,23 @@ export default class Data extends React.Component {
     }
 
     edit() {
-        if (
-            !this.props.hideEdit &&
-            admin(this.props, this.props.data)
-        ) {
-            return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, `edit.${this.props.scope}.edit`)}
-                    onClick={() => this.props.openArchivePopup({
-                        title: `${this.name()} ${t(this.props, `edit.${this.props.scope}.edit`)}`,
-                        content: (
-                            <div>
-                                {this.props.hideShow && this.details()}
-                                {this.props.form(this.props.data)}
-                            </div>
-                        )
-                    })}
-                >
-                    <i className="fa fa-pencil"></i>
-                </div>
-            )
-        } else {
-            return null;
-        }
+        return (
+            <div
+                className='flyout-sub-tabs-content-ico-link'
+                title={t(this.props, `edit.${this.props.scope}.edit`)}
+                onClick={() => this.props.openArchivePopup({
+                    title: `${this.name()} ${t(this.props, `edit.${this.props.scope}.edit`)}`,
+                    content: (
+                        <div>
+                            {this.props.hideShow && this.details()}
+                            {this.props.form(this.props.data)}
+                        </div>
+                    )
+                })}
+            >
+                <i className="fa fa-pencil"></i>
+            </div>
+        )
     }
 
     destroy() {
@@ -159,31 +152,23 @@ export default class Data extends React.Component {
     }
 
     delete() {
-        if (
-            this.props.data &&
-            !this.props.hideDelete &&
-            admin(this.props, this.props.data)
-        ) {
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'delete')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'delete'),
-                    content: (
-                        <div>
-                            <p>{this.props.data.name[this.props.locale] || this.props.data.name}</p>
-                            <div className='any-button' onClick={() => this.destroy()}>
-                                {t(this.props, 'delete')}
-                            </div>
+        return <div
+            className='flyout-sub-tabs-content-ico-link'
+            title={t(this.props, 'delete')}
+            onClick={() => this.props.openArchivePopup({
+                title: t(this.props, 'delete'),
+                content: (
+                    <div>
+                        <p>{this.props.data.name[this.props.locale] || this.props.data.name}</p>
+                        <div className='any-button' onClick={() => this.destroy()}>
+                            {t(this.props, 'delete')}
                         </div>
-                    )
-                })}
-            >
-                <i className="fa fa-trash-o"></i>
-            </div>
-        } else {
-            return null;
-        }
+                    </div>
+                )
+            })}
+        >
+            <i className="fa fa-trash-o"></i>
+        </div>
     }
 
     joinedData() {
@@ -216,12 +201,16 @@ export default class Data extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props, this.props.data)) {
+        if (
+            admin(this.props, this.props.data) || 
+            // allow commenting onn task
+            this.props.task && admin(this.props, this.props.task)
+        ) {
             return (
                 <PopupMenuContainer>
                     <PopupMenuContainer.Item>{this.show()}</PopupMenuContainer.Item>
-                    <PopupMenuContainer.Item>{this.edit()}</PopupMenuContainer.Item>
-                    <PopupMenuContainer.Item>{this.delete()}</PopupMenuContainer.Item>
+                    <PopupMenuContainer.Item>{!this.props.hideEdit && this.edit()}</PopupMenuContainer.Item>
+                    <PopupMenuContainer.Item>{!this.props.hideDelete && this.delete()}</PopupMenuContainer.Item>
                 </PopupMenuContainer>
             );
         }

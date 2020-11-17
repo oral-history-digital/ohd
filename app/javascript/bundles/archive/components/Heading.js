@@ -69,7 +69,7 @@ export default class Heading extends React.Component {
     }
 
     editHeading() {
-        if (admin(this.props, {type: 'Segment', action: 'update'})) {
+        if (admin(this.props, this.props.data.segment)) {
             return (
                 <span
                     className='flyout-sub-tabs-content-ico-link'

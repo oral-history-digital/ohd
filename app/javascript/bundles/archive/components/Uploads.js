@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
-import { t } from '../../../lib/utils';
+import { t, admin } from '../../../lib/utils';
 
 export default class Uploads extends React.Component {
 
@@ -48,57 +48,61 @@ export default class Uploads extends React.Component {
 
     content() {
         if (
-            !this.state.showForm
+            admin(this.props, {type: 'Upload', action: 'create'})
         ) {
-            return (
-                <div>
-                    <p>
-                        {t(this.props, 'edit.upload.processing')}
-                    </p>
-                    <button
-                        className='return-to-upload'
-                        onClick={() => this.returnToForm()}
-                    >
-                        {t(this.props, 'edit.upload.return')}
-                    </button>
-                </div>
-            )
-        } else {
-            let _this = this;
-            return (
-                <div>
-                    {this.explanations()}
-                    <Form
-                        scope='upload'
-                        onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
-                        submitText='edit.upload.upload'
-                        elements={[
-                            {
-                                elementType: 'select',
-                                attribute: 'type',
-                                values: this.props.uploadTypes,
-                                handlechangecallback: this.handleUploadTypeChange,
-                                withEmpty: true,
-                                validate: function(v){return v !== ''},
-                                individualErrorMsg: 'empty'
-                            },
-                            {
-                                elementType: 'select',
-                                attribute: 'lang',
-                                values: this.props.locales,
-                                withEmpty: true,
-                                validate: function(v){return /\w{2}/.test(v)},
-                            },
-                            {
-                                attribute: 'data',
-                                elementType: 'input',
-                                type: 'file',
-                                validate: function(v){return v instanceof File},
-                            },
-                        ]}
-                    />
-                </div>
-            )
+            if (
+                !this.state.showForm
+            ) {
+                return (
+                    <div>
+                        <p>
+                            {t(this.props, 'edit.upload.processing')}
+                        </p>
+                        <button
+                            className='return-to-upload'
+                            onClick={() => this.returnToForm()}
+                        >
+                            {t(this.props, 'edit.upload.return')}
+                        </button>
+                    </div>
+                )
+            } else {
+                let _this = this;
+                return (
+                    <div>
+                        {this.explanations()}
+                        <Form
+                            scope='upload'
+                            onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
+                            submitText='edit.upload.upload'
+                            elements={[
+                                {
+                                    elementType: 'select',
+                                    attribute: 'type',
+                                    values: this.props.uploadTypes,
+                                    handlechangecallback: this.handleUploadTypeChange,
+                                    withEmpty: true,
+                                    validate: function(v){return v !== ''},
+                                    individualErrorMsg: 'empty'
+                                },
+                                {
+                                    elementType: 'select',
+                                    attribute: 'lang',
+                                    values: this.props.locales,
+                                    withEmpty: true,
+                                    validate: function(v){return /\w{2}/.test(v)},
+                                },
+                                {
+                                    attribute: 'data',
+                                    elementType: 'input',
+                                    type: 'file',
+                                    validate: function(v){return v instanceof File},
+                                },
+                            ]}
+                        />
+                    </div>
+                )
+            }
         }
     }
 
