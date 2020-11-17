@@ -29,7 +29,7 @@ export default class RegistryReferences extends React.Component {
     loadRootRegistryEntry() {
         // TODO: fit this for MOG - id of root entry will be different
         if (
-            !this.props.registryEntriesStatus[1] || 
+            !this.props.registryEntriesStatus[1] ||
             this.props.registryEntriesStatus[1].split('-')[0] === 'reload'
         ) {
             this.props.fetchData(this.props, 'registry_entries', 1);
@@ -43,7 +43,7 @@ export default class RegistryReferences extends React.Component {
         let usedRegistryEntryIds = [];
 
         if (
-            this.props.refObject && 
+            this.props.refObject &&
             this.props.registryEntriesStatus[`ref_object_type_${this.props.refObject.type}_ref_object_id_${this.props.refObject.id}`] &&
             this.props.registryEntriesStatus[`ref_object_type_${this.props.refObject.type}_ref_object_id_${this.props.refObject.id}`].split('-')[0] === 'fetched'
         ) {
@@ -53,30 +53,30 @@ export default class RegistryReferences extends React.Component {
                 let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
 
                 if (
-                    registryEntry && 
-                    registryEntry.name[this.props.locale] && 
-                    usedRegistryEntryIds.indexOf(registryEntry.id) === -1 && 
+                    registryEntry &&
+                    registryEntry.name[this.props.locale] &&
+                    usedRegistryEntryIds.indexOf(registryEntry.id) === -1 &&
                     (
                         // select on this.props.registryReferenceTypeId only if defined
-                        (this.props.registryReferenceTypeId && (this.props.registryReferenceTypeId === registryReference.registry_reference_type_id)) || 
+                        (this.props.registryReferenceTypeId && (this.props.registryReferenceTypeId === registryReference.registry_reference_type_id)) ||
                         !this.props.registryReferenceTypeId
                     )
                 ) {
                     registryReferences.push(
-                        <RegistryReferenceContainer 
-                            registryEntry={registryEntry} 
-                            registryReference={registryReference} 
+                        <RegistryReferenceContainer
+                            registryEntry={registryEntry}
+                            registryReference={registryReference}
                             refObject={this.props.refObject}
                             lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
                             locale={this.props.locale}
-                            key={`registry_reference-${registryReference.id}`} 
+                            key={`registry_reference-${registryReference.id}`}
                             setOpenReference={this.props.setOpenReference}
                         />
                     );
                     usedRegistryEntryIds.push(registryEntry.id);
                 }
             }
-        } 
+        }
         return registryReferences;
     }
 
@@ -84,14 +84,15 @@ export default class RegistryReferences extends React.Component {
         // TODO: fit this for MOG - id of root entry will be different
         if (admin(this.props, {type: 'RegistryReference', action: 'create', interview_id: this.props.interview.id}) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
             return (
-                <span
-                    className='flyout-sub-tabs-content-ico-link'
+                <button
+                    type="button"
+                    className="RegistryReferences-addButton"
                     title={t(this.props, 'edit.registry_reference.new')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.registry_reference.new'),
-                        content: <RegistryReferenceFormContainer 
-                                     refObject={this.props.refObject} 
-                                     interview={this.props.interview} 
+                        content: <RegistryReferenceFormContainer
+                                     refObject={this.props.refObject}
+                                     interview={this.props.interview}
                                      lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
                                      registryReferenceTypeId={this.props.registryReferenceTypeId}
                                      locale={this.props.locale}
@@ -100,7 +101,7 @@ export default class RegistryReferences extends React.Component {
                     })}
                 >
                     <i className="fa fa-plus"></i>
-                </span>
+                </button>
             )
         } else {
             return null;
@@ -109,11 +110,12 @@ export default class RegistryReferences extends React.Component {
 
     render() {
         return (
-            <span>
-                {this.registryReferences()}
+            <div className="RegistryReferences">
+                <ul className="RegistryReferences-list">
+                    {this.registryReferences()}
+                </ul>
                 {this.addRegistryReference()}
-            </span>
+            </div>
         )
     }
 }
-
