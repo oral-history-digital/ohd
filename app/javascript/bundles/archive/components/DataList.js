@@ -38,6 +38,7 @@ export default class DataLists extends React.Component {
                         hideEdit={this.props.hideEdit}
                         hideDelete={this.props.hideDelete}
                         editView={this.props.editView}
+                        task={this.props.task}
                         key={`${this.props.scope}-${c}`} 
                     />
                 )
@@ -63,7 +64,11 @@ export default class DataLists extends React.Component {
 
     add() {
         if (
-            admin(this.props, {type: camelcase(this.props.scope), action: 'create', interview_id: this.props.interview && this.props.interview.id}) && 
+            (
+                admin(this.props, {type: camelcase(this.props.scope), action: 'create', interview_id: this.props.interview && this.props.interview.id}) || 
+                // allow commenting onn task
+                this.props.task && admin(this.props, this.props.task)
+            ) &&
             !this.props.hideAdd
         ) {
             return (

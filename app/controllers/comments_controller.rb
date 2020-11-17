@@ -2,7 +2,8 @@ class CommentsController < ApplicationController
   before_action :set_comment, only: [:update, :destroy]
 
   def create
-    authorize Comment
+    ref = comment_params[:ref_type].classify.constantize.find(comment_params[:ref_id])
+    authorize ref, :update?
     @comment = Comment.create comment_params
     receiver = @comment.ref.user_account == current_user_account ? @comment.ref.supervisor : @comment.ref.user_account
     @comment.update_attributes author_id: current_user_account.id, receiver_id: receiver && receiver.id
