@@ -8,6 +8,10 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import { isMobile } from '../../../lib/media-queries';
 
 export default class ArchiveSearchForm extends React.Component {
+    static propTypes = {
+        history: PropTypes.object.isRequired,
+    }
+
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -53,7 +57,6 @@ export default class ArchiveSearchForm extends React.Component {
             this.props.searchInMap(url, {});
         } else {
             this.props.resetQuery('archive');
-            //let url = `/${this.context.router.route.match.params.projectId}/${this.context.router.route.match.params.locale}/searches/archive`;
             let url = `${pathBase(this.props)}/searches/archive`;
             this.props.searchInArchive(url, {});
 
@@ -115,11 +118,11 @@ export default class ArchiveSearchForm extends React.Component {
         if(this.props.map && !this.props.isMapSearching ) {
             let url = `${pathBase(this.props)}/searches/map`;
             this.props.searchInMap(url, params);
-            this.context.router.history.push(url);
+            this.props.history.push(url);
         } else if (!this.props.map && !this.props.isArchiveSearching) {
             let url = `${pathBase(this.props)}/searches/archive`;
             this.props.searchInArchive(url, params);
-            this.context.router.history.push(url);
+            this.props.history.push(url);
         }
     }
 
@@ -258,9 +261,5 @@ export default class ArchiveSearchForm extends React.Component {
                 )
             }
         )
-    }
-
-    static contextTypes = {
-        router: PropTypes.object
     }
 }
