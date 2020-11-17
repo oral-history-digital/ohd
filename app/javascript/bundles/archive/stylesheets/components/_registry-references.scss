@@ -1,0 +1,23 @@
+/**
+ * RegistryReferences component
+ */
+
+.RegistryReferences {
+}
+
+.RegistryReferences-list {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+    margin: 0 -0.5rem;
+    padding: 0;
+}
+
+.RegistryReferences-addButton {
+    border: none;
+    color: var(--editorial-color);
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    transition: $transition-duration;
+}
