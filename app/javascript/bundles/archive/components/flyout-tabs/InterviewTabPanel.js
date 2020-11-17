@@ -141,13 +141,11 @@ class InterviewTabPanel extends Component {
                     }
 
                     <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
-                        <AuthShowContainer ifLoggedIn={projectId === "zwar"}>
-                            <InterviewDataContainer
-                                title={t(this.props, 'photos')}
-                                open={true}
-                                content={<GalleryContainer/>}
-                            />
-                        </AuthShowContainer>
+                        <InterviewDataContainer
+                            title={t(this.props, 'photos')}
+                            open={true}
+                            content={<GalleryContainer/>}
+                        />
 
                         <AuthShowContainer ifLoggedIn={hasMap}>
                             <InterviewDataContainer
