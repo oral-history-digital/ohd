@@ -1,4 +1,6 @@
 import React from 'react';
+import classNames from 'classnames';
+
 import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
 import { t, pluralize, underscore, admin } from '../../../lib/utils';
 
@@ -49,10 +51,10 @@ export default class RegistryReference extends React.Component {
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.registry_entry.edit'),
                         content: (
-                            <RegistryReferenceFormContainer 
-                                registryReference={this.props.registryReference} 
+                            <RegistryReferenceFormContainer
+                                registryReference={this.props.registryReference}
                                 lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
-                                locale={this.props.locale} 
+                                locale={this.props.locale}
                                 goDeeper={true}
                             />
                         )
@@ -72,9 +74,9 @@ export default class RegistryReference extends React.Component {
         } else {
             // refObject.type === Person || Interview
             this.props.deleteData(
-                this.props, pluralize(underscore(this.props.refObject.type)), 
-                this.props.refObject.archiveId || this.props.refObject.archive_id || this.props.refObject.id, 
-                'registry_references', 
+                this.props, pluralize(underscore(this.props.refObject.type)),
+                this.props.refObject.archiveId || this.props.refObject.archive_id || this.props.refObject.id,
+                'registry_references',
                 this.props.registryReference.id
             );
         }
@@ -111,7 +113,7 @@ export default class RegistryReference extends React.Component {
 
     buttons() {
         return (
-            <span className={'flyout-sub-tabs-content-ico'}>
+            <span className="RegistryReference-buttons flyout-sub-tabs-content-ico">
                 {this.edit()}
                 {this.delete()}
             </span>
@@ -121,12 +123,13 @@ export default class RegistryReference extends React.Component {
     entry() {
         if (this.props.registryReference.workflow_state === 'checked' || admin(this.props, this.props.registryReference)) {
             let hasNote = !!this.props.registryEntry.notes[this.props.locale]
-            let css = hasNote ? 'scope-note-link' : '';
             return (
-                <span 
-                    id={`reference_${this.props.registryReference.id}`} 
-                    className={css}
-                    key={"reference-" + this.props.registryReference.id} 
+                <span
+                    id={`reference_${this.props.registryReference.id}`}
+                    className={classNames('RegistryReference-name', {
+                        'scope-note-link': hasNote,
+                    })}
+                    key={"reference-" + this.props.registryReference.id}
                     onClick={() => hasNote && this.props.setOpenReference(this.props.registryEntry)}
                 >
                     {this.props.registryEntry.name[this.props.locale]}
@@ -139,11 +142,10 @@ export default class RegistryReference extends React.Component {
 
     render() {
         return (
-            <span className={'registry-reference'}>
+            <li className="RegistryReference registry-reference">
                 {this.entry()}
                 {this.buttons()}
-            </span>
+            </li>
         )
     }
 }
-
