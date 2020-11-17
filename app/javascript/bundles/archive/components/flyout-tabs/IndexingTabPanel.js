@@ -38,7 +38,7 @@ class IndexingTabPanel extends Component {
                 </div>
                 <div className='flyout-sub-tabs-container'>
                     {this.subTab('edit.interview.new', 'description', `${pathBase(this.props)}/interviews/new`, {type: 'Interview', action: 'create'})}
-                    {this.subTab('edit.upload.upload', '', `${pathBase(this.props)}/uploads/new`, {type: 'General', action: 'edit'})}
+                    {this.subTab('edit.upload.upload', '', `${pathBase(this.props)}/uploads/new`, {type: 'Upload', action: 'create'})}
                     {this.subTab( 'edit.person.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
                     {this.subTab( 'edit.registry_reference_type.admin', <RegistryReferenceTypesSearchFormContainer/>, `${pathBase(this.props)}/registry_reference_types`, {type: 'RegistryReferenceType', action: 'update'})}
                     {this.subTab( 'edit.collection.admin', <CollectionsSearchFormContainer/>, `${pathBase(this.props)}/collections`, {type: 'Collection', action: 'update'})}
