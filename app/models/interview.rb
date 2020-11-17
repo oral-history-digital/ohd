@@ -134,6 +134,15 @@ class Interview < ApplicationRecord
            dependent: :destroy
 
   has_many :tasks, dependent: :destroy
+
+  serialize :properties
+
+  after_create :set_public_attributes_to_properties
+  def set_public_attributes_to_properties
+    atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id observations)
+    update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
+  end
+
   after_create :create_tasks
   def create_tasks
     project.task_types.each do |task_type|
@@ -144,7 +153,6 @@ class Interview < ApplicationRecord
   translates :observations, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
-  serialize :properties
 
   accepts_nested_attributes_for :contributions
 
@@ -333,7 +341,7 @@ class Interview < ApplicationRecord
     end
 
     (1..d.to_i).each do |t|
-      Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', t)}", number: t, interview_id: id)
+      tp = Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', t)}", number: t, interview_id: id)
     end
   end
 
