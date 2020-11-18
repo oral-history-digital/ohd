@@ -1,23 +1,19 @@
 .logo-link {
-  display: block;
-  margin: 0;
   color: var(--primary-color);
-  overflow: hidden;
-  padding: $header-logo-padding;
-  &:hover {
-    text-decoration: none !important;
-    color: var(--primary-color);
-  }
+  display: block;
+  max-width: 15rem;
+  width: 80%;
+
   @include screen-m {
-    max-width: 305px;
+    max-width: 19rem;
   }
 }
 
-.logo-img{
+.logo-img {
   display: block;
-  max-width: 80%;
-  max-height: 52px;
-  @include screen-m {
-    max-width: 100%;
-  }
+  width: 100%;
+}
+
+.logo-link:hover {
+  text-decoration: none !important;
 }
