@@ -8,11 +8,10 @@ export default class RichTextarea extends React.Component {
         super(props);
         this.state = {
             valid: !this.props.validate,
-            value: this.props.data && this.props.data[this.props.attribute] ? 
-                  RichTextEditor.createValueFromString(this.props.data[this.props.attribute], 'html') : 
+            value: this.props.data && this.props.data[this.props.attribute] ?
+                  RichTextEditor.createValueFromString(this.props.data[this.props.attribute], 'html') :
                   RichTextEditor.createEmptyValue()
         };
-                
         this.handleChange = this.handleChange.bind(this);
     }
 
