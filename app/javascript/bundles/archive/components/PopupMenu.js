@@ -18,7 +18,7 @@ function PopupMenu(props) {
         <Popup
             className={classNames('popup-menu', props.className)}
             trigger={trigger}
-            on={['click', 'focus']}
+            on={['click']}
             contentStyle={{ zIndex:1001 }}
             position={['right top', 'center top', 'left top']}
         >
