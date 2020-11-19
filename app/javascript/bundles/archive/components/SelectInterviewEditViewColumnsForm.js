@@ -1,7 +1,7 @@
 import React from 'react';
 import Form from '../containers/form/Form';
 import SingleTextInputFormContainer from '../containers/SingleTextInputFormContainer';
-import { t } from '../../../lib/utils';
+import { t, admin, permittedInterviewEditColumns } from '../../../lib/utils';
 
 export default class SelectInterviewEditViewColumnsForm extends React.Component {
 
@@ -17,13 +17,8 @@ export default class SelectInterviewEditViewColumnsForm extends React.Component 
         return values;
     }
 
-    possibleColumns() {
-        // TODO: change this to various edit views!
-        return ['timecode', 'text_orig', 'text_translated', 'mainheading_orig', 'subheading_orig', 'mainheading_translated', 'subheading_translated', 'registry_references', 'annotations'];
-    }
-
     formElements() {
-        return this.possibleColumns().map( column => {
+        return permittedInterviewEditColumns(this.props, this.props.interview.id).map( column => {
             return ({
                 elementType: 'input',
                 type: 'checkbox',

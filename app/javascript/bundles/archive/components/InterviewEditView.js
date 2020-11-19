@@ -1,6 +1,6 @@
 import React from 'react';
 import SegmentEditViewContainer from '../containers/SegmentEditViewContainer';
-import { t, segments, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
+import { t, segments, sortedSegmentsWithActiveIndex, getInterviewee, permittedInterviewEditColumns } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class InterviewEditView extends React.Component {
@@ -37,16 +37,11 @@ export default class InterviewEditView extends React.Component {
     }
 
     tableHeader() {
-      // where does the column header 'translations_attributes' come from? FIXME remove!
-      let columns = this.props.selectedInterviewEditViewColumns
-      let index = columns.indexOf('translations_attributes');
-      if (index > -1) {
-        columns.splice(index, 1);
-      }
+        let columns = this.props.selectedInterviewEditViewColumns.filter(v => permittedInterviewEditColumns(this.props, this.props.interview.id).includes(v))
         let count = columns.size
         let row = columns.map((column, index) => {
-              let className = column === 'timecode' ? 'small' : ''
-              return <th className={className} key={`edit-column-header-${index}`}>{t(this.props, `edit_column_header.${column}`)}</th>
+            let className = column === 'timecode' ? 'small' : ''
+            return <th className={className} key={`edit-column-header-${index}`}>{t(this.props, `edit_column_header.${column}`)}</th>
         })
         return <tr>{row}</tr>;
     }

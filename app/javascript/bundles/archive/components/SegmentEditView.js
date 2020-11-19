@@ -3,7 +3,7 @@ import VizSensor from 'react-visibility-sensor/visibility-sensor';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import SubmitOnBlurForm from '../containers/form/SubmitOnBlurForm';
-import { t, fullname } from "../../../lib/utils";
+import { t, fullname, permittedInterviewEditColumns } from "../../../lib/utils";
 import moment from 'moment';
 
 export default class SegmentEditView extends React.Component {
@@ -120,7 +120,8 @@ export default class SegmentEditView extends React.Component {
 
     row(){
         let _this = this;
-        return this.props.selectedInterviewEditViewColumns.map(function(column, i){
+        let columns = this.props.selectedInterviewEditViewColumns.filter(v => permittedInterviewEditColumns(this.props, this.props.interview.id).includes(v))
+        return columns.map(function(column, i){
             return (
                 <td key={`${_this.props.segment.id}-column-${i}`}>
                     {_this.state.visible && _this.columnElement(column)}

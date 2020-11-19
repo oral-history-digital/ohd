@@ -18,6 +18,8 @@ const mapStateToProps = (state) => {
         skipEmptyRows: state.archive.skipEmptyRows,
         segmentsStatus: state.data.statuses.segments,
         selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,
+        account: state.data.accounts.current,
+        editView: state.archive.editView,
     }
 }
 
