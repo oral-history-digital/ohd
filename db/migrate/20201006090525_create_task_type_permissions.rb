@@ -26,6 +26,9 @@ class CreateTaskTypePermissions < ActiveRecord::Migration[5.2]
         {klass: 'Contribution', action_name: 'create'},
         {klass: 'Contribution', action_name: 'update'},
         {klass: 'Contribution', action_name: 'destroy'},
+        {klass: 'RegistryReference', action_name: 'create'},
+        {klass: 'RegistryReference', action_name: 'update'},
+        {klass: 'RegistryReference', action_name: 'destroy'}
       ],
       translation_metadata: [
         {klass: 'Interview', action_name: 'update'}
