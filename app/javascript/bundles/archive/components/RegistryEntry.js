@@ -4,12 +4,11 @@ import RegistryEntryShowContainer from '../containers/RegistryEntryShowContainer
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import RegistryHierarchyFormContainer from '../containers/RegistryHierarchyFormContainer';
 import PopupMenu from './PopupMenu';
-import { t, pluralize, admin } from '../../../lib/utils';
+import { t, admin } from '../../../lib/utils';
 
 export default class RegistryEntry extends React.Component {
-
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
         this.state = {
             childrenVisible: false,
             editButtonsVisible: false,
@@ -63,7 +62,6 @@ export default class RegistryEntry extends React.Component {
                 className='flyout-sub-tabs-content-ico-link'
                 title={t(this.props, 'activerecord.models.registry_entries.actions.show')}
                 onClick={() => this.props.openArchivePopup({
-                    // title: this.props.data.name[this.props.locale],
                     content: <RegistryEntryShowContainer
                     registryEntryId={this.props.data.id}
                     registryEntryParent={this.props.registryEntryParent}
@@ -223,7 +221,7 @@ export default class RegistryEntry extends React.Component {
     editButtons() {
         if (admin(this.props, this.props.data)) {
             return (
-                <PopupMenu translations={this.props.translations} locale={this.props.locale}>
+                <PopupMenu>
                     <PopupMenu.Item>{this.edit()}</PopupMenu.Item>
                     <PopupMenu.Item>{this.delete()}</PopupMenu.Item>
                     <PopupMenu.Item>{this.addRegistryEntry()}</PopupMenu.Item>
@@ -257,7 +255,6 @@ export default class RegistryEntry extends React.Component {
                 onClick={() => this.showChildren()}
             >
                 {this.props.data.name[this.props.locale]}
-                {/* {(this.props.data.child_ids[this.props.locale].length > 0) && ` (${this.props.data.child_ids[this.props.locale].length})`} */}
                 {this.showId()}
             </div>
         )
@@ -322,7 +319,6 @@ export default class RegistryEntry extends React.Component {
                 {this.entry()}
                 {this.buttons()}
                 {this.children()}
-                {/* {this.description()} */}
             </div>
         )
     }
