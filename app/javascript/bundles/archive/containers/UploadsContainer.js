@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         uploadTypes: project && project.upload_types,
         account: state.data.accounts.current,
+        editView: state.archive.editView,
         projectId: state.archive.projectId,
         hasMap: project && project.has_map,
     }
