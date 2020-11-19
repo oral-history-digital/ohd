@@ -2,31 +2,29 @@
  * PopupMenu component
  */
 
-.popup-menu {
-  background: #fff;
-  border: 1px solid black;
-  padding: 0.5rem 1.5rem 0 0;
-  //position: absolute;
-  text-align: initial;
+.popup-menu__trigger {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  outline: none;
+  padding: 0.25rem 0.5rem;
+  transition: background-color $transition-duration;
+}
+
+.popup-menu__trigger-icon {
+  color: var(--editorial-color) !important;
 }
 
 .popup-menu__list {
+  background-color: white;
+  border: 1px solid $gray-light;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
   list-style: none;
-  padding-left: 0;
+  padding: 0.5rem 0.5rem 0.5rem 0;
 }
 
-.popup-menu__close {
-  color: #8b8b7a;
-  cursor: pointer;
-  display: block;
-  padding: 0.25rem;
-  position: absolute;
-  right: 0;
-  top: 0;
-}
+/* States */
 
-/* Variants */
-
-.popup-menu--invisible {
-  display: none;
+.popup-menu__trigger:hover {
+  background-color: $gray-lighter;
 }
