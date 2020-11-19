@@ -9,7 +9,7 @@ function SiteHeader(props) {
 
     let src = null;
     if (logos) {
-        Object.keys(logos).map((k,i) => {
+        Object.keys(logos).map(k => {
             if (logos[k].locale === locale) {
                 src = logos[k].src
             }

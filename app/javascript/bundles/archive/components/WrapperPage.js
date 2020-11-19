@@ -10,6 +10,7 @@ import BurgerButton from './layout/BurgerButton';
 import MessagesContainer from '../containers/layout/MessagesContainer';
 import SiteHeaderContainer from '../containers/layout/SiteHeaderContainer';
 import SiteFooter from './layout/SiteFooter';
+import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
 
 export default class WrapperPage extends React.Component {
     static propTypes = {
@@ -140,7 +141,9 @@ export default class WrapperPage extends React.Component {
                     <BurgerButton open={visible}
                                   onClick={() => this.props.toggleFlyoutTabs(visible)}/>
 
-                    <FlyoutTabsContainer />
+                    <ErrorBoundaryContainer>
+                        <FlyoutTabsContainer />
+                    </ErrorBoundaryContainer>
 
                     <ArchivePopupContainer/>
                 </div>

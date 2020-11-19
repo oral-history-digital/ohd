@@ -30,13 +30,13 @@ export function humanReadable(obj, attribute, props, state, none='---') {
     let translation = obj.translations && obj.translations.find(t => t.locale === props.locale)
     let value = state.value || obj[attribute] || (translation && translation[attribute]);
 
-    if (props.optionsScope && props.translations[props.locale][props.optionsScope].hasOwnProperty(value)) 
+    if (props.optionsScope && props.translations[props.locale][props.optionsScope].hasOwnProperty(value))
         value = t(props, `${props.optionsScope}.${value}`);
 
-    if (props.translations[props.locale][attribute] && props.translations[props.locale][attribute].hasOwnProperty(value)) 
+    if (props.translations[props.locale][attribute] && props.translations[props.locale][attribute].hasOwnProperty(value))
         value = t(props, `${attribute}.${value}`);
 
-    if (props.translations[props.locale].hasOwnProperty(value)) 
+    if (props.translations[props.locale].hasOwnProperty(value))
         value = t(props, value);
 
     if (/\w+_id/.test(attribute) && attribute !== 'archive_id') // get corresponding name from e.g. collection_id
@@ -45,16 +45,11 @@ export function humanReadable(obj, attribute, props, state, none='---') {
     if (typeof value === 'object' && value !== null)
         value = value[props.locale]
 
-    if (typeof value === 'string' && state.collapsed) 
+    if (typeof value === 'string' && state.collapsed)
         value = value.substring(0,25)
 
     return value || none;
 }
-
-export function segments(props) {
-    return props.interview && props.interview.segments && props.interview.segments[props.tape] || {};
-}
-
 
 export function sortedSegmentsForTape(props, tape) {
     let sorted = [];
@@ -121,7 +116,7 @@ export function sortedSegmentsWithActiveIndex(time, props) {
     let activeSegment = null;
 
     if (props.interview && Object.keys(props.interview.first_segments_ids).length > 0) {
-        for (var i=1; i<= parseInt(props.interview.tape_count); i++) { 
+        for (var i=1; i<= parseInt(props.interview.tape_count); i++) {
             if (props.tape === i) {
                 let sortedWActiveAIndex = sortedSegmentsWithActiveIndexForTape(time, props);
                 index = sortedSegments.length + sortedWActiveAIndex[2];
@@ -161,7 +156,7 @@ export function t(props, key, params) {
     let keyArray = key.split('.');
     let productionFallback = keyArray[keyArray.length - 1];
 
-    if (keyArray.length > 2) { 
+    if (keyArray.length > 2) {
         keyArray[keyArray.length - 2] = 'default';
         defaultKey = keyArray.join('.');
     }
@@ -225,7 +220,7 @@ export function pluralize(word) {
     // or be aware that you have to upcase later!
     //
     let pluralizedWord;
-    if (word.toLowerCase() === 'person') 
+    if (word.toLowerCase() === 'person')
         pluralizedWord = word[0] + 'eople';
     else if (word[word.length - 1] === 'y')
         pluralizedWord = word.slice(0, -1) + 'ies'
@@ -249,9 +244,9 @@ export function underscore(str) {
 //   - editView ~ state.archive.editView
 //
 // obj can be the serialized json of e.g. an interview or a segment
-// 
+//
 // but obj can also be sth. like {type: 'Segment', id: 2345} or {type: 'UserRegistration', action: 'update'}
-// so obj should contain a type and (id or action) 
+// so obj should contain a type and (id or action)
 //
 export function admin(props, obj={}) {
     if (props.account && (props.editView || obj.type === 'Task')) {
@@ -261,17 +256,17 @@ export function admin(props, obj={}) {
             props.account.admin ||
             ((obj.type && (obj.id || obj.action)) && (
                 //
-                // if obj is a task of current_user_account, he/she should be able to edit it 
+                // if obj is a task of current_user_account, he/she should be able to edit it
                 (
-                    obj.type === 'Task' && 
+                    obj.type === 'Task' &&
                     !!tasks.find(task => task.id === obj.id)
-                ) || 
+                ) ||
                 //
                 // if obj.type and/or id correspond to a task-permission and obj.interview_id is the same as task.interview_id, current_user_account should be able to edit it
                 (
                     !!task_permissions.find(permission => {
                         return (
-                            permission.klass === obj.type && 
+                            permission.klass === obj.type &&
                             permission.action_name === obj.action &&
                             (
                                 // check for interview_id only on non-interviews
@@ -287,7 +282,7 @@ export function admin(props, obj={}) {
                 (
                     !!Object.values(props.account.permissions).find(permission => {
                         return (
-                            permission.klass === obj.type && 
+                            permission.klass === obj.type &&
                             permission.action_name === obj.action
                         )
                     })

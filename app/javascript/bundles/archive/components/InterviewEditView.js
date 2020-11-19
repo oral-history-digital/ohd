@@ -1,6 +1,6 @@
 import React from 'react';
 import SegmentEditViewContainer from '../containers/SegmentEditViewContainer';
-import { t, segments, sortedSegmentsWithActiveIndex, getInterviewee, permittedInterviewEditColumns } from '../../../lib/utils';
+import { t, sortedSegmentsWithActiveIndex, permittedInterviewEditColumns } from '../../../lib/utils';
 import spinnerSrc from '../../../images/large_spinner.gif'
 
 export default class InterviewEditView extends React.Component {

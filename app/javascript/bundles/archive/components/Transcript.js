@@ -1,6 +1,7 @@
 import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
-import { t, segments, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
+import { t, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
+import { segmentsForTape } from 'utils/segments';
 import spinnerSrc from '../../../images/large_spinner.gif'
 import {
     SEGMENTS_AFTER,
@@ -26,7 +27,7 @@ export default class Transcript extends React.Component {
     componentDidUpdate(prevProps) {
         this.loadSegments();
         if (
-            (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) || 
+            (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) ||
             prevProps.tape !== this.props.tape
         ) {
             this.scrollToActiveSegment();
@@ -61,7 +62,7 @@ export default class Transcript extends React.Component {
     }
 
     handleScroll() {
-        if (!this.props.transcriptScrollEnabled) 
+        if (!this.props.transcriptScrollEnabled)
             this.props.handleTranscriptScroll(true)
     }
 
@@ -72,7 +73,9 @@ export default class Transcript extends React.Component {
     }
 
     firstSegment() {
-        return segments(this.props)[this.props.interview.first_segments_ids[this.props.tape]];
+        const { interview, tape } = this.props;
+        const segments = segmentsForTape(interview, tape);
+        return segments[interview.first_segments_ids[tape]];
     }
 
     firstTranslationLocale() {
@@ -100,7 +103,7 @@ export default class Transcript extends React.Component {
             segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
             if (
                 (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
-                (speaker !== segment.speaker && segment.speaker_id === null) 
+                (speaker !== segment.speaker && segment.speaker_id === null)
             ) {
                 segment.speakerIdChanged = true;
                 speakerId = segment.speaker_id;
@@ -139,4 +142,3 @@ export default class Transcript extends React.Component {
         }
     }
 }
-

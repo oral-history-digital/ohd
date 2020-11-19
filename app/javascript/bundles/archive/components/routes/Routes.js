@@ -1,4 +1,5 @@
-import React, { Fragment } from 'react';
+import React from 'react';
+import ErrorBoundaryContainer from '../../containers/ErrorBoundaryContainer';
 import { Route, Switch } from 'react-router-dom';
 
 import WrappedAccountContainer from '../../containers/WrappedAccountContainer';
@@ -23,26 +24,26 @@ import HomeContainer from '../../containers/HomeContainer';
 
 const Routes = () => (
     <Switch>
-        <Route exact path="/:locale" component={props => <HomeContainer {...props} />} />
-        <Route path="/:locale/accounts/current" component={props => <WrappedAccountContainer {...props} />} />
-        <Route exact path="/:locale/interviews/new" component={props => <EditInterviewContainer {...props} />} />
-        <Route exact path="/:locale/interviews/:archiveId" component={props => <InterviewContainer {...props} />} />
-        <Route path="/:locale/uploads/new" component={props => <UploadsContainer {...props} />} />
-        <Route path="/:locale/registry_entries" component={props => <RegistryEntriesTreeContainer {...props} />} />
-        <Route path="/:locale/searches/archive" component={props => <ArchiveSearchContainer {...props} />} />
-        <Route path="/:locale/searches/map" component={props => <MapSearchContainer {...props} />} />
-        <Route path="/:locale/projects" component={props => <WrappedProjectsContainer {...props} />} />
-        <Route path="/:locale/people" component={props => <WrappedPeopleContainer {...props} />} />
-        <Route path="/:locale/registry_reference_types" component={props => <WrappedRegistryReferenceTypesContainer {...props} />} />
-        <Route path="/:locale/languages" component={props => <WrappedLanguagesContainer {...props} />} />
-        <Route path="/:locale/collections" component={props => <WrappedCollectionsContainer {...props} />} />
-        <Route path="/:locale/roles" component={props => <WrappedRolesContainer {...props} />} />
-        <Route path="/:locale/permissions" component={props => <WrappedPermissionsContainer {...props} />} />
-        <Route path="/:locale/user_accounts/password/new" component={props => <OrderNewPasswordContainer {...props} />} />
-        <Route path="/:locale/user_accounts/password/edit" component={props => <ActivateAccountContainer {...props} />} />
-        <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" component={props => <ActivateAccountContainer {...props} />} />
-        <Route exact path="/:locale/user_registrations/new" component={props => <RegisterContainer {...props} />} />
-        <Route exact path="/:locale/user_registrations" component={props => <UserRegistrationsContainer {...props} />} />
+        <Route exact path="/:locale" component={props => <ErrorBoundaryContainer><HomeContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/accounts/current" component={props => <ErrorBoundaryContainer><WrappedAccountContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route exact path="/:locale/interviews/new" component={props => <ErrorBoundaryContainer><EditInterviewContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route exact path="/:locale/interviews/:archiveId" component={props => <ErrorBoundaryContainer><InterviewContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/uploads/new" component={props => <ErrorBoundaryContainer><UploadsContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/registry_entries" component={props => <ErrorBoundaryContainer><RegistryEntriesTreeContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/searches/archive" component={props => <ErrorBoundaryContainer><ArchiveSearchContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/searches/map" component={props => <ErrorBoundaryContainer><MapSearchContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/projects" component={props => <ErrorBoundaryContainer><WrappedProjectsContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/people" component={props => <ErrorBoundaryContainer><WrappedPeopleContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/registry_reference_types" component={props => <ErrorBoundaryContainer><WrappedRegistryReferenceTypesContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/languages" component={props => <ErrorBoundaryContainer><WrappedLanguagesContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/collections" component={props => <ErrorBoundaryContainer><WrappedCollectionsContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/roles" component={props => <ErrorBoundaryContainer><WrappedRolesContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/permissions" component={props => <ErrorBoundaryContainer><WrappedPermissionsContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/user_accounts/password/new" component={props => <ErrorBoundaryContainer><OrderNewPasswordContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/user_accounts/password/edit" component={props => <ErrorBoundaryContainer><ActivateAccountContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" component={props => <ErrorBoundaryContainer><ActivateAccountContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route exact path="/:locale/user_registrations/new" component={props => <ErrorBoundaryContainer><RegisterContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route exact path="/:locale/user_registrations" component={props => <ErrorBoundaryContainer><UserRegistrationsContainer {...props} /></ErrorBoundaryContainer>} />
     </Switch>
 );
 

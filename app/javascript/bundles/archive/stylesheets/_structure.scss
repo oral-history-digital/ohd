@@ -43,9 +43,11 @@ body {
 .wrapper-section-inner {}
 
 header.site-header {
-  height: 80px;
   background: #fff;
+  height: 80px;
+  overflow: hidden;
   padding: 0 5%;
+
   @include screen-m {
     height: 100px;
   }
@@ -454,6 +456,9 @@ ul.search-results-pagination {
   flex-direction: row;
   flex-wrap: wrap;
   align-items: stretch;
+  margin-left: -20px;
+  margin-right: -20px;
+
   a:link, a:visited {
     color: var(--primary-color);
     transition: color 0.3s;

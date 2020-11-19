@@ -1,52 +1,39 @@
-import React, { useState } from 'react';
-import OutsideClickHandler from 'react-outside-click-handler';
+import React from 'react';
+import Popup from 'reactjs-popup';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { t } from '../../../lib/utils';
+import { t } from 'lib/utils';
 
 function PopupMenu(props) {
-    const [isOpen, setIsOpen] = useState(false);
+    const trigger = (
+        <button
+            className="popup-menu__trigger"
+            title={t(props, 'more')}
+        >
+            <i className="fa fa-ellipsis-v popup-menu__trigger-icon" />
+        </button>
+    );
 
-    const open = () => setIsOpen(true);
-    const close = () => setIsOpen(false);
-
-    return isOpen ?
-        (<OutsideClickHandler onOutsideClick={close} display="inline-block">
-            <div
-                className="flyout-sub-tabs-content-ico-link"
-                title={t(props, 'more')}
-                onClick={close}
-            >
-                <i className="fa fa-ellipsis-v" />
-            </div>
-            <div className={classNames('popup-menu', {
-                'popup-menu--invisible': !isOpen})}>
-                <i
-                    className="popup-menu__close fa-times fa"
-                    onClick={close}
-                />
-                <ul className="popup-menu__list">
-                    {props.children}
-                </ul>
-            </div>
-        </OutsideClickHandler>) : (
-            <div
-                className="flyout-sub-tabs-content-ico-link"
-                title={t(props, 'more')}
-                onClick={open}
-            >
-                <i className="fa fa-ellipsis-v" />
-            </div>
-        );
-}
-
-function PopupMenuItem({ children }) {
     return (
-        <li className="popup-menu__item">
-            {children}
-        </li>
+        <Popup
+            className={classNames('popup-menu', props.className)}
+            trigger={trigger}
+            on={['click', 'focus']}
+            contentStyle={{ zIndex:1001 }}
+            position={['right top', 'center top', 'left top']}
+        >
+            <ul className="popup-menu__list">
+                {props.children}
+            </ul>
+        </Popup>
     );
 }
+
+const PopupMenuItem = ({ children }) => (
+    <li className="popup-menu__item">
+        {children}
+    </li>
+);
 
 PopupMenu.propTypes = {
     className: PropTypes.string,
