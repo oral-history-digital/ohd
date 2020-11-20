@@ -17,11 +17,11 @@ export default class SegmentHeadingForm extends React.Component {
                     elements={[
                         {
                             attribute: 'mainheading',
-                            elementType: 'multiLocaleInput',
+                            multiLocale: true,
                         },
                         {
                             attribute: 'subheading',
-                            elementType: 'multiLocaleInput',
+                            multiLocale: true,
                         },
                     ]}
                 />

@@ -44,7 +44,7 @@ export default class RegistryEntryForm extends React.Component {
         }
     }
 
-    subFormProps() {
+    nestedFormProps() {
         let props = {registryEntryId: this.props.registryEntryId};
         if (this.props.registryEntryId)
             props.submitData = this.props.submitData;
@@ -64,6 +64,7 @@ export default class RegistryEntryForm extends React.Component {
                     data={this.registryEntry()}
                     values={{
                         parent_id: this.props.registryEntryParent && this.props.registryEntryParent.id,
+                        workflow_state: this.registryEntry() && this.registryEntry().workflow_state || 'preliminary',
                     }}
                     elements={[
                         {
@@ -81,10 +82,10 @@ export default class RegistryEntryForm extends React.Component {
                             optionsScope: 'workflow_states',
                         }
                     ]}
-                    subForm={RegistryNameFormContainer}
-                    subFormProps={_this.subFormProps()}
-                    subFormScope='registry_name'
-                    subScopeRepresentation={this.showRegistryName}
+                    nestedForm={RegistryNameFormContainer}
+                    nestedFormProps={_this.nestedFormProps()}
+                    nestedFormScope='registry_name'
+                    nestedScopeRepresentation={this.showRegistryName}
                 />
             </div>
         );

@@ -28,20 +28,22 @@ const mapStateToProps = (state) => {
         formElements: [
             {
                 attribute: 'name',
-                elementType: 'multiLocaleInput'
+                multiLocale: true,
             },
             {
                 attribute: 'introduction',
-                elementType: 'multiLocaleTextarea'
-                //elementType: 'multiLocaleRichTextEditor'
+                elementType: 'richTextEditor',
+                multiLocale: true,
             },
             {
                 attribute: 'more_text',
-                elementType: 'multiLocaleTextarea'
+                elementType: 'richTextEditor',
+                multiLocale: true,
             },
             {
                 attribute: 'landing_page_text',
-                elementType: 'multiLocaleTextarea',
+                elementType: 'richTextEditor',
+                multiLocale: true,
                 help: 'activerecord.attributes.project.landing_page_edit_help'
             },
             {

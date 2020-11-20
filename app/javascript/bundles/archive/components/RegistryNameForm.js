@@ -19,11 +19,12 @@ export default class RegistryNameForm extends React.Component {
                 submitText='submit'
                 elements={[
                     {
-                        elementType: 'multiLocaleInput',
                         attribute: 'descriptor',
+                        multiLocale: true
                     },
                     {
-                        elementType: 'multiLocaleTextarea',
+                        elementType: 'textarea',
+                        multiLocale: true,
                         attribute: 'notes',
                     },
                     {
