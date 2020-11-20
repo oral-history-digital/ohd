@@ -36,7 +36,7 @@ export default class Form extends React.Component {
             let error = false;
             if (typeof(element.validate) === 'function') {
                 let value = element.value || (this.props.data && this.props.data[element.attribute]);
-                error = !element.validate(value);
+                error = !(value && element.validate(value));
             }
             errors[element.attribute] = error;
         })
