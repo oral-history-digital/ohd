@@ -14,7 +14,7 @@ export default class PhotoForm extends React.Component {
                 elementType: 'select',
                 attribute: 'workflow_state',
                 values: this.props.photo && Object.values(this.props.photo.workflow_states),
-                value: this.props.photo.workflow_state,
+                value: this.props.photo && this.props.photo.workflow_state,
                 optionsScope: 'workflow_states',
             },
         ]
