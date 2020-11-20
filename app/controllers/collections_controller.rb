@@ -100,6 +100,7 @@ class CollectionsController < ApplicationController
   def search_params
     params.permit(
       :name,
+      :project_id
     ).to_h
   end
 end
