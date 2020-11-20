@@ -21,13 +21,9 @@ const mapStateToProps = (state) => {
         scope: 'collection',
         baseTabIndex: 4 + project.has_map,
         //detailsAttributes: ['name'],
-        detailsAttributes: ['project_id', 'name', 'homepage', 'institution', 'responsibles', 'notes', 'countries'],
+        detailsAttributes: ['name', 'homepage', 'institution', 'responsibles', 'notes', 'countries'],
+        initialFormValues: {project_id: project.id},
         formElements: [
-            {
-                elementType: 'select',
-                attribute: 'project_id',
-                values: state.data.projects,
-            },
             {
                 attribute: 'name',
                 multiLocale: true,

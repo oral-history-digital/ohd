@@ -80,6 +80,7 @@ export default class WrappedDataList extends React.Component {
         return (
             <Form
                 data={data}
+                values={this.props.initialFormValues}
                 scope={this.props.scope}
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 submitText='submit'
