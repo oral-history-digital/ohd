@@ -1,12 +1,10 @@
 import React from 'react';
 import InputContainer from '../../containers/form/InputContainer';
-import MultiLocaleInputContainer from '../../containers/form/MultiLocaleInputContainer';
-import MultiLocaleTextareaContainer from '../../containers/form/MultiLocaleTextareaContainer';
-import MultiLocaleRichTextEditorContainer from '../../containers/form/MultiLocaleRichTextEditorContainer';
 import RichTextEditor from 'react-rte';
 import TextareaContainer from '../../containers/form/TextareaContainer';
 import SelectContainer from '../../containers/form/SelectContainer';
 import RegistryEntrySelectContainer from '../../containers/form/RegistryEntrySelectContainer';
+import MultiLocaleWrapperContainer from '../../containers/form/MultiLocaleWrapperContainer';
 import { t, pluralize } from '../../../../lib/utils';
 
 export default class Form extends React.Component {
@@ -14,118 +12,34 @@ export default class Form extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            showErrors: false, 
-            showSubForm: false,
-            values: this.props.values || {},
-            errors: {}
+            showNestedForm: false,
+            values: this.initValues(),
+            errors: this.initErrors()
         };
 
-        this.handleChange = this.handleChange.bind(this);
         this.handleErrors = this.handleErrors.bind(this);
+        this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleSubFormSubmit = this.handleSubFormSubmit.bind(this);
-    }
-
-    componentDidMount() {
-        //this.initErrors();
-        this.initValues();
-    }
-
-    handleChange(name, value) {
-        // name should be e.g. translations_attributes-de-url-13
-        let nameParts = name.split('-');
-        if (nameParts[0] === 'translations_attributes') {
-            let index = this.state.values.translations_attributes.findIndex((t) => t.locale === nameParts[1]);
-            index = index === -1 ? this.state.values.translations_attributes.length : index;
-            let translation = Object.assign({}, this.state.values.translations_attributes[index], {
-                locale: nameParts[1],
-                id: nameParts[3],
-                [nameParts[2]]: value
-            })
-
-            this.setState({values: Object.assign({}, this.state.values, {
-                translations_attributes: Object.assign([], this.state.values.translations_attributes, {[index]: translation})
-            })})
-        } else {
-            this.setState({ 
-                values: Object.assign({}, this.state.values, {[name]: value})
-            })
-        }
-    }
-
-    handleSubmit(event) {
-        let _this = this;
-        event.preventDefault();
-        if(this.valid()) {
-            //
-            // for RichTextEditor (react rte) it is more performant to do the 'toString calculution only once, before submit
-            //
-            this.props.elements.filter(element => element.elementType === 'richTextEditor').map((element,index) => {
-                _this.setState({
-                    values: Object.assign({}, _this.state.values, {[element.attribute]: _this.state.values[element.attribute].toString('html')})
-                })
-            })
-            this.props.elements.filter(element => element.elementType === 'multiLocaleRichTextEditor').map((element,index) => {
-                _this.setState({
-                    values: Object.assign({}, this.state.values, {
-                        translations_attributes: Object.assign([], 
-                            this.state.values.translations_attributes, 
-                            this.state.values.translations_attributes.map((t,i) => {
-                                return t[element.attribute] = t[element.attribute].toString('html');
-                            })
-                        )
-                    })
-                })
-            })
-
-            this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
-            if (typeof(this.props.onSubmitCallback) === "function") {
-                this.props.onSubmitCallback()
-            }
-        } 
+        this.handleNestedFormSubmit = this.handleNestedFormSubmit.bind(this);
     }
 
     initValues() {
-        let values = this.state.values;
-        if (this.props.data) {
-            values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id
-            //values.translations_attributes = this.props.data.translations;
-        }// else {
-            //values.translations_attributes = [];
-        //}
-        values.translations_attributes = [];
-
-        this.props.elements.map((element, index) => {
-            //if (element.elementType === 'multiLocaleRichTextEditor') {
-                //values.translations_attributes.map((t,i) => {
-                    //return t[element.attribute] = t[element.attribute] ?
-                        //RichTextEditor.createValueFromString(t[element.attribute], 'html') : 
-                        //RichTextEditor.createEmptyValue()
-                //})
-            //} else if (element.elementType === 'richTextEditor') {
-                //values[element.attribute] = (this.props.data && this.props.data[element.attribute]) ?
-                    //RichTextEditor.createValueFromString(this.props.data[element.attribute], 'html') : 
-                    //RichTextEditor.createEmptyValue()
-            //} else {
-                let isTranslationsAttribute = this.props.data && this.props.data.translations && this.props.data.translations[0] && this.props.data.translations[0].hasOwnProperty(element.attribute);
-                if (!isTranslationsAttribute) 
-                    values[element.attribute] = element.value || (this.props.data && this.props.data[element.attribute])
-            //}
-        })
-        this.setState({ values: values });
+        let values = this.props.values || {};
+        if (this.props.data)
+            values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id;
+        return values;
     }
 
     initErrors() {
         let errors = {};
         this.props.elements.map((element, index) => {
             let error = false;
-            let value = element.value || (this.props.data && this.props.data[element.attribute]);
             if (typeof(element.validate) === 'function') {
-                error = !element.validate(value);
+                let value = element.value || (this.props.data && this.props.data[element.attribute]);
+                error = !(value && element.validate(value));
             }
             errors[element.attribute] = error;
         })
-        //this.setState({ errors: errors });
         return errors;
     }
 
@@ -135,26 +49,45 @@ export default class Form extends React.Component {
         })
     }
 
+    handleChange(name, value, params, identifier) {
+        if (params && !name && !value) {
+            this.writeNestedObjectToStateValues(params, identifier);
+        } else {
+            this.setState({ 
+                values: Object.assign({}, this.state.values, {[name]: value})
+            })
+        }
+    }
+
     valid() {
-        let errors = this.initErrors();
         let showErrors = false;
-        Object.keys(errors).map((name, index) => {
+        Object.keys(this.state.errors).map((name, index) => {
             let hidden = this.props.elements.filter(element => element.attribute === name)[0] && this.props.elements.filter(element => element.attribute === name)[0].hidden;
-            showErrors = (!hidden && errors[name]) || showErrors;
+            showErrors = (!hidden && this.state.errors[name]) || showErrors;
         })
-        this.setState({showErrors: showErrors, errors: errors});
         return !showErrors;
     }
 
-    deleteSubScopeValue(index) {
+    handleSubmit(event) {
+        let _this = this;
+        event.preventDefault();
+        if(this.valid()) {
+            this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
+            if (typeof(this.props.onSubmitCallback) === "function") {
+                this.props.onSubmitCallback()
+            }
+        } 
+    }
+
+    deleteNestedObject(index) {
         return <span
             className='flyout-sub-tabs-content-ico-link'
             title={t(this.props, 'delete')}
             onClick={() => {
-                let subScopeValues = this.state.values[`${pluralize(this.props.subFormScope)}_attributes`];
+                let nestedObjects = this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)];
                 this.setState({ 
                     values: Object.assign({}, this.state.values, {
-                        [`${pluralize(this.props.subFormScope)}_attributes`]: subScopeValues.slice(0,index).concat(subScopeValues.slice(index+1))
+                        [this.nestedRailsScopeName(this.props.nestedFormScope)]: nestedObjects.slice(0,index).concat(nestedObjects.slice(index+1))
                     })
                 })
             }}
@@ -163,20 +96,34 @@ export default class Form extends React.Component {
         </span>
     }
 
-    subFormScopeAsRailsAttributes() {
-        return `${pluralize(this.props.subFormScope)}_attributes`;
+    nestedRailsScopeName(scope) {
+        return `${pluralize(scope)}_attributes`;
     }
 
-    selectedSubScopeValues() {
-        if (this.props.subFormScope && this.state.values[this.subFormScopeAsRailsAttributes()]) {
+    writeNestedObjectToStateValues(params, identifier) {
+        // for translations identifier is 'locale' to not multiply translations
+        identifier ||= 'id';
+        let scope = Object.keys(params)[0];
+        let nestedObject = params[scope];
+        let nestedObjects = this.state.values[this.nestedRailsScopeName(scope)] || [];
+        let index = nestedObjects.findIndex((t) => t[identifier] === nestedObject[identifier]);
+        index = index === -1 ? nestedObjects.length : index;
+
+        this.setState({values: Object.assign({}, this.state.values, {
+            [this.nestedRailsScopeName(scope)]: Object.assign([], nestedObjects, {[index]: nestedObject})
+        })})
+    }
+
+    showNewNestedObjects() {
+        if (this.props.nestedFormScope && this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)]) {
             return (
                 <div>
-                    <h4 className='nested-value-header'>{t(this.props, `${pluralize(this.props.subFormScope)}.title`)}</h4>
-                    {this.state.values[this.subFormScopeAsRailsAttributes()].map((value, index) => {
+                    <h4 className='nested-value-header'>{t(this.props, `${pluralize(this.props.nestedFormScope)}.title`)}</h4>
+                    {this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)].map((value, index) => {
                         return (
-                            <p key={`${this.props.scope}-${this.props.subScope}-${index}`} >
-                                <span className='flyout-content-data'>{this.props.subScopeRepresentation(value)}</span>
-                                {this.deleteSubScopeValue(index)}
+                            <p key={`${this.props.scope}-${this.props.nestedScope}-${index}`} >
+                                <span className='flyout-content-data'>{this.props.nestedScopeRepresentation(value)}</span>
+                                {this.deleteNestedObject(index)}
                             </p>
                         )
                     })}
@@ -186,45 +133,40 @@ export default class Form extends React.Component {
     }
 
     // props is a dummy here
-    handleSubFormSubmit(props, params) {
-        let nestedValues = this.state.values[this.subFormScopeAsRailsAttributes()] || [];
-        this.setState({ 
-            values: Object.assign({}, this.state.values, {
-                [this.subFormScopeAsRailsAttributes()]: [...nestedValues, params[this.props.subFormScope]]
-            }),
-            showSubForm: false
-        })
+    handleNestedFormSubmit(props, params) {
+        this.writeNestedObjectToStateValues(params);
+        this.setState({ showNestedForm: false });
     }
 
-    toggleSubForm() {
-        if (this.props.subForm) {
+    toggleNestedForm() {
+        if (this.props.nestedForm) {
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, `edit.${this.props.subFormScope}.new`)}
-                    onClick={() => this.setState({showSubForm: !this.state.showSubForm})}
+                    title={t(this.props, `edit.${this.props.nestedFormScope}.new`)}
+                    onClick={() => this.setState({showNestedForm: !this.state.showNestedForm})}
                 >
                     <div>
-                        {t(this.props, `${pluralize(this.props.subFormScope)}.add`) + '  '}
-                        <i className={`fa fa-${this.state.showSubForm ? 'times' : 'plus'}`}></i>
+                        {t(this.props, `${pluralize(this.props.nestedFormScope)}.add`) + '  '}
+                        <i className={`fa fa-${this.state.showNestedForm ? 'times' : 'plus'}`}></i>
                     </div>
                 </div>
             )
         }
     }
 
-    subForm() {
-        if (this.props.subForm && this.state.showSubForm) {
-            this.props.subFormProps.formClasses = 'sub-form default';
+    nestedForm() {
+        if (this.props.nestedForm && this.state.showNestedForm) {
+            this.props.nestedFormProps.formClasses = 'nested-form default';
             if (!this.props.data) {
-                this.props.subFormProps.submitData = this.handleSubFormSubmit;
+                this.props.nestedFormProps.submitData = this.handleNestedFormSubmit;
             } else {
                 let _this = this;
-                this.props.subFormProps.onSubmitCallback = function(props, params){_this.setState({showSubForm: false})};
+                this.props.nestedFormProps.onSubmitCallback = function(props, params){_this.setState({showNestedForm: false})};
             }
             return (
                 <div>
-                    {React.createElement(this.props.subForm, this.props.subFormProps)}
+                    {React.createElement(this.props.nestedForm, this.props.nestedFormProps)}
                 </div>
             )
         }
@@ -235,9 +177,6 @@ export default class Form extends React.Component {
             select: SelectContainer,
             registryEntrySelect: RegistryEntrySelectContainer,
             input: InputContainer,
-            multiLocaleInput: MultiLocaleInputContainer,
-            multiLocaleTextarea: MultiLocaleTextareaContainer,
-            multiLocaleRichTextEditor: MultiLocaleRichTextEditorContainer,
             richTextEditor: RichTextEditor,
             textarea: TextareaContainer
         }
@@ -258,7 +197,11 @@ export default class Form extends React.Component {
             props['type'] = 'text';
         }
 
-        return React.createElement(this.components()[props.elementType], props);
+        if (props.multiLocale) {
+            return React.createElement(MultiLocaleWrapperContainer, props);
+        } else {
+            return React.createElement(this.components()[props.elementType], props);
+        }
     }
 
     cancelButton() {
@@ -276,9 +219,9 @@ export default class Form extends React.Component {
     render() {
         return (
             <div>
-                {this.selectedSubScopeValues()}
-                {this.subForm()}
-                {this.toggleSubForm()}
+                {this.showNewNestedObjects()}
+                {this.nestedForm()}
+                {this.toggleNestedForm()}
                 <form 
                     id={this.props.formId || this.props.scope} 
                     className={this.props.formClasses || `${this.props.scope} default`} 

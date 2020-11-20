@@ -28,8 +28,8 @@ export default class RegistryHierarchyForm extends React.Component {
                     key={`registry-hierarchy-form-${this.props.descendantRegistryEntry && this.props.descendantRegistryEntry.id}`}
                     scope='registry_hierarchy'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                    data={this.props.registryHierarchy}
                     values={{
-                        id: this.props.registryHierarchy && this.props.registryHierarchy.id,
                         descendant_id: this.props.descendantRegistryEntry && this.props.descendantRegistryEntry.id,
                     }}
                     elements={[

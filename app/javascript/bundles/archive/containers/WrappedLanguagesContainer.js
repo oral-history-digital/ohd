@@ -29,7 +29,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'name',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
                 //validate: function(v){return v.length > 1}
             },
         ],

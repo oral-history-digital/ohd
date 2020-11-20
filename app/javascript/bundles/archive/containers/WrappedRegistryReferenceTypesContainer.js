@@ -35,7 +35,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'name',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
         ],
         joinedData: { },

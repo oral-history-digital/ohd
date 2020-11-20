@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         formElements: [
             {
                 attribute: 'label',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
             {
                 attribute: 'key',

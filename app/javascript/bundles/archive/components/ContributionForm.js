@@ -64,8 +64,8 @@ export default class ContributionForm extends React.Component {
             <div>
             <Form
                 scope='contribution'
+                data={this.props.contribution}
                 values={{
-                    id: this.props.contribution && this.props.contribution.id,
                     interview_id: this.props.interview && this.props.interview.id
                 }}
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}

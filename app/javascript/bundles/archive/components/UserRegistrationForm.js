@@ -10,8 +10,8 @@ export default class UserRegistrationForm extends React.Component {
             <Form
                 scope='user_registration'
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                data={this.props.userRegistration}
                 values={{
-                    id: this.props.userRegistration && this.props.userRegistration.id,
                     default_locale: this.props.locale
                 }}
                 submitText='submit'

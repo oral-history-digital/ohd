@@ -46,10 +46,10 @@ export default class MarkTextForm extends React.Component {
                             individualErrorMsg: 'empty'
                         },
                     ]}
-                    subForm={SingleTextInputFormContainer}
-                    subFormProps={{}}
-                    subFormScope='text'
-                    subScopeRepresentation={this.showMarkedText}
+                    nestedForm={SingleTextInputFormContainer}
+                    nestedFormProps={{}}
+                    nestedFormScope='text'
+                    nestedScopeRepresentation={this.showMarkedText}
                 />
             )
         }

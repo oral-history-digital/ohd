@@ -35,25 +35,25 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'first_name',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
                 //validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'last_name',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
                 //validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'birth_name',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
             {
                 attribute: 'alias_names',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
             {
                 attribute: 'other_first_names',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
             {
                 attribute: 'date_of_birth',
