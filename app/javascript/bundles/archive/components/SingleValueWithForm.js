@@ -61,6 +61,7 @@ export default class SingleValueWithForm extends React.Component {
         let elements = [
             {
                 elementType: this.props.elementType,
+                multiLocale: this.props.multiLocale,
                 attribute: this.attribute(),
                 label: this.label(),
                 validate: this.props.validate,
