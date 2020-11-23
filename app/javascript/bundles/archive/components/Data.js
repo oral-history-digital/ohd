@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import PopupMenuContainer from '../containers/PopupMenuContainer';
+import PopupMenu from './PopupMenu';
 import { t, admin, pluralize, camelcase, pathBase } from '../../../lib/utils';
 
 export default class Data extends React.Component {
@@ -63,13 +63,6 @@ export default class Data extends React.Component {
     }
 
     values(detail) {
-        //if (this.props.data && this.props.data[detail] !== null && typeof(this.props.data[detail]) === 'object') {
-            //return Object.keys(this.props.data[detail]).map((key,index) => {
-                //return <span className='content'>
-                    //<br/>
-                    //<b>{`${key}: `}</b>{this.props.data[detail][key]}
-                //</span>
-            //})
         if (
             this.props.data &&
             this.props.data[detail] !== null &&
@@ -202,16 +195,16 @@ export default class Data extends React.Component {
 
     buttons() {
         if (
-            admin(this.props, this.props.data) || 
+            admin(this.props, this.props.data) ||
             // allow commenting onn task
             this.props.task && admin(this.props, this.props.task)
         ) {
             return (
-                <PopupMenuContainer>
-                    <PopupMenuContainer.Item>{this.show()}</PopupMenuContainer.Item>
-                    <PopupMenuContainer.Item>{!this.props.hideEdit && this.edit()}</PopupMenuContainer.Item>
-                    <PopupMenuContainer.Item>{!this.props.hideDelete && this.delete()}</PopupMenuContainer.Item>
-                </PopupMenuContainer>
+                <PopupMenu>
+                    <PopupMenu.Item>{this.show()}</PopupMenu.Item>
+                    <PopupMenu.Item>{!this.props.hideEdit && this.edit()}</PopupMenu.Item>
+                    <PopupMenu.Item>{!this.props.hideDelete && this.delete()}</PopupMenu.Item>
+                </PopupMenu>
             );
         }
     }
