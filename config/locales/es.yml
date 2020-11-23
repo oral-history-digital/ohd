@@ -770,7 +770,7 @@ es:
         language_id: Idioma original
         media_type: Formato de medio
         translated: se ha traducido la entrevista?
-        workflow_state: 'estatus'
+        workflow_state: estatus
         tasks_states: Bearbeitungsstand
         observations: Protócolo
       transcript:

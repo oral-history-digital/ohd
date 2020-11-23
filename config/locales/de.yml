@@ -792,7 +792,7 @@ de:
         language_id: Originalsprache
         media_type: Medientyp
         translated: ist das Interview bereits übersetzt?
-        workflow_state: Status
+        workflow_state: Interview-Status
         tasks_states: Bearbeitungsstand
         observations: Protokoll
       transcript:
