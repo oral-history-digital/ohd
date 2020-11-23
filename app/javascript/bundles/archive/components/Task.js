@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import Form from '../containers/form/Form';
 import CommentsContainer from '../containers/CommentsContainer';
 import { t, admin, pathBase } from '../../../lib/utils';
 

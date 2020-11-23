@@ -1,32 +1,26 @@
 import React from 'react';
+import RichTextEditor from 'react-rte';
 import ElementContainer from '../../containers/form/ElementContainer';
 
-export default class Textarea extends React.Component {
-
-    // props are:
-    //   @scope
-    //   @attribute = attribute name
-    //   @type 
-    //   @value = default value
-    //   @validate = function
-    //   @handleChange = function
-    //   @handleErrors = function
-    //   @help
+export default class RichTextarea extends React.Component {
 
     constructor(props, context) {
         super(props);
         this.state = {
             valid: !this.props.validate,
+            value: this.props.data && this.props.data[this.props.attribute] ?
+                  RichTextEditor.createValueFromString(this.props.data[this.props.attribute], 'html') :
+                  RichTextEditor.createEmptyValue()
         };
-                
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event) {
-        const value =  event.target.value;
-        const name =  event.target.name;
+    handleChange(value) {
+        const name =  this.props.attribute;
+        let stringValue = value.toString('html');
 
-        this.props.handleChange(name, value, this.props.data);
+        this.setState({value: value})
+        this.props.handleChange(name, stringValue, this.props.data);
 
         if (typeof this.props.handlechangecallback === 'function') {
             this.props.handlechangecallback(name, value);
@@ -60,11 +54,12 @@ export default class Textarea extends React.Component {
                 individualErrorMsg={this.props.individualErrorMsg}
                 help={this.props.help}
             >
-                <textarea 
-                    name={this.props.attribute}
-                    defaultValue={value}
-                    onChange={this.handleChange}
-                />
+                <div className='richtextarea'>
+                    <RichTextEditor
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                    />
+                </div>
             </ElementContainer>
         );
     }

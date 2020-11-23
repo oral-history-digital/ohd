@@ -1,5 +1,5 @@
 import React from 'react';
-import {render} from 'react-dom';
+import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
 
 export default class ArchivePopup extends React.Component {
 
@@ -39,7 +39,11 @@ export default class ArchivePopup extends React.Component {
                 <div className={this.css()} onClick={() => this.props.closeArchivePopup()}>
                     <div className={popCss} onClick={this.stopClicks}>
                         {this.header()}
-                        <div className='content'> {this.props.popup.content} </div>
+
+                        <ErrorBoundaryContainer>
+                            <div className='content'>{this.props.popup.content}</div>
+                        </ErrorBoundaryContainer>
+
                         {this.buttons()}
                     </div>
                 </div>

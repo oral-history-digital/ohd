@@ -25,7 +25,8 @@ export default class SegmentForm extends React.Component {
                             individualErrorMsg: 'empty'
                         },
                         {
-                            elementType: 'multiLocaleTextarea',
+                            elementType: 'textarea',
+                            multiLocale: true,
                             attribute: 'text',
                             //validate: function(v){return v && v.length > 1} 
                         },

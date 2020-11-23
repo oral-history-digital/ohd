@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'label',
-                elementType: 'multiLocaleInput',
+                multiLocale: true,
             },
             {
                 elementType: 'input',

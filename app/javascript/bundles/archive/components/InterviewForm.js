@@ -119,20 +119,19 @@ export default class InterviewForm extends React.Component {
         let props = {
             scope: 'interview',
             values: {
-                id: this.props.interview && this.props.interview.archive_id,
                 project_id: this.props.project.id
             },
-            //data: this.props.interview,
+            data: this.props.interview,
             onSubmit: this.onSubmit,
             submitText: this.props.submitText,
             elements: elements
         }
 
         if (this.props.withContributions) {
-            props['subForm'] = ContributionFormContainer;
-            props['subFormProps'] = {withSpeakerDesignation: true};
-            props['subFormScope'] = 'contribution';
-            props['subScopeRepresentation'] = this.showContribution;
+            props['nestedForm'] = ContributionFormContainer;
+            props['nestedFormProps'] = {withSpeakerDesignation: true};
+            props['nestedFormScope'] = 'contribution';
+            props['nestedScopeRepresentation'] = this.showContribution;
         }
 
         return React.createElement(Form, props)
