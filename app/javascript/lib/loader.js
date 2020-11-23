@@ -79,10 +79,10 @@ var Loader = {
                                     // "name_position"=>"3", "registry_name_type_id"=>"4"}]}, "locale"=>"de", "id"=>"28205"}
                                     //
                                     if (Array.isArray(elem[e])) {
-                                        elem[e].map((i) => {
+                                        elem[e].map((i, index) => {
                                             Object.keys(i).map((j) => {
                                                 if (i[j] && i[j] !== '')
-                                                    req.field(`${scope}[${param}][][${e}][][${j}]`, i[j]);
+                                                    req.field(`${scope}[${param}][][${e}][${index}][${j}]`, i[j]);
                                             })
                                         })
                                     } else if (elem[e]) {
