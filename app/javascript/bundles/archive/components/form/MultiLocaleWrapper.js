@@ -32,7 +32,7 @@ export default class MultiLocaleWrapper extends React.Component {
     }
 
     handleChange(name, value, translation) {
-        let params = {translation: {[name]: value, locale: translation.locale}};
+        let params = {translation: {[name]: value, locale: translation.locale, id: translation.id}};
         this.props.handleChange(null, null, params, 'locale');
     }
 
