@@ -8,7 +8,6 @@ export default class SegmentForm extends React.Component {
         let _this = this;
         return (
             <div>
-                {`${t(this.props, 'edit.segment.speaker_string')}: ${this.props.segment.speaker}`}
                 <Form 
                     scope='segment'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
