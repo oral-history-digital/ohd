@@ -1,5 +1,6 @@
 import React from 'react';
-import { t } from '../../../../lib/utils';
+import Label from './Label';
+import { t } from 'lib/utils';
 
 export default class Element extends React.Component {
 
@@ -9,30 +10,11 @@ export default class Element extends React.Component {
     //   @valid = boolean
     //   @mandatory = boolean
 
-    label() {
-        let mandatory = this.props.mandatory ? ' *' : '';
-        let l; 
-        if (this.props.label) {
-            l = this.props.label;
-        } else  if (this.props.labelKey) {
-            l = t(this.props, this.props.labelKey);
-        } else {
-            l = t(this.props, `activerecord.attributes.${this.props.scope}.${this.props.attribute}`);
-        }
-
-        // scope is equivalent to model here
-        return (
-            <label htmlFor={`${this.props.scope}_${this.props.attribute}`}>
-                {l + mandatory}
-            </label>
-        );
-    }
-
     error() {
         if (!this.props.valid && this.props.showErrors) {
-            let msg = this.props.individualErrorMsg ? 
+            let msg = this.props.individualErrorMsg ?
                 t(this.props, `activerecord.errors.models.${this.props.scope}.attributes.${this.props.attribute}.${this.props.individualErrorMsg}`) :
-                t(this.props, `activerecord.errors.default.${this.props.elementType}`) 
+                t(this.props, `activerecord.errors.default.${this.props.elementType}`)
             return (
                 <div className='help-block'>
                     {msg}
@@ -52,17 +34,26 @@ export default class Element extends React.Component {
     }
 
     render() {
+        const { scope, attribute, help } = this.props;
+
         return (
             <div className={this.css()}>
-                <div className='form-label'>
-                    {this.label()}
-                </div>
+                <Label
+                    label={this.props.label}
+                    labelKey={this.props.labelKey}
+                    scope={scope}
+                    attribute={attribute}
+                    mandatory={this.props.mandatory}
+                    htmlFor={this.props.htmlFor}
+                />
+
                 <div className='form-input'>
                     {this.props.children}
                     <p className='help-block'>
-                        {typeof(this.props.help) === 'string' ? t(this.props, this.props.help) : this.props.help}
+                        {typeof(help) === 'string' ? t(this.props, help) : help}
                     </p>
                 </div>
+
                 {this.error()}
             </div>
         );
