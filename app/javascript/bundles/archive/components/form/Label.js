@@ -21,10 +21,10 @@ function Label({
     } else if (labelKey) {
         l = t(labelKey);
     } else {
+        // Scope is equivalent to model here.
         l = t(`activerecord.attributes.${scope}.${attribute}`);
     }
 
-    // scope is equivalent to model here
     return (
         <div className={classNames('form-label', className)}>
             <label className="FormLabel" htmlFor={htmlFor}>
