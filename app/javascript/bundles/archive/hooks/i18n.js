@@ -1,10 +1,11 @@
 import { useSelector } from 'react-redux';
 
 import { t as originalT } from 'lib/utils';
+import { getLocale, getTranslations } from '../selectors/archiveSelectors';
 
 export function useI18n() {
-    const locale = useSelector(state => state.archive.locale);
-    const translations = useSelector(state => state.archive.translations);
+    const locale = useSelector(getLocale);
+    const translations = useSelector(getTranslations);
 
     const curriedT = (key, params) => originalT({ locale, translations }, key, params);
 
