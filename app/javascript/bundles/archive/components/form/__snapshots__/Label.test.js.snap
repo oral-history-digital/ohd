@@ -20,7 +20,7 @@ exports[`renders with translation key 1`] = `
   <label
     className="FormLabel"
   >
-    default_name
+    label.default_name
   </label>
 </div>
 `;
