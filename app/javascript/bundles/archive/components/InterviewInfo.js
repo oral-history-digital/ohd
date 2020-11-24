@@ -1,11 +1,9 @@
 import React from 'react';
 import { t, admin } from '../../../lib/utils';
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
-import AuthShowContainer from '../containers/AuthShowContainer';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 
 export default class InterviewInfo extends React.Component {
-
     collection() {
         let c = this.props.collections[this.props.interview.collection_id];
         let title = c && c.notes && c.notes[this.props.locale] || ''
@@ -24,7 +22,7 @@ export default class InterviewInfo extends React.Component {
     adminOnlyValues() {
         if (admin(this.props, this.props.interview)) {
             return (
-                <div>
+                <>
                     <SingleValueWithFormContainer
                         obj={this.props.interview}
                         collapse={true}
@@ -41,7 +39,7 @@ export default class InterviewInfo extends React.Component {
                         optionsScope={'workflow_states'}
                         noStatusCheckbox={true}
                     />
-                </div>
+                </>
             )
         }
     }

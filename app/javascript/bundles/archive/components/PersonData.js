@@ -1,7 +1,7 @@
 import React from 'react';
 import { t, admin, fullname, getInterviewee, pathBase, humanReadable } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
-import ContentFieldContainer from '../containers/ContentFieldContainer';
+import ContentField from './ContentField';
 import ArchivePopupButtonContainer from '../containers/ArchivePopupButtonContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
@@ -109,29 +109,23 @@ export default class PersonData extends React.Component {
                 return (m.source === 'Person' &&
                     (
                         (_this.props.isLoggedIn && m.use_in_details_view) ||
-                        (!_this.props.isLoggedIn && m.display_on_landing_page) 
+                        (!_this.props.isLoggedIn && m.display_on_landing_page)
                     )
                 )
             }).map(function(metadataField, i){
                 let label = metadataField.label && metadataField.label[_this.props.locale] || t(_this.props, metadataField.name);
                 let value = humanReadable(interviewee, metadataField.name, _this.props, _this.state);
 
-                return <ContentFieldContainer label={label} value={value} key={`detail-${i}`} />
-                //return (
-                    //<SingleValueWithFormContainer
-                        //metadataField={metadataField}
-                        //obj={interviewee}
-                    ///>
-                //)
+                return <ContentField label={label} value={value} key={`detail-${i}`} />
             })
         }
     }
 
     contributionForm() {
         return (
-            <ContributionFormContainer 
-                contribution={Object.values(this.props.interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]} 
-                submitData={this.props.submitData} 
+            <ContributionFormContainer
+                contribution={Object.values(this.props.interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]}
+                submitData={this.props.submitData}
             />
         )
     }
@@ -142,7 +136,7 @@ export default class PersonData extends React.Component {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
-                        <ContentFieldContainer label={t(this.props, 'interviewee_name')} value={fullname(this.props, interviewee, true)} >
+                        <ContentField label={t(this.props, 'interviewee_name')} value={fullname(this.props, interviewee, true)} >
                             <AuthShowContainer ifAdmin={true} obj={interviewee}>
                                 <ArchivePopupButtonContainer
                                     titleKey='edit.contribution.edit'
@@ -150,12 +144,12 @@ export default class PersonData extends React.Component {
                                     content={this.contributionForm()}
                                 />
                             </AuthShowContainer>
-                         </ContentFieldContainer>
+                         </ContentField>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                        <ContentFieldContainer 
-                            label={t(this.props, 'interviewee_name')} 
-                            value={this.props.project.fullname_on_landing_page ? fullname(this.props, interviewee) : this.props.interview.anonymous_title[this.props.locale]} 
+                        <ContentField
+                            label={t(this.props, 'interviewee_name')}
+                            value={this.props.project.fullname_on_landing_page ? fullname(this.props, interviewee) : this.props.interview.anonymous_title[this.props.locale]}
                         />
                     </AuthShowContainer>
                     {this.personMetadataFields()}

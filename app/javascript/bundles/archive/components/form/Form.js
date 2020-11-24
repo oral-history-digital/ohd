@@ -8,7 +8,6 @@ import MultiLocaleWrapperContainer from '../../containers/form/MultiLocaleWrappe
 import { t, pluralize } from '../../../../lib/utils';
 
 export default class Form extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -44,7 +43,7 @@ export default class Form extends React.Component {
     }
 
     handleErrors(name, bool) {
-        this.setState({ 
+        this.setState({
             errors: Object.assign({}, this.state.errors, {[name]: bool})
         })
     }
@@ -53,7 +52,7 @@ export default class Form extends React.Component {
         if (params && !name && !value) {
             this.writeNestedObjectToStateValues(params, identifier);
         } else {
-            this.setState({ 
+            this.setState({
                 values: Object.assign({}, this.state.values, {[name]: value})
             })
         }
@@ -76,7 +75,7 @@ export default class Form extends React.Component {
             if (typeof(this.props.onSubmitCallback) === "function") {
                 this.props.onSubmitCallback()
             }
-        } 
+        }
     }
 
     deleteNestedObject(index) {
@@ -85,7 +84,7 @@ export default class Form extends React.Component {
             title={t(this.props, 'delete')}
             onClick={() => {
                 let nestedObjects = this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)];
-                this.setState({ 
+                this.setState({
                     values: Object.assign({}, this.state.values, {
                         [this.nestedRailsScopeName(this.props.nestedFormScope)]: nestedObjects.slice(0,index).concat(nestedObjects.slice(index+1))
                     })
@@ -207,10 +206,10 @@ export default class Form extends React.Component {
     cancelButton() {
         if (typeof(this.props.cancel) === 'function') {
             return (
-                <input 
-                    type='button' 
-                    value={t(this.props, 'cancel')} 
-                    onClick={() => this.props.cancel()} 
+                <input
+                    type='button'
+                    value={t(this.props, 'cancel')}
+                    onClick={() => this.props.cancel()}
                 />
             )
         }
@@ -218,13 +217,13 @@ export default class Form extends React.Component {
 
     render() {
         return (
-            <div>
+            <div className={this.props.className}>
                 {this.showNewNestedObjects()}
                 {this.nestedForm()}
                 {this.toggleNestedForm()}
-                <form 
-                    id={this.props.formId || this.props.scope} 
-                    className={this.props.formClasses || `${this.props.scope} default`} 
+                <form
+                    id={this.props.formId || this.props.scope}
+                    className={this.props.formClasses || `${this.props.scope} default`}
                     onSubmit={this.handleSubmit}
                 >
 
