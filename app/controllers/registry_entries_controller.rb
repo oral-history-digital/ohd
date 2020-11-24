@@ -99,10 +99,10 @@ class RegistryEntriesController < ApplicationController
         root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.registry_entries.where(code: 'root').first
         csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{RegistryName.maximum(:updated_at)}-#{RegistryEntry.maximum(:updated_at)}" do
           CSV.generate(col_sep: "\t") do |row|
-            row << ["Name des Elterneintrags", "ID des Elterneintrags", "Namen (id=descriptor=notes=position=type_code) getrennt durch Raute", "ID des Eintrags", "Latitude", "Longitude"]
+            row << %w(parent_name parent_id name id description latitude, longitude)
             root.on_all_descendants do |entry|
               entry.parents.each do |parent|
-                row << [parent && parent.descriptor(params[:lang]), parent && parent.id, entry.export_names(params[:lang]), entry.id, entry.latitude, entry.longitude]
+                row << [parent && parent.descriptor(params[:lang]), parent && parent.id, entry.descriptor(params[:lang]), entry.id, entry.notes(params[:lang]), entry.latitude, entry.longitude]
               end
             end
           end
