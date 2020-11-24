@@ -105,11 +105,13 @@ export default class Form extends React.Component {
         let scope = Object.keys(params)[0];
         let nestedObject = params[scope];
         let nestedObjects = this.state.values[this.nestedRailsScopeName(scope)] || [];
-        let index = nestedObjects.findIndex((t) => t[identifier] === nestedObject[identifier]);
+        let index = nestedObjects.findIndex((t) => nestedObject[identifier] && t[identifier] === nestedObject[identifier]);
         index = index === -1 ? nestedObjects.length : index;
 
         this.setState({values: Object.assign({}, this.state.values, {
-            [this.nestedRailsScopeName(scope)]: Object.assign([], nestedObjects, {[index]: nestedObject})
+            [this.nestedRailsScopeName(scope)]: Object.assign([], nestedObjects, {
+                [index]: Object.assign({}, nestedObjects[index], nestedObject)
+            })
         })})
     }
 

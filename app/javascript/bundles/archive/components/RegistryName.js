@@ -74,6 +74,7 @@ export default class RegistryName extends React.Component {
                 registryName={this.props.registryName}
                 registryEntryId={this.props.registryEntryId}
                 submitData={this.props.submitData}
+                formClasses={this.props.formClasses}
                 onSubmitCallback={() => _this.setEditing()}
             />
         )
