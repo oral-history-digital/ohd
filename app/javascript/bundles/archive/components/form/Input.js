@@ -6,7 +6,7 @@ export default class Input extends React.Component {
     // props are:
     //   @scope
     //   @attribute = attribute name
-    //   @type 
+    //   @type
     //   @value = default value
     //   @validate = function
     //   @handleChange = function
@@ -19,7 +19,7 @@ export default class Input extends React.Component {
             valid: !this.props.validate,
             changeFile: false
         };
-                
+
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -51,12 +51,13 @@ export default class Input extends React.Component {
     cleanProps() {
         let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
         let props = {
-            type: this.props.type, 
+            id: `${this.props.scope}_${this.props.attribute}`,
+            type: this.props.type,
             name: this.props.attribute,
             defaultChecked: value,
             defaultValue: value,
             onChange: this.handleChange,
-            onClick: this.handleChange, // otherwise checkboxes would not fire 
+            onClick: this.handleChange, // otherwise checkboxes would not fire
         };
 
         return props;
@@ -82,6 +83,7 @@ export default class Input extends React.Component {
                 attribute={this.props.attribute}
                 label={this.props.label}
                 labelKey={this.props.labelKey}
+                htmlFor={`${this.props.scope}_${this.props.attribute}`}
                 showErrors={this.props.showErrors}
                 css={this.props.css}
                 hidden={this.props.hidden}

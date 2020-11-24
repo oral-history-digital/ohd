@@ -1,6 +1,6 @@
 import React from 'react';
 import Form from '../containers/form/Form';
-import ContentFieldContainer from '../containers/ContentFieldContainer';
+import ContentField from './ContentField';
 import { t, admin, underscore, humanReadable } from '../../../lib/utils';
 
 export default class SingleValueWithForm extends React.Component {
@@ -49,10 +49,10 @@ export default class SingleValueWithForm extends React.Component {
     }
 
     label() {
-        return this.props.metadataField && this.props.metadataField.label && this.props.metadataField.label[this.props.locale] || 
+        return this.props.metadataField && this.props.metadataField.label && this.props.metadataField.label[this.props.locale] ||
             t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.attribute()}`);
     }
-    
+
     attribute() {
         return (this.props.metadataField && this.props.metadataField.name) || this.props.attribute;
     }
@@ -96,11 +96,12 @@ export default class SingleValueWithForm extends React.Component {
     form() {
         let _this = this;
         return (
-            <Form 
+            <Form
                 scope={underscore(this.props.obj.type)}
                 onSubmit={function(params){_this.props.submitData(_this.props, params, {updateStateBeforeSubmit: true}); _this.setEditing()}}
                 cancel={_this.setEditing}
                 formClasses='default single-value'
+                className="ContentField"
                 data={this.props.obj}
                 elements={_this.formElements()}
             />
@@ -113,18 +114,18 @@ export default class SingleValueWithForm extends React.Component {
             (
                 (
                     (this.props.isLoggedIn && this.props.metadataField && this.props.metadataField.use_in_details_view) ||
-                    (!this.props.isLoggedIn && this.props.metadataField && this.props.metadataField.display_on_landing_page) 
-                ) && 
+                    (!this.props.isLoggedIn && this.props.metadataField && this.props.metadataField.display_on_landing_page)
+                ) &&
                 (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.attribute()])
             )
         ) {
             let value = humanReadable(this.props.obj, this.attribute(), this.props, this.state);
             return (
-                <ContentFieldContainer noLabel={this.props.noLabel} label={this.label()} value={value} >
+                <ContentField noLabel={this.props.noLabel} label={this.label()} value={value} >
                     {this.toggle()}
                     {this.props.children}
                     {this.editButton()}
-                </ContentFieldContainer>
+                </ContentField>
             )
         } else {
             return null;
@@ -132,12 +133,7 @@ export default class SingleValueWithForm extends React.Component {
     }
 
     render() {
-        let edit = admin(this.props, this.props.obj) && this.state.editing
-        return (
-            <div>
-                {edit ? this.form() : this.show()}
-            </div>
-        )
+        const isEditMode = admin(this.props, this.props.obj) && this.state.editing;
+        return isEditMode ? this.form() : this.show();
     }
-
 }
