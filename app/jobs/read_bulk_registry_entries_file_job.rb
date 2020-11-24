@@ -29,17 +29,21 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
 
         parent_name = data[0]
         parent_id   = data[1]
-        names       = data[2]
+        name        = data[2]
         id          = data[3]
-        latitude    = data[4]
-        longitude   = data[5]
+        description = data[4]
+        latitude    = data[5]
+        longitude   = data[6]
 
         begin
-          unless names.blank? && id.blank?
+          unless name.blank? && id.blank?
             entry = nil
             entry_attributes = {
+              descriptor: name, 
+              code: name && name.downcase.gsub(/\s+/, "_"),
               latitude: latitude,
               longitude: longitude,
+              notes: description,
               workflow_state: 'public',
               list_priority: false
             }
@@ -54,8 +58,8 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
               entry.update_attributes(entry_attributes)
             else
               entry = RegistryEntry.create(entry_attributes)
+              RegistryName.create registry_entry_id: entry.id, registry_name_type_id: 1, name_position: 0, descriptor: name, notes: description, locale: locale
             end
-            entry.update_or_create_names(locale, names)
 
             #
             # Parent`s attributes won`t update!
