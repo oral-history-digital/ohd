@@ -1,7 +1,3 @@
-Name des Elterneintrags;ID des Elterneintrags;Namen (id=descriptor=notes=position=type_code) getrennt durch Raute;ID des Eintrags;Latitude;Longitude
-Personen;28170;10764=Jehuda==0=first_name#10765=Gross==0=birth_name;11788;;
-Personen;28170;10766=Josef==0=first_name#10767=Mengele==0=birth_name;11789;;
-Historische Person;28171;10766=Josef==0=first_name#10767=Mengele==0=birth_name;11789;;
-Beteiligte;28173;10766=Josef==0=first_name#10767=Mengele==0=birth_name;11789;;
-Personen;28170;10768=Ester==0=first_name#10769=Lorbeer==0=birth_name;11790;;
-Personen;28170;10770=Arafat==0=last_name#10771=Jassir==0=first_name;11791;;
+parent_name;parent_id;name;id;description;latitude;longitude
+Personen;81;Contreras, Manuel;68;;;
+Personen;81;Allende, Salvador;;;;
