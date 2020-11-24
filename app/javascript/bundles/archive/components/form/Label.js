@@ -7,23 +7,13 @@ import { useI18n } from '../../hooks/i18n';
 function Label({
     label,
     labelKey,
-    scope,
-    attribute,
-    mandatory = false,
+    mandatory,
     htmlFor,
     className,
 }) {
     const { t } = useI18n();
 
-    let l;
-    if (label) {
-        l = label;
-    } else if (labelKey) {
-        l = t(labelKey);
-    } else {
-        // Scope is equivalent to model here.
-        l = t(`activerecord.attributes.${scope}.${attribute}`);
-    }
+    const l = label ? label : t(labelKey);
 
     return (
         <div className={classNames('form-label', className)}>
@@ -37,11 +27,13 @@ function Label({
 Label.propTypes = {
     label: PropTypes.string,
     labelKey: PropTypes.string,
-    scope: PropTypes.string,
-    attribute: PropTypes.string,
     mandatory: PropTypes.bool.isRequired,
-    htmlFor: PropTypes.string.isRequired,
+    htmlFor: PropTypes.string,
     className: PropTypes.string,
+};
+
+Label.defaultProps = {
+    mandatory: false,
 };
 
 export default Label;
