@@ -8,7 +8,6 @@ export function get(state, dataType, id) {
 }
 
 export function getProject(state) {
-    //return state.data.projects && state.data.projects.filter(project => {return project.identifier === state.archive.projectId});
     if (state.archive.projectId && Object.keys(state.data.projects).length > 0) {
         let project;
         for (var projectId in state.data.projects) {

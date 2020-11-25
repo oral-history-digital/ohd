@@ -1,5 +1,11 @@
-export const getEditView = state => state.archive.editView;
+const getArchive = state => state.archive;
 
-export const getLocale = state => state.archive.locale;
+export const getEditView = state => getArchive(state).editView;
 
-export const getTranslations = state => state.archive.translations;
+export const getLocale = state => getArchive(state).locale;
+
+export const getTranslations = state => getArchive(state).translations;
+
+export const getProjectId = state => getArchive(state).projectId;
+
+export const getArchiveId = state => getArchive(state).archiveId;
