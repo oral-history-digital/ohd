@@ -18,7 +18,7 @@ import GalleryContainer from '../../containers/GalleryContainer';
 import UploadTranscriptContainer from '../../containers/UploadTranscriptContainer';
 import AuthorizedContent from '../AuthorizedContent';
 
-import { admin, pathBase, t } from '../../../../lib/utils';
+import { admin, pathBase, t } from 'lib/utils';
 
 class InterviewTabPanel extends Component {
     static propTypes = {
@@ -31,10 +31,6 @@ class InterviewTabPanel extends Component {
         translations: PropTypes.object.isRequired,
         account: PropTypes.object.isRequired,
         editView: PropTypes.bool.isRequired,
-    }
-
-    constructor(props) {
-        super(props);
     }
 
     subTab(title, content, url, obj, condition = true) {

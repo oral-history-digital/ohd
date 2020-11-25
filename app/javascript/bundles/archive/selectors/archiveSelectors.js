@@ -9,3 +9,5 @@ export const getTranslations = state => getArchive(state).translations;
 export const getProjectId = state => getArchive(state).projectId;
 
 export const getArchiveId = state => getArchive(state).archiveId;
+
+export const getContributionTypes = state => getArchive(state).contributionTypes;

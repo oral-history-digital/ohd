@@ -1,5 +1,5 @@
 import { getEditView, getLocale, getTranslations, getProjectId,
-    getArchiveId } from './archiveSelectors';
+    getArchiveId, getContributionTypes } from './archiveSelectors';
 
 const state = {
     archive: {
@@ -11,6 +11,9 @@ const state = {
         editView: true,
         projectId: 'cdoh',
         archiveId: 'cd003',
+        contributionTypes: {
+            cinematographer: 'cinematographer',
+        },
     },
 };
 
@@ -35,4 +38,10 @@ test('getProjectId retrieves project id', () => {
 
 test('getArchiveId retrieves archive id', () => {
     expect(getArchiveId(state)).toBe('cd003');
+});
+
+test('getContributionTypes retrieves contributionTypes object', () => {
+    expect(getContributionTypes(state)).toStrictEqual({
+        cinematographer: 'cinematographer',
+    });
 });

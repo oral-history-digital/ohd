@@ -1,29 +1,24 @@
 import React from 'react';
-import { t, fullname, admin } from '../../../lib/utils';
+import PropTypes from 'prop-types';
+
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 import ContributionContainer from '../containers/ContributionContainer';
+import AuthorizedContent from './AuthorizedContent';
+import { t, admin } from 'lib/utils';
 
 export default class InterviewContributors extends React.Component {
-
     contributors() {
+        const { interview, people, withSpeakerDesignation, contributorsFetched } = this.props;
+
         let contributionTypes = {};
-        if (
-            this.props.interview &&
-            (
-                (
-                    this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`] &&
-                    this.props.peopleStatus[`contributors_for_interview_${this.props.interview.id}`].split('-')[0] === 'fetched'
-                ) || 
-                this.props.peopleStatus.all && this.props.peopleStatus.all.split('-')[0] === 'fetched'
-            ) &&
-            this.props.contributionTypes
-        ) {
-            for (var c in this.props.interview.contributions) {
-                let contribution = this.props.interview.contributions[c];
+
+        if (contributorsFetched) {
+            for (var c in interview.contributions) {
+                let contribution = interview.contributions[c];
                 if (
-                    this.props.withSpeakerDesignation || 
+                    withSpeakerDesignation ||
                     admin(this.props, contribution) ||
-                    contribution.contribution_type !== 'interviewee' 
+                    contribution.contribution_type !== 'interviewee'
                 ) {
                     if (!contributionTypes[contribution.contribution_type]) {
                         contributionTypes[contribution.contribution_type] = [
@@ -34,15 +29,14 @@ export default class InterviewContributors extends React.Component {
                     }
                     contributionTypes[contribution.contribution_type].push(
                         <ContributionContainer
-                            person={this.props.people[contribution.person_id]}
+                            person={people[contribution.person_id]}
                             contribution={contribution} key={`contribution-person-${contribution.id}`}
-                            withSpeakerDesignation={this.props.withSpeakerDesignation}
+                            withSpeakerDesignation={withSpeakerDesignation}
                         />
                     )
                 }
             }
         }
-        //return Object.keys(contributionTypes).map((key, index) => {
 
         return [
             'interviewee',
@@ -60,10 +54,10 @@ export default class InterviewContributors extends React.Component {
             'quality_manager_transcription',
             'quality_manager_translation',
             'quality_manager_research',
-        ].map((key, index) => {
+        ].map((key) => {
             if (contributionTypes[key]) {
                 return (
-                  <p key={`contribution-${index}`}>
+                  <p key={key}>
                     {contributionTypes[key]}
                   </p>
                 );
@@ -74,30 +68,34 @@ export default class InterviewContributors extends React.Component {
     }
 
     addContribution() {
-        if (admin(this.props, {type: 'Contribution', action: 'create', interview_id: this.props.interview.id})) {
-            return (
+        const { interview, withSpeakerDesignation, submitData, openArchivePopup } = this.props;
+
+        return (
+            <AuthorizedContent object={{type: 'Contribution', action: 'create', interview_id: interview.id}}>
                 <p>
-                    <span
+                    <button
+                        type="button"
                         className='flyout-sub-tabs-content-ico-link'
-                        title={t(this.props, 'edit.contribution.new')}
-                        onClick={() => this.props.openArchivePopup({
+                        onClick={() => openArchivePopup({
                             title: t(this.props, 'edit.contribution.new'),
-                            content: <ContributionFormContainer 
-                                interview={this.props.interview} 
-                                submitData={this.props.submitData} 
-                                withSpeakerDesignation={this.props.withSpeakerDesignation}
+                            content: <ContributionFormContainer
+                                interview={interview}
+                                submitData={submitData}
+                                withSpeakerDesignation={withSpeakerDesignation}
                             />
                         })}
                     >
                         <i className="fa fa-plus"></i> {t(this.props, 'edit.contribution.new')}
-                    </span>
+                    </button>
                 </p>
-            )
-        }
+            </AuthorizedContent>
+        );
     }
 
     render() {
-        if (this.props.interview) {
+        const { interview } = this.props;
+
+        if (interview) {
             return (
                 <div>
                     {this.contributors()}
@@ -110,3 +108,22 @@ export default class InterviewContributors extends React.Component {
     }
 }
 
+InterviewContributors.propTypes = {
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    withSpeakerDesignation: PropTypes.bool.isRequired,
+    interview: PropTypes.object.isRequired,
+    contributorsFetched: PropTypes.bool.isRequired,
+    people: PropTypes.object.isRequired,
+    contributionTypes: PropTypes.object.isRequired,
+    submitData: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};
+
+InterviewContributors.defaultProps = {
+    withSpeakerDesignation: false,
+};
