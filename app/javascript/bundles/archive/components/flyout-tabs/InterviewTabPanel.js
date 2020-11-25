@@ -112,7 +112,7 @@ class InterviewTabPanel extends Component {
                         <InterviewDataContainer
                             title={t(this.props, 'edit.upload_transcript.title')}
                             open={false}
-                            content={ <div><UploadTranscriptContainer /><InterviewContributorsContainer withSpeakerDesignation /></div> }
+                            content={ <div><UploadTranscriptContainer /><InterviewContributorsContainer /></div> }
                         />
                     </AuthorizedContent>
 
