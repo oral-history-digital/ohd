@@ -36,14 +36,13 @@ export default class Element extends React.Component {
     render() {
         const { label, labelKey, scope, attribute, help } = this.props;
 
-        const hasLabel = typeof label === 'undefined';
         // Scope is equivalent to model here.
         const key = labelKey || `activerecord.attributes.${scope}.${attribute}`;
 
         return (
             <div className={this.css()}>
                 <Label
-                    label={hasLabel ? label : undefined}
+                    label={label}
                     labelKey={key}
                     mandatory={this.props.mandatory}
                     htmlFor={this.props.htmlFor}
