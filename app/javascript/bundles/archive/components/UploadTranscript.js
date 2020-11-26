@@ -86,6 +86,7 @@ export default function UploadTranscript({
                     },
                     {
                         elementType: 'input',
+                        help: 'activerecord.attributes.transcript.delete_existing_explanation',
                         attribute: 'delete_existing',
                         type: 'checkbox'
                     },

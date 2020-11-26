@@ -842,6 +842,8 @@ ru:
         tape_durations_explanation: Dauer der Tapes (bzw. bis zum Ende des Transkripts), kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         time_shifts: Sprechbeginn
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
+        delete_existing: delete existing transcript
+        delete_existing_explanation: Deletes existing headings and keywords for this tape
       project:
         pseudo_available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)

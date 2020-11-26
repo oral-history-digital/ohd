@@ -112,7 +112,7 @@ class InterviewTabPanel extends Component {
                         <InterviewDataContainer
                             title={t(this.props, 'edit.upload_transcript.title')}
                             open={false}
-                            content={ <div><UploadTranscriptContainer /><InterviewContributorsContainer /></div> }
+                            content={ <div><UploadTranscriptContainer /><InterviewContributorsContainer withSpeakerDesignation /></div> }
                         />
                     </AuthorizedContent>
 
@@ -159,14 +159,12 @@ class InterviewTabPanel extends Component {
                             content={<CitationInfoContainer/>}
                         />
 
-                        {
-                            admin(this.props, {type: 'General', action: 'edit'}) ?
-                                (<InterviewDataContainer
-                                    title={t(this.props, 'admin_actions')}
-                                    content={<AdminActionsContainer archiveIds={[archiveId]} />}
-                                />) :
-                                null
-                        }
+                        <AuthorizedContent object={{type: 'General', action: 'edit'}}>
+                            <InterviewDataContainer
+                                title={t(this.props, 'admin_actions')}
+                                content={<AdminActionsContainer archiveIds={[archiveId]} />}
+                            />
+                        </AuthorizedContent>
                     </AuthShowContainer>
                 </div>
                 {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'download', id: archiveId}, archiveId && projectId !== "campscapes")}
