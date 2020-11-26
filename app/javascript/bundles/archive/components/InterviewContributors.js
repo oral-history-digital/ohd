@@ -8,7 +8,7 @@ import { t, admin } from 'lib/utils';
 
 export default class InterviewContributors extends React.Component {
     contributors() {
-        const { interview, people, withSpeakerDesignation, contributorsFetched } = this.props;
+        const { interview, people, contributorsFetched } = this.props;
 
         let contributionTypes = {};
 
@@ -16,7 +16,6 @@ export default class InterviewContributors extends React.Component {
             for (var c in interview.contributions) {
                 let contribution = interview.contributions[c];
                 if (
-                    withSpeakerDesignation ||
                     admin(this.props, contribution) ||
                     contribution.contribution_type !== 'interviewee'
                 ) {
@@ -31,7 +30,7 @@ export default class InterviewContributors extends React.Component {
                         <ContributionContainer
                             person={people[contribution.person_id]}
                             contribution={contribution} key={`contribution-person-${contribution.id}`}
-                            withSpeakerDesignation={withSpeakerDesignation}
+                            withSpeakerDesignation
                         />
                     )
                 }
@@ -68,7 +67,7 @@ export default class InterviewContributors extends React.Component {
     }
 
     addContribution() {
-        const { interview, withSpeakerDesignation, submitData, openArchivePopup } = this.props;
+        const { interview, submitData, openArchivePopup } = this.props;
 
         return (
             <AuthorizedContent object={{type: 'Contribution', action: 'create', interview_id: interview.id}}>
@@ -81,7 +80,7 @@ export default class InterviewContributors extends React.Component {
                             content: <ContributionFormContainer
                                 interview={interview}
                                 submitData={submitData}
-                                withSpeakerDesignation={withSpeakerDesignation}
+                                withSpeakerDesignation
                             />
                         })}
                     >
@@ -113,7 +112,6 @@ InterviewContributors.propTypes = {
     translations: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
     account: PropTypes.object.isRequired,
-    withSpeakerDesignation: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
     contributorsFetched: PropTypes.bool.isRequired,
     people: PropTypes.object.isRequired,
@@ -122,8 +120,4 @@ InterviewContributors.propTypes = {
     fetchData: PropTypes.func.isRequired,
     openArchivePopup: PropTypes.func.isRequired,
     closeArchivePopup: PropTypes.func.isRequired,
-};
-
-InterviewContributors.defaultProps = {
-    withSpeakerDesignation: false,
 };

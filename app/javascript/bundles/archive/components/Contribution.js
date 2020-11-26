@@ -49,7 +49,7 @@ export default function Contribution({
                                 content: <ContributionFormContainer
                                     contribution={contribution}
                                     submitData={submitData}
-                                    withSpeakerDesignation={withSpeakerDesignation}
+                                    withSpeakerDesignation
                                 />
                             })}
                         >

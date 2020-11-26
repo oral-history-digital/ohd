@@ -47,8 +47,8 @@ export default function UploadTranscript({
             <p>
                 <a href="/transcript-import-template.ods" download>
                     <span className="flyout-sub-tabs-content-ico-link">
-                    <i className="fa fa-download flyout-content-ico" title={t('download')}></i>
-                    {t('transcript_template')}
+                        <i className="fa fa-download flyout-content-ico" title={t('download')}></i>
+                        {t('transcript_template')}
                     </span>
                 </a>
             </p>
