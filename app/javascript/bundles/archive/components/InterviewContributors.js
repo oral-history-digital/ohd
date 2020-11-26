@@ -12,7 +12,7 @@ export default class InterviewContributors extends React.Component {
 
         let contributionTypes = {};
 
-        if (contributorsFetched) {
+        if (this.props.contributionTypes && contributorsFetched) {
             for (var c in interview.contributions) {
                 let contribution = interview.contributions[c];
                 if (

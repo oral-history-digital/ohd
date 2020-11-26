@@ -20,6 +20,8 @@ export default function UploadTranscript({
     const handleFileChange = (name, file) => {
         if (name === 'data' && file && /\.odt$/.test(file.name)) {
             setIsOdt(true);
+        } else {
+            setIsOdt(false);
         }
     };
 
