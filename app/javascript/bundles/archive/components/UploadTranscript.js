@@ -63,7 +63,6 @@ export default function UploadTranscript({
                 submitText='edit.upload_transcript.title'
                 values={{
                     archive_id: archiveId,
-                    contributions_attributes: interview && interview.contributions
                 }}
                 elements={[
                     {
@@ -103,10 +102,13 @@ export default function UploadTranscript({
                         hidden: !isOdt,
                         validate: function(v){return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v)}
                     },
+                    {
+                        elementType: 'speakerDesignationInputs',
+                        attribute: 'contributions_attributes',
+                        value: interview && Object.values(interview.contributions),
+                    },
                 ]}
-            >
-                <InterviewContributorsContainer withSpeakerDesignation onlySpeakingContributors />
-            </Form>
+            />
         </>
     );
 }

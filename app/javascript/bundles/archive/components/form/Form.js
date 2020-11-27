@@ -7,6 +7,7 @@ import TextareaContainer from '../../containers/form/TextareaContainer';
 import SelectContainer from '../../containers/form/SelectContainer';
 import RegistryEntrySelectContainer from '../../containers/form/RegistryEntrySelectContainer';
 import MultiLocaleWrapperContainer from '../../containers/form/MultiLocaleWrapperContainer';
+import SpeakerDesignationInputs from './SpeakerDesignationInputs';
 import { t, pluralize } from '../../../../lib/utils';
 
 export default class Form extends React.Component {
@@ -181,7 +182,8 @@ export default class Form extends React.Component {
             registryEntrySelect: RegistryEntrySelectContainer,
             input: InputContainer,
             richTextEditor: RichTextEditor,
-            textarea: TextareaContainer
+            textarea: TextareaContainer,
+            speakerDesignationInputs: SpeakerDesignationInputs,
         }
     }
 
