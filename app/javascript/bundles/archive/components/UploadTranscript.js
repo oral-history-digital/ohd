@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Form from '../containers/form/Form';
+import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
 import { useI18n } from '../hooks/i18n';
 import { validateTapeNumber } from 'utils/validators';
 
@@ -103,7 +104,9 @@ export default function UploadTranscript({
                         validate: function(v){return /^[\d{2}:\d{2}:\d{2},*]{1,}$/.test(v)}
                     },
                 ]}
-            />
+            >
+                <InterviewContributorsContainer withSpeakerDesignation onlySpeakingContributors />
+            </Form>
         </>
     );
 }

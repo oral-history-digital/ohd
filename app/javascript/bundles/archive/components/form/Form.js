@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import InputContainer from '../../containers/form/InputContainer';
 import RichTextEditor from 'react-rte';
 import TextareaContainer from '../../containers/form/TextareaContainer';
@@ -235,6 +237,8 @@ export default class Form extends React.Component {
                         }
                     })}
 
+                    {this.props.children}
+
                     <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
                     {this.cancelButton()}
                 </form>
@@ -242,3 +246,10 @@ export default class Form extends React.Component {
         );
     }
 }
+
+Form.propTypes = {
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node
+    ]),
+};
