@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import Form from '../containers/form/Form';
-import InterviewContributorsContainer from '../containers/InterviewContributorsContainer';
 import { useI18n } from '../hooks/i18n';
 import { validateTapeNumber } from 'utils/validators';
 
@@ -26,6 +25,10 @@ export default function UploadTranscript({
         }
     };
 
+    if (!interview) {
+        return null;
+    }
+
     if (!showForm) {
         return (
             <>
@@ -38,6 +41,15 @@ export default function UploadTranscript({
             </>
         );
     }
+
+    // Create a copy in order to not mutate state in the form.
+    const contributions = Object.values(interview.contributions)
+        .map(contribution => ({
+            id: contribution.id,
+            contribution_type: contribution.contribution_type,
+            person_id: contribution.person_id,
+            speaker_designation: contribution.speaker_designation,
+        }));
 
     return (
         <>
@@ -63,6 +75,7 @@ export default function UploadTranscript({
                 submitText='edit.upload_transcript.title'
                 values={{
                     archive_id: archiveId,
+                    contributions_attributes: contributions,
                 }}
                 elements={[
                     {
@@ -105,7 +118,7 @@ export default function UploadTranscript({
                     {
                         elementType: 'speakerDesignationInputs',
                         attribute: 'contributions_attributes',
-                        value: interview && Object.values(interview.contributions),
+                        value: contributions,
                     },
                 ]}
             />

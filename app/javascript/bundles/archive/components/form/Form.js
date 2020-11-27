@@ -188,18 +188,18 @@ export default class Form extends React.Component {
     }
 
     elementComponent(props) {
-        props['scope'] = props.scope || this.props.scope;
-        props['showErrors'] = this.state.errors[props.attribute];
-        props['handleChange'] = this.handleChange;
-        props['handleErrors'] = this.handleErrors;
-        props['key'] = props.attribute;
-        props['value'] = this.state.values[props.attribute] || props.value;
-        props['data'] = this.props.data;
+        props.scope = props.scope || this.props.scope;
+        props.showErrors = this.state.errors[props.attribute];
+        props.handleChange = this.handleChange;
+        props.handleErrors = this.handleErrors;
+        props.key = props.attribute;
+        props.value = this.state.values[props.attribute] || props.value;
+        props.data = this.props.data;
 
         // set defaults for the possibillity to shorten elements list
         if (!props.elementType) {
-            props['elementType'] = 'input';
-            props['type'] = 'text';
+            props.elementType = 'input';
+            props.type = 'text';
         }
 
         if (props.multiLocale) {

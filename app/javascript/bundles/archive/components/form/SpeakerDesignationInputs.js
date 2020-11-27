@@ -7,44 +7,49 @@ import { useI18n } from '../../hooks/i18n';
 import { getPeople } from '../../selectors/dataSelectors';
 import { fullname } from 'lib/utils';
 
-export default function SpeakerDesignationInputs(props) {
+export default function SpeakerDesignationInputs({
+    attribute,
+    value: contributions,
+    handleChange,
+}) {
     const { t, locale } = useI18n();
     const people = useSelector(getPeople);
 
-    const label = () => {
-        let mandatory = props.mandatory ? ' *' : '';
-        let label = props.label ?
-            props.label :
-            t(`activerecord.attributes.${props.scope}.${props.attribute}`);
-        return label + mandatory;
+    const onChange = (name, v) => {
+        const index = contributions.findIndex(c => c.id.toString() === name);
+        const updatedContribution = {
+            ...contributions[index],
+            speaker_designation: v,
+        };
+
+        const updatedContributions = [
+            ...contributions.slice(0, index),
+            updatedContribution,
+            ...contributions.slice(index + 1),
+        ];
+
+        handleChange(attribute, updatedContributions);
     }
 
     return (
         <div className="speaker-designation-input">
-            <h4>Sprecherzuordnungen</h4>
+            <h4>{t('assign_speakers')}</h4>
             {
-                props.value.map(contribution => {
-                    return React.createElement(InputContainer, {
-                        scope: props.attribute,
-                        key: contribution.id,
-                        attribute: contribution.id,
-                        label: fullname({ locale }, people[contribution.person_id]),
-                        value: contribution.speaker_designation,
-                        validate: props.validate,
-                        handleChange: console.log,
-                        handleErrors: console.log,
-                    });
-                })
+                contributions.map(contribution => React.createElement(InputContainer, {
+                    key: contribution.id,
+                    scope: attribute,
+                    attribute: contribution.id,
+                    label: fullname({ locale }, people[contribution.person_id]),
+                    value: contribution.speaker_designation,
+                    handleChange: onChange,
+                }))
             }
         </div>
     );
 }
 
 SpeakerDesignationInputs.propTypes = {
-    value: PropTypes.array.isRequired,
-    mandatory: PropTypes.bool,
-    label: PropTypes.string,
-    scope: PropTypes.string,
     attribute: PropTypes.string.isRequired,
-    validate: PropTypes.func,
+    value: PropTypes.array.isRequired,
+    handleChange: PropTypes.func.isRequired,
 };
