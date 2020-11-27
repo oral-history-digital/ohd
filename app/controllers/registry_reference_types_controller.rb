@@ -76,7 +76,7 @@ class RegistryReferenceTypesController < ApplicationController
             data_type: "registry_reference_types",
             extra_params: extra_params,
             page: params[:page] || 1,
-            result_pages_count: paginate ? data.total_pages : 1,
+            result_pages_count: paginate ? data.total_pages : nil,
           }
         end
         render json: json
@@ -90,6 +90,7 @@ class RegistryReferenceTypesController < ApplicationController
       params.require(:registry_reference_type).permit(
         :code,
         :registry_entry_id,
+        :use_in_transcript,
         translations_attributes: [:locale, :id, :name]
       )
     end
