@@ -981,6 +981,7 @@ en:
       task_type:
         use: in der Übersicht zeigen
       registry_reference_type:
+        use_in_transcript: Im Transkript benutzen
         code: Code
         registry_entry_id: Registereintrag (tiefst möglicher)
       default:
