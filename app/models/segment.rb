@@ -5,7 +5,7 @@ class Segment < ApplicationRecord
   belongs_to :interview#, inverse_of: :segments
   has_one :project, through: :interview
 
-  belongs_to :speaking_person, 
+  belongs_to :speaking_person,
     -> { includes(:translations) },
     class_name: 'Person',
     foreign_key: 'speaker_id'
@@ -25,13 +25,13 @@ class Segment < ApplicationRecord
   has_many  :user_annotations, as: :reference
   has_many  :annotations
 
-  scope :with_heading, -> { 
+  scope :with_heading, -> {
     joins(:translations).
     where("((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))").
     includes(:translations).
     order(:tape_number, :timecode)}
 
-  scope :mainheadings_until, ->(segment) { 
+  scope :mainheadings_until, ->(segment) {
     joins(:translations).
     includes(:translations).
     where("(segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '')").
@@ -39,7 +39,7 @@ class Segment < ApplicationRecord
     where(interview_id: segment.interview_id).
     order(:tape_number, :timecode)}
 
-  scope :subheadings_until, ->(segment, mainheading) { 
+  scope :subheadings_until, ->(segment, mainheading) {
     joins(:translations).
     includes(:translations).
     where("(segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> '')").
@@ -77,7 +77,7 @@ class Segment < ApplicationRecord
 
   def enciphered_text(version, text_original)
     # TODO: replace with utf8 À
-    text_enciphered = 
+    text_enciphered =
       case version
       when :subtitle
         text_original.
@@ -90,14 +90,14 @@ class Segment < ApplicationRecord
           gsub(/<\?\s+(.*?)>/, '(\1?)').                                                                                                           # e.g. <? bla bla>
           gsub(/<\?\d+>/, "(...?)").                                                                                                              # <?1>, <?2>, ...
           gsub(/<=>/, " ").                                                                                                                       # <=>
-          gsub(/<l\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <l(es) bla bla> 
-          gsub(/<ld\((.+)\)\s+(.*?)>/, '\2').                                                                                                      # e.g. <ld(Dialekt) bla bla> 
-          gsub(/<v\((.+)\)>/, '').                                                                                                                # e.g. <v(bla bla)> 
-          gsub(/<s\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <s(lachend) bla bla> 
-          gsub(/<sim\s+(.*?)>/, '\1').                                                                                                             # e.g. <sim bla bla> 
-          gsub(/<nl\((.+)\)\s+(.*?)>/, '\2').                                                                                                      # e.g. <nl(Geräusch) bla bla> 
-          gsub(/<g\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <g(Gestik) bla bla> 
-          gsub(/<m\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <m(Mimik) bla bla> 
+          gsub(/<l\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <l(es) bla bla>
+          gsub(/<ld\((.+)\)\s+(.*?)>/, '\2').                                                                                                      # e.g. <ld(Dialekt) bla bla>
+          gsub(/<v\((.+)\)>/, '').                                                                                                                # e.g. <v(bla bla)>
+          gsub(/<s\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <s(lachend) bla bla>
+          gsub(/<sim\s+(.*?)>/, '\1').                                                                                                             # e.g. <sim bla bla>
+          gsub(/<nl\((.+)\)\s+(.*?)>/, '\2').                                                                                                      # e.g. <nl(Geräusch) bla bla>
+          gsub(/<g\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <g(Gestik) bla bla>
+          gsub(/<m\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <m(Mimik) bla bla>
           # zwar
           gsub(/\[.*?\]/, "").                                                                                                                    # e.g. [Kommentar]
           gsub(/\[\.\.\.\]/, "XXX").                                                                                                              # e.g. [...]
@@ -107,7 +107,7 @@ class Segment < ApplicationRecord
           gsub("~", "").                                                                                                                          # e.g. Wo waren Sie ~en este tiempo~?
           gsub("...", "_").                                                                                                                       # e.g. ...
           gsub(" [---]", "").                                                                                                                     # e.g. Ich war [---] bei Maria Malta, als das passierte.
-          gsub("(???) ", "(...?)").                                                                                                               # e.g. Nice grandparents, we played football, (???) it’s 
+          gsub("(???) ", "(...?)").                                                                                                               # e.g. Nice grandparents, we played football, (???) it’s
           gsub("<***>", "")                                                                                                                       # e.g. <***>
       when :public
         text_original.
@@ -124,9 +124,9 @@ class Segment < ApplicationRecord
           gsub(" [---]", "<p>").                                                                                                                  # e.g. Ich war [---] bei Maria Malta, als das passierte.
           gsub(/\((.*?)\?\)/, '<?\1>').                                                                                                           # e.g. (By now?) it's the next generation
           gsub("<***>", "<i(Bandende)>").                                                                                                         # e.g. <***>
-          gsub("(???) ", "<?>")                                                                                                                   # e.g. Nice grandparents, we played football, (???) it’s 
+          gsub("(???) ", "<?>")                                                                                                                   # e.g. Nice grandparents, we played football, (???) it’s
       end
-    text_enciphered 
+    text_enciphered
   end
 
   validates_presence_of :timecode#, :media_id
@@ -152,13 +152,14 @@ class Segment < ApplicationRecord
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       if opts[:speaker_id]
+        opts.delete(:next_timecode)
         segment.update_attributes(opts)
       else
         assign_speakers_and_update_text(segment, opts)
       end
     end
 
-    # this methods substitutes speaker_designations (e.g. *CG:*) 
+    # this methods substitutes speaker_designations (e.g. *CG:*)
     # if these speaker_designations do not occur at the beginning of the text, a new segment will be created for each occurence
     #
     def assign_speakers_and_update_text(segment, opts)
@@ -170,10 +171,10 @@ class Segment < ApplicationRecord
       #
       all_speakers_regexp = Regexp.new(speaker_designations.map{|d| "(#{Regexp.quote(d)})"}.join('|'))
 
-      # 
+      #
       # splitted_text is an array containing [speaker_designation1, text_of_speaker1, speaker_designation2, text_of_speaker2, etc.]
       #
-      splitted_text = segment.interview.contributions.empty? ? [opts[:text]] : opts[:text] && opts[:text].split(all_speakers_regexp).reject(&:empty?)  
+      splitted_text = segment.interview.contributions.empty? ? [opts[:text]] : opts[:text] && opts[:text].split(all_speakers_regexp).reject(&:empty?)
       time_per_char = calculate_time_per_char(speaker_designations, opts)
 
       # clean erraneously added blanks
@@ -202,7 +203,7 @@ class Segment < ApplicationRecord
         unless splitted_text.empty?
           next_time = Timecode.new(segment.timecode).time + atts[:text].length * time_per_char
           if segment.next && segment.next.timecode < opts[:next_timecode]
-            segment = segment.next 
+            segment = segment.next
           else
             # if the calculated start-time for the next segment is bigger than the current tape`s time
             # associate to the next tape
@@ -264,14 +265,14 @@ class Segment < ApplicationRecord
       'public'
     end
 
-    # TODO: replace the following occurences of I18n.available_locales with project.available_locales 
+    # TODO: replace the following occurences of I18n.available_locales with project.available_locales
     # or do sth. resulting in the same (e.g. reset I18n.available_locales in application_controller after having seen params[:project])
     #
     (Project.current.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true
     end
     #dynamic_string :transcripts, stored: true  do # needs to be stored to enable highlighting
-      #translations.inject({}) do |mem, translation| 
+      #translations.inject({}) do |mem, translation|
         #mem["text_#{ISO_639.find(translation.locale.to_s).alpha2}"] = translation.text
         #mem
       #end
@@ -279,7 +280,7 @@ class Segment < ApplicationRecord
     #
     #
     # the following won`t run because of undefined method `translations' for #<Sunspot::DSL::Fields:0x00000006b9f518>
-    #translations.each do |translation| 
+    #translations.each do |translation|
       #text :"#{translation.text}", stored: true # needs to be stored to enable highlighting
     #end
 
@@ -311,13 +312,13 @@ class Segment < ApplicationRecord
         #end.join(' ')
       #end.join(' ')
     #end
-    
+
   end
 
   after_initialize do
     (project.available_locales).each do |locale|
       define_singleton_method "text_#{locale}" do
-        text("#{locale}-public") # only search in public texts 
+        text("#{locale}-public") # only search in public texts
         # TODO: enable searching over original texts in admin-mode
       end
     end
@@ -422,7 +423,7 @@ class Segment < ApplicationRecord
     if mainheadings.count > 0
       mainheadings_count = mainheadings.map{|mh| mh.mainheading("#{interview.languages.first}-public") || mh.mainheading("#{interview.languages.first}-original")}.count
       subheadings = Segment.subheadings_until(self, mainheadings.last)
-      
+
       if subheadings.count > 0
         Project.current.available_locales.inject({}) do |mem, locale|
           subheading = subheadings.last.subheading(locale) || subheadings.last.subheading("#{locale}-public")

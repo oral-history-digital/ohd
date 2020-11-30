@@ -1,10 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import InputContainer from '../../containers/form/InputContainer';
 import RichTextEditor from 'react-rte';
 import TextareaContainer from '../../containers/form/TextareaContainer';
 import SelectContainer from '../../containers/form/SelectContainer';
 import RegistryEntrySelectContainer from '../../containers/form/RegistryEntrySelectContainer';
 import MultiLocaleWrapperContainer from '../../containers/form/MultiLocaleWrapperContainer';
+import SpeakerDesignationInputs from './SpeakerDesignationInputs';
 import { t, pluralize } from '../../../../lib/utils';
 
 export default class Form extends React.Component {
@@ -179,23 +182,24 @@ export default class Form extends React.Component {
             registryEntrySelect: RegistryEntrySelectContainer,
             input: InputContainer,
             richTextEditor: RichTextEditor,
-            textarea: TextareaContainer
+            textarea: TextareaContainer,
+            speakerDesignationInputs: SpeakerDesignationInputs,
         }
     }
 
     elementComponent(props) {
-        props['scope'] = props.scope || this.props.scope;
-        props['showErrors'] = this.state.errors[props.attribute];
-        props['handleChange'] = this.handleChange;
-        props['handleErrors'] = this.handleErrors;
-        props['key'] = props.attribute;
-        props['value'] = this.state.values[props.attribute] || props.value;
-        props['data'] = this.props.data;
+        props.scope = props.scope || this.props.scope;
+        props.showErrors = this.state.errors[props.attribute];
+        props.handleChange = this.handleChange;
+        props.handleErrors = this.handleErrors;
+        props.key = props.attribute;
+        props.value = this.state.values[props.attribute] || props.value;
+        props.data = this.props.data;
 
         // set defaults for the possibillity to shorten elements list
         if (!props.elementType) {
-            props['elementType'] = 'input';
-            props['type'] = 'text';
+            props.elementType = 'input';
+            props.type = 'text';
         }
 
         if (props.multiLocale) {
@@ -235,6 +239,8 @@ export default class Form extends React.Component {
                         }
                     })}
 
+                    {this.props.children}
+
                     <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
                     {this.cancelButton()}
                 </form>
@@ -242,3 +248,10 @@ export default class Form extends React.Component {
         );
     }
 }
+
+Form.propTypes = {
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node
+    ]),
+};
