@@ -1,14 +1,17 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
 import RegistryEntryShowContainer from '../containers/RegistryEntryShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import RegistryHierarchyFormContainer from '../containers/RegistryHierarchyFormContainer';
 import PopupMenu from './PopupMenu';
-import { t, admin } from '../../../lib/utils';
+import AuthorizedContent from './AuthorizedContent';
+import { t } from 'lib/utils';
 
 export default class RegistryEntry extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             childrenVisible: false,
             editButtonsVisible: false,
@@ -194,7 +197,7 @@ export default class RegistryEntry extends React.Component {
                 <a
                     href={`https://www.openstreetmap.org/?mlat=${this.props.data.latitude}&mlon=${this.props.data.longitude}&zoom=6`}
                     target="_blank"
-                    rel="noopener"
+                    rel="noreferrer"
                     className="flyout-sub-tabs-content-ico-link"
                     title={`${this.props.data.latitude}, ${this.props.data.longitude}`}
                 >
@@ -219,8 +222,8 @@ export default class RegistryEntry extends React.Component {
     }
 
     editButtons() {
-        if (admin(this.props, this.props.data)) {
-            return (
+        return (
+            <AuthorizedContent object={this.props.data}>
                 <PopupMenu>
                     <PopupMenu.Item>{this.edit()}</PopupMenu.Item>
                     <PopupMenu.Item>{this.delete()}</PopupMenu.Item>
@@ -228,8 +231,9 @@ export default class RegistryEntry extends React.Component {
                     <PopupMenu.Item>{this.addParent()}</PopupMenu.Item>
                     <PopupMenu.Item>{this.deleteParent()}</PopupMenu.Item>
                 </PopupMenu>
-            );
-        }
+            </AuthorizedContent>
+
+        );
     }
 
     showChildren() {
@@ -238,24 +242,23 @@ export default class RegistryEntry extends React.Component {
         }
     }
 
-    showId() {
-        if (admin(this.props, this.props.data)) {
-            return ` (ID: ${this.props.data.id})`
-        }
-    }
-
     entry() {
+        const { data } = this.props;
+
         let css = this.state.childrenVisible ? 'open' : '';
         return (
             <div
-                id={`entry_${this.props.data.id}`}
-                key={"entry-" + this.props.data.id}
+                id={`entry_${data.id}`}
+                key={data.id}
                 className={`registry-entry-label ${css}`}
-                title={this.props.data.name[this.props.locale]}
+                title={data.name[this.props.locale]}
                 onClick={() => this.showChildren()}
             >
-                {this.props.data.name[this.props.locale]}
-                {this.showId()}
+                {data.name[this.props.locale]}
+
+                <AuthorizedContent object={data}>
+                    {` (ID: ${data.id})`}
+                </AuthorizedContent>
             </div>
         )
     }
@@ -297,18 +300,16 @@ export default class RegistryEntry extends React.Component {
     }
 
     renderCheckbox() {
-        if (admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
-            return (
+        return (
+            <AuthorizedContent object={{type: 'RegistryEntry', action: 'update'}}>
                 <input
                     type='checkbox'
                     className='select-checkbox'
                     checked={this.props.selectedRegistryEntryIds.indexOf(this.props.data.id) > 0}
                     onChange={() => {this.props.addRemoveRegistryEntryId(this.props.data.id)}}
                 />
-            )
-        } else {
-            return null;
-        }
+            </AuthorizedContent>
+        );
     }
 
     render() {
@@ -323,3 +324,18 @@ export default class RegistryEntry extends React.Component {
         )
     }
 }
+
+RegistryEntry.propTypes = {
+    data: PropTypes.object.isRequired,
+    archiveId: PropTypes.string.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    registryEntriesStatus: PropTypes.object.isRequired,
+    registryEntryParent: PropTypes.object.isRequired,
+    selectedRegistryEntryIds: PropTypes.array.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    deleteData: PropTypes.func.isRequired,
+    addRemoveRegistryEntryId: PropTypes.func.isRequired,
+};
