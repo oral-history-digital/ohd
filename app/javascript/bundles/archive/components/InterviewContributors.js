@@ -9,7 +9,6 @@ import { useI18n } from '../hooks/i18n';
 export default function InterviewContributors({
     interview,
     withSpeakerDesignation,
-    onlySpeakingContributors,
     submitData,
     openArchivePopup,
 }) {
@@ -23,7 +22,6 @@ export default function InterviewContributors({
         <div>
             <ContributionList
                 withSpeakerDesignation={withSpeakerDesignation}
-                onlySpeakingContributors={onlySpeakingContributors}
             />
 
             <AuthorizedContent object={{type: 'Contribution', action: 'create', interview_id: interview.id}}>
@@ -51,7 +49,6 @@ export default function InterviewContributors({
 
 InterviewContributors.propTypes = {
     withSpeakerDesignation: PropTypes.bool.isRequired,
-    onlySpeakingContributors: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     openArchivePopup: PropTypes.func.isRequired,
@@ -59,5 +56,4 @@ InterviewContributors.propTypes = {
 
 InterviewContributors.defaultProps = {
     withSpeakerDesignation: false,
-    onlySpeakingContributors: false,
 };

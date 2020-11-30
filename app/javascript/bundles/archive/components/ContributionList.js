@@ -27,11 +27,8 @@ const CONTRIBUTION_TYPES_ALL = [
     'quality_manager_research',
 ];
 
-const CONTRIBUTION_TYPES_SPEAKING = CONTRIBUTION_TYPES_ALL.slice(0, 6);
-
 export default function ContributionList({
     withSpeakerDesignation,
-    onlySpeakingContributors,
 }) {
     const currentInterview = useSelector(getCurrentInterview);
     const contributorsFetched = useSelector(getContributorsFetched);
@@ -46,12 +43,8 @@ export default function ContributionList({
 
     const interviewContributions = Object.values(currentInterview.contributions);
 
-    const shownContributionTypes = onlySpeakingContributors ? CONTRIBUTION_TYPES_SPEAKING : CONTRIBUTION_TYPES_ALL;
-
-    const filteredContributions = interviewContributions.filter(contribution => shownContributionTypes.includes(contribution.contribution_type));
-
     // group by contribution type
-    const groupedContributions = filteredContributions.reduce((acc, contribution) => {
+    const groupedContributions = interviewContributions.reduce((acc, contribution) => {
         const type = contribution.contribution_type;
 
         if (!acc[type]) {
@@ -109,10 +102,8 @@ export default function ContributionList({
 
 ContributionList.propTypes = {
     withSpeakerDesignation: PropTypes.bool.isRequired,
-    onlySpeakingContributors: PropTypes.bool.isRequired,
 };
 
 ContributionList.defaultProps = {
     withSpeakerDesignation: false,
-    onlySpeakingContributors: false,
 };

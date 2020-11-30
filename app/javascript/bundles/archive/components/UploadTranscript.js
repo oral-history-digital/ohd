@@ -5,6 +5,15 @@ import Form from '../containers/form/Form';
 import { useI18n } from '../hooks/i18n';
 import { validateTapeNumber } from 'utils/validators';
 
+const CONTRIBUTION_TYPES_SPEAKING = [
+    'interviewee',
+    'interviewer',
+    'cinematographer',
+    'sound',
+    'producer',
+    'other_attender',
+];
+
 export default function UploadTranscript({
     locale,
     projectId,
@@ -25,7 +34,7 @@ export default function UploadTranscript({
         }
     };
 
-    if (!interview) {
+    if (!interview || !interview.contributions) {
         return null;
     }
 
@@ -44,6 +53,7 @@ export default function UploadTranscript({
 
     // Create a copy in order to not mutate state in the form.
     const contributions = Object.values(interview.contributions)
+        .filter(contribution => CONTRIBUTION_TYPES_SPEAKING.includes(contribution.contribution_type))
         .map(contribution => ({
             id: contribution.id,
             contribution_type: contribution.contribution_type,
