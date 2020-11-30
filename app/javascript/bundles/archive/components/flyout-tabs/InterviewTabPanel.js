@@ -16,8 +16,9 @@ import InterviewLocationsContainer from '../../containers/InterviewLocationsCont
 import CitationInfoContainer from '../../containers/CitationInfoContainer';
 import GalleryContainer from '../../containers/GalleryContainer';
 import UploadTranscriptContainer from '../../containers/UploadTranscriptContainer';
+import AuthorizedContent from '../AuthorizedContent';
 
-import { admin, pathBase, t } from '../../../../lib/utils';
+import { admin, pathBase, t } from 'lib/utils';
 
 class InterviewTabPanel extends Component {
     static propTypes = {
@@ -30,10 +31,6 @@ class InterviewTabPanel extends Component {
         translations: PropTypes.object.isRequired,
         account: PropTypes.object.isRequired,
         editView: PropTypes.bool.isRequired,
-    }
-
-    constructor(props) {
-        super(props);
     }
 
     subTab(title, content, url, obj, condition = true) {
@@ -111,32 +108,33 @@ class InterviewTabPanel extends Component {
                         />
                     </AuthShowContainer>
 
-                    {
-                        admin(this.props, interview) ?
-                            (<InterviewDataContainer
-                                title={t(this.props, 'edit.upload_transcript.title')}
-                                open={false}
-                                content={ <div><UploadTranscriptContainer /><InterviewContributorsContainer withSpeakerDesignation /></div> }
-                            />) :
-                            null
-                    }
+                    <AuthorizedContent object={interview}>
+                        <InterviewDataContainer
+                            title={t(this.props, 'edit.upload_transcript.title')}
+                            open={false}
+                            content={<UploadTranscriptContainer />}
+                        />
+                    </AuthorizedContent>
 
                     {
                         // speakers assignment does not work for dg at the moment, but we don't need it either
-                        (admin(this.props, {type: 'Interview', action: 'update_speakers', interview_id: interview && interview.id}) && projectId !== 'dg') ?
-                            (<InterviewDataContainer
-                                title={t(this.props, 'assign_speakers')}
-                                content={<AssignSpeakersFormContainer interview={interview} />}
-                            />) :
-                            null
-                    }
-
-                    {
-                        (admin(this.props, {type: 'Interview', action: 'mark_texts', interview_id: interview && interview.id}) && projectId !== 'dg') ?
-                            (<InterviewDataContainer
-                                title={t(this.props, 'mark_texts')}
-                                content={<MarkTextFormContainer interview={interview} />}
-                            />) :
+                        projectId !== 'dg' ?
+                            (
+                                <>
+                                    <AuthorizedContent object={{type: 'Interview', action: 'update_speakers', interview_id: interview && interview.id}}>
+                                        <InterviewDataContainer
+                                            title={t(this.props, 'assign_speakers')}
+                                            content={<AssignSpeakersFormContainer interview={interview} />}
+                                        />
+                                    </AuthorizedContent>
+                                    <AuthorizedContent object={{type: 'Interview', action: 'mark_texts', interview_id: interview && interview.id}}>
+                                        <InterviewDataContainer
+                                            title={t(this.props, 'mark_texts')}
+                                            content={<MarkTextFormContainer interview={interview} />}
+                                        />
+                                    </AuthorizedContent>
+                                </>
+                            ) :
                             null
                     }
 
@@ -161,14 +159,12 @@ class InterviewTabPanel extends Component {
                             content={<CitationInfoContainer/>}
                         />
 
-                        {
-                            admin(this.props, {type: 'General', action: 'edit'}) ?
-                                (<InterviewDataContainer
-                                    title={t(this.props, 'admin_actions')}
-                                    content={<AdminActionsContainer archiveIds={[archiveId]} />}
-                                />) :
-                                null
-                        }
+                        <AuthorizedContent object={{type: 'General', action: 'edit'}}>
+                            <InterviewDataContainer
+                                title={t(this.props, 'admin_actions')}
+                                content={<AdminActionsContainer archiveIds={[archiveId]} />}
+                            />
+                        </AuthorizedContent>
                     </AuthShowContainer>
                 </div>
                 {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'download', id: archiveId}, archiveId && projectId !== "campscapes")}

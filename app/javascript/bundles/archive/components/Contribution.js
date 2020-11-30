@@ -1,86 +1,101 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import ContributionFormContainer from '../containers/ContributionFormContainer';
-import { t, fullname, admin } from '../../../lib/utils';
+import { fullname } from 'lib/utils';
+import AuthorizedContent from './AuthorizedContent';
+import { useI18n } from '../hooks/i18n';
+import { useAuthorization } from '../hooks/authorization';
 
-export default class Contribution extends React.Component {
+export default function Contribution({
+    locale,
+    person,
+    projectId,
+    archiveId,
+    contribution,
+    withSpeakerDesignation,
+    submitData,
+    deleteData,
+    openArchivePopup,
+    closeArchivePopup,
+}) {
+    const { t } = useI18n();
+    const { isAuthorized } = useAuthorization();
 
-    edit() {
+    const destroy = () => {
+        deleteData({ locale, projectId }, 'interviews', archiveId, 'contributions', contribution.id);
+        closeArchivePopup();
+    };
+
+    if (isAuthorized(contribution) || contribution.workflow_state === 'public' ) {
         return (
-            <span
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.contribution.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.contribution.edit'),
-                    content: <ContributionFormContainer 
-                        contribution={this.props.contribution} 
-                        submitData={this.props.submitData} 
-                        withSpeakerDesignation={this.props.withSpeakerDesignation}
-                    />
-                })}
-            >
-                <i className="fa fa-pencil"></i>
+            <span className="flyout-content-data">
+                {fullname({ locale }, person)}
+
+                {
+                    withSpeakerDesignation ?
+                        (<span>: {contribution.speaker_designation || t('edit.update_speaker.no_speaker_designation')}</span>) :
+                        null
+                }
+
+                <AuthorizedContent object={contribution}>
+                    <span className="flyout-sub-tabs-content-ico">
+                        <button
+                            type="button"
+                            className='flyout-sub-tabs-content-ico-link'
+                            title={t('edit.contribution.edit')}
+                            onClick={() => openArchivePopup({
+                                title: t('edit.contribution.edit'),
+                                content: <ContributionFormContainer
+                                    contribution={contribution}
+                                    submitData={submitData}
+                                    withSpeakerDesignation
+                                />
+                            })}
+                        >
+                            <i className="fa fa-pencil"></i>
+                        </button>
+
+                        <button
+                            type="button"
+                            className='flyout-sub-tabs-content-ico-link'
+                            title={t('delete')}
+                            onClick={() => openArchivePopup({
+                                title: `${t('delete')} ${t('contributions.' + contribution.contribution_type)}`,
+                                content: (
+                                    <div>
+                                        <p>{fullname({ locale }, person)}</p>
+                                        <div className='any-button' onClick={destroy}>
+                                            {t('delete')}
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        >
+                            <i className="fa fa-trash-o"></i>
+                        </button>
+                    </span>
+                </AuthorizedContent>
             </span>
-        )
-    }
-
-    destroy() {
-        this.props.deleteData(this.props, 'interviews', this.props.archiveId, 'contributions', this.props.contribution.id);
-        this.props.closeArchivePopup();
-    }
-
-    delete() {
-        return <span
-            className='flyout-sub-tabs-content-ico-link'
-            title={t(this.props, 'delete')}
-            onClick={() => this.props.openArchivePopup({
-                title: `${t(this.props, 'delete')} ${t(this.props, 'contributions.' + this.props.contribution.contribution_type)}`,
-                content: (
-                    <div>
-                        <p>{fullname(this.props, this.props.person)}</p>
-                        <div className='any-button' onClick={() => this.destroy()}>
-                            {t(this.props, 'delete')}
-                        </div>
-                    </div>
-                )
-            })}
-        >
-            <i className="fa fa-trash-o"></i>
-        </span>
-    }
-
-    buttons() {
-        if (admin(this.props, this.props.contribution)) {
-            return (
-                <span className={'flyout-sub-tabs-content-ico'}>
-                    {this.edit()}
-                    {this.delete()}
-                </span>
-            )
-        }
-    }
-
-    speakerDesignation() {
-        if (this.props.withSpeakerDesignation) {
-            return <span>{`: ${this.props.contribution.speaker_designation || t(this.props, 'edit.update_speaker.no_speaker_designation')}`}</span>;
-        }
-    }
-
-    render() {
-        if (
-            this.props.contribution.workflow_state === 'public' ||
-            admin(this.props, this.props.contribution) 
-        ){ 
-            return (
-                <span className="flyout-content-data">
-                    {fullname(this.props, this.props.person)}
-                    {this.speakerDesignation()}
-                    {this.buttons()}
-                </span>
-            );
-        } else {
-            return null;
-        }
+        );
+    } else {
+        return null;
     }
 }
 
+Contribution.propTypes = {
+    person: PropTypes.object.isRequired,
+    contribution: PropTypes.object.isRequired,
+    withSpeakerDesignation: PropTypes.bool.isRequired,
+    archiveId: PropTypes.string.isRequired,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    deleteData: PropTypes.func.isRequired,
+    submitData: PropTypes.func.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};
+
+Contribution.defaultProps = {
+    withSpeakerDesignation: false,
+};
