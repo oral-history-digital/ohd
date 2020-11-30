@@ -9,12 +9,10 @@ class TranscriptsController < ApplicationController
 
   def create
     authorize :upload, :create?
-
     file = params[:transcript].delete(:data)
     file_path = create_tmp_file(file)
 
     interview = Interview.find_by_archive_id(transcript_params[:archive_id])
-
     tape = transcript_params[:tape_number] ? interview.tapes.find_by_media_id(
       "#{interview.archive_id}_#{format('%02d', interview.tapes.count)}_#{format('%02d', transcript_params[:tape_number])}"
     ) : interview.tapes.first
@@ -25,8 +23,6 @@ class TranscriptsController < ApplicationController
     update_contributions(interview)
 
     locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send("alpha2")
-
-
 
     ReadTranscriptFileJob.perform_later(interview, file_path, tape.id, locale, current_user_account)
 
