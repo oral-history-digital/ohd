@@ -742,11 +742,6 @@ ul.registry-entries-ul {
   .registry-entry-label {
     cursor: pointer;
     float: left;
-    &.open, &:hover {
-      border-bottom: 1px dashed #383838;
-      margin-bottom: 1px;
-      padding-bottom: 4px;
-    }
   }
   li {
     padding-bottom: 6px;

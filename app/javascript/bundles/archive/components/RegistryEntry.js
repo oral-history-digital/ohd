@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
 import RegistryEntryShowContainer from '../containers/RegistryEntryShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
@@ -243,18 +244,19 @@ export default class RegistryEntry extends React.Component {
     }
 
     entry() {
-        const { data } = this.props;
+        const { data, locale } = this.props;
 
-        let css = this.state.childrenVisible ? 'open' : '';
         return (
             <div
                 id={`entry_${data.id}`}
                 key={data.id}
-                className={`registry-entry-label ${css}`}
-                title={data.name[this.props.locale]}
+                className={classNames('registry-entry-label', {
+                    'open': this.state.childrenVisible,
+                })}
+                title={data.notes[locale] || null}
                 onClick={() => this.showChildren()}
             >
-                {data.name[this.props.locale]}
+                {data.name[locale]}
 
                 <AuthorizedContent object={data}>
                     {` (ID: ${data.id})`}
