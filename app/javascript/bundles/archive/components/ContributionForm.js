@@ -52,7 +52,6 @@ export default class ContributionForm extends React.Component {
             elements.push({
                 attribute: 'speaker_designation',
                 value: this.props.contribution && this.props.contribution.speaker_designation,
-                validate: function(v){return v !== ''}
             });
         }
         return elements;
