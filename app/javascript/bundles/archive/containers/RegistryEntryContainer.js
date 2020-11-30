@@ -4,11 +4,12 @@ import RegistryEntry from '../components/RegistryEntry';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
 import { addRemoveRegistryEntryId } from '../actions/archiveActionCreators';
+import { getLocale, getTranslations, getArchiveId } from '../selectors/archiveSelectors';
 
 const mapStateToProps = (state) => ({
-    archiveId: state.archive.archiveId,
-    locale: state.archive.locale,
-    translations: state.archive.translations,
+    archiveId: getArchiveId(state),
+    locale: getLocale(state),
+    translations: getTranslations(state),
     registryEntriesStatus: state.data.statuses.registry_entries,
     selectedRegistryEntryIds: state.archive.selectedRegistryEntryIds,
 });

@@ -1,17 +1,12 @@
 import React from 'react';
-
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import RegistryEntryContainer from '../containers/RegistryEntryContainer';
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
-import { t, admin } from '../../../lib/utils';
-import PixelLoader from '../../../lib/PixelLoader'
+import PixelLoader from 'lib/PixelLoader'
+import { t, admin } from 'lib/utils';
 
 export default class RegistryEntries extends React.Component {
-
-    constructor(props, context) {
-        super(props, context);
-        //this.state = {registryEntryParent: this.props.registryEntryParent};
-    }
-
     componentDidMount() {
         this.loadWithAssociations();
         this.loadRegistryEntries();
@@ -24,7 +19,7 @@ export default class RegistryEntries extends React.Component {
 
     loadWithAssociations() {
         if (
-            this.props.registryEntryParent && 
+            this.props.registryEntryParent &&
             !this.props.registryEntryParent.associations_loaded &&
             this.props.registryEntriesStatus[this.props.registryEntryParent.id] !== 'fetching'
         ) {
@@ -55,18 +50,17 @@ export default class RegistryEntries extends React.Component {
     registryEntries() {
         if (
             this.props.registryEntryParent &&
-            this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`] && 
+            this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`] &&
             this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`].split('-')[0] === 'fetched' &&
             this.props.registryEntryParent.associations_loaded
         ) {
             return this.props.registryEntryParent.child_ids[this.props.locale].map((id, index) => {
-                let registryEntry = this.props.registryEntries[id] 
+                let registryEntry = this.props.registryEntries[id]
                 if (registryEntry && !this.hideRegistryEntry(id)) {
                     return (
-                        <li key={`registry_entries-li-${id}`}>
-                            <RegistryEntryContainer 
-                                data={registryEntry} 
-                                key={`registry_entries-${id}`} 
+                        <li key={id}>
+                            <RegistryEntryContainer
+                                data={registryEntry}
                                 registryEntryParent={this.props.registryEntryParent}
                             />
                         </li>
@@ -86,7 +80,7 @@ export default class RegistryEntries extends React.Component {
                     title={t(this.props, 'edit.registry_entry.new')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.registry_entry.new'),
-                        content: <RegistryEntryFormContainer 
+                        content: <RegistryEntryFormContainer
                                     registryEntryParent={this.props.registryEntryParent}
                                 />
                     })}
@@ -99,8 +93,10 @@ export default class RegistryEntries extends React.Component {
 
     render() {
         return (
-            <div>
-                <ul className={'registry-entries-ul'}>
+            <div className={this.props.className}>
+                <ul className={classNames('registry-entries-ul', {
+                    'registry-entries-ul-root': this.props.root,
+                })}>
                     {this.registryEntries()}
                 </ul>
                 {this.addRegistryEntry()}
@@ -109,3 +105,10 @@ export default class RegistryEntries extends React.Component {
     }
 }
 
+RegistryEntries.propTypes = {
+    root: PropTypes.bool.isRequired,
+};
+
+RegistryEntries.defaultProps = {
+    root: false,
+};

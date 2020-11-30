@@ -17,6 +17,8 @@ export default class RegistryEntry extends React.Component {
             childrenVisible: false,
             editButtonsVisible: false,
         };
+
+        this.showChildren = this.showChildren.bind(this);
     }
 
     componentDidMount() {
@@ -56,28 +58,6 @@ export default class RegistryEntry extends React.Component {
                 {t(this.props, 'edit.registry_entry.edit')}
             </div>
         )
-    }
-
-    show() {
-        if (this.props.data.registry_references_count > 0) {
-
-            return (
-                <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'activerecord.models.registry_entries.actions.show')}
-                onClick={() => this.props.openArchivePopup({
-                    content: <RegistryEntryShowContainer
-                    registryEntryId={this.props.data.id}
-                    registryEntryParent={this.props.registryEntryParent}
-                    />
-                    })}
-                >
-                    <i className="fa fa-eye" />
-                </div>
-            )
-        } else {
-            return <div className='flyout-sub-tabs-content-ico-link' />;
-        }
     }
 
     destroy() {
@@ -159,9 +139,7 @@ export default class RegistryEntry extends React.Component {
                     this.setState({ editButtonsVisible: false });
                     this.props.openArchivePopup({
                         title: t(this.props, 'edit.registry_entry.add_parent'),
-                        content: <RegistryHierarchyFormContainer
-                                     descendantRegistryEntry={this.props.data}
-                                 />
+                        content: <RegistryHierarchyFormContainer descendantRegistryEntry={this.props.data} />
                     })
                 }}
             >
@@ -180,9 +158,7 @@ export default class RegistryEntry extends React.Component {
                     this.setState({ editButtonsVisible: false });
                     this.props.openArchivePopup({
                         title: t(this.props, 'edit.registry_entry.new'),
-                        content: <RegistryEntryFormContainer
-                                    registryEntryParent={this.props.data}
-                                />
+                        content: <RegistryEntryFormContainer registryEntryParent={this.props.data} />
                     })
                 }}
             >
@@ -214,8 +190,7 @@ export default class RegistryEntry extends React.Component {
 
     buttons() {
         return (
-            <div className={'flyout-sub-tabs-content-ico'}>
-                {this.show()}
+            <div className="flyout-sub-tabs-content-ico">
                 {this.osmLink()}
                 {this.editButtons()}
             </div>
@@ -233,18 +208,16 @@ export default class RegistryEntry extends React.Component {
                     <PopupMenu.Item>{this.deleteParent()}</PopupMenu.Item>
                 </PopupMenu>
             </AuthorizedContent>
-
         );
     }
 
     showChildren() {
-        if (this.props.data.children_count > 0) {
-             this.setState({ childrenVisible: !this.state.childrenVisible })
-        }
+        this.setState(prevState => ({ childrenVisible: !prevState.childrenVisible }));
     }
 
     entry() {
-        const { data, locale } = this.props;
+        const { data, locale, openArchivePopup } = this.props;
+        const hasReferences = data.registry_references_count > 0;
 
         return (
             <div
@@ -252,9 +225,21 @@ export default class RegistryEntry extends React.Component {
                 key={data.id}
                 className={classNames('registry-entry-label', {
                     'open': this.state.childrenVisible,
+                    'is-clickable': hasReferences,
                 })}
                 title={data.notes[locale] || null}
-                onClick={() => this.showChildren()}
+                onClick={() => {
+                    if (hasReferences) {
+                        openArchivePopup({
+                            content: (
+                                <RegistryEntryShowContainer
+                                    registryEntryId={data.id}
+                                    registryEntryParent={this.props.registryEntryParent}
+                                />
+                            )
+                        });
+                    }
+                }}
             >
                 {data.name[locale]}
 
@@ -265,31 +250,25 @@ export default class RegistryEntry extends React.Component {
         )
     }
 
-    children() {
-        if (this.state.childrenVisible) {
-            return <RegistryEntriesContainer registryEntryParent={this.props.data} />;
-        }
-    }
-
     showHideChildren() {
-        if (this.props.data.children_count > 0) {
+        const { data } = this.props;
 
-            let css = this.state.childrenVisible ? 'minus-square' : 'plus-square-o';
+        if (data.children_count > 0) {
             return (
                 <div
                     className='show-hide-children'
-                    title={`${this.props.data.children_count} ${t(this.props, 'edit.registry_entry.show_children')}`}
-                    onClick={() => this.setState({ childrenVisible: !this.state.childrenVisible })}
+                    title={`${data.children_count} ${t(this.props, 'edit.registry_entry.show_children')}`}
+                    onClick={this.showChildren}
                     >
-                    <i className={`fa fa-${css}`}></i>
+                    <i className={classNames('fa fa-fw', this.state.childrenVisible ? 'fa-minus' : 'fa-plus')}></i>
                 </div>
-            )
+            );
         } else {
             return (
-            <div className='show-hide-children'>
-                    <i className={`fa fa-square`} />
-            </div>
-            )
+                <div className='show-hide-children'>
+                    <i className="fa fa-fw" />
+                </div>
+            );
         }
     }
 
@@ -316,12 +295,20 @@ export default class RegistryEntry extends React.Component {
 
     render() {
         return (
-            <div>
-                {this.renderCheckbox()}
-                {this.showHideChildren()}
-                {this.entry()}
-                {this.buttons()}
-                {this.children()}
+            <div className="RegistryEntry">
+                <div className="RegistryEntry-content">
+                    {this.renderCheckbox()}
+                    {this.showHideChildren()}
+                    {this.entry()}
+                    {this.buttons()}
+                </div>
+                {
+                    this.state.childrenVisible && (
+                    <RegistryEntriesContainer
+                        className="RegistryEntry-children"
+                        registryEntryParent={this.props.data}
+                    />
+                )}
             </div>
         )
     }
