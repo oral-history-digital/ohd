@@ -85,7 +85,7 @@ var Loader = {
                                                     req.field(`${scope}[${param}][][${e}][${index}][${j}]`, i[j]);
                                             })
                                         })
-                                    } else if (elem[e]) {
+                                    } else {
                                         req.field(`${scope}[${param}][][${e}]`, elem[e]);
                                     }
                                 })
