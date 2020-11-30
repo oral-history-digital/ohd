@@ -51,7 +51,7 @@ class LanguagesController < ApplicationController
             data_type: "languages",
             extra_params: extra_params,
             page: params[:page] || 1,
-            result_pages_count: languages.respond_to?(:total_pages) ? languages.total_pages : 1,
+            result_pages_count: languages.respond_to?(:total_pages) ? languages.total_pages : nil,
           }
         end
         render json: json

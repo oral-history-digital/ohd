@@ -65,7 +65,7 @@ class CollectionsController < ApplicationController
             data_type: "collections",
             extra_params: extra_params,
             page: params[:page] || 1,
-            result_pages_count: paginate ? data.total_pages : 1,
+            result_pages_count: paginate ? data.total_pages : nil
           }
         end
         render json: json

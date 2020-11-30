@@ -41,7 +41,7 @@ class PermissionsController < ApplicationController
             data_type: 'permissions',
             extra_params: extra_params,
             page: params[:page], 
-            result_pages_count: permissions.respond_to?(:total_pages) ? permissions.total_pages : 1
+            result_pages_count: permissions.respond_to?(:total_pages) ? permissions.total_pages : nil
           }
         #end
         render json: json
