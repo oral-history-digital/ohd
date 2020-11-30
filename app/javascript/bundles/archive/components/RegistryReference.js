@@ -54,6 +54,7 @@ export default class RegistryReference extends React.Component {
                             <RegistryReferenceFormContainer
                                 registryReference={this.props.registryReference}
                                 lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
+                                inTranscript={this.props.inTranscript}
                                 locale={this.props.locale}
                                 goDeeper={true}
                             />
