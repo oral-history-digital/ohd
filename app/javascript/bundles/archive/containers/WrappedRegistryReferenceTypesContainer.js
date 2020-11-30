@@ -31,6 +31,11 @@ const mapStateToProps = (state) => {
                 goDeeper: true
             },
             {
+                attribute: 'use_in_transcript',
+                elementType: 'input',
+                type: 'checkbox',
+            },
+            {
                 attribute: 'code',
             },
             {

@@ -31,26 +31,38 @@ export default class RegistryReferenceForm extends React.Component {
                 lowestAllowedRegistryEntryId: this.props.lowestAllowedRegistryEntryId,
                 goDeeper: true
             },
-            {
-                elementType: 'select',
-                attribute: 'workflow_state',
-                values: ['preliminary', 'checked', 'rejected'],
-                value: this.props.registryReference && this.props.registryReference.workflow_state,
-                optionsScope: 'workflow_states',
-            }
         ]
+        if (!_this.props.inTranscript) {
+            elements.push(
+                {
+                    elementType: 'select',
+                    attribute: 'workflow_state',
+                    values: ['preliminary', 'checked', 'rejected'],
+                    value: this.props.registryReference && this.props.registryReference.workflow_state,
+                    optionsScope: 'workflow_states',
+                }
+            )
+        }
         if (!_this.props.registryReferenceTypeId) {
             elements.push(
                 {
                     elementType: 'select',
                     attribute: 'registry_reference_type_id',
-                    values: this.props.registryReferenceTypes && Object.values(this.props.registryReferenceTypes),
+                    values: this.registryReferenceTypes(),
                     value: this.props.registryReference && this.props.registryReference.registry_reference_type_id,
                     withEmpty: true,
                 }
             )
         }
         return elements;
+    }
+
+    registryReferenceTypes() {
+        if (this.props.registryReferenceTypes) {
+            return this.props.inTranscript ?
+                Object.values(this.props.registryReferenceTypes).filter(r => r.use_in_transcript) :
+                Object.values(this.props.registryReferenceTypes);
+        }
     }
 
     render() {

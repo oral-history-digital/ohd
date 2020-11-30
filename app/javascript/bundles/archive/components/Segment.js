@@ -89,6 +89,7 @@ export default class Segment extends React.Component {
             return <RegistryReferencesContainer
                        refObject={this.props.data}
                        lowestAllowedRegistryEntryId={1}
+                       inTranscript={true}
                        locale={locale}
                        setOpenReference={this.setOpenReference}
                    />
