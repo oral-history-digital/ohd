@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearchResultContainer';
-import { t, admin } from '../../../lib/utils';
+import { t, admin } from 'lib/utils';
 import { INDEX_REGISTRY_ENTRIES } from '../constants/flyoutTabs';
 
 export default class RegistryEntriesTree extends React.Component {
@@ -91,7 +91,7 @@ export default class RegistryEntriesTree extends React.Component {
         } else {
             return (
                 <div>
-                    <ul className="registry-entries-ul registry-entries-ul-root">
+                    <ul className="RegistryEntryList RegistryEntryList--root">
                         {this.foundRegistryEntries()}
                     </ul>
                 </div>

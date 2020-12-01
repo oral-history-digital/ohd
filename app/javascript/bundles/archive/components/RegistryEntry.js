@@ -223,8 +223,7 @@ export default class RegistryEntry extends React.Component {
             <div
                 id={`entry_${data.id}`}
                 key={data.id}
-                className={classNames('registry-entry-label', {
-                    'open': this.state.childrenVisible,
+                className={classNames('RegistryEntry-label', {
                     'is-clickable': hasReferences,
                 })}
                 title={data.notes[locale] || null}
@@ -256,7 +255,7 @@ export default class RegistryEntry extends React.Component {
         if (data.children_count > 0) {
             return (
                 <div
-                    className='show-hide-children'
+                    className="RegistryEntry-toggleChildren"
                     title={`${data.children_count} ${t(this.props, 'edit.registry_entry.show_children')}`}
                     onClick={this.showChildren}
                     >
@@ -265,7 +264,7 @@ export default class RegistryEntry extends React.Component {
             );
         } else {
             return (
-                <div className='show-hide-children'>
+                <div className="RegistryEntry-toggleChildren">
                     <i className="fa fa-fw" />
                 </div>
             );
@@ -295,13 +294,14 @@ export default class RegistryEntry extends React.Component {
 
     render() {
         return (
-            <div className="RegistryEntry">
+            <li className={classNames('RegistryEntry', this.props.className)}>
                 <div className="RegistryEntry-content">
                     {this.renderCheckbox()}
                     {this.showHideChildren()}
                     {this.entry()}
                     {this.buttons()}
                 </div>
+                {this.props.children}
                 {
                     this.state.childrenVisible && (
                     <RegistryEntriesContainer
@@ -309,7 +309,7 @@ export default class RegistryEntry extends React.Component {
                         registryEntryParent={this.props.data}
                     />
                 )}
-            </div>
+            </li>
         )
     }
 }
@@ -317,11 +317,16 @@ export default class RegistryEntry extends React.Component {
 RegistryEntry.propTypes = {
     data: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
+    className: PropTypes.string,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
     registryEntryParent: PropTypes.object.isRequired,
     selectedRegistryEntryIds: PropTypes.array.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node
+    ]),
     openArchivePopup: PropTypes.func.isRequired,
     closeArchivePopup: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,

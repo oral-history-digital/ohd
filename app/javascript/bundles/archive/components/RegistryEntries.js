@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import RegistryEntryContainer from '../containers/RegistryEntryContainer';
 import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
 import PixelLoader from 'lib/PixelLoader'
+import AuthorizedContent from './AuthorizedContent';
 import { t, admin } from 'lib/utils';
 
 export default class RegistryEntries extends React.Component {
@@ -58,13 +59,12 @@ export default class RegistryEntries extends React.Component {
                 let registryEntry = this.props.registryEntries[id]
                 if (registryEntry && !this.hideRegistryEntry(id)) {
                     return (
-                        <li key={id}>
-                            <RegistryEntryContainer
-                                data={registryEntry}
-                                registryEntryParent={this.props.registryEntryParent}
-                            />
-                        </li>
-                    )
+                        <RegistryEntryContainer
+                            key={id}
+                            data={registryEntry}
+                            registryEntryParent={this.props.registryEntryParent}
+                        />
+                    );
                 }
             })
         } else {
@@ -73,29 +73,26 @@ export default class RegistryEntries extends React.Component {
     }
 
     addRegistryEntry() {
-        if (admin(this.props, {type: 'RegistryEntry', action: 'create'})) {
-            return (
+        return (
+            <AuthorizedContent object={{type: 'RegistryEntry', action: 'create'}}>
                 <div
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.registry_entry.new')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.registry_entry.new'),
-                        content: <RegistryEntryFormContainer
-                                    registryEntryParent={this.props.registryEntryParent}
-                                />
+                        content: <RegistryEntryFormContainer registryEntryParent={this.props.registryEntryParent} />
                     })}
                 >
-                    <i className="fa fa-plus"></i>
+                    {t(this.props, 'edit.registry_entry.new')}
                 </div>
-            )
-        }
+            </AuthorizedContent>
+        );
     }
 
     render() {
         return (
             <div className={this.props.className}>
-                <ul className={classNames('registry-entries-ul', {
-                    'registry-entries-ul-root': this.props.root,
+                <ul className={classNames('RegistryEntryList', {
+                    'RegistryEntryList--root': this.props.root,
                 })}>
                     {this.registryEntries()}
                 </ul>

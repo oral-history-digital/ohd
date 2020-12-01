@@ -729,45 +729,6 @@ a.search-result-link {
   }
 }
 
-.registry-entries-ul {
-  list-style: none;
-  padding-left: 1rem;
-  margin-top: 6px;
-
-  .show-hide-children {
-    margin-right: 8px;
-    transition: 0.3s;
-    cursor: pointer;
-  }
-
-  .registry-entry-label {
-  }
-
-  .registry-entry-label.is-clickable {
-    color: var(--primary-color);
-    cursor: pointer;
-  }
-
-  li {
-    padding-bottom: 6px;
-  }
-
-  .search-result {
-    padding-bottom: 0;
-    margin-bottom: 30px; //16px
-    border-left: solid 4px lightgrey;
-    padding-left: 5px;
-    width: 100%;
-    & > div {
-      margin-bottom: 6px;
-    }
-  }
-}
-
-.registry-entries-ul-root {
-  padding-left: 0;
-}
-
 .leaflet-container {
   height: 500px;
   width: 100%;
