@@ -4,19 +4,15 @@ import RegistryEntry from '../components/RegistryEntry';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
 import { addRemoveRegistryEntryId } from '../actions/archiveActionCreators';
-import { getCookie } from '../../../lib/utils';
+import { getLocale, getTranslations, getArchiveId } from '../selectors/archiveSelectors';
 
-const mapStateToProps = (state) => {
-    return { 
-        archiveId: state.archive.archiveId,
-        locale: state.archive.locale,
-        translations: state.archive.translations,
-        registryEntriesStatus: state.data.statuses.registry_entries,
-        account: state.data.accounts.current,
-        editView: state.archive.editView,
-        selectedRegistryEntryIds: state.archive.selectedRegistryEntryIds,
-    }
-}
+const mapStateToProps = (state) => ({
+    archiveId: getArchiveId(state),
+    locale: getLocale(state),
+    translations: getTranslations(state),
+    registryEntriesStatus: state.data.statuses.registry_entries,
+    selectedRegistryEntryIds: state.archive.selectedRegistryEntryIds,
+});
 
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
