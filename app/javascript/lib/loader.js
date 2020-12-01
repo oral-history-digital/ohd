@@ -86,7 +86,7 @@ var Loader = {
                                             })
                                         })
                                     } else {
-                                        req.field(`${scope}[${param}][][${e}]`, elem[e]);
+                                        req.field(`${scope}[${param}][][${e}]`, elem[e] || '');
                                     }
                                 })
                             } else {

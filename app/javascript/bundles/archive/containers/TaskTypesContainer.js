@@ -23,7 +23,6 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'key',
-                validate: function(v){return v.length > 1} 
             },
             {
                 attribute: 'abbreviation',
