@@ -58,13 +58,13 @@ export default class TableOfContents extends React.Component {
         if (this.props.interview && this.props.interview.headings) {
             Object.values(this.props.interview.headings).sort(function(a, b) {return a.tape_nbr - b.tape_nbr || a.time - b.time}).map((segment, index) => {
                 mainheading = segment.mainheading[this.props.locale] ||
-                    segment.mainheading[`${this.props.locale}-public`] ||
-                    segment.mainheading['de'] ||
-                    segment.mainheading['de-public'];
+                    segment.mainheading[`${this.props.locale}-public`] //||
+                    //segment.mainheading['de'] ||
+                    //segment.mainheading['de-public'];
                 subheading = segment.subheading[this.props.locale] ||
-                    segment.subheading[`${this.props.locale}-public`] ||
-                    segment.subheading['de'] ||
-                    segment.subheading['de-public'];
+                    segment.subheading[`${this.props.locale}-public`] //||
+                    //segment.subheading['de'] ||
+                    //segment.subheading['de-public'];
                 //
                 // if the table of content looks different in languages with different alphabets, have a look to the following and extend the regexp:
                 // https://stackoverflow.com/questions/18471159/regular-expression-with-the-cyrillic-alphabet
