@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import RegistryReferences from '../components/RegistryReferences';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
-import { getInterview, getCookie } from '../../../lib/utils';
+import { getInterview } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return { 
