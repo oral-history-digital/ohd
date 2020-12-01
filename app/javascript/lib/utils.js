@@ -250,32 +250,29 @@ export function underscore(str) {
 //
 export function admin(props, obj={}) {
     if (props.account && (props.editView || obj.type === 'Task')) {
-        let tasks = Object.values(props.account.tasks).concat(Object.values(props.account.supervised_tasks));
-        let task_permissions = tasks.flatMap(task => Object.values(task.permissions));
+
+        let activeTasks = Object.values(props.account.tasks).filter(t => t.workflow_state !== 'finished' && t.workflow_state !== 'cleared');
+        let activeSupervisedTasks = Object.values(props.account.supervised_tasks).filter(t => t.workflow_state !== 'cleared');
+
+        let activeTasksPermissions = activeTasks.flatMap(t => Object.values(t.permissions));
+        let activeSupervisedTasksPermissions = activeSupervisedTasks.flatMap(t => Object.values(t.permissions));
+
         if (
             props.account.admin ||
             ((obj.type && (obj.id || obj.action)) && (
                 //
                 // if obj is a task of current_user_account, he/she should be able to edit it
                 (
-                    obj.type === 'Task' &&
-                    !!tasks.find(task => task.id === obj.id)
+                    obj.type === 'Task' && (
+                        !!activeTasksPermissions.find(task => task.id === obj.id) ||
+                        !!activeSupervisedTasksPermissions.find(task => task.id === obj.id)
+                    )
                 ) ||
                 //
                 // if obj.type and/or id correspond to a task-permission and obj.interview_id is the same as task.interview_id, current_user_account should be able to edit it
                 (
-                    !!task_permissions.find(permission => {
-                        return (
-                            permission.klass === obj.type &&
-                            permission.action_name === obj.action &&
-                            (
-                                // check for interview_id only on non-interviews
-                                //
-                                (obj.type !== 'Interview' && permission.interview_id === obj.interview_id) ||
-                                (obj.type === 'Interview' && permission.interview_id === obj.id)
-                            )
-                        )
-                    })
+                    !!activeTasksPermissions.find(permission => permitted(permission, obj)) ||
+                    !!activeSupervisedTasksPermissions.find(permission => permitted(permission, obj))
                 ) ||
                 //
                 // if obj.type and/or id correspond to a role-permission, current_user_account should be able to edit it
@@ -296,6 +293,19 @@ export function admin(props, obj={}) {
     } else {
         return false;
     }
+}
+
+function permitted(permission, obj) {
+    return (
+        permission.klass === obj.type &&
+        permission.action_name === obj.action &&
+        (
+            // check for interview_id only on non-interviews
+            //
+            (obj.type !== 'Interview' && permission.interview_id === obj.interview_id) ||
+            (obj.type === 'Interview' && permission.interview_id === obj.id)
+        )
+    )
 }
 
 export function parametrizedQuery(query) {
