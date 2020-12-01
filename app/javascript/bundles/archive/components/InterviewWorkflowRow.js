@@ -66,22 +66,24 @@ export default class InterviewWorkflowRow extends React.Component {
 
     intervieweeWithPhoto() {
         let interviewee = getInterviewee(this.props);
-        return (
-            <Link className={'search-result-link box-10'}
-                onClick={() => {
-                    this.props.setArchiveId(this.props.interview.archive_id);
-                    this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
-                    this.props.setTapeAndTime(1, 0);
-                }}
-                to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
-            >
-                <img className='workflow' src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
-                <span className='workflow' >
-                    {interviewee && interviewee.names[this.props.locale].lastname + ', '}<br />
-                    {interviewee && interviewee.names[this.props.locale].firstname }
-                </span>
-            </Link>
-        )
+        if (interviewee && interviewee.names[this.props.locale]) {
+            return (
+                <Link className={'search-result-link box-10'}
+                    onClick={() => {
+                        this.props.setArchiveId(this.props.interview.archive_id);
+                        this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                        this.props.setTapeAndTime(1, 0);
+                    }}
+                    to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
+                >
+                    <img className='workflow' src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                    <span className='workflow' >
+                        {interviewee && interviewee.names[this.props.locale].lastname + ', '}<br />
+                        {interviewee && interviewee.names[this.props.locale].firstname }
+                    </span>
+                </Link>
+            )
+        }
     }
 
     symbol(task) {
