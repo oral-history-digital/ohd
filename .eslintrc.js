@@ -5,7 +5,9 @@ module.exports = {
     },
     "extends": [
         "eslint:recommended",
-        "plugin:react/recommended"
+        "plugin:jsx-a11y/recommended",
+        "plugin:react/recommended",
+        "plugin:react-hooks/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -15,7 +17,9 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "react"
+        "jsx-a11y",
+        "react",
+        "react-hooks"
     ],
     "rules": {
     },
