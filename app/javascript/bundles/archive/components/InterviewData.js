@@ -1,12 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 export default class InterviewData extends React.Component {
-    static propTypes = {
-        history: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
-    }
-
     constructor(props) {
         super(props);
 
@@ -19,24 +15,41 @@ export default class InterviewData extends React.Component {
 
     handleClick(){
         if (this.props.url && this.props.location.pathname !== this.props.url) {
-            this.setState({['open']: true});
+            this.setState({ open: true });
             this.props.history.push(this.props.url);
         } else {
-            this.setState({['open']: !this.state.open});
+            this.setState({ open: !this.state.open });
         }
     }
 
     render() {
-        let headerCss = this.state.open ? "accordion active" : 'accordion';
-        let panelCss = this.state.open ? "panel open" : 'panel';
+        const { open } = this.state;
 
         return (
             <div>
-                <button className={headerCss} lang={this.props.locale} onClick={this.handleClick} >
+                <button
+                    type="button"
+                    className={classNames('accordion', { 'active': open })}
+                    lang={this.props.locale}
+                    onClick={this.handleClick}
+                >
                     {this.props.title}
                 </button>
-                <div className={panelCss}> {this.props.content} </div>
+                <div className={classNames('panel', { 'open': open })}>
+                    {this.props.content}
+                </div>
             </div>
         );
     }
 }
+
+InterviewData.propTypes = {
+    title: PropTypes.string.isRequired,
+    open: PropTypes.bool,
+    content: PropTypes.element.isRequired,
+    url: PropTypes.string,
+    isLoggedIn: PropTypes.bool.isRequired,
+    locale: PropTypes.string.isRequired,
+    history: PropTypes.object.isRequired,
+    location: PropTypes.object.isRequired,
+};
