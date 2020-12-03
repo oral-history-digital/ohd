@@ -8,9 +8,9 @@ const state = {
 };
 
 test('getFlyoutTabsVisible retrieves flyout tabs visibility from state', () => {
-    expect(getFlyoutTabsVisible(state)).toBe(true);
+    expect(getFlyoutTabsVisible(state)).toEqual(state.flyoutTabs.visible);
 });
 
 test('getFlyoutTabsIndex retrieves currently selected tab', () => {
-    expect(getFlyoutTabsIndex(state)).toBe(3);
+    expect(getFlyoutTabsIndex(state)).toEqual(state.flyoutTabs.index);
 });
