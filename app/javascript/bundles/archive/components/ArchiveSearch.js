@@ -10,7 +10,7 @@ import InterviewWorkflowRowContainer from '../containers/InterviewWorkflowRowCon
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import { t, admin, queryToText, pathBase } from '../../../lib/utils';
-import spinnerSrc from '../../../images/large_spinner.gif'
+import Spinner from './Spinner';
 import { INDEX_SEARCH } from '../constants/flyoutTabs';
 
 export default class ArchiveSearch extends React.Component {
@@ -42,7 +42,7 @@ export default class ArchiveSearch extends React.Component {
 
     content(displayType) {
         if (this.props.isArchiveSearching && this.props.query['page'] === 1) {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+            return <Spinner />;
         } else {
             return (
                 <div>
@@ -216,7 +216,7 @@ export default class ArchiveSearch extends React.Component {
 
     renderScrollObserver() {
         if (this.props.isArchiveSearching) {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+            return <Spinner />;
         }
         else if (this.props.resultPagesCount > (this.props.query.page || 1)) {
             return (

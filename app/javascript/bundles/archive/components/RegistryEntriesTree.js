@@ -2,14 +2,10 @@ import React, { Fragment } from 'react';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearchResultContainer';
-import { t, admin } from '../../../lib/utils';
+import { t, admin } from 'lib/utils';
 import { INDEX_REGISTRY_ENTRIES } from '../constants/flyoutTabs';
 
 export default class RegistryEntriesTree extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-    }
-
     componentDidMount() {
         this.loadRootRegistryEntry();
         window.scrollTo(0, 1);
@@ -40,10 +36,9 @@ export default class RegistryEntriesTree extends React.Component {
                     return (
                         <RegistryEntrySearchResultContainer
                             result={result}
-                            key={`registry_entries-${result.id}-${index}`}
-                            //registryEntryParent={this.props.registryEntryParent}
+                            key={result.id}
                         />
-                    )
+                    );
                 })
             )
         }
@@ -87,11 +82,16 @@ export default class RegistryEntriesTree extends React.Component {
 
     content() {
         if (this.props.foundRegistryEntries.showRegistryEntriesTree) {
-            return <RegistryEntriesContainer registryEntryParent={this.props.registryEntries[1]} />;
+            return (
+                <RegistryEntriesContainer
+                    registryEntryParent={this.props.registryEntries[1]}
+                    root
+                />
+            );
         } else {
             return (
                 <div>
-                    <ul className={'registry-entries-ul'}>
+                    <ul className="RegistryEntryList RegistryEntryList--root">
                         {this.foundRegistryEntries()}
                     </ul>
                 </div>

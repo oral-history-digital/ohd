@@ -1,7 +1,7 @@
 import React from 'react';
 import HeadingContainer from '../containers/HeadingContainer';
 import { t } from "../../../lib/utils";
-import spinnerSrc from '../../../images/large_spinner.gif'
+import Spinner from './Spinner';
 
 export default class TableOfContents extends React.Component {
 
@@ -172,7 +172,7 @@ export default class TableOfContents extends React.Component {
                 </div>
             );
         } else {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+            return <Spinner />;
         }
     }
 }

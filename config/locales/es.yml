@@ -661,7 +661,7 @@ es:
         one: Registereintrag
         other: Registereinträge
         actions:
-          show: Registereintrag anzeigen
+          show: Interviewsegmente anzeigen
           index: Registereinträge anzeigen
           merge: Registereinträge zusammenführen
           show_tree: Mostrar todas las entradas

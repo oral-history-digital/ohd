@@ -2,11 +2,11 @@ import React from 'react';
 import SegmentContainer from '../containers/SegmentContainer';
 import { t, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
 import { segmentsForTape } from 'utils/segments';
-import spinnerSrc from '../../../images/large_spinner.gif'
 import {
     SEGMENTS_AFTER,
     SEGMENTS_BEFORE
 } from '../constants/archiveConstants';
+import Spinner from './Spinner';
 
 export default class Transcript extends React.Component {
 
@@ -138,7 +138,7 @@ export default class Transcript extends React.Component {
                 return this.transcripted(this.firstTranslationLocale()) ? this.transcript() : t(this.props, 'without_translation');
             }
         } else {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+            return <Spinner />;
         }
     }
 }

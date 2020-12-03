@@ -1,9 +1,7 @@
 import React from 'react';
-//import Observer from 'react-intersection-observer'
 import DataContainer from '../containers/DataContainer';
 import Form from '../containers/form/Form';
-import { t, admin, pluralize, parametrizedQuery, camelcase } from '../../../lib/utils';
-import spinnerSrc from '../../../images/large_spinner.gif'
+import { t, admin, camelcase } from '../../../lib/utils';
 
 export default class DataLists extends React.Component {
 
@@ -28,8 +26,8 @@ export default class DataLists extends React.Component {
         if (this.props.data) {
             return Object.keys(this.props.data).map((c, index) => {
                 return (
-                    <DataContainer 
-                        data={this.props.data[c]} 
+                    <DataContainer
+                        data={this.props.data[c]}
                         scope={this.props.scope}
                         detailsAttributes={this.props.detailsAttributes}
                         joinedData={this.props.joinedData}
@@ -39,7 +37,7 @@ export default class DataLists extends React.Component {
                         hideDelete={this.props.hideDelete}
                         editView={this.props.editView}
                         task={this.props.task}
-                        key={`${this.props.scope}-${c}`} 
+                        key={`${this.props.scope}-${c}`}
                     />
                 )
             })
@@ -51,7 +49,7 @@ export default class DataLists extends React.Component {
     form(data) {
         let _this = this;
         return (
-            <Form 
+            <Form
                 data={data}
                 values={this.props.initialFormValues}
                 scope={this.props.scope}
@@ -65,7 +63,7 @@ export default class DataLists extends React.Component {
     add() {
         if (
             (
-                admin(this.props, {type: camelcase(this.props.scope), action: 'create', interview_id: this.props.interview && this.props.interview.id}) || 
+                admin(this.props, {type: camelcase(this.props.scope), action: 'create', interview_id: this.props.interview && this.props.interview.id}) ||
                 // allow commenting onn task
                 this.props.task && admin(this.props, this.props.task)
             ) &&
