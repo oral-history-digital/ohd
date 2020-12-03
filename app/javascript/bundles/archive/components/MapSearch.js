@@ -12,9 +12,9 @@ import '../../../css/MarkerCluster.Default.css'
 import '../../../css/leaflet.extra-markers.min.css'
 import '../../../lib/leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css'
 
-import { t, pathBase } from '../../../lib/utils';
-import spinnerSrc from '../../../images/large_spinner.gif'
+import { pathBase } from '../../../lib/utils';
 import { INDEX_MAP } from '../constants/flyoutTabs';
+import Spinner from './Spinner';
 
 export default class MapSearch extends React.Component {
     constructor(props) {
@@ -75,7 +75,7 @@ export default class MapSearch extends React.Component {
         if (this.props.isMapSearching) {
             return (
                 <div style={{height: 500, background: "rgba(255,255,255,0.5)", position: "absolute", zIndex: 401, width: "100%", paddingLeft: 75, paddingTop: 11}} >
-                    <img src={spinnerSrc} className="archive-search-spinner" />
+                    <Spinner />
                 </div>
             )
         }

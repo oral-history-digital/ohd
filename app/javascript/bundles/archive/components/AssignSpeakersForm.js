@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '../containers/form/Form';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 import { t, fullname } from '../../../lib/utils';
-import spinnerSrc from '../../../images/large_spinner.gif'
+import Spinner from './Spinner';
 
 export default class AssignSpeakersForm extends React.Component {
 
@@ -48,7 +48,7 @@ export default class AssignSpeakersForm extends React.Component {
     formElements() {
         let elements = [];
         for (var i in this.props.interview.speaker_designations) {
-            elements.push({ 
+            elements.push({
                 elementType: 'select',
                 attribute: `[speakers]${this.props.interview.speaker_designations[i]}`,
                 label: `${t(this.props, 'edit.update_speaker.speaker_for_speaker_designation')} ${this.props.interview.speaker_designations[i]}`,
@@ -63,7 +63,7 @@ export default class AssignSpeakersForm extends React.Component {
         if (this.state.showForm) {
             let _this = this;
             return (
-                <Form 
+                <Form
                     scope='update_speaker'
                     onSubmit={function(params){_this.props.submitData(_this.props, params);_this.setState({showForm: false})}}
                     values={{
@@ -103,7 +103,7 @@ export default class AssignSpeakersForm extends React.Component {
         if (
             // speaker designations used in this interview`s segments loaded?
             this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] &&
-            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] != 'fetching' 
+            this.props.speakerDesignationsStatus[`for_interviews_${this.props.archiveId}`] != 'fetching'
         ) {
             return (
                 <div>
@@ -112,7 +112,7 @@ export default class AssignSpeakersForm extends React.Component {
                 </div>
             )
          } else {
-            return <div className="facets-spinner"><img src={spinnerSrc} /></div>;
+            return <Spinner withPadding />
          }
     }
 }
