@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 import FacetContainer from '../containers/FacetContainer';
-import spinnerSrc from '../../../images/large_spinner.gif'
 import { t, iOS, pathBase, admin } from '../../../lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import { isMobile } from '../../../lib/media-queries';
+import Spinner from './Spinner';
 
 export default class ArchiveSearchForm extends React.Component {
     static propTypes = {
@@ -171,7 +171,7 @@ export default class ArchiveSearchForm extends React.Component {
 
     searchform(){
         if (!this.facetsLoaded()) {
-            return <div className="facets-spinner"> <img src={spinnerSrc} /></div>;
+            return <Spinner withPadding />;
         } else {
             return(
                 <div>

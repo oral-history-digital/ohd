@@ -2,7 +2,7 @@ import React from 'react';
 import RefTreeEntryContainer from '../containers/RefTreeEntryContainer';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import { t } from "../../../lib/utils";
-import spinnerSrc from '../../../images/large_spinner.gif'
+import Spinner from './Spinner';
 
 export default class RefTree extends React.Component {
 
@@ -67,7 +67,7 @@ export default class RefTree extends React.Component {
                 return this.emptyRefTree();
             }
         } else {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+            return <Spinner />;
         }
     }
 

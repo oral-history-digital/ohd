@@ -5,7 +5,7 @@ import ContentField from './ContentField';
 import ArchivePopupButtonContainer from '../containers/ArchivePopupButtonContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
-import spinnerSrc from '../../../images/large_spinner.gif'
+import Spinner from './Spinner';
 
 export default class PersonData extends React.Component {
 
@@ -156,7 +156,7 @@ export default class PersonData extends React.Component {
                 </div>
             );
         } else {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+            return <Spinner />;
         }
     }
 
