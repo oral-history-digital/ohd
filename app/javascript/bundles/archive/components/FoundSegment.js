@@ -49,19 +49,6 @@ export default class Segment extends React.Component {
         }
     }
 
-    transcript() {
-        let segment = this.props.data.text[this.props.locale];
-        if (!segment || segment.length === 0){
-            for (let lang in this.props.data.text) {
-                if (lang !== this.props.locale) {
-                    segment = this.props.data.text[lang];
-                    if (segment && segment.length > 0) break;
-                }
-            }
-        }
-        return segment;
-    }
-
     css() {
         return 'content-search-text ' + (this.props.active ? 'active' : 'inactive');
     }
@@ -82,7 +69,7 @@ export default class Segment extends React.Component {
                     {moment.utc(this.props.data.time * 1000).format("HH:mm:ss")}
                 </p>
                 <div className={this.css()}>
-                    <p dangerouslySetInnerHTML={{__html:this.transcript()}} />
+                    <p dangerouslySetInnerHTML={{__html: this.props.data.text[`${this.props.locale}-public`]}} />
                 </div>
             </div>
         )
