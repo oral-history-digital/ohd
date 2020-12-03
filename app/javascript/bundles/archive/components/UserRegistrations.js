@@ -3,7 +3,7 @@ import Observer from 'react-intersection-observer'
 import AuthShowContainer from '../containers/AuthShowContainer';
 import UserRegistrationContainer from '../containers/UserRegistrationContainer';
 import { t, parametrizedQuery } from '../../../lib/utils';
-import spinnerSrc from '../../../images/large_spinner.gif'
+import Spinner from './Spinner';
 
 export default class UserRegistrations extends React.Component {
 
@@ -15,7 +15,7 @@ export default class UserRegistrations extends React.Component {
 
     renderScrollObserver() {
         if (this.props.isUserRegistrationSearching) {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+            return <Spinner />;
         }
         else if (this.props.resultPagesCount > (this.props.query.page)) {
             return (

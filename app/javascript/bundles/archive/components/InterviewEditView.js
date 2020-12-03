@@ -1,7 +1,7 @@
 import React from 'react';
 import SegmentEditViewContainer from '../containers/SegmentEditViewContainer';
 import { t, sortedSegmentsWithActiveIndex, permittedInterviewEditColumns } from '../../../lib/utils';
-import spinnerSrc from '../../../images/large_spinner.gif'
+import Spinner from './Spinner';
 
 export default class InterviewEditView extends React.Component {
 
@@ -90,7 +90,7 @@ export default class InterviewEditView extends React.Component {
                 </table>
           );
         } else {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+            return <Spinner />;
         }
     }
 }

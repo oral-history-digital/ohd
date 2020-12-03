@@ -4,7 +4,7 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import DataContainer from '../containers/DataContainer';
 import Form from '../containers/form/Form';
 import { t, admin, pluralize, parametrizedQuery, statifiedQuery, camelcase } from '../../../lib/utils';
-import spinnerSrc from '../../../images/large_spinner.gif'
+import Spinner from './Spinner';
 
 export default class WrappedDataList extends React.Component {
 
@@ -20,7 +20,7 @@ export default class WrappedDataList extends React.Component {
             this.props.dataStatus[statifiedQuery(this.props.query)] &&
             this.props.dataStatus[statifiedQuery(this.props.query)].split('-')[0] === 'fetching'
         ) {
-            return <img src={spinnerSrc} className="archive-search-spinner"/>;
+            return <Spinner />;
         } else if (!this.props.resultPagesCount || this.props.resultPagesCount > (this.props.query.page)) {
             return (
                 <Observer
