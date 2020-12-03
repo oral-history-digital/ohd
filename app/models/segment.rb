@@ -2,7 +2,7 @@ require 'globalize'
 
 class Segment < ApplicationRecord
 
-  belongs_to :interview#, inverse_of: :segments
+  belongs_to :interview, touch: true
   has_one :project, through: :interview
 
   belongs_to :speaking_person,
