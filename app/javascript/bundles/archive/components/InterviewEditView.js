@@ -69,7 +69,7 @@ export default class InterviewEditView extends React.Component {
                   <SegmentEditViewContainer
                     segment={segment}
                     originalLocale={this.props.interview.lang}
-                    translationLocale={translationLocale}
+                    translationLocale={translationLocale || this.props.locale}
                     key={`segment-${segment.id}`}
                     active={active}
                 />
