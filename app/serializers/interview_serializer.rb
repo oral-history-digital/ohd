@@ -47,7 +47,7 @@ class InterviewSerializer < ApplicationSerializer
       json = Rails.cache.fetch("#{object.project.cache_key_prefix}-#{m.name}-#{object.id}-#{object.updated_at}-#{m.updated_at}") do
         if !!object.send(m.name).try("any?")
           I18n.available_locales.inject({}) do |mem, locale|
-            mem[locale] = object.send(m.name).map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+            mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
             mem
           end
         else
