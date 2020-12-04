@@ -3,17 +3,12 @@ import { connect } from 'react-redux';
 import Annotation from '../components/Annotation';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { deleteData } from '../actions/dataActionCreators';
-import { getCookie } from '../../../lib/utils';
+import { getLocale, getTranslations } from '../selectors/archiveSelectors';
 
-const mapStateToProps = (state) => {
-    return { 
-        archiveId: state.archive.archiveId,
-        translations: state.archive.translations,
-        account: state.data.accounts.current,
-        editView: state.archive.editView,
-        
-    }
-}
+const mapStateToProps = state => ({
+    currentLocale: getLocale(state),
+    translations: getTranslations(state),
+});
 
 const mapDispatchToProps = (dispatch) => ({
     deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),

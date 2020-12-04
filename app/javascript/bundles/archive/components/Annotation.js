@@ -1,19 +1,22 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import AnnotationFormContainer from '../containers/AnnotationFormContainer';
-import { t, pluralize, admin } from '../../../lib/utils';
+import AuthorizedContent from './AuthorizedContent';
+import { t } from 'lib/utils';
 
 export default class Annotation extends React.Component {
-
     edit() {
+        const tProps = { locale: this.props.currentLocale, translations: this.props.translations };
+
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.annotation.edit')}
+                title={t(tProps, 'edit.annotation.edit')}
                 onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.annotation.edit'),
-                    content: <AnnotationFormContainer 
-                                 annotation={this.props.annotation} 
+                    title: t(tProps, 'edit.annotation.edit'),
+                    content: <AnnotationFormContainer
+                                 annotation={this.props.annotation}
                                  segment={this.props.segment}
                                  locale={this.props.locale}
                              />
@@ -30,16 +33,21 @@ export default class Annotation extends React.Component {
     }
 
     delete() {
+        const tProps = { locale: this.props.currentLocale, translations: this.props.translations };
+
         return <div
             className='flyout-sub-tabs-content-ico-link'
-            title={t(this.props, 'edit.annotation.delete')}
+            title={t(tProps, 'edit.annotation.delete')}
             onClick={() => this.props.openArchivePopup({
-                title: t(this.props, 'edit.annotation.delete'),
+                title: t(tProps, 'edit.annotation.delete'),
                 content: (
                     <div>
                         <p dangerouslySetInnerHTML={{__html: this.props.annotation.text[this.props.locale]}} />
-                        <div className='any-button' onClick={() => this.destroy()}>
-                            {t(this.props, 'edit.annotation.delete')}
+                        <div
+                            className='any-button'
+                            onClick={() => this.destroy()}
+                        >
+                            {t(tProps, 'edit.annotation.delete')}
                         </div>
                     </div>
                 )
@@ -49,34 +57,33 @@ export default class Annotation extends React.Component {
         </div>
     }
 
-    buttons() {
-        if (admin(this.props, this.props.annotation)) {
-            return (
-                <span className={'flyout-sub-tabs-content-ico'}>
-                    {this.edit()}
-                    {this.delete()}
-                </span>
-            )
-        }
-    }
-
-    annotation() {
-        return (
-            <p 
-                className='content-trans-text-element-data'
-                key={"annotation-" + this.props.annotation.id}
-                dangerouslySetInnerHTML={{__html: this.props.annotation.text[this.props.locale]}}
-            />
-        )
-    }
-
     render() {
+        const { annotation } = this.props;
+
         return (
             <div>
-                {this.annotation()}
-                {this.buttons()}
+                <p
+                    className='content-trans-text-element-data'
+                    dangerouslySetInnerHTML={{__html: annotation.text[this.props.locale]}}
+                />
+                <AuthorizedContent object={annotation}>
+                    <span className={'flyout-sub-tabs-content-ico'}>
+                        {this.edit()}
+                        {this.delete()}
+                    </span>
+                </AuthorizedContent>
             </div>
         )
     }
 }
 
+Annotation.propTypes = {
+    annotation: PropTypes.object.isRequired,
+    segment: PropTypes.object.isRequired,
+    currentLocale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    deleteData: PropTypes.func.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};

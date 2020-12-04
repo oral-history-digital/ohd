@@ -1,31 +1,36 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import AnnotationFormContainer from '../containers/AnnotationFormContainer';
 import AnnotationContainer from '../containers/AnnotationContainer';
-import { t, admin } from '../../../lib/utils';
+import AuthorizedContent from './AuthorizedContent';
+import { t } from 'lib/utils';
 
 export default class Annotations extends React.Component {
-
     annotations() {
-        let annotations = [];
-        for (var c in this.props.segment.annotations) {
-            let annotation = this.props.segment.annotations[c];
-            if (annotation.text[this.props.locale]) {
-                annotations.push(<AnnotationContainer annotation={annotation} segment={this.props.segment} key={`annotation-${annotation.id}`} locale={this.props.locale} />);
-            }
-        }
-        return annotations;
+        return Object.values(this.props.segment.annotations)
+            .filter(annotation => annotation.text.hasOwnProperty(this.props.locale))
+            .map(annotation => (
+                <AnnotationContainer
+                    annotation={annotation}
+                    segment={this.props.segment}
+                    key={annotation.id}
+                    locale={this.props.locale}
+                />
+            ));
     }
 
     addAnnotation() {
-        if (admin(this.props, {type: 'Annotation', action: 'create', interview_id: this.props.segment.interview_id})) {
-            return (
+        const tProps = { locale: this.props.currentLocale, translations: this.props.translations };
+
+        return (
+            <AuthorizedContent object={{type: 'Annotation', action: 'create', interview_id: this.props.segment.interview_id}}>
                 <div
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.annotation.new')}
+                    title={t(tProps, 'edit.annotation.new')}
                     onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.annotation.new'),
-                        content: <AnnotationFormContainer 
+                        title: t(tProps, 'edit.annotation.new'),
+                        content: <AnnotationFormContainer
                                      segment={this.props.segment}
                                      locale={this.props.locale}
                                  />
@@ -33,8 +38,8 @@ export default class Annotations extends React.Component {
                 >
                     <i className="fa fa-plus"></i>
                 </div>
-            )
-        }
+            </AuthorizedContent>
+        );
     }
 
     render() {
@@ -47,3 +52,10 @@ export default class Annotations extends React.Component {
     }
 }
 
+Annotations.propTypes = {
+    segment: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    currentLocale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+};

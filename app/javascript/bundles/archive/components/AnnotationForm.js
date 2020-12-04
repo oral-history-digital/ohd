@@ -1,19 +1,19 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte';
-import { t } from '../../../lib/utils';
+import { t } from 'lib/utils';
 
 export default class AnnotationForm extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
             values: {
-                id: this.props.annotation && this.props.annotation.id,
-                segment_id: this.props.segment.id,
-                interview_id: this.props.segment.interview_id,
-                text: this.props.annotation && this.props.annotation.text[this.props.locale] ? 
-                      RichTextEditor.createValueFromString(this.props.annotation.text[this.props.locale], 'html') : 
-                      RichTextEditor.createEmptyValue()
+                id: props.annotation && props.annotation.id,
+                segment_id: props.segment.id,
+                interview_id: props.segment.interview_id,
+                text: props.annotation && props.annotation.text[props.locale] ?
+                    RichTextEditor.createValueFromString(props.annotation.text[props.locale], 'html') :
+                    RichTextEditor.createEmptyValue()
             }
         };
 
@@ -22,7 +22,7 @@ export default class AnnotationForm extends React.Component {
     }
 
     handleChange(value) {
-        this.setState({ 
+        this.setState({
             values: Object.assign({}, this.state.values, {text: value})
         })
     }
@@ -37,18 +37,34 @@ export default class AnnotationForm extends React.Component {
 
     render () {
         return (
-            <form 
-                id='annotation' 
-                className='annotation default' 
+            <form
+                id='annotation'
+                className='annotation default'
                 onSubmit={this.handleSubmit}
             >
                 <RichTextEditor
                     value={this.state.values.text}
+                    toolbarConfig={{
+                        display: ['LINK_BUTTONS', 'HISTORY_BUTTONS'],
+                    }}
                     onChange={this.handleChange}
                 />
-                <input type="submit" value={t(this.props, 'submit')}/>
+                <input
+                    type="submit"
+                    value={t({ locale: this.props.currentLocale, translations: this.props.translations }, 'submit')}
+                />
             </form>
         );
     }
 
 }
+
+AnnotationForm.propTypes = {
+    annotation: PropTypes.object,
+    segment: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    currentLocale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    submitData: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};
