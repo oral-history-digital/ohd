@@ -19,6 +19,18 @@ const state = {
         interviewEditView: true,
         skipEmptyRows: false,
         selectedInterviewEditViewColumns: ['timecode', 'text_orig'],
+        selectedArchiveIds: ['cd007', 'cd003'],
+        selectedRegistryEntryIds: [82, 5],
+        countryKeys: {
+            de: ['AF'],
+            es: ['AF'],
+        },
+        mediaStreams: {
+            defaults: {},
+            video: {},
+            audio: {},
+        },
+        doiResult: {},
     },
 };
 
@@ -68,4 +80,24 @@ test('getSkipEmptyRows retrieves skipEmptyRows status', () => {
 
 test('getSelectedInterviewEditViewColumns retrieves selected interview table columns', () => {
     expect(selectors.getSelectedInterviewEditViewColumns(state)).toEqual(state.archive.selectedInterviewEditViewColumns);
+});
+
+test('getCountryKeys retrieves country keys array', () => {
+    expect(selectors.getCountryKeys(state)).toEqual(state.archive.countryKeys);
+});
+
+test('getSelectedArchiveIds retrieves selected archive ids', () => {
+    expect(selectors.getSelectedArchiveIds(state)).toEqual(state.archive.selectedArchiveIds);
+});
+
+test('getSelectedRegistryEntryIds retrieves selected registry entry ids', () => {
+    expect(selectors.getSelectedRegistryEntryIds(state)).toEqual(state.archive.selectedRegistryEntryIds);
+});
+
+test('getMediaStreams retrieves media streams', () => {
+    expect(selectors.getMediaStreams(state)).toEqual(state.archive.mediaStreams);
+});
+
+test('getDoiResult retrieves doi result object', () => {
+    expect(selectors.getDoiResult(state)).toEqual(state.archive.doiResult);
 });
