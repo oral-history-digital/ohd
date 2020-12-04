@@ -40,7 +40,11 @@ export default class RegistryEntries extends React.Component {
     }
 
     hideRegistryEntry(id) {
-        if (this.props.project.hidden_registry_entry_ids && this.props.project.hidden_registry_entry_ids.indexOf(id.toString()) !== -1 && !admin(this.props, {type: 'RegistryEntry', action: 'update'})) {
+        if (
+            this.props.project.hidden_registry_entry_ids &&
+            this.props.project.hidden_registry_entry_ids.indexOf(id) !== -1 &&
+            !admin(this.props, {type: 'RegistryEntry', action: 'update'})
+        ) {
             return true;
         }
         else {
@@ -57,6 +61,7 @@ export default class RegistryEntries extends React.Component {
         ) {
             return this.props.registryEntryParent.child_ids[this.props.locale].map((id, index) => {
                 let registryEntry = this.props.registryEntries[id]
+
                 if (registryEntry && !this.hideRegistryEntry(id)) {
                     return (
                         <RegistryEntryContainer
