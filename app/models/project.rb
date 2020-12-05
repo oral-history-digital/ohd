@@ -54,6 +54,12 @@ class Project < ApplicationRecord
     interviews.each(&:touch) if landing_page_text_changed?
   end
 
+  after_create :create_root_registry_entry
+  def create_root_registry_entry
+    root = RegistryEntry.create(code: 'root')
+    RegistryEntryProject.create(project_id: self.id, registry_entry_id: root.id)
+  end
+
   class << self
     def config
       @config ||= Rails.configuration.project
@@ -87,6 +93,10 @@ class Project < ApplicationRecord
 
   def archive_domain
     Rails.env == "development" ? "http://localhost:3000" : read_attribute(:archive_domain)
+  end
+
+  def root_registry_entry
+    registry_entries.where(code: 'root').first
   end
 
   def search_facets

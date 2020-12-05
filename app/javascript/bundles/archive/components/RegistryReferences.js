@@ -27,12 +27,11 @@ export default class RegistryReferences extends React.Component {
     }
 
     loadRootRegistryEntry() {
-        // TODO: fit this for MOG - id of root entry will be different
         if (
-            !this.props.registryEntriesStatus[1] ||
-            this.props.registryEntriesStatus[1].split('-')[0] === 'reload'
+            !this.props.registryEntriesStatus[this.props.project.root_registry_entry_id] ||
+            this.props.registryEntriesStatus[this.props.project.root_registry_entry_id].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData(this.props, 'registry_entries', 1);
+            this.props.fetchData(this.props, 'registry_entries', this.props.project.root_registry_entry_id);
         }
     }
 
@@ -82,8 +81,11 @@ export default class RegistryReferences extends React.Component {
     }
 
     addRegistryReference() {
-        // TODO: fit this for MOG - id of root entry will be different
-        if (admin(this.props, {type: 'RegistryReference', action: 'create', interview_id: this.props.interview.id}) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
+        if (
+            admin(this.props, {type: 'RegistryReference', action: 'create', interview_id: this.props.interview.id}) &&
+            this.props.registryEntriesStatus[this.props.project.root_registry_entry_id] &&
+            this.props.registryEntriesStatus[this.props.project.root_registry_entry_id].split('-')[0] === 'fetched'
+        ) {
             return (
                 <button
                     type="button"

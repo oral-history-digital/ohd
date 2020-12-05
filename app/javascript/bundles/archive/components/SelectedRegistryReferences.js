@@ -23,7 +23,7 @@ export default class SelectedRegistryReferences extends React.Component {
                             </span>
                             <RegistryReferencesContainer
                                 refObject={this.props.refObject}
-                                lowestAllowedRegistryEntryId={(metadataField.registry_entry_id) || 1}
+                                lowestAllowedRegistryEntryId={(metadataField.registry_entry_id) || this.props.project.root_registry_entry_id}
                                 registryReferenceTypeId={metadataField.registry_reference_type_id}
                                 locale={this.props.locale}
                                 key={`interview-registry-references-for-metadata-field-${r}`}

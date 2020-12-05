@@ -348,10 +348,6 @@ class RegistryEntry < ApplicationRecord
       result
     end
 
-    def root_node
-      @root_node ||= RegistryEntry.first #find(RegistryEntry::ROOT_NODE_ID)
-    end
-
     def create_with_name!(attributes = {})
       registry_entry = build_with_name(attributes)
       registry_entry.save!

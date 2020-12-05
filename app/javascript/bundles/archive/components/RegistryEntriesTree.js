@@ -18,12 +18,11 @@ export default class RegistryEntriesTree extends React.Component {
     }
 
     loadRootRegistryEntry() {
-        // TODO: fit this for MOG - id of root entry will be different
         if (
-            !this.props.registryEntriesStatus[1] ||
-            this.props.registryEntriesStatus[1].split('-')[0] === 'reload'
+            !this.props.registryEntriesStatus[this.props.project.root_registry_entry_id] ||
+            this.props.registryEntriesStatus[this.props.project.root_registry_entry_id].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData(this.props, 'registry_entries', 1);
+            this.props.fetchData(this.props, 'registry_entries', this.props.project.root_registry_entry_id);
         }
     }
 
@@ -84,7 +83,7 @@ export default class RegistryEntriesTree extends React.Component {
         if (this.props.foundRegistryEntries.showRegistryEntriesTree) {
             return (
                 <RegistryEntriesContainer
-                    registryEntryParent={this.props.registryEntries[1]}
+                    registryEntryParent={this.props.registryEntries[this.props.project.root_registry_entry_id]}
                     root
                 />
             );
@@ -100,7 +99,10 @@ export default class RegistryEntriesTree extends React.Component {
     }
 
     render() {
-        if (this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
+        if (
+            this.props.registryEntriesStatus[this.props.project.root_registry_entry_id] &&
+            this.props.registryEntriesStatus[this.props.project.root_registry_entry_id].split('-')[0] === 'fetched'
+        ) {
             return (
                 <Fragment>
                     <AuthShowContainer ifLoggedIn={true}>

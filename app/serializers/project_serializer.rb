@@ -44,7 +44,8 @@ class ProjectSerializer < ApplicationSerializer
     :logos,
     :sponsor_logos,
     :list_columns,
-    :grid_fields
+    :grid_fields,
+    :root_registry_entry_id
 
   def title
     object.shortname
@@ -74,4 +75,9 @@ class ProjectSerializer < ApplicationSerializer
   def has_map
     object.has_map ? 1 : 0
   end
+
+  def root_registry_entry_id
+    object.root_registry_entry.id
+  end
+
 end
