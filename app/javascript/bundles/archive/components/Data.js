@@ -43,10 +43,12 @@ export default class Data extends React.Component {
                     </p>
                 </div>
             )
-        } else if (this.props.data.archive_domain) {
+        } else if (this.props.data.type === 'Project') {
             return (
                 <div className='base-data box'>
-                    <p className='link'><a href={this.props.data.archive_domain}>{this.name()}</a></p>
+                    <Link to={pathBase(this.props)} >
+                        {this.props.data.name[this.props.locale]}
+                    </Link>
                 </div>
             )
         } else {
