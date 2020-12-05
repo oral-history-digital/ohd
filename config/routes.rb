@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   # root :to => redirect("/zwar/de")
-  root :to => redirect("/#{Project.default_locale || 'de'}")
+  root :to => redirect("/cdoh/#{Project.default_locale || 'de'}")
 
   scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
