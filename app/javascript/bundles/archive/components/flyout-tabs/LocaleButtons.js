@@ -22,12 +22,7 @@ class LocaleButtons extends Component {
 
         const newLocale = e.target.textContent;
 
-        // with projectId
         let newPath = location.pathname.replace(/^\/[a-z]{2,4}\/[a-z]{2}\//, `/${projectId}/${newLocale}/`);
-        // workaround: (without projectId in path), TODO: fit this when multi-project is finished
-        if (newPath === location.pathname) {
-            newPath = location.pathname.replace(/^\/[a-z]{2}\//, `/${newLocale}/`);
-        }
 
         history.push(newPath);
         setLocale(newLocale);

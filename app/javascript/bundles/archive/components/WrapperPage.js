@@ -28,14 +28,11 @@ export default class WrapperPage extends React.Component {
     }
 
     componentDidMount() {
-        const { match } = this.props;
-
-        if(this.props.locale !== match.params.locale) {
-            this.props.setLocale(match.params.locale);
-        }
         this.loadAccount()
         this.loadCollections();
         this.loadProjects();
+        this.setLocale();
+        this.setProjectId();
     }
 
     componentDidUpdate(prevProps) {
@@ -88,15 +85,26 @@ export default class WrapperPage extends React.Component {
         }
     }
 
+    setLocale() {
+        const { match } = this.props;
+
+        if(this.props.locale !== match.params.locale) {
+            this.props.setLocale(match.params.locale);
+        }
+    }
+
     setProjectId() {
-        //
-        // TODO: enable this for really multi-project use
-        //
         const { match } = this.props;
 
         if (match.params.projectId !== this.props.projectId) {
             this.props.setProjectId(match.params.projectId);
         }
+    }
+
+    project() {
+        const { match } = this.props;
+
+        return Object.values(this.props.projects).find(p => p.shortname.toLowerCase() === match.params.projectId.toLowerCase());
     }
 
     createSocket() {
@@ -113,7 +121,7 @@ export default class WrapperPage extends React.Component {
     }
 
     render() {
-        const { visible, locale, project,children,  transcriptScrollEnabled } = this.props;
+        const { visible, locale, children, transcriptScrollEnabled } = this.props;
 
         return (
             <ResizeWatcherContainer>
@@ -126,14 +134,14 @@ export default class WrapperPage extends React.Component {
                         'fix-video': transcriptScrollEnabled,
                         'fullscreen': !visible,
                     })}>
-                        <SiteHeaderContainer logos={project.logos} />
+                        <SiteHeaderContainer logos={this.project().logos} />
 
                         <MessagesContainer loggedInAt={this.props.loggedInAt}
                                            notifications={this.state.notifications} />
 
                         {children}
 
-                        <SiteFooter project={project} locale={locale} />
+                        <SiteFooter project={this.project()} locale={locale} />
 
                         { transcriptScrollEnabled ? <div className="compensation" /> : null }
                     </div>

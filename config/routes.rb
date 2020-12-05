@@ -3,7 +3,8 @@ Rails.application.routes.draw do
   # root :to => redirect("/zwar/de")
   root :to => redirect("/#{Project.default_locale || 'de'}")
 
-  scope "/:locale", :constraints => { :locale => /[a-z]{2}/ } do
+  scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
+  scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
     devise_for :user_accounts, :controllers => { sessions: "sessions", passwords: "passwords" }, skip: [:registrations]
     resources :accounts, only: [:show, :update, :index] do
       member do
@@ -167,7 +168,7 @@ Rails.application.routes.draw do
       end
     end
   end
-  #end
+  end
 
   get "photos/src/:name" => "photos#src"
   get "photos/thumb/:name" => "photos#thumb"
