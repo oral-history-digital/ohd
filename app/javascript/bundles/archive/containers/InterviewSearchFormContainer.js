@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     let data = state.search.interviews[state.archive.archiveId];
     return {
         archiveId: state.archive.archiveId,
+        projectId: state.archive.projectId,
         interviewFulltext: data && data.fulltext,
         translations: state.archive.translations,
         locale: state.archive.locale,

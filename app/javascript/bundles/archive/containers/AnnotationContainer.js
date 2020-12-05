@@ -3,10 +3,11 @@ import { connect } from 'react-redux';
 import Annotation from '../components/Annotation';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { deleteData } from '../actions/dataActionCreators';
-import { getLocale, getTranslations } from '../selectors/archiveSelectors';
+import { getLocale, getProjectId, getTranslations } from '../selectors/archiveSelectors';
 
 const mapStateToProps = state => ({
     currentLocale: getLocale(state),
+    projectId: getProjectId(state),
     translations: getTranslations(state),
 });
 

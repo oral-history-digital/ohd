@@ -5,6 +5,7 @@ import { fetchData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
     return { 
+        projectId: state.archive.projectId,
         contents: state.data.user_contents,
         userContentsStatus: state.data.statuses.user_contents.all,
         // the following is just a trick to force rerender after deletion

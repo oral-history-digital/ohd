@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
         randomFeaturedInterviews: state.data.random_featured_interviews,
         randomFeaturedInterviewsStatus: state.data.statuses.random_featured_interviews,
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         project: getProject(state),
         translations: state.archive.translations,
     }

@@ -8,6 +8,7 @@ import { fetchData } from '../actions/dataActionCreators';
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,

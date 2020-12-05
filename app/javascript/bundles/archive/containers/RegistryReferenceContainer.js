@@ -7,6 +7,7 @@ import { deleteData, fetchData } from '../actions/dataActionCreators';
 const mapStateToProps = (state) => {
     return { 
         archiveId: state.archive.archiveId,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,
         account: state.data.accounts.current,

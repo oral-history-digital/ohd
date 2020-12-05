@@ -9,6 +9,7 @@ import { getInterview } from '../../../lib/utils';
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         contributionTypes: state.archive.contributionTypes,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,

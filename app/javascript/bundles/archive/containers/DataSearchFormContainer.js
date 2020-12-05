@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     return {
         translations: state.archive.translations,
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         query: state.search.userRegistrations.query,
         dataStatus: state.data.statuses.user_registrations,
         isDataSearching: state.search.isUserRegistrationSearching,
