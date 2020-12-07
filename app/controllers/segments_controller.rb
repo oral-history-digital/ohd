@@ -3,6 +3,7 @@ class SegmentsController < ApplicationController
     @segment = Segment.find params[:id]
     authorize @segment
     @segment.update_attributes(segment_params)
+    @segment.reload
 
     respond_to do |format|
       format.json do
