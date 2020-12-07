@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import Spinner from './Spinner';
 
-export default function Fetch({
+export default function StateCheck({
     testSelector,
     fallback = <Spinner />,
     children,
@@ -18,7 +18,7 @@ export default function Fetch({
     return children;
 }
 
-Fetch.propTypes = {
+StateCheck.propTypes = {
     testSelector: PropTypes.func.isRequired,
     fallback: PropTypes.element,
     children: PropTypes.oneOfType([
