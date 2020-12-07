@@ -429,6 +429,15 @@ ru:
       new: Erlaubnis hinzufügen
       edit: Erlaubnis bearbeiten
       delete: Erlaubnis löschen
+    task_type:
+      new: 'Aufgabenart hinzufügen'
+      edit: 'Aufgabenart bearbeiten'
+      delete: 'Aufgabenart löschen'
+      admin: 'Aufgabenartn bearbeiten'
+    task_type_permission:
+      new: 'Berechtigung hinzufügen'
+      edit: 'Berechtigung bearbeiten'
+      delete: 'Berechtigung löschen'
     permission:
       new: Erlaubnis hinzufügen
       edit: Erlaubnis bearbeiten
@@ -962,10 +971,15 @@ ru:
       role_permission:
         name: Name
         desc: Beschreibung
-        permission_id: Erlaubnis
+        permission_id: Berechtigung
         controller: Controller
         action: Action
         created_at: angelegt
+      task_type_permission:
+        permission_id: 'Berechtigung'
+        controller: 'Controller'
+        action: 'Action'
+        created_at: 'angelegt'
       permission:
         name: Name
         klass: Class
