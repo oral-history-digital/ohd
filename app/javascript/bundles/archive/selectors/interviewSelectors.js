@@ -9,6 +9,12 @@ export const getCurrentInterview = state => {
     return interviews && interviews[archiveId];
 };
 
+export const getCurrentInterviewFetched = state => {
+    const currentInterview = getCurrentInterview(state);
+
+    return !(Object.is(currentInterview, undefined) || Object.is(currentInterview, null));
+};
+
 export const getContributorsFetched = state => {
     const interview = getCurrentInterview(state);
     const peopleStatus = getPeopleStatus(state);

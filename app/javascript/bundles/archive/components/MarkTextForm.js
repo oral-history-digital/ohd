@@ -30,17 +30,17 @@ export default class MarkTextForm extends React.Component {
             this.state.showForm
         ) {
             return (
-                <Form 
+                <Form
                     scope='mark_text'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.setState({showForm: false})}}
                     values={{
-                        id: this.props.interview && this.props.interview.archive_id
+                        id: this.props.interview.archive_id
                     }}
                     elements={[
                         {
                             elementType: 'select',
                             attribute: 'locale',
-                            values: this.props.interview && this.props.interview.languages,
+                            values: this.props.interview.languages,
                             withEmpty: true,
                             validate: function(v){return v !== ''},
                             individualErrorMsg: 'empty'
@@ -56,9 +56,9 @@ export default class MarkTextForm extends React.Component {
     }
 
     msg() {
-        let text = this.props.markTextStatus[`for_interviews_${this.props.archiveId}`] ? 
-            t(this.props, 'edit.text.' + this.props.markTextStatus[`for_interviews_${this.props.archiveId}`]) : 
-            t(this.props, 'edit.mark_text.explanation')  
+        let text = this.props.markTextStatus[`for_interviews_${this.props.archiveId}`] ?
+            t(this.props, 'edit.text.' + this.props.markTextStatus[`for_interviews_${this.props.archiveId}`]) :
+            t(this.props, 'edit.mark_text.explanation')
         if (
             //this.props.markTextStatus[`for_interviews_${this.props.archiveId}`]
             //!this.state.showForm

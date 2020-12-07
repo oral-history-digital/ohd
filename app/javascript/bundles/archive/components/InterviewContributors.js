@@ -14,10 +14,6 @@ export default function InterviewContributors({
 }) {
     const { t } = useI18n();
 
-    if (!interview) {
-        return null;
-    }
-
     return (
         <div>
             <ContributionList
