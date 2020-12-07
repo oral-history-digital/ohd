@@ -36,16 +36,22 @@ class TaskTypesController < ApplicationController
   end
 
   def index
-    task_types = policy_scope(TaskType).where(project_id: current_project.id)
+    page = params[:page] || 1
+    task_types = policy_scope(TaskType).where(search_params).order("created_at DESC").paginate page: page
+    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
 
     respond_to do |format|
+      format.html { render :template => '/react/app.html' }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}" do
+        json = #Rails.cache.fetch "#{current_project.cache_key_prefix}-task_types-visible-for-#{current_user_account.id}-#{extra_params}-#{TaskType.maximum(:updated_at)}" do
           {
             data: task_types.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
-            data_type: 'task_types'
+            data_type: 'task_types',
+            extra_params: extra_params,
+            page: params[:page], 
+            result_pages_count: task_types.total_pages
           }
-        end
+        #end
         render json: json
       end
     end
@@ -72,5 +78,9 @@ class TaskTypesController < ApplicationController
         :abbreviation,
         translations_attributes: [:id, :locale, :label]
     )
+  end
+
+  def search_params
+    params.permit(:label).to_h.select{|k,v| !v.blank? }
   end
 end

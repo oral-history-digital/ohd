@@ -17,6 +17,7 @@ import WrappedProjectsContainer from '../../containers/WrappedProjectsContainer'
 import UserRegistrationsContainer from '../../containers/UserRegistrationsContainer';
 import WrappedRolesContainer from '../../containers/WrappedRolesContainer';
 import WrappedPermissionsContainer from '../../containers/WrappedPermissionsContainer';
+import WrappedTaskTypesContainer from '../../containers/WrappedTaskTypesContainer';
 import WrappedRegistryReferenceTypesContainer from '../../containers/WrappedRegistryReferenceTypesContainer';
 import ActivateAccountContainer from '../../containers/ActivateAccountContainer';
 import OrderNewPasswordContainer from '../../containers/OrderNewPasswordContainer';
@@ -39,6 +40,7 @@ const Routes = () => (
         <Route path="/:locale/collections" component={props => <ErrorBoundaryContainer><WrappedCollectionsContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:locale/roles" component={props => <ErrorBoundaryContainer><WrappedRolesContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:locale/permissions" component={props => <ErrorBoundaryContainer><WrappedPermissionsContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/task_types" component={props => <ErrorBoundaryContainer><WrappedTaskTypesContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:locale/user_accounts/password/new" component={props => <ErrorBoundaryContainer><OrderNewPasswordContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:locale/user_accounts/password/edit" component={props => <ErrorBoundaryContainer><ActivateAccountContainer {...props} /></ErrorBoundaryContainer>} />
         <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" component={props => <ErrorBoundaryContainer><ActivateAccountContainer {...props} /></ErrorBoundaryContainer>} />

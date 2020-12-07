@@ -398,6 +398,15 @@ de:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
       delete: 'Berechtigung löschen'
+    task_type:
+      new: 'Aufgabenart hinzufügen'
+      edit: 'Aufgabenart bearbeiten'
+      delete: 'Aufgabenart löschen'
+      admin: 'Aufgabenartn bearbeiten'
+    task_type_permission:
+      new: 'Berechtigung hinzufügen'
+      edit: 'Berechtigung bearbeiten'
+      delete: 'Berechtigung löschen'
     permission:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
@@ -926,6 +935,11 @@ de:
       role:
         created_at: angelegt
       role_permission:
+        permission_id: 'Berechtigung'
+        controller: 'Controller'
+        action: 'Action'
+        created_at: 'angelegt'
+      task_type_permission:
         permission_id: 'Berechtigung'
         controller: 'Controller'
         action: 'Action'
