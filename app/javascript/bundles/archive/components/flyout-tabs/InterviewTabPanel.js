@@ -17,7 +17,6 @@ import CitationInfoContainer from '../../containers/CitationInfoContainer';
 import GalleryContainer from '../../containers/GalleryContainer';
 import UploadTranscriptContainer from '../../containers/UploadTranscriptContainer';
 import AuthorizedContent from '../AuthorizedContent';
-
 import { admin, pathBase, t } from 'lib/utils';
 
 class InterviewTabPanel extends Component {
@@ -49,7 +48,7 @@ class InterviewTabPanel extends Component {
     downloads() {
         const { interview, archiveId } = this.props;
 
-        if (interview && admin(this.props, {type: 'Interview', action: 'download'})) {
+        if (admin(this.props, {type: 'Interview', action: 'download'})) {
             let links = [];
             for (var i=1; i <= parseInt(interview.tape_count); i++) {
                 links.push(
@@ -121,13 +120,13 @@ class InterviewTabPanel extends Component {
                         projectId !== 'dg' ?
                             (
                                 <>
-                                    <AuthorizedContent object={{type: 'Interview', action: 'update_speakers', interview_id: interview && interview.id}}>
+                                    <AuthorizedContent object={{type: 'Interview', action: 'update_speakers', interview_id: interview.id}}>
                                         <InterviewDataContainer
                                             title={t(this.props, 'assign_speakers')}
                                             content={<AssignSpeakersFormContainer interview={interview} />}
                                         />
                                     </AuthorizedContent>
-                                    <AuthorizedContent object={{type: 'Interview', action: 'mark_texts', interview_id: interview && interview.id}}>
+                                    <AuthorizedContent object={{type: 'Interview', action: 'mark_texts', interview_id: interview.id}}>
                                         <InterviewDataContainer
                                             title={t(this.props, 'mark_texts')}
                                             content={<MarkTextFormContainer interview={interview} />}

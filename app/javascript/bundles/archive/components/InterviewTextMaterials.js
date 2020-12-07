@@ -32,7 +32,7 @@ export default class InterviewTextMaterials extends React.Component {
     }
 
     render() {
-        if (this.props.interview && this.props.interview.language && this.props.projectId !== "dg" && this.existsPublicTranscript()) {
+        if (this.props.interview.language && this.props.projectId !== "dg" && this.existsPublicTranscript()) {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
@@ -49,4 +49,3 @@ export default class InterviewTextMaterials extends React.Component {
         }
     }
 }
-

@@ -1,5 +1,5 @@
-import { getContributionTypes } from './archiveSelectors';
-import { getCurrentInterview, getContributorsFetched } from './interviewSelectors';
+import { getCurrentInterview, getCurrentInterviewFetched,
+    getContributorsFetched } from './interviewSelectors';
 
 const state = {
     archive: {
@@ -22,6 +22,10 @@ const state = {
 
 test('getCurrentInterview retrieves current interview', () => {
     expect(getCurrentInterview(state)).toStrictEqual({ id: 22, type: 'Interview' });
+});
+
+test('getCurrentInterviewFetched retrieves if current interview has been fetched', () => {
+    expect(getCurrentInterviewFetched(state)).toBe(true);
 });
 
 test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {
