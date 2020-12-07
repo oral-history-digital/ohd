@@ -6,6 +6,9 @@ import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import { INDEX_INTERVIEW } from '../constants/flyoutTabs';
+import StateCheck from './StateCheck';
+import Spinner from './Spinner';
+import { getCurrentInterviewFetched } from '../selectors/interviewSelectors';
 
 export default class Interview extends React.Component {
     componentDidMount() {
@@ -102,31 +105,28 @@ export default class Interview extends React.Component {
         }
     }
 
-    content() {
-        if (this.interviewLoaded()){
-            if (this.props.isCatalog) {
-                return (<InterviewDetailsLeftSideContainer interview={this.interview()} />);
-            } else {
-                return (
-                    <div>
-                        <AuthShowContainer ifLoggedIn={true}>
-                            <VideoPlayerContainer
-                                interview={this.interview()}
-                            />
-                            {this.innerContent()}
-                        </AuthShowContainer>
-                        <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                            {this.loggedOutContent()}
-                        </AuthShowContainer>
-                    </div>
-                )
-            }
-        } else {
-            return null;
-        }
-    }
-
     render() {
-        return this.content();
+        return (
+            <StateCheck
+                testSelector={getCurrentInterviewFetched}
+                fallback={<Spinner withPadding />}
+            >
+                {
+                    this.props.isCatalog ?
+                        <InterviewDetailsLeftSideContainer interview={this.interview()} /> :
+                        (
+                            <div>
+                                <AuthShowContainer ifLoggedIn={true}>
+                                    <VideoPlayerContainer interview={this.interview()} />
+                                    {this.innerContent()}
+                                </AuthShowContainer>
+                                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                                    {this.loggedOutContent()}
+                                </AuthShowContainer>
+                            </div>
+                        )
+                }
+            </StateCheck>
+        );
     }
 }

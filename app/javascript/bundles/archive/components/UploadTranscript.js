@@ -34,7 +34,7 @@ export default function UploadTranscript({
         }
     };
 
-    if (!interview || !interview.contributions) {
+    if (!interview.contributions) {
         return null;
     }
 
