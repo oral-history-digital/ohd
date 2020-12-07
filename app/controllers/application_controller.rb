@@ -196,6 +196,7 @@ class ApplicationController < ActionController::Base
           },
         },
         roles: { query: {page: 1} },
+        task_types: { query: {page: 1} },
         permissions: { query: {page: 1} },
         people: { query: {page: 1} },
         registry_reference_types: { query: {page: 1} },

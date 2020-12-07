@@ -151,7 +151,6 @@ const mapStateToProps = (state) => {
         ],
         joinedData: {
             metadata_field: MetadataFieldsContainer,
-            task_type: TaskTypesContainer,
             external_link: ExternalLinksContainer,
             logo: UploadedFileContainer,
             sponsor_logo: UploadedFileContainer,
