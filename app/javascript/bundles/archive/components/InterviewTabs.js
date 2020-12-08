@@ -5,7 +5,7 @@ import TableOfContentsContainer from '../containers/TableOfContentsContainer';
 import TranscriptContainer from '../containers/TranscriptContainer';
 import InterviewSearchContainer from '../containers/InterviewSearchContainer';
 import RefTreeContainer from '../containers/RefTreeContainer';
-import { t } from '../../../lib/utils';
+import { t } from 'lib/utils';
 
 export default class InterviewTabs extends React.Component {
 
@@ -17,9 +17,9 @@ export default class InterviewTabs extends React.Component {
     }
 
     resultsCount() {
-        let count = 0; 
+        let count = 0;
         if (this.props.interviewSearchResults && this.props.interviewSearchResults.foundSegments) {
-            count += this.props.interviewSearchResults.foundSegments.length + 
+            count += this.props.interviewSearchResults.foundSegments.length +
                 this.props.interviewSearchResults.foundPeople.length +
                 this.props.interviewSearchResults.foundRegistryEntries.length +
                 this.props.interviewSearchResults.foundBiographicalEntries.length;
@@ -29,9 +29,9 @@ export default class InterviewTabs extends React.Component {
 
     componentDidMount(){
         if (
-            this.props.interviewSearchResults && 
-            this.props.interviewSearchResults.fulltext && 
-            this.props.interviewSearchResults.fulltext !== "" && 
+            this.props.interviewSearchResults &&
+            this.props.interviewSearchResults.fulltext &&
+            this.props.interviewSearchResults.fulltext !== "" &&
             this.resultsCount() > 0
         ) {
             this.setState({['tabIndex']: 3});
@@ -45,9 +45,9 @@ export default class InterviewTabs extends React.Component {
 
     componentDidUpdate(prevProps, prevState) {
         if (
-            !(prevProps.interviewSearchResults && prevProps.interviewSearchResults.fulltext) && 
-            this.props.interviewSearchResults && 
-            this.props.interviewSearchResults.fulltext && 
+            !(prevProps.interviewSearchResults && prevProps.interviewSearchResults.fulltext) &&
+            this.props.interviewSearchResults &&
+            this.props.interviewSearchResults.fulltext &&
             this.props.interviewSearchResults.fulltext !== ""
         ) {
             this.setState({['tabIndex']: 3});
