@@ -69,11 +69,6 @@ header.site-header {
 
 .flyout-is-visible {
   &.fix-video {
-    .wrapper-video {
-      @include screen-xl {
-        right: 36%;
-      }
-    }
     .content-tabs {
       @include screen-xl {
         right: 36%;
@@ -136,46 +131,6 @@ header.site-header {
 }
 
 .fix-video {
-  .wrapper-video {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 220px;
-    @include screen-m {
-      height: 160px;
-    }
-
-    .video-element {
-      margin: 0;
-      float: none;
-      @include screen-m {
-        float: left;
-      }
-      video, audio, img {
-        height: 100px;
-        width: 133px;
-      }
-    }
-    .video-title-container {
-      display: block;
-      margin-left: 0;
-      @include screen-m {
-        display: inline-block;
-        margin-left: 20px;
-      }
-    }
-    .video-icons-container {
-      float: none;
-      padding: 0;
-    }
-    h1.video-title {
-      float: none;
-      font-size: $font-size-larger;
-      line-height: $line-height-larger;
-    }
-  }
-
   .content-tabs {
     position: fixed;
     top: 220px;
@@ -196,47 +151,6 @@ header.site-header {
   }
 }
 
-.wrapper-video {
-  position: relative;
-  padding: 30px 5% 25px;
-  height: auto;
-  background: $gray-darker;
-  color: #fff;
-  z-index: 100;
-  // -webkit-transition: max-height 1s;
-  // transition: max-height 1s;
-  @include screen-m {
-    padding: 30px 5% 25px;
-  }
-  .fa {
-    color: white !important;
-  }
-}
-.video-title-container {
-  @include clearfix();
-}
-
-h1.video-title {
-  color: #fff;
-  margin-top: 0;
-  margin-bottom: 15px;
-  font-size: $font-size-heading-h1;
-  line-height: $line-height-heading-h1;
-  float: none;
-  @include screen-m {
-    font-size: $font-size-heading-h1-large;
-    line-height: $line-height-heading-h1-large;
-    float: left;
-  }
-}
-.video-icons-container {
-  float: none;
-  padding-top: 0;
-  @include screen-m {
-    float: right;
-    padding-top: 5px;
-  }
-}
 .tapeselector, .resolutionselector {
   float: left;
   margin-right: 20px;
@@ -277,18 +191,7 @@ h1.video-title {
 .video-bookmark {
   margin-right: 0;
 }
-.video-element {
-  margin: $video-element-margin;
-  @include screen-m {
-    margin: $video-element-margin-m;
-  }
-  @include screen-l {
-    margin: $video-element-margin-l;
-  }
-  video, audio, img {
-    width: 100%;
-  }
-}
+
 footer {
   background: #fff; //$gray-dark;
   border-top: 1px solid $gray-dark;
@@ -666,19 +569,6 @@ a.search-result-link {
   }
 }
 
-/* Home Video */
-
-.video-element.home-video {
-  margin: 0;
-  padding: 0;
-  background-color: #383838;
-  video{
-    display: block;
-  }
-  @include screen-l {
-    padding: 0;
-  }
-}
 
 .wrapper-content.register {
   margin-top: 0px !important;

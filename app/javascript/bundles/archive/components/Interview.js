@@ -63,13 +63,13 @@ export default class Interview extends React.Component {
         if (this.interviewLoaded() && this.props.interviews) {
             return (
                 <div>
-                    <div className='wrapper-video' >
-                        <div className={"video-title-container"}>
-                            <h1 className='video-title'>
+                    <div className="VideoPlayer">
+                        <header className="VideoHeader">
+                            <h1 className="VideoHeader-title">
                                 {this.props.project.fullname_on_landing_page ? this.interview().title[this.props.locale] : this.interview().anonymous_title[this.props.locale]}
                             </h1>
-                        </div>
-                        <div className='video-element'>
+                        </header>
+                        <div className="VideoElement">
                             <img src={this.interview().still_url}/>
                         </div>
                     </div>
