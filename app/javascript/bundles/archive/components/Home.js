@@ -78,7 +78,7 @@ export default class Home extends React.Component {
         }
     }
 
-    content() {
+    render() {
         if (this.props.project) {
             let projectTranslation = this.props.project.translations.find(t => t.locale === this.props.locale);
             return (
@@ -94,11 +94,9 @@ export default class Home extends React.Component {
                     </div>
                 </div>
             )
+        } else {
+            return null;
         }
-    }
-
-    render() {
-        return this.content();
     }
 
 }
