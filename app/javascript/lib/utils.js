@@ -8,17 +8,6 @@ export function get(state, dataType, id) {
 
 export function getProject(state) {
     return Object.values(state.data.projects).find(p => p.identifier === state.archive.projectId);
-    //if (state.archive.projectId && Object.keys(state.data.projects).length > 0) {
-        //let project;
-        //for (var projectId in state.data.projects) {
-            //if (state.data.projects[projectId].identifier === state.archive.projectId) {
-                //project = state.data.projects[projectId];
-            //}
-            //return project;
-        //};
-    //} else {
-        //return null;
-    //}
 }
 
 export function getInterview(state) {
