@@ -45,11 +45,12 @@ export default class Data extends React.Component {
             )
         } else if (this.props.data.type === 'Project') {
             return (
-                <div className='base-data box'>
-                    <Link to={pathBase(this.props)} >
-                        {this.props.data.name[this.props.locale]}
-                    </Link>
-                </div>
+                <Link 
+                    onClick={() => this.props.setProjectId(this.props.data.identifier)}
+                    to={`/${this.props.data.identifier}/${this.props.locale}/`}
+                >
+                    {this.props.data.name[this.props.locale]}
+                </Link>
             )
         } else {
             return (

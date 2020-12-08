@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Data from '../components/Data';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { deleteData } from '../actions/dataActionCreators';
-import { setArchiveId } from '../actions/archiveActionCreators';
+import { setArchiveId, setProjectId } from '../actions/archiveActionCreators';
 import { setTapeAndTime } from '../actions/interviewActionCreators';
 import { getCookie } from '../../../lib/utils';
 
@@ -24,6 +24,7 @@ const mapDispatchToProps = (dispatch) => ({
     closeArchivePopup: () => dispatch(closeArchivePopup()),
     setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
+    setProjectId: (projectId) => dispatch(setProjectId(projectId)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Data);
