@@ -19,7 +19,7 @@ export default class Home extends React.Component {
 
     componentDidUpdate(prevProps) {
         if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
-            const url = `/${this.props.locale}/searches/archive`;
+            const url = `/${pathBase(this.props)}/searches/archive`;
             this.props.history.push(url);
         } else {
             this.loadRandomFeaturedInterviews();

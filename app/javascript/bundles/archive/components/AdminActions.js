@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { t, admin } from '../../../lib/utils';
+import { t, admin, pathBase } from '../../../lib/utils';
 
 export default class AdminActions extends React.Component {
     static propTypes = {
@@ -45,7 +45,7 @@ export default class AdminActions extends React.Component {
             // TODO: faster aproach would be to just hide or delete the dom-elements
             location.reload();
         } else {
-            this.props.history.push(`/${this.props.locale}/searches/archive`);
+            this.props.history.push(`/${pathBase(this.props)}/searches/archive`);
         }
     }
 

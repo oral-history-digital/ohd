@@ -13,6 +13,7 @@ import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActi
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         statuses: state.data.statuses.interviews,
