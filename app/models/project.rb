@@ -56,7 +56,7 @@ class Project < ApplicationRecord
 
   after_create :create_root_registry_entry
   def create_root_registry_entry
-    root = RegistryEntry.create(code: 'root')
+    root = RegistryEntry.create(code: 'root', workflow_state: 'public')
     RegistryEntryProject.create(project_id: self.id, registry_entry_id: root.id)
   end
 
