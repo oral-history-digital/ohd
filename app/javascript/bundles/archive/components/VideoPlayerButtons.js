@@ -1,61 +1,51 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import InterviewEditButtonsContainer from '../containers/InterviewEditButtonsContainer';
-import { admin, t } from '../../../lib/utils';
+import AuthorizedContent from './AuthorizedContent';
+import { useI18n } from '../hooks/i18n';
 
-class VideoPlayerButtons extends Component {
-    static propTypes = {
-        transcriptScrollEnabled: PropTypes.bool.isRequired,
-        locale: PropTypes.string.isRequired,
-        translations: PropTypes.object.isRequired,
-        account: PropTypes.object.isRequired,
-        editView: PropTypes.bool.isRequired,
-        handleTranscriptScroll: PropTypes.func.isRequired,
-    }
+export default function VideoPlayerButtons({
+    transcriptScrollEnabled,
+    className,
+    handleTranscriptScroll,
+}) {
+    const { t } = useI18n();
 
-    constructor(props) {
-        super(props);
+    function toggleExpansion() {
+        handleTranscriptScroll(!transcriptScrollEnabled);
 
-        this.toggleExpansion = this.toggleExpansion.bind(this);
-    }
-
-    toggleExpansion() {
-        this.props.handleTranscriptScroll(!this.props.transcriptScrollEnabled);
-
-        if (this.props.transcriptScrollEnabled) {
+        if (transcriptScrollEnabled) {
             window.scrollTo(0, 1);
         }
     }
 
-    render() {
-        const { transcriptScrollEnabled } = this.props;
+    return (
+        <div className={className}>
+            <AuthorizedContent object={{type: 'General', action: 'edit'}}>
+                <InterviewEditButtonsContainer />
+            </AuthorizedContent>
 
-        return (
-            <div className="VideoPlayer-buttons">
-                {
-                    admin(this.props, {type: 'General', action: 'edit'}) ?
-                        <InterviewEditButtonsContainer /> :
-                        null
-                }
-
-                <button
-                    className="IconButton"
-                    type="button"
-                    title={t(this.props, transcriptScrollEnabled ? 'expand_video' : 'compress_video')}
-                    onClick={this.toggleExpansion}
-                >
-                    <i className={classNames('fa', 'fa-fw', {
-                        'fa-angle-double-down': transcriptScrollEnabled,
-                        'fa-angle-double-up': !transcriptScrollEnabled,
-                    })}
-                       aria-hidden="true"
-                    />
-                </button>
-            </div>
-        );
-    }
+            <button
+                className="IconButton"
+                type="button"
+                title={t(transcriptScrollEnabled ? 'expand_video' : 'compress_video')}
+                onClick={toggleExpansion}
+            >
+                <i className={classNames('fa', 'fa-fw', {
+                    'fa-angle-double-down': transcriptScrollEnabled,
+                    'fa-angle-double-up': !transcriptScrollEnabled,
+                })}
+                    aria-hidden="true"
+                />
+            </button>
+        </div>
+    );
 }
 
-export default VideoPlayerButtons;
+VideoPlayerButtons.propTypes = {
+    transcriptScrollEnabled: PropTypes.bool.isRequired,
+    className: PropTypes.string,
+    handleTranscriptScroll: PropTypes.func.isRequired,
+};

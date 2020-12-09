@@ -2,11 +2,44 @@
  * VideoPlayer component
  */
 
-.VideoPlayer {}
+.VideoPlayer {
+  background: $gray-darker;
+  color: #fff;
+  height: auto;
+  padding: 30px 5% 25px;
+  position: relative;
+  z-index: 100;
+
+  @include screen-m {
+    padding: 30px 5% 25px;
+  }
+
+  .fa {
+    color: white !important;
+  }
+}
 
 .VideoPlayer-buttons {
   bottom: 0.5rem;
   display: flex;
   position: absolute;
   right: 0.5rem;
+}
+
+.VideoPlayer.is-fixed {
+  height: 13.75rem;
+  left: 0;
+  position: fixed;
+  right: 0;
+  top: 0;
+
+  @include screen-m {
+    height: 10rem;
+  }
+}
+
+.VideoPlayer.is-narrow {
+  @include screen-xl {
+    right: 36%;
+  }
 }
