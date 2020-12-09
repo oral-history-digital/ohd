@@ -77,12 +77,21 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'select',
                 attribute: 'source',
-                values: ['RegistryReferenceType', 'Language', 'Person', 'Collection', 'Interview']
+                values: {
+                    0: {value: 'RegistryReferenceType', name:  'RegistryReferenceType'},
+                    1: {value: 'Language', name: 'Language'},
+                    2: {value: 'Person', name: 'Person'},
+                    3: {value: 'Collection', name: 'Collection'},
+                    4: {value: 'Interview', name: 'Interview'}
+                }
             },
             {
                 elementType: 'select',
                 attribute: 'ref_object_type',
-                values: ['Person', 'Interview']
+                values: {
+                    0: {value: 'Person', name: 'Person'},
+                    1: {value: 'Interview', name: 'Interview'}
+                }
             },
             {
                 elementType: 'select',
