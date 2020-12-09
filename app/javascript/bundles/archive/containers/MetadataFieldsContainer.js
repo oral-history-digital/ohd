@@ -75,22 +75,20 @@ const mapStateToProps = (state) => {
                 type: 'checkbox',
             },
             {
-                attribute: 'ref_object_type',
+                elementType: 'select',
+                attribute: 'source',
+                values: ['RegistryReferenceType', 'Language', 'Person', 'Collection', 'Interview']
             },
             {
-                attribute: 'source',
+                elementType: 'select',
+                attribute: 'ref_object_type',
+                values: ['Person', 'Interview']
             },
             {
                 elementType: 'select',
                 attribute: 'registry_reference_type_id',
                 values: state.data.registry_reference_types,
                 withEmpty: true,
-                //validate: function(v){return v.length > 0} 
-            },
-            {
-                elementType: 'input',
-                attribute: 'registry_entry_id',
-                //validate: function(v){return /\d+/.test(v)} 
             },
         ],
     }

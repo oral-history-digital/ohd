@@ -865,7 +865,7 @@ el:
         use_in_details_view: in der Detailansicht zeigen
         use_in_map_search: in der Kartensuche zeigen
         display_on_landing_page: Auf der Landing-Page zeigen
-        ref_object_type: RefObjectType
+        registry_reference_type_id: RegistryReferenceType
         source: Source
         label: Label
         values: Values
