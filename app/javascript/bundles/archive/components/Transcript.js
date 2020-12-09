@@ -9,7 +9,6 @@ import {
 import Spinner from './Spinner';
 
 export default class Transcript extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleScroll = this.handleScroll.bind(this);

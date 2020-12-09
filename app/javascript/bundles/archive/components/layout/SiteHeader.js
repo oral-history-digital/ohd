@@ -1,11 +1,16 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { Link } from 'react-router-dom';
 
-import { t } from '../../../../lib/utils';
+import { useI18n } from '../../hooks/i18n';
 
-function SiteHeader(props) {
-    const { logos, locale } = props;
+function SiteHeader({
+    logos,
+    transcriptScrollEnabled,
+    locale,
+}) {
+    const { t } = useI18n();
 
     let src = null;
     if (logos) {
@@ -18,8 +23,12 @@ function SiteHeader(props) {
     }
 
     return (
-        <header className='site-header'>
-            <Link to={`/${locale}`} className="logo-link" title={t(props, 'home')}>
+        <header className={classNames('SiteHeader', { 'is-hidden': transcriptScrollEnabled })}>
+            <Link
+                to={`/${locale}`}
+                className="logo-link"
+                title={t('home')}
+            >
                 <img className="logo-img" src={src}/>
             </Link>
         </header>
@@ -28,8 +37,8 @@ function SiteHeader(props) {
 
 SiteHeader.propTypes = {
     logos: PropTypes.object,
+    transcriptScrollEnabled: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
 };
 
 export default SiteHeader;

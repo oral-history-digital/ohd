@@ -1,0 +1,18 @@
+/**
+ * SiteHeader component
+ */
+
+.SiteHeader {
+  background: #fff;
+  height: 5rem;
+  overflow: hidden;
+  padding: 0 5%;
+
+  @include screen-m {
+    height: 6.25rem;
+  }
+}
+
+.SiteHeader.is-hidden {
+  display: none;
+}
