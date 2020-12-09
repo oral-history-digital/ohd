@@ -1,7 +1,7 @@
 import { getArchiveId } from './archiveSelectors';
-import { getPeopleStatus } from './dataSelectors';
+import { getData, getPeopleStatus } from './dataSelectors';
 
-const getInterviews = state => state.data.interviews;
+export const getInterviews = state => getData(state).interviews;
 
 export const getCurrentInterview = state => {
     const interviews = getInterviews(state);
