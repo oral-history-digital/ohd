@@ -1,6 +1,6 @@
 class TaskType < ApplicationRecord
   belongs_to :project, touch: true
-  has_many :tasks, dependent: :destroy, touch: true
+  has_many :tasks, dependent: :destroy
   has_many :task_type_permissions, dependent: :destroy
   has_many :permissions, through: :task_type_permissions
 
@@ -17,4 +17,8 @@ class TaskType < ApplicationRecord
     project.clear_cache('interview')
   end
 
+  after_update :touch_tasks
+  def touch_tasks
+    tasks.update_all(updated_at: Time.now)
+  end
 end
