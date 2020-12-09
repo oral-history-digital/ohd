@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Observer from 'react-intersection-observer'
 import moment from 'moment';
@@ -16,6 +17,7 @@ import { INDEX_SEARCH } from '../constants/flyoutTabs';
 export default class ArchiveSearch extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             sortables: {
                 title: 'asc',
@@ -34,7 +36,7 @@ export default class ArchiveSearch extends React.Component {
         this.props.setFlyoutTabsIndex(INDEX_SEARCH);
     }
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         if (prevProps.isLoggedIn !== this.props.isLoggedIn) {
             this.search()
         }
@@ -46,11 +48,9 @@ export default class ArchiveSearch extends React.Component {
         } else {
             return (
                 <div>
-                    {/* {this.renderPagination()} */}
                     <div className={'search-results-container'}>
                         {this.foundInterviews(displayType)}
                     </div>
-                    {/* {this.renderPagination()} */}
                     {this.renderScrollObserver()}
                 </div>
             )
@@ -182,7 +182,6 @@ export default class ArchiveSearch extends React.Component {
 
     handleScroll(inView) {
         if(inView){
-            let query = this.props.query;
             let page = (this.props.query.page || 0) + 1;
             this.search(Object.assign({}, this.props.query, {page: page}));
         }
@@ -328,13 +327,23 @@ export default class ArchiveSearch extends React.Component {
     }
 
     searchResultTabs() {
-        if (this.props.viewModes) {
-            let _this = this;
-            return _this.props.viewModes.map(function(viewMode, i) {
-                let visibility = (_this.props.viewModes.length < 2 || (viewMode === 'workflow' && !admin(_this.props, {type: 'General', action: 'edit'}))) ? 'hidden' : ''
+        const { viewModes } = this.props;
+
+        if (viewModes) {
+            return viewModes.map((viewMode, i) => {
+                let visibility = (
+                        viewModes.length < 2 ||
+                        (viewMode === 'workflow' && !admin(this.props, {type: 'General', action: 'edit'}))
+                    ) ?
+                    'hidden' :
+                    '';
+
                 return (
-                    <Tab className={'search-results-tab ' + visibility} key={i}>
-                        <span>{t(_this.props, viewMode)}</span>
+                    <Tab
+                        key={i}
+                        className={classNames('search-results-tab', visibility)}
+                    >
+                        <span>{t(this.props, viewMode)}</span>
                     </Tab>
                 )
             })
@@ -344,17 +353,14 @@ export default class ArchiveSearch extends React.Component {
     }
 
     tabPanels() {
-        if (this.props.viewModes) {
-            let _this = this
-            return this.props.viewModes.map(function(viewMode, i) {
-                if (viewMode !== 'workflow' || (viewMode === 'workflow' && admin(_this.props, {type: 'General', action: 'edit'}))) {
-                    return (
-                        <TabPanel key={i}>
-                            {_this.content(viewMode)}
-                        </TabPanel>
-                    )
-                }
-            })
+        const { viewModes } = this.props;
+
+        if (viewModes) {
+            return viewModes.map((viewMode, i) => (
+                <TabPanel key={i}>
+                    {this.content(viewMode)}
+                </TabPanel>
+            ));
         } else {
             return null;
         }
@@ -389,8 +395,28 @@ export default class ArchiveSearch extends React.Component {
             </div>
         )
     }
-
-    static contextTypes = {
-        router: PropTypes.object
-    }
 }
+
+ArchiveSearch.propTypes = {
+    isArchiveSearching: PropTypes.bool,
+    query: PropTypes.object.isRequired,
+    viewModes: PropTypes.array.isRequired,
+    viewMode: PropTypes.string.isRequired,
+    foundInterviews: PropTypes.array.isRequired,
+    project: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    facets: PropTypes.object.isRequired,
+    resultsCount: PropTypes.number.isRequired,
+    resultPagesCount: PropTypes.number.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
+    listColumns: PropTypes.array.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    setViewMode: PropTypes.func.isRequired,
+    setFlyoutTabsIndex: PropTypes.func.isRequired,
+    hideFlyoutTabs: PropTypes.func.isRequired,
+    searchInArchive: PropTypes.func.isRequired,
+};
