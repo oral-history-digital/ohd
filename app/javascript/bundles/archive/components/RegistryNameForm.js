@@ -5,6 +5,7 @@ import { t } from '../../../lib/utils';
 export default class RegistryNameForm extends React.Component {
 
     render() {
+        let defaultNameType = Object.values(this.props.registryNameTypes).find(r => r.code === 'spelling')
         let _this = this;
         return (
             <Form 
@@ -14,7 +15,9 @@ export default class RegistryNameForm extends React.Component {
                 formClasses={_this.props.formClasses}
                 data={this.props.registryName}
                 values={{
-                    registry_entry_id: (_this.props.registryName && _this.props.registryName.registry_entry_id) || _this.props.registryEntryId
+                    registry_entry_id: (_this.props.registryName && _this.props.registryName.registry_entry_id) || _this.props.registryEntryId,
+                    registry_name_type_id: (_this.props.registryName && _this.props.registryName.registry_name_type_id) || defaultNameType.id,
+                    name_position: 1,
                 }}
                 submitText='submit'
                 elements={[
@@ -28,15 +31,10 @@ export default class RegistryNameForm extends React.Component {
                         attribute: 'notes',
                     },
                     {
-                        elementType: 'input',
-                        attribute: 'name_position',
-                        validate: function(v){return /^\d+$/.test(v)} 
-                    },
-                    {
                         elementType: 'select',
                         attribute: 'registry_name_type_id',
+                        value: (_this.props.registryName && _this.props.registryName.registry_name_type_id) || defaultNameType.id,
                         values: this.props.registryNameTypes && Object.values(this.props.registryNameTypes),
-                        withEmpty: true,
                         validate: function(v){return /^\d+$/.test(v)} 
                     },
                 ]}
