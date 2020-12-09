@@ -1,4 +1,4 @@
-import { getCurrentInterview, getCurrentInterviewFetched,
+import { getInterviews, getCurrentInterview, getCurrentInterviewFetched,
     getContributorsFetched } from './interviewSelectors';
 
 const state = {
@@ -20,8 +20,12 @@ const state = {
     },
 };
 
+test('getInterviews retrieves all interviews', () => {
+    expect(getInterviews(state)).toEqual(state.data.interviews);
+});
+
 test('getCurrentInterview retrieves current interview', () => {
-    expect(getCurrentInterview(state)).toStrictEqual({ id: 22, type: 'Interview' });
+    expect(getCurrentInterview(state)).toEqual(state.data.interviews.cd003);
 });
 
 test('getCurrentInterviewFetched retrieves if current interview has been fetched', () => {
