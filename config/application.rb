@@ -32,5 +32,6 @@ module Archive
     config.active_record.time_zone_aware_types = [:datetime, :time]
 
     config.middleware.use Rack::Deflater
+    config.middleware.use Rack::Brotli
   end
 end
