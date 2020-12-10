@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import InterviewTabPanel from '../../components/flyout-tabs/InterviewTabPanel';
 import { getInterviewee, getProject } from 'lib/utils';
-import { getCurrentInterview } from '../../selectors/interviewSelectors';
+import { getCurrentInterview } from '../../selectors/dataSelectors';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

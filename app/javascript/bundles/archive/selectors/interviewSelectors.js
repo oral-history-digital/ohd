@@ -1,33 +1,13 @@
-import { getArchiveId } from './archiveSelectors';
-import { getData, getPeopleStatus } from './dataSelectors';
+const getInterview = state => state.interview;
 
-export const getInterviews = state => getData(state).interviews;
+export const getCurrentTape = state => getInterview(state).tape;
 
-export const getCurrentInterview = state => {
-    const interviews = getInterviews(state);
-    const archiveId = getArchiveId(state);
-    return interviews && interviews[archiveId];
-};
+export const getVideoTime = state => getInterview(state).videoTime;
 
-export const getCurrentInterviewFetched = state => {
-    const currentInterview = getCurrentInterview(state);
+export const getVideoStatus = state => getInterview(state).videoStatus;
 
-    return !(Object.is(currentInterview, undefined) || Object.is(currentInterview, null));
-};
+export const getTranscriptTime = state => getInterview(state).transcriptTime;
 
-export const getContributorsFetched = state => {
-    const interview = getCurrentInterview(state);
-    const peopleStatus = getPeopleStatus(state);
+export const getTranscriptScrollEnabled = state => getInterview(state).transcriptScrollEnabled;
 
-    if (
-        interview &&
-        (
-            (peopleStatus[`contributors_for_interview_${interview.id}`] && peopleStatus[`contributors_for_interview_${interview.id}`].split('-')[0] === 'fetched') ||
-            (peopleStatus.all && peopleStatus.all.split('-')[0] === 'fetched')
-        )
-    ) {
-        return true;
-    } else {
-        return false;
-    }
-};
+export const getVideoResolution = state => getInterview(state).resolution;

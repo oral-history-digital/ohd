@@ -16,7 +16,7 @@ import * as indexes from '../constants/flyoutTabs';
 import { t, admin, pathBase } from 'lib/utils';
 import StateCheck from './StateCheck';
 import Spinner from './Spinner';
-import { getCurrentInterviewFetched } from '../selectors/interviewSelectors';
+import { getCurrentInterviewFetched } from '../selectors/dataSelectors';
 
 export default class FlyoutTabs extends React.Component {
     static propTypes = {

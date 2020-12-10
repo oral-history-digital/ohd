@@ -1,8 +1,8 @@
-import { getData, getLanguages, getPeople, getStatuses, getPeopleStatus, getCollections,
-    getProjects, getCurrentProject, getCurrentAccount, get } from './dataSelectors';
+import * as selectors from './dataSelectors';
 
 const state = {
     archive: {
+        archiveId: 'cd003',
         projectId: 'cdoh',
     },
     data: {
@@ -26,6 +26,7 @@ const state = {
         statuses: {
             people: {
                 12: 'fetched',
+                contributors_for_interview_22: 'fetched',
             },
         },
         projects: {
@@ -33,6 +34,12 @@ const state = {
                 id: 1,
                 type: 'Project',
                 identifier: 'cdoh',
+            },
+        },
+        interviews: {
+            cd003: {
+                id: 22,
+                type: 'Interview',
             },
         },
         languages: {
@@ -45,44 +52,44 @@ const state = {
 };
 
 test('getData gets data object', () => {
-    expect(getData(state)).toEqual(state.data);
+    expect(selectors.getData(state)).toEqual(state.data);
 });
 
 test('getLanguages gets languages object', () => {
-    expect(getLanguages(state)).toEqual(state.data.languages);
+    expect(selectors.getLanguages(state)).toEqual(state.data.languages);
 });
 
 test('getCollections gets collections object', () => {
-    expect(getCollections(state)).toEqual(state.data.collections);
+    expect(selectors.getCollections(state)).toEqual(state.data.collections);
 });
 
 test('getPeople gets people object', () => {
-    expect(getPeople(state)).toEqual(state.data.people);
+    expect(selectors.getPeople(state)).toEqual(state.data.people);
 });
 
 test('getStatuses gets statuses object', () => {
-    expect(getStatuses(state)).toEqual(state.data.statuses);
+    expect(selectors.getStatuses(state)).toEqual(state.data.statuses);
 });
 
 test('getPeopleStatuses gets people statuses object', () => {
-    expect(getPeopleStatus(state)).toEqual(state.data.statuses.people);
+    expect(selectors.getPeopleStatus(state)).toEqual(state.data.statuses.people);
 });
 
 test('getProjects gets projects object', () => {
-    expect(getProjects(state)).toEqual(state.data.projects);
+    expect(selectors.getProjects(state)).toEqual(state.data.projects);
 });
 
 test('getCurrentAccount gets account object', () => {
-    expect(getCurrentAccount(state)).toEqual(state.data.accounts.current);
+    expect(selectors.getCurrentAccount(state)).toEqual(state.data.accounts.current);
 });
 
 test('get gets data of a specific type', () => {
-    expect(get(state, 'collections', 1)).toEqual(state.data.collections[1]);
+    expect(selectors.get(state, 'collections', 1)).toEqual(state.data.collections[1]);
 });
 
 describe('getCurrentProject', () => {
     test('gets currently selected project\'s object', () => {
-        expect(getCurrentProject(state)).toEqual(state.data.projects[1]);
+        expect(selectors.getCurrentProject(state)).toEqual(state.data.projects[1]);
     });
 
     test('returns null if project cannot be found', () => {
@@ -95,6 +102,22 @@ describe('getCurrentProject', () => {
             },
         };
 
-        expect(getCurrentProject(state)).toBeNull();
+        expect(selectors.getCurrentProject(state)).toBeNull();
     });
+});
+
+test('getInterviews retrieves all interviews', () => {
+    expect(selectors.getInterviews(state)).toEqual(state.data.interviews);
+});
+
+test('getCurrentInterview retrieves current interview', () => {
+    expect(selectors.getCurrentInterview(state)).toEqual(state.data.interviews.cd003);
+});
+
+test('getCurrentInterviewFetched retrieves if current interview has been fetched', () => {
+    expect(selectors.getCurrentInterviewFetched(state)).toBe(true);
+});
+
+test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {
+    expect(selectors.getContributorsFetched(state)).toBe(true);
 });

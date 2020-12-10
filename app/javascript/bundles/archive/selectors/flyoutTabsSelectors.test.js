@@ -1,4 +1,4 @@
-import { getFlyoutTabsVisible, getFlyoutTabsIndex } from './flyoutTabsSelectors';
+import * as selectors from './flyoutTabsSelectors';
 
 const state = {
     flyoutTabs: {
@@ -7,10 +7,10 @@ const state = {
     },
 };
 
-test('getFlyoutTabsVisible retrieves flyout tabs visibility from state', () => {
-    expect(getFlyoutTabsVisible(state)).toEqual(state.flyoutTabs.visible);
+test('getFlyoutTabsVisible retrieves flyout tabs visibility', () => {
+    expect(selectors.getFlyoutTabsVisible(state)).toEqual(state.flyoutTabs.visible);
 });
 
 test('getFlyoutTabsIndex retrieves currently selected tab', () => {
-    expect(getFlyoutTabsIndex(state)).toEqual(state.flyoutTabs.index);
+    expect(selectors.getFlyoutTabsIndex(state)).toEqual(state.flyoutTabs.index);
 });
