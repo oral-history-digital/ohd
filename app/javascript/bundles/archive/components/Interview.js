@@ -8,7 +8,7 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import { INDEX_INTERVIEW } from '../constants/flyoutTabs';
 import StateCheck from './StateCheck';
 import Spinner from './Spinner';
-import { getCurrentInterviewFetched } from '../selectors/interviewSelectors';
+import { getCurrentInterviewFetched } from '../selectors/dataSelectors';
 
 export default class Interview extends React.Component {
     componentDidMount() {

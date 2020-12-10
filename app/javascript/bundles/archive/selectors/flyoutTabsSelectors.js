@@ -1,3 +1,5 @@
-export const getFlyoutTabsVisible = state => state.flyoutTabs.visible;
+export const getFlyoutTabs = state => state.flyoutTabs;
 
-export const getFlyoutTabsIndex = state => state.flyoutTabs.index;
+export const getFlyoutTabsVisible = state => getFlyoutTabs(state).visible;
+
+export const getFlyoutTabsIndex = state => getFlyoutTabs(state).index;
