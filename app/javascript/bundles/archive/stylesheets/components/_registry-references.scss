@@ -3,21 +3,24 @@
  */
 
 .RegistryReferences {
+  color: $gray-darkest;
+  font-size: $font-size-medium;
+  line-height: $line-height-medium;
 }
 
 .RegistryReferences-list {
-    display: flex;
-    flex-wrap: wrap;
-    list-style-type: none;
-    margin: 0 -0.5rem;
-    padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  list-style-type: none;
+  margin: 0 -0.5rem;
+  padding: 0;
 }
 
 .RegistryReferences-addButton {
-    border: none;
-    color: var(--editorial-color);
-    cursor: pointer;
-    outline: none;
-    padding: 0;
-    transition: $transition-duration;
+  border: none;
+  color: var(--editorial-color);
+  cursor: pointer;
+  outline: none;
+  padding: 0;
+  transition: $transition-duration;
 }

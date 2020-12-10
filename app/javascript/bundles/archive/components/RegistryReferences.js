@@ -112,7 +112,7 @@ export default class RegistryReferences extends React.Component {
 
     render() {
         return (
-            <div className="RegistryReferences">
+            <div className="RegistryReferences-inner">
                 <ul className="RegistryReferences-list">
                     {this.registryReferences()}
                 </ul>

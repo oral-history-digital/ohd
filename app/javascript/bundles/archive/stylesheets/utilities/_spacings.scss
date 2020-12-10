@@ -1,0 +1,49 @@
+/**
+ * Spacing utility classes
+ */
+
+/**
+ * Utility classes to put specific spacing values onto elements. The below loop
+ * will generate us a suite of classes like:
+ *
+ *   .u-mt-1 {}
+ *   .u-mr-0.25 {}
+ */
+
+$base-unit: 1.5rem;
+$fragment-identifier: \.;
+
+$spacing-directions: (
+  null: null,
+  '-top': 't',
+  '-right': 'r',
+  '-bottom': 'b',
+  '-left': 'l',
+) !default;
+
+$spacing-properties: (
+  'margin': 'm',
+) !default;
+
+$spacing-sizes: (
+  '-0':                                 0,
+  '-0#{$fragment-identifier}25': $base-unit * 0.25,
+  '-0#{$fragment-identifier}5':  $base-unit * 0.5,
+  '-1':                                 $base-unit * 1,
+  '-1#{$fragment-identifier}5':  $base-unit * 1.5,
+  '-2':                                 $base-unit * 2,
+  '-2#{$fragment-identifier}5':  $base-unit * 2.5,
+  '-3':                                 $base-unit * 3,
+  '-3#{$fragment-identifier}5':  $base-unit * 3.5,
+  '-4':                                 $base-unit * 4
+) !default;
+
+@each $property, $property-namespace in $spacing-properties {
+  @each $direction, $direction-namespace in $spacing-directions {
+    @each $size, $value in $spacing-sizes {
+      .u-#{$property-namespace}#{$direction-namespace}#{$size} {
+        #{$property}#{$direction}: $value !important;
+      }
+    }
+  }
+}
