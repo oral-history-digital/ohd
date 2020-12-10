@@ -30,5 +30,7 @@ module Archive
 
     config.time_zone = "Berlin"
     config.active_record.time_zone_aware_types = [:datetime, :time]
+
+    config.middleware.use Rack::Deflater
   end
 end
