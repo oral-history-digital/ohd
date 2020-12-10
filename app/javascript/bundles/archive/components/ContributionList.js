@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { useAuthorization } from '../hooks/authorization';
-import { getCurrentInterview, getContributorsFetched } from '../selectors/interviewSelectors';
+import { getCurrentInterview, getContributorsFetched } from '../selectors/dataSelectors';
 import { getContributionTypes } from '../selectors/archiveSelectors';
 import { getPeople } from '../selectors/dataSelectors';
 import ContributionGroup from './ContributionGroup';
