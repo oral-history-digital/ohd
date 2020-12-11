@@ -15,7 +15,7 @@ export default class SelectedRegistryReferences extends React.Component {
                     metadataField.ref_object_type === this.props.refObject.type
                 ) {
                     registryReferences.push(
-                        <div key={r} className="RegistryReferences u-mb-0.5">
+                        <div key={r} className="RegistryReferences u-mb-small">
                             <span className="RegistryReferences-label flyout-content-label">
                                 {metadataField.label[this.props.locale] ||
                                     t(this.props, `activerecord.attributes.${underscore(this.props.refObject.type)}.${metadataField.name}`)}
