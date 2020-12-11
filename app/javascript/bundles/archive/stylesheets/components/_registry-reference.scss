@@ -3,16 +3,9 @@
  */
 
 .RegistryReference {
-    padding: 0.25rem 0.5rem;
     border-right: 1px solid $gray-light;
-}
-
-.RegistryReference-name {
-
-}
-
-.RegistryReference-buttons {
-
+    display: inline-block;
+    padding: 0 0.5rem;
 }
 
 .RegistryReference:last-child {
