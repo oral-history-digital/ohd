@@ -316,7 +316,6 @@ export default class RegistryEntry extends React.Component {
 
 RegistryEntry.propTypes = {
     data: PropTypes.object.isRequired,
-    archiveId: PropTypes.string.isRequired,
     className: PropTypes.string,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
