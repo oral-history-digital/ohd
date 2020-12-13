@@ -1,4 +1,4 @@
-import { getArchiveId, getProjectId } from './archiveSelectors';
+import { getArchiveId, getProjectId  } from './archiveSelectors';
 
 export const getData = state => state.data;
 
@@ -27,6 +27,8 @@ export const getRegistryNameTypes = state => getData(state).registry_name_types;
 export const getTaskTypes = state => getData(state).task_types;
 
 export const getUserContents = state => getData(state).user_contents;
+
+export const getCurrentUserIsAdmin = state => getCurrentAccount(state).admin;
 
 export const get = (state, dataType, id) => getData(state)[dataType][id];
 

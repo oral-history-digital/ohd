@@ -9,6 +9,7 @@ const state = {
         accounts: {
             current: {
                 id: 45,
+                admin: true,
             },
         },
         collections: {
@@ -136,6 +137,10 @@ test('getTaskTypes gets task types object', () => {
 
 test('getUserContents gets user contents object', () => {
     expect(selectors.getUserContents(state)).toEqual(state.data.user_contents);
+});
+
+test('getCurrentUserIsAdmin gets admin status of current account', () => {
+    expect(selectors.getCurrentUserIsAdmin(state)).toEqual(state.data.accounts.current.admin);
 });
 
 test('get gets data of a specific type', () => {
