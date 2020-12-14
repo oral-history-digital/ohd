@@ -153,6 +153,17 @@ namespace :cache do
     end
   end
 
+ desc 'visit all inteview pages - this task is not part of cache_all'
+  task :interview_uris => :environment do
+    Interview.all.each  do |i|
+    #Interview.where(archive_id: 'mog85').first  do |i|
+      p "*** Getting interview of #{i.title[:de]} - #{i.archive_id}"
+      uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{i.archive_id}")
+      get uri
+      sleep(60)
+    end
+  end
+
   desc 'cache all'
   task :all => [
     'cache:start',
