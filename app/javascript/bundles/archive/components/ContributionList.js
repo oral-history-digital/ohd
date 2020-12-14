@@ -73,8 +73,6 @@ export default function ContributionList({
             return acc;
         }, {});
 
-    console.log(groupedContributions);
-
     const groupedAsArray = Object.keys(groupedContributions).map(type => ({
         type,
         contributions: groupedContributions[type],

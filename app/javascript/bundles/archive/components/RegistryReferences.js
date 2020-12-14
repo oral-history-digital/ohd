@@ -2,14 +2,10 @@ import React from 'react';
 
 import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
 import RegistryReferenceContainer from '../containers/RegistryReferenceContainer';
-import { t, admin } from '../../../lib/utils';
+import AuthorizedContent from './AuthorizedContent';
+import { t } from 'lib/utils';
 
 export default class RegistryReferences extends React.Component {
-
-    constructor(props, context) {
-        super(props, context);
-    }
-
     componentDidMount() {
         this.loadRegistryEntries();
         this.loadRootRegistryEntry();
@@ -83,41 +79,41 @@ export default class RegistryReferences extends React.Component {
 
     addRegistryReference() {
         // TODO: fit this for MOG - id of root entry will be different
-        if (admin(this.props, {type: 'RegistryReference', action: 'create', interview_id: this.props.interview.id}) && this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
+        if (this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
             return (
-                <button
-                    type="button"
-                    className="RegistryReferences-addButton"
-                    title={t(this.props, 'edit.registry_reference.new')}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.registry_reference.new'),
-                        content: <RegistryReferenceFormContainer
-                                     refObject={this.props.refObject}
-                                     interview={this.props.interview}
-                                     lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
-                                     inTranscript={this.props.inTranscript}
-                                     registryReferenceTypeId={this.props.registryReferenceTypeId}
-                                     locale={this.props.locale}
-                                     goDeeper={true}
-                                 />
-                    })}
-                >
-                    <i className="fa fa-plus"></i>
-                </button>
-            )
-        } else {
-            return null;
+                <AuthorizedContent object={{type: 'RegistryReference', action: 'create', interview_id: this.props.interview.id}}>
+                    <button
+                        type="button"
+                        className="RegistryReferences-addButton"
+                        title={t(this.props, 'edit.registry_reference.new')}
+                        onClick={() => this.props.openArchivePopup({
+                            title: t(this.props, 'edit.registry_reference.new'),
+                            content: <RegistryReferenceFormContainer
+                                        refObject={this.props.refObject}
+                                        interview={this.props.interview}
+                                        lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
+                                        inTranscript={this.props.inTranscript}
+                                        registryReferenceTypeId={this.props.registryReferenceTypeId}
+                                        locale={this.props.locale}
+                                        goDeeper={true}
+                                    />
+                        })}
+                    >
+                        <i className="fa fa-plus"></i>
+                    </button>
+                </AuthorizedContent>
+            );
         }
     }
 
     render() {
         return (
-            <div className="RegistryReferences">
+            <>
                 <ul className="RegistryReferences-list">
                     {this.registryReferences()}
                 </ul>
                 {this.addRegistryReference()}
-            </div>
+            </>
         )
     }
 }

@@ -1,0 +1,45 @@
+/**
+ * Spacing utility classes
+ *
+ * E.g.
+
+   .u-mt-none {
+     margin-top: 0 !important; }
+
+   .u-mt-small {
+     margin-top: 0.5rem !important; }
+
+   .u-mt {
+     margin-top: 1rem !important; }
+
+   etc...
+
+ */
+
+$spacing-directions: (
+  null: null,
+  '-top': 't',
+  '-right': 'r',
+  '-bottom': 'b',
+  '-left': 'l',
+) !default;
+
+$spacing-properties: (
+  'margin': 'm',
+) !default;
+
+$spacing-sizes: (
+  '-none':  0,
+  '-small': 0.5rem,
+  null:       1rem,
+) !default;
+
+@each $property, $property-namespace in $spacing-properties {
+  @each $direction, $direction-namespace in $spacing-directions {
+    @each $size, $value in $spacing-sizes {
+      .u-#{$property-namespace}#{$direction-namespace}#{$size} {
+        #{$property}#{$direction}: $value !important;
+      }
+    }
+  }
+}
