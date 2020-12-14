@@ -226,7 +226,6 @@ export default class RegistryEntry extends React.Component {
                 className={classNames('RegistryEntry-label', {
                     'is-clickable': hasReferences,
                 })}
-                title={data.notes[locale] || null}
                 onClick={() => {
                     if (hasReferences) {
                         openArchivePopup({
