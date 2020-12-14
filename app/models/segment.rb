@@ -460,7 +460,54 @@ class Segment < ApplicationRecord
     mid.sub(/\d{4}$/,(mid[/\d{4}$/].to_i + diff.to_i).to_s.rjust(4,'0'))
   end
 
+  def tape_nbr
+    #object.timecode.scan(/\[(\d*)\]/).flatten.first.to_i
+    self.tape_number || self.tape.number
+  end
+
+  def tape_count
+    self.interview.tapes.count
+  end
+
+  def annotations_count
+    if self.annotations.count > 0
+      (self.project.available_locales + [self.interview.lang]).inject({}) do |mem, locale|
+        mem[locale] = self.annotations.includes(:translations).where("annotation_translations.locale": locale).count
+        mem
+      end
+    else
+      zero_counts(self)
+    end
+  end
+
+  def annotations_total_count
+    self.annotations.count
+  end
+
+  def references_count
+    if self.registry_references.count > 0
+      (self.project.available_locales + [self.interview.lang]).inject({}) do |mem, locale|
+        mem[locale] = self.registry_references.where("registry_name_translations.locale": locale).count
+        mem
+      end
+    else
+      zero_counts(self)
+    end
+  end
+
+  def references_total_count
+    self.registry_references.count
+  end
+
+  def has_heading
+    self.has_heading?
+  end
+
   private
+
+  def zero_counts(object)
+    object.available_locales.map{ |locale| [locale, 0] }.to_h
+  end
 
   # remove workflow comments
   def filter_annotation(text)
