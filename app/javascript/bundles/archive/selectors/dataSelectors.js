@@ -16,7 +16,17 @@ export const getProjects = state => getData(state).projects;
 
 export const getInterviews = state => getData(state).interviews;
 
-export const getCurrentAccount = state => getData(state).accounts.current;
+export const getAccounts = state => getData(state).accounts;
+
+export const getCurrentAccount = state => getAccounts(state).current;
+
+export const getRegistryEntries = state => getData(state).registry_entries;
+
+export const getRegistryNameTypes = state => getData(state).registry_name_types;
+
+export const getTaskTypes = state => getData(state).task_types;
+
+export const getUserContents = state => getData(state).user_contents;
 
 export const get = (state, dataType, id) => getData(state)[dataType][id];
 
