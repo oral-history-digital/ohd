@@ -48,6 +48,41 @@ const state = {
                 type: 'Language',
             },
         },
+        registry_entries: {
+            23: {
+                id: 23,
+                type: 'RegistryEntry',
+                name: {
+                    de: 'Russland',
+                    en: 'Russia',
+                },
+                children_count: 77,
+            },
+        },
+        registry_name_types: {
+            2: {
+                id: 2,
+                type: 'RegistryNameType',
+                code: 'first_name',
+                name: 'Vorname',
+            },
+        },
+        task_types: {
+            3: {
+                id: 3,
+                type: 'TaskType',
+                key: 'protocol',
+                abbreviation: 'Pro',
+            },
+        },
+        user_contents: {
+            3596: {
+                id: 3596,
+                type: 'InterviewReference',
+                user_account_id: 45,
+                media_id: 'za003',
+            },
+        },
     },
 };
 
@@ -79,8 +114,28 @@ test('getProjects gets projects object', () => {
     expect(selectors.getProjects(state)).toEqual(state.data.projects);
 });
 
-test('getCurrentAccount gets account object', () => {
+test('getAccounts gets accounts object', () => {
+    expect(selectors.getAccounts(state)).toEqual(state.data.accounts);
+});
+
+test('getCurrentAccount gets account object of current user', () => {
     expect(selectors.getCurrentAccount(state)).toEqual(state.data.accounts.current);
+});
+
+test('getRegistryEntries gets registry entries object', () => {
+    expect(selectors.getRegistryEntries(state)).toEqual(state.data.registry_entries);
+});
+
+test('getRegistryNameTypes gets registry name types object', () => {
+    expect(selectors.getRegistryNameTypes(state)).toEqual(state.data.registry_name_types);
+});
+
+test('getTaskTypes gets task types object', () => {
+    expect(selectors.getTaskTypes(state)).toEqual(state.data.task_types);
+});
+
+test('getUserContents gets user contents object', () => {
+    expect(selectors.getUserContents(state)).toEqual(state.data.user_contents);
 });
 
 test('get gets data of a specific type', () => {
