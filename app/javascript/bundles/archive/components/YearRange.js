@@ -22,7 +22,7 @@ export default class YearRange extends React.Component {
         }
       }
 
-      componentWillReceiveProps(nextProps) {
+      UNSAFE_componentWillReceiveProps(nextProps) {
         // in order to reset Slider when clicking on reset button
         if(this.props.currentMin !== nextProps.currentMin || this.props.currentMax !== nextProps.currentMax) {
           this.setState({
@@ -75,7 +75,7 @@ export default class YearRange extends React.Component {
               <input name='year_of_birth_max' disabled={this.state.inputDisabled} id='year_of_birth_max' value={this.state.max} type='hidden' size='4' readOnly={true} />
             </div>
             <Range defaultValue={[this.state.min, this.state.max]} min={this.props.sliderMin} max={this.props.sliderMax}
-              onAfterChange={this.onAfterSliderChange} onChange={this.onSliderChange} allowCross={true} 
+              onAfterChange={this.onAfterSliderChange} onChange={this.onSliderChange} allowCross={true}
               marks={this.marks(this.props.sliderMin, this.props.sliderMax)}
               tipProps={{placement: 'top'}} style={rangeStyle}
               value={[this.state.min, this.state.max]}

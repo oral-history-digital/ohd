@@ -1,10 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
+import classNames from 'classnames';
+
 import UserContentFormContainer from '../containers/UserContentFormContainer';
 import VideoPlayerButtonsContainer from '../containers/VideoPlayerButtonsContainer';
 import { t, fullname, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
-import moment from 'moment';
-
 import { MISSING_STILL } from '../constants/archiveConstants'
 
 export default class VideoPlayer extends React.Component {
@@ -270,14 +271,21 @@ export default class VideoPlayer extends React.Component {
     }
 
     render() {
+        const { flyoutTabsVisible, transcriptScrollEnabled } = this.props;
+
         if (this.props.project) {
             return (
-                <div className='wrapper-video'>
-                    <div className={"video-title-container"}>
-                        <h1 className='video-title'>
+                <div className={classNames('VideoPlayer', {
+                    'is-fixed': transcriptScrollEnabled,
+                    'is-narrow': flyoutTabsVisible && transcriptScrollEnabled,
+                })}>
+                    <header className={classNames('VideoHeader', {
+                        'is-fixed': transcriptScrollEnabled,
+                    })}>
+                        <h1 className="VideoHeader-title">
                             {fullname(this.props, getInterviewee(this.props), true)}
                         </h1>
-                        <div className="video-icons-container">
+                        <div className="VideoHeader-controls">
                             <select value={this.props.tape} onChange={this.handleTapeChange} className={this.props.interview.tape_count == 1 ? 'hidden tapeselector' : 'tapeselector'}>
                                 {this.tapeSelector()}
                             </select>
@@ -285,12 +293,14 @@ export default class VideoPlayer extends React.Component {
                             {this.annotateOnSegmentLink()}
                             {this.rememberInterviewLink()}
                         </div>
-                    </div>
-                    <div className='video-element'>
+                    </header>
+                    <div className={classNames('VideoElement', {
+                        'is-fixed': transcriptScrollEnabled,
+                    })}>
                         {this.mediaElement(this)}
                     </div>
 
-                    <VideoPlayerButtonsContainer />
+                    <VideoPlayerButtonsContainer className="VideoPlayer-buttons" />
                 </div>
             );
         } else {
@@ -300,6 +310,8 @@ export default class VideoPlayer extends React.Component {
 }
 
 VideoPlayer.propTypes = {
+    transcriptScrollEnabled: PropTypes.bool.isRequired,
+    flyoutTabsVisible: PropTypes.bool.isRequired,
     handleVideoTimeUpdate: PropTypes.func,
     handleVideoEnded: PropTypes.func,
 };

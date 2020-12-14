@@ -4,7 +4,7 @@ import InterviewEditView from '../components/InterviewEditView';
 import { handleTranscriptScroll, setActualSegment } from '../actions/interviewActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     return {
@@ -21,6 +21,7 @@ const mapStateToProps = (state) => {
         selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,
         account: state.data.accounts.current,
         editView: state.archive.editView,
+        project: getProject(state),
     }
 }
 

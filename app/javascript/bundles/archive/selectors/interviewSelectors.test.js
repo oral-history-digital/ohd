@@ -1,29 +1,36 @@
-import { getContributionTypes } from './archiveSelectors';
-import { getCurrentInterview, getContributorsFetched } from './interviewSelectors';
+import * as selectors from './interviewSelectors';
 
 const state = {
-    archive: {
-        archiveId: 'cd003',
-    },
-    data: {
-        interviews: {
-            cd003: {
-                id: 22,
-                type: 'Interview',
-            },
-        },
-        statuses: {
-            people: {
-                contributors_for_interview_22: 'fetched',
-            },
-        },
-    },
+  interview: {
+    tape: 2,
+    videoTime: 0,
+    videoStatus: 'pause',
+    transcriptTime: 13.46,
+    transcriptScrollEnabled: true,
+    resolution: '720p',
+  },
 };
 
-test('getCurrentInterview retrieves current interview', () => {
-    expect(getCurrentInterview(state)).toStrictEqual({ id: 22, type: 'Interview' });
+test('getCurrentTape retrieves current tape number', () => {
+  expect(selectors.getCurrentTape(state)).toEqual(state.interview.tape);
 });
 
-test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {
-    expect(getContributorsFetched(state)).toBe(true);
+test('getVideoTime retrieves video time', () => {
+  expect(selectors.getVideoTime(state)).toEqual(state.interview.videoTime);
+});
+
+test('getVideoStatus retrieves video status', () => {
+  expect(selectors.getVideoStatus(state)).toEqual(state.interview.videoStatus);
+});
+
+test('getTranscriptTime retrieves transcript time', () => {
+  expect(selectors.getTranscriptTime(state)).toEqual(state.interview.transcriptTime);
+});
+
+test('getTranscriptScrollEnabled retrieves if video is fixed', () => {
+  expect(selectors.getTranscriptScrollEnabled(state)).toEqual(state.interview.transcriptScrollEnabled);
+});
+
+test('getVideoResolution retrieves video resolution', () => {
+  expect(selectors.getVideoResolution(state)).toEqual(state.interview.resolution);
 });

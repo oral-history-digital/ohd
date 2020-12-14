@@ -3,11 +3,10 @@ import {connect} from 'react-redux';
 import VideoPlayer from '../components/VideoPlayer';
 import {handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution} from '../actions/videoPlayerActionCreators';
 import {openArchivePopup} from '../actions/archivePopupActionCreators';
-
-import { getInterview, getProject, getCookie } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
+import { getFlyoutTabsVisible } from '../selectors/flyoutTabsSelectors';
 
 const mapStateToProps = (state) => {
-    let interview = getInterview(state);
     let project = getProject(state);
     return {
         project: project && project.identifier,
@@ -19,12 +18,14 @@ const mapStateToProps = (state) => {
         videoTime: state.interview.videoTime,
         videoStatus: state.interview.videoStatus,
         currentSegment: state.interview.currentSegment,
+        transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
         people: state.data.people,
         contributionTypes: state.archive.contributionTypes,
         mediaStreams: state.archive.mediaStreams,
         resolution: state.interview.resolution,
         account: state.data.accounts.current,
         editView: state.archive.editView,
+        flyoutTabsVisible: getFlyoutTabsVisible(state),
     }
 }
 

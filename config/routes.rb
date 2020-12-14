@@ -31,7 +31,6 @@ Rails.application.routes.draw do
       resources :projects
       resources :languages
       resources :metadata_fields
-      resources :task_types
       resources :external_links
       resources :comments
 
@@ -134,7 +133,10 @@ Rails.application.routes.draw do
     resources :roles
     resources :role_permissions, only: [:create, :destroy]
     resources :permissions
+
     resources :tasks
+    resources :task_types
+    resources :task_type_permissions, only: [:create, :destroy]
 
     namespace :admin do
       resources :users do

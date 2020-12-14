@@ -1,0 +1,53 @@
+/**
+ * VideoHeader component
+ */
+
+.VideoHeader {
+  @include clearfix();
+}
+
+.VideoHeader-title {
+  color: #fff;
+  float: none;
+  font-size: $font-size-heading-h1;
+  line-height: $line-height-heading-h1;
+  margin-bottom: 15px;
+  margin-top: 0;
+
+  @include screen-m {
+    float: left;
+    font-size: $font-size-heading-h1-large;
+    line-height: $line-height-heading-h1-large;
+  }
+}
+
+.VideoHeader-controls {
+  float: none;
+  padding-top: 0;
+
+  @include screen-m {
+    float: right;
+    padding-top: 5px;
+  }
+}
+
+.VideoHeader.is-fixed {
+  display: block;
+  margin-left: 0;
+
+  @include screen-m {
+    display: inline-block;
+    margin-left: 20px;
+  }
+}
+
+.VideoHeader.is-fixed .VideoHeader-title {
+  float: none;
+  font-size: $font-size-larger;
+  line-height: $line-height-larger;
+}
+
+.VideoHeader.is-fixed .VideoHeader-controls {
+  float: none;
+  padding: 0;
+}

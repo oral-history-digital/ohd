@@ -33,7 +33,7 @@ export default function SpeakerDesignationInputs({
 
     return (
         <div className="speaker-designation-input">
-            <h4>{t('assign_speakers')}</h4>
+            <h4>{t('speaker_designations')}</h4>
             {
                 contributions.map(contribution => React.createElement(InputContainer, {
                     key: contribution.id,

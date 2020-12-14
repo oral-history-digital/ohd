@@ -13,7 +13,10 @@ import MapTabPanelContainer from '../containers/flyout-tabs/MapTabPanelContainer
 import InterviewTabPanelContainer from '../containers/flyout-tabs/InterviewTabPanelContainer';
 import LocaleButtonsContainer from '../containers/flyout-tabs/LocaleButtonsContainer';
 import * as indexes from '../constants/flyoutTabs';
-import { t, admin, pathBase } from '../../../lib/utils';
+import { t, admin, pathBase } from 'lib/utils';
+import StateCheck from './StateCheck';
+import Spinner from './Spinner';
+import { getCurrentInterviewFetched } from '../selectors/dataSelectors';
 
 export default class FlyoutTabs extends React.Component {
     static propTypes = {
@@ -136,7 +139,12 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
 
                     <TabPanel key="interview">
-                        <InterviewTabPanelContainer />
+                        <StateCheck
+                            testSelector={getCurrentInterviewFetched}
+                            fallback={<Spinner withPadding />}
+                        >
+                            <InterviewTabPanelContainer />
+                        </StateCheck>
                     </TabPanel>
 
                     <TabPanel key="tabpanel-registry-entries">
