@@ -62,6 +62,7 @@ export default class RegistryReferences extends React.Component {
                         <RegistryReferenceContainer
                             registryEntry={registryEntry}
                             registryReference={registryReference}
+                            registryReferenceTypeId={this.props.registryReferenceTypeId}
                             refObject={this.props.refObject}
                             lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
                             inTranscript={this.props.inTranscript}
