@@ -122,7 +122,7 @@ export default class Transcript extends React.Component {
                     contentLocale={locale}
                     tabIndex={tabIndex}
                     active={active}
-                    key={"segment-" + segment.id}
+                    key={segment.id}
                 />
             )
         })

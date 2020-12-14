@@ -4,20 +4,19 @@ import Segment from '../components/Segment';
 import { handleSegmentClick } from '../actions/interviewActionCreators';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
-import { getInterview, getCookie } from '../../../lib/utils';
+import { getInterview } from 'lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
-        transcriptTime: state.archive.transcriptTime,
+    return {
         translations: state.archive.translations,
+        projectId: state.archive.projectId,
         locale: state.archive.locale,
-        tape: state.archive.tape,
         interview: getInterview(state),
         userContents: state.data.user_contents,
         statuses: state.data.statuses.segments,
         account: state.data.accounts.current,
         editView: state.archive.editView,
-        people: state.data.people
+        people: state.data.people,
     }
 }
 
