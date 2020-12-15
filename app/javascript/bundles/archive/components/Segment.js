@@ -267,7 +267,7 @@ Segment.propTypes = {
     people: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     statuses: PropTypes.object.isRequired,
-    userContents: PropTypes.object.isRequired,
+    userContents: PropTypes.object,
     tabIndex: PropTypes.number.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
