@@ -24,7 +24,7 @@ class AddCounterCacheColumnsToRegistryEntries < ActiveRecord::Migration[5.2]
     execute sql
 
     # Hack for mysql2 adapter to be able query again after executing multistatement_query
-    #connection.raw_connection.store_result while connection.raw_connection.next_result
+    connection.raw_connection.store_result while connection.raw_connection.next_result
   end
 
   def down
