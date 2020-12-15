@@ -137,14 +137,13 @@ export default class PersonData extends React.Component {
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
                         <ContentField label={t(this.props, 'interviewee_name')} value={fullname(this.props, interviewee, true)} >
-                            <AuthShowContainer ifAdmin={true} obj={interviewee}>
-                                <ArchivePopupButtonContainer
-                                    titleKey='edit.contribution.edit'
-                                    buttonFaKey='pencil'
-                                    content={this.contributionForm()}
-                                />
-                            </AuthShowContainer>
-                         </ContentField>
+                            <ArchivePopupButtonContainer
+                                titleKey='edit.contribution.edit'
+                                buttonFaKey='pencil'
+                                content={this.contributionForm()}
+                                authorizedObject={interviewee}
+                            />
+                        </ContentField>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                         <ContentField
