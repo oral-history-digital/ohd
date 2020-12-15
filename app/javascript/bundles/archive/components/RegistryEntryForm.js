@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '../containers/form/Form';
 import RegistryNameFormContainer from '../containers/RegistryNameFormContainer';
 import RegistryNameContainer from '../containers/RegistryNameContainer';
-import { t } from '../../../lib/utils';
+import { t } from 'lib/utils';
 
 export default class RegistryEntryForm extends React.Component {
 
@@ -27,9 +27,23 @@ export default class RegistryEntryForm extends React.Component {
 
     registryNames() {
         if (this.registryEntry()) {
-            return this.registryEntry().registry_names.map(registryName => {
-                return <RegistryNameContainer registryName={registryName} formClasses={'nested-form default'} key={registryName.id} />;
-            })
+            return (
+                <div>
+                    <h4 className="u-mb-none">
+                        {t(this.props, 'registry_names.title')}
+                    </h4>
+                    {
+                        this.registryEntry().registry_names.map(registryName => (
+                            <RegistryNameContainer
+                                registryName={registryName}
+                                registryEntryId={this.props.registryEntryId}
+                                formClasses={'nested-form default'}
+                                key={registryName.id}
+                            />
+                        ))
+                    }
+                </div>
+            );
         }
     }
 
@@ -52,15 +66,17 @@ export default class RegistryEntryForm extends React.Component {
     }
 
     render() {
-        let _this = this;
         return (
             <div>
                 {this.parentRegistryEntry()}
                 {this.registryNames()}
-                <Form 
+                <Form
                     key={`registry-entry-form-${this.props.registryEntryId}`}
                     scope='registry_entry'
-                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                    onSubmit={params => {
+                        this.props.submitData(this.props, params);
+                        this.props.closeArchivePopup();
+                    }}
                     data={this.registryEntry()}
                     values={{
                         parent_id: this.props.registryEntryParent && this.props.registryEntryParent.id,
@@ -83,7 +99,7 @@ export default class RegistryEntryForm extends React.Component {
                         }
                     ]}
                     nestedForm={RegistryNameFormContainer}
-                    nestedFormProps={_this.nestedFormProps()}
+                    nestedFormProps={this.nestedFormProps()}
                     nestedFormScope='registry_name'
                     nestedScopeRepresentation={this.showRegistryName}
                 />
