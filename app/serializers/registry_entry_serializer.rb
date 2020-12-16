@@ -32,14 +32,6 @@ class RegistryEntrySerializer < ApplicationSerializer
     object.longitude == '-0.376295' ? nil : object.longitude.to_f
   end
 
-  def children_count
-    object.children.count
-  end
-
-  def registry_references_count
-    object.registry_references.count
-  end
-
   def parent_registry_hierarchy_ids
     object.parent_registry_hierarchies.inject({}){|mem, h| mem[h.ancestor_id] = h.id; mem}
   end
