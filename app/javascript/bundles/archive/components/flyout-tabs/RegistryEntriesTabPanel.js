@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import RegistryEntrySearchFormContainer from '../../containers/RegistryEntrySearchFormContainer';
 import DownloadRegistryEntriesContainer from '../../containers/flyout-tabs/DownloadRegistryEntriesContainer';
 
-import { t, admin } from '../../../../lib/utils';
+import { t, admin, pathBase } from '../../../../lib/utils';
 
 function RegistryEntriesTabPanel(props) {
     return (
@@ -18,11 +18,30 @@ function RegistryEntriesTabPanel(props) {
                     </button>
                 </p>
                 {
-                    (props.projectId === 'mog' || admin(props, {type: 'General', action: 'edit'})) ?
+                    (props.projectId != 'mog' && admin(props, {type: 'General', action: 'edit'})) ?
                         props.locales.map((locale) => (
                             <div key={locale}>
                                 <DownloadRegistryEntriesContainer format="pdf" specificLocale={locale} />
                                 <DownloadRegistryEntriesContainer format="csv" specificLocale={locale} />
+                            </div>
+                        )) :
+                        null
+                }
+                {
+                    (props.projectId === 'mog') ?
+                        props.locales.map((locale) => (
+                            <div key={locale}>
+                                <p>
+                                    <a href={`/alfa-${locale}.pdf`}>
+                                        <i
+                                            className="fa fa-download flyout-content-ico"
+                                            title={t(props, 'download_registry_entries', { format: 'pdf' , locale: locale })}
+                                        />
+                                        <span>
+                                            {` ${t(props, 'download_registry_entries', { format: 'pdf', locale: locale })}`}
+                                        </span>
+                                    </a>
+                                </p>
                             </div>
                         )) :
                         null
