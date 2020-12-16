@@ -38,7 +38,7 @@ export default class Home extends React.Component {
         // TODO: put the 'if' to project-conf
         if (this.props.project.identifier === 'mog') {
              return (
-                 <div className='video-element home-video'>
+                 <div className="VideoElement VideoElement--poster">
                      <video
                          poster="https://medien.cedis.fu-berlin.de/eog/interviews/mog/home/still-home-video.jpg"
                          controls={false}

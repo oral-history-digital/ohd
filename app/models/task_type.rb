@@ -17,4 +17,8 @@ class TaskType < ApplicationRecord
     project.clear_cache('interview')
   end
 
+  after_update :touch_tasks
+  def touch_tasks
+    tasks.update_all(updated_at: Time.now)
+  end
 end

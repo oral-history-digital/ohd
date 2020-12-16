@@ -1,6 +1,6 @@
 import React from 'react';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
-import { t, underscore } from '../../../lib/utils';
+import { t, underscore } from 'lib/utils';
 
 export default class SelectedRegistryReferences extends React.Component {
 
@@ -15,20 +15,19 @@ export default class SelectedRegistryReferences extends React.Component {
                     metadataField.ref_object_type === this.props.refObject.type
                 ) {
                     registryReferences.push(
-                        <p key={`labeled-interview-registry-references-for-metadata-field-${r}`}>
-                            <span className={'flyout-content-label'}>
+                        <div key={r} className="RegistryReferences u-mb-small">
+                            <span className="RegistryReferences-label flyout-content-label">
                                 {metadataField.label[this.props.locale] ||
                                     t(this.props, `activerecord.attributes.${underscore(this.props.refObject.type)}.${metadataField.name}`)}
                                 :
                             </span>
                             <RegistryReferencesContainer
                                 refObject={this.props.refObject}
-                                lowestAllowedRegistryEntryId={(metadataField.registry_entry_id) || 1}
+                                lowestAllowedRegistryEntryId={(metadataField.registry_reference_type && metadataField.registry_reference_type.registry_entry_id) || 1}
                                 registryReferenceTypeId={metadataField.registry_reference_type_id}
                                 locale={this.props.locale}
-                                key={`interview-registry-references-for-metadata-field-${r}`}
                             />
-                        </p>
+                        </div>
                     )
                 }
             }

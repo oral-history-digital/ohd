@@ -4,7 +4,7 @@ import SiteHeader from '../../components/layout/SiteHeader';
 
 const mapStateToProps = (state) => ({
     locale: state.archive.locale,
-    translations: state.archive.translations,
+    transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
 });
 
 export default connect(mapStateToProps)(SiteHeader);

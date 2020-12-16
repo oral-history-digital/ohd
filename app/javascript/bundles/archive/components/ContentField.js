@@ -29,7 +29,7 @@ ContentField.propTypes = {
     noLabel: PropTypes.bool,
     value: PropTypes.string.isRequired,
     className: PropTypes.string,
-    children: PropTypes.node.isRequired,
+    children: PropTypes.node,
 };
 
 export default ContentField;

@@ -32,8 +32,7 @@ el:
   in: στο
   not_your_project: Η εγγραφή σας ελέγχεται από την ομάδα του προγράμματος. Αυτή η διαδικασία ενδεχόμενως να διαρκέσει δύο εώς τρεις ημέρες.
     Στη συνέχεια θα ενεργοποιηθεί ο λογαριασμός σας και θα αποκτήσετε πρόσβαση στο Αρχείο Προφορικών Μαρτυριών.
-  registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
-    Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
+  registration_needed: Πρέπει να πραγματοποιήσετε εγγραφή για να εξασφαλιστεί η προστασία προσωπικών δεδομένων. Μετά την εγγραφή έχετε πρόσβαση στις συνεντεύξεις.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
     Bitte klicken Sie auf den Link "<a href="/de/user_accounts/password/new">Passwort
     wiederherstellen</a>", um ein neues Passwort zu kreieren oder das alte wiederherzustellen.
@@ -113,7 +112,7 @@ el:
   interview_empty_gallery_explanation: Δεν υπάρχουν φωτογραφίες για αυτή τη συνέντευξη.
   tapes: Ταινίες
   without_translation: Αυτή η συνέντευξη δεν έχει ακόμα μεταφραστεί στα γερμανικά.
-  without_transcript: Dieses Interview wurde noch nicht transkribiert.
+  without_transcript: Αυτή η συνέντευξη δεν έχει ακόμα απομαγνητοφωνηθεί.
   without_index: Οι επικεφαλίδες αυτής της συνέντευξης δεν μεταφράζονται στα γερμανικά.
   without_ref_tree: Αυτή η συνέντευξη δεν έχει ακόμα ευρετηριαστεί.
   private: Ιδιωτικό
@@ -125,9 +124,9 @@ el:
   called: τελευταία επίσκεψη
   download: Αποθήκευση
   download_user_statistics: Benutzerstatistik herunterladen
-  back: Zurück
-  export_search_results: Suchergebnisse exportieren
-  language_de: Deutsch
+  back: πίσω
+  export_search_results: Εξαγωγή αποτελεσμάτων αναζήτησης
+  language_de: γερμανικά
   language_elde: ελληνική με γερμανική μετάφραση
   language_eldeen: ελληνική με γερμανική μετάφραση
   language_rude: Russisch mit deutscher Übersetzung
@@ -157,19 +156,19 @@ el:
   email: E-Mail
   change_password: Αλλαγή κωδικού
   archive_results: Αποτελέσματα αναζήτησης
-  segment_results: Suchergebnisse im Transkript
-  photo_results: Suchergebnisse in Fotos
-  biographicalentry_results: Einträge in der Kurzbiografie
-  person_results: Suchergebnisse für Personen
-  user_registration_results: Suchergebnisse für Benutzer*innen
-  segment_hits: Treffer im Transkript
+  segment_results: Αποτελέσματα αναζήτησης στην απομαγνητοφώνηση
+  photo_results: Αποτελέσματα αναζήτησης στις φωτογραφίες
+  biographicalentry_results: Αποτελέσματα αναζήτησης στο σύντομο βιογραφικό
+  person_results: Αποτελέσματα αναζήτησης στα ονόματα
+  user_registration_results: Αποτελέσματα αναζήτησης στους χρήστες
+  segment_hits: Αποτελέσματα αναζήτησης στην απομαγνητοφώνηση
   no_interviews_results: Δε βρέθηκαν συνεντεύξεις.
   interview_id: Κωδικός συνέντευξης
   interview_duration: Διάρκεια συνέντευξης
   home: Αρχική σελίδα
   login_page: Είσοδος
   logout_page: Έξοδος
-  account_page: Konto
+  account_page: Λογαριασμός
   interview: Συνέντευξη
   user_content: Προσωπικός φάκελος συνεντεύξεων
   user_content_errors: Παρακαλώ δώστε τον τίτλο και την περιγραφή
@@ -180,10 +179,11 @@ el:
   keywords: Λέξεις-κλειδιά
   keywords_mog: Λέξεις-κλειδιά
   registry: Θησαυρός
+  places: Τόποι
   registry_mog: Θησαυρός
   annotations: σημειώσεις
   reset: επαναφορά
-  set_all: Alle checken
+  set_all: Επιλογή όλων των στοιχείων
   transcript: Απομαγνητοφωνημένο κείμενο
   translation: Μετάφραση
   segmentation: Ιστορική επεξεργασία
@@ -201,7 +201,7 @@ el:
     target="_blank">οδηγίες συγγραφής σχολίων</a>.
   save: αποθηκεύστε
   cancel: διακοπή
-  assign_speakers: Sprecher*innen zuordnen
+  assign_speakers: Ανάθεση ομιλητών
   speaker_designations: Sprecher*innen-Kürzel
   person_info: Σχετικά με το άτομο
   date_of_birth: Ημερομηνία γέννησης
@@ -214,12 +214,12 @@ el:
   interview_with: Συνέντευξη με
   transcript_header: Απομαγνητοφωνημένο κείμενο
   transcript_title: Απομαγνητοφώνηση της συνέντευξης με
-  translation_title: Übersetzung des Interviews mit
-  transcript_footer: 'Τρόπος παραπομπής: Απομαγνητοφώνηση της συνέντευξης με τον/την'
-  transcript_template: Vorlage für den Import von .ods Dateien
+  translation_title: Μετάφραση της συνέντευξης με
+  transcript_footer: 'Τρόπος παραπομπής: Απομαγνητοφώνηση της συνέντευξης με'
+  transcript_template: Υπόδειγμα για την εισαγωγή αρχείων .ods
   biographical_entries_header: 'Σύντομο βιογραφικό:'
-  biographical_entries_title: 'Σύντομο βιογραφικό'
-  biographical_entries_footer: 'Παραπομπή: Σύντομο βιογραφικόx'
+  biographical_entries_title: 'Σύντομο βιογραφικό της/του'
+  biographical_entries_footer: 'Τρόπος παραπομπής: Σύντομο βιογραφικό της/του'
   interview_info: Σχετικά με τη συνέντευξη
   place: Τόπος
   duration: Διάρκεια
@@ -237,12 +237,12 @@ el:
   conditions: Προϋποθέσεις χρήσης
   privacy_protection: Προστασία δεδομένων
   legal_info: Impressum
-  request_for_use: Herausgabe von Archivmaterial
-  annotation_guidelines: Anmerkungsrichtlinien
+  request_for_use: Παραχώρηση υλικού του Αρχείου
+  annotation_guidelines: Κανονισμός σύνταξης σημειώσεων
   team: Ομάδα
   contact: Επικοινωνία
   help: Βοήθεια
-  usage_application: Nutzungsantrag
+  usage_application: Αίτηση χρήσης του υλικού
   save_interview_reference: Αποθηκεύστε τη συνέντευξη
   save_user_annotation: Γράψτε σημείωση
   save_search: Αποθήκευση αναζήτησης
@@ -426,15 +426,15 @@ el:
   choose: " Παρακαλώ επιλέξτε"
   enter_search_field: Παρακαλώ δώστε τον όρο αναζήτησης ...
   enter_field: Στοιχεία ...
-  enter_field_dg: Name, Pseudonym, Suchbegriff, ...
+  enter_field_dg: Όνομα, Ψευδώνυμο, Όρος αναζήτησης, ...
   saved_searches: Αποθηκευμένα αποτελέσματα
   saved_interviews: Αποθηκευμένες συνεντεύξεις
   saved_annotations: Αποθηκευμένες σημειώσεις
-  text_materials: Textmaterialien
-  download_registry_entries: 'Gesamtes Register als %{format} herunterladen (%{locale})'
-  search_registry_entry: Registereintrag suchen
-  grid: Raster
-  list: Liste
+  text_materials: Κείμενα
+  download_registry_entries: 'Download του ολόκληρου Θησαυρού ως %{format} (%{locale})'
+  search_registry_entry: Αναζήτηση λημμάτων στον Θησαυρό
+  grid: Πλέγμα
+  list: Λίστα
   workflow: Workflow
   edit_workflow: Workflow bearbeiten
   do_not_edit_workflow: Workflow nicht mehr bearbeiten
@@ -486,19 +486,19 @@ el:
     clear: freigeben
     restart: Bearbeitung erneut beginnen
   contributions:
-    title: Mitwirkende
-    add: Mitwirkende*n hinzufügen
-    interviewee: Interviewte*r
+    title: Συνεργάτης
+    add: Προσθήκη συνεργάτη
+    interviewee: Συνεντευξιαζόμενος/-η
     interviewer: Συνέντευξη
     transcriptor: Απομαγνητοφώνηση
     translator: Μετάφραση
     segmentator: Ιστορική επεξεργασία
     cinematographer: Κάμερα
-    proofreader: Lektorat
-    research: Erschließung
-    sound: Ton
-    other_attender: Sonstige Anwesende
-    producer: Produktion
+    proofreader: Επιμέλεια
+    research: Ιστορική επεξεργασία
+    sound: Ήχος
+    other_attender: Άλλοι παρευρισκόμενοι
+    producer: Παραγωγή
     quality_manager_translation: Ποιοτικός έλεγχος της μετάφρασης
     quality_manager_transcription: Ποιοτικός έλεγχος της απομαγνητοφώνησης
     quality_manager_interviewing: Ποιοτικός έλεγχος της συνέντευξης
@@ -508,8 +508,8 @@ el:
     new: Registernamen hinzufügen
     add: Registernamen hinzufügen
   texts:
-    add: Text hinzufügen
-    title: Ausgewählete Textpassagen
+    add: Προσθήκη κειμένου
+    title: Επιλεγμένα αποσπάσματα κειμένου
   status:
     translated: ελληνική με γερμανική μετάφραση
   upload:
@@ -562,7 +562,7 @@ el:
     gender:
       female: θήλυ
       male: άρρεν
-      diverse: Άλλοe
+      diverse: Άλλο
       not_specified: Καμία καταχώρηση
     job_description:
       researcher: Λέκτορας/ ερευνητής
@@ -588,25 +588,25 @@ el:
   gender:
     female: θήλυ
     male: άρρεν
-    diverse: Άλλοe
+    diverse: Άλλο
   search_facets:
-    forced_labor_field: Einsatzbereich
-    forced_labor_group: Gruppe
+    forced_labor_field: Τύπος εργασίας
+    forced_labor_group: Ομάδα
     periods: Χρονικές περίοδοι
     fulltext: Όρος αναζήτησης
     gender: Φύλο
     Man: άρρεν
     Woman: θήλυ
-    Diverse: Άλλοe
+    Diverse: Άλλο
     man: άρρεν
     woman: θήλυ
-    diverse: Άλλοe
+    diverse: Άλλο
     male: άρρεν
     female: θήλυ
-    diverse: Άλλοe
+    diverse: Άλλο
     video: Video
     audio: Audio
-    born: geb.
+    born: γεννημένος/-η
     typology: Εμπειρία
     resistance: Αντίσταση
     occupation: Καθημερινότητα
@@ -617,12 +617,12 @@ el:
     collaboration: Συνεργασία
     interview_id: Συνεντεύξεις
     archive_id: Όνομα
-    collection_id: Teilsammlung
-    media_type: media type
-    language_id: Sprache
-    age: Alter
+    collection_id: Υποσυλλογή
+    media_type: Τύπος μέσου
+    language_id: Γλώσσα
+    age: Ηλικία
     year_of_birth: Έτος γέννησης
-    interview_date: Entstehungszeit
+    interview_date: Ημερομηνία συνέντευξης
     public: öffentlich
     unshared: nicht öffentlich
   activerecord:
@@ -685,8 +685,8 @@ el:
           show: Interviewsegmente anzeigen
           index: Registereinträge anzeigen
           merge: Registereinträge zusammenführen
-          show_tree: Alle Einträge zeigen
-          show_search_results: Suchergebnisse zeigen
+          show_tree: Εμφάνιση όλων των λημμάτων
+          show_search_results: Εμφάνιση αποτελεσμάτων αναζήτησης
       biographical_entry:
         one: Kurzbiographie
         other: Kurzbiographien
@@ -734,77 +734,71 @@ el:
         other: Kommentare
     attributes:
       history:
-        forced_labor_details: Zwangsarbeitdetails
-        return_date: Rückkehrdatum
-        deportation_date: Verschleppungsdatum
-        punishment: Art der Mißhandlung
-        liberation_date: Befreiungsdatum
+        forced_labor_details: Στοιχεία για την καταναγκαστική εργασία
+        return_date: Ημερομηνία επιστροφής
+        deportation_date: Ημερομηνία εκτοπισμού
+        punishment: Τρόπος κακοποίησης
+        liberation_date: Ημερομηνία απελευθέρωσης
       biographical_entry:
-        text: Ereignis
-        start_date: Beginn
-        end_date: Ende
-        workflow_state: 'Status'
+        text: Γεγονός
+        start_date: Αρχή
+        end_date: Τέλος
+        workflow_state: 'Κατάσταση'
       contribution:
-        contribution_type: Art des Beitrags
-        person_id: Person
-        speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
+        contribution_type: Τύπος συμβολής
+        person_id: Άτομο
+        speaker_designation: Υπόδειξη ομιλιτών (π.χ. *CG:*)
       collection:
-        project_id: Projekt
-        homepage: Website
+        project_id: Πρόγραμμα
+        homepage: Ιστοσελίδα
         name: Name
-        countries: Interviews in
-        institution: Durchgeführt von
-        responsibles: Verantwortliche
-        interviewers: Interviewende
-        homepage: Homepage
-        notes: Weitere Anmerkungen
-        interviews: Interviewte
+        countries: Συνεντεύξεις στην
+        institution: Διεξαγωγή από
+        responsibles: Υπεύθυνοι
+        interviewers: Συνεντευκτές
+        homepage: Ιστοσελίδα
+        notes: Άλλες επισημάνσεις
+        interviews: Συνεντευξιαζόμενοι
       language:
-        code: Code
+        code: Κωδικός
         name: Name
       interview:
-        person_name: Name
-        collection_id: Teilsammlung
-        archive_id: Archiv-ID
-        forced_labor_groups: Gruppe
-        forced_labor_fields: Einsatzbereich
-        forced_labor_habitations: Unterbringung / Inhaftierung
-        forced_labor_locations: Lager und Einsatzorte
-        forced_labor_details: Angaben zum Einsatz
-        birth_date: Geboren am
-        birth_locations: Geburtsort (heutiger Name)
-        deportation: Deportationsort (heutiger Name), Jahr
-        punishment: Strafmaßnamen
-        liberation_date: Datum der Befreiung
-        return_locations: Wohnorte ab 1945
-        return_date: Datum der Rückkehr
-        home_locations: Wohnort (Land)
-        duration: Dauer
-        interview_date: geführt am
-        tape_count: Anzahl der Tapes
-        interviewers: Interviewführung
-        transcriptors: Transkription
+        person_name: Όνομα
+        collection_id: Υποσυλλογή
+        archive_id: ID Αρχείου
+        forced_labor_groups: Όμαδα
+        forced_labor_fields: Τύπος εργασίας
+        forced_labor_habitations: Εγκλεισμός
+        forced_labor_locations: Στρατόπεδο και τόποι καταναγκαστικής εργασίας
+        forced_labor_details: Στοιχεία για την καταναγκαστική εργασία
+        birth_date: Γεννήθηκε στις
+        birth_locations: Τόπος γέννησης (σημερινό όνομα)
+        deportation: Τόπος εκτοπισμού (σημερινό όνομα), έτος
+        punishment: Μέτρα τιμωρίας
+        liberation_date: Ημερομηνία απελευθέρωσης
+        return_locations: Τόπος κατοικίας
+        return_date: Ημερομηνία επιστροφής
+        home_locations: Τόπος κατοικίας (χώρα)
+        duration: Διάρκεια
+        interview_date: διεξήχθη στις
+        tape_count: Αριθμός ταινιών
+        interviewers: Συνεντευκτής
+        transcriptors: Απομαηνητοφώνηση
         translators: Μετάφραση
-        researchers: Erschließung
-        proofreaders: Lektorat
-        segmentators: Ιστορική επεξεργασία
-        language: Sprache
-        language_id: Sprache
-        media_type: Medientyp
-        translated: ist das Interview bereits übersetzt?
-        workflow_state: 'Status'
+        researchers: Ιστορική επεξεργασία
+        proofreaders: Επιμέλεια
+        segmentators: Τεμαχισμός
+        language: Γλώσσα
+        language_id: Γλώσσα
+        media_type: Τύπος μέσου
+        translated: η συνέντευξη έχει ήδη μεταφραστεί;
+        workflow_state: 'Κατάσταση'
         tasks_states: Bearbeitungsstand
-        observations: Protokoll
-        collection: Teilsammlung
-        data: Transkriptdatei
+        observations: Πρωτόκολλο
+        collection: Υποσυλλογή
+        data: Αρχείο απομαγνητοφώνησης
         timecode: Timecode
-        transcript: Transkript
-        translation: Translation
-        annotations: Anmerkungen
-        tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
-          erschliessen?
-        tape_count: Geamtzahl der Tapes
-        tape_number: Nummer dieses Tapes
+        observations: Protkoll
       transcript:
         collection_id: Sammlung
         archive_id: Archiv-ID
@@ -836,12 +830,12 @@ el:
         domain: Projektdomain
         archive_domain: Archivdomain
         doi: DOI
-        cooperation_partner: Kooperationspartner
-        leader: Projektleiter
-        manager: Projektmanager
-        hosting_institution: Institution
-        pseudo_funder_names: Finanzierung
-        contact_email: Kontaktemail
+        cooperation_partner: Συνεργασίες
+        leader: Διευθυντής του προγράμματος
+        manager: Οργανωτικός υπεύθυνος
+        hosting_institution: Θεσμός
+        pseudo_funder_names: Χρηματοδότηση
+        contact_email: Επαφή
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
         has_map: Karte anzeigen
@@ -865,7 +859,7 @@ el:
         use_in_details_view: in der Detailansicht zeigen
         use_in_map_search: in der Kartensuche zeigen
         display_on_landing_page: Auf der Landing-Page zeigen
-        ref_object_type: RefObjectType
+        registry_reference_type_id: RegistryReferenceType
         source: Source
         label: Label
         values: Values
@@ -875,45 +869,45 @@ el:
         type: Art des Imports
         data: Datei
       segment:
-        media_id: Segment-ID
-        transcript: Transkription
-        translation: Transkription (übersetzt)
-        mainheading: Hauptüberschrift
-        subheading: Zwischenüberschrift
-        text: Text
-        speaker_id: Sprecher
+        media_id: ID τεμαχίου
+        transcript: Απομαγνητοφώνηση
+        translation: Απομαγνητοφώνηση (μεταφρασημένη)
+        mainheading: Κεφάλαιο
+        subheading: Υποκεφάλαιο
+        text: Κείμενο
+        speaker_id: Ομιλιτής
       user_content:
-        title: Titel
-        description: Notiz
-        query: Suchkriterien
+        title: Τίτλος
+        description: Σημείωση
+        query: Κριτήρια αναζήτησης
       user_annotation:
-        author: Autor
-        archive_id: Archiv-ID
+        author: Συντάκτης
+        archive_id: ID Αρχείου
         timecode_string: Timecode
-        submitted_at: Einreichung am
-        description: Anmerkung
-        link_url: Link
-        workflow_state: Veröffentlichungsstatus
-        heading: Kapitel
-        media_id: Medien ID
+        submitted_at: Παράδωση στις
+        description: Επισήμανση
+        link_url: Σύνδεσμος
+        workflow_state: Κατάσταση δημοσίευσης
+        heading: Κεφάλαιο
+        media_id: ID μέσου
       user_account:
         login: Όνομα σύνδεσης
         password: Κωδικός
       account:
-        gender: Geschlecht
-        first_name: Vorname
-        last_name: Nachname
+        gender: Φύλο
+        first_name: Όνομα
+        last_name: Επώνυμο
       user_registration:
-        created_at: Erstellt am
-        activated_at: Aktiviert am
-        processed_at: Bearbeitet am
-        admin_comments: Kommentar
-        default_locale: Sprache
+        created_at: Δημιουργήθηκε στις
+        activated_at: Ενεργοποιήθηκε στις
+        processed_at: Επεξεργάστηκε στις
+        admin_comments: Σχόλιο
+        default_locale: Γλώσσα
         appellation: Προσφώνηση
         first_name: Όνομα
         last_name: Επώνυμο
         job_description: Επάγγελμα
-        gender: Geschlecht
+        gender: Φύλο
         research_intentions: Ερευνητικά ενδιαφέροντα
         comments: Διευκρινίστε για ποιο λόγο επιθυμείτε την εγγραφή στο Αρχείο
         organization: Ίδρυμα
@@ -926,8 +920,8 @@ el:
         receive_newsletter: Newsletter
         tos_agreement: Προϋποθέσεις χρήσης
         priv_agreement: Υποδείξεις για την προστασία δεδομένων
-        register: Registrierung senden
-        workflow_state: Status
+        register: Αποστολή αιτήματος εγγραφής
+        workflow_state: Κατάσταση
         registration: Εγγραφή
         registration_text_one: 'Προκειμένου να έχετε πρόσβαση στο Αρχείο Μαρτυριών
           "Μνήμες από την Κατοχή στην Ελλάδα" θα πρέπει να εγγραφείτε στο σύστημα
@@ -981,14 +975,14 @@ el:
         author_id: Autor*in
         receiver_id: Empfänger*in
       person:
-        gender: Geschlecht
-        first_name: Vorname
-        last_name: Nachname
-        birth_name: Geburtsname
-        date_of_birth: Geburtsdatum
+        gender: Φύλο
+        first_name: Όνομα
+        last_name: Επώνυμο
+        birth_name: Βαφτιστικό όνομα
+        date_of_birth: Ημερομηνία γέννησης
         alias_names: Alias Names
-        other_first_names: Other First Names
-        typology: Erfahrungen
+        other_first_names: Άλλα ονόματα
+        typology: Εμπειρίες
       registry_entry:
         descriptor: Name
         notes: Anmerkungen
@@ -1008,10 +1002,10 @@ el:
         ancestor_id: ID des Elternknoten
       annotation:
       photo:
-        caption: Fotobeschreibung
-        data: Fotodatei
-        caption_explanation: This photo caption is only available in German.
-        workflow_state: 'Status'
+        caption: Λεζάντα
+        data: Αρχείο της φωτογραφίας
+        caption_explanation: Αυτή η λεζάντα είναι διαθέσιμη μόνο στα γερμανικά.
+        workflow_state: 'Κατάσταση'
       uploaded_file:
         title: Title (hover)
       mark_text:
@@ -1038,7 +1032,7 @@ el:
         url: URL
         href: Href
         file: Datei
-        publish: Öffentlich
+        publish: Δημόσιο
         project_id: Projekt
         key: Schlüssel
         abbreviation: Abkürzung
@@ -1053,8 +1047,8 @@ el:
         password_input: Ο κωδικός σας πρέπει να αποτελείται από τουλάχιστον επτά χαρακτήρες. Οι δύο κωδικοί πρόσβασης θα πρέπει να είναι οι ίδιοι.
         email_input: Παρακαλώ, δώστε μας το μέιλ και τον κωδικό σας
       template:
-        header: Ihre Anfrage konnte nicht bearbeitet werden
-        body: 'Folgendes Problem ist aufgetreten:'
+        header: Δεν ήταν δυνατή η επεξεργασία του αιτήματός σας
+        body: 'Παρουσιάστηκε το εξής πρόβλημα:'
       models:
         interview:
           attributes:
@@ -1067,13 +1061,12 @@ el:
         user_annotation:
           attributes:
             description:
-              too_long: Anmerkungen dürfen eine Länge von 300 Zeichen nicht überschreiten.
-              modification_not_allowed: Überarbeitung des Anmerkungstextes ist nach
-                Veröffentlichung nicht mehr gestattet.
+              too_long: Οι επισημάνσεις να μην υπερβαίνουν τους 300 χαρακτήρες.
+              modification_not_allowed: Δεν επιτρέπεται η επεξεργασία των επισημάνσεων μετά την δημοσίευσή τους.
         user_content:
           attributes:
             description:
-              too_long: Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.
+              too_long: Οι επισημάνσεις σας να μην υπερβαίνουν τους 300 χαρακτήρες.
   history_of: Σύντομο βιογραφικό του/της
   edit_interview:
     new: New interview

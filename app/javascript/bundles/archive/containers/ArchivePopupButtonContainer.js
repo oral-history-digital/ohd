@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import ArchivePopupButton from '../components/ArchivePopupButton';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
-import { getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

@@ -146,7 +146,7 @@ export default class Form extends React.Component {
         if (this.props.nestedForm) {
             return (
                 <div
-                    className='flyout-sub-tabs-content-ico-link'
+                    className='flyout-sub-tabs-content-ico-link u-mb u-ml-none'
                     title={t(this.props, `edit.${this.props.nestedFormScope}.new`)}
                     onClick={() => this.setState({showNestedForm: !this.state.showNestedForm})}
                 >

@@ -1,7 +1,10 @@
 import React from 'react';
-import { t, admin } from '../../../lib/utils';
+import PropTypes from 'prop-types';
+
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
+import AuthorizedContent from './AuthorizedContent';
+import { t } from 'lib/utils';
 
 export default class InterviewInfo extends React.Component {
     collection() {
@@ -10,36 +13,25 @@ export default class InterviewInfo extends React.Component {
         if (c) {
             return (
                 <span>
-                    <i className="fa fa-info-circle" aria-hidden="true" title={title}  style={{'color': 'grey'}} />
-                    <a href={c.homepage[this.props.locale]} title={c.homepage[this.props.locale]} target='_blank'>
-                        <i className="fa fa-external-link" aria-hidden="true" style={{'color': 'grey'}} />
+                    <i
+                        className="fa fa-info-circle"
+                        aria-hidden="true"
+                        title={title}
+                        style={{'color': 'grey'}}
+                    />
+                    <a
+                        href={c.homepage[this.props.locale]}
+                        title={c.homepage[this.props.locale]}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <i
+                            className="fa fa-external-link"
+                            aria-hidden="true"
+                            style={{'color': 'grey'}}
+                        />
                     </a>
                 </span>
-            )
-        }
-    }
-
-    adminOnlyValues() {
-        if (admin(this.props, this.props.interview)) {
-            return (
-                <>
-                    <SingleValueWithFormContainer
-                        obj={this.props.interview}
-                        collapse={true}
-                        elementType={'textarea'}
-                        multiLocale={true}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations')}
-                    />
-                    <SingleValueWithFormContainer
-                        elementType={'select'}
-                        obj={this.props.interview}
-                        attribute={'workflow_state'}
-                        values={['public', 'unshared']}
-                        value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
-                        optionsScope={'workflow_states'}
-                        noStatusCheckbox={true}
-                    />
-                </>
             )
         }
     }
@@ -95,7 +87,26 @@ export default class InterviewInfo extends React.Component {
                     >
                         {this.collection()}
                     </SingleValueWithFormContainer>
-                    {this.adminOnlyValues()}
+
+                    <AuthorizedContent object={this.props.interview}>
+                        <SingleValueWithFormContainer
+                            obj={this.props.interview}
+                            collapse={true}
+                            elementType={'textarea'}
+                            multiLocale={true}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations')}
+                        />
+                        <SingleValueWithFormContainer
+                            elementType={'select'}
+                            obj={this.props.interview}
+                            attribute={'workflow_state'}
+                            values={['public', 'unshared']}
+                            value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
+                            optionsScope={'workflow_states'}
+                            noStatusCheckbox={true}
+                        />
+                    </AuthorizedContent>
+
                     <SelectedRegistryReferencesContainer refObject={this.props.interview} />
                 </div>
             );
@@ -104,3 +115,12 @@ export default class InterviewInfo extends React.Component {
         }
     }
 }
+
+InterviewInfo.propTypes = {
+    interview: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    languages: PropTypes.object.isRequired,
+    collections: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+};

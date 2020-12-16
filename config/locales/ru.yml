@@ -898,10 +898,11 @@ ru:
         use_in_details_view: in der Detailansicht zeigen
         use_in_map_search: in der Kartensuche zeigen
         display_on_landing_page: Auf der Landing-Page zeigen
-        ref_object_type: RefObjectType
+        ref_object_type: Bezugsobjekt bei RegistryReferenceType als Source
         source: Source
         label: Label
         values: Values
+        registry_reference_type_id: RegistryReferenceType
       external_link:
         internal_name: Internal Name
       upload:

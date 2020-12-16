@@ -25,7 +25,7 @@ export default class RefTreeEntry extends React.Component {
     }
 
     handleScroll() {
-        let fixVideo = ($(document).scrollTop() > $(".site-header").height());
+        let fixVideo = ($(document).scrollTop() > $(".SiteHeader").height());
         if (fixVideo && !this.props.transcriptScrollEnabled) {
             this.props.handleTranscriptScroll(true)
         } else if (!fixVideo && this.props.transcriptScrollEnabled) {
@@ -65,7 +65,7 @@ export default class RefTreeEntry extends React.Component {
                 />
                 <div
                     className='mainheading'
-                    onClick={() => this.handleClick(this.props.entry.tape_nbr, this.props.entry.time)} 
+                    onClick={() => this.handleClick(this.props.entry.tape_nbr, this.props.entry.time)}
                 >
                     {this.desc()}
                 </div>
@@ -76,4 +76,3 @@ export default class RefTreeEntry extends React.Component {
         )
     }
 }
-
