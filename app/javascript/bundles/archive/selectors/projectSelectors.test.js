@@ -28,10 +28,10 @@ describe('getshowStartPageVideo', () => {
     test('is true for mog project', () => {
         const _state = dotProp.set(state, 'archive.projectId', 'mog');
 
-        expect(selectors.getshowStartPageVideo(_state)).toBeTruthy();
+        expect(selectors.getShowStartPageVideo(_state)).toBeTruthy();
     });
 
     test('is false otherwise', () => {
-        expect(selectors.getshowStartPageVideo(state)).toBeFalsy();
+        expect(selectors.getShowStartPageVideo(state)).toBeFalsy();
     });
 });

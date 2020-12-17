@@ -1,14 +1,13 @@
 import React from 'react';
-import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import PropTypes from 'prop-types';
 import { INDEX_NONE } from '../constants/flyoutTabs';
 
 import StartPageVideo from './StartPageVideo';
+import FeaturedInterviews from './FeaturedInterviews';
 
 export default class Home extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 1);
-        this.loadRandomFeaturedInterviews();
 
         if (this.props.project.identifier === 'campscapes') {
             this.props.setFlyoutTabsIndex(INDEX_NONE);
@@ -19,32 +18,6 @@ export default class Home extends React.Component {
         if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
             const url = `/${this.props.locale}/searches/archive`;
             this.props.history.push(url);
-        } else {
-            this.loadRandomFeaturedInterviews();
-        }
-    }
-
-    loadRandomFeaturedInterviews() {
-        if (
-            !this.props.featuredInterviewsFetched
-        ) {
-            this.props.fetchData(this.props, 'random_featured_interviews');
-        }
-    }
-
-    featuredInterviews() {
-        if (
-            this.props.showFeaturedInterviews && this.props.featuredInterviewsFetched
-        ) {
-            return (
-                Object.keys(this.props.randomFeaturedInterviews).map((i, index) => {
-                    let interview = this.props.randomFeaturedInterviews[i];
-                    return <InterviewPreviewContainer
-                        interview={interview}
-                        key={"interview-" + interview.archive_id + "-" + index}
-                    />;
-                })
-            )
         }
     }
 
@@ -72,7 +45,12 @@ export default class Home extends React.Component {
                     </div>
                     <div className="search-results-container">
                         {this.moreText(projectTranslation.more_text)}
-                        {this.featuredInterviews()}
+
+                        {
+                            this.props.showFeaturedInterviews ?
+                                <FeaturedInterviews /> :
+                                null
+                        }
                     </div>
                 </div>
             );
@@ -85,11 +63,7 @@ Home.propTypes = {
     project: PropTypes.object.isRequired,
     showStartPageVideo: PropTypes.bool.isRequired,
     showFeaturedInterviews: PropTypes.bool.isRequired,
-    randomFeaturedInterviews: PropTypes.object,
-    featuredInterviewsFetched: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
-    fetchData: PropTypes.func.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
 };
