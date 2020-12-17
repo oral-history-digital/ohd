@@ -11,7 +11,7 @@ export const getShowFeaturedInterviews = state => {
     return true;
 };
 
-export const getShowStartpageVideo = state => {
+export const getShowStartPageVideo = state => {
     const projectId = getProjectId(state);
 
     // TODO: put to project-conf

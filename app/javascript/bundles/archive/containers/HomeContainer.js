@@ -7,11 +7,11 @@ import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
 import { getIsLoggedIn } from '../selectors/accountSelectors';
 import { getLocale, getTranslations } from '../selectors/archiveSelectors';
 import { getCurrentProject, getRandomFeaturedInterviews, getFeaturedInterviewsFetched } from '../selectors/dataSelectors';
-import { getShowFeaturedInterviews, getShowStartpageVideo } from '../selectors/projectSelectors';
+import { getShowFeaturedInterviews, getShowStartPageVideo } from '../selectors/projectSelectors';
 
 const mapStateToProps = state => ({
     isLoggedIn: getIsLoggedIn(state),
-    showStartpageVideo: getShowStartpageVideo(state),
+    showStartPageVideo: getShowStartPageVideo(state),
     showFeaturedInterviews: getShowFeaturedInterviews(state),
     randomFeaturedInterviews: getRandomFeaturedInterviews(state),
     featuredInterviewsFetched: getFeaturedInterviewsFetched(state),

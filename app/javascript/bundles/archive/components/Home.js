@@ -3,6 +3,8 @@ import InterviewPreviewContainer from '../containers/InterviewPreviewContainer';
 import PropTypes from 'prop-types';
 import { INDEX_NONE } from '../constants/flyoutTabs';
 
+import StartPageVideo from './StartPageVideo';
+
 export default class Home extends React.Component {
     componentDidMount() {
         window.scrollTo(0, 1);
@@ -27,21 +29,6 @@ export default class Home extends React.Component {
             !this.props.featuredInterviewsFetched
         ) {
             this.props.fetchData(this.props, 'random_featured_interviews');
-        }
-    }
-
-    startVideo() {
-        if (this.props.showStartpageVideo) {
-             return (
-                 <div className="VideoElement VideoElement--poster">
-                     <video
-                         poster="https://medien.cedis.fu-berlin.de/eog/interviews/mog/home/still-home-video.jpg"
-                         controls={false}
-                         playsInline={true}
-                         src={`https://medien.cedis.fu-berlin.de/eog/interviews/mog/home/mog_home_movie_${this.props.locale}_1803.mp4`}
-                     />
-                 </div>
-             )
         }
     }
 
@@ -74,7 +61,11 @@ export default class Home extends React.Component {
             let projectTranslation = this.props.project.translations.find(t => t.locale === this.props.locale);
             return (
                 <div className='wrapper-content home-content'>
-                    {this.startVideo()}
+                    {
+                        this.props.showStartPageVideo ?
+                            <StartPageVideo /> :
+                            null
+                    }
                     <div  className='home-text'>
                         <h1>{projectTranslation.name}</h1>
                         <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
@@ -92,7 +83,7 @@ export default class Home extends React.Component {
 Home.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     project: PropTypes.object.isRequired,
-    showStartpageVideo: PropTypes.bool.isRequired,
+    showStartPageVideo: PropTypes.bool.isRequired,
     showFeaturedInterviews: PropTypes.bool.isRequired,
     randomFeaturedInterviews: PropTypes.object,
     featuredInterviewsFetched: PropTypes.bool.isRequired,

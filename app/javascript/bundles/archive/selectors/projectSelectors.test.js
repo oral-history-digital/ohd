@@ -24,14 +24,14 @@ describe('getShowFeaturedInterviews', () => {
     });
 });
 
-describe('getShowStartpageVideo', () => {
+describe('getshowStartPageVideo', () => {
     test('is true for mog project', () => {
         const _state = dotProp.set(state, 'archive.projectId', 'mog');
 
-        expect(selectors.getShowStartpageVideo(_state)).toBeTruthy();
+        expect(selectors.getshowStartPageVideo(_state)).toBeTruthy();
     });
 
     test('is false otherwise', () => {
-        expect(selectors.getShowStartpageVideo(state)).toBeFalsy();
+        expect(selectors.getshowStartPageVideo(state)).toBeFalsy();
     });
 });
