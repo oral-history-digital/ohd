@@ -1,17 +1,13 @@
 import React from 'react';
 import Slider from 'react-slick';
 import PhotoContainer from '../containers/PhotoContainer';
-import { t, admin } from '../../../lib/utils';
-
-import '../../../css/slick.css';
-import '../../../css/slick-theme.css';
+import { admin } from 'lib/utils';
 
 export default class Carousel extends React.Component {
-
     renderPhotos() {
         let photos = [];
         if (
-            this.props.interview 
+            this.props.interview
         ) {
             for (var c in this.props.interview.photos) {
                 let photo = this.props.interview.photos[c];
@@ -19,7 +15,7 @@ export default class Carousel extends React.Component {
                     photos.push(<PhotoContainer data={photo} />);
                 }
             }
-        } 
+        }
         return photos;
     }
 
