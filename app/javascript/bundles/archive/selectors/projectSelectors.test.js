@@ -3,7 +3,21 @@ import * as selectors from './projectSelectors';
 
 const state = {
     archive: {
+        locale: 'de',
         projectId: 'cdoh',
+    },
+    data: {
+        projects: {
+            1: {
+                id: 1,
+                type: 'Project',
+                identifier: 'cdoh',
+                translations: [
+                    { locale: 'de' },
+                    { locale: 'es' },
+                ],
+            },
+        },
     },
 };
 
@@ -34,4 +48,10 @@ describe('getshowStartPageVideo', () => {
     test('is false otherwise', () => {
         expect(selectors.getShowStartPageVideo(state)).toBeFalsy();
     });
+});
+
+test('getProjectTranslation gets project translation for current locale', () => {
+    const actual = selectors.getProjectTranslation(state);
+    const expected = state.data.projects[1].translations[0];
+    expect(actual).toEqual(expected);
 });
