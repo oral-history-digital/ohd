@@ -7,7 +7,6 @@ import { addRemoveRegistryEntryId } from '../actions/archiveActionCreators';
 import { getLocale, getTranslations } from '../selectors/archiveSelectors';
 
 const mapStateToProps = (state) => ({
-    archiveId: getArchiveId(state),
     projectId: state.archive.projectId,
     locale: getLocale(state),
     translations: getTranslations(state),
