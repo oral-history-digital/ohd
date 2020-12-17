@@ -2,20 +2,23 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import Home from '../components/Home';
-import { getProject } from '../../../lib/utils';
 import { fetchData } from '../actions/dataActionCreators';
 import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
+import { getIsLoggedIn } from '../selectors/accountSelectors';
+import { getLocale, getTranslations } from '../selectors/archiveSelectors';
+import { getCurrentProject, getRandomFeaturedInterviews, getFeaturedInterviewsFetched } from '../selectors/dataSelectors';
+import { getShowFeaturedInterviews, getShowStartpageVideo } from '../selectors/projectSelectors';
 
-const mapStateToProps = (state) => {
-    return {
-        isLoggedIn: state.account.isLoggedIn,
-        randomFeaturedInterviews: state.data.random_featured_interviews,
-        randomFeaturedInterviewsStatus: state.data.statuses.random_featured_interviews,
-        locale: state.archive.locale,
-        project: getProject(state),
-        translations: state.archive.translations,
-    }
-}
+const mapStateToProps = state => ({
+    isLoggedIn: getIsLoggedIn(state),
+    showStartpageVideo: getShowStartpageVideo(state),
+    showFeaturedInterviews: getShowFeaturedInterviews(state),
+    randomFeaturedInterviews: getRandomFeaturedInterviews(state),
+    featuredInterviewsFetched: getFeaturedInterviewsFetched(state),
+    project: getCurrentProject(state),
+    locale: getLocale(state),
+    translations: getTranslations(state),
+});
 
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),

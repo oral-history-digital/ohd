@@ -28,6 +28,8 @@ export const getTaskTypes = state => getData(state).task_types;
 
 export const getUserContents = state => getData(state).user_contents;
 
+export const getRandomFeaturedInterviews = state => getData(state).random_featured_interviews;
+
 export const getCurrentUserIsAdmin = state => getCurrentAccount(state).admin;
 
 export const get = (state, dataType, id) => getData(state)[dataType][id];
@@ -69,4 +71,10 @@ export const getContributorsFetched = state => {
     } else {
         return false;
     }
+};
+
+export const getFeaturedInterviewsFetched = state => {
+    const status = getStatuses(state).random_featured_interviews.all;
+    const fetched = /^fetched/;
+    return fetched.test(status);
 };

@@ -4,10 +4,6 @@ import PropTypes from 'prop-types';
 import { INDEX_NONE } from '../constants/flyoutTabs';
 
 export default class Home extends React.Component {
-    static propTypes = {
-        history: PropTypes.object.isRequired,
-    }
-
     componentDidMount() {
         window.scrollTo(0, 1);
         this.loadRandomFeaturedInterviews();
@@ -28,15 +24,14 @@ export default class Home extends React.Component {
 
     loadRandomFeaturedInterviews() {
         if (
-            !this.props.randomFeaturedInterviewsStatus.all
+            !this.props.featuredInterviewsFetched
         ) {
             this.props.fetchData(this.props, 'random_featured_interviews');
         }
     }
 
     startVideo() {
-        // TODO: put the 'if' to project-conf
-        if (this.props.project.identifier === 'mog') {
+        if (this.props.showStartpageVideo) {
              return (
                  <div className="VideoElement VideoElement--poster">
                      <video
@@ -52,11 +47,7 @@ export default class Home extends React.Component {
 
     featuredInterviews() {
         if (
-            // TODO: put the first two lines to project-conf
-            this.props.project.identifier !== 'mog' &&
-            this.props.project.identifier !== 'campscapes' &&
-            this.props.randomFeaturedInterviewsStatus.all &&
-            this.props.randomFeaturedInterviewsStatus.all.split('-')[0] === 'fetched'
+            this.props.showFeaturedInterviews && this.props.featuredInterviewsFetched
         ) {
             return (
                 Object.keys(this.props.randomFeaturedInterviews).map((i, index) => {
@@ -78,7 +69,7 @@ export default class Home extends React.Component {
         }
     }
 
-    content() {
+    render() {
         if (this.props.project) {
             let projectTranslation = this.props.project.translations.find(t => t.locale === this.props.locale);
             return (
@@ -88,17 +79,26 @@ export default class Home extends React.Component {
                         <h1>{projectTranslation.name}</h1>
                         <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
                     </div>
-                    <div className={'search-results-container'}>
+                    <div className="search-results-container">
                         {this.moreText(projectTranslation.more_text)}
                         {this.featuredInterviews()}
                     </div>
                 </div>
-            )
+            );
         }
     }
-
-    render() {
-        return this.content();
-    }
-
 }
+
+Home.propTypes = {
+    isLoggedIn: PropTypes.bool.isRequired,
+    project: PropTypes.object.isRequired,
+    showStartpageVideo: PropTypes.bool.isRequired,
+    showFeaturedInterviews: PropTypes.bool.isRequired,
+    randomFeaturedInterviews: PropTypes.object,
+    featuredInterviewsFetched: PropTypes.bool.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    setFlyoutTabsIndex: PropTypes.func.isRequired,
+};
