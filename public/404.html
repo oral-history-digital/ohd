@@ -1,99 +1,26 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>404 error – page not found</title>
+    <title>404 – Page not found</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="data:;base64,iVBORw0KGgo=">
-    <style>
-      body {
-        font-family: Corbel, "Lucida Grande", "Lucida Sans Unicode", "DejaVu Sans",
-        "Bitstream Vera Sans", "Liberation Sans", "Verdana", "Verdana Ref", sans-serif;
-        font-size: 1rem;
-        line-height: 1.5rem;
-      }
-
-      h1 {
-        font-size: 2rem;
-        font-weight: normal;
-        line-height: 3rem;
-        margin-bottom: 1.5rem;
-        margin-top: 0;
-      }
-
-      h2 {
-        font-size: 1.5rem;
-        font-weight: bold;
-        line-height: 1.5rem;
-        margin-bottom: 1.5rem;
-        margin-top: 0;
-      }
-
-      p {
-        margin-top: 1.5rem;
-        margin-bottom: 0;
-      }
-
-      .Container {
-        margin-left: auto;
-        margin-right: auto;
-        max-width: 45rem;
-        padding-left: 1.5rem;
-        padding-right: 1.5rem;
-      }
-
-      .Section {
-        margin-bottom: 4.5rem;
-        margin-top: 3rem;
-      }
-    </style>
+    <link rel="stylesheet" href="error.css">
   </head>
   <body>
-    <div class="Container">
-      <section class="Section">
-        <h1>Fehler 404: Seite nicht gefunden</h1>
-        <h2>Die angeforderte Seite existiert nicht.</h2>
-        <p>
-          Leider ist unter dieser Internetadresse (URL) keine Seite erreichbar.
-          Die Seite ist möglicherweise abgelaufen oder unter einer anderen Internetadresse erreichbar.
-        </p>
-        <p>
-          Falls Sie diese Seite über einen Link von einer anderen Webseite aufgerufen haben,
-          informieren Sie bitte deren Betreiber.
-        </p>
-        <p>
-          <a href="/">Zurück zur Startseite</a>
-        </p>
-      </section>
-
-      <section class="Section">
-        <h1>Error 404: Page Not Found</h1>
-        <h2>The page you requested doesn't exist.</h2>
-        <p>
-          Sorry, the page you requested does not exist. It may have been deleted or moved.
-        </p>
-        <p>
-          If you followed a link from outside this site, please notify its webmaster.
-        </p>
-        <p>
-          <a href="/">Back to homepage</a>
-        </p>
-      </section>
-
-      <section class="Section">
-        <h1>Ошибка 404: Страница не найдена</h1>
-        <h2>Запрошенной Вами страницы не существует.</h2>
-        <p>
-          К сожалению, по запрошенному Вами адресу в Интернете (URL) страница недоступна.
-          Возможно, страница просрочена или доступна по другому адресу в Интернете.
-        </p>
-        <p>
-          Если Вы открыли данную страницу, перейдя по ссылке с другого веб-сайта, поставьте,
-          пожалуйста, владельца данного сайта в известность.
-        </p>
-        <p>
-          <a href="/">Back to homepage</a>
-        </p>
+    <div class="Main">
+      <section class="Section Section--warning">
+        <h1 class="Section-heading">
+          404
+        </h1>
+        <div class="Section-content">
+          <p>
+            Page not found
+          </p>
+          <p>
+            <a href="/">Homepage</a>
+          </p>
+        </div>
       </section>
     </div>
   </body>
