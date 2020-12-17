@@ -11,7 +11,13 @@
 @import "normalize";
 
 /* Vendors */
+$fa-font-path: "~font-awesome/fonts/";
 @import "~font-awesome/scss/font-awesome.scss";
+
+$slick-loader-path: "~slick-carousel/slick/";
+$slick-font-path: "~slick-carousel/slick/fonts/";
+@import "~slick-carousel/slick/slick.scss";
+@import "~slick-carousel/slick/slick-theme.scss";
 
 /* Partials */
 @import "dev";
