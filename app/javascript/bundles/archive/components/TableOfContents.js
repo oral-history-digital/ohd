@@ -1,10 +1,9 @@
 import React from 'react';
 import HeadingContainer from '../containers/HeadingContainer';
-import { t } from "../../../lib/utils";
+import { t } from "lib/utils";
 import Spinner from './Spinner';
 
 export default class TableOfContents extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleScroll = this.handleScroll.bind(this);
@@ -13,11 +12,7 @@ export default class TableOfContents extends React.Component {
     componentDidMount() {
         window.removeEventListener('scroll', this.handleScroll);
         window.addEventListener('scroll', this.handleScroll);
-        if(this.props.transcriptScrollEnabled) {
-            window.scrollTo(0, 114);
-        } else {
-            window.scrollTo(0, 1);
-        }
+        window.scrollTo(0, 1);
         this.loadHeadings();
     }
 
@@ -39,7 +34,7 @@ export default class TableOfContents extends React.Component {
     }
 
     handleScroll() {
-        let fixVideo = ($(document).scrollTop() > $(".site-header").height());
+        let fixVideo = ($(document).scrollTop() > $(".SiteHeader").height());
         if (fixVideo && !this.props.transcriptScrollEnabled) {
             this.props.handleTranscriptScroll(true)
         } else if (!fixVideo && this.props.transcriptScrollEnabled) {

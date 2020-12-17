@@ -11,14 +11,14 @@ class RegistryEntryWithAssociationsSerializer < RegistryEntrySerializer
 
   def child_ids
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale.to_s] = object.alphanum_sorted_children_ids(locale)
+      mem[locale.to_s] = object.children.ordered_by_name(locale).map(&:id)
       mem
     end
   end
 
   def parent_ids
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale.to_s] = object.alphanum_sorted_ids(:parents, locale)
+      mem[locale.to_s] = object.parents.ordered_by_name(locale).map(&:id)
       mem
     end
   end

@@ -48,6 +48,19 @@ export default class InterviewEditView extends React.Component {
 
     tableRows() {
         let translationLocale = this.props.interview.languages.filter(locale => locale !== this.props.interview.lang)[0]
+        //
+        // use project.default_locale if no translation-locale given and if it differs from interview-language
+        //
+        //translationLocale ||= this.props.interview.lang === this.props.project.default_locale ?
+            //this.props.project.available_locales.filter(locale => locale !== this.props.interview.lang)[0] :
+            //this.props.project.default_locale;
+
+        //
+        // use interface-locale if no translation-locale given and if it differs from interview-language
+        //
+        translationLocale ||= this.props.interview.lang === this.props.locale ?
+            this.props.project.available_locales.filter(locale => locale !== this.props.interview.lang)[0] :
+            this.props.locale;
 
         let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props);
         let shownSegments = []
@@ -69,7 +82,7 @@ export default class InterviewEditView extends React.Component {
                   <SegmentEditViewContainer
                     segment={segment}
                     originalLocale={this.props.interview.lang}
-                    translationLocale={translationLocale || this.props.locale}
+                    translationLocale={translationLocale}
                     key={`segment-${segment.id}`}
                     active={active}
                 />

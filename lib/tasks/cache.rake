@@ -43,6 +43,7 @@ namespace :cache do
       [
         :segments,
         :headings,
+        :speaker_designations,
         #:references,
         :ref_tree
       ].each do |data_type|
@@ -50,6 +51,26 @@ namespace :cache do
         uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{interview.archive_id}/#{data_type}.json")
         get uri
       end
+    end
+  end
+
+  desc 'visit registry references for interview'
+  task :registry_references => :environment do
+    Interview.all.each do |interview|
+      p "*** Getting registry references for #{interview.archive_id}"
+      person_refs = URI.parse("#{base_url}/#{I18n.default_locale}/registry_entries?ref_object_type=Person&ref_object_id=#{interview.interviewee.id}")
+      get person_refs
+      interview_refs = URI.parse("#{base_url}/#{I18n.default_locale}/registry_entries?ref_object_type=Interview&ref_object_id=#{interview.id}")
+      get interview_refs
+    end
+  end
+
+  desc 'visit contributors for interview'
+  task :contributors => :environment do
+    Interview.all.each do |interview|
+      p "*** Getting contributors #{interview.archive_id}"
+      uri = URI.parse("#{base_url}/#{I18n.default_locale}/people?contributors_for_interview=#{interview.id}")
+      get uri
     end
   end
 
@@ -114,6 +135,32 @@ namespace :cache do
       p "*** Getting registry_entry #{registry_entry.id}"
       uri = URI.parse("#{base_url}/#{I18n.default_locale}/registry_entries/#{registry_entry.id}.json")
       get uri
+      assoc_uri = URI.parse("#{base_url}/#{I18n.default_locale}/registry_entries/#{registry_entry.id}?with_associations=true")
+      get assoc_uri
+    end
+  end
+
+  desc 'visit all people to fill up cache'
+  task :people => :environment do
+    Person.all.each do |person|
+      p "*** Getting person #{person.id}"
+      people = URI.parse("#{base_url}/#{I18n.default_locale}/people/#{person.id}.json")
+      get people
+      if person.interviews.first
+        people_with_assoc = URI.parse("#{base_url}/#{I18n.default_locale}/people/#{person.id}?with_associations=true")
+        get people_with_assoc
+      end
+    end
+  end
+
+ desc 'visit all inteview pages - this task is not part of cache_all'
+  task :interview_uris => :environment do
+    Interview.all.each  do |i|
+    #Interview.where(archive_id: 'mog85').first  do |i|
+      p "*** Getting interview of #{i.title[:de]} - #{i.archive_id}"
+      uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{i.archive_id}")
+      get uri
+      sleep(60)
     end
   end
 
@@ -124,11 +171,14 @@ namespace :cache do
     'cache:name_searches',
     'cache:interviews',
     'cache:interview_data',
+    'cache:registry_references',
+    'cache:contributors',
     'cache:other_data',
     # TODO: fix this
     #'cache:interview_downloads',
     'cache:locations',
-    'cache:registry_entries'
+    'cache:registry_entries',
+    'cache:people'
   ] do
     puts 'cache complete.'
   end

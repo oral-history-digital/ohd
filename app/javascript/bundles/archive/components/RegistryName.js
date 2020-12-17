@@ -1,15 +1,18 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import RegistryNameFormContainer from '../containers/RegistryNameFormContainer';
-import { t, admin } from '../../../lib/utils';
+import { t, admin } from 'lib/utils';
 
 export default class RegistryName extends React.Component {
-
     constructor(props) {
         super(props);
+
         this.state = {
             editing: false,
             showConfirmDeleteButton: false
         };
+
         this.setEditing = this.setEditing.bind(this);
     }
 
@@ -68,14 +71,13 @@ export default class RegistryName extends React.Component {
     }
 
     form() {
-        let _this = this;
         return (
-            <RegistryNameFormContainer 
+            <RegistryNameFormContainer
                 registryName={this.props.registryName}
                 registryEntryId={this.props.registryEntryId}
                 submitData={this.props.submitData}
                 formClasses={this.props.formClasses}
-                onSubmitCallback={() => _this.setEditing()}
+                onSubmitCallback={this.setEditing}
             />
         )
     }
@@ -98,3 +100,15 @@ export default class RegistryName extends React.Component {
         )
     }
 }
+
+RegistryName.propTypes = {
+    registryName: PropTypes.object.isRequired,
+    registryEntryId: PropTypes.number.isRequired,
+    formClasses: PropTypes.string,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    account: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    submitData: PropTypes.func.isRequired,
+    deleteData: PropTypes.func.isRequired,
+};

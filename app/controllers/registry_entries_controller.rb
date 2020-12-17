@@ -78,7 +78,6 @@ class RegistryEntriesController < ApplicationController
               ]
             end
 
-          #registry_entries = registry_entries.includes(registry_names: :translations)
           {
             data: registry_entries,
             data_type: "registry_entries",

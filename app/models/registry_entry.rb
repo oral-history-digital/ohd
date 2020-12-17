@@ -125,16 +125,13 @@ class RegistryEntry < ApplicationRecord
   # Order registry entries lexicographically by name even when they
   # consist of several distinct registry names (ie. several name
   # types or name positions).
-  scope :ordered_by_name,
-        -> { joins( %Q(
-                   INNER JOIN registry_names ON registry_entries.id = registry_names.registry_entry_id
-                   INNER JOIN registry_name_types ON registry_names.registry_name_type_id = registry_name_types.id
-                   INNER JOIN registry_name_translations stdname ON registry_names.id = stdname.registry_name_id AND stdname.locale = '#{I18n.default_locale}'
-             )).
-             includes(registry_names: [:translations, :registry_name_type]).
-             group('registry_entries.id').
-             order('registry_entries.list_priority DESC, GROUP_CONCAT(DISTINCT stdname.descriptor COLLATE utf8_general_ci ORDER BY registry_name_types.order_priority, registry_names.name_position SEPARATOR " ")')
-           }
+  scope :ordered_by_name, ->(locale) { 
+    joins(registry_names: [:translations, :registry_name_type]).
+    where('registry_name_translations.locale': locale).
+    group('registry_entries.id').
+    order('registry_entries.list_priority DESC').
+    order('GROUP_CONCAT(DISTINCT registry_name_translations.descriptor COLLATE utf8_general_ci ORDER BY registry_name_types.order_priority, registry_names.name_position SEPARATOR " ")')
+  }
 
   # Filter registry entries that have reference types defined on them.
   scope :with_reference_types,
@@ -184,11 +181,15 @@ class RegistryEntry < ApplicationRecord
   end
 
   def names_w(locale)
-    registry_names.includes(:translations).where("registry_name_translations.locale": locale).map do |rn|
+    registry_names.
+      includes(:translations, :registry_name_type).
+      where("registry_name_translations.locale": locale).
+      order('registry_name_types.order_priority').
+      map do |rn|
       rn.translations.map do |t|
         t.descriptor
       end
-    end.flatten.uniq.join(' ')
+    end.flatten.uniq.join(', ')
   end
 
   def self.merge(opts={})
@@ -218,47 +219,6 @@ class RegistryEntry < ApplicationRecord
         rh.update_attribute(:descendant_id, merge_to_id) 
       end
     end
-  end
-
-  # method should be one of 'children' or 'parents'
-  #
-  def alphanum_sorted_ids(method, locale)
-    self.send(method).includes(registry_names: :translations).order("registry_name_translations.descriptor").map(&:id)
-    #self.send(method).includes(registry_names: :translations).map{|c| 
-      ##
-      ## replace e.g. ö with o - than remove all non alphanumeric chars
-      ##
-      #translation = c.registry_names.first && c.registry_names.first.translations.where(locale: locale).first 
-      #if translation && translation.descriptor
-        #local_name = translation.descriptor.mb_chars.normalize(:kd)
-        #Rails.configuration.mapping_to_ascii.each{|k,v| local_name = local_name.gsub(k,v)}
-        #local_name.downcase.to_s
-      #else
-        #local_name = 'no names given'
-      #end
-
-      #[
-        #c.id, 
-        #local_name
-      #]
-    #}.sort{|a,b| a[1] <=> b[1]}.map{|a| a[0]}
-  end
-
-  def alphanum_sorted_children_ids(locale)
-    # registry_names of children 
-    RegistryName.where(registry_entry_id: RegistryHierarchy.select('descendant_id').where(ancestor_id: self.id)).
-      # select only local name and order by it
-      joins(:translations).
-      where("registry_name_translations.locale": locale).
-      #
-      # REGEXP_REPLACE comes with MySQL 8.0+. Without replacement of non-chars sth.like "\"Zora\"" will be placed before "Anne" :(
-      # perhaps there is a possibility to change the collation in use?
-      #
-      #select("REGEXP_REPLACE(registry_name_translations.descriptor, '\W', '') AS name, registry_entry_id").
-      #
-      select("registry_name_translations.descriptor AS name, registry_entry_id").
-      order("registry_name_translations.descriptor").
-      map(&:registry_entry_id).uniq
   end
 
   def self.pdf_entries(project)

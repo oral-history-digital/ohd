@@ -48,6 +48,7 @@
     "redux-devtools-extension": "^2.13.8",
     "redux-thunk": "^2.2.0",
     "regenerator-runtime": "^0.13.7",
+    "reselect": "^4.0.0",
     "superagent": "^5.0.2",
     "superagent-no-cache": "^0.1.1"
   },
@@ -57,6 +58,7 @@
     "@babel/preset-env": "^7.12.1",
     "babel-jest": "^26.6.3",
     "cypress": "^4.10.0",
+    "dot-prop-immutable": "^2.1.0",
     "enzyme": "^3.11.0",
     "enzyme-adapter-react-16": "^1.15.5",
     "eslint": "^7.13.0",

@@ -192,6 +192,7 @@ ru:
   save: сохранить
   cancel: abbrechen
   assign_speakers: Sprecher*innen zuordnen
+  speaker_designations: Sprecher*innen-Kürzel
   person_info: О человеке
   date_of_birth: Дата рождения
   year_of_birth: Год рождения
@@ -428,6 +429,15 @@ ru:
       new: Erlaubnis hinzufügen
       edit: Erlaubnis bearbeiten
       delete: Erlaubnis löschen
+    task_type:
+      new: 'Aufgabenart hinzufügen'
+      edit: 'Aufgabenart bearbeiten'
+      delete: 'Aufgabenart löschen'
+      admin: 'Aufgabenartn bearbeiten'
+    task_type_permission:
+      new: 'Berechtigung hinzufügen'
+      edit: 'Berechtigung bearbeiten'
+      delete: 'Berechtigung löschen'
     permission:
       new: Erlaubnis hinzufügen
       edit: Erlaubnis bearbeiten
@@ -888,10 +898,11 @@ ru:
         use_in_details_view: in der Detailansicht zeigen
         use_in_map_search: in der Kartensuche zeigen
         display_on_landing_page: Auf der Landing-Page zeigen
-        ref_object_type: RefObjectType
+        ref_object_type: Bezugsobjekt bei RegistryReferenceType als Source
         source: Source
         label: Label
         values: Values
+        registry_reference_type_id: RegistryReferenceType
       external_link:
         internal_name: Internal Name
       upload:
@@ -961,10 +972,15 @@ ru:
       role_permission:
         name: Name
         desc: Beschreibung
-        permission_id: Erlaubnis
+        permission_id: Berechtigung
         controller: Controller
         action: Action
         created_at: angelegt
+      task_type_permission:
+        permission_id: 'Berechtigung'
+        controller: 'Controller'
+        action: 'Action'
+        created_at: 'angelegt'
       permission:
         name: Name
         klass: Class

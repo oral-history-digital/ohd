@@ -5,6 +5,7 @@ import Select from 'react-select';
 import UserRegistrationSearchFormContainer from '../../containers/UserRegistrationSearchFormContainer';
 import RoleSearchFormContainer from '../../containers/RoleSearchFormContainer';
 import PermissionSearchFormContainer from '../../containers/PermissionSearchFormContainer';
+import TaskTypeSearchFormContainer from '../../containers/TaskTypeSearchFormContainer';
 import ProjectSearchFormContainer from '../../containers/ProjectSearchFormContainer';
 import InterviewDataContainer from '../../containers/InterviewDataContainer';
 import { admin, pathBase, t } from '../../../../lib/utils';
@@ -110,6 +111,12 @@ class UsersAdminTabPanel extends Component {
                         <PermissionSearchFormContainer/>,
                         `${pathBase(this.props)}/permissions`,
                         {type: 'Permission', action: 'update'}
+                    )}
+                    {this.subTab(
+                        'edit.task_type.admin',
+                        <TaskTypeSearchFormContainer/>,
+                        `${pathBase(this.props)}/task_types`,
+                        {type: 'TaskType', action: 'update'}
                     )}
                     {this.subTab(
                         'edit.project.admin',

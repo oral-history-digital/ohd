@@ -17,6 +17,7 @@ import WrappedProjectsContainer from '../../containers/WrappedProjectsContainer'
 import UserRegistrationsContainer from '../../containers/UserRegistrationsContainer';
 import WrappedRolesContainer from '../../containers/WrappedRolesContainer';
 import WrappedPermissionsContainer from '../../containers/WrappedPermissionsContainer';
+import WrappedTaskTypesContainer from '../../containers/WrappedTaskTypesContainer';
 import WrappedRegistryReferenceTypesContainer from '../../containers/WrappedRegistryReferenceTypesContainer';
 import ActivateAccountContainer from '../../containers/ActivateAccountContainer';
 import OrderNewPasswordContainer from '../../containers/OrderNewPasswordContainer';

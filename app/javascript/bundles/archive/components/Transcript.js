@@ -9,7 +9,6 @@ import {
 import Spinner from './Spinner';
 
 export default class Transcript extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleScroll = this.handleScroll.bind(this);
@@ -123,7 +122,7 @@ export default class Transcript extends React.Component {
                     contentLocale={locale}
                     tabIndex={tabIndex}
                     active={active}
-                    key={"segment-" + segment.id}
+                    key={segment.id}
                 />
             )
         })

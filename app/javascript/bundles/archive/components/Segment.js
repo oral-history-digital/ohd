@@ -1,19 +1,18 @@
 import React from 'react';
-import VizSensor from 'react-visibility-sensor/visibility-sensor';
+import PropTypes from 'prop-types';
 import SegmentFormContainer from '../containers/SegmentFormContainer';
 import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
-import { t, fullname, admin } from "../../../lib/utils";
+import { t, fullname, admin } from 'lib/utils';
 
 export default class Segment extends React.Component {
-
     constructor(props) {
         super(props);
+
         this.state = {
             contentOpen: false,
             contentType: 'none',
-            visible: false
         };
 
         this.setOpenReference = this.setOpenReference.bind(this);
@@ -168,7 +167,7 @@ export default class Segment extends React.Component {
                          onClick={() => this.toggleAdditionalContent('annotations')}><i
                         className={`fa fa-sticky-note-o ${hasAnnotationsCss}`}></i>
                     </div>
-                    <div className={referencesCss} title={(this.props.project === 'mog') ? t(this.props, 'keywords_mog') : referencesTitle}
+                    <div className={referencesCss} title={(this.props.projectId === 'mog') ? t(this.props, 'keywords_mog') : referencesTitle}
                          onClick={() => this.toggleAdditionalContent('references')}><i
                          className={`fa fa-tag ${hasReferencesCss}`}></i>
                     </div>
@@ -177,7 +176,7 @@ export default class Segment extends React.Component {
         }
     }
 
-    edit(locale) {
+    edit() {
         let title = this.props.tabIndex == 1 ? 'edit.segment.translation' : 'edit.segment.transcript'
         if (admin(this.props, this.props.data)) {
             return (
@@ -197,7 +196,7 @@ export default class Segment extends React.Component {
         }
     }
 
-    editHeadings(locale) {
+    editHeadings() {
         if (admin(this.props, this.props.data)) {
             let title = this.hasHeading() ? t(this.props, 'edit.segment.heading.edit') : t(this.props, 'edit.segment.heading.new')
             let hasHeadingCss = this.hasHeading() ? "exists" : ""
@@ -229,41 +228,51 @@ export default class Segment extends React.Component {
 
         if (text) {
             return (
-                <VizSensor
-                    partialVisibility={true}
-                    onChange={(isVisible) => {
-                        this.setState({visible: isVisible})
-                    }}
-                >
-                    <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
-                        <div className="content-trans-speaker-ico">
-                            {this.speakerIcon()}
-                        </div>
-                        <div className='content-trans-text'
-                             onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, this.props.tabIndex)}>
-                            <div className={this.css()}
-                                 // TODO: clean mog segment-texts from html in db
-                                 //dangerouslySetInnerHTML={{__html: text}}
-                            >
-                                {text}
-                            </div>
-                        </div>
-                        {this.renderLinks(this.props.contentLocale, uAnnotations)}
-                        <div className={contentOpenClass}>
-                            <div>
-                                {this.annotations(this.props.contentLocale)}
-                                {uAnnotations}
-                            </div>
-                            <div className='content-trans-text-element-data'>
-                                {this.references(this.props.contentLocale)}
-                                {this.openReference()}
-                            </div>
+                <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
+                    <div className="content-trans-speaker-ico">
+                        {this.speakerIcon()}
+                    </div>
+                    <div className='content-trans-text'
+                            onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, this.props.tabIndex)}>
+                        <div className={this.css()}
+                                // TODO: clean mog segment-texts from html in db
+                                //dangerouslySetInnerHTML={{__html: text}}
+                        >
+                            {text}
                         </div>
                     </div>
-                </VizSensor>
+                    {this.renderLinks(this.props.contentLocale, uAnnotations)}
+                    <div className={contentOpenClass}>
+                        <div>
+                            {this.annotations(this.props.contentLocale)}
+                            {uAnnotations}
+                        </div>
+                        <div className='content-trans-text-element-data'>
+                            {this.references(this.props.contentLocale)}
+                            {this.openReference()}
+                        </div>
+                    </div>
+                </div>
             )
         } else {
             return null;
         }
     }
 }
+
+Segment.propTypes = {
+    data: PropTypes.object.isRequired,
+    contentLocale: PropTypes.string.isRequired,
+    active: PropTypes.bool.isRequired,
+    people: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    statuses: PropTypes.object.isRequired,
+    userContents: PropTypes.object,
+    tabIndex: PropTypes.number.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    account: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    handleSegmentClick: PropTypes.func.isRequired,
+};

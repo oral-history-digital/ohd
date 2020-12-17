@@ -6,6 +6,9 @@ import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import { INDEX_INTERVIEW } from '../constants/flyoutTabs';
+import StateCheck from './StateCheck';
+import Spinner from './Spinner';
+import { getCurrentInterviewFetched } from '../selectors/dataSelectors';
 
 export default class Interview extends React.Component {
     componentDidMount() {
@@ -60,13 +63,13 @@ export default class Interview extends React.Component {
         if (this.interviewLoaded() && this.props.interviews) {
             return (
                 <div>
-                    <div className='wrapper-video' >
-                        <div className={"video-title-container"}>
-                            <h1 className='video-title'>
+                    <div className="VideoPlayer">
+                        <header className="VideoHeader">
+                            <h1 className="VideoHeader-title">
                                 {this.props.project.fullname_on_landing_page ? this.interview().title[this.props.locale] : this.interview().anonymous_title[this.props.locale]}
                             </h1>
-                        </div>
-                        <div className='video-element'>
+                        </header>
+                        <div className="VideoElement">
                             <img src={this.interview().still_url}/>
                         </div>
                     </div>
@@ -102,31 +105,28 @@ export default class Interview extends React.Component {
         }
     }
 
-    content() {
-        if (this.interviewLoaded()){
-            if (this.props.isCatalog) {
-                return (<InterviewDetailsLeftSideContainer interview={this.interview()} />);
-            } else {
-                return (
-                    <div>
-                        <AuthShowContainer ifLoggedIn={true}>
-                            <VideoPlayerContainer
-                                interview={this.interview()}
-                            />
-                            {this.innerContent()}
-                        </AuthShowContainer>
-                        <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                            {this.loggedOutContent()}
-                        </AuthShowContainer>
-                    </div>
-                )
-            }
-        } else {
-            return null;
-        }
-    }
-
     render() {
-        return this.content();
+        return (
+            <StateCheck
+                testSelector={getCurrentInterviewFetched}
+                fallback={<Spinner withPadding />}
+            >
+                {
+                    this.props.isCatalog ?
+                        <InterviewDetailsLeftSideContainer interview={this.interview()} /> :
+                        (
+                            <div>
+                                <AuthShowContainer ifLoggedIn={true}>
+                                    <VideoPlayerContainer interview={this.interview()} />
+                                    {this.innerContent()}
+                                </AuthShowContainer>
+                                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                                    {this.loggedOutContent()}
+                                </AuthShowContainer>
+                            </div>
+                        )
+                }
+            </StateCheck>
+        );
     }
 }

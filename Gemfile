@@ -41,6 +41,7 @@ gem 'slim-rails'
 gem 'iso-639'
 gem 'countries'
 gem 'font-awesome-rails'
+gem 'rack-brotli', '~> 1.0'
 
 # Gems specific to public archive app:
 gem 'sunspot_rails'
