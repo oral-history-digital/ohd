@@ -16,7 +16,7 @@ export const getShowStartPageVideo = state => {
     const projectId = getProjectId(state);
 
     // TODO: put to project-conf
-    return (projectId === 'mog');
+    return projectId === 'mog';
 };
 
 export const getProjectTranslation = state => {
@@ -25,4 +25,10 @@ export const getProjectTranslation = state => {
 
     const projectTranslation = project.translations.find(t => t.locale === locale);
     return projectTranslation;
+};
+
+export const getIsCampscapesProject = state => {
+    const projectId = getProjectId(state);
+
+    return projectId === 'campscapes';
 };

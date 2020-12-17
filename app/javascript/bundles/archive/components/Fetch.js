@@ -18,7 +18,9 @@ export default function Fetch({
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(fetchData({ projectId, locale }, ...fetchParams));
+        if (!testResult) {
+            dispatch(fetchData({ projectId, locale }, ...fetchParams));
+        }
     }, [JSON.stringify(fetchParams)]);
 
     if (!testResult) {

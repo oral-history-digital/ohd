@@ -55,3 +55,15 @@ test('getProjectTranslation gets project translation for current locale', () => 
     const expected = state.data.projects[1].translations[0];
     expect(actual).toEqual(expected);
 });
+
+describe('getIsCampscapesProject', () => {
+    test('is true when set to campscapes', () => {
+        const _state = dotProp.set(state, 'archive.projectId', 'campscapes');
+
+        expect(selectors.getIsCampscapesProject(_state)).toBeTruthy();
+    });
+
+    test('is false otherwise', () => {
+        expect(selectors.getIsCampscapesProject(state)).toBeFalsy();
+    });
+});

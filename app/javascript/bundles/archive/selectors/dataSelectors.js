@@ -86,5 +86,6 @@ export const getFeaturedInterviewsArray = state => {
 export const getFeaturedInterviewsFetched = state => {
     const status = getStatuses(state).random_featured_interviews.all;
     const fetched = /^fetched/;
+
     return fetched.test(status);
 };

@@ -1,28 +1,19 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import Home from '../components/Home';
 import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
-import { getIsLoggedIn } from '../selectors/accountSelectors';
-import { getLocale } from '../selectors/archiveSelectors';
-import { getCurrentProject } from '../selectors/dataSelectors';
-import { getProjectTranslation, getShowFeaturedInterviews,
+import { getIsCampscapesProject, getProjectTranslation, getShowFeaturedInterviews,
     getShowStartPageVideo } from '../selectors/projectSelectors';
 
 const mapStateToProps = state => ({
-    isLoggedIn: getIsLoggedIn(state),
+    isCampscapesProject: getIsCampscapesProject(state),
+    projectTranslation: getProjectTranslation(state),
     showStartPageVideo: getShowStartPageVideo(state),
     showFeaturedInterviews: getShowFeaturedInterviews(state),
-    projectTranslation: getProjectTranslation(state),
-    project: getCurrentProject(state),
-    locale: getLocale(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({
     setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
 })
 
-export default withRouter(connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Home));
+export default connect(mapStateToProps, mapDispatchToProps)(Home);

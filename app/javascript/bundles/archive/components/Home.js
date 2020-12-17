@@ -1,63 +1,57 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { INDEX_NONE } from '../constants/flyoutTabs';
 
 import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';
+import RedirectOnLogin from './RedirectOnLogin';
 
-export default class Home extends React.Component {
-    componentDidMount() {
+export default function Home({
+    isCampscapesProject,
+    projectTranslation,
+    showStartPageVideo,
+    showFeaturedInterviews,
+    setFlyoutTabsIndex,
+}) {
+    useEffect(() => {
         window.scrollTo(0, 1);
 
-        if (this.props.project.identifier === 'campscapes') {
-            this.props.setFlyoutTabsIndex(INDEX_NONE);
+        if (isCampscapesProject) {
+            setFlyoutTabsIndex(INDEX_NONE);
         }
-    }
+    }, []);
 
-    componentDidUpdate(prevProps) {
-        if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
-            const url = `/${this.props.locale}/searches/archive`;
-            this.props.history.push(url);
-        }
-    }
-
-    render() {
-        const { projectTranslation } = this.props;
-
-        return (
-            <div className='wrapper-content home-content'>
+    return (
+        <div className='wrapper-content home-content'>
+            <RedirectOnLogin path="/searches/archive" />
+            {
+                showStartPageVideo ?
+                    <StartPageVideo /> :
+                    null
+            }
+            <div className='home-text'>
+                <h1>{projectTranslation.name}</h1>
+                <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
+            </div>
+            <div className="search-results-container">
                 {
-                    this.props.showStartPageVideo ?
-                        <StartPageVideo /> :
+                    projectTranslation.more_text &&
+                    (<p dangerouslySetInnerHTML={{__html: projectTranslation.more_text}} />)
+                }
+                {
+                    showFeaturedInterviews ?
+                        <FeaturedInterviews /> :
                         null
                 }
-                <div className='home-text'>
-                    <h1>{projectTranslation.name}</h1>
-                    <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
-                </div>
-                <div className="search-results-container">
-                    {
-                        projectTranslation.more_text &&
-                        (<p dangerouslySetInnerHTML={{__html: projectTranslation.more_text}} />)
-                    }
-                    {
-                        this.props.showFeaturedInterviews ?
-                            <FeaturedInterviews /> :
-                            null
-                    }
-                </div>
             </div>
-        );
-    }
+        </div>
+    );
 }
 
 Home.propTypes = {
-    isLoggedIn: PropTypes.bool.isRequired,
-    project: PropTypes.object.isRequired,
+    isCampscapesProject: PropTypes.bool.isRequired,
     projectTranslation: PropTypes.object.isRequired,
     showStartPageVideo: PropTypes.bool.isRequired,
     showFeaturedInterviews: PropTypes.bool.isRequired,
-    locale: PropTypes.string.isRequired,
-    history: PropTypes.object.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
 };
