@@ -13,7 +13,11 @@ export const getCurrentLocations = state => {
 
 export const getCurrentLocationsWithRefs = createSelector(
     [getCurrentLocations],
-    currentLocations => currentLocations?.filter(location => location.ref_object)
+    currentLocations => currentLocations?.filter(location => (
+        location.ref_object &&
+        location.latitude &&
+        location.longitude
+    ))
 );
 
 export const getLocationsFetched = state => {

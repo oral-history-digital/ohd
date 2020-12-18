@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 import InterviewLocations from '../components/InterviewLocations';
-import { handleSegmentClick } from '../actions/interviewActionCreators';
 import { fetchLocations } from '../actions/locationsActionCreators';
 import { getCurrentLocationsWithRefs, getLocationsFetched } from '../selectors/locationsSelectors';
 import { getArchiveId, getLocale, getProjectId, getTranslations } from '../selectors/archiveSelectors';
@@ -16,7 +15,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: (tape, time) => dispatch(handleSegmentClick(tape, time)),
     fetchLocations: (url, archiveId) => dispatch(fetchLocations(url, archiveId)),
 })
 

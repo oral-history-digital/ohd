@@ -1,3 +1,5 @@
+import dotProp from 'dot-prop-immutable';
+
 import * as selectors from './locationsSelectors';
 
 const state = {
@@ -35,11 +37,23 @@ test('getCurrentLocations retrieves locations for archivId', () => {
     expect(selectors.getCurrentLocations(state)).toEqual(state.locations.za283);
 });
 
-test('getCurrentLocationsWithRefs retrieves locations that have ref objects', () => {
-    const actual = selectors.getCurrentLocationsWithRefs(state);
-    const expected = [state.locations.za283[1]];
-    expect(actual).toEqual(expected);
-});
+describe('getCurrentLocationsWithRefs', () => {
+    test('retrieves locations that have ref objects', () => {
+        const actual = selectors.getCurrentLocationsWithRefs(state);
+        const expected = [state.locations.za283[1]];
+        expect(actual).toEqual(expected);
+    });
+
+    test('filters out locations without geodata', () => {
+        const _state = dotProp.delete(state, 'locations.za283.1.latitude');
+        const _state2 = dotProp.delete(_state, 'locations.za283.1.longitude');
+
+        const actual = selectors.getCurrentLocationsWithRefs(_state2);
+        const expected = [];
+        expect(actual).toEqual(expected);
+    });
+})
+
 
 test('getLocationsFetched retrieves if locations for archivId are present', () => {
     expect(selectors.getLocationsFetched(state)).toBeTruthy();

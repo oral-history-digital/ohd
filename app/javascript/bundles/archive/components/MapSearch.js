@@ -3,16 +3,17 @@ import PropTypes from 'prop-types';
 
 import 'leaflet-extra-markers'
 import 'leaflet.markercluster'
-import '../../../lib/leaflet.markercluster-regionbound/leaflet.markercluster-regionbound.min.js'
-import '../../../lib/leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.js'
+import 'lib/leaflet.markercluster-regionbound/leaflet.markercluster-regionbound.min.js'
+import 'lib/leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.js'
 
-import '../../../lib/leaflet.markercluster-regionbound/MarkerCluster.Aggregations.css'
-import '../../../lib/leaflet.markercluster-regionbound/MarkerCluster.css'
-import '../../../css/MarkerCluster.Default.css'
-import '../../../css/leaflet.extra-markers.min.css'
-import '../../../lib/leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css'
+import 'lib/leaflet.markercluster-regionbound/MarkerCluster.Aggregations.css'
+import 'lib/leaflet.markercluster-regionbound/MarkerCluster.css'
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css';
+import 'lib/leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css'
 
-import { pathBase } from '../../../lib/utils';
+import { pathBase } from 'lib/utils';
 import { INDEX_MAP } from '../constants/flyoutTabs';
 import Spinner from './Spinner';
 
