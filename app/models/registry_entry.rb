@@ -130,7 +130,7 @@ class RegistryEntry < ApplicationRecord
     where('registry_name_translations.locale': locale).
     group('registry_entries.id').
     order('registry_entries.list_priority DESC').
-    order('GROUP_CONCAT(DISTINCT registry_name_translations.descriptor COLLATE utf8_general_ci ORDER BY registry_name_types.order_priority, registry_names.name_position SEPARATOR " ")')
+    order('GROUP_CONCAT(DISTINCT registry_name_translations.descriptor COLLATE utf8mb4_general_ci ORDER BY registry_name_types.order_priority, registry_names.name_position SEPARATOR " ")')
   }
 
   # Filter registry entries that have reference types defined on them.
