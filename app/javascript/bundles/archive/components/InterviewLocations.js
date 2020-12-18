@@ -1,31 +1,18 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import LocationsContainer from '../containers/LocationsContainer'
-import { t, pathBase } from '../../../lib/utils';
+import { t, pathBase } from 'lib/utils';
 
 export default class InterviewLocations extends React.Component {
-    static propTypes = {
-        match: PropTypes.object.isRequired,
+    constructor(props) {
+        super(props);
+
+        this.popupContent = this.popupContent.bind(this);
     }
 
     componentDidMount() {
-        if (!this.locationsLoaded()) {
+        if (!this.props.locationsFetched) {
             this.props.fetchLocations(`${pathBase(this.props)}/locations`, this.props.archiveId);
-        }
-    }
-
-    locationsLoaded() {
-        return this.props.locations[this.props.archiveId] &&
-            (this.props.archiveId === this.props.match.params.archiveId);
-    }
-
-    birthLocation(ref) {
-        if (ref.name[this.props.locale]) {
-            return (
-                <p>
-                    {`${t(this.props, 'birth_location')}: ${ref.name[this.props.locale]}`}
-                </p>
-            )
         }
     }
 
@@ -42,14 +29,19 @@ export default class InterviewLocations extends React.Component {
                             {ref.ref_object.last_heading[this.props.locale]}
                         </em>
                         {t(this.props, 'interview_location_desc_two')}
-
                     </p>
                 </div>
             )
         } else if (ref.name) {
             return (
                 <div>
-                    {this.birthLocation(ref)}
+                    {
+                        ref.name[this.props.locale] && (
+                            <p>
+                                {`${t(this.props, 'birth_location')}: ${ref.name[this.props.locale]}`}
+                            </p>
+                        )
+                    }
                     <div>
                         {`${ref.names[this.props.locale].firstname} ${ref.names[this.props.locale].lastname}`}
                     </div>
@@ -65,28 +57,32 @@ export default class InterviewLocations extends React.Component {
     }
 
     render() {
-        let locations = this.props.locations[this.props.archiveId]
-        if (locations) {
-            locations =  locations.filter(l => l.ref_object);
-        }
-        if (locations && this.props.birthLocation) {
-            locations.push(this.props.birthLocation);
-        }
-        if (locations && locations.length > 0){
-            return (
-                <div>
-                    <div className='explanation'>{t(this.props, 'interview_map_explanation')}</div>
-                    <LocationsContainer
-                        data={locations}
-                        loaded={this.locationsLoaded()}
-                        popupContent={this.popupContent.bind(this)}
-                    />
-                </div>
-            );
-        }
-        else {
+        const { locationsFetched, currentLocations } = this.props;
+
+        if (!currentLocations || currentLocations.length === 0) {
             return null;
         }
-    }
 
+        return (
+            <div>
+                <div className='explanation'>{t(this.props, 'interview_map_explanation')}</div>
+                <LocationsContainer
+                    data={currentLocations}
+                    loaded={locationsFetched}
+                    popupContent={this.popupContent}
+                />
+            </div>
+        );
+    }
 }
+
+InterviewLocations.propTypes = {
+    currentLocations: PropTypes.array.isRequired,
+    locationsFetched: PropTypes.bool.isRequired,
+    archiveId: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    fetchLocations: PropTypes.func.isRequired,
+    handleSegmentClick: PropTypes.func.isRequired,
+};
