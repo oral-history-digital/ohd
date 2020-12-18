@@ -1,3 +1,5 @@
+import { createSelector } from 'reselect';
+
 import { getArchiveId, getProjectId  } from './archiveSelectors';
 
 export const getData = state => state.data;
@@ -34,15 +36,15 @@ export const getCurrentUserIsAdmin = state => getCurrentAccount(state).admin;
 
 export const get = (state, dataType, id) => getData(state)[dataType][id];
 
-export function getCurrentProject(state) {
-    const currentProjectId = getProjectId(state);
-    const projects = getProjects(state);
+export const getCurrentProject = createSelector(
+    [getProjectId, getProjects],
+    (projectId, projects) => {
+        const currentProject = Object.values(projects)
+            .find(project => project.identifier === projectId);
 
-    const currentProject = Object.values(projects)
-        .find(project => project.identifier === currentProjectId);
-
-    return currentProject || null;
-}
+        return currentProject || null;
+    }
+);
 
 export const getCurrentInterview = state => {
     const interviews = getInterviews(state);
@@ -56,22 +58,22 @@ export const getCurrentInterviewFetched = state => {
     return !(Object.is(currentInterview, undefined) || Object.is(currentInterview, null));
 };
 
-export const getContributorsFetched = state => {
-    const interview = getCurrentInterview(state);
-    const peopleStatus = getPeopleStatus(state);
-
-    if (
-        interview &&
-        (
-            (peopleStatus[`contributors_for_interview_${interview.id}`] && peopleStatus[`contributors_for_interview_${interview.id}`].split('-')[0] === 'fetched') ||
-            (peopleStatus.all && peopleStatus.all.split('-')[0] === 'fetched')
-        )
-    ) {
-        return true;
-    } else {
-        return false;
+export const getContributorsFetched = createSelector(
+    [getCurrentInterview, getPeopleStatus],
+    (interview, peopleStatus) => {
+        if (
+            interview &&
+            (
+                (peopleStatus[`contributors_for_interview_${interview.id}`] && peopleStatus[`contributors_for_interview_${interview.id}`].split('-')[0] === 'fetched') ||
+                (peopleStatus.all && peopleStatus.all.split('-')[0] === 'fetched')
+            )
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
-};
+);
 
 export const getFeaturedInterviewsArray = state => {
     const interviews = getRandomFeaturedInterviews(state);

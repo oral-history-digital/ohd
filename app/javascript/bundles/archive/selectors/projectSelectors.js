@@ -1,3 +1,4 @@
+import { createSelector } from 'reselect';
 import { getProjectId, getLocale } from './archiveSelectors';
 import { getCurrentProject } from './dataSelectors';
 
@@ -19,13 +20,12 @@ export const getShowStartPageVideo = state => {
     return projectId === 'mog';
 };
 
-export const getProjectTranslation = state => {
-    const locale = getLocale(state);
-    const project = getCurrentProject(state);
-
-    const projectTranslation = project.translations.find(t => t.locale === locale);
-    return projectTranslation;
-};
+export const getProjectTranslation = createSelector(
+    [getLocale, getCurrentProject],
+    (locale, currentProject) => {
+        return currentProject.translations.find(t => t.locale === locale);
+    }
+);
 
 export const getIsCampscapesProject = state => {
     const projectId = getProjectId(state);
