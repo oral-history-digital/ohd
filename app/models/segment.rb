@@ -64,6 +64,7 @@ class Segment < ApplicationRecord
       # run this only after update of original e.g. 'de' version!
       if (text_previously_changed? || subheading_previously_changed? || mainheading_previously_changed?) && locale.length == 2
         segment.write_other_versions(text, mainheading, subheading, locale)
+        segment.update_attributes(has_heading: true) if (mainheading || subheading) && !segment.has_heading
       end
     end
   end
@@ -463,44 +464,6 @@ class Segment < ApplicationRecord
   def tape_nbr
     #object.timecode.scan(/\[(\d*)\]/).flatten.first.to_i
     self.tape_number || self.tape.number
-  end
-
-  def tape_count
-    self.interview.tapes.count
-  end
-
-  def annotations_count
-    if self.annotations.count > 0
-      (self.project.available_locales + [self.interview.lang]).inject({}) do |mem, locale|
-        mem[locale] = self.annotations.includes(:translations).where("annotation_translations.locale": locale).count
-        mem
-      end
-    else
-      zero_counts(self)
-    end
-  end
-
-  def annotations_total_count
-    self.annotations.count
-  end
-
-  def references_count
-    if self.registry_references.count > 0
-      (self.project.available_locales + [self.interview.lang]).inject({}) do |mem, locale|
-        mem[locale] = self.registry_references.where("registry_name_translations.locale": locale).count
-        mem
-      end
-    else
-      zero_counts(self)
-    end
-  end
-
-  def references_total_count
-    self.registry_references.count
-  end
-
-  def has_heading
-    self.has_heading?
   end
 
   private
