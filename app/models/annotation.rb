@@ -5,7 +5,7 @@ class Annotation < ApplicationRecord
   belongs_to :interview
   belongs_to :user_content
 
-  belongs_to :segment
+  belongs_to :segment, counter_cache: true
 
   translates :text, fallbacks_for_empty_translations: true, touch: true
 

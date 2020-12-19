@@ -83,7 +83,7 @@ export default class Segment extends React.Component {
     references(locale) {
         if (
             this.state.contentType == 'references' &&
-            (this.props.data.references_count[locale] > 0 || admin(this.props, {type: 'RegistryReference', action: 'create', interview_id: this.props.data.interview_id}))
+            (this.props.data.registry_references_count > 0 || admin(this.props, {type: 'RegistryReference', action: 'create', interview_id: this.props.data.interview_id}))
         ) {
             return <RegistryReferencesContainer
                        refObject={this.props.data}
@@ -98,7 +98,7 @@ export default class Segment extends React.Component {
     annotations(locale) {
         if (
             this.state.contentType == 'annotations' &&
-            (this.props.data.annotations_count[locale] > 0 || admin(this.props, {type: 'Annotation', action: 'create', interview_id: this.props.data.interview_id}))
+            (this.props.data.annotations_count > 0 || admin(this.props, {type: 'Annotation', action: 'create', interview_id: this.props.data.interview_id}))
         ) {
             return <AnnotationsContainer segment={this.props.data} locale={locale} />
         }
@@ -142,19 +142,19 @@ export default class Segment extends React.Component {
     renderLinks(locale, userAnnotations) {
         if (
             admin(this.props, {type: 'General', action: 'edit'}) ||
-            this.props.data.annotations_count[this.props.contentLocale] > 0 ||
-            this.props.data.references_count[this.props.contentLocale] > 0 ||
+            this.props.data.annotations_count > 0 ||
+            this.props.data.registry_references_count > 0 ||
             userAnnotations.length > 0
         ) {
             let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
 
 
-            let hasAnnotations = this.props.data.annotations_count[this.props.contentLocale] > 0 || userAnnotations.length > 0
+            let hasAnnotations = this.props.data.annotations_count > 0 || userAnnotations.length > 0
             let annotationCss = admin(this.props, {type: 'Annotation', action: 'update', interview_id: this.props.data.interview_id}) || hasAnnotations ? 'content-trans-text-ico-link' : 'hidden';
             let hasAnnotationsCss = hasAnnotations ? 'exists' : '';
             let annotationsTitle = hasAnnotations ? t(this.props, 'edit.segment.annotations.edit') : t(this.props, 'edit.segment.annotations.new')
 
-            let hasReferences = this.props.data.references_count[this.props.contentLocale] > 0;
+            let hasReferences = this.props.data.registry_references_count > 0;
             let referencesCss = admin(this.props, {type: 'RegistryReference', action: 'update', interview_id: this.props.data.interview_id}) || hasReferences ? 'content-trans-text-ico-link' : 'hidden';
             let hasReferencesCss = hasReferences ? 'exists' : '';
             let referencesTitle = hasReferences ? t(this.props, 'edit.segment.references.edit') : t(this.props, 'edit.segment.references.new')

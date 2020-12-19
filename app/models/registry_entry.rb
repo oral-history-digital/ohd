@@ -130,7 +130,7 @@ class RegistryEntry < ApplicationRecord
     where('registry_name_translations.locale': locale).
     group('registry_entries.id').
     order('registry_entries.list_priority DESC').
-    order('GROUP_CONCAT(DISTINCT registry_name_translations.descriptor COLLATE utf8_general_ci ORDER BY registry_name_types.order_priority, registry_names.name_position SEPARATOR " ")')
+    order('GROUP_CONCAT(DISTINCT registry_name_translations.descriptor COLLATE utf8mb4_general_ci ORDER BY registry_name_types.order_priority, registry_names.name_position SEPARATOR " ")')
   }
 
   # Filter registry entries that have reference types defined on them.
@@ -335,14 +335,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   def descriptor(locale = I18n.default_locale)
-    if locale == :all
-      available_translations.inject({}) do |result, locale|
-        result[locale] = to_s(locale, true)
-        result
-      end
-    else
-      to_s(locale, true)
-    end
+    to_s(locale)
   end
 
   def notes(locale)
@@ -373,12 +366,14 @@ class RegistryEntry < ApplicationRecord
     end
   end
 
-  def to_s_with_fallback(locale = I18n.default_locale)
-    to_s(locale, true)
-  end
-
-  def to_s(locale = I18n.default_locale, with_fallback = true)
-    names_w locale
+  def to_s(locale = I18n.default_locale)
+    registry_names.
+      includes(:translations, :registry_name_type).
+      #where("registry_name_translations.locale": locale).
+      order('registry_name_types.order_priority').
+      map do |rn|
+        rn.descriptor(locale)
+      end.flatten.uniq.join(', ')
   end
 
 end
