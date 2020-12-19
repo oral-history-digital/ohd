@@ -25,7 +25,7 @@ export default class InterviewEditView extends React.Component {
     }
 
     allFilledRows(sortedWithIndex) {
-      return  sortedWithIndex[1].filter(s => { return s.has_heading || s.annotations_total_count > 0 || s.references_total_count > 0; });
+      return  sortedWithIndex[1].filter(s => { return s.has_heading || s.annotations_count > 0 || s.registry_references_count > 0; });
     }
 
     shownSegmentsAround(sortedWithIndex) {

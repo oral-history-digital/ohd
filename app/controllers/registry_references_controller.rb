@@ -184,6 +184,7 @@ class RegistryReferencesController < ApplicationController
 
   def respond registry_reference
     registry_reference.ref_object.touch
+    registry_reference.reload
 
     respond_to do |format|
       format.json do

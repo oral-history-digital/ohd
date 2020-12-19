@@ -5,7 +5,7 @@ class RegistryName < ApplicationRecord
   belongs_to :registry_entry, touch: true
   belongs_to :registry_name_type
 
-  translates :descriptor, :notes, touch: true # , fallbacks_for_empty_translations: true
+  translates :descriptor, :notes, touch: true, fallbacks_for_empty_translations: true
   accepts_nested_attributes_for :translations
 
   scope :ordered_by_type,
