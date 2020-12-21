@@ -19,7 +19,10 @@ const state = {
             resultsCount: 590,
         },
         map: {
-
+            query: {
+                page: 1,
+            },
+            foundMarkers: {},
         },
         interviews: {
 
@@ -57,6 +60,7 @@ const state = {
         languages: {
 
         },
+        isMapSearching: true,
     },
 };
 
@@ -78,4 +82,24 @@ test('getArchiveResultPagesCount retrieves number of archive result pages', () =
 
 test('getArchiveResultsCount retrieves number of archive results', () => {
     expect(selectors.getArchiveResultsCount(state)).toEqual(state.search.archive.resultsCount);
+});
+
+test('getMapSearch retrieves map part of search state', () => {
+    expect(selectors.getMapSearch(state)).toEqual(state.search.map);
+});
+
+test('getFoundMarkers retrieves found map markers', () => {
+    expect(selectors.getFoundMarkers(state)).toEqual(state.search.map.foundMarkers);
+});
+
+test('getMarkersFetched retrieves if markers have been loaded', () => {
+    expect(selectors.getMarkersFetched(state)).toEqual(false);
+});
+
+test('getMapQuery retrieves map query object', () => {
+    expect(selectors.getMapQuery(state)).toEqual(state.search.map.query);
+});
+
+test('getIsMapSearching retrieves map search state', () => {
+    expect(selectors.getIsMapSearching(state)).toEqual(state.search.isMapSearching);
 });

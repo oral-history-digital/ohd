@@ -165,7 +165,7 @@ import 'leaflet.markercluster.freezable';
             })
         }
 
-        if (options.fitBounds != false) {
+        if (options.fitBounds && allMarkers.length > 0) {
             SucheKarte.map.fitBounds(allMarkers, {padding: [15, 15]});
         }
 

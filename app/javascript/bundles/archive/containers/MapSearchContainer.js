@@ -1,29 +1,22 @@
 import { connect } from 'react-redux';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import MapSearch from '../components/MapSearch';
 import { searchInMap } from '../actions/searchActionCreators';
 import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
-import { getProject } from '../../../lib/utils';
+import { getLocale, getProjectId } from '../selectors/archiveSelectors';
+import { getIsLoggedIn } from '../selectors/accountSelectors';
+import { getFoundMarkers, getIsMapSearching, getMapQuery, getMarkersFetched } from '../selectors/searchSelectors';
 
-const mapStateToProps = (state) => {
-    let project = getProject(state);
-    return {
-        foundMarkers: state.search.map.foundMarkers,
-        query: state.search.map.query,
-        translations: state.archive.translations,
-        locale: state.archive.locale,
-        locales: (project && project.available_locales) || state.archive.locales,
-        isMapSearching: state.search.isMapSearching,
-        project: project,
-        projectId: state.archive.projectId,
-        editView: state.archive.editView,
-        account: state.data.accounts.current,
-        isLoggedIn: state.account.isLoggedIn,
-    }
-}
+const mapStateToProps = state => ({
+    markersFetched: getMarkersFetched(state),
+    foundMarkers: getFoundMarkers(state),
+    query: getMapQuery(state),
+    isMapSearching: getIsMapSearching(state),
+    isLoggedIn: getIsLoggedIn(state),
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+});
 
 const mapDispatchToProps = (dispatch) => ({
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     searchInMap: (url, query) => dispatch(searchInMap(url, query)),
     setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
 })
