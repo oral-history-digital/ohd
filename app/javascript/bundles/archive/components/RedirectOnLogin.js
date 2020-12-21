@@ -14,11 +14,12 @@ export default function RedirectOnLogin({
     const locale = useSelector(getLocale);
     const projectId = useSelector(getProjectId);
     const isLoggedIn = useSelector(getIsLoggedIn);
+
     const prevIsLoggedIn = usePrevious(isLoggedIn);
 
     if (prevIsLoggedIn === false && isLoggedIn === true) {
         return (
-            <Redirect to={`/${pathBase({projectId, locale})}${path}`} />
+            <Redirect to={`${pathBase({projectId, locale})}${path}`} />
         );
     }
 
