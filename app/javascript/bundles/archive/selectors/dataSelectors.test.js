@@ -1,3 +1,4 @@
+import dotProp from 'dot-prop-immutable';
 import * as selectors from './dataSelectors';
 
 const state = {
@@ -28,6 +29,9 @@ const state = {
             people: {
                 12: 'fetched',
                 contributors_for_interview_22: 'fetched',
+            },
+            random_featured_interviews: {
+                all: 'fetched-Thu Dec 17 2020 18:20:22 GMT+0100 (Central European Standard Time)',
             },
         },
         projects: {
@@ -82,6 +86,12 @@ const state = {
                 type: 'InterviewReference',
                 user_account_id: 45,
                 media_id: 'za003',
+            },
+        },
+        random_featured_interviews: {
+            'cd009': {
+                id: 23,
+                type: 'Interview',
             },
         },
     },
@@ -139,6 +149,25 @@ test('getUserContents gets user contents object', () => {
     expect(selectors.getUserContents(state)).toEqual(state.data.user_contents);
 });
 
+test('getRandomFeaturedInterviews gets featured interviews object', () => {
+    expect(selectors.getRandomFeaturedInterviews(state)).toEqual(state.data.random_featured_interviews);
+});
+
+describe('getFeaturedInterviewsArray', () => {
+    test('gets featured interviews array', () => {
+        const actual = selectors.getFeaturedInterviewsArray(state);
+        const expected = [{ id: 23, type: 'Interview' }];
+        expect(actual).toEqual(expected);
+    });
+
+    test('gets empty array if interviews are not available', () => {
+        const _state = dotProp.set(state, 'data.random_featured_interviews', undefined);
+        const actual = selectors.getFeaturedInterviewsArray(_state);
+        const expected = [];
+        expect(actual).toEqual(expected);
+    });
+});
+
 test('getCurrentUserIsAdmin gets admin status of current account', () => {
     expect(selectors.getCurrentUserIsAdmin(state)).toEqual(state.data.accounts.current.admin);
 });
@@ -180,4 +209,8 @@ test('getCurrentInterviewFetched retrieves if current interview has been fetched
 
 test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {
     expect(selectors.getContributorsFetched(state)).toBe(true);
+});
+
+test('getFeaturedInterviewsFetched retrieves if featured interviews have been fetched', () => {
+    expect(selectors.getFeaturedInterviewsFetched(state)).toBe(true);
 });
