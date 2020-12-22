@@ -3,6 +3,9 @@ import { connect } from 'react-redux';
 import InterviewTabPanel from '../../components/flyout-tabs/InterviewTabPanel';
 import { getInterviewee, getProject } from 'lib/utils';
 import { getCurrentInterview } from '../../selectors/dataSelectors';
+import { searchInArchive } from '../../actions/searchActionCreators';
+import { hideFlyoutTabs } from '../../actions/flyoutTabsActionCreators';
+import { setViewMode } from '../../actions/archiveActionCreators';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -19,4 +22,10 @@ const mapStateToProps = (state) => {
     };
 };
 
-export default connect(mapStateToProps)(InterviewTabPanel);
+const mapDispatchToProps = (dispatch) => ({
+    searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
+    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
+    setViewMode: (viewMode) => dispatch(setViewMode(viewMode)),
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(InterviewTabPanel);

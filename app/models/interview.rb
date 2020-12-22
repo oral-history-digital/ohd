@@ -864,6 +864,7 @@ class Interview < ApplicationRecord
         fulltext params[:fulltext]
         with(:workflow_state, user_account && (user_account.admin? || user_account.permissions?('Interview', :update)) ? ['public', 'unshared'] : 'public')
         with(:project_id, project.id)
+        with(:archive_id, params[:archive_id]) if params[:archive_id]
         dynamic :search_facets do
           facet *project.search_facets_names
           project.search_facets_names.each do |facet|
