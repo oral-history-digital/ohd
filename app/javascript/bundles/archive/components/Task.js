@@ -19,6 +19,22 @@ export default class Task extends React.Component {
 
     usersAsOptionsForSelect(attribute) {
         let opts = Object.values(this.props.userAccounts).
+            filter(u => 
+                (
+                    // supervisor-select
+                    attribute === 'supervisor_id' && 
+                    (!!Object.values(u.user_roles).find(r => r.name === 'QM') || u.admin)
+                ) ||
+                (
+                    // assigned-user-select
+                    attribute === 'user_account_id' && 
+                    (
+                        !!Object.values(u.user_roles).find(r => r.name === 'Redaktion') || 
+                        !!Object.values(u.user_roles).find(r => r.name === 'QM') || 
+                        u.admin
+                    )
+                )
+            ).
             sort((a, b) => `${b.last_name}${b.first_name}` < `${a.last_name}${a.first_name}`).
             map((userAccount, index) => {
             return (
