@@ -7,10 +7,8 @@ class TaskTypesController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          id: @task_type.project_id,
-          data_type: 'projects',
-          nested_data_type: 'task_types',
-          nested_id: @task_type.id,
+          id: @task_type.id,
+          data_type: 'task_types',
           data: cache_single(@task_type),
         }
       end
@@ -25,10 +23,8 @@ class TaskTypesController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          id: @task_type.project_id,
-          data_type: 'projects',
-          nested_data_type: 'task_types',
-          nested_id: @task_type.id,
+          id: @task_type.id,
+          data_type: 'task_types',
           data: cache_single(@task_type),
         }
       end
