@@ -39,6 +39,7 @@ class ProjectSerializer < ApplicationSerializer
     :pdf_registry_entry_codes,
     :pseudo_pdf_registry_entry_codes,
     :metadata_fields,
+    :task_types,
     :external_links,
     :logos,
     :sponsor_logos,
@@ -49,7 +50,7 @@ class ProjectSerializer < ApplicationSerializer
     object.shortname
   end
 
-  %w(metadata_fields external_links).each do |m|
+  %w(metadata_fields task_types external_links).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
     end
