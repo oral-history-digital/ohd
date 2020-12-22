@@ -18,26 +18,6 @@ export default class Segment extends React.Component {
         this.setOpenReference = this.setOpenReference.bind(this);
     }
 
-    shouldComponentUpdate(nextProps, nextState) {
-        if ((this.state.contentOpen != nextState.contentOpen) || (this.state.contentType != nextState.contentType)) {
-            return true;
-        }
-        if (nextState.openReference !== this.state.openReference) {
-            return true;
-        }
-        if (nextProps.statuses[this.props.data.id] !== this.props.statuses[this.props.data.id]) {
-            return true;
-        }
-        if (nextProps.active !== this.props.active) {
-            return true;
-        }
-        if (nextProps.editView !== this.props.editView) {
-            return true;
-        }
-
-        return false;
-    }
-
     css() {
         return 'segment ' + (this.props.active ? 'active' : 'inactive');
     }

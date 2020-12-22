@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactList from 'react-list';
+
 import SegmentContainer from '../containers/SegmentContainer';
 import { t, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
 import { segmentsForTape } from 'utils/segments';
@@ -87,6 +89,8 @@ export default class Transcript extends React.Component {
     }
 
     transcript(){
+        const { transcriptTime, tape } = this.props;
+
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
         let tabIndex = this.props.originalLocale ? 0 : 1;
         let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props);
@@ -97,8 +101,11 @@ export default class Transcript extends React.Component {
         let speaker, speakerId;
         let transcript = [];
 
-        return shownSegments.map((segment, index) => {
-            let interviewee = getInterviewee(this.props);
+        const interviewee = getInterviewee(this.props);
+
+        function renderItem(index, key) {
+            const segment = shownSegments[index];
+
             segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
             if (
                 (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
@@ -110,22 +117,32 @@ export default class Transcript extends React.Component {
             }
             let active = false;
             if (
-                segment.time <= this.props.transcriptTime + 15 &&
-                segment.time >= this.props.transcriptTime - 15 &&
-                segment.tape_nbr === this.props.tape
+                segment.time <= transcriptTime + 15 &&
+                segment.time >= transcriptTime - 15 &&
+                segment.tape_nbr === tape
             ) {
                 active = true;
             }
+
             return (
                 <SegmentContainer
+                    key={key}
                     data={segment}
                     contentLocale={locale}
                     tabIndex={tabIndex}
                     active={active}
-                    key={segment.id}
                 />
-            )
-        })
+            );
+        }
+
+        return (
+            <ReactList
+                itemRenderer={renderItem}
+                length={shownSegments.length}
+                type="variable"
+                itemSizeEstimator={() => 72}
+            />
+        );
     }
 
     render () {
