@@ -26,8 +26,7 @@ class Segment < ApplicationRecord
   has_many  :annotations
 
   scope :with_heading, -> {
-    joins(:translations).
-    where("((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))").
+    where(has_heading: true).
     includes(:translations).
     order(:tape_number, :timecode)}
 
@@ -443,10 +442,7 @@ class Segment < ApplicationRecord
   end
 
   def has_heading?
-    translation_with_heading = translations.detect do |t|
-      not (t.mainheading.blank? and t.subheading.blank?)
-    end
-    not translation_with_heading.nil?
+    !!has_heading
   end
 
   def self.media_id_successor(mid)
