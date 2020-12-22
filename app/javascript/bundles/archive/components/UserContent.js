@@ -113,7 +113,7 @@ export default class UserContent extends React.Component {
                         this.props.searchInArchive(url, this.props.data.properties);
                         this.hideFlyoutTabsIfMobile();
                     }}
-                    to={'/' + this.props.locale + '/searches/archive'}
+                    to={pathBase(this.props) + '/searches/archive'}
                 >
                     {t(this.props, callKey)}
                 </Link>
