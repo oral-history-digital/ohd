@@ -125,12 +125,12 @@ body {
     }
   }
   .wrapper-content {
-    margin-top: 270px;
+    margin-top: 170px;
     @include screen-m {
-      margin-top: 200px;
+      margin-top: 100px;
     }
     @include screen-xl {
-      margin-top: 240px;
+      margin-top: 140px;
     }
   }
 }
