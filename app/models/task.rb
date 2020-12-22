@@ -11,35 +11,36 @@ class Task < ApplicationRecord
 
   before_save :save_dates_and_inform
 
-  include Workflow
+  #include Workflow
 
-  workflow do
-    state :created do
-      event :start, transition_to: :started
-    end
-    state :started do
-      event :finish, transitions_to: :finished
-    end
-    state :finished do
-      event :clear, transitions_to: :cleared
-      event :restart, transitions_to: :restarted
-    end
-    state :cleared do
-      event :restart, transitions_to: :restarted
-    end
-    state :restarted do
-      event :finish, transitions_to: :finished
-    end
-  end
+  #workflow do
+    #state :created do
+      #event :start, transition_to: :started
+    #end
+    #state :started do
+      #event :finish, transitions_to: :finished
+    #end
+    #state :finished do
+      #event :clear, transitions_to: :cleared
+      #event :restart, transitions_to: :restarted
+    #end
+    #state :cleared do
+      #event :restart, transitions_to: :restarted
+    #end
+    #state :restarted do
+      #event :finish, transitions_to: :finished
+    #end
+  #end
 
   def workflow_states
-    current_state.events.map{|e| e.first}
+    #current_state.events.map{|e| e.first}
+    %w(created started finished cleared restarted)
   end
 
-  def workflow_state=(change)
-    self.send("#{change}!")
-    self.touch
-  end
+  #def workflow_state=(change)
+    #self.send("#{change}!")
+    #self.touch
+  #end
 
   def save_dates_and_inform
     if user_account_id_changed? && user_account_id != nil
