@@ -3,10 +3,9 @@
 class BaseRegistryReference < ApplicationRecord
   self.abstract_class = true
 
-  belongs_to :ref_object, :polymorphic => true
+  belongs_to :ref_object, polymorphic: true, counter_cache: :registry_references_count
 
-  belongs_to :registry_entry, -> { includes(:registry_names) }, counter_cache: true 
-             #-> { includes(:registry_names, {main_registers: :registry_names}) }
+  belongs_to :registry_entry, -> { includes(:registry_names) }# seems not to work: , counter_cache: :registry_references_count
 
   belongs_to :registry_reference_type
 
@@ -29,6 +28,14 @@ class BaseRegistryReference < ApplicationRecord
   scope :with_type_id, -> (id) {
         where(registry_reference_type_id: id)
   }
+
+  after_create do
+    ref_object_type.constantize.update_counters ref_object_id, registry_references_count: 1
+  end
+
+  after_destroy do
+    ref_object_type.constantize.update_counters ref_object_id, registry_references_count: -1
+  end
 
   def to_hash(options = {})
     hash = {

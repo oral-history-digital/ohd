@@ -43,7 +43,7 @@ export default class RegistryEntrySelect extends React.Component {
             this.props.registryEntries[this.state.selectedRegistryEntryId] &&
             this.props.registryEntries[this.state.selectedRegistryEntryId].associations_loaded
         ) {
-            return this.props.registryEntries[this.state.selectedRegistryEntryId].parent_ids[this.props.locale][0];
+            return this.props.registryEntries[this.state.selectedRegistryEntryId].parent_ids[0];
         } else {
             return null;
         }

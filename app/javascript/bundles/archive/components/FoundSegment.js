@@ -30,7 +30,7 @@ export default class Segment extends React.Component {
         if (this.props.tape_count > 1){
             return (
                 <span>
-                    {t(this.props, 'tape')} {this.props.data.tape_nbr}/{this.props.tape_count}
+                    {t(this.props, 'tape')} {this.props.data.tape_nbr}/{this.props.interview.tape_count}
                     &nbsp;|&nbsp;
                 </span>
             )

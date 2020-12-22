@@ -49,6 +49,7 @@
     "redux-thunk": "^2.2.0",
     "regenerator-runtime": "^0.13.7",
     "reselect": "^4.0.0",
+    "slick-carousel": "^1.8.1",
     "superagent": "^5.0.2",
     "superagent-no-cache": "^0.1.1"
   },

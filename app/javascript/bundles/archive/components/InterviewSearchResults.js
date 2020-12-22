@@ -1,8 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 import Slider from "react-slick";
-import '../../../css/slick.css';
-import '../../../css/slick-theme.css';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import PersonContainer from '../containers/PersonContainer';
 import BiographicalEntryContainer from '../containers/BiographicalEntryContainer';
@@ -48,7 +46,7 @@ export default class InterviewSearchResults extends React.Component {
                     }
                 }
 
-                let result = React.createElement(this.components()[model], 
+                let result = React.createElement(this.components()[model],
                     {
                         data: data,
                         key: `search-result-${model}-${data.id}`,
@@ -62,11 +60,11 @@ export default class InterviewSearchResults extends React.Component {
 
                 if (this.props.asSlideShow) {
                     return (
-                        <Link 
+                        <Link
                             key={`search-result-link-${model}-${data.id}`}
-                            onClick={() => { 
-                                this.props.setArchiveId(this.props.interview.archive_id); 
-                                this.props.setTapeAndTime(1, 0) 
+                            onClick={() => {
+                                this.props.setArchiveId(this.props.interview.archive_id);
+                                this.props.setTapeAndTime(1, 0)
                             }}
                             to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                         >
@@ -119,4 +117,3 @@ export default class InterviewSearchResults extends React.Component {
         }
     }
 }
-
