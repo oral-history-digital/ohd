@@ -23,7 +23,7 @@ function SiteHeader({
     }
 
     return (
-        <header className={classNames('SiteHeader', { 'is-hidden': transcriptScrollEnabled })}>
+        <header className="SiteHeader">
             <Link
                 to={`/${locale}`}
                 className="logo-link"
