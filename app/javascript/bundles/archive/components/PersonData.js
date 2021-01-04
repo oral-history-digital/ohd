@@ -1,11 +1,15 @@
 import React from 'react';
-import { t, admin, fullname, getInterviewee, pathBase, humanReadable } from '../../../lib/utils';
-import AuthShowContainer from '../containers/AuthShowContainer';
+
 import ContentField from './ContentField';
-import ArchivePopupButtonContainer from '../containers/ArchivePopupButtonContainer';
+import ArchivePopupButton from './ArchivePopupButton';
+import AuthorizedContent from './AuthorizedContent';
+import Spinner from './Spinner';
+
+import AuthShowContainer from '../containers/AuthShowContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
-import Spinner from './Spinner';
+
+import { t, admin, fullname, getInterviewee, pathBase, humanReadable } from '../../../lib/utils';
 
 export default class PersonData extends React.Component {
 
@@ -132,17 +136,19 @@ export default class PersonData extends React.Component {
 
     info() {
         let interviewee = getInterviewee(this.props);
+        let editTitle = t(this.props, 'edit.contribution.edit');
         if (interviewee) {
             return (
                 <div>
                     <AuthShowContainer ifLoggedIn={true}>
                         <ContentField label={t(this.props, 'interviewee_name')} value={fullname(this.props, interviewee, true)} >
-                            <ArchivePopupButtonContainer
-                                titleKey='edit.contribution.edit'
-                                buttonFaKey='pencil'
-                                content={this.contributionForm()}
-                                authorizedObject={interviewee}
-                            />
+                            <AuthorizedContent object={interviewee}>
+                                <ArchivePopupButton
+                                    title={editTitle}
+                                    buttonFaKey='pencil'
+                                    content={this.contributionForm()}
+                                />
+                            </AuthorizedContent>
                         </ContentField>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
