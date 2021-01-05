@@ -72,8 +72,9 @@ export default class DataLists extends React.Component {
                     <ArchivePopupButton
                         title={t(this.props, `edit.${this.props.scope}.new`)}
                         buttonFaKey='plus'
-                        content={this.form()}
-                    />
+                    >
+                        {this.form()}
+                    </ArchivePopupButton>
                 </AuthorizedContent>
             )
         }

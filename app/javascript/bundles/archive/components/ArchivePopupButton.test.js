@@ -24,8 +24,9 @@ it('renders correctly', () => {
             <ArchivePopupButton
                 title='Bearbeiten'
                 buttonFaKey='pencil'
-                content={'Klaus'}
-            />
+            >
+                {'Klaus'}
+            </ArchivePopupButton>
         )
         .toJSON();
     expect(tree).toMatchSnapshot();

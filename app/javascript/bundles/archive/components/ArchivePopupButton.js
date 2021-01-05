@@ -4,19 +4,11 @@ import { useDispatch } from 'react-redux';
 
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
-export default function ArchivePopupButton({title, content, buttonFaKey, authorizedObject}) {
-
-    //
-    // title, buttonFaKey, content
-    // e.g.:
-    // title='edit contribution'
-    // buttonFaKey='pencil'
-    // content={<div>bla bla</div>}
-    //
+export default function ArchivePopupButton({title, children, buttonFaKey, authorizedObject}) {
 
     const dispatch = useDispatch();
     const open = useCallback(
-        () => dispatch(openArchivePopup({title: title, content: content})),
+        () => dispatch(openArchivePopup({title: title, content: children})),
         [dispatch]
     )
 

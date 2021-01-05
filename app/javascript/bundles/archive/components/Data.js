@@ -59,8 +59,9 @@ export default class Data extends React.Component {
             <ArchivePopupButton
                 title={this.name()}
                 buttonFaKey='eye'
-                content={this.details()}
-            />
+            >
+                {this.details()}
+            </ArchivePopupButton>
         )
     }
 
@@ -69,11 +70,10 @@ export default class Data extends React.Component {
             <ArchivePopupButton
                 title={`${this.name()} ${t(this.props, `edit.${this.props.scope}.edit`)}`}
                 buttonFaKey='pencil'
-                content={<>
-                            {this.props.hideShow && this.details()}
-                            {this.props.form(this.props.data)}
-                        </>}
-            />
+            >
+                {this.props.hideShow && this.details()}
+                {this.props.form(this.props.data)}
+            </ArchivePopupButton>
         )
     }
 
@@ -87,13 +87,12 @@ export default class Data extends React.Component {
             <ArchivePopupButton
                 title={t(this.props, 'delete')}
                 buttonFaKey='trash-o'
-                content={<>
-                            <p>{this.name()}</p>
-                            <div className='any-button' onClick={() => this.destroy()}>
-                                {t(this.props, 'delete')}
-                            </div>
-                        </>}
-            />
+            >
+                <p>{this.name()}</p>
+                <div className='any-button' onClick={() => this.destroy()}>
+                    {t(this.props, 'delete')}
+                </div>
+            </ArchivePopupButton>
         )
     }
 
