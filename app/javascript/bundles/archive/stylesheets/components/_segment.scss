@@ -3,6 +3,7 @@
  */
 
 .Segment {
+  @include clearfix;
   padding-bottom: 0.25rem;
   padding-top: 0.25rem;
 }
@@ -12,6 +13,6 @@
 }
 
 .Segment .fa {
-  font-size: 20px;
   color: var(--primary-color);
+  font-size: 1.25rem;
 }

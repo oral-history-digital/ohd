@@ -13,7 +13,17 @@ import Spinner from './Spinner';
 export default class Transcript extends React.Component {
     constructor(props) {
         super(props);
+
         this.handleScroll = this.handleScroll.bind(this);
+        this.openSegmentPopup = this.openSegmentPopup.bind(this);
+        this.closeSegmentPopup = this.closeSegmentPopup.bind(this);
+        this.setOpenReference = this.setOpenReference.bind(this);
+
+        this.state = {
+            popupSegmentId: null,
+            popupType: null,
+            openReference: null,
+        };
     }
 
     componentDidMount() {
@@ -37,6 +47,26 @@ export default class Transcript extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('wheel', this.handleScroll);
+    }
+
+    openSegmentPopup(segmentId, popupType) {
+        this.setState({
+            popupSegmentId: segmentId,
+            popupType,
+            openReference: null,
+        });
+    }
+
+    closeSegmentPopup() {
+        this.setState({
+            popupSegmentId: null,
+            popupType: null,
+            openReference: null,
+        });
+    }
+
+    setOpenReference(reference) {
+        this.setState({ openReference: reference });
     }
 
     loadSegments() {
@@ -90,6 +120,7 @@ export default class Transcript extends React.Component {
 
     transcript(){
         const { transcriptTime, tape } = this.props;
+        const { popupSegmentId, popupType, openReference } = this.state;
 
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
         let tabIndex = this.props.originalLocale ? 0 : 1;
@@ -103,7 +134,7 @@ export default class Transcript extends React.Component {
 
         const interviewee = getInterviewee(this.props);
 
-        function renderItem(index, key) {
+        const renderItem = (index, key) => {
             const segment = shownSegments[index];
 
             segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
@@ -129,11 +160,16 @@ export default class Transcript extends React.Component {
                     key={key}
                     data={segment}
                     contentLocale={locale}
+                    popupType={popupSegmentId === segment.id ? popupType : null}
+                    openReference={popupSegmentId === segment.id ? openReference : null}
+                    openPopup={this.openSegmentPopup}
+                    closePopup={this.closeSegmentPopup}
+                    setOpenReference={this.setOpenReference}
                     tabIndex={tabIndex}
                     active={active}
                 />
             );
-        }
+        };
 
         return (
             <ReactList
