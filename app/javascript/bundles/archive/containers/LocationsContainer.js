@@ -1,19 +1,10 @@
 import { connect } from 'react-redux';
 
 import Locations from '../components/Locations';
+import { getFlyoutTabsVisible } from '../selectors/flyoutTabsSelectors';
 
-const mapStateToProps = (state, ownProps) => {
-    let data = {}
-    if(ownProps.data) {
-        data = ownProps.data
-    } else {
-        data = state.search.allInterviewsPlacesOfBirth
-    }
-    return { 
-        data: data,
-        locale: state.archive.locale,
-        visible: state.flyoutTabs.visible,
-    }
-}
+const mapStateToProps = (state) => ({
+    visible: getFlyoutTabsVisible(state),
+});
 
 export default connect(mapStateToProps)(Locations);

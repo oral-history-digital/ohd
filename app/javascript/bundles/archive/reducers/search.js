@@ -52,6 +52,7 @@ const initialState = {
     projects: { query: {page: 1} },
     collections: { query: {page: 1} },
     languages: { query: {page: 1} },
+    isMapSearching: false,
 }
 
 const search = (state = initialState, action) => {
