@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+
 import SegmentFormContainer from '../containers/SegmentFormContainer';
 import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
@@ -201,14 +203,16 @@ export default class Segment extends React.Component {
     }
 
     render() {
-        let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
-        let contentTransRowCss = this.speakerChanged() ? 'content-trans-row speaker-change' : 'content-trans-row';
         let text = this.transcript();
         let uAnnotations = this.userAnnotations();
 
         if (text) {
             return (
-                <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
+                <div
+                    id={`segment_${this.props.data.id}`}
+                    className={classNames('Segment', {
+                        'Segment--withSpeaker': this.speakerChanged(),
+                    })}>
                     <div className="content-trans-speaker-ico">
                         {this.speakerIcon()}
                     </div>
@@ -222,7 +226,7 @@ export default class Segment extends React.Component {
                         </div>
                     </div>
                     {this.renderLinks(this.props.contentLocale, uAnnotations)}
-                    <div className={contentOpenClass}>
+                    <div className={classNames(this.state.contentOpen ? 'content-trans-text-element' : 'hidden')}>
                         <div>
                             {this.annotations(this.props.contentLocale)}
                             {uAnnotations}

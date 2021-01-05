@@ -1,0 +1,17 @@
+/**
+ * Segment component
+ */
+
+.Segment {
+  padding-bottom: 0.25rem;
+  padding-top: 0.25rem;
+}
+
+.Segment--withSpeaker {
+  padding-top: 1rem;
+}
+
+.Segment .fa {
+  font-size: 20px;
+  color: var(--primary-color);
+}
