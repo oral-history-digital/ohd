@@ -7,12 +7,11 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 export default function ArchivePopupButton({title, content, buttonFaKey, authorizedObject}) {
 
     //
-    // title, buttonFaKey, content, authorizedObject
+    // title, buttonFaKey, content
     // e.g.:
     // title='edit contribution'
     // buttonFaKey='pencil'
     // content={<div>bla bla</div>}
-    // authorizedObject={this.props.interview}
     //
 
     const dispatch = useDispatch();
