@@ -12,6 +12,8 @@ export const getStatuses = state => getData(state).statuses;
 
 export const getPeopleStatus = state => getStatuses(state).people;
 
+export const getInterviewsStatus = state => getStatuses(state).interviews;
+
 export const getCollections = state => getData(state).collections;
 
 export const getProjects = state => getData(state).projects;
@@ -46,11 +48,12 @@ export const getCurrentProject = createSelector(
     }
 );
 
-export const getCurrentInterview = state => {
-    const interviews = getInterviews(state);
-    const archiveId = getArchiveId(state);
-    return interviews && interviews[archiveId];
-};
+export const getCurrentInterview = createSelector(
+    [getInterviews, getArchiveId],
+    (interviews, archiveId) => {
+        return (interviews && interviews[archiveId]);
+    }
+);
 
 export const getCurrentInterviewFetched = state => {
     const currentInterview = getCurrentInterview(state);

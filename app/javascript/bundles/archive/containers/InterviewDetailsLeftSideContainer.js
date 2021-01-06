@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import InterviewDetailsLeftSide from '../components/InterviewDetailsLeftSide';
 import { getProject, getInterview, getInterviewee } from '../../../lib/utils';
 import { searchInArchive } from '../actions/searchActionCreators';
+import { getCurrentInterview } from '../selectors/dataSelectors';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         archiveId: state.archive.archiveId,
+        interview: getCurrentInterview(state),
         foundInterviews: state.search.archive.foundInterviews,
         interviewee: getInterviewee({interview: getInterview(state), people: state.data.people}),
         locale: state.archive.locale,

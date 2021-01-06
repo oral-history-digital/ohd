@@ -1,132 +1,64 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+import { useParams } from 'react-router-dom';
 
 import InterviewEditViewContainer from '../containers/InterviewEditViewContainer';
 import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
 import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
+import InterviewLoggedOutContainer from '../containers/InterviewLoggedOutContainer';
 import { INDEX_INTERVIEW } from '../constants/flyoutTabs';
-import StateCheck from './StateCheck';
+import Fetch from './Fetch';
 import Spinner from './Spinner';
 import { getCurrentInterviewFetched } from '../selectors/dataSelectors';
 
-export default class Interview extends React.Component {
-    componentDidMount() {
-        this.setArchiveId();
-        this.loadInterview();
-        this.loadContributors();
+export default function Interview({
+    interviewEditView,
+    isCatalog,
+    setFlyoutTabsIndex,
+    setArchiveId,
+}) {
+    const { archiveId } = useParams();
 
-        this.props.setFlyoutTabsIndex(INDEX_INTERVIEW);
-    }
+    useEffect(() => {
+        setFlyoutTabsIndex(INDEX_INTERVIEW);
+        setArchiveId(archiveId);
+    }, []);
 
-    componentDidUpdate() {
-        this.setArchiveId();
-        this.loadInterview();
-        this.loadContributors();
-    }
+    return (
+        <Fetch
+            fetchParams={['interviews', archiveId]}
+            testSelector={getCurrentInterviewFetched}
+            fallback={<Spinner withPadding />}
+        >
+            {
+                isCatalog ?
+                    <InterviewDetailsLeftSideContainer /> :
+                    (
+                        <div>
+                            <AuthShowContainer ifLoggedIn>
+                                <VideoPlayerContainer />
+                                {
+                                    interviewEditView ?
+                                        <InterviewEditViewContainer /> :
+                                        <InterviewTabsContainer />
 
-    setArchiveId() {
-        if ( this.props.match.params.archiveId !== this.props.archiveId) {
-            this.props.setArchiveId(this.props.match.params.archiveId);
-        }
-    }
-
-    loadInterview() {
-        if (
-            !this.props.interviewsStatus[this.props.match.params.archiveId] ||
-            this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'reload'
-        ) {
-            this.props.fetchData(this.props, 'interviews', this.props.match.params.archiveId);
-        }
-    }
-
-    interviewLoaded() {
-        return this.props.interviewsStatus[this.props.match.params.archiveId] &&
-            (this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'fetched' ||
-            this.props.interviewsStatus[this.props.match.params.archiveId].split('-')[0] === 'processed');
-    }
-
-    loadContributors() {
-        if (
-            this.interviewLoaded() &&
-            !this.props.peopleStatus[`contributors_for_interview_${this.interview().id}`]
-        ) {
-            this.props.fetchData(this.props, 'people', null, null, `contributors_for_interview=${this.interview().id}`);
-        }
-    }
-
-    interview() {
-        return this.interviewLoaded() ? this.props.interviews[this.props.match.params.archiveId] : {};
-    }
-
-    loggedOutContent() {
-        if (this.interviewLoaded() && this.props.interviews) {
-            return (
-                <div>
-                    <div className="VideoPlayer">
-                        <header className="VideoHeader">
-                            <h1 className="VideoHeader-title">
-                                {this.props.project.fullname_on_landing_page ? this.interview().title[this.props.locale] : this.interview().anonymous_title[this.props.locale]}
-                            </h1>
-                        </header>
-                        <div className="VideoElement">
-                            <img src={this.interview().still_url}/>
+                                }
+                            </AuthShowContainer>
+                            <AuthShowContainer ifLoggedOut ifNoProject>
+                                <InterviewLoggedOutContainer />
+                            </AuthShowContainer>
                         </div>
-                    </div>
-                    {this.landingPageText()}
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
-
-    landingPageText() {
-        return (
-            <div className='wrapper-content'
-                 dangerouslySetInnerHTML={{__html: this.interview().landing_page_texts[this.props.locale]}}
-            />
-        )
-    }
-
-    innerContent() {
-        if (this.props.interviewEditView) {
-            return (
-                <InterviewEditViewContainer
-                    interview={this.interview()}
-                />
-            )
-        } else {
-            return (
-                <InterviewTabsContainer
-                    interview={this.interview()}
-                />
-            )
-        }
-    }
-
-    render() {
-        return (
-            <StateCheck
-                testSelector={getCurrentInterviewFetched}
-                fallback={<Spinner withPadding />}
-            >
-                {
-                    this.props.isCatalog ?
-                        <InterviewDetailsLeftSideContainer interview={this.interview()} /> :
-                        (
-                            <div>
-                                <AuthShowContainer ifLoggedIn={true}>
-                                    <VideoPlayerContainer interview={this.interview()} />
-                                    {this.innerContent()}
-                                </AuthShowContainer>
-                                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                                    {this.loggedOutContent()}
-                                </AuthShowContainer>
-                            </div>
-                        )
-                }
-            </StateCheck>
-        );
-    }
+                    )
+            }
+        </Fetch>
+    );
 }
+
+Interview.propTypes = {
+    isCatalog: PropTypes.bool.isRequired,
+    interviewEditView: PropTypes.bool.isRequired,
+    setFlyoutTabsIndex: PropTypes.func.isRequired,
+    setArchiveId: PropTypes.func.isRequired,
+};
