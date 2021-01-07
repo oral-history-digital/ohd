@@ -42,22 +42,19 @@ class Person < ApplicationRecord
       "public"
     end
 
-    (I18n.available_locales + [:orig]).each do |locale|
+    Rails.configuration.i18n.available_locales.each do |locale|
       string :"name_#{locale}" do
         "#{first_name(locale)} #{last_name(locale)}"
       end
-    end
 
-    (I18n.available_locales + [:orig]).each do |locale|
       text :"text_#{locale}", stored: true do
         "#{first_name(locale)} #{last_name(locale)}"
       end
-    end
-    # contributions
-    # find them through fulltext search
-    # e.g.: 'Kamera Hans Peter'
-    #
-    I18n.available_locales.each do |locale|
+
+      # contributions
+      # find them through fulltext search
+      # e.g.: 'Kamera Hans Peter'
+      #
       text :"contributions_#{locale}", stored: true do
         contributions.map(&:contribution_type).uniq.map { |c| [I18n.t(c, locale: locale), first_name(locale), last_name(locale)] }.flatten.join(" ") rescue nil
       end
