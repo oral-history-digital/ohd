@@ -8,7 +8,7 @@ function AuthorizedContent({
 }) {
     const { isAuthorized } = useAuthorization();
 
-    if (isAuthorized(object)) {
+    if (Array.isArray(object) ? object.find(obj => isAuthorized(obj)) : isAuthorized(object)) {
         return children;
     }
 
@@ -16,7 +16,10 @@ function AuthorizedContent({
 }
 
 AuthorizedContent.propTypes = {
-    object: PropTypes.object.isRequired,
+    object: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.object),
+        PropTypes.object
+    ]).isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node

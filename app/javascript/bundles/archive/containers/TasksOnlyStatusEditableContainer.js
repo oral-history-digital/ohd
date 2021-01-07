@@ -18,6 +18,7 @@ const mapStateToProps = (state) => {
         editView: true,
         //
         scope: 'task',
+        optionsScope: 'workflow_states',
         detailsAttributes: [
             'archive_id', 
             'interviewee', 
