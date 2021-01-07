@@ -11,9 +11,10 @@ import InterviewLoggedOutContainer from '../containers/InterviewLoggedOutContain
 import { INDEX_INTERVIEW } from '../constants/flyoutTabs';
 import Fetch from './Fetch';
 import Spinner from './Spinner';
-import { getCurrentInterviewFetched } from '../selectors/dataSelectors';
+import { getContributorsFetched, getCurrentInterviewFetched } from '../selectors/dataSelectors';
 
 export default function Interview({
+    interview,
     interviewEditView,
     isCatalog,
     setFlyoutTabsIndex,
@@ -32,31 +33,38 @@ export default function Interview({
             testSelector={getCurrentInterviewFetched}
             fallback={<Spinner withPadding />}
         >
-            {
-                isCatalog ?
-                    <InterviewDetailsLeftSideContainer /> :
-                    (
-                        <div>
-                            <AuthShowContainer ifLoggedIn>
-                                <VideoPlayerContainer />
-                                {
-                                    interviewEditView ?
-                                        <InterviewEditViewContainer /> :
-                                        <InterviewTabsContainer />
+            <Fetch
+                fetchParams={['people', null, null, `contributors_for_interview=${interview?.id}`]}
+                testSelector={getContributorsFetched}
+                alwaysRenderChildren
+            >
+                {
+                    isCatalog ?
+                        <InterviewDetailsLeftSideContainer /> :
+                        (
+                            <div>
+                                <AuthShowContainer ifLoggedIn>
+                                    <VideoPlayerContainer />
+                                    {
+                                        interviewEditView ?
+                                            <InterviewEditViewContainer /> :
+                                            <InterviewTabsContainer />
 
-                                }
-                            </AuthShowContainer>
-                            <AuthShowContainer ifLoggedOut ifNoProject>
-                                <InterviewLoggedOutContainer />
-                            </AuthShowContainer>
-                        </div>
-                    )
-            }
+                                    }
+                                </AuthShowContainer>
+                                <AuthShowContainer ifLoggedOut ifNoProject>
+                                    <InterviewLoggedOutContainer />
+                                </AuthShowContainer>
+                            </div>
+                        )
+                }
+            </Fetch>
         </Fetch>
     );
 }
 
 Interview.propTypes = {
+    interview: PropTypes.object,
     isCatalog: PropTypes.bool.isRequired,
     interviewEditView: PropTypes.bool.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,

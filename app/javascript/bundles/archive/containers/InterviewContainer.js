@@ -5,8 +5,10 @@ import { setArchiveId } from '../actions/archiveActionCreators';
 import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
 import { getInterviewEditView } from '../selectors/archiveSelectors';
 import { getIsCatalog } from '../selectors/projectSelectors';
+import { getCurrentInterview } from '../selectors/dataSelectors';
 
 const mapStateToProps = (state) => ({
+    interview: getCurrentInterview(state),
     isCatalog: getIsCatalog(state),
     interviewEditView: getInterviewEditView(state),
 });
