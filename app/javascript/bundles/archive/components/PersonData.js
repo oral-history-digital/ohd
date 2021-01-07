@@ -9,7 +9,7 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 
-import { t, admin, fullname, getInterviewee, pathBase, humanReadable } from '../../../lib/utils';
+import { t, fullname, getInterviewee, pathBase, humanReadable } from '../../../lib/utils';
 
 export default class PersonData extends React.Component {
 
@@ -91,9 +91,13 @@ export default class PersonData extends React.Component {
     }
 
     biographicalEntries() {
-        if(admin(this.props, {type: 'BiographicalEntry', action: 'create', interview_id: this.props.interview && this.props.interview.id}) && this.props.projectId !== 'dg') {
+        if(this.props.projectId !== 'dg') {
             let interviewee = getInterviewee(this.props);
-            return <BiographicalEntriesContainer person={interviewee} interview={this.props.interview} />;
+            return (
+                <AuthorizedContent object={{type: 'BiographicalEntry', action: 'create', interview_id: this.props.interview && this.props.interview.id}} >
+                    <BiographicalEntriesContainer person={interviewee} interview={this.props.interview} />;
+                </AuthorizedContent>
+            )
         } else {
             return null;
         }
