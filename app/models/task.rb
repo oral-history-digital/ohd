@@ -11,36 +11,53 @@ class Task < ApplicationRecord
 
   before_save :save_dates_and_inform
 
-  #include Workflow
+  include Workflow
 
-  #workflow do
-    #state :created do
-      #event :start, transition_to: :started
-    #end
-    #state :started do
-      #event :finish, transitions_to: :finished
-    #end
-    #state :finished do
-      #event :clear, transitions_to: :cleared
-      #event :restart, transitions_to: :restarted
-    #end
-    #state :cleared do
-      #event :restart, transitions_to: :restarted
-    #end
-    #state :restarted do
-      #event :finish, transitions_to: :finished
-    #end
-  #end
-
-  def workflow_states
-    #current_state.events.map{|e| e.first}
-    %w(created started finished cleared restarted)
+  # every state should be possible from all others
+  # workflow is still in here only  because of the callbacks
+  #
+  workflow do
+    state :created do
+      event :start, transition_to: :started
+      event :finish, transitions_to: :finished
+      event :clear, transitions_to: :cleared
+      event :restart, transitions_to: :restarted
+    end
+    state :started do
+      event :start, transition_to: :started
+      event :finish, transitions_to: :finished
+      event :clear, transitions_to: :cleared
+      event :restart, transitions_to: :restarted
+    end
+    state :finished do
+      event :start, transition_to: :started
+      event :finish, transitions_to: :finished
+      event :clear, transitions_to: :cleared
+      event :restart, transitions_to: :restarted
+    end
+    state :cleared do
+      event :start, transition_to: :started
+      event :finish, transitions_to: :finished
+      event :clear, transitions_to: :cleared
+      event :restart, transitions_to: :restarted
+    end
+    state :restarted do
+      event :start, transition_to: :started
+      event :finish, transitions_to: :finished
+      event :clear, transitions_to: :cleared
+      event :restart, transitions_to: :restarted
+    end
   end
 
-  #def workflow_state=(change)
-    #self.send("#{change}!")
-    #self.touch
-  #end
+  def workflow_states
+    current_state.events.map{|e| e.first}
+    #%w(created started finished cleared restarted)
+  end
+
+  def workflow_state=(change)
+    self.send("#{change}!")
+    self.touch
+  end
 
   def save_dates_and_inform
     if user_account_id_changed? && user_account_id != nil

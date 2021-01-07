@@ -1,35 +1,34 @@
-import React from 'react';
-import AuthorizedContent from './AuthorizedContent';
-import { t } from 'lib/utils';
+import React, { useCallback } from 'react';
+import PropTypes from 'prop-types';
+import { useDispatch } from 'react-redux';
 
-export default class ArchivePopupButton extends React.Component {
+import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
-    // props:
-    //
-    // titleKey, buttonFaKey, content, authorizedObject
-    // e.g.:
-    // titleKey='edit.contribution.edit'
-    // buttonFaKey='pencil'
-    // content={<div>bla bla</div>}
-    // authorizedObject={this.props.interview}
-    //
-    render() {
-        const title = t(this.props, this.props.titleKey);
+export default function ArchivePopupButton({title, children, buttonFaKey, authorizedObject}) {
 
-        return (
-            <AuthorizedContent object={this.props.authorizedObject}>
-                <span
-                    className='flyout-sub-tabs-content-ico-link'
-                    title={title}
-                    onClick={() => this.props.openArchivePopup({
-                        title: title,
-                        content: this.props.content
-                    })}
-                >
-                    <i className={`fa fa-${this.props.buttonFaKey}`}></i>
-                    {title}
-                </span>
-            </AuthorizedContent>
-        )
-    }
+    const dispatch = useDispatch();
+    const open = useCallback(
+        () => dispatch(openArchivePopup({title: title, content: children})),
+        [dispatch]
+    )
+
+    return (
+        <span
+            className='flyout-sub-tabs-content-ico-link'
+            title={title}
+            onClick={open}
+        >
+            <i className={`fa fa-${buttonFaKey}`}></i>
+            {title}
+        </span>
+    )
 }
+
+ArchivePopupButton.propTypes = {
+    title: PropTypes.string,
+    buttonFaKey: PropTypes.string,
+    content: PropTypes.oneOfType([
+        PropTypes.element,
+        PropTypes.string,
+    ]),
+};
