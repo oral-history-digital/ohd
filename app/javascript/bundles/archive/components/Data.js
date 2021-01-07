@@ -13,7 +13,7 @@ export default class Data extends React.Component {
 
     baseData() {
         if (this.props.data.type === 'Task') {
-            return <TaskPreviewContainer data={this.props.data} />
+            return <TaskPreviewContainer data={this.props.data} scope={this.props.scope} />
         } else if (this.props.data.archive_domain) {
             return (
                 <div className='base-data box'>
