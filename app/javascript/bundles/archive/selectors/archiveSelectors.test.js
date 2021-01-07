@@ -21,7 +21,7 @@ const state = {
         skipEmptyRows: false,
         selectedInterviewEditViewColumns: ['timecode', 'text_orig'],
         selectedArchiveIds: ['cd007', 'cd003'],
-        selectedRegistryEntryIds: [82, 5],
+        selectedRegistryEntryIds: ['dummy', 82, 5],
         countryKeys: {
             de: ['AF'],
             es: ['AF'],
@@ -100,7 +100,7 @@ test('getSelectedArchiveIds retrieves selected archive ids', () => {
 });
 
 test('getSelectedRegistryEntryIds retrieves selected registry entry ids', () => {
-    expect(selectors.getSelectedRegistryEntryIds(state)).toEqual(state.archive.selectedRegistryEntryIds);
+    expect(selectors.getSelectedRegistryEntryIds(state)).toEqual([82, 5]);
 });
 
 test('getMediaStreams retrieves media streams', () => {

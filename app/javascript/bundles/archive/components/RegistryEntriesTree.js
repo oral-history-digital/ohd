@@ -1,124 +1,115 @@
-import React, { Fragment } from 'react';
+import React, { useEffect } from 'react';
+import PropTypes from 'prop-types';
+
 import AuthShowContainer from '../containers/AuthShowContainer';
 import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearchResultContainer';
-import { t, admin } from 'lib/utils';
+import AuthorizedContent from './AuthorizedContent';
+import Fetch from './Fetch';
+
 import { INDEX_REGISTRY_ENTRIES } from '../constants/flyoutTabs';
+import { ROOT_REGISTRY_ENTRY_ID } from '../constants/archiveConstants';
+import { getRootRegistryEntryFetched } from '../selectors/dataSelectors';
+import { useI18n } from '../hooks/i18n';
 
-export default class RegistryEntriesTree extends React.Component {
-    componentDidMount() {
-        this.loadRootRegistryEntry();
+export default function RegistryEntriesTree({
+    locale,
+    projectId,
+    rootRegistryEntry,
+    foundRegistryEntries,
+    showRegistryEntriesTree,
+    isRegistryEntrySearching,
+    selectedRegistryEntryIds,
+    submitData,
+    openArchivePopup,
+    closeArchivePopup,
+    setFlyoutTabsIndex,
+}) {
+    const { t } = useI18n();
+
+    useEffect(() => {
         window.scrollTo(0, 1);
+        setFlyoutTabsIndex(INDEX_REGISTRY_ENTRIES);
+    }, []);
 
-        this.props.setFlyoutTabsIndex(INDEX_REGISTRY_ENTRIES);
+    const mergeRegistryEntries = () => {
+        const firstId = selectedRegistryEntryIds.slice(0, 1);
+        const restIds = selectedRegistryEntryIds.slice(1);
+
+        submitData({ locale, projectId }, {merge_registry_entry: {id: firstId, ids: restIds}});
+        closeArchivePopup();
     }
 
-    componentDidUpdate() {
-        this.loadRootRegistryEntry();
-    }
-
-    loadRootRegistryEntry() {
-        // TODO: fit this for MOG - id of root entry will be different
-        if (
-            !this.props.registryEntriesStatus[1] ||
-            this.props.registryEntriesStatus[1].split('-')[0] === 'reload'
-        ) {
-            this.props.fetchData(this.props, 'registry_entries', 1);
-        }
-    }
-
-    foundRegistryEntries() {
-        if (this.props.foundRegistryEntries.results.length == 0 && !this.props.isRegistryEntriesSearching) {
-            return <div className={'search-result'}>{`0 ${t(this.props, 'registryentry_results')}`}</div>
-        } else {
-            return (
-                this.props.foundRegistryEntries.results.map((result, index) => {
-                    return (
-                        <RegistryEntrySearchResultContainer
-                            result={result}
-                            key={result.id}
-                        />
-                    );
-                })
-            )
-        }
-    }
-
-    mergeRegistryEntries() {
-        let id;
-        let ids = [];
-        this.props.selectedRegistryEntryIds.filter(i => i !== 'dummy').map((rid, index) => {
-            if (index === 0) {
-                id = rid;
-            } else {
-                ids.push(rid);
-            }
-        })
-        this.props.submitData(this.props, {merge_registry_entry: {id: id, ids: ids}});
-        this.props.closeArchivePopup();
-    }
-
-    mergeRegistryEntriesConfirm() {
-        if (admin(this.props, {type: 'RegistryEntry', action: 'update'}) && this.props.selectedRegistryEntryIds.length > 2) {
-            let title = t(this.props, 'activerecord.models.registry_entries.actions.merge');
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={title}
-                onClick={() => this.props.openArchivePopup({
-                    title: title,
-                    content: (
-                        <div>
-                            <div className='any-button' onClick={() => this.mergeRegistryEntries()}>
-                                {t(this.props, 'ok')}
-                            </div>
-                        </div>
-                    )
-                })}
+    return (
+        <div className='wrapper-content register'>
+            <Fetch
+                fetchParams={['registry_entries', ROOT_REGISTRY_ENTRY_ID]}
+                testSelector={getRootRegistryEntryFetched}
             >
-                {title}
-            </div>
-        }
-    }
+                <AuthShowContainer ifLoggedIn>
+                        <h1 className='registry-entries-title'>
+                            {t((projectId === 'mog') ? 'registry_mog' : 'registry')}
+                        </h1>
 
-    content() {
-        if (this.props.foundRegistryEntries.showRegistryEntriesTree) {
-            return (
-                <RegistryEntriesContainer
-                    registryEntryParent={this.props.registryEntries[1]}
-                    root
-                />
-            );
-        } else {
-            return (
-                <div>
-                    <ul className="RegistryEntryList RegistryEntryList--root">
-                        {this.foundRegistryEntries()}
-                    </ul>
-                </div>
-            )
-        }
-    }
+                        {
+                            (selectedRegistryEntryIds.length >= 2) && (
+                                <AuthorizedContent object={{type: 'RegistryEntry', action: 'update'}}>
+                                    <div
+                                        className='flyout-sub-tabs-content-ico-link'
+                                        onClick={() => openArchivePopup({
+                                            title: t('activerecord.models.registry_entries.actions.merge'),
+                                            content: (
+                                                <div>
+                                                    <div className='any-button' onClick={mergeRegistryEntries}>
+                                                        {t('ok')}
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                    >
+                                        {t('activerecord.models.registry_entries.actions.merge')}
+                                    </div>
+                                </AuthorizedContent>
+                            )
+                        }
 
-    render() {
-        if (this.props.registryEntriesStatus[1] && this.props.registryEntriesStatus[1].split('-')[0] === 'fetched') {
-            return (
-                <Fragment>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <div className='wrapper-content register'>
-                            <h1 className='registry-entries-title'>
-                                {t(this.props, (this.props.project === 'mog') ? 'registry_mog' : 'registry')}
-                            </h1>
-                            {this.mergeRegistryEntriesConfirm()}
-                            {this.content()}
-                        </div>
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                        {t(this.props, 'devise.failure.unauthenticated')}
-                    </AuthShowContainer>
-                </Fragment>
-            );
-        } else {
-            return null;
-        }
-    }
+                        {
+                            showRegistryEntriesTree ?
+                                <RegistryEntriesContainer root registryEntryParent={rootRegistryEntry} /> :
+                                (foundRegistryEntries.results.length === 0 && !isRegistryEntrySearching ?
+                                    (
+                                        <div className="search-result">
+                                            {`0 ${t('registryentry_results')}`}
+                                        </div>
+                                    ) :
+                                    (
+                                        <ul className="RegistryEntryList RegistryEntryList--root">
+                                            {
+                                                foundRegistryEntries.results.map(result => <RegistryEntrySearchResultContainer key={result.id} result={result} />)
+                                            }
+                                        </ul>
+                                    )
+                                )
+                        }
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut ifNoProject>
+                    {t('devise.failure.unauthenticated')}
+                </AuthShowContainer>
+            </Fetch>
+        </div>
+    );
 }
+
+RegistryEntriesTree.propTypes = {
+    rootRegistryEntry: PropTypes.object,
+    foundRegistryEntries: PropTypes.object.isRequired,
+    showRegistryEntriesTree: PropTypes.bool.isRequired,
+    selectedRegistryEntryIds: PropTypes.array.isRequired,
+    isRegistryEntrySearching: PropTypes.bool,
+    projectId: PropTypes.string.isRequired,
+    locale: PropTypes.string.isRequired,
+    submitData: PropTypes.func.isRequired,
+    setFlyoutTabsIndex: PropTypes.func.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};

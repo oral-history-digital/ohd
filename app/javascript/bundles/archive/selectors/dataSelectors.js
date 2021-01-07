@@ -1,5 +1,6 @@
 import { createSelector } from 'reselect';
 
+import { ROOT_REGISTRY_ENTRY_ID } from '../constants/archiveConstants';
 import { getArchiveId, getProjectId  } from './archiveSelectors';
 
 export const getData = state => state.data;
@@ -14,6 +15,8 @@ export const getPeopleStatus = state => getStatuses(state).people;
 
 export const getInterviewsStatus = state => getStatuses(state).interviews;
 
+export const getRegistryEntriesStatus = state => getStatuses(state).registry_entries;
+
 export const getCollections = state => getData(state).collections;
 
 export const getProjects = state => getData(state).projects;
@@ -25,6 +28,11 @@ export const getAccounts = state => getData(state).accounts;
 export const getCurrentAccount = state => getAccounts(state).current;
 
 export const getRegistryEntries = state => getData(state).registry_entries;
+
+export const getRootRegistryEntry = createSelector(
+    [getRegistryEntries],
+    registryEntries => registryEntries[ROOT_REGISTRY_ENTRY_ID]
+);
 
 export const getRegistryNameTypes = state => getData(state).registry_name_types;
 
@@ -94,3 +102,11 @@ export const getFeaturedInterviewsFetched = state => {
 
     return fetched.test(status);
 };
+
+export const getRootRegistryEntryFetched = createSelector(
+    getRegistryEntriesStatus,
+    (status) => {
+        const fetched = /^fetched/;
+        return fetched.test(status[ROOT_REGISTRY_ENTRY_ID]);
+    }
+);
