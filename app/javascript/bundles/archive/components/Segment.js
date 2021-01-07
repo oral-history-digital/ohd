@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
+
 import SegmentFormContainer from '../containers/SegmentFormContainer';
 import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
@@ -7,37 +9,6 @@ import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { t, fullname, admin } from 'lib/utils';
 
 export default class Segment extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            contentOpen: false,
-            contentType: 'none',
-        };
-
-        this.setOpenReference = this.setOpenReference.bind(this);
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        if ((this.state.contentOpen != nextState.contentOpen) || (this.state.contentType != nextState.contentType)) {
-            return true;
-        }
-        if (nextState.openReference !== this.state.openReference) {
-            return true;
-        }
-        if (nextProps.statuses[this.props.data.id] !== this.props.statuses[this.props.data.id]) {
-            return true;
-        }
-        if (nextProps.active !== this.props.active) {
-            return true;
-        }
-        if (nextProps.editView !== this.props.editView) {
-            return true;
-        }
-
-        return false;
-    }
-
     css() {
         return 'segment ' + (this.props.active ? 'active' : 'inactive');
     }
@@ -53,28 +24,15 @@ export default class Segment extends React.Component {
        return  !!(mainheading || subheading)
     }
 
-    toggleAdditionalContent(type) {
-        let state = this.state.contentOpen;
-
-        let newState = type != this.state.contentType ? true : !state;
-
-        this.setState({
-            contentOpen: newState,
-            contentType: type
-        });
-    }
-
-    setOpenReference(entry) {
-        this.setState({openReference: entry});
-    }
-
     openReference() {
-        if (this.state.openReference) {
+        const { openReference } = this.props;
+
+        if (openReference) {
             return (
                 <div className='scope-note'>
-                    <div onClick={() => this.setOpenReference(null)} className='close'></div>
-                    <div className='title'>{this.state.openReference.name[this.props.contentLocale]}</div>
-                    <div className='note'>{this.state.openReference.notes[this.props.contentLocale]}</div>
+                    <div onClick={() => this.props.setOpenReference(null)} className='close'></div>
+                    <div className='title'>{openReference.name[this.props.contentLocale]}</div>
+                    <div className='note'>{openReference.notes[this.props.contentLocale]}</div>
                 </div>
             )
         }
@@ -82,7 +40,7 @@ export default class Segment extends React.Component {
 
     references(locale) {
         if (
-            this.state.contentType == 'references' &&
+            this.props.popupType === 'references' &&
             (this.props.data.registry_references_count > 0 || admin(this.props, {type: 'RegistryReference', action: 'create', interview_id: this.props.data.interview_id}))
         ) {
             return <RegistryReferencesContainer
@@ -90,14 +48,14 @@ export default class Segment extends React.Component {
                        lowestAllowedRegistryEntryId={1}
                        inTranscript={true}
                        locale={locale}
-                       setOpenReference={this.setOpenReference}
+                       setOpenReference={this.props.setOpenReference}
                    />
         }
     }
 
     annotations(locale) {
         if (
-            this.state.contentType == 'annotations' &&
+            this.props.popupType === 'annotations' &&
             (this.props.data.annotations_count > 0 || admin(this.props, {type: 'Annotation', action: 'create', interview_id: this.props.data.interview_id}))
         ) {
             return <AnnotationsContainer segment={this.props.data} locale={locale} />
@@ -106,7 +64,7 @@ export default class Segment extends React.Component {
 
     userAnnotations() {
         if (
-            this.state.contentType == 'annotations'
+            this.props.popupType === 'annotations'
         ) {
             return this.props.data.user_annotation_ids.map((uId, index) => {
                     if(this.props.userContents && this.props.userContents[uId] && this.props.userContents[uId].description) {
@@ -140,22 +98,24 @@ export default class Segment extends React.Component {
     }
 
     renderLinks(locale, userAnnotations) {
+        const { data, popupType, openPopup, closePopup } = this.props;
+
         if (
             admin(this.props, {type: 'General', action: 'edit'}) ||
-            this.props.data.annotations_count > 0 ||
-            this.props.data.registry_references_count > 0 ||
+            data.annotations_count > 0 ||
+            data.registry_references_count > 0 ||
             userAnnotations.length > 0
         ) {
-            let icoCss = this.state.contentOpen ? 'content-trans-text-ico active' : 'content-trans-text-ico';
+            let icoCss = this.props.popupType !== null ? 'content-trans-text-ico active' : 'content-trans-text-ico';
 
 
-            let hasAnnotations = this.props.data.annotations_count > 0 || userAnnotations.length > 0
-            let annotationCss = admin(this.props, {type: 'Annotation', action: 'update', interview_id: this.props.data.interview_id}) || hasAnnotations ? 'content-trans-text-ico-link' : 'hidden';
+            let hasAnnotations = data.annotations_count > 0 || userAnnotations.length > 0
+            let annotationCss = admin(this.props, {type: 'Annotation', action: 'update', interview_id: data.interview_id}) || hasAnnotations ? 'content-trans-text-ico-link' : 'hidden';
             let hasAnnotationsCss = hasAnnotations ? 'exists' : '';
             let annotationsTitle = hasAnnotations ? t(this.props, 'edit.segment.annotations.edit') : t(this.props, 'edit.segment.annotations.new')
 
-            let hasReferences = this.props.data.registry_references_count > 0;
-            let referencesCss = admin(this.props, {type: 'RegistryReference', action: 'update', interview_id: this.props.data.interview_id}) || hasReferences ? 'content-trans-text-ico-link' : 'hidden';
+            let hasReferences = data.registry_references_count > 0;
+            let referencesCss = admin(this.props, {type: 'RegistryReference', action: 'update', interview_id: data.interview_id}) || hasReferences ? 'content-trans-text-ico-link' : 'hidden';
             let hasReferencesCss = hasReferences ? 'exists' : '';
             let referencesTitle = hasReferences ? t(this.props, 'edit.segment.references.edit') : t(this.props, 'edit.segment.references.new')
 
@@ -163,13 +123,18 @@ export default class Segment extends React.Component {
                 <div className={icoCss}>
                     {this.edit(locale)}
                     {this.editHeadings(locale)}
-                    <div className={annotationCss} title={annotationsTitle}
-                         onClick={() => this.toggleAdditionalContent('annotations')}><i
-                        className={`fa fa-sticky-note-o ${hasAnnotationsCss}`}></i>
+                    <div
+                        className={annotationCss} title={annotationsTitle}
+                        onClick={() => popupType === 'annotations' ? closePopup() : openPopup(data.id, 'annotations')}
+                    >
+                        <i className={`fa fa-sticky-note-o ${hasAnnotationsCss}`} />
                     </div>
-                    <div className={referencesCss} title={(this.props.projectId === 'mog') ? t(this.props, 'keywords_mog') : referencesTitle}
-                         onClick={() => this.toggleAdditionalContent('references')}><i
-                         className={`fa fa-tag ${hasReferencesCss}`}></i>
+                    <div
+                        className={referencesCss}
+                        title={(this.props.projectId === 'mog') ? t(this.props, 'keywords_mog') : referencesTitle}
+                        onClick={() => popupType === 'references' ? closePopup() : openPopup(data.id, 'references')}
+                    >
+                        <i className={`fa fa-tag ${hasReferencesCss}`} />
                     </div>
                 </div>
             )
@@ -221,14 +186,16 @@ export default class Segment extends React.Component {
     }
 
     render() {
-        let contentOpenClass = this.state.contentOpen ? 'content-trans-text-element' : 'hidden';
-        let contentTransRowCss = this.speakerChanged() ? 'content-trans-row speaker-change' : 'content-trans-row';
         let text = this.transcript();
         let uAnnotations = this.userAnnotations();
 
         if (text) {
             return (
-                <div id={`segment_${this.props.data.id}`} className={contentTransRowCss}>
+                <div
+                    id={`segment_${this.props.data.id}`}
+                    className={classNames('Segment', {
+                        'Segment--withSpeaker': this.speakerChanged(),
+                    })}>
                     <div className="content-trans-speaker-ico">
                         {this.speakerIcon()}
                     </div>
@@ -242,7 +209,7 @@ export default class Segment extends React.Component {
                         </div>
                     </div>
                     {this.renderLinks(this.props.contentLocale, uAnnotations)}
-                    <div className={contentOpenClass}>
+                    <div className={classNames(this.props.popupType !== null ? 'content-trans-text-element' : 'hidden')}>
                         <div>
                             {this.annotations(this.props.contentLocale)}
                             {uAnnotations}
@@ -263,6 +230,11 @@ export default class Segment extends React.Component {
 Segment.propTypes = {
     data: PropTypes.object.isRequired,
     contentLocale: PropTypes.string.isRequired,
+    popupType: PropTypes.string,
+    openReference: PropTypes.object,
+    openPopup: PropTypes.func.isRequired,
+    closePopup: PropTypes.func.isRequired,
+    setOpenReference: PropTypes.func.isRequired,
     active: PropTypes.bool.isRequired,
     people: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,

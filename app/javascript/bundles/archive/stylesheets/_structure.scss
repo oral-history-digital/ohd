@@ -17,7 +17,6 @@ html {
 
 body {
   margin: 0;
-  overflow-y: scroll;
   font-family: $font-family;
   color: $gray-darkest;
   background: $body-bg-color;
@@ -28,7 +27,6 @@ body {
 .wrapper-page {
   margin: 0;
   @include screen-xl {
-    float: left;
     width: 64%;
   }
   .fa-eye, .fa-globe {

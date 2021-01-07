@@ -118,19 +118,6 @@
 
 // Tab Content: Transcript
 
-.content-trans-row {
-  @include clearfix;
-  margin-top: 4px;
-  margin-bottom: 4px;
-  .fa {
-    font-size: 20px;
-    color: var(--primary-color);
-  }
-  &.speaker-change {
-    margin-top: 15px;
-  }
-}
-
 .content-trans-speaker-ico,
 .content-trans-text {
   display: inline-block;
