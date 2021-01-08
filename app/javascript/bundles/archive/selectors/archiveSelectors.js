@@ -1,3 +1,5 @@
+import { createSelector } from 'reselect';
+
 const getArchive = state => state.archive;
 
 export const getProjectId = state => getArchive(state).projectId;
@@ -30,7 +32,12 @@ export const getViewMode = state => getArchive(state).viewMode;
 // UI: Admin
 export const getEditView = state => getArchive(state).editView;
 
-export const getInterviewEditView = state => getArchive(state).interviewEditView;
+export const getInterviewEditView = createSelector(
+    [getArchive],
+    archive => {
+        return (archive.interviewEditView === true || archive.interviewEditView === 'true');
+    }
+);
 
 export const getSkipEmptyRows = state => getArchive(state).skipEmptyRows;
 

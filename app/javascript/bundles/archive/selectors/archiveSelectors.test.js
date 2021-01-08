@@ -1,4 +1,5 @@
 import * as selectors from './archiveSelectors';
+import dotProp from 'dot-prop-immutable';
 
 const state = {
     archive: {
@@ -70,8 +71,16 @@ test('getContributionTypes retrieves contributionTypes object', () => {
     expect(selectors.getContributionTypes(state)).toEqual(state.archive.contributionTypes);
 });
 
-test('getInterviewEditView retrieves interviewEditView status', () => {
-    expect(selectors.getInterviewEditView(state)).toEqual(state.archive.interviewEditView);
+describe('getInterviewEditView', () => {
+    test('retrieves interviewEditView status', () => {
+        expect(selectors.getInterviewEditView(state)).toEqual(state.archive.interviewEditView);
+    });
+
+    test('converts a dirty interviewEditView status', () => {
+        const _state = dotProp.set(state, 'archive.interviewEditView', null);
+
+        expect(selectors.getInterviewEditView(_state)).toBe(false);
+    });
 });
 
 test('getSkipEmptyRows retrieves skipEmptyRows status', () => {
