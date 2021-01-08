@@ -10,6 +10,7 @@ export default function Fetch({
     fetchParams,
     testSelector,
     fallback = <Spinner />,
+    alwaysRenderChildren = false,
     children,
 }) {
     const projectId = useSelector(getProjectId);
@@ -23,17 +24,18 @@ export default function Fetch({
         }
     }, [JSON.stringify(fetchParams)]);
 
-    if (!testResult) {
-        return fallback;
+    if (testResult || alwaysRenderChildren) {
+        return children;
     }
 
-    return children;
+    return fallback;
 }
 
 Fetch.propTypes = {
     fetchParams: PropTypes.array.isRequired,
     testSelector: PropTypes.func.isRequired,
     fallback: PropTypes.element,
+    alwaysRenderChildren: PropTypes.bool,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,

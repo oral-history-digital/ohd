@@ -4,14 +4,15 @@ import InterviewEditView from '../components/InterviewEditView';
 import { handleTranscriptScroll, setActualSegment } from '../actions/interviewActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
-import { getInterview, getProject } from '../../../lib/utils';
+import { getProject } from '../../../lib/utils';
+import { getCurrentInterview } from '../selectors/dataSelectors';
 
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
-        interview: getInterview(state),
+        interview: getCurrentInterview(state),
         tape: state.interview.tape,
         transcriptTime: state.interview.transcriptTime,
         transcriptScrollEnabled: state.interview.transcriptScrollEnabled,

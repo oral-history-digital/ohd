@@ -26,6 +26,9 @@ const state = {
             },
         },
         statuses: {
+            interviews: {
+                za283: 'fetched',
+            },
             people: {
                 12: 'fetched',
                 contributors_for_interview_22: 'fetched',
@@ -117,8 +120,12 @@ test('getStatuses gets statuses object', () => {
     expect(selectors.getStatuses(state)).toEqual(state.data.statuses);
 });
 
-test('getPeopleStatuses gets people statuses object', () => {
+test('getPeopleStatus gets people statuses object', () => {
     expect(selectors.getPeopleStatus(state)).toEqual(state.data.statuses.people);
+});
+
+test('getInterviewsStatus gets interviews statuses object', () => {
+    expect(selectors.getInterviewsStatus(state)).toEqual(state.data.statuses.interviews);
 });
 
 test('getProjects gets projects object', () => {
