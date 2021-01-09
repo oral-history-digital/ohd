@@ -38,6 +38,8 @@ class ProjectSerializer < ApplicationSerializer
     :pseudo_hidden_registry_entry_ids,
     :pdf_registry_entry_ids,
     :pseudo_pdf_registry_entry_ids,
+    :hidden_transcript_registry_entry_ids,
+    :pseudo_hidden_transcript_registry_entry_ids,
     :metadata_fields,
     :task_types,
     :external_links,

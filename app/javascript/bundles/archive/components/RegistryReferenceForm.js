@@ -29,6 +29,7 @@ export default class RegistryReferenceForm extends React.Component {
                 elementType: 'registryEntrySelect',
                 attribute: 'registry_entry_id',
                 lowestAllowedRegistryEntryId: this.props.lowestAllowedRegistryEntryId,
+                inTranscript: this.props.inTranscript,
                 goDeeper: true
             },
         ]
