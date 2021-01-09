@@ -136,7 +136,7 @@ const mapStateToProps = (state) => {
                 attribute: "pseudo_hidden_registry_entry_ids"
             },
             {
-                attribute: "pseudo_pdf_registry_entry_codes"
+                attribute: "pseudo_pdf_registry_entry_ids"
             },
             {
                 elementType: 'input',

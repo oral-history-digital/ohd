@@ -847,7 +847,7 @@ de:
         has_newsletter: Newsletter
         has_map: Karte anzeigen
         pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs)
-        pseudo_pdf_registry_entry_codes: Codes der Registereinträge für PDF
+        pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
         primary_color: Primary color
         secondary_color: Secondary color
