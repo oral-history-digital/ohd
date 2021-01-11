@@ -9,10 +9,6 @@ import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { t, fullname, admin } from 'lib/utils';
 
 export default class Segment extends React.Component {
-    css() {
-        return 'segment ' + (this.props.active ? 'active' : 'inactive');
-    }
-
     transcript() {
         return admin(this.props, this.props.data) ? (this.props.data.text[this.props.contentLocale] || this.props.data.text[`${this.props.contentLocale}-public`]) :
                (this.props.data.text[`${this.props.contentLocale}-public`] || '')
@@ -186,6 +182,8 @@ export default class Segment extends React.Component {
     }
 
     render() {
+        const { contentLocale, active } = this.props;
+
         let text = this.transcript();
         let uAnnotations = this.userAnnotations();
 
@@ -201,9 +199,11 @@ export default class Segment extends React.Component {
                     </div>
                     <div className='content-trans-text'
                             onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, this.props.tabIndex)}>
-                        <div className={this.css()}
-                                // TODO: clean mog segment-texts from html in db
-                                //dangerouslySetInnerHTML={{__html: text}}
+                        <div
+                            lang={contentLocale}
+                            className={classNames('segment', active ? 'active' : 'inactive')}
+                            // TODO: clean mog segment-texts from html in db
+                            //dangerouslySetInnerHTML={{__html: text}}
                         >
                             {text}
                         </div>
