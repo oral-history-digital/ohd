@@ -88,7 +88,9 @@ class RegistryEntriesController < ApplicationController
       end
       format.pdf do
         @locale = params[:lang]
-        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{RegistryName.maximum(:updated_at)}-#{RegistryEntry.maximum(:updated_at)}" do
+        cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at)].max.strftime("%d.%m-%H:%M")
+
+        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
           @registry_entries = RegistryEntry.pdf_entries(current_project)
           render_to_string(:template => "/registry_entries/index.pdf.erb", :layout => "latex.pdf.erbtex")
         end
@@ -96,7 +98,7 @@ class RegistryEntriesController < ApplicationController
       end
       format.csv do
         root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.registry_entries.where(code: 'root').first
-        csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{RegistryName.maximum(:updated_at)}-#{RegistryEntry.maximum(:updated_at)}" do
+        csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
           CSV.generate(col_sep: "\t") do |row|
             row << %w(parent_name parent_id name id description latitude, longitude)
             root.on_all_descendants do |entry|

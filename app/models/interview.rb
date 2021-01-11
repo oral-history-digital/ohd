@@ -821,7 +821,9 @@ class Interview < ApplicationRecord
     # in order to get a dropdown list in search field
     def dropdown_search_values(project, user_account)
       wf_state = user_account && (user_account.admin? || user_account.permissions?('General', 'edit')) ? ["public", "unshared"] : 'public'
-      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{wf_state}-#{Interview.maximum(:updated_at)}-#{Person.maximum(:updated_at)}-#{project.updated_at}") do
+      cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), project.updated_at].max.strftime("%d.%m-%H:%M")
+
+      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
         search = Interview.search do
           adjust_solr_params do |params|
             params[:rows] = project.interviews.size

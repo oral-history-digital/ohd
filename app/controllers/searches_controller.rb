@@ -102,7 +102,9 @@ class SearchesController < ApplicationController
         render :template => "/react/app.html"
       end
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{params}-#{RegistryEntry.maximum(:updated_at)}-#{Interview.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}" do
+        cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max.strftime("%d.%m-%H:%M")
+
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}" do
           # define marker types
           registry_reference_type_codes = %w(birth_location deportation_location return_location company camp)
           selected_registry_reference_types = RegistryReferenceType.
