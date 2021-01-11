@@ -28,11 +28,6 @@ export const getCurrentAccount = state => getAccounts(state).current;
 
 export const getRegistryEntries = state => getData(state).registry_entries;
 
-export const getRootRegistryEntry = createSelector(
-    [getRegistryEntries, getCurrentProject],
-    (registryEntries, currentProject) => registryEntries[currentProject.root_registry_entry_id]
-);
-
 export const getRegistryNameTypes = state => getData(state).registry_name_types;
 
 export const getTaskTypes = state => getData(state).task_types;
@@ -109,3 +104,11 @@ export const getRootRegistryEntryFetched = createSelector(
         return fetched.test(status[currentProject.root_registry_entry_id]);
     }
 );
+
+export const getRootRegistryEntry = createSelector(
+    [getRegistryEntries, getCurrentProject],
+    (registryEntries, currentProject) => {
+        return registryEntries[currentProject.root_registry_entry_id];
+    }
+);
+

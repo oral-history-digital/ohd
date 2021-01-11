@@ -13,6 +13,7 @@ import { useI18n } from '../hooks/i18n';
 
 export default function RegistryEntriesTree({
     projectId,
+    currentProject,
     rootRegistryEntry,
     foundRegistryEntries,
     showRegistryEntriesTree,
@@ -29,7 +30,7 @@ export default function RegistryEntriesTree({
     return (
         <div className='wrapper-content register'>
             <Fetch
-                fetchParams={['registry_entries', rootRegistryEntry.id]}
+                fetchParams={['registry_entries', currentProject?.root_registry_entry_id]}
                 testSelector={getRootRegistryEntryFetched}
             >
                 <AuthShowContainer ifLoggedIn>

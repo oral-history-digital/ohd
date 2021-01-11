@@ -207,7 +207,7 @@ class ApplicationController < ActionController::Base
   helper_method :initial_redux_state
 
   def cache_key_params
-    params.reject{|k,v| k == 'controller' || k == 'action'}
+    params.reject{|k,v| k == 'controller' || k == 'action'}.values.join('-')
   end
 
   private
