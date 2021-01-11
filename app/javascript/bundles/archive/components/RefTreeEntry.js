@@ -25,7 +25,7 @@ export default class RefTreeEntry extends React.Component {
     }
 
     handleScroll() {
-        let fixVideo = ($(document).scrollTop() > $(".SiteHeader").height());
+        let fixVideo = (document.scrollTop > document.getElementsByClassName("SiteHeader")[0].height);
         if (fixVideo && !this.props.transcriptScrollEnabled) {
             this.props.handleTranscriptScroll(true)
         } else if (!fixVideo && this.props.transcriptScrollEnabled) {
