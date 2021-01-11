@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
-export default function ArchivePopupButton({title, children, buttonFaKey, authorizedObject}) {
+export default function ArchivePopupButton({title, children, buttonFaKey}) {
 
     const dispatch = useDispatch();
     const open = useCallback(
@@ -27,7 +27,7 @@ export default function ArchivePopupButton({title, children, buttonFaKey, author
 ArchivePopupButton.propTypes = {
     title: PropTypes.string,
     buttonFaKey: PropTypes.string,
-    content: PropTypes.oneOfType([
+    children: PropTypes.oneOfType([
         PropTypes.element,
         PropTypes.string,
     ]),

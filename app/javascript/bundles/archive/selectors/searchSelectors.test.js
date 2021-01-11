@@ -28,7 +28,8 @@ const state = {
 
         },
         registryEntries: {
-
+            showRegistryEntriesTree: true,
+            results: [],
         },
         user_registrations: {
 
@@ -61,6 +62,7 @@ const state = {
 
         },
         isMapSearching: true,
+        isRegistryEntrySearching: true,
     },
 };
 
@@ -100,6 +102,18 @@ test('getMapQuery retrieves map query object', () => {
     expect(selectors.getMapQuery(state)).toEqual(state.search.map.query);
 });
 
+test('getRegistryEntriesSearch retrieves registry entries part of search state', () => {
+    expect(selectors.getRegistryEntriesSearch(state)).toEqual(state.search.registryEntries);
+});
+
+test('getShowRegistryEntriesTree get wether to show search results', () => {
+    expect(selectors.getShowRegistryEntriesTree(state)).toEqual(state.search.registryEntries.showRegistryEntriesTree);
+});
+
 test('getIsMapSearching retrieves map search state', () => {
     expect(selectors.getIsMapSearching(state)).toEqual(state.search.isMapSearching);
+});
+
+test('getIsRegistryEntrySearching retrieves registry entry search state', () => {
+    expect(selectors.getIsRegistryEntrySearching(state)).toEqual(state.search.isRegistryEntrySearching);
 });

@@ -14,6 +14,8 @@ export const getPeopleStatus = state => getStatuses(state).people;
 
 export const getInterviewsStatus = state => getStatuses(state).interviews;
 
+export const getRegistryEntriesStatus = state => getStatuses(state).registry_entries;
+
 export const getCollections = state => getData(state).collections;
 
 export const getProjects = state => getData(state).projects;
@@ -25,6 +27,11 @@ export const getAccounts = state => getData(state).accounts;
 export const getCurrentAccount = state => getAccounts(state).current;
 
 export const getRegistryEntries = state => getData(state).registry_entries;
+
+export const getRootRegistryEntry = createSelector(
+    [getRegistryEntries, getCurrentProject],
+    (registryEntries, currentProject) => registryEntries[currentProject.root_registry_entry_id]
+);
 
 export const getRegistryNameTypes = state => getData(state).registry_name_types;
 
@@ -94,3 +101,11 @@ export const getFeaturedInterviewsFetched = state => {
 
     return fetched.test(status);
 };
+
+export const getRootRegistryEntryFetched = createSelector(
+    [getRegistryEntriesStatus, getCurrentProject],
+    (status, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(status[currentProject.root_registry_entry_id]);
+    }
+);

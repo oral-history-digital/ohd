@@ -157,7 +157,9 @@ class ApplicationController < ActionController::Base
   end
 
   def initial_search_redux_state
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-search-#{params}-#{Interview.maximum(:updated_at)}-#{current_project.updated_at}-#{current_user_account && current_user_account.admin? ? 'admin' : 'public'}") do
+    cache_key_date = [Interview.maximum(:updated_at), current_project.updated_at].max.strftime("%d.%m-%H:%M")
+
+    Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-search-#{cache_key_params}-#{cache_key_date}-#{current_user_account && current_user_account.admin? ? 'admin' : 'public'}") do
       search = Interview.archive_search(current_user_account, current_project, locale, params)
       dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
       facets = current_project.updated_search_facets(search)
@@ -203,6 +205,10 @@ class ApplicationController < ActionController::Base
     end
   end
   helper_method :initial_redux_state
+
+  def cache_key_params
+    params.reject{|k,v| k == 'controller' || k == 'action'}
+  end
 
   private
 

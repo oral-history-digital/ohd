@@ -130,7 +130,7 @@ export default class WrapperPage extends React.Component {
                     'flyout-is-hidden': !visible,
                     'fix-video': transcriptScrollEnabled,
                 })}>
-                    <div className={classNames('wrapper-page', {
+                    <div className={classNames('Site', 'wrapper-page', {
                         'fix-video': transcriptScrollEnabled,
                         'fullscreen': !visible,
                     })}>
@@ -139,7 +139,9 @@ export default class WrapperPage extends React.Component {
                         <MessagesContainer loggedInAt={this.props.loggedInAt}
                                            notifications={this.state.notifications} />
 
-                        {children}
+                        <main className="Site-content">
+                            {children}
+                        </main>
 
                         <SiteFooter project={this.project()} locale={locale} />
 
