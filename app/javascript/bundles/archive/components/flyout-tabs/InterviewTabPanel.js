@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
+import {Link} from 'react-router-dom';
 
 import AdminActionsContainer from '../../containers/AdminActionsContainer';
 import AuthShowContainer from '../../containers/AuthShowContainer';
@@ -72,6 +73,7 @@ class InterviewTabPanel extends Component {
 
     render() {
         const { archiveId, projectId, interview, interviewee, hasMap } = this.props;
+        const searchPath = `${pathBase(this.props)}/searches/archive`;
 
         return (archiveId && archiveId !== 'new') ?
             (<Fragment>
@@ -82,6 +84,20 @@ class InterviewTabPanel extends Component {
                     <AccountContainer/>
                 </AuthShowContainer>
                 <div className={`flyout-sub-tabs-container flyout-video ${projectId === "campscapes" ? "hidden": ""}`}>
+                    <AuthorizedContent object={this.props.interview}>
+                        <p>
+                            <Link
+                                onClick={() => {
+                                    this.props.searchInArchive(searchPath, {archive_id: this.props.interview.archive_id});
+                                    this.props.setViewMode('workflow')
+                                    this.props.hideFlyoutTabs();
+                                }}
+                                to={searchPath}
+                            >
+                                {t(this.props, 'workflow')}
+                            </Link>
+                        </p>
+                    </AuthorizedContent>
                     <InterviewDataContainer
                         title={t(this.props, 'person_info')}
                         open={true}

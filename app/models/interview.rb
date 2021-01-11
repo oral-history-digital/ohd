@@ -238,12 +238,9 @@ class Interview < ApplicationRecord
       end
     end
 
-    # TODO: replace the following occurences of I18n.available_locales with project.available_locales 
-    # or do sth. resulting in the same (e.g. reset I18n.available_locales in application_controller after having seen params[:project])
-    #
     # Create localized attributes so that we can order
     # interviews in all languages.
-    Project.current.available_locales.each do |locale|
+    Rails.configuration.i18n.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
         if full_title(locale)
           title = full_title(locale).mb_chars.normalize(:kd)
@@ -254,22 +251,18 @@ class Interview < ApplicationRecord
       text :"person_name_#{locale}", :stored => true, :boost => 20 do
         full_title(locale)
       end
-    end
 
-    Project.current.available_locales.each do |locale|
       string :"alias_names_#{locale}", :stored => true do
         (interviewee && interviewee.alias_names(locale)) || ''
       end
       text :"alias_names_#{locale}", :stored => true, :boost => 20 do
         (interviewee && interviewee.alias_names(locale)) || ''
       end
-    end
     
-    # contributions
-    # find them through fulltext search 
-    # e.g.: 'Kamera Hans Peter'
-    #
-    Project.current.available_locales.each do |locale|
+      # contributions
+      # find them through fulltext search 
+      # e.g.: 'Kamera Hans Peter'
+      #
       text :"contributions_#{locale}" do
         contributions.map do |c| 
           if c.person
@@ -277,11 +270,9 @@ class Interview < ApplicationRecord
           end
         end.flatten.join(' ')
       end
-    end
 
-    # biographical entries texts
-    #
-    Project.current.available_locales.each do |locale|
+      # biographical entries texts
+      #
       text :"biography_#{locale}" do
         if interviewee
           interviewee.biographical_entries.map{|b| b.text(locale)}.join(' ')
@@ -289,19 +280,18 @@ class Interview < ApplicationRecord
           ''
         end
       end
+
+      # photo caption texts
+      #
+      text :"photo_captions_#{locale}" do
+        photos.map{|p| p.caption(locale)}.join(' ')
+      end
     end
 
     text :interviewer_property do 
       properties && properties[:interviewer]
     end
 
-    # photo caption texts
-    #
-    Project.current.available_locales.each do |locale|
-      text :"photo_captions_#{locale}" do
-        photos.map{|p| p.caption(locale)}.join(' ')
-      end
-    end
   end
 
   scope :shared, -> {where(workflow_state: 'public')}
@@ -372,7 +362,7 @@ class Interview < ApplicationRecord
   end
 
   def alias_names
-    project.available_locales.inject({}) do |mem, locale|
+    I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = (interviewee.respond_to? :alias_names) ? interviewee.alias_names(locale) : nil
       mem
     end
@@ -448,6 +438,11 @@ class Interview < ApplicationRecord
         end
       end
     end
+
+    OaiRepository.repository_name = project.name[project.default_locale]
+    OaiRepository.repository_url = project.archive_domain
+    OaiRepository.record_prefix = project.archive_domain
+    OaiRepository.admin_email = project.contact_email
   end
 
   def lang
@@ -663,7 +658,7 @@ class Interview < ApplicationRecord
   end
 
   def video
-    I18n.t("media.#{media_type}")
+    I18n.t("search_facets.#{media_type}")
   end
 
   def video?
@@ -755,13 +750,8 @@ class Interview < ApplicationRecord
   end
 
   def oai_dc_subject
-    if self.respond_to?(:typology)
-      "Erfahrungen: #{self.typology.map{|t| I18n.t(t.gsub(' ', '_').downcase, scope: 'search_facets')}.join(', ')}"
-    else
-      [
-        "Gruppe: #{self.forced_labor_group.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}",
-        "Lager und Einsatzorte: #{self.forced_labor_field.map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(', ')}"
-      ].join(';')
+    project.registry_reference_type_metadata_fields.where(use_in_results_table: true, ref_object_type: 'Interview').each do |field|
+      "#{field.label(project.default_locale)}: #{self.send(field.name).map{|f| RegistryEntry.find(f).to_s(project.default_locale)}.join(';')}"
     end
   end
 
@@ -864,6 +854,7 @@ class Interview < ApplicationRecord
         fulltext params[:fulltext]
         with(:workflow_state, user_account && (user_account.admin? || user_account.permissions?('Interview', :update)) ? ['public', 'unshared'] : 'public')
         with(:project_id, project.id)
+        with(:archive_id, params[:archive_id]) if params[:archive_id]
         dynamic :search_facets do
           facet *project.search_facets_names
           project.search_facets_names.each do |facet|

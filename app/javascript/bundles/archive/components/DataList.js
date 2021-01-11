@@ -1,7 +1,12 @@
 import React from 'react';
+
+import AuthorizedContent from './AuthorizedContent';
+import ArchivePopupButton from './ArchivePopupButton';
+
 import DataContainer from '../containers/DataContainer';
 import Form from '../containers/form/Form';
-import { t, admin, camelcase } from '../../../lib/utils';
+
+import { t, camelcase } from 'lib/utils';
 
 export default class DataLists extends React.Component {
 
@@ -29,6 +34,7 @@ export default class DataLists extends React.Component {
                     <DataContainer
                         data={this.props.data[c]}
                         scope={this.props.scope}
+                        optionsScope={this.props.optionsScope}
                         detailsAttributes={this.props.detailsAttributes}
                         joinedData={this.props.joinedData}
                         form={this.form}
@@ -61,25 +67,16 @@ export default class DataLists extends React.Component {
     }
 
     add() {
-        if (
-            (
-                admin(this.props, {type: camelcase(this.props.scope), action: 'create', interview_id: this.props.interview && this.props.interview.id}) ||
-                // allow commenting onn task
-                this.props.task && admin(this.props, this.props.task)
-            ) &&
-            !this.props.hideAdd
-        ) {
+        if (!this.props.hideAdd) {
             return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, `edit.${this.props.scope}.new`)}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, `edit.${this.props.scope}.new`),
-                        content: this.form()
-                    })}
-                >
-                    <i className="fa fa-plus"></i>
-                </div>
+                <AuthorizedContent object={[{type: camelcase(this.props.scope), action: 'create', interview_id: this.props.interview?.id}, this.props.task]}>
+                    <ArchivePopupButton
+                        title={t(this.props, `edit.${this.props.scope}.new`)}
+                        buttonFaKey='plus'
+                    >
+                        {this.form()}
+                    </ArchivePopupButton>
+                </AuthorizedContent>
             )
         }
     }

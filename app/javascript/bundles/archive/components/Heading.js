@@ -74,9 +74,7 @@ export default class Heading extends React.Component {
                 <span
                     className='flyout-sub-tabs-content-ico-link'
                     onClick={() => this.props.openArchivePopup({
-                        content: <SegmentHeadingFormContainer
-                              segment={this.props.data.segment}
-                              contentLocale={this.props.locale} />
+                        content: <SegmentHeadingFormContainer segment={this.props.data.segment} />
                     })}
                 >
                         <i className="fa fa-pencil"/>

@@ -47,9 +47,9 @@ export default class RegistryReference extends React.Component {
             return (
                 <span
                     className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, 'edit.registry_entry.edit')}
+                    title={t(this.props, 'edit.registry_reference.edit')}
                     onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.registry_entry.edit'),
+                        title: t(this.props, 'edit.registry_reference.edit'),
                         content: (
                             <RegistryReferenceFormContainer
                                 registryReference={this.props.registryReference}

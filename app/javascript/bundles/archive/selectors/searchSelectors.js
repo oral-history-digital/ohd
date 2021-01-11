@@ -11,3 +11,13 @@ export const getArchiveFoundInterviews = state => getArchiveSearch(state).foundI
 export const getArchiveResultPagesCount = state => getArchiveSearch(state).resultPagesCount;
 
 export const getArchiveResultsCount = state => getArchiveSearch(state).resultsCount;
+
+export const getMapSearch = state => getSearch(state).map;
+
+export const getFoundMarkers = state => getMapSearch(state).foundMarkers;
+
+export const getMarkersFetched = state => Object.keys(getFoundMarkers(state)).length > 0;
+
+export const getMapQuery = state => getMapSearch(state).query;
+
+export const getIsMapSearching = state => getSearch(state).isMapSearching;

@@ -26,8 +26,7 @@ class Segment < ApplicationRecord
   has_many  :annotations
 
   scope :with_heading, -> {
-    joins(:translations).
-    where("((segment_translations.mainheading IS NOT NULL AND segment_translations.mainheading <> '') OR (segment_translations.subheading IS NOT NULL AND segment_translations.subheading <> ''))").
+    where(has_heading: true).
     includes(:translations).
     order(:tape_number, :timecode)}
 
@@ -75,7 +74,7 @@ class Segment < ApplicationRecord
     end
   end
 
-  def enciphered_text(version, text_original)
+  def enciphered_text(version, text_original='')
     # TODO: replace with utf8 À
     text_enciphered =
       case version
@@ -265,24 +264,9 @@ class Segment < ApplicationRecord
       'public'
     end
 
-    # TODO: replace the following occurences of I18n.available_locales with project.available_locales
-    # or do sth. resulting in the same (e.g. reset I18n.available_locales in application_controller after having seen params[:project])
-    #
-    (Project.current.available_locales + [:orig]).each do |locale|
+    Rails.configuration.i18n.available_locales.each do |locale|
       text :"text_#{locale}", stored: true
     end
-    #dynamic_string :transcripts, stored: true  do # needs to be stored to enable highlighting
-      #translations.inject({}) do |mem, translation|
-        #mem["text_#{ISO_639.find(translation.locale.to_s).alpha2}"] = translation.text
-        #mem
-      #end
-    #end
-    #
-    #
-    # the following won`t run because of undefined method `translations' for #<Sunspot::DSL::Fields:0x00000006b9f518>
-    #translations.each do |translation|
-      #text :"#{translation.text}", stored: true # needs to be stored to enable highlighting
-    #end
 
     text :mainheading, :boost => 10 do
       mainheading = ''
@@ -315,12 +299,10 @@ class Segment < ApplicationRecord
 
   end
 
-  after_initialize do
-    (project.available_locales).each do |locale|
-      define_singleton_method "text_#{locale}" do
-        text("#{locale}-public") # only search in public texts
-        # TODO: enable searching over original texts in admin-mode
-      end
+  I18n.available_locales.each do |locale|
+    define_method "text_#{locale}" do
+      text("#{locale}-public") # only search in public texts
+      # TODO: enable searching over original texts in admin-mode
     end
   end
 
@@ -443,10 +425,7 @@ class Segment < ApplicationRecord
   end
 
   def has_heading?
-    translation_with_heading = translations.detect do |t|
-      not (t.mainheading.blank? and t.subheading.blank?)
-    end
-    not translation_with_heading.nil?
+    !!has_heading
   end
 
   def self.media_id_successor(mid)

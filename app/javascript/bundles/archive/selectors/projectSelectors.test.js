@@ -16,6 +16,7 @@ const state = {
                     { locale: 'de' },
                     { locale: 'es' },
                 ],
+                is_catalog: false,
             },
         },
     },
@@ -65,5 +66,17 @@ describe('getIsCampscapesProject', () => {
 
     test('is false otherwise', () => {
         expect(selectors.getIsCampscapesProject(state)).toBeFalsy();
+    });
+});
+
+describe('getIsCatalog', () => {
+    test('returns is_catalog value', () => {
+        expect(selectors.getIsCatalog(state)).toEqual(state.data.projects[1].is_catalog);
+    });
+
+    test('is false otherwise', () => {
+        const _state = dotProp.set(state, 'data.projects.1.is_catalog', null);
+
+        expect(selectors.getIsCatalog(_state)).toBe(false);
     });
 });

@@ -141,8 +141,8 @@ export default class InterviewWorkflowRow extends React.Component {
                     {this.box(t(this.props, 'activerecord.attributes.task.task_type_id'))}
                     {this.box(t(this.props, 'activerecord.attributes.task.supervisor_id'))}
                     {this.box(t(this.props, 'activerecord.attributes.task.user_account_id'))}
-                    {this.box(t(this.props, 'activerecord.attributes.task.comments'), 30)}
                     {this.box(t(this.props, 'activerecord.attributes.task.workflow_state'))}
+                    {this.box(t(this.props, 'activerecord.attributes.task.comments'), 30)}
                 </div>
             );
         }

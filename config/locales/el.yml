@@ -57,7 +57,7 @@ el:
     mainheading_translated: Hauptüberschrift (übers.)
     subheading_orig: Zwischenüberschrift
     subheading_translated: Zwischenüberschrift (übers.)
-    registry_references: Erwähnungen
+    registry_references: Verknüpfungen
     annotations: Anmerkungen
     timecode: Timecode
   legend:
@@ -316,8 +316,8 @@ el:
         new: Anmerkungen hinzufügen
         edit: Anmerkungen
       references:
-        new: Erwähnungen hinzufügen
-        edit: Erwähnungen
+        new: Registereintrag verknüpfen
+        edit: verknüpfte Registereinträge
       speaker_string: Sprecher*in (als String)
     person:
       admin: Personen bearbeiten
@@ -328,10 +328,11 @@ el:
     contribution:
       new: Mitwirkende*n hinzufügen
     registry_reference:
-      new: Erwähnung hinzufügen
-      delete: Erwähnung löschen
+      new: Registereintrag verknüpfen
+      edit: Verknüpfung bearbeiten
+      delete: Verknüpfung löschen
     registry_reference_type:
-      admin: Erwähnungsarten bearbeiten
+      admin: Verknüpfungsarten bearbeiten
     registry_entry:
       new: Registereintrag hinzufügen
       edit: Registereintrag bearbeiten
@@ -670,11 +671,11 @@ el:
         one: Mitwirkende*r
         other: Mitwirkende
       registry_references:
-        one: Erwähnung
-        other: Erwähnungen
-      registry_reference_types:
-        one: Erwähnungsart
-        other: Erwähnungsarten
+        one: Verknüpfung
+        other: Verknüpfungen
+      registry_reference_type:
+        one: Verknüpfungsart
+        other: Verknüpfungsarten
       registry_name_types:
         one: Registernamensart
         other: Registernamensarten

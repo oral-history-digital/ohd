@@ -16,8 +16,6 @@ const mapStateToProps = (state) => {
         contributionTypes: state.archive.contributionTypes,
         isLoggedIn: state.account.isLoggedIn,
         project: project,
-        editView: state.archive.editView,
-        account: state.data.accounts.current,
     }
 }
 

@@ -32,3 +32,10 @@ export const getIsCampscapesProject = state => {
 
     return projectId === 'campscapes';
 };
+
+export const getIsCatalog = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return (currentProject.is_catalog === true);
+    }
+);

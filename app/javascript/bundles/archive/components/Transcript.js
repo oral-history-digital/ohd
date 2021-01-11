@@ -1,4 +1,6 @@
 import React from 'react';
+import ReactList from 'react-list';
+
 import SegmentContainer from '../containers/SegmentContainer';
 import { t, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
 import { segmentsForTape } from 'utils/segments';
@@ -11,7 +13,17 @@ import Spinner from './Spinner';
 export default class Transcript extends React.Component {
     constructor(props) {
         super(props);
+
         this.handleScroll = this.handleScroll.bind(this);
+        this.openSegmentPopup = this.openSegmentPopup.bind(this);
+        this.closeSegmentPopup = this.closeSegmentPopup.bind(this);
+        this.setOpenReference = this.setOpenReference.bind(this);
+
+        this.state = {
+            popupSegmentId: null,
+            popupType: null,
+            openReference: null,
+        };
     }
 
     componentDidMount() {
@@ -35,6 +47,26 @@ export default class Transcript extends React.Component {
 
     componentWillUnmount() {
         window.removeEventListener('wheel', this.handleScroll);
+    }
+
+    openSegmentPopup(segmentId, popupType) {
+        this.setState({
+            popupSegmentId: segmentId,
+            popupType,
+            openReference: null,
+        });
+    }
+
+    closeSegmentPopup() {
+        this.setState({
+            popupSegmentId: null,
+            popupType: null,
+            openReference: null,
+        });
+    }
+
+    setOpenReference(reference) {
+        this.setState({ openReference: reference });
     }
 
     loadSegments() {
@@ -87,6 +119,9 @@ export default class Transcript extends React.Component {
     }
 
     transcript(){
+        const { transcriptTime, tape } = this.props;
+        const { popupSegmentId, popupType, openReference } = this.state;
+
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
         let tabIndex = this.props.originalLocale ? 0 : 1;
         let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props);
@@ -97,8 +132,11 @@ export default class Transcript extends React.Component {
         let speaker, speakerId;
         let transcript = [];
 
-        return shownSegments.map((segment, index) => {
-            let interviewee = getInterviewee(this.props);
+        const interviewee = getInterviewee(this.props);
+
+        const renderItem = (index, key) => {
+            const segment = shownSegments[index];
+
             segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
             if (
                 (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
@@ -110,22 +148,37 @@ export default class Transcript extends React.Component {
             }
             let active = false;
             if (
-                segment.time <= this.props.transcriptTime + 15 &&
-                segment.time >= this.props.transcriptTime - 15 &&
-                segment.tape_nbr === this.props.tape
+                segment.time <= transcriptTime + 15 &&
+                segment.time >= transcriptTime - 15 &&
+                segment.tape_nbr === tape
             ) {
                 active = true;
             }
+
             return (
                 <SegmentContainer
+                    key={key}
                     data={segment}
                     contentLocale={locale}
+                    popupType={popupSegmentId === segment.id ? popupType : null}
+                    openReference={popupSegmentId === segment.id ? openReference : null}
+                    openPopup={this.openSegmentPopup}
+                    closePopup={this.closeSegmentPopup}
+                    setOpenReference={this.setOpenReference}
                     tabIndex={tabIndex}
                     active={active}
-                    key={segment.id}
                 />
-            )
-        })
+            );
+        };
+
+        return (
+            <ReactList
+                itemRenderer={renderItem}
+                length={shownSegments.length}
+                type="variable"
+                itemSizeEstimator={() => 72}
+            />
+        );
     }
 
     render () {

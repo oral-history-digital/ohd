@@ -1,23 +1,12 @@
-Rails.configuration.after_initialize do
 OaiRepository.setup do |config|
 
-  begin
-    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      #config.repository_name = Project.first.name[Project.first.default_locale]
-    end
-  rescue ActiveRecord::NoDatabaseError
-  end
+  #config.repository_name = Project.first.name[Project.first.default_locale]
 
   # The URL from which this OAI Repository is served.
   # If you're deploying to different hostnames (e.g. development, QA and
   # production environments, each with different hostnames), you could
   # dynamically set this.
-  begin
-    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.repository_url = Project.first.archive_domain
-    end
-  rescue ActiveRecord::NoDatabaseError
-  end
+  #config.repository_url = Project.first.archive_domain
 
   # By default the (unique) identifier of each record will be composed as
   # #{record_prefix}/#{record.id}
@@ -26,22 +15,12 @@ OaiRepository.setup do |config|
   #
   # Most probably you'll create an oai_dc_identifier attribute or method in
   # the AR models you intend to serve. That value will supplant the default.
-  begin
-    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.record_prefix = Project.first.archive_domain
-    end
-  rescue ActiveRecord::NoDatabaseError
-  end
+  #config.record_prefix = Project.first.archive_domain
 
   # This is your repository administrator's email address.
   # This will appear in the information returned from an "Identify" call to
   # your repository
-  begin
-    if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.admin_email = Project.first.contact_email
-    end
-  rescue ActiveRecord::NoDatabaseError
-  end
+  #config.admin_email = Project.first.contact_email
 
   # The number of records shown at a time (when doing a ListRecords)
   config.limit = 100
@@ -95,5 +74,4 @@ OaiRepository.setup do |config|
   # ]
   config.additional_formats = []
 
-end
 end

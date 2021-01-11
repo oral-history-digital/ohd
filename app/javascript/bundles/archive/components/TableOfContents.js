@@ -104,6 +104,7 @@ export default class TableOfContents extends React.Component {
                     subIndex += 1;
                     if (headings[mainIndex - 1]) {
                         headings[mainIndex - 1].subheadings.push({
+                            segment: segment,
                             main: false,
                             heading: subheading,
                             chapter: mainIndex + '.' + subIndex + '.',

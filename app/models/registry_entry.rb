@@ -98,16 +98,11 @@ class RegistryEntry < ApplicationRecord
   end
 
   searchable do
-    #I18n.available_locales.each do |locale|
-      #text :"name_#{locale}", :stored => true do
-        #descriptor(locale)
-      #end
-    #end
     string :archive_id, :multiple => true, :stored => true do
       registry_references.map{|i| i.archive_id } 
     end
     string :workflow_state
-    (I18n.available_locales + [:orig]).each do |locale|
+    Rails.configuration.i18n.available_locales.each do |locale|
       text :"text_#{locale}", stored: true do
         descriptor(locale)
       end

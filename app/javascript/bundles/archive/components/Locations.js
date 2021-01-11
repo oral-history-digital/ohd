@@ -1,54 +1,33 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+// This import order of these four items is important.
+import 'leaflet/dist/leaflet.css';
+import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.webpack.css'; // Re-uses images from ~leaflet package
 import { Map, Marker, Popup, TileLayer } from 'react-leaflet';
+import 'leaflet-defaulticon-compatibility';
+
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import MarkerClusterGroup from 'react-leaflet-markercluster';
-import '../../../css/leaflet.css';
-import '../../../css/MarkerCluster.Default.css'
-import i1 from '../../../images/layers.png';
-import i2 from '../../../images/layers-2x.png';
-import i3 from '../../../images/marker-icon.png';
-import i4 from '../../../images/marker-icon-2x.png';
-import i5 from '../../../images/marker-shadow.png';
 
 export default class Locations extends React.Component {
-
     componentDidUpdate(prevProps) {
         if (!prevProps.visible && this.props.visible) {
             if (this.map) {
                 this.map.leafletElement.invalidateSize();
-                this.map.leafletElement.fitBounds(this.markersAndLocations().locations);
+                const locations = this.props.data.map(location => [location.latitude, location.longitude]);
+                this.map.leafletElement.fitBounds(locations);
             }
         }
-    }
-
-    markersAndLocations() {
-        let markers = [];
-        let locations = [];
-
-        if (this.props.data) {
-            for (let i = 0; i < this.props.data.length; i++) {
-                //for (let j = 0; j < this.props.data[i].references.length; j++) {
-
-                    let ref = this.props.data[i];//.references[j];
-
-                    if (ref.latitude) {
-                        locations.push([ref.latitude, ref.longitude]);
-                        markers.push(
-                            <Marker position={[ref.latitude, ref.longitude]} key={`marker-${i}`} >
-                                <Popup>
-                                    {this.props.popupContent(ref)}
-                                </Popup>
-                            </Marker>
-                        )
-                    }
-                //}
-            }
-        }
-        return {markers: markers, locations: locations};
     }
 
     render() {
-        let locations = this.markersAndLocations().locations;
-        if (this.props.loaded && locations.length > 0) {
+        const { data, loaded } = this.props;
+
+        const locations = data.map(location => [location.latitude, location.longitude]);
+
+        if (loaded && data.length > 0) {
             return(
                 <Map
                     bounds={locations}
@@ -60,7 +39,18 @@ export default class Locations extends React.Component {
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
                     <MarkerClusterGroup maxClusterRadius={40}>
-                        {this.markersAndLocations().markers}
+                        {
+                            data.map((location, index) => (
+                                <Marker
+                                    key={index}
+                                    position={[location.latitude, location.longitude]}
+                                >
+                                    <Popup>
+                                        {this.props.popupContent(location)}
+                                    </Popup>
+                                </Marker>
+                            ))
+                        }
                     </MarkerClusterGroup>
                 </Map>
             );
@@ -68,5 +58,11 @@ export default class Locations extends React.Component {
             return null;
         }
     }
-
 }
+
+Locations.propTypes = {
+    loaded: PropTypes.bool.isRequired,
+    data: PropTypes.array.isRequired,
+    visible: PropTypes.bool.isRequired,
+    popupContent: PropTypes.func.isRequired,
+};

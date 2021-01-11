@@ -13,27 +13,45 @@ class Task < ApplicationRecord
 
   include Workflow
 
+  # every state should be possible from all others
+  # workflow is still in here only  because of the callbacks
+  #
   workflow do
     state :created do
       event :start, transition_to: :started
+      event :finish, transitions_to: :finished
+      event :clear, transitions_to: :cleared
+      event :restart, transitions_to: :restarted
     end
     state :started do
+      event :start, transition_to: :started
       event :finish, transitions_to: :finished
+      event :clear, transitions_to: :cleared
+      event :restart, transitions_to: :restarted
     end
     state :finished do
+      event :start, transition_to: :started
+      event :finish, transitions_to: :finished
       event :clear, transitions_to: :cleared
       event :restart, transitions_to: :restarted
     end
     state :cleared do
+      event :start, transition_to: :started
+      event :finish, transitions_to: :finished
+      event :clear, transitions_to: :cleared
       event :restart, transitions_to: :restarted
     end
     state :restarted do
+      event :start, transition_to: :started
       event :finish, transitions_to: :finished
+      event :clear, transitions_to: :cleared
+      event :restart, transitions_to: :restarted
     end
   end
 
   def workflow_states
     current_state.events.map{|e| e.first}
+    #%w(created started finished cleared restarted)
   end
 
   def workflow_state=(change)

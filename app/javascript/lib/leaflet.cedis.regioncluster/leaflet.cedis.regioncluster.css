@@ -12,30 +12,49 @@
     position: relative;
 }
 .leaflet-control-layers-overlays input[type=checkbox] {
-    margin-right: 8px;
+    align-self: baseline;
+    margin-top: 0;
+    margin-right: 0.25rem;
 }
+
+.leaflet-control-layers-overlays > label > div {
+    display: flex;
+}
+
+.leaflet-control-layers-overlays > label > div > span {
+    display: flex;
+}
+
 .leaflet-control-layers-expanded .inactive{color: #b2afa1;}
 .leaflet-control-layers .mapHelp{width: 200px; margin-bottom: 15px;}
 
 #legend{border-radius: 5px; border: 2px solid rgba(0,0,0,0.2); cursor: pointer;}
 .legend.extra-marker.extra-marker-svg i {
     position: absolute;
-    top: -1px;
-    left: -4px;
+    top: -7px;
+    left: -10px;
 }
-.leaflet-control-layers-expanded  .grouptitle{
-    margin-left: 40px;
+
+.leaflet-control-layers-expanded .grouptitle {
+    margin-left: 0;
     cursor: pointer;
 }
-.leaflet-control-layers-expanded .mapLegendClustering{cursor: pointer;}
-.legend.leaflet-marker-icon.extra-marker.leaflet-zoom-animated.leaflet-interactive {
-    position: relative;
-    left: 8px;
-    float: left;
-    height: 24px;
-    width: 35px;
-    top: 38px;
+
+.leaflet-control-layers-expanded .mapLegendClustering {
+    cursor: pointer;
 }
+
+.legend.leaflet-marker-icon.extra-marker.leaflet-zoom-animated.leaflet-interactive {
+    height: 18px;
+    position: relative;
+    width: 20px;
+}
+
+.legend.leaflet-marker-icon.extra-marker.leaflet-zoom-animated.leaflet-interactive > svg {
+    height: 18px;
+    width: 20px;
+}
+
 .extra-marker.extra-marker-svg i {
     width: 26px;
 }
