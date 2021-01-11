@@ -26,6 +26,8 @@ class Project < ApplicationRecord
   #serialize :name, Array
   serialize :funder_names, Array
   serialize :hidden_registry_entry_ids, Array
+  serialize :hidden_transcript_registry_entry_ids, Array
+  serialize :pdf_registry_entry_ids, Array
   serialize :pdf_registry_entry_codes, Array
   # serialize :fullname_on_landing_page
 
@@ -35,7 +37,7 @@ class Project < ApplicationRecord
   # if params[:available_locales] = "de,en,ru" (a string!!) it can not be serialized
   # therefore the string-values from the params-hash are splitted  first
   # 
-  [:view_modes, :available_locales, :upload_types, :funder_names, :hidden_registry_entry_ids, :pdf_registry_entry_codes].each do |m|
+  [:view_modes, :available_locales, :upload_types, :funder_names, :hidden_registry_entry_ids, :pdf_registry_entry_ids, :hidden_transcript_registry_entry_ids].each do |m|
     define_method "pseudo_#{m}=" do |string|
       write_attribute(m, string.split(','))
     end

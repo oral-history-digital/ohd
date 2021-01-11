@@ -77,7 +77,9 @@ export default class RegistryEntrySelect extends React.Component {
             this.props.registryEntriesStatus[`children_for_entry_${this.state.selectedRegistryEntryId}`] && 
             this.props.registryEntriesStatus[`children_for_entry_${this.state.selectedRegistryEntryId}`].split('-')[0] === 'fetched'
         ) {
-            return this.selectedRegistryEntry().child_ids[this.props.locale].map((id, index) => {
+            return this.selectedRegistryEntry().child_ids[this.props.locale]?.filter(rid => {
+                return !this.props.inTranscript || this.props.project.hidden_transcript_registry_entry_ids.indexOf(rid.toString()) === -1
+            }).map((id, index) => {
                 return this.props.registryEntries[id];
             })
         } else {
