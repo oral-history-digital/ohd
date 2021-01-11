@@ -29,10 +29,11 @@ export default class RegistryReferenceForm extends React.Component {
                 elementType: 'registryEntrySelect',
                 attribute: 'registry_entry_id',
                 lowestAllowedRegistryEntryId: this.props.lowestAllowedRegistryEntryId,
+                inTranscript: this.props.inTranscript,
                 goDeeper: true
             },
         ]
-        if (!_this.props.inTranscript) {
+        //if (!_this.props.inTranscript) {
             elements.push(
                 {
                     elementType: 'select',
@@ -42,7 +43,7 @@ export default class RegistryReferenceForm extends React.Component {
                     optionsScope: 'workflow_states',
                 }
             )
-        }
+        //}
         if (!_this.props.registryReferenceTypeId) {
             elements.push(
                 {

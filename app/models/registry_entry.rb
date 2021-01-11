@@ -217,7 +217,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   def self.pdf_entries(project)
-    where(code: project.pdf_registry_entry_codes).includes(registry_names: :translations).map{|e| e.all_relatives}.flatten.sort{|a, b| a.descriptor <=> b.descriptor}
+    where(id: project.pdf_registry_entry_ids).includes(registry_names: :translations).map{|e| e.all_relatives}.flatten.sort{|a, b| a.descriptor <=> b.descriptor}
   end
 
   def self.csv_entries(project)
