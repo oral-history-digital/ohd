@@ -45,7 +45,10 @@ export const getSelectedInterviewEditViewColumns = state => getArchive(state).se
 
 export const getSelectedArchiveIds = state => getArchive(state).selectedArchiveIds;
 
-export const getSelectedRegistryEntryIds = state => getArchive(state).selectedRegistryEntryIds;
+export const getSelectedRegistryEntryIds = createSelector(
+    getArchive,
+    archive => archive.selectedRegistryEntryIds.filter(id => id !== 'dummy')
+);
 
 // not used anymore
 // state.archive.randomFeaturedInterviews

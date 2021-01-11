@@ -1,4 +1,5 @@
 import dotProp from 'dot-prop-immutable';
+import { ROOT_REGISTRY_ENTRY_ID } from '../constants/archiveConstants';
 import * as selectors from './dataSelectors';
 
 const state = {
@@ -36,6 +37,9 @@ const state = {
             random_featured_interviews: {
                 all: 'fetched-Thu Dec 17 2020 18:20:22 GMT+0100 (Central European Standard Time)',
             },
+            registry_entries: {
+                [ROOT_REGISTRY_ENTRY_ID]: 'fetched-Thu Jan 07 2021 21:17:39 GMT+0100 (Central European Standard Time)',
+            },
         },
         projects: {
             1: {
@@ -57,6 +61,9 @@ const state = {
             },
         },
         registry_entries: {
+            [ROOT_REGISTRY_ENTRY_ID]: {
+                id: ROOT_REGISTRY_ENTRY_ID,
+            },
             23: {
                 id: 23,
                 type: 'RegistryEntry',
@@ -120,12 +127,16 @@ test('getStatuses gets statuses object', () => {
     expect(selectors.getStatuses(state)).toEqual(state.data.statuses);
 });
 
-test('getPeopleStatus gets people statuses object', () => {
+test('getPeopleStatus gets people status object', () => {
     expect(selectors.getPeopleStatus(state)).toEqual(state.data.statuses.people);
 });
 
-test('getInterviewsStatus gets interviews statuses object', () => {
+test('getInterviewsStatus gets interviews status object', () => {
     expect(selectors.getInterviewsStatus(state)).toEqual(state.data.statuses.interviews);
+});
+
+test('getRegistryEntriesStatus gets registry entries status object', () => {
+    expect(selectors.getRegistryEntriesStatus(state)).toEqual(state.data.statuses.registry_entries);
 });
 
 test('getProjects gets projects object', () => {
@@ -142,6 +153,14 @@ test('getCurrentAccount gets account object of current user', () => {
 
 test('getRegistryEntries gets registry entries object', () => {
     expect(selectors.getRegistryEntries(state)).toEqual(state.data.registry_entries);
+});
+
+test('getRootRegistryEntry gets root registry entry', () => {
+    expect(selectors.getRootRegistryEntry(state)).toEqual(state.data.registry_entries[ROOT_REGISTRY_ENTRY_ID]);
+});
+
+test('getRootRegistryEntryFetched is true if entry is fetched', () => {
+    expect(selectors.getRootRegistryEntryFetched(state)).toBeTruthy();
 });
 
 test('getRegistryNameTypes gets registry name types object', () => {

@@ -1,5 +1,8 @@
 /* eslint-disable import/prefer-default-export */
 
+// TODO: fit this for MOG - id of root entry will be different
+export const ROOT_REGISTRY_ENTRY_ID = 1;
+
 export const MISSING_STILL = 'https://medien.cedis.fu-berlin.de/zwar/stills/missing_still.jpg'
 
 export const ADD_DATA = 'ADD_DATA';

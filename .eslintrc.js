@@ -27,5 +27,11 @@ module.exports = {
         "react": {
             "version": "detect"
         }
+    },
+    "globals": {
+        "describe": "readonly",
+        "expect": "readonly",
+        "module": "readonly",
+        "test": "readonly"
     }
 };
