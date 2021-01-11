@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { submitData } from '../actions/dataActionCreators';
@@ -11,10 +12,10 @@ const mapStateToProps = (state) => ({
     selectedRegistryEntryIds: getSelectedRegistryEntryIds(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup()),
-});
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+    openArchivePopup,
+    closeArchivePopup,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MergeRegistryEntriesButton);

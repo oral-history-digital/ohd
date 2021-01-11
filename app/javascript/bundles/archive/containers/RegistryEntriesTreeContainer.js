@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import RegistryEntriesTree from '../components/RegistryEntriesTree';
 import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
@@ -14,8 +15,8 @@ const mapStateToProps = (state) => ({
     isRegistryEntrySearching: getIsRegistryEntrySearching(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
-});
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setFlyoutTabsIndex,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntriesTree);
