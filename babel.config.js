@@ -4,6 +4,7 @@ module.exports = function(api) {
   var isDevelopmentEnv = api.env('development')
   var isProductionEnv = api.env('production')
   var isTestEnv = api.env('test')
+  var isWebpackDevServer = process.env.WEBPACK_DEV_SERVER;
 
   if (!validEnv.includes(currentEnv)) {
     throw new Error(
@@ -76,6 +77,7 @@ module.exports = function(api) {
           async: false
         }
       ],
+      isWebpackDevServer && 'react-refresh/babel',
       isProductionEnv && [
         'babel-plugin-transform-react-remove-prop-types',
         {
