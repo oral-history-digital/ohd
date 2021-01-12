@@ -58,7 +58,7 @@ class RegistryEntriesController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{params}-#{RegistryEntry.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{cache_key_params}-#{RegistryEntry.maximum(:updated_at).strftime("%d.%m-%H:%M")}" do
           registry_entries, extra_params =
             if params[:children_for_entry]
               [
