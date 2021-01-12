@@ -424,7 +424,7 @@ GEM
     sunspot_rails (2.3.0)
       rails (>= 3)
       sunspot (= 2.3.0)
-    sunspot_solr (2.5.0)
+    sunspot_solr (2.1.0)
     temple (0.8.0)
     thor (0.19.4)
     thread_safe (0.3.6)
@@ -522,7 +522,7 @@ DEPENDENCIES
   slim-rails
   spork
   sunspot_rails
-  sunspot_solr (= 2.5.0)
+  sunspot_solr (= 2.1.0)
   uglifier
   unicode
   webpacker (~> 5.x)

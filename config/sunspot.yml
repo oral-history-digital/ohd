@@ -1,22 +1,29 @@
-production:
-  solr:
+# Sunspot Solr configuration
+
+defaults: &defaults
     hostname: localhost
-    port: 8983
+    port: 8985
+    path: /solr/default
     log_level: WARNING
-    path: /solr/production
-    # read_timeout: 2
-    # open_timeout: 0.5
 
 development:
   solr:
-    hostname: localhost
-    port: 8982
+    <<: *defaults
     log_level: INFO
-    path: /solr/development
 
 test:
   solr:
-    hostname: localhost
-    port: 8981
-    log_level: WARNING
-    path: /solr/test
+    <<: *defaults
+
+cucumber:
+  solr:
+    <<: *defaults
+    log_level: INFO
+
+production:
+  solr:
+    <<: *defaults
+    port: 8090
+    path: /solr_zwar_demo
+    # read_timeout: 2
+    # open_timeout: 0.5

@@ -7,12 +7,10 @@ config/project_config
 log/
 public/javascripts/translations.js
 solr/data
-solr/test/
-solr/development/
-solr/default/
-solr/pids
+sunspot-solr.pid
 tmp/
 /node_modules
+solr/pids/
 /public/assets
 /public/packs
 /public/packs-test
