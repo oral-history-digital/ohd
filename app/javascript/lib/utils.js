@@ -263,8 +263,16 @@ export function admin(props, obj={}) {
                 // if obj is a task of current_user_account, he/she should be able to edit it
                 (
                     obj.type === 'Task' && (
-                        !!activeTasksPermissions.find(task => task.id === obj.id) ||
-                        !!activeSupervisedTasksPermissions.find(task => task.id === obj.id)
+                        !!activeTasks.find(task => task.id === obj.id) ||
+                        !!activeSupervisedTasks.find(task => task.id === obj.id)
+                    )
+                ) ||
+                //
+                // if obj is a t ref (i.e. a comment) of a task of current_user_account, he/she should be able to edit it
+                (
+                    obj.ref_type === 'Task' && (
+                        !!activeTasks.find(task => task.id === obj.ref_id) ||
+                        !!activeSupervisedTasks.find(task => task.id === obj.ref_id)
                     )
                 ) ||
                 //
