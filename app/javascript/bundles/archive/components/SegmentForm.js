@@ -12,6 +12,7 @@ export default class SegmentForm extends React.Component {
                     scope='segment'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     data={this.props.segment}
+                    values={{locale: this.props.contentLocale}}
                     submitText='submit'
                     elements={[
                         {
