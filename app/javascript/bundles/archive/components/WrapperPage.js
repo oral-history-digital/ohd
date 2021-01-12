@@ -136,8 +136,6 @@ export default class WrapperPage extends React.Component {
                         </main>
 
                         <SiteFooter project={project} locale={locale} />
-
-                        { transcriptScrollEnabled ? <div className="compensation" /> : null }
                     </div>
 
                     <BurgerButton open={visible}
