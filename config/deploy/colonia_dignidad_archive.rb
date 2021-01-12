@@ -12,5 +12,5 @@ set :project_yml, "colonia_dignidad.yml"
 #    }
 
 set :rbenv_type, :system
-set :rbenv_ruby, '2.5.3'
+set :rbenv_ruby, '2.6.6'
 set :rbenv_custom_path, '/opt/rbenv'
