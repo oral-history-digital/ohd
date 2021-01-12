@@ -101,6 +101,7 @@ export default class Data extends React.Component {
             return Object.keys(this.props.joinedData).map((joined_model_name_underscore, index) => {
                 let props = {
                     data: this.props.data[pluralize(joined_model_name_underscore)],
+                    task: this.props.data.type === 'Task' && this.props.data,
                     initialFormValues: {
                         [`${this.props.scope}_id`]: this.props.data.id,
                         //
