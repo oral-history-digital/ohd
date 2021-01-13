@@ -1,18 +1,13 @@
-import {
-    SHOW_FLYOUT_TABS,
-    HIDE_FLYOUT_TABS,
-    TOGGLE_FLYOUT_TABS,
-    SET_FLYOUT_TABS_INDEX
-} from './action-types';
-
+import { SHOW_FLYOUT_TABS, HIDE_FLYOUT_TABS, TOGGLE_FLYOUT_TABS, SET_FLYOUT_TABS_INDEX }
+    from './action-types';
 import { INDEX_ACCOUNT } from './constants';
 
-const initialState = {
+export const initialState = {
     visible: false,
     index: INDEX_ACCOUNT,
 };
 
-const flyoutTabs = (state = initialState, action) => {
+export default function flyoutTabs(state = initialState, action) {
     switch (action.type) {
         case SHOW_FLYOUT_TABS:
             return {
@@ -37,6 +32,4 @@ const flyoutTabs = (state = initialState, action) => {
         default:
             return state;
     }
-};
-
-export default flyoutTabs;
+}
