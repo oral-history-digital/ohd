@@ -6,7 +6,7 @@ import {
     setQueryParams,
 } from '../actions/searchActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
-import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
+import { hideFlyoutTabs } from 'modules/flyout-tabs';
 
 const mapStateToProps = (state) => {
     return {

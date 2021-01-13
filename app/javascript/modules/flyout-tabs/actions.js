@@ -3,7 +3,7 @@ import {
     SHOW_FLYOUT_TABS,
     TOGGLE_FLYOUT_TABS,
     SET_FLYOUT_TABS_INDEX
-} from '../constants/archiveConstants';
+} from './action-types';
 
 export const showFlyoutTabs = () => ({
     type: SHOW_FLYOUT_TABS,

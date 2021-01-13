@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { INDEX_NONE } from '../constants/flyoutTabs';
+import { INDEX_NONE } from 'modules/flyout-tabs';
 
 import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';

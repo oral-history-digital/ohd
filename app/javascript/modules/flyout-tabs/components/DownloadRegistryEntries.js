@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { t, pathBase } from '../../../../lib/utils';
+import { t, pathBase } from 'lib/utils';
 
 function DownloadRegistryEntries(props) {
     const { format, specificLocale } = props;

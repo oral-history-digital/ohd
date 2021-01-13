@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import RegistryEntriesTree from '../components/RegistryEntriesTree';
-import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
+import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getRootRegistryEntry } from '../selectors/dataSelectors';
 import { getProjectId } from '../selectors/archiveSelectors';
 import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree } from '../selectors/searchSelectors';

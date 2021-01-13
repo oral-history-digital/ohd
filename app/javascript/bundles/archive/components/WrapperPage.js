@@ -4,13 +4,13 @@ import classNames from 'classnames';
 import ActionCable from 'actioncable';
 
 import ResizeWatcherContainer from '../containers/ResizeWatcherContainer';
-import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import BurgerButton from './layout/BurgerButton';
 import MessagesContainer from '../containers/layout/MessagesContainer';
 import SiteHeaderContainer from '../containers/layout/SiteHeaderContainer';
 import SiteFooter from './layout/SiteFooter';
 import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
+import { FlyoutTabs } from 'modules/flyout-tabs';
 
 export default class WrapperPage extends React.Component {
     static propTypes = {
@@ -142,7 +142,7 @@ export default class WrapperPage extends React.Component {
                                   onClick={() => this.props.toggleFlyoutTabs(visible)}/>
 
                     <ErrorBoundaryContainer>
-                        <FlyoutTabsContainer />
+                        <FlyoutTabs />
                     </ErrorBoundaryContainer>
 
                     <ArchivePopupContainer/>

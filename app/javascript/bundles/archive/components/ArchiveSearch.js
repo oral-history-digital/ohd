@@ -12,7 +12,7 @@ import UserContentFormContainer from '../containers/UserContentFormContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import { t, admin, queryToText, pathBase } from '../../../lib/utils';
 import Spinner from './Spinner';
-import { INDEX_SEARCH } from '../constants/flyoutTabs';
+import { INDEX_SEARCH } from 'modules/flyout-tabs';
 
 export default class ArchiveSearch extends React.Component {
     constructor(props) {

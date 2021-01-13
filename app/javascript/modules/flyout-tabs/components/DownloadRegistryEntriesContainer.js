@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import DownloadRegistryEntries from '../../components/flyout-tabs/DownloadRegistryEntries';
+import DownloadRegistryEntries from './DownloadRegistryEntries';
 
 const mapStateToProps = (state) => ({
     projectId: state.archive.projectId,

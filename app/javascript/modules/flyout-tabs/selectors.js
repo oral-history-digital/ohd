@@ -1,4 +1,6 @@
-export const getFlyoutTabs = state => state.flyoutTabs;
+import { NAME } from './constants';
+
+export const getFlyoutTabs = state => state[NAME];
 
 export const getFlyoutTabsVisible = state => getFlyoutTabs(state).visible;
 

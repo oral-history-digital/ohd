@@ -1,12 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import PeopleSearchFormContainer from '../../containers/PeopleSearchFormContainer';
-import RegistryReferenceTypesSearchFormContainer from '../../containers/RegistryReferenceTypesSearchFormContainer';
-import CollectionsSearchFormContainer from '../../containers/CollectionsSearchFormContainer';
-import LanguagesSearchFormContainer from '../../containers/LanguagesSearchFormContainer';
-import InterviewDataContainer from '../../containers/InterviewDataContainer';
-import { admin, pathBase, t } from '../../../../lib/utils';
+import PeopleSearchFormContainer from 'bundles/archive/containers/PeopleSearchFormContainer';
+import RegistryReferenceTypesSearchFormContainer from 'bundles/archive/containers/RegistryReferenceTypesSearchFormContainer';
+import CollectionsSearchFormContainer from 'bundles/archive/containers/CollectionsSearchFormContainer';
+import LanguagesSearchFormContainer from 'bundles/archive/containers/LanguagesSearchFormContainer';
+import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
+import { admin, pathBase, t } from 'lib/utils';
 
 class IndexingTabPanel extends Component {
     static propTypes = {

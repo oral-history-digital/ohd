@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import ArchiveSearch from '../components/ArchiveSearch';
 import { searchInArchive } from '../actions/searchActionCreators';
-import { hideFlyoutTabs, setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
+import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { setViewMode } from '../actions/archiveActionCreators';
 import { getProject } from 'lib/utils';
 

@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import FlyoutTabs from '../components/FlyoutTabs';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
-import { setLocale } from '../actions/archiveActionCreators';
-import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
-import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors/flyoutTabsSelectors';
-import { getInterview, getInterviewee, getProject } from '../../../lib/utils';
+import { getInterview, getInterviewee, getProject } from 'lib/utils';
+import { openArchivePopup } from 'bundles/archive/actions/archivePopupActionCreators';
+import { setLocale } from 'bundles/archive/actions/archiveActionCreators';
+import { setFlyoutTabsIndex } from '../actions';
+import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors';
+import FlyoutTabs from './FlyoutTabs';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

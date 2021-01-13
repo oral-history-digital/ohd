@@ -3,9 +3,9 @@ import {
     HIDE_FLYOUT_TABS,
     TOGGLE_FLYOUT_TABS,
     SET_FLYOUT_TABS_INDEX
-} from '../constants/archiveConstants';
+} from './action-types';
 
-import { INDEX_ACCOUNT } from '../constants/flyoutTabs';
+import { INDEX_ACCOUNT } from './constants';
 
 const initialState = {
     visible: false,
