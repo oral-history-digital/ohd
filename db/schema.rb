@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_09_153848) do
+ActiveRecord::Schema.define(version: 2021_01_12_183954) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -116,6 +116,22 @@ ActiveRecord::Schema.define(version: 2021_01_09_153848) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "contribution_type_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "contribution_type_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "label"
+    t.index ["contribution_type_id"], name: "index_contribution_type_translations_on_contribution_type_id"
+    t.index ["locale"], name: "index_contribution_type_translations_on_locale"
+  end
+
+  create_table "contribution_types", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "contributions", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "interview_id"
     t.string "contribution_type", limit: 255
@@ -124,6 +140,7 @@ ActiveRecord::Schema.define(version: 2021_01_09_153848) do
     t.datetime "updated_at"
     t.string "workflow_state", default: "unshared"
     t.string "speaker_designation"
+    t.integer "contribution_type_id"
     t.index ["interview_id"], name: "index_contributions_on_interview_id"
   end
 

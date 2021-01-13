@@ -7,6 +7,7 @@ class Project < ApplicationRecord
 
   has_many :interviews
   has_many :collections
+  has_many :contribution_types
   has_many :metadata_fields
   has_many :task_types
   has_many :external_links
