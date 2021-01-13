@@ -203,7 +203,6 @@ class Project < ApplicationRecord
         end
       when "Language"
         facet_label_hash = facet.localized_hash(:label)
-        binding.pry
         cache_key_date = [Language.maximum(:updated_at), facet.updated_at].max.strftime("%d.%m-%H:%M")
         mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
           {
