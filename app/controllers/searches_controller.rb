@@ -44,7 +44,7 @@ class SearchesController < ApplicationController
   def search(model, order)
     model.search do
       fulltext params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext] do
-        (current_project.available_locales + [:orig]).each do |locale|
+        current_project.available_locales.each do |locale|
           highlight :"text_#{locale}"
         end
       end
@@ -205,7 +205,7 @@ class SearchesController < ApplicationController
   private
 
   def highlighted_text(hit)
-    (current_project.available_locales + [:orig]).inject({}) do |mem, locale|
+    current_project.available_locales.inject({}) do |mem, locale|
       mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
         m << highlighted.sub(/:/, "").strip()

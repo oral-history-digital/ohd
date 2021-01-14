@@ -55,7 +55,7 @@ class PeopleController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{params}-#{Person.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{cache_key_params}-#{Person.maximum(:updated_at).strftime("%d.%m-%H:%M")}" do
           if params.keys.include?("all")
             data = Person.all.
               includes(:translations, :project).

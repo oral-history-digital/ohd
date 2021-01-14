@@ -152,7 +152,8 @@ class Project < ApplicationRecord
       when "RegistryReferenceType"
         rr = facet.registry_reference_type
         if rr
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.name}-#{rr.id}-#{rr.updated_at}-#{facet.updated_at}-registry_reference_type-search-facets") do
+          cache_key_date = [rr.updated_at, facet.updated_at].max.strftime("%d.%m-%H:%M")
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
             ::FacetSerializer.new(rr).as_json
           end
         end
@@ -213,7 +214,8 @@ class Project < ApplicationRecord
         end
       when "Language"
         facet_label_hash = facet.localized_hash(:label)
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-language-search-facets-#{Language.maximum(:updated_at)}-#{facet.updated_at}") do
+        cache_key_date = [Language.maximum(:updated_at), facet.updated_at].max.strftime("%d.%m-%H:%M")
+        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
@@ -227,7 +229,8 @@ class Project < ApplicationRecord
         end
       when "Collection"
         facet_label_hash = facet.localized_hash(:label)
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-collection-search-facets-#{Collection.maximum(:updated_at)}-#{facet.updated_at}") do
+        cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].max.strftime("%d.%m-%H:%M")
+        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
             subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|

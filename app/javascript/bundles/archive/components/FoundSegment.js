@@ -54,12 +54,7 @@ export default class Segment extends React.Component {
     }
 
     render() {
-        let tabIndex = 0
-        if(this.props.data.text['orig']){
-            tabIndex = (this.props.data.text['orig'] === '') ? 1 : 0; 
-        } else {
-            tabIndex = (this.props.interview && this.props.locale === this.props.interview.lang) ? 0 : 1;
-        }
+        let tabIndex = (this.props.interview && this.props.locale === this.props.interview.lang) ? 0 : 1;
         return (
             <div className={'content-search-row'} onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, tabIndex)}>
                 {this.counter()}
@@ -69,7 +64,7 @@ export default class Segment extends React.Component {
                     {moment.utc(this.props.data.time * 1000).format("HH:mm:ss")}
                 </p>
                 <div className={this.css()}>
-                    <p dangerouslySetInnerHTML={{__html: this.props.data.text[`${this.props.locale}-public`]}} />
+                    <p dangerouslySetInnerHTML={{__html: this.props.data.text[this.props.locale]}} />
                 </div>
             </div>
         )

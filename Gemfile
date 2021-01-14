@@ -1,7 +1,7 @@
 #source 'https://dev.cedis.fu-berlin.de/geminabox/'
 source 'https://rubygems.org'
 
-ruby '2.6.6'
+#ruby '2.6.6'
 
 gem 'rdoc'
 gem 'rails', '~>5.2.4'

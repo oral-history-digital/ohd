@@ -11,26 +11,6 @@ export default class RefTreeEntry extends React.Component {
 
         this.toggle = this.toggle.bind(this);
         this.handleClick = this.handleClick.bind(this);
-        this.handleScroll = this.handleScroll.bind(this);
-    }
-
-    componentDidMount() {
-        window.removeEventListener('scroll', this.handleScroll);
-        window.addEventListener('scroll', this.handleScroll);
-        window.scrollTo(0, 1);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('scroll', this.handleScroll);
-    }
-
-    handleScroll() {
-        let fixVideo = (document.scrollTop > document.getElementsByClassName("SiteHeader")[0].height);
-        if (fixVideo && !this.props.transcriptScrollEnabled) {
-            this.props.handleTranscriptScroll(true)
-        } else if (!fixVideo && this.props.transcriptScrollEnabled) {
-            this.props.handleTranscriptScroll(false)
-        }
     }
 
     toggle() {
