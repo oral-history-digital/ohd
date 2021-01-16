@@ -5,7 +5,7 @@ import WrapperPage from '../components/WrapperPage';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
 import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
-import { changeToEditView, setLocale, setProjectId } from '../actions/archiveActionCreators';
+import { setLocale, setProjectId } from '../actions/archiveActionCreators';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
 
 import { getCookie, getProject } from '../../../lib/utils';
@@ -18,6 +18,7 @@ const mapStateToProps = (state) => {
         transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
+        project: project,
         translations: state.archive.translations,
         disabled: state.popup.show,
         visible: state.flyoutTabs.visible,
@@ -45,7 +46,6 @@ const mapDispatchToProps = (dispatch) => ({
     setProjectId: id => dispatch(setProjectId(id)),
     closeArchivePopup: () => dispatch(closeArchivePopup()),
     toggleFlyoutTabs: () => dispatch(toggleFlyoutTabs()),
-    changeToEditView: (bool) => dispatch(changeToEditView(bool)),
 })
 
 export default withRouter(connect(

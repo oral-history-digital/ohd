@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import ActionCable from 'actioncable';
+import { Helmet } from 'react-helmet';
 
 import ResizeWatcherContainer from '../containers/ResizeWatcherContainer';
 import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
@@ -13,26 +14,18 @@ import SiteFooter from './layout/SiteFooter';
 import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
 
 export default class WrapperPage extends React.Component {
-    static propTypes = {
-        editView: PropTypes.bool.isRequired,
-        match: PropTypes.object.isRequired,
-    }
 
     constructor(props) {
         super(props);
         this.state = {
             notifications: [],
-            editView: this.props.editViewCookie,
         }
-        this.props.changeToEditView(this.props.editViewCookie)
     }
 
     componentDidMount() {
         this.loadAccount()
         this.loadCollections();
         this.loadProjects();
-        this.setLocale();
-        this.setProjectId();
     }
 
     componentDidUpdate(prevProps) {
@@ -43,9 +36,6 @@ export default class WrapperPage extends React.Component {
             }
         } else {
             document.body.classList.remove('noScroll');
-        }
-        if (prevProps.editView !== this.props.editView) {
-            this.setState({editView: this.props.editView})
         }
         this.loadCollections();
         this.loadProjects();
@@ -85,43 +75,21 @@ export default class WrapperPage extends React.Component {
         }
     }
 
-    setLocale() {
-        const { match } = this.props;
+    //createSocket() {
+        //let cable = ActionCable.createConsumer('/cable');
 
-        if(this.props.locale !== match.params.locale) {
-            this.props.setLocale(match.params.locale);
-        }
-    }
-
-    setProjectId() {
-        const { match } = this.props;
-
-        if (match.params.projectId !== this.props.projectId) {
-            this.props.setProjectId(match.params.projectId);
-        }
-    }
-
-    project() {
-        const { match } = this.props;
-
-        return Object.values(this.props.projects).find(p => p.shortname.toLowerCase() === match.params.projectId.toLowerCase());
-    }
-
-    createSocket() {
-        let cable = ActionCable.createConsumer('/cable');
-
-        this.notifications = cable.subscriptions.create({
-            channel: "WebNotificationsChannel"
-        }, {
-            received: (data) => {
-                console.log(data);
-                this.setState({notifications: [...this.state.notifications, data]})
-            },
-        });
-    }
+        //this.notifications = cable.subscriptions.create({
+            //channel: "WebNotificationsChannel"
+        //}, {
+            //received: (data) => {
+                //console.log(data);
+                //this.setState({notifications: [...this.state.notifications, data]})
+            //},
+        //});
+    //}
 
     render() {
-        const { visible, locale, children, transcriptScrollEnabled } = this.props;
+        const { visible, locale, children, transcriptScrollEnabled, match, project } = this.props;
 
         return (
             <ResizeWatcherContainer>
@@ -130,11 +98,15 @@ export default class WrapperPage extends React.Component {
                     'flyout-is-hidden': !visible,
                     'fix-video': transcriptScrollEnabled,
                 })}>
+                    <Helmet>
+                        <html lang={match.params.locale} />
+                    </Helmet>
+
                     <div className={classNames('Site', 'wrapper-page', {
                         'fix-video': transcriptScrollEnabled,
                         'fullscreen': !visible,
                     })}>
-                        <SiteHeaderContainer logos={this.project().logos} />
+                        <SiteHeaderContainer logos={project?.logos} />
 
                         <MessagesContainer loggedInAt={this.props.loggedInAt}
                                            notifications={this.state.notifications} />
@@ -143,7 +115,7 @@ export default class WrapperPage extends React.Component {
                             {children}
                         </main>
 
-                        <SiteFooter project={this.project()} locale={locale} />
+                        <SiteFooter project={project} locale={locale} />
 
                         { transcriptScrollEnabled ? <div className="compensation" /> : null }
                     </div>
@@ -160,4 +132,9 @@ export default class WrapperPage extends React.Component {
             </ResizeWatcherContainer>
         )
     }
+}
+
+WrapperPage.propTypes = {
+    editView: PropTypes.bool.isRequired,
+    match: PropTypes.object.isRequired,
 }

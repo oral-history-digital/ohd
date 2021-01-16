@@ -81,6 +81,10 @@ class Project < ApplicationRecord
     def current
       first
     end
+
+    def archive_domains
+      where.not(shortname: 'ohd').compact.map(&:archive_domain)
+    end
   end
 
   def identifier
@@ -92,10 +96,6 @@ class Project < ApplicationRecord
   #
   def available_locales
     read_attribute :available_locales
-  end
-
-  def archive_domain
-    Rails.env == "development" ? "http://localhost:3000" : read_attribute(:archive_domain)
   end
 
   def root_registry_entry

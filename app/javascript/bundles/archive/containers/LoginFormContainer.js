@@ -8,6 +8,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         translations: state.archive.translations,
+        projects: state.data.projects,
     }
 }
 

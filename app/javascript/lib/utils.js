@@ -1,5 +1,13 @@
 export function pathBase(props) {
-    return `/${props.projectId}/${props.locale}`;
+    if (projectByDomain(props.projects)) {
+        return `/${props.locale}`;
+    } else {
+        return `/${props.projectId}/${props.locale}`;
+    }
+}
+
+export function projectByDomain(projects) {
+    return projects && Object.values(projects).find(project => project.archive_domain === window.location.hostname);
 }
 
 export function get(state, dataType, id) {

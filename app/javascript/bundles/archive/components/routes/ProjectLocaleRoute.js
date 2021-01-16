@@ -4,9 +4,10 @@ import { Route } from 'react-router-dom';
 import WrapperPageContainer from '../../containers/WrapperPageContainer';
 import Routes from './Routes';
 
-function LocaleRoute() {
+function ProjectLocaleRoute() {
+    debugger
     return (
-        <Route path="/:locale" render={routeProps => (
+        <Route path="/:projectId/:locale" render={routeProps => (
             <WrapperPageContainer {...routeProps} >
                 <Routes />
             </WrapperPageContainer>
@@ -14,4 +15,4 @@ function LocaleRoute() {
     );
 }
 
-export default LocaleRoute;
+export default ProjectLocaleRoute;

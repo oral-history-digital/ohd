@@ -158,38 +158,50 @@ Rails.application.routes.draw do
   end
 
   concern :account do
-    devise_for :user_accounts, :controllers => { sessions: "sessions", passwords: "passwords" }, skip: [:registrations]
-    resources :accounts, only: [:show, :update, :index] do
-      member do
-        get :confirm_new_email
+    scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+      #devise_for :user_accounts, :controllers => { sessions: "sessions", passwords: "passwords" }, skip: [:registrations]
+      resources :accounts, only: [:show, :update, :index] do
+        member do
+          get :confirm_new_email
+        end
       end
-    end
-    resources :user_registrations do
-      member do
-        post :confirm
-        get :activate
-        #post :subscribe
-        #post :unsubscribe
+      resources :user_registrations do
+        member do
+          post :confirm
+          get :activate
+          #post :subscribe
+          #post :unsubscribe
+        end
       end
     end
   end
 
-  #constraints host: 'ohd.dev' do
-  constraints host: 'localhost' do
+  # these are the routes with :project_id as first part of path
+  #
+  # for development it is now set to either localhost or ohd.dev
+  # in production this should be the ohd-domain
+  #
+  constraints host: ['localhost', 'ohd.dev', 'ohd.de'] do
     root :to => redirect("/cdoh/de")
     scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
       concerns :archive
+      concerns :account
     end
   end
 
-  constraints host: 'www.example.com' do
-  #constraints host: 'colonia.dev' do
+  # in development set your projects archive_domain-attribute to sth. you have 
+  # written into your /etc/hosts (localhost or www.example.com might just be there)
+  #
+  # in production these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.
+  #
+  constraints(lambda { |request| Project.archive_domains.include?(request.host) }) do
     root :to => redirect("/de")
     concerns :archive
+    concerns :account
   end
 
-  #get "photos/src/:name" => "photos#src"
-  #get "photos/thumb/:name" => "photos#thumb"
+  get "photos/src/:name" => "photos#src"
+  get "photos/thumb/:name" => "photos#thumb"
 
   mount OaiRepository::Engine => "/oai_repository"
 end
