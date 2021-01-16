@@ -132,13 +132,13 @@ export default class ArchiveSearch extends React.Component {
     }
 
     foundInterviews(displayType) {
-        if (this.props.foundInterviews && this.props.foundInterviews.length == 0 && !this.props.isArchiveSearching) {
+        if (this.props.foundInterviews?.length == 0 && !this.props.isArchiveSearching) {
             return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
         }
         else {
             if(displayType === 'grid') {
                 return (
-                    this.props.foundInterviews.map((interview, index) => {
+                    this.props.foundInterviews?.map((interview, index) => {
                         return <InterviewPreviewContainer
                             interview={interview}
                             key={"interview-" + interview.archive_id + "-" + index}
@@ -155,7 +155,7 @@ export default class ArchiveSearch extends React.Component {
                             </tr>
                         </thead>
                         <tbody>
-                            {this.props.foundInterviews.map((interview, index) => {
+                            {this.props.foundInterviews?.map((interview, index) => {
                                 return <InterviewListRowContainer
                                     interview={interview}
                                     key={"interview-row-" + interview.archive_id + "-" + index}
@@ -168,7 +168,7 @@ export default class ArchiveSearch extends React.Component {
                 return (
                     <div>
                         {this.workflowHeader()}
-                        {this.props.foundInterviews.map((interview, index) => {
+                        {this.props.foundInterviews?.map((interview, index) => {
                             return <InterviewWorkflowRowContainer
                                 interview={interview}
                                 key={"interview-row-" + interview.archive_id + "-" + index}
