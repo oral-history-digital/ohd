@@ -34,11 +34,7 @@ class ApplicationController < ActionController::Base
     if params[:project_id]
       Project.where(shortname: params[:project_id].upcase).first
     else
-      case request.host
-      when 'www.example.com'
-        Project.where(shortname: 'ZWAR').first
-      end
-      #Project.where(archive_domain: request.host).first
+      Project.where(archive_domain: request.host).first
     end
   end
   helper_method :current_project
