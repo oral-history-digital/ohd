@@ -4,6 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchData } from '../actions/dataActionCreators';
 import { getProjectId, getLocale } from '../selectors/archiveSelectors';
+import { getProjects } from '../selectors/dataSelectors';
 import Spinner from './Spinner';
 
 export default function Fetch({
@@ -14,13 +15,14 @@ export default function Fetch({
     children,
 }) {
     const projectId = useSelector(getProjectId);
+    const projects = useSelector(getProjects);
     const locale = useSelector(getLocale);
     const testResult = useSelector(testSelector);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (!testResult) {
-            dispatch(fetchData({ projectId, locale }, ...fetchParams));
+            dispatch(fetchData({ projectId, locale, projects }, ...fetchParams));
         }
     }, [JSON.stringify(fetchParams)]);
 
