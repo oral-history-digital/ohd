@@ -159,7 +159,6 @@ Rails.application.routes.draw do
 
   concern :account do
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
-      devise_for :user_accounts, :controllers => { sessions: "sessions", passwords: "passwords" }, skip: [:registrations]
       resources :accounts, only: [:show, :update, :index] do
         member do
           get :confirm_new_email
@@ -176,6 +175,24 @@ Rails.application.routes.draw do
     end
   end
 
+  # devise_for creates named routes
+  # these named routes can NOT be reused in different scopes or constraints
+  # but we need them in the routes version with and without :project_id
+  #
+  concern :unnamed_devise_routes do
+    devise_scope :user_account do
+      scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+        post "user_accounts/sign_in", to: "sessions#create"
+        delete "user_accounts/sign_out", to: "sessions#destroy"
+        patch "user_accounts/password", to: "passwords#update"
+        put "user_accounts/password", to: "passwords#update"
+        post "user_accounts/password", to: "passwords#create"
+        get "user_accounts/confirmation", to: "devise/confirmations#show"
+        post "user_accounts/confirmation", to: "devise/confirmations#create"
+      end
+    end
+  end
+
   # these are the routes with :project_id as first part of path
   #
   # for development it is now set to either localhost or ohd.dev
@@ -185,7 +202,8 @@ Rails.application.routes.draw do
     root :to => redirect("/cdoh/de")
     scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
       concerns :archive
-      #concerns :account
+      concerns :account
+      concerns :unnamed_devise_routes
     end
   end
 
@@ -198,6 +216,11 @@ Rails.application.routes.draw do
     root :to => redirect("/de")
     concerns :archive
     concerns :account
+    scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+      devise_for :user_accounts,
+        controllers: { sessions: "sessions", passwords: "passwords" },
+        skip: [:registrations]
+    end
   end
 
   get "photos/src/:name" => "photos#src"
