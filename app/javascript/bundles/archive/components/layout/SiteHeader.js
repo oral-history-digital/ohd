@@ -1,15 +1,16 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import { getCurrentProject } from '../../selectors/dataSelectors';
+import { getLocale } from '../../selectors/archiveSelectors';
 import { useI18n } from '../../hooks/i18n';
 
-function SiteHeader({
-    logos,
-    transcriptScrollEnabled,
-    locale,
-}) {
+function SiteHeader() { 
+    const locale = useSelector(getLocale);
+    const project = useSelector(getCurrentProject);
+    const logos = project.logos;
     const { t } = useI18n();
 
     let src = null;
@@ -19,7 +20,7 @@ function SiteHeader({
                 src = logos[k].src
             }
         })
-        src = src || (logos[0] && logos[0].src);
+        src = src || (logos[0]?.src);
     }
 
     return (
@@ -34,11 +35,5 @@ function SiteHeader({
         </header>
     );
 }
-
-SiteHeader.propTypes = {
-    logos: PropTypes.object,
-    transcriptScrollEnabled: PropTypes.bool.isRequired,
-    locale: PropTypes.string.isRequired,
-};
 
 export default SiteHeader;

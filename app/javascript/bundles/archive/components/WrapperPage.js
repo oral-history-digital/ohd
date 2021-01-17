@@ -9,7 +9,7 @@ import FlyoutTabsContainer from '../containers/FlyoutTabsContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import BurgerButton from './layout/BurgerButton';
 import MessagesContainer from '../containers/layout/MessagesContainer';
-import SiteHeaderContainer from '../containers/layout/SiteHeaderContainer';
+import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
 import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
 
@@ -89,7 +89,7 @@ export default class WrapperPage extends React.Component {
     //}
 
     render() {
-        const { visible, locale, children, transcriptScrollEnabled, match, project } = this.props;
+        const { visible, children, transcriptScrollEnabled, match } = this.props;
 
         return (
             <ResizeWatcherContainer>
@@ -106,7 +106,7 @@ export default class WrapperPage extends React.Component {
                         'fix-video': transcriptScrollEnabled,
                         'fullscreen': !visible,
                     })}>
-                        <SiteHeaderContainer logos={project?.logos} />
+                        <SiteHeader />
 
                         <MessagesContainer loggedInAt={this.props.loggedInAt}
                                            notifications={this.state.notifications} />
@@ -115,7 +115,7 @@ export default class WrapperPage extends React.Component {
                             {children}
                         </main>
 
-                        <SiteFooter project={project} locale={locale} />
+                        <SiteFooter />
 
                         { transcriptScrollEnabled ? <div className="compensation" /> : null }
                     </div>

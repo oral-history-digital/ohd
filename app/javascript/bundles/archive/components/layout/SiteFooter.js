@@ -1,10 +1,13 @@
 import React from 'react';
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import ProjectFooter from './ProjectFooter';
+import { getCurrentProject } from '../../selectors/dataSelectors';
+import { getLocale } from '../../selectors/archiveSelectors';
 
-function SiteFooter(props) {
-    const { project, locale } = props;
+function SiteFooter() {
+    const project = useSelector(getCurrentProject);
+    const locale = useSelector(getLocale);
 
     let links = {};
     if (project) {
@@ -49,10 +52,5 @@ function SiteFooter(props) {
         </footer>
     );
 }
-
-SiteFooter.propTypes = {
-    project: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-};
 
 export default SiteFooter;
