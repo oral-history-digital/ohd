@@ -3,13 +3,16 @@ import PropTypes from 'prop-types';
 
 import AuthShowContainer from '../../containers/AuthShowContainer';
 import AllUserContentsContainer from '../../containers/AllUserContentsContainer';
-import { t } from '../../../../lib/utils';
+import { useI18n } from '../../hooks/i18n';
 
 function UserContentTabPanel(props) {
+
+    const { t } = useI18n();
+
     return (
         <AuthShowContainer ifLoggedIn>
             <div className='flyout-tab-title'>
-                { t(props, 'user_content') }
+                { t('user_content') }
             </div>
             <div className='flyout-sub-tabs-container flyout-folder'>
                 <AllUserContentsContainer />
