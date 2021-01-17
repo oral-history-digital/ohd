@@ -1,7 +1,9 @@
 import React, { useEffect } from 'react';
+import { Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { setLocale, setProjectId } from '../../actions/archiveActionCreators';
+import { setProjectId } from '../../actions/archiveActionCreators';
+import { getProjects } from '../../selectors/dataSelectors';
 
 import ProjectLocaleRoute from './ProjectLocaleRoute';
 import LocaleRoute from './LocaleRoute';
@@ -27,4 +29,4 @@ function RouteDivider() {
     );
 }
 
-export default LocaleRoute;
+export default RouteDivider;
