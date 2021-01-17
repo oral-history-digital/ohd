@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
+import { pathBase } from 'lib/utils';
+
 class LocaleButtons extends Component {
     static propTypes = {
         currentLocale: PropTypes.string.isRequired,
@@ -18,14 +20,14 @@ class LocaleButtons extends Component {
     }
 
     handleButtonClick(e) {
-        const { projectId, setLocale, history, location } = this.props;
+        const { projectId, projects, setLocale, history, location } = this.props;
 
-        const newLocale = e.target.textContent;
+        const locale = e.target.textContent;
 
-        let newPath = location.pathname.replace(/^\/[a-z]{2,4}\/[a-z]{2}\//, `/${projectId}/${newLocale}/`);
+        let newPath = location.pathname.replace(/^\/[a-z]{2,4}\/[a-z]{2}\//, pathBase({projectId, locale, projects}) + '/');
 
         history.push(newPath);
-        setLocale(newLocale);
+        setLocale(locale);
     }
 
     render() {
