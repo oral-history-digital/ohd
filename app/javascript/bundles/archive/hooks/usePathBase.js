@@ -6,7 +6,7 @@ import { getLocale, getProjectId } from '../selectors/archiveSelectors';
 export function usePathBase() {
     const projects = useSelector(getProjects);
     const projectId = useSelector(getProjectId);
-    const projects = useSelector(getLocale);
+    const locale = useSelector(getLocale);
 
     if (projectByDomain(projects)) {
         return `/${locale}`;
