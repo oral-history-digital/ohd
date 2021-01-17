@@ -159,7 +159,7 @@ Rails.application.routes.draw do
 
   concern :account do
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
-      #devise_for :user_accounts, :controllers => { sessions: "sessions", passwords: "passwords" }, skip: [:registrations]
+      devise_for :user_accounts, :controllers => { sessions: "sessions", passwords: "passwords" }, skip: [:registrations]
       resources :accounts, only: [:show, :update, :index] do
         member do
           get :confirm_new_email
@@ -185,7 +185,7 @@ Rails.application.routes.draw do
     root :to => redirect("/cdoh/de")
     scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
       concerns :archive
-      concerns :account
+      #concerns :account
     end
   end
 
