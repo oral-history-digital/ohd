@@ -1,5 +1,7 @@
 import { createSelector } from 'reselect';
 
+import { projectByDomain } from 'lib/utils';
+
 import { getArchiveId, getProjectId  } from './archiveSelectors';
 
 export const getData = state => state.data;
@@ -43,8 +45,8 @@ export const get = (state, dataType, id) => getData(state)[dataType][id];
 export const getCurrentProject = createSelector(
     [getProjectId, getProjects],
     (projectId, projects) => {
-        const currentProject = Object.values(projects)
-            .find(project => project.identifier === projectId);
+        const currentProject = projectByDomain(projects) || 
+            Object.values(projects).find(project => project.identifier === projectId);
 
         return currentProject || null;
     }

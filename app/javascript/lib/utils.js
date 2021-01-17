@@ -15,7 +15,7 @@ export function get(state, dataType, id) {
 }
 
 export function getProject(state) {
-    return Object.values(state.data.projects).find(p => p.identifier === state.archive.projectId);
+    return projectByDomain(state.data.projects) || Object.values(state.data.projects).find(p => p.identifier === state.archive.projectId);
 }
 
 export function getInterview(state) {
