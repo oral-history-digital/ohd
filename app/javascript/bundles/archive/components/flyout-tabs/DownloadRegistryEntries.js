@@ -13,10 +13,10 @@ function DownloadRegistryEntries(props) {
             <a href={`${usePathBase()}/registry_entries.${format}?lang=${specificLocale}`}>
                 <i
                     className="fa fa-download flyout-content-ico"
-                    title={t(props, 'download_registry_entries', { format: format, locale: specificLocale })}
+                    title={t('download_registry_entries', { format: format, locale: specificLocale })}
                 />
                 <span>
-                    {` ${t(props, 'download_registry_entries', { format: format, locale: specificLocale })}`}
+                    {` ${t('download_registry_entries', { format: format, locale: specificLocale })}`}
                 </span>
             </a>
         </p>
@@ -26,7 +26,6 @@ function DownloadRegistryEntries(props) {
 DownloadRegistryEntries.propTypes = {
     format: PropTypes.string.isRequired,
     specificLocale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
 };
 
 export default DownloadRegistryEntries;
