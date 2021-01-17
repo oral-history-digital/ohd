@@ -9,6 +9,7 @@ import { getLanguages } from '../selectors/dataSelectors';
 const mapStateToProps = state => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
+        projects: state.data.projects,
     interview: getInterview(state),
     archiveId: getArchiveId(state),
     languages: getLanguages(state),

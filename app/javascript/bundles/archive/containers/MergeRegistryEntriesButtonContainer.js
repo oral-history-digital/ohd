@@ -9,6 +9,7 @@ import MergeRegistryEntriesButton from '../components/MergeRegistryEntriesButton
 const mapStateToProps = (state) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
+        projects: state.data.projects,
     selectedRegistryEntryIds: getSelectedRegistryEntryIds(state),
 });
 

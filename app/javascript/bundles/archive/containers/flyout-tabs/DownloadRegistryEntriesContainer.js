@@ -4,6 +4,7 @@ import DownloadRegistryEntries from '../../components/flyout-tabs/DownloadRegist
 
 const mapStateToProps = (state) => ({
     projectId: state.archive.projectId,
+        projects: state.data.projects,
     locale: state.archive.locale,
     translations: state.archive.translations,
 });

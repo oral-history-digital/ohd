@@ -12,6 +12,7 @@ const mapStateToProps = (state) => {
     return {
         archiveId: state.archive.archiveId,
         projectId: state.archive.projectId,
+        projects: state.data.projects,
         interview: getCurrentInterview(state),
         interviewee: getInterviewee({interview: getCurrentInterview(state), people: state.data.people}),
         hasMap: project && project.has_map === 1,

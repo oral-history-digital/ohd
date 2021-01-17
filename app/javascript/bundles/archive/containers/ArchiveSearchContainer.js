@@ -19,6 +19,7 @@ const mapStateToProps = (state) => {
         isArchiveSearching: state.search.isArchiveSearching,
         project: project,
         projectId: state.archive.projectId,
+        projects: state.data.projects,
         viewModes: project && project.view_modes,
         viewMode: state.archive.viewMode,
         listColumns: project && project.list_columns,

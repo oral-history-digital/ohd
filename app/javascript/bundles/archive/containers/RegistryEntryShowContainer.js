@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         projectId: state.archive.projectId,
+        projects: state.data.projects,
         interviews: state.data.interviews,
         interviewsStatus: state.data.statuses.interviews,
         segments: state.data.segments,

@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
     locale: getLocale(state),
     projectId: getProjectId(state),
+        projects: state.data.projects,
 });
 
 const mapDispatchToProps = (dispatch) => ({

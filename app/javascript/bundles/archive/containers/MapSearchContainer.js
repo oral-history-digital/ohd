@@ -14,6 +14,7 @@ const mapStateToProps = state => ({
     isLoggedIn: getIsLoggedIn(state),
     locale: getLocale(state),
     projectId: getProjectId(state),
+        projects: state.data.projects,
 });
 
 const mapDispatchToProps = (dispatch) => ({

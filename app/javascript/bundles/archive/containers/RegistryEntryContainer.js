@@ -8,6 +8,7 @@ import { getLocale, getTranslations } from '../selectors/archiveSelectors';
 
 const mapStateToProps = (state) => ({
     projectId: state.archive.projectId,
+        projects: state.data.projects,
     locale: getLocale(state),
     translations: getTranslations(state),
     registryEntriesStatus: state.data.statuses.registry_entries,

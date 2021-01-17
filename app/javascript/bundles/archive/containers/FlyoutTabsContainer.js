@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
         visible: getFlyoutTabsVisible(state),
         archiveId: state.archive.archiveId,
         projectId: state.archive.projectId,
+        projects: state.data.projects,
         selectedArchiveIds: state.archive.selectedArchiveIds,
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,

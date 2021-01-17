@@ -8,6 +8,7 @@ import { getInterview, getProject } from 'lib/utils';
 const mapStateToProps = (state) => {
     return { 
         projectId: state.archive.projectId,
+        projects: state.data.projects,
         project: getProject(state),
         interview: getInterview(state),
         translations: state.archive.translations,

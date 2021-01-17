@@ -13,6 +13,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         isRegistryEntrySearching: state.search.isRegistryEntrySearching,
         projectId: project && project.initials,
+        projects: state.data.projects,
     }
 }
 

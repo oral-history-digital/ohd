@@ -10,6 +10,7 @@ const mapStateToProps = (state) => {
     return { 
         locales: (project && project.available_locales) || state.archive.locales,
         projectId: state.archive.projectId,
+        projects: state.data.projects,
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,
         registryReferenceTypes: state.data.registry_reference_types,

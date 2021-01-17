@@ -9,6 +9,7 @@ const mapStateToProps = (state) => {
     return { 
         locale: state.archive.locale,
         projectId: state.archive.projectId,
+        projects: state.data.projects,
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,
         registryEntriesStatus: state.data.statuses.registry_entries,

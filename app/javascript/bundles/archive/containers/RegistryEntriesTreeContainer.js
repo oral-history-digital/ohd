@@ -10,6 +10,7 @@ import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
 const mapStateToProps = (state) => ({
     rootRegistryEntry: getRootRegistryEntry(state),
     projectId: getProjectId(state),
+        projects: state.data.projects,
     currentProject: getCurrentProject(state),
     foundRegistryEntries: getRegistryEntriesSearch(state),
     showRegistryEntriesTree: getShowRegistryEntriesTree(state),

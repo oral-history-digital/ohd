@@ -14,6 +14,7 @@ const mapStateToProps = (state, ownProps) => {
         interviewSearchResults: state.search.interviews,
         locale: state.archive.locale,
         projectId: state.archive.projectId,
+        projects: state.data.projects,
         translations: state.archive.translations,
         project: project,
         editView: state.archive.editView,

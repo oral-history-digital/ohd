@@ -23,6 +23,7 @@ const mapStateToProps = (state) => {
         isArchiveSearching: state.search.isArchiveSearching,
         isMapSearching: state.search.isMapSearching,
         projectId: state.archive.projectId,
+        projects: state.data.projects,
         account: state.data.accounts.current,
         editView: state.archive.editView,
     }
