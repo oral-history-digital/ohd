@@ -55,7 +55,7 @@ class RegistryReferenceTypesController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{params}-#{RegistryReferenceType.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{cache_key_params}-#{RegistryReferenceType.maximum(:updated_at)}" do
           if params.keys.include?("all")
             data = RegistryReferenceType.all.
               includes(:translations).
