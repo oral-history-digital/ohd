@@ -37,16 +37,12 @@ export default class TableOfContents extends React.Component {
         let headings = [];
         let lastMainheading = '';
 
-        if (this.props.interview && this.props.interview.headings) {
+        if (this.props.interview?.headings) {
             Object.values(this.props.interview.headings).sort(function(a, b) {return a.tape_nbr - b.tape_nbr || a.time - b.time}).map((segment, index) => {
                 mainheading = segment.mainheading[this.props.locale] ||
-                    segment.mainheading[`${this.props.locale}-public`] //||
-                    //segment.mainheading['de'] ||
-                    //segment.mainheading['de-public'];
+                    segment.mainheading[`${this.props.locale}-public`]
                 subheading = segment.subheading[this.props.locale] ||
-                    segment.subheading[`${this.props.locale}-public`] //||
-                    //segment.subheading['de'] ||
-                    //segment.subheading['de-public'];
+                    segment.subheading[`${this.props.locale}-public`]
                 //
                 // if the table of content looks different in languages with different alphabets, have a look to the following and extend the regexp:
                 // https://stackoverflow.com/questions/18471159/regular-expression-with-the-cyrillic-alphabet
@@ -117,20 +113,10 @@ export default class TableOfContents extends React.Component {
     }
 
     emptyHeadingsNote(headings) {
-        if (headings.length <= 0) {
-            if (this.props.translations !== undefined) {
-                return t(this.props, 'without_index');
-            }
-        } else if (this.props.interview && this.props.interview.headings) {
-            let first = this.props.interview.headings[0];
-            if (
-                !first.mainheading[`${this.props.locale}-public`] &&
-                !first.mainheading[this.props.locale] &&
-                !first.subheading[`${this.props.locale}-public`] &&
-                !first.subheading[this.props.locale]
-            ) {
-                return t(this.props, 'without_index_locale');
-            }
+        if (Object.values(this.props.interview.headings).length <= 0) {
+            return t(this.props, 'without_index');
+        } else if (headings.length <= 0) {
+            return t(this.props, 'without_index_locale');
         }
     }
 
