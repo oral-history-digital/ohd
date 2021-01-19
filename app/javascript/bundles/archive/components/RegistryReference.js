@@ -123,23 +123,19 @@ export default class RegistryReference extends React.Component {
     }
 
     entry() {
-        if (this.props.registryReference.workflow_state === 'checked' || admin(this.props, this.props.registryReference)) {
-            let hasNote = !!this.props.registryEntry.notes[this.props.locale]
-            return (
-                <span
-                    id={`reference_${this.props.registryReference.id}`}
-                    className={classNames('RegistryReference-name', {
-                        'scope-note-link': hasNote,
-                    })}
-                    key={"reference-" + this.props.registryReference.id}
-                    onClick={() => hasNote && this.props.setOpenReference(this.props.registryEntry)}
-                >
-                    {this.props.registryEntry.name[this.props.locale]}
-                </span>
-            )
-        } else {
-            return null;
-        }
+        let hasNote = !!this.props.registryEntry.notes[this.props.locale]
+        return (
+            <span
+                id={`reference_${this.props.registryReference.id}`}
+                className={classNames('RegistryReference-name', {
+                    'scope-note-link': hasNote,
+                })}
+                key={"reference-" + this.props.registryReference.id}
+                onClick={() => hasNote && this.props.setOpenReference(this.props.registryEntry)}
+            >
+                {this.props.registryEntry.name[this.props.locale]}
+            </span>
+        )
     }
 
     render() {
