@@ -33,7 +33,7 @@ export default class RegistryReferenceForm extends React.Component {
                 goDeeper: true
             },
         ]
-        //if (!_this.props.inTranscript) {
+        if (!_this.props.inTranscript) {
             elements.push(
                 {
                     elementType: 'select',
@@ -43,7 +43,7 @@ export default class RegistryReferenceForm extends React.Component {
                     optionsScope: 'workflow_states',
                 }
             )
-        //}
+        }
         if (!_this.props.registryReferenceTypeId) {
             elements.push(
                 {
