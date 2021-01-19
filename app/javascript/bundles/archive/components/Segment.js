@@ -11,13 +11,7 @@ import { t, fullname, admin } from 'lib/utils';
 export default class Segment extends React.Component {
     transcript() {
         return admin(this.props, this.props.data) ? (this.props.data.text[this.props.contentLocale] || this.props.data.text[`${this.props.contentLocale}-public`]) :
-               (this.props.data.text[`${this.props.contentLocale}-public`] || '')
-    }
-
-    hasHeading() {
-       let mainheading = this.props.data.mainheading[this.props.contentLocale] || this.props.data.mainheading[`${this.props.contentLocale}-public`]
-       let subheading = this.props.data.subheading[this.props.contentLocale] || this.props.data.subheading[`${this.props.contentLocale}-public`]
-       return  !!(mainheading || subheading)
+            (this.props.data.text[`${this.props.contentLocale}-public`] || '')
     }
 
     openReference() {
@@ -117,8 +111,8 @@ export default class Segment extends React.Component {
 
             return (
                 <div className={icoCss}>
-                    {this.edit(locale)}
-                    {this.editHeadings(locale)}
+                    {this.edit()}
+                    {this.editHeadings()}
                     <div
                         className={annotationCss} title={annotationsTitle}
                         onClick={() => popupType === 'annotations' ? closePopup() : openPopup(data.id, 'annotations')}
@@ -159,8 +153,8 @@ export default class Segment extends React.Component {
 
     editHeadings() {
         if (admin(this.props, this.props.data)) {
-            let title = this.hasHeading() ? t(this.props, 'edit.segment.heading.edit') : t(this.props, 'edit.segment.heading.new')
-            let hasHeadingCss = this.hasHeading() ? "exists" : ""
+            let title = this.props.data.has_heading ? t(this.props, 'edit.segment.heading.edit') : t(this.props, 'edit.segment.heading.new')
+            let noHeadingCss = this.props.data.has_heading ? "" : "empty"
             return (
                 <div
                     className='flyout-sub-tabs-content-ico-link'
@@ -171,8 +165,8 @@ export default class Segment extends React.Component {
                     })}
                 >
                     <span className="fa-stack fa-1x">
-                        <i className={`fa fa-pencil fa-stack-1x fa-stack-first-custom ${hasHeadingCss}`}></i>
-                        <i className={`fa fa-header fa-stack-1x fa-stack-second-custom ${hasHeadingCss}`}></i>
+                        <i className={`fa fa-pencil fa-stack-1x fa-stack-first-custom ${noHeadingCss}`}></i>
+                        <i className={`fa fa-header fa-stack-1x fa-stack-second-custom ${noHeadingCss}`}></i>
                     </span>
                 </div>
             )
