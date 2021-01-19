@@ -27,17 +27,38 @@ class CollectionMetadataExporter
   end
 
   def build_header(xml)
+    url = "#{Rails.application.routes.url_helpers.project_url(id: @project.id, locale: 'de', host: @project.archive_domain)}.xml"
+
     xml.Header {
       xml.MdCreator 'Nokogiri'
       xml.MdCreationDate Date.today
-      xml.MdSelfLink '?'
-      xml.MdProfile '?'
-      xml.MdCollectionDisplayName '?'
+      xml.MdSelfLink url
+      xml.MdProfile 'clarin.eu:cr1:p_1387365569699'
+      xml.MdCollectionDisplayName 'Bavarian Archive for Speech Signals (BAS)'
     }
   end
 
   def build_resources(xml)
-    xml.Resources '?'
+    xml.Resources {
+      xml.ResourceProxyList {
+        @project.interviews.each_with_index do |interview, index|
+          id = (index + 1).to_s.rjust(10, '0')
+          url = "#{Rails.application.routes.url_helpers.metadata_interview_url(id: interview.archive_id, locale: 'de', host: @project.archive_domain)}.xml"
+
+          xml.ResourceProxy('id' => "c_#{id}") {
+            xml.ResourceType('Metadata', 'mimetype' => 'text/xml')
+            xml.ResourceRef url
+          }
+        end
+
+        xml.ResourceProxy('id' => 'd_0000000001') {
+          xml.ResourceType('Resource', 'mimetype' => 'application/zip')
+          xml.ResourceRef 'CLARINDocu.zip'
+        }
+      }
+      xml.JournalFileProxyList
+      xml.ResourceRelationList
+    }
   end
 
   def build_components(xml)
@@ -73,7 +94,6 @@ class CollectionMetadataExporter
       xml.Name @project.shortname
       xml.Title @project.name
       xml.ID @project.shortname.downcase
-      xml.Version 1  # TODO What?
       xml.Owner @project.hosting_institution
       xml.PublicationYear @project.created_at.year  # TODO: Not good
       xml.Description {
@@ -94,7 +114,6 @@ class CollectionMetadataExporter
   end
 
   def build_creators(xml)
-    xml.Creators '?'
   end
 
   def build_documentation_languages(xml)
@@ -114,9 +133,9 @@ class CollectionMetadataExporter
 
   def build_access(xml)
     xml.Access {
-      xml.Availability '?'
+      xml.Availability 'RES'
       xml.DistributionMedium 'online'
-      xml.CatalogueLink @project.archive_domain
+      # xml.CatalogueLink @project.archive_domain  TODO: Eventually use collection registry url?
       xml.Contact {
         xml.Person 'Florian Schiel'
         xml.Address 'Institute of Phonetics, Schellingstr. 3, 80799 Munich, Germany'
@@ -164,7 +183,7 @@ class CollectionMetadataExporter
   end
 
   def build_subject_languages(xml)
-    xml.SubjectLanguages '?'
+    # xml.SubjectLanguages '?'
   end
 
   def build_modality(xml)
