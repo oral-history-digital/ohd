@@ -17,9 +17,9 @@ function RouteDivider() {
 
     useEffect(() => {
         if (projectFromDomain) {
-            dispatch(setProjectId(projectFromDomain.short_name));
+            dispatch(setProjectId(projectFromDomain.shortname.toLowerCase()));
         }
-    }, [window.location.host]);
+    }, [window.location.hostname]);
 
     return (
         <>
