@@ -1,31 +1,23 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Route } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
-import { setProjectId } from '../../actions/archiveActionCreators';
+import WrapperPageContainer from '../../containers/WrapperPageContainer';
+import { Routes, RoutesWithProjectId } from './Routes';
 import { getProjects } from '../../selectors/dataSelectors';
-
-import ProjectLocaleRoute from './ProjectLocaleRoute';
-import LocaleRoute from './LocaleRoute';
-
 import { projectByDomain } from 'lib/utils';
 
 function RouteDivider() {
     const projects = useSelector(getProjects);
     const projectFromDomain = projectByDomain(projects);
-    const dispatch = useDispatch();
-
-    useEffect(() => {
-        if (projectFromDomain) {
-            dispatch(setProjectId(projectFromDomain.shortname.toLowerCase()));
-        }
-    }, [window.location.hostname]);
+    const path = projectFromDomain ? "/:locale" : "/:projectId/:locale";
 
     return (
-        <>
-            { !projectFromDomain && <Route component={ProjectLocaleRoute} /> }
-            { projectFromDomain && <Route component={LocaleRoute} /> }
-        </>
+        <Route path={path} render={routeProps => (
+            <WrapperPageContainer {...routeProps} >
+                { projectFromDomain ? <Routes /> : <RoutesWithProjectId /> }
+            </WrapperPageContainer>
+        )} />
     );
 }
 
