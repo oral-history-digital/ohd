@@ -38,7 +38,7 @@ class CollectionsController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-collections-#{params}-#{Collection.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-collections-#{cache_key_params}-#{Collection.maximum(:updated_at)}" do
           if params.keys.include?("all")
             data = Collection.all.
               includes(:translations).
