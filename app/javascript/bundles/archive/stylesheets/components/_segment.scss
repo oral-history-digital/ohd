@@ -15,4 +15,7 @@
 .Segment .fa {
   color: var(--primary-color);
   font-size: 1.25rem;
+  &.empty {
+    color: var(--editorial-color);
+  }
 }
