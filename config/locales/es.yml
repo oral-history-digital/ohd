@@ -385,7 +385,7 @@ es:
       new: 'Aufgabenart hinzufügen'
       edit: 'Aufgabenart bearbeiten'
       delete: 'Aufgabenart löschen'
-      admin: 'Aufgabenartn bearbeiten'
+      admin: 'Aufgabenarten bearbeiten'
     task_type_permission:
       new: 'Berechtigung hinzufügen'
       edit: 'Berechtigung bearbeiten'
