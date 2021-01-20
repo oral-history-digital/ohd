@@ -1,12 +1,10 @@
-/**
- * LocaleButtons component
- */
+@import "../../../bundles/archive/stylesheets/variables";
 
-.LocaleButtons {
+.div {
     margin-bottom: 2rem;
 }
 
-.LocaleButtons-button {
+.button {
     background-color: transparent;
     border: none;
     outline: none;
@@ -21,11 +19,11 @@
     transition: color $transition-duration;
 }
 
-.LocaleButtons-button:disabled {
+.button:disabled {
     color: $gray-darkest;
     cursor: default;
 }
 
-.LocaleButtons-button:hover {
+.button:hover {
     color: $gray-darkest;
 }

@@ -3,12 +3,13 @@ import { withRouter } from 'react-router-dom';
 
 import WrapperPage from '../components/WrapperPage';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
-import { toggleFlyoutTabs } from '../actions/flyoutTabsActionCreators';
+import { toggleFlyoutTabs } from 'modules/flyout-tabs';
 import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 import { setLocale, setProjectId } from '../actions/archiveActionCreators';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
 
 import { getCookie, getProject } from '../../../lib/utils';
+import { getFlyoutTabsVisible } from 'modules/flyout-tabs/selectors';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -23,7 +24,7 @@ const mapStateToProps = (state) => {
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
         disabled: state.popup.show,
-        visible: state.flyoutTabs.visible,
+        visible: getFlyoutTabsVisible(state),
         loggedInAt: state.account.loggedInAt,
         collections: state.data.collections,
         collectionsStatus: state.data.statuses.collections,

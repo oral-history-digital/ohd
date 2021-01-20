@@ -7,7 +7,7 @@ import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearc
 import MergeRegistryEntriesButtonContainer from '../containers/MergeRegistryEntriesButtonContainer';
 import AuthorizedContent from './AuthorizedContent';
 import Fetch from './Fetch';
-import { INDEX_REGISTRY_ENTRIES } from '../constants/flyoutTabs';
+import { INDEX_REGISTRY_ENTRIES } from 'modules/flyout-tabs';
 import { getRootRegistryEntryFetched } from '../selectors/dataSelectors';
 import { useI18n } from '../hooks/i18n';
 

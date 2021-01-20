@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import MapSearch from '../components/MapSearch';
 import { searchInMap } from '../actions/searchActionCreators';
-import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
+import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getLocale, getProjectId } from '../selectors/archiveSelectors';
 import { getIsLoggedIn } from '../selectors/accountSelectors';
 import { getFoundMarkers, getIsMapSearching, getMapQuery, getMarkersFetched } from '../selectors/searchSelectors';

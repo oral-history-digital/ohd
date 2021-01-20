@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import Interview from '../components/Interview';
 import { setArchiveId } from '../actions/archiveActionCreators';
-import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
+import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getInterviewEditView } from '../selectors/archiveSelectors';
 import { getIsCatalog } from '../selectors/projectSelectors';
 import { getCurrentInterview } from '../selectors/dataSelectors';

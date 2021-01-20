@@ -2,21 +2,21 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
-import AccountContainer from '../containers/AccountContainer';
-import AuthShowContainer from '../containers/AuthShowContainer';
-import ArchiveSearchTabPanelContainer from '../containers/flyout-tabs/ArchiveSearchTabPanelContainer';
-import RegistryEntriesTabPanelContainer from '../containers/flyout-tabs/RegistryEntriesTabPanelContainer';
-import UserContentTabPanelContainer from '../containers/flyout-tabs/UserContentTabPanelContainer';
-import UsersAdminTabPanelContainer from '../containers/flyout-tabs/UsersAdminTabPanelContainer';
-import IndexingTabPanelContainer from '../containers/flyout-tabs/IndexingTabPanelContainer';
-import MapTabPanelContainer from '../containers/flyout-tabs/MapTabPanelContainer';
-import InterviewTabPanelContainer from '../containers/flyout-tabs/InterviewTabPanelContainer';
-import LocaleButtonsContainer from '../containers/flyout-tabs/LocaleButtonsContainer';
-import * as indexes from '../constants/flyoutTabs';
+import AccountContainer from 'bundles/archive/containers/AccountContainer';
+import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
 import { t, admin, pathBase } from 'lib/utils';
-import StateCheck from './StateCheck';
-import Spinner from './Spinner';
-import { getCurrentInterviewFetched } from '../selectors/dataSelectors';
+import StateCheck from 'bundles/archive/components/StateCheck';
+import Spinner from 'bundles/archive/components/Spinner';
+import { getCurrentInterviewFetched } from 'bundles/archive/selectors/dataSelectors';
+import ArchiveSearchTabPanelContainer from './ArchiveSearchTabPanelContainer';
+import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
+import UserContentTabPanel from './UserContentTabPanel';
+import UsersAdminTabPanelContainer from './UsersAdminTabPanelContainer';
+import IndexingTabPanelContainer from './IndexingTabPanelContainer';
+import MapTabPanelContainer from './MapTabPanelContainer';
+import InterviewTabPanelContainer from './InterviewTabPanelContainer';
+import LocaleButtonsContainer from './LocaleButtonsContainer';
+import * as indexes from '../constants';
 
 export default class FlyoutTabs extends React.Component {
     static propTypes = {
@@ -160,7 +160,7 @@ export default class FlyoutTabs extends React.Component {
                     }
 
                     <TabPanel key="user-content">
-                        <UserContentTabPanelContainer />
+                        <UserContentTabPanel />
                     </TabPanel>
 
                     <TabPanel key="tabpanel-indexing">

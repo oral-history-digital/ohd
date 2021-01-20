@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import RegistryEntrySearchFormContainer from '../../containers/RegistryEntrySearchFormContainer';
-import DownloadRegistryEntriesContainer from '../../containers/flyout-tabs/DownloadRegistryEntriesContainer';
-import AuthorizedContent from '../AuthorizedContent';
+import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
 
-import { useI18n } from '../../hooks/i18n';
+import { useI18n } from 'bundles/archive/hooks/i18n';
+import RegistryEntrySearchFormContainer from 'bundles/archive/containers/RegistryEntrySearchFormContainer';
+import DownloadRegistryEntriesContainer from './DownloadRegistryEntriesContainer';
 
 function RegistryEntriesTabPanel(props) {
     const { t } = useI18n();

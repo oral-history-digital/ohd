@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 import Account from '../components/Account';
 import { submitLogout } from '../actions/accountActionCreators';
 import { changeToEditView } from '../actions/archiveActionCreators';
-import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
+import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
