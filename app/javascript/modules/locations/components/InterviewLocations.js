@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import LocationsContainer from '../containers/LocationsContainer'
+
 import { t, pathBase } from 'lib/utils';
+import LocationsContainer from './LocationsContainer'
 import MapPopupContent from './MapPopupContent';
 
 export default class InterviewLocations extends React.Component {
@@ -32,7 +33,7 @@ export default class InterviewLocations extends React.Component {
 }
 
 InterviewLocations.propTypes = {
-    currentLocations: PropTypes.array.isRequired,
+    currentLocations: PropTypes.array,
     locationsFetched: PropTypes.bool.isRequired,
     archiveId: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,

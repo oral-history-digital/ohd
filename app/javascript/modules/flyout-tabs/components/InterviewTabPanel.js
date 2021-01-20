@@ -13,7 +13,7 @@ import SelectedRegistryReferencesContainer from 'bundles/archive/containers/Sele
 import InterviewInfoContainer from 'bundles/archive/containers/InterviewInfoContainer';
 import InterviewTextMaterialsContainer from 'bundles/archive/containers/InterviewTextMaterialsContainer';
 import InterviewContributorsContainer from 'bundles/archive/containers/InterviewContributorsContainer';
-import InterviewLocationsContainer from 'bundles/archive/containers/InterviewLocationsContainer';
+import { InterviewLocationsContainer } from 'modules/locations';
 import CitationInfoContainer from 'bundles/archive/containers/CitationInfoContainer';
 import GalleryContainer from 'bundles/archive/containers/GalleryContainer';
 import UploadTranscriptContainer from 'bundles/archive/containers/UploadTranscriptContainer';

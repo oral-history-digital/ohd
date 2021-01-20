@@ -1,8 +1,4 @@
-import { 
-    REQUEST_LOCATIONS,
-    RECEIVE_LOCATIONS,
-    LOCATIONS_URL,
-} from '../constants/archiveConstants';
+import { REQUEST_LOCATIONS, RECEIVE_LOCATIONS } from './action-types';
 
 const locations = (state = {}, action) => {
     switch (action.type) {

@@ -1,11 +1,6 @@
-/* eslint-disable import/prefer-default-export */
+import Loader from 'lib/loader';
 
-import Loader from '../../../lib/loader'
-
-import { 
-  REQUEST_LOCATIONS,
-  RECEIVE_LOCATIONS,
-} from '../constants/archiveConstants';
+import { REQUEST_LOCATIONS, RECEIVE_LOCATIONS } from './action-types';
 
 const requestLocations = (archiveId) => ({
   type: REQUEST_LOCATIONS,
@@ -28,4 +23,3 @@ export function fetchLocations(url, archiveId) {
     Loader.getJson(`${url}?archive_id=${archiveId}`, null, dispatch, receiveLocations);
   }
 }
-
