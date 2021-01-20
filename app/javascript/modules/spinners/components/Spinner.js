@@ -2,7 +2,8 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import spinnerSrc from 'images/large_spinner.gif';
+import styles from './Spinner.module.scss';
+import spinnerSrc from './large_spinner.gif';
 
 export default function Spinner({
     withPadding = false,
@@ -12,8 +13,8 @@ export default function Spinner({
     return (
         <img
             src={spinnerSrc}
-            className={classNames('Spinner', className, {
-                'Spinner--withPadding': withPadding,
+            className={classNames(styles.img, className, {
+                [styles.withPadding]: withPadding,
             })}
             style={style}
             alt=""

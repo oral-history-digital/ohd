@@ -3,7 +3,7 @@ import Observer from 'react-intersection-observer'
 import AuthShowContainer from '../containers/AuthShowContainer';
 import UserRegistrationContainer from '../containers/UserRegistrationContainer';
 import { t, parametrizedQuery } from '../../../lib/utils';
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 export default class UserRegistrations extends React.Component {
 

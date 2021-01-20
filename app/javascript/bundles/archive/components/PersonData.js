@@ -3,7 +3,7 @@ import React from 'react';
 import ContentField from './ContentField';
 import ArchivePopupButton from './ArchivePopupButton';
 import AuthorizedContent from './AuthorizedContent';
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 import AuthShowContainer from '../containers/AuthShowContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';

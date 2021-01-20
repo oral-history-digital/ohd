@@ -1,7 +1,7 @@
 import React from 'react';
 import { t, pathBase } from '../../../lib/utils';
 import {Link} from 'react-router-dom';
-import PixelLoader from '../../../lib/PixelLoader'
+import { PixelLoader } from 'modules/spinners';
 
 export default class RegistryEntryShow extends React.Component {
 
@@ -17,7 +17,7 @@ export default class RegistryEntryShow extends React.Component {
 
     loadWithAssociations() {
         if (
-            this.registryEntry() && 
+            this.registryEntry() &&
             !this.registryEntry().associations_loaded &&
             this.props.registryEntriesStatus[this.props.registryEntryId] !== 'fetching'
         ) {
@@ -28,7 +28,7 @@ export default class RegistryEntryShow extends React.Component {
     fetchInterview(archiveId) {
         if(archiveId && !this.props.interviewsStatus[archiveId]) {
             this.props.fetchData(this.props, 'interviews', archiveId)
-        } 
+        }
     }
 
     interviewIsFetched(archiveId) {
@@ -42,7 +42,7 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     segmentIsFetched(id) {
-        return this.props.segmentsStatus[id] && this.props.segmentsStatus[id].split('-')[0] === 'fetched' 
+        return this.props.segmentsStatus[id] && this.props.segmentsStatus[id].split('-')[0] === 'fetched'
     }
 
     loadRegistryReferenceTypes() {
@@ -124,7 +124,7 @@ export default class RegistryEntryShow extends React.Component {
     registryReferences() {
         if (
             this.registryEntry().associations_loaded &&
-            this.props.registryReferenceTypesStatus && 
+            this.props.registryReferenceTypesStatus &&
             this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched'
         ) {
             let references = []
@@ -132,11 +132,11 @@ export default class RegistryEntryShow extends React.Component {
                 let rr = this.registryEntry().registry_references[r]
                 let rr_type = this.props.registryReferenceTypes[rr.registry_reference_type_id]
                 let ro = this.refObject(rr);
-                
+
                 if (ro) {
                     references.push(
                         <li
-                            key={`this.registryEntry().registry_reference-${r}`} 
+                            key={`this.registryEntry().registry_reference-${r}`}
                         >
                             <strong>
                                 {rr_type && `${rr_type.name[this.props.locale]} `}
@@ -192,8 +192,8 @@ export default class RegistryEntryShow extends React.Component {
             return(
                 <small style={{float: 'right'}}>
                     <i className='fa fa-globe' />
-                    &nbsp;    
-                    <a 
+                    &nbsp;
+                    <a
                         href={`https://www.openstreetmap.org/?mlat=${this.registryEntry().latitude}&mlon=${this.registryEntry().longitude}&zoom=6`}
                         target="_blank"
                         rel="noopener"
@@ -201,8 +201,8 @@ export default class RegistryEntryShow extends React.Component {
                         {`${this.registryEntry().latitude}, ${this.registryEntry().longitude}`}
                         &nbsp;
                     </a>
-                </small> 
-            ) 
+                </small>
+            )
         } else {
             return null;
         }
@@ -220,7 +220,7 @@ export default class RegistryEntryShow extends React.Component {
                     {this.registryEntry().name[this.props.locale]}
                 </h3>
                 <p>
-                    {this.registryEntry().notes[this.props.locale]} 
+                    {this.registryEntry().notes[this.props.locale]}
                 </p>
                 <h4>
                     {this.registryEntry().registry_references_count}

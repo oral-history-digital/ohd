@@ -1,7 +1,7 @@
 import React from 'react';
 import HeadingContainer from '../containers/HeadingContainer';
 import { t } from "lib/utils";
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 export default class TableOfContents extends React.Component {
     constructor(props) {

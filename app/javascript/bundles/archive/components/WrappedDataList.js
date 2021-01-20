@@ -5,7 +5,7 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import DataContainer from '../containers/DataContainer';
 import Form from '../containers/form/Form';
 
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 import AuthorizedContent from './AuthorizedContent';
 import ArchivePopupButton from './ArchivePopupButton';
 

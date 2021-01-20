@@ -2,7 +2,7 @@ import React from 'react';
 import RefTreeEntryContainer from '../containers/RefTreeEntryContainer';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import { t } from "lib/utils";
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 export default class RefTree extends React.Component {
     componentDidMount() {

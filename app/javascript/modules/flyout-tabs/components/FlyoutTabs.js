@@ -4,9 +4,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import AccountContainer from 'bundles/archive/containers/AccountContainer';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
-import { t, admin, pathBase } from 'lib/utils';
 import StateCheck from 'bundles/archive/components/StateCheck';
-import Spinner from 'bundles/archive/components/Spinner';
 import { getCurrentInterviewFetched } from 'bundles/archive/selectors/dataSelectors';
 import ArchiveSearchTabPanelContainer from './ArchiveSearchTabPanelContainer';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
@@ -17,6 +15,8 @@ import MapTabPanelContainer from './MapTabPanelContainer';
 import InterviewTabPanelContainer from './InterviewTabPanelContainer';
 import LocaleButtonsContainer from './LocaleButtonsContainer';
 import * as indexes from '../constants';
+import { Spinner } from 'modules/spinners';
+import { t, admin, pathBase } from 'lib/utils';
 
 export default class FlyoutTabs extends React.Component {
     static propTypes = {

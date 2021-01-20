@@ -10,7 +10,7 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewLoggedOutContainer from '../containers/InterviewLoggedOutContainer';
 import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
 import Fetch from './Fetch';
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 import { getContributorsFetched, getCurrentInterviewFetched } from '../selectors/dataSelectors';
 
 export default function Interview({

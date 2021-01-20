@@ -1,7 +1,7 @@
 import React from 'react';
 import SegmentEditViewContainer from '../containers/SegmentEditViewContainer';
 import { t, sortedSegmentsWithActiveIndex, permittedInterviewEditColumns } from '../../../lib/utils';
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 export default class InterviewEditView extends React.Component {
 

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 export default function StateCheck({
     testSelector,

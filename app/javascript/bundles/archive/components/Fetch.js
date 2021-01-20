@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { fetchData } from '../actions/dataActionCreators';
 import { getProjectId, getLocale } from '../selectors/archiveSelectors';
 import { getProjects } from '../selectors/dataSelectors';
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 export default function Fetch({
     fetchParams,

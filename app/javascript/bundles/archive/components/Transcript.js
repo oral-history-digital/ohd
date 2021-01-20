@@ -8,7 +8,7 @@ import {
     SEGMENTS_AFTER,
     SEGMENTS_BEFORE
 } from '../constants/archiveConstants';
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 export default class Transcript extends React.Component {
     constructor(props) {

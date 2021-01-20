@@ -15,7 +15,7 @@ import 'lib/leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css'
 
 import { pathBase } from 'lib/utils';
 import { INDEX_MAP } from 'modules/flyout-tabs';
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 export default class MapSearch extends React.Component {
     componentDidMount() {

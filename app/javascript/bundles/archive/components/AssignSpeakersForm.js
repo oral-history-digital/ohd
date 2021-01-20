@@ -2,7 +2,7 @@ import React from 'react';
 import Form from '../containers/form/Form';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 import { t, fullname } from '../../../lib/utils';
-import Spinner from './Spinner';
+import { Spinner } from 'modules/spinners';
 
 export default class AssignSpeakersForm extends React.Component {
 

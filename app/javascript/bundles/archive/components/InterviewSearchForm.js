@@ -1,6 +1,6 @@
 import React from 'react';
 import { t, pathBase } from '../../../lib/utils';
-import PixelLoader from '../../../lib/PixelLoader'
+import { PixelLoader } from 'modules/spinners';
 
 
 export default class InterviewSearchForm extends React.Component {
@@ -24,7 +24,7 @@ export default class InterviewSearchForm extends React.Component {
     }
 
     loader(){
-        if (this.props.isInterviewSearching) { 
+        if (this.props.isInterviewSearching) {
             return <PixelLoader />
         }
     }
