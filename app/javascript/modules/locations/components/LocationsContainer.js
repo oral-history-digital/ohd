@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import Locations from '../components/Locations';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
+import Locations from './Locations';
 
 const mapStateToProps = (state) => ({
     visible: getFlyoutTabsVisible(state),

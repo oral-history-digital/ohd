@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import InterviewLocations from '../components/InterviewLocations';
-import { fetchLocations } from '../actions/locationsActionCreators';
-import { getCurrentLocationsWithRefs, getLocationsFetched } from '../selectors/locationsSelectors';
-import { getArchiveId, getLocale, getProjectId, getTranslations } from '../selectors/archiveSelectors';
+import { getArchiveId, getLocale, getProjectId, getTranslations } from 'bundles/archive/selectors/archiveSelectors';
+import { fetchLocations } from '../actions';
+import { getCurrentLocationsWithRefs, getLocationsFetched } from '../selectors';
+import InterviewLocations from './InterviewLocations';
 
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),

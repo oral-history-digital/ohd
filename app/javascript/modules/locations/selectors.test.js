@@ -1,6 +1,6 @@
 import dotProp from 'dot-prop-immutable';
 
-import * as selectors from './locationsSelectors';
+import * as selectors from './selectors';
 
 const state = {
     archive: {
