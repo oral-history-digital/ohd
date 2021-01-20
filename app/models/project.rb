@@ -141,7 +141,7 @@ class Project < ApplicationRecord
       when "RegistryReferenceType"
         rr = facet.registry_reference_type
         if rr
-          cache_key_date = [rr.updated_at, facet.updated_at].max.strftime("%d.%m-%H:%M")
+          cache_key_date = [rr.updated_at, facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
           mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
             ::FacetSerializer.new(rr).as_json
           end
@@ -203,7 +203,7 @@ class Project < ApplicationRecord
         end
       when "Language"
         facet_label_hash = facet.localized_hash(:label)
-        cache_key_date = [Language.maximum(:updated_at), facet.updated_at].max.strftime("%d.%m-%H:%M")
+        cache_key_date = [Language.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
         mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
@@ -218,7 +218,7 @@ class Project < ApplicationRecord
         end
       when "Collection"
         facet_label_hash = facet.localized_hash(:label)
-        cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].max.strftime("%d.%m-%H:%M")
+        cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
         mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
           {
             name: facet_label_hash || localized_hash_for("search_facets", facet.name),
