@@ -1,3 +1,7 @@
+const NAME = 'flyout-tabs';
+
+export { NAME };
+
 export const INDEX_NONE = -1;
 export const INDEX_ACCOUNT = 0;
 export const INDEX_SEARCH = 1;

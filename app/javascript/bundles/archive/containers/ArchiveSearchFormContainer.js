@@ -8,7 +8,7 @@ import {
     searchInArchive,
     searchInMap,
 } from '../actions/searchActionCreators';
-import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
+import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
 
 const mapStateToProps = (state) => {

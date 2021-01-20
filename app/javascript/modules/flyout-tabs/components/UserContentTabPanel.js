@@ -1,12 +1,10 @@
 import React from 'react';
-import PropTypes from 'prop-types';
 
-import AuthShowContainer from '../../containers/AuthShowContainer';
-import AllUserContentsContainer from '../../containers/AllUserContentsContainer';
-import { useI18n } from '../../hooks/i18n';
+import { useI18n } from 'bundles/archive/hooks/i18n';
+import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
+import AllUserContentsContainer from 'bundles/archive/containers/AllUserContentsContainer';
 
-function UserContentTabPanel(props) {
-
+function UserContentTabPanel() {
     const { t } = useI18n();
 
     return (
@@ -20,10 +18,5 @@ function UserContentTabPanel(props) {
         </AuthShowContainer>
     );
 }
-
-UserContentTabPanel.propTypes = {
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
-};
 
 export default UserContentTabPanel;

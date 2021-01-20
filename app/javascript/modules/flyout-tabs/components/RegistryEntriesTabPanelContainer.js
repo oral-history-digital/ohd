@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import RegistryEntriesTabPanel from '../../components/flyout-tabs/RegistryEntriesTabPanel';
-import { changeRegistryEntriesViewMode } from '../../actions/searchActionCreators';
-import { getProject } from '../../../../lib/utils';
+import { changeRegistryEntriesViewMode } from 'bundles/archive/actions/searchActionCreators';
+import { getProject } from 'lib/utils';
+import RegistryEntriesTabPanel from './RegistryEntriesTabPanel';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

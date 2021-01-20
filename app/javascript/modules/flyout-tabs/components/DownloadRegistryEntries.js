@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useI18n } from '../../hooks/i18n';
-import { usePathBase } from '../../hooks/usePathBase';
+import { useI18n } from 'bundles/archives/hooks/i18n';
+import { usePathBase } from 'bundles/archives/hooks/usePathBase';
 
 function DownloadRegistryEntries(props) {
     const { format, specificLocale } = props;

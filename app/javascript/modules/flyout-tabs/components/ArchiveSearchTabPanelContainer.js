@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import ArchiveSearchTabPanel from '../../components/flyout-tabs/ArchiveSearchTabPanel';
+import ArchiveSearchTabPanel from './ArchiveSearchTabPanel';
 
 const mapStateToProps = (state) => ({
     selectedArchiveIds: state.archive.selectedArchiveIds,

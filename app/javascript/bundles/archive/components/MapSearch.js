@@ -14,7 +14,7 @@ import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css';
 import 'lib/leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css'
 
 import { pathBase } from 'lib/utils';
-import { INDEX_MAP } from '../constants/flyoutTabs';
+import { INDEX_MAP } from 'modules/flyout-tabs';
 import Spinner from './Spinner';
 
 export default class MapSearch extends React.Component {
