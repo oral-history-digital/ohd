@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import WrappedAccount from '../components/WrappedAccount';
 import { submitData } from '../actions/dataActionCreators';
 import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
-import { setFlyoutTabsIndex } from '../actions/flyoutTabsActionCreators';
+import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {

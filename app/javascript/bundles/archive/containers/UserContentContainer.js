@@ -5,7 +5,7 @@ import { openArchivePopup } from '../actions/archivePopupActionCreators';
 import { setTapeAndTime } from '../actions/interviewActionCreators';
 import { setArchiveId } from '../actions/archiveActionCreators';
 import { searchInArchive } from '../actions/searchActionCreators';
-import { hideFlyoutTabs } from '../actions/flyoutTabsActionCreators';
+import { hideFlyoutTabs } from 'modules/flyout-tabs';
 
 const mapStateToProps = (state) => {
     return {

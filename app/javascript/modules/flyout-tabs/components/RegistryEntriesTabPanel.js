@@ -1,10 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import RegistryEntrySearchFormContainer from '../../containers/RegistryEntrySearchFormContainer';
-import DownloadRegistryEntriesContainer from '../../containers/flyout-tabs/DownloadRegistryEntriesContainer';
+import RegistryEntrySearchFormContainer from 'bundles/archive/containers/RegistryEntrySearchFormContainer';
+import DownloadRegistryEntriesContainer from './DownloadRegistryEntriesContainer';
 
-import { t, admin, pathBase } from '../../../../lib/utils';
+import { t, admin } from 'lib/utils';
 
 function RegistryEntriesTabPanel(props) {
     return (

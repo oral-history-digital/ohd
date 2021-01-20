@@ -2,22 +2,22 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-import AdminActionsContainer from '../../containers/AdminActionsContainer';
-import AuthShowContainer from '../../containers/AuthShowContainer';
-import AccountContainer from '../../containers/AccountContainer';
-import MarkTextFormContainer from '../../containers/MarkTextFormContainer';
-import InterviewDataContainer from '../../containers/InterviewDataContainer';
-import AssignSpeakersFormContainer from '../../containers/AssignSpeakersFormContainer';
-import PersonDataContainer from '../../containers/PersonDataContainer';
-import SelectedRegistryReferencesContainer from '../../containers/SelectedRegistryReferencesContainer';
-import InterviewInfoContainer from '../../containers/InterviewInfoContainer';
-import InterviewTextMaterialsContainer from '../../containers/InterviewTextMaterialsContainer';
-import InterviewContributorsContainer from '../../containers/InterviewContributorsContainer';
-import InterviewLocationsContainer from '../../containers/InterviewLocationsContainer';
-import CitationInfoContainer from '../../containers/CitationInfoContainer';
-import GalleryContainer from '../../containers/GalleryContainer';
-import UploadTranscriptContainer from '../../containers/UploadTranscriptContainer';
-import AuthorizedContent from '../AuthorizedContent';
+import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContainer';
+import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
+import AccountContainer from 'bundles/archive/containers/AccountContainer';
+import MarkTextFormContainer from 'bundles/archive/containers/MarkTextFormContainer';
+import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
+import AssignSpeakersFormContainer from 'bundles/archive/containers/AssignSpeakersFormContainer';
+import PersonDataContainer from 'bundles/archive/containers/PersonDataContainer';
+import SelectedRegistryReferencesContainer from 'bundles/archive/containers/SelectedRegistryReferencesContainer';
+import InterviewInfoContainer from 'bundles/archive/containers/InterviewInfoContainer';
+import InterviewTextMaterialsContainer from 'bundles/archive/containers/InterviewTextMaterialsContainer';
+import InterviewContributorsContainer from 'bundles/archive/containers/InterviewContributorsContainer';
+import InterviewLocationsContainer from 'bundles/archive/containers/InterviewLocationsContainer';
+import CitationInfoContainer from 'bundles/archive/containers/CitationInfoContainer';
+import GalleryContainer from 'bundles/archive/containers/GalleryContainer';
+import UploadTranscriptContainer from 'bundles/archive/containers/UploadTranscriptContainer';
+import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
 import { admin, pathBase, t } from 'lib/utils';
 
 class InterviewTabPanel extends Component {

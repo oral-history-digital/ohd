@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import LocaleButtons from '../../components/flyout-tabs/LocaleButtons';
-import { setLocale } from '../../actions/archiveActionCreators';
-import { getProject } from '../../../../lib/utils';
+import { setLocale } from 'bundles/archive/actions/archiveActionCreators';
+import { getProject } from 'lib/utils';
+import LocaleButtons from './LocaleButtons';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

@@ -4,7 +4,7 @@ import UserRolesContainer from '../containers/UserRolesContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import Form from '../containers/form/Form';
 import { t } from '../../../lib/utils';
-import { INDEX_ACCOUNT } from '../constants/flyoutTabs';
+import { INDEX_ACCOUNT } from 'modules/flyout-tabs';
 
 export default class WrappedAccount extends React.Component {
     constructor(props) {

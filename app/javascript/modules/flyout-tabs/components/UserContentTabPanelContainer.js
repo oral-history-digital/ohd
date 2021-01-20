@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import UserContentTabPanel from '../../components/flyout-tabs/UserContentTabPanel';
+import UserContentTabPanel from './UserContentTabPanel';
 
 const mapStateToProps = (state) => ({
     locale: state.archive.locale,

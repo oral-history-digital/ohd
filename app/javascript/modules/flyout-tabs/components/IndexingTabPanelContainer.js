@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 
-import UsersAdminTabPanel from '../../components/flyout-tabs/UsersAdminTabPanel';
+import IndexingTabPanel from './IndexingTabPanel';
 
 const mapStateToProps = (state) => ({
-    countryKeys: state.archive.countryKeys,
     locale: state.archive.locale,
     translations: state.archive.translations,
     projectId: state.archive.projectId,
@@ -11,4 +10,4 @@ const mapStateToProps = (state) => ({
     editView: state.archive.editView,
 });
 
-export default connect(mapStateToProps)(UsersAdminTabPanel);
+export default connect(mapStateToProps)(IndexingTabPanel);

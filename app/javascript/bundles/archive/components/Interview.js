@@ -8,7 +8,7 @@ import VideoPlayerContainer from '../containers/VideoPlayerContainer';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewLoggedOutContainer from '../containers/InterviewLoggedOutContainer';
-import { INDEX_INTERVIEW } from '../constants/flyoutTabs';
+import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
 import Fetch from './Fetch';
 import Spinner from './Spinner';
 import { getContributorsFetched, getCurrentInterviewFetched } from '../selectors/dataSelectors';

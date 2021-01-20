@@ -2,13 +2,13 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 
-import UserRegistrationSearchFormContainer from '../../containers/UserRegistrationSearchFormContainer';
-import RoleSearchFormContainer from '../../containers/RoleSearchFormContainer';
-import PermissionSearchFormContainer from '../../containers/PermissionSearchFormContainer';
-import TaskTypeSearchFormContainer from '../../containers/TaskTypeSearchFormContainer';
-import ProjectSearchFormContainer from '../../containers/ProjectSearchFormContainer';
-import InterviewDataContainer from '../../containers/InterviewDataContainer';
-import { admin, pathBase, t } from '../../../../lib/utils';
+import UserRegistrationSearchFormContainer from 'bundles/archive/containers/UserRegistrationSearchFormContainer';
+import RoleSearchFormContainer from 'bundles/archive/containers/RoleSearchFormContainer';
+import PermissionSearchFormContainer from 'bundles/archive/containers/PermissionSearchFormContainer';
+import TaskTypeSearchFormContainer from 'bundles/archive/containers/TaskTypeSearchFormContainer';
+import ProjectSearchFormContainer from 'bundles/archive/containers/ProjectSearchFormContainer';
+import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
+import { admin, pathBase, t } from 'lib/utils';
 
 class UsersAdminTabPanel extends Component {
     static propTypes = {

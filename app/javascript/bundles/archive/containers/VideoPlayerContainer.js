@@ -4,7 +4,7 @@ import VideoPlayer from '../components/VideoPlayer';
 import {handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution} from '../actions/videoPlayerActionCreators';
 import {openArchivePopup} from '../actions/archivePopupActionCreators';
 import { getProject } from 'lib/utils';
-import { getFlyoutTabsVisible } from '../selectors/flyoutTabsSelectors';
+import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
 import { getCurrentInterview } from '../selectors/dataSelectors';
 
 const mapStateToProps = (state) => {

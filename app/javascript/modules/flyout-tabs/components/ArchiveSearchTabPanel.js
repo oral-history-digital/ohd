@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AdminActionsContainer from '../../containers/AdminActionsContainer';
-import ArchiveSearchFormContainer from '../../containers/ArchiveSearchFormContainer';
-import InterviewDataContainer from '../../containers/InterviewDataContainer';
-import { useI18n } from '../../hooks/i18n';
-import AuthorizedContent from '../AuthorizedContent';
+import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContainer';
+import ArchiveSearchFormContainer from 'bundles/archive/containers/ArchiveSearchFormContainer';
+import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
+import { useI18n } from 'bundles/archive/hooks/i18n';
+import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
 
 function ArchiveSearchTabPanel({ selectedArchiveIds }) {
     const { t } = useI18n();
