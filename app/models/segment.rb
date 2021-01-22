@@ -54,27 +54,37 @@ class Segment < ApplicationRecord
      .limit(1)
   }
 
-  translates :mainheading, :subheading, :text, :spec, touch: true
+  translates :mainheading, :subheading, :text, touch: true
   accepts_nested_attributes_for :translations
+
+  # globalize creates empty translation on update_attributes
+  # they have to be deleted 
+  #
+  after_save :cleanup_empty_translations
+  def cleanup_empty_translations
+    Segment::Translation.where(translated_attributes.keys.inject({}){|mem, key| mem[key] = nil; mem}).destroy_all
+  end
 
   class Translation
     belongs_to :segment
+
     after_save do
       # run this only after update of original e.g. 'de' version!
-      if (text_previously_changed? || subheading_previously_changed? || mainheading_previously_changed?) && locale.length == 2
-        segment.write_other_versions(text, mainheading, subheading, locale)
-        segment.update_attributes(has_heading: true) if (mainheading || subheading) && !segment.has_heading
+      if (text_previously_changed?) && locale.length == 2
+        segment.write_other_versions(text, locale)
       end
+      segment.update_attribute(:has_heading, true) if (mainheading || subheading) && !segment.has_heading
     end
   end
 
-  def write_other_versions(text, mainheading, subheading, locale)
+  def write_other_versions(text, locale)
     [:public, :subtitle].each do |version|
-      update_attributes(text: enciphered_text(version, text), mainheading: mainheading, subheading: subheading, locale: "#{locale}-#{version}")
+      update_attributes(text: enciphered_text(version, text), locale: "#{locale}-#{version}")
     end
   end
 
-  def enciphered_text(version, text_original='')
+  def enciphered_text(version, text_original)
+    text_original ||= ''
     # TODO: replace with utf8 À
     text_enciphered =
       case version
