@@ -111,7 +111,7 @@ export default class SegmentEditView extends React.Component {
             }
             case 'annotations': {
                 return (
-                    <AnnotationsContainer segment={this.props.segment} locale={this.props.locale} />
+                    <AnnotationsContainer segment={this.props.segment} contentLocale={this.props.locale} />
                 )
                 break;
             }
