@@ -9,10 +9,11 @@ export default class AnnotationForm extends React.Component {
         this.state = {
             values: {
                 id: props.annotation && props.annotation.id,
+                locale: this.props.contentLocale,
                 segment_id: props.segment.id,
                 interview_id: props.segment.interview_id,
-                text: props.annotation && props.annotation.text[props.locale] ?
-                    RichTextEditor.createValueFromString(props.annotation.text[props.locale], 'html') :
+                text: props.annotation && props.annotation.text[props.contentLocale] ?
+                    RichTextEditor.createValueFromString(props.annotation.text[props.contentLocale], 'html') :
                     RichTextEditor.createEmptyValue()
             }
         };
@@ -51,7 +52,7 @@ export default class AnnotationForm extends React.Component {
                 />
                 <input
                     type="submit"
-                    value={t({ locale: this.props.currentLocale, translations: this.props.translations }, 'submit')}
+                    value={t({ locale: this.props.locale, translations: this.props.translations }, 'submit')}
                 />
             </form>
         );
@@ -63,7 +64,7 @@ AnnotationForm.propTypes = {
     annotation: PropTypes.object,
     segment: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    currentLocale: PropTypes.string.isRequired,
+    contentLocale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     closeArchivePopup: PropTypes.func.isRequired,

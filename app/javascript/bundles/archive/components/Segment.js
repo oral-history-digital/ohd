@@ -48,7 +48,7 @@ export default class Segment extends React.Component {
             this.props.popupType === 'annotations' &&
             (this.props.data.annotations_count > 0 || admin(this.props, {type: 'Annotation', action: 'create', interview_id: this.props.data.interview_id}))
         ) {
-            return <AnnotationsContainer segment={this.props.data} locale={locale} />
+            return <AnnotationsContainer segment={this.props.data} contentLocale={locale} />
         }
     }
 

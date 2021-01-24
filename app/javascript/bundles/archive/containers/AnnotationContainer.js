@@ -6,7 +6,7 @@ import { deleteData } from '../actions/dataActionCreators';
 import { getLocale, getTranslations } from '../selectors/archiveSelectors';
 
 const mapStateToProps = state => ({
-    currentLocale: getLocale(state),
+    locale: getLocale(state),
     translations: getTranslations(state),
 });
 
