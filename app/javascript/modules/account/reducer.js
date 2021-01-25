@@ -1,24 +1,15 @@
-import { 
+import {
     LOGIN,
     LOGGED_IN,
     AUTH_ERROR,
-    SUBMIT_LOGIN,
-
     LOGOUT,
-    SUBMIT_LOGOUT,
-
     REGISTER,
     REGISTERED,
-    SUBMIT_REGISTER,
-
     CHANGE_PASSWORD,
     CHANGED_PASSWORD,
-    SUBMIT_CHANGE_PASSWORD,
-
     ORDER_NEW_PASSWORD,
     ORDERED_NEW_PASSWORD,
-    ORDER_NEW_PASSWORD_URL
-} from '../constants/archiveConstants';
+} from './action-types';
 
 const account = (state = {isLoggedIn: false}, action) => {
     switch (action.type) {
@@ -42,7 +33,7 @@ const account = (state = {isLoggedIn: false}, action) => {
                 error: action.error,
                 active: action.active,
                 email: action.email,
-            } 
+            }
         case LOGOUT:
             return Object.assign({}, state, {
                 isLoggedIn: false,

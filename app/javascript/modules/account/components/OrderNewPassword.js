@@ -1,6 +1,7 @@
 import React from 'react';
-import OrderNewPasswordFormContainer from '../containers/OrderNewPasswordFormContainer';
-import { t, pathBase } from '../../../lib/utils';
+
+import { t } from 'lib/utils';
+import OrderNewPasswordFormContainer from './OrderNewPasswordFormContainer';
 
 export default class OrderNewPassword extends React.Component {
 

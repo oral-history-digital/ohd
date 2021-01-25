@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import ChangePasswordForm from '../components/ChangePasswordForm';
-import { submitChangePassword } from '../actions/accountActionCreators';
+import ChangePasswordForm from './ChangePasswordForm';
+import { submitChangePassword } from '../actions';
 
 const mapStateToProps = (state) => {
     return {

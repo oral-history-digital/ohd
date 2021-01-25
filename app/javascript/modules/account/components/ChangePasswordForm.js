@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import InputContainer from '../containers/form/InputContainer';
 import queryString from 'query-string';
-import { t, pathBase } from '../../../lib/utils';
+
+import { t, pathBase } from 'lib/utils';
+import InputContainer from 'bundles/archive/containers/form/InputContainer';
 
 export default class ChangePasswordForm extends React.Component {
     static propTypes = {

@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import Account from '../components/Account';
-import { submitLogout } from '../actions/accountActionCreators';
-import { changeToEditView } from '../actions/archiveActionCreators';
+import { changeToEditView } from 'bundles/archive/actions/archiveActionCreators';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
-import { getCookie } from '../../../lib/utils';
+import { getCookie } from 'lib/utils';
+import { submitLogout } from '../actions';
+import Account from './Account';
+import { getFirstName, getIsLoggedIn, getLastName, getLoginError } from '../selectors';
 
 const mapStateToProps = (state) => {
     return {
@@ -13,11 +14,11 @@ const mapStateToProps = (state) => {
         projectId: state.archive.projectId,
         projects: state.data.projects,
         translations: state.archive.translations,
-        firstName: state.account.firstName,
-        lastName: state.account.lastName,
-        error: state.account.error,
+        firstName: getFirstName(state),
+        lastName: getLastName(state),
+        error: getLoginError(state),
         account: state.data.accounts.current,
-        isLoggedIn: state.account.isLoggedIn,
+        isLoggedIn: getIsLoggedIn(state),
         editViewCookie: getCookie('editView') === 'true',
         editView: state.archive.editView,
     }

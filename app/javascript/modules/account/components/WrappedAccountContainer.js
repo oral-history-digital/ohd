@@ -1,10 +1,11 @@
+import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import WrappedAccount from '../components/WrappedAccount';
-import { submitData } from '../actions/dataActionCreators';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { submitData } from 'bundles/archive/actions/dataActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'bundles/archive/actions/archivePopupActionCreators';
+import { getProject } from 'lib/utils';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { getProject } from '../../../lib/utils';
+import WrappedAccount from './WrappedAccount';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -19,11 +20,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup()),
-    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+    openArchivePopup,
+    closeArchivePopup,
+    setFlyoutTabsIndex,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedAccount);

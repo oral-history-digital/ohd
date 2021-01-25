@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
-import AccountContainer from 'bundles/archive/containers/AccountContainer';
+import { AccountContainer } from 'modules/account';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
 import StateCheck from 'bundles/archive/components/StateCheck';
 import { getCurrentInterviewFetched } from 'bundles/archive/selectors/dataSelectors';
