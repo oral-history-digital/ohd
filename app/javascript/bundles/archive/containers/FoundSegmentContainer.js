@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
 
 import FoundSegment from '../components/FoundSegment';
-import { handleSegmentClick } from '../actions/interviewActionCreators';
-
-import { getInterview } from '../../../lib/utils';
+import { handleSegmentClick, getCurrentTape } from 'modules/interview';
+import { getInterview } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let interview = getInterview(state);
     return {
-        tape: state.archive.tape,
+        tape: getCurrentTape(state),
         interview: interview,
         transcriptTime: state.archive.transcriptTime,
         translations: state.archive.translations,

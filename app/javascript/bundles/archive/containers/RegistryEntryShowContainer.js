@@ -4,10 +4,10 @@ import RegistryEntryShow from '../components/RegistryEntryShow';
 import { fetchData } from '../actions/dataActionCreators';
 import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { setArchiveId } from '../actions/archiveActionCreators';
-import { setTapeAndTime } from '../actions/interviewActionCreators';
+import { setTapeAndTime } from 'modules/interview';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         projects: state.data.projects,

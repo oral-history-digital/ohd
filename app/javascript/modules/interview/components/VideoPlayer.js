@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
 
-import UserContentFormContainer from '../containers/UserContentFormContainer';
-import VideoPlayerButtonsContainer from '../containers/VideoPlayerButtonsContainer';
-import { t, fullname, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
-import { MISSING_STILL } from '../constants/archiveConstants'
+import UserContentFormContainer from 'bundles/archive/containers/UserContentFormContainer';
+import VideoPlayerButtonsContainer from 'bundles/archive/containers/VideoPlayerButtonsContainer';
+import { MISSING_STILL } from 'bundles/archive/constants/archiveConstants'
+import { t, fullname, sortedSegmentsWithActiveIndex, getInterviewee } from 'lib/utils';
 
 export default class VideoPlayer extends React.Component {
     constructor(props) {

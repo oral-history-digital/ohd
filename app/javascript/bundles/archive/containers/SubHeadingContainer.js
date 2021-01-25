@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
 
 import SubHeading from '../components/SubHeading';
-import { handleSegmentClick } from '../actions/interviewActionCreators';
-import {getInterview } from '../../../lib/utils'
+import { handleSegmentClick, getCurrentTape, getTranscriptTime } from 'modules/interview';
+import { getCurrentInterview } from '../selectors/dataSelectors';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
-        transcriptTime: state.interview.transcriptTime,
-        tape: state.interview.tape,
-        interview: getInterview(state),
+        transcriptTime: getTranscriptTime(state),
+        tape: getCurrentTape(state),
+        interview: getCurrentInterview(state),
     }
 }
 
@@ -17,7 +17,4 @@ const mapDispatchToProps = (dispatch) => ({
     handleSegmentClick: (tape, time, tabIndex) => dispatch(handleSegmentClick(tape, time, tabIndex)),
 })
 
-// Don't forget to actually use connect!
-// Note that we don't export Interview, but the redux "connected" version of it.
-// See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
 export default connect(mapStateToProps, mapDispatchToProps)(SubHeading);

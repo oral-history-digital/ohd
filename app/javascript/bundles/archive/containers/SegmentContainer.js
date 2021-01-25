@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 
 import Segment from '../components/Segment';
-import { handleSegmentClick } from '../actions/interviewActionCreators';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
-
 import { getInterview } from 'lib/utils';
+import { handleSegmentClick } from 'modules/interview';
 
 const mapStateToProps = (state) => {
     return {

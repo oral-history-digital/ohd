@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { useI18n} from 'bundles/archive/hooks/i18n';
-import { handleSegmentClick } from 'bundles/archive/actions/interviewActionCreators';
+import { handleSegmentClick } from 'modules/interview';
 
 export default function MapPopupContent({ location }) {
     const { t, locale } = useI18n();

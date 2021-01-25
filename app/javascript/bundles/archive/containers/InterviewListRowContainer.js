@@ -2,10 +2,10 @@ import { connect } from 'react-redux';
 
 import InterviewListRow from '../components/InterviewListRow';
 import { searchInInterview } from '../actions/searchActionCreators';
-import { setTapeAndTime } from '../actions/interviewActionCreators';
+import { setTapeAndTime } from 'modules/interview';
 import { setArchiveId, addRemoveArchiveId } from '../actions/archiveActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
-import { getCookie, getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state, ownProps) => {
     let project = getProject(state);

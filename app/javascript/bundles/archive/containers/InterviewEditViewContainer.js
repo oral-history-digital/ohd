@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
 import InterviewEditView from '../components/InterviewEditView';
-import { handleTranscriptScroll, setActualSegment } from '../actions/interviewActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
 
-import { getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 import { getCurrentInterview } from '../selectors/dataSelectors';
+import { handleTranscriptScroll, setActualSegment, getCurrentTape, getTranscriptScrollEnabled, getTranscriptTime } from 'modules/interview';
 
 const mapStateToProps = (state) => {
     return {
@@ -15,9 +15,9 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
         interview: getCurrentInterview(state),
-        tape: state.interview.tape,
-        transcriptTime: state.interview.transcriptTime,
-        transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
+        tape: getCurrentTape(state),
+        transcriptTime: getTranscriptTime(state),
+        transcriptScrollEnabled: getTranscriptScrollEnabled(state),
         skipEmptyRows: state.archive.skipEmptyRows,
         segmentsStatus: state.data.statuses.segments,
         selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,

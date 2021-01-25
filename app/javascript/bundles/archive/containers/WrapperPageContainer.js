@@ -8,8 +8,9 @@ import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 import { setLocale, setProjectId } from '../actions/archiveActionCreators';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
 
-import { getCookie, getProject } from '../../../lib/utils';
+import { getCookie, getProject } from 'lib/utils';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs/selectors';
+import { getTranscriptScrollEnabled } from 'modules/interview';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -19,7 +20,7 @@ const mapStateToProps = (state) => {
         projects: state.data.projects,
         project: project,
         projectsStatus: state.data.statuses.projects,
-        transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
+        transcriptScrollEnabled: getTranscriptScrollEnabled(state),
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
