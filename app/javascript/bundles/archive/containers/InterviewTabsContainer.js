@@ -1,8 +1,8 @@
 import {connect} from 'react-redux';
 import InterviewTabs from '../components/InterviewTabs';
-import { setInterviewTabIndex } from '../actions/interviewActionCreators';
-import { getProject } from 'lib/utils';
 import { getCurrentInterview } from '../selectors/dataSelectors';
+import { getProject } from 'lib/utils';
+import { setInterviewTabIndex, getTabIndex } from 'modules/interview';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         interviewSearchResults: state.search.interviews[state.archive.archiveId],
         project: project && project.identifier,
-        tabIndex: state.interview.tabIndex,
+        tabIndex: getTabIndex(state),
     }
 }
 

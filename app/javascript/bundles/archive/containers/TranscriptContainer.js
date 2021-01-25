@@ -1,10 +1,9 @@
 import { connect } from 'react-redux';
 
 import Transcript from '../components/Transcript';
-import { handleTranscriptScroll, setActualSegment } from '../actions/interviewActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
-
-import { getInterview } from '../../../lib/utils';
+import { getCurrentInterview } from '../selectors/dataSelectors';
+import { handleTranscriptScroll, setActualSegment, getCurrentTape, getTranscriptScrollEnabled, getTranscriptTime } from 'modules/interview';
 
 const mapStateToProps = (state) => {
     return {
@@ -14,11 +13,11 @@ const mapStateToProps = (state) => {
         contributionTypes: state.archive.contributionTypes,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
-        interview: getInterview(state),
+        interview: getCurrentInterview(state),
         people: state.data.people,
-        tape: state.interview.tape,
-        transcriptTime: state.interview.transcriptTime,
-        transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
+        tape: getCurrentTape(state),
+        transcriptTime: getTranscriptTime(state),
+        transcriptScrollEnabled: getTranscriptScrollEnabled(state),
         segmentsStatus: state.data.statuses.segments,
         userContentsStatus: state.data.statuses.user_contents.all,
     }

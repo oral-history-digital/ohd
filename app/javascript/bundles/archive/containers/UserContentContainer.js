@@ -2,9 +2,9 @@ import { connect } from 'react-redux';
 
 import UserContent from '../components/UserContent';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
-import { setTapeAndTime } from '../actions/interviewActionCreators';
 import { setArchiveId } from '../actions/archiveActionCreators';
 import { searchInArchive } from '../actions/searchActionCreators';
+import { setTapeAndTime } from 'modules/interview';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 
 const mapStateToProps = (state) => {

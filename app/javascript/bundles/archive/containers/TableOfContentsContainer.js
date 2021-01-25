@@ -1,9 +1,9 @@
 import {connect} from 'react-redux';
 
 import TableOfContents from '../components/TableOfContents';
-import { getInterview } from '../../../lib/utils';
-import { handleTranscriptScroll } from '../actions/interviewActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
+import { getCurrentInterview } from '../selectors/dataSelectors';
+import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 
 const mapStateToProps = (state) => {
     return {
@@ -12,10 +12,9 @@ const mapStateToProps = (state) => {
         projects: state.data.projects,
         translations: state.archive.translations,
         archiveId: state.archive.archiveId,
-        locale: state.archive.locale,
-        interview: getInterview(state),
+        interview: getCurrentInterview(state),
         headingsStatus: state.data.statuses.headings,
-        transcriptScrollEnabled: state.interview.transcriptScrollEnabled
+        transcriptScrollEnabled: getTranscriptScrollEnabled(state),
     }
 }
 
@@ -25,5 +24,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableOfContents);
-
-

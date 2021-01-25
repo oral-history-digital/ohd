@@ -2,10 +2,10 @@ import { connect } from 'react-redux';
 
 import TaskPreview from '../components/TaskPreview';
 import { setArchiveId } from '../actions/archiveActionCreators';
-import { setTapeAndTime } from '../actions/interviewActionCreators';
+import { setTapeAndTime } from 'modules/interview';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         archiveId: state.archive.archiveId,
         projectId: state.archive.projectId,
         projects: state.data.projects,

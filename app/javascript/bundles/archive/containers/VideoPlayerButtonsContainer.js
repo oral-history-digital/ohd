@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
-import { handleTranscriptScroll } from '../actions/interviewActionCreators';
 
+import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import VideoPlayerButtons from '../components/VideoPlayerButtons';
 
 const mapStateToProps = (state) => ({
-    transcriptScrollEnabled: state.interview.transcriptScrollEnabled,
+    transcriptScrollEnabled: getTranscriptScrollEnabled(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

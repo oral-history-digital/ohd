@@ -4,13 +4,11 @@ import {
     SET_NEXT_TAPE,
     TRANSCRIPT_SCROLL,
     SET_INTERVIEW_TAB_INDEX,
-
     TRANSCRIPT_TIME_CHANGE,
-
     SET_TAPE_AND_TIME,
     SET_TAPE_AND_TIME_AND_RESOLUTION,
     SET_ACTUAL_SEGMENT,
-} from '../constants/archiveConstants';
+} from './action-types';
 
 const initialState = {
     tape: 1,
@@ -20,7 +18,6 @@ const initialState = {
     transcriptScrollEnabled: false,
     resolution: undefined,
 }
-
 
 const interview = (state = initialState, action) => {
     switch (action.type) {

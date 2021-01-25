@@ -1,17 +1,15 @@
 import { connect } from 'react-redux';
 
 import SegmentEditView from '../components/SegmentEditView';
-import { setTapeAndTime } from '../actions/interviewActionCreators';
 import { openArchivePopup } from '../actions/archivePopupActionCreators';
-
-import { getInterview, getCookie } from '../../../lib/utils';
+import { setTapeAndTime } from 'modules/interview';
+import { getCurrentInterview } from '../selectors/dataSelectors';
 
 const mapStateToProps = (state) => {
     return {
         transcriptTime: state.archive.transcriptTime,
         locale: state.archive.locale,
-        tape: state.archive.tape,
-        interview: getInterview(state),
+        interview: getCurrentInterview(state),
         statuses: state.data.statuses.segments,
         account: state.data.accounts.current,
         selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,

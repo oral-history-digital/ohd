@@ -2,12 +2,12 @@ import { connect } from 'react-redux';
 
 import InterviewPreview from '../components/InterviewPreview';
 import { searchInInterview } from '../actions/searchActionCreators';
-import { setTapeAndTime } from '../actions/interviewActionCreators';
+import { setTapeAndTime } from 'modules/interview';
 import { setArchiveId, addRemoveArchiveId } from '../actions/archiveActionCreators';
 import { fetchData } from '../actions/dataActionCreators';
-import { getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     let project = getProject(state);
     return {
         fulltext: state.search.archive.query.fulltext,
