@@ -1,4 +1,4 @@
-import Loader from 'lib/loader';
+import { Loader } from 'modules/api';
 
 import { REQUEST_LOCATIONS, RECEIVE_LOCATIONS } from './action-types';
 

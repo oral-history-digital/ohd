@@ -1,8 +1,6 @@
-/* eslint-disable import/prefer-default-export */
+import { Loader } from 'modules/api';
 
-import Loader from '../../../lib/loader'
-
-import { 
+import {
     SET_QUERY_PARAMS,
     RESET_QUERY,
 
@@ -136,4 +134,3 @@ export function changeRegistryEntriesViewMode(bool){
         bool: bool
     }
 }
-

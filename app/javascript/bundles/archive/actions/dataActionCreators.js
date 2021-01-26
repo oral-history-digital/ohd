@@ -1,9 +1,7 @@
-/* eslint-disable import/prefer-default-export */
+import { pluralize, pathBase } from  'lib/utils';
+import { Loader } from 'modules/api';
 
-import Loader from '../../../lib/loader'
-import { pluralize, pathBase } from  '../../../lib/utils';
-
-import { 
+import {
     REQUEST_DATA,
     RECEIVE_DATA,
     UPDATE_DATA,
@@ -55,7 +53,7 @@ const receiveData = (json) => ({
     extraId: json.extra_id,
     reloadDataType: json.reload_data_type,
     reloadId: json.reload_id,
-    msg: json.msg, 
+    msg: json.msg,
     page: json.page,
     resultPagesCount: json.result_pages_count,
 });
@@ -76,14 +74,14 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
 }
 
 export function submitData(props, params, opts={}) {
-    let dataType = Object.keys(params)[0]; 
+    let dataType = Object.keys(params)[0];
     let pluralizedDataType = pluralize(dataType);
 
     if(params[dataType].id) {
         let id = params[dataType].id;
         delete params[dataType].id;
         return dispatch => {
-            if (opts.updateStateBeforeSubmit) 
+            if (opts.updateStateBeforeSubmit)
                 dispatch(updateData(pluralizedDataType, id, Object.values(params)[0]));
             Loader.put(`${pathBase(props)}/${pluralizedDataType}/${id}`, params, dispatch, receiveData);
         }
@@ -100,7 +98,7 @@ export function deleteData(props, dataType, id, nestedDataType, nestedId, skipRe
     if  (nestedDataType)
         url += `/${nestedDataType}/${nestedId}`
 
-    if (skipRemove) { 
+    if (skipRemove) {
         return dispatch => {
             Loader.delete(url, dispatch, receiveData);
         }
@@ -127,4 +125,3 @@ const deleteStatusMsg = (dataType, msgOrIndex) => ({
     dataType: dataType,
     msgOrIndex: msgOrIndex
 });
-

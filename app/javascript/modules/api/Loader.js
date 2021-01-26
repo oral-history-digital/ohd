@@ -1,8 +1,7 @@
 import request from 'superagent';
 import noCache from 'superagent-no-cache';
 
-//if (typeof Loader == "undefined") {
-var Loader = {
+const Loader = {
     getJson: function(url, queryParams, dispatch, callback) {
         request.get(url)
             .use(noCache)
@@ -73,9 +72,9 @@ var Loader = {
                                     //
                                     // second layer nested e.g. registry_entry[registry_names[registry_name_translations]]
                                     //
-                                    // Parameters: {"registry_entry"=>{"workflow_state"=>"public", 
-                                    // "registry_names_attributes"=>[{"registry_entry_id"=>"28205", 
-                                    // "translations_attributes"=>[{"locale"=>"de", "id"=>"", "descriptor"=>"sdfsdfsdf"}], 
+                                    // Parameters: {"registry_entry"=>{"workflow_state"=>"public",
+                                    // "registry_names_attributes"=>[{"registry_entry_id"=>"28205",
+                                    // "translations_attributes"=>[{"locale"=>"de", "id"=>"", "descriptor"=>"sdfsdfsdf"}],
                                     // "name_position"=>"3", "registry_name_type_id"=>"4"}]}, "locale"=>"de", "id"=>"28205"}
                                     //
                                     if (Array.isArray(elem[e])) {
@@ -124,7 +123,7 @@ var Loader = {
                 } else if (json.error) {
                     if (typeof errorCallback === "function") {
                         dispatch(errorCallback(json));
-                    } 
+                    }
                 } else {
                     if (typeof successCallback === "function") {
                         dispatch(successCallback(json));
@@ -135,8 +134,5 @@ var Loader = {
     },
 
 };
-//};
 
 export default Loader;
-
-
