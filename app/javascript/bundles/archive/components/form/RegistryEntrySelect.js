@@ -75,11 +75,10 @@ export default class RegistryEntrySelect extends React.Component {
             // check whether selected entry is loaded
             this.selectedRegistryEntry() && 
             this.selectedRegistryEntry().associations_loaded &&
-            this.props.registryEntriesStatus[this.state.selectedRegistryEntryId].split('-')[0] === 'fetched' &&
+            this.props.registryEntriesStatus[this.state.selectedRegistryEntryId]?.split('-')[0] === 'fetched' &&
 
             // check whether childEntries are loaded
-            this.props.registryEntriesStatus[`children_for_entry_${this.state.selectedRegistryEntryId}`] && 
-            this.props.registryEntriesStatus[`children_for_entry_${this.state.selectedRegistryEntryId}`].split('-')[0] === 'fetched'
+            this.props.registryEntriesStatus[`children_for_entry_${this.state.selectedRegistryEntryId}`]?.split('-')[0] === 'fetched'
         ) {
             return this.selectedRegistryEntry().child_ids[this.props.locale]?.filter(rid => {
                 return !this.props.inTranscript || this.props.project.hidden_transcript_registry_entry_ids.indexOf(rid.toString()) === -1
