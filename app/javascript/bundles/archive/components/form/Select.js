@@ -123,7 +123,7 @@ export default class Select extends React.Component {
     }
 
     render() {
-        let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
+        let value = this.props.value || this.props.data && this.props.data[this.props.attribute] || '';
         return (
             <ElementContainer
                 scope={this.props.scope}
