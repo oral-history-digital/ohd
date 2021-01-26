@@ -34,6 +34,14 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   def show
+    project = Project.find(params[:id])
+    respond_to do |format|
+      format.xml do
+        exporter = CollectionMetadataExporter.new(@project)
+        exporter.build
+        render xml: exporter.xml
+      end
+    end
   end
 
   # GET /projects/new

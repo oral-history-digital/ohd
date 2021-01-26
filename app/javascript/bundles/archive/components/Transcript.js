@@ -1,8 +1,7 @@
 import React from 'react';
-import ReactList from 'react-list';
 
 import SegmentContainer from '../containers/SegmentContainer';
-import { t, sortedSegmentsWithActiveIndex, getInterviewee } from '../../../lib/utils';
+import { t, sortedSegmentsWithActiveIndex, getInterviewee } from 'lib/utils';
 import { segmentsForTape } from 'utils/segments';
 import {
     SEGMENTS_AFTER,
@@ -130,13 +129,10 @@ export default class Transcript extends React.Component {
             this.shownSegmentsAround(sortedWithIndex);
 
         let speaker, speakerId;
-        let transcript = [];
 
         const interviewee = getInterviewee(this.props);
 
-        const renderItem = (index, key) => {
-            const segment = shownSegments[index];
-
+        return shownSegments.map((segment, index) => {
             segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
             if (
                 (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
@@ -157,7 +153,7 @@ export default class Transcript extends React.Component {
 
             return (
                 <SegmentContainer
-                    key={key}
+                    key={segment.id}
                     data={segment}
                     contentLocale={locale}
                     popupType={popupSegmentId === segment.id ? popupType : null}
@@ -169,16 +165,7 @@ export default class Transcript extends React.Component {
                     active={active}
                 />
             );
-        };
-
-        return (
-            <ReactList
-                itemRenderer={renderItem}
-                length={shownSegments.length}
-                type="variable"
-                itemSizeEstimator={() => 72}
-            />
-        );
+        });
     }
 
     render () {

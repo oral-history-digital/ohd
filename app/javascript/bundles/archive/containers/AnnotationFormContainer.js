@@ -6,9 +6,7 @@ import { closeArchivePopup } from '../actions/archivePopupActionCreators';
 import { getLocale, getTranslations } from '../selectors/archiveSelectors';
 
 const mapStateToProps = state => ({
-    currentLocale: getLocale(state),
-    projectId: state.archive.projectId,
-        projects: state.data.projects,
+    locale: getLocale(state),
     translations: getTranslations(state),
 });
 

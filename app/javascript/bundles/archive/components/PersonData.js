@@ -141,32 +141,28 @@ export default class PersonData extends React.Component {
     info() {
         let interviewee = getInterviewee(this.props);
         let editTitle = t(this.props, 'edit.contribution.edit');
-        if (interviewee) {
-            return (
-                <div>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <ContentField label={t(this.props, 'interviewee_name')} value={fullname(this.props, interviewee, true)} >
-                            <AuthorizedContent object={interviewee}>
-                                <ArchivePopupButton
-                                    title={editTitle}
-                                    buttonFaKey='pencil'
-                                    content={this.contributionForm()}
-                                />
-                            </AuthorizedContent>
-                        </ContentField>
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                        <ContentField
-                            label={t(this.props, 'interviewee_name')}
-                            value={this.props.project.fullname_on_landing_page ? fullname(this.props, interviewee) : this.props.interview.anonymous_title[this.props.locale]}
-                        />
-                    </AuthShowContainer>
-                    {this.personMetadataFields()}
-                </div>
-            );
-        } else {
-            return <Spinner />;
-        }
+        return (
+            <div>
+                <AuthShowContainer ifLoggedIn={true}>
+                    <ContentField label={t(this.props, 'interviewee_name')} value={fullname(this.props, interviewee, true)} >
+                        <AuthorizedContent object={interviewee}>
+                            <ArchivePopupButton
+                                title={editTitle}
+                                buttonFaKey='pencil'
+                                content={this.contributionForm()}
+                            />
+                        </AuthorizedContent>
+                    </ContentField>
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                    <ContentField
+                        label={t(this.props, 'interviewee_name')}
+                        value={this.props.project.fullname_on_landing_page ? fullname(this.props, interviewee) : this.props.interview.anonymous_title[this.props.locale]}
+                    />
+                </AuthShowContainer>
+                {this.personMetadataFields()}
+            </div>
+        );
     }
 
     render() {

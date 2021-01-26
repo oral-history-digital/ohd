@@ -73,8 +73,13 @@ export default class RegistryReferences extends React.Component {
                     usedRegistryEntryIds.push(registryEntry.id);
                 }
             }
+
+            return registryReferences.length > 0 && (
+                <ul className="RegistryReferences-list">
+                    {registryReferences}
+                </ul>
+            );
         }
-        return registryReferences;
     }
 
     addRegistryReference() {
@@ -111,9 +116,7 @@ export default class RegistryReferences extends React.Component {
     render() {
         return (
             <>
-                <ul className="RegistryReferences-list">
-                    {this.registryReferences()}
-                </ul>
+                {this.registryReferences()}
                 {this.addRegistryReference()}
             </>
         )

@@ -7,7 +7,7 @@ import { t } from 'lib/utils';
 
 export default class Annotation extends React.Component {
     edit() {
-        const tProps = { locale: this.props.currentLocale, translations: this.props.translations };
+        const tProps = { locale: this.props.locale, translations: this.props.translations };
 
         return (
             <div
@@ -18,7 +18,7 @@ export default class Annotation extends React.Component {
                     content: <AnnotationFormContainer
                                  annotation={this.props.annotation}
                                  segment={this.props.segment}
-                                 locale={this.props.locale}
+                                 contentLocale={this.props.contentLocale}
                              />
                 })}
             >
@@ -33,7 +33,7 @@ export default class Annotation extends React.Component {
     }
 
     delete() {
-        const tProps = { locale: this.props.currentLocale, translations: this.props.translations };
+        const tProps = { locale: this.props.locale, translations: this.props.translations };
 
         return <div
             className='flyout-sub-tabs-content-ico-link'
@@ -42,7 +42,7 @@ export default class Annotation extends React.Component {
                 title: t(tProps, 'edit.annotation.delete'),
                 content: (
                     <div>
-                        <p dangerouslySetInnerHTML={{__html: this.props.annotation.text[this.props.locale]}} />
+                        <p dangerouslySetInnerHTML={{__html: this.props.annotation.text[this.props.contentLocale]}} />
                         <div
                             className='any-button'
                             onClick={() => this.destroy()}
@@ -64,7 +64,7 @@ export default class Annotation extends React.Component {
             <div>
                 <p
                     className='content-trans-text-element-data'
-                    dangerouslySetInnerHTML={{__html: annotation.text[this.props.locale]}}
+                    dangerouslySetInnerHTML={{__html: annotation.text[this.props.contentLocale]}}
                 />
                 <AuthorizedContent object={annotation}>
                     <span className={'flyout-sub-tabs-content-ico'}>
@@ -80,9 +80,9 @@ export default class Annotation extends React.Component {
 Annotation.propTypes = {
     annotation: PropTypes.object.isRequired,
     segment: PropTypes.object.isRequired,
-    currentLocale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    contentLocale: PropTypes.string.isRequired,
     deleteData: PropTypes.func.isRequired,
     openArchivePopup: PropTypes.func.isRequired,
     closeArchivePopup: PropTypes.func.isRequired,

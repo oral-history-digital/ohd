@@ -9,19 +9,19 @@ import { t } from 'lib/utils';
 export default class Annotations extends React.Component {
     annotations() {
         return Object.values(this.props.segment.annotations)
-            .filter(annotation => annotation.text.hasOwnProperty(this.props.locale))
+            .filter(annotation => annotation.text.hasOwnProperty(this.props.contentLocale))
             .map(annotation => (
                 <AnnotationContainer
                     annotation={annotation}
                     segment={this.props.segment}
                     key={annotation.id}
-                    locale={this.props.locale}
+                    contentLocale={this.props.contentLocale}
                 />
             ));
     }
 
     addAnnotation() {
-        const tProps = { locale: this.props.currentLocale, translations: this.props.translations };
+        const tProps = { locale: this.props.locale, translations: this.props.translations };
 
         return (
             <AuthorizedContent object={{type: 'Annotation', action: 'create', interview_id: this.props.segment.interview_id}}>
@@ -32,7 +32,7 @@ export default class Annotations extends React.Component {
                         title: t(tProps, 'edit.annotation.new'),
                         content: <AnnotationFormContainer
                                      segment={this.props.segment}
-                                     locale={this.props.locale}
+                                     contentLocale={this.props.contentLocale}
                                  />
                     })}
                 >
@@ -54,8 +54,8 @@ export default class Annotations extends React.Component {
 
 Annotations.propTypes = {
     segment: PropTypes.object.isRequired,
+    contentLocale: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
-    currentLocale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     openArchivePopup: PropTypes.func.isRequired,
 };

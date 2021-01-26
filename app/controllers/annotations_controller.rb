@@ -71,6 +71,6 @@ class AnnotationsController < ApplicationController
   private
 
   def annotation_params
-    params.require(:annotation).permit(:text, :segment_id, :interview_id)
+    params.require(:annotation).permit(:text, :segment_id, :interview_id, :locale)
   end
 end
