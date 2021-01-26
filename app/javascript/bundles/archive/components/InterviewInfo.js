@@ -90,13 +90,6 @@ export default class InterviewInfo extends React.Component {
 
                     <AuthorizedContent object={this.props.interview}>
                         <SingleValueWithFormContainer
-                            obj={this.props.interview}
-                            collapse={true}
-                            elementType={'textarea'}
-                            multiLocale={true}
-                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations')}
-                        />
-                        <SingleValueWithFormContainer
                             elementType={'select'}
                             obj={this.props.interview}
                             attribute={'workflow_state'}
