@@ -4,6 +4,7 @@ import { Route, Switch } from 'react-router-dom';
 
 import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer, ActivateAccount }
     from 'modules/account';
+import { HomeContainer } from 'modules/startpage';
 import InterviewContainer from '../../containers/InterviewContainer';
 import EditInterviewContainer from '../../containers/EditInterviewContainer';
 import UploadsContainer from '../../containers/UploadsContainer';
@@ -19,7 +20,6 @@ import WrappedRolesContainer from '../../containers/WrappedRolesContainer';
 import WrappedPermissionsContainer from '../../containers/WrappedPermissionsContainer';
 import WrappedTaskTypesContainer from '../../containers/WrappedTaskTypesContainer';
 import WrappedRegistryReferenceTypesContainer from '../../containers/WrappedRegistryReferenceTypesContainer';
-import HomeContainer from '../../containers/HomeContainer';
 
 export const Routes = () => (
     <Switch>

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import Home from '../components/Home';
+import Home from './Home';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getIsCampscapesProject, getProjectTranslation, getShowFeaturedInterviews,
-    getShowStartPageVideo } from '../selectors/projectSelectors';
+    getShowStartPageVideo } from 'bundles/archive/selectors/projectSelectors';
 
 const mapStateToProps = state => ({
     isCampscapesProject: getIsCampscapesProject(state),

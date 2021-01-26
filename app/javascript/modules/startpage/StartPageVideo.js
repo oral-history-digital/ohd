@@ -1,7 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { getLocale } from '../selectors/archiveSelectors';
+import { getLocale } from 'bundles/archive/selectors/archiveSelectors';
 
 export default function StartPageVideo() {
     const locale = useSelector(getLocale);
