@@ -1,6 +1,6 @@
 import React from 'react';
-import Form from '../containers/form/Form';
-import { t, pathBase } from '../../../lib/utils';
+import Form from 'bundles/archive/containers/form/Form';
+import { t, pathBase } from 'lib/utils';
 
 export default class RegisterForm extends React.Component {
 

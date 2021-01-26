@@ -1,6 +1,7 @@
 import React from 'react';
-import RegisterFormContainer from '../containers/RegisterFormContainer';
-import { t } from '../../../lib/utils';
+
+import { t } from 'lib/utils';
+import RegisterFormContainer from './RegisterFormContainer';
 
 export default class Register extends React.Component {
 

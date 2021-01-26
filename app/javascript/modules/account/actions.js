@@ -1,27 +1,17 @@
-/* eslint-disable import/prefer-default-export */
+import Loader from 'lib/loader';
 
-import Loader from '../../../lib/loader'
-
-import { 
+import {
     LOGIN,
     LOGGED_IN,
     AUTH_ERROR,
-    SUBMIT_LOGIN,
-
     LOGOUT,
-    SUBMIT_LOGOUT,
-
     REGISTER,
     REGISTERED,
-    SUBMIT_REGISTER,
-
     CHANGE_PASSWORD,
     CHANGED_PASSWORD,
-    SUBMIT_CHANGE_PASSWORD,
-
     ORDER_NEW_PASSWORD,
     ORDERED_NEW_PASSWORD,
-} from '../constants/archiveConstants';
+} from './action-types';
 
 const login = () => ({
     type: LOGIN,
@@ -112,4 +102,3 @@ export function submitOrderNewPassword(url, params) {
         Loader.post(url, params, dispatch, orderedNewPassword, authError);
     }
 }
-

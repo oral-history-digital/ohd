@@ -1,10 +1,10 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { INDEX_NONE } from 'modules/flyout-tabs';
 
+import { INDEX_NONE } from 'modules/flyout-tabs';
+import { RedirectOnLogin } from 'modules/account';
 import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';
-import RedirectOnLogin from './RedirectOnLogin';
 
 export default function Home({
     isCampscapesProject,

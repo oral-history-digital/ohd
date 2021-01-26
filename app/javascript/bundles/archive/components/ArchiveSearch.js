@@ -408,7 +408,7 @@ ArchiveSearch.propTypes = {
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
-    account: PropTypes.object.isRequired,
+    account: PropTypes.object,
     facets: PropTypes.object.isRequired,
     resultsCount: PropTypes.number.isRequired,
     resultPagesCount: PropTypes.number.isRequired,

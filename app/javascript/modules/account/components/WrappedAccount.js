@@ -1,10 +1,11 @@
 import React from 'react';
-import TasksOnlyStatusEditableContainer from '../containers/TasksOnlyStatusEditableContainer';
-import UserRolesContainer from '../containers/UserRolesContainer';
-import AuthShowContainer from '../containers/AuthShowContainer';
-import Form from '../containers/form/Form';
-import { t } from '../../../lib/utils';
+
+import TasksOnlyStatusEditableContainer from 'bundles/archive/containers/TasksOnlyStatusEditableContainer';
+import UserRolesContainer from 'bundles/archive/containers/UserRolesContainer';
+import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
+import Form from 'bundles/archive/containers/form/Form';
 import { INDEX_ACCOUNT } from 'modules/flyout-tabs';
+import { t } from 'lib/utils';
 
 export default class WrappedAccount extends React.Component {
     constructor(props) {

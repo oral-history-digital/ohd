@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import InputContainer from '../containers/form/InputContainer';
-import { t, pathBase } from '../../../lib/utils';
+
+import InputContainer from 'bundles/archive/containers/form/InputContainer';
+import { t, pathBase } from 'lib/utils';
 
 export default class OrderNewPasswordForm extends React.Component {
 

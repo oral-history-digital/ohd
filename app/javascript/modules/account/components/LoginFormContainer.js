@@ -1,15 +1,14 @@
 import { connect } from 'react-redux';
 
-import LoginForm from '../components/LoginForm';
-import { submitLogin } from '../actions/accountActionCreators';
+import LoginForm from './LoginForm';
+import { submitLogin } from '../actions';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         projects: state.data.projects,
         translations: state.archive.translations,
-        projects: state.data.projects,
     }
 }
 

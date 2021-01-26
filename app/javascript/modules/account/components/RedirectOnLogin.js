@@ -1,12 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { usePrevious } from '../hooks/misc';
-import { getLocale, getProjectId } from '../selectors/archiveSelectors';
-import { getIsLoggedIn } from '../selectors/accountSelectors';
-
+import { usePrevious } from 'bundles/archive/hooks/misc';
+import { getLocale, getProjectId } from 'bundles/archive/selectors/archiveSelectors';
 import { pathBase } from 'lib/utils';
+import { getIsLoggedIn } from '../selectors';
 
 export default function RedirectOnLogin({
     path,
@@ -25,3 +25,7 @@ export default function RedirectOnLogin({
 
     return null;
 }
+
+RedirectOnLogin.propTypes = {
+    path: PropTypes.string.isRequired,
+};

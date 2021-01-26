@@ -1,9 +1,10 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import AuthShowContainer from '../containers/AuthShowContainer'
-import LoginFormContainer from '../containers/LoginFormContainer'
-import { t, pathBase } from '../../../lib/utils';
-import { isMobile } from '../../../lib/media-queries';
+
+import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer'
+import LoginFormContainer from './LoginFormContainer'
+import { t, pathBase } from 'lib/utils';
+import { isMobile } from 'lib/media-queries';
 
 export default class Account extends React.Component {
     static propTypes = {
