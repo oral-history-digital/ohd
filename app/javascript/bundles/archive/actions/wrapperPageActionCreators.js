@@ -1,5 +1,4 @@
-/* eslint-disable import/prefer-default-export */
-import Loader from '../../../lib/loader'
+import { Loader } from 'modules/api';
 
 import {
     RECEIVE_STATIC_CONTENT,
@@ -34,5 +33,3 @@ export function fetchStaticContent(url) {
         Loader.getJson(url, null, dispatch, receiveStaticContent);
     }
 }
-
-

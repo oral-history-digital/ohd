@@ -1,8 +1,6 @@
-/* eslint-disable import/prefer-default-export */
-
 import request from 'superagent';
-import Loader from '../../../lib/loader'
-import { setCookie } from '../../../lib/utils'
+import { setCookie } from 'lib/utils';
+import { Loader } from 'modules/api';
 
 import {
     SET_LOCALE,
