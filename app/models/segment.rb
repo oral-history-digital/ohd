@@ -73,7 +73,11 @@ class Segment < ApplicationRecord
       if (text_previously_changed?) && locale.length == 2
         segment.write_other_versions(text, locale)
       end
-      segment.update_attribute(:has_heading, true) if (mainheading || subheading) && !segment.has_heading
+      if (mainheading_previously_changed? || subheading_previously_changed?)
+        has_heading = !self.class.where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')").
+          where(segment_id: segment.id).empty?
+        segment.update_attribute(:has_heading, has_heading)
+      end
     end
   end
 
