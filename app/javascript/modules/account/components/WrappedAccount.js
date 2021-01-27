@@ -1,11 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import TasksOnlyStatusEditableContainer from 'bundles/archive/containers/TasksOnlyStatusEditableContainer';
 import UserRolesContainer from 'bundles/archive/containers/UserRolesContainer';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
-import Form from 'bundles/archive/containers/form/Form';
 import { INDEX_ACCOUNT } from 'modules/flyout-tabs';
 import { t } from 'lib/utils';
+import UserDetailsContainer from './UserDetailsContainer';
 
 export default class WrappedAccount extends React.Component {
     constructor(props) {
@@ -33,76 +34,6 @@ export default class WrappedAccount extends React.Component {
             >
                 <i className={`fa fa-angle-${this.state.showTasks[header] ? 'up' : 'down'}`}></i>
             </span>
-        )
-    }
-
-    details() {
-        if (this.props.account) {
-            return (
-                <div className='details box'>
-                    {['first_name', 'last_name', 'email'].map((detail, index) => {
-                            return (
-                                <p className='detail' key={`${detail}-detail`}>
-                                    <span className='name'>{t(this.props, `activerecord.attributes.account.${detail}`) + ': '}</span>
-                                    <span className='content'>{this.props.account[detail]}</span>
-                                </p>
-                            )
-                    })}
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
-
-    edit() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.account.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.account.edit'),
-                    content: this.form()
-                })}
-            >
-                <i className="fa fa-pencil"></i>
-            </div>
-        )
-    }
-
-    form() {
-        let _this = this;
-        return (
-            <Form
-                data={this.props.account}
-                scope='account'
-                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
-                submitText='submit'
-                elements={[
-                    {
-                        attribute: 'first_name',
-                        validate: function(v){return v.length > 1}
-                    },
-                    {
-                        attribute: 'last_name',
-                        validate: function(v){return v.length > 1}
-                    },
-                    {
-                        attribute: 'email',
-                        elementType: 'input',
-                        type: 'email',
-                        validate: function(v){return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)}
-                    },
-                ]}
-            />
-        );
-    }
-
-    buttons() {
-        return (
-            <div className={'buttons box'}>
-                {this.edit()}
-            </div>
         )
     }
 
@@ -146,26 +77,29 @@ export default class WrappedAccount extends React.Component {
     }
 
     render() {
+        const { account } = this.props;
+
         return (
             <div className='wrapper-content register'>
                 <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
                     <h1>{t(this.props, `activerecord.models.user_account.one`)}</h1>
                     <div className='user-registration boxes'>
-                        {this.details()}
-                        {this.buttons()}
+                        {
+                            account && <UserDetailsContainer />
+                        }
                     </div>
                     <div className='user-registration boxes'>
                         {this.roles()}
                         {/* own tasks (not done)*/}
-                        {this.tasks('other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state !== 'finished' && t.workflow_state !== 'cleared'))}
+                        {this.tasks('other', account && Object.values(account.tasks).filter(t => t.workflow_state !== 'finished' && t.workflow_state !== 'cleared'))}
                         {/* own supervised tasks (not cleared)*/}
-                        {this.tasks('supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state !== 'cleared'))}
+                        {this.tasks('supervised_other', account && Object.values(account.supervised_tasks).filter(t => t.workflow_state !== 'cleared'))}
                     </div>
                     <div className='user-registration boxes'>
                         {/* own tasks (done)*/}
-                        {this.tasks('closed_other', this.props.account && Object.values(this.props.account.tasks).filter(t => t.workflow_state === 'finished' || t.workflow_state === 'cleared'), false)}
+                        {this.tasks('closed_other', account && Object.values(account.tasks).filter(t => t.workflow_state === 'finished' || t.workflow_state === 'cleared'), false)}
                         {/* own supervised tasks (cleared)*/}
-                        {this.tasks('closed_supervised_other', this.props.account && Object.values(this.props.account.supervised_tasks).filter(t => t.workflow_state === 'cleared'))}
+                        {this.tasks('closed_supervised_other', account && Object.values(account.supervised_tasks).filter(t => t.workflow_state === 'cleared'))}
                     </div>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true}>
@@ -175,3 +109,10 @@ export default class WrappedAccount extends React.Component {
         );
     }
 }
+
+WrappedAccount.propTypes = {
+    account: PropTypes.object,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    setFlyoutTabsIndex: PropTypes.func.isRequired,
+};
