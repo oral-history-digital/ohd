@@ -8,14 +8,14 @@ export default function UserDetailsForm({
     locale,
     projects,
     projectId,
-    closeArchivePopup,
+    onSubmit,
     submitData,
 }) {
     return (
         <Form
             data={account}
             scope="account"
-            onSubmit={params => {submitData({ locale, projects, projectId }, params); closeArchivePopup();}}
+            onSubmit={params => {submitData({ locale, projects, projectId }, params); onSubmit();}}
             submitText='submit'
             elements={[
                 {
@@ -42,6 +42,6 @@ UserDetailsForm.propTypes = {
     projects: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     account: PropTypes.object.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
 };

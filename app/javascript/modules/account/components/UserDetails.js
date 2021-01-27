@@ -3,10 +3,10 @@ import PropTypes from 'prop-types';
 
 import { useI18n } from 'bundles/archive/hooks/i18n';
 import UserDetailsFormContainer from './UserDetailsFormContainer';
+import { Modal } from 'modules/ui';
 
 export default function UserDetails({
     account,
-    openArchivePopup,
 }) {
     const { t } = useI18n();
 
@@ -23,16 +23,14 @@ export default function UserDetails({
                 })}
             </div>
             <div className="buttons box">
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
+                <Modal
                     title={t('edit.account.edit')}
-                    onClick={() => openArchivePopup({
-                        title: t('edit.account.edit'),
-                        content: <UserDetailsFormContainer />
-                    })}
+                    trigger={<i className="fa fa-pencil"/>}
                 >
-                    <i className="fa fa-pencil"></i>
-                </div>
+                    {closeModal => (
+                        <UserDetailsFormContainer onSubmit={closeModal} />
+                    )}
+                </Modal>
             </div>
         </>
     )
@@ -40,5 +38,4 @@ export default function UserDetails({
 
 UserDetails.propTypes = {
     account: PropTypes.object.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
 };
