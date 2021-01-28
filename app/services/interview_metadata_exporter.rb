@@ -8,6 +8,10 @@ class InterviewMetadataExporter
     end
   end
 
+  def self.pad(number)
+    number.to_s.rjust(10, '0')
+  end
+
   def initialize(interview)
     @interview = interview
   end
@@ -27,8 +31,7 @@ class InterviewMetadataExporter
   end
 
   def build_header(xml)
-    #url = "#{Rails.application.routes.url_helpers.interview_url(id: @interview.id, locale: 'de', host: @.archive_domain)}.xml"
-    url = "http://www.example.com/#{@interview.archive_id}"
+    url = "#{Rails.application.routes.url_helpers.cmdi_metadata_interview_url(id: @interview.archive_id, locale: 'de', host: @interview.project.archive_domain)}.xml"
 
     xml.Header {
       xml.MdCreator 'Nokogiri'
@@ -40,18 +43,24 @@ class InterviewMetadataExporter
   end
 
   def build_resources(xml)
+    mimetype = @interview.media_type == 'video' ? 'video/mp4' : 'audio/mp3'
+
     xml.Resources {
       xml.ResourceProxyList {
         @interview.tapes.each_with_index do |tape, index|
-          id = (index + 1).to_s.rjust(10, '0')
-          # url = "#{Rails.application.routes.url_helpers.metadata_interview_url(id: interview.archive_id, locale: 'de', host: @project.archive_domain)}.xml"
+          id = InterviewMetadataExporter.pad(tape.id)
           url = "http://www.example.com/#{tape.media_id}"
 
           xml.ResourceProxy('id' => "r_#{id}") {
-            xml.ResourceType('Resource', 'mimetype' => 'video/mp4???')
+            xml.ResourceType('Resource', 'mimetype' => mimetype)
             xml.ResourceRef url
           }
         end
+
+        xml.ResourceProxy('id' => "m_0000000001") {
+          xml.ResourceType('Resource', 'mimetype' => 'application/pdf')
+          xml.ResourceRef 'http://www.example.com/transcript.pdf'
+        }
       }
       xml.JournalFileProxyList
       xml.ResourceRelationList
@@ -90,7 +99,7 @@ class InterviewMetadataExporter
 
   def build_subject_languages(xml)
     lang = @interview.language.code
-    language_code = CollectionMetadataExporter.language_code(lang)
+    language_code = InterviewMetadataExporter.language_code(lang)
     language_name = ISO_639.find_by_code(lang).english_name
 
     xml.SubjectLanguages {
@@ -107,6 +116,27 @@ class InterviewMetadataExporter
   end
 
   def build_media_session_actors(xml)
+    xml.send('media-session-actors') do
+      # Interviewees
+      @interview.interviewees.each_with_index do |interviewee|
+        id = InterviewMetadataExporter.pad(interviewee.id)
+        xml.send('media-session-actor', 'id' => "s_#{id}") do
+          xml.Role 'Interviewee'
+          xml.Name 'anonymized'
+          xml.Code '?'
+        end
+      end
+
+      # Interviewers
+      @interview.interviewers.each_with_index do |interviewer|
+        id = InterviewMetadataExporter.pad(interviewer.id)
+        xml.send('media-session-actor', 'id' => "s_#{id}") do
+          xml.Role 'Interviewer'
+          xml.Name 'anonymized'
+          xml.Code '?'
+        end
+      end
+    end
   end
 
   def build_content(xml)
@@ -129,11 +159,34 @@ class InterviewMetadataExporter
   end
 
   def build_media_annotation_bundles(xml)
+    @interview.tapes.each_with_index do |tape, index|
+      id = InterviewMetadataExporter.pad(tape.id)
+
+      xml.send('media-annotation-bundle') do
+        xml.send('media-file', 'ref' => "r_#{id}", 'actor-ref' => all_actors_as_string) do
+          xml.Type @interview.media_type
+        end
+      end
+    end
   end
 
   def build_written_resource(xml)
+    xml.WrittenResource('ref' => 'm_0000000001', 'actor-ref' => all_actors_as_string) do
+      xml.CharacterEncoding 'UTF-8'
+      xml.AnnotationType {
+        xml.AnnotationType 'Orthography'
+      }
+      xml.AnnotationFormat {
+        xml.AnnotationFormat 'application/pdf'
+      }
+    end
   end
 
+  def all_actors_as_string
+    ids = @interview.interviewees.pluck(:id) + @interview.interviewers.pluck(:id)
+    strings = ids.map { |id| "s_#{InterviewMetadataExporter.pad(id)}" }
+    strings.join(' ')
+  end
 
   def xml
     @builder.to_xml
