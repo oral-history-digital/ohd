@@ -76,6 +76,7 @@ Rails.application.routes.draw do
         member do
           get :doi_contents
           get :metadata
+          get 'cmdi-metadata', action: :cmdi_metadata
           get :headings
           get :speaker_designations
           #get :references
