@@ -1,7 +1,7 @@
 class InterviewsController < ApplicationController
   skip_before_action :authenticate_user_account!, only: [:show, :random_featured]
-  skip_after_action :verify_authorized, only: [:show, :metadata, :random_featured]
-  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :random_featured]
+  skip_after_action :verify_authorized, only: [:show, :metadata, :cmdi_metadata, :random_featured]
+  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :cmdi_metadata, :random_featured]
 
   def new
     authorize Interview
@@ -169,6 +169,17 @@ class InterviewsController < ApplicationController
     @locale = params[:locale]
     respond_to do |format|
       format.xml
+    end
+  end
+
+  def cmdi_metadata
+    interview = Interview.find_by_archive_id(params[:id])
+    respond_to do |format|
+      format.xml do
+        exporter = InterviewMetadataExporter.new(interview)
+        exporter.build
+        render xml: exporter.xml
+      end
     end
   end
 
