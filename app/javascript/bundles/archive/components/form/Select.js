@@ -45,19 +45,11 @@ export default class Select extends React.Component {
 
     selectTextAndValueFunction(value, props) {
         if (typeof value === 'string') {
-            if (props.optionsScope) {
-                return function(value, props) {
-                    return {
-                        text: t(props, `${props.optionsScope}.${value}`),
-                        value: value
-                    }
-                }
-            } else {
-                return function(value, props) {
-                    return {
-                        text: t(props, `${props.scope}.${props.attribute}.${value}`),
-                        value: value
-                    }
+            let translationPrefix = props.optionsScope || `${props.scope}.${props.attribute}`;
+            return function(value, props) {
+                return {
+                    text: props.doNotTranslate ? value : t(props, `${translationPrefix}.${value}`),
+                    value: value
                 }
             }
         } else {
