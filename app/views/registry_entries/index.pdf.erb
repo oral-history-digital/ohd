@@ -1,5 +1,5 @@
-<% 
-  title = current_project.identifier == 'mog' ? I18n.t('registry_mog', locale: @locale) : I18n.t('registry', locale: @locale)
+<%
+  title = I18n.t('registry', locale: @locale)
   last_entry = nil
 %>
 
@@ -59,13 +59,12 @@
       \section*{<%= registry_entry.descriptor(@locale)[0].upcase %>}
       \addcontentsline{toc}{section}{<%= registry_entry.descriptor(@locale)[0].upcase %>}
     <% end %>
-  
+
     <%= @locale.to_s == 'el' ? 'ΠΟ' : 'BB' %> \textbf{<%= latex_escape(registry_entry.descriptor(@locale)) %>}\\
     <% unless registry_entry.registry_names.first.notes(@locale).blank? %>
       <%= @locale.to_s == 'el' ? 'Σε' : 'SH' %> <%= latex_escape(registry_entry.registry_names.first.notes(@locale)) %>\\
     <% end %>
-  
+
     <% last_entry = registry_entry %>
   <% end %>
 <% end %>
-

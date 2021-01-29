@@ -177,10 +177,8 @@ el:
   interviewee_name: Όνομα
   periods: Χρονικές περίοδοι
   keywords: Λήμματα ευρετηρίου
-  keywords_mog: Λέξεις-κλειδιά
   registry: Ευρετήριο
   places: Τόποι
-  registry_mog: Θησαυρός
   annotations: σημειώσεις
   reset: επαναφορά
   set_all: Επιλογή όλων των στοιχείων
