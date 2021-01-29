@@ -9,7 +9,7 @@ import { t, admin, pathBase } from '../../../../lib/utils';
 function RegistryEntriesTabPanel(props) {
     return (
         <Fragment>
-            <div className='flyout-tab-title'>{t(props, (props.projectId === 'mog') ? 'registry_mog' : 'registry')}</div>
+            <div className='flyout-tab-title'>{t(props, 'registry')}</div>
             <div className='flyout-sub-tabs-container'>
                 <RegistryEntrySearchFormContainer />
                 <p>
