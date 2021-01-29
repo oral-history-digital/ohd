@@ -29,21 +29,20 @@ function RegistryEntriesTabPanel(props) {
                 }
                 {
                     (props.projectId === 'mog') ?
-                        props.locales.map((locale) => (
-                            <div key={locale}>
+                            <div key={props.locale}>
                                 <p>
-                                    <a href={`/alfa-${locale}.pdf`}>
+                                    <a href={`/alfa-${props.locale}.pdf`}>
                                         <i
                                             className="fa fa-download flyout-content-ico"
-                                            title={t(props, 'download_registry_entries', { format: 'pdf' , locale: locale })}
+                                            title={t(props, 'download_registry_entries', { format: 'pdf' , locale: props.locale })}
                                         />
                                         <span>
-                                            {` ${t(props, 'download_registry_entries', { format: 'pdf', locale: locale })}`}
+                                            {` ${t(props, 'download_registry_entries', { format: 'pdf', locale: props.locale })}`}
                                         </span>
                                     </a>
                                 </p>
                             </div>
-                        )) :
+                        :
                         null
                 }
             </div>
