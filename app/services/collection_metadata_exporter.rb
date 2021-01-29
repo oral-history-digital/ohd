@@ -8,6 +8,10 @@ class CollectionMetadataExporter
     end
   end
 
+  def self.pad(number)
+    number.to_s.rjust(10, '0')
+  end
+
   def initialize(project)
     @project = project
   end
@@ -42,7 +46,7 @@ class CollectionMetadataExporter
     xml.Resources {
       xml.ResourceProxyList {
         @project.interviews.each_with_index do |interview, index|
-          id = (index + 1).to_s.rjust(10, '0')
+          id = CollectionMetadataExporter.pad(index + 1)
           url = "#{Rails.application.routes.url_helpers.metadata_interview_url(id: interview.archive_id, locale: 'de', host: @project.archive_domain)}.xml"
 
           xml.ResourceProxy('id' => "c_#{id}") {
