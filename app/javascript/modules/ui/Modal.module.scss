@@ -1,0 +1,56 @@
+@import "../../bundles/archive/stylesheets/variables";
+@import "../../bundles/archive/stylesheets/mixins";
+
+.trigger {
+  background-color: transparent;
+  border: 1px solid lightgray;
+  outline: none;
+  padding: 0 0.5rem;
+}
+
+/* This should not be in here */
+.trigger > i {
+  color: var(--editorial-color) !important;
+}
+
+.dialog {
+  margin: 2vh auto;
+  padding: 1.5rem;
+  position: relative;
+  width: 96vw;
+
+  @include screen-m {
+    margin: 10vh auto;
+    padding: 1.5rem;
+    width: 70vw;
+  }
+
+  @include screen-xl {
+    padding: 1.5rem;
+    width: 60vw;
+  }
+
+}
+
+.heading {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.close {
+  background-color: transparent;
+  border: 1px solid lightgray;
+  color: gray;
+  font-size: 1.5rem;
+  padding: 0 0.5rem;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+}
+
+/* Experimental */
+.trigger:focus,
+.close:focus {
+  outline: none;
+  box-shadow: 0 0 0 2px $focus-color;
+}

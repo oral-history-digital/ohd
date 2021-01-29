@@ -19,6 +19,11 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "~slick-carousel/slick/slick.scss";
 @import "~slick-carousel/slick/slick-theme.scss";
 
+// React-ui
+[data-reach-dialog-overlay] {
+  z-index: $dialog-overlay-z-index;
+}
+
 /* Partials */
 @import "dev";
 @import "fonts";
