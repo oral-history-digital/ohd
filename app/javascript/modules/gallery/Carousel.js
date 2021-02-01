@@ -1,6 +1,7 @@
 import React from 'react';
 import Slider from 'react-slick';
-import PhotoContainer from '../containers/PhotoContainer';
+
+import PhotoContainer from './PhotoContainer';
 import { admin } from 'lib/utils';
 
 export default class Carousel extends React.Component {

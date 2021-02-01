@@ -1,6 +1,7 @@
 import React from 'react';
-import PhotoFormContainer from '../containers/PhotoFormContainer';
-import { t, admin } from '../../../lib/utils';
+
+import PhotoFormContainer from './PhotoFormContainer';
+import { t, admin } from 'lib/utils';
 
 export default class Photo extends React.Component {
 
@@ -51,7 +52,7 @@ export default class Photo extends React.Component {
                         {photoExplanation}
                     </p>
                     <p>
-                        {this.props.data.captions[this.props.locale] || this.props.data.captions['de']} 
+                        {this.props.data.captions[this.props.locale] || this.props.data.captions['de']}
                     </p>
                 </div>
             )
@@ -62,9 +63,9 @@ export default class Photo extends React.Component {
 
     render() {
         return (
-            <div 
+            <div
                 key={this.keyPrefix() + this.props.data.id}
-                className={this.keyPrefix() + 'container'} 
+                className={this.keyPrefix() + 'container'}
             >
                 {this.delete()}
                 <img src={ this.props.data.src } />

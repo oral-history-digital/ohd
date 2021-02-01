@@ -1,25 +1,11 @@
 import React from 'react';
-import CarouselContainer from '../containers/CarouselContainer';
-import PhotoFormContainer from '../containers/PhotoFormContainer';
-import { t, admin } from '../../../lib/utils';
+import CarouselContainer from './CarouselContainer';
+import PhotoFormContainer from './PhotoFormContainer';
+import { t, admin } from 'lib/utils';
 
 export default class Gallery extends React.Component {
 
     thumbnailSrc(photo) {
-        //switch(this.props.project) {
-           //case 'mog': {
-               //return '/photos/thumb/' + photo.src;
-               //break;
-           //}
-           //case 'zwar': {
-                //let p = photo.src.split('.')
-                //return 'https://medien.cedis.fu-berlin.de/zwar/gallery/' + p[0] + '_thumb.' + p[1];
-                //break;
-           //}
-           //default: {
-               //return null;
-           //}
-        //}
         return photo.thumb_src;
     }
 
@@ -36,7 +22,7 @@ export default class Gallery extends React.Component {
                     n+=1;
                 }
             }
-        } 
+        }
         if (photos.length > 0) {
             return (
                 <div className={'img-gallery'}>
@@ -72,8 +58,8 @@ export default class Gallery extends React.Component {
                     title={t(this.props, 'edit.photo.new')}
                     onClick={() => this.props.openArchivePopup({
                         title: t(this.props, 'edit.photo.new'),
-                        content: <PhotoFormContainer 
-                            interview={this.props.interview} 
+                        content: <PhotoFormContainer
+                            interview={this.props.interview}
                             withUpload={true}
                         />
                     })}
@@ -85,7 +71,7 @@ export default class Gallery extends React.Component {
     }
 
     render() {
-        let explanation = this.props.interview && this.props.interview.photos && Object.keys(this.props.interview.photos).length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation' 
+        let explanation = this.props.interview && this.props.interview.photos && Object.keys(this.props.interview.photos).length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation'
         return (
             <div>
                 <div className='explanation'>{t(this.props, explanation)}</div>
@@ -93,5 +79,5 @@ export default class Gallery extends React.Component {
                 {this.addPhoto()}
             </div>
         );
-    } 
+    }
 }
