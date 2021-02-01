@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Contribution from '../components/Contribution';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData, submitData } from '../actions/dataActionCreators';
 import { getLocale, getArchiveId, getProjectId } from '../selectors/archiveSelectors';
 

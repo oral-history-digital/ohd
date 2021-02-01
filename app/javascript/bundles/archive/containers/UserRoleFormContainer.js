@@ -2,10 +2,10 @@ import { connect } from 'react-redux';
 
 import UserRoleForm from '../components/UserRoleForm';
 import { submitData, fetchData } from '../actions/dataActionCreators';
-import { closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         projects: state.data.projects,

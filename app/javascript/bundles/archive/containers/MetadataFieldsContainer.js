@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
 import DataList from '../components/DataList';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         projectId: state.archive.projectId,
@@ -17,7 +17,7 @@ const mapStateToProps = (state) => {
         joinDataStatus: state.data.statuses.registry_reference_types,
         joinDataScope: 'registry_reference_types',
         detailsAttributes: [
-            "name", 
+            "name",
             "use_as_facet",
             "use_in_results_table",
             "use_in_details_view",
@@ -30,7 +30,7 @@ const mapStateToProps = (state) => {
         formElements: [
             {
                 attribute: 'name',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'label',
@@ -44,7 +44,7 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'input',
                 attribute: 'facet_order',
-                validate: function(v){return /\d+\.*\d*/.test(v)} 
+                validate: function(v){return /\d+\.*\d*/.test(v)}
             },
             {
                 elementType: 'input',
@@ -59,7 +59,7 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'input',
                 attribute: 'list_columns_order',
-                validate: function(v){return /\d+\.*\d*/.test(v)} 
+                validate: function(v){return /\d+\.*\d*/.test(v)}
             },
             {
                 elementType: 'input',
@@ -114,4 +114,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);
-

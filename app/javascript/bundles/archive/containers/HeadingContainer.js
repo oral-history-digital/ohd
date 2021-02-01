@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Heading from '../components/Heading';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import { handleSegmentClick, getCurrentTape, getTranscriptTime } from 'modules/interview';
 
 const mapStateToProps = state => ({

@@ -2,11 +2,11 @@ import { connect } from 'react-redux';
 
 import DataList from '../components/DataList';
 import CommentsContainer from '../containers/CommentsContainer';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,
@@ -20,9 +20,9 @@ const mapStateToProps = (state) => {
         scope: 'task',
         optionsScope: 'workflow_states',
         detailsAttributes: [
-            'archive_id', 
-            'interviewee', 
-            'name', 
+            'archive_id',
+            'interviewee',
+            'name',
             'assigned_to_user_account_at',
             'assigned_to_supervisor_at',
             'started_at',
@@ -54,4 +54,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);
-

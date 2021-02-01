@@ -8,7 +8,7 @@ import {
     setArchiveIds
 } from '../actions/archiveActionCreators';
 import { deleteData, submitData } from '../actions/dataActionCreators';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {
     return {

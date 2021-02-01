@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import InterviewContributors from '../components/InterviewContributors';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import { submitData } from '../actions/dataActionCreators';
 import { getInterview  } from 'lib/utils';
 

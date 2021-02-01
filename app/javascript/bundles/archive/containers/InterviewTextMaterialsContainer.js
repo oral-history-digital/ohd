@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import InterviewTextMaterials from '../components/InterviewTextMaterials';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData } from '../actions/dataActionCreators';
 import { getCookie } from '../../../lib/utils';
 

@@ -2,12 +2,12 @@ import { connect } from 'react-redux';
 
 import RegistryReferenceForm from '../components/RegistryReferenceForm';
 import { submitData, fetchData } from '../actions/dataActionCreators';
-import { closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { closeArchivePopup } from 'modules/ui';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         locales: (project && project.available_locales) || state.archive.locales,
         projectId: state.archive.projectId,
         projects: state.data.projects,

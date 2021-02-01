@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import BiographicalEntries from '../components/BiographicalEntries';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
@@ -18,4 +18,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(BiographicalEntries);
-

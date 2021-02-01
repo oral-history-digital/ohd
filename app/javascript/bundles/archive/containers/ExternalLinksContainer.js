@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
 import DataList from '../components/DataList';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,
@@ -20,12 +20,12 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'name',
                 multiLocale: true,
-                // validate: function(v){return v.length > 1} 
+                // validate: function(v){return v.length > 1}
             },
             {
                 attribute: 'url',
                 multiLocale: true,
-                //validate: function(v){return v.length > 1} 
+                //validate: function(v){return v.length > 1}
             },
         ]
     }
@@ -40,4 +40,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);
-

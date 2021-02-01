@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import WrappedDataList from '../components/WrappedDataList';
 import TaskTypePermissionsContainer from '../containers/TaskTypePermissionsContainer';
 import { setQueryParams } from '../actions/searchActionCreators';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 import { getCookie, getProject } from '../../../lib/utils';
 
@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'abbreviation',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v.length > 1}
             },
             {
                 elementType: 'input',

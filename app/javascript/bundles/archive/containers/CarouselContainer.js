@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Carousel from '../components/Carousel';
 import { getInterview } from '../../../lib/utils';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData } from '../actions/dataActionCreators';
 import { getCookie, getProject } from '../../../lib/utils';
 
@@ -25,4 +25,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Carousel);
-

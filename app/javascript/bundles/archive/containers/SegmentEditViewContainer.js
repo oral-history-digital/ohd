@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import SegmentEditView from '../components/SegmentEditView';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import { setTapeAndTime } from 'modules/interview';
 import { getCurrentInterview } from '../selectors/dataSelectors';
 

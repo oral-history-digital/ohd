@@ -1,5 +1,6 @@
 import React from 'react';
-import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
+
+import ErrorBoundaryContainer from 'bundles/archive/containers/ErrorBoundaryContainer';
 
 export default class ArchivePopup extends React.Component {
 

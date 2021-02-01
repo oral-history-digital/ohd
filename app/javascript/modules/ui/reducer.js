@@ -1,7 +1,4 @@
-import { 
-    OPEN_POPUP,
-    CLOSE_POPUP,
-} from '../constants/archiveConstants';
+import { OPEN_POPUP, CLOSE_POPUP } from './action-types';
 
 const initialState = {
     show: false,

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import UserContent from '../components/UserContent';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import { setArchiveId } from '../actions/archiveActionCreators';
 import { searchInArchive } from '../actions/searchActionCreators';
 import { setTapeAndTime } from 'modules/interview';

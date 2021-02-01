@@ -4,7 +4,7 @@ import WrappedDataList from '../components/WrappedDataList';
 import {
     setQueryParams,
 } from '../actions/searchActionCreators';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 import { getCookie, getProject } from '../../../lib/utils';
 

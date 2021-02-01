@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 import PopupMenu from './PopupMenu';
 import AuthorizedContent from './AuthorizedContent';
-import ArchivePopupButton from './ArchivePopupButton';
+import { ArchivePopupButton } from 'modules/ui';
 
 import TaskPreviewContainer from '../containers/TaskPreviewContainer';
 
@@ -16,7 +16,7 @@ export default class Data extends React.Component {
             return <TaskPreviewContainer data={this.props.data} scope={this.props.scope} />
         } else if (this.props.data.archive_domain) {
             return (
-                <Link 
+                <Link
                     onClick={() => this.props.setProjectId(this.props.data.identifier)}
                     to={`/${this.props.data.identifier}/${this.props.locale}/`}
                 >

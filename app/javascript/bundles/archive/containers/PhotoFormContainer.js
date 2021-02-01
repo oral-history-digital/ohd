@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
 import PhotoForm from '../components/PhotoForm';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { submitData, fetchData, deleteData } from '../actions/dataActionCreators';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,

@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
 import DataList from '../components/DataList';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,
@@ -36,7 +36,7 @@ const mapStateToProps = (state) => {
                 elementType: 'select',
                 values: state.data.task_types,
                 withEmpty: true,
-                validate: function(v){return /\d+/.test(v)} 
+                validate: function(v){return /\d+/.test(v)}
             },
             {
                 attribute: 'archive_id',
@@ -47,7 +47,7 @@ const mapStateToProps = (state) => {
                 //elementType: 'select',
                 //values: state.data.interviews,
                 //withEmpty: true,
-                //validate: function(v){return /^\d+$/.test(v)} 
+                //validate: function(v){return /^\d+$/.test(v)}
             //},
             {
                 attribute: 'workflow_state',
@@ -68,4 +68,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);
-

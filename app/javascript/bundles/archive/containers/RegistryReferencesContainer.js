@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
 import RegistryReferences from '../components/RegistryReferences';
-import { openArchivePopup  } from '../actions/archivePopupActionCreators';
+import { openArchivePopup  } from 'modules/ui';
 import { fetchData } from '../actions/dataActionCreators';
 import { getInterview, getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         projectId: state.archive.projectId,
         projects: state.data.projects,
         project: getProject(state),

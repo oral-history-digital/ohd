@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
 import DataList from '../components/DataList';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         //
         scope: 'task_type',
         detailsAttributes: [
-            "key", 
+            "key",
             "project_id",
         ],
         formElements: [
@@ -26,7 +26,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'abbreviation',
-                validate: function(v){return v.length > 1} 
+                validate: function(v){return v.length > 1}
             },
             {
                 elementType: 'input',
@@ -52,4 +52,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);
-

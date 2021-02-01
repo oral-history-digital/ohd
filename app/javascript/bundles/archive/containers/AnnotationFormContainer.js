@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import AnnotationForm from '../components/AnnotationForm';
 import { submitData } from '../actions/dataActionCreators';
-import { closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { closeArchivePopup } from 'modules/ui';
 import { getLocale, getTranslations } from '../selectors/archiveSelectors';
 
 const mapStateToProps = state => ({

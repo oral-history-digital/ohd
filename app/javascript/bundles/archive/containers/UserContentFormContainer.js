@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import UserContentForm from '../components/UserContentForm';
 import { submitData } from '../actions/dataActionCreators';
-import { closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { closeArchivePopup } from 'modules/ui';
 
 import { getProject } from 'lib/utils';
 import { getCurrentTape } from 'modules/interview';
