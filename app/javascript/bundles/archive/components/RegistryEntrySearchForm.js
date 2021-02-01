@@ -1,7 +1,7 @@
 import React from 'react';
 import { t, pathBase } from '../../../lib/utils';
 import { PixelLoader } from 'modules/spinners';
-import { isMobile } from '../../../lib/media-queries';
+import { isMobile } from 'modules/responsive';
 
 export default class RegistryEntrySearchForm extends React.Component {
     constructor(props) {

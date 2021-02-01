@@ -1,16 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import ActionCable from 'actioncable';
 import { Helmet } from 'react-helmet';
 
-import ResizeWatcherContainer from '../containers/ResizeWatcherContainer';
 import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import BurgerButton from './layout/BurgerButton';
 import MessagesContainer from '../containers/layout/MessagesContainer';
 import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
 import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
+import { ResizeWatcherContainer } from 'modules/responsive';
 import { FlyoutTabs } from 'modules/flyout-tabs';
 
 export default class WrapperPage extends React.Component {
