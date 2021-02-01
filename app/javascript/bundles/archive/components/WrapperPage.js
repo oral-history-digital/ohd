@@ -3,14 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
-import BurgerButton from './layout/BurgerButton';
-import MessagesContainer from '../containers/layout/MessagesContainer';
-import SiteHeader from './layout/SiteHeader';
-import SiteFooter from './layout/SiteFooter';
 import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
 import { ArchivePopupContainer } from 'modules/ui';
 import { ResizeWatcherContainer } from 'modules/responsive';
 import { FlyoutTabs } from 'modules/flyout-tabs';
+import { SiteHeader, SiteFooter, MessagesContainer, BurgerButton } from 'modules/layout';
 
 export default class WrapperPage extends React.Component {
 
