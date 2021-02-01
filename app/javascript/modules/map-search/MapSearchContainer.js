@@ -2,11 +2,11 @@ import { connect } from 'react-redux';
 
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getIsLoggedIn } from 'modules/account';
-import MapSearch from '../components/MapSearch';
-import { searchInMap } from '../actions/searchActionCreators';
-import { getLocale, getProjectId } from '../selectors/archiveSelectors';
-import { getFoundMarkers, getIsMapSearching, getMapQuery, getMarkersFetched } from '../selectors/searchSelectors';
-import { getProjects } from '../selectors/dataSelectors';
+import { searchInMap } from 'bundles/archive/actions/searchActionCreators';
+import { getLocale, getProjectId } from 'bundles/archive/selectors/archiveSelectors';
+import { getFoundMarkers, getIsMapSearching, getMapQuery, getMarkersFetched } from 'bundles/archive/selectors/searchSelectors';
+import { getProjects } from 'bundles/archive/selectors/dataSelectors';
+import MapSearch from './MapSearch';
 
 const mapStateToProps = state => ({
     markersFetched: getMarkersFetched(state),

@@ -13,7 +13,7 @@ import WrappedLanguagesContainer from '../../containers/WrappedLanguagesContaine
 import WrappedCollectionsContainer from '../../containers/WrappedCollectionsContainer';
 import RegistryEntriesTreeContainer from '../../containers/RegistryEntriesTreeContainer';
 import ArchiveSearchContainer from '../../containers/ArchiveSearchContainer';
-import MapSearchContainer from '../../containers/MapSearchContainer';
+import { MapSearchContainer } from 'modules/map-search';
 import WrappedProjectsContainer from '../../containers/WrappedProjectsContainer';
 import UserRegistrationsContainer from '../../containers/UserRegistrationsContainer';
 import WrappedRolesContainer from '../../containers/WrappedRolesContainer';
