@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import { t } from '../../../lib/utils';
 
 export default class RegistryNameForm extends React.Component {
@@ -8,7 +8,7 @@ export default class RegistryNameForm extends React.Component {
         let defaultNameType = Object.values(this.props.registryNameTypes).find(r => r.code === 'spelling')
         let _this = this;
         return (
-            <Form 
+            <Form
                 scope='registry_name'
                 onSubmit={function(params){_this.props.submitData(_this.props, params);}}
                 onSubmitCallback={_this.props.onSubmitCallback}
@@ -35,7 +35,7 @@ export default class RegistryNameForm extends React.Component {
                         attribute: 'registry_name_type_id',
                         value: (_this.props.registryName && _this.props.registryName.registry_name_type_id) || defaultNameType.id,
                         values: this.props.registryNameTypes && Object.values(this.props.registryNameTypes),
-                        validate: function(v){return /^\d+$/.test(v)} 
+                        validate: function(v){return /^\d+$/.test(v)}
                     },
                 ]}
             />

@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import { t } from '../../../lib/utils';
 import { Link } from 'react-router-dom';
 

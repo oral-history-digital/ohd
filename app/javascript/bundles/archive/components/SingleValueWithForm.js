@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import ContentField from './ContentField';
 import { t, admin, underscore, humanReadable } from '../../../lib/utils';
 

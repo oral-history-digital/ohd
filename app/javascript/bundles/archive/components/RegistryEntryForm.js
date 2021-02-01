@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import RegistryNameFormContainer from '../containers/RegistryNameFormContainer';
 import RegistryNameContainer from '../containers/RegistryNameContainer';
 import { t } from 'lib/utils';

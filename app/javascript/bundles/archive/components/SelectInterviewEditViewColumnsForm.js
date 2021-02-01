@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import SingleTextInputFormContainer from '../containers/SingleTextInputFormContainer';
 import { t, admin, permittedInterviewEditColumns } from '../../../lib/utils';
 

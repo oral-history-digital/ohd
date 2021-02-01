@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import { t } from '../../../lib/utils';
 
 export default class RegistryReferenceForm extends React.Component {
@@ -21,7 +21,7 @@ export default class RegistryReferenceForm extends React.Component {
             this.props.fetchData(this.props, 'registry_reference_types');
         }
     }
-    
+
     elements() {
         let _this = this;
         let elements = [
@@ -70,7 +70,7 @@ export default class RegistryReferenceForm extends React.Component {
         let _this = this;
         return (
             <div>
-                <Form 
+                <Form
                     scope='registry_reference'
                     data={this.props.registryReference}
                     values={!this.props.registryReference && {

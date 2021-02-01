@@ -1,12 +1,13 @@
 import React from 'react';
-import ElementContainer from '../../containers/form/ElementContainer';
+
+import ElementContainer from './ElementContainer';
 
 export default class Textarea extends React.Component {
 
     // props are:
     //   @scope
     //   @attribute = attribute name
-    //   @type 
+    //   @type
     //   @value = default value
     //   @validate = function
     //   @handleChange = function
@@ -18,7 +19,7 @@ export default class Textarea extends React.Component {
         this.state = {
             valid: !this.props.validate,
         };
-                
+
         this.handleChange = this.handleChange.bind(this);
     }
 
@@ -60,7 +61,7 @@ export default class Textarea extends React.Component {
                 individualErrorMsg={this.props.individualErrorMsg}
                 help={this.props.help}
             >
-                <textarea 
+                <textarea
                     name={this.props.attribute}
                     defaultValue={value}
                     onChange={this.handleChange}

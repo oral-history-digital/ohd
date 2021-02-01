@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import { t } from '../../../lib/utils';
 
 export default class RegistryHierarchyForm extends React.Component {
@@ -24,7 +24,7 @@ export default class RegistryHierarchyForm extends React.Component {
         return (
             <div>
                 {this.descendantRegistryEntry()}
-                <Form 
+                <Form
                     key={`registry-hierarchy-form-${this.props.descendantRegistryEntry && this.props.descendantRegistryEntry.id}`}
                     scope='registry_hierarchy'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}

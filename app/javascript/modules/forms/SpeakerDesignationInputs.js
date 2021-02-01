@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import InputContainer from '../../containers/form/InputContainer';
-import { useI18n } from '../../hooks/i18n';
-import { getPeople } from '../../selectors/dataSelectors';
+import { useI18n } from 'bundles/archive/hooks/i18n';
+import { getPeople } from 'bundles/archive/selectors/dataSelectors';
 import { fullname } from 'lib/utils';
+import InputContainer from './InputContainer';
 
 export default function SpeakerDesignationInputs({
     attribute,

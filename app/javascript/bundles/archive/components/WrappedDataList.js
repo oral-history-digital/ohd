@@ -3,7 +3,7 @@ import Observer from 'react-intersection-observer'
 
 import AuthShowContainer from '../containers/AuthShowContainer';
 import DataContainer from '../containers/DataContainer';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import { Spinner } from 'modules/spinners';
 import AuthorizedContent from './AuthorizedContent';
 import { ArchivePopupButton } from 'modules/ui';

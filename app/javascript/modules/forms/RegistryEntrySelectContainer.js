@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
-import RegistryEntrySelect from '../../components/form/RegistryEntrySelect';
-import { fetchData } from '../../actions/dataActionCreators';
-import { getProject } from '../../../../lib/utils';
+import RegistryEntrySelect from './RegistryEntrySelect';
+import { fetchData } from 'bundles/archive/actions/dataActionCreators';
+import { getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
-    return { 
+    let project = getCurrentProject(state);
+    return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         projectId: state.archive.projectId,

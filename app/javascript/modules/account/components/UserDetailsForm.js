@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import Form from 'bundles/archive/containers/form/Form';
+import { Form } from 'modules/forms';
 
 export default function UserDetailsForm({
     account,

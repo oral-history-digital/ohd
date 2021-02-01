@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Form from 'bundles/archive/containers/form/Form';
+import { Form } from 'modules/forms';
 import { t } from 'lib/utils';
 
 export default class PhotoForm extends React.Component {

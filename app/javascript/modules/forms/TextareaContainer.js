@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
-import Input from '../../components/form/Input';
-
+import Textarea from './Textarea';
 
 const mapStateToProps = (state) => {
     return {
@@ -10,7 +9,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Input);
+export default connect(mapStateToProps)(Textarea);

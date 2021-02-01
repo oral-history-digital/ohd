@@ -4,7 +4,7 @@ import AuthorizedContent from './AuthorizedContent';
 import { ArchivePopupButton } from 'modules/ui';
 
 import DataContainer from '../containers/DataContainer';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 
 import { t, camelcase } from 'lib/utils';
 
