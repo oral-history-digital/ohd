@@ -1,7 +1,8 @@
-import * as selectors from './searchSelectors';
+import { NAME } from './constants';
+import * as selectors from './selectors';
 
 const state = {
-    search: {
+    [NAME]: {
         archive: {
             facets: {
                 gender: {},
@@ -67,31 +68,31 @@ const state = {
 };
 
 test('getArchiveFacets retrieves archive facets object', () => {
-    expect(selectors.getArchiveFacets(state)).toEqual(state.search.archive.facets);
+    expect(selectors.getArchiveFacets(state)).toEqual(state[NAME].archive.facets);
 });
 
 test('getArchiveQuery retrieves archive query object', () => {
-    expect(selectors.getArchiveQuery(state)).toEqual(state.search.archive.query);
+    expect(selectors.getArchiveQuery(state)).toEqual(state[NAME].archive.query);
 });
 
 test('getArchiveFoundInterviews retrieves archive found interviews array', () => {
-    expect(selectors.getArchiveFoundInterviews(state)).toEqual(state.search.archive.foundInterviews);
+    expect(selectors.getArchiveFoundInterviews(state)).toEqual(state[NAME].archive.foundInterviews);
 });
 
 test('getArchiveResultPagesCount retrieves number of archive result pages', () => {
-    expect(selectors.getArchiveResultPagesCount(state)).toEqual(state.search.archive.resultPagesCount);
+    expect(selectors.getArchiveResultPagesCount(state)).toEqual(state[NAME].archive.resultPagesCount);
 });
 
 test('getArchiveResultsCount retrieves number of archive results', () => {
-    expect(selectors.getArchiveResultsCount(state)).toEqual(state.search.archive.resultsCount);
+    expect(selectors.getArchiveResultsCount(state)).toEqual(state[NAME].archive.resultsCount);
 });
 
 test('getMapSearch retrieves map part of search state', () => {
-    expect(selectors.getMapSearch(state)).toEqual(state.search.map);
+    expect(selectors.getMapSearch(state)).toEqual(state[NAME].map);
 });
 
 test('getFoundMarkers retrieves found map markers', () => {
-    expect(selectors.getFoundMarkers(state)).toEqual(state.search.map.foundMarkers);
+    expect(selectors.getFoundMarkers(state)).toEqual(state[NAME].map.foundMarkers);
 });
 
 test('getMarkersFetched retrieves if markers have been loaded', () => {
@@ -99,21 +100,21 @@ test('getMarkersFetched retrieves if markers have been loaded', () => {
 });
 
 test('getMapQuery retrieves map query object', () => {
-    expect(selectors.getMapQuery(state)).toEqual(state.search.map.query);
+    expect(selectors.getMapQuery(state)).toEqual(state[NAME].map.query);
 });
 
 test('getRegistryEntriesSearch retrieves registry entries part of search state', () => {
-    expect(selectors.getRegistryEntriesSearch(state)).toEqual(state.search.registryEntries);
+    expect(selectors.getRegistryEntriesSearch(state)).toEqual(state[NAME].registryEntries);
 });
 
 test('getShowRegistryEntriesTree get wether to show search results', () => {
-    expect(selectors.getShowRegistryEntriesTree(state)).toEqual(state.search.registryEntries.showRegistryEntriesTree);
+    expect(selectors.getShowRegistryEntriesTree(state)).toEqual(state[NAME].registryEntries.showRegistryEntriesTree);
 });
 
 test('getIsMapSearching retrieves map search state', () => {
-    expect(selectors.getIsMapSearching(state)).toEqual(state.search.isMapSearching);
+    expect(selectors.getIsMapSearching(state)).toEqual(state[NAME].isMapSearching);
 });
 
 test('getIsRegistryEntrySearching retrieves registry entry search state', () => {
-    expect(selectors.getIsRegistryEntrySearching(state)).toEqual(state.search.isRegistryEntrySearching);
+    expect(selectors.getIsRegistryEntrySearching(state)).toEqual(state[NAME].isRegistryEntrySearching);
 });

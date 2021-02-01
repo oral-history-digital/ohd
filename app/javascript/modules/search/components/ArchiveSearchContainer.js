@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
+
 import { openArchivePopup } from 'modules/ui';
-import ArchiveSearch from '../components/ArchiveSearch';
-import { searchInArchive } from '../actions/searchActionCreators';
+import { searchInArchive } from '../actions';
 import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { setViewMode } from '../actions/archiveActionCreators';
+import { setViewMode } from 'bundles/archive/actions/archiveActionCreators';
 import { getProject } from 'lib/utils';
+import ArchiveSearch from './ArchiveSearch';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

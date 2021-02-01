@@ -1,15 +1,10 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import ArchiveSearchForm from '../components/ArchiveSearchForm';
-import {
-    resetQuery,
-    setQueryParams,
-    searchInArchive,
-    searchInMap,
-} from '../actions/searchActionCreators';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { openArchivePopup } from 'modules/ui';
+import { resetQuery, setQueryParams, searchInArchive, searchInMap } from '../actions';
+import ArchiveSearchForm from './ArchiveSearchForm';
 
 const mapStateToProps = (state) => {
     return {

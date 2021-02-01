@@ -4,7 +4,7 @@ import DataSearchForm from '../components/DataSearchForm';
 import {
     resetQuery,
     setQueryParams,
-} from '../actions/searchActionCreators';
+} from 'modules/search';
 import { fetchData } from '../actions/dataActionCreators';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { getProject } from '../../../lib/utils';

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import InterviewDetailsLeftSide from '../components/InterviewDetailsLeftSide';
 import { getProject, getInterview, getInterviewee } from '../../../lib/utils';
-import { searchInArchive } from '../actions/searchActionCreators';
+import { searchInArchive } from 'modules/search';
 import { getCurrentInterview } from '../selectors/dataSelectors';
 
 const mapStateToProps = (state) => {

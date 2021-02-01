@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContainer';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
-import ArchiveSearchFormContainer from 'bundles/archive/containers/ArchiveSearchFormContainer';
+import { ArchiveSearchFormContainer } from 'modules/search';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import { admin, t } from 'lib/utils';
 

@@ -12,7 +12,7 @@ import WrappedPeopleContainer from 'bundles/archive/containers/WrappedPeopleCont
 import WrappedLanguagesContainer from 'bundles/archive/containers/WrappedLanguagesContainer';
 import WrappedCollectionsContainer from 'bundles/archive/containers/WrappedCollectionsContainer';
 import RegistryEntriesTreeContainer from 'bundles/archive/containers/RegistryEntriesTreeContainer';
-import ArchiveSearchContainer from 'bundles/archive/containers/ArchiveSearchContainer';
+import { ArchiveSearchContainer } from 'modules/search';
 import { MapSearchContainer } from 'modules/map-search';
 import WrappedProjectsContainer from 'bundles/archive/containers/WrappedProjectsContainer';
 import UserRegistrationsContainer from 'bundles/archive/containers/UserRegistrationsContainer';

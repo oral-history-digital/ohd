@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContainer';
-import ArchiveSearchFormContainer from 'bundles/archive/containers/ArchiveSearchFormContainer';
+import { ArchiveSearchFormContainer } from 'modules/search';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import { useI18n } from 'bundles/archive/hooks/i18n';
 import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';

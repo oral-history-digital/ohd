@@ -16,7 +16,7 @@ import {
 
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
-} from '../constants/archiveConstants';
+} from './action-types';
 
 export function setQueryParams(scope, params){
     return {

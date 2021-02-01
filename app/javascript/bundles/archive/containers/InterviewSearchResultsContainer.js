@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import InterviewSearchResults from '../components/InterviewSearchResults';
-import { searchInInterview } from '../actions/searchActionCreators';
+import { searchInInterview } from 'modules/search';
 import { setArchiveId } from '../actions/archiveActionCreators';
 import { setTapeAndTime, getCurrentTape, getTranscriptTime } from 'modules/interview';
 

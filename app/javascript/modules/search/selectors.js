@@ -1,8 +1,9 @@
 import { createSelector } from 'reselect';
+import { NAME } from './constants';
 
-const getSearch = state => state.search;
+const getState = state => state[NAME];
 
-const getArchiveSearch = state => getSearch(state).archive;
+const getArchiveSearch = state => getState(state).archive;
 
 export const getArchiveFacets = state => getArchiveSearch(state).facets;
 
@@ -14,7 +15,7 @@ export const getArchiveResultPagesCount = state => getArchiveSearch(state).resul
 
 export const getArchiveResultsCount = state => getArchiveSearch(state).resultsCount;
 
-export const getMapSearch = state => getSearch(state).map;
+export const getMapSearch = state => getState(state).map;
 
 export const getFoundMarkers = state => getMapSearch(state).foundMarkers;
 
@@ -22,13 +23,13 @@ export const getMarkersFetched = state => Object.keys(getFoundMarkers(state)).le
 
 export const getMapQuery = state => getMapSearch(state).query;
 
-export const getRegistryEntriesSearch = state => getSearch(state).registryEntries;
+export const getRegistryEntriesSearch = state => getState(state).registryEntries;
 
 export const getShowRegistryEntriesTree = createSelector(
     getRegistryEntriesSearch,
     registryEntriesSearch => registryEntriesSearch.showRegistryEntriesTree
 );
 
-export const getIsMapSearching = state => getSearch(state).isMapSearching;
+export const getIsMapSearching = state => getState(state).isMapSearching;
 
-export const getIsRegistryEntrySearching = state => getSearch(state).isRegistryEntrySearching;
+export const getIsRegistryEntrySearching = state => getState(state).isRegistryEntrySearching;

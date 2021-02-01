@@ -5,7 +5,7 @@ import MetadataFieldsContainer from '../containers/MetadataFieldsContainer';
 import TaskTypesContainer from '../containers/TaskTypesContainer';
 import ExternalLinksContainer from '../containers/ExternalLinksContainer';
 import UploadedFileContainer from '../containers/UploadedFileContainer';
-import { setQueryParams } from '../actions/searchActionCreators';
+import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 import { getCookie, getProject } from '../../../lib/utils';

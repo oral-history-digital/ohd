@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import UserContent from '../components/UserContent';
 import { openArchivePopup } from 'modules/ui';
 import { setArchiveId } from '../actions/archiveActionCreators';
-import { searchInArchive } from '../actions/searchActionCreators';
+import { searchInArchive } from 'modules/search';
 import { setTapeAndTime } from 'modules/interview';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 

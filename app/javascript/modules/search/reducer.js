@@ -14,7 +14,7 @@ import {
 
     REQUEST_MAP_SEARCH,
     RECEIVE_MAP_SEARCH,
-} from '../constants/archiveConstants';
+} from './action-types';
 
 const initialState = {
     archive: {
