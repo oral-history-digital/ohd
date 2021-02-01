@@ -176,11 +176,9 @@ el:
   search: Suchen
   interviewee_name: Όνομα
   periods: Χρονικές περίοδοι
-  keywords: Λέξεις-κλειδιά
-  keywords_mog: Λέξεις-κλειδιά
-  registry: Θησαυρός
+  keywords: Λήμματα ευρετηρίου
+  registry: Ευρετήριο
   places: Τόποι
-  registry_mog: Θησαυρός
   annotations: σημειώσεις
   reset: επαναφορά
   set_all: Επιλογή όλων των στοιχείων
@@ -433,7 +431,7 @@ el:
   saved_annotations: Αποθηκευμένες σημειώσεις
   text_materials: Κείμενα
   download_registry_entries: 'Download του ολόκληρου Θησαυρού ως %{format} (%{locale})'
-  search_registry_entry: Αναζήτηση λημμάτων στον Θησαυρό
+  search_registry_entry: Αναζήτηση λημμάτων στο ευρετήριο
   grid: Πλέγμα
   list: Λίστα
   workflow: Workflow
@@ -671,8 +669,8 @@ el:
         one: Mitwirkende*r
         other: Mitwirkende
       registry_references:
-        one: Verknüpfung
-        other: Verknüpfungen
+        one: Σύνδεσμος
+        other: Σύνδεσμοι
       registry_reference_type:
         one: Verknüpfungsart
         other: Verknüpfungsarten
