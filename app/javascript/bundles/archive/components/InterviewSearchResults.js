@@ -4,7 +4,7 @@ import Slider from "react-slick";
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import PersonContainer from '../containers/PersonContainer';
 import BiographicalEntryContainer from '../containers/BiographicalEntryContainer';
-import PhotoContainer from '../containers/PhotoContainer';
+import { PhotoContainer } from 'modules/gallery';
 import RegistryEntryContainer from '../containers/RegistryEntryContainer';
 import { t, pluralize, pathBase } from '../../../lib/utils';
 

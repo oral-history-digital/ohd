@@ -1,6 +1,7 @@
 import React from 'react';
-import Form from '../containers/form/Form';
-import { t } from '../../../lib/utils';
+
+import Form from 'bundles/archive/containers/form/Form';
+import { t } from 'lib/utils';
 
 export default class PhotoForm extends React.Component {
 
@@ -20,7 +21,7 @@ export default class PhotoForm extends React.Component {
         ]
 
         if (this.props.withUpload) {
-            elements.push({ 
+            elements.push({
                 attribute: 'data',
                 elementType: 'input',
                 type: 'file',
@@ -34,7 +35,7 @@ export default class PhotoForm extends React.Component {
     render() {
         let _this = this;
         return (
-            <Form 
+            <Form
                 scope='photo'
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 data={this.props.photo}

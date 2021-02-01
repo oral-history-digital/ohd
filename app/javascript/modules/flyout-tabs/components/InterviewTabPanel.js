@@ -15,7 +15,7 @@ import InterviewTextMaterialsContainer from 'bundles/archive/containers/Intervie
 import InterviewContributorsContainer from 'bundles/archive/containers/InterviewContributorsContainer';
 import { InterviewLocationsContainer } from 'modules/locations';
 import CitationInfoContainer from 'bundles/archive/containers/CitationInfoContainer';
-import GalleryContainer from 'bundles/archive/containers/GalleryContainer';
+import { GalleryContainer } from 'modules/gallery';
 import UploadTranscriptContainer from 'bundles/archive/containers/UploadTranscriptContainer';
 import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
 import { admin, pathBase, t } from 'lib/utils';
