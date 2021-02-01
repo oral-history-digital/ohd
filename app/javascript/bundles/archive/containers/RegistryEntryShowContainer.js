@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import RegistryEntryShow from '../components/RegistryEntryShow';
 import { fetchData } from '../actions/dataActionCreators';
-import { closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { closeArchivePopup } from 'modules/ui';
 import { setArchiveId } from '../actions/archiveActionCreators';
 import { setTapeAndTime } from 'modules/interview';
 

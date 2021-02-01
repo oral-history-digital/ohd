@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import WrapperPage from '../components/WrapperPage';
-import { closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { closeArchivePopup, getPopupShow } from 'modules/ui';
 import { toggleFlyoutTabs } from 'modules/flyout-tabs';
 import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
 import { setLocale, setProjectId } from '../actions/archiveActionCreators';
@@ -24,7 +24,7 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
-        disabled: state.popup.show,
+        disabled: getPopupShow(state),
         visible: getFlyoutTabsVisible(state),
         loggedInAt: state.account.loggedInAt,
         collections: state.data.collections,

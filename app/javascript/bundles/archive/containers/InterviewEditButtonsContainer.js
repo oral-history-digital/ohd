@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import InterviewEditButtons from '../components/InterviewEditButtons';
 import { changeToInterviewEditView, setSkipEmptyRows } from '../actions/archiveActionCreators';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => ({
     editViewEnabled: !!state.archive.interviewEditView,

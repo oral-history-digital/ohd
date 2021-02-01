@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
 import UserRole from '../components/UserRole';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData } from '../actions/dataActionCreators';
 import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,

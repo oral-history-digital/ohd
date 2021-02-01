@@ -9,7 +9,7 @@ import {
     searchInMap,
 } from '../actions/searchActionCreators';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {
     return {

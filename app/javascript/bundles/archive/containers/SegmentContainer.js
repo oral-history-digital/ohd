@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Segment from '../components/Segment';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import { getInterview } from 'lib/utils';
 import { handleSegmentClick } from 'modules/interview';
 

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import SelectedRegistryReferences from '../components/SelectedRegistryReferences';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData } from '../actions/dataActionCreators';
 
 import { getInterview, getProject } from '../../../lib/utils';
@@ -23,4 +23,3 @@ const mapDispatchToProps = (dispatch) => ({
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectedRegistryReferences);
-

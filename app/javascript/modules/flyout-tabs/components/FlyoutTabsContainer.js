@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { getInterview, getInterviewee, getProject } from 'lib/utils';
-import { openArchivePopup } from 'bundles/archive/actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import { setLocale } from 'bundles/archive/actions/archiveActionCreators';
 import { setFlyoutTabsIndex } from '../actions';
 import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors';

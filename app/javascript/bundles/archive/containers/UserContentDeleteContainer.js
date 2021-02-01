@@ -2,10 +2,10 @@ import { connect } from 'react-redux';
 
 import UserContentDelete from '../components/UserContentDelete';
 import { deleteData } from '../actions/dataActionCreators';
-import { closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         translations: state.archive.translations,
     }

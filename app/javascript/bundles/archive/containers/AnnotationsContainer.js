@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Annotations from '../components/Annotations';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import { fetchData } from '../actions/dataActionCreators';
 import { getLocale, getTranslations } from '../selectors/archiveSelectors';
 

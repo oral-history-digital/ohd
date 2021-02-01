@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import RegistryEntry from '../components/RegistryEntry';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
 import { addRemoveRegistryEntryId } from '../actions/archiveActionCreators';
 import { getLocale, getTranslations } from '../selectors/archiveSelectors';

@@ -3,12 +3,12 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
-import ArchivePopupContainer from '../containers/ArchivePopupContainer';
 import BurgerButton from './layout/BurgerButton';
 import MessagesContainer from '../containers/layout/MessagesContainer';
 import SiteHeader from './layout/SiteHeader';
 import SiteFooter from './layout/SiteFooter';
 import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
+import { ArchivePopupContainer } from 'modules/ui';
 import { ResizeWatcherContainer } from 'modules/responsive';
 import { FlyoutTabs } from 'modules/flyout-tabs';
 
@@ -73,19 +73,6 @@ export default class WrapperPage extends React.Component {
             this.props.fetchData(this.props, 'languages', null, null, 'all');
         }
     }
-
-    //createSocket() {
-        //let cable = ActionCable.createConsumer('/cable');
-
-        //this.notifications = cable.subscriptions.create({
-            //channel: "WebNotificationsChannel"
-        //}, {
-            //received: (data) => {
-                //console.log(data);
-                //this.setState({notifications: [...this.state.notifications, data]})
-            //},
-        //});
-    //}
 
     render() {
         const { visible, children, transcriptScrollEnabled, match } = this.props;

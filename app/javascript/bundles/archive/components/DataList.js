@@ -1,7 +1,7 @@
 import React from 'react';
 
 import AuthorizedContent from './AuthorizedContent';
-import ArchivePopupButton from './ArchivePopupButton';
+import { ArchivePopupButton } from 'modules/ui';
 
 import DataContainer from '../containers/DataContainer';
 import Form from '../containers/form/Form';

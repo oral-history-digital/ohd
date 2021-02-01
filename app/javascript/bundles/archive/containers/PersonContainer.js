@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
 import Person from '../components/Person';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData } from '../actions/dataActionCreators';
 import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,
         translations: state.archive.translations,

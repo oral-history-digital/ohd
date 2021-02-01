@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
 import SelectInterviewEditViewColumnsForm from '../components/SelectInterviewEditViewColumnsForm';
-import { closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { closeArchivePopup } from 'modules/ui';
 import { selectInterviewEditViewColumns } from '../actions/archiveActionCreators';
 import { getInterview, getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,

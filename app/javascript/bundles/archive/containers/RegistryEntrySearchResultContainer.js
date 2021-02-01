@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
 import RegistryEntrySearchResult from '../components/RegistryEntrySearchResult';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
 import { addRemoveRegistryEntryId } from '../actions/archiveActionCreators';
 import { getCookie } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         archiveId: state.archive.archiveId,
         locale: state.archive.locale,
         translations: state.archive.translations,

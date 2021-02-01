@@ -2,10 +2,9 @@ import React, { useCallback } from 'react';
 import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from '../actions';
 
 export default function ArchivePopupButton({title, children, buttonFaKey}) {
-
     const dispatch = useDispatch();
     const open = useCallback(
         () => dispatch(openArchivePopup({title: title, content: children})),

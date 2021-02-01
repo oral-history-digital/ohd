@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import Gallery from '../components/Gallery';
 import { getInterview, getCookie, getProject } from '../../../lib/utils';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

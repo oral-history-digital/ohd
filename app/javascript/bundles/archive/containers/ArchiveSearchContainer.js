@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import { openArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import ArchiveSearch from '../components/ArchiveSearch';
 import { searchInArchive } from '../actions/searchActionCreators';
 import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';

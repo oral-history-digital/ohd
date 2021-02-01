@@ -1,9 +1,9 @@
 import React from 'react';
 
 import ContentField from './ContentField';
-import ArchivePopupButton from './ArchivePopupButton';
+import { ArchivePopupButton } from 'modules/ui';
+
 import AuthorizedContent from './AuthorizedContent';
-import { Spinner } from 'modules/spinners';
 
 import AuthShowContainer from '../containers/AuthShowContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';

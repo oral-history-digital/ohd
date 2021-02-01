@@ -1,13 +1,13 @@
 import { connect } from 'react-redux';
 
 import DataList from '../components/DataList';
-import { openArchivePopup, closeArchivePopup } from '../actions/archivePopupActionCreators';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
                 attribute: 'permission_id',
                 values: state.data.permissions,
                 withEmpty: true,
-                validate: function(v){return v.length > 0} 
+                validate: function(v){return v.length > 0}
             }
         ],
         hideEdit: true

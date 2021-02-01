@@ -1,7 +1,8 @@
-import * as selectors from './popupSelectors';
+import { NAME } from './constants';
+import * as selectors from './selectors';
 
 const state = {
-    popup: {
+    [NAME]: {
         show: false,
         title: 'bla',
         big: false,
@@ -16,9 +17,9 @@ const state = {
 };
 
 test('getPopup retrieves popup object', () => {
-    expect(selectors.getPopup(state)).toEqual(state.popup);
+    expect(selectors.getPopup(state)).toEqual(state[NAME]);
 });
 
 test('getPopupShow retrieves popup visibility status', () => {
-    expect(selectors.getPopupShow(state)).toEqual(state.popup.show);
+    expect(selectors.getPopupShow(state)).toEqual(state[NAME].show);
 });

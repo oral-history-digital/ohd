@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 
 import VideoPlayer from './VideoPlayer';
 import { handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution } from '../actions';
-import { openArchivePopup } from 'bundles/archive/actions/archivePopupActionCreators';
+import { openArchivePopup } from 'modules/ui';
 import { getProject } from 'lib/utils';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
 import { getCurrentInterview } from 'bundles/archive/selectors/dataSelectors';
