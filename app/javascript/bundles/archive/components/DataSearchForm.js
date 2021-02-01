@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import FormElement from './form/Element'
 import { t, pluralize, parametrizedQuery, statifiedQuery } from '../../../lib/utils';
-import { isMobile } from '../../../lib/media-queries';
+import { isMobile } from 'modules/responsive';
 
 export default class DataSearchForm extends React.Component {
     constructor(props) {

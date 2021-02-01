@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer'
 import LoginFormContainer from './LoginFormContainer'
 import { t, pathBase } from 'lib/utils';
-import { isMobile } from 'lib/media-queries';
+import { isMobile } from 'modules/responsive';
 
 export default class Account extends React.Component {
     static propTypes = {
