@@ -2,9 +2,9 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import WrapperPageContainer from '../../containers/WrapperPageContainer';
+import WrapperPageContainer from 'bundles/archive/containers/WrapperPageContainer';
 import { Routes, RoutesWithProjectId } from './Routes';
-import { getProjects } from '../../selectors/dataSelectors';
+import { getProjects } from 'bundles/archive/selectors/dataSelectors';
 import { projectByDomain } from 'lib/utils';
 
 function RouteDivider() {

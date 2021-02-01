@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import zwarLogoDe2 from '../../../../images/zwar-logo-red_de.png'
+import zwarLogoDe2 from './zwar-logo-red_de.png';
 
 function ProjectFooter({ project, locale }) {
     const identifier = project && project.identifier;

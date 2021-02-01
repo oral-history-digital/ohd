@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import Messages from '../../components/layout/Messages';
+import Messages from './Messages';
 
 const mapStateToProps = (state) => ({
     locale: state.archive.locale,

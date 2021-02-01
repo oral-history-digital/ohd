@@ -2,8 +2,8 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import ProjectFooter from './ProjectFooter';
-import { getCurrentProject } from '../../selectors/dataSelectors';
-import { getLocale } from '../../selectors/archiveSelectors';
+import { getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
+import { getLocale } from 'bundles/archive/selectors/archiveSelectors';
 
 function SiteFooter() {
     const project = useSelector(getCurrentProject);

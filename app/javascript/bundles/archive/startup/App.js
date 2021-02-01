@@ -3,7 +3,7 @@ import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom'
 
 import archiveStore from '../store/archiveStore';
-import RouteDivider from '../components/routes/RouteDivider';
+import { RouteDivider } from 'modules/routes';
 
 import '../stylesheets/main.scss';
 

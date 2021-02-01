@@ -1,25 +1,25 @@
 import React from 'react';
-import ErrorBoundaryContainer from '../../containers/ErrorBoundaryContainer';
+import ErrorBoundaryContainer from 'bundles/archive/containers/ErrorBoundaryContainer';
 import { Route, Switch } from 'react-router-dom';
 
 import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer, ActivateAccount }
     from 'modules/account';
 import { HomeContainer } from 'modules/startpage';
-import InterviewContainer from '../../containers/InterviewContainer';
-import EditInterviewContainer from '../../containers/EditInterviewContainer';
-import UploadsContainer from '../../containers/UploadsContainer';
-import WrappedPeopleContainer from '../../containers/WrappedPeopleContainer';
-import WrappedLanguagesContainer from '../../containers/WrappedLanguagesContainer';
-import WrappedCollectionsContainer from '../../containers/WrappedCollectionsContainer';
-import RegistryEntriesTreeContainer from '../../containers/RegistryEntriesTreeContainer';
-import ArchiveSearchContainer from '../../containers/ArchiveSearchContainer';
+import InterviewContainer from 'bundles/archive/containers/InterviewContainer';
+import EditInterviewContainer from 'bundles/archive/containers/EditInterviewContainer';
+import UploadsContainer from 'bundles/archive/containers/UploadsContainer';
+import WrappedPeopleContainer from 'bundles/archive/containers/WrappedPeopleContainer';
+import WrappedLanguagesContainer from 'bundles/archive/containers/WrappedLanguagesContainer';
+import WrappedCollectionsContainer from 'bundles/archive/containers/WrappedCollectionsContainer';
+import RegistryEntriesTreeContainer from 'bundles/archive/containers/RegistryEntriesTreeContainer';
+import ArchiveSearchContainer from 'bundles/archive/containers/ArchiveSearchContainer';
 import { MapSearchContainer } from 'modules/map-search';
-import WrappedProjectsContainer from '../../containers/WrappedProjectsContainer';
-import UserRegistrationsContainer from '../../containers/UserRegistrationsContainer';
-import WrappedRolesContainer from '../../containers/WrappedRolesContainer';
-import WrappedPermissionsContainer from '../../containers/WrappedPermissionsContainer';
-import WrappedTaskTypesContainer from '../../containers/WrappedTaskTypesContainer';
-import WrappedRegistryReferenceTypesContainer from '../../containers/WrappedRegistryReferenceTypesContainer';
+import WrappedProjectsContainer from 'bundles/archive/containers/WrappedProjectsContainer';
+import UserRegistrationsContainer from 'bundles/archive/containers/UserRegistrationsContainer';
+import WrappedRolesContainer from 'bundles/archive/containers/WrappedRolesContainer';
+import WrappedPermissionsContainer from 'bundles/archive/containers/WrappedPermissionsContainer';
+import WrappedTaskTypesContainer from 'bundles/archive/containers/WrappedTaskTypesContainer';
+import WrappedRegistryReferenceTypesContainer from 'bundles/archive/containers/WrappedRegistryReferenceTypesContainer';
 
 export const Routes = () => (
     <Switch>
