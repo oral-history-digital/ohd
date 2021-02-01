@@ -129,6 +129,8 @@ export default class UserContentForm extends React.Component {
         });
     }
 
+
+    // TODO: currently unused - we have to implement the publication workflow first.
     publish() {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
             return <div className={"form-group"}>
@@ -176,7 +178,6 @@ export default class UserContentForm extends React.Component {
                     </div>
                     {this.segmentSelect()}
                     {this.annotationConfirmation()}
-                    {this.publish()}
                     <input type="submit" value={submitLabel}/>
                 </form>
             </div>
