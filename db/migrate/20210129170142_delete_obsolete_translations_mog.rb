@@ -11,8 +11,8 @@ class DeleteObsoleteTranslationsMog < ActiveRecord::Migration[5.2]
       Person::Translation.where(locale: locales).destroy_all
       Photo::Translation.where(locale: locales).destroy_all
       Project::Translation.where(locale: locales).destroy_all
-      Segment::Translation.where(locale: locales).destroy_all
-      RegistryName::Translation.where(locale: locales).destroy_all
+      execute "DELETE FROM segment_translations WHERE locale IN (\"#{locales.join('","')}\");"
+      execute "DELETE FROM registry_name_translations WHERE locale IN (\"#{locales.join('","')}\");"
     end
   end
 end
