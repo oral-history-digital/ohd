@@ -1,14 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
-import InputContainer from '../../containers/form/InputContainer';
 import RichTextEditor from 'react-rte';
-import TextareaContainer from '../../containers/form/TextareaContainer';
-import SelectContainer from '../../containers/form/SelectContainer';
-import RegistryEntrySelectContainer from '../../containers/form/RegistryEntrySelectContainer';
-import MultiLocaleWrapperContainer from '../../containers/form/MultiLocaleWrapperContainer';
+
+import InputContainer from './InputContainer';
+import TextareaContainer from './TextareaContainer';
+import SelectContainer from './SelectContainer';
+import RegistryEntrySelectContainer from './RegistryEntrySelectContainer';
+import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
 import SpeakerDesignationInputs from './SpeakerDesignationInputs';
-import { t, pluralize } from '../../../../lib/utils';
+import { t, pluralize } from 'lib/utils';
 
 export default class Form extends React.Component {
     constructor(props) {

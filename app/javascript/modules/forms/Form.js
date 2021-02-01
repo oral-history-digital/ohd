@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import Form from '../../components/form/Form';
-import { getProject } from '../../../../lib/utils';
+import FormComponent from './FormComponent';
+import { getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         locale: state.archive.locale,
         locales: (project && project.locales) || state.archive.locales,
@@ -12,7 +12,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Form);
+export default connect(mapStateToProps)(FormComponent);

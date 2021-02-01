@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { useI18n } from '../../hooks/i18n';
+import { useI18n } from 'bundles/archive/hooks/i18n';
 
 function Label({
     label,

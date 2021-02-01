@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import { t } from '../../../lib/utils';
 
 export default class SegmentForm extends React.Component {
@@ -8,7 +8,7 @@ export default class SegmentForm extends React.Component {
         let _this = this;
         return (
             <div>
-                <Form 
+                <Form
                     scope='segment'
                     onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                     data={this.props.segment}
@@ -29,7 +29,7 @@ export default class SegmentForm extends React.Component {
                             //multiLocale: true,
                             value: this.props.segment && (this.props.segment.text[this.props.contentLocale] || this.props.segment.text[`${this.props.contentLocale}-public`]),
                             attribute: 'text',
-                            //validate: function(v){return v && v.length > 1} 
+                            //validate: function(v){return v && v.length > 1}
                         },
                     ]}
                 />

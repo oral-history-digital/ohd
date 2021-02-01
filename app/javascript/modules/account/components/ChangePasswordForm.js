@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
 import { t, pathBase } from 'lib/utils';
-import InputContainer from 'bundles/archive/containers/form/InputContainer';
+import { InputContainer } from 'modules/forms';
 
 export default class ChangePasswordForm extends React.Component {
     static propTypes = {

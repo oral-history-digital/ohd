@@ -1,6 +1,7 @@
 import React from 'react';
-import ElementContainer from '../../containers/form/ElementContainer';
-import { t } from '../../../../lib/utils';
+
+import { t } from 'lib/utils';
+import ElementContainer from './ElementContainer';
 
 export default class Select extends React.Component {
 

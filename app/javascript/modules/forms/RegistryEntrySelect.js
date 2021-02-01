@@ -1,6 +1,7 @@
 import React from 'react';
-import Select from '../../containers/form/SelectContainer';
-import { t } from '../../../../lib/utils';
+
+import Select from './SelectContainer';
+import { t } from 'lib/utils';
 
 export default class RegistryEntrySelect extends React.Component {
 
@@ -69,12 +70,12 @@ export default class RegistryEntrySelect extends React.Component {
     registryEntries() {
         if (
             // check whether selected entry is loaded
-            this.selectedRegistryEntry() && 
+            this.selectedRegistryEntry() &&
             this.selectedRegistryEntry().associations_loaded &&
             this.props.registryEntriesStatus[this.state.selectedRegistryEntryId].split('-')[0] === 'fetched' &&
 
             // check whether childEntries are loaded
-            this.props.registryEntriesStatus[`children_for_entry_${this.state.selectedRegistryEntryId}`] && 
+            this.props.registryEntriesStatus[`children_for_entry_${this.state.selectedRegistryEntryId}`] &&
             this.props.registryEntriesStatus[`children_for_entry_${this.state.selectedRegistryEntryId}`].split('-')[0] === 'fetched'
         ) {
             return this.selectedRegistryEntry().child_ids[this.props.locale]?.filter(rid => {
@@ -110,9 +111,9 @@ export default class RegistryEntrySelect extends React.Component {
 
     goUp() {
         if (
-            this.selectedRegistryEntry() && 
-            this.selectedRegistryEntry().id !== this.props.lowestAllowedRegistryEntryId && 
-            this.selectedRegistryEntry().associations_loaded 
+            this.selectedRegistryEntry() &&
+            this.selectedRegistryEntry().id !== this.props.lowestAllowedRegistryEntryId &&
+            this.selectedRegistryEntry().associations_loaded
         ) {
             return (
                 <div
@@ -129,7 +130,7 @@ export default class RegistryEntrySelect extends React.Component {
 
     goDown() {
         if (
-            this.selectedRegistryEntry() && 
+            this.selectedRegistryEntry() &&
             this.selectedRegistryEntry().associations_loaded &&
             this.selectedRegistryEntry().child_ids[this.props.locale].length > 0
         ) {

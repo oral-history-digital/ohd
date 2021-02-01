@@ -1,8 +1,9 @@
 import React from 'react';
-import InputContainer from '../../containers/form/InputContainer';
-import TextareaContainer from '../../containers/form/TextareaContainer';
-import RichTextareaContainer from '../../containers/form/RichTextareaContainer';
-import { t } from '../../../../lib/utils';
+
+import InputContainer from './InputContainer';
+import TextareaContainer from './TextareaContainer';
+import RichTextareaContainer from './RichTextareaContainer';
+import { t } from 'lib/utils';
 
 export default class MultiLocaleWrapper extends React.Component {
 
@@ -23,7 +24,7 @@ export default class MultiLocaleWrapper extends React.Component {
             translation = this.props.data.translations && (
                 this.props.data.translations.find(t => t.locale === locale) ||
                 // in zwar there has not been an inital original version
-                this.props.data.translations.find(t => t.locale === `${locale}-public`) 
+                this.props.data.translations.find(t => t.locale === `${locale}-public`)
             )
         } else {
             translation = this.props.data && this.props.data.translations && this.props.data.translations.find(t => t.locale === locale)

@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
-import Element from '../../components/form/Element';
-
+import Element from './Element';
 
 const mapStateToProps = (state) => {
     return {
@@ -10,7 +9,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Element);
+export default connect(mapStateToProps)(Element);

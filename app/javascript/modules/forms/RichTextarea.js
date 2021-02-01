@@ -1,6 +1,7 @@
 import React from 'react';
 import RichTextEditor from 'react-rte';
-import ElementContainer from '../../containers/form/ElementContainer';
+
+import ElementContainer from './ElementContainer';
 
 export default class RichTextarea extends React.Component {
 

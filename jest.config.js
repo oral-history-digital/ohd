@@ -84,6 +84,7 @@ module.exports = {
 
   // A map from regular expressions to module names or to arrays of module names that allow to stub out resources with a single module
   moduleNameMapper: {
+    '^bundles/(.*)': '<rootDir>/app/javascript/bundles/$1',
     '^lib/(.*)': '<rootDir>/app/javascript/lib/$1',
     '^modules/(.*)': '<rootDir>/app/javascript/modules/$1',
     '^images/(.*)': '<rootDir>/app/javascript/__mocks__/fileMock.js',

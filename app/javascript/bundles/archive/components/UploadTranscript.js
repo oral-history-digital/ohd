@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import { useI18n } from '../hooks/i18n';
 import { validateTapeNumber } from 'utils/validators';
 

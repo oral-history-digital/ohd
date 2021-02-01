@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
-import Select from '../../components/form/Select';
-
+import Select from './Select';
 
 const mapStateToProps = (state) => {
     return {
@@ -10,7 +9,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(Select);
+export default connect(mapStateToProps)(Select);

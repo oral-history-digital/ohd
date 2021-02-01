@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import { t } from '../../../lib/utils';
 
 export default class PersonForm extends React.Component {
@@ -7,7 +7,7 @@ export default class PersonForm extends React.Component {
     render() {
         let _this = this;
         return (
-            <Form 
+            <Form
                 scope='person'
                 onSubmit={function(params){
                     _this.props.submitData(_this.props, params);
@@ -24,21 +24,21 @@ export default class PersonForm extends React.Component {
                         value: this.props.person && this.props.person.gender,
                         optionsScope: 'genders',
                         withEmpty: true,
-                        validate: function(v){return v !== ''} 
+                        validate: function(v){return v !== ''}
                     },
                     {
                         elementType: 'input',
                         attribute: 'first_name',
                         value: this.props.person && this.props.person.names[this.props.locale] && this.props.person.names[this.props.locale].firstname,
                         type: 'text',
-                        validate: function(v){return v.length > 1} 
+                        validate: function(v){return v.length > 1}
                     },
                     {
                         elementType: 'input',
                         attribute: 'last_name',
                         value: this.props.person && this.props.person.names[this.props.locale] && this.props.person.names[this.props.locale].lastname,
                         type: 'text',
-                        validate: function(v){return v.length > 1} 
+                        validate: function(v){return v.length > 1}
                     },
                     {
                         elementType: 'input',
@@ -46,7 +46,7 @@ export default class PersonForm extends React.Component {
                         value: this.props.person && this.props.person.names[this.props.locale] && this.props.person.names[this.props.locale].birthname,
                         type: 'text',
                     },
-                    { 
+                    {
                         attribute: 'date_of_birth',
                         value: this.props.person && this.props.person.date_of_birth,
                         //elementType: 'input',

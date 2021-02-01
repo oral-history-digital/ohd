@@ -1,5 +1,4 @@
 import React from 'react';
-import { t, pluralize } from '../../../../lib/utils';
 
 export default class SubmitOnBlurForm extends React.Component {
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 import { t, fullname } from '../../../lib/utils';
 import { Spinner } from 'modules/spinners';

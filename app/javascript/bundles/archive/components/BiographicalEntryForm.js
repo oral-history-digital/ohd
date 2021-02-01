@@ -1,5 +1,5 @@
 import React from 'react';
-import Form from '../containers/form/Form';
+import { Form } from 'modules/forms';
 import { t } from '../../../lib/utils';
 
 export default class BiographicalEntryForm extends React.Component {
@@ -7,7 +7,7 @@ export default class BiographicalEntryForm extends React.Component {
     render() {
         let _this = this;
         return (
-            <Form 
+            <Form
                 scope='biographical_entry'
                 onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
                 data={this.props.biographicalEntry}
@@ -19,7 +19,7 @@ export default class BiographicalEntryForm extends React.Component {
                         elementType: 'textarea',
                         attribute: 'text',
                         value: this.props.biographicalEntry && this.props.biographicalEntry.text[this.props.locale],
-                        validate: function(v){return v.length > 1} 
+                        validate: function(v){return v.length > 1}
                     },
                     {
                         attribute: 'start_date',

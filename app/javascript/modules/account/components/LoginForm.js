@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Form from 'bundles/archive/containers/form/Form';
+import { Form } from 'modules/forms';
 import { pathBase } from 'lib/utils';
 
 export default class LoginForm extends React.Component {
