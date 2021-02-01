@@ -5,7 +5,7 @@ import RegistryEntriesTree from '../components/RegistryEntriesTree';
 import { getRootRegistryEntry, getCurrentProject } from '../selectors/dataSelectors';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getProjectId } from '../selectors/archiveSelectors';
-import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree } from '../selectors/searchSelectors';
+import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree } from 'modules/search';
 
 const mapStateToProps = (state) => ({
     rootRegistryEntry: getRootRegistryEntry(state),

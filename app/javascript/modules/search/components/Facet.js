@@ -1,5 +1,5 @@
 import React from 'react';
-import YearRangeContainer from "../containers/YearRangeContainer";
+import YearRangeContainer from './YearRangeContainer';
 
 export default class Facet extends React.Component {
 
@@ -95,7 +95,7 @@ export default class Facet extends React.Component {
                     </button>
                     <div style={style} className={this.state.panelClass}>
                         <div className="flyout-radio-container">
-                            <YearRangeContainer 
+                            <YearRangeContainer
                                 sliderMin={this.props.sliderMin}
                                 sliderMax={this.props.sliderMax}
                                 currentMin={this.props.currentMin}

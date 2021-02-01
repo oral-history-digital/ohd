@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import InterviewPreview from '../components/InterviewPreview';
-import { searchInInterview } from '../actions/searchActionCreators';
+import { searchInInterview } from 'modules/search';
 import { setTapeAndTime } from 'modules/interview';
 import { setArchiveId, addRemoveArchiveId } from '../actions/archiveActionCreators';
 import { fetchData } from '../actions/dataActionCreators';

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { changeRegistryEntriesViewMode } from 'bundles/archive/actions/searchActionCreators';
+import { changeRegistryEntriesViewMode } from 'modules/search';
 import { getProject } from 'lib/utils';
 import RegistryEntriesTabPanel from './RegistryEntriesTabPanel';
 

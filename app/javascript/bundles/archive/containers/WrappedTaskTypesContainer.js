@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import WrappedDataList from '../components/WrappedDataList';
 import TaskTypePermissionsContainer from '../containers/TaskTypePermissionsContainer';
-import { setQueryParams } from '../actions/searchActionCreators';
+import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
 import { getCookie, getProject } from '../../../lib/utils';

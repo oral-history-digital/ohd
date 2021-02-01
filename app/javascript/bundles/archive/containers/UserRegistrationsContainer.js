@@ -1,15 +1,15 @@
 import { connect } from 'react-redux';
 
 import UserRegistrations from '../components/UserRegistrations';
-import { 
-    setQueryParams, 
-} from '../actions/searchActionCreators';
+import {
+    setQueryParams,
+} from 'modules/search';
 import { fetchData } from '../actions/dataActionCreators';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
-    return { 
+    return {
         projectId: state.archive.projectId,
         projects: state.data.projects,
         locale: state.archive.locale,

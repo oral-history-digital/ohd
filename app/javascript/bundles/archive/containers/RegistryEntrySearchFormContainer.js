@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import RegistryEntrySearchForm from '../components/RegistryEntrySearchForm';
-import { searchRegistryEntry } from '../actions/searchActionCreators';
+import { searchRegistryEntry } from 'modules/search';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { getProject } from '../../../lib/utils';
 

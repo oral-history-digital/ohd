@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import Facet from '../components/Facet';
+import Facet from './Facet';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         facets: state.search.archive.facets,
         query: state.search.archive.query,
         mapSearchQuery: state.search.map.query,
@@ -12,4 +12,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps, null)(Facet);
+export default connect(mapStateToProps)(Facet);
