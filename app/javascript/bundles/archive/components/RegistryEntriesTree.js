@@ -35,7 +35,7 @@ export default function RegistryEntriesTree({
             >
                 <AuthShowContainer ifLoggedIn>
                         <h1 className='registry-entries-title'>
-                            {t((projectId === 'mog') ? 'registry_mog' : 'registry')}
+                            {t('registry')}
                         </h1>
 
                         <AuthorizedContent object={{type: 'RegistryEntry', action: 'update'}}>
