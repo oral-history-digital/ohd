@@ -135,7 +135,7 @@ export default class FlyoutTabs extends React.Component {
                     </TabPanel>
 
                     <TabPanel key="archive-search">
-                        <ArchiveSearchTabPanelContainer />
+                        <ArchiveSearchTabPanelContainer selectedArchiveIds={this.props.selectedArchiveIds} />
                     </TabPanel>
 
                     <TabPanel key="interview">
