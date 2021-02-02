@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import SegmentFormContainer from '../containers/SegmentFormContainer';
-import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
+import { SegmentHeadingFormContainer } from 'modules/toc';
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { t, fullname, admin } from 'lib/utils';
@@ -161,7 +161,7 @@ export default class Segment extends React.Component {
                     title={title}
                     onClick={() => this.props.openArchivePopup({
                         title: title,
-                        content: <SegmentHeadingFormContainer segment={this.props.data} contentLocale={this.props.contentLocale} />
+                        content: <SegmentHeadingFormContainer segment={this.props.data} />
                     })}
                 >
                     <span className="fa-stack fa-1x">

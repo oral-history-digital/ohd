@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import SubHeadingContainer from '../containers/SubHeadingContainer';
-import SegmentHeadingFormContainer from '../containers/SegmentHeadingFormContainer';
-import AuthorizedContent from './AuthorizedContent';
+
+import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
+import SubHeadingContainer from './SubHeadingContainer';
+import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
 
 export default class Heading extends React.Component {
     constructor(props) {

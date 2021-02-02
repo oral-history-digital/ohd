@@ -1,7 +1,6 @@
 import React from 'react';
 
 export default class Heading extends React.Component {
-
     constructor(props, context) {
         super(props, context);
         this.state = {
@@ -9,7 +8,6 @@ export default class Heading extends React.Component {
         }
         this.handleClick = this.handleClick.bind(this);
     }
-
 
     componentWillReceiveProps(nextProps) {
         let endTime = (this.props.nextSubHeading) ? this.props.nextSubHeading.time : this.props.data.duration;
@@ -21,12 +19,10 @@ export default class Heading extends React.Component {
         }
     }
 
-
     handleClick(tape, time) {
             // let tabIndex = (this.props.interview.lang === this.props.locale) ? 0 : 1;
             this.props.handleSegmentClick(tape, time, false);
     }
-
 
     render() {
         let css = 'subheading ' + (this.state.active ? 'active' : 'inactive');
@@ -42,4 +38,3 @@ export default class Heading extends React.Component {
         )
     }
 }
-
