@@ -3,21 +3,17 @@ import {
     SET_ARCHIVE_ID,
     SET_PROJECT_ID,
     SET_VIEW_MODE,
-
     REQUEST_STATIC_CONTENT,
     RECEIVE_STATIC_CONTENT,
-
     CHANGE_TO_EDIT_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
     SET_SKIP_EMPTY_ROWS,
     SELECT_INTERVIEW_EDIT_VIEW_COLUMNS,
-
-    //EXPORT_DOI,
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS,
     SET_SELECTED_ARCHIVE_IDS,
     UPDATE_SELECTED_REGISTRY_ENTRY_IDS
-} from '../constants/archiveConstants';
+} from './action-types';
 
 const initialState = {
     locale: 'de',

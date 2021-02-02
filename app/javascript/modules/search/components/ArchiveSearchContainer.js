@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { openArchivePopup } from 'modules/ui';
 import { searchInArchive } from '../actions';
 import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { setViewMode } from 'bundles/archive/actions/archiveActionCreators';
+import { setViewMode } from 'modules/archive';
 import { getProject } from 'lib/utils';
 import ArchiveSearch from './ArchiveSearch';
 

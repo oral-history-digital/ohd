@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 
 import ProjectFooter from './ProjectFooter';
 import { getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
-import { getLocale } from 'bundles/archive/selectors/archiveSelectors';
+import { getLocale } from 'modules/archive';
 
 function SiteFooter() {
     const project = useSelector(getCurrentProject);

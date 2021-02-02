@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import RegistryEntriesTree from '../components/RegistryEntriesTree';
 import { getRootRegistryEntry, getCurrentProject } from '../selectors/dataSelectors';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { getProjectId } from '../selectors/archiveSelectors';
+import { getProjectId } from 'modules/archive';
 import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree } from 'modules/search';
 
 const mapStateToProps = (state) => ({

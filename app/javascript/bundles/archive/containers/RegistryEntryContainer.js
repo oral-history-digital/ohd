@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import RegistryEntry from '../components/RegistryEntry';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
-import { addRemoveRegistryEntryId } from '../actions/archiveActionCreators';
-import { getLocale, getTranslations } from '../selectors/archiveSelectors';
+import { addRemoveRegistryEntryId, getLocale, getTranslations } from 'modules/archive';
 
 const mapStateToProps = (state) => ({
     projectId: state.archive.projectId,
-        projects: state.data.projects,
+    projects: state.data.projects,
     locale: getLocale(state),
     translations: getTranslations(state),
     registryEntriesStatus: state.data.statuses.registry_entries,

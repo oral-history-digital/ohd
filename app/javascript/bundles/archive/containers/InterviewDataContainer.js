@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import InterviewData from '../components/InterviewData';
-import { getLocale } from '../selectors/archiveSelectors';
+import { getLocale } from 'modules/archive';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),

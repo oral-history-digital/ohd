@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { submitData } from '../actions/dataActionCreators';
-import { getLocale, getProjectId, getSelectedRegistryEntryIds } from '../selectors/archiveSelectors';
+import { getLocale, getProjectId, getSelectedRegistryEntryIds } from 'modules/archive';
 import MergeRegistryEntriesButton from '../components/MergeRegistryEntriesButton';
 
 const mapStateToProps = (state) => ({

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { getArchiveId, getLocale, getProjectId, getTranslations } from 'bundles/archive/selectors/archiveSelectors';
+import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { fetchLocations } from '../actions';
 import { getCurrentLocationsWithRefs, getLocationsFetched } from '../selectors';
 import InterviewLocations from './InterviewLocations';

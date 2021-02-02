@@ -2,7 +2,7 @@ import { createSelector } from 'reselect';
 
 import { projectByDomain } from 'lib/utils';
 
-import { getArchiveId, getProjectId  } from './archiveSelectors';
+import { getArchiveId, getProjectId  } from 'modules/archive';
 
 export const getData = state => state.data;
 
@@ -45,7 +45,7 @@ export const get = (state, dataType, id) => getData(state)[dataType][id];
 export const getCurrentProject = createSelector(
     [getProjectId, getProjects],
     (projectId, projects) => {
-        const currentProject = projectByDomain(projects) || 
+        const currentProject = projectByDomain(projects) ||
             Object.values(projects).find(project => project.identifier === projectId);
 
         return currentProject || null;
@@ -113,4 +113,3 @@ export const getRootRegistryEntry = createSelector(
         return registryEntries[currentProject.root_registry_entry_id];
     }
 );
-

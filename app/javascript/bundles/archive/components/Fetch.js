@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchData } from '../actions/dataActionCreators';
-import { getProjectId, getLocale } from '../selectors/archiveSelectors';
+import { getProjectId, getLocale } from 'modules/archive';
 import { getProjects } from '../selectors/dataSelectors';
 import { Spinner } from 'modules/spinners';
 

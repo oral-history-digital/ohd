@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import UploadTranscript from '../components/UploadTranscript';
 import { submitData } from '../actions/dataActionCreators';
 import { getInterview } from 'lib/utils';
-import { getLocale, getProjectId, getArchiveId } from '../selectors/archiveSelectors';
+import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
 import { getLanguages } from '../selectors/dataSelectors';
 
 const mapStateToProps = state => ({

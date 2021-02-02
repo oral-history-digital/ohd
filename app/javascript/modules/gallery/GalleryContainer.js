@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { openArchivePopup } from 'modules/ui';
 import Gallery from './Gallery';
 import { getCurrentAccount, getCurrentInterview, getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
-import { getEditView, getLocale, getTranslations } from 'bundles/archive/selectors/archiveSelectors';
+import { getEditView, getLocale, getTranslations } from 'modules/archive';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);

@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { getArchiveId } from 'bundles/archive/selectors/archiveSelectors';
+import { getArchiveId } from 'modules/archive';
 
 export const getLocations = state => state.locations;
 

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Contribution from '../components/Contribution';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData, submitData } from '../actions/dataActionCreators';
-import { getLocale, getArchiveId, getProjectId } from '../selectors/archiveSelectors';
+import { getLocale, getArchiveId, getProjectId } from 'modules/archive';
 
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),

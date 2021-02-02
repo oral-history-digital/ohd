@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { getLocale } from '../selectors/archiveSelectors';
+import { getLocale } from 'modules/archive';
 import { getCurrentInterview, getCurrentProject } from '../selectors/dataSelectors';
 import InterviewLoggedOut from '../components/InterviewLoggedOut';
 

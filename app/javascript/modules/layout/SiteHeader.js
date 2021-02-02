@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 import { getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
-import { getLocale } from 'bundles/archive/selectors/archiveSelectors';
+import { getLocale } from 'modules/archive';
 import { useI18n } from 'bundles/archive/hooks/i18n';
 
 function SiteHeader() {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { setLocale } from 'bundles/archive/actions/archiveActionCreators';
+import { setLocale } from 'modules/archive';
 import { getProject } from 'lib/utils';
 import LocaleButtons from './LocaleButtons';
 

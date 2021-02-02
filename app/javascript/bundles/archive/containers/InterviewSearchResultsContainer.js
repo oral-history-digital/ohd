@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import InterviewSearchResults from '../components/InterviewSearchResults';
 import { searchInInterview } from 'modules/search';
-import { setArchiveId } from '../actions/archiveActionCreators';
+import { setArchiveId } from 'modules/archive';
 import { setTapeAndTime, getCurrentTape, getTranscriptTime } from 'modules/interview';
 
 const mapStateToProps = (state) => {

@@ -4,8 +4,7 @@ import { withRouter } from 'react-router-dom';
 import WrapperPage from '../components/WrapperPage';
 import { closeArchivePopup, getPopupShow } from 'modules/ui';
 import { toggleFlyoutTabs } from 'modules/flyout-tabs';
-import { fetchStaticContent } from '../actions/wrapperPageActionCreators';
-import { setLocale, setProjectId } from '../actions/archiveActionCreators';
+import { setLocale, setProjectId, fetchStaticContent } from 'modules/archive';
 import { fetchData, deleteData } from '../actions/dataActionCreators';
 
 import { getCookie, getProject } from 'lib/utils';

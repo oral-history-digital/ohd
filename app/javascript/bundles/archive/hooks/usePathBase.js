@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { projectByDomain } from 'lib/utils';
 import { getProjects } from '../selectors/dataSelectors';
-import { getLocale, getProjectId } from '../selectors/archiveSelectors';
+import { getLocale, getProjectId } from 'modules/archive';
 
 export function usePathBase() {
     const projects = useSelector(getProjects);
@@ -14,5 +14,3 @@ export function usePathBase() {
         return `/${projectId}/${locale}`;
     }
 }
-
-
