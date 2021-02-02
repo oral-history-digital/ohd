@@ -1,9 +1,12 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import PropTypes from 'prop-types';
+
+import { t } from 'lib/utils';
 import AuthShowContainer from '../containers/AuthShowContainer';
+import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
+import AuthorizedContent from './AuthorizedContent';
 
 export default class InterviewTextMaterials extends React.Component {
-
     to() {
         return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
     }
@@ -32,20 +35,45 @@ export default class InterviewTextMaterials extends React.Component {
     }
 
     render() {
-        if (this.props.interview.language && this.props.projectId !== "dg" && this.existsPublicTranscript()) {
-            return (
-                <div>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        <p>
-                            <span className='flyout-content-label'>{t(this.props, 'transcript')}:</span>
-                            {this.download(this.props.interview.lang, true)}
-                            {this.download(this.props.locale, (this.props.interview.languages.indexOf(this.props.locale) > -1 && this.props.interview.lang !== this.props.locale))}
-                        </p>
-                    </AuthShowContainer>
-                </div>
-            );
-        } else {
+        const { interview, project, locale } = this.props;
+
+        if (!interview.language) {
             return null;
         }
+
+        return (
+            <>
+                <AuthorizedContent object={interview}>
+                    <SingleValueWithFormContainer
+                        obj={interview}
+                        collapse
+                        elementType="textarea"
+                        multiLocale
+                        metadataField={Object.values(project.metadata_fields).find(m => m.name === 'observations')}
+                    />
+                </AuthorizedContent>
+                {
+                    (this.props.projectId !== "dg" && this.existsPublicTranscript()) ?
+                        (<div>
+                            <AuthShowContainer ifLoggedIn={true}>
+                                <p>
+                                    <span className='flyout-content-label'>{t(this.props, 'transcript')}:</span>
+                                    {this.download(interview.lang, true)}
+                                    {this.download(locale, (interview.languages.indexOf(locale) > -1 && interview.lang !== locale))}
+                                </p>
+                            </AuthShowContainer>
+                        </div>) :
+                        null
+                }
+            </>
+        );
     }
 }
+
+InterviewTextMaterials.propTypes = {
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    interview: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+};

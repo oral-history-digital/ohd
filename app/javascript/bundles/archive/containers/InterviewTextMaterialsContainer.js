@@ -1,28 +1,19 @@
 import { connect } from 'react-redux';
-import InterviewTextMaterials from '../components/InterviewTextMaterials';
-import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData } from 'modules/data';
-import { getCookie } from '../../../lib/utils';
 
-import { getInterview } from '../../../lib/utils';
+import InterviewTextMaterials from '../components/InterviewTextMaterials';
+import { getCurrentAccount, getCurrentInterview, getCurrentProject } from 'modules/data';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 
 const mapStateToProps = (state) => {
     return {
-        locale: state.archive.locale,
-        translations: state.archive.translations,
-        editView: state.archive.editView,
-        interview: getInterview(state),
+        locale: getLocale(state),
+        translations: getTranslations(state),
+        projectId: getProjectId(state),
+        interview: getCurrentInterview(state),
+        project: getCurrentProject(state),
         // the following is just a trick to force rerender after deletion
-        account: state.data.accounts.current,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
+        account: getCurrentAccount(state),
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup()),
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(InterviewTextMaterials);
+export default connect(mapStateToProps)(InterviewTextMaterials);

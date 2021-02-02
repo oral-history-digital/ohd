@@ -62,6 +62,7 @@ Rails.application.routes.draw do
           member do
             get :doi_contents
             get :metadata
+            get 'cmdi-metadata', action: :cmdi_metadata
             get :headings
             get :speaker_designations
             #get :references
@@ -207,7 +208,7 @@ Rails.application.routes.draw do
     end
   end
 
-  # in development set your projects archive_domain-attribute to sth. you have 
+  # in development set your projects archive_domain-attribute to sth. you have
   # written into your /etc/hosts (localhost or www.example.com might just be there)
   #
   # in production these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.

@@ -121,7 +121,7 @@ export default class Segment extends React.Component {
                     </div>
                     <div
                         className={referencesCss}
-                        title={(this.props.projectId === 'mog') ? t(this.props, 'keywords_mog') : referencesTitle}
+                        title={referencesTitle}
                         onClick={() => popupType === 'references' ? closePopup() : openPopup(data.id, 'references')}
                     >
                         <i className={`fa fa-tag ${hasReferencesCss}`} />

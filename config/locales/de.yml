@@ -177,10 +177,8 @@ de:
   interviewee_name: Name
   periods: Zeitperioden
   keywords: Registereinträge
-  keywords_mog: Schlagworte
   registry: Register
   places: Orte
-  registry_mog: Thesaurus
   annotations: Anmerkungen
   reset: zurücksetzen
   set_all: Alle checken

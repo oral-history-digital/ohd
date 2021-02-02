@@ -80,8 +80,8 @@ end
 
 #
 group :test do
-  gem 'rspec'
-  gem 'rspec-rails'
+  gem 'rspec', '~> 3.10.0'
+  gem 'rspec-rails', '~> 4.0.2'
   # Faster tests:
   gem 'spork'
   #gem 'rest-client'

@@ -182,9 +182,14 @@ export default class ArchiveSearchForm extends React.Component {
                         className={'flyout-search'}
                         onSubmit={this.handleSubmit}
                     >
-                        <AuthShowContainer ifLoggedIn={true} ifCatalog={true}>
-                            {this.renderInputField()}
-                        </AuthShowContainer>
+                        {
+                            (this.props.projectId === 'mog') ?
+                                this.renderInputField()
+                            :
+                            <AuthShowContainer ifLoggedIn={true} ifCatalog={true}>
+                                {this.renderInputField()}
+                            </AuthShowContainer>
+                        }
                         {this.renderResetButton()}
                         {this.renderFacets()}
                     </form>
