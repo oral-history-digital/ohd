@@ -17,8 +17,7 @@ export default class RegistryEntryShow extends React.Component {
 
     loadWithAssociations() {
         if (
-            this.registryEntry() && 
-            !this.registryEntry().associations_loaded &&
+            !this.registryEntry()?.associations_loaded &&
             this.props.registryEntriesStatus[this.props.registryEntryId] !== 'fetching'
         ) {
             this.props.fetchData(this.props, 'registry_entries', this.props.registryEntryId, null, 'with_associations=true');
@@ -123,7 +122,6 @@ export default class RegistryEntryShow extends React.Component {
 
     registryReferences() {
         if (
-            this.registryEntry().associations_loaded &&
             this.props.registryReferenceTypesStatus && 
             this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched'
         ) {
@@ -209,32 +207,36 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     render() {
-        let references = this.registryReferences();
-        return (
-            <div>
+        if (this.registryEntry()?.associations_loaded) {
+            let references = this.registryReferences();
+            return (
                 <div>
-                {this.osmLink()}
-                {this.breadCrumb()}
-                </div>
-                <h3>
-                    {this.registryEntry().name[this.props.locale]}
-                </h3>
-                <p>
-                    {this.registryEntry().notes[this.props.locale]} 
-                </p>
-                <h4>
-                    {this.registryEntry().registry_references_count}
-                    &nbsp;
-                    {(this.registryEntry().registry_references_count === 1) ? t(this.props, 'activerecord.models.registry_references.one') : t(this.props, 'activerecord.models.registry_references.other')}
-                    {(this.registryEntry().registry_references_count > 0) ? ':' : ''}
-                </h4>
-                <br/>
-                <ul>
-                    {references}
-                </ul>
-                {this.loader(references)}
+                    <div>
+                    {this.osmLink()}
+                    {this.breadCrumb()}
+                    </div>
+                    <h3>
+                        {this.registryEntry().name[this.props.locale]}
+                    </h3>
+                    <p>
+                        {this.registryEntry().notes[this.props.locale]} 
+                    </p>
+                    <h4>
+                        {this.registryEntry().registry_references_count}
+                        &nbsp;
+                        {(this.registryEntry().registry_references_count === 1) ? t(this.props, 'activerecord.models.registry_references.one') : t(this.props, 'activerecord.models.registry_references.other')}
+                        {(this.registryEntry().registry_references_count > 0) ? ':' : ''}
+                    </h4>
+                    <br/>
+                    <ul>
+                        {references}
+                    </ul>
+                    {this.loader(references)}
 
-            </div>
-        );
+                </div>
+            );
+        } else {
+            return null;
+        }
     }
 }
