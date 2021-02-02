@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useI18n } from '../hooks/i18n';
+import { useI18n } from 'bundles/archive/hooks/i18n';
 
 export default function MergeRegistryEntriesButton({
     locale,

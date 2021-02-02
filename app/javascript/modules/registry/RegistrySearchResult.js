@@ -1,7 +1,7 @@
 import React from 'react';
-import RegistryEntryContainer from '../containers/RegistryEntryContainer';
+import RegistryEntryContainer from './RegistryEntryContainer';
 
-export default class RegistryEntrySearchResult extends React.Component {
+export default class RegistrySearchResult extends React.Component {
     show(id, key) {
         if (this.props.result.ancestors[id]) {
             return (

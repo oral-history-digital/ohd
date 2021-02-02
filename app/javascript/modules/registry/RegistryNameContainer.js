@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import RegistryName from '../components/RegistryName';
 import { submitData, deleteData } from 'modules/data';
+import RegistryName from './RegistryName';
 
 const mapStateToProps = (state) => {
     return {

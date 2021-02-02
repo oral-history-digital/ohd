@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import RegistryEntryShow from '../components/RegistryEntryShow';
 import { fetchData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { setArchiveId } from 'modules/archive';
 import { setTapeAndTime } from 'modules/interview';
+import RegistryEntryShow from './RegistryEntryShow';
 
 const mapStateToProps = (state) => {
     return {

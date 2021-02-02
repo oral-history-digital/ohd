@@ -1,8 +1,9 @@
 import React from 'react';
+
 import { Form } from 'modules/forms';
-import RegistryNameFormContainer from '../containers/RegistryNameFormContainer';
-import RegistryNameContainer from '../containers/RegistryNameContainer';
 import { t } from 'lib/utils';
+import RegistryNameContainer from './RegistryNameContainer';
+import RegistryNameFormContainer from './RegistryNameFormContainer';
 
 export default class RegistryEntryForm extends React.Component {
 
