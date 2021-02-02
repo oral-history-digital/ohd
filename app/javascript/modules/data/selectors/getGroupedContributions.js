@@ -1,7 +1,7 @@
 import { createSelector } from 'reselect'
 
 import { getEditView } from 'modules/archive';
-import { getCurrentInterview } from '../dataSelectors';
+import { getCurrentInterview } from './dataSelectors';
 
 const CONTRIBUTION_TYPES_USER = [
     'interviewer',

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import AnnotationForm from '../components/AnnotationForm';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { getLocale, getTranslations } from 'modules/archive';
 

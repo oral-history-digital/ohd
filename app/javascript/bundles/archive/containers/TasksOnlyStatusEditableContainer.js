@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import DataList from '../components/DataList';
 import CommentsContainer from '../containers/CommentsContainer';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
+import { fetchData, deleteData, submitData } from 'modules/data';
 
 const mapStateToProps = (state) => {
     return {

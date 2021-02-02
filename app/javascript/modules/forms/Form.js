@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import FormComponent from './FormComponent';
-import { getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
+import { getCurrentProject } from 'modules/data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);

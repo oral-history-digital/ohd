@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import RegistryEntrySearchResult from '../components/RegistryEntrySearchResult';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData } from '../actions/dataActionCreators';
+import { fetchData, deleteData } from 'modules/data';
 import { addRemoveRegistryEntryId } from 'modules/archive';
 import { getCookie } from '../../../lib/utils';
 

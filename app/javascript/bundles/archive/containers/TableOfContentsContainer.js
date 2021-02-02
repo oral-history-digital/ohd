@@ -1,8 +1,8 @@
 import {connect} from 'react-redux';
 
 import TableOfContents from '../components/TableOfContents';
-import { fetchData } from '../actions/dataActionCreators';
-import { getCurrentInterview } from '../selectors/dataSelectors';
+import { fetchData } from 'modules/data';
+import { getCurrentInterview } from 'modules/data';
 import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 
 const mapStateToProps = (state) => {

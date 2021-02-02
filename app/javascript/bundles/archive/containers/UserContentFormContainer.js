@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
 import UserContentForm from '../components/UserContentForm';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 
 import { getProject } from 'lib/utils';
 import { getCurrentTape } from 'modules/interview';
-import { getCurrentInterview } from '../selectors/dataSelectors';
+import { getCurrentInterview } from 'modules/data';
 
 const mapStateToProps = (state) => {
     return {

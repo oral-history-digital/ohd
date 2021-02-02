@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import InterviewTabs from '../components/InterviewTabs';
-import { getCurrentInterview } from '../selectors/dataSelectors';
+import { getCurrentInterview } from 'modules/data';
 import { getProject } from 'lib/utils';
 import { setInterviewTabIndex, getTabIndex } from 'modules/interview';
 

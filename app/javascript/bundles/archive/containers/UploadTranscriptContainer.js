@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 import UploadTranscript from '../components/UploadTranscript';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 import { getInterview } from 'lib/utils';
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
-import { getLanguages } from '../selectors/dataSelectors';
+import { getLanguages } from 'modules/data';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),

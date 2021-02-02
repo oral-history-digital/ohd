@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { getCurrentAccount } from 'bundles/archive/selectors/dataSelectors';
+import { getCurrentAccount } from 'modules/data';
 import UserDetails from './UserDetails';
 
 const mapStateToProps = state => ({

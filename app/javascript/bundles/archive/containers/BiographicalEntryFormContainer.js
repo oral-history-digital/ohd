@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import BiographicalEntryForm from '../components/BiographicalEntryForm';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import InterviewContributors from '../components/InterviewContributors';
 import { openArchivePopup } from 'modules/ui';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 import { getInterview  } from 'lib/utils';
 
 const mapStateToProps = state => ({

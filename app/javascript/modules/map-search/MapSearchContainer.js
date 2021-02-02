@@ -4,7 +4,7 @@ import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getIsLoggedIn } from 'modules/account';
 import { getLocale, getProjectId } from 'modules/archive';
 import { searchInMap, getFoundMarkers, getIsMapSearching, getMapQuery, getMarkersFetched } from 'modules/search';
-import { getProjects } from 'bundles/archive/selectors/dataSelectors';
+import { getProjects } from 'modules/data';
 import MapSearch from './MapSearch';
 
 const mapStateToProps = state => ({

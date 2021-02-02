@@ -5,17 +5,9 @@ import {
     REQUEST_DATA,
     RECEIVE_DATA,
     UPDATE_DATA,
-    //ADD_DATA,
     REMOVE_DATA,
     DELETE_STATUS_MSG,
-} from '../constants/archiveConstants';
-
-//const addData = (params) => ({
-    //type: ADD_DATA,
-    //params: params,
-    //id: id,
-    //dataType: Object.keys(params)[0],
-//});
+} from './action-types';
 
 const updateData = (dataType, id, data, nestedDataType, nestedId) => ({
     type: UPDATE_DATA,
@@ -118,7 +110,7 @@ export function cleanStatusMsg(dataType, msgOrIndex) {
     return dispatch => {
         dispatch(deleteStatusMsg(dataType, msgOrIndex))
     }
-};
+}
 
 const deleteStatusMsg = (dataType, msgOrIndex) => ({
     type: DELETE_STATUS_MSG,

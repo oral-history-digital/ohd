@@ -3,8 +3,8 @@ import { connect } from 'react-redux';
 import Interview from '../components/Interview';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { setArchiveId, getInterviewEditView } from 'modules/archive';
-import { getIsCatalog } from '../selectors/projectSelectors';
-import { getCurrentInterview } from '../selectors/dataSelectors';
+import { getIsCatalog } from 'modules/data';
+import { getCurrentInterview } from 'modules/data';
 
 const mapStateToProps = (state) => ({
     interview: getCurrentInterview(state),

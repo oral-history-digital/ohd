@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 import InterviewEditView from '../components/InterviewEditView';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 
 import { getProject } from 'lib/utils';
-import { getCurrentInterview } from '../selectors/dataSelectors';
+import { getCurrentInterview } from 'modules/data';
 import { handleTranscriptScroll, setActualSegment, getCurrentTape, getTranscriptScrollEnabled, getTranscriptTime } from 'modules/interview';
 
 const mapStateToProps = (state) => {

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Task from '../components/Task';
-import { fetchData, submitData } from '../actions/dataActionCreators';
+import { fetchData, submitData } from 'modules/data';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state, ownProps) => {

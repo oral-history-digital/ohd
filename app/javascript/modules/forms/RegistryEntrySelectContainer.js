@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
 import RegistryEntrySelect from './RegistryEntrySelect';
-import { fetchData } from 'bundles/archive/actions/dataActionCreators';
-import { getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
+import { fetchData } from 'modules/data';
+import { getCurrentProject } from 'modules/data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);

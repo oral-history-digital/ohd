@@ -4,8 +4,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import { AccountContainer } from 'modules/account';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
-import StateCheck from 'bundles/archive/components/StateCheck';
-import { getCurrentInterviewFetched } from 'bundles/archive/selectors/dataSelectors';
+import { StateCheck, getCurrentInterviewFetched } from 'modules/data';
 import ArchiveSearchTabPanelContainer from './ArchiveSearchTabPanelContainer';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
 import UserContentTabPanel from './UserContentTabPanel';

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 import { getProjectId, getLocale } from 'modules/archive';
-import { getProjects } from '../selectors/dataSelectors';
+import { getProjects } from 'modules/data';
 import { Spinner } from 'modules/spinners';
 
 export default function Fetch({

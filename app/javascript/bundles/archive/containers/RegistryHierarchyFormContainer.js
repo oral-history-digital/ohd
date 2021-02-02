@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import RegistryHierarchyForm from '../components/RegistryHierarchyForm';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {

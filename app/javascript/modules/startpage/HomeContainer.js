@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Home from './Home';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getIsCampscapesProject, getProjectTranslation, getShowFeaturedInterviews,
-    getShowStartPageVideo } from 'bundles/archive/selectors/projectSelectors';
+    getShowStartPageVideo } from 'modules/data';
 
 const mapStateToProps = state => ({
     isCampscapesProject: getIsCampscapesProject(state),

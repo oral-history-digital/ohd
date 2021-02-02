@@ -4,7 +4,7 @@ import InterviewWorkflowRow from '../components/InterviewWorkflowRow';
 import { searchInInterview } from 'modules/search';
 import { setTapeAndTime } from 'modules/interview';
 import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state, ownProps) => {

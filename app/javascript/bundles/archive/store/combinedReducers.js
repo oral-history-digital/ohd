@@ -1,23 +1,23 @@
 import { combineReducers } from 'redux';
 
-import data from './data';
+import { accountReducer, ACCOUNT_NAME } from 'modules/account';
 import { archiveReducer, ARCHIVE_NAME } from 'modules/archive';
-import { locationsReducer, LOCATIONS_NAME } from 'modules/locations';
+import { dataReducer, DATA_NAME } from 'modules/data';
 import { flyoutTabsReducer, FLYOUT_TABS_NAME } from 'modules/flyout-tabs';
 import { interviewReducer, INTERVIEW_NAME } from 'modules/interview';
-import { accountReducer, ACCOUNT_NAME } from 'modules/account';
+import { locationsReducer, LOCATIONS_NAME } from 'modules/locations';
 import { popupReducer, POPUP_NAME } from 'modules/ui';
 import { searchReducer, SEARCH_NAME } from 'modules/search';
 
 const combinedReducer = combineReducers({
-    data,
-    [ARCHIVE_NAME]: archiveReducer,
-    [SEARCH_NAME]: searchReducer,
-    [POPUP_NAME]: popupReducer,
     [ACCOUNT_NAME]: accountReducer,
+    [ARCHIVE_NAME]: archiveReducer,
+    [DATA_NAME]: dataReducer,
+    [FLYOUT_TABS_NAME]: flyoutTabsReducer,
     [INTERVIEW_NAME]: interviewReducer,
     [LOCATIONS_NAME]: locationsReducer,
-    [FLYOUT_TABS_NAME]: flyoutTabsReducer,
+    [POPUP_NAME]: popupReducer,
+    [SEARCH_NAME]: searchReducer,
 });
 
 export default combinedReducer;

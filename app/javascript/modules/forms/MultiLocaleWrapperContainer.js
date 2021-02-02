@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
+import { getCurrentProject } from 'modules/data';
 import MultiLocaleWrapper from './MultiLocaleWrapper';
 
 const mapStateToProps = (state) => {

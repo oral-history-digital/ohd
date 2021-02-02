@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import InterviewTextMaterials from '../components/InterviewTextMaterials';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 import { getCookie } from '../../../lib/utils';
 
 import { getInterview } from '../../../lib/utils';

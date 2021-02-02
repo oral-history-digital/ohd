@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import ProjectFooter from './ProjectFooter';
-import { getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
+import { getCurrentProject } from 'modules/data';
 import { getLocale } from 'modules/archive';
 
 function SiteFooter() {

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 import { getLocale, getProjectId, getSelectedRegistryEntryIds } from 'modules/archive';
 import MergeRegistryEntriesButton from '../components/MergeRegistryEntriesButton';
 
