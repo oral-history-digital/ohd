@@ -240,7 +240,8 @@ class Interview < ApplicationRecord
 
     # Create localized attributes so that we can order
     # interviews in all languages.
-    Rails.configuration.i18n.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
+      binding.pry
       string :"person_name_#{locale}", :stored => true do
         if full_title(locale)
           title = full_title(locale).mb_chars.normalize(:kd)
@@ -629,6 +630,7 @@ class Interview < ApplicationRecord
       if first_names.empty?
         lastname_with_birthname
       else
+      binding.pry
         I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
       end
     else
