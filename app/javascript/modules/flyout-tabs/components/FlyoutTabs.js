@@ -7,7 +7,7 @@ import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
 import { StateCheck, getCurrentInterviewFetched } from 'modules/data';
 import ArchiveSearchTabPanelContainer from './ArchiveSearchTabPanelContainer';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
-import UserContentTabPanel from './UserContentTabPanel';
+import WorkbookTabPanel from './WorkbookTabPanel';
 import UsersAdminTabPanelContainer from './UsersAdminTabPanelContainer';
 import IndexingTabPanelContainer from './IndexingTabPanelContainer';
 import MapTabPanelContainer from './MapTabPanelContainer';
@@ -159,7 +159,7 @@ export default class FlyoutTabs extends React.Component {
                     }
 
                     <TabPanel key="user-content">
-                        <UserContentTabPanel />
+                        <WorkbookTabPanel />
                     </TabPanel>
 
                     <TabPanel key="tabpanel-indexing">

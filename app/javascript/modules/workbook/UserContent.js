@@ -2,10 +2,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import UserContentFormContainer from '../containers/UserContentFormContainer';
-import UserContentDeleteContainer from '../containers/UserContentDeleteContainer';
-import { t, queryToText, pathBase } from '../../../lib/utils';
+import { t, queryToText, pathBase } from 'lib/utils';
 import { isMobile } from 'modules/responsive';
+import UserContentFormContainer from './UserContentFormContainer';
+import UserContentDeleteContainer from './UserContentDeleteContainer';
 
 export default class UserContent extends React.Component {
     constructor(props) {

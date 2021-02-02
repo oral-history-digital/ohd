@@ -8,7 +8,7 @@ import moment from 'moment';
 import InterviewPreviewContainer from 'bundles/archive/containers/InterviewPreviewContainer';
 import InterviewListRowContainer from 'bundles/archive/containers/InterviewListRowContainer';
 import InterviewWorkflowRowContainer from 'bundles/archive/containers/InterviewWorkflowRowContainer';
-import UserContentFormContainer from 'bundles/archive/containers/UserContentFormContainer';
+import { UserContentFormContainer } from 'modules/workbook';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
 import { t, admin, queryToText, pathBase } from 'lib/utils';
 import { INDEX_SEARCH } from 'modules/flyout-tabs';

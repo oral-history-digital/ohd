@@ -1,10 +1,9 @@
 import React from 'react';
 
-import UserContentsContainer from '../containers/UserContentsContainer';
-import { t } from '../../../lib/utils';
+import { t } from 'lib/utils';
+import UserContentsContainer from './UserContentsContainer';
 
-export default class AllUserContents extends React.Component {
-
+export default class Workbook extends React.Component {
     componentDidMount() {
         if (!this.props.userContentsStatus && this.props.account.email && !this.props.account.error) {
             this.props.fetchData(this.props, 'user_contents');
@@ -30,4 +29,3 @@ export default class AllUserContents extends React.Component {
         );
     }
 }
-

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import classNames from 'classnames';
 
-import UserContentFormContainer from 'bundles/archive/containers/UserContentFormContainer';
+import { UserContentFormContainer } from 'modules/workbook';
 import VideoPlayerButtonsContainer from 'bundles/archive/containers/VideoPlayerButtonsContainer';
 import { MISSING_STILL } from 'bundles/archive/constants/archiveConstants'
 import { t, fullname, sortedSegmentsWithActiveIndex, getInterviewee } from 'lib/utils';

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import AllUserContents from '../components/AllUserContents';
 import { fetchData } from 'modules/data';
+import Workbook from './Workbook';
 
 const mapStateToProps = (state) => {
     return {
@@ -21,4 +21,4 @@ const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, dataId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, dataId, nestedDataType, extraParams)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(AllUserContents);
+export default connect(mapStateToProps, mapDispatchToProps)(Workbook);
