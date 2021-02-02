@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { submitData } from 'bundles/archive/actions/dataActionCreators';
 import { getProjects, getCurrentAccount } from 'bundles/archive/selectors/dataSelectors';
-import { getLocale, getProjectId } from 'bundles/archive/selectors/archiveSelectors';
+import { getLocale, getProjectId } from 'modules/archive';
 import UserDetailsForm from './UserDetailsForm';
 
 const mapStateToProps = state => ({

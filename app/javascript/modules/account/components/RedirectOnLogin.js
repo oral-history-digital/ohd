@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
 import { usePrevious } from 'bundles/archive/hooks/misc';
-import { getLocale, getProjectId } from 'bundles/archive/selectors/archiveSelectors';
+import { getLocale, getProjectId } from 'modules/archive';
 import { pathBase } from 'lib/utils';
 import { getIsLoggedIn } from '../selectors';
 

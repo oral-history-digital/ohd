@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { getProjectId, getLocale } from './archiveSelectors';
+import { getProjectId, getLocale } from 'modules/archive';
 import { getCurrentProject } from './dataSelectors';
 
 export const getShowFeaturedInterviews = state => {

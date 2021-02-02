@@ -6,7 +6,7 @@ import {
     submitDois,
     addRemoveArchiveId,
     setArchiveIds
-} from '../actions/archiveActionCreators';
+} from 'modules/archive';
 import { deleteData, submitData } from '../actions/dataActionCreators';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale } from 'bundles/archive/selectors/archiveSelectors';
+import { getLocale } from 'modules/archive';
 import ArchivePopup from './ArchivePopup';
 import { closeArchivePopup } from '../actions';
 import { getPopup } from '../selectors';

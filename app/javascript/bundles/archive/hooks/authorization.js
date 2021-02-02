@@ -2,7 +2,7 @@ import { useSelector } from 'react-redux';
 
 import { admin as originalAdmin } from 'lib/utils';
 import { getCurrentAccount } from '../selectors/dataSelectors';
-import { getEditView } from '../selectors/archiveSelectors';
+import { getEditView } from 'modules/archive';
 
 export function useAuthorization() {
     const account = useSelector(getCurrentAccount);

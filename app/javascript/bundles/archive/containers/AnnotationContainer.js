@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import Annotation from '../components/Annotation';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData } from '../actions/dataActionCreators';
-import { getLocale, getTranslations } from '../selectors/archiveSelectors';
+import { getLocale, getTranslations } from 'modules/archive';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),

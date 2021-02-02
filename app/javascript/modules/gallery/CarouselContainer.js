@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData } from 'bundles/archive/actions/dataActionCreators';
 import { getCurrentAccount, getCurrentInterview, getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
-import { getArchiveId, getEditView, getLocale, getTranslations } from 'bundles/archive/selectors/archiveSelectors';
+import { getArchiveId, getEditView, getLocale, getTranslations } from 'modules/archive';
 import Carousel from './Carousel';
 
 const mapStateToProps = (state) => {

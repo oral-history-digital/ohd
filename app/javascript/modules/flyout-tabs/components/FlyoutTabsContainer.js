@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getInterview, getInterviewee, getProject } from 'lib/utils';
 import { openArchivePopup } from 'modules/ui';
-import { setLocale } from 'bundles/archive/actions/archiveActionCreators';
+import { setLocale } from 'modules/archive';
 import { setFlyoutTabsIndex } from '../actions';
 import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors';
 import FlyoutTabs from './FlyoutTabs';

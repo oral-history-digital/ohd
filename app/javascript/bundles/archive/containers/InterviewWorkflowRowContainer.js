@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import InterviewWorkflowRow from '../components/InterviewWorkflowRow';
 import { searchInInterview } from 'modules/search';
 import { setTapeAndTime } from 'modules/interview';
-import { setArchiveId, addRemoveArchiveId } from '../actions/archiveActionCreators';
+import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
 import { fetchData } from '../actions/dataActionCreators';
 import { getProject } from 'lib/utils';
 

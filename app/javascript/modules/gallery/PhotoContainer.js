@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { openArchivePopup } from 'modules/ui';
 import { getCurrentInterview, getCurrentAccount } from 'bundles/archive/selectors/dataSelectors';
-import { getEditView, getLocale, getTranslations } from 'bundles/archive/selectors/archiveSelectors';
+import { getEditView, getLocale, getTranslations } from 'modules/archive';
 import Photo from './Photo';
 
 const mapStateToProps = state => ({

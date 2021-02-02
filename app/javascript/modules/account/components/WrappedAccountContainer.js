@@ -2,7 +2,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { getLocale, getTranslations } from 'bundles/archive/selectors/archiveSelectors';
+import { getLocale, getTranslations } from 'modules/archive';
 import { getCurrentAccount } from 'bundles/archive/selectors/dataSelectors';
 import WrappedAccount from './WrappedAccount';
 

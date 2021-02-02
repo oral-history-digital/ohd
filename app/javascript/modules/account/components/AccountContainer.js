@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { changeToEditView } from 'bundles/archive/actions/archiveActionCreators';
+import { changeToEditView } from 'modules/archive';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { getCookie } from 'lib/utils';
 import { submitLogout } from '../actions';

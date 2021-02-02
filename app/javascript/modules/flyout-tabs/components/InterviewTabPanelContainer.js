@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getInterviewee, getProject } from 'lib/utils';
 import { getCurrentInterview } from 'bundles/archive/selectors/dataSelectors';
 import { searchInArchive } from 'modules/search';
-import { setViewMode } from 'bundles/archive/actions/archiveActionCreators';
+import { setViewMode } from 'modules/archive';
 import InterviewTabPanel from './InterviewTabPanel';
 import { hideFlyoutTabs } from '../actions';
 

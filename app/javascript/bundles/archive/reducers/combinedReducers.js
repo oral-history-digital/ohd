@@ -1,7 +1,7 @@
 import { combineReducers } from 'redux';
 
-import archive from './archive';
 import data from './data';
+import { archiveReducer, ARCHIVE_NAME } from 'modules/archive';
 import { locationsReducer, LOCATIONS_NAME } from 'modules/locations';
 import { flyoutTabsReducer, FLYOUT_TABS_NAME } from 'modules/flyout-tabs';
 import { interviewReducer, INTERVIEW_NAME } from 'modules/interview';
@@ -10,8 +10,8 @@ import { popupReducer, POPUP_NAME } from 'modules/ui';
 import { searchReducer, SEARCH_NAME } from 'modules/search';
 
 const combinedReducer = combineReducers({
-    archive,
     data,
+    [ARCHIVE_NAME]: archiveReducer,
     [SEARCH_NAME]: searchReducer,
     [POPUP_NAME]: popupReducer,
     [ACCOUNT_NAME]: accountReducer,

@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { submitData, fetchData, deleteData } from 'bundles/archive/actions/dataActionCreators';
 import { getCurrentAccount, getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
-import { getLocale, getLocales, getTranslations } from 'bundles/archive/selectors/archiveSelectors';
+import { getLocale, getLocales, getTranslations } from 'modules/archive';
 import PhotoForm from './PhotoForm';
 
 const mapStateToProps = (state) => {
