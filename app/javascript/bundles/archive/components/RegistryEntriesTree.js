@@ -9,7 +9,10 @@ import AuthorizedContent from './AuthorizedContent';
 import Fetch from './Fetch';
 import { INDEX_REGISTRY_ENTRIES } from '../constants/flyoutTabs';
 import { ROOT_REGISTRY_ENTRY_ID } from '../constants/archiveConstants';
-import { getRootRegistryEntryFetched } from '../selectors/dataSelectors';
+import { 
+    getRootRegistryEntryFetched,
+    getRootRegistryEntryReload
+} from '../selectors/dataSelectors';
 import { useI18n } from '../hooks/i18n';
 
 export default function RegistryEntriesTree({
@@ -30,8 +33,9 @@ export default function RegistryEntriesTree({
     return (
         <div className='wrapper-content register'>
             <Fetch
-                fetchParams={['registry_entries', ROOT_REGISTRY_ENTRY_ID]}
+                fetchParams={['registry_entries', ROOT_REGISTRY_ENTRY_ID, null, null, 'with_associations=true']}
                 testSelector={getRootRegistryEntryFetched}
+                reloadSelector={getRootRegistryEntryReload}
             >
                 <AuthShowContainer ifLoggedIn>
                         <h1 className='registry-entries-title'>
