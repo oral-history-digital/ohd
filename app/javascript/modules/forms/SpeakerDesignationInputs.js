@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { useI18n } from 'bundles/archive/hooks/i18n';
-import { getPeople } from 'bundles/archive/selectors/dataSelectors';
+import { getPeople } from 'modules/data';
 import { fullname } from 'lib/utils';
 import InputContainer from './InputContainer';
 

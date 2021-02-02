@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
 import Transcript from '../components/Transcript';
-import { fetchData } from '../actions/dataActionCreators';
-import { getCurrentInterview } from '../selectors/dataSelectors';
+import { fetchData } from 'modules/data';
+import { getCurrentInterview } from 'modules/data';
 import { handleTranscriptScroll, setActualSegment, getCurrentTape, getTranscriptScrollEnabled, getTranscriptTime } from 'modules/interview';
 
 const mapStateToProps = (state) => {

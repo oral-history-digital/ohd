@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import SubHeading from '../components/SubHeading';
 import { handleSegmentClick, getCurrentTape, getTranscriptTime } from 'modules/interview';
-import { getCurrentInterview } from '../selectors/dataSelectors';
+import { getCurrentInterview } from 'modules/data';
 
 const mapStateToProps = (state) => {
     return {

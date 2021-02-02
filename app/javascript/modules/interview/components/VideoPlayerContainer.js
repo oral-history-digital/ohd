@@ -5,7 +5,7 @@ import { handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAnd
 import { openArchivePopup } from 'modules/ui';
 import { getProject } from 'lib/utils';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
-import { getCurrentInterview } from 'bundles/archive/selectors/dataSelectors';
+import { getCurrentInterview } from 'modules/data';
 import { getCurrentTape, getTranscriptScrollEnabled, getVideoResolution, getVideoStatus, getVideoTime } from '../selectors';
 
 const mapStateToProps = (state) => {

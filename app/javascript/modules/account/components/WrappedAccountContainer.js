@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getLocale, getTranslations } from 'modules/archive';
-import { getCurrentAccount } from 'bundles/archive/selectors/dataSelectors';
+import { getCurrentAccount } from 'modules/data';
 import WrappedAccount from './WrappedAccount';
 
 const mapStateToProps = state => ({

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import SegmentHeadingForm from '../components/SegmentHeadingForm';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { getProject } from '../../../lib/utils';
 

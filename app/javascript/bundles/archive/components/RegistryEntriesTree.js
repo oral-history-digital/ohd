@@ -6,9 +6,8 @@ import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
 import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearchResultContainer';
 import MergeRegistryEntriesButtonContainer from '../containers/MergeRegistryEntriesButtonContainer';
 import AuthorizedContent from './AuthorizedContent';
-import Fetch from './Fetch';
 import { INDEX_REGISTRY_ENTRIES } from 'modules/flyout-tabs';
-import { getRootRegistryEntryFetched } from '../selectors/dataSelectors';
+import { Fetch, getRootRegistryEntryFetched } from 'modules/data';
 import { useI18n } from '../hooks/i18n';
 
 export default function RegistryEntriesTree({

@@ -4,7 +4,7 @@ import UserRegistrations from '../components/UserRegistrations';
 import {
     setQueryParams,
 } from 'modules/search';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {

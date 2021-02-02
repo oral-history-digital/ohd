@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import RegistryReference from '../components/RegistryReference';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { deleteData, fetchData } from '../actions/dataActionCreators';
+import { deleteData, fetchData } from 'modules/data';
 
 const mapStateToProps = (state) => {
     return {

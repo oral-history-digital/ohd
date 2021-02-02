@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 import AllUserContents from '../components/AllUserContents';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         projectId: state.archive.projectId,
         projects: state.data.projects,
         contents: state.data.user_contents,

@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { deleteData } from 'bundles/archive/actions/dataActionCreators';
-import { getCurrentAccount, getCurrentInterview, getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
+import { deleteData } from 'modules/data';
+import { getCurrentAccount, getCurrentInterview, getCurrentProject } from 'modules/data';
 import { getArchiveId, getEditView, getLocale, getTranslations } from 'modules/archive';
 import Carousel from './Carousel';
 

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import UserContentDelete from '../components/UserContentDelete';
-import { deleteData } from '../actions/dataActionCreators';
+import { deleteData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {

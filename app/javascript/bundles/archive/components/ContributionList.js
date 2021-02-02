@@ -1,8 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { getPeople } from '../selectors/dataSelectors';
-import getGroupedContributions from '../selectors/data/getGroupedContributions';
+import { getPeople, getGroupedContributions } from 'modules/data';
 import ContributionGroup from './ContributionGroup';
 import ContributionContainer from '../containers/ContributionContainer';
 

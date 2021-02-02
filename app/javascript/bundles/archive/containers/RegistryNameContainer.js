@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 import RegistryName from '../components/RegistryName';
-import { submitData, deleteData } from '../actions/dataActionCreators';
+import { submitData, deleteData } from 'modules/data';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         account: state.data.accounts.current,

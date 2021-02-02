@@ -9,9 +9,8 @@ import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewLoggedOutContainer from '../containers/InterviewLoggedOutContainer';
 import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
-import Fetch from './Fetch';
 import { Spinner } from 'modules/spinners';
-import { getContributorsFetched, getCurrentInterviewFetched } from '../selectors/dataSelectors';
+import { Fetch, getContributorsFetched, getCurrentInterviewFetched } from 'modules/data';
 
 export default function Interview({
     interview,

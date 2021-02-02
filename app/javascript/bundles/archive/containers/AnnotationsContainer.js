@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import Annotations from '../components/Annotations';
 import { openArchivePopup } from 'modules/ui';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 import { getLocale, getTranslations } from 'modules/archive';
 
 const mapStateToProps = state => ({

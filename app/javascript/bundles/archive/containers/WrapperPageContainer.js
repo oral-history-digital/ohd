@@ -5,7 +5,7 @@ import WrapperPage from '../components/WrapperPage';
 import { closeArchivePopup, getPopupShow } from 'modules/ui';
 import { toggleFlyoutTabs } from 'modules/flyout-tabs';
 import { setLocale, setProjectId, fetchStaticContent } from 'modules/archive';
-import { fetchData, deleteData } from '../actions/dataActionCreators';
+import { fetchData, deleteData } from 'modules/data';
 
 import { getCookie, getProject } from 'lib/utils';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs/selectors';

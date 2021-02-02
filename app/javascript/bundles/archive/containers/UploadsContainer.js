@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import Uploads from '../components/Uploads';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 import { getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {

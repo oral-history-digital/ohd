@@ -7,7 +7,7 @@ import {
     addRemoveArchiveId,
     setArchiveIds
 } from 'modules/archive';
-import { deleteData, submitData } from '../actions/dataActionCreators';
+import { deleteData, submitData } from 'modules/data';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {

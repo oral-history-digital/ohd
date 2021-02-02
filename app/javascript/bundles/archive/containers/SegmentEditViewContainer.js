@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SegmentEditView from '../components/SegmentEditView';
 import { openArchivePopup } from 'modules/ui';
 import { setTapeAndTime } from 'modules/interview';
-import { getCurrentInterview } from '../selectors/dataSelectors';
+import { getCurrentInterview } from 'modules/data';
 
 const mapStateToProps = (state) => {
     return {

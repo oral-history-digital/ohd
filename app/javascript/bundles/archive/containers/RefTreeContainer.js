@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import RefTree from '../components/RefTree';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 
 import { getInterview } from '../../../lib/utils';
 

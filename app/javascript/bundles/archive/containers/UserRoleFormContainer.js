@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import UserRoleForm from '../components/UserRoleForm';
-import { submitData, fetchData } from '../actions/dataActionCreators';
+import { submitData, fetchData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = (state) => {

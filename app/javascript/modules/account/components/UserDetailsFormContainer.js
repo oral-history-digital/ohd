@@ -1,8 +1,8 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { submitData } from 'bundles/archive/actions/dataActionCreators';
-import { getProjects, getCurrentAccount } from 'bundles/archive/selectors/dataSelectors';
+import { submitData } from 'modules/data';
+import { getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getProjectId } from 'modules/archive';
 import UserDetailsForm from './UserDetailsForm';
 

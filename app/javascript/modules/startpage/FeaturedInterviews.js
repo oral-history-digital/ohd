@@ -1,9 +1,8 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 
-import { getFeaturedInterviewsFetched, getFeaturedInterviewsArray } from 'bundles/archive/selectors/dataSelectors';
+import { Fetch, getFeaturedInterviewsFetched, getFeaturedInterviewsArray } from 'modules/data';
 import InterviewPreviewContainer from 'bundles/archive/containers/InterviewPreviewContainer';
-import Fetch from 'bundles/archive/components/Fetch';
 
 export default function FeaturedInterviews() {
     const interviews = useSelector(getFeaturedInterviewsArray);

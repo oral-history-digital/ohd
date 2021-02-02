@@ -1,11 +1,10 @@
 import {
-    ADD_DATA,
     UPDATE_DATA,
     REMOVE_DATA,
     REQUEST_DATA,
     RECEIVE_DATA,
     DELETE_STATUS_MSG,
-} from '../constants/archiveConstants';
+} from './action-types';
 
 const initialState = {
     accounts: {

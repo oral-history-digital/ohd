@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import RegistryReferenceForm from '../components/RegistryReferenceForm';
-import { submitData, fetchData } from '../actions/dataActionCreators';
+import { submitData, fetchData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { getProject } from '../../../lib/utils';
 

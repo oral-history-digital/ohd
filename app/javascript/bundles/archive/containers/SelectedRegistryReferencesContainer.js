@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import SelectedRegistryReferences from '../components/SelectedRegistryReferences';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 
 import { getInterview, getProject } from '../../../lib/utils';
 

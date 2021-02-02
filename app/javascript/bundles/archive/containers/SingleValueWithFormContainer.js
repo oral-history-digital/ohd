@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 import SingleValueWithForm from '../components/SingleValueWithForm';
-import { submitData } from '../actions/dataActionCreators';
+import { submitData } from 'modules/data';
 
 const mapStateToProps = (state) => {
-    return { 
+    return {
         locale: state.archive.locale,
         account: state.data.accounts.current,
         editView: state.archive.editView,

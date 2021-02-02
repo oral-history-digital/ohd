@@ -4,7 +4,7 @@ import WrappedDataList from '../components/WrappedDataList';
 import TaskTypePermissionsContainer from '../containers/TaskTypePermissionsContainer';
 import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData } from '../actions/dataActionCreators';
+import { fetchData, deleteData, submitData } from 'modules/data';
 import { getCookie, getProject } from '../../../lib/utils';
 
 const mapStateToProps = (state) => {

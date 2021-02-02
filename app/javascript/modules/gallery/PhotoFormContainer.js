@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { submitData, fetchData, deleteData } from 'bundles/archive/actions/dataActionCreators';
-import { getCurrentAccount, getCurrentProject } from 'bundles/archive/selectors/dataSelectors';
+import { submitData, fetchData, deleteData } from 'modules/data';
+import { getCurrentAccount, getCurrentProject } from 'modules/data';
 import { getLocale, getLocales, getTranslations } from 'modules/archive';
 import PhotoForm from './PhotoForm';
 

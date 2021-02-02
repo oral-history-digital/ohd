@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import WrapperPageContainer from 'bundles/archive/containers/WrapperPageContainer';
 import { Routes, RoutesWithProjectId } from './Routes';
-import { getProjects } from 'bundles/archive/selectors/dataSelectors';
+import { getProjects } from 'modules/data';
 import { projectByDomain } from 'lib/utils';
 
 function RouteDivider() {

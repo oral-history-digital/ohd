@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import MarkTextForm from '../components/MarkTextForm';
-import { fetchData, submitData } from '../actions/dataActionCreators';
+import { fetchData, submitData } from 'modules/data';
 import { getInterview, getProject } from '../../../lib/utils';
 import { closeArchivePopup } from 'modules/ui';
 

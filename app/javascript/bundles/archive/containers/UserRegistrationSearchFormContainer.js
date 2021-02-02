@@ -5,7 +5,7 @@ import {
     resetQuery,
     setQueryParams,
 } from 'modules/search';
-import { fetchData } from '../actions/dataActionCreators';
+import { fetchData } from 'modules/data';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { getProject } from '../../../lib/utils';
 
