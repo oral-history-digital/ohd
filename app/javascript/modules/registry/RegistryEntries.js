@@ -1,11 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import RegistryEntryContainer from '../containers/RegistryEntryContainer';
-import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
 import { PixelLoader } from 'modules/spinners';
-import AuthorizedContent from './AuthorizedContent';
+import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
 import { t, admin } from 'lib/utils';
+import RegistryEntryContainer from './RegistryEntryContainer';
+import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 
 export default class RegistryEntries extends React.Component {
     componentDidMount() {

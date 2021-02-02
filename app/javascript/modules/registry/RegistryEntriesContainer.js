@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import RegistryEntries from '../components/RegistryEntries';
-import { openArchivePopup, closeArchivePopup } from 'modules/ui';
+import RegistryEntries from './RegistryEntries';
+import { openArchivePopup } from 'modules/ui';
 import { fetchData } from 'modules/data';
-import { getCookie, getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     return {

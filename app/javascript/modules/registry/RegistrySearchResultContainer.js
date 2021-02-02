@@ -1,18 +1,21 @@
 import { connect } from 'react-redux';
 
-import RegistryEntry from '../components/RegistryEntry';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData } from 'modules/data';
-import { addRemoveRegistryEntryId, getLocale, getTranslations } from 'modules/archive';
+import { addRemoveRegistryEntryId } from 'modules/archive';
+import RegistrySearchResult from './RegistrySearchResult';
 
-const mapStateToProps = (state) => ({
-    projectId: state.archive.projectId,
-    projects: state.data.projects,
-    locale: getLocale(state),
-    translations: getTranslations(state),
-    registryEntriesStatus: state.data.statuses.registry_entries,
-    selectedRegistryEntryIds: state.archive.selectedRegistryEntryIds,
-});
+const mapStateToProps = (state) => {
+    return {
+        archiveId: state.archive.archiveId,
+        locale: state.archive.locale,
+        translations: state.archive.translations,
+        registryEntriesStatus: state.data.statuses.registry_entries,
+        account: state.data.accounts.current,
+        editView: state.archive.editView,
+        selectedRegistryEntryIds: state.archive.selectedRegistryEntryIds,
+    }
+}
 
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
@@ -22,4 +25,4 @@ const mapDispatchToProps = (dispatch) => ({
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntry);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrySearchResult);

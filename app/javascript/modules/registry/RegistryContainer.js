@@ -1,16 +1,14 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import RegistryEntriesTree from '../components/RegistryEntriesTree';
-import { getRootRegistryEntry, getCurrentProject } from 'modules/data';
+import { getRootRegistryEntry, getCurrentProject, getProjects } from 'modules/data';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { getProjectId } from 'modules/archive';
 import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree } from 'modules/search';
+import Registry from './Registry';
 
 const mapStateToProps = (state) => ({
     rootRegistryEntry: getRootRegistryEntry(state),
-    projectId: getProjectId(state),
-    projects: state.data.projects,
+    projects: getProjects(state),
     currentProject: getCurrentProject(state),
     foundRegistryEntries: getRegistryEntriesSearch(state),
     showRegistryEntriesTree: getShowRegistryEntriesTree(state),
@@ -21,4 +19,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setFlyoutTabsIndex,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntriesTree);
+export default connect(mapStateToProps, mapDispatchToProps)(Registry);

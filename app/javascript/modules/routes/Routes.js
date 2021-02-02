@@ -11,7 +11,7 @@ import UploadsContainer from 'bundles/archive/containers/UploadsContainer';
 import WrappedPeopleContainer from 'bundles/archive/containers/WrappedPeopleContainer';
 import WrappedLanguagesContainer from 'bundles/archive/containers/WrappedLanguagesContainer';
 import WrappedCollectionsContainer from 'bundles/archive/containers/WrappedCollectionsContainer';
-import RegistryEntriesTreeContainer from 'bundles/archive/containers/RegistryEntriesTreeContainer';
+import { RegistryContainer } from 'modules/registry';
 import { ArchiveSearchContainer } from 'modules/search';
 import { MapSearchContainer } from 'modules/map-search';
 import WrappedProjectsContainer from 'bundles/archive/containers/WrappedProjectsContainer';
@@ -28,7 +28,7 @@ export const Routes = () => (
         <Route exact path="/:locale/interviews/new" component={props => <ErrorBoundaryContainer><EditInterviewContainer {...props} /></ErrorBoundaryContainer>} />
         <Route exact path="/:locale/interviews/:archiveId" component={props => <ErrorBoundaryContainer><InterviewContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:locale/uploads/new" component={props => <ErrorBoundaryContainer><UploadsContainer {...props} /></ErrorBoundaryContainer>} />
-        <Route path="/:locale/registry_entries" component={props => <ErrorBoundaryContainer><RegistryEntriesTreeContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:locale/registry_entries" component={props => <ErrorBoundaryContainer><RegistryContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:locale/searches/archive" component={props => <ErrorBoundaryContainer><ArchiveSearchContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:locale/searches/map" component={props => <ErrorBoundaryContainer><MapSearchContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:locale/projects" component={props => <ErrorBoundaryContainer><WrappedProjectsContainer {...props} /></ErrorBoundaryContainer>} />
@@ -54,7 +54,7 @@ export const RoutesWithProjectId = () => (
         <Route exact path="/:projectId/:locale/interviews/new" component={props => <ErrorBoundaryContainer><EditInterviewContainer {...props} /></ErrorBoundaryContainer>} />
         <Route exact path="/:projectId/:locale/interviews/:archiveId" component={props => <ErrorBoundaryContainer><InterviewContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:projectId/:locale/uploads/new" component={props => <ErrorBoundaryContainer><UploadsContainer {...props} /></ErrorBoundaryContainer>} />
-        <Route path="/:projectId/:locale/registry_entries" component={props => <ErrorBoundaryContainer><RegistryEntriesTreeContainer {...props} /></ErrorBoundaryContainer>} />
+        <Route path="/:projectId/:locale/registry_entries" component={props => <ErrorBoundaryContainer><RegistryContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:projectId/:locale/searches/archive" component={props => <ErrorBoundaryContainer><ArchiveSearchContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:projectId/:locale/searches/map" component={props => <ErrorBoundaryContainer><MapSearchContainer {...props} /></ErrorBoundaryContainer>} />
         <Route path="/:projectId/:locale/projects" component={props => <ErrorBoundaryContainer><WrappedProjectsContainer {...props} /></ErrorBoundaryContainer>} />

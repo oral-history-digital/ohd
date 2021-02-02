@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import RegistryEntryFormContainer from '../containers/RegistryEntryFormContainer';
-import RegistryEntryShowContainer from '../containers/RegistryEntryShowContainer';
-import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
-import RegistryHierarchyFormContainer from '../containers/RegistryHierarchyFormContainer';
-import PopupMenu from './PopupMenu';
-import AuthorizedContent from './AuthorizedContent';
+import PopupMenu from 'bundles/archive/components/PopupMenu';
+import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
 import { t } from 'lib/utils';
+import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
+import RegistryEntryShowContainer from './RegistryEntryShowContainer';
+import RegistryEntryFormContainer from './RegistryEntryFormContainer';
+import RegistryEntriesContainer from './RegistryEntriesContainer';
 
 export default class RegistryEntry extends React.Component {
     constructor(props) {

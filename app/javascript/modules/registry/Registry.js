@@ -1,17 +1,16 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import AuthShowContainer from '../containers/AuthShowContainer';
-import RegistryEntriesContainer from '../containers/RegistryEntriesContainer';
-import RegistryEntrySearchResultContainer from '../containers/RegistryEntrySearchResultContainer';
-import MergeRegistryEntriesButtonContainer from '../containers/MergeRegistryEntriesButtonContainer';
-import AuthorizedContent from './AuthorizedContent';
+import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
+import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
 import { INDEX_REGISTRY_ENTRIES } from 'modules/flyout-tabs';
 import { Fetch, getRootRegistryEntryFetched } from 'modules/data';
-import { useI18n } from '../hooks/i18n';
+import { useI18n } from 'bundles/archive/hooks/i18n';
+import RegistrySearchResultContainer from './RegistrySearchResultContainer';
+import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
+import RegistryEntriesContainer from './RegistryEntriesContainer';
 
-export default function RegistryEntriesTree({
-    projectId,
+export default function Registry({
     currentProject,
     rootRegistryEntry,
     foundRegistryEntries,
@@ -53,7 +52,7 @@ export default function RegistryEntriesTree({
                                     (
                                         <ul className="RegistryEntryList RegistryEntryList--root">
                                             {
-                                                foundRegistryEntries.results.map(result => <RegistryEntrySearchResultContainer key={result.id} result={result} />)
+                                                foundRegistryEntries.results.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
                                             }
                                         </ul>
                                     )
@@ -68,11 +67,11 @@ export default function RegistryEntriesTree({
     );
 }
 
-RegistryEntriesTree.propTypes = {
+Registry.propTypes = {
+    currentProject: PropTypes.object,
     rootRegistryEntry: PropTypes.object,
     foundRegistryEntries: PropTypes.object.isRequired,
     showRegistryEntriesTree: PropTypes.bool.isRequired,
     isRegistryEntrySearching: PropTypes.bool,
-    projectId: PropTypes.string.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
 };
