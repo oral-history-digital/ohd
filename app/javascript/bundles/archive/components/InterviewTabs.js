@@ -1,7 +1,7 @@
 import React from 'react';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
-import TableOfContentsContainer from '../containers/TableOfContentsContainer';
+import { TableOfContentsContainer } from 'modules/toc';
 import TranscriptContainer from '../containers/TranscriptContainer';
 import InterviewSearchContainer from '../containers/InterviewSearchContainer';
 import RefTreeContainer from '../containers/RefTreeContainer';
