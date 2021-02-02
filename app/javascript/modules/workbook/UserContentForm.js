@@ -1,6 +1,7 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
 import moment from 'moment';
+
+import { t } from 'lib/utils';
 
 export default class UserContentForm extends React.Component {
     constructor(props) {

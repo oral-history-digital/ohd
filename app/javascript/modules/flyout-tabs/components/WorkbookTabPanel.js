@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useI18n } from 'bundles/archive/hooks/i18n';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
-import AllUserContentsContainer from 'bundles/archive/containers/AllUserContentsContainer';
+import { WorkbookContainer } from 'modules/workbook';
 
-function UserContentTabPanel() {
+function WorkbookTabPanel() {
     const { t } = useI18n();
 
     return (
@@ -13,10 +13,10 @@ function UserContentTabPanel() {
                 { t('user_content') }
             </div>
             <div className='flyout-sub-tabs-container flyout-folder'>
-                <AllUserContentsContainer />
+                <WorkbookContainer />
             </div>
         </AuthShowContainer>
     );
 }
 
-export default UserContentTabPanel;
+export default WorkbookTabPanel;

@@ -1,15 +1,13 @@
 import { connect } from 'react-redux';
 
-import UserContentDelete from '../components/UserContentDelete';
 import { deleteData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
+import UserContentDelete from './UserContentDelete';
 
-const mapStateToProps = (state) => {
-    return {
-        locale: state.archive.locale,
-        translations: state.archive.translations,
-    }
-}
+const mapStateToProps = state => ({
+    locale: state.archive.locale,
+    translations: state.archive.translations,
+});
 
 const mapDispatchToProps = (dispatch) => ({
     deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),

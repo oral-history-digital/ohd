@@ -1,6 +1,6 @@
 import React from 'react';
 
-import UserContentContainer from '../containers/UserContentContainer';
+import UserContentContainer from './UserContentContainer';
 
 export default class UserContents extends React.Component {
 
@@ -11,7 +11,7 @@ export default class UserContents extends React.Component {
             open: false
         };
     }
-  
+
     sortedContent() {
         let userContentByType = [];
         for(var i in this.props.contents) {
@@ -41,4 +41,3 @@ export default class UserContents extends React.Component {
         );
     }
 }
-

@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
-import UserContent from '../components/UserContent';
 import { openArchivePopup } from 'modules/ui';
 import { setArchiveId } from 'modules/archive';
 import { searchInArchive } from 'modules/search';
 import { setTapeAndTime } from 'modules/interview';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
+import UserContent from './UserContent';
 
 const mapStateToProps = (state) => {
     return {
