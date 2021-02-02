@@ -9,6 +9,7 @@ import Spinner from './Spinner';
 export default function Fetch({
     fetchParams,
     testSelector,
+    reloadSelector,
     fallback = <Spinner />,
     alwaysRenderChildren = false,
     children,
@@ -16,13 +17,14 @@ export default function Fetch({
     const projectId = useSelector(getProjectId);
     const locale = useSelector(getLocale);
     const testResult = useSelector(testSelector);
+    const doReload = useSelector(reloadSelector);
     const dispatch = useDispatch();
 
     useEffect(() => {
         if (!testResult) {
             dispatch(fetchData({ projectId, locale }, ...fetchParams));
         }
-    }, [JSON.stringify(fetchParams)]);
+    }, [JSON.stringify(fetchParams), doReload]);
 
     if (testResult || alwaysRenderChildren) {
         return children;
