@@ -4,6 +4,7 @@ class RegistryEntriesController < ApplicationController
   def create
     authorize RegistryEntry
     @registry_entry = RegistryEntry.create(registry_entry_params)
+    @registry_entry.save validate: false # there is an ancestor validation from somewhere producing invalid entries
     current_project.touch
 
     respond_to do |format|
