@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import InterviewForm from '../components/InterviewForm';
 import { submitData } from 'modules/data';
-import { getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

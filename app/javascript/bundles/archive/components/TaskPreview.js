@@ -1,7 +1,8 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { t, pathBase } from 'lib/utils';
+import { pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class TaskPreview extends React.Component {
 

@@ -5,8 +5,7 @@ import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
 import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
 import { INDEX_REGISTRY_ENTRIES } from 'modules/flyout-tabs';
 import { Fetch, getRootRegistryEntryFetched } from 'modules/data';
-import { useI18n } from 'bundles/archive/hooks/i18n';
-import RegistrySearchResultContainer from './RegistrySearchResultContainer';
+import { useI18n } from 'modules/i18n';import RegistrySearchResultContainer from './RegistrySearchResultContainer';
 import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
 

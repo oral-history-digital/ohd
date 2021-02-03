@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import RefTree from '../components/RefTree';
 import { fetchData } from 'modules/data';
 
-import { getInterview } from '../../../lib/utils';
+import { getInterview } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     return {

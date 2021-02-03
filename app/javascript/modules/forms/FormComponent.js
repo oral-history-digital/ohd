@@ -8,7 +8,8 @@ import SelectContainer from './SelectContainer';
 import RegistryEntrySelectContainer from './RegistryEntrySelectContainer';
 import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
 import SpeakerDesignationInputs from './SpeakerDesignationInputs';
-import { t, pluralize } from 'lib/utils';
+import { pluralize } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class Form extends React.Component {
     constructor(props) {

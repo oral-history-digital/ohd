@@ -1,6 +1,6 @@
 import React from 'react';
 import { Form } from 'modules/forms';
-import { t } from '../../../lib/utils';
+import { t } from 'modules/i18n';
 import { Link } from 'react-router-dom';
 
 export default class ContributionForm extends React.Component {

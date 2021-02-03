@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import { t, pathBase } from 'lib/utils';
 import { PixelLoader } from 'modules/spinners';
+import { pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class RegistryEntryShow extends React.Component {
 

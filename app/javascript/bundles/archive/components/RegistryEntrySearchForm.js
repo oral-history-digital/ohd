@@ -1,5 +1,7 @@
 import React from 'react';
-import { t, pathBase } from '../../../lib/utils';
+
+import { pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 import { PixelLoader } from 'modules/spinners';
 import { isMobile } from 'modules/responsive';
 

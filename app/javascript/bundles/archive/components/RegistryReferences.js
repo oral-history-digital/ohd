@@ -3,7 +3,7 @@ import React from 'react';
 import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
 import RegistryReferenceContainer from '../containers/RegistryReferenceContainer';
 import AuthorizedContent from './AuthorizedContent';
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class RegistryReferences extends React.Component {
     componentDidMount() {

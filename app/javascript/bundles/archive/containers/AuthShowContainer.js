@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import AuthShow from '../components/AuthShow';
 import { fetchData } from 'modules/data';
-import { getCookie, getProject } from '../../../lib/utils';
+import { getCookie, getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

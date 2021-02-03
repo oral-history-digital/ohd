@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { Form } from 'modules/forms';
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class RegistryHierarchyForm extends React.Component {
 

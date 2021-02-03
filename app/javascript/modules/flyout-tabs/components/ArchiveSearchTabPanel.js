@@ -4,8 +4,7 @@ import PropTypes from 'prop-types';
 import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContainer';
 import { ArchiveSearchFormContainer } from 'modules/search';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
-import { useI18n } from 'bundles/archive/hooks/i18n';
-import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
+import { useI18n } from 'modules/i18n';import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
 
 function ArchiveSearchTabPanel({ selectedArchiveIds }) {
     const { t } = useI18n();

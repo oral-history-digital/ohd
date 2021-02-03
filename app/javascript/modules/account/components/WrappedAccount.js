@@ -5,7 +5,7 @@ import TasksOnlyStatusEditableContainer from 'bundles/archive/containers/TasksOn
 import UserRolesContainer from 'bundles/archive/containers/UserRolesContainer';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
 import { INDEX_ACCOUNT } from 'modules/flyout-tabs';
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 import UserDetailsContainer from './UserDetailsContainer';
 
 export default class WrappedAccount extends React.Component {

@@ -3,7 +3,7 @@ import SelectedRegistryReferences from '../components/SelectedRegistryReferences
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData } from 'modules/data';
 
-import { getInterview, getProject } from '../../../lib/utils';
+import { getInterview, getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     return {

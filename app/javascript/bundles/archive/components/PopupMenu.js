@@ -3,7 +3,7 @@ import Popup from 'reactjs-popup';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { useI18n } from '../hooks/i18n';
+import { useI18n } from 'modules/i18n';
 
 function PopupMenu({ className, children }) {
     const { t } = useI18n();

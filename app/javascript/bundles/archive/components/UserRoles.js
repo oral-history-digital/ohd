@@ -2,7 +2,8 @@ import React from 'react';
 
 import UserRoleContainer from '../containers/UserRoleContainer';
 import UserRoleFormContainer from '../containers/UserRoleFormContainer';
-import { t, admin } from '../../../lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class UserRoles extends React.Component {
 

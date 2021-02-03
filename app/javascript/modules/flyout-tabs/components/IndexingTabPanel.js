@@ -6,7 +6,8 @@ import RegistryReferenceTypesSearchFormContainer from 'bundles/archive/container
 import CollectionsSearchFormContainer from 'bundles/archive/containers/CollectionsSearchFormContainer';
 import LanguagesSearchFormContainer from 'bundles/archive/containers/LanguagesSearchFormContainer';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
-import { admin, pathBase, t } from 'lib/utils';
+import { admin, pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 class IndexingTabPanel extends Component {
     static propTypes = {

@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import PopupMenu from 'bundles/archive/components/PopupMenu';
 import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';

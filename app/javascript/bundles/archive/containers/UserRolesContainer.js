@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import UserRoles from '../components/UserRoles';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { getCookie } from '../../../lib/utils';
+import { getCookie } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     return {

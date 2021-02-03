@@ -6,7 +6,8 @@ import PersonContainer from '../containers/PersonContainer';
 import BiographicalEntryContainer from '../containers/BiographicalEntryContainer';
 import { PhotoContainer } from 'modules/gallery';
 import { RegistryEntryContainer } from 'modules/registry';
-import { t, pluralize, pathBase } from '../../../lib/utils';
+import { pluralize, pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class InterviewSearchResults extends React.Component {
 

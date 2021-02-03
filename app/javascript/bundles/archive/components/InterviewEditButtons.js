@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import SelectInterviewEditViewColumnsFormContainer from '../containers/SelectInterviewEditViewColumnsFormContainer';
-import { t } from '../../../lib/utils';
+import { t } from 'modules/i18n';
 
 class InterviewEditButtons extends Component {
     static propTypes = {

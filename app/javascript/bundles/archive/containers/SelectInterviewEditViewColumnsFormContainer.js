@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SelectInterviewEditViewColumnsForm from '../components/SelectInterviewEditViewColumnsForm';
 import { closeArchivePopup } from 'modules/ui';
 import { selectInterviewEditViewColumns } from 'modules/archive';
-import { getInterview, getCookie } from '../../../lib/utils';
+import { getInterview, getCookie } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     return {

@@ -1,7 +1,8 @@
 import React from 'react';
 
 import SegmentContainer from '../containers/SegmentContainer';
-import { t, sortedSegmentsWithActiveIndex, getInterviewee } from 'lib/utils';
+import { sortedSegmentsWithActiveIndex, getInterviewee } from 'lib/utils';
+import { t } from 'modules/i18n';
 import { segmentsForTape } from 'utils/segments';
 import {
     SEGMENTS_AFTER,

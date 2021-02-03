@@ -1,5 +1,5 @@
 import React from 'react';
-import { t } from '../../../lib/utils';
+import { t } from 'modules/i18n';
 import moment from 'moment';
 
 export default class CitationInfo extends React.Component {

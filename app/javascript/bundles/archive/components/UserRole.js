@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { t, pluralize, admin } from '../../../lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class UserRole extends React.Component {
 
@@ -70,4 +71,3 @@ export default class UserRole extends React.Component {
         )
     }
 }
-

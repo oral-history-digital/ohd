@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import SegmentForm from '../components/SegmentForm';
 import { submitData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
-import { getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

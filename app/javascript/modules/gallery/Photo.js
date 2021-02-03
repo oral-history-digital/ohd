@@ -1,7 +1,8 @@
 import React from 'react';
 
 import PhotoFormContainer from './PhotoFormContainer';
-import { t, admin } from 'lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class Photo extends React.Component {
 

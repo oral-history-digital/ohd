@@ -2,8 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { useI18n } from 'bundles/archive/hooks/i18n';
-import { getPeople } from 'modules/data';
+import { useI18n } from 'modules/i18n';import { getPeople } from 'modules/data';
 import { fullname } from 'lib/utils';
 import InputContainer from './InputContainer';
 

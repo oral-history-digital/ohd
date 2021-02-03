@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { t, admin, pathBase } from '../../../lib/utils';
+import { admin, pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class AdminActions extends React.Component {
     static propTypes = {

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import AssignSpeakersForm from '../components/AssignSpeakersForm';
 import { fetchData, submitData } from 'modules/data';
-import { getInterview, getProject } from '../../../lib/utils';
+import { getInterview, getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

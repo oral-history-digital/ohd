@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 import AuthorizedContent from './AuthorizedContent';
 import ContributionList from './ContributionList';
-import { useI18n } from '../hooks/i18n';
+import { useI18n } from 'modules/i18n';
 
 export default function InterviewContributors({
     interview,

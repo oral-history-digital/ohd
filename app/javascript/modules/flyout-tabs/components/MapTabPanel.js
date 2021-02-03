@@ -5,7 +5,8 @@ import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContai
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
 import { ArchiveSearchFormContainer } from 'modules/search';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
-import { admin, t } from 'lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 function MapTabPanel(props) {
     return (

@@ -7,7 +7,8 @@ import { ArchivePopupButton } from 'modules/ui';
 
 import TaskPreviewContainer from '../containers/TaskPreviewContainer';
 
-import { t, pluralize, camelcase, humanReadable } from 'lib/utils';
+import { pluralize, camelcase, humanReadable } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class Data extends React.Component {
 

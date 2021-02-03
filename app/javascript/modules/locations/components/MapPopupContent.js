@@ -2,7 +2,7 @@ import React from 'react';
 import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { useI18n} from 'bundles/archive/hooks/i18n';
+import { useI18n } from 'modules/i18n';
 import { handleSegmentClick } from 'modules/interview';
 
 export default function MapPopupContent({ location }) {

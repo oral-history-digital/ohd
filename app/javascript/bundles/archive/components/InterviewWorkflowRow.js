@@ -2,10 +2,10 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import { MISSING_STILL } from '../constants/archiveConstants'
-import AuthShowContainer from '../containers/AuthShowContainer';
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
 import TaskContainer from '../containers/TaskContainer';
-import { t, pathBase, getInterviewee, loadIntervieweeWithAssociations } from '../../../lib/utils';
+import { pathBase, getInterviewee, loadIntervieweeWithAssociations } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class InterviewWorkflowRow extends React.Component {
 
@@ -118,7 +118,7 @@ export default class InterviewWorkflowRow extends React.Component {
 
     fullView() {
         if (
-            !this.state.collapsed && 
+            !this.state.collapsed &&
             this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`] &&
             this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`].split('-')[0] === 'fetched'
         ) {
@@ -173,7 +173,7 @@ export default class InterviewWorkflowRow extends React.Component {
                             noLabel={true}
                             withEmpty={true}
                         />, '10'
-                    )} 
+                    )}
                 </div>
                 <div className='search-result-workflow-detail data boxes' key={`${this.props.interview.archive_id}-workflow-details`}>
                     {this.fullViewHeader()}
