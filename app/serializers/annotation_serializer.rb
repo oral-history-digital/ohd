@@ -6,7 +6,10 @@ class AnnotationSerializer < ApplicationSerializer
     :interview_id
 
   def text
-    object.localized_hash(:text)
+    object.translations.inject({}) do |mem, t|
+      mem[t.locale] = t.text 
+      mem
+    end
   end
 
   def author

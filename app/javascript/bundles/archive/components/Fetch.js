@@ -17,7 +17,7 @@ export default function Fetch({
     const projectId = useSelector(getProjectId);
     const locale = useSelector(getLocale);
     const testResult = useSelector(testSelector);
-    const doReload = useSelector(reloadSelector);
+    const doReload = reloadSelector && useSelector(reloadSelector);
     const dispatch = useDispatch();
 
     useEffect(() => {
