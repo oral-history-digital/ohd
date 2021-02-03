@@ -23,7 +23,10 @@ FactoryBot.define do
     has_newsletter { true }
     is_catalog { nil }
     hidden_registry_entry_ids { [28205, 28221, 28237] }
-    pdf_registry_entry_codes { [] }
+    pdf_registry_entry_ids { [] }
+    aspect_x { 16 }
+    aspect_y { 9 }
+    archive_id_number_length { 3 }
     fullname_on_landing_page { nil }
     cache_key_prefix { "cdoh" }
     name { "Das Interview-Archiv „Colonia Dignidad“" }
@@ -54,6 +57,8 @@ FactoryBot.define do
   factory :user_account do
     sequence(:login){|n| "aneumann#{n}" }
     sequence(:email){|n| "a.neumann#{n}@mad.de" }
+    password { "123456" }
+    confirmed_at { Time.now - 1.day }
     association :user_registration, factory: :user_registration_with_projects
   end
 
