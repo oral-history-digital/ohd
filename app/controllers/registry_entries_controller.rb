@@ -54,6 +54,7 @@ class RegistryEntriesController < ApplicationController
 
   def index
     policy_scope RegistryEntry
+    cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at)].max.strftime("%d.%m-%H:%M")
 
     respond_to do |format|
       format.html { render "react/app" }
@@ -88,7 +89,6 @@ class RegistryEntriesController < ApplicationController
       end
       format.pdf do
         @locale = params[:lang]
-        cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at)].max.strftime("%d.%m-%H:%M")
 
         pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
           @registry_entries = RegistryEntry.pdf_entries(current_project)
@@ -100,7 +100,7 @@ class RegistryEntriesController < ApplicationController
         root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.registry_entries.where(code: 'root').first
         csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
           CSV.generate(col_sep: "\t") do |row|
-            row << %w(parent_name parent_id name id description latitude, longitude)
+            row << %w(parent_name parent_id name id description latitude longitude)
             root.on_all_descendants do |entry|
               entry.parents.each do |parent|
                 row << [parent && parent.descriptor(params[:lang]), parent && parent.id, entry.descriptor(params[:lang]), entry.id, entry.notes(params[:lang]), entry.latitude, entry.longitude]
