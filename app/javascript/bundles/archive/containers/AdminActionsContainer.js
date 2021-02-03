@@ -17,7 +17,9 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         statuses: state.data.statuses.interviews,
         doiResult: state.archive.doiResult,
-        archiveSearchResults: state.search.interviews
+        archiveSearchResults: state.search.archive.foundInterviews,
+        editView: state.archive.editView,
+        account: state.data.accounts.current,
     }
 }
 
