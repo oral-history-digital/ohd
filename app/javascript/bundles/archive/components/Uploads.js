@@ -1,7 +1,8 @@
 import React from 'react';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import { Form } from 'modules/forms';
-import { t, admin } from '../../../lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class Uploads extends React.Component {
 

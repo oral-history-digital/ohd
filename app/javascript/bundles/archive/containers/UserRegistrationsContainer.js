@@ -5,7 +5,7 @@ import {
     setQueryParams,
 } from 'modules/search';
 import { fetchData } from 'modules/data';
-import { getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

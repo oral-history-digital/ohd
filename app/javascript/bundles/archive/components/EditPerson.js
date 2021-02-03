@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import PersonFormContainer from '../containers/PersonFormContainer';
-import { t } from '../../../lib/utils';
+import { t } from 'modules/i18n';
 
 export default class EditPerson extends React.Component {
 

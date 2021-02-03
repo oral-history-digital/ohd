@@ -1,7 +1,6 @@
 import React from 'react';
 
-import { useI18n } from 'bundles/archive/hooks/i18n';
-import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
+import { useI18n } from 'modules/i18n';import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
 import { WorkbookContainer } from 'modules/workbook';
 
 function WorkbookTabPanel() {

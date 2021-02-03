@@ -1,6 +1,6 @@
 import React from 'react';
 import moment from 'moment';
-import { t } from '../../../lib/utils';
+import { t } from 'modules/i18n';
 
 export default class Segment extends React.Component {
 
@@ -70,4 +70,3 @@ export default class Segment extends React.Component {
         )
     }
 }
-

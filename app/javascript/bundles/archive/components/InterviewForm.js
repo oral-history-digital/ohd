@@ -2,7 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import { Form } from 'modules/forms';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
-import { t, fullname, pathBase } from '../../../lib/utils';
+import { fullname, pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class InterviewForm extends React.Component {
 

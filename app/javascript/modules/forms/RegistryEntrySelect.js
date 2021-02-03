@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Select from './SelectContainer';
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class RegistryEntrySelect extends React.Component {
 

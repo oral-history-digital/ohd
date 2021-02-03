@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
 import AuthorizedContent from './AuthorizedContent';

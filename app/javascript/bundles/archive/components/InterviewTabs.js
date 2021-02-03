@@ -5,7 +5,7 @@ import { TableOfContentsContainer } from 'modules/toc';
 import TranscriptContainer from '../containers/TranscriptContainer';
 import InterviewSearchContainer from '../containers/InterviewSearchContainer';
 import RefTreeContainer from '../containers/RefTreeContainer';
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class InterviewTabs extends React.Component {
 

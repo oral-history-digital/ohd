@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 import AuthorizedContent from './AuthorizedContent';
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class InterviewInfo extends React.Component {
     collection() {

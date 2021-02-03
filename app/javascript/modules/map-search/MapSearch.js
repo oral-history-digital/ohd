@@ -85,7 +85,7 @@ export default class MapSearch extends React.Component {
 MapSearch.propTypes = {
     markersFetched: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
-    isMapSearching: PropTypes.bool.isRequired,
+    isMapSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,
     foundMarkers: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,

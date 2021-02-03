@@ -1,7 +1,7 @@
 import React from 'react';
 
 import Label from './Label';
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class Element extends React.Component {
 

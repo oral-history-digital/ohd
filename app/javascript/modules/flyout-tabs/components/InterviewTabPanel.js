@@ -18,7 +18,8 @@ import CitationInfoContainer from 'bundles/archive/containers/CitationInfoContai
 import { GalleryContainer } from 'modules/gallery';
 import UploadTranscriptContainer from 'bundles/archive/containers/UploadTranscriptContainer';
 import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
-import { admin, pathBase, t } from 'lib/utils';
+import { admin, pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 class InterviewTabPanel extends Component {
     static propTypes = {
@@ -29,7 +30,7 @@ class InterviewTabPanel extends Component {
         hasMap: PropTypes.bool.isRequired,
         locale: PropTypes.string.isRequired,
         translations: PropTypes.object.isRequired,
-        account: PropTypes.object.isRequired,
+        account: PropTypes.object,
         editView: PropTypes.bool.isRequired,
     }
 

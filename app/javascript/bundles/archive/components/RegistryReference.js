@@ -2,7 +2,8 @@ import React from 'react';
 import classNames from 'classnames';
 
 import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
-import { t, pluralize, underscore, admin } from '../../../lib/utils';
+import { pluralize, underscore, admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class RegistryReference extends React.Component {
 

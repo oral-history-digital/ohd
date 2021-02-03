@@ -9,7 +9,8 @@ import AuthShowContainer from '../containers/AuthShowContainer';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 
-import { t, fullname, getInterviewee, pathBase, humanReadable } from '../../../lib/utils';
+import { fullname, getInterviewee, pathBase, humanReadable } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class PersonData extends React.Component {
 

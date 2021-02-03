@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import CitationInfo from '../components/CitationInfo';
 
-import { getInterview, getProject } from '../../../lib/utils';
+import { getInterview, getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let interview = getInterview(state);

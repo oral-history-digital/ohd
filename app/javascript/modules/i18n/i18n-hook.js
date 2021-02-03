@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
-import { t as originalT } from 'lib/utils';
 import { getLocale, getTranslations } from 'modules/archive';
+import originalT from './t';
 
 export function useI18n() {
     const locale = useSelector(getLocale);

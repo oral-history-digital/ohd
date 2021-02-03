@@ -10,7 +10,8 @@ import InterviewListRowContainer from 'bundles/archive/containers/InterviewListR
 import InterviewWorkflowRowContainer from 'bundles/archive/containers/InterviewWorkflowRowContainer';
 import { UserContentFormContainer } from 'modules/workbook';
 import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
-import { t, admin, queryToText, pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
+import { admin, queryToText, pathBase } from 'lib/utils';
 import { INDEX_SEARCH } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
 

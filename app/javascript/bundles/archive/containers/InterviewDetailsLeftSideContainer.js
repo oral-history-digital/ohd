@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import InterviewDetailsLeftSide from '../components/InterviewDetailsLeftSide';
-import { getProject, getInterview, getInterviewee } from '../../../lib/utils';
+import { getProject, getInterview, getInterviewee } from 'lib/utils';
 import { searchInArchive } from 'modules/search';
 import { getCurrentInterview } from 'modules/data';
 

@@ -3,7 +3,7 @@ import React from 'react';
 import InputContainer from './InputContainer';
 import TextareaContainer from './TextareaContainer';
 import RichTextareaContainer from './RichTextareaContainer';
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class MultiLocaleWrapper extends React.Component {
 

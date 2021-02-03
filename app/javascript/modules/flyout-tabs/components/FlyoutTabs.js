@@ -15,7 +15,8 @@ import InterviewTabPanelContainer from './InterviewTabPanelContainer';
 import LocaleButtonsContainer from './LocaleButtonsContainer';
 import * as indexes from '../constants';
 import { Spinner } from 'modules/spinners';
-import { t, admin, pathBase } from 'lib/utils';
+import { admin, pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class FlyoutTabs extends React.Component {
     static propTypes = {

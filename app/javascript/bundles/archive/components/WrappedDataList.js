@@ -7,8 +7,8 @@ import { Form } from 'modules/forms';
 import { Spinner } from 'modules/spinners';
 import AuthorizedContent from './AuthorizedContent';
 import { ArchivePopupButton } from 'modules/ui';
-
-import { t, pluralize, parametrizedQuery, statifiedQuery, camelcase } from 'lib/utils';
+import { pluralize, parametrizedQuery, statifiedQuery, camelcase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class WrappedDataList extends React.Component {
 

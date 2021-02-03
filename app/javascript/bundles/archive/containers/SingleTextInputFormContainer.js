@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import SingleTextInputForm from '../components/SingleTextInputForm';
 import { closeArchivePopup } from 'modules/ui';
-import { getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { useI18n } from 'bundles/archive/hooks/i18n';
-import UserDetailsFormContainer from './UserDetailsFormContainer';
+import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
+import UserDetailsFormContainer from './UserDetailsFormContainer';
 
 export default function UserDetails({
     account,

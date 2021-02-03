@@ -7,7 +7,7 @@ import {
 } from 'modules/search';
 import { fetchData } from 'modules/data';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
-import { getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

@@ -1,7 +1,8 @@
 import React from 'react';
-import { t, pathBase } from '../../../lib/utils';
-import { PixelLoader } from 'modules/spinners';
 
+import { PixelLoader } from 'modules/spinners';
+import { pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class InterviewSearchForm extends React.Component {
     constructor(props) {

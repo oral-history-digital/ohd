@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+
 import { PixelLoader } from 'modules/spinners';
 import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
-import { t, admin } from 'lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 import RegistryEntryContainer from './RegistryEntryContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 

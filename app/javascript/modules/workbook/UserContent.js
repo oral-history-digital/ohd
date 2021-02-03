@@ -2,7 +2,8 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { t, queryToText, pathBase } from 'lib/utils';
+import { queryToText, pathBase } from 'lib/utils';
+import { t } from 'modules/i18n';
 import { isMobile } from 'modules/responsive';
 import UserContentFormContainer from './UserContentFormContainer';
 import UserContentDeleteContainer from './UserContentDeleteContainer';

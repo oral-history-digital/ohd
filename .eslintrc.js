@@ -32,6 +32,8 @@ module.exports = {
         "describe": "readonly",
         "expect": "readonly",
         "module": "readonly",
-        "test": "readonly"
+        "test": "readonly",
+        "it": "readonly",
+        "jest": "readonly"
     }
 };

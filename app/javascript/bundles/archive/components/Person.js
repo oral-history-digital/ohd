@@ -1,7 +1,8 @@
 import React from 'react';
 
 import PersonFormContainer from '../containers/PersonFormContainer';
-import { t, fullname, admin } from '../../../lib/utils';
+import { fullname, admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class Person extends React.Component {
 
@@ -76,4 +77,3 @@ export default class Person extends React.Component {
         }
     }
 }
-

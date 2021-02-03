@@ -1,7 +1,7 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
 import CommentsContainer from '../containers/CommentsContainer';
-import { t, admin, pathBase } from '../../../lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class Task extends React.Component {
 
@@ -19,18 +19,18 @@ export default class Task extends React.Component {
 
     usersAsOptionsForSelect(attribute) {
         let opts = Object.values(this.props.userAccounts).
-            filter(u => 
+            filter(u =>
                 (
                     // supervisor-select
-                    attribute === 'supervisor_id' && 
+                    attribute === 'supervisor_id' &&
                     (!!Object.values(u.user_roles).find(r => r.name === 'QM') || u.admin)
                 ) ||
                 (
                     // assigned-user-select
-                    attribute === 'user_account_id' && 
+                    attribute === 'user_account_id' &&
                     (
-                        !!Object.values(u.user_roles).find(r => r.name === 'Redaktion') || 
-                        !!Object.values(u.user_roles).find(r => r.name === 'QM') || 
+                        !!Object.values(u.user_roles).find(r => r.name === 'Redaktion') ||
+                        !!Object.values(u.user_roles).find(r => r.name === 'QM') ||
                         u.admin
                     )
                 )
@@ -69,7 +69,7 @@ export default class Task extends React.Component {
 
     value(attribute) {
         let v, user;
-        if (/^\d+$/.test(this.props.task[attribute])) { 
+        if (/^\d+$/.test(this.props.task[attribute])) {
             //
             // current_user has the key 'current' in the userAccounts-Hash
             //
@@ -95,7 +95,7 @@ export default class Task extends React.Component {
         if (
             // if the task is one of this users tasks
             (
-                attribute === 'workflow_state' && 
+                attribute === 'workflow_state' &&
                 (
                     this.props.task.workflow_state === 'created' ||
                     this.props.task.workflow_state === 'started' ||
@@ -145,8 +145,8 @@ export default class Task extends React.Component {
     render() {
         return (
             <div className='data boxes' key={`${this.props.interview.archive_id}-${this.props.task.id}-tasks-boxes`}>
-                <form 
-                    className={'task-form'} 
+                <form
+                    className={'task-form'}
                     key={`form-${this.props.task.id}`}
                     onSubmit={() => {event.preventDefault(); this.props.submitData(this.props, {task: this.state.task})}}
                 >

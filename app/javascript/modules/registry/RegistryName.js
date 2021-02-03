@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { t, admin } from 'lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 
 export default class RegistryName extends React.Component {

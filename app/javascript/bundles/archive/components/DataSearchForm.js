@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import { FormElement } from 'modules/forms';
 import { isMobile } from 'modules/responsive';
-import { t, pluralize, parametrizedQuery, statifiedQuery } from 'lib/utils';
+import { pluralize, parametrizedQuery, statifiedQuery } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class DataSearchForm extends React.Component {
     constructor(props) {

@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import RegistryEntrySearchForm from '../components/RegistryEntrySearchForm';
 import { searchRegistryEntry } from 'modules/search';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
-import { getProject } from '../../../lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

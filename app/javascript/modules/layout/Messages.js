@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 function Messages(props) {
     if (props.loggedInAt + 5000 > Date.now()) {

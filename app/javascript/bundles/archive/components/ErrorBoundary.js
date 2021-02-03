@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 class ErrorBoundary extends Component {
     static propTypes = {

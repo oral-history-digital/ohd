@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import InterviewEditButtonsContainer from '../containers/InterviewEditButtonsContainer';
 import AuthorizedContent from './AuthorizedContent';
-import { useI18n } from '../hooks/i18n';
+import { useI18n } from 'modules/i18n';
 
 export default function VideoPlayerButtons({
     transcriptScrollEnabled,

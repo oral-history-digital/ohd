@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 import UserContentsContainer from './UserContentsContainer';
 
 export default class Workbook extends React.Component {

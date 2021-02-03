@@ -1,7 +1,8 @@
 import React from 'react';
 import CarouselContainer from './CarouselContainer';
 import PhotoFormContainer from './PhotoFormContainer';
-import { t, admin } from 'lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class Gallery extends React.Component {
 

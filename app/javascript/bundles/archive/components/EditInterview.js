@@ -1,7 +1,7 @@
 import React from 'react';
 import AuthShowContainer from '../containers/AuthShowContainer';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
-import { t } from '../../../lib/utils';
+import { t } from 'modules/i18n';
 
 export default class EditInterview extends React.Component {
 

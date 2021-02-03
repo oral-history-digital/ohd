@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { t } from 'lib/utils';
+import { t } from 'modules/i18n';
 import OrderNewPasswordFormContainer from './OrderNewPasswordFormContainer';
 
 export default class OrderNewPassword extends React.Component {

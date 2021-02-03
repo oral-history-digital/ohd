@@ -1,7 +1,8 @@
 import React from 'react';
 
 import BiographicalEntryFormContainer from '../containers/BiographicalEntryFormContainer';
-import { t, admin } from '../../../lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class BiographicalEntry extends React.Component {
 
@@ -88,7 +89,7 @@ export default class BiographicalEntry extends React.Component {
 
     entries() {
         return ['text', 'start_date', 'end_date'].map((entry, index) => {
-            if (this.props.data[entry][this.props.locale]) 
+            if (this.props.data[entry][this.props.locale])
                 return this.entry(entry);
         })
     }
@@ -123,4 +124,3 @@ export default class BiographicalEntry extends React.Component {
         }
     }
 }
-

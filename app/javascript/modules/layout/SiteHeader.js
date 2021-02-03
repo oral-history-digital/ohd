@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { getCurrentProject } from 'modules/data';
 import { getLocale } from 'modules/archive';
-import { useI18n } from 'bundles/archive/hooks/i18n';
+import { useI18n } from 'modules/i18n';
 
 function SiteHeader() {
     const locale = useSelector(getLocale);

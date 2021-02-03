@@ -1,7 +1,7 @@
 import React from 'react';
 import RefTreeEntryContainer from '../containers/RefTreeEntryContainer';
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
-import { t } from "lib/utils";
+import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 
 export default class RefTree extends React.Component {

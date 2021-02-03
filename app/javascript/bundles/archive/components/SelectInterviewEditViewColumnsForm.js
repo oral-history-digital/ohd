@@ -1,7 +1,7 @@
 import React from 'react';
 import { Form } from 'modules/forms';
 import SingleTextInputFormContainer from '../containers/SingleTextInputFormContainer';
-import { t, admin, permittedInterviewEditColumns } from '../../../lib/utils';
+import { t, admin, permittedInterviewEditColumns } from 'lib/utils';
 
 export default class SelectInterviewEditViewColumnsForm extends React.Component {
 

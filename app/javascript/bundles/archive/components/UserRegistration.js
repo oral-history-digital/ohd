@@ -3,7 +3,8 @@ import React from 'react';
 import UserRegistrationFormContainer from '../containers/UserRegistrationFormContainer';
 import TasksContainer from '../containers/TasksContainer';
 import UserRolesContainer from '../containers/UserRolesContainer';
-import { t, fullname, admin } from '../../../lib/utils';
+import { admin } from 'lib/utils';
+import { t } from 'modules/i18n';
 
 export default class UserRegistration extends React.Component {
 

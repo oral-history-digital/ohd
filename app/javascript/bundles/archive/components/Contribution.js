@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 import { fullname } from 'lib/utils';
 import AuthorizedContent from './AuthorizedContent';
-import { useI18n } from '../hooks/i18n';
+import { useI18n } from 'modules/i18n';
 import { useAuthorization } from '../hooks/authorization';
 
 export default function Contribution({
@@ -84,7 +84,7 @@ export default function Contribution({
 }
 
 Contribution.propTypes = {
-    person: PropTypes.object.isRequired,
+    person: PropTypes.object,
     contribution: PropTypes.object.isRequired,
     withSpeakerDesignation: PropTypes.bool.isRequired,
     archiveId: PropTypes.string.isRequired,

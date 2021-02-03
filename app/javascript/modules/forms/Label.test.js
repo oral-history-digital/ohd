@@ -3,7 +3,7 @@ import renderer from 'react-test-renderer';
 
 import Label from './Label';
 
-jest.mock('bundles/archive/hooks/i18n');
+jest.mock('modules/i18n');
 
 it('renders correctly', () => {
     const tree = renderer
