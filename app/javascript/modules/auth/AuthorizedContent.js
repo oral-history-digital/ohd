@@ -1,6 +1,5 @@
-import React from 'react';
 import PropTypes from 'prop-types';
-import { useAuthorization } from '../hooks/authorization';
+import { useAuthorization } from './authorization-hook';
 
 function AuthorizedContent({
     object,

@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
+import { AuthorizedContent } from 'modules/auth';
 
 import { useI18n } from 'modules/i18n';import RegistryEntrySearchFormContainer from 'bundles/archive/containers/RegistryEntrySearchFormContainer';
 import DownloadRegistryEntriesContainer from './DownloadRegistryEntriesContainer';

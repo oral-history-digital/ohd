@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
-import AuthShowContainer from '../containers/AuthShowContainer';
+import { AuthShowContainer } from 'modules/auth';
 import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
-import AuthorizedContent from './AuthorizedContent';
+import { AuthorizedContent } from 'modules/auth';
 
 export default class InterviewTextMaterials extends React.Component {
     to() {

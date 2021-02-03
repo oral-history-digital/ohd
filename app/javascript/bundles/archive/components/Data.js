@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 
 import PopupMenu from './PopupMenu';
-import AuthorizedContent from './AuthorizedContent';
+import { AuthorizedContent } from 'modules/auth';
 import { ArchivePopupButton } from 'modules/ui';
 
 import TaskPreviewContainer from '../containers/TaskPreviewContainer';

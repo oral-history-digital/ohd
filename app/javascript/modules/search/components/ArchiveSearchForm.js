@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 
 import FacetContainer from './FacetContainer';
-import { iOS, pathBase, admin } from 'lib/utils';
+import { iOS, pathBase } from 'lib/utils';
 import { t } from 'modules/i18n';
-import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
+import { AuthShowContainer, admin } from 'modules/auth';
 import { isMobile } from 'modules/responsive';
 import { Spinner } from 'modules/spinners';
 

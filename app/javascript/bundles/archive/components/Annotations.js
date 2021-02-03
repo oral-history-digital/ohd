@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import AnnotationFormContainer from '../containers/AnnotationFormContainer';
 import AnnotationContainer from '../containers/AnnotationContainer';
-import AuthorizedContent from './AuthorizedContent';
+import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 export default class Annotations extends React.Component {

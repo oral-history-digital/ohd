@@ -9,9 +9,9 @@ import InterviewPreviewContainer from 'bundles/archive/containers/InterviewPrevi
 import InterviewListRowContainer from 'bundles/archive/containers/InterviewListRowContainer';
 import InterviewWorkflowRowContainer from 'bundles/archive/containers/InterviewWorkflowRowContainer';
 import { UserContentFormContainer } from 'modules/workbook';
-import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
+import { AuthShowContainer, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
-import { admin, queryToText, pathBase } from 'lib/utils';
+import { queryToText, pathBase } from 'lib/utils';
 import { INDEX_SEARCH } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
 

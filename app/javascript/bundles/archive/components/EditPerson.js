@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import AuthShowContainer from '../containers/AuthShowContainer';
+import { AuthShowContainer } from 'modules/auth';
 import PersonFormContainer from '../containers/PersonFormContainer';
 import { t } from 'modules/i18n';
 

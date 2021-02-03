@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
+import { AuthorizedContent } from 'modules/auth';
 import SubHeadingContainer from './SubHeadingContainer';
 import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
 

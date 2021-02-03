@@ -1,7 +1,8 @@
 import React from 'react';
 
 import PersonFormContainer from '../containers/PersonFormContainer';
-import { fullname, admin } from 'lib/utils';
+import { fullname } from 'lib/utils';
+import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 export default class Person extends React.Component {

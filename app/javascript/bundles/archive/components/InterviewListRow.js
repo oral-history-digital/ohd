@@ -1,9 +1,9 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { admin, pathBase, getInterviewee, loadIntervieweeWithAssociations } from 'lib/utils';
+import { pathBase, getInterviewee, loadIntervieweeWithAssociations } from 'lib/utils';
 import { t } from 'modules/i18n';
-import AuthShowContainer from '../containers/AuthShowContainer';
+import { AuthShowContainer, admin } from 'modules/auth';
 
 export default class InterviewListRow extends React.Component {
 

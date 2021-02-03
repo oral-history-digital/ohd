@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
-import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { INDEX_REGISTRY_ENTRIES } from 'modules/flyout-tabs';
 import { Fetch, getRootRegistryEntryFetched } from 'modules/data';
 import { useI18n } from 'modules/i18n';import RegistrySearchResultContainer from './RegistrySearchResultContainer';

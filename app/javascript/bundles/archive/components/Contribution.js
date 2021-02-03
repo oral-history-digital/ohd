@@ -3,9 +3,8 @@ import PropTypes from 'prop-types';
 
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 import { fullname } from 'lib/utils';
-import AuthorizedContent from './AuthorizedContent';
+import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { useAuthorization } from '../hooks/authorization';
 
 export default function Contribution({
     locale,

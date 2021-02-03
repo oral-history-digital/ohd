@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { PixelLoader } from 'modules/spinners';
-import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
-import { admin } from 'lib/utils';
+import { AuthorizedContent, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import RegistryEntryContainer from './RegistryEntryContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';

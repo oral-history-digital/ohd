@@ -1,7 +1,7 @@
 import React from 'react';
 
 import BiographicalEntryFormContainer from '../containers/BiographicalEntryFormContainer';
-import { admin } from 'lib/utils';
+import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 export default class BiographicalEntry extends React.Component {

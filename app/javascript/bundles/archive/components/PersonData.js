@@ -3,9 +3,9 @@ import React from 'react';
 import ContentField from './ContentField';
 import { ArchivePopupButton } from 'modules/ui';
 
-import AuthorizedContent from './AuthorizedContent';
+import { AuthorizedContent } from 'modules/auth';
 
-import AuthShowContainer from '../containers/AuthShowContainer';
+import { AuthShowContainer } from 'modules/auth';
 import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
 import ContributionFormContainer from '../containers/ContributionFormContainer';
 

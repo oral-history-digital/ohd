@@ -1,6 +1,6 @@
 import React from 'react';
 import Observer from 'react-intersection-observer'
-import AuthShowContainer from '../containers/AuthShowContainer';
+import { AuthShowContainer } from 'modules/auth';
 import UserRegistrationContainer from '../containers/UserRegistrationContainer';
 import { parametrizedQuery } from 'lib/utils';
 import { t } from 'modules/i18n';

@@ -1,6 +1,8 @@
 import React from 'react';
+
 import SegmentEditViewContainer from '../containers/SegmentEditViewContainer';
-import { sortedSegmentsWithActiveIndex, permittedInterviewEditColumns } from 'lib/utils';
+import { sortedSegmentsWithActiveIndex } from 'lib/utils';
+import { permittedInterviewEditColumns } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 
