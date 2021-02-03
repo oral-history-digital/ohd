@@ -110,3 +110,11 @@ export const getRootRegistryEntryFetched = createSelector(
         return fetched.test(status[ROOT_REGISTRY_ENTRY_ID]);
     }
 );
+
+export const getRootRegistryEntryReload = createSelector(
+    getRegistryEntriesStatus,
+    (status) => {
+        const reload = /^reload/;
+        return reload.test(status[ROOT_REGISTRY_ENTRY_ID]);
+    }
+);
