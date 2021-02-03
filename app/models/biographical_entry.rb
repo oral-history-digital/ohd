@@ -17,7 +17,7 @@ class BiographicalEntry < ApplicationRecord
     end
     string :workflow_state
     string :start_date, :stored => true
-    Rails.configuration.i18n.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       text :"text_#{locale}", stored: true do
         text(locale)
       end

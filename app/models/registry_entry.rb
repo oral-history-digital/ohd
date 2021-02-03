@@ -102,7 +102,7 @@ class RegistryEntry < ApplicationRecord
       registry_references.map{|i| i.archive_id } 
     end
     string :workflow_state
-    Rails.configuration.i18n.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       text :"text_#{locale}", stored: true do
         descriptor(locale)
       end

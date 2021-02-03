@@ -240,7 +240,7 @@ class Interview < ApplicationRecord
 
     # Create localized attributes so that we can order
     # interviews in all languages.
-    Rails.configuration.i18n.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
         if full_title(locale)
           title = full_title(locale).mb_chars.normalize(:kd)

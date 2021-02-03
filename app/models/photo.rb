@@ -30,7 +30,7 @@ class Photo < ApplicationRecord
     end
     string :workflow_state
     integer :id, :stored => true
-    Rails.configuration.i18n.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       text :"text_#{locale}", stored: true do
         caption(locale)
       end
