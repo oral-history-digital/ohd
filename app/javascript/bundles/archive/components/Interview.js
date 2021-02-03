@@ -6,7 +6,7 @@ import InterviewEditViewContainer from '../containers/InterviewEditViewContainer
 import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
 import { VideoPlayerContainer } from 'modules/interview';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
-import AuthShowContainer from '../containers/AuthShowContainer';
+import { AuthShowContainer } from 'modules/auth';
 import InterviewLoggedOutContainer from '../containers/InterviewLoggedOutContainer';
 import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';

@@ -1,8 +1,10 @@
 import React from 'react';
+
 import { Form } from 'modules/forms';
-import ContentField from './ContentField';
-import { admin, underscore, humanReadable } from 'lib/utils';
+import { underscore, humanReadable } from 'lib/utils';
+import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import ContentField from './ContentField';
 
 export default class SingleValueWithForm extends React.Component {
 

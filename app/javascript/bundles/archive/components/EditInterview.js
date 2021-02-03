@@ -1,5 +1,5 @@
 import React from 'react';
-import AuthShowContainer from '../containers/AuthShowContainer';
+import { AuthShowContainer } from 'modules/auth';
 import InterviewFormContainer from '../containers/InterviewFormContainer';
 import { t } from 'modules/i18n';
 

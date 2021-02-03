@@ -1,10 +1,11 @@
 import React from 'react';
 import VizSensor from 'react-visibility-sensor/visibility-sensor';
+import moment from 'moment';
+
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
 import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { SubmitOnBlurForm } from 'modules/forms';
-import { t, fullname, permittedInterviewEditColumns } from "../../../lib/utils";
-import moment from 'moment';
+import { permittedInterviewEditColumns } from 'modules/auth';
 
 export default class SegmentEditView extends React.Component {
 

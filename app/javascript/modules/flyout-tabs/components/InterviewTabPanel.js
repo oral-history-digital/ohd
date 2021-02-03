@@ -4,7 +4,6 @@ import {Link} from 'react-router-dom';
 
 import { AccountContainer } from 'modules/account';
 import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContainer';
-import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer';
 import MarkTextFormContainer from 'bundles/archive/containers/MarkTextFormContainer';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import AssignSpeakersFormContainer from 'bundles/archive/containers/AssignSpeakersFormContainer';
@@ -17,8 +16,8 @@ import { InterviewLocationsContainer } from 'modules/locations';
 import CitationInfoContainer from 'bundles/archive/containers/CitationInfoContainer';
 import { GalleryContainer } from 'modules/gallery';
 import UploadTranscriptContainer from 'bundles/archive/containers/UploadTranscriptContainer';
-import AuthorizedContent from 'bundles/archive/components/AuthorizedContent';
-import { admin, pathBase } from 'lib/utils';
+import { pathBase } from 'lib/utils';
+import { admin, AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 class InterviewTabPanel extends Component {

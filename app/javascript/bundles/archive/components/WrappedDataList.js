@@ -1,11 +1,11 @@
 import React from 'react';
 import Observer from 'react-intersection-observer'
 
-import AuthShowContainer from '../containers/AuthShowContainer';
+import { AuthShowContainer } from 'modules/auth';
 import DataContainer from '../containers/DataContainer';
 import { Form } from 'modules/forms';
 import { Spinner } from 'modules/spinners';
-import AuthorizedContent from './AuthorizedContent';
+import { AuthorizedContent } from 'modules/auth';
 import { ArchivePopupButton } from 'modules/ui';
 import { pluralize, parametrizedQuery, statifiedQuery, camelcase } from 'lib/utils';
 import { t } from 'modules/i18n';

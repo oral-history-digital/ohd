@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { admin } from 'lib/utils';
+import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 export default class UserRole extends React.Component {

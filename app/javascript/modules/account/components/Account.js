@@ -1,11 +1,11 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import AuthShowContainer from 'bundles/archive/containers/AuthShowContainer'
-import LoginFormContainer from './LoginFormContainer'
+import { AuthShowContainer } from 'modules/auth';
 import { pathBase } from 'lib/utils';
 import { t } from 'modules/i18n';
 import { isMobile } from 'modules/responsive';
+import LoginFormContainer from './LoginFormContainer'
 
 export default class Account extends React.Component {
     static propTypes = {

@@ -8,7 +8,8 @@ import PermissionSearchFormContainer from 'bundles/archive/containers/Permission
 import TaskTypeSearchFormContainer from 'bundles/archive/containers/TaskTypeSearchFormContainer';
 import ProjectSearchFormContainer from 'bundles/archive/containers/ProjectSearchFormContainer';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
-import { admin, pathBase } from 'lib/utils';
+import { pathBase } from 'lib/utils';
+import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 class UsersAdminTabPanel extends Component {
