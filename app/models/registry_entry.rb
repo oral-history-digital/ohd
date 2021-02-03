@@ -70,7 +70,7 @@ class RegistryEntry < ApplicationRecord
     #end
   #end
 
-  WORKFLOW_STATES = [:preliminary, :checked, :hidden, :rejected]
+  WORKFLOW_STATES = [:preliminary, :public, :hidden, :rejected]
   validates_inclusion_of :workflow_state, :in => WORKFLOW_STATES.map(&:to_s)
   validates :latitude, numericality: true, allow_blank: true
   validates :longitude, numericality: true, allow_blank: true
