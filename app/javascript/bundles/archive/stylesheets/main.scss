@@ -24,6 +24,11 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
   z-index: $dialog-overlay-z-index;
 }
 
+// react-slick
+.slick-slide > div {
+  height: 100%;
+}
+
 /* Partials */
 @import "dev";
 @import "fonts";

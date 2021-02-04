@@ -1,10 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import { t } from 'modules/i18n';
 
 export default class PhotoForm extends React.Component {
-
     elements() {
         let elements = [
             {
@@ -33,11 +32,10 @@ export default class PhotoForm extends React.Component {
     }
 
     render() {
-        let _this = this;
         return (
             <Form
                 scope='photo'
-                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
                 data={this.props.photo}
                 values={{
                     interview_id: this.props.interview && this.props.interview.id,
@@ -48,3 +46,11 @@ export default class PhotoForm extends React.Component {
         );
     }
 }
+
+PhotoForm.propTypes = {
+    interview: PropTypes.object,
+    photo: PropTypes.object,
+    withUpload: PropTypes.bool,
+    submitData: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};

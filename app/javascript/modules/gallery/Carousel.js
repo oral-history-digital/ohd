@@ -1,42 +1,42 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Slider from 'react-slick';
 
 import PhotoContainer from './PhotoContainer';
-import { admin } from 'modules/auth';
+import { useAuthorization } from 'modules/auth';
 
-export default class Carousel extends React.Component {
-    renderPhotos() {
-        let photos = [];
-        if (
-            this.props.interview
-        ) {
-            for (var c in this.props.interview.photos) {
-                let photo = this.props.interview.photos[c];
-                if (photo.workflow_state === 'public' || admin(this.props, photo)) {
-                    photos.push(<PhotoContainer data={photo} />);
-                }
+export default function Carousel({
+    interview,
+    n,
+})
+{
+    const { isAuthorized } = useAuthorization();
+
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1,
+        adaptiveHeight: true,
+        initialSlide: n || 0,
+        //variableWidth: true
+        //centerMode: true
+        //autoplay: true
+    };
+
+    return (
+        <Slider {...settings}>
+            {
+                Object.values(interview.photos)
+                    .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo))
+                    .map(photo => (<PhotoContainer key={photo.id} data={photo} />))
             }
-        }
-        return photos;
-    }
-
-    render() {
-        let settings = {
-            dots: true,
-            infinite: true,
-            speed: 500,
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            adaptiveHeight: true,
-            initialSlide: this.props.n || 0,
-            //variableWidth: true
-            //centerMode: true
-            //autoplay: true
-        };
-        return (
-            <Slider {...settings}>
-                {this.renderPhotos()}
-            </Slider>
-        );
-    }
+        </Slider>
+    );
 }
+
+Carousel.propTypes = {
+    interview: PropTypes.object.isRequired,
+    n: PropTypes.number,
+};
