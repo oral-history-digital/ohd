@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 
-import BiographicalEntry from '../components/BiographicalEntry';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData } from 'modules/data';
-import { getCookie } from 'lib/utils';
+import BiographicalEntry from './BiographicalEntry';
 
 const mapStateToProps = (state) => {
     return {

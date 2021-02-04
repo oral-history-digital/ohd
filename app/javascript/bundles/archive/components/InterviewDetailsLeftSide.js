@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import InterviewInfoContainer from '../containers/InterviewInfoContainer';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 import ContentField from './ContentField';
-import PersonDataContainer from '../containers/PersonDataContainer';
+import { PersonDataContainer } from 'modules/interviewee-metadata';
 import { getInterviewArchiveIdWithOffset, pathBase } from 'lib/utils';
 import { t } from 'modules/i18n';
 

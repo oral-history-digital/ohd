@@ -1,9 +1,7 @@
 import React from 'react';
 import { Form } from 'modules/forms';
-import { t } from 'modules/i18n';
 
 export default class BiographicalEntryForm extends React.Component {
-
     render() {
         let _this = this;
         return (

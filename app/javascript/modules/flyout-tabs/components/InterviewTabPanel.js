@@ -7,7 +7,7 @@ import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContai
 import MarkTextFormContainer from 'bundles/archive/containers/MarkTextFormContainer';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import AssignSpeakersFormContainer from 'bundles/archive/containers/AssignSpeakersFormContainer';
-import PersonDataContainer from 'bundles/archive/containers/PersonDataContainer';
+import { PersonDataContainer } from 'modules/interviewee-metadata';
 import SelectedRegistryReferencesContainer from 'bundles/archive/containers/SelectedRegistryReferencesContainer';
 import InterviewInfoContainer from 'bundles/archive/containers/InterviewInfoContainer';
 import InterviewTextMaterialsContainer from 'bundles/archive/containers/InterviewTextMaterialsContainer';

@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
-import PersonData from '../components/PersonData';
-import { getInterview, getCookie, getProject } from 'lib/utils';
+
+import { getInterview, getProject } from 'lib/utils';
 import { submitData, fetchData } from 'modules/data';
+import PersonData from './PersonData';
 
 const mapStateToProps = (state) => {
     let interview = getInterview(state);

@@ -1,16 +1,12 @@
 import React from 'react';
 
-import ContentField from './ContentField';
+import ContentField from 'bundles/archive/components/ContentField';
+import ContributionFormContainer from 'bundles/archive/containers/ContributionFormContainer';
 import { ArchivePopupButton } from 'modules/ui';
-
-import { AuthorizedContent } from 'modules/auth';
-
-import { AuthShowContainer } from 'modules/auth';
-import BiographicalEntriesContainer from '../containers/BiographicalEntriesContainer';
-import ContributionFormContainer from '../containers/ContributionFormContainer';
-
+import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { fullname, getInterviewee, pathBase, humanReadable } from 'lib/utils';
 import { t } from 'modules/i18n';
+import BiographicalEntriesContainer from './BiographicalEntriesContainer';
 
 export default class PersonData extends React.Component {
 

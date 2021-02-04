@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 import Slider from "react-slick";
 import FoundSegmentContainer from '../containers/FoundSegmentContainer';
 import PersonContainer from '../containers/PersonContainer';
-import BiographicalEntryContainer from '../containers/BiographicalEntryContainer';
+import { BiographicalEntryContainer } from 'modules/interviewee-metadata';
 import { PhotoContainer } from 'modules/gallery';
 import { RegistryEntryContainer } from 'modules/registry';
 import { pluralize, pathBase } from 'lib/utils';

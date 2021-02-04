@@ -1,8 +1,8 @@
 import React from 'react';
 
-import BiographicalEntryFormContainer from '../containers/BiographicalEntryFormContainer';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
 
 export default class BiographicalEntry extends React.Component {
 
