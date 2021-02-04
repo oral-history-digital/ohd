@@ -32,10 +32,19 @@ export default class PhotoForm extends React.Component {
     }
 
     render() {
+        const { submitData, onSubmit, closeArchivePopup } = this.props;
+
         return (
             <Form
                 scope='photo'
-                onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
+                onSubmit={(params) => {
+                    submitData(this.props, params);
+                    if (onSubmit) {
+                        onSubmit();
+                    } else {
+                        closeArchivePopup();
+                    }
+                }}
                 data={this.props.photo}
                 values={{
                     interview_id: this.props.interview && this.props.interview.id,
@@ -53,4 +62,5 @@ PhotoForm.propTypes = {
     withUpload: PropTypes.bool,
     submitData: PropTypes.func.isRequired,
     closeArchivePopup: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
 };

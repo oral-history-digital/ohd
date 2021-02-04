@@ -39,7 +39,7 @@ export default function Photo({
             <img
                 className={styles.image}
                 src={'https://picsum.photos/seed/picsum/400/600' /*data.src*/}
-                alt=""
+                alt={data.captions[locale] || data.captions['de']}
             />
 
             <PhotoCaption
