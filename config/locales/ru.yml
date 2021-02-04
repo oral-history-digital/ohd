@@ -1163,8 +1163,6 @@ ru:
     interviews: interviews
     stills: stills
   interview_title_patterns:
-    lastname_with_birthname: "%{lastname} (%{birthname})"
-    lastname_firstname: "%{lastname_with_birthname}, %{first_names}"
   video_interview: Видеоинтервью
   audio_interview: Аудиоинтервью
   segment_link: к фрагменту
@@ -1494,5 +1492,3 @@ ru:
     subject: Ваш доступ к архиву '%{project_name}'
 
   interview_title_patterns:
-    lastname_with_birthname: '%{lastname} (%{birthname})'
-    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'
