@@ -9,9 +9,7 @@ import InterviewDataContainer from 'bundles/archive/containers/InterviewDataCont
 import AssignSpeakersFormContainer from 'bundles/archive/containers/AssignSpeakersFormContainer';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
 import SelectedRegistryReferencesContainer from 'bundles/archive/containers/SelectedRegistryReferencesContainer';
-import InterviewInfoContainer from 'bundles/archive/containers/InterviewInfoContainer';
-import InterviewTextMaterialsContainer from 'bundles/archive/containers/InterviewTextMaterialsContainer';
-import InterviewContributorsContainer from 'bundles/archive/containers/InterviewContributorsContainer';
+import { InterviewInfoContainer, InterviewContributorsContainer, InterviewTextMaterialsContainer } from 'modules/interview-metadata';
 import { InterviewLocationsContainer } from 'modules/locations';
 import CitationInfoContainer from 'bundles/archive/containers/CitationInfoContainer';
 import { GalleryContainer } from 'modules/gallery';

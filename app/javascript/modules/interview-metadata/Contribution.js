@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ContributionFormContainer from '../containers/ContributionFormContainer';
 import { fullname } from 'lib/utils';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import ContributionFormContainer from './ContributionFormContainer';
 
 export default function Contribution({
     locale,

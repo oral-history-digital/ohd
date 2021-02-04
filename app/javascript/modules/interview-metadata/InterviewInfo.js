@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
-import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
+import SingleValueWithFormContainer from 'bundles/archive/containers/SingleValueWithFormContainer';
+import SelectedRegistryReferencesContainer from 'bundles/archive/containers/SelectedRegistryReferencesContainer';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 

@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import Contribution from '../components/Contribution';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData, submitData } from 'modules/data';
 import { getLocale, getArchiveId, getProjectId } from 'modules/archive';
+import Contribution from './Contribution';
 
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),

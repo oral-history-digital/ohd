@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 
-import ContributionForm from '../components/ContributionForm';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData } from 'modules/data';
 import { getProject } from 'lib/utils';
+import ContributionForm from './ContributionForm';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

@@ -1,9 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
+
 import { getPeople, getGroupedContributions } from 'modules/data';
 import ContributionGroup from './ContributionGroup';
-import ContributionContainer from '../containers/ContributionContainer';
+import ContributionContainer from './ContributionContainer';
 
 export default function ContributionList({
     withSpeakerDesignation,

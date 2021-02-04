@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import InterviewInfoContainer from '../containers/InterviewInfoContainer';
+import { InterviewInfoContainer } from 'modules/interview-metadata';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 import ContentField from './ContentField';
 import { PersonDataContainer } from 'modules/interviewee-metadata';

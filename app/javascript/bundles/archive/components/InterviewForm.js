@@ -1,7 +1,8 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
+
 import { Form } from 'modules/forms';
-import ContributionFormContainer from '../containers/ContributionFormContainer';
+import { ContributionFormContainer } from 'modules/interview-metadata';
 import { fullname, pathBase } from 'lib/utils';
 import { t } from 'modules/i18n';
 

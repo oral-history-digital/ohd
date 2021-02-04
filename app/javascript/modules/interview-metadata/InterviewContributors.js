@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ContributionFormContainer from '../containers/ContributionFormContainer';
 import { AuthorizedContent } from 'modules/auth';
-import ContributionList from './ContributionList';
 import { useI18n } from 'modules/i18n';
+import ContributionList from './ContributionList';
+import ContributionFormContainer from './ContributionFormContainer';
 
 export default function InterviewContributors({
     interview,

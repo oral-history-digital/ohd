@@ -1,7 +1,7 @@
 import React from 'react';
 
 import ContentField from 'bundles/archive/components/ContentField';
-import ContributionFormContainer from 'bundles/archive/containers/ContributionFormContainer';
+import { ContributionFormContainer } from 'modules/interview-metadata';
 import { ArchivePopupButton } from 'modules/ui';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { fullname, getInterviewee, pathBase, humanReadable } from 'lib/utils';

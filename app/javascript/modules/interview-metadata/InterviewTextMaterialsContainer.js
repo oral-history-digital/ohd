@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import InterviewTextMaterials from '../components/InterviewTextMaterials';
 import { getCurrentAccount, getCurrentInterview, getCurrentProject } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import InterviewTextMaterials from './InterviewTextMaterials';
 
 const mapStateToProps = (state) => {
     return {
