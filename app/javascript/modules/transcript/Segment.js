@@ -2,13 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import SegmentFormContainer from '../containers/SegmentFormContainer';
-import { SegmentHeadingFormContainer } from 'modules/toc';
-import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
-import AnnotationsContainer from '../containers/AnnotationsContainer';
 import { fullname } from 'lib/utils';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { SegmentHeadingFormContainer } from 'modules/toc';
+import { Modal } from 'modules/ui';
+import AnnotationsContainer from 'bundles/archive/containers/AnnotationsContainer';
+import RegistryReferencesContainer from 'bundles/archive/containers/RegistryReferencesContainer';
+import SegmentFormContainer from './SegmentFormContainer';
 
 export default class Segment extends React.Component {
     transcript() {
@@ -137,16 +138,18 @@ export default class Segment extends React.Component {
         let title = this.props.tabIndex == 1 ? 'edit.segment.translation' : 'edit.segment.transcript'
         if (admin(this.props, this.props.data)) {
             return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
+                <Modal
                     title={t(this.props, title)}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.segment.edit'),
-                        content: <SegmentFormContainer segment={this.props.data} contentLocale={this.props.contentLocale} />
-                    })}
+                    trigger={<i className="fa fa-pencil"/>}
                 >
-                    <i className="fa fa-pencil"></i>
-                </div>
+                    {closeModal => (
+                        <SegmentFormContainer
+                            segment={this.props.data}
+                            contentLocale={this.props.contentLocale}
+                            onSubmit={closeModal}
+                        />
+                    )}
+                </Modal>
             )
         } else {
             return null;
@@ -154,23 +157,26 @@ export default class Segment extends React.Component {
     }
 
     editHeadings() {
-        if (admin(this.props, this.props.data)) {
-            let title = this.props.data.has_heading ? t(this.props, 'edit.segment.heading.edit') : t(this.props, 'edit.segment.heading.new')
-            let noHeadingCss = this.props.data.has_heading ? "" : "empty"
+        const { data } = this.props;
+
+        if (admin(this.props, data)) {
+            let title = data.has_heading ? t(this.props, 'edit.segment.heading.edit') : t(this.props, 'edit.segment.heading.new')
             return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
+                <Modal
                     title={title}
-                    onClick={() => this.props.openArchivePopup({
-                        title: title,
-                        content: <SegmentHeadingFormContainer segment={this.props.data} />
-                    })}
+                    trigger={(
+                        <i className={classNames('fa', 'fa-header', {
+                            'empty': !data.has_heading,
+                        })} />
+                    )}
                 >
-                    <span className="fa-stack fa-1x">
-                        <i className={`fa fa-pencil fa-stack-1x fa-stack-first-custom ${noHeadingCss}`}></i>
-                        <i className={`fa fa-header fa-stack-1x fa-stack-second-custom ${noHeadingCss}`}></i>
-                    </span>
-                </div>
+                    {closeModal => (
+                        <SegmentHeadingFormContainer
+                            segment={this.props.data}
+                            onSubmit={closeModal}
+                        />
+                    )}
+                </Modal>
             )
         } else {
             return null;

@@ -10,12 +10,19 @@ export default function SegmentHeadingForm({
     projects,
     submitData,
     closeArchivePopup,
+    onSubmit,
 }) {
     return (
         <div>
             <Form
                 scope='segment'
-                onSubmit={(params) => {submitData({ locale, projectId, projects }, params); closeArchivePopup()}}
+                onSubmit={(params) => {
+                    submitData({ locale, projectId, projects }, params);
+                    closeArchivePopup();
+                    if (onSubmit) {
+                        onSubmit();
+                    }
+                }}
                 data={segment}
                 submitText='submit'
                 elements={[
@@ -40,4 +47,5 @@ SegmentHeadingForm.propTypes = {
     projects: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     closeArchivePopup: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
 };

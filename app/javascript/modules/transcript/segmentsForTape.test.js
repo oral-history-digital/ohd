@@ -1,4 +1,4 @@
-import { segmentsForTape } from './segments';
+import segmentsForTape from './segmentsForTape';
 
 describe('segmentsForTape', () => {
     const interview = {

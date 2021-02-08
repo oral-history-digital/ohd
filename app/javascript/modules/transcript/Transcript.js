@@ -1,14 +1,11 @@
 import React from 'react';
 
-import SegmentContainer from '../containers/SegmentContainer';
 import { sortedSegmentsWithActiveIndex, getInterviewee } from 'lib/utils';
 import { t } from 'modules/i18n';
-import { segmentsForTape } from 'utils/segments';
-import {
-    SEGMENTS_AFTER,
-    SEGMENTS_BEFORE
-} from '../constants/archiveConstants';
 import { Spinner } from 'modules/spinners';
+import { SEGMENTS_AFTER, SEGMENTS_BEFORE } from './constants';
+import segmentsForTape from './segmentsForTape';
+import SegmentContainer from './SegmentContainer';
 
 export default class Transcript extends React.Component {
     constructor(props) {
