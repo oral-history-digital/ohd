@@ -2,21 +2,17 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { openArchivePopup } from 'modules/ui';
-import Gallery from './Gallery';
-import { getCurrentAccount, getCurrentInterview, getCurrentProject } from 'modules/data';
+import { getCurrentAccount, getCurrentInterview } from 'modules/data';
 import { getEditView, getLocale, getTranslations } from 'modules/archive';
+import Gallery from './Gallery';
 
-const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
-    return {
-        interview: getCurrentInterview(state),
-        translations: getTranslations(state),
-        locale: getLocale(state),
-        editView: getEditView(state),
-        account: getCurrentAccount(state),
-        project: project && project.identifier,
-    }
-}
+const mapStateToProps = state => ({
+    interview: getCurrentInterview(state),
+    locale: getLocale(state),
+    translations: getTranslations(state),
+    editView: getEditView(state),
+    account: getCurrentAccount(state),
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     openArchivePopup,

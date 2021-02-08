@@ -1,0 +1,21 @@
+.container {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.admin {
+  margin-bottom: 1.5rem;
+}
+
+.image {
+  color: white;
+  flex-grow: 1;
+  max-height: 650px;
+  min-height: 50px;
+}
+
+.editButton {
+  margin-right: 0.75rem;
+}

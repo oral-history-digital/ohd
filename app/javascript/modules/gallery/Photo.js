@@ -1,77 +1,74 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
+import { AuthorizedContent } from 'modules/auth';
+import { Modal } from 'modules/ui';
+import { useI18n } from 'modules/i18n';
 import PhotoFormContainer from './PhotoFormContainer';
-import { admin } from 'modules/auth';
-import { t } from 'modules/i18n';
+import PhotoCaption from './PhotoCaption';
+import styles from './Photo.module.scss';
 
-export default class Photo extends React.Component {
+export default function Photo({
+    data,
+    archiveId,
+    locale,
+    projectId,
+    projects,
+    deleteData,
+}) {
+    const { t } = useI18n();
 
-    destroy() {
-        this.props.deleteData(this.props, 'interviews', this.props.archiveId, 'photos', this.props.data.id);
-        this.props.closeArchivePopup();
-    }
+    const destroy = () => deleteData({ locale, projectId, projects }, 'interviews', archiveId, 'photos', data.id);
 
-    delete() {
-        if (admin(this.props, this.props.data)) {
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'delete')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'delete'),
-                    content: (
-                        <div>
-                            <div className='any-button' onClick={() => this.destroy()}>
-                                {t(this.props, 'delete')}
+    return (
+        <div className={styles.container}>
+            <AuthorizedContent object={data}>
+                <div className={styles.admin}>
+                    <Modal
+                        title={t('edit.photo.edit')}
+                        trigger={<i className="fa fa-pencil"></i>}
+                        triggerClassName={styles.editButton}
+                    >
+                        {closeModal => (
+                            <PhotoFormContainer
+                                photo={data}
+                                onSubmit={closeModal} />
+                        )}
+                    </Modal>
+                    <Modal
+                        title={t('edit.photo.delete')}
+                        trigger={<i className="fa fa-trash-o"></i>}
+                    >
+                        {closeModal => (
+                            <div>
+                                <button className="any-button" onClick={() => { destroy(); closeModal(); }}>
+                                    {t('delete')}
+                                </button>
                             </div>
-                        </div>
-                    )
-                })}
-            >
-                <i className="fa fa-trash-o"></i>
-            </div>
-        }
-    }
-
-    keyPrefix() {
-        if (this.props.slider) {
-            return 'slider-image-';
-        } else {
-            return 'photo-';
-        }
-    }
-
-    caption() {
-        let caption = !!(this.props.data.captions[this.props.locale] || this.props.data.captions['de']);
-        let photoExplanation = this.props.data.captions[this.props.locale] ? '' : t(this.props, 'activerecord.attributes.photo.caption_explanation');
-
-        if (admin(this.props, this.props.data)) {
-            return <PhotoFormContainer photo={this.props.data}/>;
-        } else if (caption) {
-            return (
-                <div className="slider-text">
-                    <p className='photo-explanation'>
-                        {photoExplanation}
-                    </p>
-                    <p>
-                        {this.props.data.captions[this.props.locale] || this.props.data.captions['de']}
-                    </p>
+                        )}
+                    </Modal>
                 </div>
-            )
-        } else {
-            return null;
-        }
-    }
+            </AuthorizedContent>
 
-    render() {
-        return (
-            <div
-                key={this.keyPrefix() + this.props.data.id}
-                className={this.keyPrefix() + 'container'}
-            >
-                {this.delete()}
-                <img src={ this.props.data.src } />
-                {this.caption()}
-            </div>
-        )
-    }
+            <img
+                className={styles.image}
+                src={data.src}
+                alt={data.captions[locale] || data.captions['de']}
+            />
+
+            <PhotoCaption
+                photo={data}
+                locale={locale}
+            />
+        </div>
+    );
 }
+
+Photo.propTypes = {
+    data: PropTypes.object.isRequired,
+    archiveId: PropTypes.string.isRequired,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    deleteData: PropTypes.func.isRequired,
+};
