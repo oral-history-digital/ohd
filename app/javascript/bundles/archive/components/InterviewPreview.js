@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { MISSING_STILL } from '../constants/archiveConstants'
-import InterviewSearchResultsContainer from '../containers/InterviewSearchResultsContainer';
+import { InterviewSearchResultsContainer } from 'modules/interview-search';
 import { AuthShowContainer, admin } from 'modules/auth';
 import { pathBase, getInterviewee, humanReadable, loadIntervieweeWithAssociations } from 'lib/utils';
 import { t } from 'modules/i18n';

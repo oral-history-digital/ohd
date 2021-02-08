@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { PixelLoader } from 'modules/spinners';
 import { pathBase } from 'lib/utils';
@@ -36,12 +37,11 @@ export default class InterviewSearchForm extends React.Component {
                 <form onSubmit={this.handleSubmit}>
                     <label>
                         <input type="text"
-                               className="search-input"
-                               value={this.state.value}
-                               onChange={this.handleChange}
-                               placeholder={t(this.props, 'enter_search_field')}
-                               autoFocus
-                               />
+                            className="search-input"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                            placeholder={t(this.props, 'enter_search_field')}
+                        />
                     </label>
                     <input type="submit" value="" className={'search-button'}/>
                 </form>
@@ -50,3 +50,14 @@ export default class InterviewSearchForm extends React.Component {
         );
     }
 }
+
+InterviewSearchForm.propTypes = {
+    archiveId: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    interviewFulltext: PropTypes.bool,
+    isInterviewSearching: PropTypes.bool,
+    searchInInterview: PropTypes.func.isRequired,
+};

@@ -3,7 +3,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import { TableOfContentsContainer } from 'modules/toc';
 import { TranscriptContainer } from 'modules/transcript';
-import InterviewSearchContainer from '../containers/InterviewSearchContainer';
+import { InterviewSearchContainer } from 'modules/interview-search';
 import RefTreeContainer from '../containers/RefTreeContainer';
 import { t } from 'modules/i18n';
 

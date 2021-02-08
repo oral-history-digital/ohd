@@ -1,8 +1,9 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import Slider from "react-slick";
-import FoundSegmentContainer from '../containers/FoundSegmentContainer';
-import PersonContainer from '../containers/PersonContainer';
+
+import FoundSegmentContainer from 'bundles/archive/containers/FoundSegmentContainer';
+import PersonContainer from 'bundles/archive/containers/PersonContainer';
 import { BiographicalEntryContainer } from 'modules/interviewee-metadata';
 import { PhotoContainer } from 'modules/gallery';
 import { RegistryEntryContainer } from 'modules/registry';
@@ -10,7 +11,6 @@ import { pluralize, pathBase } from 'lib/utils';
 import { t } from 'modules/i18n';
 
 export default class InterviewSearchResults extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
