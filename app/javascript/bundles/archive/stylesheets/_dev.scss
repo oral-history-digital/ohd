@@ -5,33 +5,6 @@
   //background-color: #333;
   text-align: center !important;
   padding: 4px 0;
-  img {
-    vertical-align: middle;
-    position: relative;
-    margin: 0 auto;
-    max-width: 100% !important;
-    max-height: 650px;
-    //max-height: 80% !important;
-  }
-  .slider-text {
-    display: block;
-    overflow: auto;
-    position: relative;
-    max-height: 20% !important;
-    text-align: center;
-    padding: 10px;
-    font-size: $font-size-small;
-    line-height: $line-height-small;
-    color: #fff;
-    width: 100%;
-    @include screen-m {
-      width: 60%;
-      margin: 0 auto;
-      padding: 20px;
-      font-size: $font-size-medium;
-      line-height: $line-height-medium;
-    }
-  }
 }
 
 .archive-search-found-segments {

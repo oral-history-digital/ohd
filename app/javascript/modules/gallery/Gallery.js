@@ -1,15 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
+import { admin, AuthorizedContent } from 'modules/auth';
+import { t } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import CarouselContainer from './CarouselContainer';
 import PhotoFormContainer from './PhotoFormContainer';
-import { admin } from 'modules/auth';
-import { t } from 'modules/i18n';
+import styles from './Gallery.module.scss';
 
 export default class Gallery extends React.Component {
-
-    thumbnailSrc(photo) {
-        return photo.thumb_src;
-    }
-
     renderPhotos() {
         let photos = [];
         let n = 0;
@@ -26,7 +25,7 @@ export default class Gallery extends React.Component {
         }
         if (photos.length > 0) {
             return (
-                <div className={'img-gallery'}>
+                <div className={styles.gallery}>
                     {photos}
                 </div>
             )
@@ -37,42 +36,48 @@ export default class Gallery extends React.Component {
 
     photo(photo, n) {
         return (
-            <div key={"photo-" + photo.id}
-                 className={'thumbnail'}
-                 onClick={() => this.props.openArchivePopup({
-                     title: null,
-                     big: true,
-                     content: <CarouselContainer n={n} />
-                 })}
+            <button
+                type="button"
+                key={photo.id}
+                className={styles.thumbnail}
+                onClick={() => this.props.openArchivePopup({
+                    title: null,
+                    big: true,
+                    content: <CarouselContainer n={n} />
+                })}
 
             >
-                <img src={ this.thumbnailSrc(photo) } />
-            </div>
+                <img
+                    className={styles.image}
+                    src={photo.thumb_src}
+                />
+            </button>
         )
     }
 
     addPhoto() {
-        if (admin(this.props, {type: 'Photo', action: 'create', interview_id: this.props.interview && this.props.interview.id})) {
-            return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
+        return (
+            <AuthorizedContent object={{ type: 'Photo', action: 'create', interview_id: this.props.interview.id }}>
+                <Modal
                     title={t(this.props, 'edit.photo.new')}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.photo.new'),
-                        content: <PhotoFormContainer
-                            interview={this.props.interview}
-                            withUpload={true}
-                        />
-                    })}
+                    trigger={<i className="fa fa-plus"></i>}
                 >
-                    <i className="fa fa-plus"></i>
-                </div>
-            )
-        }
+                    {
+                        closeModal => (
+                            <PhotoFormContainer
+                                interview={this.props.interview}
+                                withUpload
+                                onSubmit={closeModal}
+                            />
+                        )
+                    }
+                </Modal>
+            </AuthorizedContent>
+        );
     }
 
     render() {
-        let explanation = this.props.interview && this.props.interview.photos && Object.keys(this.props.interview.photos).length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation'
+        let explanation = this.props.interview.photos && Object.keys(this.props.interview.photos).length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation'
         return (
             <div>
                 <div className='explanation'>{t(this.props, explanation)}</div>
@@ -82,3 +87,12 @@ export default class Gallery extends React.Component {
         );
     }
 }
+
+Gallery.propTypes = {
+    interview: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+};
