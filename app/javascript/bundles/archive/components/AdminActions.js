@@ -152,7 +152,7 @@ export default class AdminActions extends React.Component {
     }
 
     setAll() {
-        return <a onClick={() => { this.props.setArchiveIds(Object.keys(this.props.archiveSearchResults))} }> {t(this.props, 'set_all')}</a>;
+        return <a onClick={() => { this.props.setArchiveIds(Object.values(this.props.archiveSearchResults.map(i =>  i.archive_id)))} }> {t(this.props, 'set_all')}</a>;
     }
 
     render() {

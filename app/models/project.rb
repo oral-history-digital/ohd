@@ -29,7 +29,6 @@ class Project < ApplicationRecord
   serialize :hidden_registry_entry_ids, Array
   serialize :hidden_transcript_registry_entry_ids, Array
   serialize :pdf_registry_entry_ids, Array
-  serialize :pdf_registry_entry_codes, Array
   # serialize :fullname_on_landing_page
 
   #

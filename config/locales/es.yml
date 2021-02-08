@@ -1037,5 +1037,3 @@ es:
               too_long: Sus notas no deben exceder el límite de 300 carácteres.
 
   interview_title_patterns:
-    lastname_with_birthname: '%{lastname} (%{birthname})'
-    lastname_firstname: '%{lastname_with_birthname}, %{first_names}'

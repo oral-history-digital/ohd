@@ -2,16 +2,9 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   def localized_hash(att)
-    if self.respond_to?(:translations)
-      self.send(:translations).inject({}) do |mem, t|
-        mem[t.locale] = self.send(att, t.locale) 
-        mem
-      end
-    else
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = self.send(att, locale) 
-        mem
-      end
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = self.send(att, locale) 
+      mem
     end
   end
 

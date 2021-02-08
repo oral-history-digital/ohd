@@ -238,8 +238,6 @@ class Interview < ApplicationRecord
       end
     end
 
-    # Create localized attributes so that we can order
-    # interviews in all languages.
     Rails.configuration.i18n.available_locales.each do |locale|
       string :"person_name_#{locale}", :stored => true do
         if full_title(locale)
@@ -602,21 +600,10 @@ class Interview < ApplicationRecord
     first_interviewee = interviewee
     if first_interviewee
 
-      # Check whether we've got the requested locale. If not fall back to the
-      # default locale.
-      #used_locale = Globalize.fallbacks(locale).each do |l|
-        #break l unless first_interviewee.translations.select {|t| t.locale.to_sym == l}.blank?
-      #end
-      #return nil unless used_locale.is_a?(Symbol)
-
       # Build last name with a locale-specific pattern.
       last_name = first_interviewee.last_name(locale) || first_interviewee.last_name(I18n.default_locale) 
       birth_name = first_interviewee.birth_name(locale) || first_interviewee.birth_name(I18n.default_locale) 
-      lastname_with_birthname = if birth_name.blank?
-                                  last_name
-                                else
-                                  I18n.t('interview_title_patterns.lastname_with_birthname', :locale => locale, :lastname => last_name, :birthname => birth_name)
-                                end
+      lastname_with_birthname = [last_name, birth_name].compact.join(' ')
 
       # Build first name.
       first_names = []
@@ -629,7 +616,7 @@ class Interview < ApplicationRecord
       if first_names.empty?
         lastname_with_birthname
       else
-        I18n.t('interview_title_patterns.lastname_firstname', :locale => locale, :lastname_with_birthname => lastname_with_birthname, :first_names => first_names.join(' '))
+        "#{lastname_with_birthname}, #{first_names.join(' ')}"
       end
     else
       'no interviewee given'

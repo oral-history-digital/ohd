@@ -113,3 +113,11 @@ export const getRootRegistryEntry = createSelector(
         return registryEntries[currentProject.root_registry_entry_id];
     }
 );
+
+export const getRootRegistryEntryReload = createSelector(
+    getRegistryEntriesStatus,
+    (status) => {
+        const reload = /^reload/;
+        return reload.test(status[ROOT_REGISTRY_ENTRY_ID]);
+    }
+);

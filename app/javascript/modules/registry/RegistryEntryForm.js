@@ -93,7 +93,7 @@ export default class RegistryEntryForm extends React.Component {
                         {
                             elementType: 'select',
                             attribute: 'workflow_state',
-                            values: ['preliminary', 'checked', 'rejected'],
+                            values: ['preliminary', 'public', 'rejected'],
                             value: (this.registryEntry() && this.registryEntry().workflow_state) || 'preliminary',
                             withEmpty: true,
                             optionsScope: 'workflow_states',

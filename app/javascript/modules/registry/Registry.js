@@ -3,8 +3,9 @@ import PropTypes from 'prop-types';
 
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { INDEX_REGISTRY_ENTRIES } from 'modules/flyout-tabs';
-import { Fetch, getRootRegistryEntryFetched } from 'modules/data';
-import { useI18n } from 'modules/i18n';import RegistrySearchResultContainer from './RegistrySearchResultContainer';
+import { Fetch, getRootRegistryEntryFetched, getRootRegistryEntryReload } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import RegistrySearchResultContainer from './RegistrySearchResultContainer';
 import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
 
@@ -26,8 +27,9 @@ export default function Registry({
     return (
         <div className='wrapper-content register'>
             <Fetch
-                fetchParams={['registry_entries', currentProject?.root_registry_entry_id]}
+                fetchParams={['registry_entries', currentProject?.root_registry_entry_id, null, null, 'with_associations=true']}
                 testSelector={getRootRegistryEntryFetched}
+                reloadSelector={getRootRegistryEntryReload}
             >
                 <AuthShowContainer ifLoggedIn>
                         <h1 className='registry-entries-title'>

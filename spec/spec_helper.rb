@@ -93,8 +93,6 @@ Spork.each_run do
     #     --seed 1234
     config.order = "random"
 
-    config.include Devise::TestHelpers, :type => :controller
-
     # rspec-rails 3 will no longer automatically infer an example group's spec type
     # from the file location. You can explicitly opt-in to the feature using this
     # config option.

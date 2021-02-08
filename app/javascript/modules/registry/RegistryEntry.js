@@ -31,8 +31,7 @@ export default class RegistryEntry extends React.Component {
 
     reloadRegistryEntry() {
         if (
-            this.props.registryEntriesStatus[this.props.data.id] &&
-            this.props.registryEntriesStatus[this.props.data.id].split('-')[0] === 'reload'
+            /^reload/.test(this.props.registryEntriesStatus[this.props.data.id])
         ) {
             this.props.fetchData(this.props, 'registry_entries', this.props.data.id);
         }

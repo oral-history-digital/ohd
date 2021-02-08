@@ -278,7 +278,7 @@ class Segment < ApplicationRecord
       'public'
     end
 
-    Rails.configuration.i18n.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       text :"text_#{locale}", stored: true
     end
 
@@ -313,7 +313,7 @@ class Segment < ApplicationRecord
 
   end
 
-  Rails.configuration.i18n.available_locales.each do |locale|
+  I18n.available_locales.each do |locale|
     define_method "text_#{locale}" do
       text("#{locale}-public") # only search in public texts
       # TODO: enable searching over original texts in admin-mode

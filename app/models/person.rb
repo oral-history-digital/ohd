@@ -42,7 +42,7 @@ class Person < ApplicationRecord
       "public"
     end
 
-    Rails.configuration.i18n.available_locales.each do |locale|
+    I18n.available_locales.each do |locale|
       string :"name_#{locale}" do
         "#{first_name(locale)} #{last_name(locale)}"
       end
