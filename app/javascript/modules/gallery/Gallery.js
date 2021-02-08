@@ -49,8 +49,7 @@ export default class Gallery extends React.Component {
             >
                 <img
                     className={styles.image}
-                    src={'https://picsum.photos/seed/picsum/400/600' /*photo.thumb_src*/}
-                    alt=""
+                    src={photo.thumb_src}
                 />
             </button>
         )

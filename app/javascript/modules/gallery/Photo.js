@@ -25,7 +25,7 @@ export default function Photo({
             <AuthorizedContent object={data}>
                 <div className={styles.admin}>
                     <Modal
-                        title={t('edit')}
+                        title={t('edit.photo.edit')}
                         trigger={<i className="fa fa-pencil"></i>}
                         triggerClassName={styles.editButton}
                     >
@@ -36,7 +36,7 @@ export default function Photo({
                         )}
                     </Modal>
                     <Modal
-                        title={t('delete')}
+                        title={t('edit.photo.delete')}
                         trigger={<i className="fa fa-trash-o"></i>}
                     >
                         {closeModal => (
@@ -52,7 +52,7 @@ export default function Photo({
 
             <img
                 className={styles.image}
-                src={'https://picsum.photos/seed/picsum/400/600' /*data.src*/}
+                src={data.src}
                 alt={data.captions[locale] || data.captions['de']}
             />
 
