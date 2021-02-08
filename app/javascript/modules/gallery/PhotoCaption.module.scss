@@ -1,3 +1,19 @@
+@import "../../bundles/archive/stylesheets/variables";
+@import "../../bundles/archive/stylesheets/mixins";
+
 .container {
+  color: white;
+  font-size: $font-size-small;
+  line-height: $line-height-small;
+  max-height: 20% !important;
   max-width: 50rem;
+  overflow: auto;
+  padding: 10px;
+  text-align: center;
+
+  @include screen-m {
+    padding: 20px;
+    font-size: $font-size-medium;
+    line-height: $line-height-medium;
+  }
 }
