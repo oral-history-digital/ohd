@@ -3,7 +3,7 @@ import VizSensor from 'react-visibility-sensor/visibility-sensor';
 import moment from 'moment';
 
 import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
-import AnnotationsContainer from '../containers/AnnotationsContainer';
+import { Annotations } from 'modules/annotations';
 import { SubmitOnBlurForm } from 'modules/forms';
 import { permittedInterviewEditColumns } from 'modules/auth';
 
@@ -112,7 +112,7 @@ export default class SegmentEditView extends React.Component {
             }
             case 'annotations': {
                 return (
-                    <AnnotationsContainer segment={this.props.segment} contentLocale={this.props.locale} />
+                    <Annotations segment={this.props.segment} contentLocale={this.props.locale} />
                 )
                 break;
             }

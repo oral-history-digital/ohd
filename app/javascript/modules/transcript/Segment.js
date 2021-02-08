@@ -7,7 +7,7 @@ import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { SegmentHeadingFormContainer } from 'modules/toc';
 import { Modal } from 'modules/ui';
-import AnnotationsContainer from 'bundles/archive/containers/AnnotationsContainer';
+import { Annotations } from 'modules/annotations';
 import RegistryReferencesContainer from 'bundles/archive/containers/RegistryReferencesContainer';
 import SegmentFormContainer from './SegmentFormContainer';
 
@@ -51,7 +51,7 @@ export default class Segment extends React.Component {
             this.props.popupType === 'annotations' &&
             (this.props.data.annotations_count > 0 || admin(this.props, {type: 'Annotation', action: 'create', interview_id: this.props.data.interview_id}))
         ) {
-            return <AnnotationsContainer segment={this.props.data} contentLocale={locale} />
+            return <Annotations segment={this.props.data} contentLocale={locale} />
         }
     }
 

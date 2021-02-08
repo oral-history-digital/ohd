@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte';
+
 import { t } from 'modules/i18n';
 
 export default class AnnotationForm extends React.Component {
@@ -33,7 +34,7 @@ export default class AnnotationForm extends React.Component {
         let preparedValues = this.state.values;
         preparedValues.text = this.state.values.text.toString('html');
         this.props.submitData(this.props, {annotation: preparedValues});
-        this.props.closeArchivePopup();
+        this.props.onSubmit();
     }
 
     render () {
@@ -64,8 +65,10 @@ AnnotationForm.propTypes = {
     annotation: PropTypes.object,
     segment: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
     contentLocale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
 };
