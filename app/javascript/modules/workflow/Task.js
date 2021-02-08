@@ -1,7 +1,8 @@
 import React from 'react';
-import CommentsContainer from '../containers/CommentsContainer';
+
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import CommentsContainer from './CommentsContainer';
 
 export default class Task extends React.Component {
 

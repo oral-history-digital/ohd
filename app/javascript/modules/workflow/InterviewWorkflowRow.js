@@ -1,11 +1,11 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { MISSING_STILL } from '../constants/archiveConstants'
-import SingleValueWithFormContainer from '../containers/SingleValueWithFormContainer';
-import TaskContainer from '../containers/TaskContainer';
+import { MISSING_STILL } from 'bundles/archive/constants/archiveConstants'
+import SingleValueWithFormContainer from 'bundles/archive/containers/SingleValueWithFormContainer';
 import { pathBase, getInterviewee, loadIntervieweeWithAssociations } from 'lib/utils';
 import { t } from 'modules/i18n';
+import TaskContainer from './TaskContainer';
 
 export default class InterviewWorkflowRow extends React.Component {
 

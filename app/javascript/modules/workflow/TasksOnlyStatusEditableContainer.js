@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
 
-import DataList from '../components/DataList';
+import DataList from 'bundles/archive/components/DataList';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
+import CommentsContainer from './CommentsContainer';
 
 const mapStateToProps = (state) => {
     return {
@@ -32,30 +33,15 @@ const mapStateToProps = (state) => {
         ],
         formElements: [
             {
-                attribute: 'task_type_id',
-                elementType: 'select',
-                values: state.data.task_types,
-                withEmpty: true,
-                validate: function(v){return /\d+/.test(v)}
-            },
-            {
-                attribute: 'archive_id',
-                validate: function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)},
-            },
-            //{
-                //attribute: 'interview_id',
-                //elementType: 'select',
-                //values: state.data.interviews,
-                //withEmpty: true,
-                //validate: function(v){return /^\d+$/.test(v)}
-            //},
-            {
                 attribute: 'workflow_state',
                 elementType: 'select',
-                values: ['start', 'finish', 'clear', 'restart'],
                 optionsScope: 'workflow_states',
+                withEmpty: true,
             },
-        ]
+        ],
+        joinedData: {
+            comment: CommentsContainer,
+        },
     }
 }
 

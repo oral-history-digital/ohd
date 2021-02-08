@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import TasksOnlyStatusEditableContainer from 'bundles/archive/containers/TasksOnlyStatusEditableContainer';
 import UserRolesContainer from 'bundles/archive/containers/UserRolesContainer';
+import { TasksOnlyStatusEditableContainer } from 'modules/workflow';
 import { AuthShowContainer } from 'modules/auth';
 import { INDEX_ACCOUNT } from 'modules/flyout-tabs';
 import { t } from 'modules/i18n';

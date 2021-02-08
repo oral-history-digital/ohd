@@ -1,8 +1,8 @@
 import React from 'react';
 
 import UserRegistrationFormContainer from '../containers/UserRegistrationFormContainer';
-import TasksContainer from '../containers/TasksContainer';
 import UserRolesContainer from '../containers/UserRolesContainer';
+import { TasksContainer } from 'modules/workflow';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 

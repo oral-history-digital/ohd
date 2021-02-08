@@ -7,7 +7,7 @@ import moment from 'moment';
 
 import InterviewPreviewContainer from 'bundles/archive/containers/InterviewPreviewContainer';
 import InterviewListRowContainer from 'bundles/archive/containers/InterviewListRowContainer';
-import InterviewWorkflowRowContainer from 'bundles/archive/containers/InterviewWorkflowRowContainer';
+import { InterviewWorkflowRowContainer } from 'modules/workflow';
 import { UserContentFormContainer } from 'modules/workbook';
 import { AuthShowContainer, admin } from 'modules/auth';
 import { t } from 'modules/i18n';

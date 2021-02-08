@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import InterviewWorkflowRow from '../components/InterviewWorkflowRow';
 import { searchInInterview } from 'modules/search';
 import { setTapeAndTime } from 'modules/interview';
 import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
 import { fetchData } from 'modules/data';
 import { getProject } from 'lib/utils';
+import InterviewWorkflowRow from './InterviewWorkflowRow';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     let project = getProject(state);
     return {
         fulltext: state.search.archive.query.fulltext,
@@ -30,12 +31,12 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
-    setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
-    searchInInterview: (url, searchQuery) => dispatch(searchInInterview(url, searchQuery)),
-    addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setTapeAndTime,
+    setArchiveId,
+    searchInInterview,
+    addRemoveArchiveId,
+    fetchData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewWorkflowRow);
