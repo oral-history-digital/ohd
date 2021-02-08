@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { AuthorizedContent } from 'modules/auth';
 import { Modal } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
+import PhotoFormContainer from './PhotoFormContainer';
 import PhotoCaption from './PhotoCaption';
 import styles from './Photo.module.scss';
 
@@ -22,18 +23,31 @@ export default function Photo({
     return (
         <div className={styles.container}>
             <AuthorizedContent object={data}>
-                <Modal
-                    title={t('delete')}
-                    trigger={<i className="fa fa-trash-o"></i>}
-                >
-                    {closeModal => (
-                        <div>
-                            <button className="any-button" onClick={() => { destroy(); closeModal(); }}>
-                                {t('delete')}
-                            </button>
-                        </div>
-                    )}
-                </Modal>
+                <div className={styles.admin}>
+                    <Modal
+                        title={t('edit')}
+                        trigger={<i className="fa fa-pencil"></i>}
+                        triggerClassName={styles.editButton}
+                    >
+                        {closeModal => (
+                            <PhotoFormContainer
+                                photo={data}
+                                onSubmit={closeModal} />
+                        )}
+                    </Modal>
+                    <Modal
+                        title={t('delete')}
+                        trigger={<i className="fa fa-trash-o"></i>}
+                    >
+                        {closeModal => (
+                            <div>
+                                <button className="any-button" onClick={() => { destroy(); closeModal(); }}>
+                                    {t('delete')}
+                                </button>
+                            </div>
+                        )}
+                    </Modal>
+                </div>
             </AuthorizedContent>
 
             <img
