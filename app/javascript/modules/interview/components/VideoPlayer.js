@@ -4,10 +4,10 @@ import moment from 'moment';
 import classNames from 'classnames';
 
 import { UserContentFormContainer } from 'modules/workbook';
-import VideoPlayerButtonsContainer from 'bundles/archive/containers/VideoPlayerButtonsContainer';
 import { MISSING_STILL } from 'bundles/archive/constants/archiveConstants'
 import { fullname, sortedSegmentsWithActiveIndex, getInterviewee } from 'lib/utils';
 import { t } from 'modules/i18n';
+import VideoPlayerButtonsContainer from './VideoPlayerButtonsContainer';
 
 export default class VideoPlayer extends React.Component {
     constructor(props) {

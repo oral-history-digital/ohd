@@ -5,7 +5,7 @@ import moment from 'moment';
 import RegistryReferencesContainer from 'bundles/archive/containers/RegistryReferencesContainer';
 import { Annotations } from 'modules/annotations';
 import { SubmitOnBlurForm } from 'modules/forms';
-import { permittedInterviewEditColumns } from 'modules/auth';
+import permittedColumns from './permittedColumns';
 
 export default class SegmentEditView extends React.Component {
 
@@ -121,7 +121,7 @@ export default class SegmentEditView extends React.Component {
 
     row(){
         let _this = this;
-        let columns = this.props.selectedInterviewEditViewColumns.filter(v => permittedInterviewEditColumns(this.props, this.props.interview.id).includes(v))
+        let columns = this.props.selectedInterviewEditViewColumns.filter(v => permittedColumns(this.props, this.props.interview.id).includes(v))
         return columns.map(function(column, i){
             return (
                 <td key={`${_this.props.segment.id}-column-${i}`}>

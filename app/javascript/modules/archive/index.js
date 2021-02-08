@@ -8,4 +8,5 @@ export { addRemoveArchiveId, addRemoveRegistryEntryId, changeToEditView,
 export { default as archiveReducer } from './reducer';
 
 export { getArchiveId, getEditView, getInterviewEditView, getLocale,
-    getLocales, getProjectId, getSelectedRegistryEntryIds, getTranslations } from './selectors';
+    getLocales, getProjectId, getSelectedRegistryEntryIds, getTranslations,
+    getSelectedInterviewEditViewColumns } from './selectors';

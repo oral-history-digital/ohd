@@ -1,10 +1,10 @@
 import React from 'react';
 
 import { sortedSegmentsWithActiveIndex } from 'lib/utils';
-import { permittedInterviewEditColumns } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import SegmentEditViewContainer from './SegmentEditViewContainer';
+import permittedColumns from './permittedColumns';
 
 export default class InterviewEditView extends React.Component {
 
@@ -40,7 +40,7 @@ export default class InterviewEditView extends React.Component {
     }
 
     tableHeader() {
-        let columns = this.props.selectedInterviewEditViewColumns.filter(v => permittedInterviewEditColumns(this.props, this.props.interview.id).includes(v))
+        let columns = this.props.selectedInterviewEditViewColumns.filter(v => permittedColumns(this.props, this.props.interview.id).includes(v))
         let count = columns.size
         let row = columns.map((column, index) => {
             let className = column === 'timecode' ? 'small' : ''

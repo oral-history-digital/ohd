@@ -1,6 +1,6 @@
-import admin from './admin';
+import { admin } from 'modules/auth';
 
-export default function permittedInterviewEditColumns(props, interviewId) {
+export default function permittedColumns(props, interviewId) {
     let columns = ['timecode'];
     if (admin(props, {type: 'Segment', action: 'update', interview_id: interviewId}))
       columns = columns.concat(['text_orig', 'text_translated', 'mainheading_orig', 'subheading_orig', 'mainheading_translated', 'subheading_translated'])

@@ -2,9 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import InterviewEditButtonsContainer from '../containers/InterviewEditButtonsContainer';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { InterviewEditButtonsContainer } from 'modules/interview-edit';
 
 export default function VideoPlayerButtons({
     transcriptScrollEnabled,
