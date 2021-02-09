@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
-import { DataList } from 'modules/admin';
+import DataList from './DataList';
 
 const mapStateToProps = (state) => {
     return {
@@ -11,14 +11,35 @@ const mapStateToProps = (state) => {
         account: state.data.accounts.current,
         editView: true,
         //
-        scope: 'comment',
-        detailsAttributes: ['created_at', 'text'],
+        scope: 'task_type',
+        detailsAttributes: [
+            "key",
+            "project_id",
+        ],
         formElements: [
             {
-                attribute: 'text',
-                elementType: 'textarea',
+                attribute: 'label',
+                multiLocale: true,
             },
-        ]
+            {
+                attribute: 'key',
+            },
+            {
+                attribute: 'abbreviation',
+                validate: function(v){return v.length > 1}
+            },
+            {
+                elementType: 'input',
+                attribute: 'use',
+                type: 'checkbox',
+            },
+            {
+                elementType: 'select',
+                attribute: 'project_id',
+                values: state.data.projects,
+                withEmpty: true,
+            },
+        ],
     }
 }
 

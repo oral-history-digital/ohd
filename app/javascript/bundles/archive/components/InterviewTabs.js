@@ -4,7 +4,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import { TableOfContentsContainer } from 'modules/toc';
 import { TranscriptContainer } from 'modules/transcript';
 import { InterviewSearchContainer } from 'modules/interview-search';
-import RefTreeContainer from '../containers/RefTreeContainer';
+import { RefTreeContainer } from 'modules/interview-references';
 import { t } from 'modules/i18n';
 
 export default class InterviewTabs extends React.Component {

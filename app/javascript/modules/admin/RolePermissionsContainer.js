@@ -2,23 +2,36 @@ import { connect } from 'react-redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
-import { DataList } from 'modules/admin';
+import { getProject } from 'lib/utils';
+import DataList from './DataList';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return {
         locale: state.archive.locale,
+        locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
+        projectId: state.archive.projectId,
+        projects: state.data.projects,
         account: state.data.accounts.current,
-        editView: true,
+        editView: state.archive.editView,
         //
-        scope: 'comment',
-        detailsAttributes: ['created_at', 'text'],
+        //
+        //
+        joinDataStatus: state.data.statuses.permissions,
+        joinDataScope: 'permissions',
+        scope: 'role_permission',
+        detailsAttributes: ['name', 'desc', 'klass', 'action_name'],
         formElements: [
             {
-                attribute: 'text',
-                elementType: 'textarea',
-            },
-        ]
+                elementType: 'select',
+                attribute: 'permission_id',
+                values: state.data.permissions,
+                withEmpty: true,
+                validate: function(v){return v.length > 0}
+            }
+        ],
+        hideEdit: true
     }
 }
 

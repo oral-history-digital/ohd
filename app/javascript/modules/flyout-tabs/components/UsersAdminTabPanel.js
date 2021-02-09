@@ -2,11 +2,10 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 
-import UserRegistrationSearchFormContainer from 'bundles/archive/containers/UserRegistrationSearchFormContainer';
-import RoleSearchFormContainer from 'bundles/archive/containers/RoleSearchFormContainer';
-import PermissionSearchFormContainer from 'bundles/archive/containers/PermissionSearchFormContainer';
-import TaskTypeSearchFormContainer from 'bundles/archive/containers/TaskTypeSearchFormContainer';
-import ProjectSearchFormContainer from 'bundles/archive/containers/ProjectSearchFormContainer';
+import { PermissionSearchFormContainer, ProjectSearchFormContainer,
+    RoleSearchFormContainer, TaskTypeSearchFormContainer,
+    UserRegistrationSearchFormContainer }
+    from 'modules/admin';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import { pathBase } from 'lib/utils';
 import { admin } from 'modules/auth';

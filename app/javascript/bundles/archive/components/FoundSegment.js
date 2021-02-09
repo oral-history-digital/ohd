@@ -2,17 +2,13 @@ import React from 'react';
 import moment from 'moment';
 import { t } from 'modules/i18n';
 
-export default class Segment extends React.Component {
-
+export default class FoundSegment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             contentOpen: false,
             contentType: 'none'
         };
-    }
-
-    componentWillReceiveProps(nextProps) {
     }
 
     heading() {

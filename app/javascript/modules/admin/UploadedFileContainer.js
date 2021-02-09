@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
-import { DataList } from 'modules/admin';
+import DataList from './DataList';
 
 const mapStateToProps = (state) => {
     return {
@@ -11,12 +11,39 @@ const mapStateToProps = (state) => {
         account: state.data.accounts.current,
         editView: true,
         //
-        scope: 'comment',
-        detailsAttributes: ['created_at', 'text'],
+        scope: 'uploaded_file',
+        detailsAttributes: ['src', 'locale'],
         formElements: [
             {
-                attribute: 'text',
-                elementType: 'textarea',
+                attribute: "locale",
+                elementType: 'select',
+                values: state.archive.locales,
+                withEmpty: true,
+                validate: function(v){return /\w{2}/.test(v)},
+            },
+            {
+                attribute: 'file',
+                elementType: 'input',
+                type: 'file',
+                //validate: function(v){return v instanceof File},
+            },
+            {
+                attribute: 'href',
+            },
+            {
+                attribute: 'title',
+            },
+            {
+                attribute: 'type',
+                hidden: true,
+            },
+            {
+                attribute: 'ref_type',
+                hidden: true,
+            },
+            {
+                attribute: 'ref_id',
+                hidden: true,
             },
         ]
     }
