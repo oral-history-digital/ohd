@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { TasksContainer } from 'modules/workflow';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
-import UserRolesContainer from 'bundles/archive/containers/UserRolesContainer';
+import { UserRolesContainer } from 'modules/roles';
 import UserRegistrationFormContainer from './UserRegistrationFormContainer';
 
 export default class UserRegistration extends React.Component {

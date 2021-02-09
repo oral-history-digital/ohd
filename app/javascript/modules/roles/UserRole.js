@@ -1,10 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 export default class UserRole extends React.Component {
-
     show() {
         return (
             <div
@@ -71,3 +71,17 @@ export default class UserRole extends React.Component {
         )
     }
 }
+
+UserRole.propTypes = {
+    userRole: PropTypes.object.isRequired,
+    hideEdit: PropTypes.bool,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+    deleteData: PropTypes.func.isRequired,
+};

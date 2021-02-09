@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import UserRolesContainer from 'bundles/archive/containers/UserRolesContainer';
+import { UserRolesContainer } from 'modules/roles';
 import { TasksOnlyStatusEditableContainer } from 'modules/workflow';
 import { AuthShowContainer } from 'modules/auth';
 import { INDEX_ACCOUNT } from 'modules/flyout-tabs';

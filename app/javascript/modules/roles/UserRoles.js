@@ -1,14 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import UserRoleContainer from '../containers/UserRoleContainer';
-import UserRoleFormContainer from '../containers/UserRoleFormContainer';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import UserRoleFormContainer from './UserRoleFormContainer';
+import UserRoleContainer from './UserRoleContainer';
 
 export default class UserRoles extends React.Component {
-
     userRoles() {
-        return Object.keys(this.props.userRoles).map((id, index) => {
+        return Object.keys(this.props.userRoles).map((id) => {
             return (
                 <li key={`user-role-li-${id}`}>
                     <UserRoleContainer
@@ -54,3 +54,15 @@ export default class UserRoles extends React.Component {
         )
     }
 }
+
+UserRoles.propTypes = {
+    userRoles: PropTypes.object.isRequired,
+    userAccountId: PropTypes.number.isRequired,
+    hideAdd: PropTypes.bool,
+    hideEdit: PropTypes.bool,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+};

@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Form } from 'modules/forms';
-import { t } from 'modules/i18n';
 
 export default class UserRoleForm extends React.Component {
-
     componentDidMount() {
         this.loadRoles();
     }
@@ -22,12 +22,11 @@ export default class UserRoleForm extends React.Component {
     }
 
     render() {
-        let _this = this;
         return (
             <div>
                 <Form
                     scope='user_role'
-                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                    onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
                     values={{
                         user_account_id: this.props.userAccountId,
                     }}
@@ -45,3 +44,15 @@ export default class UserRoleForm extends React.Component {
         );
     }
 }
+
+UserRoleForm.propTypes = {
+    rolesStatus: PropTypes.object.isRequired,
+    userAccountId: PropTypes.number.isRequired,
+    roles: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    submitData: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};
