@@ -1,8 +1,6 @@
-/**
- * PopupMenu component
- */
+@import "../../../bundles/archive/stylesheets/variables";
 
-.popup-menu__trigger {
+.trigger {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -11,11 +9,11 @@
   transition: background-color $transition-duration;
 }
 
-.popup-menu__trigger-icon {
+.triggerIcon {
   color: var(--editorial-color) !important;
 }
 
-.popup-menu__list {
+.list {
   background-color: white;
   border: 1px solid $gray-light;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -25,6 +23,6 @@
 
 /* States */
 
-.popup-menu__trigger:hover {
+.trigger:hover {
   background-color: $gray-lighter;
 }

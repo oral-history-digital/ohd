@@ -4,28 +4,29 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
+import styles from './PopupMenu.module.scss';
 
 function PopupMenu({ className, children }) {
     const { t } = useI18n();
 
     const trigger = (
         <button
-            className="popup-menu__trigger"
+            className={styles.trigger}
             title={t('more')}
         >
-            <i className="fa fa-ellipsis-v popup-menu__trigger-icon" />
+            <i className={classNames(styles.triggerIcon, 'fa', 'fa-ellipsis-v')} />
         </button>
     );
 
     return (
         <Popup
-            className={classNames('popup-menu', className)}
+            className={className}
             trigger={trigger}
             on={['click']}
             contentStyle={{ zIndex:1001 }}
             position={['right top', 'center top', 'left top']}
         >
-            <ul className="popup-menu__list">
+            <ul className={styles.list}>
                 {children}
             </ul>
         </Popup>
@@ -33,7 +34,7 @@ function PopupMenu({ className, children }) {
 }
 
 const PopupMenuItem = ({ children }) => (
-    <li className="popup-menu__item">
+    <li>
         {children}
     </li>
 );

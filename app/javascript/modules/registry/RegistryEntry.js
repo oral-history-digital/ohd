@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import PopupMenu from 'bundles/archive/components/PopupMenu';
+
+import { PopupMenu } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
