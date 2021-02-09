@@ -8,10 +8,6 @@ export const getProjectId = state => getState(state).projectId;
 
 export const getArchiveId = state => getState(state).archiveId;
 
-export const getContributionTypes = state => getState(state).contributionTypes;
-
-export const getMediaStreams = state => getState(state).mediaStreams;
-
 export const getDoiResult = state => getState(state).doiResult;
 
 

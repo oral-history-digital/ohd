@@ -34,7 +34,7 @@ class ApplicationController < ActionController::Base
     if params[:project_id]
       Project.where(shortname: params[:project_id].upcase).first
     else
-      Project.where(archive_domain: request.host).first
+      Project.by_host(request.host)
     end
   end
   helper_method :current_project
@@ -47,11 +47,6 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new('Not Found')
   end
 
-  prepend_before_action :set_available_locales
-  def set_available_locales
-    I18n.available_locales = current_project.available_locales if current_project
-  end
-
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
   #
   def initial_redux_state
@@ -62,8 +57,6 @@ class ApplicationController < ActionController::Base
         projectId: current_project.identifier,
         viewModes: current_project.view_modes,
         viewMode: current_project.view_modes.first,
-        listColumns: current_project.list_columns,
-        randomFeaturedInterviews: {},
         editView: !!cookies["editView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],
@@ -72,8 +65,6 @@ class ApplicationController < ActionController::Base
         skipEmptyRows: false,
         translations: translations,
         countryKeys: country_keys,
-        contributionTypes: Project.contribution_types,
-        mediaStreams: Project.media_streams,
       },
       account: {
         isLoggingIn: false,
@@ -134,6 +125,12 @@ class ApplicationController < ActionController::Base
         end,
         task_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
           TaskType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+        end,
+        contribution_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-contribution_types-#{ContributionType.maximum(:updated_at)}") do
+          ContributionType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+        end,
+        media_streams: Rails.cache.fetch("#{current_project.cache_key_prefix}-media_streams-#{MediaStream.maximum(:updated_at)}") do
+          MediaStream.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
       },
       popup: {

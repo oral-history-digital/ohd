@@ -25,6 +25,6 @@ class BiographicalEntry < ApplicationRecord
   end
 
   def interview_id
-    person.interviews.first.id
+    person.interviews.first && person.interviews.first.id
   end
 end

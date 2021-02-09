@@ -15,7 +15,6 @@ const mapStateToProps = (state) => {
         projects: state.data.projects,
         interview: interview,
         people: state.data.people,
-        contributionTypes: state.archive.contributionTypes,
         isLoggedIn: state.account.isLoggedIn,
         project: project,
     }

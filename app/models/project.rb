@@ -8,6 +8,7 @@ class Project < ApplicationRecord
   has_many :interviews
   has_many :collections
   has_many :contribution_types
+  has_many :media_streams
   has_many :metadata_fields
   has_many :task_types
   has_many :external_links
@@ -67,14 +68,14 @@ class Project < ApplicationRecord
       @config ||= Rails.configuration.project
     end
 
-    def method_missing(n, *args, &block)
-      if config.has_key? n.to_s
-        config[n.to_s]
-      else
-        #raise "#{self} does NOT have a key named #{n}"
-        nil
-      end
-    end
+    #def method_missing(n, *args, &block)
+      #if config.has_key? n.to_s
+        #config[n.to_s]
+      #else
+        ##raise "#{self} does NOT have a key named #{n}"
+        #nil
+      #end
+    #end
 
     # TODO: fit this method
     def current
@@ -82,7 +83,11 @@ class Project < ApplicationRecord
     end
 
     def archive_domains
-      where.not(shortname: 'ohd').compact.map(&:archive_domain)
+      where.not(shortname: 'ohd').compact.map{|project| Addressable::URI.parse(project.archive_domain).host}
+    end
+
+    def by_host(host)
+      all.find{|d| Addressable::URI.parse(d.archive_domain).host == host}
     end
   end
 
@@ -120,7 +125,7 @@ class Project < ApplicationRecord
   end
 
   def clear_cache(namespace)
-    Rails.cache.redis.keys("#{cache_key_prefix}-#{namespace}*").each{|k| Rails.cache.delete(k)}
+    Rails.cache.delete_matched /^#{cache_key_prefix}-#{namespace}*/
   end
 
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|

@@ -734,7 +734,7 @@ es:
         end_date: Fin
         workflow_state: 'estatus'
       contribution:
-        contribution_type: Tipo de la contribución
+        contribution_type_id: Tipo de la contribución
         person_id: persona
         speaker_designation: Especificación del/la hablante (p.ej. *CG:*)
       collection:
@@ -1006,6 +1006,7 @@ es:
         created_at: Angelegt am
     errors:
       default:
+        empty: Seleccionar
         select: Seleccionar
         textarea: Indicar
         checkbox_input: Aceptar

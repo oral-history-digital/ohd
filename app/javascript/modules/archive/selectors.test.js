@@ -14,9 +14,6 @@ const state = {
             de: 'dummy',
             en: 'dummy',
         },
-        contributionTypes: {
-            cinematographer: 'cinematographer',
-        },
         archiveId: 'cd003',
         interviewEditView: true,
         skipEmptyRows: false,
@@ -26,11 +23,6 @@ const state = {
         countryKeys: {
             de: ['AF'],
             es: ['AF'],
-        },
-        mediaStreams: {
-            defaults: {},
-            video: {},
-            audio: {},
         },
         doiResult: {},
     },
@@ -68,10 +60,6 @@ test('getArchiveId retrieves archive id', () => {
     expect(selectors.getArchiveId(state)).toEqual(state[NAME].archiveId);
 });
 
-test('getContributionTypes retrieves contributionTypes object', () => {
-    expect(selectors.getContributionTypes(state)).toEqual(state[NAME].contributionTypes);
-});
-
 describe('getInterviewEditView', () => {
     test('retrieves interviewEditView status', () => {
         expect(selectors.getInterviewEditView(state)).toEqual(state[NAME].interviewEditView);
@@ -102,10 +90,6 @@ test('getSelectedArchiveIds retrieves selected archive ids', () => {
 
 test('getSelectedRegistryEntryIds retrieves selected registry entry ids', () => {
     expect(selectors.getSelectedRegistryEntryIds(state)).toEqual([82, 5]);
-});
-
-test('getMediaStreams retrieves media streams', () => {
-    expect(selectors.getMediaStreams(state)).toEqual(state[NAME].mediaStreams);
 });
 
 test('getDoiResult retrieves doi result object', () => {

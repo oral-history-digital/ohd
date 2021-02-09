@@ -6,11 +6,11 @@ class Contribution < ApplicationRecord
   belongs_to :interview
   belongs_to :person,
     -> { includes(:translations) }
+  belongs_to :contribution_type
 
   validates_associated :interview, :person
-  validates_presence_of :contribution_type
-  validates :contribution_type, inclusion: %w(interviewee interviewer transcriptor translator segmentator research sound cinematographer other_attender quality_manager_interviewing producer proofreader)
-  validates_uniqueness_of :person_id, :scope => [ :interview_id, :contribution_type ]
+  validates_presence_of :contribution_type_id
+  validates_uniqueness_of :person_id, :scope => [ :interview_id, :contribution_type_id ]
 
   after_save :touch_interview
   after_destroy :touch_interview

@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
-        contributionTypes: state.archive.contributionTypes,
+        contributionTypes: state.data.contribution_types,
     }
 }
 

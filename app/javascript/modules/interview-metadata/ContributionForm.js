@@ -33,9 +33,9 @@ export default class ContributionForm extends React.Component {
             },
             {
                 elementType: 'select',
-                attribute: 'contribution_type',
+                attribute: 'contribution_type_id',
                 values: this.props.contributionTypes && Object.values(this.props.contributionTypes),
-                value: this.props.contribution && this.props.contribution.contribution_type,
+                value: this.props.contribution && this.props.contribution.contribution_type_id,
                 optionsScope: 'contributions',
                 keepOrder: true,
                 withEmpty: true,
