@@ -1,25 +1,31 @@
 import { connect } from 'react-redux';
 
-import DataSearchForm from '../components/DataSearchForm';
-import {
-    resetQuery,
-    setQueryParams,
-} from 'modules/search';
+import { resetQuery, setQueryParams } from 'modules/search';
 import { fetchData } from 'modules/data';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
+import { getProject } from 'lib/utils';
+import DataSearchForm from './DataSearchForm';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return {
         translations: state.archive.translations,
         locale: state.archive.locale,
         projectId: state.archive.projectId,
         projects: state.data.projects,
-        query: state.search.registry_reference_types.query,
-        dataStatus: state.data.statuses.registry_reference_types,
-        scope: 'registry_reference_type',
+        query: state.search.user_registrations.query,
+        dataStatus: state.data.statuses.user_registrations,
+        scope: 'user_registration',
         searchableAttributes: [
-            {attributeName: 'name'},
-            {attributeName: 'code'},
+            {attributeName: 'first_name'},
+            {attributeName: 'last_name'},
+            {attributeName: 'email'},
+            {
+                attributeName: 'default_locale',
+                type: 'select',
+                values: (project && project.available_locales) || state.archive.locales,
+            },
+            {attributeName: 'workflow_state', type: 'select', values: ['all', 'account_confirmed', 'project_access_granted', 'project_access_postponed', 'project_access_rejected', 'account_deactivated']}
         ]
     }
 }

@@ -1,21 +1,27 @@
 import { connect } from 'react-redux';
 
-import DataList from '../components/DataList';
+import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
+import { getProject } from 'lib/utils';
+import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
+import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return {
         locale: state.archive.locale,
+        locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: true,
-        //
+        editView: state.archive.editView,
+        data: state.data.task_types,
+        dataStatus: state.data.statuses.task_types,
+        resultPagesCount: state.data.statuses.task_types.resultPagesCount,
+        query: state.search.task_types.query,
         scope: 'task_type',
-        detailsAttributes: [
-            "key",
-            "project_id",
-        ],
+        baseTabIndex: 5 + project.has_map,
+        detailsAttributes: ['name', 'desc'],
         formElements: [
             {
                 attribute: 'label',
@@ -40,6 +46,7 @@ const mapStateToProps = (state) => {
                 withEmpty: true,
             },
         ],
+        joinedData: {task_type_permission: TaskTypePermissionsContainer},
     }
 }
 
@@ -47,8 +54,9 @@ const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
     submitData: (props, params) => dispatch(submitData(props, params)),
+    setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataList);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

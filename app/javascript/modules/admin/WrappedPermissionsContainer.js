@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 
-import WrappedDataList from '../components/WrappedDataList';
-import RolePermissionsContainer from '../containers/RolePermissionsContainer';
 import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
-import { getCookie, getProject } from 'lib/utils';
+import { getProject } from 'lib/utils';
+import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -17,13 +16,13 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         account: state.data.accounts.current,
         editView: state.archive.editView,
-        data: state.data.roles,
-        dataStatus: state.data.statuses.roles,
-        resultPagesCount: state.data.statuses.roles.resultPagesCount,
-        query: state.search.roles.query,
-        scope: 'role',
+        data: state.data.permissions,
+        dataStatus: state.data.statuses.permissions,
+        resultPagesCount: state.data.statuses.permissions.resultPagesCount,
+        query: state.search.permissions.query,
+        scope: 'permission',
         baseTabIndex: 5 + project.has_map,
-        detailsAttributes: ['name', 'desc'],
+        detailsAttributes: ['name', 'desc', 'klass', 'action_name'],
         formElements: [
             {
                 attribute: 'name',
@@ -33,8 +32,15 @@ const mapStateToProps = (state) => {
                 elementType: 'textarea',
                 attribute: 'desc',
             },
-        ],
-        joinedData: {role_permission: RolePermissionsContainer},
+            {
+                attribute: 'klass',
+                validate: function(v){return v.length > 1}
+            },
+            {
+                attribute: 'action_name',
+                validate: function(v){return v.length > 1}
+            },
+        ]
     }
 }
 

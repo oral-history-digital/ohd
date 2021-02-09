@@ -2,10 +2,10 @@ import React from 'react';
 
 import { AuthorizedContent } from 'modules/auth';
 import { ArchivePopupButton } from 'modules/ui';
-import DataContainer from '../containers/DataContainer';
 import { Form } from 'modules/forms';
 import { camelcase } from 'lib/utils';
 import { t } from 'modules/i18n';
+import DataContainer from './DataContainer';
 
 export default class DataLists extends React.Component {
 

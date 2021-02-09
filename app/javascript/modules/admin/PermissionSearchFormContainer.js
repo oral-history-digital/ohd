@@ -1,27 +1,24 @@
 import { connect } from 'react-redux';
 
-import DataSearchForm from '../components/DataSearchForm';
-import {
-    resetQuery,
-    setQueryParams,
-} from 'modules/search';
+import { resetQuery, setQueryParams } from 'modules/search';
 import { fetchData } from 'modules/data';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
+import DataSearchForm from './DataSearchForm';
 
-const mapStateToProps = (state) => {
-    return {
-        translations: state.archive.translations,
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
-        query: state.search.collections.query,
-        dataStatus: state.data.statuses.collections,
-        scope: 'collection',
-        searchableAttributes: [
-            {attributeName: 'name'},
-        ]
-    }
-}
+const mapStateToProps = (state) => ({
+    translations: state.archive.translations,
+    locale: state.archive.locale,
+    projectId: state.archive.projectId,
+    projects: state.data.projects,
+    query: state.search.permissions.query,
+    dataStatus: state.data.statuses.permissions,
+    scope: 'permission',
+    searchableAttributes: [
+        {attributeName: 'name'},
+        {attributeName: 'klass'},
+        {attributeName: 'action_name'},
+    ],
+});
 
 const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),

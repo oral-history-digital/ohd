@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import WrappedDataList from '../components/WrappedDataList';
 import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
-import { getCookie, getProject } from 'lib/utils';
+import { getProject } from 'lib/utils';
+import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -15,24 +15,50 @@ const mapStateToProps = (state) => {
         projects: state.data.projects,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: getCookie('editView') === 'true',
-        data: state.data.languages,
-        dataStatus: state.data.statuses.languages,
-        resultPagesCount: state.data.statuses.languages.resultPagesCount,
-        query: state.search.languages.query,
-        scope: 'language',
+        editView: state.archive.editView,
+        data: state.data.people,
+        dataStatus: state.data.statuses.people,
+        resultPagesCount: state.data.statuses.people.resultPagesCount,
+        query: state.search.people.query,
+        scope: 'person',
+        sortAttribute: 'name',
+        sortAttributeTranslated: true,
         baseTabIndex: 4 + project.has_map,
         //detailsAttributes: ['name'],
-        detailsAttributes: ['code', 'name'],
+        detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth', 'typology'],
         formElements: [
             {
-                attribute: 'code',
-                validate: function(v){return /^[a-z]+$/.test(v)}
+                elementType: 'select',
+                attribute: 'gender',
+                values: ['male', 'female', 'diverse'],
+                optionsScope: 'gender',
+                withEmpty: true,
+                //validate: function(v){return v !== ''}
             },
             {
-                attribute: 'name',
+                attribute: 'first_name',
                 multiLocale: true,
                 //validate: function(v){return v.length > 1}
+            },
+            {
+                attribute: 'last_name',
+                multiLocale: true,
+                //validate: function(v){return v.length > 1}
+            },
+            {
+                attribute: 'birth_name',
+                multiLocale: true,
+            },
+            {
+                attribute: 'alias_names',
+                multiLocale: true,
+            },
+            {
+                attribute: 'other_first_names',
+                multiLocale: true,
+            },
+            {
+                attribute: 'date_of_birth',
             },
         ],
         joinedData: { },

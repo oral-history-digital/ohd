@@ -86,7 +86,6 @@ export default class DataSearchForm extends React.Component {
     }
 
     render() {
-        let _this = this;
         return (
             <div>
                 <form
@@ -95,7 +94,7 @@ export default class DataSearchForm extends React.Component {
                     className={'flyout-search default'}
                     onSubmit={this.handleSubmit}
                 >
-                    {this.props.searchableAttributes.map((element, index) => {
+                    {this.props.searchableAttributes.map((element) => {
                         return (
                             <FormElement label={t(this.props, `activerecord.attributes.${this.props.scope}.${element.attributeName}`)} key={`form-element-${element.attributeName}`}>
                                 {this.searchFormElement(element)}
@@ -110,9 +109,5 @@ export default class DataSearchForm extends React.Component {
                 </form>
             </div>
         );
-    }
-
-    static contextTypes = {
-        router: PropTypes.object
     }
 }

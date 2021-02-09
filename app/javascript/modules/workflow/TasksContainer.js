@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
-import DataList from 'bundles/archive/components/DataList';
+import { DataList } from 'modules/admin';
 
 const mapStateToProps = (state) => {
     return {

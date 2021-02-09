@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
 
-import WrappedDataList from '../components/WrappedDataList';
-import MetadataFieldsContainer from '../containers/MetadataFieldsContainer';
-import TaskTypesContainer from '../containers/TaskTypesContainer';
-import ExternalLinksContainer from '../containers/ExternalLinksContainer';
-import UploadedFileContainer from '../containers/UploadedFileContainer';
+import WrappedDataList from './WrappedDataList';
+import MetadataFieldsContainer from './MetadataFieldsContainer';
+import ExternalLinksContainer from './ExternalLinksContainer';
+import UploadedFileContainer from './UploadedFileContainer';
 import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
-import { getCookie, getProject } from 'lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

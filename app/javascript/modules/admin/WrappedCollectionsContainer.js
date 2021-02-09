@@ -1,12 +1,10 @@
 import { connect } from 'react-redux';
 
-import WrappedDataList from '../components/WrappedDataList';
-import {
-    setQueryParams,
-} from 'modules/search';
+import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
 import { getCookie, getProject } from 'lib/utils';
+import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -17,32 +15,46 @@ const mapStateToProps = (state) => {
         projects: state.data.projects,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: state.archive.editView,
-        data: state.data.permissions,
-        dataStatus: state.data.statuses.permissions,
-        resultPagesCount: state.data.statuses.permissions.resultPagesCount,
-        query: state.search.permissions.query,
-        scope: 'permission',
-        baseTabIndex: 5 + project.has_map,
-        detailsAttributes: ['name', 'desc', 'klass', 'action_name'],
+        editView: getCookie('editView') === 'true',
+        data: state.data.collections,
+        dataStatus: state.data.statuses.collections,
+        resultPagesCount: state.data.statuses.collections.resultPagesCount,
+        query: state.search.collections.query,
+        scope: 'collection',
+        baseTabIndex: 4 + project.has_map,
+        //detailsAttributes: ['name'],
+        detailsAttributes: ['name', 'homepage', 'institution', 'responsibles', 'notes', 'countries'],
+        initialFormValues: {project_id: project.id},
         formElements: [
             {
                 attribute: 'name',
-                validate: function(v){return v.length > 1}
+                multiLocale: true,
+                //validate: function(v){return v.length > 1}
             },
             {
-                elementType: 'textarea',
-                attribute: 'desc',
+                attribute: 'homepage',
+                multiLocale: true,
+                //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
             },
             {
-                attribute: 'klass',
-                validate: function(v){return v.length > 1}
+                attribute: 'institution',
+                multiLocale: true,
+                //validate: function(v){return v.length > 1}
             },
             {
-                attribute: 'action_name',
-                validate: function(v){return v.length > 1}
+                attribute: 'responsibles',
+                multiLocale: true,
             },
-        ]
+            {
+                attribute: 'notes',
+                multiLocale: true,
+            },
+            {
+                attribute: 'countries',
+                multiLocale: true,
+            },
+        ],
+        joinedData: { },
     }
 }
 

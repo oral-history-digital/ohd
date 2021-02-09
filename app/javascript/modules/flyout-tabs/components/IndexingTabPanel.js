@@ -1,10 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import PeopleSearchFormContainer from 'bundles/archive/containers/PeopleSearchFormContainer';
-import RegistryReferenceTypesSearchFormContainer from 'bundles/archive/containers/RegistryReferenceTypesSearchFormContainer';
-import CollectionsSearchFormContainer from 'bundles/archive/containers/CollectionsSearchFormContainer';
-import LanguagesSearchFormContainer from 'bundles/archive/containers/LanguagesSearchFormContainer';
+import { CollectionsSearchFormContainer, LanguagesSearchFormContainer,
+    PeopleSearchFormContainer, RegistryReferenceTypesSearchFormContainer }
+    from 'modules/admin';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import { pathBase } from 'lib/utils';
 import { admin } from 'modules/auth';

@@ -1,12 +1,10 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import PopupMenu from './PopupMenu';
+import PopupMenu from 'bundles/archive/components/PopupMenu';
+import TaskPreviewContainer from 'bundles/archive/containers/TaskPreviewContainer';
 import { AuthorizedContent } from 'modules/auth';
 import { ArchivePopupButton } from 'modules/ui';
-
-import TaskPreviewContainer from '../containers/TaskPreviewContainer';
-
 import { pluralize, camelcase, humanReadable } from 'lib/utils';
 import { t } from 'modules/i18n';
 

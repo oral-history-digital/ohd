@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import DataList from 'bundles/archive/components/DataList';
+import { DataList } from 'modules/admin';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
 import CommentsContainer from './CommentsContainer';

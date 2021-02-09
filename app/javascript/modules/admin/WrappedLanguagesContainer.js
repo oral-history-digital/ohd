@@ -1,33 +1,41 @@
 import { connect } from 'react-redux';
 
-import DataList from '../components/DataList';
+import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
+import { getCookie, getProject } from 'lib/utils';
+import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
+    let project = getProject(state);
     return {
         locale: state.archive.locale,
+        locales: (project && project.available_locales) || state.archive.locales,
+        projectId: state.archive.projectId,
+        projects: state.data.projects,
         translations: state.archive.translations,
         account: state.data.accounts.current,
-        editView: true,
-        //
-        scope: 'external_link',
-        detailsAttributes: ['name', 'url'],
+        editView: getCookie('editView') === 'true',
+        data: state.data.languages,
+        dataStatus: state.data.statuses.languages,
+        resultPagesCount: state.data.statuses.languages.resultPagesCount,
+        query: state.search.languages.query,
+        scope: 'language',
+        baseTabIndex: 4 + project.has_map,
+        //detailsAttributes: ['name'],
+        detailsAttributes: ['code', 'name'],
         formElements: [
             {
-                attribute: "internal_name"
+                attribute: 'code',
+                validate: function(v){return /^[a-z]+$/.test(v)}
             },
             {
                 attribute: 'name',
                 multiLocale: true,
-                // validate: function(v){return v.length > 1}
-            },
-            {
-                attribute: 'url',
-                multiLocale: true,
                 //validate: function(v){return v.length > 1}
             },
-        ]
+        ],
+        joinedData: { },
     }
 }
 
@@ -35,8 +43,9 @@ const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
     submitData: (props, params) => dispatch(submitData(props, params)),
+    setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
     openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataList);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

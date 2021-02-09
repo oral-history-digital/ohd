@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import Data from '../components/Data';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { deleteData } from 'modules/data';
+import Data from './Data';
 
 const mapStateToProps = (state) => {
     return {
