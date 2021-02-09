@@ -1,9 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class RefTreeEntry extends React.Component {
-
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
 
         this.state = {
             expanded: false,
@@ -56,3 +56,14 @@ export default class RefTreeEntry extends React.Component {
         )
     }
 }
+
+RefTreeEntry.propTypes = {
+    entry: PropTypes.object.isRequired,
+    index: PropTypes.number.isRequired,
+    locale: PropTypes.string.isRequired,
+    transcriptScrollEnabled: PropTypes.bool.isRequired,
+    interview: PropTypes.object.isRequired,
+    renderChildren: PropTypes.func.isRequired,
+    handleSegmentClick: PropTypes.func.isRequired,
+    handleTranscriptScroll: PropTypes.func.isRequired,
+};

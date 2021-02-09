@@ -1,8 +1,10 @@
 import React from 'react';
-import RefTreeEntryContainer from '../containers/RefTreeEntryContainer';
-import FoundSegmentContainer from '../containers/FoundSegmentContainer';
+import PropTypes from 'prop-types';
+
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import FoundSegmentContainer from 'bundles/archive/containers/FoundSegmentContainer';
+import RefTreeEntryContainer from './RefTreeEntryContainer';
 
 export default class RefTree extends React.Component {
     componentDidMount() {
@@ -20,23 +22,21 @@ export default class RefTree extends React.Component {
     }
 
     renderChildren(children) {
-        let that = this;
         return children.map((entry, index) => {
             if (entry.type === 'leafe') {
                 return (
                     <FoundSegmentContainer
                         className='heading'
-                        key={'entry-' + index}
+                        key={index}
                         data={entry}
                     />
                 )
             } else {
                 return <RefTreeEntryContainer
-                    className='heading'
-                    key={'entry-' + index}
+                    key={index}
                     entry={entry}
                     index={index}
-                    renderChildren={this.renderChildren.bind(that)}
+                    renderChildren={this.renderChildren.bind(this)}
                 />
             }
         })
@@ -72,3 +72,14 @@ export default class RefTree extends React.Component {
         );
     }
 }
+
+RefTree.propTypes = {
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    archiveId: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    interview: PropTypes.object.isRequired,
+    refTreeStatus: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+};
