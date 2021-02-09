@@ -8,6 +8,10 @@ export const getData = state => state.data;
 
 export const getLanguages = state => getData(state).languages;
 
+export const getMediaStreams = state => getData(state).media_streams;
+
+export const getContributionTypes = state => getData(state).contribution_types;
+
 export const getPeople = state => getData(state).people;
 
 export const getStatuses = state => getData(state).statuses;
@@ -115,9 +119,9 @@ export const getRootRegistryEntry = createSelector(
 );
 
 export const getRootRegistryEntryReload = createSelector(
-    getRegistryEntriesStatus,
-    (status) => {
+    [getRegistryEntriesStatus, getCurrentProject],
+    (status, currentProject) => {
         const reload = /^reload/;
-        return reload.test(status[ROOT_REGISTRY_ENTRY_ID]);
+        return reload.test(status[currentProject.root_registry_entry_id]);
     }
 );

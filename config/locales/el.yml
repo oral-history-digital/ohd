@@ -744,7 +744,7 @@ el:
         end_date: Τέλος
         workflow_state: 'Κατάσταση'
       contribution:
-        contribution_type: Τύπος συμβολής
+        contribution_type_id: Τύπος συμβολής
         person_id: Άτομο
         speaker_designation: Υπόδειξη ομιλιτών (π.χ. *CG:*)
       collection:
@@ -1039,6 +1039,7 @@ el:
         created_at: Angelegt am
     errors:
       default:
+        empty: Παρακαλώ δώστε
         select: Παρακαλώ δώστε
         textarea: Παρακαλώ συμπληρώστε
         checkbox_input: Παρακαλώ συμπληρώστε

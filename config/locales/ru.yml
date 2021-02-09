@@ -788,7 +788,7 @@ ru:
         end_date: Ende
         workflow_state: 'Status'
       contribution:
-        contribution_type: Art des Beitrags
+        contribution_type_id: Art des Beitrags
         person_id: Person
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
@@ -1071,6 +1071,7 @@ ru:
         created_at: Angelegt am
     errors:
       default:
+        empty: Bitte auswählen
         select: Bitte auswählen
         textarea: Введите адрес
         checkbox_input: Bitte zustimmen

@@ -12,8 +12,9 @@ const mapStateToProps = (state) => {
     let project = getProject(state);
     return {
         interview: getCurrentInterview(state),
-        project: project && project.identifier,
+        project: project,
         archiveId: state.archive.archiveId,
+        projectId: state.archive.projectId,
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
@@ -22,8 +23,7 @@ const mapStateToProps = (state) => {
         videoStatus: getVideoStatus(state),
         transcriptScrollEnabled: getTranscriptScrollEnabled(state),
         people: state.data.people,
-        contributionTypes: state.archive.contributionTypes,
-        mediaStreams: state.archive.mediaStreams,
+        mediaStreams: state.data.media_streams,
         resolution: getVideoResolution(state),
         account: state.data.accounts.current,
         editView: state.archive.editView,

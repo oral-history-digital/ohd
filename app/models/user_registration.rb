@@ -70,7 +70,7 @@ EVAL
                                'zipcode',
                                'city',
                                'country'
-                             ] + (Project.has_newsletter ? ['receive_newsletter'] :[])
+                             ]
 
   def after_initialize
     (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|

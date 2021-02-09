@@ -1,5 +1,4 @@
 import dotProp from 'dot-prop-immutable';
-import { ROOT_REGISTRY_ENTRY_ID } from '../constants/archiveConstants';
 import * as selectors from './dataSelectors';
 
 const state = {
@@ -38,7 +37,7 @@ const state = {
                 all: 'fetched-Thu Dec 17 2020 18:20:22 GMT+0100 (Central European Standard Time)',
             },
             registry_entries: {
-                [ROOT_REGISTRY_ENTRY_ID]: 'fetched-Thu Jan 07 2021 21:17:39 GMT+0100 (Central European Standard Time)',
+                1: 'fetched-Thu Jan 07 2021 21:17:39 GMT+0100 (Central European Standard Time)',
             },
         },
         projects: {
@@ -61,8 +60,8 @@ const state = {
             },
         },
         registry_entries: {
-            [ROOT_REGISTRY_ENTRY_ID]: {
-                id: ROOT_REGISTRY_ENTRY_ID,
+            1: {
+                id: 1,
             },
             23: {
                 id: 23,
@@ -102,6 +101,27 @@ const state = {
             'cd009': {
                 id: 23,
                 type: 'Interview',
+            },
+        },
+        contribution_types: {
+            1: {
+                id: 1,
+                type: 'ContributionType',
+                project_id: 1,
+                label: {
+                    de: 'Interviewte*r',
+                    en: 'Interviewee',
+                },
+            },
+        },
+        MediaStream: {
+            1: {
+                id: 1,
+                type: 'MediaStream',
+                project_id: 1,
+                path: 'https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4',
+                media_type: 'video',
+                resolution: '480p',
             },
         },
     },
@@ -239,4 +259,12 @@ test('getContributorsFetched retrieves if contributors for current interview hav
 
 test('getFeaturedInterviewsFetched retrieves if featured interviews have been fetched', () => {
     expect(selectors.getFeaturedInterviewsFetched(state)).toBe(true);
+});
+
+test('getContributionTypes retrieves contributionTypes object', () => {
+    expect(selectors.getContributionTypes(state)).toEqual(state.data.contribution_types);
+});
+
+test('getMediaStreams retrieves media streams', () => {
+    expect(selectors.getMediaStreams(state)).toEqual(state.data.mediaStreams);
 });

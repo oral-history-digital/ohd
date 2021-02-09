@@ -80,13 +80,8 @@ const archive = (state = initialState, action) => {
                 homeContent: action.homeContent,
                 translations: action.translations,
                 country_keys: action.countryKeys,
-                collections: action.collections,
-                contributionTypes: action.contributionTypes,
-                rootRegistryEntry: action.rootRegistryEntry,
                 registryEntryMetadataFields: action.registryEntryMetadataFields,
                 registryReferenceTypeMetadataFields: action.registryReferenceTypeMetadataFields,
-                languages: action.languages,
-                mediaStreams: action.mediaStreams,
             })
         case CHANGE_TO_EDIT_VIEW:
             return Object.assign({}, state, {

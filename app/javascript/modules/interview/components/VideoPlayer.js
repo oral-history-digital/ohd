@@ -19,11 +19,8 @@ export default class VideoPlayer extends React.Component {
     }
 
     componentDidMount() {
-        // set resolution to default as defined in project conf
-        if (this.props.mediaStreams) {
-            let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.media_type]
-            this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.videoTime, initialResolution);
-        }
+        let initialResolution = this.props.interview.media_type === 'audio' ? '192k' : '480p';
+        this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.videoTime, initialResolution);
         if (this.video) {
             this.setVideoTime()
             this.setVideoStatus()
@@ -35,12 +32,6 @@ export default class VideoPlayer extends React.Component {
     }
 
     componentDidUpdate(prevProps) {
-        // set resolution as soon as mediaStreams are available
-        if(!prevProps.mediaStreams && this.props.mediaStreams) {
-            let initialResolution = this.props.mediaStreams['defaults'][this.props.interview.media_type]
-            this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.videoTime, initialResolution);
-        }
-
         if (this.video) {
             this.setVideoTime()
             this.setVideoStatus()
@@ -82,12 +73,15 @@ export default class VideoPlayer extends React.Component {
 
     src() {
         // this will run only if tape_count < 10!!
-        if(this.props.interview.media_type && this.props.mediaStreams && this.props.resolution && this.props.mediaStreams[this.props.interview.media_type][this.props.resolution]) {
-            let url = this.props.mediaStreams[this.props.interview.media_type][this.props.resolution];
-                url = url.replace(/\#\{archive_id\}/g, (this.props.project === 'mog') ? this.props.archiveId : this.props.archiveId.toUpperCase());
-                url = url.replace(/\#\{tape_count\}/g, this.props.interview.tape_count);
-                url = url.replace(/\#\{tape_number\}/g, this.props.tape);
-                return url;
+        if(this.props.interview.media_type && this.props.resolution) {
+            let url = Object.values(this.props.mediaStreams).find(m => {
+                return m.media_type === this.props.interview.media_type &&
+                    m.resolution === this.props.resolution
+            }).path;
+            url = url.replace(/\#\{archive_id\}/g, this.props.archiveId);
+            url = url.replace(/\#\{tape_count\}/g, this.props.interview.tape_count);
+            url = url.replace(/\#\{tape_number\}/g, this.props.tape);
+            return url;
         } else {
             return null;
         }
@@ -211,7 +205,7 @@ export default class VideoPlayer extends React.Component {
 
     resolutionSelector(){
         if (this.props.interview.media_type && this.props.mediaStreams) {
-            let resolutions = Object.keys(this.props.mediaStreams[this.props.interview.media_type])
+            let resolutions = Object.values(this.props.mediaStreams).filter(m => m.media_type === this.props.interview.media_type).map(m => m.resolution)
             if (resolutions.length > 1) {
 
                 let options = [];
@@ -234,7 +228,7 @@ export default class VideoPlayer extends React.Component {
         let _this = this;
         return(
             React.createElement(
-                _this.props.project == 'dg' ? 'audio' : 'video',
+                _this.props.projectId == 'dg' ? 'audio' : 'video',
                 {
                   ref: function ref(video) {
                     _this.video = video;
@@ -257,7 +251,7 @@ export default class VideoPlayer extends React.Component {
                   },
                   src: _this.src()
                 },
-                (_this.props.project != 'dg') && _this.subtitles()
+                (_this.props.projectId != 'dg') && _this.subtitles()
               )
         )
     }
@@ -274,7 +268,7 @@ export default class VideoPlayer extends React.Component {
     render() {
         const { flyoutTabsVisible, transcriptScrollEnabled } = this.props;
 
-        if (this.props.project) {
+        if (this.props.projectId) {
             return (
                 <div className={classNames('VideoPlayer', {
                     'is-fixed': transcriptScrollEnabled,
