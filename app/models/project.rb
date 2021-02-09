@@ -68,14 +68,14 @@ class Project < ApplicationRecord
       @config ||= Rails.configuration.project
     end
 
-    #def method_missing(n, *args, &block)
-      #if config.has_key? n.to_s
-        #config[n.to_s]
-      #else
-        ##raise "#{self} does NOT have a key named #{n}"
-        #nil
-      #end
-    #end
+    def method_missing(n, *args, &block)
+      if config.has_key? n.to_s
+        config[n.to_s]
+      else
+        #raise "#{self} does NOT have a key named #{n}"
+        nil
+      end
+    end
 
     # TODO: fit this method
     def current
