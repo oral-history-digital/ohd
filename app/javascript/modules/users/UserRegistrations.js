@@ -1,13 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import Observer from 'react-intersection-observer'
+
 import { AuthShowContainer } from 'modules/auth';
-import UserRegistrationContainer from '../containers/UserRegistrationContainer';
 import { parametrizedQuery } from 'lib/utils';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import UserRegistrationContainer from './UserRegistrationContainer';
 
 export default class UserRegistrations extends React.Component {
-
     constructor(props) {
         super(props);
         this.handleScroll = this.handleScroll.bind(this);
@@ -36,7 +37,7 @@ export default class UserRegistrations extends React.Component {
 
     userRegistrations() {
         if (this.props.userRegistrations && Object.keys(this.props.userRegistrations).length > 0) {
-            return Object.keys(this.props.userRegistrations).sort(function(a, b){return b-a}).map((c, index) => {
+            return Object.keys(this.props.userRegistrations).sort(function(a, b){return b-a}).map((c) => {
                 return <UserRegistrationContainer userRegistration={this.props.userRegistrations[c]} key={`userRegistration-${c}`} />
             })
         } else {
@@ -61,3 +62,16 @@ export default class UserRegistrations extends React.Component {
         );
     }
 }
+
+UserRegistrations.propTypes = {
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    translations: PropTypes.object.isRequired,
+    query: PropTypes.object.isRequired,
+    userRegistrations: PropTypes.object.isRequired,
+    resultPagesCount: PropTypes.number.isRequired,
+    isUserRegistrationSearching: PropTypes.bool,
+    fetchData: PropTypes.func.isRequired,
+    setQueryParams: PropTypes.func.isRequired,
+};

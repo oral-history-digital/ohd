@@ -8,7 +8,7 @@ import { HomeContainer } from 'modules/startpage';
 import InterviewContainer from 'bundles/archive/containers/InterviewContainer';
 import EditInterviewContainer from 'bundles/archive/containers/EditInterviewContainer';
 import UploadsContainer from 'bundles/archive/containers/UploadsContainer';
-import UserRegistrationsContainer from 'bundles/archive/containers/UserRegistrationsContainer';
+import { UserRegistrationsContainer } from 'modules/users';
 import { RegistryContainer } from 'modules/registry';
 import { ArchiveSearchContainer } from 'modules/search';
 import { MapSearchContainer } from 'modules/map-search';

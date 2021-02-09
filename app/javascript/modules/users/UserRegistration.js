@@ -1,13 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import UserRegistrationFormContainer from '../containers/UserRegistrationFormContainer';
-import UserRolesContainer from '../containers/UserRolesContainer';
 import { TasksContainer } from 'modules/workflow';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import UserRolesContainer from 'bundles/archive/containers/UserRolesContainer';
+import UserRegistrationFormContainer from './UserRegistrationFormContainer';
 
 export default class UserRegistration extends React.Component {
-
     constructor(props) {
         super(props);
         this.state = {
@@ -103,21 +103,6 @@ export default class UserRegistration extends React.Component {
         }
     }
 
-    // edit() {
-    //     return (
-    //         <div
-    //             className='flyout-sub-tabs-content-ico-link'
-    //             title={t(this.props, 'edit.user_registration.edit')}
-    //             onClick={() => this.props.openArchivePopup({
-    //                 title: t(this.props, 'edit.user_registration.edit'),
-    //                 content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
-    //             })}
-    //         >
-    //             <i className="fa fa-pencil"></i>
-    //         </div>
-    //     )
-    // }
-
     buttons() {
         if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
             return (
@@ -190,3 +175,12 @@ export default class UserRegistration extends React.Component {
         }
     }
 }
+
+UserRegistration.propTypes = {
+    userRegistration: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+};
