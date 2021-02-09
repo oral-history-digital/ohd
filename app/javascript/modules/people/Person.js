@@ -1,12 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import PersonFormContainer from '../containers/PersonFormContainer';
 import { fullname } from 'lib/utils';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import PersonFormContainer from './PersonFormContainer';
 
 export default class Person extends React.Component {
-
     edit() {
         return (
             <div
@@ -78,3 +78,18 @@ export default class Person extends React.Component {
         }
     }
 }
+
+Person.propTypes = {
+    archiveId: PropTypes.string.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    data: PropTypes.object,
+    contribution: PropTypes.object,
+    editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    deleteData: PropTypes.func.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};
