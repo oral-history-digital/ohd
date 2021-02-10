@@ -1,7 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { projectByDomain } from 'lib/utils';
-
+import { projectByDomain } from 'modules/routes';
 import { getArchiveId, getProjectId  } from 'modules/archive';
 
 export const getData = state => state.data;

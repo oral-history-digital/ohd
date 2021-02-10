@@ -5,7 +5,8 @@ import { InterviewInfoContainer } from 'modules/interview-metadata';
 import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
 import ContentField from './ContentField';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
-import { getInterviewArchiveIdWithOffset, pathBase } from 'lib/utils';
+import { getInterviewArchiveIdWithOffset } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
 export default class InterviewDetailsLeftSide extends React.Component {

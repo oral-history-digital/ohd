@@ -5,7 +5,7 @@ import { Redirect } from 'react-router-dom';
 
 import { usePrevious } from 'bundles/archive/hooks/misc';
 import { getLocale, getProjectId } from 'modules/archive';
-import { pathBase } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { getIsLoggedIn } from '../selectors';
 
 export default function RedirectOnLogin({

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styles from './LocaleButtons.module.scss';
 
-import { pathBase } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 
 class LocaleButtons extends Component {
     static propTypes = {

@@ -1,4 +1,5 @@
-import { pluralize, pathBase } from  'lib/utils';
+import { pluralize } from  'lib/utils';
+import { pathBase } from  'modules/routes';
 import { Loader } from 'modules/api';
 
 import {

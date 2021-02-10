@@ -14,7 +14,7 @@ import { InterviewLocationsContainer } from 'modules/locations';
 import CitationInfoContainer from 'bundles/archive/containers/CitationInfoContainer';
 import { GalleryContainer } from 'modules/gallery';
 import UploadTranscriptContainer from 'bundles/archive/containers/UploadTranscriptContainer';
-import { pathBase } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { admin, AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { t } from 'modules/i18n';
 

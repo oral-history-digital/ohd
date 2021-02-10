@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthShowContainer } from 'modules/auth';
-import { pathBase } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { isMobile } from 'modules/responsive';
 import LoginFormContainer from './LoginFormContainer'

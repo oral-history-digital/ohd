@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 
 import { MISSING_STILL } from 'bundles/archive/constants/archiveConstants'
 import SingleValueWithFormContainer from 'bundles/archive/containers/SingleValueWithFormContainer';
-import { pathBase, getInterviewee, loadIntervieweeWithAssociations } from 'lib/utils';
+import { getInterviewee, loadIntervieweeWithAssociations } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import TaskContainer from './TaskContainer';
 

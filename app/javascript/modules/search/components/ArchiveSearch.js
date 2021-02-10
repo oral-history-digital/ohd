@@ -11,7 +11,8 @@ import { InterviewWorkflowRowContainer } from 'modules/workflow';
 import { UserContentFormContainer } from 'modules/workbook';
 import { AuthShowContainer, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
-import { queryToText, pathBase } from 'lib/utils';
+import { queryToText } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { INDEX_SEARCH } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
 

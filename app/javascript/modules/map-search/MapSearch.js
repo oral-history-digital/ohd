@@ -14,7 +14,7 @@ import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css';
 import './leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css'
 
-import { pathBase } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { INDEX_MAP } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
 

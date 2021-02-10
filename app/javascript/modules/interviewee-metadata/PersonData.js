@@ -4,7 +4,8 @@ import ContentField from 'bundles/archive/components/ContentField';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { ArchivePopupButton } from 'modules/ui';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
-import { fullname, getInterviewee, pathBase, humanReadable } from 'lib/utils';
+import { fullname, getInterviewee, humanReadable } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import BiographicalEntriesContainer from './BiographicalEntriesContainer';
 

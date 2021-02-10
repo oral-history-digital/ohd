@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { PixelLoader } from 'modules/spinners';
-import { pathBase } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
 export default class RegistryEntryShow extends React.Component {
@@ -124,7 +124,7 @@ export default class RegistryEntryShow extends React.Component {
 
     registryReferences() {
         if (
-            this.props.registryReferenceTypesStatus && 
+            this.props.registryReferenceTypesStatus &&
             this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched'
         ) {
             let references = []
@@ -221,7 +221,7 @@ export default class RegistryEntryShow extends React.Component {
                         {this.registryEntry().name[this.props.locale]}
                     </h3>
                     <p>
-                        {this.registryEntry().notes[this.props.locale]} 
+                        {this.registryEntry().notes[this.props.locale]}
                     </p>
                     <h4>
                         {this.registryEntry().registry_references_count}

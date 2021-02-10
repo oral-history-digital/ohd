@@ -3,9 +3,9 @@ import { Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
 import WrapperPageContainer from 'bundles/archive/containers/WrapperPageContainer';
-import { Routes, RoutesWithProjectId } from './Routes';
 import { getProjects } from 'modules/data';
-import { projectByDomain } from 'lib/utils';
+import { Routes, RoutesWithProjectId } from './Routes';
+import projectByDomain from './projectByDomain';
 
 function RouteDivider() {
     const projects = useSelector(getProjects);

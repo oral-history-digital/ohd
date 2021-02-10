@@ -5,7 +5,8 @@ import classNames from 'classnames';
 import { MISSING_STILL } from '../constants/archiveConstants'
 import { InterviewSearchResultsContainer } from 'modules/interview-search';
 import { AuthShowContainer, admin } from 'modules/auth';
-import { pathBase, getInterviewee, humanReadable, loadIntervieweeWithAssociations } from 'lib/utils';
+import { getInterviewee, humanReadable, loadIntervieweeWithAssociations } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
 export default class InterviewPreview extends React.Component {

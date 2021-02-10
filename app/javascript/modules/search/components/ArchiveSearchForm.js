@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 
 import FacetContainer from './FacetContainer';
-import { iOS, pathBase } from 'lib/utils';
+import { iOS } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { AuthShowContainer, admin } from 'modules/auth';
 import { isMobile } from 'modules/responsive';

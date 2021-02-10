@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { pathBase } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import LocationsContainer from './LocationsContainer'
 import MapPopupContent from './MapPopupContent';

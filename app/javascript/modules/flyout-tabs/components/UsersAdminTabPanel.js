@@ -7,7 +7,7 @@ import { PermissionSearchFormContainer, ProjectSearchFormContainer,
     UserRegistrationSearchFormContainer }
     from 'modules/admin';
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
-import { pathBase } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 

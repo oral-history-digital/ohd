@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { Form } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
-import { fullname, pathBase } from 'lib/utils';
+import { fullname } from 'lib/utils';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
 export default class InterviewForm extends React.Component {

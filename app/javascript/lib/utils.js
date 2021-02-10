@@ -1,16 +1,5 @@
 import { t } from 'modules/i18n';
-
-export function pathBase(props) {
-    if (projectByDomain(props.projects)) {
-        return `/${props.locale}`;
-    } else {
-        return `/${props.projectId}/${props.locale}`;
-    }
-}
-
-export function projectByDomain(projects) {
-    return projects && Object.values(projects).find(project => project.archive_domain === window.location.origin);
-}
+import { projectByDomain } from 'modules/routes';
 
 export function getProject(state) {
     return projectByDomain(state.data.projects) || Object.values(state.data.projects).find(p => p.identifier === state.archive.projectId);
