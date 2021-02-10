@@ -74,14 +74,13 @@ export default class VideoPlayer extends React.Component {
     src() {
         // this will run only if tape_count < 10!!
         if(this.props.interview.media_type && this.props.resolution) {
-            let url = Object.values(this.props.mediaStreams).find(m => {
+            let mediaStream = Object.values(this.props.mediaStreams).find(m => {
                 return m.media_type === this.props.interview.media_type &&
                     m.resolution === this.props.resolution
-            }).path;
-            url = url.replace(/\#\{archive_id\}/g, this.props.archiveId);
-            url = url.replace(/\#\{tape_count\}/g, this.props.interview.tape_count);
-            url = url.replace(/\#\{tape_number\}/g, this.props.tape);
-            return url;
+            });
+            return mediaStream?.path.replace(/\#\{archive_id\}/g, this.props.archiveId).
+                replace(/\#\{tape_count\}/g, this.props.interview.tape_count).
+                replace(/\#\{tape_number\}/g, this.props.tape);
         } else {
             return null;
         }
