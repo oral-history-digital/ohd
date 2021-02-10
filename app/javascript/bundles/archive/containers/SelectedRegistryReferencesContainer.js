@@ -1,16 +1,16 @@
 import { connect } from 'react-redux';
 import SelectedRegistryReferences from '../components/SelectedRegistryReferences';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData } from 'modules/data';
+import { fetchData, getCurrentInterview } from 'modules/data';
 
-import { getInterview, getProject } from 'lib/utils';
+import { getProject } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
         editView: state.archive.editView,
-        interview: getInterview(state),
+        interview: getCurrentInterview(state),
         project: getProject(state),
         account: state.account,
     }

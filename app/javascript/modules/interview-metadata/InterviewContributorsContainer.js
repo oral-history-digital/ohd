@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 
 import { openArchivePopup } from 'modules/ui';
-import { submitData } from 'modules/data';
-import { getInterview  } from 'lib/utils';
+import { submitData, getCurrentInterview } from 'modules/data';
 import InterviewContributors from './InterviewContributors';
 
 const mapStateToProps = state => ({
-    interview: getInterview(state),
+    interview: getCurrentInterview(state),
     // the following is just a trick to force rerender after deletion
     contributionsLastModified: state.data.statuses.contributions.lastModified,
 });

@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { openArchivePopup } from 'modules/ui';
-import { getInterview } from 'lib/utils';
 import { handleSegmentClick } from 'modules/interview';
+import { getCurrentInterview } from 'modules/data';
 import Segment from './Segment';
 
 const mapStateToProps = state => ({
@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
     projectId: state.archive.projectId,
     projects: state.data.projects,
     locale: state.archive.locale,
-    interview: getInterview(state),
+    interview: getCurrentInterview(state),
     userContents: state.data.user_contents,
     statuses: state.data.statuses.segments,
     account: state.data.accounts.current,

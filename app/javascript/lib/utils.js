@@ -12,16 +12,8 @@ export function projectByDomain(projects) {
     return projects && Object.values(projects).find(project => project.archive_domain === window.location.origin);
 }
 
-export function get(state, dataType, id) {
-    return state.data[dataType][id]
-}
-
 export function getProject(state) {
     return projectByDomain(state.data.projects) || Object.values(state.data.projects).find(p => p.identifier === state.archive.projectId);
-}
-
-export function getInterview(state) {
-    return state.data.interviews && state.data.interviews[state.archive.archiveId];
 }
 
 export function humanReadable(obj, attribute, props, state, none='---') {

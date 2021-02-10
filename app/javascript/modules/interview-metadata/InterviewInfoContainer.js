@@ -1,14 +1,15 @@
 import { connect } from 'react-redux';
 
-import { getInterview, getProject } from 'lib/utils';
+import { getProject } from 'lib/utils';
 import InterviewInfo from './InterviewInfo';
+import { getCurrentInterview } from 'modules/data';
 
 const mapStateToProps = state => ({
     locale: state.archive.locale,
     translations: state.archive.translations,
     project: getProject(state),
     collections: state.data.collections,
-    interview: getInterview(state),
+    interview: getCurrentInterview(state),
     languages: state.data.languages,
     // the following is just a trick to force rerender after deletion
     contributionsLastModified: state.data.statuses.contributions.lastModified,
