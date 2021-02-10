@@ -1,9 +1,10 @@
 import React from 'react';
-import { t } from 'modules/i18n';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
-export default class CitationInfo extends React.Component {
+import { t } from 'modules/i18n';
 
+export default class CitationInfo extends React.Component {
     content(label, value, className) {
         return (
             <p>
@@ -20,10 +21,10 @@ export default class CitationInfo extends React.Component {
         return "";
     }
 
-    doi(withCalled=false) {
+    doi() {
         if (this.props.interview.doi_status === 'created') {
             let doi = `https://doi.org/${this.props.projectDoi}/${this.props.projectId}.${this.props.interview.archive_id}`;
-            let called = withCalled ? ` (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})` : '';
+            let called = ` (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})`;
             return `, ${t(this.props, 'doi.name')}: ${doi}${called}`;
         } else {
             return '';
@@ -36,7 +37,7 @@ export default class CitationInfo extends React.Component {
             ${t(this.props, 'interview')}
             ${this.props.interview.archive_id},
             ${this.props.interview.interview_date},
-            ${this.project()}${this.doi(true)}`
+            ${this.project()}${this.doi()}`
 
             return (
                 <div>
@@ -48,3 +49,13 @@ export default class CitationInfo extends React.Component {
         }
     }
 }
+
+CitationInfo.propTypes = {
+    archiveDomain: PropTypes.string.isRequired,
+    projectDoi: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projectName: PropTypes.object.isRequired,
+    interview: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+};
