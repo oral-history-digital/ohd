@@ -2,7 +2,7 @@ import React from 'react';
 import VizSensor from 'react-visibility-sensor/visibility-sensor';
 import moment from 'moment';
 
-import RegistryReferencesContainer from 'bundles/archive/containers/RegistryReferencesContainer';
+import { RegistryReferencesContainer } from 'modules/registry-references';
 import { Annotations } from 'modules/annotations';
 import { SubmitOnBlurForm } from 'modules/forms';
 import permittedColumns from './permittedColumns';

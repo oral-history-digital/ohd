@@ -8,7 +8,7 @@ import { t } from 'modules/i18n';
 import { SegmentHeadingFormContainer } from 'modules/toc';
 import { Modal } from 'modules/ui';
 import { Annotations } from 'modules/annotations';
-import RegistryReferencesContainer from 'bundles/archive/containers/RegistryReferencesContainer';
+import { RegistryReferencesContainer } from 'modules/registry-references';
 import SegmentFormContainer from './SegmentFormContainer';
 
 export default class Segment extends React.Component {

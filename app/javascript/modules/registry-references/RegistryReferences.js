@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
-import RegistryReferenceContainer from '../containers/RegistryReferenceContainer';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
+import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
+import RegistryReferenceContainer from './RegistryReferenceContainer';
 
 export default class RegistryReferences extends React.Component {
     componentDidMount() {
@@ -122,3 +123,21 @@ export default class RegistryReferences extends React.Component {
         )
     }
 }
+
+RegistryReferences.propTypes = {
+    refObject: PropTypes.object.isRequired,
+    registryReferenceTypeId: PropTypes.number,
+    inTranscript: PropTypes.bool,
+    lowestAllowedRegistryEntryId: PropTypes.number,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    interview: PropTypes.object.isRequired,
+    translations: PropTypes.object.isRequired,
+    registryEntries: PropTypes.object.isRequired,
+    registryEntriesStatus: PropTypes.object.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    setOpenReference: PropTypes.func,
+};

@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import SingleValueWithFormContainer from 'bundles/archive/containers/SingleValueWithFormContainer';
-import SelectedRegistryReferencesContainer from 'bundles/archive/containers/SelectedRegistryReferencesContainer';
+import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 

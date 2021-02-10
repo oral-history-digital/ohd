@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 import { InterviewInfoContainer } from 'modules/interview-metadata';
-import SelectedRegistryReferencesContainer from '../containers/SelectedRegistryReferencesContainer';
+import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import ContentField from './ContentField';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
 import { getInterviewArchiveIdWithOffset } from 'lib/utils';

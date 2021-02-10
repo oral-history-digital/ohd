@@ -1,17 +1,13 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
 import { pluralize, underscore } from 'modules/strings';
 import { admin } from 'modules/auth'
 import { t } from 'modules/i18n';
+import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 
 export default class RegistryReference extends React.Component {
-
-    constructor(props, context) {
-        super(props, context);
-    }
-
     componentDidMount() {
         this.loadRegistryEntry(this.props.registryReference.registry_entry_id);
     }
@@ -149,3 +145,21 @@ export default class RegistryReference extends React.Component {
         )
     }
 }
+
+RegistryReference.propTypes = {
+    locale: PropTypes.string.isRequired,
+    hideEdit: PropTypes.bool,
+    inTranscript: PropTypes.bool,
+    lowestAllowedRegistryEntryId: PropTypes.number.isRequired,
+    registryReferenceTypeId: PropTypes.number.isRequired,
+    registryReference: PropTypes.object.isRequired,
+    registryEntry: PropTypes.object,
+    refObject: PropTypes.object,
+    registryEntries: PropTypes.object.isRequired,
+    registryEntriesStatus: PropTypes.object.isRequired,
+    setOpenReference: PropTypes.func,
+    deleteData: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};

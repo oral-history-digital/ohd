@@ -8,7 +8,7 @@ import MarkTextFormContainer from 'bundles/archive/containers/MarkTextFormContai
 import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import AssignSpeakersFormContainer from 'bundles/archive/containers/AssignSpeakersFormContainer';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
-import SelectedRegistryReferencesContainer from 'bundles/archive/containers/SelectedRegistryReferencesContainer';
+import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { InterviewInfoContainer, InterviewContributorsContainer, InterviewTextMaterialsContainer,
     CitationInfoContainer } from 'modules/interview-metadata';
 import { InterviewLocationsContainer } from 'modules/locations';

@@ -1,10 +1,11 @@
 import React from 'react';
-import RegistryReferencesContainer from '../containers/RegistryReferencesContainer';
+import PropTypes from 'prop-types';
+
 import { underscore } from 'modules/strings';
 import { t } from 'modules/i18n';
+import RegistryReferencesContainer from './RegistryReferencesContainer';
 
 export default class SelectedRegistryReferences extends React.Component {
-
     registryReferencesByType() {
         let registryReferences = [];
         if (this.props.project && this.props.refObject) {
@@ -44,3 +45,11 @@ export default class SelectedRegistryReferences extends React.Component {
         }
     }
 }
+
+SelectedRegistryReferences.propTypes = {
+    project: PropTypes.object.isRequired,
+    refObject: PropTypes.object,
+    locale: PropTypes.string.isRequired,
+    interview: PropTypes.object.isRequired,
+    account: PropTypes.object.isRequired,
+};

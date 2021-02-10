@@ -1,13 +1,9 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Form } from 'modules/forms';
-import { t } from 'modules/i18n';
 
 export default class RegistryReferenceForm extends React.Component {
-
-    constructor(props, context) {
-        super(props, context);
-    }
-
     componentDidMount() {
         this.loadRegistryReferenceTypes();
     }
@@ -23,7 +19,6 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     elements() {
-        let _this = this;
         let elements = [
             {
                 elementType: 'registryEntrySelect',
@@ -33,7 +28,7 @@ export default class RegistryReferenceForm extends React.Component {
                 goDeeper: true
             },
         ]
-        if (!_this.props.inTranscript) {
+        if (!this.props.inTranscript) {
             elements.push(
                 {
                     elementType: 'select',
@@ -44,7 +39,7 @@ export default class RegistryReferenceForm extends React.Component {
                 }
             )
         }
-        if (!_this.props.registryReferenceTypeId) {
+        if (!this.props.registryReferenceTypeId) {
             elements.push(
                 {
                     elementType: 'select',
@@ -67,7 +62,6 @@ export default class RegistryReferenceForm extends React.Component {
     }
 
     render() {
-        let _this = this;
         return (
             <div>
                 <Form
@@ -82,10 +76,27 @@ export default class RegistryReferenceForm extends React.Component {
                         ref_position: 1,
                         workflow_state: 'preliminary'
                     }}
-                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
-                    elements={_this.elements()}
+                    onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
+                    elements={this.elements()}
                 />
             </div>
         );
     }
 }
+
+RegistryReferenceForm.propTypes = {
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    registryReference: PropTypes.object,
+    refObject: PropTypes.object,
+    inTranscript: PropTypes.bool,
+    registryReferenceTypes: PropTypes.object.isRequired,
+    registryReferenceTypeId: PropTypes.number.isRequired,
+    registryReferenceTypesStatus: PropTypes.object.isRequired,
+    lowestAllowedRegistryEntryId: PropTypes.number.isRequired,
+    interview: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    submitData: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};
