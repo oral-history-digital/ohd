@@ -2,7 +2,7 @@ import React from 'react';
 import classNames from 'classnames';
 
 import RegistryReferenceFormContainer from '../containers/RegistryReferenceFormContainer';
-import { pluralize, underscore } from 'lib/utils';
+import { pluralize, underscore } from 'modules/strings';
 import { admin } from 'modules/auth'
 import { t } from 'modules/i18n';
 

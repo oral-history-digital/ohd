@@ -3,7 +3,7 @@ import React from 'react';
 import { AuthorizedContent } from 'modules/auth';
 import { ArchivePopupButton } from 'modules/ui';
 import { Form } from 'modules/forms';
-import { camelcase } from 'lib/utils';
+import { camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 import DataContainer from './DataContainer';
 
@@ -68,7 +68,7 @@ export default class DataLists extends React.Component {
     add() {
         if (!this.props.hideAdd) {
             return (
-                <AuthorizedContent object={[{type: camelcase(this.props.scope), action: 'create', interview_id: this.props.interview?.id}, this.props.task]}>
+                <AuthorizedContent object={[{type: camelCase(this.props.scope), action: 'create', interview_id: this.props.interview?.id}, this.props.task]}>
                     <ArchivePopupButton
                         title={t(this.props, `edit.${this.props.scope}.new`)}
                         buttonFaKey='plus'

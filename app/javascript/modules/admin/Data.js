@@ -4,7 +4,8 @@ import {Link} from 'react-router-dom';
 import TaskPreviewContainer from 'bundles/archive/containers/TaskPreviewContainer';
 import { AuthorizedContent } from 'modules/auth';
 import { ArchivePopupButton, PopupMenu } from 'modules/ui';
-import { pluralize, camelcase, humanReadable } from 'lib/utils';
+import { humanReadable } from 'lib/utils';
+import { pluralize, camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 
 export default class Data extends React.Component {
@@ -112,7 +113,7 @@ export default class Data extends React.Component {
                         //
                         ref_id: this.props.data.id,
                         ref_type: this.props.data.type,
-                        type: camelcase(joined_model_name_underscore)
+                        type: camelCase(joined_model_name_underscore)
                     }
                 }
                 return (

@@ -7,7 +7,7 @@ import { PersonContainer } from 'modules/people';
 import { BiographicalEntryContainer } from 'modules/interviewee-metadata';
 import { PhotoContainer } from 'modules/gallery';
 import { RegistryEntryContainer } from 'modules/registry';
-import { pluralize } from 'lib/utils';
+import { pluralize } from 'modules/strings';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 

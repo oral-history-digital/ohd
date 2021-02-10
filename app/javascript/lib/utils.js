@@ -156,30 +156,6 @@ export function fullname(props, person, withBirthName=false, locale=props.locale
     }
 }
 
-export function pluralize(word) {
-    // TODO: fit this to all upcase words like PERSON
-    // or be aware that you have to upcase later!
-    //
-    let pluralizedWord;
-    if (word.toLowerCase() === 'person')
-        pluralizedWord = word[0] + 'eople';
-    else if (word[word.length - 1] === 'y')
-        pluralizedWord = word.slice(0, -1) + 'ies'
-    else
-        pluralizedWord = word + 's';
-
-    return pluralizedWord;
-}
-
-export function camelcase(str) {
-    let s = str.replace(/_([a-z])/g, function (g) { return g[1].toUpperCase(); });
-    return s.charAt(0).toUpperCase() + s.slice(1);
-}
-
-export function underscore(str) {
-    return str.split(/(?=[A-Z])/).join('_').toLowerCase();
-}
-
 export function parametrizedQuery(query) {
     return Object.keys(query).sort().map((key, index) => {
         return `${key}=${query[key]}`;

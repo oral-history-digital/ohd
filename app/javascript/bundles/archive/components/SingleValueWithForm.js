@@ -1,7 +1,8 @@
 import React from 'react';
 
 import { Form } from 'modules/forms';
-import { underscore, humanReadable } from 'lib/utils';
+import { humanReadable } from 'lib/utils';
+import { underscore } from 'modules/strings';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import ContentField from './ContentField';
