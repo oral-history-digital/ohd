@@ -1,5 +1,5 @@
 import request from 'superagent';
-import { setCookie } from 'lib/utils';
+import { setCookie } from 'modules/persistence';
 import { Loader } from 'modules/api';
 
 import {

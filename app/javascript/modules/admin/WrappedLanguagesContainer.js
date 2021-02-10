@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
-import { getCookie, getProject } from 'lib/utils';
+import { getCookie } from 'modules/persistence';
+import { getProject } from 'lib/utils';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {

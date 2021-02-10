@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import { changeToEditView } from 'modules/archive';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
-import { getCookie } from 'lib/utils';
+import { getCookie } from 'modules/persistence';
 import { submitLogout } from '../actions';
 import Account from './Account';
 import { getFirstName, getIsLoggedIn, getLastName, getLoginError } from '../selectors';

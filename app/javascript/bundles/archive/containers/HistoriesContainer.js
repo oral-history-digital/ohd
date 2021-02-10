@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import Histories from '../components/Histories';
 import { openArchivePopup } from 'modules/ui';
-import { getCookie } from 'lib/utils';
 
 const mapStateToProps = (state) => {
     return {

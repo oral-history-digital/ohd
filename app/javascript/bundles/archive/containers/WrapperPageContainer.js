@@ -7,7 +7,8 @@ import { toggleFlyoutTabs } from 'modules/flyout-tabs';
 import { setLocale, setProjectId, fetchStaticContent } from 'modules/archive';
 import { fetchData, deleteData } from 'modules/data';
 
-import { getCookie, getProject } from 'lib/utils';
+import { getProject } from 'lib/utils';
+import { getCookie } from 'modules/persistence';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs/selectors';
 import { getTranscriptScrollEnabled } from 'modules/interview';
 
