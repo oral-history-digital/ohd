@@ -1,7 +1,7 @@
 import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
-import { Map, Marker, Popup, TileLayer } from 'react-leaflet';  // Needed to provide global L for leaflet-extra-markers import.
+import 'leaflet';  // Needed to provide global L for leaflet-extra-markers import.
 import 'leaflet-extra-markers'
 import 'leaflet.markercluster'
 import './leaflet.markercluster-regionbound/leaflet.markercluster-regionbound.min.js'
