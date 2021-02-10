@@ -85,7 +85,7 @@ export default class VideoPlayer extends React.Component {
             let url = this.props.mediaStreams[this.props.interview.media_type][this.props.resolution];
                 url = url.replace(/\#\{archive_id\}/g, (this.props.project === 'mog') ? this.props.archiveId : this.props.archiveId.toUpperCase());
                 url = url.replace(/\#\{tape_count\}/g, this.props.interview.tape_count);
-                url = url.replace(/\#\{tape_number\}/g, this.props.tape);
+                url = url.replace(/\#\{tape_number\}/g, (this.props.tape.toString().length > 1 ? this.props.tape : `0${this.props.tape}`));
                 return url;
         } else {
             return null;
