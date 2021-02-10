@@ -48,11 +48,6 @@ class ApplicationController < ActionController::Base
     raise ActionController::RoutingError.new('Not Found')
   end
 
-  prepend_before_action :set_available_locales
-  def set_available_locales
-    I18n.available_locales = current_project.available_locales if current_project
-  end
-
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
   #
   def initial_redux_state
