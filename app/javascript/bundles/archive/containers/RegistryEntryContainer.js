@@ -10,6 +10,7 @@ const mapStateToProps = (state) => ({
     locale: getLocale(state),
     translations: getTranslations(state),
     registryEntriesStatus: state.data.statuses.registry_entries,
+    registryEntries: state.data.registry_entries,
     selectedRegistryEntryIds: state.archive.selectedRegistryEntryIds,
 });
 
