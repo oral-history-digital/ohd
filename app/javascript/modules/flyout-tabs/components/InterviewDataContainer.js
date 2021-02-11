@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import InterviewData from '../components/InterviewData';
 import { getLocale } from 'modules/archive';
+import { getIsLoggedIn } from 'modules/account';
+import InterviewData from './InterviewData';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
-    isLoggedIn: state.account.isLoggedIn,
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 export default withRouter(connect(

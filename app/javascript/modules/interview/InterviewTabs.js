@@ -124,6 +124,6 @@ InterviewTabs.propTypes = {
     projectId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     interviewSearchResults: PropTypes.object,
-    tabIndex: PropTypes.number.isRequired,
+    tabIndex: PropTypes.number,
     setInterviewTabIndex: PropTypes.func.isRequired,
 };

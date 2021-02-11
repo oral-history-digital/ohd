@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { CollectionsSearchFormContainer, LanguagesSearchFormContainer,
     PeopleSearchFormContainer, RegistryReferenceTypesSearchFormContainer }
     from 'modules/admin';
-import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import { pathBase } from 'modules/routes';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import InterviewDataContainer from './InterviewDataContainer';
 
 class IndexingTabPanel extends Component {
     static propTypes = {

@@ -6,11 +6,6 @@ import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 export default class AdminActions extends React.Component {
-    static propTypes = {
-        history: PropTypes.object.isRequired,
-        match: PropTypes.object.isRequired,
-    }
-
     selectedArchiveIds() {
         return this.props.archiveIds.filter(archiveId => archiveId !== 'dummy');
     }
@@ -172,3 +167,25 @@ export default class AdminActions extends React.Component {
         );
     }
 }
+
+AdminActions.propTypes = {
+    archiveSearchResults: PropTypes.array,
+    archiveIds: PropTypes.array,
+    doiResult: PropTypes.object,
+    statuses: PropTypes.object,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    translations: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
+    match: PropTypes.object.isRequired,
+    openArchivePopup: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+    setArchiveIds: PropTypes.func.isRequired,
+    addRemoveArchiveId: PropTypes.func.isRequired,
+    submitData: PropTypes.func.isRequired,
+    deleteData: PropTypes.func.isRequired,
+    submitDois: PropTypes.func.isRequired,
+};

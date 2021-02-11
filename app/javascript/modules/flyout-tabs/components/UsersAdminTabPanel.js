@@ -6,10 +6,10 @@ import { PermissionSearchFormContainer, ProjectSearchFormContainer,
     RoleSearchFormContainer, TaskTypeSearchFormContainer,
     UserRegistrationSearchFormContainer }
     from 'modules/admin';
-import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import { pathBase } from 'modules/routes';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import InterviewDataContainer from './InterviewDataContainer';
 
 class UsersAdminTabPanel extends Component {
     static propTypes = {

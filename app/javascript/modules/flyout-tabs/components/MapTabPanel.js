@@ -1,12 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContainer';
 import { AuthShowContainer } from 'modules/auth';
 import { ArchiveSearchFormContainer } from 'modules/search';
-import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import InterviewDataContainer from './InterviewDataContainer';
+import AdminActionsContainer from './AdminActionsContainer';
 
 function MapTabPanel(props) {
     return (
