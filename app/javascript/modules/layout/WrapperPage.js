@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
-import ErrorBoundaryContainer from 'bundles/archive/containers/ErrorBoundaryContainer';
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { ArchivePopupContainer } from 'modules/ui';
 import { ResizeWatcherContainer } from 'modules/responsive';
 import { FlyoutTabs } from 'modules/flyout-tabs';
@@ -109,9 +109,9 @@ export default class WrapperPage extends React.Component {
                     <BurgerButton open={visible}
                                   onClick={() => this.props.toggleFlyoutTabs(visible)}/>
 
-                    <ErrorBoundaryContainer>
+                    <ErrorBoundary>
                         <FlyoutTabs />
-                    </ErrorBoundaryContainer>
+                    </ErrorBoundary>
 
                     <ArchivePopupContainer/>
                 </div>

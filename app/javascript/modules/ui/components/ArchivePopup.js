@@ -1,6 +1,6 @@
 import React from 'react';
 
-import ErrorBoundaryContainer from 'bundles/archive/containers/ErrorBoundaryContainer';
+import { ErrorBoundary } from 'modules/react-toolbox';
 
 export default class ArchivePopup extends React.Component {
 
@@ -41,9 +41,9 @@ export default class ArchivePopup extends React.Component {
                     <div className={popCss} onClick={this.stopClicks}>
                         {this.header()}
 
-                        <ErrorBoundaryContainer>
+                        <ErrorBoundary>
                             <div className='content'>{this.props.popup.content}</div>
-                        </ErrorBoundaryContainer>
+                        </ErrorBoundary>
 
                         {this.buttons()}
                     </div>
