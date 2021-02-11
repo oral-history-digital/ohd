@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { getLocale } from 'modules/archive';
 import { getCurrentInterview, getCurrentProject } from 'modules/data';
-import InterviewLoggedOut from '../components/InterviewLoggedOut';
+import InterviewLoggedOut from './InterviewLoggedOut';
 
 const mapStateToProps = (state) => ({
     interview: getCurrentInterview(state),

@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import { TableOfContentsContainer } from 'modules/toc';
@@ -8,9 +9,8 @@ import { RefTreeContainer } from 'modules/interview-references';
 import { t } from 'modules/i18n';
 
 export default class InterviewTabs extends React.Component {
-
-    constructor(props, context) {
-        super(props, context);
+    constructor(props) {
+        super(props);
         this.state = {
             tabIndex: 0
         }
@@ -43,7 +43,7 @@ export default class InterviewTabs extends React.Component {
     }
 
 
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         if (
             !(prevProps.interviewSearchResults && prevProps.interviewSearchResults.fulltext) &&
             this.props.interviewSearchResults &&
@@ -74,7 +74,7 @@ export default class InterviewTabs extends React.Component {
                             <i className="fa fa-clone"/>
                             <span>{t(this.props, 'translation')}</span>
                         </Tab>
-                        <Tab className={`content-tabs-nav-link ${this.props.project == 'dg' ? 'hidden' : ''}`}>
+                        <Tab className={`content-tabs-nav-link ${this.props.projectId == 'dg' ? 'hidden' : ''}`}>
                             <i className="fa fa-list"/>
                             <span>{t(this.props, 'table_of_contents')}</span>
                         </Tab>
@@ -117,3 +117,13 @@ export default class InterviewTabs extends React.Component {
         );
     }
 }
+
+InterviewTabs.propTypes = {
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    interview: PropTypes.object.isRequired,
+    interviewSearchResults: PropTypes.object,
+    tabIndex: PropTypes.number.isRequired,
+    setInterviewTabIndex: PropTypes.func.isRequired,
+};

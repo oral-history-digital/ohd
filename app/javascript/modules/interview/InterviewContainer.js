@@ -1,20 +1,21 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import Interview from '../components/Interview';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { setArchiveId, getInterviewEditView } from 'modules/archive';
 import { getIsCatalog } from 'modules/data';
 import { getCurrentInterview } from 'modules/data';
+import Interview from './Interview';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     interview: getCurrentInterview(state),
     isCatalog: getIsCatalog(state),
     interviewEditView: getInterviewEditView(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
-    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setArchiveId,
+    setFlyoutTabsIndex,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Interview);

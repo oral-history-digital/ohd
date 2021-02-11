@@ -1,16 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import { InterviewInfoContainer } from 'modules/interview-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
-import ContentField from './ContentField';
+import ContentField from 'bundles/archive/components/ContentField';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
 import { getInterviewArchiveIdWithOffset } from 'lib/utils';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
 export default class InterviewDetailsLeftSide extends React.Component {
-
     componentDidMount() {
         let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, [], 1);
         if (nextArchiveId === false) {
@@ -65,3 +65,14 @@ export default class InterviewDetailsLeftSide extends React.Component {
         )
     }
 }
+
+InterviewDetailsLeftSide.propTypes = {
+    interview: PropTypes.object.isRequired,
+    archiveId: PropTypes.string.isRequired,
+    locale: PropTypes.string.isRequired,
+    foundInterviews: PropTypes.object,
+    query: PropTypes.object.isRequired,
+    interviewee: PropTypes.object.isRequired,
+    sortedArchiveIds: PropTypes.array.isRequired,
+    searchInArchive: PropTypes.func.isRequired,
+};

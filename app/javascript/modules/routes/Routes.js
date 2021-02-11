@@ -5,7 +5,7 @@ import { Route, Switch } from 'react-router-dom';
 import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer, ActivateAccount }
     from 'modules/account';
 import { HomeContainer } from 'modules/startpage';
-import InterviewContainer from 'bundles/archive/containers/InterviewContainer';
+import { InterviewContainer } from 'modules/interview';
 import EditInterviewContainer from 'bundles/archive/containers/EditInterviewContainer';
 import UploadsContainer from 'bundles/archive/containers/UploadsContainer';
 import { UserRegistrationsContainer } from 'modules/users';

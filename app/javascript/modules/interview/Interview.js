@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 
 import { InterviewEditViewContainer } from 'modules/interview-edit';
-import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
 import { VideoPlayerContainer } from 'modules/video-player';
-import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import { AuthShowContainer } from 'modules/auth';
-import InterviewLoggedOutContainer from '../containers/InterviewLoggedOutContainer';
 import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
 import { Fetch, getContributorsFetched, getCurrentInterviewFetched } from 'modules/data';
+import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
+import InterviewTabsContainer from './InterviewTabsContainer';
+import InterviewLoggedOutContainer from './InterviewLoggedOutContainer';
 
 export default function Interview({
     interview,
