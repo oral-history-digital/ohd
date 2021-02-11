@@ -123,7 +123,7 @@ export default class WrapperPage extends React.Component {
 WrapperPage.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     isLoggedOut: PropTypes.bool.isRequired,
-    loggedInAt: PropTypes.number.isRequired,
+    loggedInAt: PropTypes.number,
     transcriptScrollEnabled: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
@@ -134,7 +134,7 @@ WrapperPage.propTypes = {
     collectionsStatus: PropTypes.object,
     visible: PropTypes.bool,
     editView: PropTypes.bool.isRequired,
-    account: PropTypes.object.isRequired,
+    account: PropTypes.object,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node

@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { MISSING_STILL } from '../constants/archiveConstants'
+import missingStill from 'assets/images/missing_still.png';
 import { InterviewSearchResultsContainer } from 'modules/interview-search';
 import { AuthShowContainer, admin } from 'modules/auth';
 import { getInterviewee, humanReadable, loadIntervieweeWithAssociations } from 'lib/utils';
@@ -157,7 +157,7 @@ export default class InterviewPreview extends React.Component {
                         <div className="search-result-img aspect-ratio">
                           <img className="aspect-ratio__inner"
                                src={this.props.interview.still_url || 'missing_still'}
-                               onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                               onError={ (e) => { e.target.src = missingStill; }}/>
                         </div>
 
                         <AuthShowContainer ifLoggedIn={true}>

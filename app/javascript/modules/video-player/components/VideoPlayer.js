@@ -4,7 +4,7 @@ import moment from 'moment';
 import classNames from 'classnames';
 
 import { UserContentFormContainer } from 'modules/workbook';
-import { MISSING_STILL } from 'bundles/archive/constants/archiveConstants'
+import missingStill from 'assets/images/missing_still.png';
 import { fullname, sortedSegmentsWithActiveIndex, getInterviewee } from 'lib/utils';
 import { t } from 'modules/i18n';
 import VideoPlayerButtonsContainer from './VideoPlayerButtonsContainer';
@@ -244,7 +244,7 @@ export default class VideoPlayer extends React.Component {
                   playsInline: true,
                   controls: true,
                   controlsList: "nodownload",
-                  poster: _this.props.interview.still_url || MISSING_STILL,
+                  poster: _this.props.interview.still_url || missingStill,
                   onClick: function onClick(e) {
                     return _this.handleVideoClick(e);
                   },

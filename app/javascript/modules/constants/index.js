@@ -1,0 +1,3 @@
+/**
+ * Put global constants here.
+ */
