@@ -7,12 +7,6 @@ import { t } from 'modules/i18n';
 import { AuthShowContainer, admin } from 'modules/auth';
 
 export default class InterviewListRow extends React.Component {
-
-    constructor(props) {
-        super(props);
-        // this.handleClick = this.handleClick.bind(this);
-    }
-
     componentDidMount() {
         loadIntervieweeWithAssociations(this.props);
         if(this.props.fulltext) {

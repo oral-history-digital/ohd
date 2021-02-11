@@ -2,12 +2,12 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import missingStill from 'assets/images/missing_still.png';
 import { InterviewSearchResultsContainer } from 'modules/interview-search';
 import { AuthShowContainer, admin } from 'modules/auth';
 import { getInterviewee, humanReadable, loadIntervieweeWithAssociations } from 'lib/utils';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
+import missingStill from 'assets/images/missing_still.png';
 
 export default class InterviewPreview extends React.Component {
 

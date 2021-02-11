@@ -1,27 +1,30 @@
 import { connect } from 'react-redux';
 
-import InterviewListRow from '../components/InterviewListRow';
 import { searchInInterview } from 'modules/search';
 import { setTapeAndTime } from 'modules/video-player';
 import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
 import { fetchData } from 'modules/data';
 import { getProject } from 'lib/utils';
+import InterviewPreview from './InterviewPreview';
 
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     let project = getProject(state);
     return {
         fulltext: state.search.archive.query.fulltext,
-        interviewSearchResults: state.search.interviews,
         locale: state.archive.locale,
         projectId: state.archive.projectId,
+        project: project,
         projects: state.data.projects,
         translations: state.archive.translations,
-        project: project,
+        query: state.search.archive.query,
+        selectedArchiveIds: state.archive.selectedArchiveIds,
+        statuses: state.data.statuses.interviews,
+        interviewSearchResults: state.search.interviews,
         editView: state.archive.editView,
         account: state.data.accounts.current,
-        selectedArchiveIds: state.archive.selectedArchiveIds,
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
+        optionsScope: 'search_facets' // for the humanReadable function
     }
 }
 
@@ -33,7 +36,4 @@ const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
 })
 
-// Don't forget to actually use connect!
-// Note that we don't export Search, but the redux "connected" version of it.
-// See https://github.com/reactjs/react-redux/blob/master/docs/api.md#examples
-export default connect(mapStateToProps, mapDispatchToProps)(InterviewListRow);
+export default connect(mapStateToProps, mapDispatchToProps)(InterviewPreview);
