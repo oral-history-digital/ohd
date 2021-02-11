@@ -1,10 +1,17 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
+import { submitData, getProjects } from 'modules/data';
+import { getProjectId } from 'modules/archive';
 import SubmitOnBlurFormComponent from './SubmitOnBlurFormComponent';
-import { submitData } from 'modules/data';
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-})
+const mapStateToProps = state => ({
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+});
 
-export default connect(null, mapDispatchToProps)(SubmitOnBlurFormComponent);
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubmitOnBlurFormComponent);

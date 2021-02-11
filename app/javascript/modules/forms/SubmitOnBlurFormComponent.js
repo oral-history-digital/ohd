@@ -1,8 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 export default class SubmitOnBlurForm extends React.Component {
-
-    constructor(props, context) {
+    constructor(props) {
         super(props);
         this.state = {
             valid: this.props.validate === undefined,
@@ -56,7 +56,6 @@ export default class SubmitOnBlurForm extends React.Component {
             //params[this.props.scope][this.props.attribute] = this.state.value;
         //}
 
-        let a = {[this.props.scope]: {id: this.props.data.id, locale: this.props.locale, [this.props.attribute]: this.state.value}};
         if(this.state.valid) {
             //this.props.submitData(this.props, params);
             this.props.submitData(this.props, {[this.props.scope]: {id: this.props.data.id, locale: this.props.locale, [this.props.attribute]: this.state.value}});
@@ -75,12 +74,21 @@ export default class SubmitOnBlurForm extends React.Component {
 
     render() {
         return (
-            <form
-                className={'submit-on-focus-out'}
-                key={this.props.key}
-            >
+            <form className={'submit-on-focus-out'}>
                 {this.input()}
             </form>
         );
     }
 }
+
+SubmitOnBlurForm.propTypes = {
+    attribute: PropTypes.string.isRequired,
+    scope: PropTypes.string.isRequired,
+    type: PropTypes.string.isRequired,
+    validate: PropTypes.func,
+    data: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    submitData: PropTypes.func.isRequired,
+};
