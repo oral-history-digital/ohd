@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import InterviewListRow from '../components/InterviewListRow';
 import { searchInInterview } from 'modules/search';
-import { setTapeAndTime } from 'modules/interview';
+import { setTapeAndTime } from 'modules/video-player';
 import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
 import { fetchData } from 'modules/data';
 import { getProject } from 'lib/utils';

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
+import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/video-player';
 import VideoPlayerButtons from './VideoPlayerButtons';
 
 const mapStateToProps = (state) => ({

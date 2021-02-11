@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 import InterviewTabs from '../components/InterviewTabs';
 import { getCurrentInterview } from 'modules/data';
 import { getProject } from 'lib/utils';
-import { setInterviewTabIndex, getTabIndex } from 'modules/interview';
+import { setInterviewTabIndex, getTabIndex } from 'modules/video-player';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);

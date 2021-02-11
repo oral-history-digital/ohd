@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import FoundSegment from '../components/FoundSegment';
-import { handleSegmentClick, getCurrentTape } from 'modules/interview';
+import { handleSegmentClick, getCurrentTape } from 'modules/video-player';
 import { getCurrentInterview } from 'modules/data';
 
 const mapStateToProps = (state) => {

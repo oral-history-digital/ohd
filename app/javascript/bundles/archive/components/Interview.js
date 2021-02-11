@@ -4,7 +4,7 @@ import { useParams } from 'react-router-dom';
 
 import { InterviewEditViewContainer } from 'modules/interview-edit';
 import InterviewDetailsLeftSideContainer from '../containers/InterviewDetailsLeftSideContainer';
-import { VideoPlayerContainer } from 'modules/interview';
+import { VideoPlayerContainer } from 'modules/video-player';
 import InterviewTabsContainer from '../containers/InterviewTabsContainer';
 import { AuthShowContainer } from 'modules/auth';
 import InterviewLoggedOutContainer from '../containers/InterviewLoggedOutContainer';

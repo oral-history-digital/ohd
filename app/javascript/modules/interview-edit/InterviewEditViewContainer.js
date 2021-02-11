@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { fetchData } from 'modules/data';
 import { getProject } from 'lib/utils';
 import { getCurrentInterview } from 'modules/data';
-import { handleTranscriptScroll, setActualSegment, getCurrentTape, getTranscriptScrollEnabled, getTranscriptTime } from 'modules/interview';
+import { handleTranscriptScroll, setActualSegment, getCurrentTape, getTranscriptScrollEnabled, getTranscriptTime } from 'modules/video-player';
 import InterviewEditView from './InterviewEditView';
 
 const mapStateToProps = (state) => ({
