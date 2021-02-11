@@ -4,7 +4,7 @@ export { } from './actions';
 
 export { default as accountReducer } from './reducer';
 
-export { getIsLoggedIn, getIsLoggedOut } from './selectors';
+export { getIsLoggedIn, getIsLoggedOut, getLoggedInAt } from './selectors';
 
 export { default as WrappedAccountContainer } from './components/WrappedAccountContainer';
 export { default as AccountContainer } from './components/AccountContainer';

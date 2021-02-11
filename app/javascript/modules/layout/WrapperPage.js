@@ -3,11 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
-import ErrorBoundaryContainer from '../containers/ErrorBoundaryContainer';
+import ErrorBoundaryContainer from 'bundles/archive/containers/ErrorBoundaryContainer';
 import { ArchivePopupContainer } from 'modules/ui';
 import { ResizeWatcherContainer } from 'modules/responsive';
 import { FlyoutTabs } from 'modules/flyout-tabs';
-import { SiteHeader, SiteFooter, MessagesContainer, BurgerButton } from 'modules/layout';
+import SiteHeader from './SiteHeader';
+import SiteFooter from './SiteFooter';
+import MessagesContainer from './MessagesContainer';
+import BurgerButton from './BurgerButton';
 
 export default class WrapperPage extends React.Component {
 
@@ -24,7 +27,7 @@ export default class WrapperPage extends React.Component {
         this.loadProjects();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
         this.loadAccount()
         if (this.props.visible && (this.state.currentMQ === 'S' || this.state.currentMQ === 'XS')) {
             if (!document.body.classList.contains('noScroll')) {
@@ -118,6 +121,26 @@ export default class WrapperPage extends React.Component {
 }
 
 WrapperPage.propTypes = {
+    isLoggedIn: PropTypes.bool.isRequired,
+    isLoggedOut: PropTypes.bool.isRequired,
+    loggedInAt: PropTypes.number.isRequired,
+    transcriptScrollEnabled: PropTypes.bool.isRequired,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    accountsStatus: PropTypes.object,
+    languagesStatus: PropTypes.object,
+    projectsStatus: PropTypes.object,
+    collectionsStatus: PropTypes.object,
+    visible: PropTypes.bool,
     editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node
+    ]),
     match: PropTypes.object.isRequired,
-}
+    toggleFlyoutTabs: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    deleteData: PropTypes.func.isRequired,
+};
