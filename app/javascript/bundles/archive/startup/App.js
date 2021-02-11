@@ -5,7 +5,7 @@ import { BrowserRouter } from 'react-router-dom'
 import archiveStore from '../store/archiveStore';
 import { RouteDivider } from 'modules/routes';
 
-import '../stylesheets/main.scss';
+import 'stylesheets/main.scss';
 
 const App = (props) => (
     <Provider store={archiveStore(props)}>
