@@ -50,6 +50,4 @@ export default function Annotations({
 Annotations.propTypes = {
     segment: PropTypes.object.isRequired,
     contentLocale: PropTypes.string.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
 };
