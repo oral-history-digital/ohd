@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { sortedSegmentsWithActiveIndex } from 'lib/utils';
+import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import SegmentEditViewContainer from './SegmentEditViewContainer';

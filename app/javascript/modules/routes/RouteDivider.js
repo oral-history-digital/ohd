@@ -2,7 +2,7 @@ import React from 'react';
 import { Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import WrapperPageContainer from 'bundles/archive/containers/WrapperPageContainer';
+import { WrapperPageContainer } from 'modules/layout';
 import { getProjects } from 'modules/data';
 import { Routes, RoutesWithProjectId } from './Routes';
 import projectByDomain from './projectByDomain';

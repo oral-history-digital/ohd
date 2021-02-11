@@ -3,9 +3,7 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
 import { AccountContainer } from 'modules/account';
-import AdminActionsContainer from 'bundles/archive/containers/AdminActionsContainer';
 import MarkTextFormContainer from 'bundles/archive/containers/MarkTextFormContainer';
-import InterviewDataContainer from 'bundles/archive/containers/InterviewDataContainer';
 import AssignSpeakersFormContainer from 'bundles/archive/containers/AssignSpeakersFormContainer';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
@@ -17,6 +15,8 @@ import UploadTranscriptContainer from 'bundles/archive/containers/UploadTranscri
 import { pathBase } from 'modules/routes';
 import { admin, AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { t } from 'modules/i18n';
+import InterviewDataContainer from './InterviewDataContainer';
+import AdminActionsContainer from './AdminActionsContainer';
 
 class InterviewTabPanel extends Component {
     static propTypes = {

@@ -5,8 +5,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Observer from 'react-intersection-observer'
 import moment from 'moment';
 
-import InterviewPreviewContainer from 'bundles/archive/containers/InterviewPreviewContainer';
-import InterviewListRowContainer from 'bundles/archive/containers/InterviewListRowContainer';
+import { InterviewPreviewContainer, InterviewListRowContainer } from 'modules/interview-preview';
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
 import { UserContentFormContainer } from 'modules/workbook';
 import { AuthShowContainer, admin } from 'modules/auth';

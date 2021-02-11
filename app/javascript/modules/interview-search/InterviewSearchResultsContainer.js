@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { searchInInterview } from 'modules/search';
 import { setArchiveId } from 'modules/archive';
-import { setTapeAndTime, getCurrentTape, getTranscriptTime } from 'modules/interview';
+import { setTapeAndTime, getCurrentTape, getTranscriptTime } from 'modules/video-player';
 import InterviewSearchResults from './InterviewSearchResults';
 
 const mapStateToProps = (state) => ({

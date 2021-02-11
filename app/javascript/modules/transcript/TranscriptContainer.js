@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData } from 'modules/data';
 import { getCurrentInterview } from 'modules/data';
-import { handleTranscriptScroll, setActualSegment, getCurrentTape, getTranscriptScrollEnabled, getTranscriptTime } from 'modules/interview';
+import { handleTranscriptScroll, setActualSegment, getCurrentTape, getTranscriptScrollEnabled, getTranscriptTime } from 'modules/video-player';
 import Transcript from './Transcript';
 
 const mapStateToProps = state => ({

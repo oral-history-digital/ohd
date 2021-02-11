@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 
-import { usePrevious } from 'bundles/archive/hooks/misc';
+import { usePrevious } from 'modules/react-toolbox';
 import { getLocale, getProjectId } from 'modules/archive';
 import { pathBase } from 'modules/routes';
 import { getIsLoggedIn } from '../selectors';

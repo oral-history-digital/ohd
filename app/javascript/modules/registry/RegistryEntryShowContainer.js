@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { fetchData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { setArchiveId } from 'modules/archive';
-import { setTapeAndTime } from 'modules/interview';
+import { setTapeAndTime } from 'modules/video-player';
 import RegistryEntryShow from './RegistryEntryShow';
 
 const mapStateToProps = (state) => {

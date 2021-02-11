@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import { MISSING_STILL } from 'bundles/archive/constants/archiveConstants'
+import missingStill from 'assets/images/missing_still.png';
 import SingleValueWithFormContainer from 'bundles/archive/containers/SingleValueWithFormContainer';
 import { getInterviewee, loadIntervieweeWithAssociations } from 'lib/utils';
 import { pathBase } from 'modules/routes';
@@ -77,7 +77,11 @@ export default class InterviewWorkflowRow extends React.Component {
                     }}
                     to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                 >
-                    <img className='workflow' src={this.props.interview.still_url || 'missing_still'} onError={(e)=>{e.target.src=MISSING_STILL}}/>
+                    <img
+                        className="workflow"
+                        src={this.props.interview.still_url || 'missing_still'}
+                        onError={(e)=> { e.target.src = missingStill; }}
+                    />
                     <span className='workflow' >
                         {interviewee && interviewee.names[this.props.locale].lastname + ', '}<br />
                         {interviewee && interviewee.names[this.props.locale].firstname }

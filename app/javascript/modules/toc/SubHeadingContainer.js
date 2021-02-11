@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { handleSegmentClick, getCurrentTape, getTranscriptTime } from 'modules/interview';
+import { handleSegmentClick, getCurrentTape, getTranscriptTime } from 'modules/video-player';
 import { getCurrentInterview } from 'modules/data';
 import SubHeading from './SubHeading';
 

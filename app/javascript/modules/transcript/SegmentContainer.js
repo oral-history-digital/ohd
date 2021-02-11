@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { openArchivePopup } from 'modules/ui';
-import { handleSegmentClick } from 'modules/interview';
+import { handleSegmentClick } from 'modules/video-player';
 import { getCurrentInterview } from 'modules/data';
 import Segment from './Segment';
 

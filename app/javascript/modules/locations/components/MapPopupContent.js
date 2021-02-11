@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-import { handleSegmentClick } from 'modules/interview';
+import { handleSegmentClick } from 'modules/video-player';
 
 export default function MapPopupContent({ location }) {
     const { t, locale } = useI18n();

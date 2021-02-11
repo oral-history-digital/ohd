@@ -2,7 +2,7 @@ import {connect} from 'react-redux';
 
 import { fetchData } from 'modules/data';
 import { getCurrentInterview } from 'modules/data';
-import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
+import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/video-player';
 import TableOfContents from './TableOfContents';
 
 const mapStateToProps = (state) => ({
