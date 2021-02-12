@@ -1,177 +1,169 @@
 Rails.application.routes.draw do
 
-  # root :to => redirect("/zwar/de")
-  #root :to => redirect("/cdoh/#{Project.default_locale || 'de'}")
-
   concern :archive do
-    scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
-      #%w{archive faq_archive_contents faq_index faq_searching faq_technical map_tutorial terms_of_use legal_notice privacy_policy}.each do |site|
-        #get site, to: "home##{site}", as: site
-        #get "/", to: "home#archive", as: :home
-      #end
+    #%w{faq_archive_contents faq_index faq_searching faq_technical map_tutorial terms_of_use legal_notice privacy_policy}.each do |site|
+      #get site, to: "home##{site}", as: site
+    #end
 
-      #localized do
-        get "random_featured_interviews", to: "interviews#random_featured"
-        resources :texts
-        resources :projects
-        resources :languages
-        resources :metadata_fields
-        resources :external_links
-        resources :comments
+    #localized do
+      get "random_featured_interviews", to: "interviews#random_featured"
+      resources :texts
+      resources :projects
+      resources :languages
+      resources :metadata_fields
+      resources :external_links
+      resources :comments
 
-        resources :contributions, only: [:create, :update, :destroy]
+      resources :contributions, only: [:create, :update, :destroy]
+      #resources :histories, only: [:create, :update, :destroy]
+      resources :biographical_entries, only: [:create, :show, :update]
+      resources :photos, only: [:create, :update, :destroy]
+      resources :uploaded_files, only: [:create, :update, :destroy]
+      resources :segments, only: [:create, :update, :index, :destroy, :show]
+      resources :registry_entries, only: [:create, :show, :update, :index, :destroy]
+      resources :registry_hierarchies, only: [:create, :destroy]
+      resources :registry_names, only: [:create, :update, :destroy]
+      resources :registry_references, only: [:create, :update, :destroy, :index]
+      resources :registry_reference_types, only: [:create, :update, :index, :destroy]
+      resources :annotations, only: [:create, :update, :destroy]
+      #get "locations", to: "registry_references#locations", :as => :locations
+
+      resources :people do
         #resources :histories, only: [:create, :update, :destroy]
-        resources :biographical_entries, only: [:create, :show, :update]
-        resources :photos, only: [:create, :update, :destroy]
-        resources :uploaded_files, only: [:create, :update, :destroy]
-        resources :segments, only: [:create, :update, :index, :destroy, :show]
-        resources :registry_entries, only: [:create, :show, :update, :index, :destroy]
-        resources :registry_hierarchies, only: [:create, :destroy]
-        resources :registry_names, only: [:create, :update, :destroy]
-        resources :registry_references, only: [:create, :update, :destroy, :index]
-        resources :registry_reference_types, only: [:create, :update, :index, :destroy]
-        resources :annotations, only: [:create, :update, :destroy]
-        #get "locations", to: "registry_references#locations", :as => :locations
+        resources :biographical_entries, only: [:destroy]
+        resources :registry_references, only: [:create, :update, :destroy]
+      end
 
-        resources :people do
-          #resources :histories, only: [:create, :update, :destroy]
-          resources :biographical_entries, only: [:destroy]
-          resources :registry_references, only: [:create, :update, :destroy]
-        end
+      #get 'map', to: 'registry_references#map', :as => :public_map
+      #get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
 
-        #get 'map', to: 'registry_references#map', :as => :public_map
-        #get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
-
-        resources :collections do
-          collection do
-            get :countries
-          end
-        end
-
-        resources :transcripts, only: [:new, :create]
-        resources :uploads, only: [:new, :create]
-
-        #post 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
-        #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
-
-        put "update_speakers/:id", to: "interviews#update_speakers"
-        put "mark_texts/:id", to: "interviews#mark_texts"
-        put "merge_registry_entries/:id", to: "registry_entries#merge"
-
-        resources :interviews do
-          member do
-            get :doi_contents
-            get :metadata
-            get 'cmdi-metadata', action: :cmdi_metadata
-            get :headings
-            get :speaker_designations
-            #get :references
-            get :ref_tree
-          end
-          collection do
-            post :dois
-            #get :stills
-          end
-          #resources :registry_entries, only: [:show]
-          resources :contributions, only: [:create, :destroy]
-          resources :photos, only: [:create, :update, :destroy]
-          resources :registry_references, only: [:create, :update, :destroy]
-          resources :segments, only: [:create, :update, :index, :destroy]
-          resources :tapes do
-            collection do
-              get :playlist
-            end
-            member do
-              get :transcript
-            end
-          end
-        end
-
-        resources :searches, only: [:new, :facets, :archive, :interview, :map] do
-          collection do
-            get :facets
-            get :archive
-            get :export_archive_search
-            get :interview
-            get :registry_entry
-            get :map
-          end
-        end
-      #end
-
-      resources :user_contents do
+      resources :collections do
         collection do
-          get :segment_annotation
-          post :create_annotation
-          post :sort
-        end
-        member do
-          patch :publish
-          get :topics
-          post :retract
-          put :update_topics
-          put :update_annotation
-          get :publish_notice
+          get :countries
         end
       end
 
-      resources :user_roles, only: [:create, :destroy]
-      resources :roles
-      resources :role_permissions, only: [:create, :destroy]
-      resources :permissions
+      resources :transcripts, only: [:new, :create]
+      resources :uploads, only: [:new, :create]
 
-      resources :tasks
-      resources :task_types
-      resources :task_type_permissions, only: [:create, :destroy]
+      #post 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
+      #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
 
-      namespace :admin do
-        resources :users do
+      put "update_speakers/:id", to: "interviews#update_speakers"
+      put "mark_texts/:id", to: "interviews#mark_texts"
+      put "merge_registry_entries/:id", to: "registry_entries#merge"
+
+      resources :interviews do
+        member do
+          get :doi_contents
+          get :metadata
+          get 'cmdi-metadata', action: :cmdi_metadata
+          get :headings
+          get :speaker_designations
+          #get :references
+          get :ref_tree
+        end
+        collection do
+          post :dois
+          #get :stills
+        end
+        #resources :registry_entries, only: [:show]
+        resources :contributions, only: [:create, :destroy]
+        resources :photos, only: [:create, :update, :destroy]
+        resources :registry_references, only: [:create, :update, :destroy]
+        resources :segments, only: [:create, :update, :index, :destroy]
+        resources :tapes do
           collection do
-            get :admin
+            get :playlist
           end
           member do
-            post :flag
+            get :transcript
           end
         end
-        resources :user_annotations do
-          member do
-            post :remove
-            post :reject
-            post :withdraw
-            post :postpone
-            post :accept
-            post :review
-          end
+      end
+
+      resources :searches, only: [:new, :facets, :archive, :interview, :map] do
+        collection do
+          get :facets
+          get :archive
+          get :export_archive_search
+          get :interview
+          get :registry_entry
+          get :map
         end
-        resources :user_statistics do
-          collection do
-            get :usage_report
-          end
+      end
+    #end
+
+    resources :user_contents do
+      collection do
+        get :segment_annotation
+        post :create_annotation
+        post :sort
+      end
+      member do
+        patch :publish
+        get :topics
+        post :retract
+        put :update_topics
+        put :update_annotation
+        get :publish_notice
+      end
+    end
+
+    resources :user_roles, only: [:create, :destroy]
+    resources :roles
+    resources :role_permissions, only: [:create, :destroy]
+    resources :permissions
+
+    resources :tasks
+    resources :task_types
+    resources :task_type_permissions, only: [:create, :destroy]
+
+    namespace :admin do
+      resources :users do
+        collection do
+          get :admin
         end
-        # get 'benutzerstatistik' => 'user_statistics#index', :as => :user_statistics
-        resources :imports do
-          collection do
-            get :for_interview
-          end
+        member do
+          post :flag
+        end
+      end
+      resources :user_annotations do
+        member do
+          post :remove
+          post :reject
+          post :withdraw
+          post :postpone
+          post :accept
+          post :review
+        end
+      end
+      resources :user_statistics do
+        collection do
+          get :usage_report
+        end
+      end
+      # get 'benutzerstatistik' => 'user_statistics#index', :as => :user_statistics
+      resources :imports do
+        collection do
+          get :for_interview
         end
       end
     end
   end
 
   concern :account do
-    scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
-      resources :accounts, only: [:show, :update, :index] do
-        member do
-          get :confirm_new_email
-        end
+    resources :accounts, only: [:show, :update, :index] do
+      member do
+        get :confirm_new_email
       end
-      resources :user_registrations do
-        member do
-          post :confirm
-          get :activate
-          #post :subscribe
-          #post :unsubscribe
-        end
+    end
+    resources :user_registrations do
+      member do
+        post :confirm
+        get :activate
+        #post :subscribe
+        #post :unsubscribe
       end
     end
   end
@@ -182,15 +174,13 @@ Rails.application.routes.draw do
   #
   concern :unnamed_devise_routes do
     devise_scope :user_account do
-      scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
-        post "user_accounts/sign_in", to: "sessions#create"
-        delete "user_accounts/sign_out", to: "sessions#destroy"
-        patch "user_accounts/password", to: "passwords#update"
-        put "user_accounts/password", to: "passwords#update"
-        post "user_accounts/password", to: "passwords#create"
-        get "user_accounts/confirmation", to: "devise/confirmations#show"
-        post "user_accounts/confirmation", to: "devise/confirmations#create"
-      end
+      post "user_accounts/sign_in", to: "sessions#create"
+      delete "user_accounts/sign_out", to: "sessions#destroy"
+      patch "user_accounts/password", to: "passwords#update"
+      put "user_accounts/password", to: "passwords#update"
+      post "user_accounts/password", to: "passwords#create"
+      get "user_accounts/confirmation", to: "devise/confirmations#show"
+      post "user_accounts/confirmation", to: "devise/confirmations#create"
     end
   end
 
@@ -200,11 +190,14 @@ Rails.application.routes.draw do
   # in production this should be the ohd-domain
   #
   constraints host: ['localhost', 'ohd.dev', 'ohd.de'] do
-    root :to => redirect("/cdoh/de")
     scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
-      concerns :archive
-      concerns :account
-      concerns :unnamed_devise_routes
+    root to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
+      scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+        root to: "projects#show"
+        concerns :archive
+        concerns :account
+        concerns :unnamed_devise_routes
+      end
     end
   end
 
@@ -214,10 +207,11 @@ Rails.application.routes.draw do
   # in production these are the routes for archiv.zwangsarbeit.de, archive.occupation-memories.org, etc.
   #
   constraints(lambda { |request| Project.archive_domains.include?(request.host) }) do
-    root :to => redirect("/de")
-    concerns :archive
-    concerns :account
+    root to: redirect {|params, request| "/#{Project.by_host(request.host).default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+      root to: "projects#show"
+      concerns :archive
+      concerns :account
       devise_for :user_accounts,
         controllers: { sessions: "sessions", passwords: "passwords" },
         skip: [:registrations]
@@ -228,4 +222,6 @@ Rails.application.routes.draw do
   get "photos/thumb/:name" => "photos#thumb"
 
   mount OaiRepository::Engine => "/oai_repository"
+  root to: "home#overview"
+
 end

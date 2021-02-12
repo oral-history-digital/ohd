@@ -44,6 +44,7 @@ class ApplicationController < ActionController::Base
   #end
 
   def not_found
+    binding.pry
     raise ActionController::RoutingError.new('Not Found')
   end
 

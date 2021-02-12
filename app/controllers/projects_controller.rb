@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:index]
+  skip_before_action :authenticate_user_account!, only: [:show, :index]
   before_action :set_project, only: [:show, :edit, :update, :destroy]
 
   # GET /projects
@@ -34,8 +34,10 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   def show
-    project = Project.find(params[:id])
     respond_to do |format|
+      format.html do
+        render :template => "/react/app.html"
+      end
       format.xml do
         exporter = CollectionMetadataExporter.new(@project)
         exporter.build
@@ -96,7 +98,7 @@ class ProjectsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_project
-      @project = Project.find(params[:id])
+      @project = current_project # Project.find(params[:id])
       authorize @project
     end
 

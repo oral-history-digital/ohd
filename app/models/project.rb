@@ -89,6 +89,10 @@ class Project < ApplicationRecord
     def by_host(host)
       all.find{|d| Addressable::URI.parse(d.archive_domain).host == host}
     end
+
+    def by_identifier(identifier)
+      where(["lower(shortname) = :value", { value: identifier.downcase }]).first
+    end
   end
 
   def identifier
