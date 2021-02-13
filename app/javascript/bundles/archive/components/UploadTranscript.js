@@ -16,6 +16,7 @@ const CONTRIBUTION_TYPES_SPEAKING = [
 export default function UploadTranscript({
     locale,
     projectId,
+    projects,
     archiveId,
     interview,
     languages,
@@ -78,7 +79,7 @@ export default function UploadTranscript({
             <Form
                 scope='transcript'
                 onSubmit={(params) => {
-                    submitData({ locale, projectId }, params);
+                    submitData({ locale, projectId, projects }, params);
                     setShowForm(false);
                 }}
                 submitText='edit.upload_transcript.title'

@@ -6,6 +6,8 @@ import { submitData } from 'modules/data';
 const mapStateToProps = (state) => {
     return {
         locale: state.archive.locale,
+        projectId: state.archive.projectId,
+        projects: state.data.projects,
         account: state.data.accounts.current,
         editView: state.archive.editView,
         isLoggedIn: state.account.isLoggedIn,
