@@ -330,12 +330,17 @@ class Interview < ApplicationRecord
 
   def find_or_create_tapes(d)
     tapes.where.not("media_id LIKE ?", "#{archive_id.upcase}_#{format('%02d', d)}_%").each do |tape|
-      tape.destroy if tape.segments.count == 0
+      if tape.segments.count == 0
+        tape.destroy
+      else
+        tape.update_attributes media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', tape.number)}"
+      end
     end
 
     (1..d.to_i).each do |t|
       tp = Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', t)}", number: t, interview_id: id)
     end
+    self.touch
   end
 
   def self.random_featured(n = 1)
@@ -841,7 +846,7 @@ class Interview < ApplicationRecord
     def archive_search(user_account, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, user_account && (user_account.admin? || user_account.permissions?('Interview', :update)) ? ['public', 'unshared'] : 'public')
+        with(:workflow_state, user_account && (user_account.admin? || user_account.permissions?('General', :edit)) ? ['public', 'unshared'] : 'public')
         with(:project_id, project.id)
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         dynamic :search_facets do

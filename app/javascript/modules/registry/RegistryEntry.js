@@ -32,6 +32,10 @@ export default class RegistryEntry extends React.Component {
 
     reloadRegistryEntry() {
         if (
+            (
+                !this.props.registryEntries[this.props.data.id] &&
+                !this.props.registryEntriesStatus[this.props.data.id]
+            ) ||
             /^reload/.test(this.props.registryEntriesStatus[this.props.data.id])
         ) {
             this.props.fetchData(this.props, 'registry_entries', this.props.data.id);

@@ -73,7 +73,6 @@ export default class VideoPlayer extends React.Component {
     }
 
     src() {
-        // this will run only if tape_count < 10!!
         if(this.props.interview.media_type && this.props.resolution) {
             let mediaStream = Object.values(this.props.mediaStreams).find(m => {
                 return m.media_type === this.props.interview.media_type &&
@@ -81,7 +80,7 @@ export default class VideoPlayer extends React.Component {
             });
             return mediaStream?.path.replace(/\#\{archive_id\}/g, this.props.archiveId).
                 replace(/\#\{tape_count\}/g, this.props.interview.tape_count).
-                replace(/\#\{tape_number\}/g, this.props.tape);
+                replace(/\#\{tape_number\}/g, (this.props.tape.toString().length > 1 ? this.props.tape : `0${this.props.tape}`));
         } else {
             return null;
         }
