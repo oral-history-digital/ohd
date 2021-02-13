@@ -212,9 +212,7 @@ Rails.application.routes.draw do
       root to: "projects#show"
       concerns :archive
       concerns :account
-      devise_for :user_accounts,
-        controllers: { sessions: "sessions", passwords: "passwords" },
-        skip: [:registrations]
+      concerns :unnamed_devise_routes
     end
   end
 
