@@ -1,5 +1,5 @@
 class ContributionTypeSerializer < ApplicationSerializer
-  attributes :id, :label, :name, :project_id
+  attributes :id, :label, :name, :code, :project_id
 
   def label
     object.localized_hash(:label)
