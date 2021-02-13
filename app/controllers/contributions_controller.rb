@@ -33,7 +33,7 @@ class ContributionsController < ApplicationController
   def respond(contribution)
     contribution.interview.touch
 
-    if contribution.contribution_type == Project.contribution_types['interviewee']
+    if contribution.contribution_type.code == 'interviewee'
       reload_data_type = 'interviews'
       reload_id = contribution.interview.archive_id
     else

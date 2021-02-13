@@ -48,7 +48,7 @@ class TranscriptsController < ApplicationController
         :tape_durations,
         :time_shifts,
         :delete_existing,
-        contributions_attributes: [:id, :person_id, :contribution_type, :speaker_designation]
+        contributions_attributes: [:id, :person_id, :contribution_type_id, :speaker_designation]
     )
   end
 
