@@ -9,6 +9,8 @@ import UserContentForm from './UserContentForm';
 const mapStateToProps = (state) => {
     return {
         archiveId: state.archive.archiveId,
+        projectId: state.archive.projectId,
+        projects: state.data.projects,
         project: getProject(state),
         interview: getCurrentInterview(state),
         tape: getCurrentTape(state),
