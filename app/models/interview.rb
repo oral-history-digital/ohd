@@ -124,11 +124,11 @@ class Interview < ApplicationRecord
               where("registry_references.registry_entry_id != '0'")
            },
            class_name: 'RegistryReference'
-           
+
   has_many :segment_registry_entries,
            through: :segment_registry_references,
            source: :registry_entry
-           
+
   has_many :checklist_items,
            -> {order('item_type ASC')},
            dependent: :destroy
@@ -185,7 +185,7 @@ class Interview < ApplicationRecord
 
     # in order to find pseudonyms with fulltextsearch (dg)
     #(text :pseudonym_string, :stored => true) if project.identifier == 'dg'
-    
+
     # in order to fast access a list of titles for the name and alias_names autocomplete:
     string :title, :stored => true
     string :media_type, :stored => true
@@ -204,14 +204,14 @@ class Interview < ApplicationRecord
         all
       end.join(' ')
     end
-    
+
     text :headings, :boost => 10 do
       segments.with_heading.inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << "#{t.mainheading} #{t.subheading}"; mem}.join(' ')
         all
       end.join(' ')
     end
-    
+
     #dynamic_integer :registry_entry_and_registry_reference_type_search_facets do
       #(project.registry_entry_search_facets + project.registry_reference_type_search_facets).inject({}) do |mem, facet|
         #mem[facet.name.to_sym] = facet.name.to_sym#, :multiple => true, :stored => true, :references => RegistryEntry
@@ -256,13 +256,13 @@ class Interview < ApplicationRecord
       text :"alias_names_#{locale}", :stored => true, :boost => 20 do
         (interviewee && interviewee.alias_names(locale)) || ''
       end
-    
+
       # contributions
-      # find them through fulltext search 
+      # find them through fulltext search
       # e.g.: 'Kamera Hans Peter'
       #
       text :"contributions_#{locale}" do
-        contributions.map do |c| 
+        contributions.map do |c|
           if c.person
             [I18n.t("contributions.#{c.contribution_type}", locale: locale), c.person.first_name(locale), c.person.last_name(locale)]
           end
@@ -286,7 +286,7 @@ class Interview < ApplicationRecord
       end
     end
 
-    text :interviewer_property do 
+    text :interviewer_property do
       properties && properties[:interviewer]
     end
 
@@ -414,11 +414,11 @@ class Interview < ApplicationRecord
     end
   end
 
-  # after_initialize do 
+  # after_initialize do
   #   project.registry_entry_metadata_fields.each do |facet|
-  #     define_singleton_method facet.name do 
+  #     define_singleton_method facet.name do
   #       if project.identifier.to_sym == :mog
-  #         segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id).uniq 
+  #         segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id).uniq
   #       else
   #         registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
   #       end
@@ -426,7 +426,7 @@ class Interview < ApplicationRecord
   #   end
   # end
 
-  after_initialize do 
+  after_initialize do
     project.registry_reference_type_metadata_fields.each do |field|
       define_singleton_method field.name do
         case field["ref_object_type"]
@@ -435,7 +435,7 @@ class Interview < ApplicationRecord
         when "Interview"
           registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
         when "Segment"
-          segment_registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq 
+          segment_registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq
         else
           []
         end
@@ -488,8 +488,8 @@ class Interview < ApplicationRecord
       end
     end
   end
- 
-  # 
+
+  #
   # speaker designations from column speaker of table segments
   #
   def speaker_designations
@@ -516,12 +516,12 @@ class Interview < ApplicationRecord
         contribution = contributions.select{|c| c.speaker_designation ==  row[:speaker]}.first
         speaker_id = contribution && contribution.person_id
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
-          Segment.create_or_update_by({ 
-            interview_id: id, 
-            timecode: row[:timecode], 
-            next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode, 
+          Segment.create_or_update_by({
+            interview_id: id,
+            timecode: row[:timecode],
+            next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode,
             tape_id: tape_id,
-            text: row[:transcript] || '', 
+            text: row[:transcript] || '',
             locale: locale,
             speaker_id: speaker_id
           })
@@ -537,12 +537,12 @@ class Interview < ApplicationRecord
     tape = Tape.find(tape_id)
     data = File.read file_path
     text = Yomu.read :text, data
-    Segment.create_or_update_by({ 
-      interview_id: id, 
-      timecode: Timecode.new(tape.time_shift).timecode, 
+    Segment.create_or_update_by({
+      interview_id: id,
+      timecode: Timecode.new(tape.time_shift).timecode,
       next_timecode: Timecode.new(tape.duration).timecode,
       tape_id: tape_id,
-      text: text, 
+      text: text,
       locale: locale
     })
   end
@@ -551,12 +551,12 @@ class Interview < ApplicationRecord
     extension = File.extname(file_path).strip.downcase[1..-1]
     webvtt = extension == 'vtt' ? ::WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
     webvtt.cues.each do |cue|
-      Segment.create_or_update_by({ 
-        interview_id: id, 
+      Segment.create_or_update_by({
+        interview_id: id,
         timecode: cue.start.to_s,
         next_timecode: cue.end.to_s,
         tape_id: tape_id,
-        text: cue.text, 
+        text: cue.text,
         locale: locale,
       })
     end
@@ -606,15 +606,15 @@ class Interview < ApplicationRecord
     if first_interviewee
 
       # Build last name with a locale-specific pattern.
-      last_name = first_interviewee.last_name(locale) || first_interviewee.last_name(I18n.default_locale) 
-      birth_name = first_interviewee.birth_name(locale) || first_interviewee.birth_name(I18n.default_locale) 
+      last_name = first_interviewee.last_name(locale) || first_interviewee.last_name(I18n.default_locale)
+      birth_name = first_interviewee.birth_name(locale) || first_interviewee.birth_name(I18n.default_locale)
       lastname_with_birthname = [last_name, birth_name].compact.join(' ')
 
       # Build first name.
       first_names = []
-      first_name = first_interviewee.first_name(locale) || first_interviewee.first_name(I18n.default_locale) 
+      first_name = first_interviewee.first_name(locale) || first_interviewee.first_name(I18n.default_locale)
       first_names << first_name unless first_name.blank?
-      other_first_names = first_interviewee.other_first_names(locale) || first_interviewee.other_first_names(I18n.default_locale) 
+      other_first_names = first_interviewee.other_first_names(locale) || first_interviewee.other_first_names(I18n.default_locale)
       first_names << other_first_names unless other_first_names.blank?
 
       # Combine first and last name with a locale-specific pattern.
@@ -757,7 +757,7 @@ class Interview < ApplicationRecord
 
   def oai_dc_contributor
     oai_contributors = [
-      %w(interviewers Interviewführung), 
+      %w(interviewers Interviewführung),
       %w(cinematographers Kamera),
       %w(transcriptors Transkripteur),
       %w(translators Übersetzer),
@@ -813,7 +813,8 @@ class Interview < ApplicationRecord
     # in order to get a dropdown list in search field
     def dropdown_search_values(project, user_account)
       wf_state = user_account && (user_account.admin? || user_account.permissions?('General', 'edit')) ? ["public", "unshared"] : 'public'
-      cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), project.updated_at].max.strftime("%d.%m-%H:%M")
+      cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), project.updated_at]
+        .compact.max.strftime("%d.%m-%H:%M")
 
       Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
         search = Interview.search do
@@ -828,9 +829,9 @@ class Interview < ApplicationRecord
         # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
         #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
         #    ...]
-        all_interviews_pseudonyms = search.hits.map do |hit| 
-          project.available_locales.inject({}) do |mem, locale| 
-            mem[locale] = hit.stored("alias_names_#{locale}") 
+        all_interviews_pseudonyms = search.hits.map do |hit|
+          project.available_locales.inject({}) do |mem, locale|
+            mem[locale] = hit.stored("alias_names_#{locale}")
             mem
           end
         end
@@ -856,7 +857,7 @@ class Interview < ApplicationRecord
           end
         end
         if params[:fulltext].blank? && params[:order].blank?
-          order_by("person_name_#{locale}".to_sym, :asc) 
+          order_by("person_name_#{locale}".to_sym, :asc)
         elsif params[:order]
           order_by(params[:order].split('-')[0].to_sym, params[:order].split('-')[1].to_sym)
         end
