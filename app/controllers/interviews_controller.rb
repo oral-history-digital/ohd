@@ -310,8 +310,6 @@ class InterviewsController < ApplicationController
       "duration",
       "video",
       "translated",
-      "observations",
-      "description",
       "workflow_state",
       "media_type",
       "biographies_workflow_state",

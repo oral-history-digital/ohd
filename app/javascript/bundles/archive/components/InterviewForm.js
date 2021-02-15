@@ -62,6 +62,7 @@ export default class InterviewForm extends React.Component {
                 attribute: 'description',
                 value: this.props.interview?.description,
                 elementType: 'textarea',
+                multiLocale: true,
                 validate: v => v.length <= 300,
             },
             {
