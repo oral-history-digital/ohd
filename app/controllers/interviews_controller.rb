@@ -311,13 +311,14 @@ class InterviewsController < ApplicationController
       "video",
       "translated",
       "observations",
+      "description",
       "workflow_state",
       "media_type",
       "biographies_workflow_state",
       properties: {},
       public_attributes: {},
       contributions_attributes: [:person_id, :contribution_type, :speaker_designation],
-      translations_attributes: [:locale, :id, :observations]
+      translations_attributes: [:locale, :id, :observations, :description]
     )
   end
 
