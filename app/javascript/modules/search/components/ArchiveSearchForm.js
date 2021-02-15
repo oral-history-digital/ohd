@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 
 import FacetContainer from './FacetContainer';
-import { iOS } from 'lib/utils';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { AuthShowContainer, admin } from 'modules/auth';
-import { isMobile } from 'modules/responsive';
+import { isMobile, isIOS } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
 
 export default class ArchiveSearchForm extends React.Component {
@@ -249,7 +248,7 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     renderDataList() {
-        if( !iOS() ) {
+        if( !isIOS() ) {
             return (
                 <datalist id="allInterviewTitles">
                     <select>

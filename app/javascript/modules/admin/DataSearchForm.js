@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { FormElement } from 'modules/forms';
-import { isMobile } from 'modules/responsive';
+import { isMobile } from 'modules/user-agent';
 import { parametrizedQuery, statifiedQuery } from 'lib/utils';
 import { pluralize } from 'modules/strings';
 import { t } from 'modules/i18n';

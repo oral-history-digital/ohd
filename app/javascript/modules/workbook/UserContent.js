@@ -5,7 +5,7 @@ import PropTypes from 'prop-types';
 import { queryToText } from 'lib/utils';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
-import { isMobile } from 'modules/responsive';
+import { isMobile } from 'modules/user-agent';
 import UserContentFormContainer from './UserContentFormContainer';
 import UserContentDeleteContainer from './UserContentDeleteContainer';
 

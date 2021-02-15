@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ArchivePopupContainer } from 'modules/ui';
-import { ResizeWatcherContainer } from 'modules/responsive';
+import { ResizeWatcherContainer } from 'modules/user-agent';
 import { FlyoutTabs } from 'modules/flyout-tabs';
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
