@@ -839,6 +839,7 @@ ru:
         tasks_states: Bearbeitungsstand
         observations: Protokoll
         collection: Частичное собрание
+        description: Description
       transcript:
         collection_id: Sammlung
         archive_id: Archiv-ID
