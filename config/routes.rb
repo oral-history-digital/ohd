@@ -222,4 +222,7 @@ Rails.application.routes.draw do
   mount OaiRepository::Engine => "/oai_repository"
   root to: "home#overview"
 
+  devise_for :user_accounts,
+    controllers: { sessions: "sessions", passwords: "passwords" },
+    skip: [:registrations]
 end
