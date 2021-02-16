@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
 import DataList from './DataList';
+import MetadataFieldFormContainer from './MetadataFieldFormContainer';
 
 const mapStateToProps = (state) => {
     return {
@@ -27,76 +28,7 @@ const mapStateToProps = (state) => {
             "source",
             "label",
         ],
-        formElements: [
-            {
-                attribute: 'name',
-                validate: function(v){return v.length > 1}
-            },
-            {
-                attribute: 'label',
-                multiLocale: true,
-            },
-            {
-                elementType: 'input',
-                attribute: 'use_as_facet',
-                type: 'checkbox',
-            },
-            {
-                elementType: 'input',
-                attribute: 'facet_order',
-                validate: function(v){return /\d+\.*\d*/.test(v)}
-            },
-            {
-                elementType: 'input',
-                attribute: 'use_in_results_table',
-                type: 'checkbox',
-            },
-            {
-                elementType: 'input',
-                attribute: 'use_in_results_list',
-                type: 'checkbox',
-            },
-            {
-                elementType: 'input',
-                attribute: 'list_columns_order',
-                validate: function(v){return /\d+\.*\d*/.test(v)}
-            },
-            {
-                elementType: 'input',
-                attribute: 'use_in_details_view',
-                type: 'checkbox',
-            },
-            {
-                elementType: 'input',
-                attribute: 'use_in_map_search',
-                type: 'checkbox',
-            },
-            {
-                elementType: 'input',
-                attribute: 'display_on_landing_page',
-                type: 'checkbox',
-            },
-            {
-                elementType: 'select',
-                attribute: 'source',
-                values: ['Person', 'Interview', 'RegistryReferenceType','Language', 'Collection'],
-                doNotTranslate: true,
-                withEmpty: true,
-            },
-            {
-                elementType: 'select',
-                attribute: 'ref_object_type',
-                values: ['Person', 'Interview'],
-                doNotTranslate: true,
-                withEmpty: true,
-            },
-            {
-                elementType: 'select',
-                attribute: 'registry_reference_type_id',
-                values: state.data.registry_reference_types,
-                withEmpty: true,
-            },
-        ],
+        form: MetadataFieldFormContainer,
     }
 }
 

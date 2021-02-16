@@ -985,7 +985,7 @@ es:
       registry_reference_type:
         use_in_transcript: Im Transkript benutzen
         code: Code
-        registry_entry_id: Registereintrag (tiefst möglicher)
+        registry_entry_id: Registereintrag
       default:
         name: Name
         title: Name
