@@ -51,7 +51,7 @@ export default class Heading extends React.Component {
                             data={heading}
                             nextSubHeading={this.props.data.subheadings[index+1] || this.props.nextHeading}
                         />
-                        {this.editHeading()}
+                        {this.editHeading(heading.segment)}
                     </div>
                 ))}
             </div>;
@@ -68,13 +68,13 @@ export default class Heading extends React.Component {
         }
     }
 
-    editHeading() {
+    editHeading(segment) {
         return (
-            <AuthorizedContent object={this.props.data.segment}>
+            <AuthorizedContent object={segment}>
                 <span
                     className='flyout-sub-tabs-content-ico-link'
                     onClick={() => this.props.openArchivePopup({
-                        content: <SegmentHeadingFormContainer segment={this.props.data.segment} />
+                        content: <SegmentHeadingFormContainer segment={segment} />
                     })}
                 >
                         <i className="fa fa-pencil"/>
@@ -96,7 +96,7 @@ export default class Heading extends React.Component {
                         onClick={this.handleClick}
                         dangerouslySetInnerHTML={{__html: this.props.data.heading}}
                     />
-                    {this.editHeading()}
+                    {this.editHeading(this.props.data.segment)}
                 </div>
                 {this.subHeadings()}
             </div>
