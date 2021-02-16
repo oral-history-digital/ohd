@@ -73,6 +73,32 @@ export const getCurrentInterviewFetched = state => {
     return !(Object.is(currentInterview, undefined) || Object.is(currentInterview, null));
 };
 
+export const getCurrentInterviewee = createSelector(
+    [getCurrentInterview, getPeople],
+    (interview, people) => {
+        if (interview?.contributions && people) {
+            const intervieweeContribution = Object.values(interview.contributions)
+                .find(c => c.contribution_type === 'interviewee');
+            return people[intervieweeContribution?.person_id];
+        }
+    }
+);
+
+const getInterviewFromProps = (_, props) =>
+    props.interview;
+
+// Eventually, only use getCurrentInterviewee above.
+export const getInterviewee = createSelector(
+    [getInterviewFromProps, getPeople],
+    (interview, people) => {
+        if (interview?.contributions && people) {
+            const intervieweeContribution = Object.values(interview.contributions)
+                .find(c => c.contribution_type === 'interviewee');
+            return people[intervieweeContribution?.person_id];
+        }
+    }
+);
+
 export const getContributorsFetched = createSelector(
     [getCurrentInterview, getPeopleStatus],
     (interview, peopleStatus) => {

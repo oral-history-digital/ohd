@@ -30,13 +30,6 @@ export function humanReadable(obj, attribute, props, state, none='---') {
     return value || none;
 }
 
-export function getInterviewee(props) {
-    if (props.interview && props.interview.contributions && props.people) {
-        let intervieweeContribution = Object.values(props.interview.contributions).find(c => c.contribution_type === 'interviewee');
-        return props.people[intervieweeContribution && intervieweeContribution.person_id]
-    }
-}
-
 export function loadIntervieweeWithAssociations(props) {
     let intervieweeContribution = Object.values(props.interview.contributions).find(c => c.contribution_type === 'interviewee');
     let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;

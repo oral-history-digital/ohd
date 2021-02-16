@@ -1,7 +1,8 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-import { getInterviewee, loadIntervieweeWithAssociations } from 'lib/utils';
+import { loadIntervieweeWithAssociations } from 'lib/utils';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { AuthShowContainer, admin } from 'modules/auth';
@@ -43,7 +44,8 @@ export default class InterviewListRow extends React.Component {
     }
 
     typologies(){
-        let interviewee =  getInterviewee(this.props);
+        const { interviewee } = this.props;
+
         if (interviewee && interviewee.typology && interviewee.typology[this.props.locale]) {
             //if (interviewee.typology[this.props.locale] && interviewee.typology[this.props.locale].length > 1) {
                 return this.content(t(this.props, 'typologies'), interviewee.typology[this.props.locale].join(', '), "");
@@ -54,7 +56,8 @@ export default class InterviewListRow extends React.Component {
     }
 
     columns(){
-        let interviewee = getInterviewee(this.props);
+        const { interviewee } = this.props;
+
         let props = this.props;
         let cols = this.props.project.list_columns.map(function(column, i){
             let value = (column.ref_object_type === 'Interview' || column.source === 'Interview') ? props.interview[column.name] : (interviewee && interviewee[column.name]);
@@ -141,3 +144,7 @@ export default class InterviewListRow extends React.Component {
         );
     }
 }
+
+InterviewListRow.propTypes = {
+    interviewee: PropTypes.object.isRequired,
+};

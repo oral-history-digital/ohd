@@ -52,6 +52,15 @@ const state = {
             cd003: {
                 id: 22,
                 type: 'Interview',
+                contributions: {
+                    1345: {
+                        id: 1345,
+                        type: 'Contribution',
+                        contribution_type: 'interviewee',
+                        person_id: 4,
+                        interview_id: 22,
+                    },
+                },
             },
         },
         languages: {
@@ -108,6 +117,7 @@ const state = {
             1: {
                 id: 1,
                 type: 'ContributionType',
+                code: 'interviewee',
                 project_id: 1,
                 label: {
                     de: 'Interviewte*r',
@@ -252,6 +262,29 @@ test('getCurrentInterview retrieves current interview', () => {
 
 test('getCurrentInterviewFetched retrieves if current interview has been fetched', () => {
     expect(selectors.getCurrentInterviewFetched(state)).toBe(true);
+});
+
+test('getCurrentInterviewee retrieves first interviewee of current interview', () => {
+    expect(selectors.getCurrentInterviewee(state)).toEqual(state.data.people[4]);
+});
+
+test('getInterviewee retrieves first interviewee of a given interview', () => {
+    const props = {
+        interview: {
+            id: 22,
+            type: 'Interview',
+            contributions: {
+                1345: {
+                    id: 1345,
+                    type: 'Contribution',
+                    contribution_type: 'interviewee',
+                    person_id: 4,
+                    interview_id: 22,
+                },
+            },
+        },
+    };
+    expect(selectors.getInterviewee(state, props)).toEqual(state.data.people[4]);
 });
 
 test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {

@@ -5,13 +5,14 @@ import { handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAnd
 import { openArchivePopup } from 'modules/ui';
 import { getProject } from 'lib/utils';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
-import { getCurrentInterview } from 'modules/data';
+import { getCurrentInterview, getCurrentInterviewee } from 'modules/data';
 import { getCurrentTape, getTranscriptScrollEnabled, getVideoResolution, getVideoStatus, getVideoTime } from '../selectors';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
     return {
         interview: getCurrentInterview(state),
+        interviewee: getCurrentInterviewee(state),
         project: project,
         archiveId: state.archive.archiveId,
         projectId: state.archive.projectId,

@@ -4,7 +4,7 @@ import moment from 'moment';
 import classNames from 'classnames';
 
 import { UserContentFormContainer } from 'modules/workbook';
-import { fullname, getInterviewee } from 'lib/utils';
+import { fullname } from 'lib/utils';
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { t } from 'modules/i18n';
 import VideoPlayerButtonsContainer from './VideoPlayerButtonsContainer';
@@ -265,7 +265,7 @@ export default class VideoPlayer extends React.Component {
     }
 
     render() {
-        const { flyoutTabsVisible, transcriptScrollEnabled } = this.props;
+        const { interviewee, flyoutTabsVisible, transcriptScrollEnabled } = this.props;
 
         if (this.props.projectId) {
             return (
@@ -277,7 +277,7 @@ export default class VideoPlayer extends React.Component {
                         'is-fixed': transcriptScrollEnabled,
                     })}>
                         <h1 className="VideoHeader-title">
-                            {fullname(this.props, getInterviewee(this.props), true)}
+                            {fullname(this.props, interviewee, true)}
                         </h1>
                         <div className="VideoHeader-controls">
                             <select value={this.props.tape} onChange={this.handleTapeChange} className={this.props.interview.tape_count == 1 ? 'hidden tapeselector' : 'tapeselector'}>
@@ -304,6 +304,7 @@ export default class VideoPlayer extends React.Component {
 }
 
 VideoPlayer.propTypes = {
+    interviewee: PropTypes.object.isRequired,
     transcriptScrollEnabled: PropTypes.bool.isRequired,
     flyoutTabsVisible: PropTypes.bool.isRequired,
     handleVideoTimeUpdate: PropTypes.func,
