@@ -159,7 +159,8 @@ class ApplicationController < ActionController::Base
   end
 
   def initial_search_redux_state
-    cache_key_date = [Interview.maximum(:updated_at), current_project.updated_at].max.strftime("%d.%m-%H:%M")
+    cache_key_date = [Interview.maximum(:updated_at), current_project.updated_at]
+      .compact.max.strftime("%d.%m-%H:%M")
 
     Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-search-#{cache_key_params}-#{cache_key_date}-#{current_user_account && current_user_account.admin? ? 'admin' : 'public'}") do
       search = Interview.archive_search(current_user_account, current_project, locale, params)

@@ -98,7 +98,12 @@ export default class InterviewPreview extends React.Component {
                 this.props.interview :
                 interviewee;
             return (
-                <li key={i} className="DetailList-item">
+                <li
+                    key={field.name}
+                    className={classNames('DetailList-item', {
+                        'DetailList-item--shortened': field.name === 'description',
+                    })}
+                >
                     {humanReadable(obj, field.name, this.props, this.state, '') + ' '}
                 </li>
             );

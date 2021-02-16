@@ -51,6 +51,13 @@ export default class InterviewInfo extends React.Component {
                     />
                     <SingleValueWithFormContainer
                         obj={this.props.interview}
+                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'description')}
+                        elementType="textarea"
+                        multiLocale
+                        validate={v => v.length <= 300}
+                    />
+                    <SingleValueWithFormContainer
+                        obj={this.props.interview}
                         optionsScope={'search_facets'}
                         elementType={'select'}
                         values={['video', 'audio']}

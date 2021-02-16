@@ -797,7 +797,8 @@ el:
         collection: Υποσυλλογή
         data: Αρχείο απομαγνητοφώνησης
         timecode: Timecode
-        observations: Protkoll
+        observations: Protokoll
+        description: Description
       transcript:
         collection_id: Sammlung
         archive_id: Archiv-ID

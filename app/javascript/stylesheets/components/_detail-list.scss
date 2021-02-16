@@ -1,5 +1,9 @@
 /**
  * DetailList component
+ *
+ * 1. Non-standard code, Autoprefixer would not work here, see:
+ *    https://developer.mozilla.org/en-US/docs/Web/CSS/-webkit-line-clamp
+ * 2. Fallback
  */
 
 .DetailList {
@@ -14,4 +18,12 @@
 
 .DetailList-item {
 
+}
+
+.DetailList-item--shortened {
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 3;  /* 1 */
+  display: -webkit-box;
+  max-height: $line-height-medium * 3;  /* 2 */
+  overflow: hidden;
 }

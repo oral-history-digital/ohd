@@ -804,6 +804,7 @@ de:
         workflow_state: Interview-Status
         tasks_states: Bearbeitungsstand
         observations: Protokoll
+        description: Beschreibung
       transcript:
         collection_id: Sammlung
         archive_id: Archiv-ID

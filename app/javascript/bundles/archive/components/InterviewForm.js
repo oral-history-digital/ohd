@@ -62,6 +62,13 @@ export default class InterviewForm extends React.Component {
                 elementType: 'input',
             },
             {
+                attribute: 'description',
+                value: this.props.interview?.description,
+                elementType: 'textarea',
+                multiLocale: true,
+                validate: v => v.length <= 300,
+            },
+            {
                 attribute: 'media_type',
                 value: this.props.interview && this.props.interview.media_type,
                 optionsScope: 'search_facets',
