@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import ContentField from 'bundles/archive/components/ContentField';
+import { ContentField } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { ArchivePopupButton } from 'modules/ui';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
