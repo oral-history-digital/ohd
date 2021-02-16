@@ -1,12 +1,12 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
 
-import TaskPreviewContainer from 'bundles/archive/containers/TaskPreviewContainer';
 import { AuthorizedContent } from 'modules/auth';
 import { ArchivePopupButton, PopupMenu } from 'modules/ui';
 import { humanReadable } from 'lib/utils';
 import { pluralize, camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
+import TaskPreviewContainer from './TaskPreviewContainer';
 
 export default class Data extends React.Component {
 

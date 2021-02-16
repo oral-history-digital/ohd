@@ -2,8 +2,8 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
-
-import { useI18n } from 'modules/i18n';import RegistryEntrySearchFormContainer from 'bundles/archive/containers/RegistryEntrySearchFormContainer';
+import { useI18n } from 'modules/i18n';
+import { RegistrySearchFormContainer } from 'modules/registry';
 import DownloadRegistryEntriesContainer from './DownloadRegistryEntriesContainer';
 
 function RegistryEntriesTabPanel(props) {
@@ -13,7 +13,7 @@ function RegistryEntriesTabPanel(props) {
         <Fragment>
             <div className='flyout-tab-title'>{t('registry')}</div>
             <div className='flyout-sub-tabs-container'>
-                <RegistryEntrySearchFormContainer />
+                <RegistrySearchFormContainer />
                 <p>
                     <button onClick={() => props.changeRegistryEntriesViewMode(!props.showRegistryEntriesTree)}>
                         {t('activerecord.models.registry_entries.actions.' + (props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}

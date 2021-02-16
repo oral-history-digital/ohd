@@ -141,6 +141,7 @@ UploadTranscript.propTypes = {
     interview: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
 };

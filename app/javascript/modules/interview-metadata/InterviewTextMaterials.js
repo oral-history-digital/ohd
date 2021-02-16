@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import SingleValueWithFormContainer from 'bundles/archive/containers/SingleValueWithFormContainer';
+import { SingleValueWithFormContainer } from 'modules/forms';
 
 export default class InterviewTextMaterials extends React.Component {
     to() {

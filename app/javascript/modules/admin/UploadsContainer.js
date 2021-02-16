@@ -1,27 +1,26 @@
 import { connect } from 'react-redux';
 
-import InterviewForm from '../components/InterviewForm';
 import { submitData } from 'modules/data';
 import { getProject } from 'lib/utils';
+import Uploads from './Uploads';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
     return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
-        archiveId: state.archive.archiveId,
+        translations: state.archive.translations,
+        uploadTypes: project && project.upload_types,
+        account: state.data.accounts.current,
+        editView: state.archive.editView,
         projectId: state.archive.projectId,
         projects: state.data.projects,
-        project: project,
-        translations: state.archive.translations,
-        collections: state.data.collections,
-        people: state.data.people,
-        languages: state.data.languages,
+        hasMap: project && project.has_map,
     }
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params))
+    submitData: (props, params) => dispatch(submitData(props, params)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(InterviewForm);
+export default connect(mapStateToProps, mapDispatchToProps)(Uploads);

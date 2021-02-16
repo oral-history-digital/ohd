@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { InterviewInfoContainer } from 'modules/interview-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
-import ContentField from 'bundles/archive/components/ContentField';
+import { ContentField } from 'modules/forms';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';

@@ -1,8 +1,8 @@
 import { connect } from 'react-redux';
 
-import TaskPreview from '../components/TaskPreview';
 import { setArchiveId } from 'modules/archive';
 import { setTapeAndTime } from 'modules/video-player';
+import TaskPreview from './TaskPreview';
 
 const mapStateToProps = (state) => {
     return {
