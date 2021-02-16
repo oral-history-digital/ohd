@@ -25,12 +25,14 @@ const mapStateToProps = (state) => {
         sortAttributeTranslated: true,
         baseTabIndex: 4 + project.has_map,
         detailsAttributes: ['code'],
+        initialFormValues: {project_id: project.id},
         formElements: [
             {
                 elementType: 'registryEntrySelect',
                 attribute: 'registry_entry_id',
-                lowestAllowedRegistryEntryId: 1,
-                goDeeper: true
+                lowestAllowedRegistryEntryId: project?.root_registry_entry_id,
+                goDeeper: true,
+                help: 'help_texts.registry_reference_types.registry_entry_id',
             },
             {
                 attribute: 'use_in_transcript',
@@ -39,6 +41,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'code',
+                help: 'help_texts.registry_reference_types.code',
             },
             {
                 attribute: 'name',

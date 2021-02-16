@@ -144,6 +144,7 @@ export default class RegistryEntrySelect extends React.Component {
                     handlechangecallback={this.handleSelectedRegistryEntry}
                     handleChange={this.props.handleChange}
                     handleErrors={this.props.handleErrors}
+                    help={this.props.help}
                 />
             )
         } else {

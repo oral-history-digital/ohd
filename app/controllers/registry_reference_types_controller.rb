@@ -57,13 +57,13 @@ class RegistryReferenceTypesController < ApplicationController
         paginate = false
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{cache_key_params}-#{RegistryReferenceType.maximum(:updated_at)}" do
           if params.keys.include?("all")
-            data = RegistryReferenceType.all.
+            data = current_project.registry_reference_types.
               includes(:translations).
               order("registry_reference_type_translations.name ASC")
             extra_params = "all"
           else
             page = params[:page] || 1
-            data = RegistryReferenceType.
+            data = current_project.registry_reference_types.
               includes(:translations).
               where(search_params).order("registry_reference_type_translations.name ASC").
               paginate(page: page)
@@ -91,6 +91,7 @@ class RegistryReferenceTypesController < ApplicationController
         :code,
         :registry_entry_id,
         :use_in_transcript,
+        :project_id,
         translations_attributes: [:locale, :id, :name]
       )
     end
