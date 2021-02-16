@@ -6,7 +6,6 @@ import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer, 
     from 'modules/account';
 import { HomeContainer } from 'modules/startpage';
 import { InterviewContainer } from 'modules/interview';
-import EditInterviewContainer from 'bundles/archive/containers/EditInterviewContainer';
 import { UserRegistrationsContainer } from 'modules/users';
 import { RegistryContainer } from 'modules/registry';
 import { ArchiveSearchContainer } from 'modules/search';
@@ -14,7 +13,7 @@ import { MapSearchContainer } from 'modules/map-search';
 import { WrappedProjectsContainer, WrappedRolesContainer,
     WrappedPermissionsContainer, WrappedTaskTypesContainer, WrappedRegistryReferenceTypesContainer,
     WrappedPeopleContainer, WrappedLanguagesContainer, WrappedCollectionsContainer,
-    UploadsContainer } from 'modules/admin';
+    UploadsContainer, EditInterviewContainer } from 'modules/admin';
 
 export const Routes = () => (
     <Switch>

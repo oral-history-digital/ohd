@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Slider from "react-slick";
 
-import FoundSegmentContainer from 'bundles/archive/containers/FoundSegmentContainer';
+import { FoundSegmentContainer } from 'modules/transcript';
 import { PersonContainer } from 'modules/people';
 import { BiographicalEntryContainer } from 'modules/interviewee-metadata';
 import { PhotoContainer } from 'modules/gallery';

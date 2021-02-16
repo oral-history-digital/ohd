@@ -18,5 +18,6 @@ export { default as WrappedRegistryReferenceTypesContainer } from './WrappedRegi
 export { default as WrappedRolesContainer } from './WrappedRolesContainer';
 export { default as WrappedTaskTypesContainer } from './WrappedTaskTypesContainer';
 export { default as UploadsContainer } from './UploadsContainer';
+export { default as EditInterviewContainer } from './EditInterviewContainer';
 
 export { default as DataList } from './DataList';

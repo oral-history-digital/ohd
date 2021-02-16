@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import EditInterview from '../components/EditInterview';
 import { getProject } from 'lib/utils';
+import EditInterview from './EditInterview';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -13,7 +13,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(EditInterview);
+export default connect(mapStateToProps)(EditInterview);

@@ -1,5 +1,6 @@
 import React from 'react';
 import moment from 'moment';
+
 import { t } from 'modules/i18n';
 
 export default class FoundSegment extends React.Component {
