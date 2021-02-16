@@ -45,6 +45,7 @@ const state = {
                 id: 1,
                 type: 'Project',
                 identifier: 'cdoh',
+                root_registry_entry_id: 1,
             },
         },
         interviews: {
@@ -176,7 +177,7 @@ test('getRegistryEntries gets registry entries object', () => {
 });
 
 test('getRootRegistryEntry gets root registry entry', () => {
-    expect(selectors.getRootRegistryEntry(state)).toEqual(state.data.registry_entries[ROOT_REGISTRY_ENTRY_ID]);
+    expect(selectors.getRootRegistryEntry(state)).toEqual(state.data.registry_entries[1]);
 });
 
 test('getRootRegistryEntryFetched is true if entry is fetched', () => {

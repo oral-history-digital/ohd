@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 
-import { projectByDomain } from 'modules/routes';
 import { getArchiveId, getProjectId  } from 'modules/archive';
 
 export const getData = state => state.data;
@@ -44,6 +43,12 @@ export const getRandomFeaturedInterviews = state => getData(state).random_featur
 export const getCurrentUserIsAdmin = state => getCurrentAccount(state).admin;
 
 export const get = (state, dataType, id) => getData(state)[dataType][id];
+
+function projectByDomain(projects) {
+    return projects && Object.values(projects).find(
+        project => project.archive_domain === window.location.origin
+    );
+}
 
 export const getCurrentProject = createSelector(
     [getProjectId, getProjects],
