@@ -52,17 +52,21 @@ export default class DataLists extends React.Component {
     }
 
     form(data) {
-        let _this = this;
-        return (
-            <Form
-                data={data}
-                values={this.props.initialFormValues}
-                scope={this.props.scope}
-                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
-                submitText='submit'
-                elements={this.props.formElements}
-            />
-        );
+        if (this.props.form) {
+            return React.createElement(this.props.form, {data: data});
+        } else {
+            let _this = this;
+            return (
+                <Form
+                    data={data}
+                    values={this.props.initialFormValues}
+                    scope={this.props.scope}
+                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                    submitText='submit'
+                    elements={this.props.formElements}
+                />
+            );
+        }
     }
 
     add() {
