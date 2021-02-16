@@ -63,6 +63,26 @@ class Project < ApplicationRecord
     RegistryEntryProject.create(project_id: self.id, registry_entry_id: root.id)
   end
 
+  after_create :create_contribution_types
+  def create_contribution_types
+    %w(
+      interviewee
+      interviewer
+      cinematographer
+      sound
+      producer
+      other_attender
+      quality_manager_interviewing
+      transcriptor
+      segmentator
+      translator
+      proofreader
+      research
+    ).each do |code|
+      ContributionType.create code: code, label: I18n.t("contributions.#{code}", locale: :de), locale: :de
+    end
+  end
+
   class << self
     def config
       @config ||= Rails.configuration.project
