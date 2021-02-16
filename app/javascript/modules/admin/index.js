@@ -17,5 +17,6 @@ export { default as WrappedProjectsContainer } from './WrappedProjectsContainer'
 export { default as WrappedRegistryReferenceTypesContainer } from './WrappedRegistryReferenceTypesContainer';
 export { default as WrappedRolesContainer } from './WrappedRolesContainer';
 export { default as WrappedTaskTypesContainer } from './WrappedTaskTypesContainer';
+export { default as UploadsContainer } from './UploadsContainer';
 
 export { default as DataList } from './DataList';

@@ -5,7 +5,7 @@ import { t } from 'modules/i18n';
 import { PixelLoader } from 'modules/spinners';
 import { isMobile } from 'modules/user-agent';
 
-export default class RegistryEntrySearchForm extends React.Component {
+export default class RegistrySearchForm extends React.Component {
     constructor(props) {
         super(props);
         this.state = {

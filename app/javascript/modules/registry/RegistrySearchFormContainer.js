@@ -1,19 +1,19 @@
 import { connect } from 'react-redux';
 
-import RegistryEntrySearchForm from '../components/RegistryEntrySearchForm';
 import { searchRegistryEntry } from 'modules/search';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
-import { getProject } from 'lib/utils';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { getProjects } from 'modules/data';
+import RegistrySearchForm from './RegistrySearchForm';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
     return {
         query: state.search.registryEntries.query,
-        translations: state.archive.translations,
-        locale: state.archive.locale,
+        translations: getTranslations(state),
+        locale: getLocale(state),
         isRegistryEntrySearching: state.search.isRegistryEntrySearching,
-        projectId: project && project.initials,
-        projects: state.data.projects,
+        projectId: getProjectId(state),
+        projects: getProjects(state),
     }
 }
 
@@ -22,4 +22,4 @@ const mapDispatchToProps = (dispatch) => ({
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntrySearchForm);
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrySearchForm);
