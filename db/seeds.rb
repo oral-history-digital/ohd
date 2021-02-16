@@ -1,40 +1,4 @@
-require "iso-639"
-
 I18n.locale = :en
 
-# create root registry_entry
-root = RegistryEntry.create workflow_state: 'public', code: 'root'
-root.save(validate: false)
-
-# create basic registry_name_type
-RegistryNameType.create code: "spelling", name: "Bezeichner", order_priority: 3, allows_multiple: false, mandatory: true
-
-# create root-names 
-name = RegistryName.create registry_entry_id: root.id, name_position: 0, descriptor: 'root', registry_name_type_id: 1
-
-# create places registry_entry as a child of root
-places = RegistryEntry.create_with_parent_and_names(root.id, 'en::places', 'places') 
-
-# create location registry_reference_types
-[["home_location", "Place of Residence"], ["deportation_location", "Place of Deportation"], ["forced_labor_location", "Place of Forced Labor"], ["return_location", "Residence since 1945"], ["birth_location", "Place of Birth"], ["interview_location", "Place of Interview"], ["birth_place", "Place of Birth"], ["place_of_death", "Place of Death"]].each do |code, name|
-  registry_reference_type = RegistryReferenceType.create(code: code, registry_entry_id: places.id, name: name) 
-end
-
-# create forced_labor_groups registry_entry as a child of root
-forced_labor_groups = RegistryEntry.create_with_parent_and_names(root.id,  'en::forced labor groups', 'forced_labor_groups')
-forced_labor_fields = RegistryEntry.create_with_parent_and_names(root.id,  'en::forced labor fields', 'forced_labor_fields')
-groups = RegistryEntry.create_with_parent_and_names(root.id, 'en::Group', 'groups')
-group_details = RegistryEntry.create_with_parent_and_names(root.id, 'en::Group Details', 'group_details')
-
-# create camps registry_entry as a child of root
-camps = RegistryEntry.create_with_parent_and_names(root.id, 'en::Camps and detention facilities', 'camps') 
-
-# create camps registry_entry as a child of root
-accessibility = RegistryEntry.create_with_parent_and_names(root.id, 'en::Accessibility', 'accessibility') 
-
-# create default collection
-Collection.create name: 'default'
-
-ISO_639::ISO_639_1.each{|l| Language.create(code: l.alpha3, name: l.english_name) unless Language.find_by_code l.alpha3}
-
-#Rake::Task['users:init_admins'].execute
+load 'db/seeds/project_seeds.rb'
+load 'db/seeds/user_seeds.rb'

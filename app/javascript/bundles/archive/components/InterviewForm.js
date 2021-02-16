@@ -44,21 +44,28 @@ export default class InterviewForm extends React.Component {
     form() {
         let _this = this;
         let elements = [
-            { 
+            {
                 attribute: 'archive_id',
                 value: this.props.interview && this.props.interview.archive_id,
                 handlechangecallback: this.setArchiveId,
                 validate: function(v){
-                    let regexp = new RegExp(`^${_this.props.project.initials}\\d{${_this.props.project.archive_id_number_length}}$`); 
+                    let regexp = new RegExp(`^${_this.props.project.initials}\\d{${_this.props.project.archive_id_number_length}}$`);
                     return regexp.test(v);
                 },
             },
-            { 
+            {
                 attribute: 'interview_date',
                 value: this.props.interview && this.props.interview.interview_date,
                 elementType: 'input',
             },
-            { 
+            {
+                attribute: 'description',
+                value: this.props.interview?.description,
+                elementType: 'textarea',
+                multiLocale: true,
+                validate: v => v.length <= 300,
+            },
+            {
                 attribute: 'media_type',
                 value: this.props.interview && this.props.interview.media_type,
                 optionsScope: 'search_facets',
@@ -84,19 +91,19 @@ export default class InterviewForm extends React.Component {
                 validate: function(v){return /^\d+$/.test(v)},
                 individualErrorMsg: 'empty'
             },
-            { 
+            {
                 // tape_count is important to calculate the video-path
                 attribute: 'tape_count',
                 value: this.props.interview && this.props.interview.tape_count,
                 elementType: 'input',
                 validate: function(v){return /^\d+$/.test(v)}
             },
-            { 
+            {
                 attribute: 'observations',
                 value: this.props.interview && this.props.interview.observations && this.props.interview.observations[this.props.locale],
                 elementType: 'textarea',
             },
-            // { 
+            // {
             //     attribute: 'translated',
             //     value: this.props.interview && this.props.interview.translated,
             //     elementType: 'input',
@@ -152,7 +159,7 @@ export default class InterviewForm extends React.Component {
                             {t(this.props,  'edit.interview.edit')}
                         </Link>
                     </p>
-                    <button 
+                    <button
                         className='return-to-form'
                         onClick={() => this.returnToForm()}
                     >

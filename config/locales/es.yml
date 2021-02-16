@@ -782,6 +782,7 @@ es:
         workflow_state: estatus
         tasks_states: Bearbeitungsstand
         observations: Protócolo
+        description: Description
       transcript:
         collection_id: Sammlung
         archive_id: Archiv-ID

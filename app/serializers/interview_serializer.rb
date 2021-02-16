@@ -19,6 +19,7 @@ class InterviewSerializer < ApplicationSerializer
     :title,
     :short_title,
     :anonymous_title,
+    :description,
     :still_url,
     :segments,
     :last_segments_ids,
@@ -116,6 +117,10 @@ class InterviewSerializer < ApplicationSerializer
     object.localized_hash(:anonymous_title)
   end
 
+  def description
+    object.localized_hash(:description)
+  end
+
   def still_url
     case object.project.identifier.to_sym
     when :cdoh
@@ -136,7 +141,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def duration
-    # interview can update duration with a timecode. 
+    # interview can update duration with a timecode.
     # Therefore duration as timecode can be duration's value in a form.
     # Further a timecode is human readable sth like 14785 not so.
     #
