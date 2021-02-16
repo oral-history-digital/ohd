@@ -21,6 +21,8 @@ export const getInterviewsStatus = state => getStatuses(state).interviews;
 
 export const getRegistryEntriesStatus = state => getStatuses(state).registry_entries;
 
+export const getRegistryReferenceTypesStatus = state => getStatuses(state).registry_reference_types;
+
 export const getCollections = state => getData(state).collections;
 
 export const getProjects = state => getData(state).projects;
@@ -32,6 +34,8 @@ export const getAccounts = state => getData(state).accounts;
 export const getCurrentAccount = state => getAccounts(state).current;
 
 export const getRegistryEntries = state => getData(state).registry_entries;
+
+export const getRegistryReferenceTypes = state => getData(state).registry_reference_types;
 
 export const getRegistryNameTypes = state => getData(state).registry_name_types;
 
