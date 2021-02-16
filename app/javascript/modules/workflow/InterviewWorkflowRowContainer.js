@@ -4,11 +4,11 @@ import { bindActionCreators } from 'redux';
 import { searchInInterview } from 'modules/search';
 import { setTapeAndTime } from 'modules/video-player';
 import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
-import { fetchData } from 'modules/data';
+import { fetchData, getInterviewee } from 'modules/data';
 import { getProject } from 'lib/utils';
 import InterviewWorkflowRow from './InterviewWorkflowRow';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, props) => {
     let project = getProject(state);
     return {
         fulltext: state.search.archive.query.fulltext,
@@ -24,6 +24,7 @@ const mapStateToProps = (state) => {
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
         interviews: state.data.interviews,
+        interviewee: getInterviewee(state, props),
         tasks: state.data.tasks,
         tasksStatus: state.data.statuses.tasks,
         userAccounts: state.data.accounts,

@@ -1,9 +1,10 @@
 import React from 'react';
-import {Link} from 'react-router-dom';
+import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import missingStill from 'assets/images/missing_still.png';
 import SingleValueWithFormContainer from 'bundles/archive/containers/SingleValueWithFormContainer';
-import { getInterviewee, loadIntervieweeWithAssociations } from 'lib/utils';
+import { loadIntervieweeWithAssociations } from 'lib/utils';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import TaskContainer from './TaskContainer';
@@ -66,7 +67,8 @@ export default class InterviewWorkflowRow extends React.Component {
     }
 
     intervieweeWithPhoto() {
-        let interviewee = getInterviewee(this.props);
+        const { interviewee } = this.props;
+
         if (interviewee && interviewee.names[this.props.locale]) {
             return (
                 <Link className={'search-result-link box-10'}
@@ -188,3 +190,7 @@ export default class InterviewWorkflowRow extends React.Component {
         );
     }
 }
+
+InterviewWorkflowRow.propTypes = {
+    interviewee: PropTypes.object.isRequired,
+};

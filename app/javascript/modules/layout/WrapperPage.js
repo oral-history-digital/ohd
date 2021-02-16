@@ -121,8 +121,8 @@ export default class WrapperPage extends React.Component {
 }
 
 WrapperPage.propTypes = {
-    isLoggedIn: PropTypes.bool.isRequired,
-    isLoggedOut: PropTypes.bool.isRequired,
+    isLoggedIn: PropTypes.bool,
+    isLoggedOut: PropTypes.bool,
     loggedInAt: PropTypes.number,
     transcriptScrollEnabled: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
