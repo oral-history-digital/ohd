@@ -149,7 +149,7 @@ export default class PersonData extends React.Component {
                             <ArchivePopupButton
                                 title={editTitle}
                                 buttonFaKey='pencil'
-                                content={this.contributionForm()}
+                                children={this.contributionForm()}
                             />
                         </AuthorizedContent>
                     </ContentField>
