@@ -5,11 +5,13 @@ import { pathBase } from 'modules/routes';
 
 export default class LoginForm extends React.Component {
     render() {
-        let _this = this;
         return (
             <Form
                 scope='user_account'
-                onSubmit={function(params){_this.props.submitLogin(`${pathBase(_this.props)}/user_accounts/sign_in`, params)}}
+                onSubmit={(params) => {
+                    const url = `${pathBase(this.props)}/user_accounts/sign_in`;
+                    this.props.submitLogin(url, params);
+                }}
                 submitText='login'
                 elements={[
                     {

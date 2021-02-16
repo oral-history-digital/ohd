@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { InterviewSearchResultsContainer } from 'modules/interview-search';
 import { AuthShowContainer, admin } from 'modules/auth';
-import { getInterviewee, humanReadable, loadIntervieweeWithAssociations } from 'lib/utils';
+import { humanReadable, loadIntervieweeWithAssociations } from 'lib/utils';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import missingStill from 'assets/images/missing_still.png';
@@ -92,7 +93,9 @@ export default class InterviewPreview extends React.Component {
         }
     }
 
-    customMetadataFields(interviewee) {
+    customMetadataFields() {
+        const { interviewee } = this.props;
+
         return this.props.project.grid_fields.map((field, i) => {
             let obj = (field.ref_object_type === 'Interview' || field.source === 'Interview') ?
                 this.props.interview :
@@ -111,11 +114,12 @@ export default class InterviewPreview extends React.Component {
     }
 
     interviewDetails() {
-        let interviewee = getInterviewee(this.props);
+        const { interviewee } = this.props;
+
         if (interviewee && interviewee.associations_loaded && !this.state.open) {
             return (
                 <ul className="DetailList" lang={this.props.locale}>
-                    {this.customMetadataFields(interviewee)}
+                    {this.customMetadataFields()}
                 </ul>
             )
         }
@@ -189,3 +193,7 @@ export default class InterviewPreview extends React.Component {
         }
     }
 }
+
+InterviewPreview.propTypes = {
+    interviewee: PropTypes.object.isRequired,
+};

@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 
-import { projectByDomain } from 'modules/routes';
 import { getArchiveId, getProjectId  } from 'modules/archive';
 
 export const getData = state => state.data;
@@ -49,6 +48,12 @@ export const getCurrentUserIsAdmin = state => getCurrentAccount(state).admin;
 
 export const get = (state, dataType, id) => getData(state)[dataType][id];
 
+function projectByDomain(projects) {
+    return projects && Object.values(projects).find(
+        project => project.archive_domain === window.location.origin
+    );
+}
+
 export const getCurrentProject = createSelector(
     [getProjectId, getProjects],
     (projectId, projects) => {
@@ -71,6 +76,32 @@ export const getCurrentInterviewFetched = state => {
 
     return !(Object.is(currentInterview, undefined) || Object.is(currentInterview, null));
 };
+
+export const getCurrentInterviewee = createSelector(
+    [getCurrentInterview, getPeople],
+    (interview, people) => {
+        if (interview?.contributions && people) {
+            const intervieweeContribution = Object.values(interview.contributions)
+                .find(c => c.contribution_type === 'interviewee');
+            return people[intervieweeContribution?.person_id];
+        }
+    }
+);
+
+const getInterviewFromProps = (_, props) =>
+    props.interview;
+
+// Eventually, only use getCurrentInterviewee above.
+export const getInterviewee = createSelector(
+    [getInterviewFromProps, getPeople],
+    (interview, people) => {
+        if (interview?.contributions && people) {
+            const intervieweeContribution = Object.values(interview.contributions)
+                .find(c => c.contribution_type === 'interviewee');
+            return people[intervieweeContribution?.person_id];
+        }
+    }
+);
 
 export const getContributorsFetched = createSelector(
     [getCurrentInterview, getPeopleStatus],

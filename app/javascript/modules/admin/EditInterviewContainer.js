@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 
-import SingleTextInputForm from '../components/SingleTextInputForm';
-import { closeArchivePopup } from 'modules/ui';
 import { getProject } from 'lib/utils';
+import EditInterview from './EditInterview';
 
 const mapStateToProps = (state) => {
     let project = getProject(state);
@@ -10,11 +9,8 @@ const mapStateToProps = (state) => {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
+        hasMap: project && project.has_map,
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    closeArchivePopup: () => dispatch(closeArchivePopup()),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(SingleTextInputForm);
+export default connect(mapStateToProps)(EditInterview);

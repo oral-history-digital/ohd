@@ -3,15 +3,13 @@ import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
 import { AccountContainer } from 'modules/account';
-import MarkTextFormContainer from 'bundles/archive/containers/MarkTextFormContainer';
-import AssignSpeakersFormContainer from 'bundles/archive/containers/AssignSpeakersFormContainer';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { InterviewInfoContainer, InterviewContributorsContainer, InterviewTextMaterialsContainer,
     CitationInfoContainer } from 'modules/interview-metadata';
 import { InterviewLocationsContainer } from 'modules/locations';
 import { GalleryContainer } from 'modules/gallery';
-import UploadTranscriptContainer from 'bundles/archive/containers/UploadTranscriptContainer';
+import { AssignSpeakersFormContainer, MarkTextFormContainer, UploadTranscriptContainer } from 'modules/interview-actions';
 import { pathBase } from 'modules/routes';
 import { admin, AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { t } from 'modules/i18n';

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
-import SingleValueWithForm from '../components/SingleValueWithForm';
 import { submitData } from 'modules/data';
+import SingleValueWithForm from './SingleValueWithForm';
 
 const mapStateToProps = (state) => {
     return {

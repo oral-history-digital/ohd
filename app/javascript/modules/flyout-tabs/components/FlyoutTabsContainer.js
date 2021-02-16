@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { getInterviewee, getProject } from 'lib/utils';
+import { getProject } from 'lib/utils';
 import { openArchivePopup } from 'modules/ui';
 import { setLocale } from 'modules/archive';
-import { getCurrentInterview } from 'modules/data';
+import { getCurrentInterview, getCurrentInterviewee } from 'modules/data';
 import { setFlyoutTabsIndex } from '../actions';
 import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors';
 import FlyoutTabs from './FlyoutTabs';
@@ -26,7 +26,7 @@ const mapStateToProps = (state) => {
         account: state.data.accounts.current,
         isLoggedIn: state.account.isLoggedIn,
         interview: getCurrentInterview(state),
-        interviewee: getInterviewee({interview: getCurrentInterview(state), people: state.data.people}),
+        interviewee: getCurrentInterviewee(state),
         countryKeys: state.archive.countryKeys,
     }
 }

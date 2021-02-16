@@ -1,6 +1,6 @@
 import React from 'react';
-import { Form } from 'modules/forms';
-import SingleTextInputFormContainer from '../containers/SingleTextInputFormContainer';
+
+import { Form, SingleTextInputFormContainer } from 'modules/forms';
 import { t } from 'modules/i18n';
 
 export default class MarkTextForm extends React.Component {

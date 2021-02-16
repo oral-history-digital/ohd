@@ -30,13 +30,6 @@ export function humanReadable(obj, attribute, props, state, none='---') {
     return value || none;
 }
 
-export function getInterviewee(props) {
-    if (props.interview && props.interview.contributions && props.people) {
-        let intervieweeContribution = Object.values(props.interview.contributions).find(c => c.contribution_type === 'interviewee');
-        return props.people[intervieweeContribution && intervieweeContribution.person_id]
-    }
-}
-
 export function loadIntervieweeWithAssociations(props) {
     let intervieweeContribution = Object.values(props.interview.contributions).find(c => c.contribution_type === 'interviewee');
     let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;
@@ -103,22 +96,4 @@ export function queryToText(query, props) {
         }
     }
     return queryText;
-}
-
-export function getInterviewArchiveIdWithOffset(archiveId, foundInterviews, sortedArchiveIds, offset = 1) {
-    if (foundInterviews && sortedArchiveIds) {
-        let listOfArchiveIds = foundInterviews.map(x => x.archive_id);
-        let positionInList = listOfArchiveIds.findIndex(i => i === archiveId)
-        // use sortedArchiveIds if archiveId not in foundInterviews
-        if (positionInList === -1) {
-            listOfArchiveIds = sortedArchiveIds
-            positionInList = sortedArchiveIds.findIndex(i => i === archiveId)
-        }
-        let offsetItem = listOfArchiveIds[positionInList + offset]
-        if (listOfArchiveIds.length > 1 && positionInList > -1 && offsetItem) {
-            return offsetItem
-        } else {
-            return false;
-        }
-    }
 }

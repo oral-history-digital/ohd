@@ -1,6 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { getInterviewee } from 'lib/utils';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { SEGMENTS_AFTER, SEGMENTS_BEFORE } from './constants';
@@ -117,7 +117,7 @@ export default class Transcript extends React.Component {
     }
 
     transcript(){
-        const { transcriptTime, tape } = this.props;
+        const { interviewee, transcriptTime, tape } = this.props;
         const { popupSegmentId, popupType, openReference } = this.state;
 
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
@@ -128,8 +128,6 @@ export default class Transcript extends React.Component {
             this.shownSegmentsAround(sortedWithIndex);
 
         let speaker, speakerId;
-
-        const interviewee = getInterviewee(this.props);
 
         return shownSegments.map((segment, index) => {
             segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
@@ -180,3 +178,7 @@ export default class Transcript extends React.Component {
         }
     }
 }
+
+Transcript.propTypes = {
+    interviewee: PropTypes.object.isRequired,
+};

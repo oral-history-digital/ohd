@@ -1,10 +1,11 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import ContentField from 'bundles/archive/components/ContentField';
+import { ContentField } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { ArchivePopupButton } from 'modules/ui';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
-import { fullname, getInterviewee, humanReadable } from 'lib/utils';
+import { fullname, humanReadable } from 'lib/utils';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import BiographicalEntriesContainer from './BiographicalEntriesContainer';
@@ -25,14 +26,16 @@ export default class PersonData extends React.Component {
     }
 
     loadWithAssociations() {
-        let interviewee = getInterviewee(this.props);
+        const { interviewee } = this.props;
+
         if (interviewee && !interviewee.associations_loaded) {
             this.props.fetchData(this.props, 'people', interviewee.id, null, 'with_associations=true');
         }
     }
 
     existsPublicBiography() {
-        let interviewee = getInterviewee(this.props);
+        const { interviewee } = this.props;
+
         if (interviewee && interviewee.associations_loaded) {
             let firstKey = interviewee && Object.keys(interviewee.biographical_entries)[0];
             let firstEntry = interviewee && interviewee.biographical_entries[firstKey];
@@ -89,8 +92,9 @@ export default class PersonData extends React.Component {
     }
 
     biographicalEntries() {
+        const { interviewee } = this.props;
+
         if(this.props.projectId !== 'dg') {
-            let interviewee = getInterviewee(this.props);
             return (
                 <AuthorizedContent object={{type: 'BiographicalEntry', action: 'create', interview_id: this.props.interview && this.props.interview.id}} >
                     <BiographicalEntriesContainer person={interviewee} interview={this.props.interview} />;
@@ -107,8 +111,10 @@ export default class PersonData extends React.Component {
     // in FlyoutTabs
     //
     personMetadataFields(){
+        const { interviewee } = this.props;
+
         let _this = this;
-        let interviewee = getInterviewee(this.props);
+
         if (interviewee && interviewee.associations_loaded) {
 
             return Object.values(this.props.project.metadata_fields).filter(m => {
@@ -137,7 +143,8 @@ export default class PersonData extends React.Component {
     }
 
     info() {
-        let interviewee = getInterviewee(this.props);
+        const { interviewee } = this.props;
+
         let editTitle = t(this.props, 'edit.contribution.edit');
         return (
             <div>
@@ -172,3 +179,7 @@ export default class PersonData extends React.Component {
         );
     }
 }
+
+PersonData.propTypes = {
+    interviewee: PropTypes.object.isRequired,
+};

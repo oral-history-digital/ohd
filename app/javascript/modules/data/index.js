@@ -9,7 +9,8 @@ export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getFeaturedInterviewsFetched, getLanguages, getPeople, getProjects,
     getRootRegistryEntry, getRootRegistryEntryFetched,
     getRootRegistryEntryReload, getRegistryEntries, getRegistryEntriesStatus,
-    getCollections, getRegistryReferenceTypesStatus, getRegistryReferenceTypes }
+    getRegistryReferenceTypesStatus, getRegistryReferenceTypes,
+    getCollections, getCurrentInterviewee, getInterviewee }
     from './selectors/dataSelectors';
 export { getIsCatalog, getIsCampscapesProject, getProjectTranslation,
     getShowFeaturedInterviews, getShowStartPageVideo } from './selectors/projectSelectors';
