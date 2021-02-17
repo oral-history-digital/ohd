@@ -66,15 +66,14 @@ visitor_urp.activated_at = DateTime.now
 visitor_urp.save
 
 
-editor_email = 'carol@example.com'
+editor_email = 'eve@example.com'
 editor_password = 'password'
 
 editor_user_account = UserAccount.new(
   login: editor_email,
   email: editor_email,
   password: editor_password,
-  first_name: 'Carol',
-  last_name: 'Sanders',
+  first_name: 'Eve',
   admin: false,
   tos_agreement: true,
   tos_agreed_at: DateTime.now,
