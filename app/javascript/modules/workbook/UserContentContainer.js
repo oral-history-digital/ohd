@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 
-import { openArchivePopup } from 'modules/ui';
 import { setArchiveId } from 'modules/archive';
 import { searchInArchive } from 'modules/search';
 import { setTapeAndTime } from 'modules/video-player';
@@ -22,7 +21,6 @@ const mapDispatchToProps = (dispatch) => ({
     setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
     setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
 })
 

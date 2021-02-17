@@ -23,14 +23,6 @@ export default class UserContent extends React.Component {
         }
     }
 
-    userContentDelete() {
-        return <UserContentDeleteContainer
-            id={this.props.data.id}
-            title={this.props.data.title}
-            description={this.props.data.description}
-        />
-    }
-
     workflowState() {
         if (this.props.data.type === 'UserAnnotation') {
             return t(this.props, this.props.data.workflow_state);
@@ -66,16 +58,22 @@ export default class UserContent extends React.Component {
 
     delete() {
         let css = this.props.editView ? "fa fa-trash-o" : "fa fa-trash-o archive-view"
-        return <div
-            className='flyout-sub-tabs-content-ico-link'
-            title={t(this.props, 'delete')}
-            onClick={() => this.props.openArchivePopup({
-                title: t(this.props, 'delete_user_content'),
-                content: this.userContentDelete()
-            })}
-        >
-            <i className={css}></i>
-        </div>
+
+        return (
+            <Modal
+                title={t(this.props, 'delete_user_content')}
+                trigger={<i className={css}/>}
+            >
+                {closeModal => (
+                    <UserContentDeleteContainer
+                        id={this.props.data.id}
+                        title={this.props.data.title}
+                        description={this.props.data.description}
+                        onSubmit={closeModal}
+                    />
+                )}
+            </Modal>
+        );
     }
 
     goTo() {

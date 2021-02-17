@@ -1,27 +1,52 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 
-export default class UserContentDelete extends React.Component {
+export default function UserContentDelete({
+    id,
+    title,
+    description,
+    locale,
+    projectId,
+    projects,
+    deleteData,
+    onSubmit,
+}) {
+    const { t } = useI18n();
 
-    destroy() {
-        this.props.deleteData(this.props, 'user_contents', this.props.id);
-        this.props.closeArchivePopup();
-    }
+    const destroy = () => {
+        deleteData({ locale, projectId, projects }, 'user_contents', id);
+        onSubmit();
+    };
 
-    render() {
-        return (
-            <div>
-                <p>{t(this.props, 'title') + ': '}
-                    <span>{this.props.title}</span>
-                </p>
-                <p>{t(this.props, 'description') + ': '}
-                    <span>{this.props.description}</span>
-                </p>
-                <div className='any-button' onClick={() => this.destroy()}>
-                    {t(this.props, 'delete')}
-                </div>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <p>{t('title') + ': '}
+                <span>{title}</span>
+            </p>
+            <p>{t('description') + ': '}
+                <span>{description}</span>
+            </p>
+
+            <button
+                type="button"
+                className="any-button"
+                onClick={destroy}
+            >
+                {t('delete')}
+            </button>
+        </div>
+    );
 }
+
+UserContentDelete.propTypes = {
+    id: PropTypes.number.isRequired,
+    title: PropTypes.string.isRequired,
+    description: PropTypes.string,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    deleteData: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+};
