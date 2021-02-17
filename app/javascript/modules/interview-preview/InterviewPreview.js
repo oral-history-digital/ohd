@@ -5,7 +5,7 @@ import classNames from 'classnames';
 
 import { InterviewSearchResultsContainer } from 'modules/interview-search';
 import { AuthShowContainer, admin } from 'modules/auth';
-import { humanReadable } from 'lib/utils';
+import { humanReadable } from 'modules/data';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import missingStill from 'assets/images/missing_still.png';

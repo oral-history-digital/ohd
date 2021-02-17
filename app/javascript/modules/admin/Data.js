@@ -3,7 +3,7 @@ import {Link} from 'react-router-dom';
 
 import { AuthorizedContent } from 'modules/auth';
 import { ArchivePopupButton, PopupMenu } from 'modules/ui';
-import { humanReadable } from 'lib/utils';
+import { humanReadable } from 'modules/data';
 import { pluralize, camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 import TaskPreviewContainer from './TaskPreviewContainer';

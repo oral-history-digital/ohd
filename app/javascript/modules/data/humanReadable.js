@@ -1,6 +1,6 @@
 import { t } from 'modules/i18n';
 
-export function humanReadable(obj, attribute, props, state, none='---') {
+export default function humanReadable(obj, attribute, props, state, none='---') {
     let translation = obj.translations && obj.translations.find(t => t.locale === props.locale)
     let value = state.value || obj[attribute] || (translation && translation[attribute]);
 
