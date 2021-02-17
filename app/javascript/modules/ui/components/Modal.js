@@ -40,7 +40,11 @@ export default function Modal({
 
                 <h3 className={styles.heading}>{title}</h3>
 
-                {children(close)}
+                {
+                    typeof children === 'function' ?
+                        children(close) :
+                        children
+                }
             </Dialog>
         </>
     );
@@ -51,5 +55,9 @@ Modal.propTypes = {
     title: PropTypes.string.isRequired,
     className: PropTypes.string,
     triggerClassName: PropTypes.string,
-    children: PropTypes.func.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+        PropTypes.func,
+    ]),
 };

@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import SubHeadingContainer from './SubHeadingContainer';
 import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
@@ -72,14 +73,17 @@ export default class Heading extends React.Component {
     editHeading(segment) {
         return (
             <AuthorizedContent object={segment}>
-                <span
-                    className='flyout-sub-tabs-content-ico-link'
-                    onClick={() => this.props.openArchivePopup({
-                        content: <SegmentHeadingFormContainer segment={segment} />
-                    })}
+                <Modal
+                    title=""
+                    trigger={<i className="fa fa-pencil" />}
                 >
-                        <i className="fa fa-pencil"/>
-                </span>
+                    {closeModal => (
+                        <SegmentHeadingFormContainer
+                            segment={segment}
+                            onSubmit={closeModal}
+                        />
+                    )}
+                </Modal>
             </AuthorizedContent>
         );
     }
@@ -112,5 +116,4 @@ Heading.propTypes = {
     tape: PropTypes.number.isRequired,
     transcriptTime: PropTypes.number.isRequired,
     handleSegmentClick: PropTypes.func.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
 };

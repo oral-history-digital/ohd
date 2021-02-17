@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { getEditView, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { deleteData, getCurrentAccount, getProjects } from 'modules/data';
 import UserRole from './UserRole';
@@ -17,8 +16,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     deleteData,
-    openArchivePopup,
-    closeArchivePopup,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserRole);
