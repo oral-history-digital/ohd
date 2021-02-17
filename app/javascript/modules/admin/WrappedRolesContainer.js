@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import WrappedDataList from './WrappedDataList';
 import RolePermissionsContainer from './RolePermissionsContainer';
 import { setQueryParams } from 'modules/search';
-import { openArchivePopup, closeArchivePopup } from 'modules/ui';
+import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject } from 'modules/data';
 
 const mapStateToProps = (state) => {
@@ -42,7 +42,6 @@ const mapDispatchToProps = (dispatch) => ({
     deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
     submitData: (props, params) => dispatch(submitData(props, params)),
     setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 

@@ -5,7 +5,7 @@ import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
 import { Spinner } from 'modules/spinners';
 import { AuthorizedContent } from 'modules/auth';
-import { ArchivePopupButton } from 'modules/ui';
+import { Modal } from 'modules/ui';
 import { pluralize, camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 import parametrizedQuery from './parametrizedQuery';
@@ -82,13 +82,12 @@ export default class WrappedDataList extends React.Component {
     }
 
     form(data) {
-        let _this = this;
         return (
             <Form
                 data={data}
                 values={this.props.initialFormValues}
                 scope={this.props.scope}
-                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
                 submitText='submit'
                 elements={this.props.formElements}
             />
@@ -99,12 +98,20 @@ export default class WrappedDataList extends React.Component {
         if (!this.props.hideAdd) {
             return (
                 <AuthorizedContent object={[{type: camelCase(this.props.scope), action: 'create', interview_id: this.props.interview?.id}, this.props.task]}>
-                    <ArchivePopupButton
+                    <Modal
                         title={t(this.props, `edit.${this.props.scope}.new`)}
-                        buttonFaKey='plus'
+                        trigger={<><i className="fa fa-plus"/>{t(this.props, `edit.${this.props.scope}.new`)}</>}
                     >
-                        {this.form()}
-                    </ArchivePopupButton>
+                        {closeModal => (
+                            <Form
+                                values={this.props.initialFormValues}
+                                scope={this.props.scope}
+                                onSubmit={(params) => {this.props.submitData(this.props, params); closeModal(); }}
+                                submitText='submit'
+                                elements={this.props.formElements}
+                            />
+                        )}
+                    </Modal>
                 </AuthorizedContent>
             )
         }
