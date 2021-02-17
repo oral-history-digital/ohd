@@ -7,6 +7,7 @@ import { UserContentFormContainer } from 'modules/workbook';
 import { fullname } from 'modules/people';
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { t } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import VideoPlayerButtonsContainer from './VideoPlayerButtonsContainer';
 import missingStill from 'assets/images/missing_still.png';
 
@@ -87,32 +88,33 @@ export default class VideoPlayer extends React.Component {
     }
 
     rememberInterviewLink() {
-        return <div className="video-bookmark" onClick={() => this.props.openArchivePopup({
-            title: t(this.props, 'save_interview_reference') + ": " + this.props.interview.short_title[this.props.locale],
-            content: this.rememberInterviewForm()
-        })}>
-            <i className="fa fa-star"></i>
-            <span>{t(this.props, 'save_interview_reference')}</span>
-        </div>
+        return (
+            <Modal
+                title={t(this.props, 'save_interview_reference') + ": " + this.props.interview.short_title[this.props.locale]}
+                trigger={<><i className="fa fa-star"/><span>{t(this.props, 'save_interview_reference')}</span></>}
+                triggerClassName="video-bookmark"
+            >
+                {closeModal => (
+                    <UserContentFormContainer
+                        title={this.defaultTitle()}
+                        description=''
+                        properties={{title: this.props.interview.title}}
+                        reference_id={this.props.interview.id}
+                        reference_type='Interview'
+                        media_id={this.props.interview.archive_id}
+                        type='InterviewReference'
+                        submitLabel={t(this.props, 'notice')}
+                        onSubmit={closeModal}
+                    />
+                )}
+            </Modal>
+        );
     }
 
     defaultTitle() {
         moment.locale(this.props.locale);
         let now = moment().format('lll');
         return `${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]} - ${now}`;
-    }
-
-    rememberInterviewForm() {
-        return <UserContentFormContainer
-            title={this.defaultTitle()}
-            description=''
-            properties={{title: this.props.interview.title}}
-            reference_id={this.props.interview.id}
-            reference_type='Interview'
-            media_id={this.props.interview.archive_id}
-            type='InterviewReference'
-            submitLabel={t(this.props, 'notice')}
-        />
     }
 
     annotateOnSegmentLink() {

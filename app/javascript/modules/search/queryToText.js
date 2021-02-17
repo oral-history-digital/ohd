@@ -1,3 +1,5 @@
+import { t } from 'modules/i18n';
+
 export default function queryToText(query, props) {
     let queryText = "";
     for (let [k, value] of Object.entries(query)) {

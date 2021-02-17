@@ -5,6 +5,7 @@ import PropTypes from 'prop-types';
 import { queryToText } from 'modules/search';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
 import UserContentFormContainer from './UserContentFormContainer';
 import UserContentDeleteContainer from './UserContentDeleteContainer';
@@ -20,21 +21,6 @@ export default class UserContent extends React.Component {
         if (isMobile()) {
             this.props.hideFlyoutTabs();
         }
-    }
-
-    userContentForm() {
-        return <UserContentFormContainer
-            id={this.props.data.id}
-            title={this.props.data.title}
-            description={this.props.data.description}
-            properties={this.props.data.properties}
-            segmentIndex={this.props.data.properties.segmentIndex}
-            reference_id={this.props.data.reference_id}
-            reference_type={this.props.data.reference_type}
-            media_id={this.props.data.media_id}
-            type={this.props.data.type}
-            workflow_state={this.props.data.workflow_state}
-        />
     }
 
     userContentDelete() {
@@ -54,16 +40,28 @@ export default class UserContent extends React.Component {
     edit() {
         let titleKey = "edit" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
         let css = this.props.editView ? "fa fa-pencil" : "fa fa-pencil archive-view"
-        return <div
-            className='flyout-sub-tabs-content-ico-link'
-            title={t(this.props, 'edit')}
-            onClick={() => this.props.openArchivePopup({
-                title: t(this.props, titleKey ),
-                content: this.userContentForm()
-            })}
-        >
-            <i className={css}></i>
-        </div>
+        return (
+            <Modal
+                title={t(this.props, 'edit')}
+                trigger={<i className={css}/>}
+            >
+                {closeModal => (
+                    <UserContentFormContainer
+                        id={this.props.data.id}
+                        title={this.props.data.title}
+                        description={this.props.data.description}
+                        properties={this.props.data.properties}
+                        segmentIndex={this.props.data.properties.segmentIndex}
+                        reference_id={this.props.data.reference_id}
+                        reference_type={this.props.data.reference_type}
+                        media_id={this.props.data.media_id}
+                        type={this.props.data.type}
+                        workflow_state={this.props.data.workflow_state}
+                        onSubmit={closeModal}
+                    />
+                )}
+            </Modal>
+        );
     }
 
     delete() {
