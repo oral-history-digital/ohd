@@ -56,16 +56,6 @@ export function fullname(props, person, withBirthName=false, locale=props.locale
     }
 }
 
-export function parametrizedQuery(query) {
-    return Object.keys(query).sort().map((key, index) => {
-        return `${key}=${query[key]}`;
-    }).join('&');
-}
-
-export function statifiedQuery(query) {
-    return parametrizedQuery(query).replace(/[=&]/g, '_');
-}
-
 export function queryToText(query, props) {
     let queryText = "";
     for (let [k, value] of Object.entries(query)) {

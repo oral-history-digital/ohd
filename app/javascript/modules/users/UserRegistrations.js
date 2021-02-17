@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Observer from 'react-intersection-observer'
 
 import { AuthShowContainer } from 'modules/auth';
-import { parametrizedQuery } from 'lib/utils';
+import { parametrizedQuery } from 'modules/admin';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import UserRegistrationContainer from './UserRegistrationContainer';

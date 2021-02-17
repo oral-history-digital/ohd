@@ -9,7 +9,6 @@ export { default as TaskTypeSearchFormContainer } from './TaskTypeSearchFormCont
 export { default as UserRegistrationSearchFormContainer } from './UserRegistrationSearchFormContainer';
 
 export { default as WrappedCollectionsContainer } from './WrappedCollectionsContainer';
-
 export { default as WrappedLanguagesContainer } from './WrappedLanguagesContainer';
 export { default as WrappedPeopleContainer } from './WrappedPeopleContainer';
 export { default as WrappedPermissionsContainer } from './WrappedPermissionsContainer';
@@ -21,3 +20,5 @@ export { default as UploadsContainer } from './UploadsContainer';
 export { default as EditInterviewContainer } from './EditInterviewContainer';
 
 export { default as DataList } from './DataList';
+
+export { default as parametrizedQuery } from './parametrizedQuery';

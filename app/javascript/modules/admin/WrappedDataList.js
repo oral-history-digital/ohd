@@ -6,9 +6,10 @@ import { Form } from 'modules/forms';
 import { Spinner } from 'modules/spinners';
 import { AuthorizedContent } from 'modules/auth';
 import { ArchivePopupButton } from 'modules/ui';
-import { parametrizedQuery, statifiedQuery } from 'lib/utils';
 import { pluralize, camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
+import parametrizedQuery from './parametrizedQuery';
+import statifiedQuery from './statifiedQuery';
 import DataContainer from './DataContainer';
 
 export default class WrappedDataList extends React.Component {
