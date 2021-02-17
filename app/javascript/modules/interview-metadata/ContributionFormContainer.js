@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData } from 'modules/data';
-import { getProject } from 'lib/utils';
+import { fetchData, getCurrentProject } from 'modules/data';
 import ContributionForm from './ContributionForm';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         locale: state.archive.locale,
         projectId: state.archive.projectId,

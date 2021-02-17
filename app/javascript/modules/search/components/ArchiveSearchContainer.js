@@ -1,14 +1,14 @@
 import { connect } from 'react-redux';
 
 import { openArchivePopup } from 'modules/ui';
-import { searchInArchive } from '../actions';
 import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { setViewMode } from 'modules/archive';
-import { getProject } from 'lib/utils';
+import { getCurrentProject } from 'modules/data';
+import { searchInArchive } from '../actions';
 import ArchiveSearch from './ArchiveSearch';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         foundInterviews: state.search.archive.foundInterviews,
         resultPagesCount: state.search.archive.resultPagesCount,

@@ -1,9 +1,4 @@
 import { t } from 'modules/i18n';
-import { projectByDomain } from 'modules/routes';
-
-export function getProject(state) {
-    return projectByDomain(state.data.projects) || Object.values(state.data.projects).find(p => p.identifier === state.archive.projectId);
-}
 
 export function humanReadable(obj, attribute, props, state, none='---') {
     let translation = obj.translations && obj.translations.find(t => t.locale === props.locale)

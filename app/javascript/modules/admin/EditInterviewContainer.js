@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import { getProject } from 'lib/utils';
+import { getCurrentProject } from 'modules/data';
 import EditInterview from './EditInterview';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,

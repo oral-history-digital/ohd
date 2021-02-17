@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
 import Register from './Register';
-import { getProject } from 'lib/utils';
+import { getCurrentProject } from 'modules/data';
 import { getRegistrationStatus } from '../selectors';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
 
     return {
         registrationStatus: getRegistrationStatus(state),

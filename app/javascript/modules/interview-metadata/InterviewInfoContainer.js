@@ -1,13 +1,12 @@
 import { connect } from 'react-redux';
 
-import { getProject } from 'lib/utils';
+import { getCurrentProject, getCurrentInterview } from 'modules/data';
 import InterviewInfo from './InterviewInfo';
-import { getCurrentInterview } from 'modules/data';
 
 const mapStateToProps = state => ({
     locale: state.archive.locale,
     translations: state.archive.translations,
-    project: getProject(state),
+    project: getCurrentProject(state),
     collections: state.data.collections,
     interview: getCurrentInterview(state),
     languages: state.data.languages,

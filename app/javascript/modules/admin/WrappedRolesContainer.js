@@ -4,11 +4,10 @@ import WrappedDataList from './WrappedDataList';
 import RolePermissionsContainer from './RolePermissionsContainer';
 import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData } from 'modules/data';
-import { getProject } from 'lib/utils';
+import { fetchData, deleteData, submitData, getCurrentProject } from 'modules/data';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,

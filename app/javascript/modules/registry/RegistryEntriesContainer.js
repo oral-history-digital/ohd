@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 
-import RegistryEntries from './RegistryEntries';
 import { openArchivePopup } from 'modules/ui';
-import { fetchData } from 'modules/data';
-import { getProject } from 'lib/utils';
+import { fetchData, getCurrentProject } from 'modules/data';
+import RegistryEntries from './RegistryEntries';
 
 const mapStateToProps = (state) => {
     return {
@@ -13,7 +12,7 @@ const mapStateToProps = (state) => {
         translations: state.archive.translations,
         registryEntries: state.data.registry_entries,
         registryEntriesStatus: state.data.statuses.registry_entries,
-        project: getProject(state),
+        project: getCurrentProject(state),
         account: state.data.accounts.current,
         editView: state.archive.editView,
     }
