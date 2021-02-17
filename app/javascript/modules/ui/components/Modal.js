@@ -34,10 +34,6 @@ export default function Modal({
                 aria-label={title}
                 onDismiss={close}
             >
-                <button className={styles.close} onClick={close}>
-                    <i className="fa fa-close" aria-hidden />
-                </button>
-
                 <h3 className={styles.heading}>{title}</h3>
 
                 {
@@ -45,6 +41,10 @@ export default function Modal({
                         children(close) :
                         children
                 }
+
+                <button className={styles.close} onClick={close}>
+                    <i className="fa fa-close" aria-hidden />
+                </button>
             </Dialog>
         </>
     );
