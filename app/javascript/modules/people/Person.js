@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { fullname } from 'lib/utils';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import PersonFormContainer from './PersonFormContainer';
+import fullname from './fullname';
 
 export default class Person extends React.Component {
     edit() {

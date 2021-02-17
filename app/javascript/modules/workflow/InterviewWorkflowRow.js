@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 import missingStill from 'assets/images/missing_still.png';
-import { loadIntervieweeWithAssociations } from 'lib/utils';
+import { loadIntervieweeWithAssociations } from 'modules/interview-preview';
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';

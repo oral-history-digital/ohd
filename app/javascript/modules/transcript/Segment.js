@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { fullname } from 'lib/utils';
+import { fullname } from 'modules/people';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { SegmentHeadingFormContainer } from 'modules/toc';
