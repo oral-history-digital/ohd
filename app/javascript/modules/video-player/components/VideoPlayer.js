@@ -4,7 +4,7 @@ import moment from 'moment';
 import classNames from 'classnames';
 
 import { UserContentFormContainer } from 'modules/workbook';
-import { fullname } from 'lib/utils';
+import { fullname } from 'modules/people';
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { t } from 'modules/i18n';
 import VideoPlayerButtonsContainer from './VideoPlayerButtonsContainer';

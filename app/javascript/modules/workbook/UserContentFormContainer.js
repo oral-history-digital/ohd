@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 
-import { submitData, getCurrentInterview } from 'modules/data';
+import { submitData, getCurrentProject, getCurrentInterview } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { getCurrentTape } from 'modules/video-player';
-import { getProject } from 'lib/utils';
 import UserContentForm from './UserContentForm';
 
 const mapStateToProps = (state) => {
@@ -11,7 +10,7 @@ const mapStateToProps = (state) => {
         archiveId: state.archive.archiveId,
         projectId: state.archive.projectId,
         projects: state.data.projects,
-        project: getProject(state),
+        project: getCurrentProject(state),
         interview: getCurrentInterview(state),
         tape: getCurrentTape(state),
         locale: state.archive.locale,

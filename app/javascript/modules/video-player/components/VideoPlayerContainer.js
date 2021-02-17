@@ -1,15 +1,14 @@
 import {connect} from 'react-redux';
 
-import VideoPlayer from './VideoPlayer';
 import { handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution } from '../actions';
 import { openArchivePopup } from 'modules/ui';
-import { getProject } from 'lib/utils';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
-import { getCurrentInterview, getCurrentInterviewee } from 'modules/data';
+import { getCurrentProject, getCurrentInterview, getCurrentInterviewee } from 'modules/data';
 import { getCurrentTape, getTranscriptScrollEnabled, getVideoResolution, getVideoStatus, getVideoTime } from '../selectors';
+import VideoPlayer from './VideoPlayer';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         interview: getCurrentInterview(state),
         interviewee: getCurrentInterviewee(state),

@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
-import { getProject } from 'lib/utils';
-import { submitData, fetchData, getCurrentInterview, getCurrentInterviewee } from 'modules/data';
+import { submitData, fetchData, getCurrentInterview, getCurrentInterviewee,
+    getCurrentProject } from 'modules/data';
 import PersonData from './PersonData';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,

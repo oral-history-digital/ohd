@@ -10,3 +10,5 @@ export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
 
 export { default as ArchiveSearchContainer } from './components/ArchiveSearchContainer';
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';
+
+export { default as queryToText } from './queryToText';

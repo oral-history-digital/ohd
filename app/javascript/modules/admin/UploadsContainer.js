@@ -1,11 +1,10 @@
 import { connect } from 'react-redux';
 
-import { submitData } from 'modules/data';
-import { getProject } from 'lib/utils';
+import { submitData, getCurrentProject } from 'modules/data';
 import Uploads from './Uploads';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         locale: state.archive.locale,
         locales: (project && project.available_locales) || state.archive.locales,

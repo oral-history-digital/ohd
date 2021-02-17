@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
 
-import { getProject } from 'lib/utils';
-import { getCurrentInterview, getCurrentInterviewee } from 'modules/data';
+import { getCurrentInterview, getCurrentInterviewee, getCurrentProject } from 'modules/data';
 import { searchInArchive } from 'modules/search';
 import { setViewMode } from 'modules/archive';
 import InterviewTabPanel from './InterviewTabPanel';
 import { hideFlyoutTabs } from '../actions';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         archiveId: state.archive.archiveId,
         projectId: state.archive.projectId,

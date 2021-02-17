@@ -3,12 +3,11 @@ import { connect } from 'react-redux';
 import { searchInInterview } from 'modules/search';
 import { setTapeAndTime } from 'modules/video-player';
 import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
-import { fetchData, getInterviewee } from 'modules/data';
-import { getProject } from 'lib/utils';
+import { fetchData, getInterviewee, getCurrentProject } from 'modules/data';
 import InterviewListRow from './InterviewListRow';
 
 const mapStateToProps = (state, props) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         fulltext: state.search.archive.query.fulltext,
         interviewSearchResults: state.search.interviews,

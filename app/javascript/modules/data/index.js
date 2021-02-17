@@ -18,3 +18,5 @@ export { default as getGroupedContributions } from './selectors/getGroupedContri
 
 export { default as Fetch } from './components/Fetch';
 export { default as StateCheck } from './components/StateCheck';
+
+export { default as humanReadable } from './humanReadable';

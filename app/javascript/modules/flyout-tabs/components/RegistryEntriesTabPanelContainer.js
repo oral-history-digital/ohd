@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 
 import { changeRegistryEntriesViewMode } from 'modules/search';
-import { getProject } from 'lib/utils';
+import { getCurrentProject } from 'modules/data';
 import RegistryEntriesTabPanel from './RegistryEntriesTabPanel';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
 
     return {
         projectId: state.archive.projectId,

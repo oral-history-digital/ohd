@@ -1,12 +1,11 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, submitData } from 'modules/data';
-import { getProject } from 'lib/utils';
+import { fetchData, submitData, getCurrentProject } from 'modules/data';
 import Task from './Task';
 
 const mapStateToProps = (state) => {
-    let project = getProject(state);
+    let project = getCurrentProject(state);
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,

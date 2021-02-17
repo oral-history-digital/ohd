@@ -1,9 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData } from 'modules/data';
-import { getProject } from 'lib/utils';
-import { getCurrentInterview } from 'modules/data';
+import { fetchData, getCurrentInterview, getCurrentProject } from 'modules/data';
 import { handleTranscriptScroll, setActualSegment, getCurrentTape, getTranscriptScrollEnabled, getTranscriptTime } from 'modules/video-player';
 import InterviewEditView from './InterviewEditView';
 
@@ -22,7 +20,7 @@ const mapStateToProps = (state) => ({
     selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,
     account: state.data.accounts.current,
     editView: state.archive.editView,
-    project: getProject(state),
+    project: getCurrentProject(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
-import { loadIntervieweeWithAssociations } from 'lib/utils';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { AuthShowContainer, admin } from 'modules/auth';
+import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 
 export default class InterviewListRow extends React.Component {
     componentDidMount() {

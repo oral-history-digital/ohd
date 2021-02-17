@@ -2,7 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { queryToText } from 'lib/utils';
+import { queryToText } from 'modules/search';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';

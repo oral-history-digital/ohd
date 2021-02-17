@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { fullname } from 'lib/utils';
+import { fullname } from 'modules/people';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import ContributionFormContainer from './ContributionFormContainer';
