@@ -6,6 +6,7 @@ import { getProjectId } from 'modules/archive';
 import SubmitOnBlurFormComponent from './SubmitOnBlurFormComponent';
 
 const mapStateToProps = state => ({
+    // locale is set with props.
     projectId: getProjectId(state),
     projects: getProjects(state),
 });

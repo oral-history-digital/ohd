@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { deleteData, submitData } from 'modules/data';
+import { deleteData, submitData, getProjects } from 'modules/data';
 import { getLocale, getArchiveId, getProjectId } from 'modules/archive';
 import Contribution from './Contribution';
 
@@ -9,7 +9,7 @@ const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
     locale: getLocale(state),
     projectId: getProjectId(state),
-        projects: state.data.projects,
+    projects: getProjects(state),
 });
 
 const mapDispatchToProps = (dispatch) => ({

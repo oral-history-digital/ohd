@@ -8,6 +8,7 @@ import { getArchiveId, getEditView, getProjectId, getTranslations } from 'module
 import RegistryReference from './RegistryReference';
 
 const mapStateToProps = state => ({
+    // locale is set via props.
     archiveId: getArchiveId(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
