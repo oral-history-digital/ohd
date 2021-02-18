@@ -2,14 +2,17 @@ import { connect } from 'react-redux';
 
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject } from 'modules/data';
+import { fetchData, deleteData, submitData, getCurrentProject, getProjects } from 'modules/data';
+import { getLocale, getProjectId } from 'modules/archive';
 import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: state.archive.locale,
+        locale: getLocale(state),
+        projectId: getProjectId(state),
+        projects: getProjects(state),
         locales: (project && project.available_locales) || state.archive.locales,
         translations: state.archive.translations,
         account: state.data.accounts.current,

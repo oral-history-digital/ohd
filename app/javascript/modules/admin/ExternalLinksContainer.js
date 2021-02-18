@@ -1,11 +1,14 @@
 import { connect } from 'react-redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData } from 'modules/data';
+import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
+import { getLocale, getProjectId } from 'modules/archive';
 import DataList from './DataList';
 
 const mapStateToProps = (state) => ({
-    locale: state.archive.locale,
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
     translations: state.archive.translations,
     account: state.data.accounts.current,
     editView: true,

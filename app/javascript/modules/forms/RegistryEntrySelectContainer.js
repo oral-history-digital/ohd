@@ -1,15 +1,16 @@
 import { connect } from 'react-redux';
 
+import { fetchData, getProjects, getCurrentProject } from 'modules/data';
+import { getLocale, getProjectId } from 'modules/archive';
 import RegistryEntrySelect from './RegistryEntrySelect';
-import { fetchData } from 'modules/data';
-import { getCurrentProject } from 'modules/data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: state.archive.locale,
+        locale: getLocale(state),
         locales: (project && project.available_locales) || state.archive.locales,
-        projectId: state.archive.projectId,
+        projectId: getProjectId(state),
+        projects: getProjects(state),
         translations: state.archive.translations,
         project: project,
         registryEntries: state.data.registry_entries,
