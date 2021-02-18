@@ -53,7 +53,7 @@ export default class InterviewTextMaterials extends React.Component {
                     />
                 </AuthorizedContent>
                 {
-                    (this.props.projectId !== "dg" && this.existsPublicTranscript()) ?
+                    (this.existsPublicTranscript()) ?
                         (<div>
                             <AuthShowContainer ifLoggedIn={true}>
                                 <p>
