@@ -26,7 +26,7 @@ export default class UserRoleForm extends React.Component {
             <div>
                 <Form
                     scope='user_role'
-                    onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
+                    onSubmit={(params) => { this.props.submitData(this.props, params); this.props.onSubmit(); }}
                     values={{
                         user_account_id: this.props.userAccountId,
                     }}
@@ -54,5 +54,5 @@ UserRoleForm.propTypes = {
     projects: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
 };

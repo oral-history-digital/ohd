@@ -3,7 +3,8 @@
 
 .trigger {
   background-color: transparent;
-  border: 1px solid lightgray;
+  border: none;
+  font-family: $font-family;
   outline: none;
   padding: 0 0.5rem;
 }

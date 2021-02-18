@@ -34,13 +34,17 @@ export default function Modal({
                 aria-label={title}
                 onDismiss={close}
             >
+                <h3 className={styles.heading}>{title}</h3>
+
+                {
+                    typeof children === 'function' ?
+                        children(close) :
+                        children
+                }
+
                 <button className={styles.close} onClick={close}>
                     <i className="fa fa-close" aria-hidden />
                 </button>
-
-                <h3 className={styles.heading}>{title}</h3>
-
-                {children(close)}
             </Dialog>
         </>
     );
@@ -51,5 +55,9 @@ Modal.propTypes = {
     title: PropTypes.string.isRequired,
     className: PropTypes.string,
     triggerClassName: PropTypes.string,
-    children: PropTypes.func.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+        PropTypes.func,
+    ]),
 };

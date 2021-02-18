@@ -9,6 +9,7 @@ import { InterviewPreviewContainer, InterviewListRowContainer } from 'modules/in
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
 import { UserContentFormContainer } from 'modules/workbook';
 import { AuthShowContainer, admin } from 'modules/auth';
+import { Modal } from 'modules/ui';
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
 import { INDEX_SEARCH } from 'modules/flyout-tabs';
@@ -260,9 +261,7 @@ export default class ArchiveSearch extends React.Component {
         })
     }
 
-
-
-    saveSearchForm() {
+    saveSearchForm(onSubmit) {
         moment.locale(this.props.locale);
         let now = moment().format('lll');
         let queryText = queryToText(this.props.query, this.props);
@@ -274,16 +273,20 @@ export default class ArchiveSearch extends React.Component {
             properties={this.props.query}
             type='Search'
             submitLabel={t(this.props, 'save_search')}
+            onSubmit={onSubmit}
         />
     }
 
     saveSearchLink() {
-        return <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'save_search'),
-                        content: this.saveSearchForm()
-                    })}>
-                    <i className="fa fa-star"></i><span>{t(this.props, 'save_search')}</span>
-                </div>
+        return (
+            <Modal
+                title={t(this.props, 'save_search')}
+                trigger={<><i className="fa fa-star"></i><span>{t(this.props, 'save_search')}</span></>}
+                triggerClassName="search-results-ico-link"
+            >
+                {closeModal => this.saveSearchForm(closeModal)}
+            </Modal>
+        );
     }
 
     exportSearch() {

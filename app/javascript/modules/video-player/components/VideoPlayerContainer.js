@@ -1,7 +1,6 @@
 import {connect} from 'react-redux';
 
 import { handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution } from '../actions';
-import { openArchivePopup } from 'modules/ui';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
 import { getCurrentProject, getCurrentInterview, getCurrentInterviewee } from 'modules/data';
 import { getCurrentTape, getTranscriptScrollEnabled, getVideoResolution, getVideoStatus, getVideoTime } from '../selectors';
@@ -36,7 +35,6 @@ const mapDispatchToProps = (dispatch) => ({
     handleVideoEnded: () => dispatch(handleVideoEnded()),
     setNextTape: () => dispatch(setNextTape()),
     setTapeAndTimeAndResolution: (tape, time, resolution) => dispatch(setTapeAndTimeAndResolution(tape, time, resolution)),
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayer);
