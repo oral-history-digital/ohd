@@ -1,28 +1,27 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import { submitData, fetchData, getCurrentInterview, getCurrentInterviewee,
-    getCurrentProject } from 'modules/data';
+import { fetchData, getCurrentInterview, getCurrentInterviewee,
+    getCurrentProject, getPeople, getProjects } from 'modules/data';
+import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { getIsLoggedIn } from 'modules/account';
 import PersonData from './PersonData';
 
-const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
-    return {
-        locale: state.archive.locale,
-        translations: state.archive.translations,
-        archiveId: state.archive.archiveId,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
-        interview: getCurrentInterview(state),
-        interviewee: getCurrentInterviewee(state),
-        people: state.data.people,
-        isLoggedIn: state.account.isLoggedIn,
-        project: project,
-    }
-}
+const mapStateToProps = state => ({
+    locale: getLocale(state),
+    translations: getTranslations(state),
+    archiveId: getArchiveId(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    interview: getCurrentInterview(state),
+    interviewee: getCurrentInterviewee(state),
+    people: getPeople(state),
+    isLoggedIn: getIsLoggedIn(state),
+    project: getCurrentProject(state),
+});
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(PersonData);

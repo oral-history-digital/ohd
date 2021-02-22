@@ -1,7 +1,5 @@
 export { NAME as ACCOUNT_NAME } from './constants';
 
-export { } from './actions';
-
 export { default as accountReducer } from './reducer';
 
 export { getIsLoggedIn, getIsLoggedOut, getLoggedInAt } from './selectors';
