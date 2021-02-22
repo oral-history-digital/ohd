@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Modal } from 'modules/ui';
 import { pathBase } from 'modules/routes';
-import { admin } from 'modules/auth';
+import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 export default class AdminActions extends React.Component {
@@ -38,7 +39,6 @@ export default class AdminActions extends React.Component {
         this.selectedArchiveIds().forEach((archiveId) => {
             this.props.deleteData(this.props, 'interviews', archiveId);
         });
-        this.props.closeArchivePopup();
         if (this.props.match.params.archiveId === undefined) {
             // TODO: faster aproach would be to just hide or delete the dom-elements
             location.reload();
@@ -52,7 +52,6 @@ export default class AdminActions extends React.Component {
             let updatedParams = Object.assign({}, params, {id: archiveId});
             this.props.submitData(this.props, {interview: updatedParams});
         });
-        this.props.closeArchivePopup();
         if (this.props.match.params.archiveId === undefined) {
             // TODO: faster aproach would be to just hide or delete the dom-elements
             location.reload();
@@ -61,7 +60,6 @@ export default class AdminActions extends React.Component {
 
     exportDOI() {
         this.props.submitDois(this.selectedArchiveIds(), this.props.locale)
-        this.props.closeArchivePopup();
     }
 
     links(archiveIds) {
@@ -72,82 +70,111 @@ export default class AdminActions extends React.Component {
     }
 
     deleteButton() {
-        if (admin(this.props, {type: 'Interview', action: 'destroy'})) {
-            let title = t(this.props, 'edit.interviews.delete.title');
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={title}
-                onClick={() => this.props.openArchivePopup({
-                    title: title,
-                    content: (
+        return (
+            <AuthorizedContent object={{ type: 'Interview', action: 'destroy' }}>
+                <Modal
+                    trigger={t(this.props, 'edit.interviews.delete.title')}
+                    triggerClassName="flyout-sub-tabs-content-ico-link"
+                >
+                    {close => (
                         <div>
                             {t(this.props, 'edit.interviews.delete.confirm_text', {archive_ids: this.selectedArchiveIds().join(', ')})}
-                            <div className='any-button' onClick={() => this.deleteInterviews()}>
+
+                            <button
+                                type="button"
+                                className="any-button"
+                                onClick={() => {
+                                    this.deleteInterviews();
+                                    close();
+                                }}
+                            >
                                 {t(this.props, 'submit')}
-                            </div>
+                            </button>
                         </div>
-                    )
-                })}
-            >
-                {title}
-            </div>
-        }
+                    )}
+                </Modal>
+            </AuthorizedContent>
+        );
     }
 
     updateButton(params, action) {
-        if (admin(this.props, {type: 'Interview', action: 'update'})) {
-            let title = t(this.props, `edit.interviews.${action}.title`);
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={title}
-                onClick={() => this.props.openArchivePopup({
-                    title: title,
-                    content: (
+        return (
+            <AuthorizedContent object={{ type: 'Interview', action: 'update' }}>
+                <Modal
+                    trigger={t(this.props, `edit.interviews.${action}.title`)}
+                    triggerClassName="flyout-sub-tabs-content-ico-link"
+                >
+                    {close => (
                         <div>
                             {t(this.props, `edit.interviews.${action}.confirm_text`, {archive_ids: this.selectedArchiveIds().join(', ')})}
-                            <div className='any-button' onClick={() => this.updateInterviews(params)}>
+
+                            <button
+                                type="button"
+                                className="any-button"
+                                onClick={() => {
+                                    this.updateInterviews(params);
+                                    close();
+                                }}
+                            >
                                 {t(this.props, 'submit')}
-                            </div>
+                            </button>
                         </div>
-                    )
-                })}
-            >
-                {title}
-            </div>
-        }
+                    )}
+                </Modal>
+            </AuthorizedContent>
+        );
     }
 
     doiButton() {
-        if (admin(this.props, {type: 'Interview', action: 'dois'})) {
-            let title = t(this.props, 'doi.title');
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={title}
-                onClick={() => this.props.openArchivePopup({
-                    title: title,
-                    content: (
+        return (
+            <AuthorizedContent object={{type: 'Interview', action: 'dois'}}>
+                <Modal
+                    trigger={t(this.props, 'doi.title')}
+                    triggerClassName="flyout-sub-tabs-content-ico-link"
+                >
+                    {close => (
                         <div>
                             {t(this.props, 'doi.text1') + ' '}
                             {this.links(this.selectedArchiveIds())}
                             {' ' + t(this.props, 'doi.text2')}
-                            <div className='any-button' onClick={() => this.exportDOI()}>
+
+                            <button
+                                type="button"
+                                className="any-button"
+                                onClick={() => {
+                                    this.exportDOI();
+                                    close();
+                                }}
+                            >
                                 {t(this.props, 'doi.ok')}
-                            </div>
+                            </button>
                         </div>
-                    )
-                })}
-            >
-                {title}
-            </div>
-        }
+                    )}
+                </Modal>
+            </AuthorizedContent>
+        );
     }
 
     reset() {
-        return <a onClick={() => { this.props.addRemoveArchiveId(-1)} }> {t(this.props, 'reset')}</a>;
+        return (
+            <button
+                type="button"
+                onClick={() => { this.props.addRemoveArchiveId(-1); }}
+            >
+                {t(this.props, 'reset')}
+            </button>
+        );
     }
 
     setAll() {
-        return <a onClick={() => { this.props.setArchiveIds(Object.values(this.props.archiveSearchResults.map(i =>  i.archive_id)))} }> {t(this.props, 'set_all')}</a>;
+        return (
+            <button
+                type="button"
+                onClick={() => { this.props.setArchiveIds(Object.values(this.props.archiveSearchResults.map(i =>  i.archive_id))); }}
+            >
+                {t(this.props, 'set_all')}
+            </button>
+        );
     }
 
     render() {
@@ -177,12 +204,8 @@ AdminActions.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     translations: PropTypes.object.isRequired,
-    editView: PropTypes.bool.isRequired,
-    account: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
     match: PropTypes.object.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
     setArchiveIds: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
