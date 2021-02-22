@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { Modal } from 'modules/ui';
 import { pluralize, underscore } from 'modules/strings';
 import { admin } from 'modules/auth'
 import { t } from 'modules/i18n';
@@ -43,25 +44,23 @@ export default class RegistryReference extends React.Component {
             this.props.registryEntries[this.props.registryReference.registry_entry_id].associations_loaded
         ) {
             return (
-                <span
-                    className='flyout-sub-tabs-content-ico-link'
+                <Modal
                     title={t(this.props, 'edit.registry_reference.edit')}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.registry_reference.edit'),
-                        content: (
-                            <RegistryReferenceFormContainer
-                                registryReference={this.props.registryReference}
-                                lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
-                                inTranscript={this.props.inTranscript}
-                                registryReferenceTypeId={this.props.registryReferenceTypeId}
-                                locale={this.props.locale}
-                                goDeeper={true}
-                            />
-                        )
-                    })}
+                    trigger={<i className="fa fa-pencil"/>}
+                    triggerClassName="flyout-sub-tabs-content-ico-link"
                 >
-                    <i className="fa fa-pencil"></i>
-                </span>
+                    {close => (
+                        <RegistryReferenceFormContainer
+                            registryReference={this.props.registryReference}
+                            lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
+                            inTranscript={this.props.inTranscript}
+                            registryReferenceTypeId={this.props.registryReferenceTypeId}
+                            locale={this.props.locale}
+                            goDeeper={true}
+                            onSubmit={close}
+                        />
+                    )}
+                </Modal>
             )
         } else {
             return null;
@@ -80,7 +79,6 @@ export default class RegistryReference extends React.Component {
                 this.props.registryReference.id
             );
         }
-        this.props.closeArchivePopup();
     }
 
     delete() {
@@ -89,23 +87,29 @@ export default class RegistryReference extends React.Component {
             !this.props.hideEdit &&
             admin(this.props, this.props.registryReference)
         ) {
-            return <span
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_reference.delete')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.registry_reference.delete'),
-                    content: (
+            return (
+                <Modal
+                    title={t(this.props, 'edit.registry_reference.delete')}
+                    trigger={<i className="fa fa-trash-o"/>}
+                    triggerClassName="flyout-sub-tabs-content-ico-link"
+                >
+                    {close => (
                         <div>
                             <p>{this.props.registryEntry.name[this.props.locale]}</p>
-                            <div className='any-button' onClick={() => this.destroy()}>
+                            <button
+                                type="button"
+                                className='any-button'
+                                onClick={() => {
+                                    this.destroy();
+                                    close();
+                                }}
+                            >
                                 {t(this.props, 'edit.registry_reference.delete')}
-                            </div>
+                            </button>
                         </div>
-                    )
-                })}
-            >
-                <i className="fa fa-trash-o"></i>
-            </span>
+                    )}
+                </Modal>
+            );
         } else {
             return null;
         }
@@ -160,6 +164,4 @@ RegistryReference.propTypes = {
     setOpenReference: PropTypes.func,
     deleteData: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
 };
