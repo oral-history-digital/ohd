@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { ContentField } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
-import { ArchivePopupButton } from 'modules/ui';
+import { Modal } from 'modules/ui';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { humanReadable } from 'modules/data';
 import { fullname } from 'modules/people';
@@ -93,12 +93,10 @@ export default class PersonData extends React.Component {
     }
 
     biographicalEntries() {
-        const { interviewee } = this.props;
-
         if(this.props.projectId !== 'dg') {
             return (
                 <AuthorizedContent object={{type: 'BiographicalEntry', action: 'create', interview_id: this.props.interview && this.props.interview.id}} >
-                    <BiographicalEntriesContainer person={interviewee} interview={this.props.interview} />;
+                    <BiographicalEntriesContainer />;
                 </AuthorizedContent>
             )
         } else {
@@ -134,29 +132,25 @@ export default class PersonData extends React.Component {
         }
     }
 
-    contributionForm() {
-        return (
-            <ContributionFormContainer
-                contribution={Object.values(this.props.interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]}
-                submitData={this.props.submitData}
-            />
-        )
-    }
-
     info() {
         const { interviewee } = this.props;
 
-        let editTitle = t(this.props, 'edit.contribution.edit');
         return (
             <div>
                 <AuthShowContainer ifLoggedIn={true}>
                     <ContentField label={t(this.props, 'interviewee_name')} value={fullname(this.props, interviewee, true)} >
                         <AuthorizedContent object={interviewee}>
-                            <ArchivePopupButton
-                                title={editTitle}
-                                buttonFaKey='pencil'
-                                children={this.contributionForm()}
-                            />
+                            <Modal
+                                title={t(this.props, 'edit.contribution.edit')}
+                                trigger={<><i className="fa fa-pencil" />{t(this.props, 'edit.contribution.edit')}</>}
+                            >
+                                {close => (
+                                    <ContributionFormContainer
+                                        contribution={Object.values(this.props.interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]}
+                                        onSubmit={close}
+                                    />
+                                )}
+                            </Modal>
                         </AuthorizedContent>
                     </ContentField>
                 </AuthShowContainer>
@@ -182,5 +176,13 @@ export default class PersonData extends React.Component {
 }
 
 PersonData.propTypes = {
+    archiveId: PropTypes.string.isRequired,
+    interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };

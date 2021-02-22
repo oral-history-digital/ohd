@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { t } from 'modules/i18n';
@@ -59,28 +60,58 @@ export default class ContributionForm extends React.Component {
     }
 
     render() {
-        let _this = this;
+        const { closeArchivePopup, submitData, onSubmit } = this.props;
+
         return (
             <div>
-            <Form
-                scope='contribution'
-                data={this.props.contribution}
-                values={{
-                    interview_id: this.props.interview && this.props.interview.id
-                }}
-                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
-                formClasses={_this.props.formClasses}
-                elements={this.formElements()}
-            />
-            <p />
-            <Link
-                to={`/${this.props.locale}/people`}
-                className='admin'
-                onClick={() => this.props.closeArchivePopup()}
-            >
-                {t(_this.props, "edit.person.admin")}
-            </Link>
+                <Form
+                    scope='contribution'
+                    data={this.props.contribution}
+                    values={{
+                        interview_id: this.props.interview && this.props.interview.id
+                    }}
+                    onSubmit={(params) => {
+                        submitData(this.props, params);
+                        closeArchivePopup();
+                        if (typeof onSubmit === 'function') {
+                            onSubmit();
+                        }
+                    }}
+                    formClasses={this.props.formClasses}
+                    elements={this.formElements()}
+                />
+                <p />
+                <Link
+                    to={`/${this.props.locale}/people`}
+                    className='admin'
+                    onClick={() => {
+                        closeArchivePopup();
+                        if (typeof onSubmit === 'function') {
+                            onSubmit();
+                        }
+                    }}
+                >
+                    {t(this.props, "edit.person.admin")}
+                </Link>
             </div>
         );
     }
 }
+
+ContributionForm.propTypes = {
+    interview: PropTypes.object.isRequired,
+    withSpeakerDesignation: PropTypes.bool,
+    contribution: PropTypes.object,
+    contributionTypes: PropTypes.object.isRequired,
+    formClasses: PropTypes.string,
+    people: PropTypes.object,
+    peopleStatus: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    translations: PropTypes.object.isRequired,
+    submitData: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
+    closeArchivePopup: PropTypes.func.isRequired,
+};

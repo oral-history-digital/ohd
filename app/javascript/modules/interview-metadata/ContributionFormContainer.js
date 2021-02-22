@@ -1,26 +1,26 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, getCurrentProject } from 'modules/data';
+import { fetchData, submitData, getContributionTypes,
+    getPeopleStatus, getPeople, getProjects } from 'modules/data';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import ContributionForm from './ContributionForm';
 
-const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
-    return {
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
-        locales: (project && project.available_locales) || state.archive.locales,
-        translations: state.archive.translations,
-        people: state.data.people,
-        peopleStatus: state.data.statuses.people,
-        contributionTypes: state.data.contribution_types,
-    }
-}
+const mapStateToProps = state => ({
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    translations: getTranslations(state),
+    people: getPeople(state),
+    peopleStatus: getPeopleStatus(state),
+    contributionTypes: getContributionTypes(state),
+});
 
-const mapDispatchToProps = (dispatch) => ({
-    closeArchivePopup: () => dispatch(closeArchivePopup()),
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    closeArchivePopup,
+    fetchData,
+    submitData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContributionForm);

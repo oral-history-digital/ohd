@@ -76,7 +76,11 @@ export default class RegistryReferenceForm extends React.Component {
                         ref_position: 1,
                         workflow_state: 'preliminary'
                     }}
-                    onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
+                    onSubmit={params => {
+                        this.props.submitData(this.props, params);
+                        this.props.closeArchivePopup();
+                        this.props?.onSubmit();
+                    }}
                     elements={this.elements()}
                 />
             </div>
@@ -91,12 +95,13 @@ RegistryReferenceForm.propTypes = {
     registryReference: PropTypes.object,
     refObject: PropTypes.object,
     inTranscript: PropTypes.bool,
-    registryReferenceTypes: PropTypes.object.isRequired,
-    registryReferenceTypeId: PropTypes.number.isRequired,
-    registryReferenceTypesStatus: PropTypes.object.isRequired,
-    lowestAllowedRegistryEntryId: PropTypes.number.isRequired,
+    registryReferenceTypes: PropTypes.object,
+    registryReferenceTypeId: PropTypes.number,
+    registryReferenceTypesStatus: PropTypes.object,
+    lowestAllowedRegistryEntryId: PropTypes.number,
     interview: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
     closeArchivePopup: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
 };
