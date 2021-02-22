@@ -1,41 +1,61 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import { Form } from 'modules/forms';
 
-export default class BiographicalEntryForm extends React.Component {
-    render() {
-        let _this = this;
-        return (
-            <Form
-                scope='biographical_entry'
-                onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
-                data={this.props.biographicalEntry}
-                values={{
-                    person_id: (this.props.person && this.props.person.id) || (this.props.biographicalEntry && this.props.biographicalEntry.person_id)
-                }}
-                elements={[
-                    {
-                        elementType: 'textarea',
-                        attribute: 'text',
-                        value: this.props.biographicalEntry && this.props.biographicalEntry.text[this.props.locale],
-                        validate: function(v){return v.length > 1}
-                    },
-                    {
-                        attribute: 'start_date',
-                        value: this.props.biographicalEntry && this.props.biographicalEntry.start_date[this.props.locale],
-                    },
-                    {
-                        attribute: 'end_date',
-                        value: this.props.biographicalEntry && this.props.biographicalEntry.end_date[this.props.locale],
-                    },
-                    {
-                        elementType: 'select',
-                        attribute: 'workflow_state',
-                        values: ["unshared", "public"],
-                        value: this.props.biographicalEntry && this.props.biographicalEntry.workflow_state,
-                        optionsScope: 'workflow_states',
-                    },
-                ]}
-            />
-        );
-    }
+export default function BiographicalEntryForm({
+    biographicalEntry,
+    person,
+    locale,
+    projectId,
+    projects,
+    submitData,
+    onSubmit,
+}) {
+    return (
+        <Form
+            scope='biographical_entry'
+            onSubmit={(params) => {
+                submitData({ locale, projectId, projects }, params);
+                onSubmit();
+            }}
+            data={biographicalEntry}
+            values={{
+                person_id: (person?.id) || (biographicalEntry?.person_id)
+            }}
+            elements={[
+                {
+                    elementType: 'textarea',
+                    attribute: 'text',
+                    value: biographicalEntry?.text[locale],
+                    validate: function(v){return v.length > 1}
+                },
+                {
+                    attribute: 'start_date',
+                    value: biographicalEntry?.start_date[locale],
+                },
+                {
+                    attribute: 'end_date',
+                    value: biographicalEntry?.end_date[locale],
+                },
+                {
+                    elementType: 'select',
+                    attribute: 'workflow_state',
+                    values: ['unshared', 'public'],
+                    value: biographicalEntry?.workflow_state,
+                    optionsScope: 'workflow_states',
+                },
+            ]}
+        />
+    );
 }
+
+BiographicalEntryForm.propTypes = {
+    biographicalEntry: PropTypes.object,
+    person: PropTypes.object,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    submitData: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+};

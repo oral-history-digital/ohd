@@ -1,11 +1,13 @@
 import React from 'react';
-import { admin } from 'modules/auth';
+import PropTypes from 'prop-types';
+
+import { AuthorizedContent, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
 import BiographicalEntryContainer from './BiographicalEntryContainer';
 
 export default class BiographicalEntries extends React.Component {
-
     biographicalEntries() {
         let biographicalEntries = [];
         for (var c in this.props.person.biographical_entries) {
@@ -18,22 +20,24 @@ export default class BiographicalEntries extends React.Component {
     }
 
     addBiographicalEntry() {
-        if (admin(this.props, {type: 'BiographicalEntry', action: 'create', interview_id: this.props.interview.id})) {
-            return (
+        return (
+            <AuthorizedContent object={{type: 'BiographicalEntry', action: 'create', interview_id: this.props.interview.id}}>
                 <p>
-                    <span
-                        className='flyout-sub-tabs-content-ico-link'
+                    <Modal
                         title={t(this.props, 'edit.biographical_entry.new')}
-                        onClick={() => this.props.openArchivePopup({
-                            title: t(this.props, 'edit.biographical_entry.new'),
-                            content: <BiographicalEntryFormContainer person={this.props.person} />
-                        })}
+                        trigger={<><i className="fa fa-plus"/> {t(this.props, 'edit.biographical_entry.new')}</>}
+                        triggerClassName="flyout-sub-tabs-content-ico-link"
                     >
-                        <i className="fa fa-plus"></i> {t(this.props, 'edit.biographical_entry.new')}
-                    </span>
+                        {close => (
+                            <BiographicalEntryFormContainer
+                                person={this.props.person}
+                                onSubmit={close}
+                            />
+                        )}
+                    </Modal>
                 </p>
-            )
-        }
+            </AuthorizedContent>
+        );
     }
 
     render() {
@@ -49,3 +53,12 @@ export default class BiographicalEntries extends React.Component {
         }
     }
 }
+
+BiographicalEntries.propTypes = {
+    person: PropTypes.object.isRequired,
+    interview: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+};

@@ -1,81 +1,73 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
-import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { Modal } from 'modules/ui';
+import { AuthorizedContent } from 'modules/auth';
 import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
 
 export default class BiographicalEntry extends React.Component {
+    constructor(props) {
+        super(props);
 
-    constructor(props, context) {
-        super(props, context);
         this.state = {
             collapsed: true
         }
     }
 
-    edit() {
-        return (
-            <span
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.biographical_entry.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.biographical_entry.edit'),
-                    content: <BiographicalEntryFormContainer biographicalEntry={this.props.data} />
-                })}
-            >
-                <i className="fa fa-pencil"></i>
-            </span>
-        )
-    }
-
-    destroy() {
-        this.props.deleteData(this.props, 'people', this.props.data.person_id, 'biographical_entries', this.props.data.id);
-        this.props.closeArchivePopup();
-    }
-
-    delete() {
-        return <span
-            className='flyout-sub-tabs-content-ico-link'
-            title={t(this.props, 'delete')}
-            onClick={() => this.props.openArchivePopup({
-                title: `${t(this.props, 'delete')}`,
-                content: (
-                    <div>
-                        {this.entries()}
-
-                        <div className='any-button' onClick={() => this.destroy()}>
-                            {t(this.props, 'delete')}
-                        </div>
-                    </div>
-                )
-            })}
-        >
-            <i className="fa fa-trash-o"></i>
-        </span>
-    }
-
-    toggle() {
-        return (
-            <span
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
-                onClick={() => this.setState({ collapsed: !this.state.collapsed })}
-            >
-                <i className={`fa fa-angle-${this.state.collapsed ? 'down' : 'up'}`}></i>
-            </span>
-        )
-    }
-
     buttons() {
-        if (admin(this.props, this.props.data)) {
-            return (
-                <span className={'flyout-sub-tabs-content-ico'}>
-                    {this.toggle()}
-                    {this.edit()}
-                    {this.delete()}
+        const { data, deleteData } = this.props;
+
+        return (
+            <AuthorizedContent object={this.props.data}>
+                    <span className={'flyout-sub-tabs-content-ico'}>
+                        <button
+                        type="button"
+                        className="flyout-sub-tabs-content-ico-link"
+                        title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
+                        onClick={() => this.setState({ collapsed: !this.state.collapsed })}
+                    >
+                        <i className={`fa fa-angle-${this.state.collapsed ? 'down' : 'up'}`}></i>
+                    </button>
+
+                    <Modal
+                        title={t(this.props, 'edit.biographical_entry.edit')}
+                        trigger={<i className="fa fa-pencil"/>}
+                        triggerClassName="flyout-sub-tabs-content-ico-link"
+                    >
+                        {close => (
+                            <BiographicalEntryFormContainer
+                                biographicalEntry={this.props.data}
+                                onSubmit={close}
+                            />
+                        )}
+                    </Modal>
+
+                    <Modal
+                        title={t(this.props, 'delete')}
+                        trigger={<i className="fa fa-trash-o"/>}
+                        triggerClassName="flyout-sub-tabs-content-ico-link"
+                    >
+                        {close => (
+                            <div>
+                                {this.entries()}
+
+                                <button
+                                    type="button"
+                                    className="any-button"
+                                    onClick={() => {
+                                        deleteData(this.props, 'people', data.person_id, 'biographical_entries', data.id);
+                                        close();
+                                    }}
+                                >
+                                    {t(this.props, 'delete')}
+                                </button>
+                        </div>
+                        )}
+                    </Modal>
                 </span>
-            )
-        }
+            </AuthorizedContent>
+        );
     }
 
     entry(name) {
@@ -88,7 +80,7 @@ export default class BiographicalEntry extends React.Component {
     }
 
     entries() {
-        return ['text', 'start_date', 'end_date'].map((entry, index) => {
+        return ['text', 'start_date', 'end_date'].map((entry) => {
             if (this.props.data[entry][this.props.locale])
                 return this.entry(entry);
         })
@@ -107,20 +99,24 @@ export default class BiographicalEntry extends React.Component {
     }
 
     render() {
-        if (this.state.collapsed) {
-            return (
-                <p>
-                    {this.preview()}
-                    {this.buttons()}
-                </p>
-            )
-        } else {
-            return (
-                <div>
-                    {this.entries()}
-                    {this.buttons()}
-                </div>
-            )
-        }
+        return (
+            <p>
+                {
+                    this.state.collapsed ?
+                        this.preview() :
+                        this.entries()
+                }
+                {this.buttons()}
+            </p>
+        );
     }
 }
+
+BiographicalEntry.propTypes = {
+    data: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    translations: PropTypes.object.isRequired,
+    deleteData: PropTypes.func.isRequired,
+};
