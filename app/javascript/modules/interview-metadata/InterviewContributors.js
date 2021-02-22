@@ -3,14 +3,13 @@ import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import ContributionList from './ContributionList';
 import ContributionFormContainer from './ContributionFormContainer';
 
 export default function InterviewContributors({
     interview,
     withSpeakerDesignation,
-    submitData,
-    openArchivePopup,
 }) {
     const { t } = useI18n();
 
@@ -22,20 +21,19 @@ export default function InterviewContributors({
 
             <AuthorizedContent object={{type: 'Contribution', action: 'create', interview_id: interview.id}}>
                 <p>
-                    <button
-                        type="button"
-                        className='flyout-sub-tabs-content-ico-link'
-                        onClick={() => openArchivePopup({
-                            title: t('edit.contribution.new'),
-                            content: <ContributionFormContainer
-                                interview={interview}
-                                submitData={submitData}
-                                withSpeakerDesignation={withSpeakerDesignation}
-                            />
-                        })}
+                    <Modal
+                        title={t('edit.contribution.new')}
+                        trigger={<i className="fa fa-plus" />}
+                        triggerClassName="flyout-sub-tabs-content-ico-link"
                     >
-                        <i className="fa fa-plus"></i> {t('edit.contribution.new')}
-                    </button>
+                        {close => (
+                            <ContributionFormContainer
+                                interview={interview}
+                                withSpeakerDesignation={withSpeakerDesignation}
+                                onSubmit={close}
+                            />
+                        )}
+                    </Modal>
                 </p>
             </AuthorizedContent>
         </div>
@@ -44,10 +42,8 @@ export default function InterviewContributors({
 }
 
 InterviewContributors.propTypes = {
-    withSpeakerDesignation: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
-    submitData: PropTypes.func.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
+    withSpeakerDesignation: PropTypes.bool.isRequired,
 };
 
 InterviewContributors.defaultProps = {
