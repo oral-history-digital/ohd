@@ -21,7 +21,7 @@ class Interview < ApplicationRecord
   has_many :tapes,
            -> {
                   includes(:interview).
-                  order(:media_id)
+                  order(:number)
            },
            dependent: :destroy,
            inverse_of: :interview
@@ -190,7 +190,7 @@ class Interview < ApplicationRecord
     string :media_type, :stored => true
     string :duration, :stored => true
     string :language, :stored => true do
-      language.name(:de)
+      language && language.translations.map(&:name).join(' ')
     end
     #string :alias_names, :stored => true
 

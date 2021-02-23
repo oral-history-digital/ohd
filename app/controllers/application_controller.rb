@@ -162,50 +162,48 @@ class ApplicationController < ActionController::Base
     cache_key_date = [Interview.maximum(:updated_at), current_project.updated_at]
       .compact.max.strftime("%d.%m-%H:%M")
 
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-initial-search-#{cache_key_params}-#{cache_key_date}-#{current_user_account && current_user_account.admin? ? 'admin' : 'public'}") do
-      search = Interview.archive_search(current_user_account, current_project, locale, params)
-      dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
-      facets = current_project.updated_search_facets(search)
-      {
-        archive: {
-          facets: facets,
-          query: search_query,
-          allInterviewsTitles: dropdown_values[:all_interviews_titles],
-          allInterviewsPseudonyms: dropdown_values[:all_interviews_pseudonyms],
-          allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
-          sortedArchiveIds: Rails.cache.fetch("sorted_archive_ids-#{current_project.cache_key_prefix}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
-          foundInterviews: search.results.map{|i| cache_single(i)},
-          allInterviewsCount: search.total,
-          resultPagesCount: search.results.total_pages,
-          resultsCount: search.total,
+    search = Interview.archive_search(current_user_account, current_project, locale, params)
+    dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
+    facets = current_project.updated_search_facets(search)
+    {
+      archive: {
+        facets: facets,
+        query: search_query,
+        allInterviewsTitles: dropdown_values[:all_interviews_titles],
+        allInterviewsPseudonyms: dropdown_values[:all_interviews_pseudonyms],
+        allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
+        sortedArchiveIds: Rails.cache.fetch("sorted_archive_ids-#{current_project.cache_key_prefix}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
+        foundInterviews: search.results.map{|i| cache_single(i)},
+        allInterviewsCount: search.total,
+        resultPagesCount: search.results.total_pages,
+        resultsCount: search.total,
+      },
+      map: {
+        facets: facets,
+        query: search_query,
+        foundMarkers: {},
+      },
+      interviews: {},
+      registryEntries: {
+        showRegistryEntriesTree: true,
+        results: []
+      },
+      user_registrations: {
+        query: {
+          workflow_state: 'account_confirmed',
+          page: 1,
         },
-        map: {
-          facets: facets,
-          query: search_query,
-          foundMarkers: {},
-        },
-        interviews: {},
-        registryEntries: {
-          showRegistryEntriesTree: true,
-          results: []
-        },
-        user_registrations: {
-          query: {
-            workflow_state: 'account_confirmed',
-            page: 1,
-          },
-        },
-        roles: { query: {page: 1} },
-        task_types: { query: {page: 1} },
-        permissions: { query: {page: 1} },
-        people: { query: {page: 1} },
-        registry_reference_types: { query: {page: 1} },
-        registry_name_types: { query: {page: 1} },
-        projects: { query: {page: 1} },
-        collections: { query: {page: 1} },
-        languages: { query: {page: 1} }
-      }
-    end
+      },
+      roles: { query: {page: 1} },
+      task_types: { query: {page: 1} },
+      permissions: { query: {page: 1} },
+      people: { query: {page: 1} },
+      registry_reference_types: { query: {page: 1} },
+      registry_name_types: { query: {page: 1} },
+      projects: { query: {page: 1} },
+      collections: { query: {page: 1} },
+      languages: { query: {page: 1} }
+    }
   end
   helper_method :initial_redux_state
 

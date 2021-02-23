@@ -1,11 +1,11 @@
 server "deploy_da03", roles: %w{app db web}
 
-set :application, "grenzregime_archive"
+set :application, "eiserner_vorhang_archive"
 set :branch, :development
 set :stage, :production
 set :deploy_to, "/data/applications/#{fetch :application}"
 set :bundle_path, "/data/bundle/01"
-set :project_yml, "grenzregime.yml"
+set :project_yml, "eiserner_vorhang.yml"
 
 #set :default_env, {
 #      'project_name' => fetch(:application)
