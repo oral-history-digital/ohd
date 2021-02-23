@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
-import { openArchivePopup } from 'modules/ui';
-import { submitData, getCurrentInterview } from 'modules/data';
+import { getCurrentInterview } from 'modules/data';
 import InterviewContributors from './InterviewContributors';
 
 const mapStateToProps = state => ({
@@ -10,9 +9,4 @@ const mapStateToProps = state => ({
     contributionsLastModified: state.data.statuses.contributions.lastModified,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-    submitData: (props, params) => dispatch(submitData(props, params)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(InterviewContributors);
+export default connect(mapStateToProps)(InterviewContributors);

@@ -69,7 +69,7 @@ UserRegistrations.propTypes = {
     projects: PropTypes.object.isRequired,
     translations: PropTypes.object.isRequired,
     query: PropTypes.object.isRequired,
-    userRegistrations: PropTypes.object.isRequired,
+    userRegistrations: PropTypes.object,
     resultPagesCount: PropTypes.number.isRequired,
     isUserRegistrationSearching: PropTypes.bool,
     fetchData: PropTypes.func.isRequired,

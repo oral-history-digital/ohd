@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { t } from 'modules/i18n';
@@ -46,7 +47,7 @@ export default class UserContentForm extends React.Component {
         event.preventDefault();
         if (this.valid()) {
             this.props.submitData(this.props, {user_content: this.state});
-            this.props.closeArchivePopup();
+            this.props.onSubmit();
         } else {
             this.setErrors();
         }
@@ -185,3 +186,7 @@ export default class UserContentForm extends React.Component {
         );
     }
 }
+
+UserContentForm.propTypes = {
+    onSubmit: PropTypes.func.isRequired,
+};

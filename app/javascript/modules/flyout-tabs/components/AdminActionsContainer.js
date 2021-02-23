@@ -2,11 +2,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
-import { submitDois, addRemoveArchiveId, setArchiveIds, getArchiveId, getEditView, getLocale,
+import { submitDois, addRemoveArchiveId, setArchiveIds, getArchiveId, getLocale,
     getProjectId, getTranslations, getDoiResult } from 'modules/archive';
-import { deleteData, submitData, getCurrentAccount, getProjects } from 'modules/data';
-import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import {  } from 'modules/archive';
+import { deleteData, submitData, getProjects } from 'modules/data';
 import AdminActions from './AdminActions';
 
 const mapStateToProps = state => ({
@@ -18,8 +16,6 @@ const mapStateToProps = state => ({
     statuses: state.data.statuses.interviews,
     doiResult: getDoiResult(state),
     archiveSearchResults: state.search.archive.foundInterviews,
-    editView: getEditView(state),
-    account: getCurrentAccount(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
@@ -28,8 +24,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setArchiveIds,
     deleteData,
     submitData,
-    openArchivePopup,
-    closeArchivePopup,
 }, dispatch);
 
 export default withRouter(connect(

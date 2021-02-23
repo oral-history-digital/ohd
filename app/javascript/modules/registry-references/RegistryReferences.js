@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 import RegistryReferenceContainer from './RegistryReferenceContainer';
 
@@ -90,25 +91,24 @@ export default class RegistryReferences extends React.Component {
         ) {
             return (
                 <AuthorizedContent object={{type: 'RegistryReference', action: 'create', interview_id: this.props.interview.id}}>
-                    <button
-                        type="button"
-                        className="RegistryReferences-addButton"
+                    <Modal
                         title={t(this.props, 'edit.registry_reference.new')}
-                        onClick={() => this.props.openArchivePopup({
-                            title: t(this.props, 'edit.registry_reference.new'),
-                            content: <RegistryReferenceFormContainer
-                                        refObject={this.props.refObject}
-                                        interview={this.props.interview}
-                                        lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
-                                        inTranscript={this.props.inTranscript}
-                                        registryReferenceTypeId={this.props.registryReferenceTypeId}
-                                        locale={this.props.locale}
-                                        goDeeper={true}
-                                    />
-                        })}
+                        trigger={<i className="fa fa-plus"/>}
+                        triggerClassName="RegistryReferences-addButton"
                     >
-                        <i className="fa fa-plus"></i>
-                    </button>
+                        {close => (
+                            <RegistryReferenceFormContainer
+                                refObject={this.props.refObject}
+                                interview={this.props.interview}
+                                lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
+                                inTranscript={this.props.inTranscript}
+                                registryReferenceTypeId={this.props.registryReferenceTypeId}
+                                locale={this.props.locale}
+                                goDeeper={true}
+                                onSubmit={close}
+                            />
+                        )}
+                    </Modal>
                 </AuthorizedContent>
             );
         }
@@ -137,7 +137,6 @@ RegistryReferences.propTypes = {
     translations: PropTypes.object.isRequired,
     registryEntries: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     setOpenReference: PropTypes.func,
 };

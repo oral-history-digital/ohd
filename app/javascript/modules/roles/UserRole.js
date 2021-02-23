@@ -3,26 +3,23 @@ import PropTypes from 'prop-types';
 
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 
 export default class UserRole extends React.Component {
     show() {
         return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
+            <Modal
                 title={t(this.props, 'edit.user_role.show')}
-                onClick={() => this.props.openArchivePopup({
-                    title: this.props.userRole.name,
-                    content: this.props.userRole.desc
-                })}
+                trigger={<i className="fa fa-eye"/>}
             >
-                <i className="fa fa-eye"></i>
-            </div>
+                {this.props.userRole.name}<br/>
+                {this.props.userRole.desc}
+            </Modal>
         )
     }
 
     destroy() {
         this.props.deleteData(this.props, 'user_roles', this.props.userRole.id, null, null, true);
-        this.props.closeArchivePopup();
     }
 
     delete() {
@@ -31,23 +28,25 @@ export default class UserRole extends React.Component {
             !this.props.hideEdit &&
             admin(this.props, this.props.userRole)
         ) {
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'delete')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'delete'),
-                    content: (
+            return (
+                <Modal
+                    title={t(this.props, 'delete')}
+                    trigger={<i className="fa fa-trash-o"/>}
+                >
+                    {closeModal => (
                         <div>
                             <p>{this.props.userRole.name}</p>
-                            <div className='any-button' onClick={() => this.destroy()}>
+                            <button
+                                type="button"
+                                className="any-button"
+                                onClick={() => { this.destroy(); closeModal(); }}
+                            >
                                 {t(this.props, 'delete')}
-                            </div>
+                            </button>
                         </div>
-                    )
-                })}
-            >
-                <i className="fa fa-trash-o"></i>
-            </div>
+                    )}
+                </Modal>
+            );
         } else {
             return null;
         }
@@ -81,7 +80,5 @@ UserRole.propTypes = {
     account: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
 };

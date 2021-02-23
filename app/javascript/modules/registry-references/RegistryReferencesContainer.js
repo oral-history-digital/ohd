@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { openArchivePopup  } from 'modules/ui';
 import { fetchData, getCurrentInterview, getCurrentProject, getProjects,
     getRegistryEntries, getRegistryEntriesStatus } from 'modules/data';
 import { getProjectId, getTranslations, getLocale } from 'modules/archive';
@@ -20,7 +19,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
-    openArchivePopup,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryReferences);

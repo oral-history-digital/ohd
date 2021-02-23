@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { openArchivePopup } from 'modules/ui';
 import { setLocale } from 'modules/archive';
 import { getCurrentInterview, getCurrentInterviewee, getCurrentProject } from 'modules/data';
 import { setFlyoutTabsIndex } from '../actions';
@@ -31,7 +30,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     setLocale: locale => dispatch(setLocale(locale)),
     setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
 })

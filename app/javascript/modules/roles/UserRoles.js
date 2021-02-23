@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import UserRoleFormContainer from './UserRoleFormContainer';
 import UserRoleContainer from './UserRoleContainer';
 
@@ -27,18 +28,17 @@ export default class UserRoles extends React.Component {
             !this.props.hideAdd
         ) {
             return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
+                <Modal
                     title={t(this.props, 'edit.user_role.new')}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.user_role.new'),
-                        content: <UserRoleFormContainer
-                                    userAccountId={this.props.userAccountId}
-                                />
-                    })}
+                    trigger={<i className="fa fa-plus"/>}
                 >
-                    <i className="fa fa-plus"></i>
-                </div>
+                    {closeModal => (
+                        <UserRoleFormContainer
+                            userAccountId={this.props.userAccountId}
+                            onSubmit={closeModal}
+                        />
+                    )}
+                </Modal>
             )
         }
     }
@@ -64,5 +64,4 @@ UserRoles.propTypes = {
     translations: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
     account: PropTypes.object.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
 };

@@ -1,20 +1,16 @@
 import { connect } from 'react-redux';
 
-import { openArchivePopup } from 'modules/ui';
+import { getEditView, getLocale, getTranslations } from 'modules/archive';
+import { getCurrentAccount, getCurrentInterview, getCurrentInterviewee } from 'modules/data';
 import BiographicalEntries from './BiographicalEntries';
 
-const mapStateToProps = (state) => {
-    return {
-        locale: state.archive.locale,
-        translations: state.archive.translations,
-        account: state.data.accounts.current,
-        editView: state.archive.editView,
+const mapStateToProps = state => ({
+    interview: getCurrentInterview(state),
+    person: getCurrentInterviewee(state),
+    locale: getLocale(state),
+    translations: getTranslations(state),
+    account: getCurrentAccount(state),
+    editView: getEditView(state),
+});
 
-    }
-}
-
-const mapDispatchToProps = (dispatch) => ({
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(BiographicalEntries);
+export default connect(mapStateToProps)(BiographicalEntries);

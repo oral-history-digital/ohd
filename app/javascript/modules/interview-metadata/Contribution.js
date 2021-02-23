@@ -4,26 +4,24 @@ import PropTypes from 'prop-types';
 import { fullname } from 'modules/people';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
 import ContributionFormContainer from './ContributionFormContainer';
 
 export default function Contribution({
     locale,
     person,
     projectId,
+    projects,
     archiveId,
     contribution,
     withSpeakerDesignation,
-    submitData,
     deleteData,
-    openArchivePopup,
-    closeArchivePopup,
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
 
     const destroy = () => {
-        deleteData({ locale, projectId }, 'interviews', archiveId, 'contributions', contribution.id);
-        closeArchivePopup();
+        deleteData({ locale, projectId, projects }, 'interviews', archiveId, 'contributions', contribution.id);
     };
 
     if (isAuthorized(contribution) || contribution.workflow_state === 'public' ) {
@@ -39,40 +37,37 @@ export default function Contribution({
 
                 <AuthorizedContent object={contribution}>
                     <span className="flyout-sub-tabs-content-ico">
-                        <button
-                            type="button"
-                            className='flyout-sub-tabs-content-ico-link'
+                        <Modal
                             title={t('edit.contribution.edit')}
-                            onClick={() => openArchivePopup({
-                                title: t('edit.contribution.edit'),
-                                content: <ContributionFormContainer
+                            trigger={<i className="fa fa-pencil" />}
+                            triggerClassName="flyout-sub-tabs-content-ico-link"
+                        >
+                            {close => (
+                                <ContributionFormContainer
                                     contribution={contribution}
-                                    submitData={submitData}
                                     withSpeakerDesignation
+                                    onSubmit={close}
                                 />
-                            })}
+                            )}
+                        </Modal>
+                        <Modal
+                            title={`${t('delete')} ${t('contributions.' + contribution.contribution_type)}`}
+                            trigger={<i className="fa fa-trash-o" />}
+                            triggerClassName="flyout-sub-tabs-content-ico-link"
                         >
-                            <i className="fa fa-pencil"></i>
-                        </button>
-
-                        <button
-                            type="button"
-                            className='flyout-sub-tabs-content-ico-link'
-                            title={t('delete')}
-                            onClick={() => openArchivePopup({
-                                title: `${t('delete')} ${t('contributions.' + contribution.contribution_type)}`,
-                                content: (
-                                    <div>
-                                        <p>{fullname({ locale }, person)}</p>
-                                        <div className='any-button' onClick={destroy}>
-                                            {t('delete')}
-                                        </div>
-                                    </div>
-                                )
-                            })}
-                        >
-                            <i className="fa fa-trash-o"></i>
-                        </button>
+                            {close => (
+                                <div>
+                                    <p>{fullname({ locale }, person)}</p>
+                                    <button
+                                        type="button"
+                                        className="any-button"
+                                        onClick={() => { destroy(); close(); }}
+                                    >
+                                        {t('delete')}
+                                    </button>
+                                </div>
+                            )}
+                        </Modal>
                     </span>
                 </AuthorizedContent>
             </span>
@@ -89,10 +84,8 @@ Contribution.propTypes = {
     archiveId: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     deleteData: PropTypes.func.isRequired,
-    submitData: PropTypes.func.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
 };
 
 Contribution.defaultProps = {
