@@ -136,24 +136,38 @@ class InterviewMetadataExporter
       # Interviewees
       @interview.interviewees.each_with_index do |interviewee|
         id = InterviewMetadataExporter.pad(interviewee.id)
+
+        code = @interview.contributions.where(
+          contribution_type: 'interviewee',
+          person_id: interviewee.id,
+          workflow_state: 'public'
+        ).first.speaker_designation
+
         xml.send('media-session-actor', 'id' => "s_#{id}") do
           xml.Role 'Interviewee'
           xml.Name 'anonymized'
-          xml.Code '?'  # TODO: Would be good to have.
-          xml.Age age(interviewee) if age(interviewee)
-          xml.Sex interviewee.gender.capitalize if (interviewee.gender)
+          xml.Code code if code.present?
+          xml.Age age(interviewee) if age(interviewee).present?
+          xml.Sex interviewee.gender.capitalize if (interviewee.gender.present?)
         end
       end
 
       # Interviewers
       @interview.interviewers.each_with_index do |interviewer|
         id = InterviewMetadataExporter.pad(interviewer.id)
+
+        code = @interview.contributions.where(
+          contribution_type: 'interviewer',
+          person_id: interviewer.id,
+          workflow_state: 'public'
+        ).first.speaker_designation
+
         xml.send('media-session-actor', 'id' => "s_#{id}") do
           xml.Role 'Interviewer'
           xml.Name 'anonymized'
-          xml.Code '?'  # TODO: Would be good to have.
-          xml.Age age(interviewer) if age(interviewer)
-          xml.Sex interviewer.gender.capitalize if interviewer.gender
+          xml.Code code if code.present?
+          xml.Age age(interviewer) if age(interviewer).present?
+          xml.Sex interviewer.gender.capitalize if interviewer.gender.present?
         end
       end
     end
