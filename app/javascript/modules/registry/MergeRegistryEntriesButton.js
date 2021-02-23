@@ -1,15 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { Modal } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
 
 export default function MergeRegistryEntriesButton({
     locale,
     projectId,
+    projects,
     selectedRegistryEntryIds,
     submitData,
-    openArchivePopup,
-    closeArchivePopup,
 }) {
     const { t } = useI18n();
 
@@ -17,8 +17,7 @@ export default function MergeRegistryEntriesButton({
         const firstId = selectedRegistryEntryIds.slice(0, 1);
         const restIds = selectedRegistryEntryIds.slice(1);
 
-        submitData({ locale, projectId }, {merge_registry_entry: {id: firstId, ids: restIds}});
-        closeArchivePopup();
+        submitData({ locale, projectId, projects }, {merge_registry_entry: {id: firstId, ids: restIds}});
     }
 
     if (selectedRegistryEntryIds.length < 2) {
@@ -26,32 +25,35 @@ export default function MergeRegistryEntriesButton({
     }
 
     return (
-        <div
-            className="flyout-sub-tabs-content-ico-link"
-            onClick={() => openArchivePopup({
-                title: t('activerecord.models.registry_entries.actions.merge'),
-                content: (
+        <Modal
+            title={t('activerecord.models.registry_entries.actions.merge')}
+            trigger={t('activerecord.models.registry_entries.actions.merge')}
+            triggerClassName="flyout-sub-tabs-content-ico-link"
+        >
+            {
+                close => (
                     <div>
-                        <div
+                        <button
+                            type="button"
                             className="any-button"
-                            onClick={mergeRegistryEntries}
+                            onClick={() => {
+                                mergeRegistryEntries();
+                                close();
+                            }}
                         >
                             {t('submit')}
-                        </div>
+                        </button>
                     </div>
                 )
-            })}
-        >
-            {t('activerecord.models.registry_entries.actions.merge')}
-        </div>
+            }
+        </Modal>
     );
 }
 
 MergeRegistryEntriesButton.propTypes = {
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     selectedRegistryEntryIds: PropTypes.array.isRequired,
     submitData: PropTypes.func.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
 };

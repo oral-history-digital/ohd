@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { t } from 'modules/i18n';
@@ -77,6 +78,7 @@ export default class RegistryEntryForm extends React.Component {
                     onSubmit={params => {
                         this.props.submitData(this.props, params);
                         this.props.closeArchivePopup();
+                        this.props?.onSubmit();
                     }}
                     data={this.registryEntry()}
                     values={{
@@ -108,3 +110,16 @@ export default class RegistryEntryForm extends React.Component {
         );
     }
 }
+
+RegistryEntryForm.propTypes = {
+    registryEntryId: PropTypes.number,
+    registryEntryParent: PropTypes.object,
+    registryEntries: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    onSubmit: PropTypes.func,
+    submitData: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};

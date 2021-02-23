@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import { PixelLoader } from 'modules/spinners';
 import { AuthorizedContent, admin } from 'modules/auth';
+import { Modal } from 'modules/ui';
 import { t } from 'modules/i18n';
 import RegistryEntryContainer from './RegistryEntryContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
@@ -81,15 +82,20 @@ export default class RegistryEntries extends React.Component {
     addRegistryEntry() {
         return (
             <AuthorizedContent object={{type: 'RegistryEntry', action: 'create'}}>
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.registry_entry.new'),
-                        content: <RegistryEntryFormContainer registryEntryParent={this.props.registryEntryParent} />
-                    })}
+                <Modal
+                    title={t(this.props, 'edit.registry_entry.new')}
+                    trigger={t(this.props, 'edit.registry_entry.new')}
+                    triggerClassName="flyout-sub-tabs-content-ico-link"
                 >
-                    {t(this.props, 'edit.registry_entry.new')}
-                </div>
+                    {
+                        close => (
+                            <RegistryEntryFormContainer
+                                registryEntryParent={this.props.registryEntryParent}
+                                onSubmit={close}
+                            />
+                        )
+                    }
+                </Modal>
             </AuthorizedContent>
         );
     }
