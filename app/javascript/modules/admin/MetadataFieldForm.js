@@ -77,6 +77,7 @@ export default function MetadataFieldForm({
                     doNotTranslate: true,
                     withEmpty: true,
                     hidden: source !== 'RegistryReferenceType',
+                    help: 'help_texts.metadata_fields.ref_object_type',
                 },
                 {
                     elementType: 'select',

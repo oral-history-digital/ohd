@@ -527,6 +527,13 @@ ru:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
+  help_texts:
+    metadata_fields:
+      registry_reference_type_id: "Für Metadaten die aus Verknüpfungen zum Register resultieren z.B. Gruppe oder Geburtsort. Weitere Verküpfungsarten können unter 'Erschliessung' => 'Verknüpfungsarten bearbeiten' angelegt werden."
+      ref_object_type: Die andere Seite der Verknüpfung vom Register aus gesehen.
+    registry_reference_types:
+      code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Verknüpfungsart)
+      registry_entry_id: tiefst möglicher, z.B. der Registereintrag 'Orte' für die Verknüpfungsart 'Geburtsort'
   contributions:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen
@@ -901,11 +908,11 @@ ru:
         use_in_details_view: in der Detailansicht zeigen
         use_in_map_search: in der Kartensuche zeigen
         display_on_landing_page: Auf der Landing-Page zeigen
-        ref_object_type: Bezugsobjekt bei RegistryReferenceType als Source
-        source: Source
+        ref_object_type: Verknüpfung mit
+        source: Datenquelle
         label: Label
-        values: Values
-        registry_reference_type_id: RegistryReferenceType
+        values: Werte
+        registry_reference_type_id: Verknüpfungsart
       external_link:
         internal_name: Internal Name
       upload:
