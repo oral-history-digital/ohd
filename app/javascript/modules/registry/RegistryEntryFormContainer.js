@@ -1,24 +1,22 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import RegistryEntryForm from './RegistryEntryForm';
-import { submitData } from 'modules/data';
+import { submitData, getProjects, getRegistryEntries } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import RegistryEntryForm from './RegistryEntryForm';
 
-const mapStateToProps = (state) => {
-    return {
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
-        translations: state.archive.translations,
-        languages: state.data.languages,
-        registryEntries: state.data.registry_entries,
-        registryEntriesStatus: state.data.statuses.registry_entries,
-    }
-}
+const mapStateToProps = state => ({
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    translations: getTranslations(state),
+    registryEntries: getRegistryEntries(state),
+});
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup())
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+    closeArchivePopup,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntryForm);
