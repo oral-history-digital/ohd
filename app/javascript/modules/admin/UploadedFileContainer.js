@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { openArchivePopup, closeArchivePopup } from 'modules/ui';
+import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
 import { getLocale, getProjectId } from 'modules/archive';
 import DataList from './DataList';
@@ -56,7 +56,6 @@ const mapDispatchToProps = (dispatch) => ({
     fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
     deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
     submitData: (props, params) => dispatch(submitData(props, params)),
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 

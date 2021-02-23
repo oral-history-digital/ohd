@@ -27,8 +27,8 @@ export default function UserDetails({
                     title={t('edit.account.edit')}
                     trigger={<i className="fa fa-pencil"/>}
                 >
-                    {closeModal => (
-                        <UserDetailsFormContainer onSubmit={closeModal} />
+                    {close => (
+                        <UserDetailsFormContainer onSubmit={close} />
                     )}
                 </Modal>
             </div>

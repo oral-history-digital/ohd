@@ -1,7 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { admin } from 'modules/auth';
+import { AuthorizedContent } from 'modules/auth';
+import { Modal } from 'modules/ui';
 import { t } from 'modules/i18n';
 import PersonFormContainer from './PersonFormContainer';
 import fullname from './fullname';
@@ -9,53 +10,57 @@ import fullname from './fullname';
 export default class Person extends React.Component {
     edit() {
         return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
+            <Modal
                 title={t(this.props, 'edit.person.edit')}
-                onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'edit.person'),
-                    content: <PersonFormContainer person={this.props.data} />
-                })}
+                trigger={<i className="fa fa-pencil"/>}
+                triggerClassName="flyout-sub-tabs-content-ico-link"
             >
-                <i className="fa fa-pencil"></i>
-            </div>
-        )
-    }
-
-    destroy() {
-        this.props.deleteData(this.props, 'interviews', this.props.archiveId, 'contributions', this.props.contribution.id);
-        this.props.closeArchivePopup();
+                {close => (
+                    <PersonFormContainer
+                        person={this.props.data}
+                        onSubmitCallback={close}
+                    />
+                )}
+            </Modal>
+        );
     }
 
     delete() {
-        return <span
-            className='flyout-sub-tabs-content-ico-link'
-            title={t(this.props, 'delete')}
-            onClick={() => this.props.openArchivePopup({
-                title: `${t(this.props, 'delete')} ${t(this.props, 'contributions.' + this.props.contribution.contribution_type)}`,
-                content: (
+        return (
+            <Modal
+                title={`${t(this.props, 'delete')} ${t(this.props, 'contributions.' + this.props.contribution.contribution_type)}`}
+                trigger={<i className="fa fa-trash-o"/>}
+                triggerClassName="flyout-sub-tabs-content-ico-link"
+            >
+                {close => (
                     <div>
                         <p>{fullname(this.props, this.props.data)}</p>
-                        <div className='any-button' onClick={() => this.destroy()}>
+
+                        <button
+                            type="button"
+                            className="any-button"
+                            onClick={() => {
+                                this.props.deleteData(this.props, 'interviews', this.props.archiveId, 'contributions', this.props.contribution.id);
+                                close();
+                            }}
+                        >
                             {t(this.props, 'delete')}
-                        </div>
+                        </button>
                     </div>
-                )
-            })}
-        >
-            <i className="fa fa-trash-o"></i>
-        </span>
+                )}
+            </Modal>
+        );
     }
 
     buttons() {
-        if (admin(this.props, this.props.data)) {
-            return (
+        return (
+            <AuthorizedContent object={this.props.data}>
                 <span className={'flyout-sub-tabs-content-ico'}>
-                    {/* {this.edit()} */}
+                    {/*this.edit()*/}
                     {this.delete()}
                 </span>
-            )
-        }
+            </AuthorizedContent>
+        );
     }
 
     render() {
@@ -90,6 +95,4 @@ Person.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     deleteData: PropTypes.func.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
 };

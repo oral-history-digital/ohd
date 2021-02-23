@@ -1,4 +1,6 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+
 import RegistryEntryContainer from './RegistryEntryContainer';
 
 export default class RegistrySearchResult extends React.Component {
@@ -48,3 +50,8 @@ export default class RegistrySearchResult extends React.Component {
         )
     }
 }
+
+RegistrySearchResult.propTypes = {
+    result: PropTypes.object,
+    locale: PropTypes.string.isRequired,
+};

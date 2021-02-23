@@ -1,13 +1,14 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
-import { ArchivePopupButton } from 'modules/ui';
+import { Modal } from 'modules/ui';
 import { Form } from 'modules/forms';
 import { camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 import DataContainer from './DataContainer';
 
-export default class DataLists extends React.Component {
+export default class DataList extends React.Component {
 
     constructor(props) {
         super(props);
@@ -28,7 +29,7 @@ export default class DataLists extends React.Component {
 
     data() {
         if (this.props.data) {
-            return Object.keys(this.props.data).map((c, index) => {
+            return Object.keys(this.props.data).map((c) => {
                 return (
                     <DataContainer
                         data={this.props.data[c]}
@@ -51,17 +52,22 @@ export default class DataLists extends React.Component {
         }
     }
 
-    form(data) {
+    form(data, onSubmit) {
         if (this.props.form) {
             return React.createElement(this.props.form, {data: data});
         } else {
-            let _this = this;
             return (
                 <Form
                     data={data}
                     values={this.props.initialFormValues}
                     scope={this.props.scope}
-                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
+                    onSubmit={(params) => {
+                        this.props.submitData(this.props, params);
+                        this.props.closeArchivePopup();
+                        if (typeof onSubmit === 'function') {
+                            onSubmit();
+                        }
+                    }}
                     submitText='submit'
                     elements={this.props.formElements}
                 />
@@ -73,12 +79,12 @@ export default class DataLists extends React.Component {
         if (!this.props.hideAdd) {
             return (
                 <AuthorizedContent object={[{type: camelCase(this.props.scope), action: 'create', interview_id: this.props.interview?.id}, this.props.task]}>
-                    <ArchivePopupButton
+                    <Modal
                         title={t(this.props, `edit.${this.props.scope}.new`)}
-                        buttonFaKey='plus'
+                        trigger={<><i className="fa fa-plus"/> {t(this.props, `edit.${this.props.scope}.new`)}</>}
                     >
-                        {this.form()}
-                    </ArchivePopupButton>
+                        {close => this.form(undefined, close)}
+                    </Modal>
                 </AuthorizedContent>
             )
         }
@@ -93,3 +99,9 @@ export default class DataLists extends React.Component {
         );
     }
 }
+
+DataList.propTypes = {
+    fetchData: PropTypes.func.isRequired,
+    submitData: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};
