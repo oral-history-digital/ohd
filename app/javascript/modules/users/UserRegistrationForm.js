@@ -3,49 +3,45 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 
-export default class UserRegistrationForm extends React.Component {
-    render() {
-        return (
-            <Form
-                scope='user_registration'
-                onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
-                data={this.props.userRegistration}
-                values={{
-                    default_locale: this.props.locale
-                }}
-                submitText='submit'
-                elements={[
-                    //{
-                        //elementType: 'input',
-                        //attribute: 'first_name',
-                        //value: this.props.userRegistration && this.props.userRegistration.first_name,
-                        //type: 'text',
-                        //validate: function(v){return v.length > 1}
-                    //},
-                    //{
-                        //elementType: 'input',
-                        //attribute: 'last_name',
-                        //value: this.props.userRegistration && this.props.userRegistration.last_name,
-                        //type: 'text',
-                        //validate: function(v){return v.length > 1}
-                    //},
-                    {
-                        elementType: 'select',
-                        attribute: 'workflow_state',
-                        values: this.props.userRegistration && Object.values(this.props.userRegistration.workflow_states),
-                        value: this.props.userRegistration && this.props.userRegistration.workflow_state,
-                        optionsScope: 'workflow_states',
-                        withEmpty: true
-                    },
-                    {
-                        elementType: 'textarea',
-                        attribute: 'admin_comments',
-                        value: this.props.userRegistration && this.props.userRegistration.admin_comments,
-                    },
-                ]}
-            />
-        );
-    }
+export default function UserRegistrationForm({
+    userRegistration,
+    locale,
+    projectId,
+    projects,
+    submitData,
+    closeArchivePopup,
+    onSubmit,
+}) {
+    return (
+        <Form
+            scope='user_registration'
+            onSubmit={(params) => {
+                submitData({ locale, projectId, projects }, params);
+                closeArchivePopup();
+                if (typeof onSubmit === 'function') {
+                    onSubmit();
+                }
+            }}
+            data={userRegistration}
+            values={{ default_locale: locale }}
+            submitText='submit'
+            elements={[
+                {
+                    elementType: 'select',
+                    attribute: 'workflow_state',
+                    values: userRegistration && Object.values(userRegistration.workflow_states),
+                    value: userRegistration?.workflow_state,
+                    optionsScope: 'workflow_states',
+                    withEmpty: true
+                },
+                {
+                    elementType: 'textarea',
+                    attribute: 'admin_comments',
+                    value: userRegistration?.admin_comments,
+                },
+            ]}
+        />
+    );
 }
 
 UserRegistrationForm.propTypes = {
@@ -55,4 +51,5 @@ UserRegistrationForm.propTypes = {
     projects: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     closeArchivePopup: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func,
 };

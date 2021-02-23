@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 
 import { TasksContainer } from 'modules/workflow';
+import { Modal } from 'modules/ui';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { UserRolesContainer } from 'modules/roles';
@@ -89,17 +90,22 @@ export default class UserRegistration extends React.Component {
     show() {
         if (this.props.userRegistration.workflow_state != 'account_created') {
             return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
+                <Modal
                     title={t(this.props, 'edit.user_registration.edit')}
-                    onClick={() => this.props.openArchivePopup({
-                        title: t(this.props, 'edit.user_registration.edit'),
-                        content: <div>{this.details()}<UserRegistrationFormContainer userRegistration={this.props.userRegistration} /></div>
-                    })}
+                    trigger={<i className="fa fa-pencil"/>}
+                    triggerClassName="flyout-sub-tabs-content-ico-link"
                 >
-                    <i className="fa fa-pencil"></i>
-                </div>
-            )
+                    {close => (
+                        <div>
+                            {this.details()}
+                            <UserRegistrationFormContainer
+                                userRegistration={this.props.userRegistration}
+                                onSubmit={close}
+                            />
+                        </div>
+                    )}
+                </Modal>
+            );
         }
     }
 

@@ -73,6 +73,7 @@ export default class AdminActions extends React.Component {
         return (
             <AuthorizedContent object={{ type: 'Interview', action: 'destroy' }}>
                 <Modal
+                    title={t(this.props, 'edit.interviews.delete.title')}
                     trigger={t(this.props, 'edit.interviews.delete.title')}
                     triggerClassName="flyout-sub-tabs-content-ico-link"
                 >
@@ -101,6 +102,7 @@ export default class AdminActions extends React.Component {
         return (
             <AuthorizedContent object={{ type: 'Interview', action: 'update' }}>
                 <Modal
+                    title={t(this.props, `edit.interviews.${action}.title`)}
                     trigger={t(this.props, `edit.interviews.${action}.title`)}
                     triggerClassName="flyout-sub-tabs-content-ico-link"
                 >
@@ -129,6 +131,7 @@ export default class AdminActions extends React.Component {
         return (
             <AuthorizedContent object={{type: 'Interview', action: 'dois'}}>
                 <Modal
+                    title={t(this.props, 'doi.title')}
                     trigger={t(this.props, 'doi.title')}
                     triggerClassName="flyout-sub-tabs-content-ico-link"
                 >
