@@ -19,6 +19,7 @@ export default function MetadataFieldForm({
     locale,
     projectId,
     projects,
+    project,
     registryReferenceTypes,
     data,
     submitData,
@@ -52,6 +53,9 @@ export default function MetadataFieldForm({
                 closeArchivePopup()
             }}
             data={data}
+            values={{
+                project_id: project.id
+            }}
             elements={[
                 {
                     elementType: 'select',
@@ -138,6 +142,7 @@ export default function MetadataFieldForm({
 
 MetadataFieldForm.propTypes = {
     projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     registryReferenceTypes: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,

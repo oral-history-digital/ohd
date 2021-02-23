@@ -3,12 +3,13 @@ import { connect } from 'react-redux';
 import MetadataFieldForm from './MetadataFieldForm';
 import { submitData } from 'modules/data';
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
-import { getRegistryReferenceTypes, getProjects } from 'modules/data';
+import { getRegistryReferenceTypes, getProjects, getCurrentProject } from 'modules/data';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
+    project: getCurrentProject(state),
     projects: getProjects(state),
     registryReferenceTypes: getRegistryReferenceTypes(state),
 });
