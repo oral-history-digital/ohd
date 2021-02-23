@@ -8,7 +8,6 @@ export default function PersonForm({
     locale,
     projectId,
     projects,
-    closeArchivePopup,
     submitData,
     onSubmitCallback,
 }) {
@@ -17,9 +16,10 @@ export default function PersonForm({
             scope='person'
             onSubmit={(params) => {
                 submitData({ locale, projectId, projects }, params);
-                if (typeof closeArchivePopup === "function") {closeArchivePopup()};
-                if (typeof onSubmitCallback === "function") {onSubmitCallback()}}
-            }
+                if (typeof onSubmitCallback === "function") {
+                    onSubmitCallback();
+                }
+            }}
             data={person}
             submitText='submit'
             elements={[
@@ -69,6 +69,5 @@ PersonForm.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
     onSubmitCallback: PropTypes.func,
 };

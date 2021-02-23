@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
-import { openArchivePopup } from 'modules/ui';
 import { resetQuery, setQueryParams, searchInArchive, searchInMap } from '../actions';
 import ArchiveSearchForm from './ArchiveSearchForm';
 
@@ -25,7 +24,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
     resetQuery: (scope) => dispatch(resetQuery(scope)),
     searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),

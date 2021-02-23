@@ -1,26 +1,25 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import { openArchivePopup } from 'modules/ui';
-import { fetchData, getCurrentProject } from 'modules/data';
+import { fetchData, getCurrentProject, getCurrentAccount, getProjects, getRegistryEntries,
+    getRegistryEntriesStatus } from 'modules/data';
+import { getEditView, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import RegistryEntries from './RegistryEntries';
 
-const mapStateToProps = (state) => {
-    return {
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
-        translations: state.archive.translations,
-        registryEntries: state.data.registry_entries,
-        registryEntriesStatus: state.data.statuses.registry_entries,
-        project: getCurrentProject(state),
-        account: state.data.accounts.current,
-        editView: state.archive.editView,
-    }
-}
+const mapStateToProps = state => ({
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    translations: getTranslations(state),
+    registryEntries: getRegistryEntries(state),
+    registryEntriesStatus: getRegistryEntriesStatus(state),
+    project: getCurrentProject(state),
+    account: getCurrentAccount(state),
+    editView: getEditView(state),
+});
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntries);

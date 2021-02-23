@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 
-import { openArchivePopup } from 'modules/ui';
 import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { setViewMode } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
@@ -31,7 +30,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    openArchivePopup: (params) => dispatch(openArchivePopup(params)),
     searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
     setViewMode: (viewMode) => dispatch(setViewMode(viewMode)),
     hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),

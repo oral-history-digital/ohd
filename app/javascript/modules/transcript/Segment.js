@@ -247,6 +247,5 @@ Segment.propTypes = {
     translations: PropTypes.object.isRequired,
     account: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
     handleSegmentClick: PropTypes.func.isRequired,
 };

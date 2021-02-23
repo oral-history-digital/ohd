@@ -201,20 +201,6 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
-
-    renderPagination() {
-        if (this.props.resultPagesCount > 1) {
-            return (
-                <div>
-                    <ul className='search-results-pagination'>
-                        {this.renderPaginationTabs()}
-                    </ul>
-                    <div className='search-results-from-to'>{this.resultsFromTo()}</div>
-                </div>
-            )
-        }
-    }
-
     renderScrollObserver() {
         if (this.props.isArchiveSearching) {
             return <Spinner />;
@@ -237,28 +223,6 @@ export default class ArchiveSearch extends React.Component {
 
     currentPage() {
         return this.props.query['page'] != undefined ? this.props.query['page'] : 1;
-    }
-
-    renderPaginationTabs() {
-        let resultPages = []
-        for (let i = 1; i <= this.props.resultPagesCount; i++) {
-            resultPages.push(i);
-        }
-        return resultPages.map((page, index) => {
-            let pageClass = 'pagination-button'
-            if (this.currentPage() == page) {
-                pageClass = 'pagination-button active'
-            }
-            return (
-                <li
-                    className={pageClass}
-                    data-page={page}
-                    key={"page-" + index}
-                    onClick={this.handleClick}>
-                    {page}
-                </li>
-            )
-        })
     }
 
     saveSearchForm(onSubmit) {
@@ -284,7 +248,7 @@ export default class ArchiveSearch extends React.Component {
                 trigger={<><i className="fa fa-star"></i><span>{t(this.props, 'save_search')}</span></>}
                 triggerClassName="search-results-ico-link"
             >
-                {closeModal => this.saveSearchForm(closeModal)}
+                {close => this.saveSearchForm(close)}
             </Modal>
         );
     }
@@ -292,7 +256,7 @@ export default class ArchiveSearch extends React.Component {
     exportSearch() {
         let query = this.props.query;
         delete query['page'];
-        let url = `/${pathBase(this.props)}/searches/archive.csv`;
+        let url = `${pathBase(this.props)}/searches/archive.csv`;
         for (let i = 0, len = Object.keys(query).length; i < len; i++) {
             let param = Object.keys(query)[i]
             url += (i === 0) ? '?' : '&'
@@ -301,7 +265,7 @@ export default class ArchiveSearch extends React.Component {
         return (
             <ul>
                 <li>
-                    <a href={url}>CSV</a>
+                    <a href={url} download>CSV</a>
                 </li>
             </ul>
         )
@@ -310,13 +274,14 @@ export default class ArchiveSearch extends React.Component {
     exportSearchLink() {
         if(Object.keys(this.props.query).length > 0 && this.props.projectId !== "dg") {
             return (
-                <div className="search-results-ico-link" onClick={() => this.props.openArchivePopup({
-                    title: t(this.props, 'export_search_results'),
-                    content: this.exportSearch()
-                })}>
-                <i className="fa fa-download"></i><span>{t(this.props, 'export_search_results')}</span>
-                </div>
-            )
+                <Modal
+                    title={t(this.props, 'export_search_results')}
+                    trigger={<><i className="fa fa-download"></i><span>{t(this.props, 'export_search_results')}</span></>}
+                    triggerClassName="search-results-ico-link"
+                >
+                    {this.exportSearch()}
+                </Modal>
+            );
         } else return null;
     }
 
@@ -418,7 +383,6 @@ ArchiveSearch.propTypes = {
     resultPagesCount: PropTypes.number.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,
     listColumns: PropTypes.array.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
     setViewMode: PropTypes.func.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
     hideFlyoutTabs: PropTypes.func.isRequired,
