@@ -8,11 +8,8 @@ class InterviewSerializer < ApplicationSerializer
     :video,
     :media_type,
     :duration,
-    :duration_seconds,
-    :duration_human,
     :translated,
     :interview_date,
-    :language,
     :languages,
     :language_id,
     :lang,
@@ -94,17 +91,6 @@ class InterviewSerializer < ApplicationSerializer
     object.video? ? true : false
   end
 
-  def language
-    if object.language
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = "#{object.language.to_s(locale)} #{(object.translated) ? I18n.t("status.translated", locale: locale) : ""}"
-        mem
-      end
-    else
-      {}
-    end
-  end
-
   def media_type
     object.media_type && object.media_type.downcase
   end
@@ -146,10 +132,6 @@ class InterviewSerializer < ApplicationSerializer
     # Further a timecode is human readable sth like 14785 not so.
     #
     Timecode.new(object.duration).timecode
-  end
-
-  def duration_seconds
-    object.duration
   end
 
   def segments

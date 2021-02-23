@@ -4,6 +4,7 @@ import MetadataFieldForm from './MetadataFieldForm';
 import { submitData } from 'modules/data';
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
 import { getRegistryReferenceTypes, getProjects } from 'modules/data';
+import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
@@ -14,6 +15,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
     submitData: (props, params) => dispatch(submitData(props, params)),
+    closeArchivePopup: () => dispatch(closeArchivePopup()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(MetadataFieldForm);

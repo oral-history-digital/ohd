@@ -64,7 +64,7 @@ export default class TableOfContents extends React.Component {
                         heading: mainheading,
                         time: segment.time,
                         tape_nbr: segment.tape_nbr,
-                        duration: this.props.interview.duration_seconds,
+                        duration: this.props.interview.duration,
                         subheadings: []
                     });
                     if (headings.length > 1) {
@@ -94,7 +94,7 @@ export default class TableOfContents extends React.Component {
                             chapter: mainIndex + '.' + subIndex + '.',
                             time: segment.time,
                             tape_nbr: segment.tape_nbr,
-                            duration: this.props.interview.duration_seconds
+                            duration: this.props.interview.duration
                         });
                         if (headings[mainIndex - 1].subheadings.length > 1) {
                             if (index < (this.props.interview.headings.length)) {

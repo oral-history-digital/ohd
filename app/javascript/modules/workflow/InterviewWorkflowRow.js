@@ -6,6 +6,7 @@ import missingStill from 'assets/images/missing_still.png';
 import { loadIntervieweeWithAssociations } from 'modules/interview-preview';
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { pathBase } from 'modules/routes';
+import { humanReadable } from 'modules/data';
 import { t } from 'modules/i18n';
 import TaskContainer from './TaskContainer';
 
@@ -61,7 +62,7 @@ export default class InterviewWorkflowRow extends React.Component {
     box(value, width='17-5') {
         return (
             <div className={`box box-${width}`}>
-                {value}
+                {humanReadable(this.props.interview, value, this.props, this.state)}
             </div>
         )
     }
@@ -160,11 +161,11 @@ export default class InterviewWorkflowRow extends React.Component {
             <div className='border-top' key={`interview-workflow-${this.props.interview.archive_id}`}>
                 <div className='search-result-workflow data boxes' key={`${this.props.interview.archive_id}-collapsed-view`}>
                     {this.intervieweeWithPhoto()}
-                    {this.box(this.props.interview.archive_id, '10')}
-                    {this.box(this.props.interview.media_type, '10')}
-                    {this.box(this.props.interview.duration_human, '10')}
-                    {this.box(this.props.interview.language[this.props.locale], '10')}
-                    {this.box(this.props.interview.collection[this.props.locale], '10')}
+                    {this.box('archive_id', '10')}
+                    {this.box('media_type', '10')}
+                    {this.box('duration', '10')}
+                    {this.box('language_id', '10')}
+                    {this.box('collection_id', '10')}
                     <div className={`box-30 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
                         {this.symbols()}
                     </div>
@@ -174,7 +175,6 @@ export default class InterviewWorkflowRow extends React.Component {
                             obj={this.props.interview}
                             attribute={'workflow_state'}
                             values={['public', 'unshared']}
-                            value={t(this.props, `workflow_states.${this.props.interview.workflow_state}`)}
                             optionsScope={'workflow_states'}
                             noStatusCheckbox={true}
                             noLabel={true}

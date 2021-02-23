@@ -6,19 +6,13 @@ import { useI18n } from 'modules/i18n';
 
 const NAME_VALUES = {
     Interview: [
-        "language", "media_type", "archive_id", "interview_date", "duration", "tape_count",
+        "media_type", "archive_id", "interview_date", "duration", "tape_count",
         "language_id", "observations", "workflow_state", "tasks_user_account_ids",
-        "tasks_supervisor_ids", "duration_human"
+        "tasks_supervisor_ids"
     ],
     Person: [
         "date_of_birth", "year_of_birth", "gender"
     ],
-    Language: [
-        "language_id"
-    ],
-    Collection: [
-        "collection_id"
-    ]
 }
 
 export default function MetadataFieldForm({
@@ -28,6 +22,7 @@ export default function MetadataFieldForm({
     registryReferenceTypes,
     data,
     submitData,
+    closeArchivePopup,
 }) {
     const { t } = useI18n();
     const [source, setSource] = useState(data?.source);
@@ -54,13 +49,14 @@ export default function MetadataFieldForm({
             scope='metadata_field'
             onSubmit={(params) => {
                 submitData({ locale, projectId, projects }, params);
+                closeArchivePopup()
             }}
             data={data}
             elements={[
                 {
                     elementType: 'select',
                     attribute: 'source',
-                    values: ['Person', 'Interview', 'RegistryReferenceType','Language', 'Collection'],
+                    values: ['Person', 'Interview', 'RegistryReferenceType'],
                     doNotTranslate: true,
                     withEmpty: true,
                     handlechangecallback: handleSourceChange,
@@ -88,7 +84,7 @@ export default function MetadataFieldForm({
                     values: nameValuesForSource(),
                     doNotTranslate: true,
                     withEmpty: true,
-                    hidden: ['RegistryReferenceType', 'Collection', 'Language'].indexOf(source) > -1,
+                    hidden: source === 'RegistryReferenceType',
                 },
                 {
                     attribute: 'label',

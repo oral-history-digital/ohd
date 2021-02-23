@@ -36,7 +36,7 @@ export default class InterviewTextMaterials extends React.Component {
     render() {
         const { interview, project, locale } = this.props;
 
-        if (!interview.language) {
+        if (!interview.language_id) {
             return null;
         }
 

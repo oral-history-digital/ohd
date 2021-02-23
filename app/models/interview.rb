@@ -561,18 +561,6 @@ class Interview < ApplicationRecord
     end
   end
 
-  #def duration
-    #@duration ||= Timecode.new read_attribute(:duration)
-  #end
-
-  def duration_human
-    if duration && duration > 0
-      Time.at(duration).utc.strftime("%-Hh %Mmin")
-    else
-      "---"
-    end
-  end
-
   # Sets the duration either as an integer in seconds,
   # or applies a timecode by parsing. Even sub-timecodes
   # such as HH:MM are allowed.

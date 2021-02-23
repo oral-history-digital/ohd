@@ -1,4 +1,5 @@
 import { t } from 'modules/i18n';
+import { pluralize } from 'modules/strings';
 
 export default function humanReadable(obj, attribute, props, state, none='---') {
     let translation = obj.translations && obj.translations.find(t => t.locale === props.locale)
@@ -13,11 +14,20 @@ export default function humanReadable(obj, attribute, props, state, none='---') 
     if (props.translations[props.locale].hasOwnProperty(value))
         value = t(props, value);
 
-    if (/\w+_id/.test(attribute) && attribute !== 'archive_id') // get corresponding name from e.g. collection_id
-        value = props.values[value] && props.values[value].name
+    if (/\w+_id/.test(attribute) && attribute !== 'archive_id') { // get corresponding name from e.g. collection_id
+        if (props.values) {
+            value = props.values[value]?.name
+        } else {
+            let associatedData = pluralize(attribute.substring(0, attribute.length - 3));
+            value = props[associatedData] && props[associatedData][value]?.name
+        }
+    }
 
     if (typeof value === 'object' && value !== null)
         value = value[props.locale]
+
+    if (attribute === 'duration')
+        value = `${value.split(':')[0]}h ${value.split(':')[1]}min`
 
     if (typeof value === 'string' && state.collapsed)
         value = value.substring(0,25)

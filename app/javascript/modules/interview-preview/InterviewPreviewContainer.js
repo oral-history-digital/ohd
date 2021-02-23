@@ -23,6 +23,8 @@ const mapStateToProps = (state, props) => {
         account: state.data.accounts.current,
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
+        languages: state.data.languages,
+        languagesStatus: state.data.statuses.languages,
         interviewee: getInterviewee(state, props),
         optionsScope: 'search_facets' // for the humanReadable function
     }

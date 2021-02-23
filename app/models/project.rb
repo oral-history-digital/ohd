@@ -190,7 +190,8 @@ class Project < ApplicationRecord
       when "Person", "Interview"
         facet_label_hash = facet.localized_hash(:label)
         name = facet_label_hash || localized_hash_for("search_facets", facet.name)
-        if facet.name == "year_of_birth"
+        case facet.name
+        when "year_of_birth"
           mem[facet.name.to_sym] = {
             name: name,
             subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
@@ -203,7 +204,8 @@ class Project < ApplicationRecord
               subfacets
             end,
           }
-        elsif %w(tasks_user_account_ids tasks_supervisor_ids).include?(facet.name)
+        # admin facets
+        when "tasks_user_account_ids", "tasks_supervisor_ids"
           # add filters for tasks
           mem[facet.name.to_sym] = {
             name: name,
@@ -215,6 +217,40 @@ class Project < ApplicationRecord
               subfacets
             end
           }
+        when "collection_id"
+          facet_label_hash = facet.localized_hash(:label)
+          cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+            {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: collections.includes(:translations).inject({}) do |subfacets, sf|
+                subfacets[sf.id.to_s] = {
+                  name: sf.localized_hash(:name),
+                  count: 0,
+                  homepage: sf.try(:localized_hash, :homepage),
+                  institution: sf.try(:localized_hash, :institution),
+                  notes: sf.try(:localized_hash, :notes),
+                }
+                subfacets
+              end
+            }
+          end
+        when /_id$/ # belongs_to associations like language on interview
+          facet_label_hash = facet.localized_hash(:label)
+          associatedModel = facet.name.sub('_id', '').classify.constantize
+          cache_key_date = [associatedModel.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+            {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: associatedModel.all.includes(:translations).inject({}) do |subfacets, sf|
+                subfacets[sf.id.to_s] = {
+                  name: sf.localized_hash(:name),
+                  count: 0
+                }
+                subfacets
+              end
+            }
+          end
         else
           mem[facet.name.to_sym] = {
             name: name,
@@ -222,39 +258,6 @@ class Project < ApplicationRecord
               subfacets[key.to_s] = {
                 name: localized_hash_for("search_facets", key),
                 count: 0,
-              }
-              subfacets
-            end
-          }
-        end
-      when "Language"
-        facet_label_hash = facet.localized_hash(:label)
-        cache_key_date = [Language.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
-          {
-            name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
-              subfacets[sf.id.to_s] = {
-                name: sf.localized_hash(:name),
-                count: 0
-              }
-              subfacets
-            end
-          }
-        end
-      when "Collection"
-        facet_label_hash = facet.localized_hash(:label)
-        cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
-          {
-            name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
-              subfacets[sf.id.to_s] = {
-                name: sf.localized_hash(:name),
-                count: 0,
-                homepage: sf.try(:localized_hash, :homepage),
-                institution: sf.try(:localized_hash, :institution),
-                notes: sf.try(:localized_hash, :notes),
               }
               subfacets
             end

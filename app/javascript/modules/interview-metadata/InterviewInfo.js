@@ -37,7 +37,7 @@ export default class InterviewInfo extends React.Component {
     }
 
     render() {
-        if (this.props.interview && this.props.interview.language) {
+        if (this.props.interview && this.props.interview.language_id) {
             return (
                 <div>
                     <SingleValueWithFormContainer
@@ -66,7 +66,6 @@ export default class InterviewInfo extends React.Component {
                     />
                     <SingleValueWithFormContainer
                         obj={this.props.interview}
-                        value={this.props.interview.duration_human}
                         validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
                         metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'duration')}
                     />

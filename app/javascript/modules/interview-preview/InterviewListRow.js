@@ -4,6 +4,7 @@ import {Link} from 'react-router-dom';
 
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
+import { humanReadable } from 'modules/data';
 import { AuthShowContainer, admin } from 'modules/auth';
 import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 
@@ -59,13 +60,16 @@ export default class InterviewListRow extends React.Component {
         const { interviewee } = this.props;
 
         let props = this.props;
+        let state = this.state;
         let cols = this.props.project.list_columns.map(function(column, i){
-            let value = (column.ref_object_type === 'Interview' || column.source === 'Interview') ? props.interview[column.name] : (interviewee && interviewee[column.name]);
-            if (typeof value === 'object' && value !== null)
-                value = value[props.locale]
+            let obj = (column.ref_object_type === 'Interview' || column.source === 'Interview') ?
+                props.interview :
+                interviewee;
             return (
-                <td key={i}>{value || '---'}</td>
-            )
+                <td key={column.name} >
+                    {humanReadable(obj, column.name, props, {})}
+                </td>
+            );
         })
         if (this.props.fulltext && this.resultsCount() > 0) {
             cols.push(

@@ -21,6 +21,10 @@ const mapStateToProps = (state, props) => {
         selectedArchiveIds: state.archive.selectedArchiveIds,
         people: state.data.people,
         peopleStatus: state.data.statuses.people,
+        languages: state.data.languages,
+        languagesStatus: state.data.statuses.languages,
+        collections: state.data.collections,
+        collectionsStatus: state.data.statuses.collections,
         interviewee: getInterviewee(state, props),
     }
 }

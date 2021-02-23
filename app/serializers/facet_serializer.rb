@@ -9,15 +9,6 @@ class FacetSerializer < ApplicationSerializer
 
   def subfacets
     case object.class.name
-    when "RegistryEntry"
-      object.children.includes(registry_names: :translations).inject({}) do |mem, child|
-        mem[child.id.to_s] = {
-          name: child.localized_hash(:descriptor),
-          count: 0,
-          priority: child.list_priority,
-        }
-        mem
-      end
     when "RegistryReferenceType"
       object.registry_entry.children.includes(registry_names: :translations).inject({}) do |mem, child|
         mem[child.id.to_s] = {
