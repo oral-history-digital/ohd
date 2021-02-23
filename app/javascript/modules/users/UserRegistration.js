@@ -188,5 +188,4 @@ UserRegistration.propTypes = {
     translations: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
     account: PropTypes.object.isRequired,
-    openArchivePopup: PropTypes.func.isRequired,
 };
