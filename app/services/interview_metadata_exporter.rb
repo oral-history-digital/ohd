@@ -177,7 +177,7 @@ class InterviewMetadataExporter
     xml.Content {
       xml.Genre 'Oral History Interview'
       xml.SubGenre 'unspecified'
-      xml.Topic '?'
+      xml.Topic @interview.collection.name if @interview.collection.present?
       xml.Modality {
         xml.Modality 'Spoken'
       }
