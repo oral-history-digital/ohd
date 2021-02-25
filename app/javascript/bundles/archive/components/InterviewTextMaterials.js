@@ -16,12 +16,8 @@ export default class InterviewTextMaterials extends React.Component {
         return this.props.interview.segments[1] && this.props.interview.segments[1][this.props.interview.first_segments_ids[1]];
     }
 
-    existsPublicTranscript() {
-        return !!this.firstSegment() && this.props.interview.workflow_state === 'public';
-    }
-
     download(lang, condition) {
-        if (condition && this.firstSegment().text[`${lang}-public`]) {
+        if (condition && this.firstSegment()) {
             // let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
             return (
                 <a href={`${this.to()}.pdf?lang=${lang}`} className='flyout-content-data'>
@@ -52,19 +48,13 @@ export default class InterviewTextMaterials extends React.Component {
                         metadataField={Object.values(project.metadata_fields).find(m => m.name === 'observations')}
                     />
                 </AuthorizedContent>
-                {
-                    (this.existsPublicTranscript()) ?
-                        (<div>
-                            <AuthShowContainer ifLoggedIn={true}>
-                                <p>
-                                    <span className='flyout-content-label'>{t(this.props, 'transcript')}:</span>
-                                    {this.download(interview.lang, true)}
-                                    {this.download(locale, (interview.languages.indexOf(locale) > -1 && interview.lang !== locale))}
-                                </p>
-                            </AuthShowContainer>
-                        </div>) :
-                        null
-                }
+                <AuthShowContainer ifLoggedIn={true}>
+                    <p>
+                        <span className='flyout-content-label'>{t(this.props, 'transcript')}:</span>
+                        {this.download(interview.lang, true)}
+                        {this.download(locale, (interview.languages.indexOf(locale) > -1 && interview.lang !== locale))}
+                    </p>
+                </AuthShowContainer>
             </>
         );
     }
