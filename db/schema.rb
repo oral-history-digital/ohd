@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_02_25_060155) do
+ActiveRecord::Schema.define(version: 2021_02_25_123151) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -733,9 +733,9 @@ ActiveRecord::Schema.define(version: 2021_02_25_060155) do
     t.datetime "processed_at"
     t.datetime "activated_at"
     t.boolean "anonymized", default: false
-    t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true
-    t.index ["login"], name: "index_user_accounts_on_login", unique: true
-    t.index ["reset_password_token"], name: "index_user_accounts_on_reset_password_token", unique: true
+    t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true, length: 191
+    t.index ["login"], name: "index_user_accounts_on_login", unique: true, length: 191
+    t.index ["reset_password_token"], name: "index_user_accounts_on_reset_password_token", unique: true, length: 191
   end
 
   create_table "user_contents", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
