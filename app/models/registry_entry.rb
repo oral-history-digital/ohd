@@ -37,7 +37,7 @@ class RegistryEntry < ApplicationRecord
            through: :child_registry_hierarchies
 
   has_many :registry_entry_relations
-  has_many :related_registry_entries, 
+  has_many :related_registry_entries,
            through: :registry_entry_relations,
            source: :related
 
@@ -82,10 +82,10 @@ class RegistryEntry < ApplicationRecord
     ancestors
   end
 
-  def children 
+  def children
     descendants
   end
-    
+
   # A registry entry may not be deleted if it still has children or
   # references pointing to it.
   def before_destroy
@@ -99,7 +99,7 @@ class RegistryEntry < ApplicationRecord
 
   searchable do
     string :archive_id, :multiple => true, :stored => true do
-      registry_references.map{|i| i.archive_id } 
+      registry_references.map{|i| i.archive_id }
     end
     string :workflow_state
     I18n.available_locales.each do |locale|
@@ -120,7 +120,7 @@ class RegistryEntry < ApplicationRecord
   # Order registry entries lexicographically by name even when they
   # consist of several distinct registry names (ie. several name
   # types or name positions).
-  scope :ordered_by_name, ->(locale) { 
+  scope :ordered_by_name, ->(locale) {
     joins(registry_names: [:translations, :registry_name_type]).
     where('registry_name_translations.locale': locale).
     group('registry_entries.id').
@@ -150,6 +150,17 @@ class RegistryEntry < ApplicationRecord
   }
 
   scope :with_location, -> { where("latitude <> '' AND longitude <> ''")}
+
+  # Get all registry entries with names so that a tree can be built by the frontend.
+  # TODO: Decide wether workflow_state should be 'public'.
+  scope :for_tree, -> (locale) {
+    joins('LEFT OUTER JOIN registry_hierarchies ON registry_entries.id = registry_hierarchies.descendant_id LEFT OUTER JOIN registry_names ON registry_entries.id = registry_names.registry_entry_id LEFT OUTER JOIN registry_name_translations ON registry_names.id = registry_name_translations.registry_name_id')
+    .where('registry_name_translations.locale': locale)
+    .group('registry_entries.id, registry_hierarchies.ancestor_id')
+    .order('registry_entries.id')
+    .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor) AS label, registry_hierarchies.ancestor_id AS parent')
+  }
+
 
   def identifier
     id
@@ -199,19 +210,19 @@ class RegistryEntry < ApplicationRecord
     registry_entry_relations.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
     registry_references.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
 
-    child_registry_hierarchies.each do |rh| 
+    child_registry_hierarchies.each do |rh|
       if RegistryHierarchy.where(ancestor_id: merge_to_id, descendant_id: rh.descendant_id).exists?
-        rh.destroy 
+        rh.destroy
       else
-        rh.update_attribute(:ancestor_id, merge_to_id) 
+        rh.update_attribute(:ancestor_id, merge_to_id)
       end
     end
 
-    parent_registry_hierarchies.each do |rh| 
+    parent_registry_hierarchies.each do |rh|
       if RegistryHierarchy.where(ancestor_id: rh.ancestor_id, descendant_id: merge_to_id).exists?
         rh.destroy
       else
-        rh.update_attribute(:descendant_id, merge_to_id) 
+        rh.update_attribute(:descendant_id, merge_to_id)
       end
     end
   end
@@ -242,7 +253,7 @@ class RegistryEntry < ApplicationRecord
 
   def bread_crumb
     if parents.count > 0
-      parents.inject({}){|mem, parent| mem[parent.id] = parent.bread_crumb; mem} 
+      parents.inject({}){|mem, parent| mem[parent.id] = parent.bread_crumb; mem}
     end
   end
 
@@ -263,7 +274,7 @@ class RegistryEntry < ApplicationRecord
       registry_entry = RegistryEntry.create code: code, desc: code, workflow_state: "public", list_priority: false
       RegistryHierarchy.create(ancestor_id: parent_id, descendant_id: registry_entry.id) if parent_id
 
-      names_w_locales.gsub("\"", '').split('#').each do |name_w_locale| 
+      names_w_locales.gsub("\"", '').split('#').each do |name_w_locale|
         locale, names = name_w_locale.split('::')
         names.split(';').each_with_index do |name, index|
           registry_name = registry_entry.registry_names.find_by_name_position index
@@ -281,13 +292,13 @@ class RegistryEntry < ApplicationRecord
       descendant = nil
       parent = find_by_code parent_code
       locale, names = descendant_name.split('::')
-      parent.children.each do |c| 
+      parent.children.each do |c|
         descendant = c if c.names_w(locale) == names
         #descendant = c if c.registry_names.first.translations.map(&:descriptor).include?(descendant_name)
       end
 
       if descendant.nil? && descendant_name.length > 2
-        descendant = RegistryEntry.create_with_parent_and_names(parent.id, descendant_name, names.gsub(/\s+/, '_').downcase) 
+        descendant = RegistryEntry.create_with_parent_and_names(parent.id, descendant_name, names.gsub(/\s+/, '_').downcase)
       end
       descendant
     end
@@ -316,7 +327,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   def descriptor=(descriptor)
-    # do not overwrite the first names descriptor with the 
+    # do not overwrite the first names descriptor with the
     # joined descriptors of all other names (gathered from e.g. registry_entries-export)
     #
     if registry_names.count == 1
@@ -334,7 +345,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   def notes=(notes)
-    # do not overwrite the first names note with the 
+    # do not overwrite the first names note with the
     # joined notes of all other names (gathered from e.g. registry_entries-export)
     #
     if registry_names.count == 1

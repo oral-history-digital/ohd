@@ -114,6 +114,17 @@ class RegistryEntriesController < ApplicationController
     end
   end
 
+  def tree
+    registry_entries = RegistryEntry.for_tree(I18n.locale)
+    authorize registry_entries
+
+    respond_to do |format|
+      format.json do
+        render json: registry_entries, each_serializer: SlimRegistryEntrySerializer
+      end
+    end
+  end
+
   def merge
     @registry_entry = RegistryEntry.find(params[:id])
     authorize @registry_entry
@@ -161,17 +172,17 @@ class RegistryEntriesController < ApplicationController
 
   def registry_entry_params
     params.require(:registry_entry).permit(
-      :workflow_state, 
-      :parent_id, 
-      :latitude, 
-      :longitude, 
+      :workflow_state,
+      :parent_id,
+      :latitude,
+      :longitude,
       registry_names_attributes: [
         :id,
         :registry_entry_id,
-        :registry_name_type_id, 
-        :name_position, 
-        :descriptor, 
-        :notes, 
+        :registry_name_type_id,
+        :name_position,
+        :descriptor,
+        :notes,
         translations_attributes: [:locale, :id, :descriptor, :notes]
       ]
     )
