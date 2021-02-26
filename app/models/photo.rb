@@ -4,19 +4,9 @@ class Photo < ApplicationRecord
   belongs_to :interview
   has_one_attached :photo
 
-  # TODO: fit this again to be used in zwar?
-  #has_attached_file :photo,
-                    #:styles => { :thumb => "240x80", :original => "500x500>" },
-                    #:url => (ApplicationController.relative_url_root || '') + "/interviews/:interview/photos/:basename_:style.:extension",
-                    #:path => ":rails_root/assets/archive_images/gallery/:basename_:style.:extension"
-
   translates :caption, fallbacks_for_empty_translations: false, touch: true
 
   scope :for_file, -> (filename) { where('photo_file_name LIKE ?', (filename || '').sub(/([^.]+)_\w+(\.\w{3,4})?$/,'\1\2') + '%') }
-
-  # TODO: fit this again to be used in zwar?
-  #validates_attachment_presence :photo
-  #validates_attachment_content_type :photo, :content_type => ['image/jpeg', 'image/png']
 
   validates_associated :interview
 
