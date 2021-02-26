@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 
 import { UserRolesContainer } from 'modules/roles';
 import { TasksOnlyStatusEditableContainer } from 'modules/workflow';
-import { AuthShowContainer } from 'modules/auth';
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
+import { Features } from 'modules/features';
 import { INDEX_ACCOUNT } from 'modules/flyout-tabs';
 import { t } from 'modules/i18n';
 import UserDetailsContainer from './UserDetailsContainer';
@@ -101,6 +102,10 @@ export default class WrappedAccount extends React.Component {
                         {/* own supervised tasks (cleared)*/}
                         {this.tasks('closed_supervised_other', account && Object.values(account.supervised_tasks).filter(t => t.workflow_state === 'cleared'))}
                     </div>
+
+                    <AuthorizedContent object={{type: 'General', action: 'edit'}}>
+                        <Features />
+                    </AuthorizedContent>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut={true}>
                     {t(this.props, 'devise.failure.unauthenticated')}

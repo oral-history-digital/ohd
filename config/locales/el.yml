@@ -1097,3 +1097,8 @@ el:
   annotation_for_interview: Παρατηρήσεις πάνω στη συνέντευξη
 
   interview_title_patterns:
+
+  modules:
+    features:
+      experimental_features: "Experimental Features"
+      tree_select: "Tree select for registry entries"

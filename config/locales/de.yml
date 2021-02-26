@@ -1082,3 +1082,8 @@ de:
               too_long: Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.
 
   interview_title_patterns:
+
+  modules:
+    features:
+      experimental_features: "Experimentelle Funktionen"
+      tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
