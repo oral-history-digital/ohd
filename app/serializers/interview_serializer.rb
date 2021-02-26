@@ -32,27 +32,21 @@ class InterviewSerializer < ApplicationSerializer
     :properties,
     :signature_original,
     :task_ids
-  #] | Project.first.metadata_fields.map(&:name)
-  ] | Project.first.metadata_fields.where("source='Interview' OR ref_object_type='Interview'").map(&:name)
+  ]
+
+  def attributes(*args)
+    hash = super
+    object.project.registry_reference_type_metadata_fields.where(ref_object_type: 'Interview').each do |m|
+      hash[m.name] = object.project.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+        mem
+      end
+    end
+    hash
+  end
 
   def collection
     object.collection && object.collection.localized_hash(:name) || {}
-  end
-
-  Project.current.registry_reference_type_metadata_fields.where(ref_object_type: 'Interview').each do |m|
-    define_method m.name do
-      # can handle object.send(m.name) = nil
-      json = Rails.cache.fetch("#{object.project.cache_key_prefix}-#{m.name}-#{object.id}-#{object.updated_at}-#{m.updated_at}") do
-        if !!object.send(m.name).try("any?")
-          I18n.available_locales.inject({}) do |mem, locale|
-            mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
-            mem
-          end
-        else
-          {}
-        end
-      end
-    end
   end
 
   def landing_page_texts
