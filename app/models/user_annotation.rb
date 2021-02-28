@@ -54,10 +54,6 @@ class UserAnnotation < UserContent
     write_property :author, name
   end
 
-  def archive_id
-    media_id[Regexp.new("^#{Project.current.initials}\\d{3}", Regexp::IGNORECASE)].downcase
-  end
-
   def timecode_string(locale)
     @timecode_string ||= "#{I18n.t(Tape, locale: locale)} #{reference.tape.number}, #{reference.timecode.to_s.sub(/^\[\d+\]/,'').split('.').first || ''}"
   end
