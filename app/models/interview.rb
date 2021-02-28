@@ -154,14 +154,6 @@ class Interview < ApplicationRecord
 
   accepts_nested_attributes_for :translations, :contributions
 
-  #validate :has_standard_name
-
-  #def has_standard_name
-    #if self.last_name(I18n.default_locale).blank?
-      #errors.add(:last_name, ' must be set for default locale (=standard name).')
-    #end
-  #end
-
   validates_associated :collection
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
@@ -293,10 +285,6 @@ class Interview < ApplicationRecord
 
   scope :shared, -> {where(workflow_state: 'public')}
   scope :with_media_type, -> {where.not(media_type: nil)}
-
-  # TODO: remove or replace this
-  #scope :researched, -> {where(researched: true)}
-  #scope :with_still_image, -> {where.not(still_image_file_name: nil)}
 
   def interviewee_id
     interviewees.first && interviewees.first.id
