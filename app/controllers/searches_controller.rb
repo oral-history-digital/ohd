@@ -106,9 +106,7 @@ class SearchesController < ApplicationController
 
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}" do
           # define marker types
-          registry_reference_type_codes = %w(birth_location deportation_location return_location company camp)
           selected_registry_reference_types = RegistryReferenceType.
-            where(code: registry_reference_type_codes).
             joins(:metadata_fields).
             where("metadata_fields.use_in_map_search": true, "metadata_fields.project_id": current_project.id)
 
