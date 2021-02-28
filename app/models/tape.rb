@@ -20,22 +20,6 @@ class Tape < ApplicationRecord
 
   #after_save :update_interview_duration
 
-  # check that this tape matches the existing number
-  # of tapes in it's media_id
-  #
-  # also validate that the media_id references the correct interview
-  def validate_on_create
-    unless media_id[/\w{2}\d+/].downcase == interview.archive_id.downcase
-      errors.add(:media_id, 'Media-ID passt nicht nicht zum Interview.')
-    end
-    unless interview.tapes.blank?
-      number_of_tapes = interview.tapes.first.media_id.split('_')[1]
-      unless media_id.split('_')[1] == number_of_tapes
-        errors.add(:media_id, 'Gesamtzahl der Bänder stimmt nicht überein mit anderen Bändern des Interviews.')
-      end
-    end
-  end
-
   workflow do
     state :digitized do
       event :import, :transitions_to => :segmented
@@ -48,15 +32,11 @@ class Tape < ApplicationRecord
   end
 
   def total_number_of_tapes
-    if Project.current.identifier.to_sym == :mog
-      interview.tapes.count
-    else
-      media_id.sub(/^[A-Z_]+\d+_/, '')[/^\d+/].to_i
-    end
+    interview.tapes.count
   end
 
   def next
-    Tape.where(interview_id: interview.id).where('lower(media_id) = ?', "#{interview.archive_id}_#{format( '%02d', total_number_of_tapes)}_#{format( '%02d', number + 1)}".downcase).first
+    interview.tapes.where(number:  number + 1)
   end
 
   def media_file(extension, subdirectories=false)

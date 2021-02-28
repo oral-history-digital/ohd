@@ -56,25 +56,4 @@ class Photo < ApplicationRecord
     ((photo_file_name.split('_').last().to_i / 1000) * 1000).to_s;
   end
 
-  # TODO: fit this again to be used in zwar?
-  #def photo_file_name=(filename)
-    ## assign the photo - but skip this part on subsequent changes of the file name
-    ## (because the filename gets assigned in the process of assigning the file)
-    #if !defined?(@assigned_filename) || @assigned_filename != filename
-      #archive_id = ((filename || '')[Regexp.new("^#{Project.current.initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
-      #@assigned_filename = filename
-      ## construct the import file path
-      #filepath = File.join(Project.archive_management_dir, archive_id, 'photos', (filename || '').split('/').last.to_s)
-      #if !File.exists?(filepath)
-        #puts "\nERROR: missing photo file, skipping: #{filepath}"
-      #else
-        #File.open(filepath, 'r') do |file|
-          #self.photo = file
-        #end
-      #end
-    #else
-      #write_attribute :photo_file_name, filename
-    #end
-  #end
-
 end

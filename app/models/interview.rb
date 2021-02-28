@@ -391,20 +391,6 @@ class Interview < ApplicationRecord
     localized_hash(:full_title)
   end
 
-  # this method is only used for the first version of the map atm.
-  # for other purposes, use the person model
-  # def birth_location
-  #   localized_hash = interviewees[0].try(:birth_location).try(:localized_hash) || Hash[Project.current.available_locales.collect { |i| [i, ""] } ]
-  #   return localized_hash.merge ({
-  #     descriptor: interviewees[0].try(:birth_location).try(:localized_hash),
-  #     id: interviewees[0].try(:birth_location).try(:id),
-  #     latitude: interviewees[0].try(:birth_location).try(:latitude),
-  #     longitude: interviewees[0].try(:birth_location).try(:longitude),
-  #     names: interviewees[0] ? PersonSerializer.new(interviewees[0]).names : {},
-  #     archive_id: archive_id
-  #   })
-  # end
-
   def reverted_short_title(locale)
     begin
       [interviewee.last_name(locale) || interviewee.last_name(I18n.defaut_locale), interviewee.first_name(locale) || interviewee.first_name(I18n.default_locale)].join(', ')
@@ -412,18 +398,6 @@ class Interview < ApplicationRecord
       "Interviewee might not be in DB, interview-archive_id = #{archive_id}"
     end
   end
-
-  # after_initialize do
-  #   project.registry_entry_metadata_fields.each do |facet|
-  #     define_singleton_method facet.name do
-  #       if project.identifier.to_sym == :mog
-  #         segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id).uniq
-  #       else
-  #         registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
-  #       end
-  #     end
-  #   end
-  # end
 
   after_initialize do
     project.registry_reference_type_metadata_fields.each do |field|

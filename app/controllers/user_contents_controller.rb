@@ -72,7 +72,6 @@ class UserContentsController < ApplicationController
       permit(:description,
              :title,
              :media_id,
-             :interview_references,
              :reference_id,
              :reference_type,
              :type,

@@ -1,98 +1,80 @@
 Rails.application.routes.draw do
 
   concern :archive do
-    #%w{faq_archive_contents faq_index faq_searching faq_technical map_tutorial terms_of_use legal_notice privacy_policy}.each do |site|
-      #get site, to: "home##{site}", as: site
-    #end
+    get "random_featured_interviews", to: "interviews#random_featured"
+    resources :texts
+    resources :projects
+    resources :languages
+    resources :metadata_fields
+    resources :external_links
+    resources :comments
 
-    #localized do
-      get "random_featured_interviews", to: "interviews#random_featured"
-      resources :texts
-      resources :projects
-      resources :languages
-      resources :metadata_fields
-      resources :external_links
-      resources :comments
+    resources :contributions, only: [:create, :update, :destroy]
+    resources :biographical_entries, only: [:create, :show, :update]
+    resources :photos, only: [:create, :update, :destroy]
+    resources :uploaded_files, only: [:create, :update, :destroy]
+    resources :segments, only: [:create, :update, :index, :destroy, :show]
+    resources :registry_entries, only: [:create, :show, :update, :index, :destroy]
+    resources :registry_hierarchies, only: [:create, :destroy]
+    resources :registry_names, only: [:create, :update, :destroy]
+    resources :registry_references, only: [:create, :update, :destroy, :index]
+    resources :registry_reference_types, only: [:create, :update, :index, :destroy]
+    resources :annotations, only: [:create, :update, :destroy]
 
-      resources :contributions, only: [:create, :update, :destroy]
-      #resources :histories, only: [:create, :update, :destroy]
-      resources :biographical_entries, only: [:create, :show, :update]
+    resources :people do
+      resources :biographical_entries, only: [:destroy]
+      resources :registry_references, only: [:create, :update, :destroy]
+    end
+
+    resources :collections do
+      collection do
+        get :countries
+      end
+    end
+
+    resources :transcripts, only: [:new, :create]
+    resources :uploads, only: [:new, :create]
+
+    put "update_speakers/:id", to: "interviews#update_speakers"
+    put "mark_texts/:id", to: "interviews#mark_texts"
+    put "merge_registry_entries/:id", to: "registry_entries#merge"
+
+    resources :interviews do
+      member do
+        get :doi_contents
+        get :metadata
+        get 'cmdi-metadata', action: :cmdi_metadata
+        get :headings
+        get :speaker_designations
+        get :ref_tree
+      end
+      collection do
+        post :dois
+      end
+      resources :contributions, only: [:create, :destroy]
       resources :photos, only: [:create, :update, :destroy]
-      resources :uploaded_files, only: [:create, :update, :destroy]
-      resources :segments, only: [:create, :update, :index, :destroy, :show]
-      resources :registry_entries, only: [:create, :show, :update, :index, :destroy]
-      resources :registry_hierarchies, only: [:create, :destroy]
-      resources :registry_names, only: [:create, :update, :destroy]
-      resources :registry_references, only: [:create, :update, :destroy, :index]
-      resources :registry_reference_types, only: [:create, :update, :index, :destroy]
-      resources :annotations, only: [:create, :update, :destroy]
-      #get "locations", to: "registry_references#locations", :as => :locations
-
-      resources :people do
-        #resources :histories, only: [:create, :update, :destroy]
-        resources :biographical_entries, only: [:destroy]
-        resources :registry_references, only: [:create, :update, :destroy]
-      end
-
-      #get 'map', to: 'registry_references#map', :as => :public_map
-      #get 'mapframe', to: 'registry_references#map_frame', :as => :map_frame
-
-      resources :collections do
+      resources :registry_references, only: [:create, :update, :destroy]
+      resources :segments, only: [:create, :update, :index, :destroy]
+      resources :tapes do
         collection do
-          get :countries
+          get :playlist
         end
-      end
-
-      resources :transcripts, only: [:new, :create]
-      resources :uploads, only: [:new, :create]
-
-      #post 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
-      #get 'upload_transcript', to: 'interviews#upload_transcript', as: :upload_transcript
-
-      put "update_speakers/:id", to: "interviews#update_speakers"
-      put "mark_texts/:id", to: "interviews#mark_texts"
-      put "merge_registry_entries/:id", to: "registry_entries#merge"
-
-      resources :interviews do
         member do
-          get :doi_contents
-          get :metadata
-          get 'cmdi-metadata', action: :cmdi_metadata
-          get :headings
-          get :speaker_designations
-          #get :references
-          get :ref_tree
-        end
-        collection do
-          post :dois
-          #get :stills
-        end
-        #resources :registry_entries, only: [:show]
-        resources :contributions, only: [:create, :destroy]
-        resources :photos, only: [:create, :update, :destroy]
-        resources :registry_references, only: [:create, :update, :destroy]
-        resources :segments, only: [:create, :update, :index, :destroy]
-        resources :tapes do
-          collection do
-            get :playlist
-          end
-          member do
-            get :transcript
-          end
+          get :transcript
         end
       end
+    end
 
-      resources :searches, only: [:new, :facets, :archive, :interview, :map] do
-        collection do
-          get :facets
-          get :archive
-          get :export_archive_search
-          get :interview
-          get :registry_entry
-          get :map
-        end
+    resources :searches, only: [:new, :facets, :archive, :interview, :map] do
+      collection do
+        get :facets
+        get :archive
+        get :export_archive_search
+        get :interview
+        get :registry_entry
+        get :map
       end
-    #end
+    end
 
     resources :user_contents do
       collection do
@@ -143,7 +125,6 @@ Rails.application.routes.draw do
           get :usage_report
         end
       end
-      # get 'benutzerstatistik' => 'user_statistics#index', :as => :user_statistics
       resources :imports do
         collection do
           get :for_interview
@@ -162,8 +143,6 @@ Rails.application.routes.draw do
       member do
         post :confirm
         get :activate
-        #post :subscribe
-        #post :unsubscribe
       end
     end
   end

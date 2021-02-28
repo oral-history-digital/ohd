@@ -26,25 +26,25 @@ class UsageReport < ApplicationRecord
   scope :searches, -> { where({action: SEARCHES}) }
   scope :maps, -> { where({action: MAP}) }
 
-  def validate
-    case action
-      when LOGIN
-        validate_user_account
-      when INTERVIEW
-        validate_archive_id
-      when MATERIALS
-        validate_archive_id
-        unless facets.match(Regexp.new("^#{Project.current.initials}\\d{3}_\\w{2,4}", Regexp::IGNORECASE))
-          errors.add_to_base('Incorrect or missing filename parameter for text materials request')
-        end
-      when SEARCHES
-        # validate_user_account
-      when MAP
-        # nothing
-      else
-        # nothing - should not be valid
-    end
-  end
+  #def validate
+    #case action
+      #when LOGIN
+        #validate_user_account
+      #when INTERVIEW
+        #validate_archive_id
+      #when MATERIALS
+        #validate_archive_id
+        #unless facets.match(Regexp.new("^#{Project.current.initials}\\d{3}_\\w{2,4}", Regexp::IGNORECASE))
+          #errors.add_to_base('Incorrect or missing filename parameter for text materials request')
+        #end
+      #when SEARCHES
+        ## validate_user_account
+      #when MAP
+        ## nothing
+      #else
+        ## nothing - should not be valid
+    #end
+  #end
 
   def verb=(verb)
     @verb = verb
@@ -450,10 +450,10 @@ class UsageReport < ApplicationRecord
     false
   end
 
-  def validate_archive_id
-    unless resource_id.match(Regexp.new("#{Project.current.initials}\\d{3}", Regexp::IGNORECASE))
-      errors.add(:resource_id, :invalid)
-    end
-  end
+  #def validate_archive_id
+    #unless resource_id.match(Regexp.new("#{Project.current.initials}\\d{3}", Regexp::IGNORECASE))
+      #errors.add(:resource_id, :invalid)
+    #end
+  #end
 
 end

@@ -46,24 +46,6 @@ class UserAnnotation < UserContent
     end
   end
 
-  #attr_accessible :description, :title, :position
-
-  #validates_format_of :reference_type, :with => /\ASegment\z/
-  #validates_uniqueness_of :reference_id, :scope => :user_account_id
-
-  # 1. validates for existing media_id
-  # 2. disable changes to description if not private or proposed
-  def validate
-    unless media_id =~ Regexp.new("#{Project.current.initials.upcase}\\d{3}_\\d{2}_\\d{2}_\\d{4}")
-      errors.add :media_id, 'Invalid Media ID given.'
-    end
-    if description_changed?
-      unless private?
-        errors.add :description, :modification_not_allowed
-      end
-    end
-  end
-
   def author
     read_property :author
   end

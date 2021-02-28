@@ -3,9 +3,19 @@ class PersonWithAssociationsSerializer < PersonSerializer
   attributes [
                :biographical_entries,
                :registry_references,
-             ] |
-             MetadataField.where(ref_object_type: "Person", source: "RegistryReferenceType").map(&:name) |
-             MetadataField.where(source: "Person").map(&:name)
+             ]
+             #MetadataField.where(source: "Person").map(&:name)
+
+  def attributes(*args)
+    hash = super
+    object.project.registry_reference_type_metadata_fields.where(ref_object_type: 'Interview').each do |m|
+      hash[m.name] = object.project.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+        mem
+      end
+    end
+    hash
+  end
 
   #
   # this method is to determine in react whether a person serialized with PersonSerializerWithAssociations has to be loaded

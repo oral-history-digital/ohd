@@ -3,7 +3,6 @@ class InterviewSerializer < ApplicationSerializer
     :id,
     :archive_id,
     :collection_id,
-    :collection,
     :tape_count,
     :video,
     :media_type,
@@ -31,7 +30,9 @@ class InterviewSerializer < ApplicationSerializer
     :landing_page_texts,
     :properties,
     :signature_original,
-    :task_ids
+    :task_ids,
+    :tasks_user_account_ids,
+    :tasks_supervisor_ids
   ]
 
   def attributes(*args)
@@ -61,19 +62,19 @@ class InterviewSerializer < ApplicationSerializer
 
   def contributions
     json =  Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-contributions-#{object.id}-#{object.contributions.maximum(:updated_at)}") do
-      object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+      object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
     end
   end
 
   def registry_references
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-registry_references-#{object.id}-#{object.registry_references.maximum(:updated_at)}") do
-      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
     end
   end
 
   def photos
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-photos-#{object.id}-#{object.photos.maximum(:updated_at)}") do
-      object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+      object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
     end
   end
 

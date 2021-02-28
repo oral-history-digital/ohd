@@ -421,13 +421,13 @@ class Segment < ApplicationRecord
       subheadings = Segment.subheadings_until(self, mainheadings.last)
 
       if subheadings.count > 0
-        Project.current.available_locales.inject({}) do |mem, locale|
+        interview.project.available_locales.inject({}) do |mem, locale|
           subheading = subheadings.last.subheading(locale) || subheadings.last.subheading("#{locale}-public")
           mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheading}"
           mem
         end
       else
-        Project.current.available_locales.inject({}) do |mem, locale|
+        interview.project.available_locales.inject({}) do |mem, locale|
           mainheading = mainheadings.last.mainheading(locale) || mainheadings.last.mainheading("#{locale}-public")
           mem[locale] = "#{mainheadings_count}. #{mainheading}"
           mem

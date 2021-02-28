@@ -4,7 +4,6 @@ class UserContentSerializer < ApplicationSerializer
     :user_account_id,
     :title,
     :media_id,
-    :interview_references,
     :properties,
     :reference_id,
     :reference_type,
