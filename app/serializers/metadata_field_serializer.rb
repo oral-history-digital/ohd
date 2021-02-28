@@ -24,4 +24,7 @@ class MetadataFieldSerializer < ApplicationSerializer
     end
   end
 
+  def registry_entry_id
+    object.registry_reference_type && object.registry_reference_type.registry_entry_id
+  end
 end
