@@ -52,7 +52,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: "initials",
-                validate: function(v){return /^[a-z]+$/.test(v)}
+                validate: function(v){return /^[a-zA-Z]+$/.test(v)}
             },
             {
                 attribute: "archive_id_number_length",
