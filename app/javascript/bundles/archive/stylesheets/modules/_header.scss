@@ -1,17 +1,15 @@
 .logo-link {
   color: var(--primary-color);
-  display: block;
-  max-width: 15rem;
-  width: 80%;
-
-  @include screen-m {
-    max-width: 19rem;
-  }
 }
 
 .logo-img {
   display: block;
-  width: 100%;
+  height: 3.5rem;
+  max-width: 100%;
+
+  @include screen-m {
+    height: 4.75rem;
+  }
 }
 
 .logo-link:hover {
