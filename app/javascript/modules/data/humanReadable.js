@@ -27,7 +27,7 @@ export default function humanReadable(obj, attribute, props, state, none='---') 
         value = value[props.locale]
 
     if (attribute === 'duration')
-        value = `${value.split(':')[0]}h ${value.split(':')[1]}min`
+        value = `${value.split(':')[0]} h ${value.split(':')[1]} min`
 
     if (typeof value === 'string' && state.collapsed)
         value = value.substring(0,25)
