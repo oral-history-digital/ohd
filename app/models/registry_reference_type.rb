@@ -17,11 +17,10 @@ class RegistryReferenceType < ApplicationRecord
   # types actually in use to define the type of a reference.
   has_many :registry_references, :dependent => :nullify
 
-  has_many :metadata_fields
+  has_one :metadata_field
 
   def to_s(locale = I18n.locale)
-    m = MetadataField.where(name: code, source: 'RegistryReferenceType').first
-    (m && m.label(locale)) || name(locale)
+    (metadata_field && metadata_field.label(locale)) || name(locale)
   end
 
   def to_sym
