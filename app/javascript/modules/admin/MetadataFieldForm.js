@@ -129,6 +129,7 @@ export default function MetadataFieldForm({
                     elementType: 'input',
                     attribute: 'use_in_map_search',
                     type: 'checkbox',
+                    hidden: source !== 'RegistryReferenceType',
                 },
                 {
                     elementType: 'input',
