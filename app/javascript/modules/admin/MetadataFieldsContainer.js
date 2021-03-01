@@ -4,6 +4,7 @@ import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData } from 'modules/data';
 import DataList from './DataList';
 import MetadataFieldFormContainer from './MetadataFieldFormContainer';
+import MetadataFieldShow from './MetadataFieldShow';
 
 const mapStateToProps = (state) => {
     return {
@@ -29,6 +30,7 @@ const mapStateToProps = (state) => {
             "label",
         ],
         form: MetadataFieldFormContainer,
+        showComponent: MetadataFieldShow,
     }
 }
 

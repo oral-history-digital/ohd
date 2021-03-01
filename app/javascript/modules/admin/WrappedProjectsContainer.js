@@ -4,6 +4,7 @@ import WrappedDataList from './WrappedDataList';
 import MetadataFieldsContainer from './MetadataFieldsContainer';
 import ExternalLinksContainer from './ExternalLinksContainer';
 import UploadedFileContainer from './UploadedFileContainer';
+import ProjectShow from './ProjectShow';
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject } from 'modules/data';
@@ -158,6 +159,7 @@ const mapStateToProps = (state) => {
             logo: UploadedFileContainer,
             sponsor_logo: UploadedFileContainer,
         },
+        showComponent: ProjectShow,
     }
 }
 

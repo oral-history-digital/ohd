@@ -4,6 +4,7 @@ import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
 import { getLocale, getProjectId } from 'modules/archive';
 import { DataList } from 'modules/admin';
+import TaskPreviewContainer from './TaskPreviewContainer';
 
 const mapStateToProps = (state) => {
     return {
@@ -58,7 +59,8 @@ const mapStateToProps = (state) => {
                 values: ['start', 'finish', 'clear', 'restart'],
                 optionsScope: 'workflow_states',
             },
-        ]
+        ],
+        showComponent: TaskPreviewContainer,
     }
 }
 

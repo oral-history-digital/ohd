@@ -6,22 +6,12 @@ import { ArchivePopupButton, PopupMenu } from 'modules/ui';
 import { humanReadable } from 'modules/data';
 import { pluralize, camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
-import TaskPreviewContainer from './TaskPreviewContainer';
 
 export default class Data extends React.Component {
 
     baseData() {
-        if (this.props.data.type === 'Task') {
-            return <TaskPreviewContainer data={this.props.data} scope={this.props.scope} />
-        } else if (this.props.data.archive_domain) {
-            return (
-                <Link
-                    onClick={() => this.props.setProjectId(this.props.data.identifier)}
-                    to={`/${this.props.data.identifier}/${this.props.locale}/`}
-                >
-                    {this.props.data.name[this.props.locale]}
-                </Link>
-            )
+        if (this.props.showComponent) {
+            return React.createElement(this.props.showComponent, {data: this.props.data, scope: this.props.scope });
         } else {
             return (
                 <div className='base-data box'>

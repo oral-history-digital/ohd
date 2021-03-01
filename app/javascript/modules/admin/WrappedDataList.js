@@ -73,6 +73,7 @@ export default class WrappedDataList extends React.Component {
                     detailsAttributes={this.props.detailsAttributes}
                     joinedData={this.props.joinedData}
                     form={this.form}
+                    showComponent={this.props.showComponent}
                     hideEdit={this.props.hideEdit}
                     hideDelete={this.props.hideDelete}
                     key={`${this.props.scope}-${data.id}`}
@@ -82,16 +83,20 @@ export default class WrappedDataList extends React.Component {
     }
 
     form(data) {
-        return (
-            <Form
-                data={data}
-                values={this.props.initialFormValues}
-                scope={this.props.scope}
-                onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
-                submitText='submit'
-                elements={this.props.formElements}
-            />
-        );
+        if (this.props.form) {
+            return React.createElement(this.props.form, {data: data});
+        } else {
+            return (
+                <Form
+                    data={data}
+                    values={this.props.initialFormValues}
+                    scope={this.props.scope}
+                    onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
+                    submitText='submit'
+                    elements={this.props.formElements}
+                />
+            );
+        }
     }
 
     add() {

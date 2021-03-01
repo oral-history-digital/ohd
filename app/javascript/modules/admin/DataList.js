@@ -38,6 +38,7 @@ export default class DataList extends React.Component {
                         detailsAttributes={this.props.detailsAttributes}
                         joinedData={this.props.joinedData}
                         form={this.form}
+                        showComponent={this.props.showComponent}
                         hideShow={this.props.hideShow}
                         hideEdit={this.props.hideEdit}
                         hideDelete={this.props.hideDelete}
