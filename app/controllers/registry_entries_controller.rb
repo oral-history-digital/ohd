@@ -98,7 +98,7 @@ class RegistryEntriesController < ApplicationController
         send_data pdf, filename: "registry_entries_#{params[:lang]}.pdf", :type => "application/pdf" #, :disposition => "attachment"
       end
       format.csv do
-        root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.registry_entries.where(code: 'root').first
+        root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
         csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
           CSV.generate(col_sep: "\t") do |row|
             row << %w(parent_name parent_id name id description latitude longitude)
