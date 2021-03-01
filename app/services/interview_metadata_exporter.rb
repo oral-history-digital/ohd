@@ -16,6 +16,22 @@ class InterviewMetadataExporter
     @interview = interview
   end
 
+  def recording_date
+    Date.parse(@interview.interview_date)
+  end
+
+  def age(person)
+    if (person.date_of_birth.present?)
+      birthday = Date.parse(person.date_of_birth)
+
+      # Not sure if age calculation is exact.
+      # https://medium.com/@craigsheen/calculating-age-in-rails-9bb661f11303
+      ((recording_date.to_time - birthday.to_time) / 1.year.seconds).floor
+    else
+      nil
+    end
+  end
+
   def build
     @builder = Nokogiri::XML::Builder.new(encoding: 'UTF-8') do |xml|
       xml.CMD(
@@ -82,10 +98,10 @@ class InterviewMetadataExporter
   def build_media_session(xml)
     xml.send('media-session') do
       xml.Name @interview.anonymous_title
-      xml.NumberOfSpeakers 2
+      xml.NumberOfSpeakers(@interview.interviewees.count + @interview.interviewers.count)
       xml.Corpus @interview.project.name  # must match element Title in corpus CMDI
       xml.Environment 'unknown'
-      xml.RecordingDate Date.parse(@interview.interview_date).to_s
+      xml.RecordingDate recording_date.to_s
       xml.NumberOfRecordings @interview.tapes.count
       xml.NumberMediaFiles @interview.tapes.count
 
@@ -120,20 +136,38 @@ class InterviewMetadataExporter
       # Interviewees
       @interview.interviewees.each_with_index do |interviewee|
         id = InterviewMetadataExporter.pad(interviewee.id)
+
+        code = @interview.contributions.where(
+          contribution_type: 'interviewee',
+          person_id: interviewee.id,
+          workflow_state: 'public'
+        ).first.speaker_designation
+
         xml.send('media-session-actor', 'id' => "s_#{id}") do
           xml.Role 'Interviewee'
           xml.Name 'anonymized'
-          xml.Code '?'
+          xml.Code code if code.present?
+          xml.Age age(interviewee) if age(interviewee).present?
+          xml.Sex interviewee.gender.capitalize if (interviewee.gender.present?)
         end
       end
 
       # Interviewers
       @interview.interviewers.each_with_index do |interviewer|
         id = InterviewMetadataExporter.pad(interviewer.id)
+
+        code = @interview.contributions.where(
+          contribution_type: 'interviewer',
+          person_id: interviewer.id,
+          workflow_state: 'public'
+        ).first.speaker_designation
+
         xml.send('media-session-actor', 'id' => "s_#{id}") do
           xml.Role 'Interviewer'
           xml.Name 'anonymized'
-          xml.Code '?'
+          xml.Code code if code.present?
+          xml.Age age(interviewer) if age(interviewer).present?
+          xml.Sex interviewer.gender.capitalize if interviewer.gender.present?
         end
       end
     end
@@ -142,8 +176,8 @@ class InterviewMetadataExporter
   def build_content(xml)
     xml.Content {
       xml.Genre 'Oral History Interview'
-      xml.SubGenre 'Interview about self-experienced historic events'
-      xml.Topic '?'
+      xml.SubGenre 'unspecified'
+      xml.Topic @interview.collection.name if @interview.collection.present?
       xml.Modality {
         xml.Modality 'Spoken'
       }
@@ -172,7 +206,6 @@ class InterviewMetadataExporter
 
   def build_written_resource(xml)
     xml.WrittenResource('ref' => 'm_0000000001', 'actor-ref' => all_actors_as_string) do
-      xml.CharacterEncoding 'UTF-8'
       xml.AnnotationType {
         xml.AnnotationType 'Orthography'
       }

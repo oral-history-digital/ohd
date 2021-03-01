@@ -147,6 +147,8 @@ export default class PersonData extends React.Component {
                                 {close => (
                                     <ContributionFormContainer
                                         contribution={Object.values(this.props.interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]}
+                                        interview={this.props.interview}
+                                        withSpeakerDesignation
                                         onSubmit={close}
                                     />
                                 )}
