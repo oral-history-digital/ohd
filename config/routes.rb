@@ -169,8 +169,11 @@ Rails.application.routes.draw do
   # in production this should be the ohd-domain
   #
   constraints host: ['localhost', 'ohd.dev', 'ohd.de'] do
+    scope "/:locale" do
+      root to: "projects#index"
+    end
     scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
-    root to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
+      root to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         root to: "projects#show"
         concerns :archive
@@ -199,7 +202,7 @@ Rails.application.routes.draw do
   get "photos/thumb/:name" => "photos#thumb"
 
   mount OaiRepository::Engine => "/oai_repository"
-  root to: "home#overview"
+  root to: redirect("#{Rails.env.development? ? 'http://localhost:3000/de' : 'http://da03.cedis.fu-berlin.de:100/de'}")
 
   devise_for :user_accounts,
     controllers: { sessions: "sessions", passwords: "passwords" },

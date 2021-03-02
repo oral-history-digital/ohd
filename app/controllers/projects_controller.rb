@@ -4,7 +4,6 @@ class ProjectsController < ApplicationController
 
   # GET /projects
   def index
-    #if params[:all]
     if params.keys.include?('all')
       projects = policy_scope(Project).all
       extra_params = 'all'
@@ -19,7 +18,6 @@ class ProjectsController < ApplicationController
       format.json do
         json = Rails.cache.fetch "projects-#{extra_params}-#{Project.maximum(:updated_at)}" do
           {
-            #data: Project.includes(:translations, metadata_fields: [:translations], external_links: [:translations]).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'projects',
             extra_params: extra_params,

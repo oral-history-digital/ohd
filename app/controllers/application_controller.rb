@@ -53,11 +53,11 @@ class ApplicationController < ActionController::Base
   def initial_redux_state
     {
       archive: {
-        locale: current_project.default_locale,
-        locales: current_project.available_locales,
-        projectId: current_project.identifier,
-        viewModes: current_project.view_modes,
-        viewMode: current_project.view_modes.first,
+        locale: current_project ? current_project.default_locale : I18n.locale,
+        locales: current_project ? current_project.available_locales : I18n.available_locales,
+        projectId: current_project ? current_project.identifier : nil,
+        viewModes: current_project ? current_project.view_modes : ['grid'],
+        viewMode: current_project ? current_project.view_modes.first : 'grid',
         editView: !!cookies["editView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],
@@ -65,7 +65,7 @@ class ApplicationController < ActionController::Base
         selectedInterviewEditViewColumns: ['timecode', 'text_orig', 'text_translated', 'mainheading_orig', 'subheading_orig', 'registry_references', 'annotations'],
         skipEmptyRows: false,
         translations: translations,
-        countryKeys: country_keys,
+        countryKeys: current_project && country_keys,
       },
       account: {
         isLoggingIn: false,
@@ -101,10 +101,10 @@ class ApplicationController < ActionController::Base
           tasks: {},
           task_types: {all: 'fetched'},
           projects: {all: 'fetched'},
-          collections: {"collections_for_project_#{current_project.identifier}": 'fetched'},
+          collections: current_project && {"collections_for_project_#{current_project.identifier}": 'fetched'},
           languages: {all: 'fetched'},
         },
-        collections: Rails.cache.fetch("#{current_project.cache_key_prefix}-collections-collections_for_project_#{current_project.identifier}-#{Collection.maximum(:updated_at)}") do
+        collections: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-collections-collections_for_project_#{current_project.identifier}-#{Collection.maximum(:updated_at)}") do
           current_project.collections.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
@@ -112,8 +112,8 @@ class ApplicationController < ActionController::Base
             includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
             inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
-        languages: Rails.cache.fetch("#{current_project.cache_key_prefix}-languages-#{Language.maximum(:updated_at)}") do
-          Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+        languages: Rails.cache.fetch("languages-#{Language.maximum(:updated_at)}") do
+          Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
         end,
         accounts: {
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || nil #{}
@@ -121,16 +121,16 @@ class ApplicationController < ActionController::Base
         people: {},
         interviews: {},
         registry_entries: {},
-        registry_name_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_name_types-#{RegistryNameType.maximum(:updated_at)}") do
+        registry_name_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_name_types-#{RegistryNameType.maximum(:updated_at)}") do
           RegistryNameType.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
-        task_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
+        task_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
           TaskType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
-        contribution_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-contribution_types-#{ContributionType.maximum(:updated_at)}") do
+        contribution_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-contribution_types-#{ContributionType.maximum(:updated_at)}") do
           ContributionType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
-        media_streams: Rails.cache.fetch("#{current_project.cache_key_prefix}-media_streams-#{MediaStream.maximum(:updated_at)}") do
+        media_streams: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-media_streams-#{MediaStream.maximum(:updated_at)}") do
           MediaStream.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
       },
@@ -154,7 +154,7 @@ class ApplicationController < ActionController::Base
         transcriptScrollEnabled: false,
         resolution: '480p',
       },
-      search: initial_search_redux_state
+      search: current_project && initial_search_redux_state
     }
   end
 
