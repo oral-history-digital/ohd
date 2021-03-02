@@ -37,7 +37,7 @@ class ProjectsController < ApplicationController
     project = Project.find(params[:id])
     respond_to do |format|
       format.xml do
-        exporter = CollectionMetadataExporter.new(@project)
+        exporter = ProjectMetadataExporter.new(@project)
         exporter.build
         render xml: exporter.xml
       end
