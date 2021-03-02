@@ -1,4 +1,4 @@
-class CollectionMetadataExporter
+class ProjectMetadataExporter
   def self.language_code(lang)
     code = ISO_639.find_by_code(lang).alpha3_terminologic
     if code != ''
@@ -46,8 +46,8 @@ class CollectionMetadataExporter
     xml.Resources {
       xml.ResourceProxyList {
         @project.interviews.each_with_index do |interview, index|
-          id = CollectionMetadataExporter.pad(index + 1)
-          url = "#{Rails.application.routes.url_helpers.metadata_interview_url(id: interview.archive_id, locale: 'de', host: @project.archive_domain)}.xml"
+          id = ProjectMetadataExporter.pad(index + 1)
+          url = "#{interview.archive_id.upcase}/#{interview.archive_id}.xml"
 
           xml.ResourceProxy('id' => "c_#{id}") {
             xml.ResourceType('Metadata', 'mimetype' => 'text/xml')
@@ -92,12 +92,12 @@ class CollectionMetadataExporter
   end
 
   def build_general_info(xml)
-    language_code = CollectionMetadataExporter.language_code(@project.default_locale)
+    language_code = ProjectMetadataExporter.language_code(@project.default_locale)
 
     xml.GeneralInfo {
       xml.Name @project.shortname
-      xml.Title @project.name
-      xml.ID @project.shortname.downcase
+      xml.Title "OHD #{@project.name}"
+      xml.ID "OHD_#{@project.shortname.downcase}_001"
       xml.Owner @project.hosting_institution
       xml.PublicationYear @project.created_at.year  # TODO: Not good
       xml.Description {
@@ -123,7 +123,7 @@ class CollectionMetadataExporter
   def build_documentation_languages(xml)
     xml.DocumentationLanguages {
       @project.available_locales.each do |lang|
-        language_code = CollectionMetadataExporter.language_code(lang)
+        language_code = ProjectMetadataExporter.language_code(lang)
         language_name = ISO_639.find_by_code(lang).english_name
         xml.Language {
           xml.LanguageName language_name
