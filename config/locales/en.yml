@@ -1095,3 +1095,8 @@ en:
     und Kapodistrias-Universität Athen.
 
   interview_title_patterns:
+
+  modules:
+    features:
+      experimental_features: "Experimental Features"
+      tree_select: "Tree select for registry entries"
