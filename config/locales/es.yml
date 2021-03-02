@@ -1057,3 +1057,8 @@ es:
               too_long: Sus notas no deben exceder el límite de 300 carácteres.
 
   interview_title_patterns:
+
+  modules:
+    features:
+      experimental_features: "Experimental Features"
+      tree_select: "Tree select for registry entries"
