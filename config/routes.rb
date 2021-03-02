@@ -35,6 +35,8 @@ Rails.application.routes.draw do
     resources :transcripts, only: [:new, :create]
     resources :uploads, only: [:new, :create]
 
+    get "registry_entry_tree", to: "registry_entries#tree"
+
     put "update_speakers/:id", to: "interviews#update_speakers"
     put "mark_texts/:id", to: "interviews#mark_texts"
     put "merge_registry_entries/:id", to: "registry_entries#merge"

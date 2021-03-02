@@ -9,4 +9,7 @@ class RegistryEntryPolicy < ApplicationPolicy
     update?
   end
 
+  def tree?
+    index?
+  end
 end
