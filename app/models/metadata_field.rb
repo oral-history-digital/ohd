@@ -11,4 +11,8 @@ class MetadataField < ApplicationRecord
   serialize :values
   validates_uniqueness_of :name, :scope => [:project_id, :source]
 
+  before_save :set_name
+  def set_name
+    self.name = registry_reference_type.code if registry_reference_type
+  end
 end
