@@ -73,6 +73,7 @@ export default function MetadataFieldForm({
                     handlechangecallback: handleRegistryReferenceTypeIdChange,
                     hidden: source !== 'RegistryReferenceType',
                     help: 'help_texts.metadata_fields.registry_reference_type_id',
+                    validate: function(v){return /\d+/.test(v)}
                 },
                 {
                     elementType: 'select',
@@ -82,6 +83,7 @@ export default function MetadataFieldForm({
                     withEmpty: true,
                     hidden: source !== 'RegistryReferenceType',
                     help: 'help_texts.metadata_fields.ref_object_type',
+                    validate: function(v){return /\w+/.test(v)}
                 },
                 {
                     elementType: 'select',
@@ -90,6 +92,7 @@ export default function MetadataFieldForm({
                     optionsScope: 'search_facets',
                     withEmpty: true,
                     hidden: source === 'RegistryReferenceType',
+                    validate: function(v){return /\w+/.test(v)}
                 },
                 {
                     attribute: 'label',
@@ -103,7 +106,6 @@ export default function MetadataFieldForm({
                 {
                     elementType: 'input',
                     attribute: 'facet_order',
-                    validate: function(v){return /\d+\.*\d*/.test(v)}
                 },
                 {
                     elementType: 'input',
@@ -118,7 +120,6 @@ export default function MetadataFieldForm({
                 {
                     elementType: 'input',
                     attribute: 'list_columns_order',
-                    validate: function(v){return /\d+\.*\d*/.test(v)}
                 },
                 {
                     elementType: 'input',
