@@ -8,6 +8,7 @@ import { flyoutTabsReducer, FLYOUT_TABS_NAME } from 'modules/flyout-tabs';
 import { locationsReducer, LOCATIONS_NAME } from 'modules/locations';
 import { popupReducer, POPUP_NAME } from 'modules/ui';
 import { searchReducer, SEARCH_NAME } from 'modules/search';
+import { treeSelectReducer, TREE_SELECT_NAME } from 'modules/tree-select';
 import { videoPlayerReducer, VIDEO_PLAYER_NAME } from 'modules/video-player';
 
 const combinedReducer = combineReducers({
@@ -19,6 +20,7 @@ const combinedReducer = combineReducers({
     [LOCATIONS_NAME]: locationsReducer,
     [POPUP_NAME]: popupReducer,
     [SEARCH_NAME]: searchReducer,
+    [TREE_SELECT_NAME]: treeSelectReducer,
     [VIDEO_PLAYER_NAME]: videoPlayerReducer,
 });
 

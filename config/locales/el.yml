@@ -1103,3 +1103,6 @@ el:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    tree_select:
+      no_matches: 'no matches'
+      remove_selection: 'remove selection'
