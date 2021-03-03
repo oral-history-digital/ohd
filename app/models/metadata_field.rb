@@ -4,7 +4,7 @@ class MetadataField < ApplicationRecord
   belongs_to :project, touch: true
   belongs_to :registry_entry
   belongs_to :registry_reference_type
-  validates_uniqueness_of :registry_reference_type_id
+  validates_uniqueness_of :registry_reference_type_id,  allow_nil: true
 
   translates :label, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
