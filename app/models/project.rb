@@ -66,6 +66,11 @@ class Project < ApplicationRecord
     RegistryName.create registry_entry_id: root.id, registry_name_type_id: 1, name_position: 0, descriptor: 'Register', locale: :de
   end
 
+  after_create :create_default_registry_name_type
+  def create_default_registry_name_type
+    RegistryNameType.create code: "spelling", name: "Bezeichner", order_priority: 3
+  end
+
   after_create :create_contribution_types
   def create_contribution_types
     %w(
