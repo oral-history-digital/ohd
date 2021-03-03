@@ -38,8 +38,8 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.xml do
         exporter = ProjectMetadataExporter.new(@project)
-        exporter.build
-        render xml: exporter.xml
+        metadata = exporter.build
+        render xml: metadata.to_xml
       end
     end
   end
