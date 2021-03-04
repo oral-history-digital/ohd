@@ -13,7 +13,7 @@ class TaskType < ApplicationRecord
       INSERT INTO tasks (interview_id, task_type_id, workflow_state, created_at, updated_at)
       VALUES #{Interview.all.map {|i| "(#{i.id},#{self.id},'created','#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}','#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}')" }.join(",")}
     END_SQL
-    ActiveRecord::Base.connection.execute(sql)
+    Interview.count > 0 && ActiveRecord::Base.connection.execute(sql)
     project.clear_cache('interview')
   end
 
