@@ -1009,7 +1009,8 @@ en:
         caption_explanation: This photo caption is only available in German.
         workflow_state: 'Status'
       uploaded_file:
-        title: Title (hover)
+        href: Link
+        title: Mouseover text
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
