@@ -161,7 +161,7 @@ EVAL
 
   def confirm_account
     # this is triggered from user account to update the workflow state
-    AdminMailer.with(registration: self, project: current_project).new_registration_info.deliver
+    AdminMailer.with(registration: self, project: projects.first).new_registration_info.deliver
     self.update!
   end
 
@@ -172,26 +172,26 @@ EVAL
 
   def grant_project_access
     self.update_attribute(:activated_at, Time.now)
-    self.user_registration_projects.find_by_project_id(current_project).update_attribute(:activated_at, Time.now)
+    self.user_registration_projects.find_by_project_id(projects.first).update_attribute(:activated_at, Time.now)
     # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
-    subject = I18n.t('devise.mailer.project_access_granted.subject', project_name: current_project.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
+    subject = I18n.t('devise.mailer.project_access_granted.subject', project_name: projects.first.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
     CustomDeviseMailer.project_access_granted(self.user_account, {subject: subject}).deliver_now
   end
 
   def reject_project_access
     # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
-    subject = I18n.t('devise.mailer.project_access_rejected.subject', project_name: current_project.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
+    subject = I18n.t('devise.mailer.project_access_rejected.subject', project_name: projects.first.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
     CustomDeviseMailer.project_access_rejected(self.user_account, {subject: subject}).deliver_now
   end
 
   # Flags the account as deactivated and removes project access
   def deactivate_account
-    project = self.user_registration_projects.find_by_project_id(current_project)
+    project = self.user_registration_projects.find_by_project_id(projects.first)
     project.update_attribute(:activated_at, nil) unless project.nil?
     self.user_account.update_attribute(:admin, nil)
     self.user_account.deactivate!
     # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
-    subject = I18n.t('devise.mailer.account_deactivated.subject', project_name: current_project.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
+    subject = I18n.t('devise.mailer.account_deactivated.subject', project_name: projects.first.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
     CustomDeviseMailer.account_deactivated(self.user_account, {subject: subject}).deliver_now
   end
 
@@ -229,11 +229,6 @@ EVAL
   end
 
   private
-
-  # FIXME: get project from params instead
-  def current_project
-    Project.last
-  end
 
   def serialize_form_parameters
     serialized_form_params = {}

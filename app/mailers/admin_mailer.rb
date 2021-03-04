@@ -5,7 +5,7 @@ class AdminMailer < ApplicationMailer
     @project = params[:project]
     @user_name = registration.full_name
     uri = URI.parse(@project.archive_domain)
-    @url = user_registrations_url(protocol: uri.scheme, host: uri.host, locale: @project.available_locales.first)
+    @url = user_registrations_url(protocol: uri.scheme, host: uri.host, locale: @project.default_locale, project_id: @project.identifier)
 
     mail(
       subject: "Neue Registrierung zur Prüfung",
