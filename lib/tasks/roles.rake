@@ -1,6 +1,6 @@
-namespace :permissions do
+namespace :roles do
 
-    desc 'create permissions for all controllers and actions (if they do NOT exist)' 
+    desc 'create permissions for all models (if they do NOT exist)' 
     task :create => :environment do
       Rails.application.eager_load!
       ApplicationRecord.descendants.each do |model|
