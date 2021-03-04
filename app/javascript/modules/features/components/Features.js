@@ -31,7 +31,7 @@ export default function Features() {
                                         }
                                     />
                                     {' '}
-                                    {t(`modules.features.${name.replaceAll('-', '_')}`)}
+                                    {t(`modules.features.${name.replace(/-/g, '_')}`)}
                                 </label>
                             </li>
                         ))
