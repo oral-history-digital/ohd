@@ -160,7 +160,7 @@ class ApplicationController < ActionController::Base
 
   def initial_search_redux_state
     cache_key_date = [Interview.maximum(:updated_at), current_project.updated_at]
-      .compact.max.strftime("%d.%m-%H:%M")
+      .compact.max
 
     search = Interview.archive_search(current_user_account, current_project, locale, params)
     dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)

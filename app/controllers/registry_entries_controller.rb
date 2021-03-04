@@ -55,12 +55,12 @@ class RegistryEntriesController < ApplicationController
 
   def index
     policy_scope RegistryEntry
-    cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at)].max.strftime("%d.%m-%H:%M")
+    cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at)].max
 
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{cache_key_params}-#{RegistryEntry.maximum(:updated_at).strftime("%d.%m-%H:%M")}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{cache_key_params}-#{RegistryEntry.maximum(:updated_at)}" do
           registry_entries, extra_params =
             if params[:children_for_entry]
               [
