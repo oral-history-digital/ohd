@@ -7,7 +7,8 @@ module.exports = {
         "eslint:recommended",
         "plugin:jsx-a11y/recommended",
         "plugin:react/recommended",
-        "plugin:react-hooks/recommended"
+        "plugin:react-hooks/recommended",
+        "plugin:jest/recommended"
     ],
     "parserOptions": {
         "ecmaFeatures": {
@@ -19,7 +20,8 @@ module.exports = {
     "plugins": [
         "jsx-a11y",
         "react",
-        "react-hooks"
+        "react-hooks",
+        "jest"
     ],
     "rules": {
     },
@@ -29,11 +31,6 @@ module.exports = {
         }
     },
     "globals": {
-        "describe": "readonly",
-        "expect": "readonly",
-        "module": "readonly",
-        "test": "readonly",
-        "it": "readonly",
-        "jest": "readonly"
+        "module": "readonly"
     }
 };

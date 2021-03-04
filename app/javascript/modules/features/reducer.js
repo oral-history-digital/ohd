@@ -1,22 +1,29 @@
+import { saveState } from 'modules/persistence';
 import { TREE_SELECT_NAME } from 'modules/tree-select';
 import { ENABLE, DISABLE } from './action-types';
+import { NAME } from './constants';
 
 export const initialState = {
     [TREE_SELECT_NAME]: false,
 };
 
 const features = (state = initialState, action) => {
+    let nextState;
     switch (action.type) {
     case ENABLE:
-        return {
+        nextState = {
             ...state,
             [action.payload.name]: true,
         };
+        saveState(NAME, nextState);
+        return nextState;
     case DISABLE:
-        return {
+        nextState = {
             ...state,
             [action.payload.name]: false,
         };
+        saveState(NAME, nextState);
+        return nextState;
     default:
         return state;
     }
