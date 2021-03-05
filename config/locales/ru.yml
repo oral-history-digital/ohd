@@ -1058,7 +1058,8 @@ ru:
         caption_explanation: Описание фотографии доступно только на немецком языке.
         workflow_state: 'Status'
       uploaded_file:
-        title: Title (hover)
+        href: Link
+        title: Mouseover text
       mark_text:
       text:
         text_to_mark: zu ersetzender Text

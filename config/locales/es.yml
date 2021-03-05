@@ -994,7 +994,8 @@ es:
         caption_explanation: Este pie de foto sólo está disponible en alemán.
         workflow_state: 'estatus'
       uploaded_file:
-        title: Title (hover)
+        href: Link
+        title: Mouseover text
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
