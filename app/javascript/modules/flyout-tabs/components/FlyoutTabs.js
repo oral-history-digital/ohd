@@ -67,7 +67,7 @@ export default class FlyoutTabs extends React.Component {
     }
 
     render() {
-        const { flyoutTabsIndex, interview, projectId, archiveId, isLoggedIn, hasMap } = this.props;
+        const { flyoutTabsIndex, interview, projectId, project, archiveId, isLoggedIn, hasMap } = this.props;
 
         return (
             <Tabs
@@ -85,15 +85,15 @@ export default class FlyoutTabs extends React.Component {
 
                         <LocaleButtonsContainer />
 
-                        <Tab className='flyout-tab' key='archive-search'>
+                        <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='archive-search'>
                             { t(this.props, (projectId === 'campscapes' && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search') }
                         </Tab>
 
-                        <Tab className={interview ? 'flyout-tab' : 'hidden'} key='interview'>
+                        <Tab className={interview && project ? 'flyout-tab' : 'hidden'} key='interview'>
                             { t(this.props, 'interview') }
                         </Tab>
 
-                        <Tab className={isLoggedIn ? 'flyout-tab' : 'hidden'} key='registry'>
+                        <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='registry'>
                             { t(this.props, 'registry') }
                         </Tab>
 
@@ -107,15 +107,13 @@ export default class FlyoutTabs extends React.Component {
                                 null
                         }
 
-                        <AuthShowContainer ifLoggedIn>
-                            <Tab className='flyout-tab' key='user-content'>
-                                { t(this.props, 'user_content') }
-                            </Tab>
-                        </AuthShowContainer>
+                        <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='user-content'>
+                            { t(this.props, 'user_content') }
+                        </Tab>
 
                         <Tab
                             selectedClassName='admin'
-                            className={admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
+                            className={project && admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
                             key='indexing'
                         >
                             { t(this.props, 'edit.indexing') }
@@ -123,7 +121,7 @@ export default class FlyoutTabs extends React.Component {
 
                         <Tab
                             selectedClassName='admin'
-                            className={admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
+                            className={project && admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
                             key='administration'
                         >
                             { t(this.props, 'edit.administration') }
