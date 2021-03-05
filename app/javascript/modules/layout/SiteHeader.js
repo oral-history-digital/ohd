@@ -9,7 +9,7 @@ import { useI18n } from 'modules/i18n';
 function SiteHeader() {
     const locale = useSelector(getLocale);
     const project = useSelector(getCurrentProject);
-    const logos = project.logos;
+    const logos = project?.logos;
     const { t } = useI18n();
 
     let src = null;

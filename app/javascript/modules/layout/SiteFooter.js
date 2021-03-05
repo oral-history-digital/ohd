@@ -33,7 +33,7 @@ function SiteFooter() {
             <ProjectFooter project={project} locale={locale}/>
 
             {
-                project.sponsor_logos ?
+                project?.sponsor_logos ?
                 (
                     <div className='home-content-logos'>
                         {Object.keys(project.sponsor_logos).map((k, index) => {

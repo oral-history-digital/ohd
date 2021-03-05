@@ -25,7 +25,7 @@ const mapStateToProps = (state) => {
         resultPagesCount: state.data.statuses.projects.resultPagesCount,
         query: state.search.projects.query,
         scope: 'project',
-        baseTabIndex: 5 + project.has_map,
+        baseTabIndex: 5 + (project ? project.has_map : 0),
         detailsAttributes: ['title'],
         formElements: [
             {

@@ -154,19 +154,16 @@ class ApplicationController < ActionController::Base
         transcriptScrollEnabled: false,
         resolution: '480p',
       },
-      search: current_project && initial_search_redux_state
+      search: initial_search_redux_state
     }
   end
 
   def initial_search_redux_state
-    cache_key_date = [Interview.maximum(:updated_at), current_project.updated_at]
-      .compact.max
-
-    search = Interview.archive_search(current_user_account, current_project, locale, params)
-    dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
-    facets = current_project.updated_search_facets(search)
+    search = current_project && Interview.archive_search(current_user_account, current_project, locale, params)
+    dropdown_values = current_project && Interview.dropdown_search_values(current_project, current_user_account)
+    facets = current_project && current_project.updated_search_facets(search)
     {
-      archive: {
+      archive: current_project && {
         facets: facets,
         query: search_query,
         allInterviewsTitles: dropdown_values[:all_interviews_titles],
@@ -178,7 +175,7 @@ class ApplicationController < ActionController::Base
         resultPagesCount: search.results.total_pages,
         resultsCount: search.total,
       },
-      map: {
+      map: current_project && {
         facets: facets,
         query: search_query,
         foundMarkers: {},
