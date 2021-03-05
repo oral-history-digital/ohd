@@ -25,7 +25,12 @@ class LocaleButtons extends Component {
 
         const locale = e.target.textContent;
 
-        let newPath = location.pathname.replace(/^\/[a-z]{2,4}\/[a-z]{2}\//, pathBase({projectId, locale, projects}) + '/');
+        let newPath;
+        if (/^\/[a-z]{2}\/{0,1}$/.test(location.pathname)) {
+            newPath = `/${locale}/`;
+        } else {
+            newPath = location.pathname.replace(/^\/[a-z]{2,4}\/[a-z]{2}\//, pathBase({projectId, locale, projects}) + '/');
+        }
 
         history.push(newPath);
         setLocale(locale);

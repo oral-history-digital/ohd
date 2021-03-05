@@ -13,9 +13,10 @@ export default function AuthShow({
 }) {
     if (
         // logged in and registered for the current project
-        (isLoggedIn && ifLoggedIn && account && account.project_ids && account.project_ids.indexOf(projectId) > -1 ) ||
+        (isLoggedIn && ifLoggedIn) ||
+        //(isLoggedIn && ifLoggedIn && account && account.project_ids && account.project_ids.indexOf(projectId) > -1 ) ||
         // catalog-project
-        (project.isCatalog && ifCatalog)
+        (ifCatalog && project.isCatalog)
     ) {
         return children;
     } else if (

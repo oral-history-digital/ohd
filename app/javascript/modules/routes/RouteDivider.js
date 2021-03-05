@@ -10,10 +10,9 @@ import projectByDomain from './projectByDomain';
 function RouteDivider() {
     const projects = useSelector(getProjects);
     const projectFromDomain = projectByDomain(projects);
-    const path = projectFromDomain ? "/:locale" : "/:projectId/:locale";
 
     return (
-        <Route path={path} render={routeProps => (
+        <Route path={'/'} render={routeProps => (
             <WrapperPageContainer {...routeProps} >
                 { projectFromDomain ? <Routes /> : <RoutesWithProjectId /> }
             </WrapperPageContainer>

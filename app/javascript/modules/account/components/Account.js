@@ -88,7 +88,7 @@ export default class Account extends React.Component {
                             {t(this.props, 'logout')}
                         </div>
                     </AuthShowContainer>
-                    <AuthShowContainer ifNoProject={true}>
+                    <AuthShowContainer ifNoProject={this.props.project}>
                         {this.projectAccessAlert()}
                     </AuthShowContainer>
 
