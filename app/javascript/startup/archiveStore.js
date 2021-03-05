@@ -3,11 +3,15 @@ import thunkMiddleware from 'redux-thunk';
 import { composeWithDevTools } from 'redux-devtools-extension/logOnlyInProduction';
 
 import combinedReducers from './combinedReducers';
+import persistedState from './persistedState';
 
 const archiveStore = (railsProps) => (
     createStore(
         combinedReducers,
-        railsProps,
+        {
+            ...railsProps,
+            ...persistedState,
+        },
         composeWithDevTools(applyMiddleware(thunkMiddleware))
     )
 );

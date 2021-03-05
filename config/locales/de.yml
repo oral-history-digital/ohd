@@ -1018,7 +1018,8 @@ de:
         caption_explanation: Die Beschreibung gibt es nur auf deutsch.
         workflow_state: 'Status'
       uploaded_file:
-        title: Title (hover)
+        href: Link
+        title: Mouseover-Text
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
