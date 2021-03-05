@@ -12,7 +12,6 @@ const mapStateToProps = (state) => {
         projectId: state.archive.projectId,
         projects: state.data.projects,
         translations: state.archive.translations,
-        facets: state.search.archive.facets,
         editView: state.archive.editView
     }
 }
