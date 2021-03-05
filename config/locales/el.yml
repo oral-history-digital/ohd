@@ -1027,7 +1027,8 @@ el:
         caption_explanation: Αυτή η λεζάντα είναι διαθέσιμη μόνο στα γερμανικά.
         workflow_state: 'Κατάσταση'
       uploaded_file:
-        title: Title (hover)
+        href: Link
+        title: Mouseover text
       mark_text:
       text:
         text_to_mark: zu ersetzender Text

@@ -22,7 +22,9 @@ export default class Data extends React.Component {
     }
 
     name() {
-        return this.props.data.title || (this.props.data.name?.hasOwnProperty(this.props.locale) ? this.props.data.name[this.props.locale] : this.props.data.name);
+        const { data, locale } = this.props;
+
+        return data.title || (data.name?.hasOwnProperty(locale) ? data.name[locale] : data.name);
     }
 
     details() {
@@ -106,6 +108,7 @@ export default class Data extends React.Component {
                         type: camelCase(joined_model_name_underscore)
                     }
                 }
+
                 return (
                     <div className={`${pluralize(joined_model_name_underscore)} box`} key={`${joined_model_name_underscore}-box`}>
                         <h4 className='title'>{t(this.props, `activerecord.models.${joined_model_name_underscore}.other`)}</h4>
