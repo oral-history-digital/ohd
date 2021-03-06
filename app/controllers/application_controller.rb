@@ -31,12 +31,13 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project
-    if params[:project_id]
-      Project.where(shortname: params[:project_id].upcase).first
-    else
-      Project.by_host(request.host)
-    end
+    @current_project = @current_project || (
+      params[:project_id].present? ?
+        Project.where(shortname: params[:project_id].upcase).first :
+        Project.by_host(request.host)
+    )
   end
+
   helper_method :current_project
 
   #def set_variant
