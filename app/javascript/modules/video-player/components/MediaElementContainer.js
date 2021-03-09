@@ -1,30 +1,30 @@
 import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
-import { getCurrentInterview, getCurrentInterviewee, getMediaStreams } from 'modules/data';
+import { getCurrentInterview, getMediaStreams } from 'modules/data';
 import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { setTapeAndTimeAndResolution } from '../actions';
-import { getCurrentTape, getTranscriptScrollEnabled, getVideoResolution, getVideoTime } from '../selectors';
-import VideoPlayer from './VideoPlayer';
+import { handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution } from '../actions';
+import { getCurrentTape, getVideoResolution, getVideoStatus, getVideoTime } from '../selectors';
+import MediaElement from './MediaElement';
 
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
-    flyoutTabsVisible: getFlyoutTabsVisible(state),
     interview: getCurrentInterview(state),
-    interviewee: getCurrentInterviewee(state),
     locale: getLocale(state),
     mediaStreams: getMediaStreams(state),
     projectId: getProjectId(state),
     resolution: getVideoResolution(state),
     tape: getCurrentTape(state),
-    transcriptScrollEnabled: getTranscriptScrollEnabled(state),
     translations: getTranslations(state),
+    videoStatus: getVideoStatus(state),
     videoTime: getVideoTime(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+    handleVideoEnded,
+    handleVideoTimeChange,
+    setNextTape,
     setTapeAndTimeAndResolution,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayer);
+export default connect(mapStateToProps, mapDispatchToProps)(MediaElement);
