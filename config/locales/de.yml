@@ -1091,3 +1091,6 @@ de:
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
+    tree_select:
+      no_matches: 'keine Ergebnisse'
+      remove_selection: 'Auswahl entfernen'
