@@ -66,7 +66,7 @@ export default class InterviewForm extends React.Component {
                 value: this.props.interview?.description,
                 elementType: 'textarea',
                 multiLocale: true,
-                validate: v => v.length <= 300,
+                //validate: v => v.length <= 300,
             },
             {
                 attribute: 'media_type',
@@ -91,7 +91,7 @@ export default class InterviewForm extends React.Component {
                 values: this.props.collections,
                 value: this.props.interview && this.props.interview.collection_id,
                 withEmpty: true,
-                validate: function(v){return /^\d+$/.test(v)},
+                //validate: function(v){return /^\d+$/.test(v)},
                 individualErrorMsg: 'empty'
             },
             {
