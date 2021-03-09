@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import { getCurrentInterview } from 'modules/data';
+import { submitData, getCurrentProject } from 'modules/data';
 import InterviewContributors from './InterviewContributors';
 
 const mapStateToProps = state => ({
@@ -9,4 +10,8 @@ const mapStateToProps = state => ({
     contributionsLastModified: state.data.statuses.contributions.lastModified,
 });
 
-export default connect(mapStateToProps)(InterviewContributors);
+const mapDispatchToProps = (dispatch) => ({
+    submitData: (props, params) => dispatch(submitData(props, params))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(InterviewContributors);

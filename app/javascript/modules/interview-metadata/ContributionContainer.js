@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { deleteData, getProjects } from 'modules/data';
+import { submitData, deleteData, getProjects } from 'modules/data';
 import { getLocale, getArchiveId, getProjectId } from 'modules/archive';
 import Contribution from './Contribution';
 
@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = (dispatch) => ({
     deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
+    submitData: (props, params) => dispatch(submitData(props, params))
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(Contribution);

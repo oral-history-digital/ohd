@@ -33,7 +33,7 @@ export default class InterviewForm extends React.Component {
         return (
             <span>
                 <span>{fullname(this.props, this.props.people[parseInt(value.person_id)]) + ', '}</span>
-                <span>{t(this.props, `contributions.${value.contribution_type}`) + ', '}</span>
+                <span>{this.props.contributionTypes[value.contribution_type_id].name[this.props.locale]}</span>
             </span>
         )
     }

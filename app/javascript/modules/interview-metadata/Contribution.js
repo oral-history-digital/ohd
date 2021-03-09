@@ -16,6 +16,7 @@ export default function Contribution({
     contribution,
     withSpeakerDesignation,
     deleteData,
+    submitData
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
@@ -46,6 +47,7 @@ export default function Contribution({
                                 <ContributionFormContainer
                                     contribution={contribution}
                                     withSpeakerDesignation
+                                    submitData={submitData}
                                     onSubmit={close}
                                 />
                             )}

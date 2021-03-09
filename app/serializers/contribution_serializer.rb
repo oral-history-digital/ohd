@@ -1,6 +1,7 @@
 class ContributionSerializer < ApplicationSerializer
   attributes :id, 
     :contribution_type, 
+    :contribution_type_id, 
     :person_id, 
     :interview_id,
     :speaker_designation,

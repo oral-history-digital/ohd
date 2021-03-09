@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, submitData, getContributionTypes,
+import { fetchData, getContributionTypes,
     getPeopleStatus, getPeople, getProjects } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import ContributionForm from './ContributionForm';
@@ -20,7 +20,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     closeArchivePopup,
     fetchData,
-    submitData,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContributionForm);

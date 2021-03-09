@@ -71,7 +71,9 @@ export default class ContributionForm extends React.Component {
                         interview_id: this.props.interview && this.props.interview.id
                     }}
                     onSubmit={(params) => {
-                        submitData(this.props, params);
+                        if (typeof submitData === 'function') {
+                            submitData(this.props, params);
+                        }
                         closeArchivePopup();
                         if (typeof onSubmit === 'function') {
                             onSubmit();

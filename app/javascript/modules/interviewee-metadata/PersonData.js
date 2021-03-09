@@ -149,6 +149,7 @@ export default class PersonData extends React.Component {
                                         contribution={Object.values(this.props.interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]}
                                         interview={this.props.interview}
                                         withSpeakerDesignation
+                                        submitData={this.props.submitData}
                                         onSubmit={close}
                                     />
                                 )}
