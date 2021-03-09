@@ -39,7 +39,7 @@ class Interview < ApplicationRecord
            :through => :contributions
 
   has_many :interviewees,
-           -> {where("contributions.contribution_type = 'interviewee'")}, ## ZWAR
+           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'interviewee'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
