@@ -3,7 +3,12 @@ Rails.application.routes.draw do
   concern :archive do
     get "random_featured_interviews", to: "interviews#random_featured"
     resources :texts
-    resources :projects
+
+    resources :projects, only: [:update]
+    get "project/edit-info", to: "projects#edit_info"
+    get "project/edit-config", to: "projects#edit_config"
+    get "project/edit-display", to: "projects#edit_display"
+
     resources :languages
     resources :metadata_fields
     resources :external_links
@@ -179,6 +184,7 @@ Rails.application.routes.draw do
       root to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         root to: "projects#show"
+        resources :projects, only: [:update, :destroy]
         concerns :archive
         concerns :account
         concerns :unnamed_devise_routes

@@ -12,6 +12,7 @@ import UsersAdminTabPanelContainer from './UsersAdminTabPanelContainer';
 import IndexingTabPanelContainer from './IndexingTabPanelContainer';
 import MapTabPanelContainer from './MapTabPanelContainer';
 import InterviewTabPanelContainer from './InterviewTabPanelContainer';
+import ProjectConfigTabPanelContainer from './ProjectConfigTabPanelContainer';
 import LocaleButtonsContainer from './LocaleButtonsContainer';
 import * as indexes from '../constants';
 import { Spinner } from 'modules/spinners';
@@ -126,6 +127,13 @@ export default class FlyoutTabs extends React.Component {
                         >
                             { t(this.props, 'edit.administration') }
                         </Tab>
+                        <Tab
+                            selectedClassName='admin'
+                            className={project && admin(this.props, {type: 'Project', action: 'update'}) ? 'flyout-tab admin' : 'hidden'}
+                            key='administration'
+                        >
+                            { t(this.props, 'edit.project.admin') }
+                        </Tab>
                     </TabList>
 
                     <TabPanel key='account'>
@@ -167,6 +175,10 @@ export default class FlyoutTabs extends React.Component {
 
                     <TabPanel key="tabpanel-users-admin">
                         <UsersAdminTabPanelContainer />
+                    </TabPanel>
+
+                    <TabPanel key="tabpanel-project-config">
+                        <ProjectConfigTabPanelContainer />
                     </TabPanel>
                 </div>
             </Tabs>

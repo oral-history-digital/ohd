@@ -13,7 +13,9 @@ import { MapSearchContainer } from 'modules/map-search';
 import { WrappedProjectsContainer, WrappedRolesContainer,
     WrappedPermissionsContainer, WrappedTaskTypesContainer, WrappedRegistryReferenceTypesContainer,
     WrappedPeopleContainer, WrappedLanguagesContainer, WrappedCollectionsContainer,
-    UploadsContainer, EditInterviewContainer } from 'modules/admin';
+    UploadsContainer, EditInterviewContainer,
+    EditProjectDisplayContainer, EditProjectConfigContainer, EditProjectInfoContainer
+} from 'modules/admin';
 
 export const Routes = () => (
     <Switch>
@@ -25,7 +27,11 @@ export const Routes = () => (
         <Route path="/:locale/registry_entries" component={props => <ErrorBoundary><RegistryContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/searches/archive" component={props => <ErrorBoundary><ArchiveSearchContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/searches/map" component={props => <ErrorBoundary><MapSearchContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:locale/project" component={props => <ErrorBoundary><WrappedProjectsContainer {...props} /></ErrorBoundary>} />
+
+        <Route path="/:locale/project/edit-info" component={props => <ErrorBoundary><EditProjectInfoContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:locale/project/edit-config" component={props => <ErrorBoundary><EditProjectConfigContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:locale/project/edit-display" component={props => <ErrorBoundary><EditProjectDisplayContainer {...props} /></ErrorBoundary>} />
+
         <Route path="/:locale/people" component={props => <ErrorBoundary><WrappedPeopleContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/registry_reference_types" component={props => <ErrorBoundary><WrappedRegistryReferenceTypesContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/languages" component={props => <ErrorBoundary><WrappedLanguagesContainer {...props} /></ErrorBoundary>} />
@@ -52,7 +58,11 @@ export const RoutesWithProjectId = () => (
         <Route path="/:projectId/:locale/registry_entries" component={props => <ErrorBoundary><RegistryContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/searches/archive" component={props => <ErrorBoundary><ArchiveSearchContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/searches/map" component={props => <ErrorBoundary><MapSearchContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:projectId/:locale/project" component={props => <ErrorBoundary><WrappedProjectsContainer {...props} /></ErrorBoundary>} />
+
+        <Route path="/:projectId/:locale/project/edit-info" component={props => <ErrorBoundary><EditProjectInfoContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:projectId/:locale/project/edit-config" component={props => <ErrorBoundary><EditProjectConfigContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:projectId/:locale/project/edit-display" component={props => <ErrorBoundary><EditProjectDisplayContainer {...props} /></ErrorBoundary>} />
+
         <Route path="/:projectId/:locale/people" component={props => <ErrorBoundary><WrappedPeopleContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/registry_reference_types" component={props => <ErrorBoundary><WrappedRegistryReferenceTypesContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/languages" component={props => <ErrorBoundary><WrappedLanguagesContainer {...props} /></ErrorBoundary>} />

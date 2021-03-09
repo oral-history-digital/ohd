@@ -2,10 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 
-import { PermissionSearchFormContainer, ProjectSearchFormContainer,
-    RoleSearchFormContainer, TaskTypeSearchFormContainer,
-    UserRegistrationSearchFormContainer }
-    from 'modules/admin';
+import { UserRegistrationSearchFormContainer } from 'modules/admin';
 import { pathBase } from 'modules/routes';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
@@ -100,30 +97,6 @@ class UsersAdminTabPanel extends Component {
                         </div>,
                         `${pathBase(this.props)}/user_registrations`,
                         {type: 'UserRegistration', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.role.admin',
-                        <RoleSearchFormContainer/>,
-                        `${pathBase(this.props)}/roles`,
-                        {type: 'Role', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.permission.admin',
-                        <PermissionSearchFormContainer/>,
-                        `${pathBase(this.props)}/permissions`,
-                        {type: 'Permission', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.task_type.admin',
-                        <TaskTypeSearchFormContainer/>,
-                        `${pathBase(this.props)}/task_types`,
-                        {type: 'TaskType', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.project.admin',
-                        <ProjectSearchFormContainer/>,
-                        `${pathBase(this.props)}/projects`,
-                        {type: 'Project', action: 'update'}
                     )}
                 </div>
             </Fragment>) :

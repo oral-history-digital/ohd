@@ -283,15 +283,20 @@ el:
       edit: Sprache bearbeiten
       admin: Sprachen bearbeiten
     collection:
-      new: Sammmlung hinzufügen
-      edit: Sammmlung bearbeiten
-      admin: Sammmlungen bearbeiten
+      admin: Teilsammlungen bearbeiten
+      new: Teilsammlung hinzufügen
+      edit: Teilsammlung bearbeiten
+      processed: 'Teilsammlung angelegt: '
+      return: Weitere Teilsammlung anlegen
     project:
-      new: Projekt hinzufügen
-      edit: Projekt bearbeiten
-      admin: Projekte bearbeiten
-      processed: 'Projekt angelegt: '
-      return: Weitere Projekt anlegen
+      new: Sammlung hinzufügen
+      edit: Sammlung bearbeiten
+      admin: Sammlungskonfiguration
+      info: Sammlungsinformation bearbeiten
+      config: Sammlung konfigurieren
+      display: Anzeigeoptionen bearbeiten
+      processed: 'Sammlung angelegt: '
+      return: Weitere Sammlung anlegen
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
@@ -732,8 +737,8 @@ el:
         one: Zur Rolle gehörende Erlaubnis
         other: Zur Rolle gehörende Erlaubnisse
       project:
-        one: Projekt
-        other: Projekte
+        one: Sammlung
+        other: Sammlungen
       person:
         one: Person
         other: Personen
@@ -815,7 +820,7 @@ el:
         observations: Protokoll
         description: Description
       transcript:
-        collection_id: Sammlung
+        collection_id: Teilsammlung
         archive_id: Archiv-ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
@@ -1054,7 +1059,7 @@ el:
         href: Href
         file: Datei
         publish: Δημόσιο
-        project_id: Projekt
+        project_id: Sammlung
         key: Schlüssel
         abbreviation: Abkürzung
         created_at: Angelegt am

@@ -300,15 +300,20 @@ en:
       edit: Sprache bearbeiten
       admin: Sprachen bearbeiten
     collection:
-      new: Sammmlung hinzufügen
-      edit: Sammmlung bearbeiten
-      admin: Sammmlungen bearbeiten
+      admin: Teilsammlungen bearbeiten
+      new: Teilsammlung hinzufügen
+      edit: Teilsammlung bearbeiten
+      processed: 'Teilsammlung angelegt: '
+      return: Weitere Teilsammlung anlegen
     project:
-      new: Projekt hinzufügen
-      edit: Projekt bearbeiten
-      admin: Projekte bearbeiten
-      processed: 'Projekt angelegt: '
-      return: Weitere Projekt anlegen
+      new: Sammlung hinzufügen
+      edit: Sammlung bearbeiten
+      admin: Sammlungskonfiguration
+      info: Sammlungsinformation bearbeiten
+      config: Sammlung konfigurieren
+      display: Anzeigeoptionen bearbeiten
+      processed: 'Sammlung angelegt: '
+      return: Weitere Sammlung anlegen
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
@@ -730,8 +735,8 @@ en:
         one: Zur Rolle gehörende Erlaubnis
         other: Zur Rolle gehörende Erlaubnisse
       project:
-        one: Projekt
-        other: Projekte
+        one: Sammlung
+        other: Sammlungen
       person:
         one: Person
         other: Personen
@@ -761,7 +766,7 @@ en:
         person_id: Person
         speaker_designation: speaker designation (e.g. *CG:*)
       collection:
-        project_id: Projekt
+        project_id: Sammlung
         homepage: Website
         name: Name
         countries: Interviews in
@@ -776,7 +781,7 @@ en:
         name: Name
       interview:
         person_name: Name
-        collection_id: Sammlung
+        collection_id: Teilsammlung
         archive_id: Archiv-ID
         forced_labor_groups: Gruppe
         forced_labor_fields: Einsatzbereich
@@ -809,7 +814,7 @@ en:
         observations: Protokoll
         description: Description
       transcript:
-        collection_id: Sammlung
+        collection_id: Teilsammlung
         archive_id: Archiv-ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
@@ -1036,7 +1041,7 @@ en:
         href: Href
         file: File
         publish: Public
-        project_id: Project
+        project_id: Sammlung
         key: Schlüssel
         abbreviation: Abkürzung
         created_at: Angelegt am

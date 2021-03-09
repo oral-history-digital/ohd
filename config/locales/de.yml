@@ -305,11 +305,11 @@ de:
       processed: 'Person angelegt: '
       return: Weitere Person anlegen
     collection:
-      admin: Sammlungen bearbeiten
-      new: Sammlung hinzufügen
-      edit: Sammlung bearbeiten
-      processed: 'Sammlung angelegt: '
-      return: Weitere Sammlung anlegen
+      admin: Teilsammlungen bearbeiten
+      new: Teilsammlung hinzufügen
+      edit: Teilsammlung bearbeiten
+      processed: 'Teilsammlung angelegt: '
+      return: Weitere Teilsammlung anlegen
     language:
       admin: Sprachen bearbeiten
       new: Sprache hinzufügen
@@ -317,11 +317,14 @@ de:
       processed: 'Sprache angelegt: '
       return: Weitere Sprache anlegen
     project:
-      new: Projekt hinzufügen
-      edit: Projekt bearbeiten
-      admin: Projekte bearbeiten
-      processed: 'Projekt angelegt: '
-      return: Weitere Projekt anlegen
+      new: Sammlung hinzufügen
+      edit: Sammlung bearbeiten
+      admin: Sammlungskonfiguration
+      info: Sammlungsinformation bearbeiten
+      config: Sammlung konfigurieren
+      display: Anzeigeoptionen bearbeiten
+      processed: 'Sammlung angelegt: '
+      return: Weitere Sammlung anlegen
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
@@ -743,8 +746,8 @@ de:
         one: 'Zur Rolle gehörende Berechtigung'
         other: 'Zur Rolle gehörende Berechtigungen'
       project:
-        one: Projekt
-        other: Projekte
+        one: Sammlung
+        other: Sammlungen
       person:
         one: Person
         other: Personen
@@ -775,7 +778,7 @@ de:
         person_id: Person
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
-        project_id: Projekt
+        project_id: Sammlung
         homepage: Website
         countries: Interviews in
         institution: Durchgeführt von
@@ -788,7 +791,7 @@ de:
         code: Code
       interview:
         person_name: Name
-        collection_id: Sammlung
+        collection_id: Teilsammlung
         archive_id: Archiv-ID
         forced_labor_groups: Gruppe
         forced_labor_fields: Einsatzbereich
@@ -821,7 +824,7 @@ de:
         observations: Protokoll
         description: Beschreibung
       transcript:
-        collection_id: Sammlung
+        collection_id: Teilsammlung
         archive_id: Archiv-ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
@@ -1045,7 +1048,7 @@ de:
         href: Href
         file: Datei
         publish: Öffentlich
-        project_id: Projekt
+        project_id: Sammlung
         key: Schlüssel
         abbreviation: Abkürzung
         created_at: Angelegt am

@@ -3,6 +3,9 @@ export { default as LanguagesSearchFormContainer } from './LanguagesSearchFormCo
 export { default as PeopleSearchFormContainer } from './PeopleSearchFormContainer';
 export { default as PermissionSearchFormContainer } from './PermissionSearchFormContainer';
 export { default as ProjectSearchFormContainer } from './ProjectSearchFormContainer';
+export { default as EditProjectInfoContainer } from './EditProjectInfoContainer';
+export { default as EditProjectConfigContainer } from './EditProjectConfigContainer';
+export { default as EditProjectDisplayContainer } from './EditProjectDisplayContainer';
 export { default as RegistryReferenceTypesSearchFormContainer } from './RegistryReferenceTypesSearchFormContainer';
 export { default as RoleSearchFormContainer } from './RoleSearchFormContainer';
 export { default as TaskTypeSearchFormContainer } from './TaskTypeSearchFormContainer';

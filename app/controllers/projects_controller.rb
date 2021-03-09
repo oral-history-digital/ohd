@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
   skip_before_action :authenticate_user_account!, only: [:show, :index]
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  before_action :set_project, only: [:show, :edit_info, :edit_display, :edit_config, :edit, :update, :destroy]
 
   # GET /projects
   def index
@@ -40,6 +40,16 @@ class ProjectsController < ApplicationController
         exporter = CollectionMetadataExporter.new(@project)
         exporter.build
         render xml: exporter.xml
+      end
+    end
+  end
+
+  %w(edit_info edit_display edit_config).each do |m|
+    define_method m do
+      respond_to do |format|
+        format.html do
+          render :template => "/react/app.html"
+        end
       end
     end
   end
