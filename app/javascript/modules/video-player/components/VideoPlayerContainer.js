@@ -1,30 +1,17 @@
 import {connect} from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
-import { getCurrentInterview, getCurrentInterviewee, getMediaStreams } from 'modules/data';
-import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { setTapeAndTimeAndResolution } from '../actions';
-import { getCurrentTape, getTranscriptScrollEnabled, getVideoResolution, getVideoTime } from '../selectors';
+import { getCurrentInterviewee } from 'modules/data';
+import { getLocale, getProjectId } from 'modules/archive';
+import { getTranscriptScrollEnabled } from '../selectors';
 import VideoPlayer from './VideoPlayer';
 
 const mapStateToProps = state => ({
-    archiveId: getArchiveId(state),
     flyoutTabsVisible: getFlyoutTabsVisible(state),
-    interview: getCurrentInterview(state),
     interviewee: getCurrentInterviewee(state),
     locale: getLocale(state),
-    mediaStreams: getMediaStreams(state),
     projectId: getProjectId(state),
-    resolution: getVideoResolution(state),
-    tape: getCurrentTape(state),
     transcriptScrollEnabled: getTranscriptScrollEnabled(state),
-    translations: getTranslations(state),
-    videoTime: getVideoTime(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    setTapeAndTimeAndResolution,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(VideoPlayer);
+export default connect(mapStateToProps)(VideoPlayer);
