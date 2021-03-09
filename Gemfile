@@ -76,6 +76,7 @@ group :development do
   gem 'progress_bar'
   gem 'rb-readline'
   gem 'pry'
+  gem 'meta_request'
 end
 
 #
