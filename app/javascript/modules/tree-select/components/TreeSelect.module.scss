@@ -1,0 +1,15 @@
+/* Overwrite global form styles */
+
+.treeSelect label {
+  float: initial !important;
+  font-size: 0.875rem;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: initial !important;
+}
+
+.treeSelect input {
+  margin: 0 !important;
+  padding: 0 !important;
+  width: initial !important;
+}

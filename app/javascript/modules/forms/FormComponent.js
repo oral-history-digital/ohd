@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte';
 
+import { TreeSelectContainer } from 'modules/tree-select';
 import InputContainer from './InputContainer';
 import TextareaContainer from './TextareaContainer';
 import SelectContainer from './SelectContainer';
@@ -35,7 +36,7 @@ export default class Form extends React.Component {
 
     initErrors() {
         let errors = {};
-        this.props.elements.map((element, index) => {
+        this.props.elements.map((element) => {
             let error = false;
             if (typeof(element.validate) === 'function') {
                 let value = element.value || (this.props.data && this.props.data[element.attribute]);
@@ -180,7 +181,7 @@ export default class Form extends React.Component {
     components() {
         return {
             select: SelectContainer,
-            registryEntrySelect: RegistryEntrySelectContainer,
+            registryEntrySelect: this.props.treeSelectEnabled ? TreeSelectContainer : RegistryEntrySelectContainer,
             input: InputContainer,
             richTextEditor: RichTextEditor,
             textarea: TextareaContainer,
@@ -251,6 +252,7 @@ export default class Form extends React.Component {
 }
 
 Form.propTypes = {
+    treeSelectEnabled: PropTypes.bool.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
