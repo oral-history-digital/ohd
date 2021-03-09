@@ -16,6 +16,6 @@ class Contribution < ApplicationRecord
   after_destroy :touch_interview
 
   def touch_interview
-    interview.touch
+    interview && interview.touch
   end
 end
