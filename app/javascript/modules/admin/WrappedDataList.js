@@ -22,17 +22,19 @@ export default class WrappedDataList extends React.Component {
     }
 
     renderScrollObserver() {
-        if (
-            this.props.dataStatus[statifiedQuery(this.props.query)] &&
-            this.props.dataStatus[statifiedQuery(this.props.query)].split('-')[0] === 'fetching'
-        ) {
-            return <Spinner />;
-        } else if (!this.props.resultPagesCount || this.props.resultPagesCount > (this.props.query.page)) {
-            return (
-                <Observer
-                    onChange={inView => this.handleScroll(inView)}
-                />
-            )
+        if (this.props.query) {
+            if (
+                this.props.dataStatus[statifiedQuery(this.props.query)] &&
+                this.props.dataStatus[statifiedQuery(this.props.query)].split('-')[0] === 'fetching'
+            ) {
+                return <Spinner />;
+            } else if (!this.props.resultPagesCount || this.props.resultPagesCount > (this.props.query.page)) {
+                return (
+                    <Observer
+                        onChange={inView => this.handleScroll(inView)}
+                    />
+                )
+            }
         }
     }
 
@@ -82,9 +84,9 @@ export default class WrappedDataList extends React.Component {
         })
     }
 
-    form(data) {
+    form(data, onSubmit) {
         if (this.props.form) {
-            return React.createElement(this.props.form, {data: data});
+            return React.createElement(this.props.form, {data: data, values: this.props.initialFormValues});
         } else {
             return (
                 <Form
@@ -107,15 +109,7 @@ export default class WrappedDataList extends React.Component {
                         title={t(this.props, `edit.${this.props.scope}.new`)}
                         trigger={<><i className="fa fa-plus"/>{t(this.props, `edit.${this.props.scope}.new`)}</>}
                     >
-                        {closeModal => (
-                            <Form
-                                values={this.props.initialFormValues}
-                                scope={this.props.scope}
-                                onSubmit={(params) => {this.props.submitData(this.props, params); closeModal(); }}
-                                submitText='submit'
-                                elements={this.props.formElements}
-                            />
-                        )}
+                        {close => this.form(undefined, close)}
                     </Modal>
                 </AuthorizedContent>
             )
