@@ -12,7 +12,7 @@ export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getRootRegistryEntryReload, getRegistryEntries, getRegistryEntriesStatus,
     getRegistryReferenceTypesStatus, getRegistryReferenceTypes,
     getCollections, getCurrentInterviewee, getInterviewee,
-    getContributionTypes, getPeopleStatus }
+    getContributionTypes, getPeopleStatus, getMediaStreams }
     from './selectors/dataSelectors';
 export { getIsCatalog, getIsCampscapesProject, getProjectTranslation,
     getShowFeaturedInterviews, getShowStartPageVideo } from './selectors/projectSelectors';

@@ -29,6 +29,8 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
   height: 100%;
 }
 
+@import "react-dropdown-tree-select/dist/styles.css";
+
 /* Partials */
 @import "dev";
 @import "fonts";
