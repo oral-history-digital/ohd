@@ -104,9 +104,9 @@ class ProjectsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+  # if a project is updated or destroyed from ohd.de
     def set_project
-      @project = current_project # Project.find(params[:id])
+      @project = current_project || Project.find(params[:id])
       authorize @project
     end
 

@@ -23,7 +23,7 @@ export const getShowStartPageVideo = state => {
 export const getProjectTranslation = createSelector(
     [getLocale, getCurrentProject],
     (locale, currentProject) => {
-        return currentProject.translations.find(t => t.locale === locale);
+        return currentProject?.translations.find(t => t.locale === locale);
     }
 );
 

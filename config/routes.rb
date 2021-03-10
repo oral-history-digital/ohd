@@ -176,7 +176,7 @@ Rails.application.routes.draw do
   # for development it is now set to either localhost or ohd.dev
   # in production this should be the ohd-domain
   #
-  constraints host: ['localhost', 'ohd.dev', 'ohd.de'] do
+    constraints(lambda { |request| ['localhost:3000', 'da03.cedis.fu-berlin.de:100'].include?("#{request.host}:#{request.port}") }) do
     scope "/:locale" do
       root to: "projects#index"
     end

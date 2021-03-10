@@ -7,13 +7,16 @@ import { getLocale, setProjectId } from 'modules/archive';
 function ProjectShow({data}) {
     const locale = useSelector(getLocale);
 
+    const logo = data.logos && Object.values(data.logos).find(l => l.locale === locale);
+    const href = data.archive_domain ? `${data.archive_domain}/${locale}/` : `/${data.identifier}/${locale}/`;
+
     return (
-        <Link
-            onClick={() => setProjectId(data.identifier)}
-            to={`/${data.identifier}/${locale}/`}
+        <a
+            href={href}
         >
+            <img className="logo-img" src={logo?.src}/>
             {data.name[locale]}
-        </Link>
+        </a>
     );
 }
 
