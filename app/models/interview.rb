@@ -330,11 +330,11 @@ class Interview < ApplicationRecord
     self.touch
   end
 
-  def self.random_featured(n = 1)
+  def self.random_featured(n = 1, project_id)
     if n == 1
-      shared.with_media_type.order(Arel.sql('RAND()')).first || first
+      shared.where(project_id: project_id).with_media_type.order(Arel.sql('RAND()')).first || first
     else
-      shared.with_media_type.order(Arel.sql('RAND()')).first(n) || first(n)
+      shared.where(project_id: project_id).with_media_type.order(Arel.sql('RAND()')).first(n) || first(n)
     end
   end
 
