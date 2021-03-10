@@ -137,6 +137,13 @@ export const getFeaturedInterviewsFetched = state => {
     return fetched.test(status);
 };
 
+export const getRegistryReferenceTypesFetched = state => {
+    const status = getStatuses(state).registry_reference_types.all;
+    const fetched = /^fetched/;
+
+    return fetched.test(status);
+};
+
 export const getRootRegistryEntryFetched = createSelector(
     [getRegistryEntriesStatus, getCurrentProject],
     (status, currentProject) => {
