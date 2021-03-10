@@ -3,9 +3,9 @@ export { default as LanguagesSearchFormContainer } from './LanguagesSearchFormCo
 export { default as PeopleSearchFormContainer } from './PeopleSearchFormContainer';
 export { default as PermissionSearchFormContainer } from './PermissionSearchFormContainer';
 export { default as ProjectSearchFormContainer } from './ProjectSearchFormContainer';
-export { default as EditProjectInfoContainer } from './EditProjectInfoContainer';
-export { default as EditProjectConfigContainer } from './EditProjectConfigContainer';
-export { default as EditProjectDisplayContainer } from './EditProjectDisplayContainer';
+export { default as EditProjectInfo } from './EditProjectInfo';
+export { default as EditProjectConfig } from './EditProjectConfig';
+export { default as EditProjectDisplay } from './EditProjectDisplay';
 export { default as RegistryReferenceTypesSearchFormContainer } from './RegistryReferenceTypesSearchFormContainer';
 export { default as RoleSearchFormContainer } from './RoleSearchFormContainer';
 export { default as TaskTypeSearchFormContainer } from './TaskTypeSearchFormContainer';
@@ -21,6 +21,11 @@ export { default as WrappedRolesContainer } from './WrappedRolesContainer';
 export { default as WrappedTaskTypesContainer } from './WrappedTaskTypesContainer';
 export { default as UploadsContainer } from './UploadsContainer';
 export { default as EditInterviewContainer } from './EditInterviewContainer';
+
+export { default as MetadataFieldsContainer } from './MetadataFieldsContainer';
+export { default as ExternalLinksContainer } from './ExternalLinksContainer';
+export { default as LogosContainer } from './LogosContainer';
+export { default as SponsorLogosContainer } from './SponsorLogosContainer';
 
 export { default as DataList } from './DataList';
 

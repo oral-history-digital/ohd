@@ -32,6 +32,13 @@ class UploadedFilesController < ApplicationController
     end
   end
 
+  def index
+    policy_scope(UploadedFile)
+    respond_to do |format|
+      format.html { render 'react/app' }
+    end
+  end
+
   private
 
   def respond uploaded_file

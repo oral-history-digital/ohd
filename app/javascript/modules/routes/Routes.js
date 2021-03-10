@@ -14,7 +14,8 @@ import { WrappedProjectsContainer, WrappedRolesContainer,
     WrappedPermissionsContainer, WrappedTaskTypesContainer, WrappedRegistryReferenceTypesContainer,
     WrappedPeopleContainer, WrappedLanguagesContainer, WrappedCollectionsContainer,
     UploadsContainer, EditInterviewContainer,
-    EditProjectDisplayContainer, EditProjectConfigContainer, EditProjectInfoContainer
+    EditProjectDisplay, EditProjectConfig, EditProjectInfo,
+    MetadataFieldsContainer
 } from 'modules/admin';
 
 export const Routes = () => (
@@ -28,10 +29,11 @@ export const Routes = () => (
         <Route path="/:locale/searches/archive" component={props => <ErrorBoundary><ArchiveSearchContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/searches/map" component={props => <ErrorBoundary><MapSearchContainer {...props} /></ErrorBoundary>} />
 
-        <Route path="/:locale/project/edit-info" component={props => <ErrorBoundary><EditProjectInfoContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:locale/project/edit-config" component={props => <ErrorBoundary><EditProjectConfigContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:locale/project/edit-display" component={props => <ErrorBoundary><EditProjectDisplayContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:locale/project/edit-info" component={props => <ErrorBoundary><EditProjectInfo {...props} /></ErrorBoundary>} />
+        <Route path="/:locale/project/edit-config" component={props => <ErrorBoundary><EditProjectConfig {...props} /></ErrorBoundary>} />
+        <Route path="/:locale/project/edit-display" component={props => <ErrorBoundary><EditProjectDisplay {...props} /></ErrorBoundary>} />
 
+        <Route path="/:locale/metadata_fields" component={props => <ErrorBoundary><MetadataFieldsContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/people" component={props => <ErrorBoundary><WrappedPeopleContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/registry_reference_types" component={props => <ErrorBoundary><WrappedRegistryReferenceTypesContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/languages" component={props => <ErrorBoundary><WrappedLanguagesContainer {...props} /></ErrorBoundary>} />
@@ -59,10 +61,11 @@ export const RoutesWithProjectId = () => (
         <Route path="/:projectId/:locale/searches/archive" component={props => <ErrorBoundary><ArchiveSearchContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/searches/map" component={props => <ErrorBoundary><MapSearchContainer {...props} /></ErrorBoundary>} />
 
-        <Route path="/:projectId/:locale/project/edit-info" component={props => <ErrorBoundary><EditProjectInfoContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:projectId/:locale/project/edit-config" component={props => <ErrorBoundary><EditProjectConfigContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:projectId/:locale/project/edit-display" component={props => <ErrorBoundary><EditProjectDisplayContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:projectId/:locale/project/edit-info" component={props => <ErrorBoundary><EditProjectInfo {...props} /></ErrorBoundary>} />
+        <Route path="/:projectId/:locale/project/edit-config" component={props => <ErrorBoundary><EditProjectConfig {...props} /></ErrorBoundary>} />
+        <Route path="/:projectId/:locale/project/edit-display" component={props => <ErrorBoundary><EditProjectDisplay {...props} /></ErrorBoundary>} />
 
+        <Route path="/:projectId/:locale/metadata_fields" component={props => <ErrorBoundary><MetadataFieldsContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/people" component={props => <ErrorBoundary><WrappedPeopleContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/registry_reference_types" component={props => <ErrorBoundary><WrappedRegistryReferenceTypesContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/languages" component={props => <ErrorBoundary><WrappedLanguagesContainer {...props} /></ErrorBoundary>} />

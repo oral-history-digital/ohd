@@ -40,6 +40,7 @@ class MetadataFieldsController < ApplicationController
     @project = Interview.find_by_archive_id(params[:project_id])
     policy_scope(MetadataField)
     respond_to do |format|
+      format.html { render 'react/app' }
       format.json do
         json = Rails.cache.fetch("#{current_project.cache_key_prefix}-project-metadata_fields-#{@project.id}-#{@project.metadata_fields.maximum(:updated_at)}") do
           {

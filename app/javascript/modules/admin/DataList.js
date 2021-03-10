@@ -55,7 +55,7 @@ export default class DataList extends React.Component {
 
     form(data, onSubmit) {
         if (this.props.form) {
-            return React.createElement(this.props.form, {data: data});
+            return React.createElement(this.props.form, {data: data, values: this.props.initialFormValues});
         } else {
             return (
                 <Form

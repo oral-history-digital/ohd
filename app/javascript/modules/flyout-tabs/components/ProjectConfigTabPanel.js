@@ -59,6 +59,12 @@ class ProjectConfigTabPanel extends Component {
                         {type: 'Project', action: 'update'}
                     )}
                     {this.subTab(
+                        'edit.metadata_field.admin',
+                        'description',
+                        `${pathBase(this.props)}/metadata_fields`,
+                        {type: 'Project', action: 'update'}
+                    )}
+                    {this.subTab(
                         'edit.role.admin',
                         <RoleSearchFormContainer/>,
                         `${pathBase(this.props)}/roles`,

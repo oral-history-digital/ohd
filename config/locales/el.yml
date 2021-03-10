@@ -300,7 +300,7 @@ el:
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
-      admin: Metadatume bearbeiten
+      admin: Metadaten bearbeiten
       processed: 'Metadatum angelegt: '
       return: Weiteres Metadatum anlegen
     external_link:
@@ -309,6 +309,14 @@ el:
       admin: Externen Links bearbeiten
       processed: 'Externer Link angelegt: '
       return: Weiteren Externen Link anlegen
+    logo:
+      new: Logo hinzufügen
+      edit: Logo bearbeiten
+      admin: Logos bearbeiten
+    sponsor_logo:
+      new: Sponsor Logo hinzufügen
+      edit: Sponsor Logo bearbeiten
+      admin: Sponsor Logos bearbeiten
     segment:
       transcript: Transkript bearbeiten
       translation: Übersetzung bearbeiten

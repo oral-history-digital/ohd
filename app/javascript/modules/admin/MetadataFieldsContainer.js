@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData } from 'modules/data';
-import DataList from './DataList';
+import { getCurrentProject, fetchData, deleteData, submitData } from 'modules/data';
+import WrappedDataList from './WrappedDataList';
 import MetadataFieldFormContainer from './MetadataFieldFormContainer';
 import MetadataFieldShow from './MetadataFieldShow';
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
+    let project = getCurrentProject(state);
     return {
         locale: state.archive.locale,
         translations: state.archive.translations,
@@ -15,6 +16,7 @@ const mapStateToProps = (state) => {
         account: state.data.accounts.current,
         editView: true,
         //
+        data: project.metadata_fields,
         scope: 'metadata_field',
         joinDataStatus: state.data.statuses.registry_reference_types,
         joinDataScope: 'registry_reference_types',
@@ -41,4 +43,4 @@ const mapDispatchToProps = (dispatch) => ({
     closeArchivePopup: () => dispatch(closeArchivePopup())
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(DataList);
+export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

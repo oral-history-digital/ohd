@@ -1,7 +1,6 @@
 import React from 'react';
 
 import { Form } from 'modules/forms';
-import { AuthShowContainer } from 'modules/auth';
 import { humanReadable } from 'modules/data';
 import { t } from 'modules/i18n';
 
@@ -71,16 +70,6 @@ export default class EditData extends React.Component {
     }
 
     render() {
-        return (
-            <div className='wrapper-content register'>
-                <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className='registry-entries-title'>{t(this.props, `edit.project.info`)}</h1>
-                    {this.state.editing ? this.form() : this.show()}
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
-            </div>
-        )
+        return <>{this.state.editing ? this.form() : this.show()}</>
     }
 }

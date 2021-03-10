@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
 import WrappedDataList from './WrappedDataList';
-import MetadataFieldsContainer from './MetadataFieldsContainer';
-import ExternalLinksContainer from './ExternalLinksContainer';
-import LogoContainer from './LogoContainer';
-import SponsorLogosContainer from './SponsorLogosContainer';
+//import MetadataFieldsContainer from './MetadataFieldsContainer';
+//import ExternalLinksContainer from './ExternalLinksContainer';
+//import LogoContainer from './LogoContainer';
+//import SponsorLogosContainer from './SponsorLogosContainer';
 import ProjectShow from './ProjectShow';
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
@@ -155,10 +155,10 @@ const mapStateToProps = (state) => {
             }
         ],
         joinedData: {
-            metadata_field: MetadataFieldsContainer,
-            external_link: ExternalLinksContainer,
-            logo: LogoContainer,
-            sponsor_logo: SponsorLogosContainer,
+            //metadata_field: MetadataFieldsContainer,
+            //external_link: ExternalLinksContainer,
+            //logo: LogoContainer,
+            //sponsor_logo: SponsorLogosContainer,
         },
         showComponent: ProjectShow,
     }
