@@ -1,12 +1,12 @@
 /**
- * VideoHeader component
+ * MediaHeader component
  */
 
-.VideoHeader {
+.MediaHeader {
   @include clearfix();
 }
 
-.VideoHeader-title {
+.MediaHeader-title {
   color: #fff;
   float: none;
   font-size: $font-size-heading-h1;
@@ -21,7 +21,7 @@
   }
 }
 
-.VideoHeader-controls {
+.MediaHeader-controls {
   float: none;
   padding-top: 0;
 
@@ -31,7 +31,7 @@
   }
 }
 
-.VideoHeader.is-fixed {
+.MediaHeader.is-fixed {
   display: block;
   margin-left: 0;
 
@@ -41,13 +41,13 @@
   }
 }
 
-.VideoHeader.is-fixed .VideoHeader-title {
+.MediaHeader.is-fixed .MediaHeader-title {
   float: none;
   font-size: $font-size-larger;
   line-height: $line-height-larger;
 }
 
-.VideoHeader.is-fixed .VideoHeader-controls {
+.MediaHeader.is-fixed .MediaHeader-controls {
   float: none;
   padding: 0;
 }

@@ -1,8 +1,8 @@
 /**
- * VideoPlayer component
+ * MediaPlayer component
  */
 
-.VideoPlayer {
+.MediaPlayer {
   background: $gray-darker;
   color: #fff;
   height: auto;
@@ -19,14 +19,14 @@
   }
 }
 
-.VideoPlayer-buttons {
+.MediaPlayer-buttons {
   bottom: 0.5rem;
   display: flex;
   position: absolute;
   right: 0.5rem;
 }
 
-.VideoPlayer.is-fixed {
+.MediaPlayer.is-fixed {
   height: 13.75rem;
   left: 0;
   position: fixed;
@@ -38,7 +38,7 @@
   }
 }
 
-.VideoPlayer.is-narrow {
+.MediaPlayer.is-narrow {
   @include screen-xl {
     right: 36%;
   }

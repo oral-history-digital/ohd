@@ -1,21 +1,17 @@
 import {
     TRANSCRIPT_TIME_CHANGE,
-    TRANSCRIPT_SCROLL,
-    SET_INTERVIEW_TAB_INDEX,
     SET_TAPE_AND_TIME,
-    SET_ACTUAL_SEGMENT,
     VIDEO_TIME_CHANGE,
     VIDEO_ENDED,
     SET_TAPE_AND_TIME_AND_RESOLUTION,
     SET_NEXT_TAPE,
 } from './action-types';
 
-export function handleSegmentClick(tape, time, tabIndex) {
+export function handleSegmentClick(tape, time) {
     return {
         type: TRANSCRIPT_TIME_CHANGE,
         videoTime: time,
         tape: tape,
-        tabIndex: tabIndex,
     }
 }
 
@@ -26,27 +22,6 @@ export function setTapeAndTime(tape, time) {
         transcriptTime: time,
         tape: tape
     }
-}
-
-export function setInterviewTabIndex(tabIndex) {
-    return {
-        tabIndex: tabIndex,
-        type: SET_INTERVIEW_TAB_INDEX,
-    }
-}
-
-export function setActualSegment(segment) {
-    return {
-        type: SET_ACTUAL_SEGMENT,
-        segment: segment
-    }
-}
-
-export function handleTranscriptScroll(bool) {
-  return {
-        type: TRANSCRIPT_SCROLL,
-        transcriptScrollEnabled: bool,
-  }
 }
 
 export function handleVideoTimeChange(time) {

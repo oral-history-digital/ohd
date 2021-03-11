@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { handleSegmentClick } from 'modules/video-player';
+import { handleSegmentClick } from 'modules/media-player';
 import { getCurrentInterview } from 'modules/data';
 import Segment from './Segment';
 

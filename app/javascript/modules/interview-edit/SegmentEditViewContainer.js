@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setTapeAndTime } from 'modules/video-player';
+import { setTapeAndTime } from 'modules/media-player';
 import { getCurrentInterview } from 'modules/data';
 import SegmentEditView from './SegmentEditView';
 

@@ -146,13 +146,16 @@ class ApplicationController < ActionController::Base
           right: ['ok']
         }
       },
-      interview: {
+      'media-player': {
         tape: 1,
         videoTime: 0,
         videoStatus: 'pause',
         transcriptTime: 0,
+        resolution: '480p'
+      },
+      interview: {
         transcriptScrollEnabled: false,
-        resolution: '480p',
+        tabIndex: 0
       },
       search: initial_search_redux_state
     }

@@ -8,13 +8,13 @@ export default function InterviewLoggedOut({
 }) {
     return (
         <div>
-            <div className="VideoPlayer">
-                <header className="VideoHeader">
-                    <h1 className="VideoHeader-title">
+            <div className="MediaPlayer">
+                <header className="MediaHeader">
+                    <h1 className="MediaHeader-title">
                         {project.fullname_on_landing_page ? interview.title[locale] : interview.anonymous_title[locale]}
                     </h1>
                 </header>
-                <div className="VideoElement">
+                <div className="MediaElement">
                     <img src={interview.still_url} alt="Video preview" />
                 </div>
             </div>
