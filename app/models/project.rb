@@ -49,10 +49,10 @@ class Project < ApplicationRecord
     end
   end
 
-  validates :aspect_x, numericality: { only_integer: true }
-  validates :aspect_y, numericality: { only_integer: true }
-  validates :archive_id_number_length, numericality: { only_integer: true }
-  validates :initials, format: { with: /\A[a-zA-Z]+\z/ }
+  validates :aspect_x, numericality: { only_integer: true },  allow_nil: true
+  validates :aspect_y, numericality: { only_integer: true },  allow_nil: true
+  validates :archive_id_number_length, numericality: { only_integer: true },  allow_nil: true
+  validates :initials, format: { with: /\A[a-zA-Z]+\z/ },  allow_nil: true
 
   before_save :touch_interviews
   def touch_interviews
@@ -111,11 +111,17 @@ class Project < ApplicationRecord
     end
 
     def archive_domains
-      where.not(shortname: 'ohd').compact.map{|project| Addressable::URI.parse(project.archive_domain).host}
+      where.not(shortname: 'ohd').map do |project| 
+        uri = Addressable::URI.parse(project.archive_domain)
+        uri && uri.host
+      end.compact
     end
 
     def by_host(host)
-      all.find{|d| Addressable::URI.parse(d.archive_domain).host == host}
+      all.find do |project| 
+        uri = Addressable::URI.parse(project.archive_domain)
+        uri && uri.host == host
+      end
     end
 
     def by_identifier(identifier)
