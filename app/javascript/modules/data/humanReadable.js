@@ -11,7 +11,7 @@ export default function humanReadable(obj, attribute, props, state, none='---') 
     if (props.translations[props.locale][attribute] && props.translations[props.locale][attribute].hasOwnProperty(value))
         value = t(props, `${attribute}.${value}`);
 
-    if (props.translations[props.locale].hasOwnProperty(value))
+    if (typeof value === 'string' && props.translations[props.locale].hasOwnProperty(value))
         value = t(props, value);
 
     if (/\w+_id/.test(attribute) && attribute !== 'archive_id') { // get corresponding name from e.g. collection_id
