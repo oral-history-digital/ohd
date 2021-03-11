@@ -1,5 +1,7 @@
 export default function t(props, key, params) {
     let text, defaultKey;
+    if (!key)
+        return '';
     let keyArray = key.split('.');
     let productionFallback = keyArray[keyArray.length - 1];
 
