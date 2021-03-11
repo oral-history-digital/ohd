@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useParams } from 'react-router-dom';
 
 import { InterviewEditViewContainer } from 'modules/interview-edit';
-import { VideoPlayerContainer } from 'modules/video-player';
+import { MediaPlayerContainer } from 'modules/media-player';
 import { AuthShowContainer } from 'modules/auth';
 import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
@@ -43,7 +43,7 @@ export default function Interview({
                         (
                             <div>
                                 <AuthShowContainer ifLoggedIn>
-                                    <VideoPlayerContainer />
+                                    <MediaPlayerContainer />
                                     {
                                         interviewEditView ?
                                             <InterviewEditViewContainer /> :

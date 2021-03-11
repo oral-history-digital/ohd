@@ -7,7 +7,7 @@ import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 
-export default class VideoControls extends React.Component {
+export default class MediaControls extends React.Component {
     constructor(props) {
         super(props);
 
@@ -136,7 +136,7 @@ export default class VideoControls extends React.Component {
 
     render() {
         return (
-            <div className="VideoHeader-controls">
+            <div className="MediaHeader-controls">
                 <select
                     value={this.props.tape}
                     onChange={this.handleTapeChange}
@@ -152,7 +152,7 @@ export default class VideoControls extends React.Component {
     }
 }
 
-VideoControls.propTypes = {
+MediaControls.propTypes = {
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,

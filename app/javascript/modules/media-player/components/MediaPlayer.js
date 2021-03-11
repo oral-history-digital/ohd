@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { fullname } from 'modules/people';
-import VideoControlsContainer from './VideoControlsContainer';
+import MediaControlsContainer from './MediaControlsContainer';
 import MediaElementContainer from './MediaElementContainer';
-import VideoPlayerButtonsContainer from './VideoPlayerButtonsContainer';
+import MediaPlayerButtonsContainer from './MediaPlayerButtonsContainer';
 
-export default function VideoPlayer({
+export default function MediaPlayer({
     flyoutTabsVisible,
     interviewee,
     locale,
@@ -19,31 +19,31 @@ export default function VideoPlayer({
     }
 
     return (
-        <div className={classNames('VideoPlayer', {
+        <div className={classNames('MediaPlayer', {
             'is-fixed': transcriptScrollEnabled,
             'is-narrow': flyoutTabsVisible && transcriptScrollEnabled,
         })}>
-            <header className={classNames('VideoHeader', {
+            <header className={classNames('MediaHeader', {
                 'is-fixed': transcriptScrollEnabled,
             })}>
-                <h1 className="VideoHeader-title">
+                <h1 className="MediaHeader-title">
                     {fullname({ locale }, interviewee, true)}
                 </h1>
 
-                <VideoControlsContainer />
+                <MediaControlsContainer />
             </header>
-            <div className={classNames('VideoElement', {
+            <div className={classNames('MediaElement', {
                 'is-fixed': transcriptScrollEnabled,
             })}>
                 <MediaElementContainer />
             </div>
 
-            <VideoPlayerButtonsContainer className="VideoPlayer-buttons" />
+            <MediaPlayerButtonsContainer className="MediaPlayer-buttons" />
         </div>
     );
 }
 
-VideoPlayer.propTypes = {
+MediaPlayer.propTypes = {
     flyoutTabsVisible: PropTypes.bool.isRequired,
     interviewee: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,

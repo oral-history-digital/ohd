@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { submitData, getCurrentProject, getCurrentInterview } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
-import { getCurrentTape } from 'modules/video-player';
+import { getCurrentTape } from 'modules/media-player';
 import UserContentForm from './UserContentForm';
 
 const mapStateToProps = (state) => {

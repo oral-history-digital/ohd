@@ -10,8 +10,4 @@ export const getVideoStatus = state => getState(state).videoStatus;
 
 export const getTranscriptTime = state => getState(state).transcriptTime;
 
-export const getTranscriptScrollEnabled = state => getState(state).transcriptScrollEnabled;
-
 export const getVideoResolution = state => getState(state).resolution;
-
-export const getTabIndex = state => getState(state).tabIndex;

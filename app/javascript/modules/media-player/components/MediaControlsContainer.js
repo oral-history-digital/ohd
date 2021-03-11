@@ -5,7 +5,7 @@ import { getCurrentInterview, getMediaStreams } from 'modules/data';
 import { getArchiveId, getLocale, getTranslations } from 'modules/archive';
 import { setTapeAndTimeAndResolution } from '../actions';
 import { getCurrentTape, getVideoResolution, getVideoTime } from '../selectors';
-import VideoControls from './VideoControls';
+import MediaControls from './MediaControls';
 
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
@@ -22,4 +22,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setTapeAndTimeAndResolution,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(VideoControls);
+export default connect(mapStateToProps, mapDispatchToProps)(MediaControls);

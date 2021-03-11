@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { toggleFlyoutTabs, getFlyoutTabsVisible } from 'modules/flyout-tabs';
 import { getEditView, getLocale, getProjectId } from 'modules/archive';
 import { fetchData, deleteData, getCurrentAccount, getProjects } from 'modules/data';
-import { getTranscriptScrollEnabled } from 'modules/video-player';
+import { getTranscriptScrollEnabled } from 'modules/interview';
 import { getIsLoggedIn, getIsLoggedOut, getLoggedInAt } from 'modules/account';
 import WrapperPage from './WrapperPage';
 

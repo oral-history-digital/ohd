@@ -58,6 +58,9 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/detail-list";
 @import "components/form-label";
 @import "components/icon-button";
+@import "components/media-element";
+@import "components/media-header";
+@import "components/media-player";
 @import "components/registry-entry";
 @import "components/registry-entry-list";
 @import "components/registry-reference";
@@ -65,9 +68,6 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/segment";
 @import "components/site";
 @import "components/site-header";
-@import "components/video-element";
-@import "components/video-header";
-@import "components/video-player";
 @import "components/wrapper-page";
 
 /* Print */

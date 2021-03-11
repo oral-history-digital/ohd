@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { setArchiveId } from 'modules/archive';
 import { searchInArchive } from 'modules/search';
-import { setTapeAndTime } from 'modules/video-player';
+import { setTapeAndTime } from 'modules/media-player';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import UserContent from './UserContent';
 
