@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { handleSegmentClick, getCurrentTape, getTranscriptTime } from 'modules/video-player';
+import { handleSegmentClick, getCurrentTape, getTranscriptTime } from 'modules/media-player';
 import Heading from './Heading';
 
 const mapStateToProps = state => ({

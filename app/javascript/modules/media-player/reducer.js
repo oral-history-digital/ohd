@@ -15,7 +15,7 @@ const initialState = {
     resolution: undefined,
 }
 
-const videoPlayer = (state = initialState, action) => {
+const mediaPlayer = (state = initialState, action) => {
     switch (action.type) {
         case VIDEO_TIME_CHANGE:
             return Object.assign({}, state, {
@@ -59,4 +59,4 @@ const videoPlayer = (state = initialState, action) => {
     }
 };
 
-export default videoPlayer;
+export default mediaPlayer;

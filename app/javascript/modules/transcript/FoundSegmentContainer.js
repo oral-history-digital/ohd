@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { handleSegmentClick, getCurrentTape } from 'modules/video-player';
+import { handleSegmentClick, getCurrentTape } from 'modules/media-player';
 import { getCurrentInterview } from 'modules/data';
 import { setInterviewTabIndex } from 'modules/interview';
 import FoundSegment from './FoundSegment';

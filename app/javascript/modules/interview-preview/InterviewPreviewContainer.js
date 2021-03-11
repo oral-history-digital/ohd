@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { searchInInterview } from 'modules/search';
-import { setTapeAndTime } from 'modules/video-player';
+import { setTapeAndTime } from 'modules/media-player';
 import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject } from 'modules/data';
 import InterviewPreview from './InterviewPreview';

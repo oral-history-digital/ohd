@@ -6,7 +6,7 @@ import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { InterviewEditButtonsContainer } from 'modules/interview-edit';
 
-export default function VideoPlayerButtons({
+export default function MediaPlayerButtons({
     transcriptScrollEnabled,
     className,
     handleTranscriptScroll,
@@ -44,7 +44,7 @@ export default function VideoPlayerButtons({
     );
 }
 
-VideoPlayerButtons.propTypes = {
+MediaPlayerButtons.propTypes = {
     transcriptScrollEnabled: PropTypes.bool.isRequired,
     className: PropTypes.string,
     handleTranscriptScroll: PropTypes.func.isRequired,

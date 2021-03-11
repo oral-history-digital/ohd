@@ -4,7 +4,7 @@ import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
 import { getCurrentInterviewee } from 'modules/data';
 import { getLocale, getProjectId } from 'modules/archive';
 import { getTranscriptScrollEnabled } from 'modules/interview';
-import VideoPlayer from './VideoPlayer';
+import MediaPlayer from './MediaPlayer';
 
 const mapStateToProps = state => ({
     flyoutTabsVisible: getFlyoutTabsVisible(state),
@@ -14,4 +14,4 @@ const mapStateToProps = state => ({
     transcriptScrollEnabled: getTranscriptScrollEnabled(state),
 });
 
-export default connect(mapStateToProps)(VideoPlayer);
+export default connect(mapStateToProps)(MediaPlayer);

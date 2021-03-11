@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData } from 'modules/data';
 import { getCurrentInterview, getCurrentInterviewee } from 'modules/data';
-import { getCurrentTape, getTranscriptTime } from 'modules/video-player';
+import { getCurrentTape, getTranscriptTime } from 'modules/media-player';
 import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import Transcript from './Transcript';
 

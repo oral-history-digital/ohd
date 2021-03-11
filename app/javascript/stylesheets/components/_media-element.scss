@@ -1,8 +1,8 @@
 /**
- * VideoElement component
+ * MediaElement component
  */
 
-.VideoElement {
+.MediaElement {
   margin: $video-element-margin;
 
   @include screen-m {
@@ -17,7 +17,7 @@
   }
 }
 
-.VideoElement.is-fixed {
+.MediaElement.is-fixed {
   float: none;
   margin: 0;
 
@@ -31,7 +31,7 @@
   }
 }
 
-.VideoElement--poster {
+.MediaElement--poster {
   background-color: #383838;
   margin: 0;
   padding: 0;

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { fetchData, getCurrentInterview, getCurrentProject } from 'modules/data';
-import { getCurrentTape, getTranscriptTime } from 'modules/video-player';
+import { getCurrentTape, getTranscriptTime } from 'modules/media-player';
 import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import InterviewEditView from './InterviewEditView';
 

@@ -7,7 +7,7 @@ export default function StartPageVideo() {
     const locale = useSelector(getLocale);
 
     return (
-        <div className="VideoElement VideoElement--poster">
+        <div className="MediaElement MediaElement--poster">
             <video
                 poster="https://medien.cedis.fu-berlin.de/eog/interviews/mog/home/still-home-video.jpg"
                 controls
