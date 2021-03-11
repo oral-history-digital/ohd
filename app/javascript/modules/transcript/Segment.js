@@ -82,7 +82,9 @@ export default class Segment extends React.Component {
                 <div
                     className="content-trans-speaker-link"
                     title={(this.props.people && this.props.data.speaker_id) ? fullname(this.props, this.props.people[this.props.data.speaker_id]) : this.props.data.speaker}
-                    onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, this.props.tabIndex)}
+                    onClick={() => {
+                        this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time);
+                    }}
                 >
                     <i className={speakerCss}></i>
                 </div>
@@ -199,8 +201,12 @@ export default class Segment extends React.Component {
                     <div className="content-trans-speaker-ico">
                         {this.speakerIcon()}
                     </div>
-                    <div className='content-trans-text'
-                            onClick={() => this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time, this.props.tabIndex)}>
+                    <div
+                        className='content-trans-text'
+                        onClick={() => {
+                            this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time);
+                        }}
+                    >
                         <div
                             lang={contentLocale}
                             className={classNames('segment', active ? 'active' : 'inactive')}

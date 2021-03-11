@@ -41,7 +41,7 @@ export default class Heading extends React.Component {
     handleClick() {
         const { data, handleSegmentClick } = this.props;
 
-        handleSegmentClick(data.tape_nbr, data.time, false);
+        handleSegmentClick(data.tape_nbr, data.time);
     }
 
     subHeadings() {

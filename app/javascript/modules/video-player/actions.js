@@ -7,12 +7,11 @@ import {
     SET_NEXT_TAPE,
 } from './action-types';
 
-export function handleSegmentClick(tape, time, tabIndex) {
+export function handleSegmentClick(tape, time) {
     return {
         type: TRANSCRIPT_TIME_CHANGE,
         videoTime: time,
         tape: tape,
-        tabIndex: tabIndex,
     }
 }
 

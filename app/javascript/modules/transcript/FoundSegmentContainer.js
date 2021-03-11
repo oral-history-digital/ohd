@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { handleSegmentClick, getCurrentTape } from 'modules/video-player';
 import { getCurrentInterview } from 'modules/data';
+import { setInterviewTabIndex } from 'modules/interview';
 import FoundSegment from './FoundSegment';
 
 const mapStateToProps = (state) => {
@@ -14,8 +16,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: (tape, time, tabIndex) => dispatch(handleSegmentClick(tape, time, tabIndex)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    handleSegmentClick,
+    setInterviewTabIndex,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(FoundSegment);
