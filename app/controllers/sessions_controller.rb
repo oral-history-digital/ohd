@@ -9,15 +9,15 @@ class SessionsController < Devise::SessionsController
 
   def create
     self.resource = warden.authenticate!(auth_options)
-    if resource.user_registration.projects.include?(current_project) && resource.user_registration.user_registration_projects.find_by_project_id(current_project).activated_at != nil
+    #if resource.user_registration.projects.include?(current_project) && resource.user_registration.user_registration_projects.find_by_project_id(current_project).activated_at != nil
       set_flash_message!(:notice, :signed_in)
       sign_in(resource_name, resource)
       yield resource if block_given?
       respond_with resource, location: "/#{params[:locale]}" 
-    else
-      sign_out
-      render json: {error: 'not_your_project'}
-    end
+    #else
+      #sign_out
+      #render json: {error: 'not_your_project'}
+    #end
   rescue BCrypt::Errors::InvalidHash
     respond_to do |format|
       format.json {
