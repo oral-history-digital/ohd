@@ -1,6 +1,6 @@
 # Create a new user for development purposes.
 # E.g.:
-# bundle exec rake user:create['alice@example.com','password', 'Alice', 'Test']
+# bundle exec rake user:create['alice@example.com','password','Alice','Test']
 
 namespace :user do
   desc "Create new user"
