@@ -7,9 +7,7 @@ const state = {
         videoTime: 0,
         videoStatus: 'pause',
         transcriptTime: 13.46,
-        transcriptScrollEnabled: true,
         resolution: '720p',
-        tabIndex: 2,
     },
 };
 
@@ -29,14 +27,6 @@ test('getTranscriptTime retrieves transcript time', () => {
     expect(selectors.getTranscriptTime(state)).toEqual(state[NAME].transcriptTime);
 });
 
-test('getTranscriptScrollEnabled retrieves if video is fixed', () => {
-    expect(selectors.getTranscriptScrollEnabled(state)).toEqual(state[NAME].transcriptScrollEnabled);
-});
-
 test('getVideoResolution retrieves video resolution', () => {
     expect(selectors.getVideoResolution(state)).toEqual(state[NAME].resolution);
-});
-
-test('getTabIndex retrieves index of interview tabs', () => {
-    expect(selectors.getTabIndex(state)).toEqual(state[NAME].tabIndex);
 });

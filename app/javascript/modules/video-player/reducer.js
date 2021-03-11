@@ -2,12 +2,9 @@ import {
     VIDEO_TIME_CHANGE,
     VIDEO_ENDED,
     SET_NEXT_TAPE,
-    TRANSCRIPT_SCROLL,
-    SET_INTERVIEW_TAB_INDEX,
     TRANSCRIPT_TIME_CHANGE,
     SET_TAPE_AND_TIME,
     SET_TAPE_AND_TIME_AND_RESOLUTION,
-    SET_ACTUAL_SEGMENT,
 } from './action-types';
 
 const initialState = {
@@ -15,11 +12,10 @@ const initialState = {
     videoTime: 0,
     videoStatus: 'pause',
     transcriptTime: 0,
-    transcriptScrollEnabled: false,
     resolution: undefined,
 }
 
-const interview = (state = initialState, action) => {
+const videoPlayer = (state = initialState, action) => {
     switch (action.type) {
         case VIDEO_TIME_CHANGE:
             return Object.assign({}, state, {
@@ -58,22 +54,10 @@ const interview = (state = initialState, action) => {
                 tape: action.tape,
                 resolution: action.resolution,
                 videoStatus: action.videoStatus,
-            })
-        case SET_INTERVIEW_TAB_INDEX:
-            return Object.assign({}, state, {
-                tabIndex: action.tabIndex
-            })
-        case SET_ACTUAL_SEGMENT:
-            return Object.assign({}, state, {
-                currentSegment: action.segment
-            })
-        case TRANSCRIPT_SCROLL:
-            return Object.assign({}, state, {
-                transcriptScrollEnabled: action.transcriptScrollEnabled
-            })
+            });
         default:
             return state;
     }
 };
 
-export default interview;
+export default videoPlayer;

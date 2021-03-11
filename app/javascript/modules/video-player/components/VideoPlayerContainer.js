@@ -3,7 +3,7 @@ import {connect} from 'react-redux';
 import { getFlyoutTabsVisible } from 'modules/flyout-tabs';
 import { getCurrentInterviewee } from 'modules/data';
 import { getLocale, getProjectId } from 'modules/archive';
-import { getTranscriptScrollEnabled } from '../selectors';
+import { getTranscriptScrollEnabled } from 'modules/interview';
 import VideoPlayer from './VideoPlayer';
 
 const mapStateToProps = state => ({

@@ -1,1 +1,1 @@
-export const NAME = 'interview';
+export const NAME = 'media-player';

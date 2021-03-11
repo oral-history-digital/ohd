@@ -2,8 +2,9 @@ import {connect} from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getCurrentInterview } from 'modules/data';
-import { setInterviewTabIndex, getTabIndex } from 'modules/video-player';
 import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { setInterviewTabIndex } from '../actions';
+import { getTabIndex } from '../selectors';
 import InterviewTabs from './InterviewTabs';
 
 const mapStateToProps = state => ({
