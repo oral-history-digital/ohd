@@ -129,16 +129,12 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     renderResetButton() {
-        if(Object.keys(this.props.query).length > 0 && this.props.query['page']) {
-            return (
-                <button
-                    className={'reset'}
-                    onClick={this.handleReset}>{t(this.props, 'reset')}
-                </button>
-            )
-        } else {
-            return null;
-        }
+        return (
+            <button
+                className={'reset'}
+                onClick={this.handleReset}>{t(this.props, 'reset')}
+            </button>
+        )
     }
 
     renderInputField() {
