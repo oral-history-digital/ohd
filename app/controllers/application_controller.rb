@@ -149,8 +149,8 @@ class ApplicationController < ActionController::Base
       },
       'media-player': {
         tape: 1,
-        videoTime: 0,
-        videoStatus: 'pause',
+        mediaTime: 0,
+        mediaStatus: 'pause',
         transcriptTime: 0,
         resolution: '480p'
       },

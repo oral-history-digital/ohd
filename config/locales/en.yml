@@ -90,8 +90,8 @@ en:
   selected: Selected
   archive_id: Archive id
   noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
-  compress_video: "Video: Ansicht verkleinern"
-  expand_video: "Video: Ansicht vergrößern"
+  compress_media_player: "Compress media player"
+  expand_media_player: "Expand media player"
   interviews: Interviews
   places: Birth places
   interview_location_desc_one: " wird in Kapitel "

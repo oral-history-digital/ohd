@@ -1,8 +1,7 @@
 import {
     TRANSCRIPT_TIME_CHANGE,
     SET_TAPE_AND_TIME,
-    VIDEO_TIME_CHANGE,
-    VIDEO_ENDED,
+    TIME_CHANGE,
     SET_TAPE_AND_TIME_AND_RESOLUTION,
     SET_NEXT_TAPE,
 } from './action-types';
@@ -10,7 +9,7 @@ import {
 export function handleSegmentClick(tape, time) {
     return {
         type: TRANSCRIPT_TIME_CHANGE,
-        videoTime: time,
+        mediaTime: time,
         tape: tape,
     }
 }
@@ -18,33 +17,27 @@ export function handleSegmentClick(tape, time) {
 export function setTapeAndTime(tape, time) {
     return {
         type: SET_TAPE_AND_TIME,
-        videoTime: time,
+        mediaTime: time,
         transcriptTime: time,
         tape: tape
     }
 }
 
-export function handleVideoTimeChange(time) {
+export function handleTimeChange(time) {
     return {
-        type: VIDEO_TIME_CHANGE,
+        type: TIME_CHANGE,
         transcriptTime: time
     }
   }
 
-export function handleVideoEnded() {
-    return {
-        type: VIDEO_ENDED,
-    }
-}
-
-export function setTapeAndTimeAndResolution(tape, time, resolution, videoStatus = 'pause') {
+export function setTapeAndTimeAndResolution(tape, time, resolution, mediaStatus = 'pause') {
     return {
         type: SET_TAPE_AND_TIME_AND_RESOLUTION,
-        videoTime: time,
+        mediaTime: time,
         transcriptTime: time,
         tape,
         resolution,
-        videoStatus,
+        mediaStatus,
     }
 }
 

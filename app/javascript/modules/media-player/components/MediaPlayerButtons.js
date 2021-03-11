@@ -30,7 +30,7 @@ export default function MediaPlayerButtons({
             <button
                 className="IconButton"
                 type="button"
-                title={t(transcriptScrollEnabled ? 'expand_video' : 'compress_video')}
+                title={t(transcriptScrollEnabled ? 'expand_media_player' : 'compress_media_player')}
                 onClick={toggleExpansion}
             >
                 <i className={classNames('fa', 'fa-fw', {
