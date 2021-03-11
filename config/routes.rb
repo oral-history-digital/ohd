@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     get "random_featured_interviews", to: "interviews#random_featured"
     resources :texts
 
-    resources :projects, only: [:update]
+    resources :projects, only: [:create, :update, :destroy]
     get "project/edit-info", to: "projects#edit_info"
     get "project/edit-config", to: "projects#edit_config"
     get "project/edit-display", to: "projects#edit_display"
