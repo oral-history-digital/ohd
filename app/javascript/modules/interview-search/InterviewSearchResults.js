@@ -43,7 +43,7 @@ export default class InterviewSearchResults extends React.Component {
             let active = false;
             return this.props.searchResults[`found${pluralize(model)}`].map( (data, index) => {
                 if (model === 'Segment') {
-                    if (data.time <= this.props.transcriptTime + 10 && data.time >= this.props.transcriptTime - 5) {
+                    if (data.time <= this.props.mediaTime + 10 && data.time >= this.props.mediaTime - 5) {
                         active = true;
                     }
                 }

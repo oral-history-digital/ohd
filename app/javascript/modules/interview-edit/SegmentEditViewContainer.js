@@ -6,7 +6,6 @@ import { getCurrentInterview } from 'modules/data';
 import SegmentEditView from './SegmentEditView';
 
 const mapStateToProps = (state) => ({
-    transcriptTime: state.archive.transcriptTime,
     locale: state.archive.locale,
     interview: getCurrentInterview(state),
     statuses: state.data.statuses.segments,

@@ -4,9 +4,8 @@ import { NAME } from './constants';
 const state = {
     [NAME]: {
         tape: 2,
-        mediaTime: 0,
-        mediaStatus: 'pause',
-        transcriptTime: 13.46,
+        mediaTime: 12.46,
+        isPlaying: true,
         resolution: '720p',
     },
 };
@@ -19,12 +18,8 @@ test('getMediaTime retrieves media time', () => {
     expect(selectors.getMediaTime(state)).toEqual(state[NAME].mediaTime);
 });
 
-test('getMediaStatus retrieves media status', () => {
-    expect(selectors.getMediaStatus(state)).toEqual(state[NAME].mediaStatus);
-});
-
-test('getTranscriptTime retrieves transcript time', () => {
-    expect(selectors.getTranscriptTime(state)).toEqual(state[NAME].transcriptTime);
+test('getIsPlaying retrieves wether medium is playing', () => {
+    expect(selectors.getIsPlaying(state)).toEqual(state[NAME].isPlaying);
 });
 
 test('getResolution retrieves media resolution', () => {

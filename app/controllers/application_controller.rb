@@ -150,8 +150,7 @@ class ApplicationController < ActionController::Base
       'media-player': {
         tape: 1,
         mediaTime: 0,
-        mediaStatus: 'pause',
-        transcriptTime: 0,
+        isPlaying: false,
         resolution: nil
       },
       interview: {

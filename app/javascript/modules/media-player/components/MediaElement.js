@@ -10,51 +10,72 @@ export default class MediaElement extends React.Component {
 
         this.mediaElement = React.createRef();
 
-        this.handleMediaEnded = this.handleMediaEnded.bind(this);
+        this.handlePlayEvent = this.handlePlayEvent.bind(this);
+        this.handlePauseEvent = this.handlePauseEvent.bind(this);
+        this.handleTimeUpdateEvent = this.handleTimeUpdateEvent.bind(this);
+        this.handleEndedEvent = this.handleEndedEvent.bind(this);
     }
 
     componentDidMount() {
         let initialResolution = this.props.interview.media_type === 'audio' ? '192k' : '480p';
         this.props.setResolution(initialResolution);
 
-        this.setMediaTime()
-        this.setMediaStatus()
-
-        this.mediaElement.current.addEventListener('contextmenu', this.handleContextMenu);
+        const mediaElement = this.mediaElement.current;
+        mediaElement.addEventListener('play', this.handlePlayEvent);
+        mediaElement.addEventListener('pause', this.handlePauseEvent);
+        mediaElement.addEventListener('timeupdate', this.handleTimeUpdateEvent);
+        mediaElement.addEventListener('ended', this.handleEndedEvent);
+        mediaElement.addEventListener('contextmenu', this.handleContextMenuEvent);
     }
 
     componentDidUpdate() {
-        this.setMediaTime()
-        this.setMediaStatus()
     }
 
     componentWillUnmount() {
         this.props.resetMedia();
 
-        this.mediaElement.current.removeEventListener('contextmenu', this.handleContextMenu);
+        const mediaElement = this.mediaElement.current;
+        mediaElement.removeEventListener('play', this.handlePlayEvent);
+        mediaElement.removeEventListener('pause', this.handlePauseEvent);
+        mediaElement.removeEventListener('timeupdate', this.handleTimeUpdateEvent);
+        mediaElement.removeEventListener('ended', this.handleEndedEvent);
+        mediaElement.removeEventListener('contextmenu', this.handleContextMenuEvent);
     }
 
-    handleContextMenu(e) {
-        e.preventDefault();
-        return false;
+    handlePlayEvent() {
+        this.props.updateIsPlaying(true);
     }
 
-    setMediaTime() {
-        if (this.props.mediaTime !== 0) {
-            this.mediaElement.current.currentTime = this.props.mediaTime;
-        }
+    handlePauseEvent() {
+        this.props.updateIsPlaying(false);
     }
 
-    setMediaStatus() {
-        this.props.mediaStatus === 'play' ? this.mediaElement.current.play() : this.mediaElement.current.pause();
+    handleTimeUpdateEvent(e) {
+        const time = Math.round(e.target.currentTime * 10) / 10;
+        this.props.updateMediaTime(time);
     }
 
-    handleMediaEnded() {
+    handleEndedEvent() {
         const { tape, interview, setTape } = this.props;
 
         if (tape < interview.tape_count) {
             setTape(tape);
         }
+    }
+
+    handleContextMenuEvent(e) {
+        e.preventDefault();
+        return false;
+    }
+
+    setMediaTime() {
+        // TODO: should be sendChangeTimeRequest();
+        //this.mediaElement.current.currentTime = this.props.mediaTim;
+    }
+
+    setMediaStatus() {
+        // TODO: could be sendPlayRequest/sendPauseRequest();
+        //this.props.mediaStatu === 'play' ? this.mediaElement.current.play() : this.mediaElement.current.pause();
     }
 
     src() {
@@ -86,24 +107,25 @@ export default class MediaElement extends React.Component {
     }
 
     render() {
-        return(
-            React.createElement(
-                this.props.projectId == 'dg' ? 'audio' : 'video',
-                {
-                    ref: this.mediaElement,
-                    onTimeUpdate: event => {
-                        var time = Math.round(event.target.currentTime * 10) / 10;
-                        if (time !== this.props.mediaTime) {
-                            this.props.handleTimeChange(time);
-                        }
-                    },
-                    onEnded: this.handleMediaEnded,
-                    controls: true,
-                    poster: this.props.interview.still_url || missingStill,
-                    src: this.src(),
-                },
-                (this.props.projectId != 'dg') && this.subtitles()
-              )
+        return (
+            this.props.projectId === 'dg' ?
+                (
+                    <audio
+                        ref={this.mediaElement}
+                        controls
+                        src={this.src()}
+                    />
+                ) :
+                (
+                    <video
+                        ref={this.mediaElement}
+                        controls
+                        poster={this.props.interview.still_url || missingStill}
+                        src={this.src()}
+                    >
+                        {this.subtitles()}
+                    </video>
+                )
         );
     }
 }
@@ -117,9 +139,8 @@ MediaElement.propTypes = {
     resolution: PropTypes.string.isRequired,
     tape: PropTypes.number.isRequired,
     translations: PropTypes.object.isRequired,
-    mediaStatus: PropTypes.string.isRequired,
-    mediaTime: PropTypes.number.isRequired,
-    handleTimeChange: PropTypes.func.isRequired,
+    updateMediaTime: PropTypes.func.isRequired,
+    updateIsPlaying: PropTypes.func.isRequired,
     setTape: PropTypes.func.isRequired,
     setResolution: PropTypes.func.isRequired,
     resetMedia: PropTypes.func.isRequired,

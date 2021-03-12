@@ -19,6 +19,24 @@ test('setResolution', () => {
     expect(actual).toEqual(expected);
 });
 
+test('updateMediaTime', () => {
+    const actual = actions.updateMediaTime(25.3);
+    const expected = {
+        type: types.UPDATE_MEDIA_TIME,
+        payload: { time: 25.3 },
+    };
+    expect(actual).toEqual(expected);
+});
+
+test('updateIsPlaying', () => {
+    const actual = actions.updateIsPlaying(true);
+    const expected = {
+        type: types.UPDATE_IS_PLAYING,
+        payload: { isPlaying: true },
+    };
+    expect(actual).toEqual(expected);
+});
+
 test('resetMedia', () => {
     const actual = actions.resetMedia();
     const expected = { type: types.RESET_MEDIA };

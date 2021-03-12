@@ -10,7 +10,6 @@ const mapStateToProps = (state) => {
     return {
         tape: getCurrentTape(state),
         interview: getCurrentInterview(state),
-        transcriptTime: state.archive.transcriptTime,
         translations: state.archive.translations,
         locale: state.archive.locale,
     }

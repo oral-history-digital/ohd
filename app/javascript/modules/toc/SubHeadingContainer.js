@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 
-import { handleSegmentClick, getCurrentTape, getTranscriptTime } from 'modules/media-player';
+import { handleSegmentClick, getCurrentTape, getMediaTime } from 'modules/media-player';
 import { getCurrentInterview } from 'modules/data';
 import SubHeading from './SubHeading';
 
 const mapStateToProps = state => ({
     locale: state.archive.locale,
-    transcriptTime: getTranscriptTime(state),
+    mediaTime: getMediaTime(state),
     tape: getCurrentTape(state),
     interview: getCurrentInterview(state),
 });

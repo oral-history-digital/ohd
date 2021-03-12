@@ -22,7 +22,7 @@ export default class Heading extends React.Component {
 
     UNSAFE_componentWillReceiveProps(nextProps) {
         let endTime = (this.props.nextHeading) ? this.props.nextHeading.time : this.props.data.duration;
-        let active = this.props.tape === this.props.data.tape_nbr && endTime > nextProps.transcriptTime && this.props.data.time <= nextProps.transcriptTime;
+        let active = this.props.tape === this.props.data.tape_nbr && endTime > nextProps.mediaTime && this.props.data.time <= nextProps.mediaTime;
         if (active !== this.state.active) {
             this.setState({
                 active: active
@@ -114,6 +114,6 @@ Heading.propTypes = {
     nextHeading: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     tape: PropTypes.number.isRequired,
-    transcriptTime: PropTypes.number.isRequired,
+    mediaTime: PropTypes.number.isRequired,
     handleSegmentClick: PropTypes.func.isRequired,
 };

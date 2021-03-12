@@ -4,8 +4,7 @@ import * as actions from './actions';
 const state = {
     tape: 1,
     mediaTime: 0,
-    mediaStatus: 'pause',
-    transcriptTime: 0,
+    isPlaying: false,
     resolution: null,
 };
 
@@ -31,13 +30,30 @@ test('handles the setResolution action', () => {
     expect(reducer(state, action)).toEqual(expectedState);
 });
 
+test('handles the updateMediaTime action', () => {
+    const action = actions.updateMediaTime(12.3);
+    const expectedState = {
+        ...state,
+        mediaTime: 12.3,
+    };
+    expect(reducer(state, action)).toEqual(expectedState);
+});
+
+test('handles the updateIsPlaying action', () => {
+    const action = actions.updateIsPlaying(true);
+    const expectedState = {
+        ...state,
+        isPlaying: true,
+    };
+    expect(reducer(state, action)).toEqual(expectedState);
+});
+
 test('handles the resetMedia action', () => {
     const action = actions.resetMedia();
     const _state = {
         tape: 3,
         mediaTime: 25.4,
-        mediaStatus: 'play',
-        transcriptTime: 5.2,
+        isPlaying: true,
         resolution: '480p',
     };
     const expectedState = initialState;

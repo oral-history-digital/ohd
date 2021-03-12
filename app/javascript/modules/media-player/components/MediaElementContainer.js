@@ -3,8 +3,8 @@ import { bindActionCreators } from 'redux';
 
 import { getCurrentInterview, getMediaStreams } from 'modules/data';
 import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { handleTimeChange, setTape, setResolution, resetMedia } from '../actions';
-import { getCurrentTape, getResolution, getMediaStatus, getMediaTime } from '../selectors';
+import { updateMediaTime, updateIsPlaying, setTape, setResolution, resetMedia } from '../actions';
+import { getCurrentTape, getResolution } from '../selectors';
 import MediaElement from './MediaElement';
 
 const mapStateToProps = state => ({
@@ -16,12 +16,11 @@ const mapStateToProps = state => ({
     resolution: getResolution(state),
     tape: getCurrentTape(state),
     translations: getTranslations(state),
-    mediaStatus: getMediaStatus(state),
-    mediaTime: getMediaTime(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    handleTimeChange,
+    updateMediaTime,
+    updateIsPlaying,
     setTape,
     setResolution,
     resetMedia,

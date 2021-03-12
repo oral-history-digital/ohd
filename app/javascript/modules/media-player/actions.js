@@ -1,7 +1,8 @@
 import {
     TRANSCRIPT_TIME_CHANGE,
     SET_TAPE_AND_TIME,
-    TIME_CHANGE,
+    UPDATE_MEDIA_TIME,
+    UPDATE_IS_PLAYING,
     SET_TAPE,
     SET_RESOLUTION,
     RESET_MEDIA,
@@ -19,17 +20,19 @@ export function setTapeAndTime(tape, time) {
     return {
         type: SET_TAPE_AND_TIME,
         mediaTime: time,
-        transcriptTime: time,
         tape: tape
     }
 }
 
-export function handleTimeChange(time) {
-    return {
-        type: TIME_CHANGE,
-        transcriptTime: time
-    }
-}
+export const updateMediaTime = (time) => ({
+    type: UPDATE_MEDIA_TIME,
+    payload: { time },
+});
+
+export const updateIsPlaying = (isPlaying) => ({
+    type: UPDATE_IS_PLAYING,
+    payload: { isPlaying },
+});
 
 export const setTape = (tape) => ({
     type: SET_TAPE,
