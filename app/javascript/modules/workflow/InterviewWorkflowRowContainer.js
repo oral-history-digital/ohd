@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { searchInInterview } from 'modules/search';
-import { setTapeAndTime } from 'modules/media-player';
 import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject } from 'modules/data';
 import InterviewWorkflowRow from './InterviewWorkflowRow';
@@ -36,7 +35,6 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setTapeAndTime,
     setArchiveId,
     searchInInterview,
     addRemoveArchiveId,

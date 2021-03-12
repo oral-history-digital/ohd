@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getCurrentInterview, getMediaStreams } from 'modules/data';
 import { getArchiveId, getLocale, getTranslations } from 'modules/archive';
-import { setTapeAndTimeAndResolution } from '../actions';
+import { setTape, setResolution } from '../actions';
 import { getCurrentTape, getResolution, getMediaTime } from '../selectors';
 import MediaControls from './MediaControls';
 
@@ -19,7 +19,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setTapeAndTimeAndResolution,
+    setTape,
+    setResolution,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MediaControls);

@@ -15,8 +15,7 @@ export default class MediaElement extends React.Component {
 
     componentDidMount() {
         let initialResolution = this.props.interview.media_type === 'audio' ? '192k' : '480p';
-
-        this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.mediaTime, initialResolution);
+        this.props.setResolution(initialResolution);
 
         this.setMediaTime()
         this.setMediaStatus()
@@ -30,8 +29,7 @@ export default class MediaElement extends React.Component {
     }
 
     componentWillUnmount() {
-        // reset resolution to undefined, otherwise changing video to audio or audio to video will crash
-        this.props.setTapeAndTimeAndResolution(this.props.tape, this.mediaElement.current.currentTime, undefined);
+        this.props.resetMedia();
 
         this.mediaElement.current.removeEventListener('contextmenu', this.handleContextMenu);
     }
@@ -52,8 +50,10 @@ export default class MediaElement extends React.Component {
     }
 
     handleMediaEnded() {
-        if (this.props.tape < this.props.interview.tape_count) {
-            this.props.setNextTape();
+        const { tape, interview, setTape } = this.props;
+
+        if (tape < interview.tape_count) {
+            setTape(tape);
         }
     }
 
@@ -120,6 +120,7 @@ MediaElement.propTypes = {
     mediaStatus: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     handleTimeChange: PropTypes.func.isRequired,
-    setNextTape: PropTypes.func.isRequired,
-    setTapeAndTimeAndResolution: PropTypes.func.isRequired,
+    setTape: PropTypes.func.isRequired,
+    setResolution: PropTypes.func.isRequired,
+    resetMedia: PropTypes.func.isRequired,
 };

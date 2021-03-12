@@ -16,11 +16,11 @@ export default class MediaControls extends React.Component {
     }
 
     handleTapeChange(e) {
-        this.props.setTapeAndTimeAndResolution(parseInt(e.target.value), 0, this.props.resolution);
+        this.props.setTape(Number.parseInt(e.target.value));
     }
 
     handleResolutionChange(e) {
-        this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.mediaTime, e.target.value, 'pause');
+        this.props.setResolution(e.target.value);
     }
 
     rememberInterviewLink() {
@@ -161,5 +161,6 @@ MediaControls.propTypes = {
     tape: PropTypes.number.isRequired,
     translations: PropTypes.object.isRequired,
     mediaTime: PropTypes.number.isRequired,
-    setTapeAndTimeAndResolution: PropTypes.func.isRequired,
+    setTape: PropTypes.func.isRequired,
+    setResolution: PropTypes.func.isRequired,
 };

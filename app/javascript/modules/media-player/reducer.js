@@ -1,17 +1,18 @@
 import {
     TIME_CHANGE,
-    SET_NEXT_TAPE,
     TRANSCRIPT_TIME_CHANGE,
     SET_TAPE_AND_TIME,
-    SET_TAPE_AND_TIME_AND_RESOLUTION,
+    SET_TAPE,
+    SET_RESOLUTION,
+    RESET_MEDIA,
 } from './action-types';
 
-const initialState = {
+export const initialState = {
     tape: 1,
     mediaTime: 0,
     mediaStatus: 'pause',
     transcriptTime: 0,
-    resolution: undefined,
+    resolution: null,
 };
 
 const mediaPlayer = (state = initialState, action) => {
@@ -19,12 +20,6 @@ const mediaPlayer = (state = initialState, action) => {
         case TIME_CHANGE:
             return Object.assign({}, state, {
                 transcriptTime: action.transcriptTime,
-            })
-        case SET_NEXT_TAPE:
-            return Object.assign({}, state, {
-                tape: state.tape + 1,
-                mediaTime: 0.1,
-                mediaStatus: 'play',
             })
         case TRANSCRIPT_TIME_CHANGE:
             return Object.assign({}, state, {
@@ -39,14 +34,18 @@ const mediaPlayer = (state = initialState, action) => {
                 transcriptTime: action.transcriptTime,
                 tape: action.tape,
             })
-        case SET_TAPE_AND_TIME_AND_RESOLUTION:
-            return Object.assign({}, state, {
-                mediaTime: action.mediaTime,
-                transcriptTime: action.transcriptTime,
-                tape: action.tape,
-                resolution: action.resolution,
-                mediaStatus: action.mediaStatus,
-            });
+        case SET_TAPE:
+            return {
+                ...state,
+                tape: action.payload.tape,
+            };
+        case SET_RESOLUTION:
+            return {
+                ...state,
+                resolution: action.payload.resolution,
+            };
+        case RESET_MEDIA:
+            return initialState;
         default:
             return state;
     }

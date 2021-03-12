@@ -2,8 +2,9 @@ import {
     TRANSCRIPT_TIME_CHANGE,
     SET_TAPE_AND_TIME,
     TIME_CHANGE,
-    SET_TAPE_AND_TIME_AND_RESOLUTION,
-    SET_NEXT_TAPE,
+    SET_TAPE,
+    SET_RESOLUTION,
+    RESET_MEDIA,
 } from './action-types';
 
 export function handleSegmentClick(tape, time) {
@@ -28,21 +29,16 @@ export function handleTimeChange(time) {
         type: TIME_CHANGE,
         transcriptTime: time
     }
-  }
-
-export function setTapeAndTimeAndResolution(tape, time, resolution, mediaStatus = 'pause') {
-    return {
-        type: SET_TAPE_AND_TIME_AND_RESOLUTION,
-        mediaTime: time,
-        transcriptTime: time,
-        tape,
-        resolution,
-        mediaStatus,
-    }
 }
 
-export function setNextTape() {
-    return {
-        type: SET_NEXT_TAPE,
-    }
-}
+export const setTape = (tape) => ({
+    type: SET_TAPE,
+    payload: { tape },
+});
+
+export const setResolution = (resolution) => ({
+    type: SET_RESOLUTION,
+    payload: { resolution },
+});
+
+export const resetMedia = () => ({ type: RESET_MEDIA });

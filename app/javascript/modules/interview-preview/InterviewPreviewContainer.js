@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 import { searchInInterview } from 'modules/search';
-import { setTapeAndTime } from 'modules/media-player';
 import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject } from 'modules/data';
 import InterviewPreview from './InterviewPreview';
@@ -31,7 +30,6 @@ const mapStateToProps = (state, props) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
     searchInInterview: (url, searchQuery) => dispatch(searchInInterview(url, searchQuery)),
     addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),

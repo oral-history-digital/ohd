@@ -152,7 +152,7 @@ class ApplicationController < ActionController::Base
         mediaTime: 0,
         mediaStatus: 'pause',
         transcriptTime: 0,
-        resolution: '480p'
+        resolution: nil
       },
       interview: {
         transcriptScrollEnabled: false,
