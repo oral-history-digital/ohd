@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { fetchData } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { setArchiveId } from 'modules/archive';
-import { setTapeAndTime } from 'modules/media-player';
+import { sendTimeChangeRequest } from 'modules/media-player';
 import RegistryEntryShow from './RegistryEntryShow';
 
 const mapStateToProps = (state) => {
@@ -23,11 +24,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-    setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
-    closeArchivePopup: () => dispatch(closeArchivePopup()),
-    setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+    sendTimeChangeRequest,
+    closeArchivePopup,
+    setArchiveId,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntryShow);

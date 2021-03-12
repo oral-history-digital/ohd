@@ -21,7 +21,7 @@ export default class RefTreeEntry extends React.Component {
 
     handleClick(tape, time) {
         if (this.props.entry.type === 'leafe') {
-            this.props.handleSegmentClick(tape, time);
+            this.props.sendTimeChangeRequest(tape, time);
         } else {
             this.toggle();
         }
@@ -64,6 +64,6 @@ RefTreeEntry.propTypes = {
     transcriptScrollEnabled: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
     renderChildren: PropTypes.func.isRequired,
-    handleSegmentClick: PropTypes.func.isRequired,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
     handleTranscriptScroll: PropTypes.func.isRequired,
 };

@@ -1,6 +1,6 @@
 export { NAME as MEDIA_PLAYER_NAME } from './constants';
 
-export { handleSegmentClick, setTapeAndTime } from './actions';
+export { sendTimeChangeRequest } from './actions';
 
 export { default as mediaPlayerReducer } from './reducer';
 

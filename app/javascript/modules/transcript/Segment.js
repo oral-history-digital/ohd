@@ -83,7 +83,7 @@ export default class Segment extends React.Component {
                     className="content-trans-speaker-link"
                     title={(this.props.people && this.props.data.speaker_id) ? fullname(this.props, this.props.people[this.props.data.speaker_id]) : this.props.data.speaker}
                     onClick={() => {
-                        this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time);
+                        this.props.sendTimeChangeRequest(this.props.data.tape_nbr, this.props.data.time);
                     }}
                 >
                     <i className={speakerCss}></i>
@@ -204,7 +204,7 @@ export default class Segment extends React.Component {
                     <div
                         className='content-trans-text'
                         onClick={() => {
-                            this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time);
+                            this.props.sendTimeChangeRequest(this.props.data.tape_nbr, this.props.data.time);
                         }}
                     >
                         <div
@@ -253,5 +253,5 @@ Segment.propTypes = {
     translations: PropTypes.object.isRequired,
     account: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
-    handleSegmentClick: PropTypes.func.isRequired,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
 };

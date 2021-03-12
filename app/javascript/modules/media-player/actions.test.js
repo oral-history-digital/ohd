@@ -42,3 +42,21 @@ test('resetMedia', () => {
     const expected = { type: types.RESET_MEDIA };
     expect(actual).toEqual(expected);
 });
+
+test('sendTimeChangeRequest', () => {
+    const actual = actions.sendTimeChangeRequest(2, 15.7);
+    const expected = {
+        type: types.SEND_TIME_CHANGE_REQUEST,
+        payload: {
+            tape: 2,
+            time: 15.7,
+        },
+    };
+    expect(actual).toEqual(expected);
+});
+
+test('clearTimeChangeRequest', () => {
+    const actual = actions.clearTimeChangeRequest();
+    const expected = { type: types.CLEAR_TIME_CHANGE_REQUEST };
+    expect(actual).toEqual(expected);
+});

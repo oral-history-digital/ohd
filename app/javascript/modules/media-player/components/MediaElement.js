@@ -14,6 +14,7 @@ export default class MediaElement extends React.Component {
         this.handlePauseEvent = this.handlePauseEvent.bind(this);
         this.handleTimeUpdateEvent = this.handleTimeUpdateEvent.bind(this);
         this.handleEndedEvent = this.handleEndedEvent.bind(this);
+        this.checkForTimeChangeRequest = this.checkForTimeChangeRequest.bind(this);
     }
 
     componentDidMount() {
@@ -26,9 +27,13 @@ export default class MediaElement extends React.Component {
         mediaElement.addEventListener('timeupdate', this.handleTimeUpdateEvent);
         mediaElement.addEventListener('ended', this.handleEndedEvent);
         mediaElement.addEventListener('contextmenu', this.handleContextMenuEvent);
+        mediaElement.addEventListener('canplay', this.handleCanPlayEvent);
+
+        this.checkForTimeChangeRequest();
     }
 
     componentDidUpdate() {
+        this.checkForTimeChangeRequest();
     }
 
     componentWillUnmount() {
@@ -40,6 +45,7 @@ export default class MediaElement extends React.Component {
         mediaElement.removeEventListener('timeupdate', this.handleTimeUpdateEvent);
         mediaElement.removeEventListener('ended', this.handleEndedEvent);
         mediaElement.removeEventListener('contextmenu', this.handleContextMenuEvent);
+        mediaElement.removeEventListener('canplay', this.handleCanPlayEvent);
     }
 
     handlePlayEvent() {
@@ -68,14 +74,23 @@ export default class MediaElement extends React.Component {
         return false;
     }
 
-    setMediaTime() {
-        // TODO: should be sendChangeTimeRequest();
-        //this.mediaElement.current.currentTime = this.props.mediaTim;
+    handleCanPlayEvent(e) {
+        console.log('now', e);
     }
 
-    setMediaStatus() {
-        // TODO: could be sendPlayRequest/sendPauseRequest();
-        //this.props.mediaStatu === 'play' ? this.mediaElement.current.play() : this.mediaElement.current.pause();
+    checkForTimeChangeRequest() {
+        // We use Redux as an event system here.
+        // If a request is available, it is immediately cleared and processed.
+        if (this.props.timeChangeRequestAvailable) {
+            this.props.clearTimeChangeRequest();
+
+            const mediaElement = this.mediaElement.current;
+
+            mediaElement.currentTime = this.props.timeChangeRequest;
+            mediaElement.play().catch((err) => {
+                console.log(err);
+            });
+        }
     }
 
     src() {
@@ -138,10 +153,13 @@ MediaElement.propTypes = {
     projectId: PropTypes.string.isRequired,
     resolution: PropTypes.string.isRequired,
     tape: PropTypes.number.isRequired,
+    timeChangeRequest: PropTypes.number,
+    timeChangeRequestAvailable: PropTypes.bool.isRequired,
     translations: PropTypes.object.isRequired,
     updateMediaTime: PropTypes.func.isRequired,
     updateIsPlaying: PropTypes.func.isRequired,
     setTape: PropTypes.func.isRequired,
     setResolution: PropTypes.func.isRequired,
     resetMedia: PropTypes.func.isRequired,
+    clearTimeChangeRequest: PropTypes.func.isRequired,
 };

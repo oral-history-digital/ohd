@@ -9,3 +9,7 @@ export const getMediaTime = state => getState(state).mediaTime;
 export const getIsPlaying = state => getState(state).isPlaying;
 
 export const getResolution = state => getState(state).resolution;
+
+export const getTimeChangeRequest = state => getState(state).timeChangeRequest;
+
+export const getTimeChangeRequestAvailable = state => getTimeChangeRequest(state) !== null;

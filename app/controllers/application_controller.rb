@@ -151,7 +151,8 @@ class ApplicationController < ActionController::Base
         tape: 1,
         mediaTime: 0,
         isPlaying: false,
-        resolution: nil
+        resolution: nil,
+        timeChangeRequest: nil,
       },
       interview: {
         transcriptScrollEnabled: false,

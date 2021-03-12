@@ -39,9 +39,9 @@ export default class Heading extends React.Component {
     }
 
     handleClick() {
-        const { data, handleSegmentClick } = this.props;
+        const { data, sendTimeChangeRequest } = this.props;
 
-        handleSegmentClick(data.tape_nbr, data.time);
+        sendTimeChangeRequest(data.tape_nbr, data.time);
     }
 
     subHeadings() {
@@ -115,5 +115,5 @@ Heading.propTypes = {
     locale: PropTypes.string.isRequired,
     tape: PropTypes.number.isRequired,
     mediaTime: PropTypes.number.isRequired,
-    handleSegmentClick: PropTypes.func.isRequired,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
 };

@@ -56,7 +56,7 @@ export default class FoundSegment extends React.Component {
             <div
                 className="content-search-row"
                 onClick={() => {
-                    this.props.handleSegmentClick(this.props.data.tape_nbr, this.props.data.time);
+                    this.props.sendTimeChangeRequest(this.props.data.tape_nbr, this.props.data.time);
                     this.props.setInterviewTabIndex(tabIndex);
                 }}
             >

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setTapeAndTime } from 'modules/media-player';
+import { sendTimeChangeRequest } from 'modules/media-player';
 import { getCurrentInterview } from 'modules/data';
 import SegmentEditView from './SegmentEditView';
 
@@ -15,7 +15,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setTapeAndTime,
+    sendTimeChangeRequest,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(SegmentEditView);

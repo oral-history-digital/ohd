@@ -1,11 +1,11 @@
 import {
     UPDATE_MEDIA_TIME,
     UPDATE_IS_PLAYING,
-    TRANSCRIPT_TIME_CHANGE,
-    SET_TAPE_AND_TIME,
     SET_TAPE,
     SET_RESOLUTION,
     RESET_MEDIA,
+    SEND_TIME_CHANGE_REQUEST,
+    CLEAR_TIME_CHANGE_REQUEST,
 } from './action-types';
 
 export const initialState = {
@@ -13,20 +13,11 @@ export const initialState = {
     mediaTime: 0,
     isPlaying: false,
     resolution: null,
+    timeChangeRequest: null,
 };
 
 const mediaPlayer = (state = initialState, action) => {
     switch (action.type) {
-        case TRANSCRIPT_TIME_CHANGE:
-            return Object.assign({}, state, {
-                mediaTime: action.mediaTime,
-                tape: action.tape,
-            })
-        case SET_TAPE_AND_TIME:
-            return Object.assign({}, state, {
-                mediaTime: action.mediaTime,
-                tape: action.tape,
-            })
         case UPDATE_MEDIA_TIME:
             return {
                 ...state,
@@ -49,6 +40,17 @@ const mediaPlayer = (state = initialState, action) => {
             };
         case RESET_MEDIA:
             return initialState;
+        case SEND_TIME_CHANGE_REQUEST:
+            return {
+                ...state,
+                tape: action.payload.tape,
+                timeChangeRequest: action.payload.time,
+            };
+        case CLEAR_TIME_CHANGE_REQUEST:
+            return {
+                ...state,
+                timeChangeRequest: null,
+            };
         default:
             return state;
     }
