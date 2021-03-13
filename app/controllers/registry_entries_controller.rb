@@ -148,7 +148,7 @@ class RegistryEntriesController < ApplicationController
     authorize @registry_entry
 
     parent = @registry_entry.parents.first
-    @registry_entry.destroy
+    @registry_entry.destroy if @registry_entry.children.count == 0
     current_project.touch
 
     clear_cache parent
