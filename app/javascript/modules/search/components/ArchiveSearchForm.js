@@ -22,15 +22,12 @@ export default class ArchiveSearchForm extends React.Component {
     }
 
     componentDidMount() {
-        if (!this.facetsLoaded()) {
-            if(this.props.map){
-                let url = `${pathBase(this.props)}/searches/map`;
-                this.props.searchInMap(url, {});
-            } else {
-                let url = `${pathBase(this.props)}/searches/archive`;
-                this.props.searchInArchive(url, {});
-            }
-
+        if(this.props.map){
+            let url = `${pathBase(this.props)}/searches/map`;
+            this.props.searchInMap(url, {});
+        } else {
+            let url = `${pathBase(this.props)}/searches/archive`;
+            this.props.searchInArchive(url, {});
         }
     }
 
