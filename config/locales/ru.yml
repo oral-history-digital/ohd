@@ -88,8 +88,8 @@ ru:
   archive_id: Archiv-ID
   biographical_entries_of: Краткая биография
   noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
-  compress_video: "Video: Ansicht verkleinern"
-  expand_video: "Video: Ansicht vergrößern"
+  compress_media_player: "Compress media player"
+  expand_media_player: "Expand media player"
   interviews: Интервью
   places: Место рождения
   interview_location_desc_one: " упоминается в главе "

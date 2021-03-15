@@ -4,10 +4,12 @@ const getState = state => state[NAME];
 
 export const getCurrentTape = state => getState(state).tape;
 
-export const getVideoTime = state => getState(state).videoTime;
+export const getMediaTime = state => getState(state).mediaTime;
 
-export const getVideoStatus = state => getState(state).videoStatus;
+export const getIsPlaying = state => getState(state).isPlaying;
 
-export const getTranscriptTime = state => getState(state).transcriptTime;
+export const getResolution = state => getState(state).resolution;
 
-export const getVideoResolution = state => getState(state).resolution;
+export const getTimeChangeRequest = state => getState(state).timeChangeRequest;
+
+export const getTimeChangeRequestAvailable = state => getTimeChangeRequest(state) !== null;

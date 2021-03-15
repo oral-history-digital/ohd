@@ -96,8 +96,8 @@ es:
   selected: seleccionado
   archive_id: ID de archivo
   noscript: Por favor, active JavaScript para garantizar la plena funcionalidad de la página web.
-  compress_video: "Video: Ansicht verkleinern"
-  expand_video: "Video: Ansicht vergrößern"
+  compress_media_player: "Compress media player"
+  expand_media_player: "Expand media player"
   interviews: Entrevistas
   places: Lugares de nacimiento
   interview_location_desc_one: " se menciona en capítulo "

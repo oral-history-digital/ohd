@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { handleSegmentClick } from 'modules/media-player';
+import { sendTimeChangeRequest } from 'modules/media-player';
 import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import { getCurrentInterview } from 'modules/data';
 import { getLocale } from 'modules/archive';
@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    handleSegmentClick,
+    sendTimeChangeRequest,
     handleTranscriptScroll,
 }, dispatch);
 

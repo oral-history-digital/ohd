@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 
 import { setArchiveId } from 'modules/archive';
-import { setTapeAndTime } from 'modules/media-player';
 import TaskPreview from './TaskPreview';
 
 const mapStateToProps = (state) => {
@@ -16,7 +15,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => ({
-    setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
     setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
 })
 

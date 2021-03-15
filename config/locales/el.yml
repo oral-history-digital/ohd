@@ -98,8 +98,8 @@ el:
   archive_id: Κωδικός συνέντευξης
   noscript: Παρακαλώ ενεργοποιήστε το Javascript για να μπορέσετε να δείτε αυτή τη
     σελίδα.
-  compress_video: "Video: Ansicht verkleinern"
-  expand_video: "Video: Ansicht vergrößern"
+  compress_media_player: "Compress media player"
+  expand_media_player: "Expand media player"
   interviews: Συνεντεύξεις
   places: Τόποι γέννησης
   interview_location_desc_one: " αναφέρεται στο κεφάλαιο "

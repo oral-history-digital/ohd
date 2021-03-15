@@ -16,11 +16,11 @@ export default class MediaControls extends React.Component {
     }
 
     handleTapeChange(e) {
-        this.props.setTapeAndTimeAndResolution(parseInt(e.target.value), 0, this.props.resolution);
+        this.props.setTape(Number.parseInt(e.target.value));
     }
 
     handleResolutionChange(e) {
-        this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.videoTime, e.target.value, 'pause');
+        this.props.setResolution(e.target.value);
     }
 
     rememberInterviewLink() {
@@ -58,7 +58,7 @@ export default class MediaControls extends React.Component {
     annotateOnSegmentLink() {
         const { locale, translations, interview, tape } = this.props;
 
-        let sortedSegmentsWithIndex = sortedSegmentsWithActiveIndex(this.props.videoTime, { interview, tape });
+        let sortedSegmentsWithIndex = sortedSegmentsWithActiveIndex(this.props.mediaTime, { interview, tape });
 
         return (
             <Modal
@@ -160,6 +160,7 @@ MediaControls.propTypes = {
     resolution: PropTypes.string.isRequired,
     tape: PropTypes.number.isRequired,
     translations: PropTypes.object.isRequired,
-    videoTime: PropTypes.number.isRequired,
-    setTapeAndTimeAndResolution: PropTypes.func.isRequired,
+    mediaTime: PropTypes.number.isRequired,
+    setTape: PropTypes.func.isRequired,
+    setResolution: PropTypes.func.isRequired,
 };

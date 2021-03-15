@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { handleSegmentClick } from 'modules/media-player';
+import { sendTimeChangeRequest } from 'modules/media-player';
 import { getCurrentInterview } from 'modules/data';
 import Segment from './Segment';
 
@@ -19,7 +19,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    handleSegmentClick,
+    sendTimeChangeRequest,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Segment);

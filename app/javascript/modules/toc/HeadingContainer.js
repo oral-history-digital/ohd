@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import { handleSegmentClick, getCurrentTape, getTranscriptTime } from 'modules/media-player';
+import { sendTimeChangeRequest, getCurrentTape, getMediaTime } from 'modules/media-player';
 import Heading from './Heading';
 
 const mapStateToProps = state => ({
     locale: state.archive.locale,
-    transcriptTime: getTranscriptTime(state),
+    mediaTime: getMediaTime(state),
     tape: getCurrentTape(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    handleSegmentClick: (tape, time, tabIndex) => dispatch(handleSegmentClick(tape, time, tabIndex)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    sendTimeChangeRequest,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Heading);

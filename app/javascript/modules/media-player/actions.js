@@ -1,55 +1,41 @@
 import {
-    TRANSCRIPT_TIME_CHANGE,
-    SET_TAPE_AND_TIME,
-    VIDEO_TIME_CHANGE,
-    VIDEO_ENDED,
-    SET_TAPE_AND_TIME_AND_RESOLUTION,
-    SET_NEXT_TAPE,
+    UPDATE_MEDIA_TIME,
+    UPDATE_IS_PLAYING,
+    SET_TAPE,
+    SET_RESOLUTION,
+    RESET_MEDIA,
+    SEND_TIME_CHANGE_REQUEST,
+    CLEAR_TIME_CHANGE_REQUEST,
 } from './action-types';
 
-export function handleSegmentClick(tape, time) {
-    return {
-        type: TRANSCRIPT_TIME_CHANGE,
-        videoTime: time,
-        tape: tape,
-    }
-}
+export const updateMediaTime = (time) => ({
+    type: UPDATE_MEDIA_TIME,
+    payload: { time },
+});
 
-export function setTapeAndTime(tape, time) {
-    return {
-        type: SET_TAPE_AND_TIME,
-        videoTime: time,
-        transcriptTime: time,
-        tape: tape
-    }
-}
+export const updateIsPlaying = (isPlaying) => ({
+    type: UPDATE_IS_PLAYING,
+    payload: { isPlaying },
+});
 
-export function handleVideoTimeChange(time) {
-    return {
-        type: VIDEO_TIME_CHANGE,
-        transcriptTime: time
-    }
-  }
+export const setTape = (tape) => ({
+    type: SET_TAPE,
+    payload: { tape },
+});
 
-export function handleVideoEnded() {
-    return {
-        type: VIDEO_ENDED,
-    }
-}
+export const setResolution = (resolution) => ({
+    type: SET_RESOLUTION,
+    payload: { resolution },
+});
 
-export function setTapeAndTimeAndResolution(tape, time, resolution, videoStatus = 'pause') {
-    return {
-        type: SET_TAPE_AND_TIME_AND_RESOLUTION,
-        videoTime: time,
-        transcriptTime: time,
+export const resetMedia = () => ({ type: RESET_MEDIA });
+
+export const sendTimeChangeRequest = (tape, time) => ({
+    type: SEND_TIME_CHANGE_REQUEST,
+    payload: {
         tape,
-        resolution,
-        videoStatus,
-    }
-}
+        time,
+    },
+});
 
-export function setNextTape() {
-    return {
-        type: SET_NEXT_TAPE,
-    }
-}
+export const clearTimeChangeRequest = () => ({ type: CLEAR_TIME_CHANGE_REQUEST });

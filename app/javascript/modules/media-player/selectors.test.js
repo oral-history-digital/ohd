@@ -1,13 +1,15 @@
+import dotProp from 'dot-prop-immutable';
+
 import * as selectors from './selectors';
 import { NAME } from './constants';
 
 const state = {
     [NAME]: {
         tape: 2,
-        videoTime: 0,
-        videoStatus: 'pause',
-        transcriptTime: 13.46,
+        mediaTime: 12.4,
+        isPlaying: true,
         resolution: '720p',
+        timeChangeRequest: 31.2,
     },
 };
 
@@ -15,18 +17,29 @@ test('getCurrentTape retrieves current tape number', () => {
     expect(selectors.getCurrentTape(state)).toEqual(state[NAME].tape);
 });
 
-test('getVideoTime retrieves video time', () => {
-    expect(selectors.getVideoTime(state)).toEqual(state[NAME].videoTime);
+test('getMediaTime retrieves media time', () => {
+    expect(selectors.getMediaTime(state)).toEqual(state[NAME].mediaTime);
 });
 
-test('getVideoStatus retrieves video status', () => {
-    expect(selectors.getVideoStatus(state)).toEqual(state[NAME].videoStatus);
+test('getIsPlaying retrieves wether medium is playing', () => {
+    expect(selectors.getIsPlaying(state)).toEqual(state[NAME].isPlaying);
 });
 
-test('getTranscriptTime retrieves transcript time', () => {
-    expect(selectors.getTranscriptTime(state)).toEqual(state[NAME].transcriptTime);
+test('getResolution retrieves media resolution', () => {
+    expect(selectors.getResolution(state)).toEqual(state[NAME].resolution);
 });
 
-test('getVideoResolution retrieves video resolution', () => {
-    expect(selectors.getVideoResolution(state)).toEqual(state[NAME].resolution);
+test('getTimeChangeRequest gets requested time change', () => {
+    expect(selectors.getTimeChangeRequest(state)).toEqual(state[NAME].timeChangeRequest);
+});
+
+describe('getTimeChangeRequestAvailable', () => {
+    test('is true if request is available', () => {
+        expect(selectors.getTimeChangeRequestAvailable(state)).toBeTruthy();
+    });
+
+    test('is false if request is not available', () => {
+        const _state = dotProp.set(state, `${NAME}.timeChangeRequest`, null);
+        expect(selectors.getTimeChangeRequestAvailable(_state)).toBeFalsy();
+    });
 });
