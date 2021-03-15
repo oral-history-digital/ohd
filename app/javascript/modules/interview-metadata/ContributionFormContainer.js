@@ -20,6 +20,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     closeArchivePopup,
     fetchData,
+    // please NO submitData in here: it would disable
+    // ContributionForm`s functionality
+    // as sub-form
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ContributionForm);
