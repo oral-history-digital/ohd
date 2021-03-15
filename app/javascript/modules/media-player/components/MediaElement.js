@@ -13,6 +13,7 @@ export default class MediaElement extends React.Component {
         this.handlePlayEvent = this.handlePlayEvent.bind(this);
         this.handlePauseEvent = this.handlePauseEvent.bind(this);
         this.handleTimeUpdateEvent = this.handleTimeUpdateEvent.bind(this);
+        this.handleCanPlayEvent = this.handleCanPlayEvent.bind(this);
         this.handleEndedEvent = this.handleEndedEvent.bind(this);
         this.checkForTimeChangeRequest = this.checkForTimeChangeRequest.bind(this);
     }
@@ -27,7 +28,6 @@ export default class MediaElement extends React.Component {
         mediaElement.addEventListener('timeupdate', this.handleTimeUpdateEvent);
         mediaElement.addEventListener('ended', this.handleEndedEvent);
         mediaElement.addEventListener('contextmenu', this.handleContextMenuEvent);
-        mediaElement.addEventListener('canplay', this.handleCanPlayEvent);
 
         this.checkForTimeChangeRequest();
     }
@@ -75,7 +75,13 @@ export default class MediaElement extends React.Component {
     }
 
     handleCanPlayEvent(e) {
-        console.log('now', e);
+        const mediaElement = this.mediaElement.current;
+
+        mediaElement.removeEventListener('canplay', this.handleCanPlayEvent);
+
+        mediaElement.play().catch((err) => {
+            console.log(err);
+        });
     }
 
     checkForTimeChangeRequest() {
@@ -87,9 +93,15 @@ export default class MediaElement extends React.Component {
             const mediaElement = this.mediaElement.current;
 
             mediaElement.currentTime = this.props.timeChangeRequest;
-            mediaElement.play().catch((err) => {
-                console.log(err);
-            });
+
+            // If medium is ready, play it directly, if not, play it when ready.
+            if (mediaElement.readyState >= 2) {
+                mediaElement.play().catch((err) => {
+                    console.log(err);
+                });
+            } else {
+                mediaElement.addEventListener('canplay', this.handleCanPlayEvent);
+            }
         }
     }
 
