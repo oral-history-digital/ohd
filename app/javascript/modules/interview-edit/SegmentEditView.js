@@ -22,9 +22,13 @@ export default class SegmentEditView extends React.Component {
         switch (columnName) {
             case 'timecode': {
               return (
-                  <div id={`segment_${this.props.segment.id}`} className={this.css()} onClick={() => this.props.setTapeAndTime(this.props.segment.tape_nbr, this.props.segment.time)}>
-                      {`${this.props.segment.tape_nbr} - ${this.segmentTime()}`}
-                  </div>
+                    <div
+                        id={`segment_${this.props.segment.id}`}
+                        className={this.css()}
+                        onClick={() => this.props.sendTimeChangeRequest(this.props.segment.tape_nbr, this.props.segment.time)}
+                    >
+                        {`${this.props.segment.tape_nbr} - ${this.segmentTime()}`}
+                    </div>
               )
               break;
             }

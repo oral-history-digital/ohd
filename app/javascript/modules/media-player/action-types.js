@@ -1,8 +1,9 @@
 import { NAME } from './constants';
 
-export const VIDEO_TIME_CHANGE = `${NAME}/timeChange`;
-export const VIDEO_ENDED = `${NAME}/ended`;
-export const SET_NEXT_TAPE = `${NAME}/setNextTape`;
-export const TRANSCRIPT_TIME_CHANGE = `${NAME}/transcriptTimeChange`;
-export const SET_TAPE_AND_TIME = `${NAME}/setTapeAndTime`;
-export const SET_TAPE_AND_TIME_AND_RESOLUTION = `${NAME}/setTapeTimeAndResolution`;
+export const UPDATE_MEDIA_TIME = `${NAME}/updateMediaTime`;
+export const UPDATE_IS_PLAYING = `${NAME}/updateIsPlaying`;
+export const SET_TAPE = `${NAME}/setTape`;
+export const SET_RESOLUTION = `${NAME}/setResolution`;
+export const RESET_MEDIA = `${NAME}/resetMedia`;
+export const SEND_TIME_CHANGE_REQUEST = `${NAME}/sendTimeChangeRequest`;
+export const CLEAR_TIME_CHANGE_REQUEST = `${NAME}/clearTimeChangeRequest`;

@@ -1,8 +1,9 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { setArchiveId } from 'modules/archive';
 import { searchInArchive } from 'modules/search';
-import { setTapeAndTime } from 'modules/media-player';
+import { sendTimeChangeRequest } from 'modules/media-player';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import UserContent from './UserContent';
 
@@ -16,11 +17,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    setTapeAndTime: (tape, time) => dispatch(setTapeAndTime(tape, time)),
-    searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
-    setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
-    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    sendTimeChangeRequest,
+    searchInArchive,
+    setArchiveId,
+    hideFlyoutTabs,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContent);

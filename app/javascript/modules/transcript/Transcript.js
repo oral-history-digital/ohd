@@ -77,7 +77,7 @@ export default class Transcript extends React.Component {
     }
 
     scrollToActiveSegment() {
-        let currentSegment = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props)[0];
+        let currentSegment = sortedSegmentsWithActiveIndex(this.props.mediaTime, this.props)[0];
         let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
         if (activeSegmentElement) {
             let offset = activeSegmentElement.offsetTop;
@@ -117,12 +117,12 @@ export default class Transcript extends React.Component {
     }
 
     transcript(){
-        const { interviewee, transcriptTime, tape } = this.props;
+        const { interviewee, mediaTime, tape } = this.props;
         const { popupSegmentId, popupType, openReference } = this.state;
 
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
         let tabIndex = this.props.originalLocale ? 0 : 1;
-        let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props);
+        let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.mediaTime, this.props);
         let shownSegments = this.props.transcriptScrollEnabled ?
             sortedWithIndex[1] :
             this.shownSegmentsAround(sortedWithIndex);
@@ -141,8 +141,8 @@ export default class Transcript extends React.Component {
             }
             let active = false;
             if (
-                segment.time <= transcriptTime + 15 &&
-                segment.time >= transcriptTime - 15 &&
+                segment.time <= mediaTime + 15 &&
+                segment.time >= mediaTime - 15 &&
                 segment.tape_nbr === tape
             ) {
                 active = true;

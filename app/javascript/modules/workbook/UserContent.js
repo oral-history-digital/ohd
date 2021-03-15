@@ -94,7 +94,7 @@ export default class UserContent extends React.Component {
                 <Link
                     onClick={() => {
                         this.props.setArchiveId(this.props.data.properties.interview_archive_id);
-                        this.props.setTapeAndTime(this.props.data.properties.tape_nbr, this.props.data.properties.time)
+                        this.props.sendTimeChangeRequest(this.props.data.properties.tape_nbr, this.props.data.properties.time)
                         this.hideFlyoutTabsIfMobile();
                     }}
                     to={pathBase(this.props) + '/interviews/' + this.props.data.properties.interview_archive_id}

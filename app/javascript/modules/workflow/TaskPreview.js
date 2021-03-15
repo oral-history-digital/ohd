@@ -31,7 +31,6 @@ export default class TaskPreview extends React.Component {
                     <Link
                         onClick={() => {
                             this.props.setArchiveId(this.props.data.archive_id);
-                            this.props.setTapeAndTime(1, 0)
                         }}
                         to={pathBase(this.props) + '/interviews/' + this.props.data.archive_id}
                     >

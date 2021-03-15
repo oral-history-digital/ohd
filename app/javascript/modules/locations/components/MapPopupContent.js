@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-import { handleSegmentClick } from 'modules/media-player';
+import { sendTimeChangeRequest } from 'modules/media-player';
 
 export default function MapPopupContent({ location }) {
     const { t, locale } = useI18n();
@@ -11,7 +11,7 @@ export default function MapPopupContent({ location }) {
 
     if (location.ref_object) {
         return (
-            <div onClick={() => dispatch(handleSegmentClick(location.ref_object.tape_number, location.ref_object.time))}>
+            <div onClick={() => dispatch(sendTimeChangeRequest(location.ref_object.tape_number, location.ref_object.time))}>
                 <p>
                     <em className='place'>
                         {location.desc[locale]}

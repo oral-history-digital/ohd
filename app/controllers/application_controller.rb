@@ -149,10 +149,10 @@ class ApplicationController < ActionController::Base
       },
       'media-player': {
         tape: 1,
-        videoTime: 0,
-        videoStatus: 'pause',
-        transcriptTime: 0,
-        resolution: '480p'
+        mediaTime: 0,
+        isPlaying: false,
+        resolution: nil,
+        timeChangeRequest: nil,
       },
       interview: {
         transcriptScrollEnabled: false,

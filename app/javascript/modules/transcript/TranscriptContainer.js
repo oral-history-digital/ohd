@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData } from 'modules/data';
 import { getCurrentInterview, getCurrentInterviewee } from 'modules/data';
-import { getCurrentTape, getTranscriptTime } from 'modules/media-player';
+import { getCurrentTape, getMediaTime } from 'modules/media-player';
 import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import Transcript from './Transcript';
 
@@ -17,7 +17,7 @@ const mapStateToProps = state => ({
     interviewee: getCurrentInterviewee(state),
     people: state.data.people,
     tape: getCurrentTape(state),
-    transcriptTime: getTranscriptTime(state),
+    mediaTime: getMediaTime(state),
     transcriptScrollEnabled: getTranscriptScrollEnabled(state),
     segmentsStatus: state.data.statuses.segments,
     userContentsStatus: state.data.statuses.user_contents.all,

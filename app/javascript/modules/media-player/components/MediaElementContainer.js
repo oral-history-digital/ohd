@@ -3,8 +3,10 @@ import { bindActionCreators } from 'redux';
 
 import { getCurrentInterview, getMediaStreams } from 'modules/data';
 import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { handleVideoTimeChange, handleVideoEnded, setNextTape, setTapeAndTimeAndResolution } from '../actions';
-import { getCurrentTape, getVideoResolution, getVideoStatus, getVideoTime } from '../selectors';
+import { updateMediaTime, updateIsPlaying, setTape, setResolution, resetMedia,
+    clearTimeChangeRequest } from '../actions';
+import { getCurrentTape, getResolution, getTimeChangeRequest,
+    getTimeChangeRequestAvailable } from '../selectors';
 import MediaElement from './MediaElement';
 
 const mapStateToProps = state => ({
@@ -13,18 +15,20 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
     mediaStreams: getMediaStreams(state),
     projectId: getProjectId(state),
-    resolution: getVideoResolution(state),
+    resolution: getResolution(state),
     tape: getCurrentTape(state),
+    timeChangeRequest: getTimeChangeRequest(state),
+    timeChangeRequestAvailable: getTimeChangeRequestAvailable(state),
     translations: getTranslations(state),
-    videoStatus: getVideoStatus(state),
-    videoTime: getVideoTime(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    handleVideoEnded,
-    handleVideoTimeChange,
-    setNextTape,
-    setTapeAndTimeAndResolution,
+    updateMediaTime,
+    updateIsPlaying,
+    setTape,
+    setResolution,
+    resetMedia,
+    clearTimeChangeRequest,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MediaElement);

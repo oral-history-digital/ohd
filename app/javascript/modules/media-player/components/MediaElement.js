@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import { t } from 'modules/i18n';
 import missingStill from 'assets/images/missing_still.png';
@@ -9,53 +8,100 @@ export default class MediaElement extends React.Component {
     constructor(props) {
         super(props);
 
-        this.fullscreenChange = this.fullscreenChange.bind(this);
+        this.mediaElement = React.createRef();
 
-        this.tracksVisible = false;
+        this.handlePlayEvent = this.handlePlayEvent.bind(this);
+        this.handlePauseEvent = this.handlePauseEvent.bind(this);
+        this.handleTimeUpdateEvent = this.handleTimeUpdateEvent.bind(this);
+        this.handleCanPlayEvent = this.handleCanPlayEvent.bind(this);
+        this.handleEndedEvent = this.handleEndedEvent.bind(this);
+        this.checkForTimeChangeRequest = this.checkForTimeChangeRequest.bind(this);
     }
 
     componentDidMount() {
         let initialResolution = this.props.interview.media_type === 'audio' ? '192k' : '480p';
-        this.props.setTapeAndTimeAndResolution(this.props.tape, this.props.videoTime, initialResolution);
-        if (this.video) {
-            this.setVideoTime()
-            this.setVideoStatus()
-            this.video.addEventListener('webkitfullscreenchange', this.fullscreenChange);
-            this.video.addEventListener('mozfullscreenchange', this.fullscreenChange);
-            this.video.addEventListener('fullscreenchange', this.fullscreenChange);
-            this.video.addEventListener('contextmenu',function(e) { e.preventDefault(); return false; });
-        }
+        this.props.setResolution(initialResolution);
+
+        const mediaElement = this.mediaElement.current;
+        mediaElement.addEventListener('play', this.handlePlayEvent);
+        mediaElement.addEventListener('pause', this.handlePauseEvent);
+        mediaElement.addEventListener('timeupdate', this.handleTimeUpdateEvent);
+        mediaElement.addEventListener('ended', this.handleEndedEvent);
+        mediaElement.addEventListener('contextmenu', this.handleContextMenuEvent);
+
+        this.checkForTimeChangeRequest();
     }
 
     componentDidUpdate() {
-        if (this.video) {
-            this.setVideoTime()
-            this.setVideoStatus()
-            this.video.addEventListener('contextmenu',function(e) { e.preventDefault(); return false; });
-        }
+        this.checkForTimeChangeRequest();
     }
 
     componentWillUnmount() {
-        // reset resolution to undefined, otherwise changing video to audio or audio to video will crash
-        this.props.setTapeAndTimeAndResolution(this.props.tape, this.video && this.video.currentTime, undefined);
+        this.props.resetMedia();
+
+        const mediaElement = this.mediaElement.current;
+        mediaElement.removeEventListener('play', this.handlePlayEvent);
+        mediaElement.removeEventListener('pause', this.handlePauseEvent);
+        mediaElement.removeEventListener('timeupdate', this.handleTimeUpdateEvent);
+        mediaElement.removeEventListener('ended', this.handleEndedEvent);
+        mediaElement.removeEventListener('contextmenu', this.handleContextMenuEvent);
+        mediaElement.removeEventListener('canplay', this.handleCanPlayEvent);
     }
 
-    setVideoTime() {
-        if (this.props.videoTime !== 0) {
-            this.video.currentTime = this.props.videoTime;
+    handlePlayEvent() {
+        this.props.updateIsPlaying(true);
+    }
+
+    handlePauseEvent() {
+        this.props.updateIsPlaying(false);
+    }
+
+    handleTimeUpdateEvent(e) {
+        const time = Math.round(e.target.currentTime * 10) / 10;
+        this.props.updateMediaTime(time);
+    }
+
+    handleEndedEvent() {
+        const { tape, interview, setTape } = this.props;
+
+        if (tape < interview.tape_count) {
+            setTape(tape);
         }
     }
 
-    setVideoStatus() {
-        // let isPlaying = this.video.currentTime > 0 && !this.video.paused && !this.video.ended && this.video.readyState > 2;
-        this.props.videoStatus === 'play' ? this.video.play() : this.video.pause();
+    handleContextMenuEvent(e) {
+        e.preventDefault();
+        return false;
     }
 
-    handleVideoEnded() {
-        if (this.props.tape < this.props.interview.tape_count) {
-            this.props.setNextTape();
-        } else {
-            this.props.handleVideoEnded();
+    handleCanPlayEvent(e) {
+        const mediaElement = this.mediaElement.current;
+
+        mediaElement.removeEventListener('canplay', this.handleCanPlayEvent);
+
+        mediaElement.play().catch((err) => {
+            console.log(err);
+        });
+    }
+
+    checkForTimeChangeRequest() {
+        // We use Redux as an event system here.
+        // If a request is available, it is immediately cleared and processed.
+        if (this.props.timeChangeRequestAvailable) {
+            this.props.clearTimeChangeRequest();
+
+            const mediaElement = this.mediaElement.current;
+
+            mediaElement.currentTime = this.props.timeChangeRequest;
+
+            // If medium is ready, play it directly, if not, play it when ready.
+            if (mediaElement.readyState >= 2) {
+                mediaElement.play().catch((err) => {
+                    console.log(err);
+                });
+            } else {
+                mediaElement.addEventListener('canplay', this.handleCanPlayEvent);
+            }
         }
     }
 
@@ -73,35 +119,6 @@ export default class MediaElement extends React.Component {
         }
     }
 
-    defaultTitle() {
-        moment.locale(this.props.locale);
-        let now = moment().format('lll');
-        return `${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]} - ${now}`;
-    }
-
-    fullscreenChange() {
-        let isFullscreen = document.fullScreen || document.mozFullScreen || document.webkitIsFullScreen;
-        if (isFullscreen) {
-            this.tracksVisible = false;
-            let tracks = {};
-            for (let i = 0; i < this.video.textTracks.length; i++) {
-                if (this.video.textTracks[i].mode === "showing") {
-                    this.tracksVisible = true;
-                }
-                tracks[this.video.textTracks[i].language] = this.video.textTracks[i];
-            }
-            if (!this.tracksVisible) {
-                tracks[this.props.locale].mode = 'showing';
-            }
-        } else {
-            if (!this.tracksVisible) {
-                for (let i = 0; i < this.video.textTracks.length; i++) {
-                    this.video.textTracks[i].mode = 'disabled';
-                }
-            }
-        }
-    }
-
     subtitles() {
         return this.props.interview.languages.map((language) => {
             return (
@@ -116,39 +133,26 @@ export default class MediaElement extends React.Component {
         })
     }
 
-    handleVideoClick() {
-        if(this.video) {
-            if(navigator.userAgent.indexOf("Chrome") != -1 )
-            {
-                this.video.paused ? this.video.play() : this.video.pause();
-            }
-        }
-    }
-
     render() {
-        return(
-            React.createElement(
-                this.props.projectId == 'dg' ? 'audio' : 'video',
-                {
-                    ref: video => { this.video = video; },
-                    onTimeUpdate: event => {
-                        var time = Math.round(event.target.currentTime * 100) / 100;
-                        if (time !== this.props.videoTime) {
-                            this.props.handleVideoTimeChange(time);
-                        }
-                    },
-                    onEnded: () => {
-                        this.handleVideoEnded();
-                    },
-                    playsInline: true,
-                    controls: true,
-                    controlsList: "nodownload",
-                    poster: this.props.interview.still_url || missingStill,
-                    onClick: this.handleVideoClick,
-                    src: this.src(),
-                },
-                (this.props.projectId != 'dg') && this.subtitles()
-              )
+        return (
+            this.props.projectId === 'dg' ?
+                (
+                    <audio
+                        ref={this.mediaElement}
+                        controls
+                        src={this.src()}
+                    />
+                ) :
+                (
+                    <video
+                        ref={this.mediaElement}
+                        controls
+                        poster={this.props.interview.still_url || missingStill}
+                        src={this.src()}
+                    >
+                        {this.subtitles()}
+                    </video>
+                )
         );
     }
 }
@@ -161,11 +165,13 @@ MediaElement.propTypes = {
     projectId: PropTypes.string.isRequired,
     resolution: PropTypes.string.isRequired,
     tape: PropTypes.number.isRequired,
+    timeChangeRequest: PropTypes.number,
+    timeChangeRequestAvailable: PropTypes.bool.isRequired,
     translations: PropTypes.object.isRequired,
-    videoStatus: PropTypes.string.isRequired,
-    videoTime: PropTypes.number.isRequired,
-    handleVideoEnded: PropTypes.func,
-    handleVideoTimeChange: PropTypes.func.isRequired,
-    setNextTape: PropTypes.func.isRequired,
-    setTapeAndTimeAndResolution: PropTypes.func.isRequired,
+    updateMediaTime: PropTypes.func.isRequired,
+    updateIsPlaying: PropTypes.func.isRequired,
+    setTape: PropTypes.func.isRequired,
+    setResolution: PropTypes.func.isRequired,
+    resetMedia: PropTypes.func.isRequired,
+    clearTimeChangeRequest: PropTypes.func.isRequired,
 };

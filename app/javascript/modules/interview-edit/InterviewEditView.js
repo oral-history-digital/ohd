@@ -65,7 +65,7 @@ export default class InterviewEditView extends React.Component {
             this.props.project.available_locales.filter(locale => locale !== this.props.interview.lang)[0] :
             this.props.locale;
 
-        let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.transcriptTime, this.props);
+        let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.mediaTime, this.props);
         let shownSegments = []
         if (this.props.skipEmptyRows) {
             shownSegments = this.allFilledRows(sortedWithIndex);
@@ -75,8 +75,8 @@ export default class InterviewEditView extends React.Component {
             return shownSegments.map((segment, index) => {
                 let active = false;
                 if (
-                    segment.time <= this.props.transcriptTime + 15 &&
-                    segment.time >= this.props.transcriptTime - 15 &&
+                    segment.time <= this.props.mediaTime + 15 &&
+                    segment.time >= this.props.mediaTime - 15 &&
                     segment.tape_nbr === this.props.tape
                 ) {
                     active = true;

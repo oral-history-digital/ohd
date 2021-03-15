@@ -87,7 +87,7 @@ export default class RegistryEntryShow extends React.Component {
                                 onClick={() => {
                                     this.props.closeArchivePopup();
                                     this.props.setArchiveId(rr.archive_id);
-                                    this.props.setTapeAndTime(this.props.segments[rr.ref_object_id].tape_nbr, this.props.segments[rr.ref_object_id].time)
+                                    this.props.sendTimeChangeRequest(this.props.segments[rr.ref_object_id].tape_nbr, this.props.segments[rr.ref_object_id].time)
                                 }}
                                 to={pathBase(this.props) + '/interviews/' + rr.archive_id}
                             >
