@@ -29,7 +29,7 @@ class SegmentsController < ApplicationController
         data = Rails.cache.fetch("#{current_project.cache_key_prefix}-interview-segments-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}") do
           @interview.tapes.inject({}) do |tapes, tape|
             segments_for_tape = tape.segments.
-              includes(:translations, :registry_references, :user_annotations, annotations: [:translations], speaking_person: [:translations]).
+              includes(:interview, :tape, :translations, :registry_references, :user_annotations, annotations: [:translations], speaking_person: [:translations], project: [:metadata_fields]).
               where.not(timecode: '00:00:00.000').order(:timecode)#.first(20)
 
             tapes[tape.number] = segments_for_tape.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
