@@ -131,27 +131,19 @@ class InterviewTabPanel extends Component {
                         />
                     </AuthorizedContent>
 
-                    {
-                        // speakers assignment does not work for dg at the moment, but we don't need it either
-                        projectId !== 'dg' ?
-                            (
-                                <>
-                                    <AuthorizedContent object={{type: 'Interview', action: 'update_speakers', interview_id: interview.id}}>
-                                        <InterviewDataContainer
-                                            title={t(this.props, 'assign_speakers')}
-                                            content={<AssignSpeakersFormContainer interview={interview} />}
-                                        />
-                                    </AuthorizedContent>
-                                    <AuthorizedContent object={{type: 'Interview', action: 'mark_texts', interview_id: interview.id}}>
-                                        <InterviewDataContainer
-                                            title={t(this.props, 'mark_texts')}
-                                            content={<MarkTextFormContainer interview={interview} />}
-                                        />
-                                    </AuthorizedContent>
-                                </>
-                            ) :
-                            null
-                    }
+                    <AuthorizedContent object={{type: 'Interview', action: 'update_speakers', interview_id: interview.id}}>
+                        <InterviewDataContainer
+                            title={t(this.props, 'assign_speakers')}
+                            content={<AssignSpeakersFormContainer interview={interview} />}
+                        />
+                    </AuthorizedContent>
+
+                    <AuthorizedContent object={{type: 'Interview', action: 'mark_texts', interview_id: interview.id}}>
+                        <InterviewDataContainer
+                            title={t(this.props, 'mark_texts')}
+                            content={<MarkTextFormContainer interview={interview} />}
+                        />
+                    </AuthorizedContent>
 
                     <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
                         <InterviewDataContainer
