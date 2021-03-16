@@ -108,9 +108,10 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_results_list: true).order(:list_columns_order)
   end
 
-  def clear_cache(namespace)
-    Rails.cache.redis.keys("#{cache_key_prefix}-#{namespace}*").each{|k| Rails.cache.delete(k)}
-  end
+  #def clear_cache(namespace)
+    ##Rails.cache.redis.keys("#{cache_key_prefix}-#{namespace}*").each{|k| Rails.cache.delete(k)}
+    #`rm -rf #{Rails.root}/tmp/cache/application/*`
+  #end
 
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
   %w(RegistryReferenceType Person Interview).each do |m|
