@@ -1,7 +1,13 @@
 \fancyhead{}
 \fancyfoot{}
 \fancyhead[L]{
-  \includegraphics[height=12mm]{<%= "#{current_project.shortname}-Archiv-PDF-Logo-#{@locale}.png" %>}
+<% 
+  logo = File.join(Rails.root, 'tmp', 'files', "#{current_project.logos.where(locale: @locale).first.file.blob.filename}")
+  unless File.file?(logo)
+    File.symlink(ActiveStorage::Blob.service.send(:path_for, current_project.logos.where(locale: @locale).first.file.key), logo)
+  end
+%>
+  \includegraphics[height=12mm]{<%= "#{logo}" %>}
   \vspace*{0.2cm}
   \newline{\fontsize{9}{11}\selectfont{\textcolor{primaryColor} {<%= header_text %> }}}
   \vspace*{0.1cm}
