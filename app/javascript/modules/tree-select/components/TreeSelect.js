@@ -8,10 +8,13 @@ import styles from './TreeSelect.module.scss';
 
 export default function TreeSelect({
     locale,
+    projectId,
+    projects,
     dataAvailable,
     tree,
     handleChange,
     fetchRegistryTree,
+    fetchData,
 }) {
     const { t } = useI18n();
 
@@ -22,7 +25,14 @@ export default function TreeSelect({
     }, [])
 
     const onChange = (_, selectedNodes) => {
-        handleChange('registry_entry_id', selectedNodes[0]?.value);
+        const registryEntryId = selectedNodes[0]?.value
+
+        if (typeof registryEntryId !== 'undefined') {
+            fetchData({ locale, projectId, projects }, 'registry_entries', registryEntryId, null,
+                'with_associations=true');
+        }
+
+        handleChange('registry_entry_id', registryEntryId);
     }
 
     if (!dataAvailable) {
@@ -60,8 +70,11 @@ export default function TreeSelect({
 
 TreeSelect.propTypes = {
     locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     dataAvailable: PropTypes.bool.isRequired,
     tree: PropTypes.object,
     handleChange: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
     fetchRegistryTree: PropTypes.func.isRequired,
 };
