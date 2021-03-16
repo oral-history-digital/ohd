@@ -38,7 +38,7 @@ export function humanReadable(obj, attribute, props, state, none='---') {
     if (props.translations[props.locale].hasOwnProperty(value))
         value = t(props, value);
 
-    if (/\w+_id/.test(attribute) && attribute !== 'archive_id') // get corresponding name from e.g. collection_id
+    if (props.values && /\w+_id/.test(attribute) && attribute !== 'archive_id') // get corresponding name from e.g. collection_id
         value = props.values[value] && props.values[value].name
 
     if (typeof value === 'object' && value !== null)
