@@ -65,7 +65,7 @@ class TranscriptsController < ApplicationController
   end
 
   def update_contributions(interview)
-    contribution_attributes = transcript_params[:contributions_attributes]
+    contribution_attributes = transcript_params[:contributions_attributes] || []
 
     contribution_attributes.each do |attributes|
       contribution = Contribution.find(attributes[:id])

@@ -424,6 +424,14 @@ class Interview < ApplicationRecord
     end
   end
 
+  def has_transcript?(locale)
+    segment_count = Segment
+      .joins(:translations)
+      .where('segments.interview_id': id, 'segment_translations.locale': "#{locale}-public")
+      .count
+    segment_count > 0
+  end
+
   def translated
     # the attribute 'translated' is wrong on many interviews in zwar.
     # this is why we use the languages-array for checking

@@ -20,6 +20,10 @@ class InterviewMetadataExporter
     Date.parse(@interview.interview_date)
   end
 
+  def transcript_languages
+    @interview.languages.select { |lang| @interview.has_transcript?(lang) }
+  end
+
   def age(person)
     if (person.date_of_birth.present?)
       birthday = Date.parse(person.date_of_birth)
@@ -59,13 +63,14 @@ class InterviewMetadataExporter
   end
 
   def build_resources(xml)
-    mimetype = @interview.media_type == 'video' ? 'video/mp4' : 'audio/mp3'
+    mimetype = @interview.media_type == 'video' ? 'video/mp4' : 'audio/x-wav'
 
     xml.Resources {
       xml.ResourceProxyList {
+        # Tapes
         @interview.tapes.each_with_index do |tape, index|
           id = InterviewMetadataExporter.pad(tape.id)
-          url = "http://www.example.com/#{tape.media_id}"
+          url = "#{@interview.archive_id.upcase}_original/#{tape.media_id}.wav"
 
           xml.ResourceProxy('id' => "r_#{id}") {
             xml.ResourceType('Resource', 'mimetype' => mimetype)
@@ -73,10 +78,14 @@ class InterviewMetadataExporter
           }
         end
 
-        xml.ResourceProxy('id' => "m_0000000001") {
-          xml.ResourceType('Resource', 'mimetype' => 'application/pdf')
-          xml.ResourceRef 'http://www.example.com/transcript.pdf'
-        }
+        # Transcripts
+        transcript_languages.each_with_index do |lang, index|
+          id = InterviewMetadataExporter.pad(index + 1)
+          xml.ResourceProxy('id' => "m_#{id}") {
+            xml.ResourceType('Resource', 'mimetype' => 'application/pdf')
+            xml.ResourceRef "#{@interview.archive_id}_transcript_#{lang}.pdf"
+          }
+        end
       }
       xml.JournalFileProxyList
       xml.ResourceRelationList
@@ -99,7 +108,7 @@ class InterviewMetadataExporter
     xml.send('media-session') do
       xml.Name @interview.anonymous_title
       xml.NumberOfSpeakers(@interview.interviewees.count + @interview.interviewers.count)
-      xml.Corpus @interview.project.name  # must match element Title in corpus CMDI
+      xml.Corpus "OHD #{@interview.project.name}"  # must match element Title in corpus CMDI
       xml.Environment 'unknown'
       xml.RecordingDate recording_date.to_s
       xml.NumberOfRecordings @interview.tapes.count
@@ -109,7 +118,7 @@ class InterviewMetadataExporter
       build_media_session_actors(xml)
       build_content(xml)
       build_media_annotation_bundles(xml)
-      build_written_resource(xml)
+      build_written_resources(xml)
     end
   end
 
@@ -204,14 +213,20 @@ class InterviewMetadataExporter
     end
   end
 
-  def build_written_resource(xml)
-    xml.WrittenResource('ref' => 'm_0000000001', 'actor-ref' => all_actors_as_string) do
-      xml.AnnotationType {
-        xml.AnnotationType 'Orthography'
-      }
-      xml.AnnotationFormat {
-        xml.AnnotationFormat 'application/pdf'
-      }
+  def build_written_resources(xml)
+    transcript_languages.each_with_index do |lang, index|
+      id = InterviewMetadataExporter.pad(index + 1)
+      language_code = InterviewMetadataExporter.language_code(lang)
+      # TODO: Add language to resource somehow, lang attribute is not supported
+
+      xml.WrittenResource('ref' => "m_#{id}", 'actor-ref' => all_actors_as_string) do
+        xml.AnnotationType {
+          xml.AnnotationType 'Orthography'
+        }
+        xml.AnnotationFormat {
+          xml.AnnotationFormat 'application/pdf'
+        }
+      end
     end
   end
 

@@ -390,6 +390,8 @@ GEM
       rspec-expectations (~> 3.10)
       rspec-mocks (~> 3.10)
       rspec-support (~> 3.10)
+    rspec-snapshot (0.1.2)
+      rspec (> 3.0.0)
     rspec-support (3.10.1)
     ruby-graphviz (1.2.3)
     ruby-vips (2.0.13)
@@ -520,6 +522,7 @@ DEPENDENCIES
   rspec (~> 3.10.0)
   rspec-activemodel-mocks
   rspec-rails (~> 4.0.2)
+  rspec-snapshot (~> 0.1.2)
   simplecov
   slim-rails
   spork

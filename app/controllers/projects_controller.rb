@@ -37,9 +37,9 @@ class ProjectsController < ApplicationController
         render :template => "/react/app.html"
       end
       format.xml do
-        exporter = CollectionMetadataExporter.new(@project)
-        exporter.build
-        render xml: exporter.xml
+        exporter = ProjectMetadataExporter.new(@project)
+        metadata = exporter.build
+        render xml: metadata.to_xml
       end
     end
   end

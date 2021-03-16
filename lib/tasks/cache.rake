@@ -11,15 +11,16 @@ namespace :cache do
   end
 
   # rake cache:clear[cdoh]
-  desc 'clear project cache'
-  task :clear, [:cache_key_prefix] => :environment do |t, args|
-    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
-    if project
-      Rails.cache.redis.keys("#{project.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
-    else
-      puts "no project with cache_key_prefix #{args.cache_key_prefix} found"
-    end
-  end
+  #desc 'clear project cache'
+  #task :clear, [:cache_key_prefix] => :environment do |t, args|
+    #project = Project.where(cache_key_prefix: args.cache_key_prefix).first
+    #if project
+      ##Rails.cache.redis.keys("#{project.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
+      #`rm -rf #{Rails.root}/tmp/cache/application/*`
+    #else
+      #puts "no project with cache_key_prefix #{args.cache_key_prefix} found"
+    #end
+  #end
 
   desc 'visit start page'
   task :start, [:cache_key_prefix] => :environment do |t, args|
