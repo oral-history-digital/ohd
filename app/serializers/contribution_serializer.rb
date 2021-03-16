@@ -9,6 +9,6 @@ class ContributionSerializer < ApplicationSerializer
     :workflow_state
 
   def contribution_type
-    object.contribution_type.code
+    object.contribution_type && object.contribution_type.code
   end
 end
