@@ -144,7 +144,7 @@ export default class MediaControls extends React.Component {
                 >
                     {this.tapeSelector()}
                 </select>
-                {this.resolutionSelector()}
+                {this.props.resolution && this.resolutionSelector()}
                 {this.annotateOnSegmentLink()}
                 {this.rememberInterviewLink()}
             </div>
@@ -157,7 +157,7 @@ MediaControls.propTypes = {
     interview: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     mediaStreams: PropTypes.object.isRequired,
-    resolution: PropTypes.string.isRequired,
+    resolution: PropTypes.string,
     tape: PropTypes.number.isRequired,
     translations: PropTypes.object.isRequired,
     mediaTime: PropTypes.number.isRequired,

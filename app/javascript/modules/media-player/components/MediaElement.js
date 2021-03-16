@@ -163,7 +163,7 @@ MediaElement.propTypes = {
     locale: PropTypes.string.isRequired,
     mediaStreams: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
-    resolution: PropTypes.string.isRequired,
+    resolution: PropTypes.string,
     tape: PropTypes.number.isRequired,
     timeChangeRequest: PropTypes.number,
     timeChangeRequestAvailable: PropTypes.bool.isRequired,

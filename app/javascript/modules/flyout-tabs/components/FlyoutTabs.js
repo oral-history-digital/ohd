@@ -130,7 +130,7 @@ export default class FlyoutTabs extends React.Component {
                         <Tab
                             selectedClassName='admin'
                             className={project && admin(this.props, {type: 'Project', action: 'update'}) ? 'flyout-tab admin' : 'hidden'}
-                            key='administration'
+                            key='project-administration'
                         >
                             { t(this.props, 'edit.project.admin') }
                         </Tab>
