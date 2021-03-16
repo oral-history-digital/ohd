@@ -4,7 +4,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
   def perform(file_path, receiver, project, locale)
     read_file(file_path, project, locale)
     #Interview.reindex
-    Rails.cache.redis.keys("#{Project.current.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
+    #Rails.cache.redis.keys("#{Project.current.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
 
     #WebNotificationsChannel.broadcast_to(
       #receiver,
@@ -30,7 +30,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
       unless index == 0
         begin
           unless data[0].blank? && data[1].blank? && data[2].blank?
-            interview = Interview.find_by_archive_id(data[0]) || Interview.find_by_signature_original(data[14])
+            interview = Interview.find_by_archive_id(data[0]) || (data[14] && Interview.find_by_signature_original(data[14]))
 
             interview_data = {
               project_id: project.id,
@@ -136,7 +136,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
       languages = name.split(/\s+[ua]nd\s+/).map do |l| 
         # ISO_639 knows only english  and french
         ISO_639.find(l) ||
-        ISO_639.find(l[0..2]) || # some german language names can be found like this 
+        ISO_639.find(l[0..2].downcase) || # some german language names can be found like this 
         ISO_639.find_by_english_name(l.classify) ||
         ISO_639.search(l).first 
       end.compact.uniq
