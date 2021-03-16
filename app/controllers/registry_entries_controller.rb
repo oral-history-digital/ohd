@@ -66,7 +66,7 @@ class RegistryEntriesController < ApplicationController
               [
                 RegistryEntry.find(params[:children_for_entry]).children.includes([
                   :parent_registry_hierarchies,
-                  {registry_names: :translations}
+                  {registry_names: [:translations, :registry_name_type]}
                 ]).inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
                 "children_for_entry_#{params[:children_for_entry]}",
               ]
@@ -74,7 +74,7 @@ class RegistryEntriesController < ApplicationController
               [
                 params[:ref_object_type].classify.constantize.find(params[:ref_object_id]).registry_entries.includes([
                   :parent_registry_hierarchies,
-                  {registry_names: :translations}
+                  {registry_names: [:translations, :registry_name_type]}
                 ]).inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
                 "ref_object_type_#{params[:ref_object_type]}_ref_object_id_#{params[:ref_object_id]}",
               ]
