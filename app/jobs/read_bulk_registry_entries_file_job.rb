@@ -62,6 +62,12 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
             end
 
             #
+            # reset counter-cache-columns
+            #
+            RegistryEntry.reset_counters(entry.id, :registry_references, :ancestors, :descendants)
+
+
+            #
             # Parent`s attributes won`t update!
             # A parent is searched for by id if given.
             # Otherwise a parent is searched by name.
