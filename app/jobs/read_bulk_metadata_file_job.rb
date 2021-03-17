@@ -55,12 +55,19 @@ class ReadBulkMetadataFileJob < ApplicationJob
             # create default tape 
             Tape.find_or_create_by interview_id: interview.id, media_id: "#{interview.archive_id.upcase}_01_01", workflow_state: "digitized", time_shift: 0, number: 1 
 
-            interviewee_data = {first_name: data[1], last_name: data[2], alias_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6]}.select{|k,v| v != nil}
+            interviewee_data = {
+              first_name: data[1],
+              last_name: data[2],
+              alias_names: data[3],
+              gender: gender(data[4]),
+              date_of_birth: data[5] || data[6],
+              project_id: project.id
+            }.select{|k,v| v != nil}
 
             if interview.interviewee
               interview.interviewee.update_attributes interviewee_data
             else
-              interviewee = Person.find_or_create_by(first_name: data[1], last_name: data[2], alias_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6])
+              interviewee = Person.find_or_create_by interviewee_data
               Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
             end
 
