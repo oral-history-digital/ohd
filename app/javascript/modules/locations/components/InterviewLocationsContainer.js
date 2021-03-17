@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
     locationsFetched: getLocationsFetched(state),
     locale: getLocale(state),
     projectId: getProjectId(state),
-        projects: state.data.projects,
+    projects: state.data.projects,
     translations: getTranslations(state),
 });
 

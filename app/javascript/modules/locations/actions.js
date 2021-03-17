@@ -1,25 +1,41 @@
-import { Loader } from 'modules/api';
+import request from 'superagent';
+import { normalize, schema } from 'normalizr';
 
 import { REQUEST_LOCATIONS, RECEIVE_LOCATIONS } from './action-types';
 
-const requestLocations = (archiveId) => ({
-  type: REQUEST_LOCATIONS,
-  archiveId: archiveId,
+const segment = new schema.Entity('segments');
+
+const registryReference = new schema.Entity('registryReferences', {
+    ref_object: segment,
 });
 
-function receiveLocations(json){
-  return {
-    type: RECEIVE_LOCATIONS,
-    archiveId: json.archive_id,
-    segmentRefLocations: json.segment_ref_locations,
-    interviewRefLocations: json.interview_ref_locations,
-    receivedAt: Date.now()
-  }
-}
+const registryReferenceList = new schema.Array(registryReference);
 
-export function fetchLocations(url, archiveId) {
-  return dispatch => {
-    dispatch(requestLocations(archiveId))
-    Loader.getJson(`${url}?archive_id=${archiveId}`, null, dispatch, receiveLocations);
-  }
+
+const requestLocations = (archiveId) => ({
+    type: REQUEST_LOCATIONS,
+    archiveId: archiveId,
+});
+
+const receiveLocations = (archiveId, normalizedData) => ({
+    type: RECEIVE_LOCATIONS,
+    payload: {
+        archiveId,
+        ...normalizedData,
+    },
+});
+
+export const fetchLocations = (url, archiveId) => async dispatch => {
+    dispatch(requestLocations(archiveId));
+
+    let res;
+    res = await request.get(url)
+        .query({ 'archive_id': archiveId })
+        .set('Accept', 'application/json');
+
+    const originalData = res.body;
+
+    const normalizedData = normalize(originalData.segment_ref_locations, registryReferenceList);
+
+    dispatch(receiveLocations(originalData.archive_id, normalizedData));
 }
