@@ -1,10 +1,6 @@
 class RegistryReference < BaseRegistryReference
-  belongs_to :interview
-  belongs_to :ref_object, polymorphic: true
-  belongs_to :registry_reference_type
 
   before_create :write_archive_id
-  after_commit :touch_objects, on: [:create, :update, :destroy]
 
   scope :for_interview, ->(interview_id) {
           where({interview_id: interview_id, ref_object_type: "Interview"})
@@ -22,15 +18,6 @@ class RegistryReference < BaseRegistryReference
             # exclude dedalo default location (Valencia)
             where.not('registry_entries.longitude': '-0.376295').where.not('registry_entries.latitude': '39.462571')
         }
-
-  def touch_objects
-    registry_entry && registry_entry.touch
-    ref_object && ref_object.touch
-    # reindex interview when updated person-references
-    if (ref_object_type == "Person" && ref_object_type.constantize.find(ref_object_id).respond_to?(:interviews))
-      ref_object_type.constantize.find(ref_object_id).interviews.map(&:save)
-    end
-  end
 
   def write_archive_id
     if ref_object_type == "Interview"

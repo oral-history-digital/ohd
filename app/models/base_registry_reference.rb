@@ -3,9 +3,11 @@
 class BaseRegistryReference < ApplicationRecord
   self.abstract_class = true
 
-  belongs_to :ref_object, polymorphic: true, counter_cache: :registry_references_count
+  belongs_to :interview
 
-  belongs_to :registry_entry, -> { includes(:registry_names) }# seems not to work: , counter_cache: :registry_references_count
+  belongs_to :ref_object, polymorphic: true, counter_cache: :registry_references_count, touch: true
+
+  belongs_to :registry_entry, -> { includes(:registry_names) }, counter_cache: :registry_references_count, touch: true
 
   belongs_to :registry_reference_type
 
