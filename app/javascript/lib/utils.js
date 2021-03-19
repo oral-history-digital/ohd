@@ -52,7 +52,7 @@ export function humanReadable(obj, attribute, props, state, none='---') {
 
 export function sortedSegmentsForTape(props, tape) {
     let sorted = [];
-    if (props.interview && Object.keys(props.interview.segments).length > 0) {
+    if (props.interview && props.interview.segments[tape]  && Object.keys(props.interview.segments).length > 0) {
         sorted = Object.values(props.interview.segments[tape]).sort((a, b) =>{return a.time - b.time})
     }
     return sorted;
