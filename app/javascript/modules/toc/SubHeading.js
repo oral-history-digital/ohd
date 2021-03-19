@@ -1,15 +1,20 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-export default class Heading extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            active: false
-        }
+import { t } from 'modules/i18n';
+import formatTimecode from './formatTimecode';
+import styles from './SubHeading.module.scss';
+
+export default class SubHeading extends React.Component {
+    constructor(props) {
+        super(props);
+
+        this.state = { active: false };
         this.handleClick = this.handleClick.bind(this);
     }
 
-    componentWillReceiveProps(nextProps) {
+    UNSAFE_componentWillReceiveProps(nextProps) {
         let endTime = (this.props.nextSubHeading) ? this.props.nextSubHeading.time : this.props.data.duration;
         let active = this.props.tape === this.props.data.tape_nbr && endTime >= nextProps.mediaTime && this.props.data.time <= nextProps.mediaTime;
         if (active !== this.state.active) {
@@ -25,16 +30,42 @@ export default class Heading extends React.Component {
     }
 
     render() {
-        let css = 'subheading ' + (this.state.active ? 'active' : 'inactive');
+        const { locale, translations, data } = this.props;
+
         return (
-            <div>
+            <div className={styles.container}>
                 <div
-                    className={css}
-                    onClick={() => this.handleClick(this.props.data.tape_nbr, this.props.data.time)}
+                    className={classNames(styles.main, {
+                        [styles.active]: this.state.active,
+                    })}
+                    onClick={() => this.handleClick(data.tape_nbr, data.time)}
                 >
-                    <div className='chapter-number'>{this.props.data.chapter}</div><div className='chapter-text' dangerouslySetInnerHTML={{__html: this.props.data.heading}} />
+                    <span className={styles.chapter}>
+                        {data.chapter}
+                    </span>
+
+                    <div>
+                        <div className={styles.heading}>
+                            {data.heading}
+                        </div>
+
+                        <div className={styles.timecode}>
+                            {t({locale, translations}, 'tape')} {data.tape_nbr} | {formatTimecode(data.time)}
+                        </div>
+                    </div>
                 </div>
             </div>
         )
     }
 }
+
+SubHeading.propTypes = {
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    data: PropTypes.object.isRequired,
+    nextSubHeading: PropTypes.object.isRequired,
+    tape: PropTypes.number.isRequired,
+    mediaTime: PropTypes.number.isRequired,
+    handleClick: PropTypes.func.isRequired,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
+};

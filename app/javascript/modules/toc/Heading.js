@@ -1,11 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 
+import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import SubHeadingContainer from './SubHeadingContainer';
 import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
+import formatTimecode from './formatTimecode';
+import styles from './Heading.module.scss';
 
 export default class Heading extends React.Component {
     constructor(props) {
@@ -46,27 +50,45 @@ export default class Heading extends React.Component {
 
     subHeadings() {
         if (this.props.data.main) {
-            return <div className={this.state.expanded ? 'expanded' : 'collapsed'}>
-                {this.props.data.subheadings.map((heading, index) => (
-                    <div key={index}>
-                        <SubHeadingContainer
-                            data={heading}
-                            nextSubHeading={this.props.data.subheadings[index+1] || this.props.nextHeading}
-                        />
-                        {this.editHeading(heading.segment)}
-                    </div>
-                ))}
-            </div>;
+            return (
+                <div className={classNames(styles.subHeadings, {
+                    [styles.subHeadingsCollapsed]: !this.state.expanded,
+                })}>
+                    {this.props.data.subheadings.map((heading, index) => (
+                        <div key={index}>
+                            <SubHeadingContainer
+                                data={heading}
+                                nextSubHeading={this.props.data.subheadings[index+1] || this.props.nextHeading}
+                            />
+                            {this.editHeading(heading.segment)}
+                        </div>
+                    ))}
+                </div>
+            );
         }
     }
 
     expandable() {
-        if (this.props.data.subheadings.length === 0) {
-            return <div className='heading-ico active'/>
+        const { data } = this.props;
+        const { expanded } = this.state;
+
+        if (data.subheadings.length === 0) {
+            return null;
         } else {
-            let icoClass = this.state.expanded ? 'heading-ico active' : 'heading-ico';
-            return <div className={icoClass}
-                        onClick={this.toggle}/>
+            return (
+                <button
+                    type="button"
+                    className={styles.toggle}
+                    onClick={this.toggle}
+                    aria-label={expanded ? 'Collapse' : 'Expand'}
+                >
+                    {
+                        expanded ?
+                            <FaMinus /> :
+                            <FaPlus />
+                    }
+                </button>
+            );
         }
     }
 
@@ -89,22 +111,39 @@ export default class Heading extends React.Component {
     }
 
     render() {
+        const { locale, translations, data } = this.props;
+
         return (
-            <div className='heading'>
-                {this.expandable()}
-                <div className={classNames('mainheading', this.state.active ? 'active' : 'inactive')}>
-                    <span className='chapter-number' onClick={this.handleClick}>
-                        {this.props.data.chapter}
-                    </span>
-                    <span
-                        className='chapter-text'
+            <>
+                <div className={styles.container}>
+                    {this.expandable()}
+
+                    <div
+                        className={classNames(styles.main, {
+                            [styles.active]: this.state.active,
+                        })}
                         onClick={this.handleClick}
-                        dangerouslySetInnerHTML={{__html: this.props.data.heading}}
-                    />
-                    {this.editHeading(this.props.data.segment)}
+                    >
+                        <span className={styles.chapter}>
+                            {data.chapter}
+                        </span>
+
+                        <div>
+                            <div className={styles.heading}>
+                                {data.heading}
+                            </div>
+
+                            <div className={styles.timecode}>
+                            {t({locale, translations}, 'tape')} {data.tape_nbr} | {formatTimecode(data.time)}
+                            </div>
+                        </div>
+                    </div>
+
+                    {this.editHeading(data.segment)}
                 </div>
+
                 {this.subHeadings()}
-            </div>
+            </>
         )
     }
 }
@@ -113,6 +152,7 @@ Heading.propTypes = {
     data: PropTypes.object.isRequired,
     nextHeading: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
     tape: PropTypes.number.isRequired,
     mediaTime: PropTypes.number.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,

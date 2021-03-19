@@ -1,0 +1,25 @@
+@import "../../stylesheets/variables";
+
+.container {
+  composes: container from './shared.module.scss';
+}
+
+.main {
+  composes: main from './shared.module.scss';
+}
+
+.active {
+  composes: active from './shared.module.scss';
+}
+
+.chapter {
+  composes: chapter from './shared.module.scss';
+}
+
+.heading {
+  composes: heading from './shared.module.scss';
+}
+
+.timecode {
+  composes: timecode from './shared.module.scss';
+}

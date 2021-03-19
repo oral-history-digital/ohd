@@ -1,0 +1,52 @@
+@import "../../stylesheets/variables";
+
+.container {
+  composes: container from './shared.module.scss';
+}
+
+.main {
+  composes: main from './shared.module.scss';
+}
+
+.active {
+  composes: active from './shared.module.scss';
+
+}
+
+.toggle {
+  background-color: transparent;
+  border: none;
+  color: var(--primary-color);
+  height: 1.5rem;
+  left: 0;
+  margin-left: -0.5rem;
+  outline: none;
+  padding: 0.25rem 0.5rem;
+  position: absolute;
+  top: 0;
+}
+
+.chapter {
+  composes: chapter from './shared.module.scss';
+}
+
+.heading {
+  composes: heading from './shared.module.scss';
+}
+
+.timecode {
+  composes: timecode from './shared.module.scss';
+}
+
+.subHeadings {}
+
+.subHeadingsCollapsed {
+  display: none;
+}
+
+
+/* Experimental */
+.toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.25rem $focus-color;
+}

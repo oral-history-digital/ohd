@@ -1,0 +1,37 @@
+@import "../../stylesheets/variables";
+
+.container {
+  align-items: flex-start;
+  display: flex;
+  margin-top: 0.75rem;
+  padding-left: 2.5rem;
+  position: relative;
+}
+
+.main {
+  display: flex;
+  flex-grow: 1;
+}
+
+.active {
+  background-color: rgba(255, 250, 129, 0.5);
+}
+
+.chapter {
+  font-weight: bold;
+  letter-spacing: 0.1rem;
+  min-width: 3rem;
+}
+
+.heading {
+}
+
+.heading:hover {
+  text-decoration: underline;
+}
+
+.timecode {
+  color: $gray-dark;
+  font-size: 0.75rem;
+  margin-left: auto;
+}
