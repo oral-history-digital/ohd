@@ -154,11 +154,10 @@ class RegistryEntry < ApplicationRecord
   # Get all registry entries with names so that a tree can be built by the frontend.
   # TODO: Decide wether workflow_state should be 'public'.
   scope :for_tree, -> (locale) {
-    joins('LEFT OUTER JOIN registry_hierarchies ON registry_entries.id = registry_hierarchies.descendant_id LEFT OUTER JOIN registry_names ON registry_entries.id = registry_names.registry_entry_id LEFT OUTER JOIN registry_name_translations ON registry_names.id = registry_name_translations.registry_name_id')
-    .where('registry_name_translations.locale': locale)
+    joins('LEFT OUTER JOIN registry_hierarchies ON registry_entries.id = registry_hierarchies.descendant_id INNER JOIN registry_names ON registry_entries.id = registry_names.registry_entry_id INNER JOIN registry_name_translations ON registry_names.id = registry_name_translations.registry_name_id INNER JOIN registry_name_types ON registry_names.registry_name_type_id = registry_name_types.id')
+    .where('registry_name_translations.locale' => locale)
     .group('registry_entries.id, registry_hierarchies.ancestor_id')
-    .order('registry_entries.id')
-    .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor) AS label, registry_hierarchies.ancestor_id AS parent')
+    .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC SEPARATOR \', \') AS label, registry_hierarchies.ancestor_id AS parent')
   }
 
 
