@@ -44,6 +44,22 @@ export const getTree = createSelector(
             }
         });
 
+        // Sort
+        sortChildren(root.children);
+
+        function sortChildren(children) {
+            children.sort((a, b) => {
+                const aLower = a.label.toLowerCase();
+                const bLower = b.label.toLowerCase();
+                return aLower.localeCompare(bLower);
+            });
+            children.forEach(child => {
+                if (child.children) {
+                    sortChildren(child.children);
+                }
+            })
+        }
+
         return root;
     }
 );

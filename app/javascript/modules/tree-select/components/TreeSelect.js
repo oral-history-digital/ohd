@@ -58,7 +58,7 @@ export default function TreeSelect({
                 keepChildrenOnSearch
                 clearSearchOnChange
                 texts={{
-                    placeholder: t('choose'),
+                    placeholder: t('modules.tree_select.enter_or_choose'),
                     noMatches: t('modules.tree_select.no_matches'),
                     label: '#tree-select-label',
                     labelRemove: t('modules.tree_select.remove_entry'),
