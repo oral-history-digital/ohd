@@ -9,8 +9,22 @@
 }
 
 .main {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
   display: flex;
   flex-grow: 1;
+  font-family: $font-family;
+  line-height: 1.5rem;
+  outline: none;
+  padding: 0;
+  text-align: left;
+}
+
+/* Experimental */
+.main:focus {
+  outline: none;
+  box-shadow: 0 0 0 0.25rem $focus-color;
 }
 
 .active {
@@ -24,10 +38,6 @@
 }
 
 .heading {
-}
-
-.heading:hover {
-  text-decoration: underline;
 }
 
 .timecode {
