@@ -1100,5 +1100,6 @@ de:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
     tree_select:
+      enter_or_choose: 'Eingeben oder auswählen'
       no_matches: 'keine Ergebnisse'
       remove_selection: 'Auswahl entfernen'
