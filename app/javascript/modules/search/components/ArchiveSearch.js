@@ -14,6 +14,7 @@ import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
 import { INDEX_SEARCH } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
+import { ScrollToTop } from 'modules/user-agent';
 import queryToText from '../queryToText';
 
 export default class ArchiveSearch extends React.Component {
@@ -33,8 +34,6 @@ export default class ArchiveSearch extends React.Component {
     }
 
     componentDidMount() {
-        window.scrollTo(0, 1);
-
         this.props.setFlyoutTabsIndex(INDEX_SEARCH);
     }
 
@@ -331,32 +330,34 @@ export default class ArchiveSearch extends React.Component {
 
     render() {
         return (
-            <div className='wrapper-content interviews'>
-                <h1 className="search-results-title">
-                    {t(this.props, 'interviews')}
-                </h1>
-                <div className="search-results-legend">
-                    <AuthShowContainer ifLoggedIn={true}>
-                        {this.saveSearchLink()}
-                        {this.exportSearchLink()}
-                    </AuthShowContainer>
-                    {this.renderArchiveResultsCount()}
-                </div>
+            <ScrollToTop>
+                <div className='wrapper-content interviews'>
+                    <h1 className="search-results-title">
+                        {t(this.props, 'interviews')}
+                    </h1>
+                    <div className="search-results-legend">
+                        <AuthShowContainer ifLoggedIn={true}>
+                            {this.saveSearchLink()}
+                            {this.exportSearchLink()}
+                        </AuthShowContainer>
+                        {this.renderArchiveResultsCount()}
+                    </div>
 
-                <Tabs
-                    className='tabs'
-                    selectedTabClassName='active'
-                    selectedTabPanelClassName='active'
-                    selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
-                    onSelect={tabIndex => this.handleTabClick(tabIndex)}
-                >
-                    <TabList className={'search-results-tabs'}>
-                        {this.searchResultTabs()}
-                    </TabList>
-                    {this.tabPanels()}
-                </Tabs>
-            </div>
-        )
+                    <Tabs
+                        className='tabs'
+                        selectedTabClassName='active'
+                        selectedTabPanelClassName='active'
+                        selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
+                        onSelect={tabIndex => this.handleTabClick(tabIndex)}
+                    >
+                        <TabList className={'search-results-tabs'}>
+                            {this.searchResultTabs()}
+                        </TabList>
+                        {this.tabPanels()}
+                    </Tabs>
+                </div>
+            </ScrollToTop>
+        );
     }
 }
 

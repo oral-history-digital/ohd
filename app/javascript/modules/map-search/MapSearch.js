@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 
 import 'leaflet';  // Needed to provide global L for leaflet-extra-markers import.
@@ -17,11 +17,10 @@ import './leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css'
 import { pathBase } from 'modules/routes';
 import { INDEX_MAP } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
+import { ScrollToTop } from 'modules/user-agent';
 
 export default class MapSearch extends React.Component {
     componentDidMount() {
-        window.scrollTo(0, 1);
-
         this.props.setFlyoutTabsIndex(INDEX_MAP);
 
         if (this.props.markersFetched) {
@@ -69,7 +68,7 @@ export default class MapSearch extends React.Component {
 
     render() {
         return (
-            <Fragment>
+            <ScrollToTop>
                 <div className='wrapper-content map'>
                     {
                         this.props.isMapSearching ?
@@ -78,7 +77,7 @@ export default class MapSearch extends React.Component {
                     }
                     <div id='map' />
                 </div>
-            </Fragment>
+            </ScrollToTop>
         )
     }
 }

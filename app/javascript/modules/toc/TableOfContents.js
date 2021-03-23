@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { ScrollToTop } from 'modules/user-agent';
 import HeadingContainer from './HeadingContainer';
 
 export default class TableOfContents extends React.Component {
@@ -125,18 +126,20 @@ export default class TableOfContents extends React.Component {
         ) {
             let headings = this.prepareHeadings();
             return (
-                <div>
-                    {this.emptyHeadingsNote(headings)}
-                    <div className={'content-index'}>
-                        {headings.map((heading, index) => {
-                            return <HeadingContainer
-                                key={'mainheading-' + index}
-                                data={heading}
-                                nextHeading={headings[index+1]}
-                            />
-                        })}
+                <ScrollToTop>
+                    <div>
+                        {this.emptyHeadingsNote(headings)}
+                        <div className={'content-index'}>
+                            {headings.map((heading, index) => {
+                                return <HeadingContainer
+                                    key={'mainheading-' + index}
+                                    data={heading}
+                                    nextHeading={headings[index+1]}
+                                />
+                            })}
+                        </div>
                     </div>
-                </div>
+                </ScrollToTop>
             );
         } else {
             return <Spinner />;

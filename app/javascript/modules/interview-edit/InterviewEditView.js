@@ -3,18 +3,13 @@ import React from 'react';
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { ScrollToTop } from 'modules/user-agent';
 import SegmentEditViewContainer from './SegmentEditViewContainer';
 import permittedColumns from './permittedColumns';
 
 export default class InterviewEditView extends React.Component {
-
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         this.loadSegments();
-        window.scrollTo(0, 1);
     }
 
     componentDidUpdate(prevProps) {
@@ -96,14 +91,16 @@ export default class InterviewEditView extends React.Component {
     render () {
         if (this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`] && this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched') {
             return (
-                <table className='edit-interview'>
-                    <thead>
-                        {this.tableHeader()}
-                    </thead>
-                    <tbody>
-                        {this.tableRows()}
-                    </tbody>
-                </table>
+                <ScrollToTop>
+                    <table className='edit-interview'>
+                        <thead>
+                            {this.tableHeader()}
+                        </thead>
+                        <tbody>
+                            {this.tableRows()}
+                        </tbody>
+                    </table>
+                </ScrollToTop>
           );
         } else {
             return <Spinner />;

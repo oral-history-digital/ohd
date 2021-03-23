@@ -5,6 +5,7 @@ import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { INDEX_REGISTRY_ENTRIES } from 'modules/flyout-tabs';
 import { Fetch, getRootRegistryEntryFetched, getRootRegistryEntryReload } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { ScrollToTop } from 'modules/user-agent';
 import RegistrySearchResultContainer from './RegistrySearchResultContainer';
 import MergeRegistryEntriesButtonContainer from './MergeRegistryEntriesButtonContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
@@ -20,50 +21,51 @@ export default function Registry({
     const { t } = useI18n();
 
     useEffect(() => {
-        window.scrollTo(0, 1);
         setFlyoutTabsIndex(INDEX_REGISTRY_ENTRIES);
     }, []);
 
     return (
-        <div className='wrapper-content register'>
-            <Fetch
-                fetchParams={['registry_entries', currentProject?.root_registry_entry_id, null, null, 'with_associations=true']}
-                testSelector={getRootRegistryEntryFetched}
-                reloadSelector={getRootRegistryEntryReload}
-            >
-                <AuthShowContainer ifLoggedIn>
-                        <h1 className='registry-entries-title'>
-                            {t('registry')}
-                        </h1>
+        <ScrollToTop>
+            <div className='wrapper-content register'>
+                <Fetch
+                    fetchParams={['registry_entries', currentProject?.root_registry_entry_id, null, null, 'with_associations=true']}
+                    testSelector={getRootRegistryEntryFetched}
+                    reloadSelector={getRootRegistryEntryReload}
+                >
+                    <AuthShowContainer ifLoggedIn>
+                            <h1 className='registry-entries-title'>
+                                {t('registry')}
+                            </h1>
 
-                        <AuthorizedContent object={{type: 'RegistryEntry', action: 'update'}}>
-                            <MergeRegistryEntriesButtonContainer />
-                        </AuthorizedContent>
+                            <AuthorizedContent object={{type: 'RegistryEntry', action: 'update'}}>
+                                <MergeRegistryEntriesButtonContainer />
+                            </AuthorizedContent>
 
-                        {
-                            showRegistryEntriesTree ?
-                                <RegistryEntriesContainer root registryEntryParent={rootRegistryEntry} /> :
-                                (foundRegistryEntries.results.length === 0 && !isRegistryEntrySearching ?
-                                    (
-                                        <div className="search-result">
-                                            {`0 ${t('registryentry_results')}`}
-                                        </div>
-                                    ) :
-                                    (
-                                        <ul className="RegistryEntryList RegistryEntryList--root">
-                                            {
-                                                foundRegistryEntries.results.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
-                                            }
-                                        </ul>
+                            {
+                                showRegistryEntriesTree ?
+                                    <RegistryEntriesContainer root registryEntryParent={rootRegistryEntry} /> :
+                                    (foundRegistryEntries.results.length === 0 && !isRegistryEntrySearching ?
+                                        (
+                                            <div className="search-result">
+                                                {`0 ${t('registryentry_results')}`}
+                                            </div>
+                                        ) :
+                                        (
+                                            <ul className="RegistryEntryList RegistryEntryList--root">
+                                                {
+                                                    foundRegistryEntries.results.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
+                                                }
+                                            </ul>
+                                        )
                                     )
-                                )
-                        }
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut ifNoProject>
-                    {t('devise.failure.unauthenticated')}
-                </AuthShowContainer>
-            </Fetch>
-        </div>
+                            }
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut ifNoProject>
+                        {t('devise.failure.unauthenticated')}
+                    </AuthShowContainer>
+                </Fetch>
+            </div>
+        </ScrollToTop>
     );
 }
 
