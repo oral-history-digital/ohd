@@ -1103,3 +1103,5 @@ de:
       enter_or_choose: 'Eingeben oder auswählen'
       no_matches: 'keine Ergebnisse'
       remove_selection: 'Auswahl entfernen'
+      loading: 'Lade Baumdaten…'
+      help_text: 'Mit Pfeil hoch/runter, Pos1/Ende zwischen Einträgen navigieren, mit Pfeil rechts/links Untereinträge aus- oder einklappen und mit Return/Rücktaste Eintrag auswählen oder entfernen.'
