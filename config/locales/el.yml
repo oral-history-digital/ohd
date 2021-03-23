@@ -513,11 +513,17 @@ el:
     translated: ελληνική με γερμανική μετάφραση
   upload:
     type:
+      bulk_photos: Import von Fotos
       bulk_metadata: Import von Metadaten
       bulk_registry_entries: Import von Registereinträgen
       bulk_texts: Import von Textdateien (Protokolle oder Biografien)
     explanation:
       introduction: Wähle zuerst was du  importieren möchtest.
+      bulk_photos: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
+        als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
+        sowie Feldart bei. Sprachbeschreibungen sollten entweder in Englisch oder im Alpha2- oder Alpha3-Code erfolgen.
+        Delimiter sollten entweder Semikolon oder Tab sein.
+        Komprimiere die csv-Datei zusammen mit den Fotos in eine zip-Datei und lade sie hoch (keine Unterordner in der zip-Datei!).
       bulk_metadata: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
         als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
         sowie Feldart bei. Sprachbeschreibungen sollten entweder in Englisch oder im Alpha2- oder Alpha3-Code erfolgen.

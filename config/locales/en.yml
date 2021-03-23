@@ -511,6 +511,7 @@ en:
     translated: with German translation
   upload:
     type:
+      bulk_photos: Import von Fotos
       bulk_metadata: Bulk Metadata Import
       bulk_registry_entries: Import of Registry Entries
       introduction: "Für einen erfolgreichen Import der Textdateien müssen diese in einer zip-Datei ohne Unterordner komprimiert werden.
@@ -519,6 +520,11 @@ en:
       bulk_texts: Bulk Text Import (protocolls and biographies)
     explanation:
       introduction: Wähle zuerst was du  importieren möchtest.
+      bulk_photos: Lade die Tabellenvorlage herunter, importiere deine Daten, speichere
+        als csv-Datei und lade sie hoch. Behalte die Anzahl und Namen der Spalten
+        sowie Feldart bei. Sprachbeschreibungen sollten entweder in Englisch oder im Alpha2- oder Alpha3-Code erfolgen.
+        Delimiter sollten entweder Semikolon oder Tab sein.
+        Komprimiere die csv-Datei zusammen mit den Fotos in eine zip-Datei und lade sie hoch (keine Unterordner in der zip-Datei!).
       bulk_metadata: Download this spreadsheet template, fill in your data, save as
         csv and upload. Keep column number and names as well as field types.
         Languages should be given in english or in alpha2- or alpha3-codes.
