@@ -3,12 +3,17 @@ import { bindActionCreators } from 'redux';
 
 import { sendTimeChangeRequest, getCurrentTape, getMediaTime } from 'modules/media-player';
 import Heading from './Heading';
+import isHeadingActive from './isHeadingActive';
 
 const mapStateToProps = (state, ownProps) => {
-    const endTime = ownProps.nextHeading ? ownProps.nextHeading.time : ownProps.data.duration;
-    const tape = getCurrentTape(state);
-    const mediaTime = getMediaTime(state);
-    const active = tape === ownProps.data.tape_nbr && endTime > mediaTime && ownProps.data.time <= mediaTime;
+    const active = isHeadingActive({
+        thisHeadingTape: ownProps.data.tape_nbr,
+        thisHeadingTime: ownProps.data.time,
+        nextHeadingTape: ownProps.nextHeading?.tape_nbr,
+        nextHeadingTime: ownProps.nextHeading?.time,
+        currentTape: getCurrentTape(state),
+        currentTime: getMediaTime(state),
+    });
 
     return { active };
 };
