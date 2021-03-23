@@ -68,7 +68,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
               interview.interviewee.update_attributes interviewee_data
             else
               interviewee = Person.find_or_create_by interviewee_data
-              Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
+              Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type_id: ContributionType.find_by_code('interviewee').id
             end
 
             short_bio = BiographicalEntry.find_or_create_by(person_id: interview.interviewee.id)
@@ -170,7 +170,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     contributors_string.split(';').each do |contributor_string|
       last_name, first_name = contributor_string.split(/,\s*/)
       contributor = Person.find_or_create_by first_name: first_name, last_name: last_name, project_id: interview.project.id
-      Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type: contribution_type
+      Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type_id: ContributionType.find_by_code(contribution_type).id
     end
   end
 
