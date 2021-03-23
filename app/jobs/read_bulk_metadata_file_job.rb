@@ -2,6 +2,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
   queue_as :default
 
   def perform(file_path, receiver, project, locale)
+    jobs_logger.info "*** uploading #{file_path} metadata"
     read_file(file_path, project, locale)
 
     #WebNotificationsChannel.broadcast_to(
@@ -10,6 +11,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
       #file: File.basename(file_path),
     #)
 
+    jobs_logger.info "*** uploaded #{file_path} metadata"
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
     File.delete(file_path) if File.exist?(file_path)
   end
@@ -53,18 +55,30 @@ class ReadBulkMetadataFileJob < ApplicationJob
             # create default tape 
             Tape.find_or_create_by interview_id: interview.id, media_id: "#{interview.archive_id.upcase}_01_01", workflow_state: "digitized", time_shift: 0, number: 1 
 
-            interviewee_data = {first_name: data[1], last_name: data[2], alias_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6]}.select{|k,v| v != nil}
+            interviewee_data = {
+              first_name: data[1],
+              last_name: data[2],
+              alias_names: data[3],
+              gender: gender(data[4]),
+              date_of_birth: data[5] || data[6],
+              project_id: project.id
+            }.select{|k,v| v != nil}
 
             if interview.interviewee
               interview.interviewee.update_attributes interviewee_data
             else
-              interviewee = Person.find_or_create_by(first_name: data[1], last_name: data[2], alias_names: data[3], gender: gender(data[4]), date_of_birth: data[5] || data[6])
+              interviewee = Person.find_or_create_by interviewee_data
               Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
             end
 
             short_bio = BiographicalEntry.find_or_create_by(person_id: interview.interviewee.id)
             short_bio.update_attributes text: data[11]
 
+            create_contributions(interview, data[23], 'interviewer')
+            create_contributions(interview, data[24], 'transcriptor')
+            create_contributions(interview, data[24], 'translator')
+            create_contributions(interview, data[24], 'research')
+            
             reference(interview, data[22], 'accessibility')
             reference(interview, data[28], 'camp')
             reference(interview, data[7], 'group')
@@ -75,7 +89,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
               birth_location_type = RegistryReferenceType.find_by_code('birth_location')
               place = find_or_create_place(data[9], data[10])
               destroy_reference(interview, birth_location_type.id)
-              create_reference(place.id, interview, interviewee, birth_location_type.id) if place
+              create_reference(place.id, interview, interview.interviewee, birth_location_type.id) if place
             end
 
             # create interview location and reference it
@@ -150,6 +164,14 @@ class ReadBulkMetadataFileJob < ApplicationJob
     country = country_name && RegistryEntry.find_or_create_descendant('place', "#{I18n.locale}::#{country_name}")
     place = name && RegistryEntry.find_or_create_descendant(country ? country.code : 'place', "#{I18n.locale}::#{name}")
     place
+  end
+
+  def create_contributions(interview, contributors_string, contribution_type)
+    contributors_string.split(';').each do |contributor_string|
+      last_name, first_name = contributor_string.split(/,\s*/)
+      contributor = Person.find_or_create_by first_name: first_name, last_name: last_name, project_id: interview.project.id
+      Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type: contribution_type
+    end
   end
 
   def reference(interview, data, code)

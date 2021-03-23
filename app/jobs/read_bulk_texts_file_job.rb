@@ -2,6 +2,7 @@ class ReadBulkTextsFileJob < ApplicationJob
   queue_as :default
 
   def perform(file_path, receiver, project, locale)
+    jobs_logger.info "*** uploading #{file_path} text-files"
     zip_content = []
     Zip::File.open(file_path) do |zip_file|
       zip_file.each do |entry|
@@ -89,6 +90,7 @@ class ReadBulkTextsFileJob < ApplicationJob
       #file: File.basename(file_path),
     #)
 
+    jobs_logger.info "*** uploaded #{file_path} text-files"
     AdminMailer.with(receiver: receiver, type: 'read_protokolls', file: file_path).finished_job.deliver_now
   end
 
