@@ -35,12 +35,8 @@ export default function TreeSelect({
         handleChange('registry_entry_id', registryEntryId);
     }
 
-    if (!dataAvailable) {
-        return <Spinner/>;
-    }
-
     return (
-        <div>
+        <div className={styles.container}>
             <label
                 id="tree-select-label"
                 className="form-label"
@@ -52,18 +48,22 @@ export default function TreeSelect({
                 id="tree-select"
                 className={styles.treeSelect}
                 mode="radioSelect"
-                data={tree.children}
+                data={tree ? tree.children : []}
                 onChange={onChange}
                 keepTreeOnSearch
                 keepChildrenOnSearch
                 clearSearchOnChange
-                texts={{
+                texts={dataAvailable ? {
                     placeholder: t('modules.tree_select.enter_or_choose'),
                     noMatches: t('modules.tree_select.no_matches'),
                     label: '#tree-select-label',
                     labelRemove: t('modules.tree_select.remove_entry'),
-                }}
+                } : { placeholder: t('modules.tree_select.loading') }}
+                disabled={!dataAvailable}
             />
+            <p className="help-block">
+                {t('modules.tree_select.help_text')}
+            </p>
         </div>
     );
 }
