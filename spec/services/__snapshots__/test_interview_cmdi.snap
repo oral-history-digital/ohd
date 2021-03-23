@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CMD xmlns="http://www.clarin.eu/cmd/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" CMDVersion="1.1" xsi:schemaLocation="http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1387365569699/xsd">
+  <Header>
+    <MdCreator>Nokogiri</MdCreator>
+    <MdCreationDate>2021-01-01</MdCreationDate>
+    <MdSelfLink>http://www.example.com/</MdSelfLink>
+    <MdProfile>clarin.eu:cr1:p_1336550377513</MdProfile>
+    <MdCollectionDisplayName>Bavarian Archive for Speech Signals (BAS)</MdCollectionDisplayName>
+  </Header>
+  <Resources>
+    <ResourceProxyList>
+      <ResourceProxy id="r_0000000001">
+        <ResourceType mimetype="video/mp4">Resource</ResourceType>
+        <ResourceRef>za001/za001_03_01.mp4</ResourceRef>
+      </ResourceProxy>
+      <ResourceProxy id="r_0000000002">
+        <ResourceType mimetype="video/mp4">Resource</ResourceType>
+        <ResourceRef>za001/za001_03_02.mp4</ResourceRef>
+      </ResourceProxy>
+      <ResourceProxy id="r_0000000003">
+        <ResourceType mimetype="video/mp4">Resource</ResourceType>
+        <ResourceRef>za001/za001_03_03.mp4</ResourceRef>
+      </ResourceProxy>
+      <ResourceProxy id="m_0000000001">
+        <ResourceType mimetype="application/pdf">Resource</ResourceType>
+        <ResourceRef>za001/transcript_de.pdf</ResourceRef>
+      </ResourceProxy>
+      <ResourceProxy id="m_0000000002">
+        <ResourceType mimetype="application/pdf">Resource</ResourceType>
+        <ResourceRef>za001/transcript_en.pdf</ResourceRef>
+      </ResourceProxy>
+    </ResourceProxyList>
+    <JournalFileProxyList/>
+    <ResourceRelationList/>
+  </Resources>
+  <Components>
+    <media-session-profile>
+      <media-session>
+        <Name>Alice H.</Name>
+        <NumberOfSpeakers>3</NumberOfSpeakers>
+        <Corpus>Test collection</Corpus>
+        <Environment>unknown</Environment>
+        <RecordingDate>2021-03-10</RecordingDate>
+        <NumberOfRecordings>3</NumberOfRecordings>
+        <NumberMediaFiles>3</NumberMediaFiles>
+        <SubjectLanguages>
+          <SubjectLanguage>
+            <Dominant>true</Dominant>
+            <Language>
+              <LanguageName>Russian</LanguageName>
+              <ISO639>
+                <iso-639-3-code>rus</iso-639-3-code>
+              </ISO639>
+            </Language>
+          </SubjectLanguage>
+        </SubjectLanguages>
+        <media-session-actors>
+          <media-session-actor id="s_0000000001">
+            <Role>Interviewee</Role>
+            <Name>anonymized</Name>
+            <Code>INE</Code>
+            <Age>49</Age>
+            <Sex>Female</Sex>
+          </media-session-actor>
+          <media-session-actor id="s_0000000002">
+            <Role>Interviewer</Role>
+            <Name>anonymized</Name>
+            <Code>INR1</Code>
+            <Age>25</Age>
+            <Sex>Male</Sex>
+          </media-session-actor>
+          <media-session-actor id="s_0000000003">
+            <Role>Interviewer</Role>
+            <Name>anonymized</Name>
+            <Code>INR2</Code>
+            <Age>40</Age>
+            <Sex>Female</Sex>
+          </media-session-actor>
+        </media-session-actors>
+        <Content>
+          <Genre>Oral History Interview</Genre>
+          <SubGenre>unspecified</SubGenre>
+          <Topic>Test interviews</Topic>
+          <Modality>
+            <Modality>Spoken</Modality>
+          </Modality>
+          <CommunicationContext>
+            <Interactivity>interactive</Interactivity>
+            <PlanningType>spontaneous</PlanningType>
+            <Involvement>non-elicited</Involvement>
+            <SocialContext>Private</SocialContext>
+            <EventStructure>Dialogue</EventStructure>
+            <Channel>Face to Face</Channel>
+          </CommunicationContext>
+        </Content>
+        <media-annotation-bundle>
+          <media-file ref="r_0000000001" actor-ref="s_0000000001 s_0000000002 s_0000000003">
+            <Type>video</Type>
+          </media-file>
+        </media-annotation-bundle>
+        <media-annotation-bundle>
+          <media-file ref="r_0000000002" actor-ref="s_0000000001 s_0000000002 s_0000000003">
+            <Type>video</Type>
+          </media-file>
+        </media-annotation-bundle>
+        <media-annotation-bundle>
+          <media-file ref="r_0000000003" actor-ref="s_0000000001 s_0000000002 s_0000000003">
+            <Type>video</Type>
+          </media-file>
+        </media-annotation-bundle>
+        <WrittenResource ref="m_0000000001" actor-ref="s_0000000001 s_0000000002 s_0000000003">
+          <AnnotationType>
+            <AnnotationType>Orthography</AnnotationType>
+          </AnnotationType>
+          <AnnotationFormat>
+            <AnnotationFormat>application/pdf</AnnotationFormat>
+          </AnnotationFormat>
+        </WrittenResource>
+        <WrittenResource ref="m_0000000002" actor-ref="s_0000000001 s_0000000002 s_0000000003">
+          <AnnotationType>
+            <AnnotationType>Orthography</AnnotationType>
+          </AnnotationType>
+          <AnnotationFormat>
+            <AnnotationFormat>application/pdf</AnnotationFormat>
+          </AnnotationFormat>
+        </WrittenResource>
+      </media-session>
+    </media-session-profile>
+  </Components>
+</CMD>

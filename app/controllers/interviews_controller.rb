@@ -177,8 +177,8 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       format.xml do
         exporter = InterviewMetadataExporter.new(interview)
-        exporter.build
-        render xml: exporter.xml
+        metadata = exporter.build
+        render xml: metadata.to_xml
       end
     end
   end
