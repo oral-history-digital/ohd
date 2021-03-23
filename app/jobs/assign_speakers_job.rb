@@ -2,6 +2,7 @@ class AssignSpeakersJob < ApplicationJob
   queue_as :default
 
   def perform(interview, speakers, contribution_data, receiver)
+    jobs_logger.info "*** assigning speakers in interview #{interview.archive_id}"
     if !contribution_data && speakers.length > 0
       interview.segments.each do |segment|
         segment.update_attribute :speaker_id, speakers[segment.speaker] if segment.speaker && speakers[segment.speaker]
@@ -31,6 +32,7 @@ class AssignSpeakersJob < ApplicationJob
       #archive_id: interview.archive_id
     #)
 
+    jobs_logger.info "*** assigned speakers in interview #{interview.archive_id}"
     AdminMailer.with(interview: interview, receiver: receiver, type: 'assign_speakers').finished_job.deliver_now
   end
 

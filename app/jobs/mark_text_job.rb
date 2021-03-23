@@ -2,6 +2,7 @@ class MarkTextJob < ApplicationJob
   queue_as :default
 
   def perform(interview, texts_to_mark, locale, receiver)
+    jobs_logger.info "*** marking texts in interview #{interview.archive_id}"
     interview.segments.each do |segment|
       text = segment.text(locale) || segment.text("#{locale}-public")
       texts_to_mark.each do |t|
@@ -20,6 +21,7 @@ class MarkTextJob < ApplicationJob
       #archive_id: interview.archive_id
     #)
 
+    jobs_logger.info "*** marked texts in interview #{interview.archive_id}"
     AdminMailer.with(interview: interview, receiver: receiver, type: 'mark_text').finished_job.deliver_now
   end
 

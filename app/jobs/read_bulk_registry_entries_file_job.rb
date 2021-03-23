@@ -2,6 +2,7 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
   queue_as :default
 
   def perform(file_path, receiver, project, locale)
+    jobs_logger.info "*** uploading #{file_path} registry-entries"
     read_file(file_path, project, locale)
 
     #WebNotificationsChannel.broadcast_to(
@@ -10,6 +11,7 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
       #file: File.basename(file_path),
     #)
 
+    jobs_logger.info "*** uploaded #{file_path} registry-entries"
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
     File.delete(file_path) if File.exist?(file_path)
   end

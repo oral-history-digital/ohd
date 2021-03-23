@@ -287,7 +287,7 @@ class RegistryEntry < ApplicationRecord
       end
 
       if descendant.nil? && descendant_name.length > 2
-        descendant = RegistryEntry.create_with_parent_and_names(parent.id, descendant_name, names.gsub(/\s+/, '_').downcase) 
+        descendant = RegistryEntry.create_with_parent_and_names(parent.id, descendant_name, names.gsub(/[\s+,]/, '_').downcase) 
       end
       descendant
     end
