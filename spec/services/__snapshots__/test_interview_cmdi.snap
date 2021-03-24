@@ -32,13 +32,16 @@
     </ResourceProxyList>
     <JournalFileProxyList/>
     <ResourceRelationList/>
+    <IsPartOfList>
+      <IsPartOf>../ohd_zwar_001.xml</IsPartOf>
+    </IsPartOfList>
   </Resources>
   <Components>
     <media-session-profile>
       <media-session>
         <Name>Alice H.</Name>
         <NumberOfSpeakers>3</NumberOfSpeakers>
-        <Corpus>Test collection</Corpus>
+        <Corpus>OHD Test collection</Corpus>
         <Environment>unknown</Environment>
         <RecordingDate>2021-03-10</RecordingDate>
         <NumberOfRecordings>3</NumberOfRecordings>

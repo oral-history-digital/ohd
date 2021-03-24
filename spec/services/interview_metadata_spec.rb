@@ -9,6 +9,7 @@ RSpec.describe InterviewMetadata do
     md.mime_type = 'video/mp4';
     md.tape_paths = ['za001/za001_03_01.mp4', 'za001/za001_03_02.mp4', 'za001/za001_03_03.mp4']
     md.transcript_paths = ['za001/transcript_de.pdf', 'za001/transcript_en.pdf']
+    md.project_id = 'zwar';
     md.name = 'Alice H.'
     md.num_speakers = 3
     md.corpus_name = 'Test collection'
