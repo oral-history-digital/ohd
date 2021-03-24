@@ -58,7 +58,7 @@ class ProjectMetadata
               xml.GeneralInfo {
                 xml.Name name
                 xml.Title "OHD #{title}"
-                xml.ID "OHD_#{id}_001"
+                xml.ID "ohd_#{id}_001"
                 xml.Owner owner
                 xml.PublicationYear publication_year
                 xml.Description {

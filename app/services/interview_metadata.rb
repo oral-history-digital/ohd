@@ -1,6 +1,6 @@
 class InterviewMetadata
   attr_accessor :self_link, :creation_date,
-    :media_type, :mime_type, :tape_paths, :transcript_paths,
+    :media_type, :mime_type, :tape_paths, :transcript_paths, :project_id,
     :name, :num_speakers, :corpus_name, :recording_date, :dominant_language,
     :actors, :topic
 
@@ -50,13 +50,16 @@ class InterviewMetadata
             }
             xml.JournalFileProxyList
             xml.ResourceRelationList
+            xml.IsPartOfList {
+              xml.IsPartOf "../ohd_#{project_id}_001.xml"
+            }
           }
           xml.Components {
             xml.send('media-session-profile') {
               xml.send('media-session') {
                 xml.Name name
                 xml.NumberOfSpeakers num_speakers
-                xml.Corpus corpus_name
+                xml.Corpus "OHD #{corpus_name}"
                 xml.Environment 'unknown'
                 xml.RecordingDate recording_date.to_s
                 xml.NumberOfRecordings tape_paths.size
