@@ -15,11 +15,12 @@ class InterviewMetadataExporter
     @md.mime_type = @interview.media_type == 'video' ? 'video/mp4' : 'audio/x-wav'
     @md.tape_paths = @interview.tapes.map { |tape| "#{@interview.archive_id.upcase}_original/#{tape.media_id}.wav" }
     @md.transcript_paths = transcript_languages.map { |lang| "#{@interview.archive_id}_transcript_#{lang}.pdf" }
+    @md.project_id = @project.shortname.downcase  # must match element ID in corpus CMDI
 
     # Components
     @md.name = @interview.anonymous_title
     @md.num_speakers = @interview.interviewees.count + @interview.interviewers.count
-    @md.corpus_name = "OHD #{@interview.project.name}"  # must match element Title in corpus CMDI
+    @md.corpus_name = @interview.project.name  # must match element Title in corpus CMDI
     @md.recording_date = recording_date
     @md.dominant_language = @interview.language.code
     interviewees = @interview.interviewees.map { |interviewee| contributor_details(interviewee, 'interviewee')  }
