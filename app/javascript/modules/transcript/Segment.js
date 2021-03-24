@@ -71,12 +71,8 @@ export default class Segment extends React.Component {
         }
     }
 
-    speakerChanged() {
-        return (this.props.data.speaker_changed || this.props.data.speakerIdChanged);
-    }
-
     speakerIcon() {
-        if (this.speakerChanged()) {
+        if (this.props.data.speakerIdChanged) {
             let speakerCss = this.props.data.speaker_is_interviewee ? "fa fa-user" : "fa fa-user-o";
             return (
                 <div
@@ -196,7 +192,7 @@ export default class Segment extends React.Component {
                 <div
                     id={`segment_${this.props.data.id}`}
                     className={classNames('Segment', {
-                        'Segment--withSpeaker': this.speakerChanged(),
+                        'Segment--withSpeaker': this.props.data.speakerIdChanged,
                     })}>
                     <div className="content-trans-speaker-ico">
                         {this.speakerIcon()}

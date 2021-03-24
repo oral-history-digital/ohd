@@ -268,7 +268,9 @@ class Segment < ApplicationRecord
   end
 
   searchable do
-    string :archive_id, :stored => true
+    string :archive_id, :stored => true do
+      interview.archive_id
+    end
     string :media_id, :stored => true
     string :timecode
     string :sort_key
@@ -341,14 +343,6 @@ class Segment < ApplicationRecord
     interview.language && ISO_639.find(interview.language.first_code).alpha2
   end
 
-  def archive_id
-    @archive_id || interview.archive_id
-  end
-
-  def archive_id=(code)
-    @archive_id = code
-  end
-
   def media_id=(id)
     write_attribute :media_id, id.upcase
   end
@@ -398,15 +392,9 @@ class Segment < ApplicationRecord
 
   def as_vtt_subtitles(lang)
     # TODO: rm strip
-    raw_segment_text = text("#{lang}-subtitle") || text("#{lang}-public")
-    segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
+    segment_text = text("#{lang}-subtitle") || text("#{lang}-public")
     end_time = self.next.try(:time) || 9999
     "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
-  end
-
-  def speaker_changed(raw_segment_text = false)
-    # TODO: rm this method after segment sanitation and replace it s occurences
-    raw_segment_text && raw_segment_text[1] == ":"
   end
 
   # returns the segment that leads the chapter
