@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject } from 'modules/data';
+import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
+    getPeople } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
@@ -12,11 +13,11 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         locales: (project && project.available_locales) || getLocales(state),
         projectId: getProjectId(state),
-        projects: state.data.projects,
+        projects: getProjects(state),
         translations: getTranslations(state),
-        account: state.data.accounts.current,
+        account: getCurrentAccount(state),
         editView: getEditView(state),
-        data: state.data.people,
+        data: getPeople(state),
         dataStatus: state.data.statuses.people,
         resultPagesCount: state.data.statuses.people.resultPagesCount,
         query: state.search.people.query,

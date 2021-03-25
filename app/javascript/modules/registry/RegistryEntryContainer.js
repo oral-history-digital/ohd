@@ -1,18 +1,18 @@
 import { connect } from 'react-redux';
 
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData } from 'modules/data';
+import { fetchData, deleteData, getProjects, getRegistryEntries } from 'modules/data';
 import { addRemoveRegistryEntryId, getLocale, getTranslations, getSelectedRegistryEntryIds,
     getProjectId } from 'modules/archive';
 import RegistryEntry from './RegistryEntry';
 
 const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
-    projects: state.data.projects,
+    projects: getProjects(state),
     locale: getLocale(state),
     translations: getTranslations(state),
     registryEntriesStatus: state.data.statuses.registry_entries,
-    registryEntries: state.data.registry_entries,
+    registryEntries: getRegistryEntries(state),
     selectedRegistryEntryIds: getSelectedRegistryEntryIds(state),
 });
 

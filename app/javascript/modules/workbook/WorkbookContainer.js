@@ -1,20 +1,20 @@
 import { connect } from 'react-redux';
 
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { fetchData } from 'modules/data';
+import { fetchData, getProjects, getUserContents, getCurrentAccount } from 'modules/data';
 import Workbook from './Workbook';
 
 const mapStateToProps = (state) => {
     return {
         projectId: getProjectId(state),
-        projects: state.data.projects,
-        contents: state.data.user_contents,
+        projects: getProjects(state),
+        contents: getUserContents(state),
         userContentsStatus: state.data.statuses.user_contents.all,
         // the following is just a trick to force rerender after deletion
         lastModified: state.data.statuses.user_contents.lastModified,
         locale: getLocale(state),
         translations: getTranslations(state),
-        account: state.data.accounts.current
+        account: getCurrentAccount(state),
     }
 }
 

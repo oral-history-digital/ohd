@@ -2,14 +2,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId } from 'modules/archive';
-import { submitData } from 'modules/data';
+import { submitData, getPeople, getProjects } from 'modules/data';
 import SegmentForm from './SegmentForm';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
-    people: state.data.people,
+    people: getPeople(state),
     projectId: getProjectId(state),
-    projects: state.data.projects,
+    projects: getProjects(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

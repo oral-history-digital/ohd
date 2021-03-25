@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { getLocale, getLocales, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject } from 'modules/data';
+import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import DataList from './DataList';
 
 const mapStateToProps = (state) => {
@@ -12,8 +12,8 @@ const mapStateToProps = (state) => {
         locales: (project && project.available_locales) || getLocales(state),
         translations: getTranslations(state),
         projectId: getProjectId(state),
-        projects: state.data.projects,
-        account: state.data.accounts.current,
+        projects: getProjects(state),
+        account: getCurrentAccount(state),
         editView: getEditView(state),
         //
         //

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
+import { fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import DataList from './DataList';
 
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),
-        account: state.data.accounts.current,
+        account: getCurrentAccount(state),
         editView: true,
         //
         scope: 'task_type',
@@ -39,7 +39,7 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'select',
                 attribute: 'project_id',
-                values: state.data.projects,
+                values: getProjects(state),
                 withEmpty: true,
             },
         ],

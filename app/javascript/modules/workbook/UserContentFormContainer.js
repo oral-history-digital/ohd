@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { submitData, getCurrentProject, getCurrentInterview } from 'modules/data';
+import { submitData, getCurrentProject, getCurrentInterview, getProjects } from 'modules/data';
 import { getLocale, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
 import { closeArchivePopup } from 'modules/ui';
 import { getCurrentTape } from 'modules/media-player';
@@ -10,7 +10,7 @@ const mapStateToProps = (state) => {
     return {
         archiveId: getArchiveId(state),
         projectId: getProjectId(state),
-        projects: state.data.projects,
+        projects: getProjects(state),
         project: getCurrentProject(state),
         interview: getCurrentInterview(state),
         tape: getCurrentTape(state),

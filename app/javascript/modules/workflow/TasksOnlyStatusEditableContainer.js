@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { DataList } from 'modules/admin';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
+import { fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import CommentsContainer from './CommentsContainer';
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),
-        account: state.data.accounts.current,
+        account: getCurrentAccount(state),
         //
         // editView should always be true on tasks
         // because tasks can be seen only in the own account

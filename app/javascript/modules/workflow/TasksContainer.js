@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
+import { fetchData, deleteData, submitData, getProjects, getCurrentAccount, getTaskTypes } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { DataList } from 'modules/admin';
 import TaskPreviewContainer from './TaskPreviewContainer';
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),
-        account: state.data.accounts.current,
+        account: getCurrentAccount(state),
         //
         // editView should always be true on tasks
         // because tasks can be seen only in the own account
@@ -38,7 +38,7 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'task_type_id',
                 elementType: 'select',
-                values: state.data.task_types,
+                values: getTaskTypes(state),
                 withEmpty: true,
                 validate: function(v){return /\d+/.test(v)}
             },
@@ -49,7 +49,7 @@ const mapStateToProps = (state) => {
             //{
                 //attribute: 'interview_id',
                 //elementType: 'select',
-                //values: state.data.interviews,
+                //values: getInterviews(state),
                 //withEmpty: true,
                 //validate: function(v){return /^\d+$/.test(v)}
             //},

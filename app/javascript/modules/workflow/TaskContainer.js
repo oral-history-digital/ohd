@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, submitData, getCurrentProject, getProjects } from 'modules/data';
+import { fetchData, submitData, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import Task from './Task';
 
@@ -14,7 +14,7 @@ const mapStateToProps = (state) => {
         translations: getTranslations(state),
         project: project,
         userAccounts: state.data.accounts,
-        account: state.data.accounts.current,
+        account: getCurrentAccount(state),
         editView: getEditView(state),
     }
 }

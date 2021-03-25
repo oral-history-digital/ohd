@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 
 import { getLocale } from 'modules/archive';
+import { getUserContents } from 'modules/data';
 import UserContents from './UserContents';
 
 const mapStateToProps = state => ({
-    contents: state.data.user_contents,
+    contents: getUserContents(state),
     status: state.data.statuses.user_contents.lastModified,
     locale: getLocale(state),
 });

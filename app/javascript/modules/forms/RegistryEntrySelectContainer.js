@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { fetchData, getProjects, getCurrentProject } from 'modules/data';
+import { fetchData, getProjects, getCurrentProject, getRegistryEntries } from 'modules/data';
 import { getLocale, getProjectId, getTranslations, getLocales } from 'modules/archive';
 import RegistryEntrySelect from './RegistryEntrySelect';
 
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
         projects: getProjects(state),
         translations: getTranslations(state),
         project: project,
-        registryEntries: state.data.registry_entries,
+        registryEntries: getRegistryEntries(state),
         registryEntriesStatus: state.data.statuses.registry_entries,
         lastModifiedRegistryEntries: state.data.statuses.registry_entries.lastModified,
     }

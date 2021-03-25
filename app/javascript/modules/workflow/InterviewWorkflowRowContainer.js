@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import { searchInInterview } from 'modules/search';
 import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations,
     getEditView, getSelectedArchiveIds } from 'modules/archive';
-import { fetchData, getInterviewee, getCurrentProject } from 'modules/data';
+import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeople,
+    getLanguages, getCollections, getInterviews } from 'modules/data';
 import InterviewWorkflowRow from './InterviewWorkflowRow';
 
 const mapStateToProps = (state, props) => {
@@ -14,19 +15,19 @@ const mapStateToProps = (state, props) => {
         interviewSearchResults: state.search.interviews,
         locale: getLocale(state),
         projectId: getProjectId(state),
-        projects: state.data.projects,
+        projects: getProjects(state),
         translations: getTranslations(state),
         project: project,
         editView: getEditView(state),
-        account: state.data.accounts.current,
+        account: getCurrentAccount(state),
         selectedArchiveIds: getSelectedArchiveIds(state),
-        people: state.data.people,
+        people: getPeople(state),
         peopleStatus: state.data.statuses.people,
-        languages: state.data.languages,
+        languages: getLanguages(state),
         languagesStatus: state.data.statuses.languages,
-        collections: state.data.collections,
+        collections: getCollections(state),
         collectionsStatus: state.data.statuses.collections,
-        interviews: state.data.interviews,
+        interviews: getInterviews(state),
         interviewee: getInterviewee(state, props),
         tasks: state.data.tasks,
         tasksStatus: state.data.statuses.tasks,

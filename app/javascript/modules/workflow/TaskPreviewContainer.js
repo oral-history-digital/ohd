@@ -1,16 +1,17 @@
 import { connect } from 'react-redux';
 
 import { setArchiveId, getLocale, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
+import { getProjects, getCurrentAccount } from 'modules/data';
 import TaskPreview from './TaskPreview';
 
 const mapStateToProps = (state) => {
     return {
         archiveId: getArchiveId(state),
         projectId: getProjectId(state),
-        projects: state.data.projects,
+        projects: getProjects(state),
         locale: getLocale(state),
         translations: getTranslations(state),
-        account: state.data.accounts.current
+        account: getCurrentAccount(state),
     }
 }
 

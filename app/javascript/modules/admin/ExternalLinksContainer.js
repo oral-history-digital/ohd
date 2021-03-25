@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { getCurrentProject, fetchData, deleteData, submitData, getProjects } from 'modules/data';
+import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import DataList from './DataList';
 
@@ -12,7 +12,7 @@ const mapStateToProps = state => {
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),
-        account: state.data.accounts.current,
+        account: getCurrentAccount(state),
         editView: true,
         data: project.external_links,
         scope: 'external_link',

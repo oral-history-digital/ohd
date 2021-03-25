@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import { getLocale, getProjectId } from 'modules/archive';
+import { getProjects } from 'modules/data';
 import { submitLogin } from '../actions';
 import LoginForm from './LoginForm';
 
@@ -8,7 +9,7 @@ const mapStateToProps = (state) => {
     return {
         locale: getLocale(state),
         projectId: getProjectId(state),
-        projects: state.data.projects,
+        projects: getProjects(state),
     }
 }
 

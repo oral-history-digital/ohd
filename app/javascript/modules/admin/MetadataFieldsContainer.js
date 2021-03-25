@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { getLocale, getTranslations, getProjectId } from 'modules/archive';
 import { closeArchivePopup } from 'modules/ui';
-import { getCurrentProject, fetchData, deleteData, submitData } from 'modules/data';
+import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 import MetadataFieldFormContainer from './MetadataFieldFormContainer';
 import MetadataFieldShow from './MetadataFieldShow';
@@ -13,8 +13,8 @@ const mapStateToProps = state => {
         locale: getLocale(state),
         translations: getTranslations(state),
         projectId: getProjectId(state),
-        projects: state.data.projects,
-        account: state.data.accounts.current,
+        projects: getProjects(state),
+        account: getCurrentAccount(state),
         editView: true,
         //
         data: project.metadata_fields,

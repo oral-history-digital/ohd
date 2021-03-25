@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 
-import { fetchData, getCurrentInterview } from 'modules/data';
+import { fetchData, getCurrentInterview, getProjects } from 'modules/data';
 import { getLocale, getProjectId, getTranslations, getArchiveId } from 'modules/archive';
 import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import TableOfContents from './TableOfContents';
@@ -8,7 +8,7 @@ import TableOfContents from './TableOfContents';
 const mapStateToProps = (state) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
-    projects: state.data.projects,
+    projects: getProjects(state),
     translations: getTranslations(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),

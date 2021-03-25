@@ -3,7 +3,7 @@ import { withRouter } from 'react-router-dom';
 
 import { setLocale, getLocale, getArchiveId, getProjectId, getSelectedArchiveIds,
     getLocales, getEditView, getTranslations, getCountryKeys } from 'modules/archive';
-import { getCurrentInterview, getCurrentInterviewee, getCurrentProject } from 'modules/data';
+import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { setFlyoutTabsIndex } from '../actions';
 import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors';
 import FlyoutTabs from './FlyoutTabs';
@@ -15,7 +15,7 @@ const mapStateToProps = (state) => {
         visible: getFlyoutTabsVisible(state),
         archiveId: getArchiveId(state),
         projectId: getProjectId(state),
-        projects: state.data.projects,
+        projects: getProjects(state),
         project: project,
         selectedArchiveIds: getSelectedArchiveIds(state),
         locale: getLocale(state),
@@ -23,7 +23,7 @@ const mapStateToProps = (state) => {
         hasMap: project && project.has_map === 1,
         editView: getEditView(state),
         translations: getTranslations(state),
-        account: state.data.accounts.current,
+        account: getCurrentAccount(state),
         isLoggedIn: state.account.isLoggedIn,
         interview: getCurrentInterview(state),
         interviewee: getCurrentInterviewee(state),

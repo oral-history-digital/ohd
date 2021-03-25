@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 
 import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { getProjects } from 'modules/data';
 import { fetchLocations } from '../actions';
 import { getCurrentLocationsWithRefs, getLocationsFetched } from '../selectors';
 import InterviewLocations from './InterviewLocations';
@@ -11,7 +12,7 @@ const mapStateToProps = state => ({
     locationsFetched: getLocationsFetched(state),
     locale: getLocale(state),
     projectId: getProjectId(state),
-        projects: state.data.projects,
+    projects: getProjects(state),
     translations: getTranslations(state),
 });
 

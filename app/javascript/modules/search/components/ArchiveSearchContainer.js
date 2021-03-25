@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { setViewMode, getLocale, getViewMode, getTranslations, getProjectId,
     getEditView } from 'modules/archive';
-import { getCurrentProject } from 'modules/data';
+import { getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { searchInArchive } from '../actions';
 import ArchiveSearch from './ArchiveSearch';
 
@@ -20,12 +20,12 @@ const mapStateToProps = (state) => {
         isArchiveSearching: state.search.isArchiveSearching,
         project: project,
         projectId: getProjectId(state),
-        projects: state.data.projects,
+        projects: getProjects(state),
         viewModes: project && project.view_modes,
         viewMode: getViewMode(state),
         listColumns: project && project.list_columns,
         editView: getEditView(state),
-        account: state.data.accounts.current,
+        account: getCurrentAccount(state),
         isLoggedIn: state.account.isLoggedIn,
     }
 }

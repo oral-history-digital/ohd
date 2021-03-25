@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData } from 'modules/data';
+import { fetchData, getProjects, getInterviews, getRegistryEntries } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { setArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
@@ -11,8 +11,8 @@ const mapStateToProps = (state) => {
     return {
         locale: getLocale(state),
         projectId: getProjectId(state),
-        projects: state.data.projects,
-        interviews: state.data.interviews,
+        projects: getProjects(state),
+        interviews: getInterviews(state),
         interviewsStatus: state.data.statuses.interviews,
         segments: state.data.segments,
         segmentsStatus: state.data.statuses.segments,
@@ -20,7 +20,7 @@ const mapStateToProps = (state) => {
         registryReferenceTypes: state.data.registry_reference_types,
         registryReferenceTypesStatus: state.data.statuses.registry_reference_types.all,
         registryEntriesStatus: state.data.statuses.registry_entries,
-        registryEntries: state.data.registry_entries,
+        registryEntries: getRegistryEntries(state),
     }
 }
 
