@@ -1,21 +1,22 @@
 import { connect } from 'react-redux';
 
+import { getLocale, getProjectId, getLocales, getTranslations, getEditView } from 'modules/archive';
 import { changeRegistryEntriesViewMode } from 'modules/search';
-import { getCurrentProject } from 'modules/data';
+import { getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import RegistryEntriesTabPanel from './RegistryEntriesTabPanel';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
 
     return {
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
+        projectId: getProjectId(state),
+        projects: getProjects(state),
         showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree,
-        locale: state.archive.locale,
-        locales: (project && project.available_locales) || state.archive.locales,
-        translations: state.archive.translations,
-        account: state.data.accounts.current,
-        editView: state.archive.editView,
+        locale: getLocale(state),
+        locales: (project && project.available_locales) || getLocales(state),
+        translations: getTranslations(state),
+        account: getCurrentAccount(state),
+        editView: getEditView(state),
     };
 };
 

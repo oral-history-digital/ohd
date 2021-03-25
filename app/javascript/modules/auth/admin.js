@@ -1,8 +1,8 @@
 import permitted from './permitted';
 
 // props should contain:
-//   - account ~ state.data.accounts.current
-//   - editView ~ state.archive.editView
+//   - account ~ getCurrentAccount(state)
+//   - editView ~ getEditView(state)
 //
 // obj can be the serialized json of e.g. an interview or a segment
 //

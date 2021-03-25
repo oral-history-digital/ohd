@@ -1,19 +1,20 @@
 import { connect } from 'react-redux';
 
-import { submitData, getCurrentProject } from 'modules/data';
+import { getLocale, getLocales, getTranslations, getEditView, getProjectId } from 'modules/archive';
+import { submitData, getCurrentProject, getCurrentAccount, getProjects } from 'modules/data';
 import Uploads from './Uploads';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: state.archive.locale,
-        locales: (project && project.available_locales) || state.archive.locales,
-        translations: state.archive.translations,
+        locale: getLocale(state),
+        locales: (project && project.available_locales) || getLocales(state),
+        translations: getTranslations(state),
         uploadTypes: project && project.upload_types,
-        account: state.data.accounts.current,
-        editView: state.archive.editView,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
+        account: getCurrentAccount(state),
+        editView: getEditView(state),
+        projectId: getProjectId(state),
+        projects: getProjects(state),
         hasMap: project && project.has_map,
     }
 }

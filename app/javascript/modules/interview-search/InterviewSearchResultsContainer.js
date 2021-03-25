@@ -2,15 +2,15 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { searchInInterview } from 'modules/search';
-import { setArchiveId } from 'modules/archive';
+import { setArchiveId, getLocale, getArchiveId, getTranslations } from 'modules/archive';
 import { getMediaTime } from 'modules/media-player';
 import InterviewSearchResults from './InterviewSearchResults';
 
 const mapStateToProps = (state) => ({
-    archiveId: state.archive.archiveId,
+    archiveId: getArchiveId(state),
     mediaTime: getMediaTime(state),
-    locale: state.archive.locale,
-    translations: state.archive.translations,
+    locale: getLocale(state),
+    translations: getTranslations(state),
     isInterviewSearching: state.search.isInterviewSearching,
     fulltext: state.search.archive.query.fulltext,
 });

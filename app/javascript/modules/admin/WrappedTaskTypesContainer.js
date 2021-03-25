@@ -2,8 +2,9 @@ import { connect } from 'react-redux';
 
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects } from 'modules/data';
-import { getLocale, getProjectId } from 'modules/archive';
+import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
+    getTaskTypes } from 'modules/data';
+import { getLocale, getProjectId, getLocales, getTranslations, getEditView } from 'modules/archive';
 import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
 import WrappedDataList from './WrappedDataList';
 
@@ -13,11 +14,11 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
-        locales: (project && project.available_locales) || state.archive.locales,
-        translations: state.archive.translations,
-        account: state.data.accounts.current,
-        editView: state.archive.editView,
-        data: state.data.task_types,
+        locales: (project && project.available_locales) || getLocales(state),
+        translations: getTranslations(state),
+        account: getCurrentAccount(state),
+        editView: getEditView(state),
+        data: getTaskTypes(state),
         dataStatus: state.data.statuses.task_types,
         resultPagesCount: state.data.statuses.task_types.resultPagesCount,
         query: state.search.task_types.query,
@@ -44,7 +45,7 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'select',
                 attribute: 'project_id',
-                values: state.data.projects,
+                values: getProjects(state),
                 withEmpty: true,
             },
         ],

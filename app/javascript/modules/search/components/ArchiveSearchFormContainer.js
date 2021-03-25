@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
+import { getProjects, getCurrentAccount } from 'modules/data';
 import { resetQuery, setQueryParams, searchInArchive, searchInMap } from '../actions';
 import ArchiveSearchForm from './ArchiveSearchForm';
 
@@ -12,14 +14,14 @@ const mapStateToProps = (state) => {
         facets: state.search.archive.facets,
         mapSearchFacets: state.search.map.facets,
         query: state.search.archive.query,
-        translations: state.archive.translations,
-        locale: state.archive.locale,
+        translations: getTranslations(state),
+        locale: getLocale(state),
         isArchiveSearching: state.search.isArchiveSearching,
         isMapSearching: state.search.isMapSearching,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
-        account: state.data.accounts.current,
-        editView: state.archive.editView,
+        projectId: getProjectId(state),
+        projects: getProjects(state),
+        account: getCurrentAccount(state),
+        editView: getEditView(state),
     }
 }
 

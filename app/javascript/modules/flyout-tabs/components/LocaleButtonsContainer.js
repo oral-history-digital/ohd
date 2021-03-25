@@ -1,17 +1,17 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { setLocale } from 'modules/archive';
-import { getCurrentProject } from 'modules/data';
+import { setLocale, getLocale, getLocales, getProjectId } from 'modules/archive';
+import { getCurrentProject, getProjects } from 'modules/data';
 import LocaleButtons from './LocaleButtons';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        currentLocale: state.archive.locale,
-        locales: (project && project.available_locales) || state.archive.locales,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
+        currentLocale: getLocale(state),
+        locales: (project && project.available_locales) || getLocales(state),
+        projectId: getProjectId(state),
+        projects: getProjects(state),
     };
 };
 

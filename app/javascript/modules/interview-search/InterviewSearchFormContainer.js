@@ -1,18 +1,21 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { getLocale, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
+import { getProjects } from 'modules/data';
 import { searchInInterview } from 'modules/search';
 import InterviewSearchForm from './InterviewSearchForm';
 
 const mapStateToProps = (state) => {
-    let data = state.search.interviews[state.archive.archiveId];
+    let data = state.search.interviews[getArchiveId(state)];
+
     return {
-        archiveId: state.archive.archiveId,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
+        archiveId: getArchiveId(state),
+        projectId: getProjectId(state),
+        projects: getProjects(state),
         interviewFulltext: data && data.fulltext,
-        translations: state.archive.translations,
-        locale: state.archive.locale,
+        translations: getTranslations(state),
+        locale: getLocale(state),
         isInterviewSearching: state.search.isInterviewSearching,
     }
 }

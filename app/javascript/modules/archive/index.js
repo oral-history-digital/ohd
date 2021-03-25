@@ -9,4 +9,5 @@ export { default as archiveReducer } from './reducer';
 
 export { getArchiveId, getEditView, getInterviewEditView, getLocale,
     getLocales, getProjectId, getSelectedRegistryEntryIds, getTranslations,
-    getSelectedInterviewEditViewColumns, getDoiResult } from './selectors';
+    getSelectedInterviewEditViewColumns, getDoiResult, getCountryKeys,
+    getSelectedArchiveIds, getViewMode, getSkipEmptyRows } from './selectors';

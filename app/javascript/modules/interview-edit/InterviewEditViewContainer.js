@@ -1,26 +1,28 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, getCurrentInterview, getCurrentProject } from 'modules/data';
+import { getLocale, getSelectedInterviewEditViewColumns, getProjectId, getTranslations, getArchiveId,
+    getSkipEmptyRows, getEditView } from 'modules/archive';
+import { fetchData, getCurrentInterview, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
 import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import InterviewEditView from './InterviewEditView';
 
 const mapStateToProps = (state) => ({
-    locale: state.archive.locale,
-    projectId: state.archive.projectId,
-    projects: state.data.projects,
-    translations: state.archive.translations,
-    archiveId: state.archive.archiveId,
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    translations: getTranslations(state),
+    archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     tape: getCurrentTape(state),
     mediaTime: getMediaTime(state),
     transcriptScrollEnabled: getTranscriptScrollEnabled(state),
-    skipEmptyRows: state.archive.skipEmptyRows,
+    skipEmptyRows: getSkipEmptyRows(state),
     segmentsStatus: state.data.statuses.segments,
-    selectedInterviewEditViewColumns: state.archive.selectedInterviewEditViewColumns,
-    account: state.data.accounts.current,
-    editView: state.archive.editView,
+    selectedInterviewEditViewColumns: getSelectedInterviewEditViewColumns(state),
+    account: getCurrentAccount(state),
+    editView: getEditView(state),
     project: getCurrentProject(state),
 });
 

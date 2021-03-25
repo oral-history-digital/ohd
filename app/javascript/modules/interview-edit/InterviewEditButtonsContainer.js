@@ -1,12 +1,12 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { changeToInterviewEditView, setSkipEmptyRows } from 'modules/archive';
+import { changeToInterviewEditView, setSkipEmptyRows, getInterviewEditView, getSkipEmptyRows } from 'modules/archive';
 import InterviewEditButtons from './InterviewEditButtons';
 
 const mapStateToProps = (state) => ({
-    editViewEnabled: !!state.archive.interviewEditView,
-    skipEmptyRows: state.archive.skipEmptyRows,
+    editViewEnabled: !!getInterviewEditView(state),
+    skipEmptyRows: getSkipEmptyRows(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

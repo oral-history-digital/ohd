@@ -1,21 +1,23 @@
 import { connect } from 'react-redux';
 
+import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject } from 'modules/data';
+import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
+    getPeople } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: state.archive.locale,
-        locales: (project && project.available_locales) || state.archive.locales,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
-        translations: state.archive.translations,
-        account: state.data.accounts.current,
-        editView: state.archive.editView,
-        data: state.data.people,
+        locale: getLocale(state),
+        locales: (project && project.available_locales) || getLocales(state),
+        projectId: getProjectId(state),
+        projects: getProjects(state),
+        translations: getTranslations(state),
+        account: getCurrentAccount(state),
+        editView: getEditView(state),
+        data: getPeople(state),
         dataStatus: state.data.statuses.people,
         resultPagesCount: state.data.statuses.people.resultPagesCount,
         query: state.search.people.query,

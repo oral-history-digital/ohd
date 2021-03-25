@@ -1,8 +1,10 @@
 import { connect } from 'react-redux';
 
 import { searchInInterview } from 'modules/search';
-import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
-import { fetchData, getInterviewee, getCurrentProject } from 'modules/data';
+import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations, getEditView,
+    getSelectedArchiveIds } from 'modules/archive';
+import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeople,
+    getLanguages, getCollections } from 'modules/data';
 import InterviewListRow from './InterviewListRow';
 
 const mapStateToProps = (state, props) => {
@@ -10,19 +12,19 @@ const mapStateToProps = (state, props) => {
     return {
         fulltext: state.search.archive.query.fulltext,
         interviewSearchResults: state.search.interviews,
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
-        translations: state.archive.translations,
+        locale: getLocale(state),
+        projectId: getProjectId(state),
+        projects: getProjects(state),
+        translations: getTranslations(state),
         project: project,
-        editView: state.archive.editView,
-        account: state.data.accounts.current,
-        selectedArchiveIds: state.archive.selectedArchiveIds,
-        people: state.data.people,
+        editView: getEditView(state),
+        account: getCurrentAccount(state),
+        selectedArchiveIds: getSelectedArchiveIds(state),
+        people: getPeople(state),
         peopleStatus: state.data.statuses.people,
-        languages: state.data.languages,
+        languages: getLanguages(state),
         languagesStatus: state.data.statuses.languages,
-        collections: state.data.collections,
+        collections: getCollections(state),
         collectionsStatus: state.data.statuses.collections,
         interviewee: getInterviewee(state, props),
     }

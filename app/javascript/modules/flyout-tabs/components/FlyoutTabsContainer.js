@@ -1,8 +1,11 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import { setLocale } from 'modules/archive';
-import { getCurrentInterview, getCurrentInterviewee, getCurrentProject } from 'modules/data';
+import { setLocale, getLocale, getArchiveId, getProjectId, getSelectedArchiveIds,
+    getLocales, getEditView, getTranslations, getCountryKeys } from 'modules/archive';
+import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getProjects,
+    getCurrentAccount } from 'modules/data';
+import { getIsLoggedIn } from 'modules/account';
 import { setFlyoutTabsIndex } from '../actions';
 import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors';
 import FlyoutTabs from './FlyoutTabs';
@@ -12,21 +15,21 @@ const mapStateToProps = (state) => {
     return {
         flyoutTabsIndex: getFlyoutTabsIndex(state),
         visible: getFlyoutTabsVisible(state),
-        archiveId: state.archive.archiveId,
-        projectId: state.archive.projectId,
-        projects: state.data.projects,
+        archiveId: getArchiveId(state),
+        projectId: getProjectId(state),
+        projects: getProjects(state),
         project: project,
-        selectedArchiveIds: state.archive.selectedArchiveIds,
-        locale: state.archive.locale,
-        locales: (project && project.available_locales) || state.archive.locales,
+        selectedArchiveIds: getSelectedArchiveIds(state),
+        locale: getLocale(state),
+        locales: (project && project.available_locales) || getLocales(state),
         hasMap: project && project.has_map === 1,
-        editView: state.archive.editView,
-        translations: state.archive.translations,
-        account: state.data.accounts.current,
-        isLoggedIn: state.account.isLoggedIn,
+        editView: getEditView(state),
+        translations: getTranslations(state),
+        account: getCurrentAccount(state),
+        isLoggedIn: getIsLoggedIn(state),
         interview: getCurrentInterview(state),
         interviewee: getCurrentInterviewee(state),
-        countryKeys: state.archive.countryKeys,
+        countryKeys: getCountryKeys(state),
     }
 }
 

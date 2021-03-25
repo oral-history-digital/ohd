@@ -47,7 +47,3 @@ export const getSelectedRegistryEntryIds = createSelector(
     getState,
     archive => archive.selectedRegistryEntryIds.filter(id => id !== 'dummy')
 );
-
-// not used anymore
-// state.archive.randomFeaturedInterviews
-// state.archive.listColumns

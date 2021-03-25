@@ -1,28 +1,30 @@
 import { connect } from 'react-redux';
 
 import { searchInInterview } from 'modules/search';
-import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
-import { fetchData, getInterviewee, getCurrentProject } from 'modules/data';
+import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations,
+    getSelectedArchiveIds, getEditView } from 'modules/archive';
+import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeople,
+    getLanguages } from 'modules/data';
 import InterviewPreview from './InterviewPreview';
 
 const mapStateToProps = (state, props) => {
     let project = getCurrentProject(state);
     return {
         fulltext: state.search.archive.query.fulltext,
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
+        locale: getLocale(state),
+        projectId: getProjectId(state),
         project: project,
-        projects: state.data.projects,
-        translations: state.archive.translations,
+        projects: getProjects(state),
+        translations: getTranslations(state),
         query: state.search.archive.query,
-        selectedArchiveIds: state.archive.selectedArchiveIds,
+        selectedArchiveIds: getSelectedArchiveIds(state),
         statuses: state.data.statuses.interviews,
         interviewSearchResults: state.search.interviews,
-        editView: state.archive.editView,
-        account: state.data.accounts.current,
-        people: state.data.people,
+        editView: getEditView(state),
+        account: getCurrentAccount(state),
+        people: getPeople(state),
         peopleStatus: state.data.statuses.people,
-        languages: state.data.languages,
+        languages: getLanguages(state),
         languagesStatus: state.data.statuses.languages,
         interviewee: getInterviewee(state, props),
         optionsScope: 'search_facets' // for the humanReadable function
