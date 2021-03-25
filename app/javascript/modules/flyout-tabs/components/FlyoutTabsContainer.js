@@ -3,7 +3,9 @@ import { withRouter } from 'react-router-dom';
 
 import { setLocale, getLocale, getArchiveId, getProjectId, getSelectedArchiveIds,
     getLocales, getEditView, getTranslations, getCountryKeys } from 'modules/archive';
-import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
+import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getProjects,
+    getCurrentAccount } from 'modules/data';
+import { getIsLoggedIn } from 'modules/account';
 import { setFlyoutTabsIndex } from '../actions';
 import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors';
 import FlyoutTabs from './FlyoutTabs';
@@ -24,7 +26,7 @@ const mapStateToProps = (state) => {
         editView: getEditView(state),
         translations: getTranslations(state),
         account: getCurrentAccount(state),
-        isLoggedIn: state.account.isLoggedIn,
+        isLoggedIn: getIsLoggedIn(state),
         interview: getCurrentInterview(state),
         interviewee: getCurrentInterviewee(state),
         countryKeys: getCountryKeys(state),

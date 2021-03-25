@@ -4,6 +4,7 @@ import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { setViewMode, getLocale, getViewMode, getTranslations, getProjectId,
     getEditView } from 'modules/archive';
 import { getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
+import { getIsLoggedIn } from 'modules/account';
 import { searchInArchive } from '../actions';
 import ArchiveSearch from './ArchiveSearch';
 
@@ -26,7 +27,7 @@ const mapStateToProps = (state) => {
         listColumns: project && project.list_columns,
         editView: getEditView(state),
         account: getCurrentAccount(state),
-        isLoggedIn: state.account.isLoggedIn,
+        isLoggedIn: getIsLoggedIn(state),
     }
 }
 

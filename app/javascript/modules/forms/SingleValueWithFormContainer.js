@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import { getLocale, getProjectId, getEditView, getTranslations } from 'modules/archive';
 import { submitData, getProjects, getCurrentAccount } from 'modules/data';
+import { getIsLoggedIn } from 'modules/account';
 import SingleValueWithForm from './SingleValueWithForm';
 
 const mapStateToProps = (state) => {
@@ -11,7 +12,7 @@ const mapStateToProps = (state) => {
         projects: getProjects(state),
         account: getCurrentAccount(state),
         editView: getEditView(state),
-        isLoggedIn: state.account.isLoggedIn,
+        isLoggedIn: getIsLoggedIn(state),
         translations: getTranslations(state),
     }
 }
