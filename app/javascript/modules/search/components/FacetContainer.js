@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 
+import { getLocale, getTranslations } from 'modules/archive';
 import Facet from './Facet';
 
 const mapStateToProps = (state) => {
@@ -7,8 +8,8 @@ const mapStateToProps = (state) => {
         facets: state.search.archive.facets,
         query: state.search.archive.query,
         mapSearchQuery: state.search.map.query,
-        locale: state.archive.locale,
-        translations: state.archive.translations
+        locale: getLocale(state),
+        translations: getTranslations(state),
     }
 }
 

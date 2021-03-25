@@ -1,6 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { getLocale, getTranslations } from 'modules/archive';
 import { sendTimeChangeRequest, getCurrentTape } from 'modules/media-player';
 import { getCurrentInterview } from 'modules/data';
 import { setInterviewTabIndex } from 'modules/interview';
@@ -10,8 +11,8 @@ const mapStateToProps = (state) => {
     return {
         tape: getCurrentTape(state),
         interview: getCurrentInterview(state),
-        translations: state.archive.translations,
-        locale: state.archive.locale,
+        translations: getTranslations(state),
+        locale: getLocale(state),
     }
 }
 

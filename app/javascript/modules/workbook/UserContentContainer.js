@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setArchiveId } from 'modules/archive';
+import { setArchiveId, getLocale, getProjectId, getTranslations,
+    getEditView } from 'modules/archive';
 import { searchInArchive } from 'modules/search';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
@@ -9,11 +10,11 @@ import UserContent from './UserContent';
 
 const mapStateToProps = (state) => {
     return {
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
+        locale: getLocale(state),
+        projectId: getProjectId(state),
         projects: state.data.projects,
-        translations: state.archive.translations,
-        editView: state.archive.editView
+        translations: getTranslations(state),
+        editView: getEditView(state),
     }
 }
 

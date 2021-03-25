@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import RegistryNameForm from './RegistryNameForm';
 
 const mapStateToProps = (state) => {
     return {
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
+        locale: getLocale(state),
+        projectId: getProjectId(state),
         projects: state.data.projects,
-        translations: state.archive.translations,
+        translations: getTranslations(state),
         registryNameTypes: state.data.registry_name_types,
     }
 }

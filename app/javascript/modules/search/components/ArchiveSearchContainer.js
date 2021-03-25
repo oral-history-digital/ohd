@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 
 import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { setViewMode } from 'modules/archive';
+import { setViewMode, getLocale, getViewMode, getTranslations, getProjectId,
+    getEditView } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
 import { searchInArchive } from '../actions';
 import ArchiveSearch from './ArchiveSearch';
@@ -14,16 +15,16 @@ const mapStateToProps = (state) => {
         resultsCount: state.search.archive.resultsCount,
         query: state.search.archive.query,
         facets: state.search.archive.facets,
-        translations: state.archive.translations,
-        locale: state.archive.locale,
+        translations: getTranslations(state),
+        locale: getLocale(state),
         isArchiveSearching: state.search.isArchiveSearching,
         project: project,
-        projectId: state.archive.projectId,
+        projectId: getProjectId(state),
         projects: state.data.projects,
         viewModes: project && project.view_modes,
-        viewMode: state.archive.viewMode,
+        viewMode: getViewMode(state),
         listColumns: project && project.list_columns,
-        editView: state.archive.editView,
+        editView: getEditView(state),
         account: state.data.accounts.current,
         isLoggedIn: state.account.isLoggedIn,
     }

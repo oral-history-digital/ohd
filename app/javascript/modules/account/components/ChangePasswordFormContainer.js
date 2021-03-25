@@ -1,15 +1,16 @@
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import ChangePasswordForm from './ChangePasswordForm';
 import { submitChangePassword } from '../actions';
 
 const mapStateToProps = (state) => {
     return {
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
+        locale: getLocale(state),
+        projectId: getProjectId(state),
         projects: state.data.projects,
-        translations: state.archive.translations,
+        translations: getTranslations(state),
         account: state.account,
     };
 }

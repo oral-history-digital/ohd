@@ -1,14 +1,15 @@
 import { connect } from 'react-redux';
 
+import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import IndexingTabPanel from './IndexingTabPanel';
 
 const mapStateToProps = (state) => ({
-    locale: state.archive.locale,
-    translations: state.archive.translations,
-    projectId: state.archive.projectId,
-        projects: state.data.projects,
+    locale: getLocale(state),
+    translations: getTranslations(state),
+    projectId: getProjectId(state),
+    projects: state.data.projects,
     account: state.data.accounts.current,
-    editView: state.archive.editView,
+    editView: getEditView(state),
 });
 
 export default connect(mapStateToProps)(IndexingTabPanel);

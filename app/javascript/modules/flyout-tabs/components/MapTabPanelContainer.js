@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 
+import { getLocale, getSelectedArchiveIds, getTranslations, getEditView } from 'modules/archive';
 import MapTabPanel from './MapTabPanel';
 
 const mapStateToProps = (state) => ({
-    selectedArchiveIds: state.archive.selectedArchiveIds,
-    locale: state.archive.locale,
-    translations: state.archive.translations,
+    selectedArchiveIds: getSelectedArchiveIds(state),
+    locale: getLocale(state),
+    translations: getTranslations(state),
     account: state.data.accounts.current,
-    editView: state.archive.editView,
+    editView: getEditView(state),
 });
 
 export default connect(mapStateToProps)(MapTabPanel);

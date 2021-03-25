@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 
 import { searchInInterview } from 'modules/search';
-import { setArchiveId, addRemoveArchiveId } from 'modules/archive';
+import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations,
+    getSelectedArchiveIds, getEditView } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject } from 'modules/data';
 import InterviewPreview from './InterviewPreview';
 
@@ -9,16 +10,16 @@ const mapStateToProps = (state, props) => {
     let project = getCurrentProject(state);
     return {
         fulltext: state.search.archive.query.fulltext,
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
+        locale: getLocale(state),
+        projectId: getProjectId(state),
         project: project,
         projects: state.data.projects,
-        translations: state.archive.translations,
+        translations: getTranslations(state),
         query: state.search.archive.query,
-        selectedArchiveIds: state.archive.selectedArchiveIds,
+        selectedArchiveIds: getSelectedArchiveIds(state),
         statuses: state.data.statuses.interviews,
         interviewSearchResults: state.search.interviews,
-        editView: state.archive.editView,
+        editView: getEditView(state),
         account: state.data.accounts.current,
         people: state.data.people,
         peopleStatus: state.data.statuses.people,

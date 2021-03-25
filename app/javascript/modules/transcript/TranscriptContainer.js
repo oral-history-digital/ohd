@@ -1,18 +1,18 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData } from 'modules/data';
-import { getCurrentInterview, getCurrentInterviewee } from 'modules/data';
+import { getLocale, getProjectId, getTranslations, getArchiveId } from 'modules/archive';
+import { fetchData, getCurrentInterview, getCurrentInterviewee } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
 import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import Transcript from './Transcript';
 
 const mapStateToProps = state => ({
-    locale: state.archive.locale,
-    projectId: state.archive.projectId,
+    locale: getLocale(state),
+    projectId: getProjectId(state),
     projects: state.data.projects,
-    translations: state.archive.translations,
-    archiveId: state.archive.archiveId,
+    translations: getTranslations(state),
+    archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     interviewee: getCurrentInterviewee(state),
     people: state.data.people,

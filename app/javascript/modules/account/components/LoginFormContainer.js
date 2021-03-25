@@ -1,12 +1,13 @@
 import { connect } from 'react-redux';
 
-import LoginForm from './LoginForm';
+import { getLocale, getProjectId } from 'modules/archive';
 import { submitLogin } from '../actions';
+import LoginForm from './LoginForm';
 
 const mapStateToProps = (state) => {
     return {
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
+        locale: getLocale(state),
+        projectId: getProjectId(state),
         projects: state.data.projects,
     }
 }

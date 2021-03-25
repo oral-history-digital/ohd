@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 
+import { getLocale, getProjectId, getLocales, getTranslations, getEditView } from 'modules/archive';
 import { changeRegistryEntriesViewMode } from 'modules/search';
 import { getCurrentProject } from 'modules/data';
 import RegistryEntriesTabPanel from './RegistryEntriesTabPanel';
@@ -8,14 +9,14 @@ const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
 
     return {
-        projectId: state.archive.projectId,
+        projectId: getProjectId(state),
         projects: state.data.projects,
         showRegistryEntriesTree: state.search.registryEntries.showRegistryEntriesTree,
-        locale: state.archive.locale,
-        locales: (project && project.available_locales) || state.archive.locales,
-        translations: state.archive.translations,
+        locale: getLocale(state),
+        locales: (project && project.available_locales) || getLocales(state),
+        translations: getTranslations(state),
         account: state.data.accounts.current,
-        editView: state.archive.editView,
+        editView: getEditView(state),
     };
 };
 

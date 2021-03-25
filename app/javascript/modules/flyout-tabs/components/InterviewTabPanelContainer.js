@@ -2,23 +2,23 @@ import { connect } from 'react-redux';
 
 import { getCurrentInterview, getCurrentInterviewee, getCurrentProject } from 'modules/data';
 import { searchInArchive } from 'modules/search';
-import { setViewMode } from 'modules/archive';
+import { setViewMode, getLocale, getArchiveId, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import InterviewTabPanel from './InterviewTabPanel';
 import { hideFlyoutTabs } from '../actions';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        archiveId: state.archive.archiveId,
-        projectId: state.archive.projectId,
+        archiveId: getArchiveId(state),
+        projectId: getProjectId(state),
         projects: state.data.projects,
         interview: getCurrentInterview(state),
         interviewee: getCurrentInterviewee(state),
         hasMap: project && project.has_map === 1,
-        locale: state.archive.locale,
-        translations: state.archive.translations,
+        locale: getLocale(state),
+        translations: getTranslations(state),
         account: state.data.accounts.current,
-        editView: state.archive.editView,
+        editView: getEditView(state),
     };
 };
 

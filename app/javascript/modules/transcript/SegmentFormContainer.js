@@ -1,13 +1,14 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { getLocale, getProjectId } from 'modules/archive';
 import { submitData } from 'modules/data';
 import SegmentForm from './SegmentForm';
 
 const mapStateToProps = state => ({
-    locale: state.archive.locale,
+    locale: getLocale(state),
     people: state.data.people,
-    projectId: state.archive.projectId,
+    projectId: getProjectId(state),
     projects: state.data.projects,
 });
 

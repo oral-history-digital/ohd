@@ -1,17 +1,18 @@
 import { connect } from 'react-redux';
 
-import RegisterForm from './RegisterForm';
-import { submitRegister } from '../actions';
+import { getLocale, getProjectId, getTranslations, getCountryKeys } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
+import { submitRegister } from '../actions';
+import RegisterForm from './RegisterForm';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        projectId: state.archive.projectId,
+        projectId: getProjectId(state),
         projects: state.data.projects,
-        locale: state.archive.locale,
-        translations: state.archive.translations,
-        countryKeys: state.archive.countryKeys,
+        locale: getLocale(state),
+        translations: getTranslations(state),
+        countryKeys: getCountryKeys(state),
         externalLinks: project && project.external_links,
     }
 }

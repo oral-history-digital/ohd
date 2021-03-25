@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 
+import { getLocale, getTranslations } from 'modules/archive';
 import Input from './Input';
 
 const mapStateToProps = (state) => {
     return {
-        locale: state.archive.locale,
-        translations: state.archive.translations,
+        locale: getLocale(state),
+        translations: getTranslations(state),
     }
 }
 

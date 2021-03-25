@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { fetchData, submitData, getCurrentInterview, getProjects } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
-import { getLocale, getProjectId } from 'modules/archive';
+import { getLocale, getProjectId, getArchiveId, getTranslations } from 'modules/archive';
 import MarkTextForm from './MarkTextForm';
 
 const mapStateToProps = (state) => {
@@ -10,8 +10,8 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
-        archiveId: state.archive.archiveId,
-        translations: state.archive.translations,
+        archiveId: getArchiveId(state),
+        translations: getTranslations(state),
         account: state.data.accounts.current,
         interview: getCurrentInterview(state),
         markTextStatus: state.data.statuses.mark_text,

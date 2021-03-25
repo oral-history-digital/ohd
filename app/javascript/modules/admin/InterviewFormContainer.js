@@ -1,18 +1,19 @@
 import { connect } from 'react-redux';
 
+import { getLocale, getLocales, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
 import { submitData, getCurrentProject } from 'modules/data';
 import InterviewForm from './InterviewForm';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        locale: state.archive.locale,
-        locales: (project && project.available_locales) || state.archive.locales,
-        archiveId: state.archive.archiveId,
-        projectId: state.archive.projectId,
+        locale: getLocale(state),
+        locales: (project && project.available_locales) || getLocales(state),
+        archiveId: getArchiveId(state),
+        projectId: getProjectId(state),
         projects: state.data.projects,
         project: project,
-        translations: state.archive.translations,
+        translations: getTranslations(state),
         collections: state.data.collections,
         contributionTypes: state.data.contribution_types,
         people: state.data.people,

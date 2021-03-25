@@ -1,20 +1,21 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { getCurrentInterview } from 'modules/data';
 import Segment from './Segment';
 
 const mapStateToProps = state => ({
-    translations: state.archive.translations,
-    projectId: state.archive.projectId,
+    translations: getTranslations(state),
+    projectId: getProjectId(state),
     projects: state.data.projects,
-    locale: state.archive.locale,
+    locale: getLocale(state),
     interview: getCurrentInterview(state),
     userContents: state.data.user_contents,
     statuses: state.data.statuses.segments,
     account: state.data.accounts.current,
-    editView: state.archive.editView,
+    editView: getEditView(state),
     people: state.data.people,
 });
 

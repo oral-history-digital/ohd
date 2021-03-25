@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 
 import Register from './Register';
 import { getCurrentProject } from 'modules/data';
+import { getLocale, getTranslations } from 'modules/archive';
 import { getRegistrationStatus } from '../selectors';
 
 const mapStateToProps = (state) => {
@@ -9,9 +10,9 @@ const mapStateToProps = (state) => {
 
     return {
         registrationStatus: getRegistrationStatus(state),
-        translations: state.archive.translations,
+        translations: getTranslations(state),
         externalLinks: project && project.external_links,
-        locale: state.archive.locale
+        locale: getLocale(state),
     }
 }
 

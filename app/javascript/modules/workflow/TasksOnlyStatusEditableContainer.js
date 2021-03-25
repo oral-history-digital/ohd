@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { DataList } from 'modules/admin';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getProjects } from 'modules/data';
-import { getLocale, getProjectId } from 'modules/archive';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import CommentsContainer from './CommentsContainer';
 
 const mapStateToProps = (state) => {
@@ -11,7 +11,7 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
-        translations: state.archive.translations,
+        translations: getTranslations(state),
         account: state.data.accounts.current,
         //
         // editView should always be true on tasks

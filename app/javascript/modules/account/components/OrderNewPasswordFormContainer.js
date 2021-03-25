@@ -1,15 +1,16 @@
 import { bindActionCreators} from 'redux';
 import { connect } from 'react-redux';
 
-import OrderNewPasswordForm from './OrderNewPasswordForm';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { submitOrderNewPassword } from '../actions';
+import OrderNewPasswordForm from './OrderNewPasswordForm';
 
 const mapStateToProps = (state) => {
     return {
-        locale: state.archive.locale,
-        projectId: state.archive.projectId,
+        locale: getLocale(state),
+        projectId: getProjectId(state),
         projects: state.data.projects,
-        translations: state.archive.translations,
+        translations: getTranslations(state),
         account: state.data.accounts.current,
     }
 }
