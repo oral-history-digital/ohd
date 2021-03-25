@@ -35,9 +35,18 @@
   font-weight: bold;
   letter-spacing: 0.1rem;
   min-width: 3rem;
+  transition: color $transition-duration;
 }
 
 .heading {
+  transition: color $transition-duration;
+}
+
+.main:hover .heading,
+.main:hover .chapter,
+.main:focus .heading,
+.main:focus .chapter {
+  color: var(--primary-color);
 }
 
 .timecode {

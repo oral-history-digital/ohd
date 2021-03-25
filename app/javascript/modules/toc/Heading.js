@@ -31,7 +31,7 @@ export default function Heading({
                                 type="button"
                                 className={styles.toggle}
                                 onClick={() => setExpanded(!expanded)}
-                                aria-label={expanded ? 'Collapse' : 'Expand'}
+                                aria-label={expanded ? t('modules.toc.collapse') : t('modules.toc.expand')}
                             >
                                 {
                                     expanded ?

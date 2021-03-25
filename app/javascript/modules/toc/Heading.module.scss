@@ -1,15 +1,15 @@
 @import "../../stylesheets/variables";
 
 .container {
-  composes: container from './shared.module.scss';
+  composes: container from './sharedHeading.module.scss';
 }
 
 .main {
-  composes: main from './shared.module.scss';
+  composes: main from './sharedHeading.module.scss';
 }
 
 .active {
-  composes: active from './shared.module.scss';
+  composes: active from './sharedHeading.module.scss';
 
 }
 
@@ -28,15 +28,15 @@
 }
 
 .chapter {
-  composes: chapter from './shared.module.scss';
+  composes: chapter from './sharedHeading.module.scss';
 }
 
 .heading {
-  composes: heading from './shared.module.scss';
+  composes: heading from './sharedHeading.module.scss';
 }
 
 .timecode {
-  composes: timecode from './shared.module.scss';
+  composes: timecode from './sharedHeading.module.scss';
 }
 
 .subHeadings {}
