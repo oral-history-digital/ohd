@@ -32,6 +32,10 @@
   cursor: initial;
 }
 
+.treeSelect :global(.node.disabled .radio-item) {
+  display: none;
+}
+
 .treeSelect :global(.dropdown-trigger) {
   border-color: $gray-medium !important;
 }

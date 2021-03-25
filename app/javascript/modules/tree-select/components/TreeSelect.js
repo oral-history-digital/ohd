@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 
-import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import styles from './TreeSelect.module.scss';
 
