@@ -1,7 +1,7 @@
 import { FETCH_LOCATIONS_STARTED, FETCH_LOCATIONS_SUCCEEDED, FETCH_LOCATIONS_FAILED }
     from './action-types';
 
-const initialState = {
+export const initialState = {
     isLoading: false,
     error: null,
 };
