@@ -4,10 +4,9 @@ import { getLocale, getLocales, getProjectId, getTranslations } from 'modules/ar
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getLanguages } from 'modules/data';
+    getLanguages, getLanguagesStatus } from 'modules/data';
 import { getCookie } from 'modules/persistence';
 import WrappedDataList from './WrappedDataList';
-import { getLanguagesStatus } from '../data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);

@@ -7,6 +7,7 @@ import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getC
 import { getLocale, getProjectId, getLocales, getTranslations, getEditView } from 'modules/archive';
 import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
 import WrappedDataList from './WrappedDataList';
+import { getTaskTypesStatus } from '../data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
@@ -19,8 +20,8 @@ const mapStateToProps = (state) => {
         account: getCurrentAccount(state),
         editView: getEditView(state),
         data: getTaskTypes(state),
-        dataStatus: state.data.statuses.task_types,
-        resultPagesCount: state.data.statuses.task_types.resultPagesCount,
+        dataStatus: getTaskTypesStatus(state),
+        resultPagesCount: getTaskTypesStatus(state).resultPagesCount,
         query: state.search.task_types.query,
         scope: 'task_type',
         baseTabIndex: 5 + project.has_map,

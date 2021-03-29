@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
+import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
+    getPermissionsStatus } from 'modules/data';
 import { getLocale, getProjectId, getLocales, getTranslations, getEditView } from 'modules/archive';
 import DataList from './DataList';
 
@@ -18,7 +19,7 @@ const mapStateToProps = (state) => {
         //
         //
         //
-        joinDataStatus: state.data.statuses.permissions,
+        joinDataStatus: getPermissionsStatus(state),
         joinDataScope: 'permissions',
         scope: 'task_type_permission',
         detailsAttributes: ['name', 'desc', 'klass', 'action_name'],

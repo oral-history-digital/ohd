@@ -7,6 +7,7 @@ import { fetchData, deleteData, submitData, getCurrentProject, getProjects,
     getCurrentAccount } from 'modules/data';
 import DataList from './DataList';
 import ProjectShow from './ProjectShow';
+import { getProjectsStatus } from '../data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
@@ -19,8 +20,8 @@ const mapStateToProps = (state) => {
         account: getCurrentAccount(state),
         editView: getEditView(state),
         data: getProjects(state),
-        dataStatus: state.data.statuses.projects,
-        resultPagesCount: state.data.statuses.projects.resultPagesCount,
+        dataStatus: getProjectsStatus(state),
+        resultPagesCount: getProjectsStatus(state).resultPagesCount,
         query: state.search.projects.query,
         scope: 'project',
         baseTabIndex: 5 + (project ? project.has_map : 0),

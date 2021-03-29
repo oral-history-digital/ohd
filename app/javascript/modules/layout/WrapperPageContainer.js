@@ -4,16 +4,18 @@ import { withRouter } from 'react-router-dom';
 
 import { toggleFlyoutTabs, getFlyoutTabsVisible } from 'modules/flyout-tabs';
 import { getEditView, getLocale, getProjectId } from 'modules/archive';
-import { fetchData, deleteData, getCurrentAccount, getProjects, getCollectionsStatus, getLanguagesStatus, getAccountsStatus } from 'modules/data';
+import { fetchData, deleteData, getCurrentAccount, getProjects, getCollectionsStatus,
+    getLanguagesStatus, getAccountsStatus, getProjectsStatus } from 'modules/data';
 import { getTranscriptScrollEnabled } from 'modules/interview';
 import { getIsLoggedIn, getIsLoggedOut, getLoggedInAt } from 'modules/account';
 import WrapperPage from './WrapperPage';
+import {  } from '../data';
 
 const mapStateToProps = (state) => {
     return {
         projectId: getProjectId(state),
         projects: getProjects(state),
-        projectsStatus: state.data.statuses.projects,
+        projectsStatus: getProjectsStatus(state),
         transcriptScrollEnabled: getTranscriptScrollEnabled(state),
         locale: getLocale(state),
         visible: getFlyoutTabsVisible(state),

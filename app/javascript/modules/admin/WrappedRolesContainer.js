@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
+import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
+    getRolesStatus } from 'modules/data';
 import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import WrappedDataList from './WrappedDataList';
 import RolePermissionsContainer from './RolePermissionsContainer';
@@ -18,8 +19,8 @@ const mapStateToProps = (state) => {
         account: getCurrentAccount(state),
         editView: getEditView(state),
         data: state.data.roles,
-        dataStatus: state.data.statuses.roles,
-        resultPagesCount: state.data.statuses.roles.resultPagesCount,
+        dataStatus: getRolesStatus(state),
+        resultPagesCount: getRolesStatus(state).resultPagesCount,
         query: state.search.roles.query,
         scope: 'role',
         baseTabIndex: 5 + project.has_map,
