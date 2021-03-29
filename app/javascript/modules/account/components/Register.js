@@ -1,14 +1,10 @@
 import React from 'react';
 
 import { t } from 'modules/i18n';
+import { ScrollToTop } from 'modules/user-agent';
 import RegisterFormContainer from './RegisterFormContainer';
 
 export default class Register extends React.Component {
-
-    componentDidMount() {
-        window.scrollTo(0, 1);
-    }
-
     content() {
         if (!this.props.registrationStatus) {
 
@@ -45,9 +41,11 @@ export default class Register extends React.Component {
 
     render() {
         return (
-            <div className='wrapper-content register'>
-                {this.content()}
-            </div>
+            <ScrollToTop>
+                <div className='wrapper-content register'>
+                    {this.content()}
+                </div>
+            </ScrollToTop>
         );
     }
 }

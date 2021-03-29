@@ -1,14 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { ScrollToTop } from 'modules/user-agent';
 import HeadingContainer from './HeadingContainer';
 
 export default class TableOfContents extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
     componentDidMount() {
         this.loadHeadings();
     }
@@ -128,21 +126,34 @@ export default class TableOfContents extends React.Component {
         ) {
             let headings = this.prepareHeadings();
             return (
-                <div>
-                    {this.emptyHeadingsNote(headings)}
-                    <div className={'content-index'}>
-                        {headings.map((heading, index) => {
-                            return <HeadingContainer
-                                key={'mainheading-' + index}
-                                data={heading}
-                                nextHeading={headings[index+1]}
-                            />
-                        })}
+                <ScrollToTop>
+                    <div>
+                        {this.emptyHeadingsNote(headings)}
+                        <div className={'content-index'}>
+                            {headings.map((heading, index) => {
+                                return <HeadingContainer
+                                    key={'mainheading-' + index}
+                                    data={heading}
+                                    nextHeading={headings[index+1]}
+                                />
+                            })}
+                        </div>
                     </div>
-                </div>
+                </ScrollToTop>
             );
         } else {
             return <Spinner />;
         }
     }
 }
+
+TableOfContents.propTypes = {
+    archiveId: PropTypes.string.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    interview: PropTypes.object.isRequired,
+    headingsStatus: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+};

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { INDEX_NONE } from 'modules/flyout-tabs';
 import { RedirectOnLogin } from 'modules/account';
+import { ScrollToTop } from 'modules/user-agent';
 import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';
 
@@ -14,37 +15,37 @@ export default function Home({
     setFlyoutTabsIndex,
 }) {
     useEffect(() => {
-        window.scrollTo(0, 1);
-
         if (isCampscapesProject) {
             setFlyoutTabsIndex(INDEX_NONE);
         }
     }, []);
 
     return (
-        <div className='wrapper-content home-content'>
-            <RedirectOnLogin path="/searches/archive" />
-            {
-                showStartPageVideo ?
-                    <StartPageVideo /> :
-                    null
-            }
-            <div className='home-text'>
-                <h1>{projectTranslation.name}</h1>
-                <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
-            </div>
-            <div className="search-results-container">
+        <ScrollToTop>
+            <div className='wrapper-content home-content'>
+                <RedirectOnLogin path="/searches/archive" />
                 {
-                    projectTranslation.more_text &&
-                    (<p dangerouslySetInnerHTML={{__html: projectTranslation.more_text}} />)
-                }
-                {
-                    showFeaturedInterviews ?
-                        <FeaturedInterviews /> :
+                    showStartPageVideo ?
+                        <StartPageVideo /> :
                         null
                 }
+                <div className='home-text'>
+                    <h1>{projectTranslation.name}</h1>
+                    <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
+                </div>
+                <div className="search-results-container">
+                    {
+                        projectTranslation.more_text &&
+                        (<p dangerouslySetInnerHTML={{__html: projectTranslation.more_text}} />)
+                    }
+                    {
+                        showFeaturedInterviews ?
+                            <FeaturedInterviews /> :
+                            null
+                    }
+                </div>
             </div>
-        </div>
+        </ScrollToTop>
     );
 }
 
