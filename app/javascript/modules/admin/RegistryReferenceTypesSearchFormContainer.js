@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { getLocale, getTranslations, getProjectId } from 'modules/archive';
 import { resetQuery, setQueryParams } from 'modules/search';
-import { fetchData, getProjects } from 'modules/data';
+import { fetchData, getProjects, getRegistryReferenceTypesStatus } from 'modules/data';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import DataSearchForm from './DataSearchForm';
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
     projects: getProjects(state),
     query: state.search.registry_reference_types.query,
-    dataStatus: state.data.statuses.registry_reference_types,
+    dataStatus: getRegistryReferenceTypesStatus(state),
     scope: 'registry_reference_type',
     searchableAttributes: [
         {attributeName: 'name'},

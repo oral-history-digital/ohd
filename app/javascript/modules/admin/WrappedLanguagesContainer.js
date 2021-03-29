@@ -7,6 +7,7 @@ import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getC
     getLanguages } from 'modules/data';
 import { getCookie } from 'modules/persistence';
 import WrappedDataList from './WrappedDataList';
+import { getLanguagesStatus } from '../data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
@@ -19,8 +20,8 @@ const mapStateToProps = (state) => {
         account: getCurrentAccount(state),
         editView: getCookie('editView') === 'true',
         data: getLanguages(state),
-        dataStatus: state.data.statuses.languages,
-        resultPagesCount: state.data.statuses.languages.resultPagesCount,
+        dataStatus: getLanguagesStatus(state),
+        resultPagesCount: getLanguagesStatus(state).resultPagesCount,
         query: state.search.languages.query,
         scope: 'language',
         baseTabIndex: 4 + project.has_map,

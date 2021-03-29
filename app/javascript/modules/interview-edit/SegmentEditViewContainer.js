@@ -3,13 +3,13 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getSelectedInterviewEditViewColumns, getEditView } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
-import { getCurrentInterview, getCurrentAccount } from 'modules/data';
+import { getCurrentInterview, getCurrentAccount, getSegmentsStatus } from 'modules/data';
 import SegmentEditView from './SegmentEditView';
 
 const mapStateToProps = (state) => ({
     locale: getLocale(state),
     interview: getCurrentInterview(state),
-    statuses: state.data.statuses.segments,
+    statuses: getSegmentsStatus(state),
     account: getCurrentAccount(state),
     selectedInterviewEditViewColumns: getSelectedInterviewEditViewColumns(state),
     editView: getEditView(state),

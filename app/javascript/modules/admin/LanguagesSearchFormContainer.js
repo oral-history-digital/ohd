@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { resetQuery, setQueryParams } from 'modules/search';
-import { fetchData, getProjects } from 'modules/data';
+import { fetchData, getProjects, getLanguagesStatus } from 'modules/data';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import DataSearchForm from './DataSearchForm';
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
     projects: getProjects(state),
     query: state.search.languages.query,
-    dataStatus: state.data.statuses.languages,
+    dataStatus: getLanguagesStatus(state),
     scope: 'language',
     searchableAttributes: [
         {attributeName: 'name'},

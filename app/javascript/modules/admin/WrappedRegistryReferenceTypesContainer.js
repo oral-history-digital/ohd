@@ -3,7 +3,8 @@ import { connect } from 'react-redux';
 import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
+import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
+    getRegistryReferenceTypes, getRegistryReferenceTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
@@ -16,9 +17,9 @@ const mapStateToProps = (state) => {
         translations: getTranslations(state),
         account: getCurrentAccount(state),
         editView: getEditView(state),
-        data: state.data.registry_reference_types,
-        dataStatus: state.data.statuses.registry_reference_types,
-        resultPagesCount: state.data.statuses.registry_reference_types.resultPagesCount,
+        data: getRegistryReferenceTypes(state),
+        dataStatus: getRegistryReferenceTypesStatus(state),
+        resultPagesCount: getRegistryReferenceTypesStatus(state).resultPagesCount,
         query: state.search.registry_reference_types.query,
         scope: 'registry_reference_type',
         sortAttribute: 'name',

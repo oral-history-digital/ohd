@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { submitDois, addRemoveArchiveId, setArchiveIds, getArchiveId, getLocale,
     getProjectId, getTranslations, getDoiResult } from 'modules/archive';
-import { deleteData, submitData, getProjects } from 'modules/data';
+import { deleteData, submitData, getProjects, getInterviewsStatus } from 'modules/data';
 import AdminActions from './AdminActions';
 
 const mapStateToProps = state => ({
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
     projects: getProjects(state),
     translations: getTranslations(state),
     archiveId: getArchiveId(state),
-    statuses: state.data.statuses.interviews,
+    statuses: getInterviewsStatus(state),
     doiResult: getDoiResult(state),
     archiveSearchResults: state.search.archive.foundInterviews,
 });

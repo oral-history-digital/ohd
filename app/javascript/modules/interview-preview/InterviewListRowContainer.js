@@ -4,7 +4,7 @@ import { searchInInterview } from 'modules/search';
 import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations, getEditView,
     getSelectedArchiveIds } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeople,
-    getLanguages, getCollections } from 'modules/data';
+    getLanguages, getCollections, getPeopleStatus, getCollectionsStatus, getLanguagesStatus } from 'modules/data';
 import InterviewListRow from './InterviewListRow';
 
 const mapStateToProps = (state, props) => {
@@ -21,11 +21,11 @@ const mapStateToProps = (state, props) => {
         account: getCurrentAccount(state),
         selectedArchiveIds: getSelectedArchiveIds(state),
         people: getPeople(state),
-        peopleStatus: state.data.statuses.people,
+        peopleStatus: getPeopleStatus(state),
         languages: getLanguages(state),
-        languagesStatus: state.data.statuses.languages,
+        languagesStatus: getLanguagesStatus(state),
         collections: getCollections(state),
-        collectionsStatus: state.data.statuses.collections,
+        collectionsStatus: getCollectionsStatus(state),
         interviewee: getInterviewee(state, props),
     }
 }

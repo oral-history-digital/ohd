@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getSelectedInterviewEditViewColumns, getProjectId, getTranslations, getArchiveId,
     getSkipEmptyRows, getEditView } from 'modules/archive';
-import { fetchData, getCurrentInterview, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
+import { fetchData, getCurrentInterview, getCurrentProject, getProjects, getCurrentAccount,
+    getSegmentsStatus } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
 import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import InterviewEditView from './InterviewEditView';
@@ -19,7 +20,7 @@ const mapStateToProps = (state) => ({
     mediaTime: getMediaTime(state),
     transcriptScrollEnabled: getTranscriptScrollEnabled(state),
     skipEmptyRows: getSkipEmptyRows(state),
-    segmentsStatus: state.data.statuses.segments,
+    segmentsStatus: getSegmentsStatus(state),
     selectedInterviewEditViewColumns: getSelectedInterviewEditViewColumns(state),
     account: getCurrentAccount(state),
     editView: getEditView(state),

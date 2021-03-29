@@ -26,8 +26,17 @@ const state = {
             },
         },
         statuses: {
+            accounts: {
+                current: 'fetched',
+            },
+            collections: {
+                collections_for_project_zwar: 'fetched',
+            },
             interviews: {
                 za283: 'fetched',
+            },
+            languages: {
+                all: 'fetched',
             },
             people: {
                 12: 'fetched',
@@ -38,6 +47,9 @@ const state = {
             },
             registry_entries: {
                 1: 'fetched-Thu Jan 07 2021 21:17:39 GMT+0100 (Central European Standard Time)',
+            },
+            segments: {
+                for_interviews_za003: 'fetched-Mon',
             },
         },
         projects: {
@@ -158,6 +170,18 @@ test('getStatuses gets statuses object', () => {
     expect(selectors.getStatuses(state)).toEqual(state.data.statuses);
 });
 
+test('getAccountsStatus gets accounts status object', () => {
+    expect(selectors.getAccountsStatus(state)).toEqual(state.data.statuses.accounts);
+});
+
+test('getCollectionsStatus gets collections status object', () => {
+    expect(selectors.getCollectionsStatus(state)).toEqual(state.data.statuses.collections);
+});
+
+test('getLanguagesStatus gets languages status object', () => {
+    expect(selectors.getLanguagesStatus(state)).toEqual(state.data.statuses.languages);
+});
+
 test('getPeopleStatus gets people status object', () => {
     expect(selectors.getPeopleStatus(state)).toEqual(state.data.statuses.people);
 });
@@ -168,6 +192,10 @@ test('getInterviewsStatus gets interviews status object', () => {
 
 test('getRegistryEntriesStatus gets registry entries status object', () => {
     expect(selectors.getRegistryEntriesStatus(state)).toEqual(state.data.statuses.registry_entries);
+});
+
+test('getSegmentsStatus gets segments status object', () => {
+    expect(selectors.getSegmentsStatus(state)).toEqual(state.data.statuses.segments);
 });
 
 test('getProjects gets projects object', () => {
@@ -227,10 +255,6 @@ describe('getFeaturedInterviewsArray', () => {
 
 test('getCurrentUserIsAdmin gets admin status of current account', () => {
     expect(selectors.getCurrentUserIsAdmin(state)).toEqual(state.data.accounts.current.admin);
-});
-
-test('get gets data of a specific type', () => {
-    expect(selectors.get(state, 'collections', 1)).toEqual(state.data.collections[1]);
 });
 
 describe('getCurrentProject', () => {

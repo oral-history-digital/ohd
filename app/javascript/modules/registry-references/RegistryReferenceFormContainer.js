@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, fetchData, getProjects, getRegistryEntries } from 'modules/data';
+import { submitData, fetchData, getProjects, getRegistryEntries, getRegistryEntriesStatus,
+    getRegistryReferenceTypes, getRegistryReferenceTypesStatus } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { getLocale, getProjectId } from 'modules/archive';
 import RegistryReferenceForm from './RegistryReferenceForm';
@@ -11,10 +12,10 @@ const mapStateToProps = state => ({
     projectId: getProjectId(state),
     projects: getProjects(state),
     registryEntries: getRegistryEntries(state),
-    registryReferenceTypes: state.data.registry_reference_types,
-    registryReferenceTypesStatus: state.data.statuses.registry_reference_types.all,
-    registryEntriesStatus: state.data.statuses.registry_entries,
-    lastModifiedRegistryEntries: state.data.statuses.registry_entries.lastModified,
+    registryReferenceTypes: getRegistryReferenceTypes(state),
+    registryReferenceTypesStatus: getRegistryReferenceTypesStatus(state).all,
+    registryEntriesStatus: getRegistryEntriesStatus(state),
+    lastModifiedRegistryEntries: getRegistryEntriesStatus(state).lastModified,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
