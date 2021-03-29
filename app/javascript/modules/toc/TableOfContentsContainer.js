@@ -1,11 +1,11 @@
 import {connect} from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { fetchData, getCurrentInterview, getProjects, getHeadingsStatus } from 'modules/data';
 import { getLocale, getProjectId, getTranslations, getArchiveId } from 'modules/archive';
-import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import TableOfContents from './TableOfContents';
 
-const mapStateToProps = (state) => ({
+const mapStateToProps = state => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
@@ -13,12 +13,10 @@ const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     headingsStatus: getHeadingsStatus(state),
-    transcriptScrollEnabled: getTranscriptScrollEnabled(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    handleTranscriptScroll: bool => dispatch(handleTranscriptScroll(bool)),
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(TableOfContents);

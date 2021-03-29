@@ -1,40 +1,64 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
-export default class Heading extends React.Component {
-    constructor(props, context) {
-        super(props, context);
-        this.state = {
-            active: false
-        }
-        this.handleClick = this.handleClick.bind(this);
-    }
+import { useI18n } from 'modules/i18n';
+import { Modal } from 'modules/ui';
+import { AuthorizedContent } from 'modules/auth';
+import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
+import formatTimecode from './formatTimecode';
+import styles from './SubHeading.module.scss';
 
-    componentWillReceiveProps(nextProps) {
-        let endTime = (this.props.nextSubHeading) ? this.props.nextSubHeading.time : this.props.data.duration;
-        let active = this.props.tape === this.props.data.tape_nbr && endTime >= nextProps.mediaTime && this.props.data.time <= nextProps.mediaTime;
-        if (active !== this.state.active) {
-            this.setState({
-                active: active
-            })
-        }
-    }
+export default function SubHeading({
+    data,
+    active,
+    sendTimeChangeRequest,
+}) {
+    const { t } = useI18n();
 
-    handleClick(tape, time) {
-        // let tabIndex = (this.props.interview.lang === this.props.locale) ? 0 : 1;
-        this.props.sendTimeChangeRequest(tape, time);
-    }
+    return (
+        <div className={styles.container}>
+            <button
+                type="button"
+                className={classNames(styles.main, {
+                    [styles.active]: active,
+                })}
+                onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
+            >
+                <span className={styles.chapter}>
+                    {data.chapter}
+                </span>
 
-    render() {
-        let css = 'subheading ' + (this.state.active ? 'active' : 'inactive');
-        return (
-            <div>
-                <div
-                    className={css}
-                    onClick={() => this.handleClick(this.props.data.tape_nbr, this.props.data.time)}
-                >
-                    <div className='chapter-number'>{this.props.data.chapter}</div><div className='chapter-text' dangerouslySetInnerHTML={{__html: this.props.data.heading}} />
+                <div>
+                    <div className={styles.heading}>
+                        {data.heading}
+                    </div>
+
+                    <div className={styles.timecode}>
+                        {t('tape')} {data.tape_nbr} | {formatTimecode(data.time)}
+                    </div>
                 </div>
-            </div>
-        )
-    }
+            </button>
+
+            <AuthorizedContent object={data.segment}>
+                <Modal
+                    title=""
+                    trigger={<i className="fa fa-pencil" />}
+                >
+                    {closeModal => (
+                        <SegmentHeadingFormContainer
+                            segment={data.segment}
+                            onSubmit={closeModal}
+                        />
+                    )}
+                </Modal>
+            </AuthorizedContent>
+        </div>
+    );
 }
+
+SubHeading.propTypes = {
+    data: PropTypes.object.isRequired,
+    active: PropTypes.bool.isRequired,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
+};
