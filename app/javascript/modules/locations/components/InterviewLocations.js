@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
@@ -21,7 +22,7 @@ export default class InterviewLocations extends React.Component {
     }
 
     fetch() {
-        this.props.fetchLocations(`${pathBase(this.props)}/locations`, this.props.archiveId);
+        this.props.fetchLocations(`${pathBase(this.props)}/location`, this.props.archiveId);
     }
 
     render() {
@@ -43,7 +44,7 @@ export default class InterviewLocations extends React.Component {
                     error && (
                         <button
                             type="button"
-                            className="button"
+                            className={classNames('button', 'button--small')}
                             disabled={loading}
                             onClick={this.fetch}
                         >

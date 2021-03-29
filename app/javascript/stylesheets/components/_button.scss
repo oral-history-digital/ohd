@@ -5,6 +5,12 @@
   outline: none !important;
 }
 
+.button--small {
+  font-size: 0.875rem !important;
+  line-height: 1.5rem !important;
+  padding: 0 0.375rem;
+}
+
 .button:disabled {
   opacity: 0.5;
 }
