@@ -1122,6 +1122,9 @@ el:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    locations:
+      error: 'Error while loading map:'
+      try_again: 'Try again'
     tree_select:
       enter_or_choose: 'Enter or choose'
       no_matches: 'no matches'

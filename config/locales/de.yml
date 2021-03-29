@@ -1105,6 +1105,9 @@ de:
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
+    locations:
+      error: 'Fehler beim Laden der Karte:'
+      try_again: 'Nochmals versuchen'
     tree_select:
       enter_or_choose: 'Eingeben oder auswählen'
       no_matches: 'keine Ergebnisse'

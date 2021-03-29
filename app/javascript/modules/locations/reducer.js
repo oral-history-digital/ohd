@@ -10,14 +10,15 @@ const locations = (state = initialState, action) => {
     switch (action.type) {
         case FETCH_LOCATIONS_STARTED:
             return {
+                ...state,
                 isLoading: true,
-                error: null,
             };
         case FETCH_LOCATIONS_SUCCEEDED:
             return {
                 ...state,
                 [action.payload.archive_id]: action.payload.segment_ref_locations,
                 isLoading: false,
+                error: null,
             };
         case FETCH_LOCATIONS_FAILED:
             return {
