@@ -13,7 +13,7 @@ export default class SelectedRegistryReferences extends React.Component {
                 let metadataField = this.props.project.metadata_fields[r];
                 if (
                     metadataField.registry_entry_id &&
-                    ((metadataField.use_in_details_view && this.props.account.isLoggedIn) || metadataField.display_on_landing_page) &&
+                    ((metadataField.use_in_details_view && this.props.isLoggedIn) || metadataField.display_on_landing_page) &&
                     metadataField.ref_object_type === this.props.refObject.type
                 ) {
                     registryReferences.push(
@@ -51,5 +51,5 @@ SelectedRegistryReferences.propTypes = {
     refObject: PropTypes.object,
     locale: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
-    account: PropTypes.object.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
 };

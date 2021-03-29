@@ -1,25 +1,25 @@
 import { NAME } from './constants';
 
-const getState = state => state[NAME];
+export const getAccount = state => state[NAME];
 
-export const getIsLoggedIn = state => getState(state).isLoggedIn;
+export const getIsLoggedIn = state => getAccount(state).isLoggedIn;
 
-export const getIsLoggedOut = state => getState(state).isLoggedOut;
+export const getIsLoggedOut = state => getAccount(state).isLoggedOut;
 
-export const getIsLoggingIn = state => getState(state).isLoggingIn;
+export const getIsLoggingIn = state => getAccount(state).isLoggingIn;
 
-export const getFirstName = state => getState(state).firstName;
+export const getFirstName = state => getAccount(state).firstName;
 
-export const getLastName = state => getState(state).lastName;
+export const getLastName = state => getAccount(state).lastName;
 
-export const getEmail = state => getState(state).email;
+export const getEmail = state => getAccount(state).email;
 
-export const getAdmin = state => getState(state).admin;
+export const getAdmin = state => getAccount(state).admin;
 
-export const getLoggedInAt = state => getState(state).loggedInAt;
+export const getLoggedInAt = state => getAccount(state).loggedInAt;
 
-export const getLoginError = state => getState(state).error;
+export const getLoginError = state => getAccount(state).error;
 
-export const getRegistrationStatus = state => getState(state).registrationStatus;
+export const getRegistrationStatus = state => getAccount(state).registrationStatus;
 
-export const getOrderNewPasswordStatus = state => getState(state).orderNewPasswordStatus;
+export const getOrderNewPasswordStatus = state => getAccount(state).orderNewPasswordStatus;

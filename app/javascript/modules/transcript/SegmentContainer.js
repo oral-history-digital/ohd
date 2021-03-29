@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
-import { getCurrentInterview, getProjects, getUserContents, getCurrentAccount, getPeople } from 'modules/data';
+import { getCurrentInterview, getProjects, getUserContents, getCurrentAccount, getPeople, getSegmentsStatus } from 'modules/data';
 import Segment from './Segment';
 
 const mapStateToProps = state => ({
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
     interview: getCurrentInterview(state),
     userContents: getUserContents(state),
-    statuses: state.data.statuses.segments,
+    statuses: getSegmentsStatus(state),
     account: getCurrentAccount(state),
     editView: getEditView(state),
     people: getPeople(state),

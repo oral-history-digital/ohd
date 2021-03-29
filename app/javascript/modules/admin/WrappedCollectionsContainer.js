@@ -4,7 +4,7 @@ import { getLocale, getLocales, getProjectId, getTranslations } from 'modules/ar
 import { setQueryParams } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getCollections } from 'modules/data';
+    getCollections, getCollectionsStatus } from 'modules/data';
 import { getCookie } from 'modules/persistence';
 import WrappedDataList from './WrappedDataList';
 
@@ -19,8 +19,8 @@ const mapStateToProps = (state) => {
         account: getCurrentAccount(state),
         editView: getCookie('editView') === 'true',
         data: getCollections(state),
-        dataStatus: state.data.statuses.collections,
-        resultPagesCount: state.data.statuses.collections.resultPagesCount,
+        dataStatus: getCollectionsStatus(state),
+        resultPagesCount: getCollectionsStatus(state).resultPagesCount,
         query: state.search.collections.query,
         scope: 'collection',
         baseTabIndex: 4 + project.has_map,

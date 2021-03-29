@@ -17,6 +17,10 @@ const state = {
     },
 };
 
+test('getAccount retrieves whole account', () => {
+    expect(selectors.getAccount(state)).toEqual(state[NAME]);
+});
+
 test('getIsLoggedIn retrieves login status', () => {
     expect(selectors.getIsLoggedIn(state)).toEqual(state[NAME].isLoggedIn);
 });

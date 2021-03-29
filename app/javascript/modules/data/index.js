@@ -9,11 +9,14 @@ export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getFeaturedInterviewsFetched, getLanguages, getPeople, getProjects,
     getRootRegistryEntry, getRootRegistryEntryFetched,
     getRegistryReferenceTypesFetched,
-    getRootRegistryEntryReload, getRegistryEntries, getRegistryEntriesStatus,
-    getRegistryReferenceTypesStatus, getRegistryReferenceTypes,
+    getRootRegistryEntryReload, getRegistryEntries, getRegistryReferenceTypes,
     getCollections, getCurrentInterviewee, getInterviewee,
-    getContributionTypes, getPeopleStatus, getMediaStreams,
-    getInterviews, getTaskTypes, getUserContents }
+    getContributionTypes, getInterviewsStatus, getRegistryEntriesStatus, getRegistryReferenceTypesStatus,
+    getCollectionsStatus, getLanguagesStatus, getPeopleStatus, getSegmentsStatus, getAccountsStatus,
+    getRolesStatus, getPermissionsStatus, getProjectsStatus, getTaskTypesStatus, getUserContentsStatus,
+    getContributionsStatus, getUserRegistrationsStatus, getHeadingsStatus, getSpeakerDesignationsStatus,
+    getRefTreeStatus, getTasksStatus, getMarkTextStatus,
+    getMediaStreams, getInterviews, getTaskTypes, getUserContents }
     from './selectors/dataSelectors';
 export { getIsCatalog, getIsCampscapesProject, getProjectTranslation,
     getShowFeaturedInterviews, getShowStartPageVideo } from './selectors/projectSelectors';

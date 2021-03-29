@@ -4,7 +4,7 @@ import { getLocale, getLocales, getProjectId, getTranslations, getEditView } fro
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getPeople } from 'modules/data';
+    getPeople, getPeopleStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
@@ -18,8 +18,8 @@ const mapStateToProps = (state) => {
         account: getCurrentAccount(state),
         editView: getEditView(state),
         data: getPeople(state),
-        dataStatus: state.data.statuses.people,
-        resultPagesCount: state.data.statuses.people.resultPagesCount,
+        dataStatus: getPeopleStatus(state),
+        resultPagesCount: getPeopleStatus(state).resultPagesCount,
         query: state.search.people.query,
         scope: 'person',
         sortAttribute: 'name',

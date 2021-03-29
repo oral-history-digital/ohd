@@ -4,7 +4,7 @@ import { searchInInterview } from 'modules/search';
 import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations,
     getSelectedArchiveIds, getEditView } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeople,
-    getLanguages } from 'modules/data';
+    getLanguages, getPeopleStatus, getInterviewsStatus, getLanguagesStatus } from 'modules/data';
 import InterviewPreview from './InterviewPreview';
 
 const mapStateToProps = (state, props) => {
@@ -18,14 +18,14 @@ const mapStateToProps = (state, props) => {
         translations: getTranslations(state),
         query: state.search.archive.query,
         selectedArchiveIds: getSelectedArchiveIds(state),
-        statuses: state.data.statuses.interviews,
+        statuses: getInterviewsStatus(state),
         interviewSearchResults: state.search.interviews,
         editView: getEditView(state),
         account: getCurrentAccount(state),
         people: getPeople(state),
-        peopleStatus: state.data.statuses.people,
+        peopleStatus: getPeopleStatus(state),
         languages: getLanguages(state),
-        languagesStatus: state.data.statuses.languages,
+        languagesStatus: getLanguagesStatus(state),
         interviewee: getInterviewee(state, props),
         optionsScope: 'search_facets' // for the humanReadable function
     }

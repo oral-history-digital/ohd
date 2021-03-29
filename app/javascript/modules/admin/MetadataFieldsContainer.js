@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { getLocale, getTranslations, getProjectId } from 'modules/archive';
 import { closeArchivePopup } from 'modules/ui';
-import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
+import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentAccount, getRegistryReferenceTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 import MetadataFieldFormContainer from './MetadataFieldFormContainer';
 import MetadataFieldShow from './MetadataFieldShow';
@@ -19,7 +19,7 @@ const mapStateToProps = state => {
         //
         data: project.metadata_fields,
         scope: 'metadata_field',
-        joinDataStatus: state.data.statuses.registry_reference_types,
+        joinDataStatus: getRegistryReferenceTypesStatus(state),
         joinDataScope: 'registry_reference_types',
         detailsAttributes: [
             "name",
