@@ -181,7 +181,8 @@ export default class Form extends React.Component {
     components() {
         return {
             select: SelectContainer,
-            registryEntrySelect: this.props.treeSelectEnabled ? TreeSelectContainer : RegistryEntrySelectContainer,
+            registryEntrySelect: RegistryEntrySelectContainer,
+            registryEntryTreeSelect: this.props.treeSelectEnabled ? TreeSelectContainer : RegistryEntrySelectContainer,
             input: InputContainer,
             richTextEditor: RichTextEditor,
             textarea: TextareaContainer,
