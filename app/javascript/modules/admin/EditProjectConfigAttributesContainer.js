@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: "archive_domain",
-                validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
+                //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
                 help: 'activerecord.attributes.project.archive_domain_help'
             },
             {
