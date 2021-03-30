@@ -22,7 +22,7 @@ export default class InterviewLocations extends React.Component {
     }
 
     fetch() {
-        this.props.fetchLocations(`${pathBase(this.props)}/location`, this.props.archiveId);
+        this.props.fetchLocations(`${pathBase(this.props)}/locations`, this.props.archiveId);
     }
 
     render() {
