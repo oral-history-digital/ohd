@@ -32,6 +32,7 @@ export default class Locations extends React.Component {
                 bounds={locations}
                 maxZoom={16}
                 ref={(map) => { this.map = map; }}
+                scrollWheelZoom={false}
             >
                 <TileLayer
                     url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
