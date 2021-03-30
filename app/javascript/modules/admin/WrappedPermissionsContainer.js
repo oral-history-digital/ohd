@@ -2,7 +2,8 @@ import { connect } from 'react-redux';
 
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount, getPermissionsStatus } from 'modules/data';
+import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
+    getPermissions, getPermissionsStatus } from 'modules/data';
 import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import WrappedDataList from './WrappedDataList';
 
@@ -16,7 +17,7 @@ const mapStateToProps = (state) => {
         translations: getTranslations(state),
         account: getCurrentAccount(state),
         editView: getEditView(state),
-        data: state.data.permissions,
+        data: getPermissions(state),
         dataStatus: getPermissionsStatus(state),
         resultPagesCount: getPermissionsStatus(state).resultPagesCount,
         query: state.search.permissions.query,

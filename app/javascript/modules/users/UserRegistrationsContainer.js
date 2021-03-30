@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setQueryParams } from 'modules/search';
-import { fetchData, getProjects, getUserRegistrationsStatus } from 'modules/data';
+import { fetchData, getProjects, getUserRegistrations, getUserRegistrationsStatus } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import UserRegistrations from './UserRegistrations';
 
@@ -11,7 +11,7 @@ const mapStateToProps = state => ({
     projects: getProjects(state),
     locale: getLocale(state),
     translations: getTranslations(state),
-    userRegistrations: state.data.user_registrations,
+    userRegistrations: getUserRegistrations(state),
     resultPagesCount: getUserRegistrationsStatus(state).resultPagesCount,
     query: state.search.user_registrations.query,
     isUserRegistrationSearching: state.search.isUserRegistrationSearching,

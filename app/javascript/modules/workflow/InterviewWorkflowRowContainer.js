@@ -6,7 +6,7 @@ import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslati
     getEditView, getSelectedArchiveIds } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeople,
     getLanguages, getCollections, getInterviews, getPeopleStatus, getCollectionsStatus,
-    getLanguagesStatus, getAccountsStatus, getTasksStatus } from 'modules/data';
+    getLanguagesStatus, getAccounts, getAccountsStatus, getTasksStatus, getTasks } from 'modules/data';
 import InterviewWorkflowRow from './InterviewWorkflowRow';
 
 const mapStateToProps = (state, props) => {
@@ -30,9 +30,9 @@ const mapStateToProps = (state, props) => {
         collectionsStatus: getCollectionsStatus(state),
         interviews: getInterviews(state),
         interviewee: getInterviewee(state, props),
-        tasks: state.data.tasks,
+        tasks: getTasks(state),
         tasksStatus: getTasksStatus(state),
-        userAccounts: state.data.accounts,
+        userAccounts: getAccounts(state),
         userAccountsStatus: getAccountsStatus(state),
     }
 }
