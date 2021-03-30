@@ -222,11 +222,9 @@ class ApplicationController < ActionController::Base
   end
 
   def country_keys
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-country-keys") do
-      current_project.available_locales.inject({}) do |mem, locale|
-        mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
-        mem
-      end
+    current_project.available_locales.inject({}) do |mem, locale|
+      mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
+      mem
     end
   end
 
