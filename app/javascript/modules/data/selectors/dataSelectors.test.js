@@ -139,6 +139,29 @@ const state = {
                 name: 'Vorname',
             },
         },
+        roles: {
+            1: {
+                id: 1,
+                type: 'Role',
+            },
+        },
+        permissions: {
+            92: {
+                id: 92,
+                type: 'Permission',
+            },
+        },
+        segments: {
+            99015: {
+                type: 'Segment',
+            },
+        },
+        tasks: {
+            35: {
+                id: 35,
+                type: 'Task',
+            },
+        },
         task_types: {
             3: {
                 id: 3,
@@ -155,6 +178,7 @@ const state = {
                 media_id: 'za003',
             },
         },
+        user_registrations: {},
         random_featured_interviews: {
             'cd009': {
                 id: 23,
@@ -294,6 +318,14 @@ test('getCurrentAccount gets account object of current user', () => {
     expect(selectors.getCurrentAccount(state)).toEqual(state.data.accounts.current);
 });
 
+test('getPermissions gets permissions object', () => {
+    expect(selectors.getPermissions(state)).toEqual(state.data.permissions);
+});
+
+test('getRoles gets roles object', () => {
+    expect(selectors.getRoles(state)).toEqual(state.data.roles);
+});
+
 test('getRegistryEntries gets registry entries object', () => {
     expect(selectors.getRegistryEntries(state)).toEqual(state.data.registry_entries);
 });
@@ -310,12 +342,24 @@ test('getRegistryNameTypes gets registry name types object', () => {
     expect(selectors.getRegistryNameTypes(state)).toEqual(state.data.registry_name_types);
 });
 
+test('getSegments gets segments object', () => {
+    expect(selectors.getSegments(state)).toEqual(state.data.segments);
+});
+
+test('getTasks gets tasks object', () => {
+    expect(selectors.getTasks(state)).toEqual(state.data.tasks);
+});
+
 test('getTaskTypes gets task types object', () => {
     expect(selectors.getTaskTypes(state)).toEqual(state.data.task_types);
 });
 
 test('getUserContents gets user contents object', () => {
     expect(selectors.getUserContents(state)).toEqual(state.data.user_contents);
+});
+
+test('getUserRegistrations gets user registrations object', () => {
+    expect(selectors.getUserRegistrations(state)).toEqual(state.data.user_registrations);
 });
 
 test('getRandomFeaturedInterviews gets featured interviews object', () => {

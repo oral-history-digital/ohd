@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { getLocale, getLocales, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getPermissionsStatus } from 'modules/data';
+    getPermissions, getPermissionsStatus } from 'modules/data';
 import DataList from './DataList';
 
 const mapStateToProps = (state) => {
@@ -27,7 +27,7 @@ const mapStateToProps = (state) => {
             {
                 elementType: 'select',
                 attribute: 'permission_id',
-                values: state.data.permissions,
+                values: getPermissions(state),
                 withEmpty: true,
                 validate: function(v){return v.length > 0}
             }
