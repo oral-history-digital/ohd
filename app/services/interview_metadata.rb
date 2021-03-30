@@ -23,7 +23,7 @@ class InterviewMetadata
         'xmlns' => 'http://www.clarin.eu/cmd/',
         'xmlns:xsi' => 'http://www.w3.org/2001/XMLSchema-instance',
         'CMDVersion' => '1.1',
-        'xsi:schemaLocation' => 'http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1387365569699/xsd') do
+        'xsi:schemaLocation' => 'http://www.clarin.eu/cmd/ http://catalog.clarin.eu/ds/ComponentRegistry/rest/registry/profiles/clarin.eu:cr1:p_1336550377513/xsd') do
           xml.Header {
             xml.MdCreator 'Nokogiri'
             xml.MdCreationDate creation_date
