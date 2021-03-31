@@ -1,21 +1,56 @@
-/**
- * Segment component
- */
-
 .Segment {
-  @include clearfix;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
+  display: flex;
+  padding-left: 2.2rem;
 }
 
 .Segment--withSpeaker {
-  padding-top: 1rem;
+  margin-top: 1.5rem;
+  padding-left: 0;
 }
 
-.Segment .fa {
+.Segment--withSpeaker:first-of-type {
+  margin-top: 0;
+}
+
+.Segment-icon {
+  color: var(--primary-color) !important;
+  display: inline-block;
+  //font-size: 1.25rem;
+  line-height: 1.5rem;
+  margin: 0 !important;
+  width: 2.2rem;
+  flex-basis: 2.2rem;
+  flex-shrink: 0;
+}
+
+.Segment-text {
+  background-color: transparent;
+  border: none;
+  color: $body-text-color;
+  cursor: pointer;
+  //flex-basis: 70%;
+  font-family: $font-family;
+  line-height: 1.5rem;
+  max-width: 40rem;
+  outline: none;
+  padding: 0;
+  text-align: left;
+  transition-property: background-color, color;
+  transition-duration: $transition-duration;
+}
+
+.Segment-text.is-active {
+  background-color: rgba(255, 250, 129, 0.5);
+}
+
+.Segment-text:hover {
   color: var(--primary-color);
-  font-size: 1.25rem;
-  &.empty {
-    color: var(--editorial-color);
-  }
+}
+
+.Segment-text:focus {
+  box-shadow: 0 0 0 0.25rem $focus-color;
+}
+
+.Segment-buttons {
+  flex-basis: 20%;
 }
