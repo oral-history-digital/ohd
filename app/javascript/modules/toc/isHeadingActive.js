@@ -17,9 +17,9 @@ export default function isHeadingActive({
     }
 
     if (
+        typeof nextHeadingTape === 'undefined' && typeof nextHeadingTime === 'undefined' ||
         currentTape === nextHeadingTape && currentTime < nextHeadingTime ||
-        currentTape < nextHeadingTape ||
-        typeof nextHeadingTape === 'undefined' && typeof nextHeadingTime === 'undefined'
+        currentTape < nextHeadingTape
     ) {
         isBeforeNextHeading = true;
     }

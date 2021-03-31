@@ -7,6 +7,7 @@ import { SEGMENTS_AFTER, SEGMENTS_BEFORE } from './constants';
 import segmentsForTape from './segmentsForTape';
 import SegmentContainer from './SegmentContainer';
 import sortedSegmentsWithActiveIndex from './sortedSegmentsWithActiveIndex';
+import isSegmentActive from './isSegmentActive';
 
 export default class Transcript extends React.Component {
     constructor(props) {
@@ -135,7 +136,7 @@ export default class Transcript extends React.Component {
 
         let speaker, speakerId;
 
-        return shownSegments.map((segment) => {
+        return shownSegments.map((segment, index, array) => {
             segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
             if (
                 (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
@@ -145,14 +146,16 @@ export default class Transcript extends React.Component {
                 speakerId = segment.speaker_id;
                 speaker = segment.speaker;
             }
-            let active = false;
-            if (
-                segment.time <= mediaTime + 15 &&
-                segment.time >= mediaTime - 15 &&
-                segment.tape_nbr === tape
-            ) {
-                active = true;
-            }
+
+            const nextSegment = array[index + 1];
+            const active = isSegmentActive({
+                thisSegmentTape: segment.tape_nbr,
+                thisSegmentTime: segment.time,
+                nextSegmentTape: nextSegment?.tape_nbr,
+                nextSegmentTime: nextSegment?.time,
+                currentTape: tape,
+                currentTime: mediaTime,
+            });
 
             return (
                 <SegmentContainer
