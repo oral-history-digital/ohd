@@ -200,7 +200,7 @@ Transcript.propTypes = {
     interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object.isRequired,
     segmentsStatus: PropTypes.object.isRequired,
-    userContentsStatus: PropTypes.object.isRequired,
+    userContentsStatus: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
     handleTranscriptScroll: PropTypes.func.isRequired,
 };
