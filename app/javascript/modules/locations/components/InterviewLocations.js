@@ -35,7 +35,7 @@ export default class InterviewLocations extends React.Component {
                 }
                 {
                     error && !loading && (
-                        <p style={{ lineHeight: '1.5rem' }}>
+                        <p className="paragraph">
                             {t(this.props, 'modules.locations.error')} {error}
                         </p>
                     )
