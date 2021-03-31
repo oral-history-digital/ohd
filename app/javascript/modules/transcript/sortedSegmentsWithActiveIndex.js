@@ -18,6 +18,5 @@ export default function sortedSegmentsWithActiveIndex(time, props) {
         }
     }
 
-    let l = sortedSegments.length;
     return [activeSegment, sortedSegments, index];
 }

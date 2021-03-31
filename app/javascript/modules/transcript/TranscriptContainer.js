@@ -15,7 +15,6 @@ const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     interviewee: getCurrentInterviewee(state),
-    people: getPeople(state),
     tape: getCurrentTape(state),
     mediaTime: getMediaTime(state),
     transcriptScrollEnabled: getTranscriptScrollEnabled(state),

@@ -25,9 +25,11 @@ export default class Transcript extends React.Component {
     }
 
     componentDidMount() {
+        const { locale, projectId, projects } = this.props;
+
         this.loadSegments();
         if (!this.props.userContentsStatus) {
-            this.props.fetchData(this.props, 'user_contents');
+            this.props.fetchData({ locale, projectId, projects }, 'user_contents');
         }
         window.addEventListener('wheel', this.handleScroll);
         this.scrollToActiveSegment();
@@ -68,16 +70,20 @@ export default class Transcript extends React.Component {
     }
 
     loadSegments() {
+        const { locale, projectId, projects, archiveId } = this.props;
+
         if (
             this.props.loadSegments &&
-            !this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`]
+            !this.props.segmentsStatus[`for_interviews_${archiveId}`]
         ) {
-            this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'segments');
+            this.props.fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'segments');
         }
     }
 
     scrollToActiveSegment() {
-        let currentSegment = sortedSegmentsWithActiveIndex(this.props.mediaTime, this.props)[0];
+        const { mediaTime, interview, tape } = this.props;
+
+        let currentSegment = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape })[0];
         let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
         if (activeSegmentElement) {
             let offset = activeSegmentElement.offsetTop;
@@ -113,7 +119,7 @@ export default class Transcript extends React.Component {
 
     transcripted(locale) {
         let first = this.firstSegment();
-        return first && (first.text.hasOwnProperty(locale) || first.text.hasOwnProperty(`${locale}-public`));
+        return first && (Object.prototype.hasOwnProperty.call(first.text, locale) || Object.prototype.hasOwnProperty.call(first.text, `${locale}-public`));
     }
 
     transcript(){
@@ -129,7 +135,7 @@ export default class Transcript extends React.Component {
 
         let speaker, speakerId;
 
-        return shownSegments.map((segment, index) => {
+        return shownSegments.map((segment) => {
             segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
             if (
                 (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
@@ -170,7 +176,6 @@ export default class Transcript extends React.Component {
             if (this.props.originalLocale) {
                 return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
             } else {
-                //return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_translation');
                 return this.transcripted(this.firstTranslationLocale()) ? this.transcript() : t(this.props, 'without_translation');
             }
         } else {
@@ -180,5 +185,23 @@ export default class Transcript extends React.Component {
 }
 
 Transcript.propTypes = {
+    originalLocale: PropTypes.bool,
+    loadSegments: PropTypes.bool,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    archiveId: PropTypes.string.isRequired,
+    mediaTime: PropTypes.number.isRequired,
+    tape: PropTypes.number.isRequired,
+    transcriptScrollEnabled: PropTypes.bool.isRequired,
+    interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object.isRequired,
+    segmentsStatus: PropTypes.object.isRequired,
+    userContentsStatus: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+    handleTranscriptScroll: PropTypes.func.isRequired,
+};
+
+Transcript.defaultProps = {
+    originalLocale: false,
 };
