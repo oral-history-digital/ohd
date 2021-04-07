@@ -48,7 +48,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
 
     csv.each_with_index do |data, index|
       begin
-        unless data[0].blank? 
+        unless index == 0 || data[0].blank? 
           #
           # archive_id;photo_id;photo-file-name;description;date;place;photographer;license;format
           #
@@ -80,7 +80,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
           photo.write_iptc_metadata({title: data[3]}) if data[3]
 
           Sunspot.reindex interview
-          interview.touch
+          photo.interview.touch
           File.delete(photos[index]) if File.exist?(photos[index])
 
           if photo.id
@@ -96,7 +96,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
   end
 
   def log(text, error=true)
-    File.open(File.join(Rails.root, 'tmp', 'photo_import.log'), 'a') do |f|
+    File.open(File.join(Rails.root, 'log', 'photo_import.log'), 'a') do |f|
       f.puts "* #{DateTime.now} - #{error ? 'ERROR' : 'INFO'}: #{text}"
     end
   end
