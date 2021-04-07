@@ -1,4 +1,5 @@
 require 'rubygems'
+require 'pry'
 require 'spork'
 require 'simplecov'
 SimpleCov.start 'rails'
