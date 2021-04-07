@@ -7,9 +7,13 @@ RSpec.describe RegistryEntriesController, type: :controller do
     FactoryBot.create :registry_entry
   end
 
+  let :project do
+    FactoryBot.create :project
+  end
+
   describe 'GET csv' do
     it 'returns a 200' do
-      get :index, params: { root_id: registry_entry.id, lang: :de, locale: :de }, format: :csv
+      get :index, params: { root_id: registry_entry.id, lang: :de, locale: :de, project_id: project.cache_key_prefix }, format: :csv
 
       expect(response).to have_http_status(:ok)
     end
