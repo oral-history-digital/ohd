@@ -71,7 +71,7 @@ class Segment < ApplicationRecord
     after_save do
       # run this only after update of original e.g. 'de' version!
       if (text_previously_changed?) && locale.length == 2
-        segment.write_other_versions(text, locale)
+        segment.write_other_versions(locale)
       end
       if (mainheading_previously_changed? || subheading_previously_changed?)
         has_heading = !self.class.where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')").
@@ -81,14 +81,14 @@ class Segment < ApplicationRecord
     end
   end
 
-  def write_other_versions(text, locale)
+  def write_other_versions(locale)
     [:public, :subtitle].each do |version|
-      update_attributes(text: enciphered_text(version, text), locale: "#{locale}-#{version}")
+      update_attributes(text: enciphered_text(version, locale), locale: "#{locale}-#{version}")
     end
   end
 
-  def enciphered_text(version, text_original)
-    text_original ||= ''
+  def enciphered_text(version, locale)
+    text_original = text(locale) || ''
     # TODO: replace with utf8 À
     text_enciphered =
       case version
@@ -105,7 +105,7 @@ class Segment < ApplicationRecord
           gsub(/<=>/, " ").                                                                                                                       # <=>
           gsub(/<l\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <l(es) bla bla>
           gsub(/<ld\((.+)\)\s+(.*?)>/, '\2').                                                                                                      # e.g. <ld(Dialekt) bla bla>
-          gsub(/<v\((.+)\)>/, '').                                                                                                                # e.g. <v(bla bla)>
+          gsub(/ <v\((.+?)\)>/, '').                                                                                                                # e.g. <v(bla bla)>
           gsub(/<s\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <s(lachend) bla bla>
           gsub(/<sim\s+(.*?)>/, '\1').                                                                                                             # e.g. <sim bla bla>
           gsub(/<nl\((.+)\)\s+(.*?)>/, '\2').                                                                                                      # e.g. <nl(Geräusch) bla bla>
