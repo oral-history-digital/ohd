@@ -25,7 +25,7 @@ Rails.application.routes.draw do
     resources :registry_references, only: [:create, :update, :destroy, :index]
     resources :registry_reference_types, only: [:create, :update, :index, :destroy]
     resources :annotations, only: [:create, :update, :destroy]
-    get "locations", to: "registry_references#locations", :as => :locations
+    get "locations", to: "registry_references#locations"
 
     resources :people do
       resources :biographical_entries, only: [:destroy]
