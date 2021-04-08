@@ -44,57 +44,53 @@ class Interview < ApplicationRecord
            :source => :person,
            :through => :contributions
 
-  #has_many :interview_contributors,
   has_many :interviewers,
-           -> {where("contributions.contribution_type = 'interviewer'")},
+           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'interviewer'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :transcript_contributors,
   has_many :transcriptors,
-           -> {where("contributions.contribution_type = 'transcriptor'")},
+           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'transcriptor'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   #has_many :translation_contributors,
   has_many :translators,
-           -> {where("contributions.contribution_type = 'translator'")},
+           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'translator'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   has_many :cinematographers,
-           -> {where("contributions.contribution_type = 'cinematographer'")},
+           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'cinematographer'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
   has_many :quality_managers,
-           -> {where("contributions.contribution_type = 'quality_manager'")},
+           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'quality_manager'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
 
-  #has_many :proofreading_contributors,
   has_many :proofreaders,
-           -> {where("contributions.contribution_type": 'proofreader')},
+           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'proofreader'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  #has_many :segmentation_contributors,
   has_many :segmentators,
-           -> {where("contributions.contribution_type = 'segmentator'")},
+           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'segmentator'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
 
-  #has_many :documentation_contributors,
   has_many :researchers,
-           -> {where("contributions.contribution_type = 'research'")},
+           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'research'")},
            :class_name => 'Person',
            :source => :person,
            :through => :contributions
