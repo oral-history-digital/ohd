@@ -106,11 +106,11 @@ class Segment < ApplicationRecord
           gsub(/<l\((.+?)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <l(es) bla bla>
           gsub(/<ld\((.+?)\)\s+(.*?)>/, '\2').                                                                                                      # e.g. <ld(Dialekt) bla bla>
           gsub(/<v\((.+?)\)>/, '').                                                                                                                # e.g. <v(bla bla)>
-          gsub(/<s\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <s(lachend) bla bla>
+          gsub(/<s\((.+?)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <s(lachend) bla bla>
           gsub(/<sim\s+(.*?)>/, '\1').                                                                                                             # e.g. <sim bla bla>
-          gsub(/<nl\((.+)\)\s+(.*?)>/, '\2').                                                                                                      # e.g. <nl(Geräusch) bla bla>
+          gsub(/<nl\((.+?)\)\s+(.*?)>/, '\2').                                                                                                      # e.g. <nl(Geräusch) bla bla>
           gsub(/<g\((.+?)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <g(Gestik) bla bla>
-          gsub(/<m\((.+)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <m(Mimik) bla bla>
+          gsub(/<m\((.+?)\)\s+(.*?)>/, '\2').                                                                                                       # e.g. <m(Mimik) bla bla>
           # zwar
           gsub(/\[.*?\]/, "").                                                                                                                    # e.g. [Kommentar]
           gsub(/\[\.\.\.\]/, "XXX").                                                                                                              # e.g. [...]
@@ -126,10 +126,10 @@ class Segment < ApplicationRecord
       when :public
         text_original.
           # colonia
-          gsub(/<res\s+(.*)>/, "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz (xy Minuten) nicht veröffentlicht").  # e.g. <res bla bla>
-          gsub(/<an\s+(.*)>/, "XXX").                                                                                                             # e.g. <an bla bla>
-          gsub(/<n\(([^>]*)\)>/, '(\1)').                                                                                                        # <n(1977)>
-          gsub(/<i\((.*)\)>/, "<c(Pause)>").                                                                                                      # <i(Batteriewechsel)>
+          gsub(/<res\s+(.*?)>/, "Auf Wunsch des Interviewten oder aus rechtlichen Gründen wird diese Sequenz (xy Minuten) nicht veröffentlicht").  # e.g. <res bla bla>
+          gsub(/<an\s+(.*?)>/, "XXX").                                                                                                             # e.g. <an bla bla>
+          gsub(/<n\(([^>]*?)\)>/, '(\1)').                                                                                                        # <n(1977)>
+          gsub(/<i\((.*?)\)>/, "<c(Pause)>").                                                                                                      # <i(Batteriewechsel)>
           # zwar
           gsub(/\[\.\.\.\]/, "XXX").                                                                                                              # e.g. <an bla bla>
           gsub(/\{.*?\}/, "").                                                                                                                    # e.g. {[laughs silently]}
@@ -167,7 +167,8 @@ class Segment < ApplicationRecord
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       if opts[:speaker_id]
-        opts.delete(:next_timecode)
+        next_timecode = opts.delete(:next_timecode)
+        opts.update(duration: next_timecode - opts[:timecode])
         segment.update_attributes(opts)
       else
         assign_speakers_and_update_text(segment, opts)
@@ -395,7 +396,15 @@ class Segment < ApplicationRecord
   def as_vtt_subtitles(lang)
     # TODO: rm strip
     segment_text = text("#{lang}-subtitle") || text("#{lang}-public")
-    end_time = self.next.try(:time) || 9999
+    end_time = time
+    if duration
+      end_time += duration
+    else
+      # if there is no next segment add 7s (approximated segment time)
+      end_time = self.next ? self.next.time : self.time + 7
+      # lazy update duration
+      update_attributes duration: end_time - self.time
+    end
     "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
   end
 

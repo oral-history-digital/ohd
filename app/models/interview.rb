@@ -158,7 +158,6 @@ class Interview < ApplicationRecord
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
   validates :media_type, inclusion: {in: %w(video audio)}
-  validates :description, length: { maximum: 300 }
 
   #has_one_attached :still_image
 
@@ -388,25 +387,27 @@ class Interview < ApplicationRecord
   end
 
   after_initialize do
-    project.registry_reference_type_metadata_fields.each do |field|
-      define_singleton_method field.name do
-        case field["ref_object_type"]
-        when "Person"
-          (interviewee && interviewee.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
-        when "Interview"
-          registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
-        when "Segment"
-          segment_registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq
-        else
-          []
+    if project
+      project.registry_reference_type_metadata_fields.each do |field|
+        define_singleton_method field.name do
+          case field["ref_object_type"]
+          when "Person"
+            (interviewee && interviewee.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
+          when "Interview"
+            registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
+          when "Segment"
+            segment_registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq
+          else
+            []
+          end
         end
       end
-    end
 
-    OaiRepository.repository_name = project.name[project.default_locale]
-    OaiRepository.repository_url = project.archive_domain
-    OaiRepository.record_prefix = project.archive_domain
-    OaiRepository.admin_email = project.contact_email
+      OaiRepository.repository_name = project.name[project.default_locale]
+      OaiRepository.repository_url = project.archive_domain
+      OaiRepository.record_prefix = project.archive_domain
+      OaiRepository.admin_email = project.contact_email
+    end
   end
 
   def lang
@@ -444,7 +445,9 @@ class Interview < ApplicationRecord
 
   def to_vtt(lang, tape_number=1)
     vtt = "WEBVTT\n"
-    segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(lang)}\n"}
+    tapes.where(number: tape_number).first.segments.includes(:translations).each_with_index do |segment, index | 
+      vtt << "\n#{index + 1}\n#{segment.as_vtt_subtitles(lang)}\n"
+    end
     vtt
   end
 
