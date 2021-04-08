@@ -20,9 +20,6 @@ export default function Carousel({
         slidesToScroll: 1,
         adaptiveHeight: true,
         initialSlide: n || 0,
-        //variableWidth: true
-        //centerMode: true
-        //autoplay: true
     };
 
     return (
