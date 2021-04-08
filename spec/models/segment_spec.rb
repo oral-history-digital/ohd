@@ -2,7 +2,7 @@ require File.expand_path(File.dirname(__FILE__) + '/../spec_helper')
 
 describe Segment do
 
-  describe "enciphered text" do
+  describe "subtitle-enciphered-text" do
     it "should parse <p2> correctly" do
       segment = segment_with_translations([['de', "Ich war <p3> bei Maria Malta, als <p2> das passierte."]])
       expect(segment.enciphered_text(:subtitle, 'de')).to eq("Ich war bei Maria Malta, als das passierte.")
@@ -48,6 +48,15 @@ describe Segment do
       expect(segment.enciphered_text(:subtitle, 'de')).to eq("Was soll ich dazu sagen?")
     end
 
+    it "should parse <? bla bla> correctly" do
+      segment = segment_with_translations([['de', "<g(Gestikulieren) „Ja, ja, ich bin da Flughafenchef\"> und <? ich hab gesagt „Komm, äh\"> <v(Lachen)>"]])
+      expect(segment.enciphered_text(:subtitle, 'de')).to eq("„Ja, ja, ich bin da Flughafenchef\" und (ich hab gesagt „Komm, äh\"?) ")
+    end
+
+    it "should parse (unverständlich, 1 Wort) correctly" do
+      segment = segment_with_translations([['de', "wir hatten damals Rinder (unverständlich, 1 Wort) und ich ging"]])
+      expect(segment.enciphered_text(:subtitle, 'de')).to eq("wir hatten damals Rinder (...?) und ich ging")
+    end
   end
 
 end

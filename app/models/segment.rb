@@ -115,10 +115,10 @@ class Segment < ApplicationRecord
           gsub(/\[.*?\]/, "").                                                                                                                    # e.g. [Kommentar]
           gsub(/\[\.\.\.\]/, "XXX").                                                                                                              # e.g. [...]
           gsub(/\s*\([-|\d]+\)/, "").                                                                                                             # e.g. (-), (---), (6)
-          gsub(/\(.*?, .*?\)/, "(...?)").                                                                                                         # e.g. (unverständlich, 1 Wort)
           gsub(/\{.*?\}/, "").                                                                                                                    # e.g. {[laughs silently]}
           gsub("~", "").                                                                                                                          # e.g. Wo waren Sie ~en este tiempo~?
           gsub("...", "_").                                                                                                                       # e.g. ...
+          gsub(/\(unverständlich, \d+ \w+\)/, "(...?)").                                                                                          # e.g. (unverständlich, 1 Wort)
           gsub(" [---]", "").                                                                                                                     # e.g. Ich war [---] bei Maria Malta, als das passierte.
           gsub("(???) ", "(...?)").                                                                                                               # e.g. Nice grandparents, we played football, (???) it’s
           gsub("<***>", "").                                                                                                                      # e.g. <***>
