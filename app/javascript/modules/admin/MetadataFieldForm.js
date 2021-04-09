@@ -40,7 +40,7 @@ export default function MetadataFieldForm({
 
     const nameValuesForSource = () => {
         if (source === 'RegistryReferenceType') {
-            return registryReferenceTypes[registryReferenceTypeId]?.code;
+            return registryReferenceTypes && registryReferenceTypes[registryReferenceTypeId]?.code;
         } else {
             return NAME_VALUES[source];
         }
