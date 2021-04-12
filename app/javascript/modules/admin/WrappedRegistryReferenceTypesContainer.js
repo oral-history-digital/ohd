@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
-import { setQueryParams } from 'modules/search';
+import { setQueryParams, getRegistryReferenceTypesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
     getRegistryReferenceTypes, getRegistryReferenceTypesStatus } from 'modules/data';
@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
         data: getRegistryReferenceTypes(state),
         dataStatus: getRegistryReferenceTypesStatus(state),
         resultPagesCount: getRegistryReferenceTypesStatus(state).resultPagesCount,
-        query: state.search.registry_reference_types.query,
+        query: getRegistryReferenceTypesQuery(state),
         scope: 'registry_reference_type',
         sortAttribute: 'name',
         sortAttributeTranslated: true,

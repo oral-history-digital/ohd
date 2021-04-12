@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
-import { setQueryParams } from 'modules/search';
+import { setQueryParams, getPeopleQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
     getPeople, getPeopleStatus } from 'modules/data';
@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
         data: getPeople(state),
         dataStatus: getPeopleStatus(state),
         resultPagesCount: getPeopleStatus(state).resultPagesCount,
-        query: state.search.people.query,
+        query: getPeopleQuery(state),
         scope: 'person',
         sortAttribute: 'name',
         sortAttributeTranslated: true,

@@ -5,9 +5,14 @@ const state = {
     [NAME]: {
         archive: {
             facets: {
-                gender: {},
+                gender: {
+                    name: {
+                        en: 'Gender',
+                    },
+                },
             },
             query: {
+                fulltext: 'alice',
                 page: 1,
             },
             foundInterviews: [
@@ -20,35 +25,66 @@ const state = {
             resultsCount: 590,
         },
         map: {
+            facets: {
+                language_id: {
+                    name: {
+                        en: 'Language',
+                    },
+                },
+            },
             query: {
                 page: 1,
             },
-            foundMarkers: {},
+            foundMarkers: {
+                birth_location: {
+                    title: 'dummy',
+                },
+            },
         },
         interviews: {
-
+            za003: {
+                fulltext: 'poland',
+            },
         },
         registryEntries: {
             showRegistryEntriesTree: true,
             results: [],
         },
         user_registrations: {
-
+            query: {
+                workflow_state: 'account_confirmed',
+                page: 1,
+            },
         },
         roles: {
-
+            query: {
+                desc: 'interview',
+                page: 1,
+            },
         },
         task_types: {
-
+            query: {
+                label: 'protocol',
+                page: 1,
+            },
         },
         permissions: {
-
+            query: {
+                name: 'account',
+                page: 2,
+            },
         },
         people: {
-
+            query: {
+                first_name: 'marina',
+                page: 2,
+            },
         },
         registry_reference_types: {
-
+            query: {
+                name: 'acquaintance',
+                page: 1,
+            },
         },
         registry_name_types: {
 
@@ -57,10 +93,16 @@ const state = {
 
         },
         collections: {
-
+            query: {
+                name: 'israel',
+                page: 1,
+            },
         },
         languages: {
-
+            query: {
+                name: 'italian',
+                page: 2,
+            },
         },
         isMapSearching: true,
         isRegistryEntrySearching: true,
@@ -73,6 +115,10 @@ test('getArchiveFacets retrieves archive facets object', () => {
 
 test('getArchiveQuery retrieves archive query object', () => {
     expect(selectors.getArchiveQuery(state)).toEqual(state[NAME].archive.query);
+});
+
+test('getArchiveQueryFulltext retrieves archive query object fulltext part', () => {
+    expect(selectors.getArchiveQueryFulltext(state)).toEqual(state[NAME].archive.query.fulltext);
 });
 
 test('getArchiveFoundInterviews retrieves archive found interviews array', () => {
@@ -96,11 +142,15 @@ test('getFoundMarkers retrieves found map markers', () => {
 });
 
 test('getMarkersFetched retrieves if markers have been loaded', () => {
-    expect(selectors.getMarkersFetched(state)).toEqual(false);
+    expect(selectors.getMarkersFetched(state)).toEqual(true);
 });
 
 test('getMapQuery retrieves map query object', () => {
     expect(selectors.getMapQuery(state)).toEqual(state[NAME].map.query);
+});
+
+test('getMapFacets retrieves map facets object', () => {
+    expect(selectors.getMapFacets(state)).toEqual(state[NAME].map.facets);
 });
 
 test('getRegistryEntriesSearch retrieves registry entries part of search state', () => {
@@ -117,4 +167,40 @@ test('getIsMapSearching retrieves map search state', () => {
 
 test('getIsRegistryEntrySearching retrieves registry entry search state', () => {
     expect(selectors.getIsRegistryEntrySearching(state)).toEqual(state[NAME].isRegistryEntrySearching);
+});
+
+test('getPeopleQuery retrieves people query params', () => {
+    expect(selectors.getPeopleQuery(state)).toEqual(state[NAME].people.query);
+});
+
+test('getRegistryReferenceTypesQuery retrieves registry reference types query params', () => {
+    expect(selectors.getRegistryReferenceTypesQuery(state)).toEqual(state[NAME].registry_reference_types.query);
+});
+
+test('getCollectionsQuery retrieves collections query params', () => {
+    expect(selectors.getCollectionsQuery(state)).toEqual(state[NAME].collections.query);
+});
+
+test('getLanguagesQuery retrieves languages query params', () => {
+    expect(selectors.getLanguagesQuery(state)).toEqual(state[NAME].languages.query);
+});
+
+test('getRolesQuery retrieves roles query params', () => {
+    expect(selectors.getRolesQuery(state)).toEqual(state[NAME].roles.query);
+});
+
+test('getPermissionsQuery retrieves permissions query params', () => {
+    expect(selectors.getPermissionsQuery(state)).toEqual(state[NAME].permissions.query);
+});
+
+test('getTaskTypesQuery retrieves task types query params', () => {
+    expect(selectors.getTaskTypesQuery(state)).toEqual(state[NAME].task_types.query);
+});
+
+test('getUserRegistrationsQuery retrieves user registrations query params', () => {
+    expect(selectors.getUserRegistrationsQuery(state)).toEqual(state[NAME].user_registrations.query);
+});
+
+test('getInterviewSearch retrieves interview search results', () => {
+    expect(selectors.getInterviewSearch(state)).toEqual(state[NAME].interviews);
 });

@@ -5,6 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { submitDois, addRemoveArchiveId, setArchiveIds, getArchiveId, getLocale,
     getProjectId, getTranslations, getDoiResult } from 'modules/archive';
 import { deleteData, submitData, getProjects, getInterviewsStatus } from 'modules/data';
+import { getArchiveFoundInterviews } from 'modules/search';
 import AdminActions from './AdminActions';
 
 const mapStateToProps = state => ({
@@ -15,7 +16,7 @@ const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
     statuses: getInterviewsStatus(state),
     doiResult: getDoiResult(state),
-    archiveSearchResults: state.search.archive.foundInterviews,
+    archiveSearchResults: getArchiveFoundInterviews(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

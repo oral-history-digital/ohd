@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams } from 'modules/search';
+import { setQueryParams, getPermissionsQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
     getPermissions, getPermissionsStatus } from 'modules/data';
@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
         data: getPermissions(state),
         dataStatus: getPermissionsStatus(state),
         resultPagesCount: getPermissionsStatus(state).resultPagesCount,
-        query: state.search.permissions.query,
+        query: getPermissionsQuery(state),
         scope: 'permission',
         baseTabIndex: 5 + project.has_map,
         detailsAttributes: ['name', 'desc', 'klass', 'action_name'],

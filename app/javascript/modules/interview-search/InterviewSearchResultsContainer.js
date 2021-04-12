@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { searchInInterview } from 'modules/search';
+import { searchInInterview, getArchiveQueryFulltext } from 'modules/search';
 import { setArchiveId, getLocale, getArchiveId, getTranslations } from 'modules/archive';
 import { getMediaTime } from 'modules/media-player';
 import InterviewSearchResults from './InterviewSearchResults';
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
     locale: getLocale(state),
     translations: getTranslations(state),
     isInterviewSearching: state.search.isInterviewSearching,
-    fulltext: state.search.archive.query.fulltext,
+    fulltext: getArchiveQueryFulltext(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

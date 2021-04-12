@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getLocales, getProjectId, getTranslations } from 'modules/archive';
-import { setQueryParams } from 'modules/search';
+import { setQueryParams, getLanguagesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
     getLanguages, getLanguagesStatus } from 'modules/data';
@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
         data: getLanguages(state),
         dataStatus: getLanguagesStatus(state),
         resultPagesCount: getLanguagesStatus(state).resultPagesCount,
-        query: state.search.languages.query,
+        query: getLanguagesQuery(state),
         scope: 'language',
         baseTabIndex: 4 + project.has_map,
         //detailsAttributes: ['name'],

@@ -6,6 +6,7 @@ import { resetQuery, setQueryParams } from 'modules/search';
 import { fetchData, getCurrentProject, getProjects, getUserRegistrationsStatus } from 'modules/data';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import DataSearchForm from './DataSearchForm';
+import { getUserRegistrationsQuery } from '../search';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
@@ -14,7 +15,7 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
-        query: state.search.user_registrations.query,
+        query: getUserRegistrationsQuery(state),
         dataStatus: getUserRegistrationsStatus(state),
         scope: 'user_registration',
         searchableAttributes: [
