@@ -106,7 +106,7 @@ class Segment < ApplicationRecord
           gsub(/<s\((.+?)\)\s+(.*?)>/, '\2').                                                                                                     # e.g. <s(lachend) bla bla>
           gsub(/<sim\s+(.*?)>/, '\1').                                                                                                            # e.g. <sim bla bla>
           gsub(/<nl\((.+?)\)\s+(.*?)>/, '\2').                                                                                                    # e.g. <nl(Geräusch) bla bla>
-          gsub(/<g\((.+?)\)\s+(.*?)>/, '\2').                                                                                                     # e.g. <g(Gestik) bla bla>
+          gsub(/<g\((.+?)\)\s*(.*?)>/, '\2').                                                                                                     # e.g. <g(Gestik) bla bla>
           gsub(/<m\((.+?)\)\s+(.*?)>/, '\2').                                                                                                     # e.g. <m(Mimik) bla bla>
           # zwar
           gsub(/\[.*?\]/, "").                                                                                                                    # e.g. [Kommentar]
