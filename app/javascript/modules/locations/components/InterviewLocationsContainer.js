@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { getProjects } from 'modules/data';
@@ -16,8 +17,8 @@ const mapStateToProps = state => ({
     translations: getTranslations(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchLocations: (url, archiveId) => dispatch(fetchLocations(url, archiveId)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchLocations,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewLocations);

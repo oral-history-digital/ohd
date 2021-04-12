@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import MetadataFieldForm from './MetadataFieldForm';
 import { submitData } from 'modules/data';
-import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
+import { getLocale, getProjectId } from 'modules/archive';
 import { getRegistryReferenceTypes, getProjects, getCurrentProject } from 'modules/data';
-import { openArchivePopup, closeArchivePopup } from 'modules/ui';
+import { closeArchivePopup } from 'modules/ui';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
@@ -14,9 +15,9 @@ const mapStateToProps = state => ({
     registryReferenceTypes: getRegistryReferenceTypes(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup()),
-});
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+    closeArchivePopup,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MetadataFieldForm);

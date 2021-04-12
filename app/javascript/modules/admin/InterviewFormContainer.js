@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getLocale, getLocales, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
 import { submitData, getCurrentProject, getProjects, getCollections, getContributionTypes,
@@ -22,8 +23,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params))
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewForm);

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import { setLocale, getLocale, getLocales, getProjectId } from 'modules/archive';
@@ -15,9 +16,9 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    setLocale: locale => dispatch(setLocale(locale)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setLocale,
+}, dispatch);
 
 export default withRouter(connect(
     mapStateToProps,

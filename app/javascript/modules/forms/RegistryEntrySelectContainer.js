@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { fetchData, getProjects, getCurrentProject, getRegistryEntries, getRegistryEntriesStatus } from 'modules/data';
 import { getLocale, getProjectId, getTranslations, getLocales } from 'modules/archive';
@@ -19,8 +20,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntrySelect);

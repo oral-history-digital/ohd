@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import Home from './Home';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
@@ -12,8 +13,8 @@ const mapStateToProps = state => ({
     showFeaturedInterviews: getShowFeaturedInterviews(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setFlyoutTabsIndex,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

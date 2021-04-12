@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { submitData, getProjects, getLanguages } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
@@ -15,9 +16,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup())
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+    closeArchivePopup,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryHierarchyForm);

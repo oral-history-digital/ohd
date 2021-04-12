@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { resetQuery, setQueryParams } from 'modules/search';
 import { fetchData, getProjects, getCollectionsStatus } from 'modules/data';
@@ -19,11 +20,11 @@ const mapStateToProps = (state) => ({
     ],
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-    setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
-    resetQuery: (scope) => dispatch(resetQuery(scope)),
-    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+    setQueryParams,
+    resetQuery,
+    hideFlyoutTabs,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataSearchForm);

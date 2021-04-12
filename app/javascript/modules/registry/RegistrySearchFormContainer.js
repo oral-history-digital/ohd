@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { searchRegistryEntry } from 'modules/search';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
@@ -17,9 +18,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    searchRegistryEntry: (url, query) => dispatch(searchRegistryEntry(url, query)),
-    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    searchRegistryEntry,
+    hideFlyoutTabs,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistrySearchForm);

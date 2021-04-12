@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getTranslations, getCountryKeys } from 'modules/archive';
 import { getCurrentProject, getProjects } from 'modules/data';
@@ -17,8 +18,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitRegister: (url, params) => dispatch(submitRegister(url, params)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitRegister,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegisterForm);

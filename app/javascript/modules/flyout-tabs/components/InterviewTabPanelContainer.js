@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { searchInArchive } from 'modules/search';
@@ -22,10 +23,10 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
-    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
-    setViewMode: (viewMode) => dispatch(setViewMode(viewMode)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    searchInArchive,
+    hideFlyoutTabs,
+    setViewMode,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewTabPanel);

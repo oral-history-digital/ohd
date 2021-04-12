@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getCurrentInterview, submitData, getContributionsStatus } from 'modules/data';
 import InterviewContributors from './InterviewContributors';
@@ -9,8 +10,8 @@ const mapStateToProps = state => ({
     contributionsLastModified: getContributionsStatus(state).lastModified,
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params))
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewContributors);

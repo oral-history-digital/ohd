@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { submitData, deleteData, getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
@@ -15,9 +16,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+    deleteData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryName);

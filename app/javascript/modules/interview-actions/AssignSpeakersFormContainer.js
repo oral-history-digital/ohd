@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getLocale, getLocales, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
 import { fetchData, submitData, getCurrentProject, getProjects, getCurrentAccount, getPeople,
@@ -21,9 +22,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-    submitData: (props, params) => dispatch(submitData(props, params)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+    submitData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(AssignSpeakersForm);

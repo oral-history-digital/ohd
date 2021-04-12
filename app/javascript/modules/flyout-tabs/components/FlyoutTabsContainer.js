@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import { setLocale, getLocale, getArchiveId, getProjectId, getSelectedArchiveIds,
@@ -33,10 +34,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    setLocale: locale => dispatch(setLocale(locale)),
-    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setLocale,
+    setFlyoutTabsIndex,
+}, dispatch);
 
 export default withRouter(connect(
     mapStateToProps,
