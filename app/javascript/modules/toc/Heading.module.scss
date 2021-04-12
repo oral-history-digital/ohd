@@ -29,10 +29,12 @@
 
 .chapter {
   composes: chapter from './sharedHeading.module.scss';
+  font-weight: bold;
 }
 
 .heading {
   composes: heading from './sharedHeading.module.scss';
+  font-weight: bold;
 }
 
 .timecode {
