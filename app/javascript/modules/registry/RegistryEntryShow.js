@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { PixelLoader } from 'modules/spinners';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
+import { admin } from 'modules/auth';
 
 export default class RegistryEntryShow extends React.Component {
 
@@ -73,9 +74,12 @@ export default class RegistryEntryShow extends React.Component {
 
     refObject(rr) {
         let ref_object_string = ''
+        let isAllowedToSee =  admin(this.props, {type: 'General', action: 'edit'}) ||
+            this.props.interviews[rr.archive_id].workflow_state === 'public'
+
         switch (rr.ref_object_type) {
             case 'Segment':
-                if(this.segmentIsFetched(rr.ref_object_id)) {
+                if(this.segmentIsFetched(rr.ref_object_id) && isAllowedToSee) {
                     if (this.interviewIsFetched(rr.archive_id)) {
                         ref_object_string = this.props.segments[rr.ref_object_id].timecode + ' ' +
                                             this.tape(this.props.segments[rr.ref_object_id]) + ' ' +
@@ -102,7 +106,7 @@ export default class RegistryEntryShow extends React.Component {
                 }
                 break;
             default:
-                if(this.interviewIsFetched(rr.archive_id)) {
+                if(this.interviewIsFetched(rr.archive_id) && isAllowedToSee) {
                     ref_object_string = `${this.props.interviews[rr.archive_id].short_title[this.props.locale]} (${rr.archive_id})`
                     return (
                         <Link className={'search-result-link'}
@@ -123,11 +127,11 @@ export default class RegistryEntryShow extends React.Component {
     }
 
     registryReferences() {
+        let references = []
         if (
             this.props.registryReferenceTypesStatus &&
             this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched'
         ) {
-            let references = []
             for (var r in this.registryEntry().registry_references) {
                 let rr = this.registryEntry().registry_references[r]
                 let rr_type = this.props.registryReferenceTypes[rr.registry_reference_type_id]
@@ -147,8 +151,8 @@ export default class RegistryEntryShow extends React.Component {
                     );
                 }
             }
-            return references;
         }
+        return references;
     }
 
     show(id, key) {
@@ -224,10 +228,10 @@ export default class RegistryEntryShow extends React.Component {
                         {this.registryEntry().notes[this.props.locale]}
                     </p>
                     <h4>
-                        {this.registryEntry().registry_references_count}
+                        {references.length}
                         &nbsp;
-                        {(this.registryEntry().registry_references_count === 1) ? t(this.props, 'activerecord.models.registry_references.one') : t(this.props, 'activerecord.models.registry_references.other')}
-                        {(this.registryEntry().registry_references_count > 0) ? ':' : ''}
+                        {(references.length === 1) ? t(this.props, 'activerecord.models.registry_references.one') : t(this.props, 'activerecord.models.registry_references.other')}
+                        {references.length > 0 ? ':' : ''}
                     </h4>
                     <br/>
                     <ul>

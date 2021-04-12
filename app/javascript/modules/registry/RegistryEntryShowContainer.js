@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData, getProjects, getInterviews, getRegistryEntries, getInterviewsStatus,
     getRegistryEntriesStatus, getRegistryReferenceTypes, getRegistryReferenceTypesStatus,
-    getSegments, getSegmentsStatus } from 'modules/data';
+    getSegments, getSegmentsStatus, getCurrentAccount } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
-import { setArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { setArchiveId, getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import RegistryEntryShow from './RegistryEntryShow';
 
@@ -23,6 +23,8 @@ const mapStateToProps = (state) => {
         registryReferenceTypesStatus: getRegistryReferenceTypesStatus(state).all,
         registryEntriesStatus:getRegistryEntriesStatus(state),
         registryEntries: getRegistryEntries(state),
+        editView: getEditView(state),
+        account: getCurrentAccount(state),
     }
 }
 
