@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
@@ -25,13 +26,13 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
-    resetQuery: (scope) => dispatch(resetQuery(scope)),
-    searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
-    searchInMap: (url, query) => dispatch(searchInMap(url, query)),
-    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setQueryParams,
+    resetQuery,
+    searchInArchive,
+    searchInMap,
+    hideFlyoutTabs,
+}, dispatch);
 
 export default withRouter(connect(
     mapStateToProps,

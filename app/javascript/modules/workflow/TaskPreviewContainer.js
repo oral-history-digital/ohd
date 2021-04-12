@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { setArchiveId, getLocale, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
 import { getProjects, getCurrentAccount } from 'modules/data';
@@ -15,8 +16,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setArchiveId,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(TaskPreview);

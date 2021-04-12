@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import { changeToEditView, getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
@@ -26,11 +27,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitLogout: (url) => dispatch(submitLogout(url)),
-    changeToEditView: (bool) => dispatch(changeToEditView(bool)),
-    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitLogout,
+    changeToEditView,
+    hideFlyoutTabs,
+}, dispatch);
 
 export default withRouter(connect(
     mapStateToProps,

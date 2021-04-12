@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { submitData } from 'modules/data';
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
@@ -14,8 +15,8 @@ const mapStateToProps = state => ({
     languages: getLanguages(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-});
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadTranscript);

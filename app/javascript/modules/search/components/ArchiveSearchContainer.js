@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { setViewMode, getLocale, getViewMode, getTranslations, getProjectId,
@@ -31,11 +32,11 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    searchInArchive: (url, query) => dispatch(searchInArchive(url, query)),
-    setViewMode: (viewMode) => dispatch(setViewMode(viewMode)),
-    hideFlyoutTabs: () => dispatch(hideFlyoutTabs()),
-    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    searchInArchive,
+    setViewMode,
+    hideFlyoutTabs,
+    setFlyoutTabsIndex,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearch);

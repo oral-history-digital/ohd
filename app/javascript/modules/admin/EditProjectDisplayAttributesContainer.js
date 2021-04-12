@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getCurrentProject, submitData, getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
@@ -38,8 +39,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(EditData);

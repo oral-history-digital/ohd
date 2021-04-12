@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { fetchData, submitData, getCurrentInterview, getProjects, getCurrentAccount,
     getMarkTextStatus } from 'modules/data';
@@ -19,10 +20,10 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup())
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+    submitData,
+    closeArchivePopup,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MarkTextForm);

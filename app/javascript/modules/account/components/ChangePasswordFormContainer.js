@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
@@ -17,9 +18,9 @@ const mapStateToProps = state => {
     };
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitChangePassword: (url, method, params) => dispatch(submitChangePassword(url, method, params)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitChangePassword,
+}, dispatch);
 
 export default withRouter(connect(
     mapStateToProps,

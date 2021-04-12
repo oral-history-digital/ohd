@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { fetchData, getProjects, getUserContents, getCurrentAccount } from 'modules/data';
@@ -19,8 +20,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchData: (props, dataType, dataId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, dataId, nestedDataType, extraParams)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Workbook);

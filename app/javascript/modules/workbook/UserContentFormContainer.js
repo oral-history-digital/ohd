@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { submitData, getCurrentProject, getCurrentInterview, getProjects } from 'modules/data';
 import { getLocale, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
@@ -19,9 +20,9 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup())
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitData,
+    closeArchivePopup,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContentForm);

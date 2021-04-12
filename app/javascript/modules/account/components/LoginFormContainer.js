@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId } from 'modules/archive';
 import { getProjects } from 'modules/data';
@@ -13,8 +14,8 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    submitLogin: (url, params) => dispatch(submitLogin(url, params)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    submitLogin,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginForm);

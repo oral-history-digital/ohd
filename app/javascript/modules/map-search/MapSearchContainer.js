@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getIsLoggedIn } from 'modules/account';
@@ -18,9 +19,9 @@ const mapStateToProps = state => ({
     projects: getProjects(state),
 });
 
-const mapDispatchToProps = (dispatch) => ({
-    searchInMap: (url, query) => dispatch(searchInMap(url, query)),
-    setFlyoutTabsIndex: index => dispatch(setFlyoutTabsIndex(index)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    searchInMap,
+    setFlyoutTabsIndex,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MapSearch);

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getLocales, getTranslations, getEditView } from 'modules/archive';
 import { changeRegistryEntriesViewMode } from 'modules/search';
@@ -20,8 +21,8 @@ const mapStateToProps = (state) => {
     };
 };
 
-const mapDispatchToProps = (dispatch) => ({
-    changeRegistryEntriesViewMode: bool => dispatch(changeRegistryEntriesViewMode(bool)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    changeRegistryEntriesViewMode,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntriesTabPanel);

@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { setQueryParams } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
@@ -45,12 +46,12 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-    deleteData: (props, dataType, id, nestedDataType, nestedId, skipRemove) => dispatch(deleteData(props, dataType, id, nestedDataType, nestedId, skipRemove)),
-    submitData: (props, params) => dispatch(submitData(props, params)),
-    setQueryParams: (scope, params) => dispatch(setQueryParams(scope, params)),
-    closeArchivePopup: () => dispatch(closeArchivePopup())
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+    deleteData,
+    submitData,
+    setQueryParams,
+    closeArchivePopup,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

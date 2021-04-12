@@ -1,4 +1,5 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 import { searchInInterview } from 'modules/search';
 import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations, getEditView,
@@ -30,11 +31,11 @@ const mapStateToProps = (state, props) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => ({
-    setArchiveId: (archiveId) => dispatch(setArchiveId(archiveId)),
-    searchInInterview: (url, searchQuery) => dispatch(searchInInterview(url, searchQuery)),
-    addRemoveArchiveId: (archiveId) => dispatch(addRemoveArchiveId(archiveId)),
-    fetchData: (props, dataType, archiveId, nestedDataType, extraParams) => dispatch(fetchData(props, dataType, archiveId, nestedDataType, extraParams)),
-})
+const mapDispatchToProps = dispatch => bindActionCreators({
+    setArchiveId,
+    searchInInterview,
+    addRemoveArchiveId,
+    fetchData,
+}, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(InterviewListRow);
