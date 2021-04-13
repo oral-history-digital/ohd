@@ -10,7 +10,6 @@ describe Interview do
       expect(interview.segments.first.text('de')).to eq("Heute ist Montag der 5. Oktober 2020, ich führe ein Interview mit Frau Alma Brückmann")
       expect(interview.segments.first.text('de-subtitle')).to eq("Heute ist Montag der 5. Oktober 2020, ich führe ein Interview mit Frau Alma Brückmann")
       expect(interview.segments.first.text('de-public')).to eq("Heute ist Montag der 5. Oktober 2020, ich führe ein Interview mit Frau Alma Brückmann")
-      binding.pry
     end
   end
 end
