@@ -481,7 +481,7 @@ class Interview < ApplicationRecord
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
       parsed_sheet.each_with_index do |row, index|
-        contribution = contributions.select{|c| c.speaker_designation ==  row[:speaker]}.first
+        contribution = contributions.select{|c| c.speaker_designation == row[:speaker]}.first
         speaker_id = contribution && contribution.person_id
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
           Segment.create_or_update_by({
