@@ -6,15 +6,16 @@ import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/a
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { getProjects, getCurrentAccount } from 'modules/data';
 import { resetQuery, setQueryParams, searchInArchive, searchInMap } from '../actions';
+import { getArchiveFacets, getArchiveQuery, getMapFacets } from '../selectors';
 import ArchiveSearchForm from './ArchiveSearchForm';
 
 const mapStateToProps = (state) => {
     return {
         allInterviewsTitles: state.search.archive.allInterviewsTitles,
         allInterviewsPseudonyms: state.search.archive.allInterviewsPseudonyms,
-        facets: state.search.archive.facets,
-        mapSearchFacets: state.search.map.facets,
-        query: state.search.archive.query,
+        facets: getArchiveFacets(state),
+        mapSearchFacets: getMapFacets(state),
+        query: getArchiveQuery(state),
         translations: getTranslations(state),
         locale: getLocale(state),
         isArchiveSearching: state.search.isArchiveSearching,

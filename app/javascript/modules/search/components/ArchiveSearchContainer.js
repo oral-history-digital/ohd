@@ -7,16 +7,17 @@ import { setViewMode, getLocale, getViewMode, getTranslations, getProjectId,
 import { getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { getIsLoggedIn } from 'modules/account';
 import { searchInArchive } from '../actions';
+import { getArchiveFacets, getArchiveFoundInterviews, getArchiveQuery, getArchiveResultPagesCount, getArchiveResultsCount } from '../selectors';
 import ArchiveSearch from './ArchiveSearch';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        foundInterviews: state.search.archive.foundInterviews,
-        resultPagesCount: state.search.archive.resultPagesCount,
-        resultsCount: state.search.archive.resultsCount,
-        query: state.search.archive.query,
-        facets: state.search.archive.facets,
+        foundInterviews: getArchiveFoundInterviews(state),
+        resultPagesCount: getArchiveResultPagesCount(state),
+        resultsCount: getArchiveResultsCount(state),
+        query: getArchiveQuery(state),
+        facets: getArchiveFacets(state),
         translations: getTranslations(state),
         locale: getLocale(state),
         isArchiveSearching: state.search.isArchiveSearching,

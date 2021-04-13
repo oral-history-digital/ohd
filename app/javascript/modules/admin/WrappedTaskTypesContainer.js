@@ -1,14 +1,13 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams } from 'modules/search';
+import { setQueryParams, getTaskTypesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getTaskTypes } from 'modules/data';
+    getTaskTypes, getTaskTypesStatus } from 'modules/data';
 import { getLocale, getProjectId, getLocales, getTranslations, getEditView } from 'modules/archive';
 import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
 import WrappedDataList from './WrappedDataList';
-import { getTaskTypesStatus } from '../data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
@@ -23,7 +22,7 @@ const mapStateToProps = (state) => {
         data: getTaskTypes(state),
         dataStatus: getTaskTypesStatus(state),
         resultPagesCount: getTaskTypesStatus(state).resultPagesCount,
-        query: state.search.task_types.query,
+        query: getTaskTypesQuery(state),
         scope: 'task_type',
         baseTabIndex: 5 + project.has_map,
         detailsAttributes: ['name', 'desc'],

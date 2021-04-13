@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { searchInInterview } from 'modules/search';
+import { searchInInterview, getArchiveQuery, getArchiveQueryFulltext, getInterviewSearch } from 'modules/search';
 import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations,
     getSelectedArchiveIds, getEditView } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeople,
@@ -11,16 +11,16 @@ import InterviewPreview from './InterviewPreview';
 const mapStateToProps = (state, props) => {
     let project = getCurrentProject(state);
     return {
-        fulltext: state.search.archive.query.fulltext,
+        fulltext: getArchiveQueryFulltext(state),
         locale: getLocale(state),
         projectId: getProjectId(state),
         project: project,
         projects: getProjects(state),
         translations: getTranslations(state),
-        query: state.search.archive.query,
+        query: getArchiveQuery(state),
         selectedArchiveIds: getSelectedArchiveIds(state),
         statuses: getInterviewsStatus(state),
-        interviewSearchResults: state.search.interviews,
+        interviewSearchResults: getInterviewSearch(state),
         editView: getEditView(state),
         account: getCurrentAccount(state),
         people: getPeople(state),

@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setQueryParams } from 'modules/search';
+import { setQueryParams, getRolesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
     getRoles, getRolesStatus } from 'modules/data';
@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
         data: getRoles(state),
         dataStatus: getRolesStatus(state),
         resultPagesCount: getRolesStatus(state).resultPagesCount,
-        query: state.search.roles.query,
+        query: getRolesQuery(state),
         scope: 'role',
         baseTabIndex: 5 + project.has_map,
         detailsAttributes: ['name', 'desc'],

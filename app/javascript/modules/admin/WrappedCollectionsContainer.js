@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getLocales, getProjectId, getTranslations } from 'modules/archive';
-import { setQueryParams } from 'modules/search';
+import { setQueryParams, getCollectionsQuery } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
     getCollections, getCollectionsStatus } from 'modules/data';
@@ -22,7 +22,7 @@ const mapStateToProps = (state) => {
         data: getCollections(state),
         dataStatus: getCollectionsStatus(state),
         resultPagesCount: getCollectionsStatus(state).resultPagesCount,
-        query: state.search.collections.query,
+        query: getCollectionsQuery(state),
         scope: 'collection',
         baseTabIndex: 4 + project.has_map,
         //detailsAttributes: ['name'],

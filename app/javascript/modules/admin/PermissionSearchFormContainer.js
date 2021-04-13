@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getTranslations, getProjectId } from 'modules/archive';
-import { resetQuery, setQueryParams } from 'modules/search';
+import { resetQuery, setQueryParams, getPermissionsQuery } from 'modules/search';
 import { fetchData, getProjects, getPermissionsStatus } from 'modules/data';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import DataSearchForm from './DataSearchForm';
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
-    query: state.search.permissions.query,
+    query: getPermissionsQuery(state),
     dataStatus: getPermissionsStatus(state),
     scope: 'permission',
     searchableAttributes: [

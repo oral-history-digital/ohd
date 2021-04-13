@@ -6,7 +6,12 @@ export { resetQuery, setQueryParams, searchInArchive, searchInInterview, searchR
 export { default as searchReducer } from './reducer';
 
 export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree,
-    getFoundMarkers, getIsMapSearching, getMapQuery, getMarkersFetched } from './selectors';
+    getFoundMarkers, getIsMapSearching, getMapQuery, getMapFacets, getMarkersFetched, getPeopleQuery,
+    getRegistryReferenceTypesQuery, getCollectionsQuery, getLanguagesQuery,
+    getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
+    getArchiveFacets, getArchiveQuery, getArchiveQueryFulltext,
+    getArchiveResultPagesCount, getArchiveResultsCount, getArchiveFoundInterviews,
+    getInterviewSearch } from './selectors';
 
 export { default as ArchiveSearchContainer } from './components/ArchiveSearchContainer';
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';
