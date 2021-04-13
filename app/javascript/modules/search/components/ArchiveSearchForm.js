@@ -21,16 +21,6 @@ export default class ArchiveSearchForm extends React.Component {
         this.handleReset = this.handleReset.bind(this);
     }
 
-    componentDidMount() {
-        if(this.props.map){
-            let url = `${pathBase(this.props)}/searches/map`;
-            this.props.searchInMap(url, {});
-        } else {
-            let url = `${pathBase(this.props)}/searches/archive`;
-            this.props.searchInArchive(url, {});
-        }
-    }
-
     facetsLoaded() {
         return this.props.facets;
     }

@@ -114,8 +114,7 @@ const search = (state = initialState, action) => {
             })
         case RECEIVE_ARCHIVE_SEARCH:
             let foundInterviews = [];
-            //let foundSegmentsForInterviews = {};
-            if (action.page > 1){
+            if (parseInt(action.page) > 1){
                 foundInterviews = state.archive.foundInterviews.concat(action.foundInterviews);
             }
             else {
