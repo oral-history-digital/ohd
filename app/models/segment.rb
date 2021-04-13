@@ -57,21 +57,13 @@ class Segment < ApplicationRecord
   translates :mainheading, :subheading, :text, touch: true
   accepts_nested_attributes_for :translations
 
-  # globalize creates empty translation on update_attributes
-  # they have to be deleted 
-  #
-  after_save :cleanup_empty_translations
-  def cleanup_empty_translations
-    Segment::Translation.where(translated_attributes.keys.inject({}){|mem, key| mem[key] = nil; mem}).destroy_all
-  end
-
   class Translation
     belongs_to :segment
 
-    after_save do
-      # run this only after update of original e.g. 'de' version!
+    after_commit do
+      # run this only after commit of original e.g. 'de' version!
       if (text_previously_changed?) && locale.length == 2
-        segment.write_other_versions(locale)
+        segment.write_other_versions(text, locale)
       end
       if (mainheading_previously_changed? || subheading_previously_changed?)
         has_heading = !self.class.where("(mainheading IS NOT NULL AND mainheading <> '') OR (subheading IS NOT NULL AND subheading <> '')").
@@ -81,14 +73,13 @@ class Segment < ApplicationRecord
     end
   end
 
-  def write_other_versions(locale)
+  def write_other_versions(text, locale)
     [:public, :subtitle].each do |version|
-      update_attributes(text: enciphered_text(version, locale), locale: "#{locale}-#{version}")
+      update_attributes(text: enciphered_text(version, text), locale: "#{locale}-#{version}")
     end
   end
 
-  def enciphered_text(version, locale)
-    text_original = text(locale) || ''
+  def enciphered_text(version, text_original='')
     # TODO: replace with utf8 À
     text_enciphered =
       case version
@@ -160,17 +151,15 @@ class Segment < ApplicationRecord
   #validates_associated :interview
   validates_associated :tape
 
-  # TODO: rm this: segments won`t change id any more when platform and archive are joined together?!
-  #after_create :reassign_user_content
-
   before_validation :do_before_validation_on_create, :on => :create
 
   class << self
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       if opts[:speaker_id]
-        next_timecode = opts.delete(:next_timecode)
-        opts.update(duration: next_timecode - opts[:timecode])
+        next_time = Timecode.new(opts.delete(:next_timecode)).time
+        duration = next_time - Timecode.new(opts[:timecode]).time
+        opts.update(duration: duration) if duration > 0
         segment.update_attributes(opts)
       else
         assign_speakers_and_update_text(segment, opts)
