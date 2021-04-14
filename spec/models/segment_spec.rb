@@ -79,6 +79,11 @@ describe Segment do
       expect(segment.enciphered_text(:subtitle, "<***>")).
       to eq("")
     end
+
+    it "should parse {[bla bla]} correctly" do
+      expect(segment.enciphered_text(:subtitle, "{[laughs silently]}")).
+      to eq("")
+    end
   end
 
   describe "public-enciphered-text" do
