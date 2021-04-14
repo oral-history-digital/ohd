@@ -108,8 +108,8 @@ class Segment < ApplicationRecord
           gsub("...", "_").                                                                                                                       # e.g. ...
           gsub(/\(unverständlich, \d+ \w+\)/, "(...?)").                                                                                          # e.g. (unverständlich, 1 Wort)
           gsub(/<\?\d+>/, "(...?)").                                                                                                              # <?1>, <?2>, ...
-          gsub(/<l\((.+?)\)\s+(.*?)>/, '<i>\2</i>').                                                                                              # e.g. <l(es) bla bla>
-          gsub(/<ld\((.+?)\)\s+(.*?)>/, '<i>\2</i>').                                                                                             # e.g. <ld(Dialekt) bla bla>
+          gsub(/<l\((.+?)\)\s+(.*?)>/, '\2').                                                                                                     # e.g. <l(es) bla bla>
+          gsub(/<ld\((.+?)\)\s+(.*?)>/, '\2').                                                                                                    # e.g. <ld(Dialekt) bla bla>
           gsub(" [---]", "").                                                                                                                     # e.g. Ich war [---] bei Maria Malta, als das passierte.
           gsub("(???) ", "(...?)").                                                                                                               # e.g. Nice grandparents, we played football, (???) it’s
           gsub("<***>", "").                                                                                                                      # e.g. <***>
@@ -124,7 +124,7 @@ class Segment < ApplicationRecord
           gsub(/<i\((.*?)\)>/, "<c(Pause)>").                                                                                                     # <i(Batteriewechsel)>
           # zwar
           gsub(/\[\.\.\.\]/, "XXX").                                                                                                              # e.g. <an bla bla>
-          gsub(/\{\[(.*?)\]\}/, '{\1}').                                                                                                          # e.g. {[laughs silently]}
+          gsub(/\{\[?(.*?)\]?\}/, '[\1]').                                                                                                        # e.g. {[laughs silently]}
           gsub("~", "").                                                                                                                          # e.g. Wo waren Sie ~en este tiempo~?
           gsub("...", "_").                                                                                                                       # e.g. ...
           gsub(" [---]", "<p>").                                                                                                                  # e.g. Ich war [---] bei Maria Malta, als das passierte.
