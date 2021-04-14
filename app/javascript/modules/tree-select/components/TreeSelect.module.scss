@@ -4,7 +4,10 @@
   margin-bottom: 1.5rem;
 }
 
-/* Overwrite global form styles */
+/*
+ * Overwrite global styles
+ */
+
 
 .treeSelect label {
   float: none !important;
@@ -26,6 +29,10 @@
 
 .treeSelect :global(.node) {
   margin-right: 0.75rem;
+}
+
+.treeSelect :global(.node.hide) {
+  position: initial;
 }
 
 .treeSelect :global(.node.disabled) > * {
