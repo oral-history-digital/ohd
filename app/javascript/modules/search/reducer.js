@@ -19,7 +19,7 @@ import {
 const initialState = {
     archive: {
         facets: null,
-        query:{},
+        query:{page: 1},
         allInterviewsTitles: [],
         allInterviewsPseudonyms: [],
         allInterviewsPlacesOfBirth: [],
@@ -95,7 +95,7 @@ const search = (state = initialState, action) => {
         case RESET_QUERY:
             return Object.assign({}, state, {
                 [action.scope]: Object.assign({}, state[action.scope], {
-                    query: {},
+                    query: {page: 1},
                 }),
                 'interviews': (action.scope === 'archive') ? {} : state['interviews'],
             })

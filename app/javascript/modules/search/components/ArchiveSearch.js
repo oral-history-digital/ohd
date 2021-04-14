@@ -177,7 +177,7 @@ export default class ArchiveSearch extends React.Component {
 
     handleScroll(inView) {
         if(inView){
-            let page = (this.props.query.page || 0) + 1;
+            let page = (parseInt(this.props.query.page) || 0) + 1;
             this.search(Object.assign({}, this.props.query, {page: page}));
         }
     }
@@ -198,7 +198,7 @@ export default class ArchiveSearch extends React.Component {
         if (this.props.isArchiveSearching) {
             return <Spinner />;
         }
-        else if (this.props.resultPagesCount > (this.props.query.page || 1)) {
+        else if (this.props.resultPagesCount > (parseInt(this.props.query.page) || 1)) {
             return (
                 <Observer
                     onChange={inView => this.handleScroll(inView)}
