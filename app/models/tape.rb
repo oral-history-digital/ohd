@@ -15,9 +15,6 @@ class Tape < ApplicationRecord
   validates_presence_of :media_id, :interview_id
   validates_uniqueness_of :media_id
 
-  before_validation :inform, on: :create
-  #before_save :check_state
-
   #after_save :update_interview_duration
 
   workflow do
@@ -75,11 +72,6 @@ class Tape < ApplicationRecord
 
   def language
     @language ||= self.interview.language
-  end
-
-  def inform
-    s = self
-    puts "TAPE CREATED"
   end
 
   def number
