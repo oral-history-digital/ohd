@@ -247,7 +247,7 @@ export default class ArchiveSearch extends React.Component {
     }
 
     exportSearch() {
-        let query = this.props.query;
+        let query = Object.assign({}, this.props.query);
         delete query['page'];
         let url = `${pathBase(this.props)}/searches/archive.csv`;
         for (let i = 0, len = Object.keys(query).length; i < len; i++) {
