@@ -1,15 +1,15 @@
 .Segment {
+  align-items: flex-start;
   display: flex;
   padding-left: 2.2rem;
 }
 
 .Segment--withSpeaker {
-  margin-top: 1.5rem;
   padding-left: 0;
 }
 
-.Segment--withSpeaker:first-of-type {
-  margin-top: 0;
+.Segment--withSpeaker:not(:first-of-type) {
+  margin-top: 0.75rem;
 }
 
 .Segment-icon {
@@ -52,4 +52,6 @@
 
 .Segment-buttons {
   flex-basis: 20%;
+  flex-grow: 1;
+  flex-shrink: 1;
 }

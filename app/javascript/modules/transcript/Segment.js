@@ -52,20 +52,17 @@ export default function Segment({
                 {text}
             </button>
 
-            {
-                true ? null :
-                <SegmentButtonsContainer
-                    data={data}
-                    contentLocale={contentLocale}
-                    popupType={popupType}
-                    openReference={openReference}
-                    openPopup={openPopup}
-                    closePopup={closePopup}
-                    setOpenReference={setOpenReference}
-                    tabIndex={tabIndex}
-                    active={active}
-                />
-            }
+            <SegmentButtonsContainer
+                data={data}
+                contentLocale={contentLocale}
+                popupType={popupType}
+                openReference={openReference}
+                openPopup={openPopup}
+                closePopup={closePopup}
+                setOpenReference={setOpenReference}
+                tabIndex={tabIndex}
+                active={active}
+            />
         </div>
     );
 }
