@@ -103,8 +103,9 @@ class SearchesController < ApplicationController
       end
       format.json do
         cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max
+        cache_key_permissions = current_user_account && (current_user_account.admin? || current_user_account.permissions?('General', :edit)) ? 'all' : 'public'
 
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}-#{cache_key_permissions}-#{params[:project_id]}" do
           # define marker types
           selected_registry_reference_types = RegistryReferenceType.
             where(project_id: current_project.id).
@@ -229,7 +230,8 @@ class SearchesController < ApplicationController
   end
 
   def link_element(interview, rrt, locale)
-    "<a href='/de/interviews/#{interview.archive_id}'>#{rrt.to_s(locale)} - #{interview.short_title(locale)} (#{interview.archive_id})<br/><small>#{interview.language.name(locale)}</small></a>"
+    pathBase = params[:project_id] ? "#{params[:project_id]}/#{locale}" : locale
+    "<a href='/#{pathBase}/interviews/#{interview.archive_id}'>#{rrt.to_s(locale)} - #{interview.short_title(locale)} (#{interview.archive_id})<br/><small>#{interview.language.name(locale)}</small></a>"
   end
 
 end
