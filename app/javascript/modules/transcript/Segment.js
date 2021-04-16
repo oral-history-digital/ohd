@@ -5,6 +5,7 @@ import classNames from 'classnames';
 import { fullname } from 'modules/people';
 import { useAuthorization } from 'modules/auth';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
+import SegmentPopupContainer from './SegmentPopupContainer';
 
 export default function Segment({
     data,
@@ -26,44 +27,63 @@ export default function Segment({
         (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
         (data.text[`${contentLocale}-public`] || '');
 
+    const showButtons = isAuthorized(data) ||
+        isAuthorized({ type: 'General', action: 'edit' }) ||
+        (data.annotations_count + data.user_annotation_ids.length) > 0 ||
+        data.registry_references_count > 0;
+
     return (
-        <div
-            className={classNames('Segment', {
-                'Segment--withSpeaker': data.speakerIdChanged,
-            })}>
+        <>
+            <div
+                className={classNames('Segment', {
+                    'Segment--withSpeaker': data.speakerIdChanged,
+                })}>
+                {
+                    data.speakerIdChanged && (
+                        <i
+                            className={classNames('Segment-icon', 'fa', data.speaker_is_interviewee ? 'fa-user' : 'fa-user-o')}
+                            title={(people && data.speaker_id) ? fullname({ locale }, people[data.speaker_id]) : data.speaker}
+                        />
+                    )
+                }
+                <button
+                    type="button"
+                    className={classNames('Segment-text', {
+                        'is-active': active,
+                    })}
+                    lang={contentLocale}
+                    onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
+                    // TODO: clean mog segment-texts from html in db
+                    //dangerouslySetInnerHTML={{__html: text}}
+                >
+                    {text}
+                </button>
+
+                {
+                    showButtons && (
+                        <SegmentButtonsContainer
+                            data={data}
+                            contentLocale={contentLocale}
+                            popupType={popupType}
+                            openPopup={openPopup}
+                            closePopup={closePopup}
+                            tabIndex={tabIndex}
+                        />
+                    )
+                }
+            </div>
             {
-                data.speakerIdChanged && (
-                    <i
-                        className={classNames('Segment-icon', 'fa', data.speaker_is_interviewee ? 'fa-user' : 'fa-user-o')}
-                        title={(people && data.speaker_id) ? fullname({ locale }, people[data.speaker_id]) : data.speaker}
+                popupType && (
+                    <SegmentPopupContainer
+                        contentLocale={contentLocale}
+                        data={data}
+                        openReference={openReference}
+                        popupType={popupType}
+                        setOpenReference={setOpenReference}
                     />
                 )
             }
-            <button
-                type="button"
-                className={classNames('Segment-text', {
-                    'is-active': active,
-                })}
-                lang={contentLocale}
-                onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
-                // TODO: clean mog segment-texts from html in db
-                //dangerouslySetInnerHTML={{__html: text}}
-            >
-                {text}
-            </button>
-
-            <SegmentButtonsContainer
-                data={data}
-                contentLocale={contentLocale}
-                popupType={popupType}
-                openReference={openReference}
-                openPopup={openPopup}
-                closePopup={closePopup}
-                setOpenReference={setOpenReference}
-                tabIndex={tabIndex}
-                active={active}
-            />
-        </div>
+        </>
     );
 }
 
