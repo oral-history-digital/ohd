@@ -1,7 +1,7 @@
 server "deploy_da03", roles: %w{app db web}
 
 set :application, "mog_archive"
-set :branch, :development
+set :branch, :multi_tenant
 set :stage, :production
 set :deploy_to, "/data/applications/#{fetch :application}"
 set :bundle_path, "/data/bundle/01"
