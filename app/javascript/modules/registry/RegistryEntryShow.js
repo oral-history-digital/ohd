@@ -75,7 +75,7 @@ export default class RegistryEntryShow extends React.Component {
     refObject(rr) {
         let ref_object_string = ''
         let isAllowedToSee =  admin(this.props, {type: 'General', action: 'edit'}) ||
-            this.props.interviews[rr.archive_id].workflow_state === 'public'
+            this.props.interviews[rr.archive_id]?.workflow_state === 'public'
 
         switch (rr.ref_object_type) {
             case 'Segment':
@@ -84,7 +84,7 @@ export default class RegistryEntryShow extends React.Component {
                         ref_object_string = this.props.segments[rr.ref_object_id].timecode + ' ' +
                                             this.tape(this.props.segments[rr.ref_object_id]) + ' ' +
                                             t(this.props, 'in') + ' ' +
-                                            this.props.interviews[rr.archive_id].short_title[this.props.locale] + ' ' +
+                                            this.props.interviews[rr.archive_id]?.short_title[this.props.locale] + ' ' +
                                             `(${rr.archive_id})`
                         return (
                             <Link className={'search-result-link'}
@@ -107,7 +107,7 @@ export default class RegistryEntryShow extends React.Component {
                 break;
             default:
                 if(this.interviewIsFetched(rr.archive_id) && isAllowedToSee) {
-                    ref_object_string = `${this.props.interviews[rr.archive_id].short_title[this.props.locale]} (${rr.archive_id})`
+                    ref_object_string = `${this.props.interviews[rr.archive_id]?.short_title[this.props.locale]} (${rr.archive_id})`
                     return (
                         <Link className={'search-result-link'}
                             onClick={() => {
