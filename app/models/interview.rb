@@ -519,13 +519,27 @@ class Interview < ApplicationRecord
     extension = File.extname(file_path).strip.downcase[1..-1]
     webvtt = extension == 'vtt' ? ::WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
     webvtt.cues.each do |cue|
+      #
+      # get speaker_id
+      #
+      speaker_match = cue.text.match(/<v (\S+)>/)
+      speaker_designation = speaker_match && speaker_match[1] 
+      contribution = contributions.select{|c| c.speaker_designation == speaker_designation}.first
+      speaker_id = contribution && contribution.person_id
+      binding.pry
+      #
+      # cut speaker-tag
+      #
+      text = cue.text.sub(/<v \S+> /, '')
+
       Segment.create_or_update_by({
         interview_id: id,
         timecode: cue.start.to_s,
         next_timecode: cue.end.to_s,
         tape_id: tape_id,
-        text: cue.text,
+        text: text,
         locale: locale,
+        speaker_id: speaker_id
       })
     end
   end
