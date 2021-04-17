@@ -24,5 +24,9 @@ export const getLocationsFetched = state => {
     const locations = getLocations(state);
     const archiveId = getArchiveId(state);
 
-    return locations.hasOwnProperty(archiveId);
+    return Object.prototype.hasOwnProperty.call(locations, archiveId);
 };
+
+export const getLocationsLoading = state => getLocations(state).isLoading;
+
+export const getLocationsError = state => getLocations(state).error;

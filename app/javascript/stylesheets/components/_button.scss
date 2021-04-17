@@ -1,0 +1,32 @@
+.button {
+  background-color: $gray-warm !important;
+  border: none !important;
+  color: white !important;
+  outline: none !important;
+  transition-property: color, background-color;
+  transition-duration: $transition-duration;
+}
+
+.button--small {
+  font-size: 0.875rem !important;
+  line-height: 1.5rem !important;
+  padding: 0 0.375rem;
+}
+
+.button--map {
+  background-color: transparent !important;
+  color: $body-text-color !important;
+  text-align: left;
+}
+
+.button:disabled {
+  opacity: 0.5;
+}
+
+.button:focus {
+  box-shadow: 0 0 0 0.25rem $focus-color;
+}
+
+.button--map:hover {
+  color: var(--primary-color) !important;
+}

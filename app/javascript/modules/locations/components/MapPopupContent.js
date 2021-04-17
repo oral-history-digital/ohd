@@ -1,5 +1,6 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
@@ -11,18 +12,20 @@ export default function MapPopupContent({ location }) {
 
     if (location.ref_object) {
         return (
-            <div onClick={() => dispatch(sendTimeChangeRequest(location.ref_object.tape_number, location.ref_object.time))}>
-                <p>
-                    <em className='place'>
-                        {location.desc[locale]}
-                    </em>
-                    {t('interview_location_desc_one')}
-                    <em className='chapter'>
-                        {location.ref_object.last_heading[locale]}
-                    </em>
-                    {t('interview_location_desc_two')}
-                </p>
-            </div>
+            <button
+                type="button"
+                className={classNames('button', 'button--map')}
+                onClick={() => dispatch(sendTimeChangeRequest(location.ref_object.tape_number, location.ref_object.time))}
+            >
+                <em className='place'>
+                    {location.desc[locale]}
+                </em>
+                {t('interview_location_desc_one')}
+                <em className='chapter'>
+                    {location.ref_object.last_heading[locale]}
+                </em>
+                {t('interview_location_desc_two')}
+            </button>
         )
     } else if (location.name) {
         return (

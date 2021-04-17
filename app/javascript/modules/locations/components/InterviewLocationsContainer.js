@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { getProjects } from 'modules/data';
 import { fetchLocations } from '../actions';
-import { getCurrentLocationsWithRefs, getLocationsFetched } from '../selectors';
+import { getCurrentLocationsWithRefs, getLocationsFetched, getLocationsLoading,
+    getLocationsError } from '../selectors';
 import InterviewLocations from './InterviewLocations';
 
 const mapStateToProps = state => ({
@@ -15,6 +16,8 @@ const mapStateToProps = state => ({
     projectId: getProjectId(state),
     projects: getProjects(state),
     translations: getTranslations(state),
+    loading: getLocationsLoading(state),
+    error: getLocationsError(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -23,45 +23,41 @@ export default class Locations extends React.Component {
     }
 
     render() {
-        const { data, loaded } = this.props;
+        const { data } = this.props;
 
         const locations = data.map(location => [location.latitude, location.longitude]);
 
-        if (loaded && data.length > 0) {
-            return(
-                <Map
-                    bounds={locations}
-                    maxZoom={16}
-                    ref={(map) => { this.map = map; }}
-                >
-                    <TileLayer
-                        url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
-                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                    />
-                    <MarkerClusterGroup maxClusterRadius={40}>
-                        {
-                            data.map((location, index) => (
-                                <Marker
-                                    key={index}
-                                    position={[location.latitude, location.longitude]}
-                                >
-                                    <Popup>
-                                        {this.props.popupContent(location)}
-                                    </Popup>
-                                </Marker>
-                            ))
-                        }
-                    </MarkerClusterGroup>
-                </Map>
-            );
-        } else {
-            return null;
-        }
+        return(
+            <Map
+                bounds={locations}
+                maxZoom={16}
+                ref={(map) => { this.map = map; }}
+                scrollWheelZoom={false}
+            >
+                <TileLayer
+                    url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                />
+                <MarkerClusterGroup maxClusterRadius={40}>
+                    {
+                        data.map((location, index) => (
+                            <Marker
+                                key={index}
+                                position={[location.latitude, location.longitude]}
+                            >
+                                <Popup>
+                                    {this.props.popupContent(location)}
+                                </Popup>
+                            </Marker>
+                        ))
+                    }
+                </MarkerClusterGroup>
+            </Map>
+        );
     }
 }
 
 Locations.propTypes = {
-    loaded: PropTypes.bool.isRequired,
     data: PropTypes.array.isRequired,
     visible: PropTypes.bool.isRequired,
     popupContent: PropTypes.func.isRequired,
