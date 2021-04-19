@@ -526,7 +526,6 @@ class Interview < ApplicationRecord
       speaker_designation = speaker_match && speaker_match[1] 
       contribution = contributions.select{|c| c.speaker_designation == speaker_designation}.first
       speaker_id = contribution && contribution.person_id
-      binding.pry
       #
       # cut speaker-tag
       #
