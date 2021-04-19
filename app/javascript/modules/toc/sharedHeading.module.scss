@@ -19,12 +19,11 @@
   outline: none;
   padding: 0;
   text-align: left;
+  transition: box-shadow $transition-duration;
 }
 
-/* Experimental */
 .main:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.25rem $focus-color;
+  box-shadow: 0 0 0 $focus-radius $focus-color;
 }
 
 .active {

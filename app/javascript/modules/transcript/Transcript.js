@@ -67,7 +67,11 @@ export default class Transcript extends React.Component {
     }
 
     setOpenReference(reference) {
-        this.setState({ openReference: reference });
+        if (this.state.openReference === reference) {
+            this.setState({ openReference: null });
+        } else {
+            this.setState({ openReference: reference });
+        }
     }
 
     loadSegments() {
