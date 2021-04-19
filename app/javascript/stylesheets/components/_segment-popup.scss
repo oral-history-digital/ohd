@@ -1,4 +1,8 @@
 .SegmentPopup {
+  max-width: 45rem;
+}
+
+.SegmentPopup-inner {
   border: 2px solid $gray-lighter;
   padding: 0.75rem;
   margin-left: auto;

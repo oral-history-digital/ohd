@@ -3,6 +3,7 @@ $segment-icon-width: 1rem;
 .Segment {
   align-items: flex-start;
   display: flex;
+  max-width: 45rem;
   padding-left: $segment-icon-width + 0.75rem;
 }
 
@@ -64,7 +65,7 @@ $segment-icon-width: 1rem;
   border-bottom: 2px solid transparent;
   flex-grow: 1;
   margin-left: auto;
-  min-width: 10%;
+  min-width: 3rem;
   text-align: right;
   transition: border-color $transition-duration;
 }

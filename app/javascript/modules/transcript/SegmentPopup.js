@@ -25,58 +25,60 @@ export default function SegmentPopup({
 
     return (
         <div className="SegmentPopup">
-            <div className="SegmentPopup-annotations">
-                {
-                    popupType === 'annotations' && (data.annotations_count > 0 || isAuthorized({type: 'Annotation', action: 'create', interview_id: data.interview_id})) && (
-                        <Annotations
-                            segment={data}
-                            contentLocale={contentLocale}
-                        />
-                    )
-                }
-                {
-                    popupType === 'annotations' && userAnnotations.map(userAnnotation => (
-                        <p
-                            key={userAnnotation.id}
-                            className=""
-                        >
-                            {userAnnotation.description}
-                        </p>
-                    ))
-                }
-            </div>
-            <div className="SegmentPopup-references RegistryReferences">
-                {
-                    popupType === 'references' && (hasReferences || isAuthorized({type: 'RegistryReference', action: 'create', interview_id: data.interview_id })) && (
-                        <RegistryReferencesContainer
-                            refObject={data}
-                            lowestAllowedRegistryEntryId={1}
-                            inTranscript={true}
-                            locale={contentLocale}
-                            setOpenReference={setOpenReference}
-                        />
-                    )
-                }
-
-                {
-                    openReference && (
-                        <div className="SegmentPopup-glossary">
-                            <button
-                                type="button"
-                                className="Button SegmentPopup-collapse"
-                                onClick={() => setOpenReference(null)}
+            <div className="SegmentPopup-inner">
+                <div className="SegmentPopup-annotations">
+                    {
+                        popupType === 'annotations' && (data.annotations_count > 0 || isAuthorized({type: 'Annotation', action: 'create', interview_id: data.interview_id})) && (
+                            <Annotations
+                                segment={data}
+                                contentLocale={contentLocale}
+                            />
+                        )
+                    }
+                    {
+                        popupType === 'annotations' && userAnnotations.map(userAnnotation => (
+                            <p
+                                key={userAnnotation.id}
+                                className=""
                             >
-                                <FaTimes className="Button-icon" />
-                            </button>
-                            <div className="SegmentPopup-term">
-                                {openReference.name[contentLocale]}
+                                {userAnnotation.description}
+                            </p>
+                        ))
+                    }
+                </div>
+                <div className="SegmentPopup-references RegistryReferences">
+                    {
+                        popupType === 'references' && (hasReferences || isAuthorized({type: 'RegistryReference', action: 'create', interview_id: data.interview_id })) && (
+                            <RegistryReferencesContainer
+                                refObject={data}
+                                lowestAllowedRegistryEntryId={1}
+                                inTranscript={true}
+                                locale={contentLocale}
+                                setOpenReference={setOpenReference}
+                            />
+                        )
+                    }
+
+                    {
+                        openReference && (
+                            <div className="SegmentPopup-glossary">
+                                <button
+                                    type="button"
+                                    className="Button SegmentPopup-collapse"
+                                    onClick={() => setOpenReference(null)}
+                                >
+                                    <FaTimes className="Button-icon" />
+                                </button>
+                                <div className="SegmentPopup-term">
+                                    {openReference.name[contentLocale]}
+                                </div>
+                                <div className="SegmentPopup-explanation">
+                                    {openReference.notes[contentLocale]}
+                                </div>
                             </div>
-                            <div className="SegmentPopup-explanation">
-                                {openReference.notes[contentLocale]}
-                            </div>
-                        </div>
-                    )
-                }
+                        )
+                    }
+                </div>
             </div>
         </div>
     );
