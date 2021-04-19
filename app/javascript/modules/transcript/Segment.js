@@ -68,6 +68,7 @@ export default function Segment({
                             openPopup={openPopup}
                             closePopup={closePopup}
                             tabIndex={tabIndex}
+                            active={popupType !== null}
                         />
                     )
                 }

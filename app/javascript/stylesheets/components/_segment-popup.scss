@@ -1,6 +1,37 @@
 .SegmentPopup {
-  border: 0.1875rem solid $gray-light;
+  border: 2px solid $gray-lighter;
   padding: 0.75rem;
   margin-left: auto;
   width: 80%;
+}
+
+.SegmentPopup-glossary {
+  border-top: 1px solid $gray-lighter;
+  margin-top: 0.375rem;
+  padding-top: 0.75rem;
+  position: relative;
+}
+
+.SegmentPopup-collapse {
+  background-color: $gray-lightest;
+  color: $gray-dark;
+  position: absolute;
+  top: 0.75rem;
+  right: 0;
+}
+
+.SegmentPopup-collapse:hover {
+  background-color: $gray-lightest;
+}
+
+.SegmentPopup-term {
+  color: $gray-dark;
+  font-size: $font-size-large;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
+.SegmentPopup-explanation {
+  color: $gray-dark;
+  margin-top: 0.75rem;
 }

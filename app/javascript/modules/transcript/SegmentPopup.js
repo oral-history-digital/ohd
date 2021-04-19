@@ -42,7 +42,7 @@ export default function SegmentPopup({
                     ))
                 }
             </div>
-            <div className="SegmentPopup-references">
+            <div className="SegmentPopup-references RegistryReferences">
                 {
                     popupType === 'references' && (hasReferences || isAuthorized({type: 'RegistryReference', action: 'create', interview_id: data.interview_id })) && (
                         <RegistryReferencesContainer
@@ -57,18 +57,18 @@ export default function SegmentPopup({
 
                 {
                     openReference && (
-                        <div className="scope-note">
+                        <div className="SegmentPopup-glossary">
                             <button
                                 type="button"
-                                className="Button"
+                                className="Button SegmentPopup-collapse"
                                 onClick={() => setOpenReference(null)}
                             >
-                                <FaTimes />
+                                <FaTimes className="Button-icon" />
                             </button>
-                            <div className="title">
+                            <div className="SegmentPopup-term">
                                 {openReference.name[contentLocale]}
                             </div>
-                            <div className="note">
+                            <div className="SegmentPopup-explanation">
                                 {openReference.notes[contentLocale]}
                             </div>
                         </div>

@@ -128,10 +128,8 @@ export default class RegistryReference extends React.Component {
         let hasNote = !!this.props.registryEntry.notes[this.props.locale]
         return (
             <span
-                id={`reference_${this.props.registryReference.id}`}
-                className={classNames('RegistryReference-name', {
-                    'scope-note-link': hasNote,
-                })}
+                id={this.props.registryReference.id}
+                className={classNames('RegistryReference-name', { 'RegistryReference-name--link': hasNote })}
                 key={"reference-" + this.props.registryReference.id}
                 onClick={() => hasNote && this.props.setOpenReference(this.props.registryEntry)}
             >

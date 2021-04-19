@@ -42,7 +42,7 @@
   background-color: rgba(255, 250, 129, 0.5);
 }
 
-.Segment-text:hover {
+.Segment:hover > .Segment-text {
   color: var(--primary-color);
 }
 
@@ -51,7 +51,20 @@
 }
 
 .Segment-buttons {
-  flex-basis: 20%;
+  align-self: flex-end;
+  border-bottom: 2px solid transparent;
   flex-grow: 1;
-  flex-shrink: 1;
+  margin-left: auto;
+  min-width: 10%;
+  text-align: right;
+  transition: border-color $transition-duration;
+}
+
+.Segment-buttons.is-active {
+  border-bottom: none;
+}
+
+.Segment:hover > .Segment-buttons,
+.Segment:focus > .Segment-buttons {
+  border-color: $gray-lighter;
 }

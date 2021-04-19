@@ -1,13 +1,18 @@
-/**
- * RegistryReference component
- */
-
 .RegistryReference {
-    border-right: 1px solid $gray-light;
-    display: inline-block;
-    padding: 0 0.5rem;
+  border-right: 1px solid $gray-light;
+  display: inline-block;
+  padding: 0 0.5rem;
 }
 
 .RegistryReference:last-child {
-    border-right: none;
+  border-right: none;
+}
+
+.RegistryReference-name {
+
+}
+
+.RegistryReference-name--link {
+  color: var(--primary-color);
+  cursor: pointer;
 }

@@ -20,7 +20,7 @@ export default function Annotation({
     return (
         <div>
             <p
-                className='content-trans-text-element-data'
+                className=""
                 dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}}
             />
             <AuthorizedContent object={annotation}>
