@@ -22,7 +22,10 @@ export default function SegmentButtons({
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
 
-    const userAnnotations = data.user_annotation_ids.map(id => userContents?.[id]);
+    const userAnnotations = data.user_annotation_ids
+        .map(id => userContents?.[id])
+        .filter(annotation => typeof annotation !== 'undefined');
+
     const hasAnnotations = (data.annotations_count + userAnnotations.length) > 0;
     const hasReferences = data.registry_references_count > 0;
     const showAnnotationsButton = isAuthorized({type: 'Annotation', action: 'update', interview_id: data.interview_id}) || hasAnnotations;

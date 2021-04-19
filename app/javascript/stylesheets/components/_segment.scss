@@ -13,13 +13,21 @@
 }
 
 .Segment-icon {
-  color: var(--primary-color) !important;
   display: inline-block;
-  line-height: 1.5rem;
-  margin: 0 !important;
+  margin: 0;
+  margin-top: 0.25rem;
   width: 2.2rem;
   flex-basis: 2.2rem;
   flex-shrink: 0;
+}
+
+.Segment-icon--primary {
+  color: var(--primary-color);
+
+}
+
+.Segment-icon--secondary {
+  color: $gray-medium;
 }
 
 .Segment-text {

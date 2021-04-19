@@ -1,7 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
-import classNames from 'classnames';
 
 import { useAuthorization } from 'modules/auth';
 import { Annotations } from 'modules/annotations';
@@ -17,7 +16,11 @@ export default function SegmentPopup({
 }) {
     const { isAuthorized } = useAuthorization();
 
-    const userAnnotations = data.user_annotation_ids.map(id => userContents[id]);
+    const userAnnotations = data
+        .user_annotation_ids
+        .map(id => userContents?.[id])
+        .filter(annotation => typeof annotation !== 'undefined');
+
     const hasReferences = data.registry_references_count > 0;
 
     return (

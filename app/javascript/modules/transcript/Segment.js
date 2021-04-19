@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { FaUser } from 'react-icons/fa';
 
 import { fullname } from 'modules/people';
 import { useAuthorization } from 'modules/auth';
@@ -40,8 +41,8 @@ export default function Segment({
                 })}>
                 {
                     data.speakerIdChanged && (
-                        <i
-                            className={classNames('Segment-icon', 'fa', data.speaker_is_interviewee ? 'fa-user' : 'fa-user-o')}
+                        <FaUser
+                            className={classNames('Segment-icon', data.speaker_is_interviewee ? 'Segment-icon--primary' : 'Segment-icon--secondary')}
                             title={(people && data.speaker_id) ? fullname({ locale }, people[data.speaker_id]) : data.speaker}
                         />
                     )
