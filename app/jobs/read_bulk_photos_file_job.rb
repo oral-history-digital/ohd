@@ -24,7 +24,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
       end
     end
 
-    import_photos(photos, csv_file_name)
+    import_photos(photos, csv_file_name, locale)
     File.delete(file_path) if File.exist?(file_path)
     File.delete(csv_file_name) if File.exist?(csv_file_name)
 
@@ -38,7 +38,8 @@ class ReadBulkPhotosFileJob < ApplicationJob
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
   end
 
-  def import_photos(photos, csv_file_name)
+  def import_photos(photos, csv_file_name, locale)
+    I18n.locale = locale
     csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00" }
     csv = Roo::CSV.new(csv_file_name, csv_options: csv_options)
     if csv.first.length == 1
@@ -59,9 +60,12 @@ class ReadBulkPhotosFileJob < ApplicationJob
             log("*** no archive_id found in data: #{data}")
           end
 
-          photo_params = {
+          photo = Photo.find_or_create_by(
             interview_id: interview && interview.id,
-            photo_file_name: data[2],
+            photo_file_name: data[2]
+          )
+
+          photo_params = {
             caption: data[3],
             date: data[4],
             place: data[5],
@@ -71,17 +75,19 @@ class ReadBulkPhotosFileJob < ApplicationJob
           }
 
           # publication state:
-          #photo_params.update(workflow_state: 'publish') if data[9] == 'Yes'
+          photo_params.update(workflow_state: 'publish') if data[9] == 'Yes'
 
-          photo = Photo.create photo_params
+          photo.update_attributes photo_params
 
-          photo.photo.attach(io: File.open(photos[index]), filename: data[2], metadata: {title: data[3]})
+          tmp_photo_path = File.join(Rails.root, 'tmp', 'files', data[2])
+          photo.photo.attach(io: File.open(tmp_photo_path), filename: data[2])
+          #photo.photo.attach(io: File.open(File.join(Rails.root, 'tmp', 'files', data[2])), filename: data[2], metadata: {title: data[3]})
 
           photo.write_iptc_metadata({title: data[3]}) if data[3]
 
-          Sunspot.reindex interview
+          Sunspot.index interview
           photo.interview.touch
-          File.delete(photos[index]) if File.exist?(photos[index])
+          File.delete(tmp_photo_path) if File.exist?(tmp_photo_path)
 
           if photo.id
             log("saved #{archive_id}: #{data[2]}", false)

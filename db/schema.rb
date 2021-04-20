@@ -342,6 +342,10 @@ ActiveRecord::Schema.define(version: 2021_03_23_173150) do
     t.text "caption", limit: 4294967295
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string "date"
+    t.string "place"
+    t.string "photographer"
+    t.string "license"
     t.index ["photo_id"], name: "index_photo_translations_on_photo_id"
   end
 
@@ -352,10 +356,6 @@ ActiveRecord::Schema.define(version: 2021_03_23_173150) do
     t.integer "photo_file_size"
     t.datetime "updated_at"
     t.string "workflow_state", limit: 255
-    t.string "date"
-    t.string "place"
-    t.string "photographer"
-    t.string "license"
   end
 
   create_table "project_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

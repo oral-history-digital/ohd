@@ -4,7 +4,7 @@ class Photo < ApplicationRecord
   belongs_to :interview
   has_one_attached :photo
 
-  translates :caption, fallbacks_for_empty_translations: false, touch: true
+  translates :caption, :date, :place, :photographer, :license, fallbacks_for_empty_translations: false, touch: true
 
   scope :for_file, -> (filename) { where('photo_file_name LIKE ?', (filename || '').sub(/([^.]+)_\w+(\.\w{3,4})?$/,'\1\2') + '%') }
 
@@ -48,12 +48,12 @@ class Photo < ApplicationRecord
     file.save
   end
 
-  def src
-    "http://dedalo.cedis.fu-berlin.de/dedalo/media/image/original/#{sub_folder}/#{photo_file_name}.jpg"
-  end
-
-  def sub_folder
-    ((photo_file_name.split('_').last().to_i / 1000) * 1000).to_s;
+  def variant_path(resolution)
+    variant = photo.variant(resize: resolution)
+    signed_blob_id = variant.blob.signed_id
+    variation_key  = variant.variation.key
+    filename       = variant.blob.filename
+    Rails.application.routes.url_helpers.rails_blob_representation_path(signed_blob_id, variation_key, filename)
   end
 
 end
