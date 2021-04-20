@@ -65,11 +65,13 @@ export default class InterviewListRow extends React.Component {
             let obj = (column.ref_object_type === 'Interview' || column.source === 'Interview') ?
                 props.interview :
                 interviewee;
-            return (
-                <td key={column.name} >
-                    {humanReadable(obj, column.name, props, {})}
-                </td>
-            );
+            if (obj) {
+                return (
+                    <td key={column.name} >
+                        {humanReadable(obj, column.name, props, {})}
+                    </td>
+                );
+            }
         })
         if (this.props.fulltext && this.resultsCount() > 0) {
             cols.push(
