@@ -1,8 +1,8 @@
 class PhotoSerializer < ApplicationSerializer
 
-  attributes :id, 
-             :captions, 
-             :src, 
+  attributes :id,
+             :captions,
+             :src,
              :thumb_src,
              :text,
              :interview_id,
@@ -19,13 +19,13 @@ class PhotoSerializer < ApplicationSerializer
 
   def src
     if object.photo.attachment
-      object.variant_path('500x500')
+      object.variant_path('1000x1000')
     end
   end
 
   def thumb_src
     if object.photo.attachment
-      object.variant_path('100x100')
+      object.variant_path('200x200')
     end
   end
 
