@@ -4,7 +4,7 @@ $segment-icon-width: 1rem;
   align-items: flex-start;
   display: flex;
   max-width: 45rem;
-  padding-left: $segment-icon-width + 0.75rem;
+  padding-left: $segment-icon-width + ($base-unit / 2);
 }
 
 .Segment--withSpeaker {
@@ -12,12 +12,12 @@ $segment-icon-width: 1rem;
 }
 
 .Segment--withSpeaker:not(:first-of-type) {
-  margin-top: 0.75rem;
+  margin-top: $base-unit / 2;
 }
 
 .Segment-icon {
   display: inline-block;
-  margin: 0.25rem 0.75rem 0 0;
+  margin: 0.25rem ($base-unit / 2) 0 0;
   width: $segment-icon-width;
   flex-basis: $segment-icon-width;
   flex-shrink: 0;
@@ -39,7 +39,7 @@ $segment-icon-width: 1rem;
   cursor: pointer;
   flex-grow: 1;
   font-family: $font-family;
-  line-height: 1.5rem;
+  line-height: $base-unit;
   max-width: 30rem;
   outline: none;
   padding: 0;
@@ -65,7 +65,7 @@ $segment-icon-width: 1rem;
   border-bottom: 2px solid transparent;
   flex-grow: 1;
   margin-left: auto;
-  min-width: 3rem;
+  min-width: $base-unit * 2;
   text-align: right;
   transition: border-color $transition-duration;
 }
