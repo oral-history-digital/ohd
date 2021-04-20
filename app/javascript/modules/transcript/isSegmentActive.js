@@ -1,3 +1,8 @@
+// Segment times are shifted forward by some milliseconds.
+// Otherwise, when clicking a segment sometimes the segment before
+// is highlighted for a moment.
+const TIME_SHIFT = 0.05;  // 50ms
+
 export default function isSegmentActive({
     thisSegmentTape,
     thisSegmentTime,
@@ -10,7 +15,7 @@ export default function isSegmentActive({
     let isBeforeNextSegment = false;
 
     if (
-        currentTape === thisSegmentTape && currentTime >= thisSegmentTime ||
+        currentTape === thisSegmentTape && currentTime >= (thisSegmentTime - TIME_SHIFT) ||
         currentTape > thisSegmentTape
     ) {
         isBehindThisSegment = true;
@@ -18,7 +23,7 @@ export default function isSegmentActive({
 
     if (
         typeof nextSegmentTape === 'undefined' && typeof nextSegmentTime === 'undefined' ||
-        currentTape === nextSegmentTape && currentTime < nextSegmentTime ||
+        currentTape === nextSegmentTape && currentTime < (nextSegmentTime - TIME_SHIFT) ||
         currentTape < nextSegmentTape
     ) {
         isBeforeNextSegment = true;

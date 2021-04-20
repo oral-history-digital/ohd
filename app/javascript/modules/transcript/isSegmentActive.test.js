@@ -72,4 +72,18 @@ describe('special cases', () => {
 
         expect(actual).toBe(expected);
     });
+
+    test('is true some milliseconds before actually being active', () => {
+        const actual = isSegmentActive({
+            thisSegmentTape: 1,
+            thisSegmentTime: 15,
+            nextSegmentTape: 1,
+            nextSegmentTime: 30,
+            currentTape: 1,
+            currentTime: 14.97,
+        });
+        const expected = true;
+
+        expect(actual).toBe(expected);
+    });
 });
