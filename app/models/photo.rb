@@ -10,7 +10,7 @@ class Photo < ApplicationRecord
 
   validates_associated :interview
 
-  def file_path 
+  def file_path
     File.join("storage", photo.blob.key.first(2), photo.blob.key.first(4).last(2), photo.blob.key)
   end
 
@@ -32,7 +32,7 @@ class Photo < ApplicationRecord
   #
   def translations_attributes=(atts)
     atts.each do |t|
-      if t[:id] 
+      if t[:id]
         translations.find(t[:id]).update_attributes locale: t[:locale], caption: t[:caption]
       else
         update_attributes t
@@ -49,7 +49,7 @@ class Photo < ApplicationRecord
   end
 
   def variant_path(resolution)
-    variant = photo.variant(resize: resolution)
+    variant = photo.variant(resize: resolution, auto_orient: true, strip: true)
     signed_blob_id = variant.blob.signed_id
     variation_key  = variant.variation.key
     filename       = variant.blob.filename
