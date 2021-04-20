@@ -4,7 +4,7 @@ import { ENABLE, DISABLE } from './action-types';
 import { NAME } from './constants';
 
 export const initialState = {
-    [TREE_SELECT_NAME]: false,
+    [TREE_SELECT_NAME]: true,
 };
 
 const features = (state = initialState, action) => {
