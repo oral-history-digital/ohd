@@ -13,9 +13,7 @@ class TranscriptsController < ApplicationController
     file_path = create_tmp_file(file)
 
     interview = Interview.find_by_archive_id(transcript_params[:archive_id])
-    tape = transcript_params[:tape_number] ? interview.tapes.find_by_media_id(
-      "#{interview.archive_id}_#{format('%02d', interview.tapes.count)}_#{format('%02d', transcript_params[:tape_number])}"
-    ) : interview.tapes.first
+    tape = interview.tapes.find_by_number transcript_params[:tape_number]
 
     update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
     tape.segments.destroy_all if transcript_params[:delete_existing]
