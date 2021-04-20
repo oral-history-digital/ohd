@@ -27,7 +27,7 @@ export default function InterviewEditButtons({
                         </Modal>
 
                         <button
-                            className={classNames('IconButton', { 'is-pressed': skipEmptyRows })}
+                            className={classNames('StateButton', { 'is-pressed': skipEmptyRows })}
                             type="button"
                             title={t(`edit_column_header.${skipEmptyRows ? 'skip_rows_off' : 'skip_rows_on'}`)}
                             onClick={() => setSkipEmptyRows(!skipEmptyRows)}
@@ -38,7 +38,7 @@ export default function InterviewEditButtons({
                     null
             }
             <button
-                className={classNames('IconButton', { 'is-pressed': editViewEnabled })}
+                className={classNames('StateButton', { 'is-pressed': editViewEnabled })}
                 type="button"
                 title={t(`edit_column_header.${editViewEnabled ? 'close_table' : 'open_table'}`)}
                 onClick={() => changeToInterviewEditView(!editViewEnabled)}

@@ -36,8 +36,8 @@ export default function SegmentButtons({
             <AuthorizedContent object={data}>
                 <Modal
                     title={t(tabIndex === 1 ? 'edit.segment.translation' : 'edit.segment.transcript')}
-                    trigger={<FaPencilAlt className="Button-icon" />}
-                    triggerClassName="Button Button--primary"
+                    trigger={<FaPencilAlt className="IconButton-icon" />}
+                    triggerClassName="IconButton IconButton--primary"
                 >
                     {closeModal => (
                         <SegmentFormContainer
@@ -49,8 +49,8 @@ export default function SegmentButtons({
                 </Modal>
                 <Modal
                     title={t(data.has_heading ? 'edit.segment.heading.edit' : 'edit.segment.heading.new')}
-                    trigger={<FaHeading className="Button-icon" />}
-                    triggerClassName={classNames('Button', data.has_heading ? 'Button--primary' : 'Button--editorial')}
+                    trigger={<FaHeading className="IconButton-icon" />}
+                    triggerClassName={classNames('IconButton', data.has_heading ? 'IconButton--primary' : 'IconButton--editorial')}
                 >
                     {closeModal => (
                         <SegmentHeadingFormContainer
@@ -64,11 +64,11 @@ export default function SegmentButtons({
                 showAnnotationsButton && (
                     <button
                         type="button"
-                        className={classNames('Button', hasAnnotations ? 'Button--primary' : 'Button--editorial')}
+                        className={classNames('IconButton', hasAnnotations ? 'IconButton--primary' : 'IconButton--editorial')}
                         title={t(hasAnnotations ? 'edit.segment.annotations.edit' : 'edit.segment.annotations.new')}
                         onClick={() => popupType === 'annotations' ? closePopup() : openPopup(data.id, 'annotations')}
                     >
-                        <FaStickyNote className="Button-icon" />
+                        <FaStickyNote className="IconButton-icon" />
                     </button>
                 )
             }
@@ -76,11 +76,11 @@ export default function SegmentButtons({
                 showReferencesButton && (
                     <button
                         type="button"
-                        className={classNames('Button', hasReferences ? 'Button--primary' : 'Button--editorial' )}
+                        className={classNames('IconButton', hasReferences ? 'IconButton--primary' : 'IconButton--editorial' )}
                         title={t(hasReferences ? 'edit.segment.references.edit' : 'edit.segment.references.new')}
                         onClick={() => popupType === 'references' ? closePopup() : openPopup(data.id, 'references')}
                     >
-                        <FaTag className="Button-icon" />
+                        <FaTag className="IconButton-icon" />
                     </button>
                 )
             }
