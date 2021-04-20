@@ -6,12 +6,18 @@ import { useI18n } from 'modules/i18n';
 function AuthorizedContent({
     object,
     children,
-    showUnauthorizedMsg
+    showUnauthorizedMsg,
+    showIfPublic
 }) {
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
 
-    if (Array.isArray(object) ? object.find(obj => isAuthorized(obj)) : isAuthorized(object)) {
+    if (
+        Array.isArray(object) ? 
+        object.find(obj => (showIfPublic && obj.workflow_state === 'public') || isAuthorized(obj)) : 
+        (showIfPublic && object.workflow_state === 'public') || isAuthorized(object)
+    )
+    {
         return children;
     }
 

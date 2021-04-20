@@ -80,6 +80,7 @@ class Segment < ApplicationRecord
   end
 
   def enciphered_text(version, text_original='')
+    text_original ||= ''
     # TODO: replace with utf8 À
     text_enciphered =
       case version

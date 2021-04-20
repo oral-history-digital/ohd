@@ -94,7 +94,7 @@ class InterviewTabPanel extends Component {
                             </Link>
                         </p>
                     </AuthorizedContent>
-                    <AuthorizedContent object={interview}>
+                    <AuthorizedContent object={interview} showIfPublic>
                         <InterviewDataContainer
                             title={t(this.props, 'person_info')}
                             open={true}
@@ -107,7 +107,7 @@ class InterviewTabPanel extends Component {
                         />
                     </AuthorizedContent>
                     <AuthShowContainer ifLoggedOut={projectId !== "campscapes"} ifNoProject={true}>
-                        <AuthorizedContent object={interview}>
+                        <AuthorizedContent object={interview} showIfPublic>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
@@ -116,7 +116,7 @@ class InterviewTabPanel extends Component {
                         </AuthorizedContent>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
-                        <AuthorizedContent object={interview}>
+                        <AuthorizedContent object={interview} showIfPublic>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
@@ -148,7 +148,7 @@ class InterviewTabPanel extends Component {
                     </AuthorizedContent>
 
                     <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
-                        <AuthorizedContent object={interview}>
+                        <AuthorizedContent object={interview} showIfPublic>
                             <InterviewDataContainer
                                 title={t(this.props, 'photos')}
                                 open={true}
@@ -157,7 +157,7 @@ class InterviewTabPanel extends Component {
                         </AuthorizedContent>
 
                         <AuthShowContainer ifLoggedIn={hasMap}>
-                            <AuthorizedContent object={interview}>
+                            <AuthorizedContent object={interview} showIfPublic>
                                 <InterviewDataContainer
                                     title={t(this.props, 'map')}
                                     open={true}
@@ -166,7 +166,7 @@ class InterviewTabPanel extends Component {
                             </AuthorizedContent>
                         </AuthShowContainer>
 
-                        <AuthorizedContent object={interview}>
+                        <AuthorizedContent object={interview} showIfPublic>
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}
                                 open={true}
