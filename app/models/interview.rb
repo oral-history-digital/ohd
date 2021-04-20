@@ -38,68 +38,6 @@ class Interview < ApplicationRecord
            :source => :person,
            :through => :contributions
 
-  has_many :interviewees,
-           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'interviewee'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  has_many :interviewers,
-           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'interviewer'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  #has_many :transcript_contributors,
-  has_many :transcriptors,
-           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'transcriptor'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  #has_many :translation_contributors,
-  has_many :translators,
-           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'translator'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  has_many :cinematographers,
-           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'cinematographer'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  has_many :quality_managers,
-           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'quality_manager'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-
-  has_many :proofreaders,
-           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'proofreader'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  has_many :segmentators,
-           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'segmentator'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  has_many :researchers,
-           -> {joins(contributions: :contribution_type).where("contribution_types.code = 'research'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  # TODO: rm this after integration of zwar-BE
-  #has_many :imports,
-           #:as => :importable,
-           #:dependent => :delete_all
-
   has_many :registry_references,
            -> {includes(registry_entry: {registry_names: :translations}, registry_reference_type: {})},
            :as => :ref_object,
@@ -283,6 +221,12 @@ class Interview < ApplicationRecord
 
   def interviewee_id
     interviewees.first && interviewees.first.id
+  end
+
+  %w(interviewee interviewer transcriptor translator cinematographer quality_manager proofreader segmentator research).each do |contributor|
+    define_method contributor.pluralize do
+      Contribution.joins(:contribution_type).where(interview_id: self.id).where("contribution_types.code = ?", contributor).map(&:person)
+    end
   end
 
   def biographies_workflow_state=(change)
