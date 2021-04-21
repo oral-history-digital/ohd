@@ -25,6 +25,7 @@
   padding: 0.25rem 0.5rem;
   position: absolute;
   top: 0;
+  transition: box-shadow $transition-duration;
 }
 
 .chapter {
@@ -47,9 +48,7 @@
   display: none;
 }
 
-
-/* Experimental */
 .toggle:focus {
   outline: none;
-  box-shadow: 0 0 0 0.25rem $focus-color;
+  box-shadow: 0 0 0 $focus-radius $focus-color;
 }

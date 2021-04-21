@@ -2,6 +2,12 @@
 // Variables
 // --------------------------------------------------
 
+// Base unit
+// --------------------------------------------------
+
+$base-unit: 1.5rem;
+
+
 // Colors
 // --------------------------------------------------
 
@@ -20,6 +26,7 @@ $gray-warm:     #8b8b7a !default;
 $flyout-tab-title-text-color: #fff !default;
 
 $focus-color: hsla(210, 100%, 50%, 0.5);
+$focus-radius: $base-unit / 8;
 
 
 // Z-indexes

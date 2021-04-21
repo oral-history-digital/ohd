@@ -45,11 +45,12 @@
 
 .treeSelect :global(.dropdown-trigger) {
   border-color: $gray-medium !important;
+  outline: none;
+  transition: box-shadow $transition-duration;
 }
 
 .treeSelect :global(.dropdown-trigger):focus {
-  box-shadow: 0 0 0 0.25rem $focus-color;
-  outline: none;
+  box-shadow: 0 0 0 $focus-radius $focus-color;
 }
 
 .treeSelect :global(.dropdown-content) {

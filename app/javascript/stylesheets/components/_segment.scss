@@ -1,21 +1,80 @@
-/**
- * Segment component
- */
+$segment-icon-width: 1rem;
 
 .Segment {
-  @include clearfix;
-  padding-bottom: 0.25rem;
-  padding-top: 0.25rem;
+  align-items: flex-start;
+  display: flex;
+  max-width: 45rem;
+  padding-left: $segment-icon-width + ($base-unit / 2);
 }
 
 .Segment--withSpeaker {
-  padding-top: 1rem;
+  padding-left: 0;
 }
 
-.Segment .fa {
+.Segment--withSpeaker:not(:first-of-type) {
+  margin-top: $base-unit / 2;
+}
+
+.Segment-icon {
+  display: inline-block;
+  margin: 0.25rem ($base-unit / 2) 0 0;
+  width: $segment-icon-width;
+  flex-basis: $segment-icon-width;
+  flex-shrink: 0;
+}
+
+.Segment-icon--primary {
   color: var(--primary-color);
-  font-size: 1.25rem;
-  &.empty {
-    color: var(--editorial-color);
-  }
+
+}
+
+.Segment-icon--secondary {
+  color: $gray-medium;
+}
+
+.Segment-text {
+  background-color: transparent;
+  border: none;
+  color: $body-text-color;
+  cursor: pointer;
+  flex-grow: 1;
+  font-family: $font-family;
+  line-height: $base-unit;
+  max-width: 30rem;
+  outline: none;
+  padding: 0;
+  text-align: left;
+  transition-property: background-color, box-shadow, color;
+  transition-duration: $transition-duration;
+}
+
+.Segment-text.is-active {
+  background-color: rgba(255, 250, 129, 0.5);
+}
+
+.Segment:hover > .Segment-text {
+  color: var(--primary-color);
+}
+
+.Segment-text:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
+.Segment-buttons {
+  align-self: flex-end;
+  border-bottom: 2px solid transparent;
+  flex-grow: 1;
+  margin-left: auto;
+  min-width: $base-unit * 2;
+  text-align: right;
+  transition: border-color $transition-duration;
+}
+
+.Segment-buttons.is-active {
+  border-bottom: none;
+}
+
+.Segment:hover > .Segment-buttons,
+.Segment:focus > .Segment-buttons {
+  border-color: $gray-lighter;
 }

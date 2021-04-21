@@ -28,7 +28,7 @@ export default function MediaPlayerButtons({
             </AuthorizedContent>
 
             <button
-                className="IconButton"
+                className="StateButton"
                 type="button"
                 title={t(transcriptScrollEnabled ? 'expand_media_player' : 'compress_media_player')}
                 onClick={toggleExpansion}

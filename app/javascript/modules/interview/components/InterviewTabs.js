@@ -91,17 +91,10 @@ export default class InterviewTabs extends React.Component {
 
                 <div className='wrapper-content'>
                     <TabPanel>
-                        <TranscriptContainer
-                            originalLocale={true}
-                            loadSegments={true}
-                            selectedIndex={this.state.tabIndex}
-                        />
+                        <TranscriptContainer originalLocale loadSegments />
                     </TabPanel>
                     <TabPanel>
-                        <TranscriptContainer
-                            originalLocale={false}
-                            selectedIndex={this.state.tabIndex}
-                        />
+                        <TranscriptContainer />
                     </TabPanel>
                     <TabPanel>
                         <TableOfContentsContainer/>

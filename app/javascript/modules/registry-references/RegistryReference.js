@@ -1,6 +1,5 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
 import { Modal } from 'modules/ui';
 import { pluralize, underscore } from 'modules/strings';
@@ -125,19 +124,29 @@ export default class RegistryReference extends React.Component {
     }
 
     entry() {
-        let hasNote = !!this.props.registryEntry.notes[this.props.locale]
+        const { registryEntry, registryReference, locale, setOpenReference } = this.props;
+
+        const hasNote = !!registryEntry.notes[locale];
+
         return (
-            <span
-                id={`reference_${this.props.registryReference.id}`}
-                className={classNames('RegistryReference-name', {
-                    'scope-note-link': hasNote,
-                })}
-                key={"reference-" + this.props.registryReference.id}
-                onClick={() => hasNote && this.props.setOpenReference(this.props.registryEntry)}
-            >
-                {this.props.registryEntry.name[this.props.locale]}
-            </span>
-        )
+            hasNote ? (
+                <button
+                    type="button"
+                    id={"reference-" + registryReference.id}
+                    className="RegistryReference-name RegistryReference-name--link"
+                    onClick={() => setOpenReference(registryEntry)}
+                >
+                    {registryEntry.name[locale]}
+                </button>
+            ) : (
+                <span
+                    id={"reference-" + registryReference.id}
+                    className="RegistryReference-name"
+                >
+                    {registryEntry.name[locale]}
+                </span>
+            )
+        );
     }
 
     render() {

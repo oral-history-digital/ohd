@@ -7,6 +7,7 @@
   font-family: $font-family;
   outline: none;
   padding: 0 0.5rem;
+  transition: box-shadow $transition-duration;
 }
 
 .dialog {
@@ -38,15 +39,15 @@
   border: 1px solid lightgray;
   color: gray;
   font-size: 1.5rem;
+  outline: none;
   padding: 0 0.5rem;
   position: absolute;
   right: 1rem;
   top: 1rem;
+  transition: box-shadow $transition-duration;
 }
 
-/* Experimental */
 .trigger:focus,
 .close:focus {
-  outline: none;
-  box-shadow: 0 0 0 0.25rem $focus-color;
+  box-shadow: 0 0 0 $focus-radius $focus-color;
 }

@@ -1,0 +1,41 @@
+.SegmentPopup {
+  max-width: 45rem;
+}
+
+.SegmentPopup-inner {
+  border: 2px solid $gray-lighter;
+  padding: $base-unit / 2;
+  margin-left: auto;
+  width: 80%;
+}
+
+.SegmentPopup-glossary {
+  border-top: 1px solid $gray-lighter;
+  margin-top: $base-unit / 4;
+  padding-top: $base-unit / 2;
+  position: relative;
+}
+
+.SegmentPopup-collapse {
+  background-color: $gray-lightest;
+  color: $gray-dark;
+  position: absolute;
+  top: $base-unit / 2;
+  right: 0;
+}
+
+.SegmentPopup-collapse:hover {
+  background-color: $gray-lightest;
+}
+
+.SegmentPopup-term {
+  color: $gray-dark;
+  font-size: $font-size-large;
+  font-weight: bold;
+  letter-spacing: 0.05em;
+}
+
+.SegmentPopup-explanation {
+  color: $gray-dark;
+  margin-top: $base-unit / 2;
+}
