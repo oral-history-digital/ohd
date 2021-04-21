@@ -3,9 +3,12 @@
 .container {
   align-items: flex-start;
   display: flex;
-  margin-top: 0.75rem;
   padding-left: 2.5rem;
   position: relative;
+}
+
+.container:not(:first-of-type) {
+  margin-top: 0.75rem;
 }
 
 .main {
