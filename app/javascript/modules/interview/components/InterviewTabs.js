@@ -64,7 +64,7 @@ export default class InterviewTabs extends React.Component {
                 selectedIndex={this.state.tabIndex}
                 onSelect={tabIndex => {this.setState({tabIndex}); this.props.setInterviewTabIndex(tabIndex)}}
             >
-                <div className='content-tabs'>
+                <div className="Layout-contentTabs content-tabs">
                     <TabList className={'content-tabs-nav'}>
                         <Tab className={'content-tabs-nav-link'}>
                             <i className="fa fa-file-text-o"/>

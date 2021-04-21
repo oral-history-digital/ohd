@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
         projectsStatus: getProjectsStatus(state),
         transcriptScrollEnabled: getTranscriptScrollEnabled(state),
         locale: getLocale(state),
-        visible: getFlyoutTabsVisible(state),
+        flyoutTabsVisible: getFlyoutTabsVisible(state),
         loggedInAt: getLoggedInAt(state),
         collectionsStatus: getCollectionsStatus(state),
         languagesStatus: getLanguagesStatus(state),

@@ -24,11 +24,7 @@ body {
   line-height: $line-height-large;
 }
 
-.wrapper-page {
-  margin: 0;
-  @include screen-xl {
-    width: 64%;
-  }
+.Layout-page {
   .fa-eye, .fa-globe {
     color: var(--primary-color) !important;
   }
@@ -48,76 +44,7 @@ body {
   cursor: pointer;
 }
 
-
-.flyout-is-visible {
-  &.fix-video {
-    .content-tabs {
-      @include screen-xl {
-        right: 36%;
-      }
-    }
-  }
-}
-
-.flyout-is-visible {
-  .wrapper-flyout, .scroll-flyout {
-    z-index: 1000; //because of leaflet
-    width: 100%;
-    padding-right: 0;
-    overflow: hidden;
-    @include screen-m {
-      width: 44%;
-      padding-right: 9px;
-    }
-    @include screen-l {
-      width: 40%;
-      padding-right: 9px;
-    }
-    @include screen-xl {
-      width: 36%;
-      padding-right: 9px;
-    }
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    background: rgba(232,232,228, 0.95);
-    @include screen-xl {
-      border-left: 1px solid $gray-light;
-    }
-    @include screen-xl {
-      display: block !important;
-    }
-  }
-  .scroll-flyout {
-    overflow-x: hidden;
-    overflow-y: auto;
-    height:100%;
-    @include screen-m {
-      //margin-right: -9px;
-    }
-  }
-}
-
-.flyout-is-hidden {
-  .wrapper-flyout{
-    display: none;
-  }
-  .fullscreen {
-    width: 100%;
-  }
-}
-
 .fix-video {
-  .content-tabs {
-    position: fixed;
-    top: 220px;
-    left: 0;
-    right: 0;
-    @include screen-m {
-      top: 160px;
-    }
-  }
   .wrapper-content {
     margin-top: 170px;
     @include screen-m {

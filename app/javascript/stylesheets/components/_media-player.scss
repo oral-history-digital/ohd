@@ -37,9 +37,3 @@
     height: 10rem;
   }
 }
-
-.MediaPlayer.is-narrow {
-  @include screen-xl {
-    right: 36%;
-  }
-}

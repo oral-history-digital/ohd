@@ -1,0 +1,10 @@
+.Sidebar {
+  background: rgba(232,232,228, 0.95);
+  overflow-x: hidden;
+  overflow-y: auto;
+
+  @include screen-m {
+    border-left: 1px solid $gray-light;
+    padding-right: 9px;
+  }
+}

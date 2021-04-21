@@ -29,10 +29,13 @@ $focus-color: hsla(210, 100%, 50%, 0.5);
 $focus-radius: $base-unit / 8;
 
 
-// Z-indexes
+// z-indexes
 
-$dialog-overlay-z-index: 3000;
-$lightbox-z-index: 2000;
+$z-index-content-tabs:    100;
+$z-index-sidebar:         1000;  // because of Leaflet
+$z-index-sidebar-toggle:  1100;
+$lightbox-z-index:        2000;
+$dialog-overlay-z-index:  3000;
 
 
 // Basics
