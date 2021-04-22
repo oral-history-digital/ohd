@@ -11,15 +11,12 @@
 }
 
 .content-tabs-nav-link {
-  align-items: center;
   background-color: $gray-lighter;
   color: $gray-darkest;
   cursor: pointer;
   display: flex;
-  justify-content: center;
   padding: $base-unit / 2;
-  text-align: center;
-  transition: background-color 0.3s;
+  transition: background-color $transition-duration;
 }
 
 .content-tabs-nav-link:hover {

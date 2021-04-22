@@ -25,13 +25,14 @@ $gray-warm:     #8b8b7a !default;
 
 $flyout-tab-title-text-color: #fff !default;
 
-$focus-color: hsla(210, 100%, 50%, 0.5);
+$focus-color: #6eb0f1;
 $focus-radius: $base-unit / 8;
 
 
 // z-indexes
 
 $z-index-content-tabs:    100;
+$z-index-media-player:    100;
 $z-index-sidebar:         1000;  // because of Leaflet
 $z-index-sidebar-toggle:  1100;
 $lightbox-z-index:        2000;

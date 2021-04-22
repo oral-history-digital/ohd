@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FaAngleDoubleDown, FaAngleDoubleUp } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { AuthorizedContent } from 'modules/auth';
@@ -33,12 +34,11 @@ export default function MediaPlayerButtons({
                 title={t(transcriptScrollEnabled ? 'expand_media_player' : 'compress_media_player')}
                 onClick={toggleExpansion}
             >
-                <i className={classNames('fa', 'fa-fw', {
-                    'fa-angle-double-down': transcriptScrollEnabled,
-                    'fa-angle-double-up': !transcriptScrollEnabled,
-                })}
-                    aria-hidden="true"
-                />
+                {
+                    transcriptScrollEnabled ?
+                        <FaAngleDoubleDown className="StateButton-icon" /> :
+                        <FaAngleDoubleUp className="StateButton-icon" />
+                }
             </button>
         </div>
     );

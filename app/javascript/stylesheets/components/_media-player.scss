@@ -1,21 +1,15 @@
-/**
- * MediaPlayer component
- */
-
 .MediaPlayer {
   background: $gray-darker;
   color: #fff;
+  display: flex;
+  flex-direction: column;
   height: auto;
   padding: 30px 5% 25px;
   position: relative;
-  z-index: 100;
+  z-index: $z-index-media-player;
 
   @include screen-m {
     padding: 30px 5% 25px;
-  }
-
-  .fa {
-    color: white !important;
   }
 }
 
@@ -27,7 +21,9 @@
 }
 
 .MediaPlayer.is-fixed {
-  height: 13.75rem;
+  flex-direction: row-reverse;
+  height: 10rem;
+  justify-content: flex-end;
   left: 0;
   padding: 0;
   position: fixed;
@@ -37,4 +33,17 @@
   @include screen-m {
     height: 10rem;
   }
+}
+
+video::cue {
+	left: 0;
+	right: 0;
+	position: absolute;
+	padding: 1%;
+	margin: 0 3%;
+	font-family: $font-family;
+}
+
+.fix-video video:not(:fullscreen)::cue {
+  visibility: hidden;
 }

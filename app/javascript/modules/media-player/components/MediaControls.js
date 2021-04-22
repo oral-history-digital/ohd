@@ -1,5 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FaPencilAlt, FaStar } from 'react-icons/fa';
+import classNames from 'classnames';
 import moment from 'moment';
 
 import { UserContentFormContainer } from 'modules/workbook';
@@ -29,8 +31,8 @@ export default class MediaControls extends React.Component {
         return (
             <Modal
                 title={t({ locale, translations }, 'save_interview_reference') + ": " + this.props.interview.short_title[locale]}
-                trigger={<><i className="fa fa-star"/><span>{t({ locale, translations }, 'save_interview_reference')}</span></>}
-                triggerClassName="video-bookmark"
+                trigger={<><FaStar /> <span>{t({ locale, translations }, 'save_interview_reference')}</span></>}
+                triggerClassName="MediaControls-bookmark"
             >
                 {closeModal => (
                     <UserContentFormContainer
@@ -63,8 +65,8 @@ export default class MediaControls extends React.Component {
         return (
             <Modal
                 title={t({ locale, translations }, 'save_user_annotation')}
-                trigger={<><i className="fa fa-pencil"></i><span>{t({ locale, translations }, 'save_user_annotation')}</span></>}
-                triggerClassName="video-text-note"
+                trigger={<><FaPencilAlt /> <span>{t({ locale, translations }, 'save_user_annotation')}</span></>}
+                triggerClassName="MediaControls-annotation"
             >
                 {closeModal => this.annotateOnSegmentForm(sortedSegmentsWithIndex, closeModal)}
             </Modal>
@@ -122,7 +124,7 @@ export default class MediaControls extends React.Component {
                     <select
                         value={this.props.resolution}
                         onChange={this.handleResolutionChange}
-                        className="resolutionselector"
+                        className="MediaControls-resolutionSelector"
                     >
                         {options}
                     </select>
@@ -135,24 +137,37 @@ export default class MediaControls extends React.Component {
     }
 
     render() {
+        const { className, fixed, tape, interview, resolution } = this.props;
+
         return (
-            <div className="MediaHeader-controls">
-                <select
-                    value={this.props.tape}
-                    onChange={this.handleTapeChange}
-                    className={this.props.interview.tape_count == 1 ? 'hidden tapeselector' : 'tapeselector'}
-                >
-                    {this.tapeSelector()}
-                </select>
-                {this.props.resolution && this.resolutionSelector()}
-                {this.annotateOnSegmentLink()}
-                {this.rememberInterviewLink()}
+            <div className={classNames(className, 'MediaControls', { 'is-fixed': fixed })}>
+                <div className="MediaControls-selects">
+                    {
+                        interview.tape_count > 1 && (
+                            <select
+                                value={tape}
+                                onChange={this.handleTapeChange}
+                                className="MediaControls-tapeSelector"
+                            >
+                                {this.tapeSelector()}
+                            </select>
+                        )
+                    }
+                    {resolution && this.resolutionSelector()}
+                </div>
+
+                <div className="MediaControls-buttons">
+                    {this.annotateOnSegmentLink()}
+                    {this.rememberInterviewLink()}
+                </div>
             </div>
         );
     }
 }
 
 MediaControls.propTypes = {
+    className: PropTypes.string,
+    fixed: PropTypes.bool.isRequired,
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,

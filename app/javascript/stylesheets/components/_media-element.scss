@@ -18,17 +18,21 @@
 }
 
 .MediaElement.is-fixed {
-  float: none;
-  margin: 0;
-
-  @include screen-m {
-    float: left;
-  }
+  margin: $base-unit 0 0;
 
   video, audio, img {
     background-color: black;
-    height: 10rem;
-    width: 17.7rem;
+    height: 7rem;
+    width: 12.4444rem;
+  }
+
+  @include screen-m {
+    margin: 0;
+
+    video, audio, img {
+      height: 10rem;
+      width: 17.7777rem;
+    }
   }
 }
 

@@ -24,77 +24,9 @@ body {
   line-height: $line-height-large;
 }
 
-.Layout-page {
-  .fa-eye, .fa-globe {
-    color: var(--primary-color) !important;
-  }
-}
-
-.wrapper-section {
-  padding: 0 10%;
-}
-
-.wrapper-content {
-  padding: 40px 5%;
-  @include clearfix;
-}
-
 .active_map_popup_text{
   color: var(--primary-color);
   cursor: pointer;
-}
-
-.fix-video {
-  .wrapper-content {
-    margin-top: 170px;
-    @include screen-m {
-      margin-top: 100px;
-    }
-    @include screen-xl {
-      margin-top: 10rem - 6.25rem + $base-unit * 2;
-    }
-  }
-}
-
-.tapeselector, .resolutionselector {
-  float: left;
-  margin-right: 20px;
-  font-family: FiraSans;
-  font-size: 0.75rem;
-  transition: 0.4s;
-  margin-top: 2px;
-}
-.video-bookmark,
-.video-text-note {
-  color: #fff;
-  font-size: $font-size-large;
-  line-height: $line-height-large;
-  cursor: pointer;
-  transition: 0.4s;
-  float: left;
-  margin-right: 20px;
-  span {
-    display: none;
-    @include screen-l {
-      display: inline-block;
-      font-size: $font-size-small;
-      line-height: $line-height-small;
-    }
-  }
-  .fa {
-    margin-right: 10px;
-    font-size: $font-size-larger;
-    @include screen-l {
-      font-size: $font-size-medium;
-    }
-  }
-  margin-bottom: 10px;
-  &:hover {
-    color: $gray-light;
-  }
-}
-.video-bookmark {
-  margin-right: 0;
 }
 
 footer {

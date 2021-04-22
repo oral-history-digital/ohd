@@ -28,7 +28,10 @@ export default function MediaPlayer({
                     {fullname({ locale }, interviewee, true)}
                 </h1>
 
-                <MediaControlsContainer />
+                <MediaControlsContainer
+                    className="MediaHeader-controls"
+                    fixed={transcriptScrollEnabled}
+                />
             </header>
             <div className={classNames('MediaElement', {
                 'is-fixed': transcriptScrollEnabled,
