@@ -1,7 +1,7 @@
 require 'globalize'
 
 class Photo < ApplicationRecord
-  belongs_to :interview
+  belongs_to :interview, touch: true
   has_one_attached :photo
 
   translates :caption, :date, :place, :photographer, :license, fallbacks_for_empty_translations: false, touch: true

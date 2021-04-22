@@ -86,7 +86,6 @@ class ReadBulkPhotosFileJob < ApplicationJob
           photo.write_iptc_metadata({title: data[3]}) if data[3]
 
           Sunspot.index interview
-          photo.interview.touch
           File.delete(tmp_photo_path) if File.exist?(tmp_photo_path)
 
           if photo.id
