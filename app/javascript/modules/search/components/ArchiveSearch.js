@@ -37,6 +37,12 @@ export default class ArchiveSearch extends React.Component {
         this.props.setFlyoutTabsIndex(INDEX_SEARCH);
     }
 
+    componentDidUpdate(prevProps) {
+        if (prevProps.isLoggedIn !== this.props.isLoggedIn) {
+            this.search()
+        }
+    }
+
     content(displayType) {
         if (this.props.isArchiveSearching && this.props.query['page'] === 1) {
             return <Spinner />;
@@ -182,7 +188,7 @@ export default class ArchiveSearch extends React.Component {
         }
     }
 
-    search(query={}) {
+    search(query={page: 1}) {
         let url = `${pathBase(this.props)}/searches/archive`;
         this.props.searchInArchive(url, query);
     }
