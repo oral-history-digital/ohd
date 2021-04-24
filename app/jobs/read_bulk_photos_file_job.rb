@@ -47,6 +47,8 @@ class ReadBulkPhotosFileJob < ApplicationJob
       csv = Roo::CSV.new(csv_file_name, csv_options: csv_options)
     end
 
+    interviews_to_reindex = []
+
     csv.each_with_index do |data, index|
       begin
         unless index == 0 || data[0].blank? 
@@ -83,9 +85,16 @@ class ReadBulkPhotosFileJob < ApplicationJob
           photo.photo.attach(io: File.open(tmp_photo_path), filename: data[2])
           #photo.photo.attach(io: File.open(File.join(Rails.root, 'tmp', 'files', data[2])), filename: data[2], metadata: {title: data[3]})
 
-          photo.write_iptc_metadata({title: data[3]}) if data[3]
+          photo.write_iptc_metadata({
+            caption: data[3],
+            creator: data[6],
+            headline: "#{interview.archive_id}-Interview mit #{interview.short_title(locale)}",
+            copyright: data[7],
+            date: data[4],
+            city: data[5]
+          })
 
-          Sunspot.index interview
+          interviews_to_reindex << interview
           File.delete(tmp_photo_path) if File.exist?(tmp_photo_path)
 
           if photo.id
@@ -97,6 +106,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
       rescue StandardError => e
         log("#{e.message}: #{e.backtrace}")
       end
+      Sunspot.index interviews_to_reindex.uniq
     end
   end
 
