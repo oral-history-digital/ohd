@@ -41,7 +41,7 @@ class Photo < ApplicationRecord
   end
 
   def write_iptc_metadata(metadata)
-    file = MiniExiftool.new file_path
+    file = MiniExiftool.new ActiveStorage::Blob.service.path_for(photo.key)
     metadata.each do |k,v|
       file[k] = v
     end
