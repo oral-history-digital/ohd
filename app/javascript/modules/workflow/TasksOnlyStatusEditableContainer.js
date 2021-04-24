@@ -6,6 +6,7 @@ import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import CommentsContainer from './CommentsContainer';
+import TaskPreviewContainer from './TaskPreviewContainer';
 
 const mapStateToProps = (state) => {
     return {
@@ -43,6 +44,7 @@ const mapStateToProps = (state) => {
                 withEmpty: true,
             },
         ],
+        showComponent: TaskPreviewContainer,
         joinedData: {
             comment: CommentsContainer,
         },
