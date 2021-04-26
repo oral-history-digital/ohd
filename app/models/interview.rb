@@ -225,7 +225,7 @@ class Interview < ApplicationRecord
 
   %w(interviewee interviewer transcriptor translator cinematographer quality_manager proofreader segmentator research).each do |contributor|
     define_method contributor.pluralize do
-      Contribution.joins(:contribution_type).where(interview_id: self.id).where("contribution_types.code = ?", contributor).map(&:person)
+      contributions.joins(:contribution_type).where("contribution_types.code = ?", contributor).map(&:person)
     end
   end
 
