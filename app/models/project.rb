@@ -24,6 +24,8 @@ class Project < ApplicationRecord
   translates :name, :introduction, :more_text, :landing_page_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
+  validates_uniqueness_of :initials
+
   serialize :view_modes, Array
   serialize :available_locales, Array
   serialize :upload_types, Array

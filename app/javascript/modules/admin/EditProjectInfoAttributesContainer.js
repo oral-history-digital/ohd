@@ -39,11 +39,6 @@ const mapStateToProps = (state) => {
                 help: 'activerecord.attributes.project.landing_page_edit_help'
             },
             {
-                attribute: "domain",
-                validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
-                help: 'activerecord.attributes.project.domain_help'
-            },
-            {
                 attribute: "cooperation_partner"
             },
             {
