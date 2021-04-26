@@ -50,12 +50,14 @@ namespace :task_types do
       transcript: [
         {klass: 'Segment', action_name: 'create'},
         {klass: 'Segment', action_name: 'update'},
-        {klass: 'Upload', action_name: 'create'}
+        {klass: 'Upload', action_name: 'create'},
+        {klass: 'Interview', action_name: 'update'}
       ],
       translation_transcript: [
         {klass: 'Segment', action_name: 'create'},
         {klass: 'Segment', action_name: 'update'},
-        {klass: 'Upload', action_name: 'create'}
+        {klass: 'Upload', action_name: 'create'},
+        {klass: 'Interview', action_name: 'update'}
       ],
       metadata: [
         {klass: 'Interview', action_name: 'update'},
@@ -73,31 +75,37 @@ namespace :task_types do
         {klass: 'Upload', action_name: 'create'},
         {klass: 'Photo', action_name: 'create'},
         {klass: 'Photo', action_name: 'update'},
-        {klass: 'Photo', action_name: 'destroy'}
+        {klass: 'Photo', action_name: 'destroy'},
+        {klass: 'Interview', action_name: 'update'}
       ],
       translation_photos: [
         {klass: 'Upload', action_name: 'create'},
         {klass: 'Photo', action_name: 'create'},
         {klass: 'Photo', action_name: 'update'},
-        {klass: 'Photo', action_name: 'destroy'}
+        {klass: 'Photo', action_name: 'destroy'},
+        {klass: 'Interview', action_name: 'update'}
       ],
       biography: [
         {klass: 'BiographicalEntry', action_name: 'create'},
         {klass: 'BiographicalEntry', action_name: 'update'},
-        {klass: 'BiographicalEntry', action_name: 'destroy'}
+        {klass: 'BiographicalEntry', action_name: 'destroy'},
+        {klass: 'Interview', action_name: 'update'}
       ],
       translation_biography: [
         {klass: 'BiographicalEntry', action_name: 'create'},
         {klass: 'BiographicalEntry', action_name: 'update'},
-        {klass: 'BiographicalEntry', action_name: 'destroy'}
+        {klass: 'BiographicalEntry', action_name: 'destroy'},
+        {klass: 'Interview', action_name: 'update'}
       ],
       table_of_contents: [
         {klass: 'Segment', action_name: 'create'},
-        {klass: 'Segment', action_name: 'update'}
+        {klass: 'Segment', action_name: 'update'},
+        {klass: 'Interview', action_name: 'update'}
       ],
       translation_table_of_contents: [
         {klass: 'Segment', action_name: 'create'},
-        {klass: 'Segment', action_name: 'update'}
+        {klass: 'Segment', action_name: 'update'},
+        {klass: 'Interview', action_name: 'update'}
       ],
       register: [ 
         {klass: 'RegistryReference', action_name: 'create'},
@@ -107,11 +115,13 @@ namespace :task_types do
       annotations: [
         {klass: 'Annotation', action_name: 'create'},
         {klass: 'Annotation', action_name: 'update'},
-        {klass: 'Annotation', action_name: 'destroy'}
+        {klass: 'Annotation', action_name: 'destroy'},
+        {klass: 'Interview', action_name: 'update'}
       ],
       anonymisation: [
         {klass: 'Segment', action_name: 'create'},
-        {klass: 'Segment', action_name: 'update'}
+        {klass: 'Segment', action_name: 'update'},
+        {klass: 'Interview', action_name: 'update'}
       ]
     }
   end
