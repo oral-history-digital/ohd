@@ -31,14 +31,6 @@ class BaseRegistryReference < ApplicationRecord
         where(registry_reference_type_id: id)
   }
 
-  after_create do
-    ref_object_type.constantize.update_counters ref_object_id, registry_references_count: 1
-  end
-
-  after_destroy do
-    ref_object_type.constantize.update_counters ref_object_id, registry_references_count: -1
-  end
-
   def to_hash(options = {})
     hash = {
         :id => id,
