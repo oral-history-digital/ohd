@@ -318,6 +318,10 @@ el:
       new: Sponsor Logo hinzufügen
       edit: Sponsor Logo bearbeiten
       admin: Sponsor Logos bearbeiten
+    media_stream:
+      new: Medienpfad hinzufügen
+      edit: Medienpfad bearbeiten
+      admin: Medienpfade bearbeiten
     segment:
       transcript: Transkript bearbeiten
       translation: Übersetzung bearbeiten
@@ -505,6 +509,8 @@ el:
     registry_reference_types:
       code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Verknüpfungsart)
       registry_entry_id: tiefst möglicher, z.B. der Registereintrag 'Orte' für die Verknüpfungsart 'Geburtsort'
+    media_streams:
+      path: Variablen sind INTERVIEW_ID, TAPE_COUNT und TAPE_NUMBER. Sie müssen genauso in dem Pfad vorkommen.
   contributions:
     title: Συνεργάτης
     add: Προσθήκη συνεργάτη
@@ -1041,6 +1047,10 @@ el:
       registry_hierarchy:
         ancestor_id: ID des Elternknoten
       annotation:
+      media_stream:
+        media_type: Medientyp
+        path: Pfad
+        resolution: Auflösung
       photo:
         caption: Λεζάντα
         data: Αρχείο της φωτογραφίας
