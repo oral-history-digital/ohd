@@ -103,18 +103,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def still_url
-    case object.project.identifier.to_sym
-    when :cdoh
-      "https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{object.archive_id}/#{object.archive_id}_2.jpg"
-    when :mog
-      "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub("mog", "")}_2.jpg"
-    when :zwar
-      if object.still_image_file_name
-        "https://medien.cedis.fu-berlin.de/zwar/stills/#{object.archive_id}_still_original.JPG"
-      else
-        "https://medien.cedis.fu-berlin.de/zwar/stills/missing_still.jpg"
-      end
-    end
+    MediaStream.where(project_id: object.project.id, media_type: 'still').first.path.gsub(/INTERVIEW_ID/, object.archive_id)
   end
 
   def tape_count
