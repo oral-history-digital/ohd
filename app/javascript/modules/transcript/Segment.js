@@ -36,6 +36,7 @@ export default function Segment({
     return (
         <>
             <div
+                id={`segment_${data.id}`}
                 className={classNames('Segment', {
                     'Segment--withSpeaker': data.speakerIdChanged,
                 })}>
