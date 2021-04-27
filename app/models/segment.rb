@@ -269,6 +269,9 @@ class Segment < ApplicationRecord
     string :media_id, :stored => true
     string :timecode
     string :sort_key
+    text :speaker, stored: true do
+      speaking_person && speaking_person.name.inject(""){|mem, (k,v)| mem << v; mem}
+    end
 
     # dummy method, necessary for generic search
     string :workflow_state do
