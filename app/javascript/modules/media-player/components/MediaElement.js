@@ -111,9 +111,9 @@ export default class MediaElement extends React.Component {
                 return m.media_type === this.props.interview.media_type &&
                     m.resolution === this.props.resolution
             });
-            return mediaStream?.path.replace(/#\{archive_id\}/g, this.props.archiveId).
-                replace(/#\{tape_count\}/, this.props.interview.tape_count).
-                replace(/#\{tape_number\}/, (this.props.tape.toString().length > 1 ? this.props.tape : `0${this.props.tape}`));
+            return mediaStream?.path.replace(/INTERVIEW_ID/g, this.props.archiveId).
+                replace(/TAPE_COUNT/g, this.props.interview.tape_count).
+                replace(/TAPE_NUMBER/g, (this.props.tape.toString().length > 1 ? this.props.tape : `0${this.props.tape}`));
         } else {
             return null;
         }
