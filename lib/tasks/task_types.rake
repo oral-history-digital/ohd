@@ -3,11 +3,12 @@ namespace :task_types do
   desc 'create default_task_types_and permissions' 
   task :create_default_task_types_and_permissions, [:project_initials] => :environment do |t, args|
     default_task_types.each do |key, (label, abbreviation)|
-      I18n.locale = Project.first.default_locale
-      TaskType.create key: key, label: label, abbreviation: abbreviation, project_id: Project.where(initials: args.project_initials).first.id, use: true
+      project = Project.where(initials: args.project_initials).first
+      I18n.locale = project.default_locale
+      TaskType.create key: key, label: label, abbreviation: abbreviation, project_id: project.id, use: true
     end
     default_task_type_permissions.each do |task_type_key, permissions|
-      task_type = TaskType.find_by_key task_type_key
+      task_type = TaskType.find_by key: task_type_key, project_id: project.id
       permissions.each do |p|
         permission = Permission.find_or_create_by(klass: p[:klass], action_name: p[:action_name])
         if permission && task_type
