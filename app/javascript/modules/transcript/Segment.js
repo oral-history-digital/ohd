@@ -5,6 +5,7 @@ import { FaUser } from 'react-icons/fa';
 
 import { fullname } from 'modules/people';
 import { useAuthorization } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 
@@ -23,10 +24,11 @@ export default function Segment({
     sendTimeChangeRequest,
 }) {
     const { isAuthorized } = useAuthorization();
+    const { t } = useI18n();
 
     const text = isAuthorized(data) ?
         (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
-        (data.text[`${contentLocale}-public`] || '');
+        data.text[`${contentLocale}-public`];
 
     const showButtons = isAuthorized(data) ||
         isAuthorized({ type: 'General', action: 'edit' }) ||
@@ -58,7 +60,7 @@ export default function Segment({
                     // TODO: clean mog segment-texts from html in db
                     //dangerouslySetInnerHTML={{__html: text}}
                 >
-                    {text}
+                    {text || <i>{t('modules.transcript.no_text')}</i>}
                 </button>
 
                 {
