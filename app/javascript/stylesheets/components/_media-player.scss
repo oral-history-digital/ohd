@@ -4,12 +4,12 @@
   display: flex;
   flex-direction: column;
   height: auto;
-  padding: 30px 5% 25px;
+  padding: $base-unit 5% ($base-unit * 2);
   position: relative;
   z-index: $z-index-media-player;
 
   @include screen-m {
-    padding: 30px 5% 25px;
+    padding-top: $base-unit * 1.5;
   }
 }
 

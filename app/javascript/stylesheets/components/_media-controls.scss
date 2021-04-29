@@ -9,7 +9,8 @@
 .MediaControls-selects {
 }
 
-.MediaControls.is-fixed .MediaControls-buttons {
+.MediaControls.is-fixed > * {
+  margin-top: $base-unit / 2;
 }
 
 .MediaControls-tapeSelector,
