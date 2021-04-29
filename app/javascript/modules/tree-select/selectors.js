@@ -1,5 +1,4 @@
 import { createSelector } from 'reselect';
-
 import { NAME } from './constants';
 
 const getState = state => state[NAME];
@@ -35,7 +34,7 @@ function prepareEntriesForComponent(data, selectedRegistryEntryId) {
     }));
 }
 
-function buildTree(data) {
+export function buildTree(data) {
     // https://typeofnan.dev/an-easy-way-to-build-a-tree-with-object-references/
     const idMapping = data.reduce((acc, el, i) => {
         acc[el.value] = i;
@@ -53,8 +52,14 @@ function buildTree(data) {
         const parentEl = data[idMapping[el.parent]];
         if (parentEl) {
             parentEl.children = [...(parentEl.children || []), el];
+        } else {
+            console.warn(`[${NAME}] Parent ${el.parent} of registry entry ${el.value} (${el.label}) does not exist.`);
         }
     });
+
+    if (typeof root === 'undefined') {
+        throw new TypeError(`[${NAME}] Registry tree does not contain root element.`);
+    }
 
     return root;
 }
