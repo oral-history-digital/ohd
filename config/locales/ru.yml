@@ -1548,6 +1548,8 @@ ru:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    transcript:
+      no_text: 'segment contains no text'
     tree_select:
       enter_or_choose: 'Enter or choose'
       no_matches: 'no matches'
