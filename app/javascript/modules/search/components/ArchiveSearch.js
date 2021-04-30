@@ -63,7 +63,9 @@ export default class ArchiveSearch extends React.Component {
         let headers = [];
 
         if (admin(this.props, {type: 'General', action: 'edit'})) {
-            headers.push(<td key={'list-header-column-selected'}><strong>{t(this.props, 'selected')}</strong></td>);
+            // the following column header will be shown above the second column (tested in FF and Chrome). Why?
+            headers.push(<td key={'list-header-column-selected'}></td>);
+            //headers.push(<td key={'list-header-column-selected'}><strong>{t(this.props, 'selected')}</strong></td>);
         }
 
         props.listColumns.map(function(column, i){
