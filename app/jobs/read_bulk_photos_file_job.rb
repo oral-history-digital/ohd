@@ -77,7 +77,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
           }
 
           # publication state:
-          photo_params.update(workflow_state: 'publish') if data[9] == 'Yes'
+          photo_params.update(workflow_state: 'publish') if %w(yes y ja j true t).include?(data[9].downcase)
 
           photo.update_attributes photo_params
 
