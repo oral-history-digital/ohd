@@ -40,59 +40,83 @@ export default class InterviewInfo extends React.Component {
         if (this.props.interview && this.props.interview.language_id) {
             return (
                 <div>
-                    <SingleValueWithFormContainer
-                        obj={this.props.interview}
-                        validate={function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'archive_id')}
-                    />
-                    <SingleValueWithFormContainer
-                        obj={this.props.interview}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'interview_date')}
-                    />
-                    <SingleValueWithFormContainer
-                        obj={this.props.interview}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'description')}
-                        elementType="textarea"
-                        multiLocale
-                        validate={v => v.length <= 300}
-                    />
-                    <SingleValueWithFormContainer
-                        obj={this.props.interview}
-                        optionsScope={'search_facets'}
-                        elementType={'select'}
-                        values={['video', 'audio']}
-                        value={t(this.props, `search_facets.${this.props.interview.media_type}`)}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'media_type')}
-                    />
-                    <SingleValueWithFormContainer
-                        obj={this.props.interview}
-                        validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'duration')}
-                    />
-                    <SingleValueWithFormContainer
-                        obj={this.props.interview}
-                        validate={function(v){return /^\d+$/.test(v)}}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'tape_count')}
-                    />
-                    <SingleValueWithFormContainer
-                        elementType={'select'}
-                        obj={this.props.interview}
-                        values={this.props.languages}
-                        withEmpty={true}
-                        validate={function(v){return /^\d+$/.test(v)}}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'language_id')}
-                    />
-                    <SingleValueWithFormContainer
-                        elementType={'select'}
-                        obj={this.props.interview}
-                        values={this.props.collections}
-                        withEmpty={true}
-                        validate={function(v){return /^\d+$/.test(v)}}
-                        individualErrorMsg={'empty'}
-                        metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'collection_id')}
-                    >
-                        {this.collection()}
-                    </SingleValueWithFormContainer>
+                    {
+                        Object.values(this.props.project.metadata_fields).find(m => m.name === 'archive_id') &&
+                        <SingleValueWithFormContainer
+                            obj={this.props.interview}
+                            validate={function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'archive_id')}
+                        />
+                    }
+                    {
+                        Object.values(this.props.project.metadata_fields).find(m => m.name === 'interview_date') &&
+                        <SingleValueWithFormContainer
+                            obj={this.props.interview}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'interview_date')}
+                        />
+                    }
+                    {
+                        Object.values(this.props.project.metadata_fields).find(m => m.name === 'description') &&
+                        <SingleValueWithFormContainer
+                            obj={this.props.interview}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'description')}
+                            elementType="textarea"
+                            multiLocale
+                            validate={v => v.length <= 300}
+                        />
+                    }
+                    {
+                        Object.values(this.props.project.metadata_fields).find(m => m.name === 'media_type') &&
+                        <SingleValueWithFormContainer
+                            obj={this.props.interview}
+                            optionsScope={'search_facets'}
+                            elementType={'select'}
+                            values={['video', 'audio']}
+                            value={t(this.props, `search_facets.${this.props.interview.media_type}`)}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'media_type')}
+                        />
+                    }
+                    {
+                        Object.values(this.props.project.metadata_fields).find(m => m.name === 'duration') &&
+                        <SingleValueWithFormContainer
+                            obj={this.props.interview}
+                            validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'duration')}
+                        />
+                    }
+                    {
+                        Object.values(this.props.project.metadata_fields).find(m => m.name === 'tape_count') &&
+                        <SingleValueWithFormContainer
+                            obj={this.props.interview}
+                            validate={function(v){return /^\d+$/.test(v)}}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'tape_count')}
+                        />
+                    }
+                    {
+                        Object.values(this.props.project.metadata_fields).find(m => m.name === 'language_id') &&
+                        <SingleValueWithFormContainer
+                            elementType={'select'}
+                            obj={this.props.interview}
+                            values={this.props.languages}
+                            withEmpty={true}
+                            validate={function(v){return /^\d+$/.test(v)}}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'language_id')}
+                        />
+                    }
+                    {
+                        Object.values(this.props.project.metadata_fields).find(m => m.name === 'collection_id') &&
+                        <SingleValueWithFormContainer
+                            elementType={'select'}
+                            obj={this.props.interview}
+                            values={this.props.collections}
+                            withEmpty={true}
+                            validate={function(v){return /^\d+$/.test(v)}}
+                            individualErrorMsg={'empty'}
+                            metadataField={Object.values(this.props.project.metadata_fields).find(m => m.name === 'collection_id')}
+                        >
+                            {this.collection()}
+                        </SingleValueWithFormContainer>
+                    }
 
                     <AuthorizedContent object={this.props.interview}>
                         <SingleValueWithFormContainer
