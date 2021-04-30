@@ -665,6 +665,7 @@ el:
     tasks_user_account_ids: Bearbeiter*innen
     workflow_state: Status
     date_of_birth: Geburtsdatum
+    signature_original: Originalsignatur
   activerecord:
     models:
       interview:
