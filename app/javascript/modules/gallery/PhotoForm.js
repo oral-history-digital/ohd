@@ -11,6 +11,22 @@ export default class PhotoForm extends React.Component {
                 multiLocale: true,
             },
             {
+                attribute: 'place',
+                multiLocale: true,
+            },
+            {
+                attribute: 'date',
+                multiLocale: true,
+            },
+            {
+                attribute: 'photographer',
+                multiLocale: true,
+            },
+            {
+                attribute: 'license',
+                multiLocale: true,
+            },
+            {
                 elementType: 'select',
                 attribute: 'workflow_state',
                 values: this.props.photo && Object.values(this.props.photo.workflow_states),

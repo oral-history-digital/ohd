@@ -1021,6 +1021,10 @@ es:
         resolution: Auflösung
       photo:
         caption: Descripción de la foto
+        place: Place
+        date: Date
+        photographer: Photographer
+        license: License
         data: Archivo de la foto
         caption_explanation: Este pie de foto sólo está disponible en alemán.
         workflow_state: 'estatus'

@@ -11,27 +11,27 @@ export default function PhotoCaption({
 }) {
     const { t } = useI18n();
 
-    const caption = !!(photo.captions[locale] || photo.captions['de']);
+    const caption = photo.captions[locale] || photo.captions['de'];
     const photoExplanation = photo.captions[locale] ? null : t('activerecord.attributes.photo.caption_explanation');
 
-    if (caption) {
-        return (
-            <div className={classNames(styles.container, 'slider-text')}>
-                {
-                    photoExplanation ?
-                        (<p className='photo-explanation'>
-                            {photoExplanation}
-                        </p>) :
-                        null
-                }
-                <p>
-                    {photo.captions[locale] || photo.captions['de']}
-                </p>
-            </div>
-        );
-    } else {
-        return null;
-    }
+    const translations = photo.translations.find(t => t.locale === locale);
+
+    return (
+        <div className={classNames(styles.container, 'slider-text')}>
+            {
+                photoExplanation ?
+                    (<p className='photo-explanation'>
+                        {photoExplanation}
+                    </p>) :
+                    null
+            }
+            <p className={styles.paragraph}>{caption}</p>
+            <p className={styles.paragraph}>{translations?.place}</p>
+            <p className={styles.paragraph}>{translations?.date}</p>
+            <p className={styles.paragraph}>{translations?.photographer}</p>
+            <p className={styles.paragraph}>{translations?.license}</p>
+        </div>
+    );
 }
 
 PhotoCaption.propTypes = {

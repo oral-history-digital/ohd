@@ -1054,6 +1054,10 @@ el:
         resolution: Auflösung
       photo:
         caption: Λεζάντα
+        place: Place
+        date: Date
+        photographer: Photographer
+        license: License
         data: Αρχείο της φωτογραφίας
         caption_explanation: Αυτή η λεζάντα είναι διαθέσιμη μόνο στα γερμανικά.
         workflow_state: 'Κατάσταση'

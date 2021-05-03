@@ -33,7 +33,7 @@ class Photo < ApplicationRecord
   def translations_attributes=(atts)
     atts.each do |t|
       if t[:id]
-        translations.find(t[:id]).update_attributes locale: t[:locale], caption: t[:caption]
+        translations.find(t[:id]).update_attributes t
       else
         update_attributes t
       end
