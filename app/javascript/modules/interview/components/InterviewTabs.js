@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FaRegFileAlt, FaRegClone, FaList, FaSearch, FaTags } from 'react-icons/fa';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import { TableOfContentsContainer } from 'modules/toc';
@@ -65,25 +66,25 @@ export default class InterviewTabs extends React.Component {
                 onSelect={tabIndex => {this.setState({tabIndex}); this.props.setInterviewTabIndex(tabIndex)}}
             >
                 <div className="Layout-contentTabs content-tabs">
-                    <TabList className={'content-tabs-nav'}>
-                        <Tab className={'content-tabs-nav-link'}>
-                            <i className="fa fa-file-text-o"/>
+                    <TabList className="content-tabs-nav">
+                        <Tab className="content-tabs-nav-link">
+                            <FaRegFileAlt />
                             <span>{t(this.props, 'transcript')}</span>
                         </Tab>
                         <Tab className={`content-tabs-nav-link ${(this.props.interview.lang === 'de' && this.props.locale === 'de') ? 'hidden' : ''}`}>
-                            <i className="fa fa-clone"/>
+                            <FaRegClone />
                             <span>{t(this.props, 'translation')}</span>
                         </Tab>
                         <Tab className={`content-tabs-nav-link ${this.props.projectId == 'dg' ? 'hidden' : ''}`}>
-                            <i className="fa fa-list"/>
+                            <FaList />
                             <span>{t(this.props, 'table_of_contents')}</span>
                         </Tab>
-                        <Tab className={'content-tabs-nav-link'}>
-                            <i className="fa fa-search"/>
+                        <Tab className="content-tabs-nav-link">
+                            <FaSearch />
                             <span>{t(this.props, 'interview_search')}</span>
                         </Tab>
-                        <Tab className={'content-tabs-nav-link'}>
-                            <i className="fa fa-tags"/>
+                        <Tab className="content-tabs-nav-link">
+                            <FaTags />
                             <span>{t(this.props, 'keywords')}</span>
                         </Tab>
                     </TabList>

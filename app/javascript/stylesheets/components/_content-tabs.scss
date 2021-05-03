@@ -30,7 +30,7 @@
   background-color: var(--primary-color);
 }
 
-.fix-video .content-tabs-nav-link i {
+.fix-video .content-tabs-nav-link svg {
   display: block;
 
   @include screen-m {
@@ -38,7 +38,7 @@
   }
 }
 
-.content-tabs-nav-link i {
+.content-tabs-nav-link svg {
   display: block;
   margin: 0;
   padding: 0;
