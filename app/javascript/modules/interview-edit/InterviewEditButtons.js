@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { FaEdit, FaFilter, FaColumns } from 'react-icons/fa';
 
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
@@ -21,7 +22,8 @@ export default function InterviewEditButtons({
                     (<>
                         <Modal
                             title={t('edit_column_header.select_columns')}
-                            trigger={<i className="fa fa-fw fa-columns"/>}
+                            trigger={<FaColumns className="StateButton-icon" />}
+                            triggerClassName="StateButton"
                         >
                             {closeModal => <SelectColumnsFormContainer onSubmit={closeModal} />}
                         </Modal>
@@ -32,7 +34,7 @@ export default function InterviewEditButtons({
                             title={t(`edit_column_header.${skipEmptyRows ? 'skip_rows_off' : 'skip_rows_on'}`)}
                             onClick={() => setSkipEmptyRows(!skipEmptyRows)}
                         >
-                            <i className="fa fa-fw fa-filter" aria-hidden="true"/>
+                            <FaFilter className="StateButton-icon" />
                         </button>
                     </>) :
                     null
@@ -43,7 +45,7 @@ export default function InterviewEditButtons({
                 title={t(`edit_column_header.${editViewEnabled ? 'close_table' : 'open_table'}`)}
                 onClick={() => changeToInterviewEditView(!editViewEnabled)}
             >
-                <i className="fa fa-fw fa-edit" aria-hidden="true"/>
+                <FaEdit className="StateButton-icon" />
             </button>
         </>
     );
