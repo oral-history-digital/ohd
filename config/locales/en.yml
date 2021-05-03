@@ -1043,6 +1043,10 @@ en:
         resolution: Auflösung
       photo:
         caption: Fotobeschreibung
+        place: Place
+        date: Date
+        photographer: Photographer
+        license: License
         data: Fotodatei
         caption_explanation: This photo caption is only available in German.
         workflow_state: 'Status'

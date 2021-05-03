@@ -8,7 +8,6 @@ import MediaElementContainer from './MediaElementContainer';
 import MediaPlayerButtonsContainer from './MediaPlayerButtonsContainer';
 
 export default function MediaPlayer({
-    flyoutTabsVisible,
     interviewee,
     locale,
     projectId,
@@ -19,9 +18,8 @@ export default function MediaPlayer({
     }
 
     return (
-        <div className={classNames('MediaPlayer', {
+        <div className={classNames('Layout-mediaPlayer', 'MediaPlayer', {
             'is-fixed': transcriptScrollEnabled,
-            'is-narrow': flyoutTabsVisible && transcriptScrollEnabled,
         })}>
             <header className={classNames('MediaHeader', {
                 'is-fixed': transcriptScrollEnabled,
@@ -30,7 +28,10 @@ export default function MediaPlayer({
                     {fullname({ locale }, interviewee, true)}
                 </h1>
 
-                <MediaControlsContainer />
+                <MediaControlsContainer
+                    className="MediaHeader-controls"
+                    fixed={transcriptScrollEnabled}
+                />
             </header>
             <div className={classNames('MediaElement', {
                 'is-fixed': transcriptScrollEnabled,
@@ -44,7 +45,6 @@ export default function MediaPlayer({
 }
 
 MediaPlayer.propTypes = {
-    flyoutTabsVisible: PropTypes.bool.isRequired,
     interviewee: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,

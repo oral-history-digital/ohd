@@ -65,10 +65,10 @@ describe('User Registration', () => {
       cy.wait(500)
       cy.get('body').then(($body) => {
          if ($body.text().includes(user.email)) {
-           cy.get('.wrapper-page').should('contain', `Eine Registrierung für ${user.email} liegt bereits vor`)
+           cy.get('.Layout-page').should('contain', `Eine Registrierung für ${user.email} liegt bereits vor`)
          }
          else { // works only on first run of the test
-           cy.get('.wrapper-page').should('contain', `Bitte überprüfen Sie Ihr E-Mail-Postfach und bestätigen Sie Ihre Registrierung mit dem Link in der E-Mail.`)
+           cy.get('.Layout-page').should('contain', `Bitte überprüfen Sie Ihr E-Mail-Postfach und bestätigen Sie Ihre Registrierung mit dem Link in der E-Mail.`)
          }
        })
     })

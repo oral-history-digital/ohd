@@ -13,9 +13,9 @@ import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 
 export default class WrapperPage extends React.Component {
-
     constructor(props) {
         super(props);
+
         this.state = {
             notifications: [],
         }
@@ -29,7 +29,7 @@ export default class WrapperPage extends React.Component {
 
     componentDidUpdate() {
         this.loadAccount()
-        if (this.props.visible && (this.state.currentMQ === 'S' || this.state.currentMQ === 'XS')) {
+        if (this.props.flyoutTabsVisible && (this.state.currentMQ === 'S' || this.state.currentMQ === 'XS')) {
             if (!document.body.classList.contains('noScroll')) {
                 document.body.classList.add('noScroll');
             }
@@ -75,43 +75,45 @@ export default class WrapperPage extends React.Component {
     }
 
     render() {
-        const { visible, children, transcriptScrollEnabled, match } = this.props;
+        const { flyoutTabsVisible, children, transcriptScrollEnabled, match, toggleFlyoutTabs } = this.props;
 
         return (
             <ResizeWatcherContainer>
-                <div className={classNames({
-                    'flyout-is-visible': visible,
-                    'flyout-is-hidden': !visible,
+                <div className={classNames('Layout', {
+                    'sidebar-is-visible': flyoutTabsVisible,
+                    'is-sticky': transcriptScrollEnabled,
                     'fix-video': transcriptScrollEnabled,
                 })}>
                     <Helmet>
                         <html lang={match.params.locale} />
                     </Helmet>
 
-                    <div className={classNames('Site', 'wrapper-page', {
+                    <div className={classNames('Layout-page', 'Site', {
                         'fix-video': transcriptScrollEnabled,
-                        'fullscreen': !visible,
                     })}>
                         <SiteHeader />
 
-                        <MessagesContainer loggedInAt={this.props.loggedInAt}
-                                           notifications={this.state.notifications} />
+                        <MessagesContainer
+                            loggedInAt={this.props.loggedInAt}
+                            notifications={this.state.notifications}
+                        />
 
                         <main className="Site-content">
                             {children}
                         </main>
 
                         <SiteFooter />
-
-                        { transcriptScrollEnabled ? <div className="compensation" /> : null }
                     </div>
 
-                    <BurgerButton open={visible}
-                                  onClick={() => this.props.toggleFlyoutTabs(visible)}/>
-
                     <ErrorBoundary>
-                        <FlyoutTabs />
+                        <FlyoutTabs className="Layout-sidebar" />
                     </ErrorBoundary>
+
+                    <BurgerButton
+                        className="Layout-sidebarToggle"
+                        open={flyoutTabsVisible}
+                        onClick={() => toggleFlyoutTabs(flyoutTabsVisible)}
+                    />
 
                     <ArchivePopupContainer/>
                 </div>
@@ -132,7 +134,7 @@ WrapperPage.propTypes = {
     languagesStatus: PropTypes.object,
     projectsStatus: PropTypes.object,
     collectionsStatus: PropTypes.object,
-    visible: PropTypes.bool,
+    flyoutTabsVisible: PropTypes.bool,
     editView: PropTypes.bool.isRequired,
     account: PropTypes.object,
     children: PropTypes.oneOfType([

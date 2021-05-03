@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
 import { AccountContainer } from 'modules/account';
@@ -20,13 +21,6 @@ import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
 export default class FlyoutTabs extends React.Component {
-    static propTypes = {
-        visible: PropTypes.bool.isRequired,
-        flyoutTabsIndex: PropTypes.number.isRequired,
-        setFlyoutTabsIndex: PropTypes.func.isRequired,
-        history: PropTypes.object.isRequired,
-    }
-
     constructor(props) {
         super(props);
 
@@ -68,120 +62,126 @@ export default class FlyoutTabs extends React.Component {
     }
 
     render() {
-        const { flyoutTabsIndex, interview, projectId, project, archiveId, isLoggedIn, hasMap } = this.props;
+        const { className, flyoutTabsIndex, interview, projectId, project, archiveId, isLoggedIn, hasMap } = this.props;
 
         return (
             <Tabs
-                className='wrapper-flyout'
+                className={classNames(className, 'Sidebar', 'wrapper-flyout')}
                 selectedTabClassName="active"
                 selectedTabPanelClassName="active"
                 selectedIndex={flyoutTabsIndex}
                 onSelect={this.handleTabClick}
             >
-                <div className='scroll-flyout'>
-                    <TabList className='flyout'>
-                        <Tab className='flyout-top-nav' key='account'>
-                            { t(this.props, isLoggedIn ? 'account_page' : 'login_page') }
-                        </Tab>
+                <TabList className='flyout'>
+                    <Tab className='flyout-top-nav' key='account'>
+                        { t(this.props, isLoggedIn ? 'account_page' : 'login_page') }
+                    </Tab>
 
-                        <LocaleButtonsContainer />
+                    <LocaleButtonsContainer />
 
-                        <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='archive-search'>
-                            { t(this.props, (projectId === 'campscapes' && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search') }
-                        </Tab>
+                    <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='archive-search'>
+                        { t(this.props, (projectId === 'campscapes' && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search') }
+                    </Tab>
 
-                        <Tab className={interview && project ? 'flyout-tab' : 'hidden'} key='interview'>
-                            { t(this.props, 'interview') }
-                        </Tab>
+                    <Tab className={interview && project ? 'flyout-tab' : 'hidden'} key='interview'>
+                        { t(this.props, 'interview') }
+                    </Tab>
 
-                        <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='registry'>
-                            { t(this.props, 'registry') }
-                        </Tab>
-
-                        {
-                            hasMap ?
-                                (<AuthShowContainer ifLoggedIn={hasMap}>
-                                    <Tab className='flyout-tab' key='map'>
-                                        { t(this.props, 'map') }
-                                    </Tab>
-                                </AuthShowContainer>) :
-                                null
-                        }
-
-                        <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='user-content'>
-                            { t(this.props, 'user_content') }
-                        </Tab>
-
-                        <Tab
-                            selectedClassName='admin'
-                            className={project && admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
-                            key='indexing'
-                        >
-                            { t(this.props, 'edit.indexing') }
-                        </Tab>
-
-                        <Tab
-                            selectedClassName='admin'
-                            className={project && admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
-                            key='administration'
-                        >
-                            { t(this.props, 'edit.administration') }
-                        </Tab>
-                        <Tab
-                            selectedClassName='admin'
-                            className={project && admin(this.props, {type: 'Project', action: 'update'}) ? 'flyout-tab admin' : 'hidden'}
-                            key='project-administration'
-                        >
-                            { t(this.props, 'edit.project.admin') }
-                        </Tab>
-                    </TabList>
-
-                    <TabPanel key='account'>
-                        <AccountContainer/>
-                    </TabPanel>
-
-                    <TabPanel key="archive-search">
-                        <ArchiveSearchTabPanelContainer selectedArchiveIds={this.props.selectedArchiveIds} />
-                    </TabPanel>
-
-                    <TabPanel key="interview">
-                        <StateCheck
-                            testSelector={getCurrentInterviewFetched}
-                            fallback={<Spinner withPadding />}
-                        >
-                            <InterviewTabPanelContainer />
-                        </StateCheck>
-                    </TabPanel>
-
-                    <TabPanel key="tabpanel-registry-entries">
-                        <RegistryEntriesTabPanelContainer />
-                    </TabPanel>
+                    <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='registry'>
+                        { t(this.props, 'registry') }
+                    </Tab>
 
                     {
                         hasMap ?
-                            (<TabPanel key='map'>
-                                <MapTabPanelContainer />
-                            </TabPanel>) :
+                            (<AuthShowContainer ifLoggedIn={hasMap}>
+                                <Tab className='flyout-tab' key='map'>
+                                    { t(this.props, 'map') }
+                                </Tab>
+                            </AuthShowContainer>) :
                             null
                     }
 
-                    <TabPanel key="user-content">
-                        <WorkbookTabPanel />
-                    </TabPanel>
+                    <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='user-content'>
+                        { t(this.props, 'user_content') }
+                    </Tab>
 
-                    <TabPanel key="tabpanel-indexing">
-                        <IndexingTabPanelContainer />
-                    </TabPanel>
+                    <Tab
+                        selectedClassName='admin'
+                        className={project && admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
+                        key='indexing'
+                    >
+                        { t(this.props, 'edit.indexing') }
+                    </Tab>
 
-                    <TabPanel key="tabpanel-users-admin">
-                        <UsersAdminTabPanelContainer />
-                    </TabPanel>
+                    <Tab
+                        selectedClassName='admin'
+                        className={project && admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
+                        key='administration'
+                    >
+                        { t(this.props, 'edit.administration') }
+                    </Tab>
+                    <Tab
+                        selectedClassName='admin'
+                        className={project && admin(this.props, {type: 'Project', action: 'update'}) ? 'flyout-tab admin' : 'hidden'}
+                        key='project-administration'
+                    >
+                        { t(this.props, 'edit.project.admin') }
+                    </Tab>
+                </TabList>
 
-                    <TabPanel key="tabpanel-project-config">
-                        <ProjectConfigTabPanelContainer />
-                    </TabPanel>
-                </div>
+                <TabPanel key='account'>
+                    <AccountContainer/>
+                </TabPanel>
+
+                <TabPanel key="archive-search">
+                    <ArchiveSearchTabPanelContainer selectedArchiveIds={this.props.selectedArchiveIds} />
+                </TabPanel>
+
+                <TabPanel key="interview">
+                    <StateCheck
+                        testSelector={getCurrentInterviewFetched}
+                        fallback={<Spinner withPadding />}
+                    >
+                        <InterviewTabPanelContainer />
+                    </StateCheck>
+                </TabPanel>
+
+                <TabPanel key="tabpanel-registry-entries">
+                    <RegistryEntriesTabPanelContainer />
+                </TabPanel>
+
+                {
+                    hasMap ?
+                        (<TabPanel key='map'>
+                            <MapTabPanelContainer />
+                        </TabPanel>) :
+                        null
+                }
+
+                <TabPanel key="user-content">
+                    <WorkbookTabPanel />
+                </TabPanel>
+
+                <TabPanel key="tabpanel-indexing">
+                    <IndexingTabPanelContainer />
+                </TabPanel>
+
+                <TabPanel key="tabpanel-users-admin">
+                    <UsersAdminTabPanelContainer />
+                </TabPanel>
+
+                <TabPanel key="tabpanel-project-config">
+                    <ProjectConfigTabPanelContainer />
+                </TabPanel>
             </Tabs>
         );
     }
 }
+
+FlyoutTabs.propTypes = {
+    className: PropTypes.string,
+    visible: PropTypes.bool.isRequired,
+    flyoutTabsIndex: PropTypes.number.isRequired,
+    setFlyoutTabsIndex: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+};

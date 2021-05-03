@@ -1,0 +1,95 @@
+.Layout {
+
+}
+
+.Layout-page {
+  .fa-eye, .fa-globe {
+    color: var(--primary-color) !important;
+  }
+}
+
+.Layout-mediaPlayer {
+
+}
+
+.Layout-contentTabs {
+  height: $base-unit * 2;
+  overflow: hidden;
+  z-index: $z-index-content-tabs;
+}
+
+.wrapper-content {
+  padding: ($base-unit * 2) 5% ($base-unit * 2);
+}
+
+.Layout.is-sticky {
+  .wrapper-content {
+    margin-top: 10rem - 5rem + $base-unit * 2;
+
+    @include screen-m {
+      margin-top: 10rem - 6.25rem + $base-unit * 2;
+    }
+  }
+}
+
+.Layout-sidebar {
+  bottom: 0;
+  display: none;
+  position: fixed;
+  right: 0;
+  top: 0;
+  width: 100%;
+  z-index: $z-index-sidebar;
+
+  @include screen-m {
+    width: 44%;
+  }
+
+  @include screen-l {
+    width: 40%;
+  }
+
+  @include screen-xl {
+    width: 36%;
+  }
+}
+
+.Layout-sidebarToggle {
+  position: fixed;
+  right: $base-unit / 2;
+  top: $base-unit / 2;
+  z-index: $z-index-sidebar-toggle;
+
+  @include screen-m {
+    right: $base-unit;
+    top: $base-unit;
+  }
+}
+
+.Layout.is-sticky .Layout-contentTabs {
+  position: fixed;
+  top: 10rem;
+  left: 0;
+  right: 0;
+}
+
+.Layout.sidebar-is-visible {
+
+}
+
+.Layout.sidebar-is-visible > .Layout-page {
+  @include screen-xl {
+    width: 64%;
+  }
+}
+
+.Layout.sidebar-is-visible > .Layout-sidebar {
+  display: block;
+}
+
+.Layout.is-sticky.sidebar-is-visible .Layout-mediaPlayer,
+.Layout.is-sticky.sidebar-is-visible .Layout-contentTabs {
+  @include screen-xl {
+    right: 36%;
+  }
+}

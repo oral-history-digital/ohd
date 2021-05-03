@@ -1092,6 +1092,10 @@ ru:
         resolution: Auflösung
       photo:
         caption: Fotobeschreibung
+        place: Place
+        date: Date
+        photographer: Photographer
+        license: License
         data: Fotodatei
         caption_explanation: Описание фотографии доступно только на немецком языке.
         workflow_state: 'Status'

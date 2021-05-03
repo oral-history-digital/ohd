@@ -3,14 +3,11 @@
   border: none;
   color: white;
   cursor: pointer;
+  margin-left: $base-unit / 8;
   outline: none;
-  padding: 1rem 0.5rem;
+  padding: 0.25rem 0.25rem;
   transition-property: background-color, box-shadow, filter;
   transition-duration: $transition-duration;
-}
-
-.StateButton:hover {
-  background-color: var(--editorial-color);
 }
 
 .StateButton:focus {
@@ -22,6 +19,6 @@
   filter: brightness(0.8);
 }
 
-.StateButton.is-pressed:hover {
-  filter: none;
+.StateButton-icon {
+  vertical-align: middle;
 }
