@@ -41,7 +41,7 @@ export default function TreeSelect({
                 className="form-label"
                 htmlFor="tree-select"
             >
-                {t('activerecord.models.registry_entries.one')}
+                {t('activerecord.models.registry_entry.one')}
             </label>
             <DropdownTreeSelect
                 id="tree-select"

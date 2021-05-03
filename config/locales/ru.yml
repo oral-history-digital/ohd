@@ -392,6 +392,10 @@ ru:
       delete: Verknüpfung löschen
     registry_reference_type:
       admin: Verknüpfungsarten bearbeiten
+    registry_name_type:
+      admin: Registernamensarten bearbeiten
+    contribution_type:
+      admin: Mitwirkkungsarten bearbeiten
     registry_entry:
       new: Registereintrag hinzufügen
       edit: Registereintrag bearbeiten
@@ -751,19 +755,22 @@ ru:
       annotation:
         one: Комментарий
         other: Комментарии
-      contributions:
+      contribution:
         one: Mitwirkende*r
         other: Mitwirkende
-      registry_references:
+      registry_reference:
         one: Упоминание
         other: Упоминания
       registry_reference_type:
         one: Verknüpfungsart
         other: Verknüpfungsarten
-      registry_name_types:
+      registry_name_type:
         one: Registernamensart
         other: Registernamensarten
-      registry_entries:
+      contribution_type:
+        one: Mitwirkungsart
+        other: Mitwirkungsarten
+      registry_entry:
         one: Регистр
         other: Регистр
         actions:
@@ -1120,6 +1127,7 @@ ru:
         key: Schlüssel
         abbreviation: Abkürzung
         created_at: Angelegt am
+        code: Code
     errors:
       default:
         empty: Bitte auswählen

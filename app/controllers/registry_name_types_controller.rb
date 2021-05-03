@@ -1,0 +1,106 @@
+class RegistryNameTypesController < ApplicationController
+
+  def create
+    authorize RegistryNameType
+    @registry_name_type = RegistryNameType.create(registry_name_type_params)
+
+    respond_to do |format|
+      format.json do
+        render json: data_json(@registry_name_type, msg: "processed")
+      end
+    end
+  end
+
+  def show
+    @registry_name_type = RegistryNameType.find params[:id]
+    authorize @registry_name_type
+
+    respond_to do |format|
+      format.json do
+        render json: data_json(@registry_name_type)
+      end
+    end
+  end
+
+  def update
+    @registry_name_type = RegistryNameType.find params[:id]
+    authorize @registry_name_type
+    @registry_name_type.update_attributes registry_name_type_params
+
+    respond_to do |format|
+      format.json do
+        render json: data_json(@registry_name_type, msg: "processed")
+      end
+    end
+  end
+
+  def destroy 
+    @registry_name_type = RegistryNameType.find(params[:id])
+    authorize @registry_name_type
+    registry_name_type = @registry_name_type
+    @registry_name_type.destroy
+
+    respond_to do |format|
+      format.html do
+        render :action => 'index'
+      end
+      format.json { render json: {}, status: :ok }
+    end
+  end
+
+  def index
+    policy_scope RegistryNameType
+
+    respond_to do |format|
+      format.html { render "react/app" }
+      format.json do
+        paginate = false
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_name_types-#{cache_key_params}-#{RegistryNameType.maximum(:updated_at)}" do
+          if params.keys.include?("all")
+            data = current_project.registry_name_types.
+              #includes(:translations).
+              #order("registry_name_type_translations.name ASC")
+              order("name ASC")
+            extra_params = "all"
+          else
+            page = params[:page] || 1
+            data = current_project.registry_name_types.
+              #includes(:translations).
+              where(search_params).
+              #order("registry_name_type_translations.name ASC").
+              order("name ASC").
+              paginate(page: page)
+            paginate = true
+            extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
+          end
+
+          {
+            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data_type: "registry_name_types",
+            extra_params: extra_params,
+            page: params[:page] || 1,
+            result_pages_count: paginate ? data.total_pages : nil,
+          }
+        end
+        render json: json
+      end
+    end
+  end
+
+  private
+
+    def registry_name_type_params
+      params.require(:registry_name_type).permit(
+        :code,
+        :name,
+        :project_id
+      )
+    end
+
+    def search_params
+      params.permit(
+        :name,
+        :code
+      ).to_h
+    end
+end

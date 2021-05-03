@@ -86,6 +86,8 @@ class ApplicationController < ActionController::Base
           ref_tree: {},
           registry_references: {},
           registry_reference_types: {},
+          registry_name_types: {},
+          contribution_types: {},
           registry_entries: {},
           contributions: {},
           people: {},
@@ -200,6 +202,7 @@ class ApplicationController < ActionController::Base
       people: { query: {page: 1} },
       registry_reference_types: { query: {page: 1} },
       registry_name_types: { query: {page: 1} },
+      contribution_types: { query: {page: 1} },
       projects: { query: {page: 1} },
       collections: { query: {page: 1} },
       languages: { query: {page: 1} }

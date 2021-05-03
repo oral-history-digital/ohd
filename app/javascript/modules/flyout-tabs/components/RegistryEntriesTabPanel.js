@@ -16,7 +16,7 @@ function RegistryEntriesTabPanel(props) {
                 <RegistrySearchFormContainer />
                 <p>
                     <button onClick={() => props.changeRegistryEntriesViewMode(!props.showRegistryEntriesTree)}>
-                        {t('activerecord.models.registry_entries.actions.' + (props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
+                        {t('activerecord.models.registry_entry.actions.' + (props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                     </button>
                 </p>
                 {

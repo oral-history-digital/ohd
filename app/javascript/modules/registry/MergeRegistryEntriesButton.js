@@ -26,8 +26,8 @@ export default function MergeRegistryEntriesButton({
 
     return (
         <Modal
-            title={t('activerecord.models.registry_entries.actions.merge')}
-            trigger={t('activerecord.models.registry_entries.actions.merge')}
+            title={t('activerecord.models.registry_entry.actions.merge')}
+            trigger={t('activerecord.models.registry_entry.actions.merge')}
             triggerClassName="flyout-sub-tabs-content-ico-link"
         >
             {

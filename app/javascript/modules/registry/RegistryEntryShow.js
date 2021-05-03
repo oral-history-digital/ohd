@@ -230,7 +230,7 @@ export default class RegistryEntryShow extends React.Component {
                     <h4>
                         {references.length}
                         &nbsp;
-                        {(references.length === 1) ? t(this.props, 'activerecord.models.registry_references.one') : t(this.props, 'activerecord.models.registry_references.other')}
+                        {(references.length === 1) ? t(this.props, 'activerecord.models.registry_reference.one') : t(this.props, 'activerecord.models.registry_reference.other')}
                         {references.length > 0 ? ':' : ''}
                     </h4>
                     <br/>

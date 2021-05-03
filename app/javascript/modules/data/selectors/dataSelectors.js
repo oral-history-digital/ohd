@@ -76,6 +76,10 @@ export const getRegistryEntriesStatus = state => getStatuses(state).registry_ent
 
 export const getRegistryReferenceTypesStatus = state => getStatuses(state).registry_reference_types;
 
+export const getRegistryNameTypesStatus = state => getStatuses(state).registry_reference_types;
+
+export const getContributionTypesStatus = state => getStatuses(state).registry_reference_types;
+
 export const getRolesStatus = state => getStatuses(state).roles;
 
 export const getSegmentsStatus = state => getStatuses(state).segments;

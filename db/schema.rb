@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_23_173150) do
+ActiveRecord::Schema.define(version: 2021_04_30_190216) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -465,6 +465,7 @@ ActiveRecord::Schema.define(version: 2021_03_23_173150) do
     t.boolean "mandatory"
     t.datetime "updated_at"
     t.datetime "created_at"
+    t.integer "project_id"
   end
 
   create_table "registry_names", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

@@ -42,6 +42,10 @@ export const getPeopleQuery = state => getState(state).people.query;
 
 export const getRegistryReferenceTypesQuery = state => getState(state).registry_reference_types.query;
 
+export const getRegistryNameTypesQuery = state => getState(state).registry_name_types.query;
+
+export const getContributionTypesQuery = state => getState(state).contribution_types.query;
+
 export const getCollectionsQuery = state => getState(state).collections.query;
 
 export const getLanguagesQuery = state => getState(state).languages.query;
