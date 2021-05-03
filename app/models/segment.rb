@@ -81,6 +81,7 @@ class Segment < ApplicationRecord
 
   def enciphered_text(version, text_original='')
     text_original ||= ''
+    text_original = text_original.gsub('{{', '{[').gsub('}}', ']}') # replace wrong {{ with {[
     # TODO: replace with utf8 À
     text_enciphered =
       case version
@@ -114,8 +115,9 @@ class Segment < ApplicationRecord
           gsub(" [---]", "").                                                                                                                     # e.g. Ich war [---] bei Maria Malta, als das passierte.
           gsub("(???) ", "(...?)").                                                                                                               # e.g. Nice grandparents, we played football, (???) it’s
           gsub("<***>", "").                                                                                                                      # e.g. <***>
-          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace
-          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace
+          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace (more than one)
+          gsub(/\s+[\.\,\?\!\:]/, " ").                                                                                                           # cleanup whitespace (before .,?!:)
+          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace (beginning of phrase)
       when :public
         text_original.
           # colonia
@@ -132,8 +134,9 @@ class Segment < ApplicationRecord
           gsub(/\((.*?)\?\)/, '<?\1>').                                                                                                           # e.g. (By now?) it's the next generation
           gsub("<***>", "<i(Bandende)>").                                                                                                         # e.g. <***>
           gsub("(???) ", "<?>").                                                                                                                  # e.g. Nice grandparents, we played football, (???) it’s
-          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace
-          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace
+          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace (more than one)
+          gsub(/\s+[\.\,\?\!\:]/, " ").                                                                                                           # cleanup whitespace (before .,?!:)
+          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace (beginning of phrase)
       end
     text_enciphered
   end
