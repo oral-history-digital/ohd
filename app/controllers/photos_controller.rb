@@ -7,7 +7,7 @@ class PhotosController < ApplicationController
     @photo = Photo.create(photo_params)
     @photo.photo.attach(io: data, filename: "#{@photo.interview.archive_id.upcase}_#{str = format('%02d', @photo.interview.photos.count)}", metadata: {title: photo_params[:caption]})
 
-    WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]}) 
+    WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]})
     clear_cache @photo.interview
 
     respond_to do |format|
@@ -27,7 +27,7 @@ class PhotosController < ApplicationController
     @photo = Photo.find(params[:id])
     authorize @photo
     @photo.update_attributes(photo_params)
-    WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]}) 
+    WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]})
     @photo.interview.touch
 
     respond_to do |format|
@@ -43,7 +43,7 @@ class PhotosController < ApplicationController
     end
   end
 
-  def destroy 
+  def destroy
     @photo = Photo.find(params[:id])
     authorize @photo
     @photo.destroy
@@ -69,9 +69,9 @@ class PhotosController < ApplicationController
 
   def photo_params
     params.require(:photo).permit(
-      :interview_id, 
+      :interview_id,
       :workflow_state,
-      translations_attributes: [:locale, :id, :caption]
+      translations_attributes: [:locale, :id, :caption, :place, :date, :photographer, :license]
     )
   end
 

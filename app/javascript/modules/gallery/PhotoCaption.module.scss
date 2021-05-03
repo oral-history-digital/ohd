@@ -2,11 +2,11 @@
 @import "../../stylesheets/mixins";
 
 .container {
+  align-self: stretch;
   color: white;
   font-size: $font-size-small;
   line-height: $line-height-small;
   max-height: 20% !important;
-  max-width: 50rem;
   overflow: auto;
   padding: 10px;
   text-align: center;
@@ -16,4 +16,13 @@
     font-size: $font-size-medium;
     line-height: $line-height-medium;
   }
+}
+
+.paragraph {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 30rem;
+  font-size: 1rem;
+  line-height: $base-unit;
+  margin-bottom: 0;
 }
