@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
 import { InterviewSearchResultsContainer } from 'modules/interview-search';
-import { AuthShowContainer, admin } from 'modules/auth';
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { humanReadable } from 'modules/data';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
@@ -12,7 +12,6 @@ import missingStill from 'assets/images/missing_still.png';
 import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 
 export default class InterviewPreview extends React.Component {
-
     constructor(props) {
         super(props);
 
@@ -97,7 +96,7 @@ export default class InterviewPreview extends React.Component {
     customMetadataFields() {
         const { interviewee } = this.props;
 
-        return this.props.project.grid_fields.map((field, i) => {
+        return this.props.project.grid_fields.map((field) => {
             let obj = (field.ref_object_type === 'Interview' || field.source === 'Interview') ?
                 this.props.interview :
                 interviewee;
@@ -136,37 +135,38 @@ export default class InterviewPreview extends React.Component {
     }
 
     renderExportCheckbox() {
-        if (admin(this.props, {type: 'Interview', action: 'update', interview_id: this.props.interview.id})) {
-            return <div>
-                <input
-                    type='checkbox'
-                    className='export-checkbox'
-                    checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0}
-                    onChange={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}
-                />
-            </div>
-        } else {
-            return null;
-        }
+        return (
+            <AuthorizedContent object={{ type: 'Interview', action: 'update', interview_id: this.props.interview.id }}>
+                <div>
+                    <input
+                        type='checkbox'
+                        className='export-checkbox'
+                        checked={this.props.selectedArchiveIds.indexOf(this.props.interview.archive_id) > 0}
+                        onChange={() => {this.props.addRemoveArchiveId(this.props.interview.archive_id)}}
+                    />
+                </div>
+            </AuthorizedContent>
+        );
     }
 
     render() {
-        if (this.props.statuses && this.props.statuses[this.props.interview.archive_id] !== 'deleted') {
+        if (this.props?.statuses[this.props.interview.archive_id] !== 'deleted') {
             return (
                 <div className={classNames('interview-preview', 'search-result', {
                     'detailed': this.state.open,
                 })}>
                     {this.renderBadge()}
-                    <Link className={'search-result-link'}
-                        onClick={() => {
-                            this.props.setArchiveId(this.props.interview.archive_id);
-                        }}
+                    <Link
+                        className="search-result-link"
+                        onClick={() => this.props.setArchiveId(this.props.interview.archive_id)}
                         to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
                     >
                         <div className="search-result-img aspect-ratio">
-                          <img className="aspect-ratio__inner"
-                               src={this.props.interview.still_url || 'missing_still'}
-                               onError={ (e) => { e.target.src = missingStill; }}/>
+                            <img
+                                className="aspect-ratio__inner"
+                                src={this.props.interview.still_url || 'missing_still'}
+                                onError={ (e) => { e.target.src = missingStill; }}
+                            />
                         </div>
 
                         <AuthShowContainer ifLoggedIn={true}>
@@ -195,5 +195,23 @@ export default class InterviewPreview extends React.Component {
 }
 
 InterviewPreview.propTypes = {
+    fulltext: PropTypes.string,
+    interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object.isRequired,
+    interviewSearchResults: PropTypes.object.isRequired,
+    query: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    statuses: PropTypes.object.isRequired,
+    selectedArchiveIds: PropTypes.array,
+    optionsScope: PropTypes.string.isRequired,
+    people: PropTypes.object.isRequired,
+    peopleStatus: PropTypes.object.isRequired,
+    setArchiveId: PropTypes.func.isRequired,
+    addRemoveArchiveId: PropTypes.func.isRequired,
+    searchInInterview: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };

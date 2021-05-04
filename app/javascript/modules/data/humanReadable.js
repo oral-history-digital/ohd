@@ -1,6 +1,10 @@
 import { t } from 'modules/i18n';
 import { pluralize } from 'modules/strings';
 
+/**
+ * Needs in props at most: optionsScope, translations, locale, values
+ */
+
 export default function humanReadable(obj, attribute, props, state, none='---') {
     let translation = obj.translations && obj.translations.find(t => t.locale === props.locale)
     let value = state.value || obj[attribute] || (translation && translation[attribute]);
