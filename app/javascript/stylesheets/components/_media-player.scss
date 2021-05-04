@@ -3,7 +3,7 @@
   color: #fff;
   display: flex;
   flex-direction: column;
-  height: auto;
+  height: 29rem; //height: auto;
   padding: $base-unit 5% ($base-unit * 2);
   position: relative;
   z-index: $z-index-media-player;
@@ -20,7 +20,7 @@
   right: 0.5rem;
 }
 
-.Layout.is-sticky .MediaPlayer {
+.MediaPlayer.is-sticky {
   flex-direction: row-reverse;
   height: 10rem;
   justify-content: flex-end;

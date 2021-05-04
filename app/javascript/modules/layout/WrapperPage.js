@@ -11,7 +11,6 @@ import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
-import ScrollListener from './ScrollListener';
 
 export default class WrapperPage extends React.Component {
     constructor(props) {
@@ -76,58 +75,55 @@ export default class WrapperPage extends React.Component {
     }
 
     render() {
-        const { flyoutTabsVisible, children, match, toggleFlyoutTabs } = this.props;
+        const { sticky, flyoutTabsVisible, children, match, toggleFlyoutTabs } = this.props;
 
         return (
             <ResizeWatcherContainer>
-                <ScrollListener>
-                    {(isSticky, mediaPlayerEl) => (
-                        <div className={classNames('Layout', {
-                            'sidebar-is-visible': flyoutTabsVisible,
-                            'is-sticky': isSticky, //transcriptScrollEnabled//,
-                            'fix-video': false, //transcriptScrollEnabled//,
-                        })}>
-                            <Helmet>
-                                <html lang={match.params.locale} />
-                            </Helmet>
+                <div className={classNames('Layout', {
+                    'sidebar-is-visible': flyoutTabsVisible,
+                    'is-sticky': sticky,
+                    'fix-video': false,
+                })}>
+                    <Helmet>
+                        <html lang={match.params.locale} />
+                    </Helmet>
 
-                            <div className={classNames('Layout-page', 'Site', {
-                                'fix-video': false, // transcriptScrollEnabled,//
-                            })}>
-                                <SiteHeader />
+                    <div className={classNames('Layout-page', 'Site', {
+                        'fix-video': false, // transcriptScrollEnabled,//
+                    })}>
+                        <SiteHeader />
 
-                                <MessagesContainer
-                                    loggedInAt={this.props.loggedInAt}
-                                    notifications={this.state.notifications}
-                                />
+                        <MessagesContainer
+                            loggedInAt={this.props.loggedInAt}
+                            notifications={this.state.notifications}
+                        />
 
-                                <main className="Site-content">
-                                    {children}
-                                </main>
+                        <main className="Site-content">
+                            {children}
+                        </main>
 
-                                <SiteFooter />
-                            </div>
+                        <SiteFooter />
+                    </div>
 
-                            <ErrorBoundary>
-                                <FlyoutTabs className="Layout-sidebar" />
-                            </ErrorBoundary>
+                    <ErrorBoundary>
+                        <FlyoutTabs className="Layout-sidebar" />
+                    </ErrorBoundary>
 
-                            <BurgerButton
-                                className="Layout-sidebarToggle"
-                                open={flyoutTabsVisible}
-                                onClick={() => toggleFlyoutTabs(flyoutTabsVisible)}
-                            />
+                    <BurgerButton
+                        className="Layout-sidebarToggle"
+                        open={flyoutTabsVisible}
+                        onClick={() => toggleFlyoutTabs(flyoutTabsVisible)}
+                    />
 
-                            <ArchivePopupContainer/>
-                        </div>
-                    )}
-                </ScrollListener>
+                    <ArchivePopupContainer/>
+                </div>
             </ResizeWatcherContainer>
         )
     }
 }
 
 WrapperPage.propTypes = {
+    sticky: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool,
     isLoggedOut: PropTypes.bool,
     loggedInAt: PropTypes.number,

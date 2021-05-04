@@ -60,3 +60,15 @@ test('clearTimeChangeRequest', () => {
     const expected = { type: types.CLEAR_TIME_CHANGE_REQUEST };
     expect(actual).toEqual(expected);
 });
+
+test('setSticky', () => {
+    const actual = actions.setSticky();
+    const expected = { type: types.SET_STICKY };
+    expect(actual).toEqual(expected);
+});
+
+test('unsetSticky', () => {
+    const actual = actions.unsetSticky();
+    const expected = { type: types.UNSET_STICKY };
+    expect(actual).toEqual(expected);
+});

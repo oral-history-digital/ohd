@@ -7,3 +7,5 @@ export const SET_RESOLUTION = `${NAME}/setResolution`;
 export const RESET_MEDIA = `${NAME}/resetMedia`;
 export const SEND_TIME_CHANGE_REQUEST = `${NAME}/sendTimeChangeRequest`;
 export const CLEAR_TIME_CHANGE_REQUEST = `${NAME}/clearTimeChangeRequest`;
+export const SET_STICKY = `${NAME}/setSticky`;
+export const UNSET_STICKY = `${NAME}/unsetSticky`;

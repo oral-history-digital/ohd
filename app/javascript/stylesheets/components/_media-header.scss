@@ -22,7 +22,7 @@
   margin-left: auto;
 }
 
-.Layout.is-sticky .MediaHeader {
+.MediaHeader.is-sticky {
   align-items: flex-start;
   flex-direction: column;
   flex-wrap: nowrap;
@@ -34,12 +34,12 @@
   }
 }
 
-.Layout.is-sticky .MediaHeader-title {
+.MediaHeader.is-sticky .MediaHeader-title {
   font-size: $font-size-larger;
   line-height: $base-unit;
   margin-right: 0;
 }
 
-.Layout.is-sticky .MediaHeader-controls {
+.MediaHeader.is-sticky .MediaHeader-controls {
   margin-left: 0;
 }

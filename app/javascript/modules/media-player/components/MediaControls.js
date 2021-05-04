@@ -137,10 +137,10 @@ export default class MediaControls extends React.Component {
     }
 
     render() {
-        const { className, fixed, tape, interview, resolution } = this.props;
+        const { className, tape, interview, resolution } = this.props;
 
         return (
-            <div className={classNames(className, 'MediaControls', { 'is-fixed': fixed })}>
+            <div className={classNames(className, 'MediaControls')}>
                 <div className="MediaControls-selects">
                     {
                         interview.tape_count > 1 && (
@@ -167,7 +167,6 @@ export default class MediaControls extends React.Component {
 
 MediaControls.propTypes = {
     className: PropTypes.string,
-    fixed: PropTypes.bool.isRequired,
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,

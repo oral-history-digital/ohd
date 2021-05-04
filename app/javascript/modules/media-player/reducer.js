@@ -6,6 +6,8 @@ import {
     RESET_MEDIA,
     SEND_TIME_CHANGE_REQUEST,
     CLEAR_TIME_CHANGE_REQUEST,
+    SET_STICKY,
+    UNSET_STICKY,
 } from './action-types';
 
 export const initialState = {
@@ -14,6 +16,7 @@ export const initialState = {
     isPlaying: false,
     resolution: null,
     timeChangeRequest: null,
+    sticky: false,
 };
 
 const mediaPlayer = (state = initialState, action) => {
@@ -50,6 +53,16 @@ const mediaPlayer = (state = initialState, action) => {
             return {
                 ...state,
                 timeChangeRequest: null,
+            };
+        case SET_STICKY:
+            return {
+                ...state,
+                sticky: true,
+            };
+        case UNSET_STICKY:
+            return {
+                ...state,
+                sticky: false,
             };
         default:
             return state;
