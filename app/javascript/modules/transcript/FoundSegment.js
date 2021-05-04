@@ -1,4 +1,5 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { t } from 'modules/i18n';
@@ -6,9 +7,10 @@ import { t } from 'modules/i18n';
 export default class FoundSegment extends React.Component {
     constructor(props) {
         super(props);
+
         this.state = {
             contentOpen: false,
-            contentType: 'none'
+            contentType: 'none',
         };
     }
 
@@ -67,9 +69,22 @@ export default class FoundSegment extends React.Component {
                     {moment.utc(this.props.data.time * 1000).format("HH:mm:ss")}
                 </p>
                 <div className={this.css()}>
-                    <p dangerouslySetInnerHTML={{__html: this.props.data.text[this.props.locale]}} />
+                    <p>{this.props.data.text[this.props.locale]}</p>
                 </div>
             </div>
         )
     }
 }
+
+FoundSegment.propTypes = {
+    data: PropTypes.object.isRequired,
+    interview: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    tape_count: PropTypes.number,
+    active: PropTypes.bool.isRequired,
+    translations: PropTypes.object.isRequired,
+    index: PropTypes.number,
+    foundSegmentsAmount: PropTypes.number,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
+    setInterviewTabIndex: PropTypes.func.isRequired,
+};
