@@ -11,7 +11,6 @@ export default function MediaPlayer({
     interviewee,
     locale,
     projectId,
-    transcriptScrollEnabled,
 }) {
     if (!projectId) {
         return null;
@@ -19,10 +18,10 @@ export default function MediaPlayer({
 
     return (
         <div className={classNames('Layout-mediaPlayer', 'MediaPlayer', {
-            'is-fixed': transcriptScrollEnabled,
+            'is-fixed': false, // transcriptScrollEnabled,//
         })}>
             <header className={classNames('MediaHeader', {
-                'is-fixed': transcriptScrollEnabled,
+                'is-fixed': false // transcriptScrollEnabled,//
             })}>
                 <h1 className="MediaHeader-title">
                     {fullname({ locale }, interviewee, true)}
@@ -30,11 +29,11 @@ export default function MediaPlayer({
 
                 <MediaControlsContainer
                     className="MediaHeader-controls"
-                    fixed={transcriptScrollEnabled}
+                    fixed={false}
                 />
             </header>
             <div className={classNames('MediaElement', {
-                'is-fixed': transcriptScrollEnabled,
+                'is-fixed': false, // transcriptScrollEnabled,//
             })}>
                 <MediaElementContainer />
             </div>
@@ -48,5 +47,4 @@ MediaPlayer.propTypes = {
     interviewee: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    transcriptScrollEnabled: PropTypes.bool.isRequired,
 };

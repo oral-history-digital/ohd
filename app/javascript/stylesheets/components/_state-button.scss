@@ -6,8 +6,8 @@
   margin-left: $base-unit / 8;
   outline: none;
   padding: 0.25rem 0.25rem;
-  transition-property: background-color, box-shadow, filter;
   transition-duration: $transition-duration;
+  transition-property: background-color, box-shadow, filter;
 }
 
 .StateButton:focus {
@@ -15,7 +15,7 @@
 }
 
 .StateButton.is-pressed {
-  background-color: var(--editorial-color);
+  background-color: var(--primary-color);
   filter: brightness(0.8);
 }
 

@@ -75,21 +75,21 @@ export default class WrapperPage extends React.Component {
     }
 
     render() {
-        const { flyoutTabsVisible, children, transcriptScrollEnabled, match, toggleFlyoutTabs } = this.props;
+        const { flyoutTabsVisible, children, match, toggleFlyoutTabs } = this.props;
 
         return (
             <ResizeWatcherContainer>
                 <div className={classNames('Layout', {
                     'sidebar-is-visible': flyoutTabsVisible,
-                    'is-sticky': transcriptScrollEnabled,
-                    'fix-video': transcriptScrollEnabled,
+                    'is-sticky': false, //transcriptScrollEnabled//,
+                    'fix-video': false, //transcriptScrollEnabled//,
                 })}>
                     <Helmet>
                         <html lang={match.params.locale} />
                     </Helmet>
 
                     <div className={classNames('Layout-page', 'Site', {
-                        'fix-video': transcriptScrollEnabled,
+                        'fix-video': false, // transcriptScrollEnabled,//
                     })}>
                         <SiteHeader />
 
@@ -126,7 +126,6 @@ WrapperPage.propTypes = {
     isLoggedIn: PropTypes.bool,
     isLoggedOut: PropTypes.bool,
     loggedInAt: PropTypes.number,
-    transcriptScrollEnabled: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,

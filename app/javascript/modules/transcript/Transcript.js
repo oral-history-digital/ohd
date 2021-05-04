@@ -94,7 +94,7 @@ export default class Transcript extends React.Component {
             let offset = activeSegmentElement.offsetTop;
             if (offset > 450) {
                 (window.innerHeight < 900) && this.handleScroll();
-                this.props.transcriptScrollEnabled && window.scrollTo(0, offset - 400);
+                //this.props.transcriptScrollEnabled && window.scrollTo(0, offset - 400);
             } else {
                 window.scrollTo(0, 1);
             }
@@ -102,8 +102,8 @@ export default class Transcript extends React.Component {
     }
 
     handleScroll() {
-        if (!this.props.transcriptScrollEnabled)
-            this.props.handleTranscriptScroll(true)
+        //if (!this.props.transcriptScrollEnabled)
+        //    this.props.handleTranscriptScroll(true)
     }
 
     shownSegmentsAround(sortedWithIndex) {
@@ -134,9 +134,9 @@ export default class Transcript extends React.Component {
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
         let tabIndex = this.props.originalLocale ? 0 : 1;
         let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.mediaTime, this.props);
-        let shownSegments = this.props.transcriptScrollEnabled ?
-            sortedWithIndex[1] :
-            this.shownSegmentsAround(sortedWithIndex);
+        let shownSegments = this.props.autoScroll ?
+            this.shownSegmentsAround(sortedWithIndex) :
+            sortedWithIndex[1];
 
         let speaker, speakerId;
 
@@ -200,13 +200,12 @@ Transcript.propTypes = {
     archiveId: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     tape: PropTypes.number.isRequired,
-    transcriptScrollEnabled: PropTypes.bool.isRequired,
+    autoScroll: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object.isRequired,
     segmentsStatus: PropTypes.object.isRequired,
     userContentsStatus: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
-    handleTranscriptScroll: PropTypes.func.isRequired,
 };
 
 Transcript.defaultProps = {

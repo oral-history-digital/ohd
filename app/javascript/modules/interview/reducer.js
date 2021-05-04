@@ -1,20 +1,27 @@
-import { TRANSCRIPT_SCROLL, SET_INTERVIEW_TAB_INDEX } from './action-types';
+import { SET_INTERVIEW_TAB_INDEX, ENABLE_AUTO_SCROLL, DISABLE_AUTO_SCROLL } from './action-types';
 
 export const initialState = {
-    transcriptScrollEnabled: false,
+    autoScroll: true,
     tabIndex: 0,
 };
 
 const interview = (state = initialState, action) => {
     switch (action.type) {
         case SET_INTERVIEW_TAB_INDEX:
-            return Object.assign({}, state, {
-                tabIndex: action.tabIndex
-            })
-        case TRANSCRIPT_SCROLL:
-            return Object.assign({}, state, {
-                transcriptScrollEnabled: action.transcriptScrollEnabled
-            })
+            return {
+                ...state,
+                tabIndex: action.tabIndex,
+            };
+        case ENABLE_AUTO_SCROLL:
+            return {
+                ...state,
+                autoScroll: true,
+            };
+        case DISABLE_AUTO_SCROLL:
+            return {
+                ...state,
+                autoScroll: false,
+            };
         default:
             return state;
     }
