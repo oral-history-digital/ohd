@@ -20,7 +20,7 @@
   right: 0.5rem;
 }
 
-.MediaPlayer.is-fixed {
+.Layout.is-sticky .MediaPlayer {
   flex-direction: row-reverse;
   height: 10rem;
   justify-content: flex-end;
@@ -29,10 +29,6 @@
   position: fixed;
   right: 0;
   top: 0;
-
-  @include screen-m {
-    height: 10rem;
-  }
 }
 
 video::cue {

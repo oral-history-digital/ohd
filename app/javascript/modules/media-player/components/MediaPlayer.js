@@ -16,12 +16,17 @@ export default function MediaPlayer({
         return null;
     }
 
+    const isSticky = false;
+
     return (
-        <div className={classNames('Layout-mediaPlayer', 'MediaPlayer', {
-            'is-fixed': false, // transcriptScrollEnabled,//
-        })}>
+        <div
+            className={classNames('Layout-mediaPlayer', 'MediaPlayer', {
+                'is-sticky': isSticky,
+                'is-fixed': isSticky, // transcriptScrollEnabled,//
+            })}
+        >
             <header className={classNames('MediaHeader', {
-                'is-fixed': false // transcriptScrollEnabled,//
+                'is-fixed': isSticky // transcriptScrollEnabled,//
             })}>
                 <h1 className="MediaHeader-title">
                     {fullname({ locale }, interviewee, true)}
@@ -29,11 +34,11 @@ export default function MediaPlayer({
 
                 <MediaControlsContainer
                     className="MediaHeader-controls"
-                    fixed={false}
+                    fixed={isSticky}
                 />
             </header>
             <div className={classNames('MediaElement', {
-                'is-fixed': false, // transcriptScrollEnabled,//
+                'is-fixed': isSticky, // transcriptScrollEnabled,//
             })}>
                 <MediaElementContainer />
             </div>

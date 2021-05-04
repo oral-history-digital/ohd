@@ -31,9 +31,9 @@ export default function Segment({
 
     useEffect(() => {
         if (autoScroll && active) {
-            const offset = divEl.current.offsetTop;
+            const topOfSegment = divEl.current.offsetTop;
 
-            scrollSmoothlyTo(0, offset - 180);
+            scrollSmoothlyTo(0, topOfSegment - 208 - 24);
         }
     }, [autoScroll, active])
 

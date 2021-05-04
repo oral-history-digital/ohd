@@ -12,7 +12,7 @@
   }
 }
 
-.MediaElement.is-fixed {
+.Layout.is-sticky .MediaElement {
   margin: $base-unit 0 0;
 
   video, audio, img {
