@@ -1,36 +1,20 @@
 import { createSelector } from 'reselect'
 
 import { getEditView } from 'modules/archive';
-import { getCurrentInterview } from './dataSelectors';
-
-const CONTRIBUTION_TYPES_USER = [
-    'interviewer',
-    'cinematographer',
-    'sound',
-    'producer',
-    'other_attender',
-    'transcriptor',
-    'translator',
-    'segmentator',
-    'proofreader',
-    'research',
-];
-
-const CONTRIBUTION_TYPES_ADMIN = CONTRIBUTION_TYPES_USER.concat([
-    'quality_manager_interviewing',
-    'quality_manager_transcription',
-    'quality_manager_translation',
-    'quality_manager_research',
-]);
+import { getCurrentInterview, getContributionTypes } from './dataSelectors';
 
 const getGroupedContributions = createSelector(
-    [getEditView, getCurrentInterview],
-    (editView, currentInterview) => {
+    [getEditView, getCurrentInterview, getContributionTypes],
+    (editView, currentInterview, contributionTypes) => {
         if (!currentInterview || !currentInterview.contributions) {
             return null;
         }
 
-        const availableTypes = editView ? CONTRIBUTION_TYPES_ADMIN : CONTRIBUTION_TYPES_USER;
+        const availableTypes = Object
+            .values(contributionTypes)
+            .filter(ct => editView || ct.use_in_details_view)
+            .sort((a, b) => a.order - b.order)
+            .map(ct => ct.code)
 
         const groupedContributions = Object
             .values(currentInterview.contributions)

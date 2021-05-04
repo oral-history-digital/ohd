@@ -89,7 +89,9 @@ class ContributionTypesController < ApplicationController
     def contribution_type_params
       params.require(:contribution_type).permit(
         :code,
-        #:use_in_transcript,
+        #:use_as_speaker,
+        :use_in_details_view,
+        :order,
         :project_id,
         translations_attributes: [:locale, :id, :label]
       )

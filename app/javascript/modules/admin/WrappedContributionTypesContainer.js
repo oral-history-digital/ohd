@@ -38,11 +38,14 @@ const mapStateToProps = (state) => {
                 help: 'help_texts.contribution_types.code',
                 validate: function(v){return /^\w+$/.test(v)}
             },
-            //{
-                //attribute: 'show_in_details_view',
-                //elementType: 'input',
-                //type: 'checkbox',
-            //},
+            {
+                attribute: 'use_in_details_view',
+                elementType: 'input',
+                type: 'checkbox',
+            },
+            {
+                attribute: 'order',
+            },
             //{
                 //attribute: 'use_as_speaker',
                 //elementType: 'input',

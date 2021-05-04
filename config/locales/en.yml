@@ -511,6 +511,8 @@ en:
     registry_reference_types:
       code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Verknüpfungsart)
       registry_entry_id: tiefst möglicher, z.B. der Registereintrag 'Orte' für die Verknüpfungsart 'Geburtsort'
+    contribution_types:
+      code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Mitwirkungsart)
     media_streams:
       path: Variablen sind INTERVIEW_ID, TAPE_COUNT und TAPE_NUMBER. Sie müssen genauso in dem Pfad vorkommen.
   contributions:
@@ -900,7 +902,6 @@ en:
         use_in_results_table: als Suchergebnis zeigen (Raster)
         use_in_results_list: als Suchergebnis zeigen (Liste)
         list_columns_order: Reihenfolge in den Suchergebnissen
-        use_in_details_view: in der Detailansicht zeigen
         use_in_map_search: in der Kartensuche zeigen
         display_on_landing_page: Auf der Landing-Page zeigen
         ref_object_type: Verknüpfung mit
@@ -1083,6 +1084,8 @@ en:
         abbreviation: Abkürzung
         created_at: Angelegt am
         code: Code
+        use_in_details_view: in der Detailansicht zeigen
+        order: Reihenfolge
     errors:
       default:
         empty: Please select
