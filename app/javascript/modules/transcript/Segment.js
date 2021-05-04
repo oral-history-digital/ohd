@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaUser } from 'react-icons/fa';
@@ -6,11 +6,13 @@ import { FaUser } from 'react-icons/fa';
 import { fullname } from 'modules/people';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { scrollSmoothlyTo } from 'modules/user-agent';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 
 export default function Segment({
     data,
+    autoScroll,
     contentLocale,
     locale,
     active,
@@ -23,8 +25,17 @@ export default function Segment({
     tabIndex,
     sendTimeChangeRequest,
 }) {
+    const divEl = useRef(null);
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
+
+    useEffect(() => {
+        if (autoScroll && active) {
+            const offset = divEl.current.offsetTop;
+
+            scrollSmoothlyTo(0, offset - 180);
+        }
+    }, [autoScroll, active])
 
     const text = isAuthorized(data) ?
         (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
@@ -39,6 +50,7 @@ export default function Segment({
         <>
             <div
                 id={`segment_${data.id}`}
+                ref={divEl}
                 className={classNames('Segment', {
                     'Segment--withSpeaker': data.speakerIdChanged,
                 })}>
@@ -94,6 +106,7 @@ export default function Segment({
 
 Segment.propTypes = {
     data: PropTypes.object.isRequired,
+    autoScroll: PropTypes.bool.isRequired,
     contentLocale: PropTypes.string.isRequired,
     popupType: PropTypes.string,
     openReference: PropTypes.object,

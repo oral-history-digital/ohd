@@ -134,9 +134,7 @@ export default class Transcript extends React.Component {
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
         let tabIndex = this.props.originalLocale ? 0 : 1;
         let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.mediaTime, this.props);
-        let shownSegments = this.props.autoScroll ?
-            this.shownSegmentsAround(sortedWithIndex) :
-            sortedWithIndex[1];
+        let shownSegments = sortedWithIndex[1];
 
         let speaker, speakerId;
 
