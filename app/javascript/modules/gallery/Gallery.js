@@ -57,7 +57,7 @@ export default class Gallery extends React.Component {
 
     addPhoto() {
         return (
-            <AuthorizedContent object={{ type: 'Photo', action: 'create', interview_id: this.props.interview.id }}>
+            <AuthorizedContent object={{ type: 'Photo', interview_id: this.props.interview.id }} action='create'>
                 <Modal
                     title={t(this.props, 'edit.photo.new')}
                     trigger={<i className="fa fa-plus"></i>}

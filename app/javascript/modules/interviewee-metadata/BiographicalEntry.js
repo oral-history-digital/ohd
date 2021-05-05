@@ -20,7 +20,7 @@ export default class BiographicalEntry extends React.Component {
         const { data, deleteData } = this.props;
 
         return (
-            <AuthorizedContent object={data}>
+            <AuthorizedContent object={data} action='update'>
                 <Modal
                     title={t(this.props, 'edit.biographical_entry.edit')}
                     trigger={<i className="fa fa-pencil"/>}

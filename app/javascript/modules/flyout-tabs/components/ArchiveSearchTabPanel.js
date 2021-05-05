@@ -19,7 +19,7 @@ function ArchiveSearchTabPanel({ selectedArchiveIds }) {
             <ArchiveSearchFormContainer/>
 
             <div className='flyout-sub-tabs-container flyout-video'>
-                <AuthorizedContent object={{type: 'General', action: 'edit'}}>
+                <AuthorizedContent object={{type: 'General'}} action='edit'>
                     <InterviewDataContainer
                         title={t('admin_actions')}
                         content={<AdminActionsContainer archiveIds={selectedArchiveIds} />}

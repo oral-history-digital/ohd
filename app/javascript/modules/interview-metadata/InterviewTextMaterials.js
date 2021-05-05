@@ -38,7 +38,7 @@ export default class InterviewTextMaterials extends React.Component {
 
         return (
             <>
-                <AuthorizedContent object={interview}>
+                <AuthorizedContent object={interview} action='update'>
                     <SingleValueWithFormContainer
                         obj={interview}
                         collapse

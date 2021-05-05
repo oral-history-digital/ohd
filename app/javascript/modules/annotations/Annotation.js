@@ -23,7 +23,7 @@ export default function Annotation({
                 className=""
                 dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}}
             />
-            <AuthorizedContent object={annotation}>
+            <AuthorizedContent object={annotation} action='update'>
                 <span className={'flyout-sub-tabs-content-ico'}>
                     <Modal
                         title={t('edit.annotation.edit')}

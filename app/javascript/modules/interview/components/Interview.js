@@ -44,7 +44,7 @@ export default function Interview({
                         (
                             <div>
                                 <AuthShowContainer ifLoggedIn>
-                                    <AuthorizedContent  object={interview} showUnauthorizedMsg showIfPublic>
+                                    <AuthorizedContent  object={interview} action='show' showUnauthorizedMsg showIfPublic>
                                         <MediaPlayerContainer />
                                         {
                                             interviewEditView ?

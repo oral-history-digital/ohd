@@ -20,7 +20,7 @@ export default function InterviewContributors({
                 withSpeakerDesignation={withSpeakerDesignation}
             />
 
-            <AuthorizedContent object={{type: 'Contribution', action: 'create', interview_id: interview.id}}>
+            <AuthorizedContent object={{type: 'Contribution', interview_id: interview.id}} action='create'>
                 <p>
                     <Modal
                         title={t('edit.contribution.new')}

@@ -81,7 +81,7 @@ export default class RegistryEntries extends React.Component {
 
     addRegistryEntry() {
         return (
-            <AuthorizedContent object={{type: 'RegistryEntry', action: 'create'}}>
+            <AuthorizedContent object={{type: 'RegistryEntry'}} action='create'>
                 <Modal
                     title={t(this.props, 'edit.registry_entry.new')}
                     trigger={t(this.props, 'edit.registry_entry.new')}

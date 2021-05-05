@@ -22,7 +22,7 @@ export default function Photo({
 
     return (
         <div className={styles.container}>
-            <AuthorizedContent object={data}>
+            <AuthorizedContent object={data} action='update'>
                 <div className={styles.admin}>
                     <Modal
                         title={t('edit.photo.edit')}

@@ -136,7 +136,7 @@ export default class InterviewPreview extends React.Component {
 
     renderExportCheckbox() {
         return (
-            <AuthorizedContent object={{ type: 'Interview', action: 'update', interview_id: this.props.interview.id }}>
+            <AuthorizedContent object={{ type: 'Interview', interview_id: this.props.interview.id }} action='update'>
                 <div>
                     <input
                         type='checkbox'

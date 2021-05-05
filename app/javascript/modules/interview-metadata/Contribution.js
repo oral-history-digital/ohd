@@ -36,7 +36,7 @@ export default function Contribution({
                         null
                 }
 
-                <AuthorizedContent object={contribution}>
+                <AuthorizedContent object={contribution} action='update'>
                     <span className="flyout-sub-tabs-content-ico">
                         <Modal
                             title={t('edit.contribution.edit')}

@@ -103,7 +103,7 @@ export default class WrappedAccount extends React.Component {
                         {this.tasks('closed_supervised_other', account && Object.values(account.supervised_tasks).filter(t => t.workflow_state === 'cleared'))}
                     </div>
 
-                    <AuthorizedContent object={{type: 'General', action: 'edit'}}>
+                    <AuthorizedContent object={{type: 'General'}} action='edit'>
                         <Features />
                     </AuthorizedContent>
                 </AuthShowContainer>

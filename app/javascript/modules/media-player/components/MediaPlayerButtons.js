@@ -24,7 +24,7 @@ export default function MediaPlayerButtons({
 
     return (
         <div className={className}>
-            <AuthorizedContent object={{type: 'General', action: 'edit'}}>
+            <AuthorizedContent object={{type: 'General'}} action='edit'>
                 <InterviewEditButtonsContainer />
             </AuthorizedContent>
 

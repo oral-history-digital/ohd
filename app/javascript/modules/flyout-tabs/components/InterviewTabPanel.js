@@ -80,7 +80,7 @@ class InterviewTabPanel extends Component {
                     <AccountContainer/>
                 </AuthShowContainer>
                 <div className={`flyout-sub-tabs-container flyout-video ${projectId === "campscapes" ? "hidden": ""}`}>
-                    <AuthorizedContent object={this.props.interview}>
+                    <AuthorizedContent object={this.props.interview} action='update'>
                         <p>
                             <Link
                                 onClick={() => {
@@ -94,7 +94,7 @@ class InterviewTabPanel extends Component {
                             </Link>
                         </p>
                     </AuthorizedContent>
-                    <AuthorizedContent object={interview} showIfPublic>
+                    <AuthorizedContent object={interview} action='show' showIfPublic>
                         <InterviewDataContainer
                             title={t(this.props, 'person_info')}
                             open={true}
@@ -107,7 +107,7 @@ class InterviewTabPanel extends Component {
                         />
                     </AuthorizedContent>
                     <AuthShowContainer ifLoggedOut={projectId !== "campscapes"} ifNoProject={true}>
-                        <AuthorizedContent object={interview} showIfPublic>
+                        <AuthorizedContent object={interview} action='show' showIfPublic>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
@@ -116,7 +116,7 @@ class InterviewTabPanel extends Component {
                         </AuthorizedContent>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
-                        <AuthorizedContent object={interview} showIfPublic>
+                        <AuthorizedContent object={interview} action='show' showIfPublic>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
@@ -125,7 +125,7 @@ class InterviewTabPanel extends Component {
                         </AuthorizedContent>
                     </AuthShowContainer>
 
-                    <AuthorizedContent object={interview}>
+                    <AuthorizedContent object={interview} action='update'>
                         <InterviewDataContainer
                             title={t(this.props, 'edit.upload_transcript.title')}
                             open={false}
@@ -133,14 +133,14 @@ class InterviewTabPanel extends Component {
                         />
                     </AuthorizedContent>
 
-                    <AuthorizedContent object={{type: 'Interview', action: 'update_speakers', interview_id: interview.id}}>
+                    <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='update_speakers'>
                         <InterviewDataContainer
                             title={t(this.props, 'assign_speakers')}
                             content={<AssignSpeakersFormContainer interview={interview} />}
                         />
                     </AuthorizedContent>
 
-                    <AuthorizedContent object={{type: 'Interview', action: 'mark_texts', interview_id: interview.id}}>
+                    <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='mark_texts'>
                         <InterviewDataContainer
                             title={t(this.props, 'mark_texts')}
                             content={<MarkTextFormContainer interview={interview} />}
@@ -148,7 +148,7 @@ class InterviewTabPanel extends Component {
                     </AuthorizedContent>
 
                     <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
-                        <AuthorizedContent object={interview} showIfPublic>
+                        <AuthorizedContent object={interview} action='show' showIfPublic>
                             <InterviewDataContainer
                                 title={t(this.props, 'photos')}
                                 open={true}
@@ -157,7 +157,7 @@ class InterviewTabPanel extends Component {
                         </AuthorizedContent>
 
                         <AuthShowContainer ifLoggedIn={hasMap}>
-                            <AuthorizedContent object={interview} showIfPublic>
+                            <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <InterviewDataContainer
                                     title={t(this.props, 'map')}
                                     open={true}
@@ -166,7 +166,7 @@ class InterviewTabPanel extends Component {
                             </AuthorizedContent>
                         </AuthShowContainer>
 
-                        <AuthorizedContent object={interview} showIfPublic>
+                        <AuthorizedContent object={interview} action='show' showIfPublic>
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}
                                 open={true}
@@ -174,7 +174,7 @@ class InterviewTabPanel extends Component {
                             />
                         </AuthorizedContent>
 
-                        <AuthorizedContent object={interview}>
+                        <AuthorizedContent object={interview} action='update'>
                             <InterviewDataContainer
                                 title={t(this.props, 'admin_actions')}
                                 content={<AdminActionsContainer archiveIds={[archiveId]} />}

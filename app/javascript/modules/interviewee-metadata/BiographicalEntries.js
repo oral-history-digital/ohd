@@ -21,7 +21,7 @@ export default class BiographicalEntries extends React.Component {
 
     addBiographicalEntry() {
         return (
-            <AuthorizedContent object={{type: 'BiographicalEntry', action: 'create', interview_id: this.props.interview.id}}>
+            <AuthorizedContent object={{type: 'BiographicalEntry', interview_id: this.props.interview.id}} action='create'>
                 <p>
                     <Modal
                         title={t(this.props, 'edit.biographical_entry.new')}

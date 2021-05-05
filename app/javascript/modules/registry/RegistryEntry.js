@@ -203,7 +203,7 @@ export default class RegistryEntry extends React.Component {
 
     editButtons() {
         return (
-            <AuthorizedContent object={this.props.data}>
+            <AuthorizedContent object={this.props.data} action='update'>
                 <PopupMenu>
                     <PopupMenu.Item>{this.edit()}</PopupMenu.Item>
                     <PopupMenu.Item>{this.delete()}</PopupMenu.Item>
@@ -245,7 +245,7 @@ export default class RegistryEntry extends React.Component {
             >
                 {data.name[locale]}
 
-                <AuthorizedContent object={data}>
+                <AuthorizedContent object={data} action='update'>
                     {` (ID: ${data.id})`}
                 </AuthorizedContent>
             </div>
@@ -284,7 +284,7 @@ export default class RegistryEntry extends React.Component {
 
     renderCheckbox() {
         return (
-            <AuthorizedContent object={{type: 'RegistryEntry', action: 'update'}}>
+            <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
                 <input
                     type='checkbox'
                     className='select-checkbox'

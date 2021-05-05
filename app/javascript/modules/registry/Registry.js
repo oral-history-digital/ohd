@@ -37,7 +37,7 @@ export default function Registry({
                                 {t('registry')}
                             </h1>
 
-                            <AuthorizedContent object={{type: 'RegistryEntry', action: 'update'}}>
+                            <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
                                 <MergeRegistryEntriesButtonContainer />
                             </AuthorizedContent>
 

@@ -90,7 +90,7 @@ export default class RegistryReferences extends React.Component {
             this.props.registryEntriesStatus[this.props.project.root_registry_entry_id].split('-')[0] === 'fetched'
         ) {
             return (
-                <AuthorizedContent object={{type: 'RegistryReference', action: 'create', interview_id: this.props.interview.id}}>
+                <AuthorizedContent object={{type: 'RegistryReference', interview_id: this.props.interview.id}} action='create'>
                     <Modal
                         title={t(this.props, 'edit.registry_reference.new')}
                         trigger={<i className="fa fa-plus"/>}

@@ -33,7 +33,7 @@ export default function SegmentButtons({
 
     return (
         <div className={classNames('Segment-buttons', { 'is-active': active })}>
-            <AuthorizedContent object={data}>
+            <AuthorizedContent object={data} action='update'>
                 <Modal
                     title={t(tabIndex === 1 ? 'edit.segment.translation' : 'edit.segment.transcript')}
                     trigger={<FaPencilAlt className="IconButton-icon" />}

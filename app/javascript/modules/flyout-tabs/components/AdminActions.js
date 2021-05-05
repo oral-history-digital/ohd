@@ -71,7 +71,7 @@ export default class AdminActions extends React.Component {
 
     deleteButton() {
         return (
-            <AuthorizedContent object={{ type: 'Interview', action: 'destroy' }}>
+            <AuthorizedContent object={{ type: 'Interview' }} action='destroy'>
                 <Modal
                     title={t(this.props, 'edit.interviews.delete.title')}
                     trigger={t(this.props, 'edit.interviews.delete.title')}
@@ -100,7 +100,7 @@ export default class AdminActions extends React.Component {
 
     updateButton(params, action) {
         return (
-            <AuthorizedContent object={{ type: 'Interview', action: 'update' }}>
+            <AuthorizedContent object={{ type: 'Interview' }} action='update'>
                 <Modal
                     title={t(this.props, `edit.interviews.${action}.title`)}
                     trigger={t(this.props, `edit.interviews.${action}.title`)}
@@ -129,7 +129,7 @@ export default class AdminActions extends React.Component {
 
     doiButton() {
         return (
-            <AuthorizedContent object={{type: 'Interview', action: 'dois'}}>
+            <AuthorizedContent object={{type: 'Interview'}} action='dois'>
                 <Modal
                     title={t(this.props, 'doi.title')}
                     trigger={t(this.props, 'doi.title')}

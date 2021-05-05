@@ -28,7 +28,7 @@ export default function Annotations({
                     ))
             }
             {
-                <AuthorizedContent object={{type: 'Annotation', action: 'create', interview_id: segment.interview_id}}>
+                <AuthorizedContent object={{type: 'Annotation', interview_id: segment.interview_id}} action='create'>
                     <Modal
                         title={t('edit.annotation.new')}
                         trigger={<i className="fa fa-plus"/>}

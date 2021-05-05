@@ -95,7 +95,7 @@ export default class PersonData extends React.Component {
     biographicalEntries() {
         if(this.props.projectId !== 'dg') {
             return (
-                <AuthorizedContent object={{type: 'BiographicalEntry', action: 'create', interview_id: this.props.interview && this.props.interview.id}} >
+                <AuthorizedContent object={{type: 'BiographicalEntry', interview_id: this.props.interview && this.props.interview.id}} action='create'>
                     <BiographicalEntriesContainer />
                 </AuthorizedContent>
             )
@@ -139,7 +139,7 @@ export default class PersonData extends React.Component {
             <div>
                 <AuthShowContainer ifLoggedIn={true}>
                     <ContentField label={t(this.props, 'interviewee_name')} value={fullname(this.props, interviewee, true)} >
-                        <AuthorizedContent object={interviewee}>
+                        <AuthorizedContent object={interviewee} action='update'>
                             <Modal
                                 title={t(this.props, 'edit.contribution.edit')}
                                 trigger={<><i className="fa fa-pencil" />{t(this.props, 'edit.contribution.edit')}</>}
