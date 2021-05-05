@@ -6,11 +6,13 @@ import permitted from './permitted';
 //
 // obj can be the serialized json of e.g. an interview or a segment
 //
-// but obj can also be sth. like {type: 'Segment', id: 2345} or {type: 'UserRegistration', action: 'update'}
-// so obj should contain a type and (id or action)
+// but obj can also be sth. like {type: 'Segment', id: 2345}
+// so obj should contain a type and optional id
 //
-export default function admin(props, obj={}) {
-    if (props.account && (props.editView || obj.type === 'Task')) {
+// action corresponds to methods in rails e.g. 'show', 'update', 'destroy'
+//
+export default function admin(props, obj={}, action) {
+    if (props.account && (props.editView || obj.type === 'Task' || action === 'show')) {
 
         let activeTasks = Object.values(props.account.tasks).filter(t => t.workflow_state !== 'finished' && t.workflow_state !== 'cleared');
         let activeSupervisedTasks = Object.values(props.account.supervised_tasks).filter(t => t.workflow_state !== 'cleared');
@@ -20,7 +22,7 @@ export default function admin(props, obj={}) {
 
         if (
             props.account.admin ||
-            ((obj.type && (obj.id || obj.action)) && (
+            ((obj.type && (obj.id || action)) && (
                 //
                 // if obj is a task of current_user_account, he/she should be able to edit it
                 (
@@ -40,8 +42,8 @@ export default function admin(props, obj={}) {
                 //
                 // if obj.type and/or id correspond to a task-permission and obj.interview_id is the same as task.interview_id, current_user_account should be able to edit it
                 (
-                    !!activeTasksPermissions.find(permission => permitted(permission, obj)) ||
-                    !!activeSupervisedTasksPermissions.find(permission => permitted(permission, obj))
+                    !!activeTasksPermissions.find(permission => permitted(permission, obj, action)) ||
+                    !!activeSupervisedTasksPermissions.find(permission => permitted(permission, obj, action))
                 ) ||
                 //
                 // if obj.type and/or id correspond to a role-permission, current_user_account should be able to edit it
@@ -49,7 +51,7 @@ export default function admin(props, obj={}) {
                     !!Object.values(props.account.permissions).find(permission => {
                         return (
                             permission.klass === obj.type &&
-                            permission.action_name === obj.action
+                            permission.action_name === action
                         )
                     })
                 )
