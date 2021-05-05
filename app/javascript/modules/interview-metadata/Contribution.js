@@ -25,7 +25,7 @@ export default function Contribution({
         deleteData({ locale, projectId, projects }, 'interviews', archiveId, 'contributions', contribution.id);
     };
 
-    if (isAuthorized(contribution) || contribution.workflow_state === 'public' ) {
+    if (isAuthorized(contribution, 'update') || contribution.workflow_state === 'public' ) {
         return (
             <span className="flyout-content-data">
                 {fullname({ locale }, person)}

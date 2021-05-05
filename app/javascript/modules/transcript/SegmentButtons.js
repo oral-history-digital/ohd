@@ -28,8 +28,8 @@ export default function SegmentButtons({
 
     const hasAnnotations = (data.annotations_count + userAnnotations.length) > 0;
     const hasReferences = data.registry_references_count > 0;
-    const showAnnotationsButton = isAuthorized({type: 'Annotation', action: 'update', interview_id: data.interview_id}) || hasAnnotations;
-    const showReferencesButton = isAuthorized({type: 'RegistryReference', action: 'update', interview_id: data.interview_id}) || hasReferences;
+    const showAnnotationsButton = isAuthorized({type: 'Annotation', interview_id: data.interview_id}, 'update') || hasAnnotations;
+    const showReferencesButton = isAuthorized({type: 'RegistryReference', interview_id: data.interview_id}, 'update') || hasReferences;
 
     return (
         <div className={classNames('Segment-buttons', { 'is-active': active })}>

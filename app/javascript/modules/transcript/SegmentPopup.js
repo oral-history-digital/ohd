@@ -28,7 +28,7 @@ export default function SegmentPopup({
             <div className="SegmentPopup-inner">
                 <div className="SegmentPopup-annotations">
                     {
-                        popupType === 'annotations' && (data.annotations_count > 0 || isAuthorized({type: 'Annotation', action: 'create', interview_id: data.interview_id})) && (
+                        popupType === 'annotations' && (data.annotations_count > 0 || isAuthorized({type: 'Annotation', interview_id: data.interview_id}, 'create')) && (
                             <Annotations
                                 segment={data}
                                 contentLocale={contentLocale}
@@ -48,7 +48,7 @@ export default function SegmentPopup({
                 </div>
                 <div className="SegmentPopup-references RegistryReferences">
                     {
-                        popupType === 'references' && (hasReferences || isAuthorized({type: 'RegistryReference', action: 'create', interview_id: data.interview_id })) && (
+                        popupType === 'references' && (hasReferences || isAuthorized({type: 'RegistryReference', interview_id: data.interview_id}, 'create')) && (
                             <RegistryReferencesContainer
                                 refObject={data}
                                 lowestAllowedRegistryEntryId={1}

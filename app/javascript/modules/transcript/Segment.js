@@ -26,12 +26,12 @@ export default function Segment({
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
 
-    const text = isAuthorized(data) ?
+    const text = isAuthorized(data, 'update') ?
         (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
         data.text[`${contentLocale}-public`];
 
-    const showButtons = isAuthorized(data) ||
-        isAuthorized({ type: 'General', action: 'edit' }) ||
+    const showButtons = isAuthorized(data, 'update') ||
+        isAuthorized({type: 'General'}, 'edit') ||
         (data.annotations_count + data.user_annotation_ids.length) > 0 ||
         data.registry_references_count > 0;
 
