@@ -34,7 +34,7 @@ export default function MediaPlayerButtons({
             <button
                 className={classNames('StateButton', { 'is-pressed': autoScroll })}
                 type="button"
-                title={autoScroll ? 'auto scroll enabled' : 'auto scroll disabled'}
+                title={autoScroll ? t('modules.media_player.auto_scroll_enabled') : t('modules.media_player.auto_scroll_disabled')}
                 onClick={toggleAutoScroll}
             >
                 <FaMagic className="StateButton-icon" />
