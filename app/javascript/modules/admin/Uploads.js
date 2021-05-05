@@ -52,7 +52,7 @@ export default class Uploads extends React.Component {
 
     content() {
         if (
-            admin(this.props, {type: 'Upload', action: 'create'})
+            admin(this.props, {type: 'Upload'}, 'create')
         ) {
             if (
                 !this.state.showForm

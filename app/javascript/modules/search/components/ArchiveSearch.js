@@ -62,7 +62,7 @@ export default class ArchiveSearch extends React.Component {
         let props = this.props
         let headers = [];
 
-        if (admin(this.props, {type: 'General', action: 'edit'})) {
+        if (admin(this.props, {type: 'General'}, 'edit')) {
             // the following column header will be shown above the second column (tested in FF and Chrome). Why?
             headers.push(<td key={'list-header-column-selected'}></td>);
             //headers.push(<td key={'list-header-column-selected'}><strong>{t(this.props, 'selected')}</strong></td>);
@@ -167,7 +167,7 @@ export default class ArchiveSearch extends React.Component {
                         </tbody>
                     </table>
                 )
-            } else if (displayType === 'workflow' && admin(this.props, {type: 'General', action: 'edit'})) {
+            } else if (displayType === 'workflow' && admin(this.props, {type: 'General'}, 'edit')) {
                 return (
                     <div>
                         {this.workflowHeader()}
@@ -303,7 +303,7 @@ export default class ArchiveSearch extends React.Component {
             return viewModes.map((viewMode, i) => {
                 let visibility = (
                         viewModes.length < 2 ||
-                        (viewMode === 'workflow' && !admin(this.props, {type: 'General', action: 'edit'}))
+                        (viewMode === 'workflow' && !admin(this.props, {type: 'General'}, 'edit'))
                     ) ?
                     'hidden' :
                     '';

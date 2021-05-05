@@ -74,7 +74,7 @@ export default class RegistryEntryShow extends React.Component {
 
     refObject(rr) {
         let ref_object_string = ''
-        let isAllowedToSee =  admin(this.props, {type: 'General', action: 'edit'}) ||
+        let isAllowedToSee =  admin(this.props, {type: 'General'}, 'edit') ||
             this.props.interviews[rr.archive_id]?.workflow_state === 'public'
 
         switch (rr.ref_object_type) {

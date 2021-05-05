@@ -222,7 +222,7 @@ export default class ArchiveSearchForm extends React.Component {
                         currentMin={this.currentYearRange()[0] || this.yearRange(facet)[0]}
                         currentMax={this.currentYearRange()[1] || this.yearRange(facet)[1]}
                         map={this.props.map}
-                        show={(adminFacets.indexOf(facet) > -1 && admin(this.props, {type: 'General', action: 'edit'})) || (adminFacets.indexOf(facet) === -1)}
+                        show={(adminFacets.indexOf(facet) > -1 && admin(this.props, {type: 'General'}, 'edit')) || (adminFacets.indexOf(facet) === -1)}
                         admin={(adminFacets.indexOf(facet) > -1)}
                     />
                 )

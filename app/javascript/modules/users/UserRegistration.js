@@ -110,7 +110,7 @@ export default class UserRegistration extends React.Component {
     }
 
     buttons() {
-        if (admin(this.props, {type: 'UserRegistration', action: 'update'})) {
+        if (admin(this.props, {type: 'UserRegistration'}, 'update')) {
             return (
                 <div className={'buttons box'}>
                     {this.show()}
@@ -123,7 +123,7 @@ export default class UserRegistration extends React.Component {
     roles() {
         if (
             this.props.userRegistration.user_account_id &&
-            admin(this.props, {type: 'UserRole', action: 'create'})
+            admin(this.props, {type: 'UserRole'}, 'create')
         ) {
             return (
                 <div className={'roles box'}>
@@ -145,7 +145,7 @@ export default class UserRegistration extends React.Component {
     tasks() {
         if (
             this.props.userRegistration.user_account_id &&
-            admin(this.props, {type: 'Task', action: 'create'})
+            admin(this.props, {type: 'Task'}, 'create')
         ) {
             return (
                 <div className={'tasks box'}>

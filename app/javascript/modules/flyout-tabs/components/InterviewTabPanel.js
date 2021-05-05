@@ -30,7 +30,7 @@ class InterviewTabPanel extends Component {
     }
 
     subTab(title, content, url, obj, condition = true) {
-        return (admin(this.props, obj) && condition) ?
+        return (admin(this.props, obj, 'update') && condition) ?
             (<div className='flyout-sub-tabs-container flyout-video'>
                 <InterviewDataContainer
                     title={t(this.props, title)}
@@ -45,7 +45,7 @@ class InterviewTabPanel extends Component {
     downloads() {
         const { interview, archiveId } = this.props;
 
-        if (admin(this.props, {type: 'Interview', action: 'download'})) {
+        if (admin(this.props, {type: 'Interview'}, 'download')) {
             let links = [];
             for (var i=1; i <= parseInt(interview.tape_count); i++) {
                 links.push(

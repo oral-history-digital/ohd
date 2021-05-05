@@ -54,7 +54,7 @@ class UsersAdminTabPanel extends Component {
     }
 
     subTab(title, content, url, obj, condition = true) {
-        return (admin(this.props, obj) && condition) ?
+        return (admin(this.props, obj, 'update') && condition) ?
             (<div className='flyout-sub-tabs-container flyout-video'>
                 <InterviewDataContainer
                     title={t(this.props, title)}
@@ -67,7 +67,7 @@ class UsersAdminTabPanel extends Component {
     }
 
     render() {
-        return admin(this.props, {type: 'General', action: 'edit'}) ?
+        return admin(this.props, {type: 'General'}, 'edit') ?
             (<Fragment>
                 <div className='flyout-tab-title'>
                     { t(this.props, 'edit.administration') }

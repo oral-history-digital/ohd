@@ -26,7 +26,7 @@ export default class UserRole extends React.Component {
         if (
             this.props.userRole &&
             !this.props.hideEdit &&
-            admin(this.props, this.props.userRole)
+            admin(this.props, this.props.userRole, 'update')
         ) {
             return (
                 <Modal

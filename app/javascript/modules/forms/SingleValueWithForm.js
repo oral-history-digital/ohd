@@ -25,7 +25,7 @@ export default class SingleValueWithForm extends React.Component {
     }
 
     editButton() {
-        if (admin(this.props, this.props.obj)) {
+        if (admin(this.props, this.props.obj, 'update')) {
             return (
                 <span
                     className='flyout-sub-tabs-content-ico-link'
@@ -114,7 +114,7 @@ export default class SingleValueWithForm extends React.Component {
 
     show() {
         if (
-            admin(this.props, this.props.obj) ||
+            admin(this.props, this.props.obj, 'update') ||
             (
                 (
                     (this.props.isLoggedIn && this.props.metadataField && this.props.metadataField.use_in_details_view) ||
@@ -137,7 +137,7 @@ export default class SingleValueWithForm extends React.Component {
     }
 
     render() {
-        const isEditMode = admin(this.props, this.props.obj) && this.state.editing;
+        const isEditMode = admin(this.props, this.props.obj, 'update') && this.state.editing;
         return isEditMode ? this.form() : this.show();
     }
 }

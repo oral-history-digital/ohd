@@ -38,7 +38,7 @@ export default class RegistryReference extends React.Component {
         if (
             this.props.registryReference &&
             !this.props.hideEdit &&
-            admin(this.props, this.props.registryReference) &&
+            admin(this.props, this.props.registryReference, 'update') &&
             this.props.registryEntries[this.props.registryReference.registry_entry_id] &&
             this.props.registryEntries[this.props.registryReference.registry_entry_id].associations_loaded
         ) {
@@ -84,7 +84,7 @@ export default class RegistryReference extends React.Component {
         if (
             this.props.registryReference &&
             !this.props.hideEdit &&
-            admin(this.props, this.props.registryReference)
+            admin(this.props, this.props.registryReference, 'destroy')
         ) {
             return (
                 <Modal

@@ -40,7 +40,7 @@ export default class RegistryName extends React.Component {
     confirmDeleteButton() {
         if (
             this.props.registryName &&
-            admin(this.props, this.props.registryName) &&
+            admin(this.props, this.props.registryName, 'update') &&
             this.state.showConfirmDeleteButton
         ) {
             return <div
@@ -56,7 +56,7 @@ export default class RegistryName extends React.Component {
     delete() {
         if (
             this.props.registryName &&
-            admin(this.props, this.props.registryName) &&
+            admin(this.props, this.props.registryName, 'update') &&
             !this.state.showConfirmDeleteButton
         ) {
             return <div

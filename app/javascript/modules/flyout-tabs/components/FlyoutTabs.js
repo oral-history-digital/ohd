@@ -107,7 +107,7 @@ export default class FlyoutTabs extends React.Component {
 
                     <Tab
                         selectedClassName='admin'
-                        className={project && admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
+                        className={project && admin(this.props, {type: 'General'}, 'edit') ? 'flyout-tab admin' : 'hidden'}
                         key='indexing'
                     >
                         { t(this.props, 'edit.indexing') }
@@ -115,14 +115,14 @@ export default class FlyoutTabs extends React.Component {
 
                     <Tab
                         selectedClassName='admin'
-                        className={project && admin(this.props, {type: 'General', action: 'edit'}) ? 'flyout-tab admin' : 'hidden'}
+                        className={project && admin(this.props, {type: 'General'}, 'edit') ? 'flyout-tab admin' : 'hidden'}
                         key='administration'
                     >
                         { t(this.props, 'edit.administration') }
                     </Tab>
                     <Tab
                         selectedClassName='admin'
-                        className={project && admin(this.props, {type: 'Project', action: 'update'}) ? 'flyout-tab admin' : 'hidden'}
+                        className={project && admin(this.props, {type: 'Project'}, 'update') ? 'flyout-tab admin' : 'hidden'}
                         key='project-administration'
                     >
                         { t(this.props, 'edit.project.admin') }

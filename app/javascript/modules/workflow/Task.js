@@ -102,10 +102,10 @@ export default class Task extends React.Component {
                     this.props.task.workflow_state === 'started' ||
                     this.props.task.workflow_state === 'restarted'
                 ) &&
-                admin(this.props, this.props.task)
+                admin(this.props, this.props.task, 'update')
             ) ||
             // if the user has the permission to assign tasks
-            admin(this.props, {type: 'Task', action: 'assign'})
+            admin(this.props, {type: 'Task'}, 'assign')
         ) {
             return (
                 <select

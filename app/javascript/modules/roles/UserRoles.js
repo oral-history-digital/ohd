@@ -24,7 +24,7 @@ export default class UserRoles extends React.Component {
 
     addUserRole() {
         if (
-            admin(this.props, {type: 'UserRole', action: 'create'}) &&
+            admin(this.props, {type: 'UserRole'}, 'create') &&
             !this.props.hideAdd
         ) {
             return (

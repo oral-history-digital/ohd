@@ -17,7 +17,7 @@ function MapTabPanel(props) {
             <ArchiveSearchFormContainer map/>
             <div className='flyout-sub-tabs-container flyout-video'>
                 {
-                    admin(props, {type: 'General', action: 'edit'}) ?
+                    admin(props, {type: 'General'}, 'edit') ?
                         (<InterviewDataContainer
                             title={t(props, 'admin_actions')}
                             content={<AdminActionsContainer archiveIds={props.selectedArchiveIds} />}
