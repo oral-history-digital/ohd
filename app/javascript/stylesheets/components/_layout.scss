@@ -24,12 +24,10 @@
 
 .Layout.is-sticky {
   .wrapper-content {
-    margin-top: 10rem - 5rem + $base-unit * 2;
+    margin-top: $media-player-height-mobile + $content-tabs-height;
 
-    margin-top: 29rem + $base-unit * 2;
     @include screen-m {
-      margin-top: 10rem - 6.25rem + $base-unit * 2;
-      margin-top: 29rem + $base-unit * 2;
+      margin-top: $media-player-height-desktop + $content-tabs-height;
     }
   }
 }

@@ -3,12 +3,14 @@
   color: #fff;
   display: flex;
   flex-direction: column;
-  height: 29rem; //height: auto;
-  padding: $base-unit 5% ($base-unit * 2);
+  height: $media-player-height-mobile;
+  padding: $base-unit 5%;
   position: relative;
   z-index: $z-index-media-player;
 
   @include screen-m {
+    height: $media-player-height-desktop;
+    padding-bottom: $base-unit * 2;
     padding-top: $base-unit * 1.5;
   }
 }
@@ -22,24 +24,11 @@
 
 .MediaPlayer.is-sticky {
   flex-direction: row-reverse;
-  height: 10rem;
+  height: $media-player-height-sticky;
   justify-content: flex-end;
   left: 0;
   padding: 0;
   position: fixed;
   right: 0;
   top: 0;
-}
-
-video::cue {
-	left: 0;
-	right: 0;
-	position: absolute;
-	padding: 1%;
-	margin: 0 3%;
-	font-family: $font-family;
-}
-
-.fix-video video:not(:fullscreen)::cue {
-  visibility: hidden;
 }

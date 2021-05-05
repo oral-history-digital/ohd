@@ -105,6 +105,16 @@ $font-family-heading-weight: normal !default;
 $font-path: "../fonts/" !default;
 
 
+// Widths and heights
+
+$site-header-height-mobile:   5rem;
+$site-header-height-desktop:  6.25rem;
+$media-player-height-mobile:  20rem;
+$media-player-height-desktop: 28rem;
+$media-player-height-sticky:  10rem;
+$content-tabs-height:         $base-unit * 2;
+
+
 // Miscellaneous
 // --------------------------------------------------
 

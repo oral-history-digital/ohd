@@ -10,6 +10,11 @@ import { scrollSmoothlyTo } from 'modules/user-agent';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 
+const MEDIA_PLAYER_HEIGHT_STICKY = 160;
+const CONTENT_TABS_HEIGHT = 48;
+const SPACE_BEFORE_ACTIVE_SEGMENT = 48;
+const SCROLL_OFFSET = MEDIA_PLAYER_HEIGHT_STICKY + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_SEGMENT;
+
 export default function Segment({
     data,
     autoScroll,
@@ -33,7 +38,7 @@ export default function Segment({
         if (autoScroll && active) {
             const topOfSegment = divEl.current.offsetTop;
 
-            scrollSmoothlyTo(0, topOfSegment - 208 - 24);
+            scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
         }
     }, [autoScroll, active])
 

@@ -53,9 +53,7 @@ export default function MediaPlayer({
                 <MediaControlsContainer className={classNames('MediaHeader-controls', { 'is-sticky': sticky })} />
             </header>
 
-            <div className={classNames('MediaElement', { 'is-sticky': sticky })}>
-                <MediaElementContainer />
-            </div>
+            <MediaElementContainer className={classNames({ 'is-sticky': sticky })} />
 
             <MediaPlayerButtonsContainer className="MediaPlayer-buttons" />
         </div>

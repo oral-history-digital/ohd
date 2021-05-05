@@ -15,6 +15,8 @@ export default function MediaPlayerButtons({
 }) {
     const { t } = useI18n();
 
+    console.log(className)
+
     function toggleAutoScroll() {
         if (autoScroll) {
             disableAutoScroll();
@@ -24,7 +26,7 @@ export default function MediaPlayerButtons({
     }
 
     return (
-        <div className={className}>
+        <div className={classNames(className)}>
             <AuthorizedContent object={{type: 'General', action: 'edit'}}>
                 <InterviewEditButtonsContainer />
             </AuthorizedContent>
