@@ -40,6 +40,7 @@ namespace :roles do
           :permissions=>[
             {:name=>"Interview create", :klass=>"Interview", :action_name=>"create"},
             {:name=>"Interview update", :klass=>"Interview", :action_name=>"update"}
+            {:name=>"Interview show", :klass=>"Interview", :action_name=>"show"}
           ]
         },
         {
@@ -67,10 +68,11 @@ namespace :roles do
           ]
         },
         {
-          :name=>"Personen zuweisen", 
+          :name=>"Mitwirkende zuweisen", 
           :permissions=>[
             {:name=>"Contribution create", :klass=>"Contribution", :action_name=>"create"},
             {:name=>"Contribution destroy", :klass=>"Contribution", :action_name=>"destroy"}
+            {:name=>"Interview show", :klass=>"Interview", :action_name=>"show"}
           ]
         },
         {
@@ -108,6 +110,7 @@ namespace :roles do
         {
           :name=>"Interview anlegen und bearbeiten",
           :permissions=>[
+            {:name=>"Interview show", :klass=>"Interview", :action_name=>"show"}
             {:name=>"Interview create", :klass=>"Interview", :action_name=>"create"},
             {:name=>"Interview update", :klass=>"Interview", :action_name=>"update"},
             {:name=>"Interview update_speakers", :klass=>"Interview", :action_name=>"update_speakers"},
@@ -134,6 +137,7 @@ namespace :roles do
           :name=>"Transkript importieren/ bearbeiten",
           :permissions=>[
             {:name=>"Segment update", :klass=>"Segment", :action_name=>"update"},
+            {:name=>"Interview show", :klass=>"Interview", :action_name=>"show"}
             {:name=>"Interview create", :klass=>"Interview", :action_name=>"create"},
             {:name=>"Interview update", :klass=>"Interview", :action_name=>"update"},
             {:name=>"Person create", :klass=>"Person", :action_name=>"create"},
@@ -210,6 +214,7 @@ namespace :roles do
             {:name=>"Photo destroy", :klass=>"Photo", :action_name=>"destroy"},
             {:name=>"Photo update", :klass=>"Photo", :action_name=>"update"},
             {:name=>"Upload create", :klass=>"Upload", :action_name=>"create"}
+            {:name=>"Interview show", :klass=>"Interview", :action_name=>"show"}
           ]
         },
         {
@@ -226,6 +231,7 @@ namespace :roles do
             {:name=>"UserRole create", :klass=>"UserRole", :action_name=>"create"},
             {:name=>"UserRole destroy", :klass=>"UserRole", :action_name=>"destroy"},
             {:name=>"Interview update", :klass=>"Interview", :action_name=>"update"},
+            {:name=>"Interview show", :klass=>"Interview", :action_name=>"show"}
             {:name=>"Comment create", :klass=>"Comment", :action_name=>"create"},
             {:name=>"Comment destroy", :klass=>"Comment", :action_name=>"destroy"},
             {:name=>"Comment update", :klass=>"Comment", :action_name=>"update"},
@@ -237,6 +243,7 @@ namespace :roles do
             {:name=>"Segment update", :klass=>"Segment", :action_name=>"update"},
             {:name=>"Contribution create", :klass=>"Contribution", :action_name=>"create"},
             {:name=>"Contribution destroy", :klass=>"Contribution", :action_name=>"destroy"},
+            {:name=>"Interview show", :klass=>"Interview", :action_name=>"show"}
             {:name=>"Interview mark_texts", :klass=>"Interview", :action_name=>"mark_texts"},
             {:name=>"Interview update", :klass=>"Interview", :action_name=>"update"},
             {:name=>"RegistryReference create", :klass=>"RegistryReference", :action_name=>"create"},
@@ -264,6 +271,7 @@ namespace :roles do
         {
           :name=>"Export",
           :permissions=>[
+            {:name=>"Interview show", :klass=>"Interview", :action_name=>"show"}
             {:name=>"Interview dois", :klass=>"Interview", :action_name=>"dois"},
             {:name=>"Interview download", :klass=>"Interview", :action_name=>"download"}
           ]
