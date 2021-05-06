@@ -11,8 +11,12 @@ $segment-icon-width: 1rem;
   padding-left: 0;
 }
 
-.Segment--withSpeaker:not(:first-of-type) {
+.Segment:not(:first-of-type) {
   margin-top: $base-unit / 2;
+}
+
+.Segment--withSpeaker:not(:first-of-type) {
+  margin-top: $base-unit;
 }
 
 .Segment-icon {
@@ -40,7 +44,7 @@ $segment-icon-width: 1rem;
   flex-grow: 1;
   font-family: $font-family;
   line-height: $base-unit;
-  max-width: 30rem;
+  max-width: 32.5rem;
   outline: none;
   padding: 0;
   text-align: left;
