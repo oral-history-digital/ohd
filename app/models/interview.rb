@@ -373,16 +373,6 @@ class Interview < ApplicationRecord
     segment_count > 0
   end
 
-  def translated
-    # the attribute 'translated' is wrong on many interviews in zwar.
-    # this is why we use the languages-array for checking
-    if project.identifier == 'zwar'
-      (self.languages.size > 1) && ('de'.in? self.languages)
-    else
-      read_attribute :translated
-    end
-  end
-
   def to_vtt(lang, tape_number=1)
     vtt = "WEBVTT\n"
     tapes.where(number: tape_number).first.segments.includes(:translations).each_with_index do |segment, index | 

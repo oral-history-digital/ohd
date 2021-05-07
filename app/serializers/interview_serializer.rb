@@ -7,7 +7,6 @@ class InterviewSerializer < ApplicationSerializer
     :video,
     :media_type,
     :duration,
-    :translated,
     :interview_date,
     :languages,
     :language_id,

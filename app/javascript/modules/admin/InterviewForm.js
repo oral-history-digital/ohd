@@ -106,12 +106,6 @@ export default class InterviewForm extends React.Component {
                 value: this.props.interview && this.props.interview.observations && this.props.interview.observations[this.props.locale],
                 elementType: 'textarea',
             },
-            // {
-            //     attribute: 'translated',
-            //     value: this.props.interview && this.props.interview.translated,
-            //     elementType: 'input',
-            //     type: 'checkbox'
-            // },
         ]
 
         if (this.props.interview) {
