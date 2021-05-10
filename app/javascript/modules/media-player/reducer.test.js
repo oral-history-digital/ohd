@@ -8,7 +8,6 @@ const state = {
     isPlaying: false,
     resolution: null,
     timeChangeRequest: null,
-    sticky: false,
 };
 
 test('returns the initial state', () => {
@@ -79,25 +78,6 @@ test('handles the clearTimeChangeRequest action', () => {
     const _state = {
         ...state,
         timeChangeRequest: 22.3,
-    };
-    const expectedState = state;
-    expect(reducer(_state, action)).toEqual(expectedState);
-});
-
-test('handles the setSticky action', () => {
-    const action = { type: types.SET_STICKY };
-    const expectedState = {
-        ...state,
-        sticky: true,
-    };
-    expect(reducer(state, action)).toEqual(expectedState);
-});
-
-test('handles the unsetSticky action', () => {
-    const action = { type: types.UNSET_STICKY };
-    const _state = {
-        ...state,
-        sticky: true,
     };
     const expectedState = state;
     expect(reducer(_state, action)).toEqual(expectedState);

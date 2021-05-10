@@ -154,7 +154,6 @@ class ApplicationController < ActionController::Base
         isPlaying: false,
         resolution: nil,
         timeChangeRequest: nil,
-        sticky: false
       },
       interview: {
         autoScroll: true,

@@ -2,14 +2,14 @@
   display: flex;
 }
 
-.MediaControls.is-sticky {
+.Layout.is-sticky .MediaControls {
   flex-direction: column;
 }
 
 .MediaControls-selects {
 }
 
-.MediaControls.is-sticky > * {
+.Layout.is-sticky .MediaControls > * {
   margin-top: $base-unit / 2;
 }
 

@@ -22,7 +22,7 @@
   right: 0.5rem;
 }
 
-.MediaPlayer.is-sticky {
+.Layout.is-sticky .MediaPlayer {
   flex-direction: row-reverse;
   height: $media-player-height-sticky;
   justify-content: flex-end;

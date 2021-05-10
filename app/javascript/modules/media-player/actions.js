@@ -6,8 +6,6 @@ import {
     RESET_MEDIA,
     SEND_TIME_CHANGE_REQUEST,
     CLEAR_TIME_CHANGE_REQUEST,
-    SET_STICKY,
-    UNSET_STICKY,
 } from './action-types';
 
 export const updateMediaTime = (time) => ({
@@ -41,7 +39,3 @@ export const sendTimeChangeRequest = (tape, time) => ({
 });
 
 export const clearTimeChangeRequest = () => ({ type: CLEAR_TIME_CHANGE_REQUEST });
-
-export const setSticky = () => ({ type: SET_STICKY });
-
-export const unsetSticky = () => ({ type: UNSET_STICKY });

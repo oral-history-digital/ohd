@@ -10,7 +10,6 @@ const state = {
         isPlaying: true,
         resolution: '720p',
         timeChangeRequest: 31.2,
-        sticky: true,
     },
 };
 
@@ -43,8 +42,4 @@ describe('getTimeChangeRequestAvailable', () => {
         const _state = dotProp.set(state, `${NAME}.timeChangeRequest`, null);
         expect(selectors.getTimeChangeRequestAvailable(_state)).toBeFalsy();
     });
-});
-
-test('getSticky gets if media player is sticky', () => {
-    expect(selectors.getSticky(state)).toEqual(state[NAME].sticky);
 });

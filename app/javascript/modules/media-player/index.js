@@ -4,6 +4,6 @@ export { sendTimeChangeRequest } from './actions';
 
 export { default as mediaPlayerReducer } from './reducer';
 
-export { getCurrentTape, getMediaTime, getIsPlaying, getSticky } from './selectors';
+export { getCurrentTape, getMediaTime, getIsPlaying } from './selectors';
 
 export { default as MediaPlayerContainer } from './components/MediaPlayerContainer';

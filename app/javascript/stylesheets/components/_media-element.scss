@@ -8,7 +8,7 @@
   min-height: 1rem;  /* 1 */
 }
 
-.MediaElement.is-sticky {
+.Layout.is-sticky .MediaElement {
   display: initial;
   margin: $base-unit 0 0;
 
@@ -17,7 +17,7 @@
   }
 }
 
-.MediaElement.is-sticky .MediaElement-element {
+.Layout.is-sticky .MediaElement-element {
   background-color: black;
   height: 7rem;
   width: 12.4444rem;
@@ -37,7 +37,7 @@
 	font-family: $font-family;
 }
 
-.MediaElement.is-sticky video:not(:fullscreen)::cue {
+.Layout.is-sticky .MediaElement video:not(:fullscreen)::cue {
   visibility: hidden;
 }
 

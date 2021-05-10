@@ -13,5 +13,3 @@ export const getResolution = state => getState(state).resolution;
 export const getTimeChangeRequest = state => getState(state).timeChangeRequest;
 
 export const getTimeChangeRequestAvailable = state => getTimeChangeRequest(state) !== null;
-
-export const getSticky = state => getState(state).sticky;

@@ -286,12 +286,8 @@ table.edit-interview {
     }
 }
 
-.fix-video .edit-interview thead {
-  top: 220px;
-
-  @include screen-m {
-    top: 160px;
-  }
+.Layout.is-sticky .edit-interview thead {
+  top: $media-player-height-sticky;
 }
 
 
