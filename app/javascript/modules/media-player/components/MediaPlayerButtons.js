@@ -15,8 +15,6 @@ export default function MediaPlayerButtons({
 }) {
     const { t } = useI18n();
 
-    console.log(className)
-
     function toggleAutoScroll() {
         if (autoScroll) {
             disableAutoScroll();

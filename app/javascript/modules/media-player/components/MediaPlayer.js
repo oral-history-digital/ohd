@@ -1,11 +1,16 @@
-import React, { useRef, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import debounce from 'debounce';
 
 import { fullname } from 'modules/people';
+import { SITE_HEADER_HEIGHT, MEDIA_PLAYER_HEIGHT_STATIC, MEDIA_PLAYER_HEIGHT_STICKY } from 'modules/constants';
 import MediaControlsContainer from './MediaControlsContainer';
 import MediaElementContainer from './MediaElementContainer';
 import MediaPlayerButtonsContainer from './MediaPlayerButtonsContainer';
+
+// TODO: Make the threshold fit for mobile, too.
+const STICKY_THRESHOLD = SITE_HEADER_HEIGHT + MEDIA_PLAYER_HEIGHT_STATIC - MEDIA_PLAYER_HEIGHT_STICKY
 
 export default function MediaPlayer({
     interviewee,
@@ -15,23 +20,23 @@ export default function MediaPlayer({
     setSticky,
     unsetSticky,
 }) {
-    const divEl = useRef(null);
-
-    const listener = (e) => {
+    const handleScroll = (e) => {
         const scrollY = e.target.scrollingElement.scrollTop;
 
-        if (scrollY > 408) {
+        if (scrollY > STICKY_THRESHOLD) {
             setSticky();
         } else {
             unsetSticky();
         }
     };
 
+    const debouncedHandleScroll = debounce(handleScroll, 100);
+
     useEffect(() => {
-        window.addEventListener('scroll', listener);
+        window.addEventListener('scroll', debouncedHandleScroll);
 
         const cleanup = () => {
-            window.removeEventListener('scroll', listener);
+            window.removeEventListener('scroll', debouncedHandleScroll);
             unsetSticky();
         }
 

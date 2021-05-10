@@ -15,6 +15,7 @@
     "classnames": "^2.2.6",
     "core-js": "^3.7.0",
     "datalist-polyfill": "^1.23.3",
+    "debounce": "^1.2.1",
     "font-awesome": "^4.7.0",
     "form-serialize": "^0.7.2",
     "glob": "^7.1.2",
