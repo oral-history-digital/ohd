@@ -10,11 +10,14 @@ test('setInterviewTabIndex', () => {
     expect(actual).toEqual(expected);
 });
 
-test('handleTranscriptScroll', () => {
-    const actual = actions.handleTranscriptScroll(true);
-    const expected = {
-        type: types.TRANSCRIPT_SCROLL,
-        transcriptScrollEnabled: true,
-    };
+test('enableAutoScroll', () => {
+    const actual = actions.enableAutoScroll();
+    const expected = { type: types.ENABLE_AUTO_SCROLL };
+    expect(actual).toEqual(expected);
+});
+
+test('disableAutoScroll', () => {
+    const actual = actions.disableAutoScroll();
+    const expected = { type: types.DISABLE_AUTO_SCROLL };
     expect(actual).toEqual(expected);
 });

@@ -156,7 +156,7 @@ class ApplicationController < ActionController::Base
         timeChangeRequest: nil,
       },
       interview: {
-        transcriptScrollEnabled: false,
+        autoScroll: true,
         tabIndex: 0
       },
       search: initial_search_redux_state

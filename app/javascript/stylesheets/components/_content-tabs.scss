@@ -30,20 +30,13 @@
   background-color: var(--primary-color);
 }
 
-.fix-video .content-tabs-nav-link svg {
-  display: block;
-
-  @include screen-m {
-    display: none;
-  }
-}
-
 .content-tabs-nav-link svg {
   display: block;
   margin: 0;
   padding: 0;
   line-height: 1;
   font-size: 21px;
+
   @include screen-m {
     margin-bottom: 8px;
     font-size: 18px;

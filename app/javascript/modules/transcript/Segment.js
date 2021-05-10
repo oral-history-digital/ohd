@@ -1,16 +1,22 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaUser } from 'react-icons/fa';
 
 import { fullname } from 'modules/people';
+import { MEDIA_PLAYER_HEIGHT_STICKY, CONTENT_TABS_HEIGHT } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { scrollSmoothlyTo } from 'modules/user-agent';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 
+const SPACE_BEFORE_ACTIVE_SEGMENT = 48;
+const SCROLL_OFFSET = MEDIA_PLAYER_HEIGHT_STICKY + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_SEGMENT;
+
 export default function Segment({
     data,
+    autoScroll,
     contentLocale,
     locale,
     active,
@@ -23,8 +29,17 @@ export default function Segment({
     tabIndex,
     sendTimeChangeRequest,
 }) {
+    const divEl = useRef(null);
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
+
+    useEffect(() => {
+        if (autoScroll && active) {
+            const topOfSegment = divEl.current.offsetTop;
+
+            scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
+        }
+    }, [autoScroll, active])
 
     const text = isAuthorized(data) ?
         (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
@@ -39,6 +54,7 @@ export default function Segment({
         <>
             <div
                 id={`segment_${data.id}`}
+                ref={divEl}
                 className={classNames('Segment', {
                     'Segment--withSpeaker': data.speakerIdChanged,
                 })}>
@@ -94,6 +110,7 @@ export default function Segment({
 
 Segment.propTypes = {
     data: PropTypes.object.isRequired,
+    autoScroll: PropTypes.bool.isRequired,
     contentLocale: PropTypes.string.isRequired,
     popupType: PropTypes.string,
     openReference: PropTypes.object,

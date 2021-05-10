@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import { t } from 'modules/i18n';
 import missingStill from 'assets/images/missing_still.png';
@@ -134,30 +135,39 @@ export default class MediaElement extends React.Component {
     }
 
     render() {
+        const { projectId, interview, className } = this.props;
+
+        const isAudio = projectId === 'dg';
+
         return (
-            this.props.projectId === 'dg' ?
-                (
-                    <audio
-                        ref={this.mediaElement}
-                        controls
-                        src={this.src()}
-                    />
-                ) :
-                (
-                    <video
-                        ref={this.mediaElement}
-                        controls
-                        poster={this.props.interview.still_url || missingStill}
-                        src={this.src()}
-                    >
-                        {this.subtitles()}
-                    </video>
-                )
+            <div className={classNames('MediaElement', className, isAudio ? 'MediaElement--audio' : 'MediaElement--video')}>
+                {
+                    isAudio ? (
+                        <audio
+                            ref={this.mediaElement}
+                            className="MediaElement-element"
+                            controls
+                            src={this.src()}
+                        />
+                    ) : (
+                        <video
+                            ref={this.mediaElement}
+                            className="MediaElement-element"
+                            controls
+                            poster={interview.still_url || missingStill}
+                            src={this.src()}
+                        >
+                            {this.subtitles()}
+                        </video>
+                    )
+                }
+            </div>
         );
     }
 }
 
 MediaElement.propTypes = {
+    className: PropTypes.string,
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,

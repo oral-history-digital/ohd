@@ -61,9 +61,7 @@ RefTreeEntry.propTypes = {
     entry: PropTypes.object.isRequired,
     index: PropTypes.number.isRequired,
     locale: PropTypes.string.isRequired,
-    transcriptScrollEnabled: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
     renderChildren: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
-    handleTranscriptScroll: PropTypes.func.isRequired,
 };

@@ -1,5 +1,6 @@
 import reducer, { initialState } from './reducer';
 import * as actions from './actions';
+import * as types from './action-types';
 
 const state = {
     tape: 1,
