@@ -1,10 +1,9 @@
 import { useEffect, useState } from 'react';
 import debounce from 'debounce';
 
-import { SITE_HEADER_HEIGHT, MEDIA_PLAYER_HEIGHT_STATIC, MEDIA_PLAYER_HEIGHT_STICKY } from 'modules/constants';
-
-// TODO: Make the threshold fit for mobile, too.
-const STICKY_THRESHOLD = SITE_HEADER_HEIGHT + MEDIA_PLAYER_HEIGHT_STATIC - MEDIA_PLAYER_HEIGHT_STICKY
+import { SITE_HEADER_HEIGHT_MOBILE, SITE_HEADER_HEIGHT_DESKTOP, MEDIA_PLAYER_HEIGHT_MOBILE,
+    MEDIA_PLAYER_HEIGHT_DESKTOP, MEDIA_PLAYER_HEIGHT_STICKY } from 'modules/constants';
+import { isMobile } from 'modules/user-agent';
 
 export function useScrollBelowThreshold() {
     const [isBelow, setIsBelow] = useState(false);
@@ -12,7 +11,13 @@ export function useScrollBelowThreshold() {
     const handleScroll = (e) => {
         const scrollY = e.target.scrollingElement.scrollTop;
 
-        if (scrollY > STICKY_THRESHOLD) {
+        const headerAndPlayerHeight = isMobile() ?
+            SITE_HEADER_HEIGHT_MOBILE + MEDIA_PLAYER_HEIGHT_MOBILE :
+            SITE_HEADER_HEIGHT_DESKTOP + MEDIA_PLAYER_HEIGHT_DESKTOP;
+
+        const stickyThreshold = headerAndPlayerHeight - MEDIA_PLAYER_HEIGHT_STICKY;
+
+        if (scrollY > stickyThreshold) {
             setIsBelow(true);
         } else {
             setIsBelow(false);
