@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import debounce from 'debounce';
+import throttle from 'lodash.throttle';
 
 import { SITE_HEADER_HEIGHT_MOBILE, SITE_HEADER_HEIGHT_DESKTOP, MEDIA_PLAYER_HEIGHT_MOBILE,
     MEDIA_PLAYER_HEIGHT_DESKTOP, MEDIA_PLAYER_HEIGHT_STICKY } from 'modules/constants';
@@ -24,13 +24,13 @@ export function useScrollBelowThreshold() {
         }
     };
 
-    const debouncedHandleScroll = debounce(handleScroll, 100);
+    const throttledHandleScroll = throttle(handleScroll, 100);
 
     useEffect(() => {
-        window.addEventListener('scroll', debouncedHandleScroll);
+        window.addEventListener('scroll', throttledHandleScroll);
 
         const cleanup = () => {
-            window.removeEventListener('scroll', debouncedHandleScroll);
+            window.removeEventListener('scroll', throttledHandleScroll);
         }
 
         return cleanup;
