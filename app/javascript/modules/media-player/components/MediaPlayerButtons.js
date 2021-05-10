@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { FaMagic } from 'react-icons/fa';
+import { FaSortAmountDown } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { AuthorizedContent } from 'modules/auth';
@@ -35,7 +35,7 @@ export default function MediaPlayerButtons({
                 title={autoScroll ? t('modules.media_player.auto_scroll_enabled') : t('modules.media_player.auto_scroll_disabled')}
                 onClick={toggleAutoScroll}
             >
-                <FaMagic className="StateButton-icon" />
+                <FaSortAmountDown className="StateButton-icon" />
             </button>
         </div>
     );
