@@ -19,6 +19,7 @@ export default function Segment({
     autoScroll,
     contentLocale,
     locale,
+    editView,
     active,
     people,
     popupType,
@@ -34,7 +35,7 @@ export default function Segment({
     const { t } = useI18n();
 
     useEffect(() => {
-        if (autoScroll && active) {
+        if (autoScroll && active && divEl.current) {
             const topOfSegment = divEl.current.offsetTop;
 
             scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
@@ -45,10 +46,16 @@ export default function Segment({
         (data.text[contentLocale] || data.text[`${contentLocale}-public`]) :
         data.text[`${contentLocale}-public`];
 
+    const showSegment = text || editView;
+
     const showButtons = isAuthorized(data) ||
         isAuthorized({ type: 'General', action: 'edit' }) ||
         (data.annotations_count + data.user_annotation_ids.length) > 0 ||
         data.registry_references_count > 0;
+
+    if (!showSegment) {
+        return null;
+    }
 
     return (
         <>
@@ -111,6 +118,7 @@ export default function Segment({
 Segment.propTypes = {
     data: PropTypes.object.isRequired,
     autoScroll: PropTypes.bool.isRequired,
+    editView: PropTypes.bool.isRequired,
     contentLocale: PropTypes.string.isRequired,
     popupType: PropTypes.string,
     openReference: PropTypes.object,

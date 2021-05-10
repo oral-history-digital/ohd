@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale } from 'modules/archive';
+import { getLocale, getEditView } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { getPeople } from 'modules/data';
 import { getAutoScroll } from 'modules/interview';
@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
     people: getPeople(state),
     autoScroll: getAutoScroll(state),
+    editView: getEditView(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
