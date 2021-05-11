@@ -406,17 +406,14 @@ a.search-result-link {
   }
 }
 
-
-.wrapper-content.register {
-  margin-top: 0px !important;
-}
-
-.wrapper-content.interviews {
+.wrapper-content.register,
+.wrapper-content.interviews,
+.wrapper-content.home-content,
+.wrapper-content.map {
   margin-top: 0px !important;
 }
 
 .wrapper-content.home-content {
-  margin-top: 0px !important;
   padding:0;
   .home-text {
     padding: 15px 5% 30px 5%;
