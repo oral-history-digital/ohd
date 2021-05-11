@@ -212,6 +212,8 @@ class Interview < ApplicationRecord
 
     text :interviewer_property do
       properties && properties[:interviewer]
+    rescue StandardError => e
+      puts "*** #{self.id}"
     end
 
   end
