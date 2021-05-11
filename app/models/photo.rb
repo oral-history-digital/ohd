@@ -5,6 +5,7 @@ class Photo < ApplicationRecord
   has_one_attached :photo
 
   translates :caption, :date, :place, :photographer, :license, fallbacks_for_empty_translations: false, touch: true
+  accepts_nested_attributes_for :translations
 
   scope :for_file, -> (filename) { where('photo_file_name LIKE ?', (filename || '').sub(/([^.]+)_\w+(\.\w{3,4})?$/,'\1\2') + '%') }
 
@@ -23,19 +24,6 @@ class Photo < ApplicationRecord
     I18n.available_locales.each do |locale|
       text :"text_#{locale}", stored: true do
         caption(locale)
-      end
-    end
-  end
-
-  # this method should be present through 'translates: ....'
-  # But it isn't. Therefore:
-  #
-  def translations_attributes=(atts)
-    atts.each do |t|
-      if t[:id]
-        translations.find(t[:id]).update_attributes t
-      else
-        update_attributes t
       end
     end
   end

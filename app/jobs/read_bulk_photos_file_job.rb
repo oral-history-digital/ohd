@@ -85,12 +85,14 @@ class ReadBulkPhotosFileJob < ApplicationJob
           photo.photo.attach(io: File.open(tmp_photo_path), filename: data[2])
           #photo.photo.attach(io: File.open(File.join(Rails.root, 'tmp', 'files', data[2])), filename: data[2], metadata: {title: data[3]})
 
+          date = Date.parse(data[4]).strftime("%Y%m%d") rescue data[4]
+
           photo.write_iptc_metadata({
             caption: data[3],
             creator: data[6],
             headline: "#{interview.archive_id}-Interview mit #{interview.short_title(locale)}",
             copyright: data[7],
-            date: data[4],
+            date: date,
             city: data[5]
           })
 
