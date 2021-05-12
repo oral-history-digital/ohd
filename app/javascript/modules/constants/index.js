@@ -1,3 +1,12 @@
 /**
  * Put global constants here.
  */
+
+const ONE_REM = 16;
+
+export const SITE_HEADER_HEIGHT_MOBILE =   5    * ONE_REM;
+export const SITE_HEADER_HEIGHT_DESKTOP =  6.25 * ONE_REM;
+export const MEDIA_PLAYER_HEIGHT_MOBILE =  20   * ONE_REM
+export const MEDIA_PLAYER_HEIGHT_DESKTOP = 28   * ONE_REM;
+export const MEDIA_PLAYER_HEIGHT_STICKY =  10   * ONE_REM;
+export const CONTENT_TABS_HEIGHT =         3    * ONE_REM;

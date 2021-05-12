@@ -1132,6 +1132,9 @@ de:
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
+    media_player:
+      auto_scroll_enabled: "mitlaufendes Transkript ein"
+      auto_scroll_disabled: "mitlaufendes Transkript aus"
     transcript:
       no_text: 'Segment enthält keinen Text'
     tree_select:

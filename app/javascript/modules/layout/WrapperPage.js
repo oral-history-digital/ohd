@@ -16,26 +16,19 @@ export default class WrapperPage extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            notifications: [],
-        }
+        this.state = { notifications: [] };
     }
 
     componentDidMount() {
-        this.loadAccount()
-        this.loadCollections();
-        this.loadProjects();
+        this.loadStuff();
     }
 
     componentDidUpdate() {
+        this.loadStuff();
+    }
+
+    loadStuff() {
         this.loadAccount()
-        if (this.props.flyoutTabsVisible && (this.state.currentMQ === 'S' || this.state.currentMQ === 'XS')) {
-            if (!document.body.classList.contains('noScroll')) {
-                document.body.classList.add('noScroll');
-            }
-        } else {
-            document.body.classList.remove('noScroll');
-        }
         this.loadCollections();
         this.loadProjects();
         this.loadLanguages();
@@ -75,22 +68,19 @@ export default class WrapperPage extends React.Component {
     }
 
     render() {
-        const { flyoutTabsVisible, children, transcriptScrollEnabled, match, toggleFlyoutTabs } = this.props;
+        const { isSticky, flyoutTabsVisible, children, match, toggleFlyoutTabs } = this.props;
 
         return (
             <ResizeWatcherContainer>
                 <div className={classNames('Layout', {
                     'sidebar-is-visible': flyoutTabsVisible,
-                    'is-sticky': transcriptScrollEnabled,
-                    'fix-video': transcriptScrollEnabled,
+                    'is-sticky': isSticky,
                 })}>
                     <Helmet>
                         <html lang={match.params.locale} />
                     </Helmet>
 
-                    <div className={classNames('Layout-page', 'Site', {
-                        'fix-video': transcriptScrollEnabled,
-                    })}>
+                    <div className={classNames('Layout-page', 'Site')}>
                         <SiteHeader />
 
                         <MessagesContainer
@@ -123,10 +113,10 @@ export default class WrapperPage extends React.Component {
 }
 
 WrapperPage.propTypes = {
+    isSticky: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool,
     isLoggedOut: PropTypes.bool,
     loggedInAt: PropTypes.number,
-    transcriptScrollEnabled: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,

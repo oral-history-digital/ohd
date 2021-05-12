@@ -6,7 +6,6 @@ import { getLocale, getSelectedInterviewEditViewColumns, getProjectId, getTransl
 import { fetchData, getCurrentInterview, getCurrentProject, getProjects, getCurrentAccount,
     getSegmentsStatus } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
-import { handleTranscriptScroll, getTranscriptScrollEnabled } from 'modules/interview';
 import InterviewEditView from './InterviewEditView';
 
 const mapStateToProps = (state) => ({
@@ -18,7 +17,6 @@ const mapStateToProps = (state) => ({
     interview: getCurrentInterview(state),
     tape: getCurrentTape(state),
     mediaTime: getMediaTime(state),
-    transcriptScrollEnabled: getTranscriptScrollEnabled(state),
     skipEmptyRows: getSkipEmptyRows(state),
     segmentsStatus: getSegmentsStatus(state),
     selectedInterviewEditViewColumns: getSelectedInterviewEditViewColumns(state),
@@ -28,7 +26,6 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    handleTranscriptScroll,
     fetchData,
 }, dispatch);
 

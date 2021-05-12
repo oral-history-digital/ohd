@@ -11,33 +11,23 @@ export default function MediaPlayer({
     interviewee,
     locale,
     projectId,
-    transcriptScrollEnabled,
 }) {
     if (!projectId) {
         return null;
     }
 
     return (
-        <div className={classNames('Layout-mediaPlayer', 'MediaPlayer', {
-            'is-fixed': transcriptScrollEnabled,
-        })}>
-            <header className={classNames('MediaHeader', {
-                'is-fixed': transcriptScrollEnabled,
-            })}>
+        <div
+            className={classNames('Layout-mediaPlayer', 'MediaPlayer')}
+        >
+            <header className="MediaHeader">
                 <h1 className="MediaHeader-title">
                     {fullname({ locale }, interviewee, true)}
                 </h1>
-
-                <MediaControlsContainer
-                    className="MediaHeader-controls"
-                    fixed={transcriptScrollEnabled}
-                />
+                <MediaControlsContainer className="MediaHeader-controls" />
             </header>
-            <div className={classNames('MediaElement', {
-                'is-fixed': transcriptScrollEnabled,
-            })}>
-                <MediaElementContainer />
-            </div>
+
+            <MediaElementContainer />
 
             <MediaPlayerButtonsContainer className="MediaPlayer-buttons" />
         </div>
@@ -48,5 +38,4 @@ MediaPlayer.propTypes = {
     interviewee: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    transcriptScrollEnabled: PropTypes.bool.isRequired,
 };

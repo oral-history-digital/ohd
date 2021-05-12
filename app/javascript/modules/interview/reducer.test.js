@@ -1,8 +1,8 @@
 import reducer, { initialState } from './reducer';
-import * as actions from './actions';
+import * as types from './action-types';
 
 const state = {
-    transcriptScrollEnabled: false,
+    autoScroll: true,
     tabIndex: 0,
 };
 
@@ -11,7 +11,10 @@ test('returns the initial state', () => {
 });
 
 test('handles the setInterviewTabIndex action', () => {
-    const action = actions.setInterviewTabIndex(2);
+    const action = {
+        type: types.SET_INTERVIEW_TAB_INDEX,
+        tabIndex: 2,
+    };
     const expectedState = {
         ...state,
         tabIndex: 2,
@@ -19,26 +22,24 @@ test('handles the setInterviewTabIndex action', () => {
     expect(reducer(state, action)).toEqual(expectedState);
 });
 
-describe('handleTranscriptScroll', () => {
-    test('is enabled', () => {
-        const action = actions.handleTranscriptScroll(true);
-        const expectedState = {
-            ...state,
-            transcriptScrollEnabled: true,
-        };
-        expect(reducer(state, action)).toEqual(expectedState);
-    });
+test('handles the ENABLE_AUTO_SCROLL action', () => {
+    const _state = {
+        ...state,
+        autoScroll: false,
+    };
+    const action = { type: types.ENABLE_AUTO_SCROLL };
+    const expectedState = {
+        ...state,
+        autoScroll: true,
+    };
+    expect(reducer(_state, action)).toEqual(expectedState);
+});
 
-    test('is disabled', () => {
-        const action = actions.handleTranscriptScroll(false);
-        const _state = {
-            ...state,
-            transcriptScrollEnabled: true,
-        };
-        const expectedState = {
-            ...state,
-            transcriptScrollEnabled: false,
-        };
-        expect(reducer(_state, action)).toEqual(expectedState);
-    });
+test('handles the DISABLE_AUTO_SCROLL action', () => {
+    const action = { type: types.DISABLE_AUTO_SCROLL };
+    const expectedState = {
+        ...state,
+        autoScroll: false,
+    };
+    expect(reducer(state, action)).toEqual(expectedState);
 });

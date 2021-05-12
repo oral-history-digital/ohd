@@ -52,6 +52,8 @@ export const Routes = () => (
     </Switch>
 );
 
+export const MemoizedRoutes = React.memo(Routes);
+
 export const RoutesWithProjectId = () => (
     <Switch>
         <Route exact path="/:locale" component={props => <ErrorBoundary><WrappedProjectsContainer {...props} /></ErrorBoundary>} />
@@ -85,3 +87,5 @@ export const RoutesWithProjectId = () => (
         <Route exact path="/:projectId/:locale/user_registrations" component={props => <ErrorBoundary><UserRegistrationsContainer {...props} /></ErrorBoundary>} />
     </Switch>
 );
+
+export const MemoizedRoutesWithProjectId = React.memo(RoutesWithProjectId);

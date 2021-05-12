@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
-import { SEGMENTS_AFTER, SEGMENTS_BEFORE } from './constants';
 import segmentsForTape from './segmentsForTape';
 import SegmentContainer from './SegmentContainer';
 import sortedSegmentsWithActiveIndex from './sortedSegmentsWithActiveIndex';
@@ -13,7 +12,6 @@ export default class Transcript extends React.Component {
     constructor(props) {
         super(props);
 
-        this.handleScroll = this.handleScroll.bind(this);
         this.openSegmentPopup = this.openSegmentPopup.bind(this);
         this.closeSegmentPopup = this.closeSegmentPopup.bind(this);
         this.setOpenReference = this.setOpenReference.bind(this);
@@ -26,28 +24,20 @@ export default class Transcript extends React.Component {
     }
 
     componentDidMount() {
-        const { locale, projectId, projects } = this.props;
+        const { locale, projectId, projects, autoScroll } = this.props;
 
         this.loadSegments();
         if (!this.props.userContentsStatus) {
             this.props.fetchData({ locale, projectId, projects }, 'user_contents');
         }
-        window.addEventListener('wheel', this.handleScroll);
-        this.scrollToActiveSegment();
-    }
 
-    componentDidUpdate(prevProps) {
-        this.loadSegments();
-        if (
-            (!prevProps.transcriptScrollEnabled && this.props.transcriptScrollEnabled) ||
-            prevProps.tape !== this.props.tape
-        ) {
-            this.scrollToActiveSegment();
+        if (!autoScroll) {
+            window.scrollTo(0, 0);
         }
     }
 
-    componentWillUnmount() {
-        window.removeEventListener('wheel', this.handleScroll);
+    componentDidUpdate() {
+        this.loadSegments();
     }
 
     openSegmentPopup(segmentId, popupType) {
@@ -85,33 +75,6 @@ export default class Transcript extends React.Component {
         }
     }
 
-    scrollToActiveSegment() {
-        const { mediaTime, interview, tape } = this.props;
-
-        let currentSegment = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape })[0];
-        let activeSegmentElement = document.getElementById(`segment_${currentSegment && currentSegment.id}`);
-        if (activeSegmentElement) {
-            let offset = activeSegmentElement.offsetTop;
-            if (offset > 450) {
-                (window.innerHeight < 900) && this.handleScroll();
-                this.props.transcriptScrollEnabled && window.scrollTo(0, offset - 400);
-            } else {
-                window.scrollTo(0, 1);
-            }
-        }
-    }
-
-    handleScroll() {
-        if (!this.props.transcriptScrollEnabled)
-            this.props.handleTranscriptScroll(true)
-    }
-
-    shownSegmentsAround(sortedWithIndex) {
-        let start = sortedWithIndex[2] >= SEGMENTS_BEFORE ? sortedWithIndex[2] - SEGMENTS_BEFORE : 0
-        let end = sortedWithIndex[2] + SEGMENTS_AFTER
-        return sortedWithIndex[1] ? sortedWithIndex[1].slice(start, end) : [];
-    }
-
     firstSegment() {
         const { interview, tape } = this.props;
         const segments = segmentsForTape(interview, tape);
@@ -134,9 +97,7 @@ export default class Transcript extends React.Component {
         let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
         let tabIndex = this.props.originalLocale ? 0 : 1;
         let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.mediaTime, this.props);
-        let shownSegments = this.props.transcriptScrollEnabled ?
-            sortedWithIndex[1] :
-            this.shownSegmentsAround(sortedWithIndex);
+        let shownSegments = sortedWithIndex[1];
 
         let speaker, speakerId;
 
@@ -179,9 +140,11 @@ export default class Transcript extends React.Component {
     }
 
     render () {
-        if (this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`] && this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched') {
-            if (this.props.originalLocale) {
-                return this.transcripted(this.props.interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
+        const { segmentsStatus, archiveId, originalLocale, interview } = this.props;
+
+        if (segmentsStatus[`for_interviews_${archiveId}`] && segmentsStatus[`for_interviews_${archiveId}`].split('-')[0] === 'fetched') {
+            if (originalLocale) {
+                return this.transcripted(interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
             } else {
                 return this.transcripted(this.firstTranslationLocale()) ? this.transcript() : t(this.props, 'without_translation');
             }
@@ -200,13 +163,12 @@ Transcript.propTypes = {
     archiveId: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     tape: PropTypes.number.isRequired,
-    transcriptScrollEnabled: PropTypes.bool.isRequired,
+    autoScroll: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object.isRequired,
     segmentsStatus: PropTypes.object.isRequired,
     userContentsStatus: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
-    handleTranscriptScroll: PropTypes.func.isRequired,
 };
 
 Transcript.defaultProps = {

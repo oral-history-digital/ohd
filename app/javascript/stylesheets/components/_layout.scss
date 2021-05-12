@@ -24,10 +24,10 @@
 
 .Layout.is-sticky {
   .wrapper-content {
-    margin-top: 10rem - 5rem + $base-unit * 2;
+    margin-top: $media-player-height-mobile + $content-tabs-height;
 
     @include screen-m {
-      margin-top: 10rem - 6.25rem + $base-unit * 2;
+      margin-top: $media-player-height-desktop + $content-tabs-height;
     }
   }
 }
@@ -71,6 +71,10 @@
   top: 10rem;
   left: 0;
   right: 0;
+}
+
+.Layout.is-sticky .Layout-mediaPlayer {
+
 }
 
 .Layout.sidebar-is-visible {
