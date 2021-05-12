@@ -49,7 +49,7 @@ export default function Segment({
     const showSegment = text || editView;
 
     const showButtons = isAuthorized(data) ||
-        isAuthorized({ type: 'General' }, 'edit' }) ||
+        isAuthorized({ type: 'General' }, 'edit') ||
         (data.annotations_count + data.user_annotation_ids.length) > 0 ||
         data.registry_references_count > 0;
 
