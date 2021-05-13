@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_04_184018) do
+ActiveRecord::Schema.define(version: 2021_05_13_131944) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -529,6 +529,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_184018) do
     t.string "name", limit: 255
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "project_id"
   end
 
   create_table "segment_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -740,7 +741,6 @@ ActiveRecord::Schema.define(version: 2021_05_04_184018) do
     t.datetime "activated_at"
     t.boolean "anonymized", default: false
     t.index ["confirmation_token"], name: "index_user_accounts_on_confirmation_token", unique: true, length: 191
-    t.index ["login"], name: "index_user_accounts_on_login", unique: true, length: 191
     t.index ["reset_password_token"], name: "index_user_accounts_on_reset_password_token", unique: true, length: 191
   end
 
@@ -765,6 +765,7 @@ ActiveRecord::Schema.define(version: 2021_05_04_184018) do
     t.datetime "published_at"
     t.string "media_id", limit: 255
     t.integer "user_account_id"
+    t.integer "project_id"
     t.index ["media_id"], name: "index_user_contents_on_media_id", length: 191
     t.index ["type", "id_hash"], name: "index_user_contents_on_type_and_id_hash", length: 191
     t.index ["user_account_id"], name: "index_user_contents_on_user_account_id"
@@ -796,7 +797,6 @@ ActiveRecord::Schema.define(version: 2021_05_04_184018) do
     t.boolean "receive_newsletter"
     t.boolean "priv_agreement", default: false
     t.datetime "updated_at"
-    t.index ["email"], name: "index_user_registrations_on_email", length: 191
     t.index ["workflow_state", "email"], name: "index_user_registrations_on_workflow_state_and_email", length: 191
     t.index ["workflow_state"], name: "index_user_registrations_on_workflow_state", length: 191
   end

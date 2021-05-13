@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { queryToText } from 'modules/search';
-import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
@@ -78,13 +77,14 @@ export default class UserContent extends React.Component {
 
     goTo() {
         let callKey = "call" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
+        const pathBase = `/${this.props.projects[this.props.data.project_id].shortname.toLowerCase()}/${this.props.locale}`;
 
         if (this.props.data.type === 'InterviewReference') {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
                     onClick={() => this.hideFlyoutTabsIfMobile()}
-                    to={pathBase(this.props) + '/interviews/' + this.props.data.media_id}>
+                    to={pathBase + '/interviews/' + this.props.data.media_id}>
                     {t(this.props, callKey)}
                 </Link>
             </p>
@@ -97,13 +97,13 @@ export default class UserContent extends React.Component {
                         this.props.sendTimeChangeRequest(this.props.data.properties.tape_nbr, this.props.data.properties.time)
                         this.hideFlyoutTabsIfMobile();
                     }}
-                    to={pathBase(this.props) + '/interviews/' + this.props.data.properties.interview_archive_id}
+                    to={pathBase + '/interviews/' + this.props.data.properties.interview_archive_id}
                 >
                     {t(this.props, callKey)}
                 </Link>
             </p>
         } else if (this.props.data.type === 'Search') {
-            let url = `${pathBase(this.props)}/searches/archive`;
+            let url = `${pathBase}/searches/archive`;
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
@@ -111,7 +111,7 @@ export default class UserContent extends React.Component {
                         this.props.searchInArchive(url, this.props.data.properties);
                         this.hideFlyoutTabsIfMobile();
                     }}
-                    to={pathBase(this.props) + '/searches/archive'}
+                    to={url}
                 >
                     {t(this.props, callKey)}
                 </Link>
