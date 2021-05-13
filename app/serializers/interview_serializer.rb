@@ -102,7 +102,8 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def still_url
-    MediaStream.where(project_id: object.project.id, media_type: 'still').first.path.gsub(/INTERVIEW_ID/, object.archive_id)
+    still_media_stream = MediaStream.where(project_id: object.project.id, media_type: 'still').first
+    still_media_stream && still_media_stream.path.gsub(/INTERVIEW_ID/, object.archive_id)
   end
 
   def tape_count
