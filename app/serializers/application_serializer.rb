@@ -38,7 +38,6 @@ class ApplicationSerializer < ActiveModel::Serializer
 
   def project_id
     object.project_id || 
-      (object.project && object.project.id) ||
       (object.interview && object.interview.project_id)
   end
 
