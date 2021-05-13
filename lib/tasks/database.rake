@@ -10,7 +10,7 @@
 #
 # 2. on source db: rake database:prepare_join[max-id,db-username,db-name]
 #    (
-#      add max-id-value from target-db, step 1., to all id- and *_id-fields of the source-db
+#      add max(max-id-value from target-db, max-id-value from source-db), to all id- and *_id-fields of the source-db
 #      dump source db without create table statements
 #    )
 #    result: prepared-source-db-name.sql
@@ -66,18 +66,20 @@ namespace :database do
     task :unify_user_accounts, [:max_id] => :environment do |t, args|
       UserRegistration.group(:email).count.select{|k,v| v > 1}.each do |email, count|
         first_ur = UserRegistration.where(email: email).where("id <= ?", args.max_id).first
-        other_urs = UserRegistration.where(email: email).where("id > ?", args.max_id)
+        if first_ur
+          other_urs = UserRegistration.where(email: email).where("id > ?", args.max_id)
 
-        other_urs.each do |ur|
-          ur.user_registration_projects.update_all(user_registration_id: first_ur.id)
+          other_urs.each do |ur|
+            ur.user_registration_projects.update_all(user_registration_id: first_ur.id)
 
-          ur.user_account.user_roles.update_all(user_account_id: first_ur.user_account_id)
-          ur.user_account.tasks.update_all(user_account_id: first_ur.user_account_id)
-          ur.user_account.user_contents.update_all(user_account_id: first_ur.user_account_id)
-          ur.user_account.searches.update_all(user_account_id: first_ur.user_account_id)
+            ur.user_account.user_roles.update_all(user_account_id: first_ur.user_account_id)
+            ur.user_account.tasks.update_all(user_account_id: first_ur.user_account_id)
+            ur.user_account.user_contents.update_all(user_account_id: first_ur.user_account_id)
+            ur.user_account.searches.update_all(user_account_id: first_ur.user_account_id)
 
-          ur.user_account.destroy
-          ur.destroy
+            ur.user_account.destroy
+            ur.destroy
+          end
         end
       end
     end
