@@ -30,4 +30,8 @@ class UploadedFileSerializer < ApplicationSerializer
     nil
   end
 
+  def project_id
+    object.ref_type == 'Project' && object.ref_id
+  end
+
 end

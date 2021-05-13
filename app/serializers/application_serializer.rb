@@ -1,5 +1,5 @@
 class ApplicationSerializer < ActiveModel::Serializer
-  attributes :id, :type, :translations
+  attributes :id, :type, :translations, :project_id
 
   def type 
     object.class.name
@@ -34,6 +34,12 @@ class ApplicationSerializer < ActiveModel::Serializer
       #
       JSON.parse(raw.to_json)
     end
+  end
+
+  def project_id
+    object.project_id || 
+      (object.project && object.project.id) ||
+      (object.interview && object.interview.project_id)
   end
 
 end

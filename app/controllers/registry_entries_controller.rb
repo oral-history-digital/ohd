@@ -4,6 +4,7 @@ class RegistryEntriesController < ApplicationController
   def create
     authorize RegistryEntry
     @registry_entry = RegistryEntry.create(registry_entry_params)
+    @registry_entry.project_id = current_project.id
     @registry_entry.save validate: false # there is an ancestor validation from somewhere producing invalid entries
     current_project.touch
 
@@ -115,7 +116,7 @@ class RegistryEntriesController < ApplicationController
   end
 
   def tree
-    registry_entries = RegistryEntry.for_tree(I18n.locale)
+    registry_entries = RegistryEntry.for_tree(I18n.locale, current_project.id)
     authorize registry_entries
 
     respond_to do |format|

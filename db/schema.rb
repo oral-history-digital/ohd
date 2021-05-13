@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_13_131944) do
+ActiveRecord::Schema.define(version: 2021_05_13_183948) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -420,14 +420,8 @@ ActiveRecord::Schema.define(version: 2021_05_13_131944) do
     t.integer "registry_references_count", default: 0
     t.integer "children_count", default: 0
     t.integer "parents_count", default: 0
-    t.index ["code"], name: "index_registry_entries_on_code", length: 50
-  end
-
-  create_table "registry_entry_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "project_id"
-    t.integer "registry_entry_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["code"], name: "index_registry_entries_on_code", length: 50
   end
 
   create_table "registry_entry_relations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

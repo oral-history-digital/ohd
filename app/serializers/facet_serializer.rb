@@ -4,7 +4,7 @@ class FacetSerializer < ApplicationSerializer
              :subfacets
 
   def name
-    MetadataField.includes(:translations).find_by_name(object.code).localized_hash(:label)
+    object.project.metadata_fields.includes(:translations).find_by_name(object.code).localized_hash(:label)
   end
 
   def subfacets
