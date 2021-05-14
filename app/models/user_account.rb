@@ -35,25 +35,29 @@ class UserAccount < ApplicationRecord
     tasks | supervised_tasks
   end
 
-  def task_permissions?(record, action_name)
+  def task_permissions?(project, record, action_name)
     if record.respond_to?(:class_name)
       # on create record is just a class not an object
       # and we can not really check for interview_id
       # so trust the checking in the frontend :(
       #
-      all_tasks.map(&:permissions).flatten.uniq.find{|p| p.klass == record.class_name && p.action_name == action_name}
+      all_tasks.select{|t| t.interview.project_id == project.id}.
+        map(&:permissions).flatten.uniq.
+        find{|p| p.klass == record.class_name && p.action_name == action_name}
     else
-      record_tasks = record.is_a?(Interview) ? all_tasks.select{|t| t.interview_id == record.id} : all_tasks.select{|t| t.interview_id == record.interview_id}
-      record_tasks.map(&:permissions).flatten.uniq.find{|p| p.klass == record.class.name && p.action_name == action_name}
+      record_tasks = record.is_a?(project, Interview) ?
+        all_tasks.select{|t| t.interview_id == record.id} :
+        all_tasks.select{|t| t.interview_id == record.interview_id}
+      record_tasks.map(&:permissions).flatten.uniq.
+        find{|p| p.klass == record.class.name && p.action_name == action_name}
     end
   end
 
-  def permissions?(klass, action_name)
-    !permissions.where(klass: klass, action_name: action_name).blank?
-  end
-
-  def roles?(klass, action_name)
-    !roles.joins(:permissions).where("permissions.klass": klass, "permissions.action_name": action_name).blank?
+  def roles?(project, klass, action_name)
+    !roles.joins(:permissions).
+      where(project_id: project.id).
+      where("permissions.klass": klass, "permissions.action_name": action_name).
+      blank?
   end
 
   # NOTE: validates_confirmation_of won't work on virtual attributes!

@@ -1,8 +1,9 @@
 class ApplicationPolicy
-  attr_reader :user, :record
+  attr_reader :user, :record, :project
 
-  def initialize(user, record)
-    @user = user
+  def initialize(project_context, record)
+    @user = project_context.user
+    @project = project_context.project
     @record = record
   end
 
@@ -14,36 +15,33 @@ class ApplicationPolicy
     true
   end
 
-  def create?
-    user.admin? || user.permissions?(resolve_class_name(record), "create") || user.task_permissions?(record, "create") 
-  end
-
-  def new?
-    user.admin? || user.permissions?(resolve_class_name(record), "new") || user.task_permissions?(record, "new") 
-  end
-
-  def update?
-    user.admin? || user.permissions?(resolve_class_name(record), "update") || user.task_permissions?(record, "update") 
-  end
-
-  def edit?
-    user.admin? || user.permissions?(resolve_class_name(record), "edit") || user.task_permissions?(record, "edit") 
-  end
-
-  def destroy?
-    user.admin? || user.permissions?(resolve_class_name(record), "destroy") || user.task_permissions?(record, "destroy") 
+  %w(create new update edit destroy).each do |m|
+    define_method "{m}?" do
+      user.admin? || user.roles?(project, resolve_class_name(record), m) || user.task_permissions?(project, record, m)
+    end
   end
 
   class Scope
-    attr_reader :user, :scope
+    attr_reader :user, :scope, :project
 
-    def initialize(user, scope)
-      @user = user
+    def initialize(project_context, scope)
+      @user = project_context.user
+      @project = project_context.project
       @scope = scope
     end
 
     def resolve
-      scope.all
+      if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
+        if scope.attribute_names.include?('project_id')
+          scope.where(project_id: project.id)
+        elsif scope.attribute_names.include?('interview_id')
+          scope.joins(:interview).where("interviews.project_id = ?", project.id)
+        else
+          scope.all
+        end
+      else
+        scope.none
+      end
     end
   end
 

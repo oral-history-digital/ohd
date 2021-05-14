@@ -10,10 +10,4 @@ class ProjectPolicy < ApplicationPolicy
   def edit_config?
     update?
   end
-
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
-  end
 end

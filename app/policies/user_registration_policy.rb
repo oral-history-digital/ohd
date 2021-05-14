@@ -31,7 +31,7 @@ class UserRegistrationPolicy < ApplicationPolicy
   class Scope < Scope
     def resolve
       if user.admin? || user.permissions.map(&:klass).include?(scope.to_s)
-        scope.all
+        scope.joins(:user_registration_projects).where("user_registration_projects.project_id = ?", project.id)
       else
         scope.none
       end
