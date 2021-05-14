@@ -12,7 +12,7 @@ class ApplicationController < ActionController::Base
   after_action :verify_policy_scoped, only: :index
 
   def pundit_user
-    current_user_account
+    ProjectContext.new(current_user_account, current_project)
   end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized

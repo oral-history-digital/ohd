@@ -103,7 +103,7 @@ class SearchesController < ApplicationController
       end
       format.json do
         cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max
-        cache_key_permissions = current_user_account && (current_user_account.admin? || current_user_account.permissions?('General', :edit)) ? 'all' : 'public'
+        cache_key_permissions = current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'General', :edit)) ? 'all' : 'public'
 
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}-#{cache_key_permissions}-#{params[:project_id]}" do
           # define marker types
