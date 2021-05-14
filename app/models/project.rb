@@ -12,9 +12,7 @@ class Project < ApplicationRecord
   has_many :metadata_fields
   has_many :task_types
   has_many :external_links
-  has_many :registry_entry_projects
-  has_many :registry_entries,
-    through: :registry_entry_projects
+  has_many :registry_entries
   has_many :user_registration_projects
   has_many :user_registrations,
     through: :user_registration_projects
@@ -64,8 +62,7 @@ class Project < ApplicationRecord
 
   after_create :create_root_registry_entry
   def create_root_registry_entry
-    root = RegistryEntry.create(code: 'root', workflow_state: 'public')
-    RegistryEntryProject.create(project_id: self.id, registry_entry_id: root.id)
+    root = RegistryEntry.create(project_id: self.id, code: 'root', workflow_state: 'public')
     RegistryName.create registry_entry_id: root.id, registry_name_type_id: 1, name_position: 0, descriptor: 'Register', locale: :de
   end
 

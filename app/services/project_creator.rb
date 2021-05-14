@@ -22,8 +22,7 @@ class ProjectCreator
   end
 
   def create_root_registry_entry
-    root = RegistryEntry.create(code: 'root', workflow_state: 'public')
-    RegistryEntryProject.create(project_id: project.id, registry_entry_id: root.id)
+    root = RegistryEntry.create(project_id: project.id, code: 'root', workflow_state: 'public')
   end
 
   def create

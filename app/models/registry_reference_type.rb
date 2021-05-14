@@ -11,6 +11,7 @@ class RegistryReferenceType < ApplicationRecord
   # reference types for all registry entries that are descendants
   # of the entry pointed to here.
   belongs_to :registry_entry
+  belongs_to :project
 
   # The relation to registry references defines "assigned"
   # reference types for registry references. These are reference
