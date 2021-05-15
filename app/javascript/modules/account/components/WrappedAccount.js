@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import groupBy from 'lodash.groupby';
 
 import { UserRolesContainer } from 'modules/roles';
 import { TasksOnlyStatusEditableContainer } from 'modules/workflow';
@@ -38,17 +39,30 @@ export default class WrappedAccount extends React.Component {
         )
     }
 
-    roles() {
-        if (this.props.account && this.props.account.user_roles && Object.keys(this.props.account.user_roles).length > 0) {
+    groupedByProject(roles) {
+        const groupedRoles = groupBy(roles, 'project_id');
+        return Object.keys(groupedRoles).map(projectId => {
             return (
-                <div className={'roles box'}>
-                    <h4 className='title'>{t(this.props, 'activerecord.models.role.other')}</h4>
+                <>
+                    <h4>{this.props.projects[projectId].name[this.props.locale]}</h4>
                     <UserRolesContainer
-                        userRoles={this.props.account.user_roles || {}}
+                        userRoles={groupedRoles[projectId] || {}}
                         userAccountId={this.props.account.id}
                         hideEdit={true}
                         hideAdd={true}
                     />
+                </>
+            )
+        })
+    }
+
+    roles() {
+        const roles = this.props.account?.user_roles && Object.values(this.props.account.user_roles);
+        if (roles.length > 0) {
+            return (
+                <div className={'roles box'}>
+                    <h3 className='title'>{t(this.props, 'activerecord.models.role.other')}</h3>
+                    {this.groupedByProject(roles)}
                 </div>
             )
         } else {
