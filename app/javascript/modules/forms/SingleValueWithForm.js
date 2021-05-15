@@ -114,7 +114,7 @@ export default class SingleValueWithForm extends React.Component {
 
     show() {
         if (
-            admin(this.props, this.props.obj, 'update') ||
+            admin(this.props, this.props.obj, 'show') ||
             (
                 (
                     (this.props.isLoggedIn && this.props.metadataField && this.props.metadataField.use_in_details_view) ||

@@ -16,6 +16,7 @@ const mapStateToProps = (state) => {
         editView: getEditView(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
+        project: getCurrentProject(state),
         hasMap: project && project.has_map,
     }
 }

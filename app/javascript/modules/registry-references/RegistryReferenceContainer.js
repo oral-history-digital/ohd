@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { deleteData, fetchData, getCurrentAccount, getProjects, getRegistryEntries,
-    getRegistryEntriesStatus } from 'modules/data';
+    getRegistryEntriesStatus, getCurrentProject } from 'modules/data';
 import { getArchiveId, getEditView, getProjectId, getTranslations } from 'modules/archive';
 import RegistryReference from './RegistryReference';
 
@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
+    project: getCurrentProject(state),
     translations: getTranslations(state),
     registryEntries: getRegistryEntries(state),
     account: getCurrentAccount(state),

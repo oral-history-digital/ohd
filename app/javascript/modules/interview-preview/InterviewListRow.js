@@ -91,7 +91,7 @@ export default class InterviewListRow extends React.Component {
     }
 
     renderExportCheckbox() {
-        if (admin(this.props, {type: 'Interview'}, 'update')) {
+        if (admin(this.props, {type: 'Interview'}, 'show')) {
             return <td>
                 <input
                     type='checkbox'

@@ -4,7 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
-import { getProjects, getCurrentAccount } from 'modules/data';
+import { getProjects, getCurrentAccount, getCurrentProject } from 'modules/data';
 import { resetQuery, setQueryParams, searchInArchive, searchInMap } from '../actions';
 import { getArchiveFacets, getArchiveQuery, getMapFacets } from '../selectors';
 import ArchiveSearchForm from './ArchiveSearchForm';
@@ -22,6 +22,7 @@ const mapStateToProps = (state) => {
         isMapSearching: state.search.isMapSearching,
         projectId: getProjectId(state),
         projects: getProjects(state),
+        project: getCurrentProject(state),
         account: getCurrentAccount(state),
         editView: getEditView(state),
     }

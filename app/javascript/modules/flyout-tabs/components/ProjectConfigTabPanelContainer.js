@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { getLocale, getCountryKeys, getTranslations, getProjectId, getEditView } from 'modules/archive';
-import { getProjects, getCurrentAccount } from 'modules/data';
+import { getProjects, getCurrentAccount, getCurrentProject } from 'modules/data';
 import ProjectConfigTabPanel from './ProjectConfigTabPanel';
 
 const mapStateToProps = (state) => ({
@@ -10,6 +10,7 @@ const mapStateToProps = (state) => ({
     translations: getTranslations(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
+    project: getCurrentProject(state),
     account: getCurrentAccount(state),
     editView: getEditView(state),
 });

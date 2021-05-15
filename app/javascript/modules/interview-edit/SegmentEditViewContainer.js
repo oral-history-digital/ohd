@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getSelectedInterviewEditViewColumns, getEditView } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
-import { getCurrentInterview, getCurrentAccount, getSegmentsStatus } from 'modules/data';
+import { getCurrentInterview, getCurrentProject, getCurrentAccount, getSegmentsStatus } from 'modules/data';
 import SegmentEditView from './SegmentEditView';
 
 const mapStateToProps = (state) => ({
@@ -13,6 +13,7 @@ const mapStateToProps = (state) => ({
     account: getCurrentAccount(state),
     selectedInterviewEditViewColumns: getSelectedInterviewEditViewColumns(state),
     editView: getEditView(state),
+    project: getCurrentProject(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { selectInterviewEditViewColumns, getEditView, getSelectedInterviewEditViewColumns } from 'modules/archive';
-import { getCurrentInterview, getCurrentAccount } from 'modules/data';
+import { getCurrentInterview, getCurrentAccount, getCurrentProject } from 'modules/data';
 import SelectColumnsForm from './SelectColumnsForm';
 
 const mapStateToProps = state => ({
@@ -10,6 +10,7 @@ const mapStateToProps = state => ({
     interview: getCurrentInterview(state),
     account: getCurrentAccount(state),
     editView: getEditView(state),
+    project: getCurrentProject(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

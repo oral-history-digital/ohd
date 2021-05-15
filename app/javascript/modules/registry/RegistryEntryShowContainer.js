@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData, getProjects, getInterviews, getRegistryEntries, getInterviewsStatus,
     getRegistryEntriesStatus, getRegistryReferenceTypes, getRegistryReferenceTypesStatus,
-    getSegments, getSegmentsStatus, getCurrentAccount } from 'modules/data';
+    getSegments, getSegmentsStatus, getCurrentAccount, getCurrentProject } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { setArchiveId, getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
@@ -14,6 +14,7 @@ const mapStateToProps = (state) => {
         locale: getLocale(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
+        project: getCurrentProject(state),
         interviews: getInterviews(state),
         interviewsStatus: getInterviewsStatus(state),
         segments: getSegments(state),
