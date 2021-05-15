@@ -3,6 +3,7 @@ import permitted from './permitted';
 // props should contain:
 //   - account ~ getCurrentAccount(state)
 //   - editView ~ getEditView(state)
+//   - project ~ getCurrentProject(state)
 //
 // obj can be the serialized json of e.g. an interview or a segment
 //
@@ -48,7 +49,10 @@ export default function admin(props, obj={}, action) {
                 //
                 // if obj.type and/or id correspond to a role-permission, current_user_account should be able to edit it
                 (
-                    !!Object.values(props.account.permissions).find(permission => {
+                    !!Object.values(props.account.user_roles).
+                    filter(r => r.project_id && r.project_id === props.project?.id).
+                    flatMap(r => Object.values(r.role_permissions)).
+                    find(permission => {
                         return (
                             permission.klass === obj.type &&
                             permission.action_name === action

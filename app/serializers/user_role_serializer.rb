@@ -2,8 +2,9 @@ class UserRoleSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :desc,
-    #:permissions,
+    :project_id,
     :role_permissions#,
+    #:permissions,
     #:created_at
 
   #def permissions
@@ -16,6 +17,10 @@ class UserRoleSerializer < ApplicationSerializer
 
   def desc 
     object.role.desc
+  end
+
+  def project_id
+    object.role.project_id
   end
 
   def role_permissions
