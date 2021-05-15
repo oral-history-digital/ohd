@@ -4,6 +4,7 @@ class TaskSerializer < ApplicationSerializer
     :user_account_id,
     :supervisor_id,
     :interview_id,
+    :project_id,
     :archive_id,
     :interviewee,
     :workflow_state,
@@ -25,6 +26,10 @@ class TaskSerializer < ApplicationSerializer
 
   def archive_id
     object.interview.archive_id
+  end
+
+  def project_id
+    object.interview.project_id
   end
 
   def interviewee

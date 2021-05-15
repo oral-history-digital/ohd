@@ -125,12 +125,13 @@ export default class UserRegistration extends React.Component {
             this.props.userRegistration.user_account_id &&
             admin(this.props, {type: 'UserRole'}, 'create')
         ) {
+            const roles = Object.values(this.props.userRegistration.user_roles).filter(u => u.project_id === this.props.project.id) || [];
             return (
                 <div className={'roles box'}>
-                    <h4 className='title'>{Object.keys(this.props.userRegistration.user_roles).length + ' ' + t(this.props, `activerecord.models.role.other`)}{this.toggle('roles')}</h4>
+                    <h4 className='title'>{roles.length + ' ' + t(this.props, `activerecord.models.role.other`)}{this.toggle('roles')}</h4>
                     {this.state.show.roles &&
                         <UserRolesContainer
-                            userRoles={this.props.userRegistration.user_roles || []}
+                            userRoles={roles}
                             userAccountId={this.props.userRegistration.user_account_id}
                             hideEdit={false}
                         />
@@ -147,12 +148,13 @@ export default class UserRegistration extends React.Component {
             this.props.userRegistration.user_account_id &&
             admin(this.props, {type: 'Task'}, 'create')
         ) {
+            const user_tasks = Object.values(this.props.userRegistration.tasks).filter(t => t.project_id === this.props.project.id);
             return (
                 <div className={'tasks box'}>
-                    <h4 className='title'>{Object.keys(this.props.userRegistration.tasks).length + ' ' + t(this.props, `activerecord.models.task.other`)}{this.toggle('tasks')}</h4>
+                    <h4 className='title'>{user_tasks.length + ' ' + t(this.props, `activerecord.models.task.other`)}{this.toggle('tasks')}</h4>
                     {this.state.show.tasks &&
                         <TasksContainer
-                            data={this.props.userRegistration.tasks}
+                            data={user_tasks}
                             initialFormValues={{user_account_id: this.props.userRegistration.user_account_id}}
                             hideEdit={true}
                             hideDelete={true}
