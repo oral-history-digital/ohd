@@ -7,8 +7,8 @@ import permitted from './permitted';
 //
 // obj can be the serialized json of e.g. an interview or a segment
 //
-// but obj can also be sth. like {type: 'Segment', id: 2345}
-// so obj should contain a type and optional id
+// but obj can also be sth. like {type: 'Segment', id: 2345, project_id: 1}
+// so obj should contain a type and optional id and mostly project_id
 //
 // action corresponds to methods in rails e.g. 'show', 'update', 'destroy'
 //
