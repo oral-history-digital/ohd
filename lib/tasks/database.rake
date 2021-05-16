@@ -15,8 +15,9 @@
 #    )
 #    result: prepared-source-db-name.sql
 #
-# 3. on target-db: mysql -u max -p target-db-name prepared-source-db-name.sql
+# 3. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
 #
+# 4. on target-db: run rake database:unify_[user_accounts|languages|permissions]
 
 namespace :database do
 
@@ -86,7 +87,6 @@ namespace :database do
 
     desc 'unify languages'
     task :unify_languages, [:max_id] => :environment do |t, args|
-      #Language.group(:code).count.select{|k,v| v > 1}.each do |code, count|
       Language.all.each do |language|
         codes = ISO_639.find(language.code)
         first_language = Language.where(code: codes).where("id <= ?", args.max_id).first
@@ -97,4 +97,21 @@ namespace :database do
         end
       end
     end
+
+    desc 'unify permissions'
+    task :unify_permissions, [:max_id] => :environment do |t, args|
+      Permission.group(:klass, :action_name).count.select{|k,v| v > 1}.each do |(klass, action_name), count|
+        first_perm = Permission.where(klass: klass, action_name: action_name).where("id <= ?", args.max_id).first
+        if first_perm
+          other_perms = Permission.where(klass: klass, action_name: action_name).where("id > ?", args.max_id)
+
+          other_perms.each do |perm|
+            perm.role_permissions.update_all(permission_id: first_perm.id)
+            perm.task_type_permissions.update_all(permission_id: first_perm.id)
+            perm.destroy
+          end
+        end
+      end
+    end
+
 end
