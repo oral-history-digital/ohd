@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import groupBy from 'lodash.groupby';
 import { Link } from 'react-router-dom';
 import request from 'superagent';
 
@@ -28,7 +29,8 @@ export default function MapPopup({
                 if (error) {
                     setError(error.message);
                 } else if (res) {
-                    setReferences(res.body);
+                    const groupedReferences = groupBy(res.body, ref => ref.registry_reference_type_id);
+                    setReferences(groupedReferences);
                 }
             });
     }, [pathBase]);
@@ -44,22 +46,27 @@ export default function MapPopup({
             <h3 className="MapPopup-heading">{name}</h3>
             {
                 references !== null ?
-                    (
-                        <ul className="MapPopup-list">
-                            {
-                                references.map(ref => (
-                                    <li key={ref.id}>
-                                        <Link
-                                            to={`${pathBase}/interviews/${ref.archive_id}`}
-                                            className="MapPopup-link"
-                                        >
-                                            {`${ref.first_name} ${ref.last_name} (${ref.archive_id})`}
-                                        </Link>
-                                    </li>
-                                ))
-                            }
-                        </ul>
-                    ) :
+                    Object.keys(references).map(type => (
+                        <div key={type}>
+                            <h4 className="MapPopup-subHeading">
+                                Typ {type} ({references[type].length})
+                            </h4>
+                            <ul className="MapPopup-list">
+                                {
+                                    references[type].map(ref => (
+                                        <li key={ref.id}>
+                                            <Link
+                                                to={`${pathBase}/interviews/${ref.archive_id}`}
+                                                className="MapPopup-link"
+                                            >
+                                                {`${ref.first_name} ${ref.last_name} (${ref.archive_id})`}
+                                            </Link>
+                                        </li>
+                                    ))
+                                }
+                            </ul>
+                        </div>
+                    )) :
                     <Spinner small />
             }
         </div>
