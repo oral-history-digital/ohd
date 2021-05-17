@@ -16,6 +16,7 @@ export default function MapPopup({
     const { locale } = useI18n();
 
     const [references, setReferences] = useState(null);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const path = `${pathBase}/searches/map_references/${registryEntryId}`;
@@ -25,12 +26,18 @@ export default function MapPopup({
             .query(query)
             .end((error, res) => {
                 if (error) {
-                    console.log(error)
+                    setError(error.message);
                 } else if (res) {
                     setReferences(res.body);
                 }
             });
     }, [pathBase]);
+
+    if (error) {
+        return (
+            <p>{error}</p>
+        );
+    }
 
     return (
         <div className="MapPopup">
