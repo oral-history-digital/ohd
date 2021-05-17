@@ -37,6 +37,10 @@ export default class ArchiveSearch extends React.Component {
         this.props.setFlyoutTabsIndex(INDEX_SEARCH);
     }
 
+    componentDidMount() {
+        this.search()
+    }
+
     componentDidUpdate(prevProps) {
         if (prevProps.isLoggedIn !== this.props.isLoggedIn) {
             this.search()
