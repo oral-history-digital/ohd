@@ -1,0 +1,40 @@
+.MapPopup {
+  max-height: 15rem;
+  overflow-y: auto;
+  width: 15rem;
+  padding: 0;
+}
+
+.MapPopup-heading {
+  color: black;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: $base-unit;
+  margin: 0 0 ($base-unit / 2);
+}
+
+.MapPopup-subHeading {
+  color: black;
+  font-size: 0.875rem;
+  line-height: $base-unit;
+  margin: 0;
+}
+
+.MapPopup-list {
+  list-style-type: none;
+  margin: 0 0 ($base-unit / 2);
+  padding: 0;
+}
+
+.MapPopup-link:link,
+.MapPopup-link:visited {
+  color: var(--primary-color);
+  font-size: 0.75rem;
+  line-height: $base-unit;
+}
+
+.MapPopup-link:hover,
+.MapPopup-link:active {
+  color: var(--primary-color) !important;
+  text-decoration: underline !important;
+}

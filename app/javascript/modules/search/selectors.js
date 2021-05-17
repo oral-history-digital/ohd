@@ -1,5 +1,5 @@
 import { createSelector } from 'reselect';
-import { NAME } from './constants';
+import { NAME, MAP_DEFAULT_BOUNDS } from './constants';
 
 const getState = state => state[NAME];
 
@@ -41,9 +41,25 @@ export const getMapMarkers = createSelector(
     })
 );
 
+export const getMapBounds = createSelector(
+    getMapMarkers,
+    markers => {
+        if (markers?.length > 0) {
+            return markers.map(marker =>
+                [marker.lat, marker.lon]
+            );
+        } else {
+            return MAP_DEFAULT_BOUNDS;
+        }
+    }
+);
+
 export const getMarkersFetched = state => getFoundMarkers(state) !== null;
 
-export const getMapQuery = state => getMapSearch(state).query;
+export const getMapQuery = createSelector(
+    getMapSearch,
+    mapSearchState => mapSearchState.query
+);
 
 export const getMapFacets = state => getMapSearch(state).facets;
 

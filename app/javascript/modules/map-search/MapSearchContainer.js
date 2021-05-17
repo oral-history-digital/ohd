@@ -2,12 +2,14 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { searchInMap, getMapMarkers, getIsMapSearching, getMapQuery, getMarkersFetched } from 'modules/search';
+import { searchInMap, getMapMarkers, getIsMapSearching, getMapQuery, getMarkersFetched,
+    getMapBounds } from 'modules/search';
 import MapSearch from './MapSearch';
 
 const mapStateToProps = state => ({
     markersFetched: getMarkersFetched(state),
     mapMarkers: getMapMarkers(state),
+    mapBounds: getMapBounds(state),
     query: getMapQuery(state),
     isMapSearching: getIsMapSearching(state),
 });

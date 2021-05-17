@@ -6,6 +6,7 @@ import styles from './Spinner.module.scss';
 import spinnerSrc from './large_spinner.gif';
 
 export default function Spinner({
+    small = false,
     withPadding = false,
     className,
     style,
@@ -14,6 +15,7 @@ export default function Spinner({
         <img
             src={spinnerSrc}
             className={classNames(styles.img, className, {
+                [styles.small]: small,
                 [styles.withPadding]: withPadding,
             })}
             style={style}
@@ -23,6 +25,7 @@ export default function Spinner({
 }
 
 Spinner.propTypes = {
+    small: PropTypes.bool,
     withPadding: PropTypes.bool,
     className: PropTypes.string,
     style: PropTypes.object,

@@ -1,16 +1,14 @@
 import React, { useEffect } from 'react';
-import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
 import 'leaflet/dist/leaflet.css';
 import { Tooltip, Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
 
-import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
-
-const OUTER_BOUNDS = [[[-80,-180], [80,180]]];
+import MapOverlay from './MapOverlay';
+import MapPopup from './MapPopup';
+import markerColor from './markerColor';
+import markerRadius from './markerRadius';
 
 const leafletOptions = {
     maxZoom: 16,
@@ -20,31 +18,61 @@ const leafletOptions = {
 
 export default function MapSearch({
     mapMarkers,
+    mapBounds,
     markersFetched,
     isMapSearching,
     query,
     searchInMap,
 }) {
     const pathBase = usePathBase();
-    const { locale } = useI18n();
 
     useEffect(() => {
         const path = `${pathBase}/searches/map`;
         searchInMap(path, query);
-    }, [locale]);
+    }, [pathBase]);
 
     return (
         <ScrollToTop>
             <div className='wrapper-content map'>
-                {
-                    (!markersFetched || isMapSearching) ?
-                        <Spinner /> :
-                        (
-                            <div>
-                                {mapMarkers.length} Markers
-                            </div>
-                        )
-                }
+                <Map
+                    className="Map Map--search"
+                    bounds={mapBounds}
+                    {...leafletOptions}
+                >
+                    {
+                        isMapSearching && <MapOverlay />
+                    }
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {
+                        mapMarkers?.map(marker => {
+                            return (
+                                <CircleMarker
+                                    key={marker.id}
+                                    center={[marker.lat, marker.lon]}
+                                    radius={markerRadius(marker.numReferences)}
+                                    fillColor={markerColor(marker.referenceTypes)}
+                                    fillOpacity={0.5}
+                                    stroke={0}
+                                >
+                                    <Tooltip>
+                                        {marker.name} ({marker.numReferences})
+                                    </Tooltip>
+                                    <Popup>
+                                        <MapPopup
+                                            name={marker.name}
+                                            registryEntryId={marker.id}
+                                            query={query}
+                                        />
+                                    </Popup>
+                                </CircleMarker>
+                            );
+                        })
+                    }
+                </Map>
+
             </div>
         </ScrollToTop>
     );
@@ -52,6 +80,7 @@ export default function MapSearch({
 
 MapSearch.propTypes = {
     mapMarkers: PropTypes.array,
+    mapBounds: PropTypes.array.isRequired,
     markersFetched: PropTypes.bool.isRequired,
     isMapSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,
