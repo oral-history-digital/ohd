@@ -58,7 +58,7 @@ export default class WrappedAccount extends React.Component {
 
     roles() {
         const roles = this.props.account?.user_roles && Object.values(this.props.account.user_roles);
-        if (roles.length > 0) {
+        if (roles?.length > 0) {
             return (
                 <div className={'roles box'}>
                     <h3 className='title'>{t(this.props, 'activerecord.models.role.other')}</h3>
