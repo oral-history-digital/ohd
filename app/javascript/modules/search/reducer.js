@@ -15,6 +15,7 @@ import {
     REQUEST_MAP_SEARCH,
     RECEIVE_MAP_SEARCH,
     RECEIVE_MAP_REFERENCE_TYPES,
+    TOGGLE_MAP_FILTER,
 } from './action-types';
 
 export const initialState = {
@@ -36,6 +37,7 @@ export const initialState = {
         query: {},
         foundMarkers: null,
         referenceTypes: null,
+        filter: null,
     },
     interviews: {},
     registryEntries: {
@@ -163,6 +165,7 @@ const search = (state = initialState, action) => {
                     map: {
                         ...state.map,
                         referenceTypes: action.payload,
+                        filter: action.payload.map(type => type.id),
                     },
                 };
         default:

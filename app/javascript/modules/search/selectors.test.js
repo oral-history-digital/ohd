@@ -217,6 +217,10 @@ test('getMapReferenceTypes retrieves map reference types array', () => {
     expect(selectors.getMapReferenceTypes(state)).toEqual(state[NAME].map.referenceTypes);
 });
 
+test('getMapFilter retrieves map filter array', () => {
+    expect(selectors.getMapFilter(state)).toEqual(state[NAME].map.filter);
+});
+
 test('getMapQuery retrieves map query object', () => {
     expect(selectors.getMapQuery(state)).toEqual(state[NAME].map.query);
 });

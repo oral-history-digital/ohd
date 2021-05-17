@@ -7,6 +7,7 @@ import { usePathBase } from 'modules/routes';
 import { ScrollToTop } from 'modules/user-agent';
 import MapOverlay from './MapOverlay';
 import MapPopup from './MapPopup';
+import MapFilterContainer from './MapFilterContainer';
 import markerColor from './markerColor';
 import markerRadius from './markerRadius';
 
@@ -78,6 +79,7 @@ export default function MapSearch({
                     }
                 </Map>
 
+                <MapFilterContainer />
             </div>
         </ScrollToTop>
     );

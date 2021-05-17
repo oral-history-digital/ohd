@@ -58,6 +58,8 @@ export const getMarkersFetched = state => getFoundMarkers(state) !== null;
 
 export const getMapReferenceTypes = state => getMapSearch(state).referenceTypes;
 
+export const getMapFilter = state => getMapSearch(state).filter;
+
 export const getMapQuery = state => getMapSearch(state).query;
 
 export const getMapFacets = state => getMapSearch(state).facets;

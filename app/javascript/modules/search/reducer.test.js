@@ -7,6 +7,7 @@ const state = {
         query: {},
         foundMarkers: null,
         referenceTypes: null,
+        filter: null,
     },
     isMapSearching: false,
 };
@@ -64,7 +65,13 @@ test('handles the RECEIVE_MAP_REFERENCE_TYPES action', () => {
         ...state,
         map: {
             ...state.map,
-            referenceTypes: action.payload,
+            referenceTypes: [
+                {
+                    id: 2,
+                    name: 'Habitation',
+                },
+            ],
+            filter: [2],
         },
     };
     expect(reducer(state, action)).toEqual(expectedState);

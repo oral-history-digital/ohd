@@ -49,3 +49,12 @@ test('receiveMapReferenceTypes', () => {
     };
     expect(actual).toEqual(expected);
 });
+
+test('toggleMapFilter', () => {
+    const actual = actions.toggleMapFilter(3);
+    const expected = {
+        type: types.TOGGLE_MAP_FILTER,
+        payload: 3,
+    };
+    expect(actual).toEqual(expected);
+});
