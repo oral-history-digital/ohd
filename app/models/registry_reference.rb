@@ -20,7 +20,7 @@ class RegistryReference < BaseRegistryReference
         }
 
   scope :for_map_registry_entry, -> (registry_entry_id, locale, person_ids) {
-    .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
+    joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
     .joins('INNER JOIN people ON people.id = registry_references.ref_object_id')
     .joins('INNER JOIN person_translations ON people.id = person_translations.person_id')
     .joins('INNER JOIN registry_entries ON registry_references.registry_entry_id = registry_entries.id')

@@ -38,7 +38,7 @@ const requestArchiveSearch = (searchQuery) => ({
     searchQuery: searchQuery,
 });
 
-const requestMapSearch = (searchQuery) => ({
+export const requestMapSearch = (searchQuery) => ({
     type: REQUEST_MAP_SEARCH,
     searchQuery: searchQuery,
 });
@@ -60,11 +60,11 @@ function receiveArchiveSearchResults(json){
     }
 }
 
-function receiveMapSearchResults(json){
+export function receiveMapSearchResults(json){
     return {
         type: RECEIVE_MAP_SEARCH,
-        foundMarkers: json.markers
-    }
+        payload: json,
+    };
 }
 
 export function searchInArchive(url, searchQuery) {

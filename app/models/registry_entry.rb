@@ -160,7 +160,7 @@ class RegistryEntry < ApplicationRecord
   }
 
   scope :for_map, -> (locale, person_ids) {
-    .joins('INNER JOIN registry_names ON registry_names.registry_entry_id = registry_entries.id')
+    joins('INNER JOIN registry_names ON registry_names.registry_entry_id = registry_entries.id')
     .joins('INNER JOIN registry_name_translations ON registry_name_translations.registry_name_id = registry_names.id')
     .joins('INNER JOIN registry_references ON registry_references.registry_entry_id = registry_entries.id')
     .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')

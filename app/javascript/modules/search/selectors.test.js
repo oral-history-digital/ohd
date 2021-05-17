@@ -1,3 +1,5 @@
+import dotProp from 'dot-prop-immutable';
+
 import { NAME } from './constants';
 import * as selectors from './selectors';
 
@@ -35,11 +37,22 @@ const state = {
             query: {
                 page: 1,
             },
-            foundMarkers: {
-                birth_location: {
-                    title: 'dummy',
+            foundMarkers: [
+                {
+                    id: 12,
+                    name: 'London',
+                    lat: '5.4',
+                    lon: '23.3',
+                    ref_types: '1,2,7,8,1',
                 },
-            },
+                {
+                    id: 13,
+                    name: 'Paris',
+                    lat: '12.2',
+                    lon: '30.1',
+                    ref_types: '3',
+                },
+            ],
         },
         interviews: {
             za003: {
@@ -141,8 +154,38 @@ test('getFoundMarkers retrieves found map markers', () => {
     expect(selectors.getFoundMarkers(state)).toEqual(state[NAME].map.foundMarkers);
 });
 
-test('getMarkersFetched retrieves if markers have been loaded', () => {
-    expect(selectors.getMarkersFetched(state)).toEqual(true);
+test('getMapMarkers retrieves converted map markers', () => {
+    const actual = selectors.getMapMarkers(state);
+    const expected = [
+        {
+            id: 12,
+            name: 'London',
+            lat: 5.4,
+            lon: 23.3,
+            numReferences: 5,
+            referenceTypes: [1, 2, 7, 8],
+        },
+        {
+            id: 13,
+            name: 'Paris',
+            lat: 12.2,
+            lon: 30.1,
+            numReferences: 1,
+            referenceTypes: [3],
+        },
+    ];
+    expect(actual).toEqual(expected);
+});
+
+describe('getMarkersFetched', () => {
+    test('is true if markers have been loaded', () => {
+        expect(selectors.getMarkersFetched(state)).toBeTruthy();
+    });
+
+    test('is false if markers have not been loaded', () => {
+        const _state = dotProp.set(state, `${NAME}.map.foundMarkers`, null);
+        expect(selectors.getMarkersFetched(_state)).toBeFalsy();
+    });
 });
 
 test('getMapQuery retrieves map query object', () => {

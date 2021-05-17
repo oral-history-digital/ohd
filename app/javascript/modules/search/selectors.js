@@ -21,7 +21,27 @@ export const getMapSearch = state => getState(state).map;
 
 export const getFoundMarkers = state => getMapSearch(state).foundMarkers;
 
-export const getMarkersFetched = state => Object.keys(getFoundMarkers(state)).length > 0;
+export const getMapMarkers = createSelector(
+    getFoundMarkers,
+    markers => markers?.map(marker => {
+        const types = marker.ref_types
+            .split(',')
+            .map(type => Number.parseInt(type));
+        const numReferences = types.length;
+        const uniqueTypes = [...new Set(types)];
+
+        return {
+            id: marker.id,
+            name: marker.name,
+            lat: Number.parseFloat(marker.lat),
+            lon: Number.parseFloat(marker.lon),
+            numReferences,
+            referenceTypes: uniqueTypes,
+        };
+    })
+);
+
+export const getMarkersFetched = state => getFoundMarkers(state) !== null;
 
 export const getMapQuery = state => getMapSearch(state).query;
 

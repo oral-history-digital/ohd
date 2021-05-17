@@ -1,43 +1,60 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
-import { pathBase } from 'modules/routes';
+import 'leaflet/dist/leaflet.css';
+import { Tooltip, Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
+
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 
-export default class MapSearch extends React.Component {
-    componentDidMount() {
-        if (this.props.markersFetched) {
-            this.initMap();
-        } else {
-            this.search();
-        }
-    }
+const OUTER_BOUNDS = [[[-80,-180], [80,180]]];
 
-    search(query={}) {
-        let url = `${pathBase(this.props)}/searches/map`;
-        this.props.searchInMap(url, query);
-    }
+const leafletOptions = {
+    maxZoom: 16,
+    scrollWheelZoom: false,
+    zoomAnimation: false,
+};
 
-    render() {
-        return (
-            <ScrollToTop>
-                <div className='wrapper-content map'>
-                    <Spinner />
-                </div>
-            </ScrollToTop>
-        )
-    }
+export default function MapSearch({
+    mapMarkers,
+    markersFetched,
+    isMapSearching,
+    query,
+    searchInMap,
+}) {
+    const pathBase = usePathBase();
+    const { locale } = useI18n();
+
+    useEffect(() => {
+        const path = `${pathBase}/searches/map`;
+        searchInMap(path, query);
+    }, [locale]);
+
+    return (
+        <ScrollToTop>
+            <div className='wrapper-content map'>
+                {
+                    (!markersFetched || isMapSearching) ?
+                        <Spinner /> :
+                        (
+                            <div>
+                                {mapMarkers.length} Markers
+                            </div>
+                        )
+                }
+            </div>
+        </ScrollToTop>
+    );
 }
 
 MapSearch.propTypes = {
+    mapMarkers: PropTypes.array,
     markersFetched: PropTypes.bool.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
     isMapSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,
-    foundMarkers: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    locale: PropTypes.string.isRequired,
     searchInMap: PropTypes.func.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
 };
