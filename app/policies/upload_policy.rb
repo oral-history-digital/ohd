@@ -1,7 +1,7 @@
-class UploadPolicy < Struct.new(:user, :upload)
+class UploadPolicy < Struct.new(:project_context, :upload)
 
   def create?
-    user.admin? || user.roles?(project, 'Upload', "create")
+    project_context.user.admin? || project_context.user.roles?(project_context.project, 'Upload', "create")
   end
 
   def new?
