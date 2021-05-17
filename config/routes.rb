@@ -84,6 +84,7 @@ Rails.application.routes.draw do
         get :interview
         get :registry_entry
         get :map
+        get :map_references
       end
     end
 

@@ -96,7 +96,7 @@ class SearchesController < ApplicationController
     end
   end
 
-  def map
+  def map_old
     respond_to do |format|
       format.html do
         render :template => "/react/app.html"
@@ -162,6 +162,32 @@ class SearchesController < ApplicationController
     end
   end
 
+  def map
+    respond_to do |format|
+      format.html do
+        render :template => "/react/app.html"
+      end
+      format.json do
+        registry_entries = RegistryEntry.for_map(I18n.locale, map_interviewee_ids)
+        authorize registry_entries
+
+        render json: registry_entries, each_serializer: SlimRegistryEntryMapSerializer
+      end
+    end
+  end
+
+  def map_references
+    respond_to do |format|
+      format.json do
+        registry_entry_id = params[:id]
+        registry_references = RegistryReference.for_map_registry_entry(registry_entry_id, I18n.locale, map_interviewee_ids)
+        authorize registry_references
+
+        render json: registry_references, each_serializer: SlimRegistryReferenceMapSerializer
+      end
+    end
+  end
+
   def archive
     respond_to do |format|
       format.html do
@@ -203,6 +229,12 @@ class SearchesController < ApplicationController
   end
 
   private
+
+  def map_interviewee_ids
+    search = Interview.archive_search(current_user_account, current_project, locale, params, 1000)
+    interviewee_ids = search.hits.map{|hit| hit.stored(:interviewee_id)}
+    interviewee_ids
+  end
 
   def highlighted_text(hit)
     current_project.available_locales.inject({}) do |mem, locale|
