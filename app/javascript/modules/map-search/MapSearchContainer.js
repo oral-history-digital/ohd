@@ -2,20 +2,22 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { searchInMap, getMapMarkers, getIsMapSearching, getMapQuery, getMarkersFetched,
-    getMapBounds } from 'modules/search';
+import { searchInMap, fetchMapReferenceTypes, getMapMarkers, getIsMapSearching, getMapQuery, getMarkersFetched,
+    getMapBounds, getMapReferenceTypes } from 'modules/search';
 import MapSearch from './MapSearch';
 
 const mapStateToProps = state => ({
     markersFetched: getMarkersFetched(state),
     mapMarkers: getMapMarkers(state),
     mapBounds: getMapBounds(state),
+    mapReferenceTypes: getMapReferenceTypes(state),
     query: getMapQuery(state),
     isMapSearching: getIsMapSearching(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     searchInMap,
+    fetchMapReferenceTypes,
     setFlyoutTabsIndex,
 }, dispatch);
 

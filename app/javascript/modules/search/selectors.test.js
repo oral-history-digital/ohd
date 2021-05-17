@@ -53,6 +53,10 @@ const state = {
                     ref_types: '3',
                 },
             ],
+            referenceTypes: [{
+                id: 1,
+                name: 'Habitation',
+            }],
         },
         interviews: {
             za003: {
@@ -207,6 +211,10 @@ describe('getMarkersFetched', () => {
         const _state = dotProp.set(state, `${NAME}.map.foundMarkers`, null);
         expect(selectors.getMarkersFetched(_state)).toBeFalsy();
     });
+});
+
+test('getMapReferenceTypes retrieves map reference types array', () => {
+    expect(selectors.getMapReferenceTypes(state)).toEqual(state[NAME].map.referenceTypes);
 });
 
 test('getMapQuery retrieves map query object', () => {

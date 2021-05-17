@@ -9,6 +9,8 @@ import {
 
     REQUEST_MAP_SEARCH,
     RECEIVE_MAP_SEARCH,
+    REQUEST_MAP_REFERENCE_TYPES,
+    RECEIVE_MAP_REFERENCE_TYPES,
 
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
@@ -43,6 +45,8 @@ export const requestMapSearch = (searchQuery) => ({
     searchQuery: searchQuery,
 });
 
+export const requestMapReferenceTypes = () => ({ type: REQUEST_MAP_REFERENCE_TYPES });
+
 function receiveArchiveSearchResults(json){
     return {
         type: RECEIVE_ARCHIVE_SEARCH,
@@ -67,6 +71,11 @@ export function receiveMapSearchResults(json){
     };
 }
 
+export const receiveMapReferenceTypes = (json) => ({
+    type: RECEIVE_MAP_REFERENCE_TYPES,
+    payload: json,
+});
+
 export function searchInArchive(url, searchQuery) {
     return dispatch => {
         dispatch(requestArchiveSearch(searchQuery))
@@ -80,6 +89,11 @@ export function searchInMap(url, searchQuery) {
         Loader.getJson(url, searchQuery, dispatch, receiveMapSearchResults);
     }
 }
+
+export const fetchMapReferenceTypes = url => dispatch => {
+    dispatch(requestMapReferenceTypes());
+    Loader.getJson(url, null, dispatch, receiveMapReferenceTypes);
+};
 
 const requestInterviewSearch = (searchQuery) => ({
     type: REQUEST_INTERVIEW_SEARCH,

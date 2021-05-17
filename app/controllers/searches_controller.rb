@@ -188,6 +188,17 @@ class SearchesController < ApplicationController
     end
   end
 
+  def map_reference_types
+    respond_to do |format|
+      format.json do
+        registry_reference_types = RegistryReferenceType.for_map(I18n.locale)
+        authorize registry_reference_types
+
+        render json: registry_reference_types, each_serializer: SlimRegistryReferenceTypeMapSerializer
+      end
+    end
+  end
+
   def archive
     respond_to do |format|
       format.html do

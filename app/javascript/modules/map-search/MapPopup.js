@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import groupBy from 'lodash.groupby';
+import keyBy from 'lodash.keyby';
 import { Link } from 'react-router-dom';
 import request from 'superagent';
 
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
+import { getMapReferenceTypes } from 'modules/search';
 
 export default function MapPopup({
     name,
@@ -14,6 +17,9 @@ export default function MapPopup({
     query,
 }) {
     const pathBase = usePathBase();
+    const referenceTypes = useSelector(getMapReferenceTypes);
+    const typesById = keyBy(referenceTypes, type => type.id);
+
     const { locale } = useI18n();
 
     const [references, setReferences] = useState(null);
@@ -49,7 +55,7 @@ export default function MapPopup({
                     Object.keys(references).map(type => (
                         <div key={type}>
                             <h4 className="MapPopup-subHeading">
-                                Typ {type} ({references[type].length})
+                                {typesById[type].name} ({references[type].length})
                             </h4>
                             <ul className="MapPopup-list">
                                 {

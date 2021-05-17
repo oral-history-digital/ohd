@@ -19,16 +19,21 @@ const leafletOptions = {
 export default function MapSearch({
     mapMarkers,
     mapBounds,
+    mapReferenceTypes,
     markersFetched,
     isMapSearching,
     query,
     searchInMap,
+    fetchMapReferenceTypes,
 }) {
     const pathBase = usePathBase();
 
     useEffect(() => {
-        const path = `${pathBase}/searches/map`;
-        searchInMap(path, query);
+        const searchPath = `${pathBase}/searches/map`;
+        searchInMap(searchPath, query);
+
+        const typesPath = `${pathBase}/searches/map_reference_types`;
+        fetchMapReferenceTypes(typesPath);
     }, [pathBase]);
 
     return (
@@ -47,7 +52,7 @@ export default function MapSearch({
                         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                     />
                     {
-                        mapMarkers?.map(marker => {
+                        mapReferenceTypes && mapMarkers?.map(marker => {
                             return (
                                 <CircleMarker
                                     key={marker.id}
@@ -81,9 +86,11 @@ export default function MapSearch({
 MapSearch.propTypes = {
     mapMarkers: PropTypes.array,
     mapBounds: PropTypes.array.isRequired,
+    mapReferenceTypes: PropTypes.array,
     markersFetched: PropTypes.bool.isRequired,
     isMapSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,
     searchInMap: PropTypes.func.isRequired,
+    fetchMapReferenceTypes: PropTypes.func.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
 };

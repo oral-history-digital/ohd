@@ -14,6 +14,7 @@ import {
 
     REQUEST_MAP_SEARCH,
     RECEIVE_MAP_SEARCH,
+    RECEIVE_MAP_REFERENCE_TYPES,
 } from './action-types';
 
 export const initialState = {
@@ -34,6 +35,7 @@ export const initialState = {
         facets: null,
         query: {},
         foundMarkers: null,
+        referenceTypes: null,
     },
     interviews: {},
     registryEntries: {
@@ -154,6 +156,14 @@ const search = (state = initialState, action) => {
                         foundMarkers: action.payload,
                     },
                     isMapSearching: false,
+                };
+            case RECEIVE_MAP_REFERENCE_TYPES:
+                return {
+                    ...state,
+                    map: {
+                        ...state.map,
+                        referenceTypes: action.payload,
+                    },
                 };
         default:
             return state;

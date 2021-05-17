@@ -56,10 +56,9 @@ export const getMapBounds = createSelector(
 
 export const getMarkersFetched = state => getFoundMarkers(state) !== null;
 
-export const getMapQuery = createSelector(
-    getMapSearch,
-    mapSearchState => mapSearchState.query
-);
+export const getMapReferenceTypes = state => getMapSearch(state).referenceTypes;
+
+export const getMapQuery = state => getMapSearch(state).query;
 
 export const getMapFacets = state => getMapSearch(state).facets;
 

@@ -185,6 +185,7 @@ class ApplicationController < ActionController::Base
         facets: facets,
         query: search_query,
         foundMarkers: nil,
+        referenceTypes: nil,
       },
       interviews: {},
       registryEntries: {

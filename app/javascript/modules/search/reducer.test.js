@@ -6,6 +6,7 @@ const state = {
         facets: null,
         query: {},
         foundMarkers: null,
+        referenceTypes: null,
     },
     isMapSearching: false,
 };
@@ -47,4 +48,24 @@ test('handles the RECEIVE_MAP_SEARCH action', () => {
         },
     };
     expect(reducer(_state, action)).toEqual(expectedState);
+});
+
+test('handles the RECEIVE_MAP_REFERENCE_TYPES action', () => {
+    const action = {
+        type: types.RECEIVE_MAP_REFERENCE_TYPES,
+        payload: [
+            {
+                id: 2,
+                name: 'Habitation',
+            },
+        ],
+    };
+    const expectedState = {
+        ...state,
+        map: {
+            ...state.map,
+            referenceTypes: action.payload,
+        },
+    };
+    expect(reducer(state, action)).toEqual(expectedState);
 });
