@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
 import { Tooltip, Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
@@ -24,10 +24,12 @@ export default function MapSearch({
     markersFetched,
     isMapSearching,
     query,
+    flyoutTabsVisible,
     searchInMap,
     fetchMapReferenceTypes,
 }) {
     const pathBase = usePathBase();
+    const mapEl = useRef(null);
 
     useEffect(() => {
         const typesPath = `${pathBase}/searches/map_reference_types`;
@@ -40,12 +42,17 @@ export default function MapSearch({
         searchInMap(searchPath, query);
     }, [pathBase]);
 
+    useEffect(() => {
+        mapEl.current?.leafletElement?.invalidateSize();
+    }, [flyoutTabsVisible]);
+
     return (
         <ScrollToTop>
             <div className='wrapper-content map'>
                 <Map
                     className="Map Map--search"
                     bounds={mapBounds}
+                    ref={mapEl}
                     {...leafletOptions}
                 >
                     {
@@ -95,6 +102,7 @@ MapSearch.propTypes = {
     markersFetched: PropTypes.bool.isRequired,
     isMapSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,
+    flyoutTabsVisible: PropTypes.bool.isRequired,
     searchInMap: PropTypes.func.isRequired,
     fetchMapReferenceTypes: PropTypes.func.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
