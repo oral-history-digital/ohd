@@ -30,11 +30,14 @@ export default function MapSearch({
     const pathBase = usePathBase();
 
     useEffect(() => {
-        const searchPath = `${pathBase}/searches/map`;
-        searchInMap(searchPath, query);
-
         const typesPath = `${pathBase}/searches/map_reference_types`;
         fetchMapReferenceTypes(typesPath);
+    }, [pathBase]);
+
+    // TODO: Make this dependent on 'query', too.
+    useEffect(() => {
+        const searchPath = `${pathBase}/searches/map`;
+        searchInMap(searchPath, query);
     }, [pathBase]);
 
     return (

@@ -5,7 +5,6 @@ import keyBy from 'lodash.keyby';
 import { Link } from 'react-router-dom';
 import request from 'superagent';
 
-import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import { getMapReferenceTypes, getMapFilter } from 'modules/search';
@@ -19,7 +18,6 @@ export default function MapPopup({
     const pathBase = usePathBase();
     const referenceTypes = useSelector(getMapReferenceTypes);
     const filter = useSelector(getMapFilter);
-    const { locale } = useI18n();
 
     const typesById = keyBy(referenceTypes, type => type.id);
 

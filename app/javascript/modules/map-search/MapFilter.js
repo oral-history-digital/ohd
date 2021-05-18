@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import keyBy from 'lodash.keyby';
 
+import { useI18n } from 'modules/i18n';
 import typeToColor from './typeToColor';
 import { MARKER_COLOR_TWO_TYPES, MARKER_COLOR_THREE_AND_MORE_TYPES } from './constants';
 
@@ -10,6 +11,8 @@ export default function MapFilter({
     mapReferenceTypes,
     toggleMapFilter,
 }) {
+    const { t } = useI18n();
+
     if (!mapReferenceTypes) {
         return null;
     }
@@ -53,7 +56,7 @@ export default function MapFilter({
             </form>
             <div>
                 <p>
-                    2 Referenztypen
+                    2 {t('modules.map_filter.reference_types')}
                     {' '}
                     <svg
                         className="MapFilter-icon"
@@ -64,7 +67,7 @@ export default function MapFilter({
                     </svg>
                 </p>
                 <p>
-                    3+ Referenztypen
+                    3+ {t('modules.map_filter.reference_types')}
                     {' '}
                     <svg
                         className="MapFilter-icon"

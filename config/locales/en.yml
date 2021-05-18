@@ -1148,6 +1148,8 @@ en:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    map_filter:
+      reference_types: "reference types"
     media_player:
       auto_scroll_enabled: "auto-scrolling transcript"
       auto_scroll_disabled: "manually scrolling transcript"
