@@ -59,7 +59,7 @@ export default function MapSearch({
                                     key={marker.id}
                                     center={[marker.lat, marker.lon]}
                                     radius={markerRadius(marker.numReferences)}
-                                    fillColor={markerColor(marker.referenceTypes)}
+                                    fillColor={markerColor(mapReferenceTypes, marker.referenceTypes)}
                                     fillOpacity={0.5}
                                     stroke={0}
                                 >

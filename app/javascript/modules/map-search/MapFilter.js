@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import keyBy from 'lodash.keyby';
 
 import typeToColor from './typeToColor';
+import { MARKER_COLOR_TWO_TYPES, MARKER_COLOR_THREE_AND_MORE_TYPES } from './constants';
 
 export default function MapFilter({
     filter,
@@ -20,14 +21,14 @@ export default function MapFilter({
         <div className="MapFilter">
             <form className="MapFilter-form">
                 {
-                    availableTypeIds.map((id, index) => (
+                    availableTypeIds.map((id) => (
                         <label
                             key={id}
                             className="MapFilter-label"
                         >
                             <input
                                 className="MapFilter-checkbox"
-                                name={typeToColor(id)}
+                                name={typesById[id].name}
                                 type="checkbox"
                                 checked={filter.includes(id)}
                                 onChange={() => toggleMapFilter(id)}
@@ -38,7 +39,13 @@ export default function MapFilter({
                                 viewBox="0 0 100 100"
                                 xmlns="http://www.w3.org/2000/svg"
                             >
-                                <circle cx="50" cy="50" r="40" stroke="none" fill={typeToColor(id)} />
+                                <circle
+                                    cx="50"
+                                    cy="50"
+                                    r="40"
+                                    stroke="none"
+                                    fill={typeToColor(mapReferenceTypes, id)}
+                                />
                             </svg>
                         </label>
                     ))
@@ -53,7 +60,7 @@ export default function MapFilter({
                         viewBox="0 0 100 100"
                         xmlns="http://www.w3.org/2000/svg"
                     >
-                        <circle cx="50" cy="50" r="40" stroke="none" fill="grey" />
+                        <circle cx="50" cy="50" r="40" stroke="none" fill={MARKER_COLOR_TWO_TYPES} />
                     </svg>
                 </p>
                 <p>
@@ -64,7 +71,7 @@ export default function MapFilter({
                         viewBox="0 0 100 100"
                         xmlns="http://www.w3.org/2000/svg"
                     >
-                        <circle cx="50" cy="50" r="40" stroke="none" fill="black" />
+                        <circle cx="50" cy="50" r="40" stroke="none" fill={MARKER_COLOR_THREE_AND_MORE_TYPES} />
                     </svg>
                 </p>
             </div>
