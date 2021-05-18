@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
-import { Tooltip, Map, CircleMarker, Popup, TileLayer } from 'react-leaflet';
+import { Tooltip, Map, CircleMarker, TileLayer } from 'react-leaflet';
 
 import { usePathBase } from 'modules/routes';
 import { ScrollToTop } from 'modules/user-agent';
@@ -76,13 +76,11 @@ export default function MapSearch({
                                     <Tooltip>
                                         {marker.name} ({marker.numReferences})
                                     </Tooltip>
-                                    <Popup>
-                                        <MapPopup
-                                            name={marker.name}
-                                            registryEntryId={marker.id}
-                                            query={query}
-                                        />
-                                    </Popup>
+                                    <MapPopup
+                                        name={marker.name}
+                                        registryEntryId={marker.id}
+                                        query={query}
+                                    />
                                 </CircleMarker>
                             );
                         })
