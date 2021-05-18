@@ -186,6 +186,7 @@ class ApplicationController < ActionController::Base
         query: search_query,
         foundMarkers: nil,
         referenceTypes: nil,
+        filter: nil
       },
       interviews: {},
       registryEntries: {
