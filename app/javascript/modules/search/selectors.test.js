@@ -53,10 +53,15 @@ const state = {
                     ref_types: '3',
                 },
             ],
-            referenceTypes: [{
-                id: 1,
-                name: 'Habitation',
-            }],
+            referenceTypes: [
+                {
+                    id: 1,
+                    name: 'Habitation',
+                },
+                {
+                    id: 2,
+                    name: 'Birthplace',
+                }],
             filter: [1, 2],
         },
         interviews: {
@@ -208,6 +213,15 @@ describe('getMarkersFetched', () => {
 
 test('getMapReferenceTypes retrieves map reference types array', () => {
     expect(selectors.getMapReferenceTypes(state)).toEqual(state[NAME].map.referenceTypes);
+});
+
+test('getLocationCountByReferenceType retrieves location number for each type', () => {
+    const actual = selectors.getLocationCountByReferenceType(state);
+    const expected = {
+        '1': 1,
+        '2': 1,
+    };
+    expect(actual).toEqual(expected);
 });
 
 test('getMapFilter retrieves map filter array', () => {

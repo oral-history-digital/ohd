@@ -72,6 +72,27 @@ export const getMarkersFetched = state => getFoundMarkers(state) !== null;
 
 export const getMapReferenceTypes = state => getMapSearch(state).referenceTypes;
 
+export const getLocationCountByReferenceType = createSelector(
+    [getMapReferenceTypes, getFoundMarkers],
+    (referenceTypes, markers) => referenceTypes?.reduce((acc, type) => {
+        let numLocations = 0;
+
+        markers?.forEach(marker => {
+            const types = marker.ref_types
+                .split(',')
+                .map(type => Number.parseInt(type));
+
+            if (types.includes(type.id)) {
+                numLocations += 1;
+            }
+        });
+
+        acc[type.id] = numLocations;
+
+        return acc;
+    }, {})
+);
+
 export const getMapQuery = state => getMapSearch(state).query;
 
 export const getMapFacets = state => getMapSearch(state).facets;

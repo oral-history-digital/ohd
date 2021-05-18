@@ -9,6 +9,7 @@ import { MARKER_COLOR_TWO_TYPES, MARKER_COLOR_THREE_AND_MORE_TYPES } from './con
 export default function MapFilter({
     filter,
     mapReferenceTypes,
+    locationCountByReferenceType,
     toggleMapFilter,
 }) {
     const { t } = useI18n();
@@ -50,6 +51,7 @@ export default function MapFilter({
                                     fill={typeToColor(mapReferenceTypes, id)}
                                 />
                             </svg>
+                            {` (${locationCountByReferenceType[id]})`}
                         </label>
                     ))
                 }
@@ -84,6 +86,7 @@ export default function MapFilter({
 
 MapFilter.propTypes = {
     mapReferenceTypes: PropTypes.array,
+    locationCountByReferenceType: PropTypes.object,
     filter: PropTypes.array.isRequired,
     toggleMapFilter: PropTypes.func.isRequired,
 };

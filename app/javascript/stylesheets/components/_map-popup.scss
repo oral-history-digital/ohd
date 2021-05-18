@@ -1,8 +1,12 @@
+/**
+ * Natural height when just one reference is displayed.
+ */
+
 .MapPopup {
-  max-height: 15rem;
-  min-height: 7.5rem;
+  max-height: $base-unit * 10;
+  min-height: $base-unit * 4;  /* 1 */
   overflow-y: auto;
-  width: 15rem;
+  width: $base-unit * 10;
   padding: 0;
 }
 
