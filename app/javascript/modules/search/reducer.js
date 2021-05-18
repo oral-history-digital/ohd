@@ -1,4 +1,5 @@
 import xor from 'lodash.xor';
+
 import {
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
@@ -18,6 +19,7 @@ import {
     RECEIVE_MAP_REFERENCE_TYPES,
     TOGGLE_MAP_FILTER,
 } from './action-types';
+import { MAP_NUM_INITIALLY_SELECTED_TYPES } from './constants';
 
 export const initialState = {
     archive: {
@@ -166,7 +168,9 @@ const search = (state = initialState, action) => {
                     map: {
                         ...state.map,
                         referenceTypes: action.payload,
-                        filter: action.payload.map(type => type.id),
+                        filter: action.payload
+                            .map(type => type.id)
+                            .slice(0, MAP_NUM_INITIALLY_SELECTED_TYPES),
                     },
                 };
             case TOGGLE_MAP_FILTER:

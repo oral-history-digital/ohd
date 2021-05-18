@@ -1,5 +1,6 @@
 import reducer, { initialState } from './reducer';
 import * as types from './action-types';
+import { MAP_NUM_INITIALLY_SELECTED_TYPES } from './constants';
 
 const state = {
     map: {
@@ -56,8 +57,20 @@ test('handles the RECEIVE_MAP_REFERENCE_TYPES action', () => {
         type: types.RECEIVE_MAP_REFERENCE_TYPES,
         payload: [
             {
-                id: 2,
+                id: 1,
                 name: 'Habitation',
+            },
+            {
+                id: 2,
+                name: 'Birthplace',
+            },
+            {
+                id: 3,
+                name: 'Habitation after 1945',
+            },
+            {
+                id: 4,
+                name: 'Companies',
             },
         ],
     };
@@ -67,11 +80,23 @@ test('handles the RECEIVE_MAP_REFERENCE_TYPES action', () => {
             ...state.map,
             referenceTypes: [
                 {
-                    id: 2,
+                    id: 1,
                     name: 'Habitation',
                 },
+                {
+                    id: 2,
+                    name: 'Birthplace',
+                },
+                {
+                    id: 3,
+                    name: 'Habitation after 1945',
+                },
+                {
+                    id: 4,
+                    name: 'Companies',
+                },
             ],
-            filter: [2],
+            filter: [1, 2, 3, 4].slice(0, MAP_NUM_INITIALLY_SELECTED_TYPES),
         },
     };
     expect(reducer(state, action)).toEqual(expectedState);
