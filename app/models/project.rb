@@ -91,6 +91,31 @@ class Project < ApplicationRecord
     end
   end
 
+  after_create :create_task_types
+  def create_task_types
+    {
+      media_import: ['Medienimport (A/V)', 'Med'],
+      approval: ['Einverständnis', 'EV'],
+      protocol: ['Protokoll', 'Pro'],
+      transcript: ['Transkript', 'Trans'],
+      translation_transcript: ['Übersetzung/Transkript', 'Ü/Trans'],
+      metadata: ['Metadaten', 'Met'],
+      translation_metadata: ['Übersetzung/Metadaten', 'Ü/Met'],
+      photos: ['Fotos', 'Fot'],
+      translation_photos: ['Übersetzung/ Fotos', 'Ü/Fot'],
+      biography: ['Kurzbiografie', 'Bio'],
+      translation_biography: ['Übersetzung/Kurzbiografie', 'Ü/Bio'],
+      table_of_contents: ['Inhaltsverzeichnis', 'Inh'],
+      translation_table_of_contents: ['Übersetzung/Inhaltsverzeichnis', 'Ü/Inh'],
+      register: ['Register', 'Reg'],
+      translation_register: ['Übersetzung/Register', 'Ü/Reg'],
+      annotations: ['Anmerkungen', 'Anm'],
+      anonymisation: ['Anonymisierung' 'Ano']
+    }.each do |key, (label, abbreviation)|
+      TaskType.create key: key, label: label, abbreviation: abbreviation, project_id: self.id, use: true
+    end
+  end
+
   class << self
     def config
       @config ||= Rails.configuration.project

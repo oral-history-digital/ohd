@@ -8,6 +8,7 @@ class Task < ApplicationRecord
   has_many :comments, as: :ref, dependent: :destroy
 
   validates_associated :interview
+  validates_uniqueness_of :task_type_id, :scope => [:interview_id]
 
   before_save :save_dates_and_inform
 
