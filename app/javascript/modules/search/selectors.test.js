@@ -41,16 +41,23 @@ const state = {
                 {
                     id: 12,
                     name: 'London',
-                    lat: '5.4',
-                    lon: '23.3',
+                    lat: '51.51',
+                    lon: '-0.11',
                     ref_types: '1,2,7,8,1',
                 },
                 {
                     id: 13,
                     name: 'Paris',
-                    lat: '12.2',
-                    lon: '30.1',
+                    lat: '48.85',
+                    lon: '2.35',
                     ref_types: '3',
+                },
+                {
+                    id: 14,
+                    name: 'New York City',
+                    lat: '40.71',
+                    lon: '-74.00',
+                    ref_types: '7,8',
                 },
             ],
             referenceTypes: [
@@ -170,8 +177,8 @@ test('getMapMarkers retrieves filtered and converted map markers', () => {
         {
             id: 12,
             name: 'London',
-            lat: 5.4,
-            lon: 23.3,
+            lat: 51.51,
+            lon: -0.11,
             numReferences: 3,
             referenceTypes: [1, 2],
         },
@@ -183,8 +190,8 @@ describe('getMapBounds', () => {
     test('retrieves an array of all lat long data for map library', () => {
         const actual = selectors.getMapBounds(state);
         const expected = [
-            [5.4, 23.3],
-            [12.2, 30.1],
+            [40.71, -74.00],
+            [51.51, 2.35],
         ];
         expect(actual).toEqual(expected);
     });

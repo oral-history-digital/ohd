@@ -57,14 +57,22 @@ export const getMapMarkers = createSelector(
 export const getMapBounds = createSelector(
     getFoundMarkers,
     markers => {
-        if (markers?.length > 0) {
-            return markers.map(marker => [
-                Number.parseFloat(marker.lat),
-                Number.parseFloat(marker.lon),
-            ]);
-        } else {
+        if (!markers || markers.length === 0) {
             return MAP_DEFAULT_BOUNDS;
         }
+
+        const allLats = markers.map(marker => Number.parseFloat(marker.lat));
+        const allLngs = markers.map(marker => Number.parseFloat(marker.lon));
+
+        const minLat = Math.min.apply(null, allLats);
+        const maxLat = Math.max.apply(null, allLats);
+        const minLng = Math.min.apply(null, allLngs);
+        const maxLng = Math.max.apply(null, allLngs);
+
+        return [
+            [minLat, minLng],
+            [maxLat, maxLng],
+        ];
     }
 );
 
