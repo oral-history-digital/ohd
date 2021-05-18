@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import groupBy from 'lodash.groupby';
 import keyBy from 'lodash.keyby';
 import { Link } from 'react-router-dom';
 import request from 'superagent';
@@ -9,7 +8,8 @@ import request from 'superagent';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import { getMapReferenceTypes } from 'modules/search';
+import { getMapReferenceTypes, getMapFilter } from 'modules/search';
+import groupAndFilterReferences from './groupAndFilterReferences';
 
 export default function MapPopup({
     name,
@@ -18,9 +18,10 @@ export default function MapPopup({
 }) {
     const pathBase = usePathBase();
     const referenceTypes = useSelector(getMapReferenceTypes);
-    const typesById = keyBy(referenceTypes, type => type.id);
-
+    const filter = useSelector(getMapFilter);
     const { locale } = useI18n();
+
+    const typesById = keyBy(referenceTypes, type => type.id);
 
     const [references, setReferences] = useState(null);
     const [error, setError] = useState(null);
@@ -35,10 +36,7 @@ export default function MapPopup({
                 if (error) {
                     setError(error.message);
                 } else if (res) {
-                    const groupedReferences = groupBy(res.body, ref => ref.registry_reference_type_id);
-                    setReferences(groupedReferences);
-
-
+                    setReferences(res.body);
                 }
             });
     }, [pathBase]);
@@ -49,19 +47,21 @@ export default function MapPopup({
         );
     }
 
+    const groupedReferences = references ? groupAndFilterReferences(references, filter) : null;
+
     return (
         <div className="MapPopup">
             <h3 className="MapPopup-heading">{name}</h3>
             {
-                references !== null ?
-                    Object.keys(references).map(type => (
+                groupedReferences !== null ?
+                    Object.keys(groupedReferences).map(type => (
                         <div key={type}>
                             <h4 className="MapPopup-subHeading">
-                                {typesById[type].name} ({references[type].length})
+                                {typesById[type].name} ({groupedReferences[type].length})
                             </h4>
                             <ul className="MapPopup-list">
                                 {
-                                    references[type].map(ref => (
+                                    groupedReferences[type].map(ref => (
                                         <li key={ref.id}>
                                             <Link
                                                 to={`${pathBase}/interviews/${ref.archive_id}`}
