@@ -5,6 +5,7 @@ import { Tooltip, Map, CircleMarker, TileLayer } from 'react-leaflet';
 
 import { usePathBase } from 'modules/routes';
 import { ScrollToTop } from 'modules/user-agent';
+import { INDEX_MAP } from 'modules/flyout-tabs';
 import MapOverlay from './MapOverlay';
 import MapPopup from './MapPopup';
 import MapFilterContainer from './MapFilterContainer';
@@ -21,15 +22,19 @@ export default function MapSearch({
     mapMarkers,
     mapBounds,
     mapReferenceTypes,
-    markersFetched,
     isMapSearching,
     query,
     flyoutTabsVisible,
     searchInMap,
     fetchMapReferenceTypes,
+    setFlyoutTabsIndex,
 }) {
     const pathBase = usePathBase();
     const mapEl = useRef(null);
+
+    useEffect(() => {
+        setFlyoutTabsIndex(INDEX_MAP);
+    }, []);
 
     useEffect(() => {
         const typesPath = `${pathBase}/searches/map_reference_types`;
@@ -97,7 +102,6 @@ MapSearch.propTypes = {
     mapMarkers: PropTypes.array,
     mapBounds: PropTypes.array.isRequired,
     mapReferenceTypes: PropTypes.array,
-    markersFetched: PropTypes.bool.isRequired,
     isMapSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,
     flyoutTabsVisible: PropTypes.bool.isRequired,

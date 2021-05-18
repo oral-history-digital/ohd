@@ -26,7 +26,7 @@ export const getMapFilter = state => getMapSearch(state).filter;
 export const getMapMarkers = createSelector(
     [getFoundMarkers, getMapFilter],
     (markers, filter) => {
-        if (!markers) {
+        if (!markers || !filter) {
             return null;
         }
 
