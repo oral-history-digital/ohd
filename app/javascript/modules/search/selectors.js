@@ -21,33 +21,47 @@ export const getMapSearch = state => getState(state).map;
 
 export const getFoundMarkers = state => getMapSearch(state).foundMarkers;
 
-export const getMapMarkers = createSelector(
-    getFoundMarkers,
-    markers => markers?.map(marker => {
-        const types = marker.ref_types
-            .split(',')
-            .map(type => Number.parseInt(type));
-        const numReferences = types.length;
-        const uniqueTypes = [...new Set(types)];
+export const getMapFilter = state => getMapSearch(state).filter;
 
-        return {
-            id: marker.id,
-            name: marker.name,
-            lat: Number.parseFloat(marker.lat),
-            lon: Number.parseFloat(marker.lon),
-            numReferences,
-            referenceTypes: uniqueTypes,
-        };
-    })
+export const getMapMarkers = createSelector(
+    [getFoundMarkers, getMapFilter],
+    (markers, filter) => {
+        if (!markers) {
+            return null;
+        }
+
+        const convertedMarkers = markers
+            .map(marker => {
+                const types = marker.ref_types
+                    .split(',')
+                    .map(type => Number.parseInt(type))
+                    .filter(type => filter.includes(type));
+                const numReferences = types.length;
+                const uniqueTypes = [...new Set(types)];
+
+                return {
+                    id: marker.id,
+                    name: marker.name,
+                    lat: Number.parseFloat(marker.lat),
+                    lon: Number.parseFloat(marker.lon),
+                    numReferences,
+                    referenceTypes: uniqueTypes,
+                };
+            })
+            .filter(marker => marker.numReferences > 0);
+
+        return convertedMarkers;
+    }
 );
 
 export const getMapBounds = createSelector(
-    getMapMarkers,
+    getFoundMarkers,
     markers => {
         if (markers?.length > 0) {
-            return markers.map(marker =>
-                [marker.lat, marker.lon]
-            );
+            return markers.map(marker => [
+                Number.parseFloat(marker.lat),
+                Number.parseFloat(marker.lon),
+            ]);
         } else {
             return MAP_DEFAULT_BOUNDS;
         }
@@ -57,8 +71,6 @@ export const getMapBounds = createSelector(
 export const getMarkersFetched = state => getFoundMarkers(state) !== null;
 
 export const getMapReferenceTypes = state => getMapSearch(state).referenceTypes;
-
-export const getMapFilter = state => getMapSearch(state).filter;
 
 export const getMapQuery = state => getMapSearch(state).query;
 

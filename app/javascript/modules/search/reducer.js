@@ -1,3 +1,4 @@
+import xor from 'lodash.xor';
 import {
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
@@ -166,6 +167,14 @@ const search = (state = initialState, action) => {
                         ...state.map,
                         referenceTypes: action.payload,
                         filter: action.payload.map(type => type.id),
+                    },
+                };
+            case TOGGLE_MAP_FILTER:
+                return {
+                    ...state,
+                    map: {
+                        ...state.map,
+                        filter: xor(state.map.filter, [action.payload]),
                     },
                 };
         default:

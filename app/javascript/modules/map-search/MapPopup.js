@@ -37,6 +37,8 @@ export default function MapPopup({
                 } else if (res) {
                     const groupedReferences = groupBy(res.body, ref => ref.registry_reference_type_id);
                     setReferences(groupedReferences);
+
+
                 }
             });
     }, [pathBase]);

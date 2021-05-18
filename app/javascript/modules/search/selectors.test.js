@@ -57,6 +57,7 @@ const state = {
                 id: 1,
                 name: 'Habitation',
             }],
+            filter: [1, 2],
         },
         interviews: {
             za003: {
@@ -158,7 +159,7 @@ test('getFoundMarkers retrieves found map markers', () => {
     expect(selectors.getFoundMarkers(state)).toEqual(state[NAME].map.foundMarkers);
 });
 
-test('getMapMarkers retrieves converted map markers', () => {
+test('getMapMarkers retrieves filtered and converted map markers', () => {
     const actual = selectors.getMapMarkers(state);
     const expected = [
         {
@@ -166,16 +167,8 @@ test('getMapMarkers retrieves converted map markers', () => {
             name: 'London',
             lat: 5.4,
             lon: 23.3,
-            numReferences: 5,
-            referenceTypes: [1, 2, 7, 8],
-        },
-        {
-            id: 13,
-            name: 'Paris',
-            lat: 12.2,
-            lon: 30.1,
-            numReferences: 1,
-            referenceTypes: [3],
+            numReferences: 3,
+            referenceTypes: [1, 2],
         },
     ];
     expect(actual).toEqual(expected);
