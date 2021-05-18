@@ -62,7 +62,7 @@ export default class InterviewWorkflowRow extends React.Component {
     box(value, width='17-5') {
         return (
             <div className={`box box-${width}`}>
-                {humanReadable(this.props.interview, value, this.props, this.state)}
+                {value}
             </div>
         )
     }
@@ -160,11 +160,11 @@ export default class InterviewWorkflowRow extends React.Component {
             <div className='border-top' key={`interview-workflow-${this.props.interview.archive_id}`}>
                 <div className='search-result-workflow data boxes' key={`${this.props.interview.archive_id}-collapsed-view`}>
                     {this.intervieweeWithPhoto()}
-                    {this.box('archive_id', '10')}
-                    {this.box('media_type', '10')}
-                    {this.box('duration', '10')}
-                    {this.box('language_id', '10')}
-                    {this.box('collection_id', '10')}
+                    {this.box(humanReadable(this.props.interview, 'archive_id', this.props, this.state), '10')}
+                    {this.box(humanReadable(this.props.interview, 'media_type', this.props, this.state), '10')}
+                    {this.box(humanReadable(this.props.interview, 'duration', this.props, this.state), '10')}
+                    {this.box(humanReadable(this.props.interview, 'language_id', this.props, this.state), '10')}
+                    {this.box(humanReadable(this.props.interview, 'collection_id', this.props, this.state), '10')}
                     <div className={`box-30 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
                         {this.symbols()}
                     </div>
