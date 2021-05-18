@@ -16,7 +16,7 @@ class ApplicationPolicy
   end
 
   %w(create new update edit destroy).each do |m|
-    define_method "{m}?" do
+    define_method "#{m}?" do
       user.admin? || user.roles?(project, resolve_class_name(record), m) || user.task_permissions?(project, record, m)
     end
   end
