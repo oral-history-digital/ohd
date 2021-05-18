@@ -41,6 +41,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
   def import_photos(photos, csv_file_name, locale)
     I18n.locale = locale
     csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00" }
+    #csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00", liberal_parsing: true, encoding: "ISO8859-1:utf-8"  }
     csv = Roo::CSV.new(csv_file_name, csv_options: csv_options)
     if csv.first.length == 1
       csv_options.update(col_sep: "\t")
@@ -77,7 +78,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
           }
 
           # publication state:
-          photo_params.update(workflow_state: 'publish') if %w(yes y ja j true t).include?(data[9].downcase)
+          photo_params.update(workflow_state: 'publish') if %w(yes y ja j true t).include?(data[9] && data[9].downcase)
 
           photo.update_attributes photo_params
 
