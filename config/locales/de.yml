@@ -1132,9 +1132,18 @@ de:
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
+    gallery:
+      metadatum:
+        place: Ort
+        date: Datum
+        photographer: Fotograf*in
+        license: Lizenz
     media_player:
       auto_scroll_enabled: "mitlaufendes Transkript ein"
       auto_scroll_disabled: "mitlaufendes Transkript aus"
+    toc:
+      collapse: Einklappen
+      expand: Ausklappen
     transcript:
       no_text: 'Segment enthält keinen Text'
     tree_select:
@@ -1143,6 +1152,3 @@ de:
       remove_selection: 'Auswahl entfernen'
       loading: 'Lade Baumdaten…'
       help_text: 'Mit Pfeil hoch/runter, Pos1/Ende zwischen Einträgen navigieren, mit Pfeil rechts/links Untereinträge aus- oder einklappen und mit Return/Rücktaste Eintrag auswählen oder entfernen.'
-    toc:
-      collapse: Einklappen
-      expand: Ausklappen
