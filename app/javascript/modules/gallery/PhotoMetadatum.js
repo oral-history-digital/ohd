@@ -12,7 +12,7 @@ export default function PhotoMetadatum({
 
     return (
         <p className={className}>
-            {t(`modules.gallery.metadatum.${label}`)}: {value}
+            {t(`activerecord.attributes.photo.${label}`)}: {value}
         </p>
     );
 }

@@ -1109,12 +1109,6 @@ es:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
-    gallery:
-      metadatum:
-        place: Place
-        date: Date
-        photographer: Photographer
-        license: License
     media_player:
       auto_scroll_enabled: "auto-scrolling transcript"
       auto_scroll_disabled: "manually scrolling transcript"
