@@ -84,8 +84,11 @@ class PhotosController < ApplicationController
   end
 
   def write_iptc_metadata
+    if photo_params[:translations_attributes].blank?
+      return
+    end
+
     # we can write only one language version as IPTC
-    #
     translation_params = photo_params[:translations_attributes].first
     date = Date.parse(translation_params[:date]).strftime("%Y%m%d") rescue translation_params[:date]
 
