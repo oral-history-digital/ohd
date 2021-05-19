@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 import { AuthorizedContent } from 'modules/auth';
 import { Modal } from 'modules/ui';
@@ -26,7 +27,7 @@ export default function Photo({
                 <div className={styles.admin}>
                     <Modal
                         title={t('edit.photo.edit')}
-                        trigger={<i className="fa fa-pencil"></i>}
+                        trigger={<FaPencilAlt />}
                         triggerClassName={styles.editButton}
                     >
                         {closeModal => (
@@ -37,7 +38,7 @@ export default function Photo({
                     </Modal>
                     <Modal
                         title={t('edit.photo.delete')}
-                        trigger={<i className="fa fa-trash-o"></i>}
+                        trigger={<FaTrash />}
                     >
                         {closeModal => (
                             <div>
