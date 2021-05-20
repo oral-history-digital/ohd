@@ -4,7 +4,7 @@ import keyBy from 'lodash.keyby';
 
 import { useI18n } from 'modules/i18n';
 import typeToColor from './typeToColor';
-import { MARKER_COLOR_TWO_TYPES, MARKER_COLOR_THREE_AND_MORE_TYPES } from './constants';
+import { MARKER_COLOR_MULTIPLE_TYPES } from './constants';
 
 export default function MapFilter({
     filter,
@@ -58,25 +58,14 @@ export default function MapFilter({
             </form>
             <div>
                 <p>
-                    2 {t('modules.map_filter.reference_types')}
+                    {t('modules.map_filter.multiple_types')}
                     {' '}
                     <svg
                         className="MapFilter-icon"
                         viewBox="0 0 100 100"
                         xmlns="http://www.w3.org/2000/svg"
                     >
-                        <circle cx="50" cy="50" r="40" stroke="none" fill={MARKER_COLOR_TWO_TYPES} />
-                    </svg>
-                </p>
-                <p>
-                    3+ {t('modules.map_filter.reference_types')}
-                    {' '}
-                    <svg
-                        className="MapFilter-icon"
-                        viewBox="0 0 100 100"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <circle cx="50" cy="50" r="40" stroke="none" fill={MARKER_COLOR_THREE_AND_MORE_TYPES} />
+                        <circle cx="50" cy="50" r="40" stroke="none" fill={MARKER_COLOR_MULTIPLE_TYPES} />
                     </svg>
                 </p>
             </div>

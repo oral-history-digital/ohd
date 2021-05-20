@@ -1134,7 +1134,7 @@ de:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
     map_filter:
-      reference_types: Referenztypen
+      multiple_types: mehrere Erwähnungsarten
     media_player:
       auto_scroll_enabled: "mitlaufendes Transkript ein"
       auto_scroll_disabled: "mitlaufendes Transkript aus"
