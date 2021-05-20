@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { Dialog, DialogOverlay, DialogContent } from '@reach/dialog';
+import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
 import styles from './Modal.module.scss';
@@ -16,6 +16,11 @@ export default function Modal({
     const [showDialog, setShowDialog] = useState(false);
     const open = () => setShowDialog(true);
     const close = () => setShowDialog(false);
+
+    // Stop some events here so that they don't influence elements below the modal.
+    const handleClick = (event) => {
+        event.stopPropagation();
+    };
 
     return (
         <>
@@ -33,6 +38,15 @@ export default function Modal({
                 isOpen={showDialog}
                 aria-label={title}
                 onDismiss={close}
+
+                onMouseDown={handleClick}
+                onMouseUp={handleClick}
+                onMouseMove={handleClick}
+                onMouseLeave={handleClick}
+                onTouchStart={handleClick}
+                onTouchEnd={handleClick}
+                onTouchMove={handleClick}
+                onTouchCancel={handleClick}
             >
                 <h3 className={styles.heading}>{title}</h3>
 
