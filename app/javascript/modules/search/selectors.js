@@ -48,7 +48,10 @@ export const getMapMarkers = createSelector(
                     referenceTypes: uniqueTypes,
                 };
             })
-            .filter(marker => marker.numReferences > 0);
+            .filter(marker => marker.numReferences > 0)
+            // Markers with more references should be first so that
+            // they don't mask smaller markers on the Leaflet marker pane.
+            .sort((markerA, markerB) => markerB.numReferences - markerA.numReferences);
 
         return convertedMarkers;
     }

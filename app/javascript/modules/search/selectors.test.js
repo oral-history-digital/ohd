@@ -57,7 +57,7 @@ const state = {
                     name: 'New York City',
                     lat: '40.71',
                     lon: '-74.00',
-                    ref_types: '7,8',
+                    ref_types: '7,8,1,1,1,1,1,1,1',
                 },
             ],
             referenceTypes: [
@@ -175,6 +175,14 @@ test('getMapMarkers retrieves filtered and converted map markers', () => {
     const actual = selectors.getMapMarkers(state);
     const expected = [
         {
+            id: 14,
+            name: 'New York City',
+            lat: 40.71,
+            lon: -74,
+            numReferences: 7,
+            referenceTypes: [1],
+        },
+        {
             id: 12,
             name: 'London',
             lat: 51.51,
@@ -225,7 +233,7 @@ test('getMapReferenceTypes retrieves map reference types array', () => {
 test('getLocationCountByReferenceType retrieves location number for each type', () => {
     const actual = selectors.getLocationCountByReferenceType(state);
     const expected = {
-        '1': 1,
+        '1': 2,
         '2': 1,
     };
     expect(actual).toEqual(expected);
