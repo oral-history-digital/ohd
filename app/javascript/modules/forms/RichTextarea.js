@@ -1,5 +1,5 @@
 import React from 'react';
-import RichTextEditor from 'react-rte';
+import RichTextEditor from 'react-rte-17';
 
 import ElementContainer from './ElementContainer';
 

@@ -9973,10 +9973,10 @@ react-router@5.2.0:
     tiny-invariant "^1.0.2"
     tiny-warning "^1.0.0"
 
-react-rte@^0.16.1:
-  version "0.16.3"
-  resolved "https://registry.yarnpkg.com/react-rte/-/react-rte-0.16.3.tgz#27a069800a281b57c35b063c0e53eb04657af08f"
-  integrity sha512-IDZtdd+jjtd8zqrlEeO+DdujANdM9cy7o5AAKKzcSoW77r7U5PVicpkuWu5as3rzWRqlfQqPpjXq/PEFTRTmNA==
+react-rte-17@^0.17.1:
+  version "0.17.1"
+  resolved "https://registry.yarnpkg.com/react-rte-17/-/react-rte-17-0.17.1.tgz#cf0eb52002a0a0c948ac55d1cfb92cc7f53bbed7"
+  integrity sha512-cL4ELzuSXCysGqiXqeyoze23LTTyE7Xo5dzUZLCbc911BEt/bcG0juJo2FW8aWlEP551UJRd4k9hfSxvje7m9w==
   dependencies:
     babel-runtime "^6.23.0"
     class-autobind "^0.1.4"
