@@ -1043,6 +1043,7 @@ en:
         path: Pfad
         resolution: Auflösung
       photo:
+        public_id: Öffentl. ID
         caption: Fotobeschreibung
         place: Place
         date: Date

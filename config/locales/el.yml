@@ -1061,6 +1061,7 @@ el:
         path: Pfad
         resolution: Auflösung
       photo:
+        public_id: Öffentl. ID
         caption: Λεζάντα
         place: Place
         date: Date

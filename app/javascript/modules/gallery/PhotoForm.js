@@ -7,6 +7,9 @@ export default class PhotoForm extends React.Component {
     elements() {
         let elements = [
             {
+                attribute: 'public_id',
+            },
+            {
                 attribute: 'caption',
                 multiLocale: true,
             },
@@ -26,14 +29,17 @@ export default class PhotoForm extends React.Component {
                 attribute: 'license',
                 multiLocale: true,
             },
-            {
+        ]
+
+        if (this.props.photo?.id) {
+            elements.push({
                 elementType: 'select',
                 attribute: 'workflow_state',
-                values: this.props.photo && Object.values(this.props.photo.workflow_states),
-                value: this.props.photo && this.props.photo.workflow_state,
+                values: Object.values(this.props.photo.workflow_states),
+                value: this.props.photo.workflow_state,
                 optionsScope: 'workflow_states',
-            },
-        ]
+            })
+        }
 
         if (this.props.withUpload) {
             elements.push({

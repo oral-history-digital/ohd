@@ -67,6 +67,7 @@ class PhotosController < ApplicationController
   def photo_params
     params.require(:photo).permit(
       :interview_id,
+      :public_id,
       :workflow_state,
       translations_attributes: [:locale, :id, :caption, :place, :date, :photographer, :license]
     )

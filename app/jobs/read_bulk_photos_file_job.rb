@@ -69,6 +69,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
           )
 
           photo_params = {
+            public_id: data[1],
             caption: data[3],
             date: data[4],
             place: data[5],
