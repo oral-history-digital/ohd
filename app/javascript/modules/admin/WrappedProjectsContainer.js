@@ -7,8 +7,7 @@ import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects,
     getCurrentAccount } from 'modules/data';
 import DataList from './DataList';
-import ProjectShow from './ProjectShow';
-import { getProjectsStatus } from '../data';
+import { getProjectsStatus, ProjectShow } from 'modules/data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
