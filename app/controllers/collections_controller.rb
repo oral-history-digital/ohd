@@ -40,20 +40,18 @@ class CollectionsController < ApplicationController
         paginate = false
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-collections-#{cache_key_params}-#{Collection.maximum(:updated_at)}" do
           if params.keys.include?("all")
-            data = Collection.all.
+            data = policy_scope(Collection).
               includes(:translations).
               order("collection_translations.name ASC")
             extra_params = "all"
           elsif params[:collections_for_project]
-            data = Collection.
+            data = policy_scope(Collection).
               includes(:translations).
-              where(project_id: current_project.id)
             extra_params = "collections_for_project_#{}"
           else
             page = params[:page] || 1
-            data = Collection.
+            data = policy_scope(Collection).
               includes(:translations).
-              where(project_id: current_project.id).
               where(search_params).order("collection_translations.name ASC").
               paginate(page: page)
             paginate = true

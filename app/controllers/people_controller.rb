@@ -57,18 +57,18 @@ class PeopleController < ApplicationController
         paginate = false
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{cache_key_params}-#{Person.maximum(:updated_at)}" do
           if params.keys.include?("all")
-            data = Person.all.
+            data = policy_scope(Person).
               includes(:translations, :project).
               order("person_translations.last_name ASC")
             extra_params = "all"
           elsif params[:contributors_for_interview]
-            data = Person.
+            data = policy_scope(Person).
               includes(:translations, :project).
               where(id: Interview.find(params[:contributors_for_interview]).contributions.map(&:person_id))
             extra_params = "contributors_for_interview_#{params[:contributors_for_interview]}"
           else
             page = params[:page] || 1
-            data = Person.
+            data = policy_scope(Person).
               includes(:translations, :project).
               where(search_params).order("person_translations.last_name ASC").
               paginate(page: page)
