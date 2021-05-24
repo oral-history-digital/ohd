@@ -6,7 +6,6 @@ export default function AuthShow({
     ifLoggedOut,
     ifNoProject,
     ifCatalog,
-    projectId,
     project,
     account,
     children,
@@ -14,7 +13,7 @@ export default function AuthShow({
     if (
         // logged in and registered for the current project
         //(isLoggedIn && ifLoggedIn) ||
-        (isLoggedIn && ifLoggedIn && account && account.project_ids && account.project_ids.indexOf(projectId) > -1 ) ||
+        (isLoggedIn && ifLoggedIn && account?.project_ids.indexOf(project?.id) > -1 ) ||
         // catalog-project
         (ifCatalog && project.isCatalog)
     ) {
@@ -23,7 +22,7 @@ export default function AuthShow({
         // logged out
         (!isLoggedIn && ifLoggedOut) ||
         // logged in and NOT registered for the current project
-        (isLoggedIn && ifNoProject && account && account.project_ids && account.project_ids.indexOf(projectId) === -1 )
+        (isLoggedIn && ifNoProject && account?.project_ids.indexOf(project?.id) === -1 )
     ) {
         // logged out or still not registered for a project
         return children;

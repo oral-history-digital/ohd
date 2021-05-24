@@ -33,7 +33,7 @@ class UserAccountSerializer < ApplicationSerializer
   end
 
   def project_ids
-    object.user_registration && object.user_registration.user_registration_projects.where.not(activated_at: nil).map{|urp| urp.project.identifier}
+    object.user_registration && object.user_registration.user_registration_projects.where.not(activated_at: nil).map{|urp| urp.project_id}
   end
 
 end
