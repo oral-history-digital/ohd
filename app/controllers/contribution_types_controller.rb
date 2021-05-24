@@ -59,13 +59,13 @@ class ContributionTypesController < ApplicationController
           if params.keys.include?("all")
             data = current_project.contribution_types.
               includes(:translations).
-              order("contribution_type_translations.name ASC")
+              order("contribution_type_translations.label ASC")
             extra_params = "all"
           else
             page = params[:page] || 1
             data = current_project.contribution_types.
               includes(:translations).
-              where(search_params).order("contribution_type_translations.name ASC").
+              where(search_params).order("contribution_type_translations.label ASC").
               paginate(page: page)
             paginate = true
             extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
