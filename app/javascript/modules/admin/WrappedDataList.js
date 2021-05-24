@@ -21,6 +21,18 @@ export default class WrappedDataList extends React.Component {
         this.renderScrollObserver = this.renderScrollObserver.bind(this);
     }
 
+    componentDidMount() {
+        this.loadData();
+    }
+
+    loadData() {
+         if (
+            !(this.props.dataStatus[statifiedQuery(this.props.query)] || this.props.dataStatus.all)
+         ) {
+            this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
+         }
+     }
+
     renderScrollObserver() {
         if (this.props.query) {
             if (
@@ -28,7 +40,7 @@ export default class WrappedDataList extends React.Component {
                 this.props.dataStatus[statifiedQuery(this.props.query)].split('-')[0] === 'fetching'
             ) {
                 return <Spinner />;
-            } else if (!this.props.resultPagesCount || this.props.resultPagesCount > (this.props.query.page)) {
+            } else if (!this.props.resultPagesCount || this.props.resultPagesCount > parseInt(this.props.query.page)) {
                 return (
                     <Observer
                         onChange={inView => this.handleScroll(inView)}

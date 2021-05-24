@@ -16,18 +16,6 @@ export default class DataSearchForm extends React.Component {
         this.handleReset = this.handleReset.bind(this);
     }
 
-    componentDidMount() {
-        this.loadData();
-    }
-
-    loadData() {
-         if (
-            !(this.props.dataStatus[statifiedQuery(this.props.query)] || this.props.dataStatus.all)
-         ) {
-            this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
-         }
-     }
-
     handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
