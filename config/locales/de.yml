@@ -1134,6 +1134,9 @@ de:
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
+    layout:
+      back_to_top:
+        label: "Zurück nach oben"
     map_filter:
       multiple_types: mehrere Erwähnungsarten
     media_player:
