@@ -10,7 +10,7 @@ class UserAccountSerializer < ApplicationSerializer
     :supervised_tasks,
     :user_roles,
     :permissions,
-    :project_ids
+    :user_registration_projects
 
   def user_account_id
     object.id
@@ -32,8 +32,8 @@ class UserAccountSerializer < ApplicationSerializer
     object.permissions.inject({}){|mem, c| mem[c.id] = PermissionSerializer.new(c); mem}
   end
 
-  def project_ids
-    object.user_registration && object.user_registration.user_registration_projects.where.not(activated_at: nil).map{|urp| urp.project_id}
+  def user_registration_projects
+    object.user_registration && object.user_registration.user_registration_projects.inject({}){|mem, c| mem[c.id] = UserRegistrationProjectSerializer.new(c); mem}
   end
 
 end
