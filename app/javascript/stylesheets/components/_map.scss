@@ -1,7 +1,17 @@
+.Map {}
+
 .Map--search {
   height: 66vh;
   margin-bottom: $base-unit;
   max-height: $base-unit * 30;
   min-height: $base-unit * 10;
   width: 100%;
+}
+
+.Map--search .leaflet-overlay-pane {
+  filter: grayscale(0);
+}
+
+.Map--search .leaflet-tile-pane {
+  filter: grayscale(0.5);
 }
