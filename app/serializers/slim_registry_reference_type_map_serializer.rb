@@ -1,3 +1,4 @@
 class SlimRegistryReferenceTypeMapSerializer < ActiveModel::Serializer
-  attributes :id, :name
+  attribute :id
+  attribute :label, key: :name
 end

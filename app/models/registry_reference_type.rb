@@ -23,9 +23,11 @@ class RegistryReferenceType < ApplicationRecord
   scope :for_map, -> (locale) {
     joins('INNER JOIN registry_reference_type_translations ON registry_reference_types.id = registry_reference_type_translations.registry_reference_type_id')
     .joins('INNER JOIN metadata_fields ON registry_reference_types.id = metadata_fields.registry_reference_type_id')
+    .joins('INNER JOIN metadata_field_translations ON metadata_fields.id = metadata_field_translations.metadata_field_id')
     .where('metadata_fields.ref_object_type="Person" AND metadata_fields.use_in_map_search IS TRUE')
     .where('registry_reference_type_translations.locale = ?', locale)
-    .select('registry_reference_types.id, registry_reference_type_translations.name')
+    .where('metadata_field_translations.locale = ?', locale)
+    .select('registry_reference_types.id, metadata_field_translations.label')
   }
 
   def to_s(locale = I18n.locale)
