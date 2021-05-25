@@ -2,10 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import groupBy from 'lodash.groupby';
 
+import UserProjects from './UserProjects';
 import { UserRolesContainer } from 'modules/roles';
 import { TasksOnlyStatusEditableContainer } from 'modules/workflow';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { ProjectShow } from 'modules/data';
 import { Features } from 'modules/features';
 import { INDEX_ACCOUNT } from 'modules/flyout-tabs';
 import { t } from 'modules/i18n';
@@ -92,12 +92,6 @@ export default class WrappedAccount extends React.Component {
         }
     }
 
-    projects(account) {
-        return account.project_ids.map(pid => {
-            return <ProjectShow data={this.props.projects[pid]} />
-        })
-    }
-
     render() {
         const { account } = this.props;
 
@@ -111,7 +105,9 @@ export default class WrappedAccount extends React.Component {
                         }
                     </div>
                     <div className='user-registration boxes'>
-                        {this.projects(account)}
+                        {
+                            account && <UserProjects />
+                        }
                     </div>
                     <div className='user-registration boxes'>
                         {this.roles()}

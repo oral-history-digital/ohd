@@ -4,7 +4,10 @@ import { Link } from 'react-router-dom';
 
 import { getLocale, setProjectId } from 'modules/archive';
 
-function ProjectShow({data}) {
+function ProjectShow({
+    data,
+    children
+}) {
     const locale = useSelector(getLocale);
 
     const logo = data.logos && Object.values(data.logos).find(l => l.locale === locale);
@@ -14,8 +17,9 @@ function ProjectShow({data}) {
         <a
             href={href}
         >
-            <img className="logo-img" src={logo?.src}/>
-            {data.name[locale]}
+            <img className="logo-img" src={logo?.src} />
+            { data.name[locale] }
+            { children }
         </a>
     );
 }
