@@ -4,14 +4,14 @@ import classNames from 'classnames';
 import { FaUser } from 'react-icons/fa';
 
 import { fullname } from 'modules/people';
-import { MEDIA_PLAYER_HEIGHT_STICKY, CONTENT_TABS_HEIGHT } from 'modules/constants';
+import { CSS_BASE_UNIT, MEDIA_PLAYER_HEIGHT_STICKY, CONTENT_TABS_HEIGHT } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 
-const SPACE_BEFORE_ACTIVE_SEGMENT = 48;
+const SPACE_BEFORE_ACTIVE_SEGMENT = 1.5 * CSS_BASE_UNIT;
 const SCROLL_OFFSET = MEDIA_PLAYER_HEIGHT_STICKY + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_SEGMENT;
 
 export default function Segment({

@@ -3,6 +3,7 @@
  */
 
 const ONE_REM = 16;
+export const CSS_BASE_UNIT = 24;
 
 export const SITE_HEADER_HEIGHT_MOBILE =   5    * ONE_REM;
 export const SITE_HEADER_HEIGHT_DESKTOP =  6.25 * ONE_REM;
