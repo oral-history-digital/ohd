@@ -27,6 +27,7 @@ class RegistryReferenceType < ApplicationRecord
     .where('metadata_fields.ref_object_type="Person" AND metadata_fields.use_in_map_search IS TRUE')
     .where('registry_reference_type_translations.locale = ?', locale)
     .where('metadata_field_translations.locale = ?', locale)
+    .order('metadata_fields.facet_order')
     .select('registry_reference_types.id, metadata_field_translations.label')
   }
 
