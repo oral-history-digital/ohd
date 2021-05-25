@@ -48,10 +48,9 @@ export default class WrapperPage extends React.Component {
 
     loadCollections() {
         if (
-            this.props.projectId &&
-            !this.props.collectionsStatus[`collections_for_project_${this.props.projectId}`]
+            !this.props.collectionsStatus.all
         ) {
-            this.props.fetchData(this.props, 'collections', null, null, `collections_for_project=${this.props.projectId}`);
+            this.props.fetchData(this.props, 'collections', null, null, 'all');
         }
     }
 
@@ -62,7 +61,7 @@ export default class WrapperPage extends React.Component {
     }
 
     loadLanguages() {
-        if (!this.props.languagesStatus) {
+        if (!this.props.languagesStatus.all) {
             this.props.fetchData(this.props, 'languages', null, null, 'all');
         }
     }

@@ -27,7 +27,8 @@ export default class WrappedDataList extends React.Component {
 
     loadData() {
          if (
-            !(this.props.dataStatus[statifiedQuery(this.props.query)] || this.props.dataStatus.all)
+             this.props.query &&
+             !(this.props.dataStatus.all || this.props.dataStatus[statifiedQuery(this.props.query)])
          ) {
             this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
          }
@@ -36,16 +37,20 @@ export default class WrappedDataList extends React.Component {
     renderScrollObserver() {
         if (this.props.query) {
             if (
-                this.props.dataStatus[statifiedQuery(this.props.query)] &&
-                this.props.dataStatus[statifiedQuery(this.props.query)].split('-')[0] === 'fetching'
+                this.props.dataStatus.all !== 'fetched'
             ) {
-                return <Spinner />;
-            } else if (!this.props.resultPagesCount || this.props.resultPagesCount > parseInt(this.props.query.page)) {
-                return (
-                    <Observer
-                        onChange={inView => this.handleScroll(inView)}
-                    />
-                )
+                if (
+                    this.props.dataStatus[statifiedQuery(this.props.query)] &&
+                    this.props.dataStatus[statifiedQuery(this.props.query)].split('-')[0] === 'fetching'
+                ) {
+                    return <Spinner />;
+                } else if (!this.props.resultPagesCount || this.props.resultPagesCount > parseInt(this.props.query.page)) {
+                    return (
+                        <Observer
+                            onChange={inView => this.handleScroll(inView)}
+                        />
+                    )
+                }
             }
         }
     }

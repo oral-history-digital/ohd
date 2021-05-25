@@ -30,7 +30,7 @@ const state = {
                 current: 'fetched',
             },
             collections: {
-                collections_for_project_zwar: 'fetched',
+                all: 'fetched',
             },
             contributions: {
                 14: 'fetched-Mon',
