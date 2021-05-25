@@ -104,11 +104,11 @@ class ApplicationController < ActionController::Base
           tasks: {},
           task_types: {all: 'fetched'},
           projects: {all: 'fetched'},
-          collections: current_project && {"collections_for_project_#{current_project.identifier}": 'fetched'},
+          collections: {all: 'fetched'},
           languages: {all: 'fetched'},
         },
         collections: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-collections-collections_for_project_#{current_project.identifier}-#{Collection.maximum(:updated_at)}") do
-          current_project.collections.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+          policy_scope(Collection).includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
           Project.all.
@@ -125,16 +125,16 @@ class ApplicationController < ActionController::Base
         interviews: {},
         registry_entries: {},
         registry_name_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_name_types-#{RegistryNameType.maximum(:updated_at)}") do
-          RegistryNameType.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+          policy_scope(RegistryNameType).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         task_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
-          TaskType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+          policy_scope(TaskType).includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         contribution_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-contribution_types-#{ContributionType.maximum(:updated_at)}") do
-          ContributionType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+          policy_scope(ContributionType).includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
         media_streams: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-media_streams-#{MediaStream.maximum(:updated_at)}") do
-          MediaStream.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+          policy_scope(MediaStream).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
       },
       popup: {
