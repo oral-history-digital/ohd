@@ -32,7 +32,7 @@ export default function MediaPlayerButtons({
             <button
                 className={classNames('StateButton', { 'is-pressed': autoScroll })}
                 type="button"
-                title={autoScroll ? t('modules.media_player.auto_scroll_enabled') : t('modules.media_player.auto_scroll_disabled')}
+                title={autoScroll ? t('modules.media_player.auto_scroll.disable') : t('modules.media_player.auto_scroll.enable')}
                 onClick={toggleAutoScroll}
             >
                 <FaSortAmountDown className="StateButton-icon" />

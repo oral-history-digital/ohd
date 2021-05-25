@@ -1136,8 +1136,9 @@ de:
     map_filter:
       multiple_types: mehrere Erwähnungsarten
     media_player:
-      auto_scroll_enabled: "mitlaufendes Transkript ein"
-      auto_scroll_disabled: "mitlaufendes Transkript aus"
+      auto_scroll:
+        enable: "mitlaufendes Transkript ein"
+        disable: "mitlaufendes Transkript aus"
     toc:
       collapse: Einklappen
       expand: Ausklappen
