@@ -1,3 +1,5 @@
+import xor from 'lodash.xor';
+
 import {
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
@@ -14,9 +16,12 @@ import {
 
     REQUEST_MAP_SEARCH,
     RECEIVE_MAP_SEARCH,
+    RECEIVE_MAP_REFERENCE_TYPES,
+    TOGGLE_MAP_FILTER,
 } from './action-types';
+import { MAP_NUM_INITIALLY_SELECTED_TYPES } from './constants';
 
-const initialState = {
+export const initialState = {
     archive: {
         facets: null,
         query:{page: 1},
@@ -33,7 +38,9 @@ const initialState = {
     map: {
         facets: null,
         query: {},
-        foundMarkers: {},
+        foundMarkers: null,
+        referenceTypes: null,
+        filter: null,
     },
     interviews: {},
     registryEntries: {
@@ -135,20 +142,45 @@ const search = (state = initialState, action) => {
                 isArchiveSearching: false,
             })
             case REQUEST_MAP_SEARCH:
-            return Object.assign({}, state, {
-                isMapSearching: true,
-                map: Object.assign({}, state.map, {
-                    query: Object.assign({}, state.map.query, action.searchQuery)
-                })
-            })
+                return {
+                    ...state,
+                    map: {
+                        ...state.map,
+                        query: {
+                            ...state.map.query,
+                            ...action.searchQuery,
+                        },
+                    },
+                    isMapSearching: true,
+                };
             case RECEIVE_MAP_SEARCH:
-                return Object.assign({}, state, {
-                    map: Object.assign({}, state.map, {
-                        foundMarkers: action.foundMarkers
-                    }),
+                return {
+                    ...state,
+                    map: {
+                        ...state.map,
+                        foundMarkers: action.payload,
+                    },
                     isMapSearching: false,
-                })
-
+                };
+            case RECEIVE_MAP_REFERENCE_TYPES:
+                return {
+                    ...state,
+                    map: {
+                        ...state.map,
+                        referenceTypes: action.payload,
+                        filter: action.payload
+                            .map(type => type.id)
+                            .slice(0, MAP_NUM_INITIALLY_SELECTED_TYPES),
+                    },
+                };
+            case TOGGLE_MAP_FILTER:
+                return {
+                    ...state,
+                    map: {
+                        ...state.map,
+                        filter: xor(state.map.filter, [action.payload]),
+                    },
+                };
         default:
             return state;
     }
