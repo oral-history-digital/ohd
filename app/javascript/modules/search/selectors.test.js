@@ -1,4 +1,6 @@
-import { NAME } from './constants';
+import dotProp from 'dot-prop-immutable';
+
+import { NAME, MAP_DEFAULT_BOUNDS } from './constants';
 import * as selectors from './selectors';
 
 const state = {
@@ -35,11 +37,39 @@ const state = {
             query: {
                 page: 1,
             },
-            foundMarkers: {
-                birth_location: {
-                    title: 'dummy',
+            foundMarkers: [
+                {
+                    id: 12,
+                    name: 'London',
+                    lat: '51.51',
+                    lon: '-0.11',
+                    ref_types: '1,2,7,8,1',
                 },
-            },
+                {
+                    id: 13,
+                    name: 'Paris',
+                    lat: '48.85',
+                    lon: '2.35',
+                    ref_types: '3',
+                },
+                {
+                    id: 14,
+                    name: 'New York City',
+                    lat: '40.71',
+                    lon: '-74.00',
+                    ref_types: '7,8,1,1,1,1,1,1,1',
+                },
+            ],
+            referenceTypes: [
+                {
+                    id: 1,
+                    name: 'Habitation',
+                },
+                {
+                    id: 2,
+                    name: 'Birthplace',
+                }],
+            filter: [1, 2],
         },
         interviews: {
             za003: {
@@ -141,8 +171,76 @@ test('getFoundMarkers retrieves found map markers', () => {
     expect(selectors.getFoundMarkers(state)).toEqual(state[NAME].map.foundMarkers);
 });
 
-test('getMarkersFetched retrieves if markers have been loaded', () => {
-    expect(selectors.getMarkersFetched(state)).toEqual(true);
+test('getMapMarkers retrieves filtered and converted map markers', () => {
+    const actual = selectors.getMapMarkers(state);
+    const expected = [
+        {
+            id: 14,
+            name: 'New York City',
+            lat: 40.71,
+            lon: -74,
+            numReferences: 7,
+            referenceTypes: [1],
+        },
+        {
+            id: 12,
+            name: 'London',
+            lat: 51.51,
+            lon: -0.11,
+            numReferences: 3,
+            referenceTypes: [1, 2],
+        },
+    ];
+    expect(actual).toEqual(expected);
+});
+
+describe('getMapBounds', () => {
+    test('retrieves an array of all lat long data for map library', () => {
+        const actual = selectors.getMapBounds(state);
+        const expected = [
+            [40.71, -74.00],
+            [51.51, 2.35],
+        ];
+        expect(actual).toEqual(expected);
+    });
+
+    test('retrieves default bounds if there is no data', () => {
+        const _state = dotProp.set(state, `${NAME}.map.foundMarkers`, null);
+        expect(selectors.getMapBounds(_state)).toEqual(MAP_DEFAULT_BOUNDS);
+    });
+
+    test('retrieves default bounds if markers are empty', () => {
+        const _state = dotProp.set(state, `${NAME}.map.foundMarkers`, []);
+        expect(selectors.getMapBounds(_state)).toEqual(MAP_DEFAULT_BOUNDS);
+    });
+});
+
+describe('getMarkersFetched', () => {
+    test('is true if markers have been loaded', () => {
+        expect(selectors.getMarkersFetched(state)).toBeTruthy();
+    });
+
+    test('is false if markers have not been loaded', () => {
+        const _state = dotProp.set(state, `${NAME}.map.foundMarkers`, null);
+        expect(selectors.getMarkersFetched(_state)).toBeFalsy();
+    });
+});
+
+test('getMapReferenceTypes retrieves map reference types array', () => {
+    expect(selectors.getMapReferenceTypes(state)).toEqual(state[NAME].map.referenceTypes);
+});
+
+test('getLocationCountByReferenceType retrieves location number for each type', () => {
+    const actual = selectors.getLocationCountByReferenceType(state);
+    const expected = {
+        '1': 2,
+        '2': 1,
+    };
+    expect(actual).toEqual(expected);
+});
+
+test('getMapFilter retrieves map filter array', () => {
+    expect(selectors.getMapFilter(state)).toEqual(state[NAME].map.filter);
 });
 
 test('getMapQuery retrieves map query object', () => {

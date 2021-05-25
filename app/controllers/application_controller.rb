@@ -184,7 +184,9 @@ class ApplicationController < ActionController::Base
       map: current_project && {
         facets: facets,
         query: search_query,
-        foundMarkers: {},
+        foundMarkers: nil,
+        referenceTypes: nil,
+        filter: nil
       },
       interviews: {},
       registryEntries: {

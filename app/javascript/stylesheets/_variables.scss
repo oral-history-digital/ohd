@@ -31,13 +31,14 @@ $focus-radius: $base-unit / 8;
 
 // z-indexes
 
-$z-index-content-tabs:    100;
-$z-index-media-player:    100;
-$z-index-sidebar:         1000;  // because of Leaflet
-$z-index-sidebar-toggle:  1100;
-$lightbox-z-index:        2000;
-$dialog-overlay-z-index:  3000;
-
+$z-index-content-tabs:        100;
+$z-index-media-player:        100;
+$z-index-map-overlay:         800;  // Map library has z-index of 700.
+$z-index-map-overlay-spinner: 801;
+$z-index-sidebar:             1000;
+$z-index-sidebar-toggle:      1100;
+$lightbox-z-index:            2000;
+$dialog-overlay-z-index:      3000;
 
 // Basics
 // --------------------------------------------------

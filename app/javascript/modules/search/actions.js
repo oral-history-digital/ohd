@@ -9,6 +9,9 @@ import {
 
     REQUEST_MAP_SEARCH,
     RECEIVE_MAP_SEARCH,
+    REQUEST_MAP_REFERENCE_TYPES,
+    RECEIVE_MAP_REFERENCE_TYPES,
+    TOGGLE_MAP_FILTER,
 
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
@@ -38,10 +41,12 @@ const requestArchiveSearch = (searchQuery) => ({
     searchQuery: searchQuery,
 });
 
-const requestMapSearch = (searchQuery) => ({
+export const requestMapSearch = (searchQuery) => ({
     type: REQUEST_MAP_SEARCH,
     searchQuery: searchQuery,
 });
+
+export const requestMapReferenceTypes = () => ({ type: REQUEST_MAP_REFERENCE_TYPES });
 
 function receiveArchiveSearchResults(json){
     return {
@@ -60,12 +65,17 @@ function receiveArchiveSearchResults(json){
     }
 }
 
-function receiveMapSearchResults(json){
+export function receiveMapSearchResults(json){
     return {
         type: RECEIVE_MAP_SEARCH,
-        foundMarkers: json.markers
-    }
+        payload: json,
+    };
 }
+
+export const receiveMapReferenceTypes = (json) => ({
+    type: RECEIVE_MAP_REFERENCE_TYPES,
+    payload: json,
+});
 
 export function searchInArchive(url, searchQuery) {
     return dispatch => {
@@ -80,6 +90,16 @@ export function searchInMap(url, searchQuery) {
         Loader.getJson(url, searchQuery, dispatch, receiveMapSearchResults);
     }
 }
+
+export const fetchMapReferenceTypes = url => dispatch => {
+    dispatch(requestMapReferenceTypes());
+    Loader.getJson(url, null, dispatch, receiveMapReferenceTypes);
+};
+
+export const toggleMapFilter = referenceTypeId => ({
+    type: TOGGLE_MAP_FILTER,
+    payload: referenceTypeId,
+});
 
 const requestInterviewSearch = (searchQuery) => ({
     type: REQUEST_INTERVIEW_SEARCH,

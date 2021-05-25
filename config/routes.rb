@@ -84,6 +84,8 @@ Rails.application.routes.draw do
         get :interview
         get :registry_entry
         get :map
+        get 'map_references/:id', action: :map_references
+        get :map_reference_types
       end
     end
 

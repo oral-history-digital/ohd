@@ -1,95 +1,111 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
+import 'leaflet/dist/leaflet.css';
+import { Tooltip, Map, CircleMarker, TileLayer } from 'react-leaflet';
 
-import 'leaflet';  // Needed to provide global L for leaflet-extra-markers import.
-import 'leaflet-extra-markers'
-import 'leaflet.markercluster'
-import './leaflet.markercluster-regionbound/leaflet.markercluster-regionbound.min.js'
-import './leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.js'
-
-import './leaflet.markercluster-regionbound/MarkerCluster.Aggregations.css'
-import './leaflet.markercluster-regionbound/MarkerCluster.css'
-import 'leaflet.markercluster/dist/MarkerCluster.css';
-import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-import 'leaflet-extra-markers/dist/css/leaflet.extra-markers.min.css';
-import './leaflet.cedis.regioncluster/leaflet.cedis.regioncluster.css'
-
-import { pathBase } from 'modules/routes';
-import { INDEX_MAP } from 'modules/flyout-tabs';
-import { Spinner } from 'modules/spinners';
+import { usePathBase } from 'modules/routes';
 import { ScrollToTop } from 'modules/user-agent';
+import { INDEX_MAP } from 'modules/flyout-tabs';
+import MapOverlay from './MapOverlay';
+import MapPopup from './MapPopup';
+import MapFilterContainer from './MapFilterContainer';
+import markerColor from './markerColor';
+import markerRadius from './markerRadius';
 
-export default class MapSearch extends React.Component {
-    componentDidMount() {
-        this.props.setFlyoutTabsIndex(INDEX_MAP);
+const leafletOptions = {
+    maxZoom: 16,
+    scrollWheelZoom: false,
+    zoomAnimation: false,
+};
 
-        if (this.props.markersFetched) {
-            this.initMap();
-        } else {
-            this.search();
-        }
-    }
+export default function MapSearch({
+    mapMarkers,
+    mapBounds,
+    mapReferenceTypes,
+    isMapSearching,
+    query,
+    flyoutTabsVisible,
+    searchInMap,
+    fetchMapReferenceTypes,
+    setFlyoutTabsIndex,
+}) {
+    const pathBase = usePathBase();
+    const mapEl = useRef(null);
 
-    initMap() {
-        window.SucheKarte.init('map', this.props.foundMarkers,  {
-            useClustering: true,
-            controlsCollapsed: false,
-            showControls: true,
-            fitBounds: true,
-            allowClustersOfOne: false,
-            showBorders: false,
-        });
-    }
+    useEffect(() => {
+        setFlyoutTabsIndex(INDEX_MAP);
+    }, []);
 
-    removeMap() {
-        window.SucheKarte.map?.remove();
-    }
+    useEffect(() => {
+        const typesPath = `${pathBase}/searches/map_reference_types`;
+        fetchMapReferenceTypes(typesPath);
+    }, [pathBase]);
 
-    componentDidUpdate(prevProps) {
-        if (!prevProps.markersFetched && this.props.markersFetched) {
-            this.initMap()
-        } else if (Object.keys(prevProps.foundMarkers).length !== Object.keys(this.props.foundMarkers).length) {
-            this.removeMap();
-            this.initMap();
-        }
-        if (!prevProps.isLoggedIn && this.props.isLoggedIn) {
-            this.search(this.props.query);
-        }
-    }
+    // TODO: Make this dependent on 'query', too.
+    useEffect(() => {
+        const searchPath = `${pathBase}/searches/map`;
+        searchInMap(searchPath, query);
+    }, [pathBase]);
 
-    componentWillUnmount() {
-        this.removeMap();
-    }
+    useEffect(() => {
+        mapEl.current?.leafletElement?.invalidateSize();
+    }, [flyoutTabsVisible]);
 
-    search(query={}) {
-        let url = `${pathBase(this.props)}/searches/map`;
-        this.props.searchInMap(url, query);
-    }
-
-    render() {
-        return (
-            <ScrollToTop>
-                <div className='wrapper-content map'>
+    return (
+        <ScrollToTop>
+            <div className='wrapper-content map'>
+                <Map
+                    className="Map Map--search"
+                    bounds={mapBounds}
+                    ref={mapEl}
+                    {...leafletOptions}
+                >
                     {
-                        this.props.isMapSearching ?
-                            <Spinner /> :
-                            null
+                        isMapSearching && <MapOverlay />
                     }
-                    <div id='map' />
-                </div>
-            </ScrollToTop>
-        )
-    }
+                    <TileLayer
+                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                    />
+                    {
+                        mapReferenceTypes && mapMarkers?.map(marker => {
+                            return (
+                                <CircleMarker
+                                    key={marker.id}
+                                    center={[marker.lat, marker.lon]}
+                                    radius={markerRadius(marker.numReferences)}
+                                    fillColor={markerColor(mapReferenceTypes, marker.referenceTypes)}
+                                    fillOpacity={0.5}
+                                    stroke={0}
+                                >
+                                    <Tooltip>
+                                        {marker.name} ({marker.numReferences})
+                                    </Tooltip>
+                                    <MapPopup
+                                        name={marker.name}
+                                        registryEntryId={marker.id}
+                                        query={query}
+                                    />
+                                </CircleMarker>
+                            );
+                        })
+                    }
+                </Map>
+
+                <MapFilterContainer />
+            </div>
+        </ScrollToTop>
+    );
 }
 
 MapSearch.propTypes = {
-    markersFetched: PropTypes.bool.isRequired,
-    isLoggedIn: PropTypes.bool.isRequired,
+    mapMarkers: PropTypes.array,
+    mapBounds: PropTypes.array.isRequired,
+    mapReferenceTypes: PropTypes.array,
     isMapSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,
-    foundMarkers: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    locale: PropTypes.string.isRequired,
+    flyoutTabsVisible: PropTypes.bool.isRequired,
     searchInMap: PropTypes.func.isRequired,
+    fetchMapReferenceTypes: PropTypes.func.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
 };

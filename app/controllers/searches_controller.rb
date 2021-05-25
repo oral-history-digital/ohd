@@ -96,7 +96,7 @@ class SearchesController < ApplicationController
     end
   end
 
-  def map
+  def map_old
     respond_to do |format|
       format.html do
         render :template => "/react/app.html"
@@ -162,6 +162,52 @@ class SearchesController < ApplicationController
     end
   end
 
+  def map
+    respond_to do |format|
+      format.html do
+        render :template => "/react/app.html"
+      end
+      format.json do
+        cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max
+        cache_key_permissions = current_user_account && (current_user_account.admin? || current_user_account.permissions?('General', :edit)) ? 'all' : 'public'
+
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}-#{cache_key_permissions}-#{params[:project_id]}" do
+          registry_entries = RegistryEntry.for_map(I18n.locale, map_interviewee_ids)
+          authorize registry_entries
+
+          ActiveModelSerializers::SerializableResource.new(registry_entries,
+            each_serializer: SlimRegistryEntryMapSerializer
+          ).as_json
+        end
+
+        render json: json
+      end
+    end
+  end
+
+  def map_references
+    respond_to do |format|
+      format.json do
+        registry_entry_id = params[:id]
+        registry_references = RegistryReference.for_map_registry_entry(registry_entry_id, I18n.locale, map_interviewee_ids)
+        authorize registry_references
+
+        render json: registry_references, each_serializer: SlimRegistryReferenceMapSerializer
+      end
+    end
+  end
+
+  def map_reference_types
+    respond_to do |format|
+      format.json do
+        registry_reference_types = RegistryReferenceType.for_map(I18n.locale)
+        authorize registry_reference_types
+
+        render json: registry_reference_types, each_serializer: SlimRegistryReferenceTypeMapSerializer
+      end
+    end
+  end
+
   def archive
     respond_to do |format|
       format.html do
@@ -203,6 +249,12 @@ class SearchesController < ApplicationController
   end
 
   private
+
+  def map_interviewee_ids
+    search = Interview.archive_search(current_user_account, current_project, locale, params, 1000)
+    interviewee_ids = search.hits.map{|hit| hit.stored(:interviewee_id)}
+    interviewee_ids
+  end
 
   def highlighted_text(hit)
     current_project.available_locales.inject({}) do |mem, locale|
