@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
-import styles from './PhotoCaption.module.scss';
+import PhotoMetadatum from './PhotoMetadatum';
+
+const metadata = [
+    'place',
+    'date',
+    'photographer',
+    'license',
+];
 
 export default function PhotoCaption({
     photo,
@@ -17,7 +24,7 @@ export default function PhotoCaption({
     const translations = photo.translations.find(t => t.locale === locale);
 
     return (
-        <div className={classNames(styles.container, 'slider-text')}>
+        <div className={classNames('PhotoCaption', 'slider-text')}>
             {
                 photoExplanation ?
                     (<p className='photo-explanation'>
@@ -25,11 +32,22 @@ export default function PhotoCaption({
                     </p>) :
                     null
             }
-            <p className={styles.paragraph}>{caption}</p>
-            <p className={styles.paragraph}>{translations?.place}</p>
-            <p className={styles.paragraph}>{translations?.date}</p>
-            <p className={styles.paragraph}>{translations?.photographer}</p>
-            <p className={styles.paragraph}>{translations?.license}</p>
+            <p className="PhotoCaption-paragraph">{caption}</p>
+
+            {
+                translations && metadata.map(metadatum => {
+                    if (!translations[metadatum]) {
+                        return null;
+                    }
+
+                    return (<PhotoMetadatum
+                        key={metadatum}
+                        className="PhotoCaption-paragraph"
+                        label={metadatum}
+                        value={translations[metadatum]}
+                    />);
+                })
+            }
         </div>
     );
 }

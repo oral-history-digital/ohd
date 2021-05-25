@@ -1153,6 +1153,9 @@ el:
     media_player:
       auto_scroll_enabled: "auto-scrolling transcript"
       auto_scroll_disabled: "manually scrolling transcript"
+    toc:
+      collapse: Collapse
+      expand: Expand
     transcript:
       no_text: 'segment contains no text'
     tree_select:
@@ -1161,6 +1164,3 @@ el:
       remove_selection: 'remove selection'
       loading: 'Loading tree data…'
       help_text: 'Use Arrow Up/Down, Home/End to change between entries, Arrow Right/Left to expand or collapse sub-entries and Return/Backspace to select or remove an entry.'
-    toc:
-      collapse: Collapse
-      expand: Expand
