@@ -54,7 +54,7 @@ export default class Person extends React.Component {
 
     buttons() {
         return (
-            <AuthorizedContent object={this.props.data}>
+            <AuthorizedContent object={this.props.data} action='destroy'>
                 <span className={'flyout-sub-tabs-content-ico'}>
                     {/*this.edit()*/}
                     {this.delete()}

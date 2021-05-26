@@ -64,7 +64,7 @@ export default function Heading({
                     </div>
                 </button>
 
-                <AuthorizedContent object={data.segment}>
+                <AuthorizedContent object={data.segment} action='update'>
                     <Modal
                         title=""
                         trigger={<i className="fa fa-pencil" />}

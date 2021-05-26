@@ -123,7 +123,7 @@ export default class Data extends React.Component {
 
     buttons() {
         return (
-            <AuthorizedContent object={[this.props.data, this.props.task]}>
+            <AuthorizedContent object={[this.props.data, this.props.task]} action='update'>
                 <PopupMenu>
                     <PopupMenu.Item>{!this.props.hideShow && this.show()}</PopupMenu.Item>
                     <PopupMenu.Item>{!this.props.hideEdit && this.edit()}</PopupMenu.Item>

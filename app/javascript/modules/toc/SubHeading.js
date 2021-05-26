@@ -40,7 +40,7 @@ export default function SubHeading({
                 </div>
             </button>
 
-            <AuthorizedContent object={data.segment}>
+            <AuthorizedContent object={data.segment} action='update'>
                 <Modal
                     title=""
                     trigger={<i className="fa fa-pencil" />}

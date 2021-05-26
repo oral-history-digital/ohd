@@ -135,7 +135,7 @@ export default class InterviewInfo extends React.Component {
                         </SingleValueWithFormContainer>
                     }
 
-                    <AuthorizedContent object={this.props.interview}>
+                    <AuthorizedContent object={this.props.interview} action='update'>
                         <SingleValueWithFormContainer
                             elementType={'select'}
                             obj={this.props.interview}
