@@ -1,7 +1,7 @@
 namespace :roles do
 
     desc 'create permissions for all models (if they do NOT exist)' 
-    task :create => :environment do
+    task :create_permissions => :environment do
       Rails.application.eager_load!
       ApplicationRecord.descendants.each do |model|
         %w(create update destroy).each do |action_name|
@@ -216,6 +216,9 @@ namespace :roles do
             {:name=>"UploadedFile create", :klass=>"UploadedFile", :action_name=>"create"},
             {:name=>"UploadedFile destroy", :klass=>"UploadedFile", :action_name=>"destroy"},
             {:name=>"UploadedFile update", :klass=>"UploadedFile", :action_name=>"update"},
+            {:name=>"MediaStream create", :klass=>"MediaStream", :action_name=>"create"},
+            {:name=>"MediaStream destroy", :klass=>"MediaStream", :action_name=>"destroy"},
+            {:name=>"MediaStream update", :klass=>"MediaStream", :action_name=>"update"},
           ]
         },
         {
