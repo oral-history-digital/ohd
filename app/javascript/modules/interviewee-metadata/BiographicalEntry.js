@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
@@ -9,7 +9,7 @@ import { AuthorizedContent } from 'modules/auth';
 import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
 import styles from './BiographicalEntry.module.scss';
 
-export default class BiographicalEntry extends React.Component {
+export default class BiographicalEntry extends Component {
     constructor(props) {
         super(props);
 

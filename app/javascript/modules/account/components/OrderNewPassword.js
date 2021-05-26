@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { t } from 'modules/i18n';
 import OrderNewPasswordFormContainer from './OrderNewPasswordFormContainer';
 
-export default class OrderNewPassword extends React.Component {
+export default class OrderNewPassword extends Component {
 
     passwordStatus() {
         return <div className='text'>{t(this.props, this.props.orderNewPasswordStatus)}</div>;

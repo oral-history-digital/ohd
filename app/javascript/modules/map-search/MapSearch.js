@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
 import { Tooltip, Map, CircleMarker, TileLayer } from 'react-leaflet';

@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { t } from 'modules/i18n';
 import { ScrollToTop } from 'modules/user-agent';
 import RegisterFormContainer from './RegisterFormContainer';
 
-export default class Register extends React.Component {
+export default class Register extends Component {
     content() {
         if (!this.props.registrationStatus) {
 

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
@@ -8,7 +8,7 @@ import SegmentContainer from './SegmentContainer';
 import sortedSegmentsWithActiveIndex from './sortedSegmentsWithActiveIndex';
 import isSegmentActive from './isSegmentActive';
 
-export default class Transcript extends React.Component {
+export default class Transcript extends Component {
     constructor(props) {
         super(props);
 

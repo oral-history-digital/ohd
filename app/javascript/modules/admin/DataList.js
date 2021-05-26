@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
@@ -8,7 +8,7 @@ import { camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 import DataContainer from './DataContainer';
 
-export default class DataList extends React.Component {
+export default class DataList extends Component {
 
     constructor(props) {
         super(props);
@@ -55,7 +55,7 @@ export default class DataList extends React.Component {
 
     form(data, onSubmit) {
         if (this.props.form) {
-            return React.createElement(this.props.form, {data: data, values: this.props.initialFormValues});
+            return createElement(this.props.form, {data: data, values: this.props.initialFormValues});
         } else {
             return (
                 <Form

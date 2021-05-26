@@ -1,7 +1,7 @@
-import React from 'react';
+import { Component } from 'react';
 import { Form } from 'modules/forms';
 
-export default class SingleTextInputForm extends React.Component {
+export default class SingleTextInputForm extends Component {
     render() {
         return (
             <Form

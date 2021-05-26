@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { admin, AuthorizedContent } from 'modules/auth';
@@ -8,7 +8,7 @@ import CarouselContainer from './CarouselContainer';
 import PhotoFormContainer from './PhotoFormContainer';
 import styles from './Gallery.module.scss';
 
-export default class Gallery extends React.Component {
+export default class Gallery extends Component {
     renderPhotos() {
         let photos = [];
         let n = 0;

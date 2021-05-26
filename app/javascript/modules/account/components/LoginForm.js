@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { Form } from 'modules/forms';
 import { pathBase } from 'modules/routes';
 
-export default class LoginForm extends React.Component {
+export default class LoginForm extends Component {
     render() {
         return (
             <Form

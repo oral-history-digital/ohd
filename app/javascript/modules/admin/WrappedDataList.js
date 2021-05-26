@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 import Observer from 'react-intersection-observer'
 
 import { AuthShowContainer } from 'modules/auth';
@@ -12,7 +12,7 @@ import parametrizedQuery from './parametrizedQuery';
 import statifiedQuery from './statifiedQuery';
 import DataContainer from './DataContainer';
 
-export default class WrappedDataList extends React.Component {
+export default class WrappedDataList extends Component {
 
     constructor(props) {
         super(props);
@@ -103,7 +103,7 @@ export default class WrappedDataList extends React.Component {
 
     form(data, onSubmit) {
         if (this.props.form) {
-            return React.createElement(this.props.form, {data: data, values: this.props.initialFormValues});
+            return createElement(this.props.form, {data: data, values: this.props.initialFormValues});
         } else {
             return (
                 <Form

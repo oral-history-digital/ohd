@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 import {Link} from 'react-router-dom';
 
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
-export default class TaskPreview extends React.Component {
+export default class TaskPreview extends Component {
 
     dateAttribute() {
         if (this.props.data.user_account_id === this.props.account.id) {

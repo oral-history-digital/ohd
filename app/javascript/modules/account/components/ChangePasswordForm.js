@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
 
@@ -6,7 +6,7 @@ import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { InputContainer } from 'modules/forms';
 
-export default class ChangePasswordForm extends React.Component {
+export default class ChangePasswordForm extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,

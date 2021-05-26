@@ -1,5 +1,3 @@
-import React from 'react';
-
 import styles from './PixelLoader.module.scss';
 
 export default function PixelLoader() {

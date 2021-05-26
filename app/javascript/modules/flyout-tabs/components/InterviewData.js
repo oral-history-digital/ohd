@@ -1,8 +1,8 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-export default class InterviewData extends React.Component {
+export default class InterviewData extends Component {
     constructor(props) {
         super(props);
 

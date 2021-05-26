@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import { Form } from 'modules/forms';
@@ -7,7 +7,7 @@ import { fullname } from 'modules/people';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
-export default class InterviewForm extends React.Component {
+export default class InterviewForm extends Component {
 
     constructor(props) {
         super(props);
@@ -138,7 +138,7 @@ export default class InterviewForm extends React.Component {
             props['nestedScopeRepresentation'] = this.showContribution;
         }
 
-        return React.createElement(Form, props)
+        return createElement(Form, props);
     }
 
     render() {

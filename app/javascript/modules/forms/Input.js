@@ -1,8 +1,8 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 
 import ElementContainer from './ElementContainer';
 
-export default class Input extends React.Component {
+export default class Input extends Component {
 
     // props are:
     //   @scope
@@ -73,7 +73,7 @@ export default class Input extends React.Component {
                 </div>
             )
         } else {
-            return React.createElement('input', this.cleanProps());
+            return createElement('input', this.cleanProps());
         }
     }
 

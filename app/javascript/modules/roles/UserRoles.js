@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { admin } from 'modules/auth';
@@ -7,7 +7,7 @@ import { Modal } from 'modules/ui';
 import UserRoleFormContainer from './UserRoleFormContainer';
 import UserRoleContainer from './UserRoleContainer';
 
-export default class UserRoles extends React.Component {
+export default class UserRoles extends Component {
     userRoles() {
         return Object.keys(this.props.userRoles).map((id) => {
             return (

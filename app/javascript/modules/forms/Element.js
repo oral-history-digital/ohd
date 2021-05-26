@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 
 import Label from './Label';
 import { t } from 'modules/i18n';
 
-export default class Element extends React.Component {
+export default class Element extends Component {
 
     // props are:
     //   @scope

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import groupBy from 'lodash.groupby';
 
@@ -11,7 +11,7 @@ import { INDEX_ACCOUNT } from 'modules/flyout-tabs';
 import { t } from 'modules/i18n';
 import UserDetailsContainer from './UserDetailsContainer';
 
-export default class WrappedAccount extends React.Component {
+export default class WrappedAccount extends Component {
     constructor(props) {
         super(props);
         this.state = {

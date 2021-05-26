@@ -1,15 +1,15 @@
-import React from 'react';
+import { createRef, Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { t } from 'modules/i18n';
 import missingStill from 'assets/images/missing_still.png';
 
-export default class MediaElement extends React.Component {
+export default class MediaElement extends Component {
     constructor(props) {
         super(props);
 
-        this.mediaElement = React.createRef();
+        this.mediaElement = createRef();
 
         this.handlePlayEvent = this.handlePlayEvent.bind(this);
         this.handlePauseEvent = this.handlePauseEvent.bind(this);

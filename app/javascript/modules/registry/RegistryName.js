@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 
-export default class RegistryName extends React.Component {
+export default class RegistryName extends Component {
     constructor(props) {
         super(props);
 

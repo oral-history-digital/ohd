@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthorizedContent, admin } from 'modules/auth';
@@ -7,7 +7,7 @@ import { Modal } from 'modules/ui';
 import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
 import BiographicalEntryContainer from './BiographicalEntryContainer';
 
-export default class BiographicalEntries extends React.Component {
+export default class BiographicalEntries extends Component {
     biographicalEntries() {
         let biographicalEntries = [];
         for (var c in this.props.person.biographical_entries) {

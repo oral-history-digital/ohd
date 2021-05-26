@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import Observer from 'react-intersection-observer'
 
@@ -8,7 +8,7 @@ import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import UserRegistrationContainer from './UserRegistrationContainer';
 
-export default class UserRegistrations extends React.Component {
+export default class UserRegistrations extends Component {
     constructor(props) {
         super(props);
         this.handleScroll = this.handleScroll.bind(this);

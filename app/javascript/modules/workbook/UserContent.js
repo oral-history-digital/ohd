@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
@@ -9,7 +9,7 @@ import { isMobile } from 'modules/user-agent';
 import UserContentFormContainer from './UserContentFormContainer';
 import UserContentDeleteContainer from './UserContentDeleteContainer';
 
-export default class UserContent extends React.Component {
+export default class UserContent extends Component {
     constructor(props) {
         super(props);
 

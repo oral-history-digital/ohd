@@ -1,4 +1,4 @@
-import React from 'react';
+import { memo } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
@@ -52,7 +52,7 @@ export const Routes = () => (
     </Switch>
 );
 
-export const MemoizedRoutes = React.memo(Routes);
+export const MemoizedRoutes = memo(Routes);
 
 export const RoutesWithProjectId = () => (
     <Switch>
@@ -88,4 +88,4 @@ export const RoutesWithProjectId = () => (
     </Switch>
 );
 
-export const MemoizedRoutesWithProjectId = React.memo(RoutesWithProjectId);
+export const MemoizedRoutesWithProjectId = memo(RoutesWithProjectId);

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -10,7 +10,7 @@ import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
 
-export default class RegistryEntry extends React.Component {
+export default class RegistryEntry extends Component {
     constructor(props) {
         super(props);
 

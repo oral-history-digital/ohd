@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 
-export default class Uploads extends React.Component {
+export default class Uploads extends Component {
 
     constructor(props) {
         super(props);

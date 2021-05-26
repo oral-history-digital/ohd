@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { FaSortAmountDown } from 'react-icons/fa';
 import classNames from 'classnames';

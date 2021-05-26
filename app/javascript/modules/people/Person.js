@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
@@ -7,7 +7,7 @@ import { t } from 'modules/i18n';
 import PersonFormContainer from './PersonFormContainer';
 import fullname from './fullname';
 
-export default class Person extends React.Component {
+export default class Person extends Component {
     edit() {
         return (
             <Modal

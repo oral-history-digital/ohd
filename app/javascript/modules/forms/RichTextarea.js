@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 import RichTextEditor from 'react-rte-17';
 
 import ElementContainer from './ElementContainer';
 
-export default class RichTextarea extends React.Component {
+export default class RichTextarea extends Component {
 
     constructor(props, context) {
         super(props);

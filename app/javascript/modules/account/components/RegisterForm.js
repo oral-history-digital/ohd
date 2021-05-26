@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 import { Form } from 'modules/forms';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
-export default class RegisterForm extends React.Component {
+export default class RegisterForm extends Component {
 
     formElements() {
         let conditionsLink = Object.values(this.props.externalLinks).filter(link => link.internal_name === 'conditions')[0];

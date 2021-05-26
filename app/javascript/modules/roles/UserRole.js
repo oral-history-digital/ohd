@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 
-export default class UserRole extends React.Component {
+export default class UserRole extends Component {
     show() {
         return (
             <Modal

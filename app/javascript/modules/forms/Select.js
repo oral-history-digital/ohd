@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { t } from 'modules/i18n';
 import ElementContainer from './ElementContainer';
 
-export default class Select extends React.Component {
+export default class Select extends Component {
 
     // props are:
     //   @scope

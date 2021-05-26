@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import VizSensor from 'react-visibility-sensor/visibility-sensor';
 import moment from 'moment';
 
@@ -7,7 +7,7 @@ import { Annotations } from 'modules/annotations';
 import { SubmitOnBlurForm } from 'modules/forms';
 import permittedColumns from './permittedColumns';
 
-export default class SegmentEditView extends React.Component {
+export default class SegmentEditView extends Component {
 
     constructor(props) {
         super(props);

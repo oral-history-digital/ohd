@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
@@ -7,7 +7,7 @@ import { Modal } from 'modules/ui';
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 import RegistryReferenceContainer from './RegistryReferenceContainer';
 
-export default class RegistryReferences extends React.Component {
+export default class RegistryReferences extends Component {
     componentDidMount() {
         this.loadRegistryEntries();
         this.loadRootRegistryEntry();
