@@ -1,8 +1,8 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { Form } from 'modules/forms';
 
-export default class RegistryNameForm extends React.Component {
+export default class RegistryNameForm extends Component {
 
     render() {
         let defaultNameType = Object.values(this.props.registryNameTypes).find(r => r.code === 'spelling')

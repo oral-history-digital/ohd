@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { SingleValueWithFormContainer } from 'modules/forms';
 
-export default class InterviewTextMaterials extends React.Component {
+export default class InterviewTextMaterials extends Component {
     to() {
         return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
     }

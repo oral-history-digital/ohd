@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 
-export default class UserRoleForm extends React.Component {
+export default class UserRoleForm extends Component {
     componentDidMount() {
         this.loadRoles();
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FaRegFileAlt, FaRegClone, FaList, FaSearch, FaTags } from 'react-icons/fa';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
@@ -9,7 +9,7 @@ import { InterviewSearchContainer } from 'modules/interview-search';
 import { RefTreeContainer } from 'modules/interview-references';
 import { t } from 'modules/i18n';
 
-export default class InterviewTabs extends React.Component {
+export default class InterviewTabs extends Component {
     constructor(props) {
         super(props);
         this.state = {

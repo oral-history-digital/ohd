@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router-dom';
 
 import { PixelLoader } from 'modules/spinners';
@@ -6,7 +6,7 @@ import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { admin } from 'modules/auth';
 
-export default class RegistryEntryShow extends React.Component {
+export default class RegistryEntryShow extends Component {
 
     componentDidMount() {
         this.loadWithAssociations();

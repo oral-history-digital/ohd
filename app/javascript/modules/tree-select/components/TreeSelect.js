@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 

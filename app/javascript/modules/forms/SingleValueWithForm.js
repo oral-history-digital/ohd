@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { Form } from 'modules/forms';
 import { humanReadable } from 'modules/data';
@@ -7,7 +7,7 @@ import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import ContentField from './ContentField';
 
-export default class SingleValueWithForm extends React.Component {
+export default class SingleValueWithForm extends Component {
 
     constructor(props) {
         super(props);

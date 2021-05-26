@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { InputContainer } from 'modules/forms';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
-export default class OrderNewPasswordForm extends React.Component {
+export default class OrderNewPasswordForm extends Component {
 
     static contextTypes = {
         router: PropTypes.object

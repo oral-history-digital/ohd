@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
@@ -8,7 +8,7 @@ import { humanReadable } from 'modules/data';
 import { AuthShowContainer, admin } from 'modules/auth';
 import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 
-export default class InterviewListRow extends React.Component {
+export default class InterviewListRow extends Component {
     componentDidMount() {
         loadIntervieweeWithAssociations(this.props);
         if(this.props.fulltext) {

@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { t } from 'modules/i18n';
 import UserContentsContainer from './UserContentsContainer';
 
-export default class Workbook extends React.Component {
+export default class Workbook extends Component {
     componentDidMount() {
         if (!this.props.userContentsStatus && this.props.account.email && !this.props.account.error) {
             this.props.fetchData(this.props, 'user_contents');

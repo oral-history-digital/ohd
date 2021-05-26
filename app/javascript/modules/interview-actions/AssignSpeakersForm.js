@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { Form } from 'modules/forms';
 import { fullname } from 'modules/people';
@@ -6,7 +6,7 @@ import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 
-export default class AssignSpeakersForm extends React.Component {
+export default class AssignSpeakersForm extends Component {
 
     constructor(props) {
         super(props);

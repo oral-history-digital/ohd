@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { FormElement } from 'modules/forms';
@@ -8,7 +8,7 @@ import { t } from 'modules/i18n';
 import parametrizedQuery from './parametrizedQuery';
 import statifiedQuery from './statifiedQuery';
 
-export default class DataSearchForm extends React.Component {
+export default class DataSearchForm extends Component {
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -68,10 +68,10 @@ export default class DataSearchForm extends React.Component {
         };
 
         if (element.type === 'select') {
-            return React.createElement('select', opts, this.optionsForSelect(element.attributeName, element.values));
+            return createElement('select', opts, this.optionsForSelect(element.attributeName, element.values));
         } else {
             opts.type = "text";
-            return React.createElement('input', opts);
+            return createElement('input', opts);
         }
     }
 

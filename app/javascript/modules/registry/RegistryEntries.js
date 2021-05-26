@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -9,7 +9,7 @@ import { t } from 'modules/i18n';
 import RegistryEntryContainer from './RegistryEntryContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 
-export default class RegistryEntries extends React.Component {
+export default class RegistryEntries extends Component {
     componentDidMount() {
         this.loadWithAssociations();
         this.loadRegistryEntries();

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import { humanReadable } from 'modules/data';
 import { t } from 'modules/i18n';
 import TaskContainer from './TaskContainer';
 
-export default class InterviewWorkflowRow extends React.Component {
+export default class InterviewWorkflowRow extends Component {
 
     constructor(props) {
         super(props);

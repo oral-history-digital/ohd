@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
@@ -6,7 +6,7 @@ import { Spinner } from 'modules/spinners';
 import { FoundSegmentContainer } from 'modules/transcript';
 import RefTreeEntryContainer from './RefTreeEntryContainer';
 
-export default class RefTree extends React.Component {
+export default class RefTree extends Component {
     componentDidMount() {
         this.loadRefTree();
     }

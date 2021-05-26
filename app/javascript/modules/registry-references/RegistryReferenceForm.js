@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 
-export default class RegistryReferenceForm extends React.Component {
+export default class RegistryReferenceForm extends Component {
     componentDidMount() {
         this.loadRegistryReferenceTypes();
     }

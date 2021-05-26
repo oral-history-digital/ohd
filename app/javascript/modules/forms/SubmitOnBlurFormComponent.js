@@ -1,7 +1,7 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 
-export default class SubmitOnBlurForm extends React.Component {
+export default class SubmitOnBlurForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -63,13 +63,11 @@ export default class SubmitOnBlurForm extends React.Component {
     }
 
     input() {
-        return (
-            React.createElement(this.props.type || 'input', {
-                onBlur: this.submit,
-                onChange: this.handleChange,
-                defaultValue: this.value(),
-            })
-        )
+        return createElement(this.props.type || 'input', {
+            onBlur: this.submit,
+            onChange: this.handleChange,
+            defaultValue: this.value(),
+        });
     }
 
     render() {

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
@@ -20,7 +20,7 @@ import { Spinner } from 'modules/spinners';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
-export default class FlyoutTabs extends React.Component {
+export default class FlyoutTabs extends Component {
     constructor(props) {
         super(props);
 

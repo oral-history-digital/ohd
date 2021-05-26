@@ -1,6 +1,6 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
-import RichTextEditor from 'react-rte';
+import RichTextEditor from 'react-rte-17';
 
 import { TreeSelectContainer } from 'modules/tree-select';
 import InputContainer from './InputContainer';
@@ -12,7 +12,7 @@ import SpeakerDesignationInputs from './SpeakerDesignationInputs';
 import { pluralize } from 'modules/strings';
 import { t } from 'modules/i18n';
 
-export default class Form extends React.Component {
+export default class Form extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -172,9 +172,9 @@ export default class Form extends React.Component {
             }
             return (
                 <div>
-                    {React.createElement(this.props.nestedForm, this.props.nestedFormProps)}
+                    {createElement(this.props.nestedForm, this.props.nestedFormProps)}
                 </div>
-            )
+            );
         }
     }
 
@@ -206,9 +206,9 @@ export default class Form extends React.Component {
         }
 
         if (props.multiLocale) {
-            return React.createElement(MultiLocaleWrapperContainer, props);
+            return createElement(MultiLocaleWrapperContainer, props);
         } else {
-            return React.createElement(this.components()[props.elementType], props);
+            return createElement(this.components()[props.elementType], props);
         }
     }
 

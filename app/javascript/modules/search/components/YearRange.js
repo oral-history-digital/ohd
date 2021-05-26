@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 import Slider from 'rc-slider';
 const Range = Slider.createSliderWithTooltip(Slider.Range);
@@ -9,7 +9,7 @@ import 'rc-slider/assets/index.css';
 const rangeStyle = { width: 318 };
 const style = { paddingBottom: 20, marginLeft: -11};
 
-export default class YearRange extends React.Component {
+export default class YearRange extends Component {
 
     constructor(props) {
         super(props)

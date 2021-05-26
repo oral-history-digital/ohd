@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { useAuthorization } from './authorization-hook';
 import { useI18n } from 'modules/i18n';

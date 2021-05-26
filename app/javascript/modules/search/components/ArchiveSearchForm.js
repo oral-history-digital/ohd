@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 
@@ -9,7 +9,7 @@ import { AuthShowContainer, admin } from 'modules/auth';
 import { isMobile, isIOS } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
 
-export default class ArchiveSearchForm extends React.Component {
+export default class ArchiveSearchForm extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
     }

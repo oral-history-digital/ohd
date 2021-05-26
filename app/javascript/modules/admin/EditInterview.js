@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { AuthShowContainer } from 'modules/auth';
 import { t } from 'modules/i18n';
 import InterviewFormContainer from './InterviewFormContainer';
 
-export default class EditInterview extends React.Component {
+export default class EditInterview extends Component {
 
     constructor(props) {
         super(props);

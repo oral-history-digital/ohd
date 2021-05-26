@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -10,7 +10,7 @@ import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import getInterviewArchiveIdWithOffset from './getInterviewArchiveIdWithOffset';
 
-export default class InterviewDetailsLeftSide extends React.Component {
+export default class InterviewDetailsLeftSide extends Component {
     componentDidMount() {
         let nextArchiveId = getInterviewArchiveIdWithOffset(this.props.archiveId, this.props.foundInterviews, [], 1);
         if (nextArchiveId === false) {

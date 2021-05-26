@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { Form } from 'modules/forms';
 import { humanReadable } from 'modules/data';
 import { t } from 'modules/i18n';
 
-export default class EditData extends React.Component {
+export default class EditData extends Component {
 
     constructor(props) {
         super(props);

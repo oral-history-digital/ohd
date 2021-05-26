@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
@@ -11,7 +11,7 @@ import { t } from 'modules/i18n';
 import missingStill from 'assets/images/missing_still.png';
 import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 
-export default class InterviewPreview extends React.Component {
+export default class InterviewPreview extends Component {
     constructor(props) {
         super(props);
 

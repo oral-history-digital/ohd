@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { t } from 'modules/i18n';
 
-export default class UserContentForm extends React.Component {
+export default class UserContentForm extends Component {
     constructor(props) {
         super(props);
         this.state = {

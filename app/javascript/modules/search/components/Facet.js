@@ -1,7 +1,7 @@
-import React from 'react';
+import { Component } from 'react';
 import YearRangeContainer from './YearRangeContainer';
 
-export default class Facet extends React.Component {
+export default class Facet extends Component {
 
     constructor(props) {
         super(props);

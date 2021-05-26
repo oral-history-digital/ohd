@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import CommentsContainer from './CommentsContainer';
 
-export default class Task extends React.Component {
+export default class Task extends Component {
 
     constructor(props) {
         super(props);

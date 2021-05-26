@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Modal } from 'modules/ui';
@@ -6,7 +6,7 @@ import { pathBase } from 'modules/routes';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 
-export default class AdminActions extends React.Component {
+export default class AdminActions extends Component {
     selectedArchiveIds() {
         return this.props.archiveIds.filter(archiveId => archiveId !== 'dummy');
     }

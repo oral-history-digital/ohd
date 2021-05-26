@@ -1,8 +1,8 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 
-export default class ArchivePopup extends React.Component {
+export default class ArchivePopup extends Component {
 
     constructor(props) {
         super(props);

@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthShowContainer } from 'modules/auth';
@@ -7,7 +7,7 @@ import { t } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
 import LoginFormContainer from './LoginFormContainer'
 
-export default class Account extends React.Component {
+export default class Account extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
     }

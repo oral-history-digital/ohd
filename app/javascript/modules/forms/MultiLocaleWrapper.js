@@ -1,11 +1,11 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 
 import InputContainer from './InputContainer';
 import TextareaContainer from './TextareaContainer';
 import RichTextareaContainer from './RichTextareaContainer';
 import { t } from 'modules/i18n';
 
-export default class MultiLocaleWrapper extends React.Component {
+export default class MultiLocaleWrapper extends Component {
 
     constructor(props) {
         super(props);
@@ -59,10 +59,10 @@ export default class MultiLocaleWrapper extends React.Component {
         return (
             <div className='multi-locale-input'>
                 {this.props.locales.map((locale, index) => {
-                    return React.createElement(_this.components()[_this.props.elementType], _this.preparedProps(locale));
+                    return createElement(_this.components()[_this.props.elementType], _this.preparedProps(locale));
                 })}
             </div>
-        )
+        );
     }
 
 }
