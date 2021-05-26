@@ -752,7 +752,7 @@ class Interview < ApplicationRecord
     def archive_search(user_account, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, user_account && (user_account.admin? || user_account.roles?(project, 'General', :edit)) ? ['public', 'unshared'] : 'public')
+        with(:workflow_state, user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
         with(:project_id, project.id)
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         dynamic :search_facets do

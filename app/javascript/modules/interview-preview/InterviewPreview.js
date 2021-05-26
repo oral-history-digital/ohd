@@ -57,6 +57,7 @@ export default class InterviewPreview extends React.Component {
 
     renderBadge() {
         if (this.resultsCount() > 0) {
+        debugger
             return (
                 <div className={'badge'} onClick={this.handleClick} title={`${t(this.props, 'segment_hits')}: ${this.resultsCount()}`}>
                     <i className="fa fa-align-justify" aria-hidden="true" />
