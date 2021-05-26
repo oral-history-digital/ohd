@@ -93,7 +93,7 @@ export default class WrappedAccount extends React.Component {
     }
 
     projects(account) {
-        return account.project_ids.map(pid => {
+        return account?.project_ids.map(pid => {
             return <ProjectShow data={this.props.projects[pid]} />
         })
     }
