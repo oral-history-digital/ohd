@@ -121,7 +121,7 @@ export default class WrappedDataList extends React.Component {
     add() {
         if (!this.props.hideAdd) {
             return (
-                <AuthorizedContent object={[{type: camelCase(this.props.scope), interview_id: this.props.interview?.id}, this.props.task]} action: 'create'>
+                <AuthorizedContent object={[{type: camelCase(this.props.scope), interview_id: this.props.interview?.id}, this.props.task]} action='create'>
                     <Modal
                         title={t(this.props, `edit.${this.props.scope}.new`)}
                         trigger={<><i className="fa fa-plus"/>{t(this.props, `edit.${this.props.scope}.new`)}</>}
