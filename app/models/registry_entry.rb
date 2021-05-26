@@ -266,8 +266,8 @@ class RegistryEntry < ApplicationRecord
   end
 
   def bread_crumb
-    if parents.count > 0
-      parents.inject({}){|mem, parent| mem[parent.id] = parent.bread_crumb; mem}
+    if (parents - children).count > 0
+      (parents - children).inject({}){|mem, parent| mem[parent.id] = parent.bread_crumb; mem}
     end
   end
 
