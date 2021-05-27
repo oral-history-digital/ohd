@@ -125,7 +125,7 @@ class InterviewTabPanel extends Component {
                         </AuthorizedContent>
                     </AuthShowContainer>
 
-                    <AuthorizedContent object={interview} action='update'>
+                    <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
                         <InterviewDataContainer
                             title={t(this.props, 'edit.upload_transcript.title')}
                             open={false}
