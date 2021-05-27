@@ -3,6 +3,7 @@ class PhotoSerializer < ApplicationSerializer
   attributes :id,
              :captions,
              :src,
+             :public_id,
              :thumb_src,
              :text,
              :interview_id,

@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 
 import Select from './SelectContainer';
 import { t } from 'modules/i18n';
 
-export default class RegistryEntrySelect extends React.Component {
+export default class RegistryEntrySelect extends Component {
 
     constructor(props, context) {
         super(props, context);

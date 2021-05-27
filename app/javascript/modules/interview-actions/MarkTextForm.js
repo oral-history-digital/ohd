@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { Form, SingleTextInputFormContainer } from 'modules/forms';
 import { t } from 'modules/i18n';
 
-export default class MarkTextForm extends React.Component {
+export default class MarkTextForm extends Component {
 
     constructor(props) {
         super(props);

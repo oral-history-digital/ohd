@@ -1,10 +1,10 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
-import RichTextEditor from 'react-rte';
+import RichTextEditor from 'react-rte-17';
 
 import { t } from 'modules/i18n';
 
-export default class AnnotationForm extends React.Component {
+export default class AnnotationForm extends Component {
     constructor(props) {
         super(props);
         this.state = {

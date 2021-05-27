@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 import {Link} from 'react-router-dom';
 
 import { AuthorizedContent } from 'modules/auth';
@@ -7,11 +7,11 @@ import { humanReadable } from 'modules/data';
 import { pluralize, camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 
-export default class Data extends React.Component {
+export default class Data extends Component {
 
     baseData() {
         if (this.props.showComponent) {
-            return React.createElement(this.props.showComponent, {data: this.props.data, scope: this.props.scope });
+            return createElement(this.props.showComponent, {data: this.props.data, scope: this.props.scope });
         } else {
             return (
                 <div className='base-data box'>
@@ -112,10 +112,10 @@ export default class Data extends React.Component {
                 return (
                     <div className={`${pluralize(joined_model_name_underscore)} box`} key={`${joined_model_name_underscore}-box`}>
                         <h4 className='title'>{t(this.props, `activerecord.models.${joined_model_name_underscore}.other`)}</h4>
-                        {React.createElement(this.props.joinedData[joined_model_name_underscore], props)}
+                        {createElement(this.props.joinedData[joined_model_name_underscore], props)}
                     </div>
-                )
-            })
+                );
+            });
         } else {
             return null;
         }
@@ -123,7 +123,7 @@ export default class Data extends React.Component {
 
     buttons() {
         return (
-            <AuthorizedContent object={[this.props.data, this.props.task]}>
+            <AuthorizedContent object={[this.props.data, this.props.task]} action='update'>
                 <PopupMenu>
                     <PopupMenu.Item>{!this.props.hideShow && this.show()}</PopupMenu.Item>
                     <PopupMenu.Item>{!this.props.hideEdit && this.edit()}</PopupMenu.Item>

@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { underscore } from 'modules/strings';
 import { t } from 'modules/i18n';
 import RegistryReferencesContainer from './RegistryReferencesContainer';
 
-export default class SelectedRegistryReferences extends React.Component {
+export default class SelectedRegistryReferences extends Component {
     registryReferencesByType() {
         let registryReferences = [];
         if (this.props.project && this.props.refObject) {

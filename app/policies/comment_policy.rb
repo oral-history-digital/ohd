@@ -1,11 +1,11 @@
 class CommentPolicy < ApplicationPolicy
 
   def create?
-    user.admin? || user.roles?(project, 'Comment', :create) || user.all_tasks.find{|t| record == t}
+    user.admin? || user.roles?(project, 'Comment', 'create') || user.all_tasks.find{|t| record == t}
   end
 
   def update?
-    user.admin? || user.roles?(project, 'Comment', :update) || user.all_tasks.find{|t| record.ref == t}
+    user.admin? || user.roles?(project, 'Comment', 'update') || user.all_tasks.find{|t| record.ref == t}
   end
 
   def destroy?

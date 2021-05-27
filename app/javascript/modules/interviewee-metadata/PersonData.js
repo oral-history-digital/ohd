@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { ContentField } from 'modules/forms';
@@ -11,7 +11,7 @@ import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import BiographicalEntriesContainer from './BiographicalEntriesContainer';
 
-export default class PersonData extends React.Component {
+export default class PersonData extends Component {
 
     constructor(props) {
         super(props);

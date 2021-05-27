@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { TasksContainer } from 'modules/workflow';
@@ -8,7 +8,7 @@ import { t } from 'modules/i18n';
 import { UserRolesContainer } from 'modules/roles';
 import UserRegistrationFormContainer from './UserRegistrationFormContainer';
 
-export default class UserRegistration extends React.Component {
+export default class UserRegistration extends Component {
     constructor(props) {
         super(props);
         this.state = {

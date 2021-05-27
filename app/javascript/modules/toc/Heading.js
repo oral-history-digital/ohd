@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaPlus, FaMinus } from 'react-icons/fa';
@@ -64,7 +64,7 @@ export default function Heading({
                     </div>
                 </button>
 
-                <AuthorizedContent object={data.segment}>
+                <AuthorizedContent object={data.segment} action='update'>
                     <Modal
                         title=""
                         trigger={<i className="fa fa-pencil" />}

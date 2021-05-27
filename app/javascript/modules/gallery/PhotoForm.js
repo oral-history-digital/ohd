@@ -1,9 +1,9 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 
-export default class PhotoForm extends React.Component {
+export default class PhotoForm extends Component {
     elements() {
         let elements = [
             {

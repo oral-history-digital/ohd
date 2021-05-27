@@ -45,7 +45,7 @@ class UserAccount < ApplicationRecord
         map(&:permissions).flatten.uniq.
         find{|p| p.klass == record.class_name && p.action_name == action_name}
     else
-      record_tasks = record.is_a?(project, Interview) ?
+      record_tasks = record.is_a?(Interview) ?
         all_tasks.select{|t| t.interview_id == record.id} :
         all_tasks.select{|t| t.interview_id == record.interview_id}
       record_tasks.map(&:permissions).flatten.uniq.

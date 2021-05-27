@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
@@ -6,7 +6,7 @@ import { t } from 'modules/i18n';
 import RegistryNameContainer from './RegistryNameContainer';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 
-export default class RegistryEntryForm extends React.Component {
+export default class RegistryEntryForm extends Component {
 
     constructor(props) {
         super(props);

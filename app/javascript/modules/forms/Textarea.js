@@ -1,8 +1,8 @@
-import React from 'react';
+import { Component } from 'react';
 
 import ElementContainer from './ElementContainer';
 
-export default class Textarea extends React.Component {
+export default class Textarea extends Component {
 
     // props are:
     //   @scope

@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 import { FaSortAmountDown } from 'react-icons/fa';
 import classNames from 'classnames';
@@ -23,6 +22,8 @@ export default function MediaPlayerButtons({
         }
     }
 
+    const autoScrollButtonLabel = autoScroll ? t('modules.media_player.auto_scroll.disable') : t('modules.media_player.auto_scroll.enable')
+
     return (
         <div className={classNames(className)}>
             <AuthorizedContent object={{type: 'General'}} action='edit'>
@@ -32,7 +33,8 @@ export default function MediaPlayerButtons({
             <button
                 className={classNames('StateButton', { 'is-pressed': autoScroll })}
                 type="button"
-                title={autoScroll ? t('modules.media_player.auto_scroll_enabled') : t('modules.media_player.auto_scroll_disabled')}
+                aria-label={autoScrollButtonLabel}
+                title={autoScrollButtonLabel}
                 onClick={toggleAutoScroll}
             >
                 <FaSortAmountDown className="StateButton-icon" />

@@ -1,8 +1,8 @@
-import React from 'react';
+import { Component } from 'react';
 
 import UserContentContainer from './UserContentContainer';
 
-export default class UserContents extends React.Component {
+export default class UserContents extends Component {
 
     constructor(props) {
         super(props);

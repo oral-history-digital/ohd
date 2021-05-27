@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement, Component } from 'react';
 import { Link } from 'react-router-dom';
 import Slider from "react-slick";
 
@@ -11,7 +11,7 @@ import { pluralize } from 'modules/strings';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
-export default class InterviewSearchResults extends React.Component {
+export default class InterviewSearchResults extends Component {
     constructor(props) {
         super(props);
         this.handleClick = this.handleClick.bind(this);
@@ -48,7 +48,7 @@ export default class InterviewSearchResults extends React.Component {
                     }
                 }
 
-                let result = React.createElement(this.components()[model],
+                let result = createElement(this.components()[model],
                     {
                         data: data,
                         key: `search-result-${model}-${data.id}`,
@@ -73,7 +73,7 @@ export default class InterviewSearchResults extends React.Component {
                 } else {
                     return result;
                 }
-            })
+            });
         }
     }
 

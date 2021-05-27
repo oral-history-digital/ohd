@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
@@ -12,7 +12,7 @@ import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 
-export default class WrapperPage extends React.Component {
+export default class WrapperPage extends Component {
     constructor(props) {
         super(props);
 

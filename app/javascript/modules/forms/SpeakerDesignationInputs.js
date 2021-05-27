@@ -1,4 +1,4 @@
-import React from 'react';
+import { createElement } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
@@ -35,7 +35,7 @@ export default function SpeakerDesignationInputs({
         <div className="speaker-designation-input">
             <h4>{t('speaker_designations')}</h4>
             {
-                contributions.map(contribution => React.createElement(InputContainer, {
+                contributions.map(contribution => createElement(InputContainer, {
                     key: contribution.id,
                     scope: attribute,
                     attribute: contribution.id,

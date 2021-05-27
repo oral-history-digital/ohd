@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 
@@ -92,7 +92,7 @@ class UsersAdminTabPanel extends Component {
                                     placeholder: (provided) => Object.assign(Object.assign({}, provided), { cursor: 'text' }),
                                     menu: (provided) => Object.assign(Object.assign({}, provided), { position: 'relative' }),
                                 }}
-                                placeholder={"Statistik nach Ländern filtern (optional)"}
+                                placeholder="Statistik nach Ländern filtern (optional)"
                             />
                         </div>,
                         `${pathBase(this.props)}/user_registrations`,

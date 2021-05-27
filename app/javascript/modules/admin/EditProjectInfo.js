@@ -1,5 +1,3 @@
-import React from 'react';
-
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
 import EditProjectInfoAttributesContainer from './EditProjectInfoAttributesContainer';
 import ExternalLinksContainer from './ExternalLinksContainer';

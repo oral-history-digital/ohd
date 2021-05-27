@@ -1,4 +1,3 @@
-import React from 'react';
 import PropTypes from 'prop-types';
 
 import zwarLogoDe2 from './zwar-logo-red_de.png';

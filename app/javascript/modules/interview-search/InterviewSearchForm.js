@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { PixelLoader } from 'modules/spinners';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
-export default class InterviewSearchForm extends React.Component {
+export default class InterviewSearchForm extends Component {
     constructor(props) {
         super(props);
         this.state = {

@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
 import { InterviewEditViewContainer } from 'modules/interview-edit';
 import { MediaPlayerContainer } from 'modules/media-player';
-import { AuthShowContainer } from 'modules/auth';
-import { AuthorizedContent } from 'modules/auth';
+import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
-import { Fetch, getContributorsFetched } from 'modules/data';
+import { Fetch, getContributorsFetched, getInterviewsStatus } from 'modules/data';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
 import InterviewTabsContainer from './InterviewTabsContainer';
 import InterviewLoggedOutContainer from './InterviewLoggedOutContainer';
@@ -27,14 +27,19 @@ export default function Interview({
 }) {
     const { archiveId } = useParams();
 
+    const statuses = useSelector(getInterviewsStatus);
+    const status = statuses[archiveId];
+
     useEffect(() => {
         setFlyoutTabsIndex(INDEX_INTERVIEW);
         setArchiveId(archiveId);
     }, []);
 
     useEffect(() => {
-        fetchData({ projectId, locale, projects }, 'interviews', archiveId);
-    }, [projectId, locale, archiveId]);
+        if (!status) {
+            fetchData({ projectId, locale, projects }, 'interviews', archiveId);
+        }
+    }, [projectId, locale, archiveId, status]);
 
     if (!interviewIsFetched) {
         return <Spinner withPadding />;

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { t } from 'modules/i18n';
@@ -7,7 +7,7 @@ import { ScrollToTop } from 'modules/user-agent';
 import SegmentEditViewContainer from './SegmentEditViewContainer';
 import permittedColumns from './permittedColumns';
 
-export default class InterviewEditView extends React.Component {
+export default class InterviewEditView extends Component {
     componentDidMount() {
         this.loadSegments();
     }

@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { SingleValueWithFormContainer } from 'modules/forms';
@@ -6,7 +6,7 @@ import { SelectedRegistryReferencesContainer } from 'modules/registry-references
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 
-export default class InterviewInfo extends React.Component {
+export default class InterviewInfo extends Component {
     collection() {
         let c = this.props.collections[this.props.interview.collection_id];
         let title = c && c.notes && c.notes[this.props.locale] || ''
@@ -135,7 +135,7 @@ export default class InterviewInfo extends React.Component {
                         </SingleValueWithFormContainer>
                     }
 
-                    <AuthorizedContent object={this.props.interview}>
+                    <AuthorizedContent object={this.props.interview} action='update'>
                         <SingleValueWithFormContainer
                             elementType={'select'}
                             obj={this.props.interview}

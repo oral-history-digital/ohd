@@ -1,11 +1,11 @@
-import React from 'react';
+import { Component } from 'react';
 import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { t } from 'modules/i18n';
 
-export default class ContributionForm extends React.Component {
+export default class ContributionForm extends Component {
 
     componentDidMount() {
         this.loadAllPeople();

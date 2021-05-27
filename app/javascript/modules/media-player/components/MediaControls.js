@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaStar } from 'react-icons/fa';
 import classNames from 'classnames';
@@ -9,7 +9,7 @@ import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 
-export default class MediaControls extends React.Component {
+export default class MediaControls extends Component {
     constructor(props) {
         super(props);
 

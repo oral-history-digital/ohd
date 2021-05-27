@@ -1,4 +1,4 @@
-import React from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { pathBase } from 'modules/routes';
@@ -6,7 +6,7 @@ import { t } from 'modules/i18n';
 import LocationsContainer from './LocationsContainer'
 import MapPopupContent from './MapPopupContent';
 
-export default class InterviewLocations extends React.Component {
+export default class InterviewLocations extends Component {
     componentDidMount() {
         if (!this.props.locationsFetched) {
             this.props.fetchLocations(`${pathBase(this.props)}/locations`, this.props.archiveId);
