@@ -45,7 +45,7 @@ class InterviewTabPanel extends Component {
     downloads() {
         const { interview, archiveId } = this.props;
 
-        if (admin(this.props, {type: 'Interview'}, 'download')) {
+        if (admin(this.props, this.props.interview, 'download')) {
             let links = [];
             for (var i=1; i <= parseInt(interview.tape_count); i++) {
                 links.push(
