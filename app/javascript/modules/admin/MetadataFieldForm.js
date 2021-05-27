@@ -140,7 +140,7 @@ export default function MetadataFieldForm({
                         hidden: source !== 'RegistryReferenceType',
                     },
                     {
-                        elementType: 'input',
+                        elementType: 'colorPicker',
                         attribute: 'map_color',
                         hidden: source !== 'RegistryReferenceType',
                     },

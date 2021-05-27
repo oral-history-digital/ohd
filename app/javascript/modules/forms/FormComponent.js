@@ -6,6 +6,7 @@ import { TreeSelectContainer } from 'modules/tree-select';
 import InputContainer from './InputContainer';
 import TextareaContainer from './TextareaContainer';
 import SelectContainer from './SelectContainer';
+import ColorPicker from './ColorPicker';
 import RegistryEntrySelectContainer from './RegistryEntrySelectContainer';
 import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
 import SpeakerDesignationInputs from './SpeakerDesignationInputs';
@@ -187,6 +188,7 @@ export default class Form extends Component {
             richTextEditor: RichTextEditor,
             textarea: TextareaContainer,
             speakerDesignationInputs: SpeakerDesignationInputs,
+            colorPicker: ColorPicker,
         }
     }
 
