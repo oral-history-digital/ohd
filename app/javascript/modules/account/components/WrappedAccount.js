@@ -1,9 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import groupBy from 'lodash.groupby';
 
 import UserProjects from './UserProjects';
-import { UserRolesContainer } from 'modules/roles';
 import { TasksOnlyStatusEditableContainer } from 'modules/workflow';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { Features } from 'modules/features';
@@ -38,37 +36,6 @@ export default class WrappedAccount extends Component {
                 <i className={`fa fa-angle-${this.state.showTasks[header] ? 'up' : 'down'}`}></i>
             </span>
         )
-    }
-
-    groupedByProject(roles) {
-        const groupedRoles = groupBy(roles, 'project_id');
-        return Object.keys(groupedRoles).map(projectId => {
-            return (
-                <>
-                    <h4>{this.props.projects[projectId].name[this.props.locale]}</h4>
-                    <UserRolesContainer
-                        userRoles={groupedRoles[projectId] || {}}
-                        userAccountId={this.props.account.id}
-                        hideEdit={true}
-                        hideAdd={true}
-                    />
-                </>
-            )
-        })
-    }
-
-    roles() {
-        const roles = this.props.account?.user_roles && Object.values(this.props.account.user_roles);
-        if (roles?.length > 0) {
-            return (
-                <div className={'roles box'}>
-                    <h3 className='title'>{t(this.props, 'activerecord.models.role.other')}</h3>
-                    {this.groupedByProject(roles)}
-                </div>
-            )
-        } else {
-            return null;
-        }
     }
 
     tasks(header, data, hideShow=true) {
@@ -110,7 +77,6 @@ export default class WrappedAccount extends Component {
                         }
                     </div>
                     <div className='user-registration boxes'>
-                        {this.roles()}
                         {/* own tasks (not done)*/}
                         {this.tasks('other', account && Object.values(account.tasks).filter(t => t.workflow_state !== 'finished' && t.workflow_state !== 'cleared'))}
                         {/* own supervised tasks (not cleared)*/}

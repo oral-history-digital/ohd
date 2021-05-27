@@ -13,13 +13,15 @@ function ProjectShow({
     const href = data.archive_domain ? `${data.archive_domain}/${locale}/` : `/${data.identifier}/${locale}/`;
 
     return (
-        <a
-            href={href}
-        >
-            <img className="logo-img" src={logo?.src} />
-            { data.name[locale] }
+        <>
+            <a
+                href={href}
+            >
+                <img className="logo-img" src={logo?.src} />
+                { data.name[locale] }
+            </a>
             { children }
-        </a>
+        </>
     );
 }
 
