@@ -141,6 +141,11 @@ export default function MetadataFieldForm({
                     },
                     {
                         elementType: 'input',
+                        attribute: 'map_color',
+                        hidden: source !== 'RegistryReferenceType',
+                    },
+                    {
+                        elementType: 'input',
                         attribute: 'display_on_landing_page',
                         type: 'checkbox',
                     },
