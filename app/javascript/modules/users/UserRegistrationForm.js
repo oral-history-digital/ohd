@@ -13,7 +13,7 @@ export default function UserRegistrationForm({
 }) {
     return (
         <Form
-            scope='user_registration'
+            scope='user_registration_project'
             onSubmit={(params) => {
                 submitData({ locale, projectId, projects }, params);
                 closeArchivePopup();

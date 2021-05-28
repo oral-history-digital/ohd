@@ -66,29 +66,6 @@ class UserRegistration < ApplicationRecord
       event :confirm_account, :transition_to => :account_confirmed
       event :expire_confirmation_token, :transition_to => :confirmation_token_expired
     end
-    # admin workflow
-    state :account_confirmed do
-      event :grant_project_access, :transitions_to => :project_access_granted
-      event :reject_project_access,    :transitions_to => :project_access_rejected
-      event :postpone_project_access,  :transitions_to => :project_access_postponed
-    end
-    state :project_access_granted do
-      event :reject_project_access,    :transitions_to => :project_access_rejected
-      event :deactivate_account,    :transitions_to => :account_deactivated
-    end
-    state :project_access_postponed do
-      event :grant_project_access,      :transitions_to => :project_access_granted
-      event :reject_project_access,    :transitions_to => :project_access_rejected
-      event :deactivate_account,    :transitions_to => :account_deactivated
-    end
-    state :project_access_rejected do
-      event :grant_project_access,      :transitions_to => :project_access_granted
-      event :deactivate_account,        :transitions_to => :account_deactivated
-    end
-    state :account_deactivated do
-      event :reactivate_account, :transitions_to => :account_created
-    end
-
   end
 
   def workflow_states

@@ -1,0 +1,2 @@
+class UserRegistrationProjectPolicy < ApplicationPolicy
+end
