@@ -24,54 +24,6 @@ class UserRegistration < ApplicationRecord
   scope :legit, -> { where('workflow_state = "project_access_granted"') }
   scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
 
-  # fields expected for the user registration
-  def self.define_registration_fields(fields)
-    @@registration_fields = {}
-    @@registration_field_names = []
-    fields.each_with_index do |field, index|
-      name = field.to_sym
-      @@registration_field_names << name
-      @@registration_fields[name] = { :mandatory => true }
-    end
-    @@registration_field_names.each do |field|
-      next if [:email, :first_name, :last_name, :tos_agreement, :priv_agreement].include?(field)
-      class_eval <<EVAL
-              def #{field}
-                @#{field}
-              end
-
-              def #{field}=(value)
-                @#{field} = value
-              end
-EVAL
-    end
-  end
-
-  def self.registration_field_names
-    @@registration_field_names
-  end
-
-  def self.registration_fields
-    @@registration_fields
-  end
-
-  define_registration_fields [
-                               'appellation',
-                               'first_name',
-                               'last_name',
-                               'email',
-                               'gender',
-                               'job_description',
-                               'research_intentions',
-                               'comments',
-                               'organization',
-                               'homepage',
-                               'street',
-                               'zipcode',
-                               'city',
-                               'country'
-                             ]
-
   def after_initialize
     (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
       self.send(attr.to_s + "=", value)
