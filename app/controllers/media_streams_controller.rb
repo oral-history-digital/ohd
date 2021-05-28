@@ -55,7 +55,8 @@ class MediaStreamsController < ApplicationController
       :id, 
       :media_type,
       :path, 
-      :resolution
+      :resolution,
+      :project_id
     )
   end
 

@@ -796,9 +796,9 @@ ru:
       task:
         one: Aufgabe
         other: Aufgaben
-        supervised_other: Betreute Aufgaben/ QM
+        supervised: Betreute Aufgaben/ QM
         closed_other: abgeschlossene Aufgaben
-        closed_supervised_other: abgeschlossene Aufgaben/ QM
+        closed_supervised: abgeschlossene Aufgaben/ QM
       task_type:
         one: Aufgabenart
         other: Aufgabenarten

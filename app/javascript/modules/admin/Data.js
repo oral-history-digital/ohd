@@ -36,7 +36,7 @@ export default class Data extends Component {
                             return <img src={ this.props.data.src } />
                         } else {
                             return (
-                                <p className='detail'>
+                                <p className='detail' key={attribute}>
                                     <span className='name'>{t(this.props, `activerecord.attributes.${this.props.scope}.${attribute}`) + ': '}</span>
                                     <span className='content'>{humanReadable(this.props.data, attribute, this.props, {})}</span>
                                 </p>
