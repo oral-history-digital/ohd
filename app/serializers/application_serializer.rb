@@ -38,7 +38,7 @@ class ApplicationSerializer < ActiveModel::Serializer
 
   def project_id
     (object.respond_to?(:project_id) && object.project_id) || 
-      (object.respond_to?(:interview) && object.interview.project_id)
+      (object.respond_to?(:interview) && object.interview && object.interview.project_id)
   end
 
 end
