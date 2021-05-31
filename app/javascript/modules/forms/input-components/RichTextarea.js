@@ -1,11 +1,10 @@
 import { Component } from 'react';
 import RichTextEditor from 'react-rte-17';
 
-import ElementContainer from './ElementContainer';
+import Element from '../Element';
 
 export default class RichTextarea extends Component {
-
-    constructor(props, context) {
+    constructor(props) {
         super(props);
         this.state = {
             valid: !this.props.validate,
@@ -41,13 +40,13 @@ export default class RichTextarea extends Component {
     render() {
         let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
         return (
-            <ElementContainer
+            <Element
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 label={this.props.label}
                 labelKey={this.props.labelKey}
                 showErrors={this.props.showErrors}
-                css={this.props.css}
+                className={this.props.className}
                 hidden={this.props.hidden}
                 valid={this.state.valid}
                 mandatory={typeof(this.props.validate) === 'function'}
@@ -61,8 +60,7 @@ export default class RichTextarea extends Component {
                         onChange={this.handleChange}
                     />
                 </div>
-            </ElementContainer>
+            </Element>
         );
     }
-
 }

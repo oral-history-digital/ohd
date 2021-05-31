@@ -1,6 +1,6 @@
 import { Component } from 'react';
 
-import ElementContainer from './ElementContainer';
+import Element from '../Element';
 
 export default class Textarea extends Component {
 
@@ -47,13 +47,13 @@ export default class Textarea extends Component {
     render() {
         let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
         return (
-            <ElementContainer
+            <Element
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 label={this.props.label}
                 labelKey={this.props.labelKey}
                 showErrors={this.props.showErrors}
-                css={this.props.css}
+                className={this.props.className}
                 hidden={this.props.hidden}
                 valid={this.state.valid}
                 mandatory={typeof(this.props.validate) === 'function'}
@@ -66,7 +66,7 @@ export default class Textarea extends Component {
                     defaultValue={value}
                     onChange={this.handleChange}
                 />
-            </ElementContainer>
+            </Element>
         );
     }
 
