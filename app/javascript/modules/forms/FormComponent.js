@@ -4,7 +4,7 @@ import RichTextEditor from 'react-rte-17';
 
 import { TreeSelectContainer } from 'modules/tree-select';
 import InputContainer from './input-components/InputContainer';
-import TextareaContainer from './input-components/TextareaContainer';
+import Textarea from './input-components/Textarea';
 import SelectContainer from './input-components/SelectContainer';
 import ColorPicker from './input-components/ColorPicker';
 import RegistryEntrySelectContainer from './input-components/RegistryEntrySelectContainer';
@@ -186,7 +186,7 @@ export default class Form extends Component {
             registryEntryTreeSelect: this.props.treeSelectEnabled ? TreeSelectContainer : RegistryEntrySelectContainer,
             input: InputContainer,
             richTextEditor: RichTextEditor,
-            textarea: TextareaContainer,
+            textarea: Textarea,
             speakerDesignationInputs: SpeakerDesignationInputs,
             colorPicker: ColorPicker,
         }

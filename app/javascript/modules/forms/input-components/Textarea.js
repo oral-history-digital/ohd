@@ -1,73 +1,80 @@
-import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Element from '../Element';
 
-export default class Textarea extends Component {
+export default function Textarea({
+    value,
+    data,
+    attribute,
+    scope,
+    label,
+    labelKey,
+    className,
+    hidden,
+    showErrors,
+    individualErrorMsg,
+    help,
+    validate,
+    handleChange,
+    handlechangecallback,
+    handleErrors,
+}) {
+    const onChange = event => {
+        const newValue = event.target.value;
+        const name = event.target.name;
 
-    // props are:
-    //   @scope
-    //   @attribute = attribute name
-    //   @type
-    //   @value = default value
-    //   @validate = function
-    //   @handleChange = function
-    //   @handleErrors = function
-    //   @help
+        handleChange(name, newValue, data);
 
-    constructor(props, context) {
-        super(props);
-        this.state = {
-            valid: !this.props.validate,
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-    }
-
-    handleChange(event) {
-        const value =  event.target.value;
-        const name =  event.target.name;
-
-        this.props.handleChange(name, value, this.props.data);
-
-        if (typeof this.props.handlechangecallback === 'function') {
-            this.props.handlechangecallback(name, value);
+        if (typeof handlechangecallback === 'function') {
+            handlechangecallback(name, newValue);
         }
 
-        if (typeof(this.props.validate) === 'function') {
-            if (this.props.validate(value)) {
-                this.props.handleErrors(name, false);
-                this.setState({valid: true})
-            } else {
-                this.props.handleErrors(name, true);
-                this.setState({valid: false})
-            }
+        if (typeof validate === 'function') {
+            const valid = validate(newValue);
+            handleErrors(name, !valid);
         }
-    }
+    };
 
-    render() {
-        let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
-        return (
-            <Element
-                scope={this.props.scope}
-                attribute={this.props.attribute}
-                label={this.props.label}
-                labelKey={this.props.labelKey}
-                showErrors={this.props.showErrors}
-                className={this.props.className}
-                hidden={this.props.hidden}
-                valid={this.state.valid}
-                mandatory={typeof(this.props.validate) === 'function'}
-                elementType='textarea'
-                individualErrorMsg={this.props.individualErrorMsg}
-                help={this.props.help}
-            >
-                <textarea
-                    name={this.props.attribute}
-                    defaultValue={value}
-                    onChange={this.handleChange}
-                />
-            </Element>
-        );
-    }
+    const actualValue = value || data?.[attribute];
 
+    return (
+        <Element
+            scope={scope}
+            attribute={attribute}
+            label={label}
+            labelKey={labelKey}
+            showErrors={showErrors}
+            className={className}
+            hidden={hidden}
+            valid={typeof validate === 'function' ? validate(actualValue) : true}
+            mandatory={typeof validate === 'function'}
+            elementType='textarea'
+            individualErrorMsg={individualErrorMsg}
+            help={help}
+        >
+            <textarea
+                name={attribute}
+                defaultValue={actualValue}
+                onChange={onChange}
+            />
+        </Element>
+    );
 }
+
+Textarea.propTypes = {
+    value: PropTypes.string,
+    data: PropTypes.object,
+    scope: PropTypes.string,
+    attribute: PropTypes.string,
+    label: PropTypes.string,
+    labelKey: PropTypes.string,
+    className: PropTypes.string,
+    individualErrorMsg: PropTypes.string,
+    help: PropTypes.string,
+    showErrors: PropTypes.bool,
+    hidden: PropTypes.bool,
+    validate: PropTypes.func,
+    handleChange: PropTypes.func.isRequired,
+    handleErrors: PropTypes.func.isRequired,
+    handlechangecallback: PropTypes.func,
+};
