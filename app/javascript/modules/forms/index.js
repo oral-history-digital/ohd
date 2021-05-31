@@ -6,4 +6,4 @@ export { default as SingleTextInputFormContainer } from './SingleTextInputFormCo
 export { default as SingleValueWithFormContainer } from './SingleValueWithFormContainer';
 export { default as SubmitOnBlurForm } from './SubmitOnBlurForm';
 
-export { validateTapeNumber } from './validators';
+export { validateTapeNumber, validateColor } from './validators';

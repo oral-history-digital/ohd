@@ -1,0 +1,27 @@
+.ColorPicker {
+  display: inline-block;
+  position: relative;
+  width: 72%;
+}
+
+.ColorPicker-swatch {
+  border: none;
+  border-radius: 0.25rem;
+  height: $base-unit;
+  outline: none;
+  padding: 0;
+  width: $base-unit;
+}
+
+.ColorPicker-popover {
+  border-radius: 9px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  left: 0;
+  position: absolute;
+  top: calc(100% + 2px);
+  z-index: $z-index-color-picker;
+}
+
+.ColorPicker-swatch:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
