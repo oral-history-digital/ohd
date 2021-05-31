@@ -140,6 +140,11 @@ export default function MetadataFieldForm({
                         hidden: source !== 'RegistryReferenceType',
                     },
                     {
+                        elementType: 'colorPicker',
+                        attribute: 'map_color',
+                        hidden: source !== 'RegistryReferenceType',
+                    },
+                    {
                         elementType: 'input',
                         attribute: 'display_on_landing_page',
                         type: 'checkbox',

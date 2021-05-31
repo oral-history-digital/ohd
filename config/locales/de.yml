@@ -913,6 +913,7 @@ de:
         use_in_results_list: als Suchergebnis zeigen (Liste)
         list_columns_order: Reihenfolge in den Suchergebnissen
         use_in_map_search: in der Kartensuche zeigen
+        map_color: Farbe für Kartensuche
         display_on_landing_page: Auf der Landing-Page zeigen
         ref_object_type: Verknüpfung mit
         source: Datenquelle

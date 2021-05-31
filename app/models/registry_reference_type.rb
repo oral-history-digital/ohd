@@ -28,7 +28,7 @@ class RegistryReferenceType < ApplicationRecord
     .where('registry_reference_type_translations.locale = ?', locale)
     .where('metadata_field_translations.locale = ?', locale)
     .order('metadata_fields.facet_order')
-    .select('registry_reference_types.id, metadata_field_translations.label')
+    .select('registry_reference_types.id, metadata_fields.map_color, metadata_field_translations.label')
   }
 
   def to_s(locale = I18n.locale)

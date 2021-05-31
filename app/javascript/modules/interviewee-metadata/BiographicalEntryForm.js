@@ -27,7 +27,7 @@ export default function BiographicalEntryForm({
                     elementType: 'textarea',
                     attribute: 'text',
                     value: biographicalEntry?.text[locale],
-                    validate: function(v){return v.length > 1}
+                    validate: function(v){return v?.length > 1}
                 },
                 {
                     attribute: 'start_date',
