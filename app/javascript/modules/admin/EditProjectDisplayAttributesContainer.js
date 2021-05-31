@@ -20,12 +20,15 @@ const mapStateToProps = (state) => {
         formElements: [
             {
                 attribute: "primary_color",
+                elementType: 'colorPicker',
             },
             {
                 attribute: "secondary_color",
+                elementType: 'colorPicker',
             },
             {
                 attribute: "editorial_color",
+                elementType: 'colorPicker',
             },
             {
                 attribute: "aspect_x",
