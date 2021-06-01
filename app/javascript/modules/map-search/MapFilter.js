@@ -2,7 +2,6 @@ import PropTypes from 'prop-types';
 import keyBy from 'lodash.keyby';
 
 import { useI18n } from 'modules/i18n';
-import typeToColor from './typeToColor';
 import { MARKER_COLOR_MULTIPLE_TYPES } from './constants';
 
 export default function MapFilter({
@@ -24,35 +23,39 @@ export default function MapFilter({
         <div className="MapFilter">
             <form className="MapFilter-form">
                 {
-                    availableTypeIds.map((id) => (
-                        <label
-                            key={id}
-                            className="MapFilter-label"
-                        >
-                            <input
-                                className="MapFilter-checkbox"
-                                name={typesById[id].name}
-                                type="checkbox"
-                                checked={filter.includes(id)}
-                                onChange={() => toggleMapFilter(id)}
-                            />
-                            {`${typesById[id].name} `}
-                            <svg
-                                className="MapFilter-icon"
-                                viewBox="0 0 100 100"
-                                xmlns="http://www.w3.org/2000/svg"
+                    availableTypeIds.map(id => {
+                        const referenceType = typesById[id];
+
+                        return (
+                            <label
+                                key={id}
+                                className="MapFilter-label"
                             >
-                                <circle
-                                    cx="50"
-                                    cy="50"
-                                    r="40"
-                                    stroke="none"
-                                    fill={typeToColor(mapReferenceTypes, id)}
+                                <input
+                                    className="MapFilter-checkbox"
+                                    name={referenceType.name}
+                                    type="checkbox"
+                                    checked={filter.includes(id)}
+                                    onChange={() => toggleMapFilter(id)}
                                 />
-                            </svg>
-                            {` (${locationCountByReferenceType[id]})`}
-                        </label>
-                    ))
+                                {`${referenceType.name} `}
+                                <svg
+                                    className="MapFilter-icon"
+                                    viewBox="0 0 100 100"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                >
+                                    <circle
+                                        cx="50"
+                                        cy="50"
+                                        r="40"
+                                        stroke="none"
+                                        fill={referenceType.color}
+                                    />
+                                </svg>
+                                {` (${locationCountByReferenceType[id]})`}
+                            </label>
+                        );
+                    })
                 }
             </form>
             <div>

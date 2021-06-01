@@ -15,7 +15,7 @@ function RouteDivider() {
         <Route path={'/'} render={routeProps => (
             <WrapperPageContainer
                 {...routeProps}
-                isSticky={isScrollBelowThreshold}
+                scrollPositionBelowThreshold={isScrollBelowThreshold}
             >
                 { projectFromDomain ? <MemoizedRoutes /> : <MemoizedRoutesWithProjectId /> }
             </WrapperPageContainer>

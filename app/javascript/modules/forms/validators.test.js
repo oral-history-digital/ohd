@@ -1,4 +1,4 @@
-import { validateTapeNumber } from './validators';
+import { validateTapeNumber, validateColor } from './validators';
 
 describe('validateTapeNumber', () => {
     it('returns true for 0', () => {
@@ -19,5 +19,17 @@ describe('validateTapeNumber', () => {
 
     it('returns false for negative number', () => {
         expect(validateTapeNumber(-1)).toBeFalsy();
+    });
+});
+
+describe('validateColor', () => {
+    it('accepts standard hex format', () => {
+        const result = validateColor('#3a5f00');
+        expect(result).toBeTruthy();
+    });
+
+    it('accepts uppercase letters', () => {
+        const result = validateColor('#3A5F00');
+        expect(result).toBeTruthy();
     });
 });

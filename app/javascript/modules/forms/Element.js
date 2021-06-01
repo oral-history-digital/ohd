@@ -1,64 +1,80 @@
-import { Component } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import Label from './Label';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 
-export default class Element extends Component {
+export default function Element({
+    label,
+    labelKey,
+    className,
+    scope,
+    attribute,
+    elementType,
+    htmlFor,
+    valid,
+    showErrors,
+    help,
+    hidden,
+    mandatory,
+    individualErrorMsg,
+    children,
+}) {
+    const { t } = useI18n();
 
-    // props are:
-    //   @scope
-    //   @attribute
-    //   @valid = boolean
-    //   @mandatory = boolean
+    // Scope is equivalent to model here.
+    const key = labelKey || `activerecord.attributes.${scope}.${attribute}`;
 
-    error() {
-        if (!this.props.valid && this.props.showErrors) {
-            let msg = this.props.individualErrorMsg ?
-                t(this.props, `activerecord.errors.models.${this.props.scope}.attributes.${this.props.attribute}.${this.props.individualErrorMsg}`) :
-                t(this.props, `activerecord.errors.default.${this.props.elementType}`)
-            return (
-                <div className='help-block'>
-                    {msg}
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
+    return (
+        <div className={classNames('form-group', className, {
+            'hidden': hidden,
+            'has-error': !valid && showErrors,
+        })}>
+            <Label
+                label={label}
+                labelKey={key}
+                mandatory={mandatory}
+                htmlFor={htmlFor}
+            />
 
-    css() {
-        let name = `form-group ${this.props.css ? this.props.css : ''} ${this.props.hidden ? 'hidden' : ''}`;
-        if (!this.props.valid && this.props.showErrors) {
-            name += ' has-error';
-        }
-        return name;
-    }
-
-    render() {
-        const { label, labelKey, scope, attribute, help } = this.props;
-
-        // Scope is equivalent to model here.
-        const key = labelKey || `activerecord.attributes.${scope}.${attribute}`;
-
-        return (
-            <div className={this.css()}>
-                <Label
-                    label={label}
-                    labelKey={key}
-                    mandatory={this.props.mandatory}
-                    htmlFor={this.props.htmlFor}
-                />
-
-                <div className='form-input'>
-                    {this.props.children}
-                    <p className='help-block'>
-                        {typeof(help) === 'string' ? t(this.props, help) : help}
-                    </p>
-                </div>
-
-                {this.error()}
+            <div className='form-input'>
+                {children}
+                <p className='help-block'>
+                    {typeof help === 'string' ? t(help) : help}
+                </p>
             </div>
-        );
-    }
 
+            {
+                !valid && showErrors && (
+                    <div className="help-block">
+                        {
+                            individualErrorMsg ?
+                                t(`activerecord.errors.models.${scope}.attributes.${attribute}.${individualErrorMsg}`) :
+                                t(`activerecord.errors.default.${elementType}`)
+                        }
+                    </div>
+                )
+            }
+        </div>
+    );
 }
+
+Element.propTypes = {
+    label: PropTypes.string,
+    labelKey: PropTypes.string,
+    htmlFor: PropTypes.string,
+    scope: PropTypes.string,
+    attribute: PropTypes.string,
+    className: PropTypes.string,
+    elementType: PropTypes.string,
+    help: PropTypes.string,
+    individualErrorMsg: PropTypes.string,
+    valid: PropTypes.bool,
+    showErrors: PropTypes.bool,
+    hidden: PropTypes.bool,
+    mandatory: PropTypes.bool,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
+};

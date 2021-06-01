@@ -1,8 +1,8 @@
 import { createElement, Component } from 'react';
 
-import InputContainer from './InputContainer';
-import TextareaContainer from './TextareaContainer';
-import RichTextareaContainer from './RichTextareaContainer';
+import InputContainer from './input-components/InputContainer';
+import Textarea from './input-components/Textarea';
+import RichTextareaContainer from './input-components/RichTextareaContainer';
 import { t } from 'modules/i18n';
 
 export default class MultiLocaleWrapper extends Component {
@@ -50,7 +50,7 @@ export default class MultiLocaleWrapper extends Component {
         return {
             input: InputContainer,
             richTextEditor: RichTextareaContainer,
-            textarea: TextareaContainer
+            textarea: Textarea,
         }
     }
 
