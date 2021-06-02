@@ -8,8 +8,7 @@ export { default as searchReducer } from './reducer';
 
 export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree,
     getFoundMarkers, getIsMapSearching, getMapQuery, getMapFacets, getMarkersFetched,
-    getMapReferenceTypes, getMapFilter, getMapMarkers, getMapBounds,
-    getLocationCountByReferenceType,
+    getMapReferenceTypes, getMapFilter, getMapMarkers, getLocationCountByReferenceType,
     getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery, getLanguagesQuery,
     getContributionTypesQuery, getRegistryNameTypesQuery,
     getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,

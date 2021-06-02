@@ -3,12 +3,11 @@ import { bindActionCreators } from 'redux';
 
 import { getFlyoutTabsVisible, setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { searchInMap, fetchMapReferenceTypes, getMapMarkers, getIsMapSearching, getMapQuery,
-    getMapBounds, getMapReferenceTypes } from 'modules/search';
+    getMapReferenceTypes } from 'modules/search';
 import MapSearch from './MapSearch';
 
 const mapStateToProps = state => ({
     mapMarkers: getMapMarkers(state),
-    mapBounds: getMapBounds(state),
     mapReferenceTypes: getMapReferenceTypes(state),
     query: getMapQuery(state),
     isMapSearching: getIsMapSearching(state),

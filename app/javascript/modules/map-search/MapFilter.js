@@ -78,6 +78,6 @@ export default function MapFilter({
 MapFilter.propTypes = {
     mapReferenceTypes: PropTypes.array,
     locationCountByReferenceType: PropTypes.object,
-    filter: PropTypes.array.isRequired,
+    filter: PropTypes.array,
     toggleMapFilter: PropTypes.func.isRequired,
 };
