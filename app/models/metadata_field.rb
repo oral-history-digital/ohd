@@ -11,7 +11,7 @@ class MetadataField < ApplicationRecord
   serialize :values
   validates_uniqueness_of :name, :scope => [:project_id, :source]
 
-  validates_format_of :map_color, with: /#[A-F0-9]{6}/i
+  validates_format_of :map_color, with: /\A#([0-9a-f]{3}|[0-9a-f]{6})\z/i
 
   before_save :set_name
   def set_name
