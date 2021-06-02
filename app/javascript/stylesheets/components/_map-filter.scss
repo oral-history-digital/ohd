@@ -11,6 +11,11 @@
   font-size: 1rem;
   line-height: $base-unit;
   user-select: none;
+  opacity: 0.5;
+}
+
+.MapFilter-label.is-active {
+  opacity: 1;
 }
 
 .MapFilter p {
