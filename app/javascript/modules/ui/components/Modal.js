@@ -4,8 +4,6 @@ import classNames from 'classnames';
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
-import styles from './Modal.module.scss';
-
 export default function Modal({
     title,
     className,
@@ -26,7 +24,7 @@ export default function Modal({
         <>
             <button
                 type="button"
-                className={classNames(styles.trigger, triggerClassName)}
+                className={classNames('Modal-trigger', triggerClassName)}
                 title={title}
                 onClick={open}
             >
@@ -34,7 +32,7 @@ export default function Modal({
             </button>
 
             <Dialog
-                className={classNames(styles.dialog, className)}
+                className={classNames('Modal-dialog', className)}
                 isOpen={showDialog}
                 aria-label={title}
                 onDismiss={close}
@@ -48,7 +46,7 @@ export default function Modal({
                 onTouchMove={handleClick}
                 onTouchCancel={handleClick}
             >
-                <h3 className={styles.heading}>{title}</h3>
+                <h3 className="Modal-heading">{title}</h3>
 
                 {
                     typeof children === 'function' ?
@@ -56,7 +54,7 @@ export default function Modal({
                         children
                 }
 
-                <button className={styles.close} onClick={close}>
+                <button className="Modal-close" onClick={close}>
                     <i className="fa fa-close" aria-hidden />
                 </button>
             </Dialog>

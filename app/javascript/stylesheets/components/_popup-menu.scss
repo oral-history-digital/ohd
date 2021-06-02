@@ -1,6 +1,4 @@
-@import "../../../stylesheets/variables";
-
-.trigger {
+.PopupMenu-trigger {
   background-color: transparent;
   border: none;
   cursor: pointer;
@@ -9,11 +7,11 @@
   transition: background-color $transition-duration;
 }
 
-.triggerIcon {
+.PopupMenu-triggerIcon {
   color: var(--editorial-color) !important;
 }
 
-.list {
+.PopupMenu-list {
   background-color: white;
   border: 1px solid $gray-light;
   box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
@@ -23,6 +21,6 @@
 
 /* States */
 
-.trigger:hover {
+.PopupMenu-trigger:hover {
   background-color: $gray-lighter;
 }

@@ -7,7 +7,6 @@ import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
-import styles from './BiographicalEntry.module.scss';
 
 export default class BiographicalEntry extends Component {
     constructor(props) {
@@ -95,7 +94,7 @@ export default class BiographicalEntry extends Component {
             <p>
                 <Disclosure open={open} onChange={() => this.setState({ open: !open })}>
                     <DisclosureButton
-                        className={classNames(styles.toggle, 'flyout-sub-tabs-content-ico-link')}
+                        className={classNames('Button', 'flyout-sub-tabs-content-ico-link')}
                         title={t(this.props, this.state.open ? 'hide' : 'show')}
                     >
                         {this.preview()}

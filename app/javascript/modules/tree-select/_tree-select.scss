@@ -1,6 +1,4 @@
-@import "../../../stylesheets/variables";
-
-.container {
+.TreeSelect {
   margin-bottom: 1.5rem;
 }
 
@@ -8,8 +6,7 @@
  * Overwrite global styles
  */
 
-
-.treeSelect label {
+.TreeSelect-select label {
   float: none !important;
   font-size: 0.875rem;
   margin: 0 !important;
@@ -17,43 +14,43 @@
   width: auto !important;
 }
 
-.treeSelect input {
+.TreeSelect-select input {
   margin: 0 0.25rem 0 0 !important;
   padding: 0 !important;
   width: auto !important;
 }
 
-.treeSelect :global(.search)::placeholder {
+.TreeSelect-select .search::placeholder {
   color: $gray-darkest;
 }
 
-.treeSelect :global(.node) {
+.TreeSelect-select .node {
   margin-right: 0.75rem;
 }
 
-.treeSelect :global(.node.hide) {
+.TreeSelect-select .node.hide {
   position: initial;
 }
 
-.treeSelect :global(.node.disabled) > * {
+.TreeSelect-select .node.disabled > * {
   cursor: initial;
 }
 
-.treeSelect :global(.node.disabled .radio-item) {
+.TreeSelect-select .node.disabled .radio-item {
   display: none;
 }
 
-.treeSelect :global(.dropdown-trigger) {
+.TreeSelect-select .dropdown-trigger {
   border-color: $gray-medium !important;
   outline: none;
   transition: box-shadow $transition-duration;
 }
 
-.treeSelect :global(.dropdown-trigger):focus {
+.TreeSelect-select .dropdown-trigger:focus {
   box-shadow: 0 0 0 $focus-radius $focus-color;
 }
 
-.treeSelect :global(.dropdown-content) {
+.TreeSelect-select .dropdown-content {
   max-height: 25rem;
   overflow-y: auto;
 }
@@ -61,7 +58,7 @@
 
 /* Individual toggle icon */
 
-.treeSelect :global(.toggle) {
+.TreeSelect-select .toggle {
   color: var(--primary-color) !important;
   font: normal normal normal 16px/1 FontAwesome;
   margin: 0 0.375rem 0 0.25rem;
@@ -69,13 +66,13 @@
   white-space: pre;
 }
 
-.treeSelect :global(.toggle.collapsed)::after {
+.TreeSelect-select .toggle.collapsed::after {
   cursor: pointer;
   content: "\F067";
   vertical-align: middle;
 }
 
-.treeSelect :global(.toggle.expanded)::after {
+.TreeSelect-select .toggle.expanded::after {
   cursor: pointer;
   content: "\F068";
   vertical-align: middle;

@@ -1,26 +1,26 @@
-.container {
+.Photo {
   align-items: center;
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
-.admin {
+.Photo-admin {
   margin-bottom: 1.5rem;
 }
 
-.admin svg {
+.Photo-admin svg {
   color: white;
   vertical-align: -0.1rem;
 }
 
-.image {
+.Photo-image {
   color: white;
   flex-grow: 1;
   max-height: 650px;
   min-height: 50px;
 }
 
-.editButton {
+.Photo-editButton {
   margin-right: 0.75rem;
 }

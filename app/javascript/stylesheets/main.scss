@@ -54,14 +54,17 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/aspect-ratio";
 @import "components/back-to-top";
 @import "components/burger-button";
+@import "components/button";
 @import "components/color-picker";
 @import "components/content-field";
 @import "components/content-tabs";
 @import "components/contribution-list";
 @import "components/detail-list";
+@import "components/features";
 @import "components/form-label";
 @import "components/icon-button";
 @import "components/layout";
+@import "components/locale-buttons";
 @import "components/map";
 @import "components/map-filter";
 @import "components/map-overlay";
@@ -70,7 +73,10 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/media-element";
 @import "components/media-header";
 @import "components/media-player";
+@import "components/modal";
 @import "components/photo-caption";
+@import "components/pixel-loader";
+@import "components/popup-menu";
 @import "components/registry-entry";
 @import "components/registry-entry-list";
 @import "components/registry-reference";
@@ -80,8 +86,14 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/sidebar";
 @import "components/site";
 @import "components/site-header";
+@import "components/spinner";
 @import "components/state-button";
 @import "components/wrapper-page";
+
+/* Modules */
+@import "../modules/gallery/styles";
+@import "../modules/toc/styles";
+@import "../modules/tree-select/styles";
 
 /* Print */
 @import "print";

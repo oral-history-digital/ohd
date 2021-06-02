@@ -1,7 +1,4 @@
-@import "../../../stylesheets/variables";
-@import "../../../stylesheets/mixins";
-
-.trigger {
+.Modal-trigger {
   background-color: transparent;
   border: none;
   font-family: $font-family;
@@ -11,7 +8,7 @@
   transition: box-shadow $transition-duration;
 }
 
-.dialog {
+.Modal-dialog {
   margin: 2vh auto;
   padding: 1.5rem;
   position: relative;
@@ -30,12 +27,12 @@
 
 }
 
-.heading {
+.Modal-heading {
   margin-top: 0;
   margin-bottom: 0.75rem;
 }
 
-.close {
+.Modal-close {
   background-color: transparent;
   border: 1px solid lightgray;
   color: gray;
@@ -48,7 +45,7 @@
   transition: box-shadow $transition-duration;
 }
 
-.trigger:focus,
-.close:focus {
+.Modal-trigger:focus,
+.Modal-close:focus {
   box-shadow: 0 0 0 $focus-radius $focus-color;
 }

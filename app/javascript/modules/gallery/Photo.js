@@ -6,7 +6,6 @@ import { Modal } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
 import PhotoFormContainer from './PhotoFormContainer';
 import PhotoCaption from './PhotoCaption';
-import styles from './Photo.module.scss';
 
 export default function Photo({
     data,
@@ -21,13 +20,13 @@ export default function Photo({
     const destroy = () => deleteData({ locale, projectId, projects }, 'interviews', archiveId, 'photos', data.id);
 
     return (
-        <div className={styles.container}>
+        <div className="Photo">
             <AuthorizedContent object={data} action='update'>
-                <div className={styles.admin}>
+                <div className="Photo-admin">
                     <Modal
                         title={t('edit.photo.edit')}
                         trigger={<FaPencilAlt />}
-                        triggerClassName={styles.editButton}
+                        triggerClassName="Photo-editButton"
                     >
                         {closeModal => (
                             <PhotoFormContainer
@@ -51,7 +50,7 @@ export default function Photo({
             </AuthorizedContent>
 
             <img
-                className={styles.image}
+                className="Photo-image"
                 src={data.src}
                 alt={data.captions[locale] || data.captions['de']}
             />

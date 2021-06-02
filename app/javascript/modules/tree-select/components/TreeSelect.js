@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 
 import { useI18n } from 'modules/i18n';
-import styles from './TreeSelect.module.scss';
 
 export default function TreeSelect({
     locale,
@@ -35,7 +34,7 @@ export default function TreeSelect({
     }
 
     return (
-        <div className={styles.container}>
+        <div className="TreeSelect">
             <label
                 id="tree-select-label"
                 className="form-label"
@@ -45,7 +44,7 @@ export default function TreeSelect({
             </label>
             <DropdownTreeSelect
                 id="tree-select"
-                className={styles.treeSelect}
+                className="TreeSelect-select"
                 mode="radioSelect"
                 data={tree ? tree.children : []}
                 onChange={onChange}

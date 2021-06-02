@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { sendTimeChangeRequest, getCurrentTape, getMediaTime } from 'modules/media-player';
-import SubHeading from './SubHeading';
+import Subheading from './Subheading';
 import isHeadingActive from './isHeadingActive';
 
 const mapStateToProps = (state, ownProps) => {
@@ -22,4 +22,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     sendTimeChangeRequest,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(SubHeading);
+export default connect(mapStateToProps, mapDispatchToProps)(Subheading);

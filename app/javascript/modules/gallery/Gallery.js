@@ -6,7 +6,6 @@ import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import CarouselContainer from './CarouselContainer';
 import PhotoFormContainer from './PhotoFormContainer';
-import styles from './Gallery.module.scss';
 
 export default class Gallery extends Component {
     renderPhotos() {
@@ -25,7 +24,7 @@ export default class Gallery extends Component {
         }
         if (photos.length > 0) {
             return (
-                <div className={styles.gallery}>
+                <div className="Gallery">
                     {photos}
                 </div>
             )
@@ -39,7 +38,7 @@ export default class Gallery extends Component {
             <button
                 type="button"
                 key={photo.id}
-                className={styles.thumbnail}
+                className="Gallery-thumbnail"
                 onClick={() => this.props.openArchivePopup({
                     title: null,
                     big: true,
@@ -48,8 +47,9 @@ export default class Gallery extends Component {
 
             >
                 <img
-                    className={styles.image}
+                    className="Gallery-image"
                     src={photo.thumb_src}
+                    alt=""
                 />
             </button>
         )

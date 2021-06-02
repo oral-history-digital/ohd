@@ -6,10 +6,9 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
-import SubHeadingContainer from './SubHeadingContainer';
+import SubheadingContainer from './SubheadingContainer';
 import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
 import formatTimecode from './formatTimecode';
-import styles from './Heading.module.scss';
 
 export default function Heading({
     data,
@@ -22,14 +21,14 @@ export default function Heading({
 
     return (
         <>
-            <div className={styles.container}>
+            <div className="Heading Heading--main">
                 {
                     data.subheadings.length === 0 ?
                         null :
                         (
                             <button
                                 type="button"
-                                className={styles.toggle}
+                                className="Heading-toggle"
                                 onClick={() => setExpanded(!expanded)}
                                 aria-label={expanded ? t('modules.toc.collapse') : t('modules.toc.expand')}
                             >
@@ -44,21 +43,19 @@ export default function Heading({
 
                 <button
                     type="button"
-                    className={classNames(styles.main, {
-                        [styles.active]: active,
-                    })}
+                    className={classNames('Heading-main', { 'is-active': active })}
                     onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
                 >
-                    <span className={styles.chapter}>
+                    <span className="Heading-chapter">
                         {data.chapter}
                     </span>
 
                     <div>
-                        <div className={styles.heading}>
+                        <div className="Heading-heading">
                             {data.heading}
                         </div>
 
-                        <div className={styles.timecode}>
+                        <div className="Heading-timecode">
                             {t('tape')} {data.tape_nbr} | {formatTimecode(data.time)}
                         </div>
                     </div>
@@ -81,16 +78,15 @@ export default function Heading({
 
             {
                 data.main && (
-                    <div className={classNames(styles.subHeadings, {
-                        [styles.subHeadingsCollapsed]: !expanded,
+                    <div className={classNames('Heading-subheadings', {
+                        'is-expanded': expanded,
                     })}>
-                        {data.subheadings.map((heading, index) => (
-                            <div key={heading.segment.id}>
-                                <SubHeadingContainer
-                                    data={heading}
-                                    nextSubHeading={data.subheadings[index + 1] || nextHeading}
-                                />
-                            </div>
+                        {data.subheadings.map((subheading, index) => (
+                            <SubheadingContainer
+                                key={subheading.segment.id}
+                                data={subheading}
+                                nextSubHeading={data.subheadings[index + 1] || nextHeading}
+                            />
                         ))}
                     </div>
                 )

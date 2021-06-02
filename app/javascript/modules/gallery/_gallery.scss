@@ -1,6 +1,4 @@
-@import "../../stylesheets/variables";
-
-.gallery {
+.Gallery {
   background-color: $gray-dark;
   display: flex;
   flex-direction: row;
@@ -9,7 +7,7 @@
   padding: 5px 10px;
 }
 
-.thumbnail {
+.Gallery-thumbnail {
   border: none;
   cursor: pointer;
   flex-grow: 0;
@@ -23,7 +21,7 @@
   width: 100px;
 }
 
-.thumbnail::after {
+.Gallery-thumbnail::after {
   align-items: center;
   background: rgba(0,0,0,0.7);
   bottom: 0;
@@ -43,17 +41,17 @@
   transition: all 300ms ease-in;
 }
 
-.thumbnail:focus
+.Gallery-thumbnail:focus
 {
   box-shadow: 0 0 0 $focus-radius $focus-color;
 }
 
-.thumbnail:focus::after,
-.thumbnail:hover::after {
+.Gallery-thumbnail:focus::after,
+.Gallery-thumbnail:hover::after {
   opacity: 1;
 }
 
-.image {
+.Gallery-image {
   height: 100%;
   object-fit: cover;
   width: 100%;

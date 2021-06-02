@@ -1,10 +1,8 @@
-@import "../../../stylesheets/variables";
-
-.div {
+.LocaleButtons {
     margin-bottom: 2rem;
 }
 
-.button {
+.LocaleButtons-button {
     background-color: transparent;
     border: none;
     outline: none;
@@ -19,11 +17,11 @@
     transition: color $transition-duration;
 }
 
-.button:disabled {
+.LocaleButtons-button:disabled {
     color: $gray-darkest;
     cursor: default;
 }
 
-.button:hover {
+.LocaleButtons-button:hover {
     color: $gray-darkest;
 }

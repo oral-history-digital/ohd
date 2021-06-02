@@ -3,7 +3,6 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useI18n } from 'modules/i18n';
 import { getFeatures } from '../selectors';
 import { enable, disable } from '../actions';
-import styles from './Features.module.scss';
 
 export default function Features() {
     const features = useSelector(getFeatures);
@@ -15,11 +14,11 @@ export default function Features() {
             <h4>{t('modules.features.experimental_features')}</h4>
 
             <form>
-                <ul className={styles.list}>
+                <ul className="Features">
                     {
                         features.map(([name, isEnabled]) => (
                             <li key={name}>
-                                <label className={styles.label}>
+                                <label className="Features-label">
                                     <input
                                         name={name}
                                         type="checkbox"

@@ -1,6 +1,5 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import styles from './LocaleButtons.module.scss';
 
 import { pathBase } from 'modules/routes';
 
@@ -40,13 +39,13 @@ class LocaleButtons extends Component {
         const { currentLocale, locales } = this.props;
 
         return (
-            <div className={styles.div}>
+            <div className="LocaleButtons">
                 {
-                    locales.map((locale, index) => (
+                    locales.map(locale => (
                         <button
                             key={locale}
                             type="button"
-                            className={styles.button}
+                            className="LocaleButtons-button"
                             disabled={locale === currentLocale}
                             onClick={this.handleButtonClick}
                         >

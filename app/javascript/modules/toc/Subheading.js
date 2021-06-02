@@ -6,9 +6,8 @@ import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
 import formatTimecode from './formatTimecode';
-import styles from './SubHeading.module.scss';
 
-export default function SubHeading({
+export default function Subheading({
     data,
     active,
     sendTimeChangeRequest,
@@ -16,24 +15,22 @@ export default function SubHeading({
     const { t } = useI18n();
 
     return (
-        <div className={styles.container}>
+        <div className="Heading Heading--sub">
             <button
                 type="button"
-                className={classNames(styles.main, {
-                    [styles.active]: active,
-                })}
+                className={classNames('Heading-main', { 'is-active': active })}
                 onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
             >
-                <span className={styles.chapter}>
+                <span className="Heading-chapter">
                     {data.chapter}
                 </span>
 
                 <div>
-                    <div className={styles.heading}>
+                    <div className="Heading-heading">
                         {data.heading}
                     </div>
 
-                    <div className={styles.timecode}>
+                    <div className="Heading-timecode">
                         {t('tape')} {data.tape_nbr} | {formatTimecode(data.time)}
                     </div>
                 </div>
@@ -56,7 +53,7 @@ export default function SubHeading({
     );
 }
 
-SubHeading.propTypes = {
+Subheading.propTypes = {
     data: PropTypes.object.isRequired,
     active: PropTypes.bool.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,

@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import styles from './Spinner.module.scss';
 import spinnerSrc from './large_spinner.gif';
 
 export default function Spinner({
@@ -13,9 +12,9 @@ export default function Spinner({
     return (
         <img
             src={spinnerSrc}
-            className={classNames(styles.img, className, {
-                [styles.small]: small,
-                [styles.withPadding]: withPadding,
+            className={classNames('Spinner', className, {
+                'Spinner--small': small,
+                'Spinner--withPadding': withPadding,
             })}
             style={style}
             alt=""
