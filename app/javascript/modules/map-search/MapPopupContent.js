@@ -19,6 +19,7 @@ export default function MapPopupContent({
     const pathBase = usePathBase();
     const referenceTypes = useSelector(getMapReferenceTypes);
     const filter = useSelector(getMapFilter);
+    const mapReferenceTypes = useSelector(getMapReferenceTypes);
 
     const typesById = keyBy(referenceTypes, type => type.id);
 
@@ -51,21 +52,21 @@ export default function MapPopupContent({
         );
     }
 
-    const groupedReferences = references ? groupAndFilterReferences(references, filter) : null;
+    const groupedReferences = references ? groupAndFilterReferences(references, filter, mapReferenceTypes) : null;
 
     return (
         <div className="MapPopup">
             <h3 className="MapPopup-heading">{name}</h3>
             {
                 groupedReferences !== null ?
-                    Object.keys(groupedReferences).map(type => (
-                        <div key={type}>
+                    groupedReferences.map(group => (
+                        <div key={group.id}>
                             <h4 className="MapPopup-subHeading">
-                                {typesById[type].name} ({groupedReferences[type].length})
+                                {typesById[group.id].name} ({group.references.length})
                             </h4>
                             <ul className="MapPopup-list">
                                 {
-                                    groupedReferences[type].map(ref => (
+                                    group.references.map(ref => (
                                         <li key={ref.id}>
                                             <Link
                                                 to={`${pathBase}/interviews/${ref.archive_id}`}
