@@ -64,10 +64,12 @@ const state = {
                 {
                     id: 1,
                     name: 'Habitation',
+                    color: '#1c2d8f',
                 },
                 {
                     id: 2,
                     name: 'Birthplace',
+                    color: '#1c2d8f',
                 }],
             filter: [1, 2],
         },

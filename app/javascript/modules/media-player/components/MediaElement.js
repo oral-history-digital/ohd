@@ -137,7 +137,7 @@ export default class MediaElement extends Component {
     render() {
         const { projectId, interview, className } = this.props;
 
-        const isAudio = projectId === 'dg';
+        const isAudio = interview.media_type === 'audio';
 
         return (
             <div className={classNames('MediaElement', className, isAudio ? 'MediaElement--audio' : 'MediaElement--video')}>

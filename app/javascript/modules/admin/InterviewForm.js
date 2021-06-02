@@ -66,7 +66,6 @@ export default class InterviewForm extends Component {
                 value: this.props.interview?.description,
                 elementType: 'textarea',
                 multiLocale: true,
-                //validate: v => v.length <= 300,
             },
             {
                 attribute: 'media_type',

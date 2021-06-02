@@ -11,6 +11,7 @@ import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
+import BackToTopButton from './BackToTopButton';
 
 export default class WrapperPage extends Component {
     constructor(props) {
@@ -67,13 +68,13 @@ export default class WrapperPage extends Component {
     }
 
     render() {
-        const { isSticky, flyoutTabsVisible, children, match, toggleFlyoutTabs } = this.props;
+        const { scrollPositionBelowThreshold, flyoutTabsVisible, children, match, toggleFlyoutTabs } = this.props;
 
         return (
             <ResizeWatcherContainer>
                 <div className={classNames('Layout', {
                     'sidebar-is-visible': flyoutTabsVisible,
-                    'is-sticky': isSticky,
+                    'is-sticky': scrollPositionBelowThreshold,
                 })}>
                     <Helmet>
                         <html lang={match.params.locale} />
@@ -104,6 +105,11 @@ export default class WrapperPage extends Component {
                         onClick={() => toggleFlyoutTabs(flyoutTabsVisible)}
                     />
 
+                    <BackToTopButton
+                        visible={scrollPositionBelowThreshold}
+                        fullscreen={!flyoutTabsVisible}
+                    />
+
                     <ArchivePopupContainer/>
                 </div>
             </ResizeWatcherContainer>
@@ -112,7 +118,7 @@ export default class WrapperPage extends Component {
 }
 
 WrapperPage.propTypes = {
-    isSticky: PropTypes.bool.isRequired,
+    scrollPositionBelowThreshold: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool,
     isLoggedOut: PropTypes.bool,
     loggedInAt: PropTypes.number,

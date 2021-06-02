@@ -1,6 +1,6 @@
 import { createElement, Component } from 'react';
 
-import ElementContainer from './ElementContainer';
+import Element from '../Element';
 
 export default class Input extends Component {
 
@@ -79,14 +79,14 @@ export default class Input extends Component {
 
     render() {
         return (
-            <ElementContainer
+            <Element
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 label={this.props.label}
                 labelKey={this.props.labelKey}
                 htmlFor={`${this.props.scope}_${this.props.attribute}`}
                 showErrors={this.props.showErrors}
-                css={this.props.css}
+                className={this.props.className}
                 hidden={this.props.hidden}
                 valid={this.state.valid}
                 mandatory={typeof(this.props.validate) === 'function'}
@@ -95,7 +95,7 @@ export default class Input extends Component {
                 help={this.props.help}
             >
                 {this.inputOrImg()}
-            </ElementContainer>
+            </Element>
         );
     }
 

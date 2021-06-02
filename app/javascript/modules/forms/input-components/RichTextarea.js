@@ -1,33 +1,26 @@
 import { Component } from 'react';
+import RichTextEditor from 'react-rte-17';
 
-import ElementContainer from './ElementContainer';
+import Element from '../Element';
 
-export default class Textarea extends Component {
-
-    // props are:
-    //   @scope
-    //   @attribute = attribute name
-    //   @type
-    //   @value = default value
-    //   @validate = function
-    //   @handleChange = function
-    //   @handleErrors = function
-    //   @help
-
-    constructor(props, context) {
+export default class RichTextarea extends Component {
+    constructor(props) {
         super(props);
         this.state = {
             valid: !this.props.validate,
+            value: this.props.data && this.props.data[this.props.attribute] ?
+                  RichTextEditor.createValueFromString(this.props.data[this.props.attribute], 'html') :
+                  RichTextEditor.createEmptyValue()
         };
-
         this.handleChange = this.handleChange.bind(this);
     }
 
-    handleChange(event) {
-        const value =  event.target.value;
-        const name =  event.target.name;
+    handleChange(value) {
+        const name =  this.props.attribute;
+        let stringValue = value.toString('html');
 
-        this.props.handleChange(name, value, this.props.data);
+        this.setState({value: value})
+        this.props.handleChange(name, stringValue, this.props.data);
 
         if (typeof this.props.handlechangecallback === 'function') {
             this.props.handlechangecallback(name, value);
@@ -47,13 +40,13 @@ export default class Textarea extends Component {
     render() {
         let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
         return (
-            <ElementContainer
+            <Element
                 scope={this.props.scope}
                 attribute={this.props.attribute}
                 label={this.props.label}
                 labelKey={this.props.labelKey}
                 showErrors={this.props.showErrors}
-                css={this.props.css}
+                className={this.props.className}
                 hidden={this.props.hidden}
                 valid={this.state.valid}
                 mandatory={typeof(this.props.validate) === 'function'}
@@ -61,13 +54,13 @@ export default class Textarea extends Component {
                 individualErrorMsg={this.props.individualErrorMsg}
                 help={this.props.help}
             >
-                <textarea
-                    name={this.props.attribute}
-                    defaultValue={value}
-                    onChange={this.handleChange}
-                />
-            </ElementContainer>
+                <div className='richtextarea'>
+                    <RichTextEditor
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                    />
+                </div>
+            </Element>
         );
     }
-
 }

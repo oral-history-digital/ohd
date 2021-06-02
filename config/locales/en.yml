@@ -903,6 +903,7 @@ en:
         use_in_results_list: als Suchergebnis zeigen (Liste)
         list_columns_order: Reihenfolge in den Suchergebnissen
         use_in_map_search: in der Kartensuche zeigen
+        map_color: color for map search
         display_on_landing_page: Auf der Landing-Page zeigen
         ref_object_type: Verknüpfung mit
         source: Datenquelle
@@ -1148,6 +1149,9 @@ en:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    layout:
+      back_to_top:
+        label: "Back to top"
     map_filter:
       multiple_types: multiple reference types
     media_player:

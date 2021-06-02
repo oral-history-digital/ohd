@@ -5,7 +5,6 @@ form.default {
  .form-group {
     width: 100%;
     @include clearfix;
-    overflow: hidden;
     padding: 1px;
     margin: 0 0 15px 0;
  }
