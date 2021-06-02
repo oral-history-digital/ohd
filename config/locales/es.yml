@@ -884,7 +884,7 @@ es:
         archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
       metadata_field:
         use_as_facet: als Facette benutzen
-        facet_order: Reihenfolge in den Suchfacetten
+        facet_order: order in search facets and map filter
         use_in_results_table: als Suchergebnis zeigen (Raster)
         use_in_results_list: als Suchergebnis zeigen (Liste)
         list_columns_order: Reihenfolge in den Suchergebnissen
