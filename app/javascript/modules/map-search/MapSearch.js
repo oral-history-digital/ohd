@@ -11,6 +11,7 @@ import MapPopup from './MapPopup';
 import MapFilterContainer from './MapFilterContainer';
 import markerColor from './markerColor';
 import markerRadius from './markerRadius';
+import { MAP_DEFAULT_BOUNDS } from './constants';
 
 const leafletOptions = {
     maxZoom: 16,
@@ -20,7 +21,6 @@ const leafletOptions = {
 
 export default function MapSearch({
     mapMarkers,
-    mapBounds,
     mapReferenceTypes,
     isMapSearching,
     query,
@@ -56,7 +56,7 @@ export default function MapSearch({
             <div className='wrapper-content map'>
                 <Map
                     className="Map Map--search"
-                    bounds={mapBounds}
+                    bounds={MAP_DEFAULT_BOUNDS}
                     ref={mapEl}
                     {...leafletOptions}
                 >
@@ -100,7 +100,6 @@ export default function MapSearch({
 
 MapSearch.propTypes = {
     mapMarkers: PropTypes.array,
-    mapBounds: PropTypes.array.isRequired,
     mapReferenceTypes: PropTypes.array,
     isMapSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,

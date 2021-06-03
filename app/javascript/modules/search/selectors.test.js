@@ -1,6 +1,6 @@
 import dotProp from 'dot-prop-immutable';
 
-import { NAME, MAP_DEFAULT_BOUNDS } from './constants';
+import { NAME  } from './constants';
 import * as selectors from './selectors';
 
 const state = {
@@ -194,27 +194,6 @@ test('getMapMarkers retrieves filtered and converted map markers', () => {
         },
     ];
     expect(actual).toEqual(expected);
-});
-
-describe('getMapBounds', () => {
-    test('retrieves an array of all lat long data for map library', () => {
-        const actual = selectors.getMapBounds(state);
-        const expected = [
-            [40.71, -74.00],
-            [51.51, 2.35],
-        ];
-        expect(actual).toEqual(expected);
-    });
-
-    test('retrieves default bounds if there is no data', () => {
-        const _state = dotProp.set(state, `${NAME}.map.foundMarkers`, null);
-        expect(selectors.getMapBounds(_state)).toEqual(MAP_DEFAULT_BOUNDS);
-    });
-
-    test('retrieves default bounds if markers are empty', () => {
-        const _state = dotProp.set(state, `${NAME}.map.foundMarkers`, []);
-        expect(selectors.getMapBounds(_state)).toEqual(MAP_DEFAULT_BOUNDS);
-    });
 });
 
 describe('getMarkersFetched', () => {

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import keyBy from 'lodash.keyby';
 
 import { useI18n } from 'modules/i18n';
@@ -25,17 +26,18 @@ export default function MapFilter({
                 {
                     availableTypeIds.map(id => {
                         const referenceType = typesById[id];
+                        const isActive = filter.includes(id);
 
                         return (
                             <label
                                 key={id}
-                                className="MapFilter-label"
+                                className={classNames('MapFilter-label', { 'is-active': isActive })}
                             >
                                 <input
                                     className="MapFilter-checkbox"
                                     name={referenceType.name}
                                     type="checkbox"
-                                    checked={filter.includes(id)}
+                                    checked={isActive}
                                     onChange={() => toggleMapFilter(id)}
                                 />
                                 {`${referenceType.name} `}
@@ -78,6 +80,6 @@ export default function MapFilter({
 MapFilter.propTypes = {
     mapReferenceTypes: PropTypes.array,
     locationCountByReferenceType: PropTypes.object,
-    filter: PropTypes.array.isRequired,
+    filter: PropTypes.array,
     toggleMapFilter: PropTypes.func.isRequired,
 };
