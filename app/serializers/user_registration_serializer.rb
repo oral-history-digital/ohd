@@ -7,11 +7,8 @@ class UserRegistrationSerializer < ApplicationSerializer
     :email,
     :tos_agreement,
     :application_info,
-    :workflow_state,
-    :workflow_states,
     :created_at,
     :activated_at,
-    :admin_comments,
     :user_account_id,
     :processed_at,
     :default_locale,
@@ -30,6 +27,7 @@ class UserRegistrationSerializer < ApplicationSerializer
     :state,
     :country,
     :user_roles,
+    :user_registration_projects,
     :tasks
 
   def user_account_id
@@ -47,6 +45,10 @@ class UserRegistrationSerializer < ApplicationSerializer
 
   def user_roles
     object.user_account ? object.user_account.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem} : {}
+  end
+
+  def user_registration_projects
+    object.user_registration_projects.inject({}){|mem, c| mem[c.id] = UserRegistrationProjectSerializer.new(c); mem}
   end
 
   def tasks

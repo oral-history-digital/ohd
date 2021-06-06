@@ -158,6 +158,7 @@ Rails.application.routes.draw do
         get :activate
       end
     end
+    resources :user_registration_projects, only: [:create, :update]
   end
 
   # devise_for creates named routes

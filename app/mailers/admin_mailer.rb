@@ -4,7 +4,7 @@ class AdminMailer < ApplicationMailer
     registration = params[:registration]
     @project = params[:project]
     @user_name = registration.full_name
-    uri = URI.parse(@project.archive_domain)
+    uri = @project.archive_domain.blank? ? URI.parse(OHD_DOMAIN) : URI.parse(@project.archive_domain)
     @url = user_registrations_url(protocol: uri.scheme, host: uri.host, port: uri.port, locale: @project.default_locale, project_id: @project.identifier)
 
     mail(

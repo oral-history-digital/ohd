@@ -6,7 +6,7 @@ import { Modal } from 'modules/ui';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { UserRolesContainer } from 'modules/roles';
-import UserRegistrationFormContainer from './UserRegistrationFormContainer';
+import UserRegistrationProjectFormContainer from './UserRegistrationProjectFormContainer';
 
 export default class UserRegistration extends Component {
     constructor(props) {
@@ -88,7 +88,8 @@ export default class UserRegistration extends Component {
     }
 
     show() {
-        if (this.props.userRegistration.workflow_state != 'account_created') {
+        if (this.props.userRegistration.user_account_id) {
+            const userRegistrationProject = Object.values(this.props.userRegistration.user_registration_projects).find(urp => urp.project_id === this.props.project.id)
             return (
                 <Modal
                     title={t(this.props, 'edit.user_registration.edit')}
@@ -98,8 +99,8 @@ export default class UserRegistration extends Component {
                     {close => (
                         <div>
                             {this.details()}
-                            <UserRegistrationFormContainer
-                                userRegistration={this.props.userRegistration}
+                            <UserRegistrationProjectFormContainer
+                                userRegistrationProject={userRegistrationProject}
                                 onSubmit={close}
                             />
                         </div>

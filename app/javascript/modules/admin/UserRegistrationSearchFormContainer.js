@@ -19,15 +19,25 @@ const mapStateToProps = (state) => {
         dataStatus: getUserRegistrationsStatus(state),
         scope: 'user_registration',
         searchableAttributes: [
-            {attributeName: 'first_name'},
-            {attributeName: 'last_name'},
-            {attributeName: 'email'},
+            {
+                attributeName: 'first_name'
+            },
+            {
+                attributeName: 'last_name'
+            },
+            {
+                attributeName: 'email'
+            },
             {
                 attributeName: 'default_locale',
                 type: 'select',
                 values: (project && project.available_locales) || getLocales(state),
             },
-            {attributeName: 'workflow_state', type: 'select', values: ['all', 'account_confirmed', 'project_access_granted', 'project_access_postponed', 'project_access_rejected', 'account_deactivated']}
+            {
+                attributeName: 'user_registration_projects.workflow_state',
+                type: 'select',
+                values: ['all', 'account_confirmed', 'project_access_granted', 'project_access_postponed', 'project_access_rejected', 'account_deactivated']
+            }
         ]
     }
 }

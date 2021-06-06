@@ -1,6 +1,7 @@
 <%
   my_locale = @user_account.default_locale || I18n.locale
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}/user_registrations/#{@user_account.confirmation_token}/activate"
+  last_project = @resource.user_registration.projects.last
+  url = "#{last_project.domainWithOptinalIdentifier}/#{my_locale}/user_registrations/#{@user_account.confirmation_token}/activate"
   case my_locale.to_sym
   when :en
 -%>

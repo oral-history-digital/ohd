@@ -1,12 +1,12 @@
 <%
   my_locale = @user_account.locale_with_project_fallback
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}"
+  url = "#{@project.domainWithOptinalIdentifier}/#{my_locale}"
   case my_locale.to_sym
   when :en
 -%>
 Dear <%= @user_account.display_name %>,
 
-We hereby confirm your account for the application "<%= @user_account.user_registration.projects.last.name('en') %>".
+We hereby confirm your account for the application "<%= @project.name('en') %>".
 
 With your account: <%= @user_account.email %>
 
@@ -14,11 +14,11 @@ you can now log in here <%= url %> and access all functions of the interview arc
 
 Yours sincerely,
 
-The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
+The project team "<%= @project.name('en') %>"
 <% when :el -%>
 Αγαπητή/-έ <%= @user_account.display_name %>,
 
-Θέλουμε να σας πληροφορήσουμε ότι η πρόσβασή σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>" εγκρίθηκε.
+Θέλουμε να σας πληροφορήσουμε ότι η πρόσβασή σας στην εφαρμογή "<%= @project.name('el') %>" εγκρίθηκε.
 
 Με τον λογαριασμό σας: <%= @user_account.email %>
 
@@ -26,11 +26,11 @@ The project team "<%= @user_account.user_registration.projects.last.name('en') %
 
 Με εκτίμηση,
 
-Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"
+Η ομάδα του προγράμματος "<%= @project.name('el') %>"
 <% when :es -%>
 Estimada/o <%= @user_account.display_name %>,
 
-por la presente le confirmamos su cuenta para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".
+por la presente le confirmamos su cuenta para la aplicación "<%= @project.name('es') %>".
 
 Con su cuenta: <%= @user_account.email %>
 
@@ -38,11 +38,11 @@ puede registrarse aquí <%= url %> y acceder a todas las funciones del archivo d
 
 Con saludos cordiales,
 
-El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"
+El equipo del proyecto "<%= @project.name('es') %>"
 <% when :ru -%>
 Уважаемый(-ая) <%= @user_account.display_name %>,
 
-мы подтверждаем Ваш аккаунт для доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>".
+мы подтверждаем Ваш аккаунт для доступа к проекту "<%= @project.name('ru') %>".
 
 С Вашим аккаунтом: <%= @user_account.email %>
 
@@ -50,11 +50,11 @@ El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('
 
 С уважением,
 
-сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"
+сотрудники проекта "<%= @project.name('ru') %>"
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 
-hiermit bestätigen wir Ihren Zugang für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>".
+hiermit bestätigen wir Ihren Zugang für die Anwendung "<%= @project.name('de') %>".
 
 Mit Ihrem Account: <%= @user_account.email %>
 
@@ -62,5 +62,5 @@ können Sie sich nun hier <%= url %> anmelden und auf alle Funktionen des Interv
 
 Mit freundlichen Grüßen,
 
-Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"
+Das Projekt-Team "<%= @project.name('de') %>"
 <% end -%>

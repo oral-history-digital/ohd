@@ -30,6 +30,8 @@ class UserRegistrationProjectsController < ApplicationController
     params.require(:user_registration_project).
       permit(
         :project_id,
+        :workflow_state,
+        :admin_comments
     )
   end
 end

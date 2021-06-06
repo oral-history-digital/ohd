@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 
-export default function UserRegistrationForm({
-    userRegistration,
+export default function UserRegistrationProjectForm({
+    userRegistrationProject,
     locale,
     projectId,
     projects,
@@ -21,30 +21,30 @@ export default function UserRegistrationForm({
                     onSubmit();
                 }
             }}
-            data={userRegistration}
+            data={userRegistrationProject}
             values={{ default_locale: locale }}
             submitText='submit'
             elements={[
                 {
                     elementType: 'select',
                     attribute: 'workflow_state',
-                    values: userRegistration && Object.values(userRegistration.workflow_states),
-                    value: userRegistration?.workflow_state,
+                    values: userRegistrationProject && Object.values(userRegistrationProject.workflow_states),
+                    value: userRegistrationProject?.workflow_state,
                     optionsScope: 'workflow_states',
                     withEmpty: true
                 },
                 {
                     elementType: 'textarea',
                     attribute: 'admin_comments',
-                    value: userRegistration?.admin_comments,
+                    value: userRegistrationProject?.admin_comments,
                 },
             ]}
         />
     );
 }
 
-UserRegistrationForm.propTypes = {
-    userRegistration: PropTypes.object,
+UserRegistrationProjectForm.propTypes = {
+    userRegistrationProject: PropTypes.object,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,

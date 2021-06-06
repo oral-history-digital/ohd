@@ -1,8 +1,5 @@
 class UserRegistration < ApplicationRecord
-  include Workflow
-  include ActionView::Helpers::TextHelper
-
-  STATES = %w(account_created account_confirmed project_access_granted project_access_postponed rejected account_deactivated)
+  #include ActionView::Helpers::TextHelper
 
   belongs_to :user_account
 
@@ -21,59 +18,61 @@ class UserRegistration < ApplicationRecord
 
   before_create :serialize_form_parameters
 
-  scope :legit, -> { where('workflow_state = "project_access_granted"') }
   scope :wants_newsletter, -> { where('receive_newsletter = ?', true) }
+
+  # fields expected for the user registration
+  def self.define_registration_fields(fields)
+    @@registration_fields = {}
+    @@registration_field_names = []
+    fields.each_with_index do |field, index|
+      name = field.to_sym
+      @@registration_field_names << name
+      @@registration_fields[name] = { :mandatory => true }
+    end
+    @@registration_field_names.each do |field|
+      next if [:email, :first_name, :last_name, :tos_agreement, :priv_agreement].include?(field)
+      class_eval <<EVAL
+              def #{field}
+                @#{field}
+              end
+
+              def #{field}=(value)
+                @#{field} = value
+              end
+EVAL
+    end
+  end
+
+  def self.registration_field_names
+    @@registration_field_names
+  end
+
+  def self.registration_fields
+    @@registration_fields
+  end
+
+  define_registration_fields [
+                               'appellation',
+                               'first_name',
+                               'last_name',
+                               'email',
+                               'gender',
+                               'job_description',
+                               'research_intentions',
+                               'comments',
+                               'organization',
+                               'homepage',
+                               'street',
+                               'zipcode',
+                               'city',
+                               'country'
+                             ]
 
   def after_initialize
     (YAML::load(read_attribute(:application_info) || '') || {}).each_pair do |attr, value|
       self.send(attr.to_s + "=", value)
     end
     @skip_mail_delivery = false
-  end
-
-    #   former workflow:
-    # 1. user fills out registration form => :unchecked
-    # 2. admin registers the user which leads to the state 'checked'  => Welcome+Activation-Email
-    #     admin rejects => Rejection-Email
-    # 3. user clicks on activation link which leads to the state 'registered'
-
-    # new workflow
-    # 1. user fills out registration form => :account_created => Activation-Email
-    # 2. user opts in => :account_confirmed
-    # 3. admin activates_project => :project_access_granted  => Welcome-Email
-    #     admin rejects => Rejection-Email
-
-    # revoking access
-    # a) remove access to project (can be granted again) => TOS-Violation-EMAIL
-    # b) deactivate account (can be reactivated) => Account-Deactivated-EMAIL
-    # c) delete account (only Super-Admin?) => not yet implemented, currently done via rails console
-
-    # legacy data
-    # 1. registered accounts are migrated to :project_access_granted
-    #    accounts should be validated and fixed
-    #   (we have 1900 UserAccounts which are registered but not activated,
-    #    1965 confirmation tokens which did not expire properly)
-    # 2. all other accounts are :deleted (anonymized).
-    #    We keep the following data:
-    #     - for statistics: job_description, research_intentions, country, gender
-    #    Users accounts checked or unchecked in the last 7 days are asked to register again due to changed registration process
-    # associated data: ip, usage report
-
-  workflow do
-
-    # self-service step - not editable in UI
-    state :account_created do
-      event :confirm_account, :transition_to => :account_confirmed
-      event :expire_confirmation_token, :transition_to => :confirmation_token_expired
-    end
-  end
-
-  def workflow_states
-    current_state.events.map{|e| e.first}
-  end
-
-  def workflow_state=(change)
-    self.send("#{change}!")
   end
 
   # Registers a UserAccount by generating a confirmation token
@@ -88,56 +87,8 @@ class UserRegistration < ApplicationRecord
     save_registration_data_and_user_data_to_user_account
   end
 
-  def confirm_account
-    # this is triggered from user account to update the workflow state
-    AdminMailer.with(registration: self, project: projects.first).new_registration_info.deliver
-    self.update!
-  end
-
-  # TODO: check how the token expires
-  def expire_confirmation_token
-    self.user_account.update_attribute(:confirmation_token, nil)
-  end
-
-  def grant_project_access
-    self.update_attribute(:activated_at, Time.now)
-    self.user_registration_projects.find_by_project_id(projects.first).update_attribute(:activated_at, Time.now)
-    # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
-    subject = I18n.t('devise.mailer.project_access_granted.subject', project_name: projects.first.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_granted(self.user_account, {subject: subject}).deliver_now
-  end
-
-  def reject_project_access
-    # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
-    subject = I18n.t('devise.mailer.project_access_rejected.subject', project_name: projects.first.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
-    CustomDeviseMailer.project_access_rejected(self.user_account, {subject: subject}).deliver_now
-  end
-
-  # Flags the account as deactivated and removes project access
-  def deactivate_account
-    project = self.user_registration_projects.find_by_project_id(projects.first)
-    project.update_attribute(:activated_at, nil) unless project.nil?
-    self.user_account.update_attribute(:admin, nil)
-    self.user_account.deactivate!
-    # FIXME: why is self.default_locale always 'de'? we use user_account.default_locale for now
-    subject = I18n.t('devise.mailer.account_deactivated.subject', project_name: projects.first.name(self.user_account.locale_with_project_fallback), locale: self.user_account.locale_with_project_fallback)
-    CustomDeviseMailer.account_deactivated(self.user_account, {subject: subject}).deliver_now
-  end
-
-  def reactivate_account
-    self.user_account.reactivate!
-    # FIXME: devise confirmation instructions uses I18n.locale for the email subject - to prevent this, we could use a custom template
-    user_account.resend_confirmation_instructions
-  end
-
   def full_name
     [ self.first_name.to_s.capitalize, self.last_name.to_s.capitalize ].join(' ').strip
-  end
-
-  def form_parameters
-    require 'yaml'
-    form_parameters = YAML.load read_attribute(:application_info)
-    form_parameters
   end
 
   def skip_mail_delivery!
