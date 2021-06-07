@@ -150,6 +150,14 @@ export const getInterviewee = createSelector(
     }
 );
 
+export const getTranscriptFetched = createSelector(
+    [getSegmentsStatus, getArchiveId],
+    (segmentsStatus, archiveId) => {
+        const isFetched = /^fetched/;
+        return isFetched.test(segmentsStatus[`for_interviews_${archiveId}`]);
+    }
+);
+
 export const getContributorsFetched = createSelector(
     [getCurrentInterview, getPeopleStatus],
     (interview, peopleStatus) => {

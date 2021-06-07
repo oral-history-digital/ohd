@@ -65,18 +65,16 @@ export default class Transcript extends Component {
     }
 
     loadSegments() {
-        const { locale, projectId, projects, archiveId } = this.props;
+        const { locale, projectId, projects, archiveId, transcriptFetched, loadSegments, fetchData } = this.props;
 
-        if (
-            this.props.loadSegments &&
-            !this.props.segmentsStatus[`for_interviews_${archiveId}`]
-        ) {
-            this.props.fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'segments');
+        if (loadSegments && !transcriptFetched) {
+            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'segments');
         }
     }
 
     firstSegment() {
         const { interview, tape } = this.props;
+
         const segments = segmentsForTape(interview, tape);
         return segments[interview.first_segments_ids[tape]];
     }
@@ -85,7 +83,7 @@ export default class Transcript extends Component {
         return this.props.interview.languages.filter(l => l !== this.props.interview.lang)[0];
     }
 
-    transcripted(locale) {
+    hasTranscript(locale) {
         let first = this.firstSegment();
         return first && (Object.prototype.hasOwnProperty.call(first.text, locale) || Object.prototype.hasOwnProperty.call(first.text, `${locale}-public`));
     }
@@ -140,16 +138,16 @@ export default class Transcript extends Component {
     }
 
     render () {
-        const { segmentsStatus, archiveId, originalLocale, interview } = this.props;
+        const { transcriptFetched, originalLocale, interview } = this.props;
 
-        if (segmentsStatus[`for_interviews_${archiveId}`] && segmentsStatus[`for_interviews_${archiveId}`].split('-')[0] === 'fetched') {
-            if (originalLocale) {
-                return this.transcripted(interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
-            } else {
-                return this.transcripted(this.firstTranslationLocale()) ? this.transcript() : t(this.props, 'without_translation');
-            }
-        } else {
+        if (!transcriptFetched) {
             return <Spinner />;
+        }
+
+        if (originalLocale) {
+            return this.hasTranscript(interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
+        } else {
+            return this.hasTranscript(this.firstTranslationLocale()) ? this.transcript() : t(this.props, 'without_translation');
         }
     }
 }
@@ -166,7 +164,7 @@ Transcript.propTypes = {
     autoScroll: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object.isRequired,
-    segmentsStatus: PropTypes.object.isRequired,
+    transcriptFetched: PropTypes.bool.isRequired,
     userContentsStatus: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
 };

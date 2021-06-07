@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getTranslations, getArchiveId } from 'modules/archive';
-import { fetchData, getCurrentInterview, getCurrentInterviewee, getProjects, getPeople, getSegmentsStatus, getUserContentsStatus } from 'modules/data';
+import { fetchData, getCurrentInterview, getCurrentInterviewee, getProjects, getTranscriptFetched, getUserContentsStatus } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
 import { getAutoScroll } from 'modules/interview';
 import Transcript from './Transcript';
@@ -18,7 +18,7 @@ const mapStateToProps = state => ({
     tape: getCurrentTape(state),
     mediaTime: getMediaTime(state),
     autoScroll: getAutoScroll(state),
-    segmentsStatus: getSegmentsStatus(state),
+    transcriptFetched: getTranscriptFetched(state),
     userContentsStatus: getUserContentsStatus(state).all,
 });
 

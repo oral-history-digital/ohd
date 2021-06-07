@@ -71,6 +71,7 @@ const state = {
             },
             segments: {
                 for_interviews_za003: 'fetched-Mon',
+                for_interviews_cd003: 'fetched-Tue',
             },
             speaker_designations: {
                 for_interviews_za003: 'first_step_explanation',
@@ -437,6 +438,17 @@ test('getInterviewee retrieves first interviewee of a given interview', () => {
         },
     };
     expect(selectors.getInterviewee(state, props)).toEqual(state.data.people[4]);
+});
+
+describe('getTranscriptFetched', () => {
+    test('returns true if transcript has been fetched', () => {
+        expect(selectors.getTranscriptFetched(state)).toBeTruthy();
+    });
+
+    test('returns false if transcript has not been fetched', () => {
+        const _state = dotProp.set(state, 'archive.archiveId', 'za085');
+        expect(selectors.getTranscriptFetched(_state)).toBeFalsy();
+    });
 });
 
 test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {

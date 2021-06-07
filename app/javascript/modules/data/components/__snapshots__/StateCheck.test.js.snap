@@ -3,7 +3,7 @@
 exports[`renders Spinner component if selector returns false 1`] = `
 <img
   alt=""
-  className=""
+  className="Spinner"
   src="mock.jpg"
 />
 `;
