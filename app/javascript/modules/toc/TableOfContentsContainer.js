@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData, getProjects, getHeadingsFetched, getHeadings, getPreparedHeadings } from 'modules/data';
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
+import { getIsIdle } from 'modules/media-player';
 import TableOfContents from './TableOfContents';
 
 const mapStateToProps = state => ({
@@ -13,6 +14,7 @@ const mapStateToProps = state => ({
     headingsFetched: getHeadingsFetched(state),
     headings: getHeadings(state),
     preparedHeadings: getPreparedHeadings(state),
+    isIdle: getIsIdle(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

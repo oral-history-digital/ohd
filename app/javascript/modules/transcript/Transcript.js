@@ -17,6 +17,7 @@ export default function Transcript({
     loadSegments,
     interviewee,
     mediaTime,
+    isIdle,
     tape,
     locale,
     projectId,
@@ -37,9 +38,9 @@ export default function Transcript({
             fetchData({ locale, projectId, projects }, 'user_contents');
         }
 
-        // Only scroll to top if video has not started yet and auto scroll is off.
+        // Only scroll to top if media has not started yet and auto scroll is off.
         // Otherwise, scrolling is handled in Segment component.
-        if (!autoScroll && mediaTime === 0) {
+        if (!autoScroll && isIdle) {
             window.scrollTo(0, 0);
         }
     }, []);
@@ -136,6 +137,7 @@ Transcript.propTypes = {
     projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
+    isIdle: PropTypes.bool.isRequired,
     tape: PropTypes.number.isRequired,
     autoScroll: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,

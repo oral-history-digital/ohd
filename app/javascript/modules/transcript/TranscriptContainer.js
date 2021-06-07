@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
 import { fetchData, getCurrentInterview, getCurrentInterviewee, getProjects, getTranscriptFetched,
     getTranscriptLocale, getHasTranscript, getUserContentsStatus } from 'modules/data';
-import { getCurrentTape, getMediaTime } from 'modules/media-player';
+import { getCurrentTape, getMediaTime, getIsIdle } from 'modules/media-player';
 import { getAutoScroll } from 'modules/interview';
 import Transcript from './Transcript';
 
@@ -17,6 +17,7 @@ const mapStateToProps = (state, props) => ({
     interviewee: getCurrentInterviewee(state),
     tape: getCurrentTape(state),
     mediaTime: getMediaTime(state),
+    isIdle: getIsIdle(state),
     autoScroll: getAutoScroll(state),
     transcriptFetched: getTranscriptFetched(state),
     transcriptLocale: getTranscriptLocale(state, props),

@@ -21,6 +21,24 @@ test('getMediaTime retrieves media time', () => {
     expect(selectors.getMediaTime(state)).toEqual(state[NAME].mediaTime);
 });
 
+describe('getIsIdle', () => {
+    test('is true if media is at beginning and paused', () => {
+        const _state = {
+            [NAME]: {
+                ...state[NAME],
+                tape: 1,
+                mediaTime: 0,
+                isPlaying: false,
+            },
+        };
+        expect(selectors.getIsIdle(_state)).toBeTruthy();
+    });
+
+    test('is false if media is not at beginning', () => {
+        expect(selectors.getIsIdle(state)).toBeFalsy();
+    });
+});
+
 test('getIsPlaying retrieves wether medium is playing', () => {
     expect(selectors.getIsPlaying(state)).toEqual(state[NAME].isPlaying);
 });

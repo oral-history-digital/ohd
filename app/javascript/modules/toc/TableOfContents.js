@@ -3,13 +3,13 @@ import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
-import { ScrollToTop } from 'modules/user-agent';
 import HeadingContainer from './HeadingContainer';
 
 export default function TableOfContents({
     headingsFetched,
     headings,
     preparedHeadings,
+    isIdle,
     archiveId,
     locale,
     projectId,
@@ -17,6 +17,14 @@ export default function TableOfContents({
     fetchData,
 }) {
     const { t } = useI18n();
+
+    useEffect(() => {
+        // Only scroll to top if media has not started yet.
+        // Otherwise, scrolling is handled in Heading/Subheading components.
+        if (isIdle) {
+            window.scrollTo(0, 0);
+        }
+    }, []);
 
     useEffect(() => {
         if (!headingsFetched) {
@@ -36,20 +44,18 @@ export default function TableOfContents({
     }
 
     return (
-        <ScrollToTop>
-            <div>
-                {emptyHeadingsNote}
-                <div className={'content-index'}>
-                    {preparedHeadings.map((heading, index) => {
-                        return <HeadingContainer
-                            key={'mainheading-' + index}
-                            data={heading}
-                            nextHeading={preparedHeadings[index + 1]}
-                        />
-                    })}
-                </div>
+        <div>
+            {emptyHeadingsNote}
+            <div className="content-index">
+                {preparedHeadings.map((heading, index) => (
+                    <HeadingContainer
+                        key={heading.chapter}
+                        data={heading}
+                        nextHeading={preparedHeadings[index + 1]}
+                    />
+                ))}
             </div>
-        </ScrollToTop>
+        </div>
     );
 }
 
@@ -61,5 +67,6 @@ TableOfContents.propTypes = {
     headingsFetched: PropTypes.bool.isRequired,
     headings: PropTypes.object,
     preparedHeadings: PropTypes.array,
+    isIdle: PropTypes.bool.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

@@ -1,6 +1,8 @@
+import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
+import { SCROLL_OFFSET } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
@@ -13,9 +15,17 @@ export default function Subheading({
     sendTimeChangeRequest,
 }) {
     const { t } = useI18n();
+    const divEl = useRef();
+
+    useEffect(() => {
+        if (active) {
+            const topOfSegment = divEl.current.offsetTop;
+            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
+        }
+    }, []);
 
     return (
-        <div className="Heading Heading--sub">
+        <div ref={divEl} className="Heading Heading--sub">
             <button
                 type="button"
                 className={classNames('Heading-main', { 'is-active': active })}
