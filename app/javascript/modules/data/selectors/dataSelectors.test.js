@@ -101,6 +101,8 @@ const state = {
             cd003: {
                 id: 22,
                 type: 'Interview',
+                lang: 'ru',
+                languages: ['ru', 'de'],
                 contributions: {
                     1345: {
                         id: 1345,
@@ -109,6 +111,23 @@ const state = {
                         person_id: 4,
                         interview_id: 22,
                     },
+                },
+                first_segments_ids: {
+                    1: 199498,
+                },
+                segments: {
+                    1: {
+                        199498: {
+                            id: 199498,
+                            type: 'Segment',
+                            text: {
+                                'de': 'dummy',
+                                'de-public': 'dummy',
+                                'ru': 'dummy',
+                                'ru-public': 'dummy',
+                            },
+                        },
+                    }
                 },
             },
         },
@@ -448,6 +467,30 @@ describe('getTranscriptFetched', () => {
     test('returns false if transcript has not been fetched', () => {
         const _state = dotProp.set(state, 'archive.archiveId', 'za085');
         expect(selectors.getTranscriptFetched(_state)).toBeFalsy();
+    });
+});
+
+describe('getTranscriptLocale', () => {
+    test('returns original locale if prop is set', () => {
+        const props = { originalLocale: true };
+        expect(selectors.getTranscriptLocale(state, props)).toBe('ru');
+    });
+
+    test('returns first translated locale if prop is set', () => {
+        const props = { originalLocale: false };
+        expect(selectors.getTranscriptLocale(state, props)).toBe('de');
+    });
+});
+
+describe('getHasTranscript', () => {
+    test('returns true if there is at least one segment with text in original locale', () => {
+        const props = { originalLocale: true };
+        expect(selectors.getHasTranscript(state, props)).toBeTruthy();
+    });
+
+    test('returns true if there is at least one segment with text in translation', () => {
+        const props = { originalLocale: false };
+        expect(selectors.getHasTranscript(state, props)).toBeTruthy();
     });
 });
 

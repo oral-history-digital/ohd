@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
-import segmentsForTape from './segmentsForTape';
 import SegmentContainer from './SegmentContainer';
 import sortedSegmentsWithActiveIndex from './sortedSegmentsWithActiveIndex';
 import isSegmentActive from './isSegmentActive';
@@ -24,11 +23,11 @@ export default class Transcript extends Component {
     }
 
     componentDidMount() {
-        const { locale, projectId, projects, autoScroll } = this.props;
+        const { locale, projectId, projects, autoScroll, userContentsStatus, fetchData } = this.props;
 
         this.loadSegments();
-        if (!this.props.userContentsStatus) {
-            this.props.fetchData({ locale, projectId, projects }, 'user_contents');
+        if (!userContentsStatus) {
+            fetchData({ locale, projectId, projects }, 'user_contents');
         }
 
         if (!autoScroll) {
@@ -72,83 +71,66 @@ export default class Transcript extends Component {
         }
     }
 
-    firstSegment() {
-        const { interview, tape } = this.props;
-
-        const segments = segmentsForTape(interview, tape);
-        return segments[interview.first_segments_ids[tape]];
-    }
-
-    firstTranslationLocale() {
-        return this.props.interview.languages.filter(l => l !== this.props.interview.lang)[0];
-    }
-
-    hasTranscript(locale) {
-        let first = this.firstSegment();
-        return first && (Object.prototype.hasOwnProperty.call(first.text, locale) || Object.prototype.hasOwnProperty.call(first.text, `${locale}-public`));
-    }
-
-    transcript(){
-        const { interviewee, mediaTime, tape } = this.props;
-        const { popupSegmentId, popupType, openReference } = this.state;
-
-        let locale = this.props.originalLocale ? this.props.interview.lang : this.firstTranslationLocale();
-        let tabIndex = this.props.originalLocale ? 0 : 1;
-        let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.mediaTime, this.props);
-        let shownSegments = sortedWithIndex[1];
-
-        let speaker, speakerId;
-
-        return shownSegments.map((segment, index, array) => {
-            segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
-            if (
-                (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
-                (speaker !== segment.speaker && segment.speaker_id === null)
-            ) {
-                segment.speakerIdChanged = true;
-                speakerId = segment.speaker_id;
-                speaker = segment.speaker;
-            }
-
-            const nextSegment = array[index + 1];
-            const active = isSegmentActive({
-                thisSegmentTape: segment.tape_nbr,
-                thisSegmentTime: segment.time,
-                nextSegmentTape: nextSegment?.tape_nbr,
-                nextSegmentTime: nextSegment?.time,
-                currentTape: tape,
-                currentTime: mediaTime,
-            });
-
-            return (
-                <SegmentContainer
-                    key={segment.id}
-                    data={segment}
-                    contentLocale={locale}
-                    popupType={popupSegmentId === segment.id ? popupType : null}
-                    openReference={popupSegmentId === segment.id ? openReference : null}
-                    openPopup={this.openSegmentPopup}
-                    closePopup={this.closeSegmentPopup}
-                    setOpenReference={this.setOpenReference}
-                    tabIndex={tabIndex}
-                    active={active}
-                />
-            );
-        });
-    }
-
     render () {
-        const { transcriptFetched, originalLocale, interview } = this.props;
+        const { transcriptFetched, transcriptLocale, hasTranscript, originalLocale, interviewee, mediaTime, tape } = this.props;
+        const { popupSegmentId, popupType, openReference } = this.state;
 
         if (!transcriptFetched) {
             return <Spinner />;
         }
 
-        if (originalLocale) {
-            return this.hasTranscript(interview.lang) ? this.transcript() : t(this.props, 'without_transcript');
-        } else {
-            return this.hasTranscript(this.firstTranslationLocale()) ? this.transcript() : t(this.props, 'without_translation');
+        if (!hasTranscript) {
+            return originalLocale ? t(this.props, 'without_transcript') : t(this.props, 'without_translation');
         }
+
+        let tabIndex = originalLocale ? 0 : 1;
+        let sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, this.props);
+        let shownSegments = sortedWithIndex[1];
+
+        let speaker, speakerId;
+
+        return (
+            <div className="Transcript">
+                {
+                    shownSegments.map((segment, index, array) => {
+                        segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
+                        if (
+                            (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
+                            (speaker !== segment.speaker && segment.speaker_id === null)
+                        ) {
+                            segment.speakerIdChanged = true;
+                            speakerId = segment.speaker_id;
+                            speaker = segment.speaker;
+                        }
+
+                        const nextSegment = array[index + 1];
+                        const active = isSegmentActive({
+                            thisSegmentTape: segment.tape_nbr,
+                            thisSegmentTime: segment.time,
+                            nextSegmentTape: nextSegment?.tape_nbr,
+                            nextSegmentTime: nextSegment?.time,
+                            currentTape: tape,
+                            currentTime: mediaTime,
+                        });
+
+                        return (
+                            <SegmentContainer
+                                key={segment.id}
+                                data={segment}
+                                contentLocale={transcriptLocale}
+                                popupType={popupSegmentId === segment.id ? popupType : null}
+                                openReference={popupSegmentId === segment.id ? openReference : null}
+                                openPopup={this.openSegmentPopup}
+                                closePopup={this.closeSegmentPopup}
+                                setOpenReference={this.setOpenReference}
+                                tabIndex={tabIndex}
+                                active={active}
+                            />
+                        );
+                    })
+                }
+            </div>
+        );
     }
 }
 
@@ -165,6 +147,8 @@ Transcript.propTypes = {
     interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object.isRequired,
     transcriptFetched: PropTypes.bool.isRequired,
+    hasTranscript: PropTypes.bool.isRequired,
+    transcriptLocale: PropTypes.string,
     userContentsStatus: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
 };

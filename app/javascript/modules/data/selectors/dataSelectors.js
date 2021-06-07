@@ -158,6 +158,41 @@ export const getTranscriptFetched = createSelector(
     }
 );
 
+const getOriginalLocaleFromProps = (_, props) => props.originalLocale;
+
+export const getTranscriptLocale = createSelector(
+    [getCurrentInterview, getOriginalLocaleFromProps],
+    (interview, originalLocale) => {
+        if (!interview) {
+            return undefined;
+        }
+
+        const firstTranslationLocale = interview.languages.filter(l => l !== interview.lang)[0];
+        const locale = originalLocale ? interview.lang : firstTranslationLocale;
+        return locale;
+    }
+);
+
+export const getHasTranscript = createSelector(
+    [getCurrentInterview, getTranscriptLocale],
+    (interview, locale) => {
+        if (!interview || !locale) {
+            return false;
+        }
+
+        const segmentsOfFirstTape = interview.segments?.[1];
+
+        if (!segmentsOfFirstTape) {
+            return false;
+        }
+
+        const firstSegmentId = interview.first_segments_ids[1];
+        const firstSegment = segmentsOfFirstTape[firstSegmentId];
+
+        return firstSegment && (Object.prototype.hasOwnProperty.call(firstSegment.text, locale) || Object.prototype.hasOwnProperty.call(firstSegment.text, `${locale}-public`));
+    }
+);
+
 export const getContributorsFetched = createSelector(
     [getCurrentInterview, getPeopleStatus],
     (interview, peopleStatus) => {
