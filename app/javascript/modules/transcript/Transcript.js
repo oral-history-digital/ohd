@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
@@ -49,22 +49,22 @@ export default function Transcript({
     }, [loadSegments, transcriptFetched]);
 
 
-    const openSegmentPopup = (segmentId, popupType) => setPopupState({
+    const openSegmentPopup = useCallback((segmentId, popupType) => setPopupState({
         popupSegmentId: segmentId,
         popupType,
         openReference: null,
-    });
+    }), []);
 
-    const closeSegmentPopup = () => setPopupState({
+    const closeSegmentPopup = useCallback(() => setPopupState({
         popupSegmentId: null,
         popupType: null,
         openReference: null,
-    });
+    }), []);
 
-    const setOpenReference = reference => setPopupState(oldPopupState => ({
+    const setOpenReference = useCallback(reference => setPopupState(oldPopupState => ({
         ...oldPopupState,
         openReference: oldPopupState.openReference === reference ? null : reference,
-    }));
+    })), []);
 
     const { popupSegmentId, popupType, openReference } = popupState;
 

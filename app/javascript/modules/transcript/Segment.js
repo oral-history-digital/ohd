@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaUser } from 'react-icons/fa';
@@ -14,7 +14,7 @@ import SegmentPopupContainer from './SegmentPopupContainer';
 const SPACE_BEFORE_ACTIVE_SEGMENT = 1.5 * CSS_BASE_UNIT;
 const SCROLL_OFFSET = MEDIA_PLAYER_HEIGHT_STICKY + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_SEGMENT;
 
-export default function Segment({
+function Segment({
     data,
     autoScroll,
     contentLocale,
@@ -131,3 +131,7 @@ Segment.propTypes = {
     locale: PropTypes.string.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
 };
+
+const MemoizedSegment = memo(Segment);
+
+export default MemoizedSegment;
