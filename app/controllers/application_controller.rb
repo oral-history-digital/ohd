@@ -195,7 +195,7 @@ class ApplicationController < ActionController::Base
       },
       user_registrations: {
         query: {
-          workflow_state: 'account_confirmed',
+          'user_registrations.workflow_state': 'account_confirmed',
           page: 1,
         },
       },

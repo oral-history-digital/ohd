@@ -776,6 +776,8 @@ ActiveRecord::Schema.define(version: 2021_05_27_155700) do
     t.datetime "updated_at", null: false
     t.datetime "activated_at"
     t.integer "user_account_id"
+    t.string "workflow_state"
+    t.string "admin_comments"
   end
 
   create_table "user_registrations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -787,7 +789,6 @@ ActiveRecord::Schema.define(version: 2021_05_27_155700) do
     t.string "workflow_state", limit: 255
     t.datetime "created_at"
     t.datetime "activated_at"
-    t.string "admin_comments", limit: 255
     t.integer "user_account_id"
     t.datetime "processed_at"
     t.string "default_locale", limit: 255

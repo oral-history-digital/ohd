@@ -1,14 +1,15 @@
 class UserRegistrationProject < ApplicationRecord
   include Workflow
 
-  belongs_to :user_registration
+  belongs_to :user_registration, touch: true
   has_one :user_account, through: :user_registration
   belongs_to :project
 
   validates_uniqueness_of :project_id, scope: :user_registration_id
+  validates :project_id, :user_registration_id, presence: true
 
   after_create do
-    AdminMailer.with(registration: self, project: project).new_registration_info.deliver if user_registration.activated_at
+    AdminMailer.with(registration: self.user_registration, project: project).new_registration_info.deliver_now if user_registration.activated_at
   end
 
   workflow do

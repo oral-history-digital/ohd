@@ -172,13 +172,15 @@ class UserRegistrationsController < ApplicationController
   end
 
   def search_params
-    params.permit(
+    permitted = params.permit(
       :first_name,
       :last_name,
       :email,
       :default_locale,
       'user_registration_projects.workflow_state'
     ).to_h.select{|k,v| !(v.blank? || v == 'all') }
+    permitted['user_registration_projects.workflow_state'] = 'account_confirmed' unless permitted['user_registration_projects.workflow_state']
+    permitted
   end
 
 end

@@ -16,7 +16,7 @@ class SessionsController < Devise::SessionsController
       respond_with resource, location: "/#{params[:locale]}" 
     #else
       #sign_out
-      #render json: {error: 'not_your_project'}
+      #render json: {error: 'project_access_in_process'}
     #end
   rescue BCrypt::Errors::InvalidHash
     respond_to do |format|

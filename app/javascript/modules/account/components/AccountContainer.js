@@ -7,6 +7,7 @@ import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { getCookie } from 'modules/persistence';
 import { getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { submitLogout } from '../actions';
+import { openArchivePopup } from 'modules/ui';
 import { getFirstName, getIsLoggedIn, getLastName, getLoginError } from '../selectors';
 import Account from './Account';
 
@@ -31,6 +32,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     submitLogout,
     changeToEditView,
     hideFlyoutTabs,
+    openArchivePopup,
 }, dispatch);
 
 export default withRouter(connect(

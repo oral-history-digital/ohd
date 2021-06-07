@@ -3,12 +3,17 @@ class UserRegistrationProjectsController < ApplicationController
   def create
     authorize UserRegistrationProject
     @user_registration_project = UserRegistrationProject.new user_registration_project_params
-    @user_registration_project.user_registration_id = current_user.user_registration.id
+    @user_registration_project.user_registration_id = current_user_account.user_registration.id
     @user_registration_project.save
+    current_user_account.touch
 
     respond_to do |format|
       format.json do
-        render json: data_json(@user_registration_project, msg: 'processed')
+        render json: {
+          id: 'current',
+          data_type: 'accounts',
+          data: current_user_account && ::UserAccountSerializer.new(current_user_account)
+        }
       end
     end
   end
@@ -17,9 +22,11 @@ class UserRegistrationProjectsController < ApplicationController
     @user_registration_project = UserRegistrationProject.find params[:id]
     authorize @user_registration_project
     @user_registration_project.update_attributes user_registration_project_params
+    @user_registration_project.user_account.touch
+
     respond_to do |format|
       format.json do
-        render json: data_json(@user_registration_project, msg: 'processed')
+        render json: data_json(@user_registration_project.user_registration, msg: 'processed')
       end
     end
   end

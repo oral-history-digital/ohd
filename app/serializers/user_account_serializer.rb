@@ -12,6 +12,8 @@ class UserAccountSerializer < ApplicationSerializer
     :permissions,
     :user_registration_projects
 
+  has_one :user_registration
+
   def user_account_id
     object.id
   end
