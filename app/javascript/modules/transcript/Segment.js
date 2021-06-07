@@ -32,14 +32,16 @@ function Segment({
     const { t } = useI18n();
 
     useEffect(() => {
-        if (active) {
+        // Checking for divEl.current is necessary because sometimes component returns null.
+        if (active && divEl.current) {
             const topOfSegment = divEl.current.offsetTop;
             window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
         }
     }, []);
 
     useEffect(() => {
-        if (autoScroll && active) {
+        // Checking for divEl.current is necessary because sometimes component returns null.
+        if (autoScroll && active && divEl.current) {
             const topOfSegment = divEl.current.offsetTop;
             scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
         }
@@ -78,9 +80,7 @@ function Segment({
                 }
                 <button
                     type="button"
-                    className={classNames('Segment-text', {
-                        'is-active': active,
-                    })}
+                    className={classNames('Segment-text', { 'is-active': active })}
                     lang={contentLocale}
                     onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
                     // TODO: clean mog segment-texts from html in db
