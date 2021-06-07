@@ -37,7 +37,9 @@ export default function Transcript({
             fetchData({ locale, projectId, projects }, 'user_contents');
         }
 
-        if (!autoScroll) {
+        // Only scroll to top if video has not started yet and auto scroll is off.
+        // Otherwise, scrolling is handled in Segment component.
+        if (!autoScroll && mediaTime === 0) {
             window.scrollTo(0, 0);
         }
     }, []);

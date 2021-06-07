@@ -30,15 +30,24 @@ function Segment({
     tabIndex,
     sendTimeChangeRequest,
 }) {
-    const divEl = useRef(null);
+    const divEl = useRef();
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
 
-    useEffect(() => {
-        if (autoScroll && active && divEl.current) {
-            const topOfSegment = divEl.current.offsetTop;
+    const scrollIntoView = () => {
+        const topOfSegment = divEl.current.offsetTop;
+        scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
+    }
 
-            scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
+    useEffect(() => {
+        if (active) {
+            scrollIntoView();
+        }
+    }, []);
+
+    useEffect(() => {
+        if (autoScroll && active) {
+            scrollIntoView();
         }
     }, [autoScroll, active])
 
