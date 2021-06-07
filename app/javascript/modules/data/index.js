@@ -18,6 +18,7 @@ export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getRolesStatus, getPermissionsStatus, getProjectsStatus, getTaskTypesStatus, getUserContentsStatus,
     getContributionsStatus, getUserRegistrationsStatus, getHeadingsStatus, getSpeakerDesignationsStatus,
     getRefTreeStatus, getTasksStatus, getMarkTextStatus,
+    getHeadingsFetched, getHeadings, getPreparedHeadings,
     getMediaStreams, getInterviews, getTaskTypes, getUserContents }
     from './selectors/dataSelectors';
 export { getIsCatalog, getIsCampscapesProject, getProjectTranslation,

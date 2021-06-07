@@ -36,7 +36,7 @@ const state = {
                 14: 'fetched-Mon',
             },
             headings: {
-                for_interviews_za003: 'fetched-Mon',
+                for_interviews_cd003: 'fetched-Mon',
             },
             interviews: {
                 za283: 'fetched',
@@ -128,6 +128,12 @@ const state = {
                             },
                         },
                     }
+                },
+                headings: {
+                    0: {
+                        id: 19499,
+                        type: 'Segment',
+                    },
                 },
             },
         },
@@ -265,6 +271,14 @@ test('getContributionsStatus gets contributions status object', () => {
 test('getHeadingsStatus gets headings status object', () => {
     expect(selectors.getHeadingsStatus(state)).toEqual(state.data.statuses.headings);
 });
+
+test('getHeadingsFetched gets if headings of current interview are fetched', () => {
+    expect(selectors.getHeadingsFetched(state)).toBeTruthy();
+});
+
+test('getHeadings gets headings object of current interview', () => {
+    expect(selectors.getHeadings(state)).toEqual(state.data.interviews.cd003.headings);
+})
 
 test('getLanguagesStatus gets languages status object', () => {
     expect(selectors.getLanguagesStatus(state)).toEqual(state.data.statuses.languages);
