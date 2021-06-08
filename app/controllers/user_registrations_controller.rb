@@ -94,14 +94,21 @@ class UserRegistrationsController < ApplicationController
 
   def index
     page = params[:page] || 1
-    user_registrations = policy_scope(UserRegistration).where(search_params).order("last_name ASC").paginate page: page
+    user_registrations = policy_scope(UserRegistration).
+      where(search_params).
+      order("last_name ASC").
+      paginate(page: page).
+      includes(:user_registration_projects).
+      inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+
+    update_initial_redux_state(user_registrations)
     extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
 
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do |format|
         render json: {
-          data: user_registrations.includes(:user_registration_projects).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+          data: user_registrations,
             data_type: 'user_registrations',
             extra_params: extra_params,
             page: params[:page],
@@ -145,6 +152,14 @@ class UserRegistrationsController < ApplicationController
 
   def account_for_token(confirmation_token)
     @user_account = UserAccount.includes(:user_registration).find_by(confirmation_token: confirmation_token)
+  end
+
+  def update_initial_redux_state(user_registrations)
+    initial_redux_state.update(
+      data: initial_redux_state[:data].update(
+        user_registrations: user_registrations
+      )
+    )
   end
 
   def user_registration_params

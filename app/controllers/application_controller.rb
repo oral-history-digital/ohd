@@ -52,7 +52,7 @@ class ApplicationController < ActionController::Base
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
   #
   def initial_redux_state
-    {
+    @initial_redux_state ||= {
       archive: {
         locale: current_project ? current_project.default_locale : I18n.locale,
         locales: current_project ? current_project.available_locales : I18n.available_locales,
