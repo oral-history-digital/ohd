@@ -32,9 +32,9 @@ class ApplicationPolicy
 
     def resolve
       if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
-        if scope.attribute_names.include?('project_id')
+        if project && scope.attribute_names.include?('project_id')
           scope.where(project_id: project.id)
-        elsif scope.attribute_names.include?('interview_id')
+        elsif project && scope.attribute_names.include?('interview_id')
           scope.joins(:interview).where("interviews.project_id = ?", project.id)
         else
           scope.all
