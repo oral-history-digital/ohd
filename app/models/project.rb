@@ -68,7 +68,7 @@ class Project < ApplicationRecord
 
   after_create :create_default_registry_name_type
   def create_default_registry_name_type
-    RegistryNameType.create code: "spelling", name: "Bezeichner", order_priority: 3
+    RegistryNameType.create code: "spelling", name: "Bezeichner", order_priority: 3, project_id: self.id
   end
 
   after_create :create_contribution_types
