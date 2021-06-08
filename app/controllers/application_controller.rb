@@ -133,9 +133,7 @@ class ApplicationController < ActionController::Base
         contribution_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-contribution_types-#{ContributionType.maximum(:updated_at)}") do
           policy_scope(ContributionType).includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
-        media_streams: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-media_streams-#{MediaStream.maximum(:updated_at)}") do
-          policy_scope(MediaStream).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-        end,
+        media_streams: policy_scope(MediaStream).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
       },
       popup: {
         show: false,
