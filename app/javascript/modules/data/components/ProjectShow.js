@@ -5,6 +5,7 @@ import { getLocale, setProjectId } from 'modules/archive';
 
 function ProjectShow({
     data,
+    hideLogo,
     children
 }) {
     const locale = useSelector(getLocale);
@@ -16,8 +17,9 @@ function ProjectShow({
         <>
             <a
                 href={href}
+                target='_blank'
             >
-                <img className="logo-img" src={logo?.src} />
+                { !hideLogo && <img className="logo-img" src={logo?.src} /> }
                 { data.name[locale] }
             </a>
             { children }

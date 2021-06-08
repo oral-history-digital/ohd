@@ -23,7 +23,7 @@ function UserProject({
     const projectId = userRegistrationProject.project_id;
 
     return (
-        <ProjectShow data={projects[projectId]} >
+        <ProjectShow data={projects[projectId]} hideLogo >
             <i className={`fa fa-angle-${showProject ? 'up' : 'down'}`} onClick={() => setShowProject(!showProject)}></i>
             <ContentField label={t('activerecord.attributes.user_registration.activated_at')} value={userRegistrationProject.activated_at} />
             {
