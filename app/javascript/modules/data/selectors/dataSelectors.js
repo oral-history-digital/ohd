@@ -1,6 +1,6 @@
 import { createSelector } from 'reselect';
 
-import { getArchiveId, getProjectId  } from 'modules/archive';
+import { getArchiveId, getProjectId, getLocale  } from 'modules/archive';
 
 export const getData = state => state.data;
 
@@ -57,6 +57,15 @@ export const getCollectionsStatus = state => getStatuses(state).collections;
 export const getContributionsStatus = state => getStatuses(state).contributions;
 
 export const getHeadingsStatus = state => getStatuses(state).headings;
+
+export const getHeadingsFetched = createSelector(
+    [getHeadingsStatus, getArchiveId],
+    (headingsStatus, archiveId) => {
+        const status = headingsStatus[`for_interviews_${archiveId}`];
+        const isFetched = /^fetched/;
+        return isFetched.test(status);
+    }
+);
 
 export const getLanguagesStatus = state => getStatuses(state).languages;
 
@@ -150,6 +159,49 @@ export const getInterviewee = createSelector(
     }
 );
 
+export const getTranscriptFetched = createSelector(
+    [getSegmentsStatus, getArchiveId],
+    (segmentsStatus, archiveId) => {
+        const isFetched = /^fetched/;
+        return isFetched.test(segmentsStatus[`for_interviews_${archiveId}`]);
+    }
+);
+
+const getOriginalLocaleFromProps = (_, props) => props.originalLocale;
+
+export const getTranscriptLocale = createSelector(
+    [getCurrentInterview, getOriginalLocaleFromProps],
+    (interview, originalLocale) => {
+        if (!interview) {
+            return undefined;
+        }
+
+        const firstTranslationLocale = interview.languages.filter(l => l !== interview.lang)[0];
+        const locale = originalLocale ? interview.lang : firstTranslationLocale;
+        return locale;
+    }
+);
+
+export const getHasTranscript = createSelector(
+    [getCurrentInterview, getTranscriptLocale],
+    (interview, locale) => {
+        if (!interview || !locale) {
+            return false;
+        }
+
+        const segmentsOfFirstTape = interview.segments?.[1];
+
+        if (!segmentsOfFirstTape) {
+            return false;
+        }
+
+        const firstSegmentId = interview.first_segments_ids[1];
+        const firstSegment = segmentsOfFirstTape[firstSegmentId];
+
+        return firstSegment && (Object.prototype.hasOwnProperty.call(firstSegment.text, locale) || Object.prototype.hasOwnProperty.call(firstSegment.text, `${locale}-public`));
+    }
+);
+
 export const getContributorsFetched = createSelector(
     [getCurrentInterview, getPeopleStatus],
     (interview, peopleStatus) => {
@@ -211,5 +263,96 @@ export const getRootRegistryEntryReload = createSelector(
     (status, currentProject) => {
         const reload = /^reload/;
         return reload.test(status[currentProject.root_registry_entry_id]);
+    }
+);
+
+export const getHeadings = createSelector(
+    getCurrentInterview,
+    interview => interview?.headings
+);
+
+export const getPreparedHeadings = createSelector(
+    [getCurrentInterview, getLocale],
+    (interview, locale) => {
+        let mainIndex = 0;
+        let mainheading = '';
+        let subIndex = 0;
+        let subheading = '';
+        let headings = [];
+        let lastMainheading = '';
+
+        if (interview?.headings) {
+            Object.values(interview.headings).sort(function(a, b) {return a.tape_nbr - b.tape_nbr || a.time - b.time}).map((segment, index) => {
+                mainheading = segment.mainheading[locale] ||
+                    segment.mainheading[`${locale}-public`]
+                subheading = segment.subheading[locale] ||
+                    segment.subheading[`${locale}-public`]
+                //
+                // if the table of content looks different in languages with different alphabets, have a look to the following and extend the regexp:
+                // https://stackoverflow.com/questions/18471159/regular-expression-with-the-cyrillic-alphabet
+                //
+                // JavaScript (at least the versions most widely used) does not fully support Unicode.
+                // That is to say, \w matches only Latin letters, decimal digits, and underscores ([a-zA-Z0-9_])
+                //
+                if (mainheading && /[\w\u0430-\u044f0-9]+/.test(mainheading) && mainheading !== lastMainheading) {
+                    mainIndex += 1;
+                    subIndex = 0;
+                    lastMainheading = mainheading;
+                    // TODO: segment should not be part of the headings object - we need it for editing, but there
+                    // should be a leaner solution
+                    headings.push({
+                        segment: segment,
+                        main: true,
+                        chapter: mainIndex + '.',
+                        heading: mainheading,
+                        time: segment.time,
+                        tape_nbr: segment.tape_nbr,
+                        duration: interview.duration,
+                        subheadings: []
+                    });
+                    if (headings.length > 1) {
+                        if (index < interview.headings.length) {
+                            // set previous heading's next_time attribute to this segment's time
+                            if (headings[headings.length - 2].tape_nbr == segment.tape_nbr) {
+                                headings[headings.length - 2].next_time = segment.time;
+                            }
+                        }
+                        if (headings[headings.length - 2].subheadings.length > 0) {
+                            // set previous subheading's next_time attribute to this segment's time
+                            if (!headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_time) {
+                                if (headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].tape_nbr == segment.tape_nbr) {
+                                    headings[headings.length - 2].subheadings[headings[headings.length - 2].subheadings.length - 1].next_time = segment.time;
+                                }
+                            }
+                        }
+                    }
+                }
+                if (subheading && /[\w\u0430-\u044f0-9]+/.test(subheading)) {
+                    subIndex += 1;
+                    if (headings[mainIndex - 1]) {
+                        headings[mainIndex - 1].subheadings.push({
+                            segment: segment,
+                            main: false,
+                            heading: subheading,
+                            chapter: mainIndex + '.' + subIndex + '.',
+                            time: segment.time,
+                            tape_nbr: segment.tape_nbr,
+                            duration: interview.duration
+                        });
+                        if (headings[mainIndex - 1].subheadings.length > 1) {
+                            if (index < (interview.headings.length)) {
+                                if (headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].tape_nbr == segment.tape_nbr) {
+                                    headings[mainIndex - 1].subheadings[headings[mainIndex - 1].subheadings.length - 2].next_time = segment.time;
+                                }
+                            }
+                        }
+                    } else {
+                        console.log(`segment ${segment.id} with locale ${locale} tries to add a subheading to headings with index ${mainIndex -1}`);
+                        console.log(`There are ${headings.length} headings at this point`);
+                    }
+                }
+            })
+        }
+        return headings;
     }
 );

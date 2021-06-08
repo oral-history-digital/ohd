@@ -1,5 +1,7 @@
 import sortedSegmentsWithActiveIndexForTape from './sortedSegmentsWithActiveIndexForTape';
 
+// props needs to contain: interview, tape
+
 export default function sortedSegmentsWithActiveIndex(time, props) {
     let sortedSegments = [];
     let index = 0;

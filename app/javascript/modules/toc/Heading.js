@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 
+import { SCROLL_OFFSET } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
@@ -16,30 +17,36 @@ export default function Heading({
     active,
     sendTimeChangeRequest,
 }) {
-    const [expanded, setExpanded] = useState(false);
+    const [expanded, setExpanded] = useState(active);
     const { t } = useI18n();
+    const divEl = useRef();
+
+    const hasSubheadings = data.subheadings.length > 0;
+
+    useEffect(() => {
+        if (active && !hasSubheadings) {
+            const topOfSegment = divEl.current.offsetTop;
+            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
+        }
+    }, []);
 
     return (
         <>
-            <div className="Heading Heading--main">
-                {
-                    data.subheadings.length === 0 ?
-                        null :
-                        (
-                            <button
-                                type="button"
-                                className="Heading-toggle"
-                                onClick={() => setExpanded(!expanded)}
-                                aria-label={expanded ? t('modules.toc.collapse') : t('modules.toc.expand')}
-                            >
-                                {
-                                    expanded ?
-                                        <FaMinus /> :
-                                        <FaPlus />
-                                }
-                            </button>
-                        )
-                }
+            <div ref={divEl} className="Heading Heading--main">
+                {hasSubheadings && (
+                    <button
+                        type="button"
+                        className="Heading-toggle"
+                        onClick={() => setExpanded(!expanded)}
+                        aria-label={expanded ? t('modules.toc.collapse') : t('modules.toc.expand')}
+                    >
+                        {
+                            expanded ?
+                                <FaMinus /> :
+                                <FaPlus />
+                        }
+                    </button>
+                )}
 
                 <button
                     type="button"

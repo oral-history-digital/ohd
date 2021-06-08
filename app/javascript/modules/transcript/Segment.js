@@ -1,20 +1,17 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaUser } from 'react-icons/fa';
 
 import { fullname } from 'modules/people';
-import { CSS_BASE_UNIT, MEDIA_PLAYER_HEIGHT_STICKY, CONTENT_TABS_HEIGHT } from 'modules/constants';
+import { SCROLL_OFFSET } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 
-const SPACE_BEFORE_ACTIVE_SEGMENT = 1.5 * CSS_BASE_UNIT;
-const SCROLL_OFFSET = MEDIA_PLAYER_HEIGHT_STICKY + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_SEGMENT;
-
-export default function Segment({
+function Segment({
     data,
     autoScroll,
     contentLocale,
@@ -30,14 +27,22 @@ export default function Segment({
     tabIndex,
     sendTimeChangeRequest,
 }) {
-    const divEl = useRef(null);
+    const divEl = useRef();
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
 
     useEffect(() => {
+        // Checking for divEl.current is necessary because sometimes component returns null.
+        if (active && divEl.current) {
+            const topOfSegment = divEl.current.offsetTop;
+            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
+        }
+    }, []);
+
+    useEffect(() => {
+        // Checking for divEl.current is necessary because sometimes component returns null.
         if (autoScroll && active && divEl.current) {
             const topOfSegment = divEl.current.offsetTop;
-
             scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
         }
     }, [autoScroll, active])
@@ -75,9 +80,7 @@ export default function Segment({
                 }
                 <button
                     type="button"
-                    className={classNames('Segment-text', {
-                        'is-active': active,
-                    })}
+                    className={classNames('Segment-text', { 'is-active': active })}
                     lang={contentLocale}
                     onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
                     // TODO: clean mog segment-texts from html in db
@@ -131,3 +134,7 @@ Segment.propTypes = {
     locale: PropTypes.string.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
 };
+
+const MemoizedSegment = memo(Segment);
+
+export default MemoizedSegment;

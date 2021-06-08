@@ -36,7 +36,7 @@ const state = {
                 14: 'fetched-Mon',
             },
             headings: {
-                for_interviews_za003: 'fetched-Mon',
+                for_interviews_cd003: 'fetched-Mon',
             },
             interviews: {
                 za283: 'fetched',
@@ -71,6 +71,7 @@ const state = {
             },
             segments: {
                 for_interviews_za003: 'fetched-Mon',
+                for_interviews_cd003: 'fetched-Tue',
             },
             speaker_designations: {
                 for_interviews_za003: 'first_step_explanation',
@@ -100,6 +101,8 @@ const state = {
             cd003: {
                 id: 22,
                 type: 'Interview',
+                lang: 'ru',
+                languages: ['ru', 'de'],
                 contributions: {
                     1345: {
                         id: 1345,
@@ -107,6 +110,29 @@ const state = {
                         contribution_type: 'interviewee',
                         person_id: 4,
                         interview_id: 22,
+                    },
+                },
+                first_segments_ids: {
+                    1: 199498,
+                },
+                segments: {
+                    1: {
+                        199498: {
+                            id: 199498,
+                            type: 'Segment',
+                            text: {
+                                'de': 'dummy',
+                                'de-public': 'dummy',
+                                'ru': 'dummy',
+                                'ru-public': 'dummy',
+                            },
+                        },
+                    }
+                },
+                headings: {
+                    0: {
+                        id: 19499,
+                        type: 'Segment',
                     },
                 },
             },
@@ -245,6 +271,14 @@ test('getContributionsStatus gets contributions status object', () => {
 test('getHeadingsStatus gets headings status object', () => {
     expect(selectors.getHeadingsStatus(state)).toEqual(state.data.statuses.headings);
 });
+
+test('getHeadingsFetched gets if headings of current interview are fetched', () => {
+    expect(selectors.getHeadingsFetched(state)).toBeTruthy();
+});
+
+test('getHeadings gets headings object of current interview', () => {
+    expect(selectors.getHeadings(state)).toEqual(state.data.interviews.cd003.headings);
+})
 
 test('getLanguagesStatus gets languages status object', () => {
     expect(selectors.getLanguagesStatus(state)).toEqual(state.data.statuses.languages);
@@ -437,6 +471,41 @@ test('getInterviewee retrieves first interviewee of a given interview', () => {
         },
     };
     expect(selectors.getInterviewee(state, props)).toEqual(state.data.people[4]);
+});
+
+describe('getTranscriptFetched', () => {
+    test('returns true if transcript has been fetched', () => {
+        expect(selectors.getTranscriptFetched(state)).toBeTruthy();
+    });
+
+    test('returns false if transcript has not been fetched', () => {
+        const _state = dotProp.set(state, 'archive.archiveId', 'za085');
+        expect(selectors.getTranscriptFetched(_state)).toBeFalsy();
+    });
+});
+
+describe('getTranscriptLocale', () => {
+    test('returns original locale if prop is set', () => {
+        const props = { originalLocale: true };
+        expect(selectors.getTranscriptLocale(state, props)).toBe('ru');
+    });
+
+    test('returns first translated locale if prop is set', () => {
+        const props = { originalLocale: false };
+        expect(selectors.getTranscriptLocale(state, props)).toBe('de');
+    });
+});
+
+describe('getHasTranscript', () => {
+    test('returns true if there is at least one segment with text in original locale', () => {
+        const props = { originalLocale: true };
+        expect(selectors.getHasTranscript(state, props)).toBeTruthy();
+    });
+
+    test('returns true if there is at least one segment with text in translation', () => {
+        const props = { originalLocale: false };
+        expect(selectors.getHasTranscript(state, props)).toBeTruthy();
+    });
 });
 
 test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {
