@@ -5,8 +5,6 @@ class UserRegistrationsController < ApplicationController
   skip_after_action :verify_authorized, only: [:new, :create, :activate, :confirm]
   skip_after_action :verify_policy_scoped, only: [:new, :create, :activate, :confirm]
 
-  before_action :filter_user_registrations, only: [:index]
-
   respond_to :json, :html
 
   def new
@@ -21,7 +19,7 @@ class UserRegistrationsController < ApplicationController
   def create
     @user_registration = UserRegistration.new(user_registration_params)
     if @user_registration.save
-      UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id
+      UserRegistrationProject.create project_id: current_project.id, user_registration_id: @user_registration.id if current_project
       @user_registration.register
       render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
     elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
@@ -95,25 +93,35 @@ class UserRegistrationsController < ApplicationController
   end
 
   def index
+    page = params[:page] || 1
+    user_registrations = policy_scope(UserRegistration).
+      where(search_params).
+      order("last_name ASC").
+      paginate(page: page).
+      includes(:user_registration_projects).
+      inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+
+    update_initial_redux_state(user_registrations)
+    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do |format|
-        extra_params = @filters.update(page: params[:page] || 1).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
         render json: {
-            data: @user_registrations.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+          data: user_registrations,
             data_type: 'user_registrations',
             extra_params: extra_params,
             page: params[:page],
-            result_pages_count: @user_registrations.total_pages
+            result_pages_count: user_registrations.total_pages
           }
       end
       format.csv do
         response.headers['Pragma'] = 'no-cache'
         response.headers['Cache-Control'] = 'no-cache, must-revalidate'
         response.headers['Content-Type'] = 'text/comma-separated-values'
-        fields = %w(appellation first_name last_name email job_description organization country street zipcode city workflow_state created_at)
+        fields = %w(appellation first_name last_name email job_description organization country street zipcode city created_at)
         csv = [fields.map{|f| translate_field_or_value(f) }.join("\t")]
-        @user_registrations.each do |r|
+        user_registrations.each do |r|
           r_csv = []
           fields.each do |f|
             r_csv << translate_field_or_value(f, r.send(f.to_sym) || '').gsub(/[,;]+/,'')
@@ -121,7 +129,7 @@ class UserRegistrationsController < ApplicationController
           csv << r_csv.join("\t")
         end
         send_data(csv.join("\n"),
-                  { :filename => "Nutzer-#{@filters.keys.map{|k| translate_field_or_value(k, @filters[k])}.join("_")}-#{Time.now.strftime('%d.%m.%Y')}.csv",
+                  { :filename => "Nutzer-#{search_params.keys.map{|k| translate_field_or_value(k, search_params[k])}.join("_")}-#{Time.now.strftime('%d.%m.%Y')}.csv",
                     :disposition => 'attachment',
                     :type => 'text/comma-separated-values' })
       end
@@ -146,6 +154,14 @@ class UserRegistrationsController < ApplicationController
     @user_account = UserAccount.includes(:user_registration).find_by(confirmation_token: confirmation_token)
   end
 
+  def update_initial_redux_state(user_registrations)
+    initial_redux_state.update(
+      data: initial_redux_state[:data].update(
+        user_registrations: user_registrations
+      )
+    )
+  end
+
   def user_registration_params
     params.require(:user_registration).permit(
       :appellation,
@@ -166,82 +182,20 @@ class UserRegistrationsController < ApplicationController
       :receive_newsletter,
       :tos_agreement,
       :priv_agreement,
-      :default_locale,
-      :workflow_state,
-      :admin_comments
+      :default_locale
     )
   end
 
-  def filter_user_registrations
-    @filters = {}
-    conditionals = []
-    condition_args = []
-    # workflow state
-    @filters['workflow_state'] = params['workflow_state'] || 'account_confirmed'
-    unless @filters['workflow_state'].blank? || @filters['workflow_state'] == 'all'
-      conditionals << "(workflow_state = '#{@filters['workflow_state']}'" + (@filters['workflow_state'] == "account_confirmed" ? " OR workflow_state IS NULL)" : ")")
-    end
-    # other attributes
-    %w(email default_locale).each do |att|
-      @filters[att] = params[att]
-      unless @filters[att].blank?
-        conditionals << "#{att} = ?"
-        condition_args << @filters[att]
-      end
-    end
-    # user name
-    %w(last_name first_name).each do |name_part|
-      @filters[name_part] = params[name_part]
-      unless @filters[name_part].blank?
-        conditionals << "#{name_part} LIKE ?"
-        condition_args << @filters[name_part] + '%'
-      end
-    end
-    # job description etc
-    %w(job_description state research_intentions country).each do |info_part|
-      @filters[info_part] = params[info_part]
-      unless @filters[info_part].blank? || @filters[info_part] == 'all'
-        conditionals << "application_info LIKE ?"
-        condition_args << "%#{info_part}: #{ActiveRecord::Base.connection.quote(@filters[info_part])[1..-2]}%"
-      end
-    end
-    @filters = @filters.delete_if{|k,v| v.blank? || v == 'all' }
-    # the first workflow steps are self service steps.
-    # the admin is involved in the workflow starting from 'account_confirmed'
-    # if the user does not confirm the account, it will expire and vanish
-    # TODO: show information about unconfirmed accounts - either in workflow view or elsewhere (read only)
-    conditionals << "workflow_state NOT in ('new', 'account_created', 'checked')"
-    conditions = [ conditionals.join(' AND ') ] + condition_args
-    conditions = conditions.first if conditions.length == 1
-    @user_registrations = policy_scope(UserRegistration).includes(user_account: [:user_roles, :tasks]).where(conditions).order("user_registrations.id DESC").paginate page: params[:page] || 1
+  def search_params
+    permitted = params.permit(
+      :first_name,
+      :last_name,
+      :email,
+      :default_locale,
+      'user_registration_projects.workflow_state'
+    ).to_h.select{|k,v| !(v.blank? || v == 'all') }
+    permitted['user_registration_projects.workflow_state'] = 'account_confirmed' unless permitted['user_registration_projects.workflow_state']
+    permitted
   end
 
-  def translate_field_or_value(field, value=nil)
-    if value.nil?
-      t(field, :scope => 'devise.registration_fields', :locale => :de)
-    else
-      if value.is_a?(Time)
-        return value.strftime('%d.%m.%Y %H:%M Uhr')
-      end
-      if value.blank?
-        return ''
-      end
-      if value
-        return 'ja'
-      end
-      value.strip! if value.is_a?(String)
-      scope = case field
-                when 'last_name', 'first_name', 'email', 'organization', 'street', 'zipcode', 'city'
-                  value
-                when 'country'
-                  return value if value.length > 2
-                  'countries'
-                when 'workflow_state'
-                  'devise.workflow_states'
-                else
-                  'devise.registration_values.' + field.to_s
-              end
-      t(value, :scope => scope, :locale => :de)
-    end
-  end
 end

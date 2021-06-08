@@ -158,6 +158,10 @@ class Project < ApplicationRecord
     shortname.downcase
   end
 
+  def domainWithOptinalIdentifier
+    archive_domain.blank? ? "#{OHD_DOMAIN}/#{identifier}" : archive_domain
+  end
+
   # there is a rails method available_locales as well.
   # we need to overwrite it here.
   #

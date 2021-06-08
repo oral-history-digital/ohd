@@ -31,7 +31,9 @@ ru:
     es: spanisch
   in: В
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  not_your_project: Ваш запрос на регистрацию находится на рассмотрении сотрудников проекта, это может занять до двух рабочих дней. Только после этого Ваш аккаунт будет активирован и Вы получите доступ к материалам Архива интервью.
+  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
+  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
+  project_access_in_process: Ваш запрос на регистрацию находится на рассмотрении сотрудников проекта, это может занять до двух рабочих дней. Только после этого Ваш аккаунт будет активирован и Вы получите доступ к материалам Архива интервью.
   registration_needed: В целях защиты персональных данных тех, чьи истории жизни представлены
     в архиве, просим Вас зарегистрироваться. После регистрации Вы получите доступ
     ко всем интервью в полном объеме.
@@ -530,9 +532,6 @@ ru:
     account_created: angelegt
     account_confirmed: ungeprüft
     account_deactivated: gesperrt
-    project_access_granted: freigeschaltet
-    project_access_rejected: abgelehnt
-    project_access_postponed: zurückgestellt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -549,6 +548,14 @@ ru:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
+  user_registration_projects:
+    workflow_states:
+      project_access_granted: freigeschaltet
+      project_access_rejected: abgelehnt
+      project_access_postponed: zurückgestellt
+      account_confirmed: ungeprüft
+      account_deactivated: gesperrt
+      all: alle
   help_texts:
     metadata_fields:
       registry_reference_type_id: "Für Metadaten die aus Verknüpfungen zum Register resultieren z.B. Gruppe oder Geburtsort. Weitere Verküpfungsarten können unter 'Erschliessung' => 'Verknüpfungsarten bearbeiten' angelegt werden."
@@ -998,7 +1005,6 @@ ru:
         created_at: Erstellt am
         activated_at: Aktiviert am
         processed_at: Bearbeitet am
-        admin_comments: Kommentar
         default_locale: Sprache
         appellation: Обращение
         first_name: Имя
@@ -1020,6 +1026,11 @@ ru:
         register: Отправить регистрацию
         workflow_state: Status
         transition_to: 'Status'
+        user_registration_projects:
+          workflow_state: Status
+      user_registration_project:
+        workflow_state: Status
+        admin_comments: Kommentar
       user_role:
         role_id: Rolle
       role:

@@ -49,7 +49,7 @@ export const initialState = {
     },
     user_registrations: {
         query: {
-            workflow_state: 'account_confirmed',
+            'user_registration_projects.workflow_state': 'account_confirmed',
             page: 1,
         },
     },

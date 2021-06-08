@@ -31,7 +31,9 @@ es:
     es: spanisch
   in: en
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  not_your_project: Su registro actualmente está en revisión por el equipo del proyecto, esta revisión puede durar hasta dos días hábiles.
+  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
+  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
+  project_access_in_process: Su registro actualmente está en revisión por el equipo del proyecto, esta revisión puede durar hasta dos días hábiles.
     Solamente después se activará su acceso y pueda acceder al contenido del archivo de entrevistas.
   registration_needed: Para garantizar la protección de datos personales, usted se tiene que registrar.
     Después de haberse registrado, usted tendrá acceso a las entrevistas completas.
@@ -479,9 +481,6 @@ es:
     account_created: angelegt
     account_confirmed: ungeprüft
     account_deactivated: gesperrt
-    project_access_granted: freigeschaltet
-    project_access_rejected: abgelehnt
-    project_access_postponed: zurückgestellt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -497,6 +496,14 @@ es:
     start: Bearbeitung beginnen
     finish: dem QM einreichen
     clear: freigeben
+  user_registration_projects:
+    workflow_states:
+      project_access_granted: freigeschaltet
+      project_access_rejected: abgelehnt
+      project_access_postponed: zurückgestellt
+      account_confirmed: ungeprüft
+      account_deactivated: gesperrt
+      all: alle
     restart: Bearbeitung erneut beginnen
   help_texts:
     metadata_fields:
@@ -937,7 +944,6 @@ es:
         created_at: Creado el
         activated_at: Activado el
         processed_at: Editado el
-        admin_comments: Comentario
         default_locale: Idioma por defecto
         appellation: Título
         first_name: Nombre
@@ -958,6 +964,11 @@ es:
         priv_agreement: Indicaciones sobre la política de privacidad
         register: Enviar registro
         workflow_state: Estado
+        user_registration_projects:
+          workflow_state: Estado
+      user_registration_project:
+        workflow_state: Estado
+        admin_comments: Comentario
       user_role:
         role_id: Rolle
       role:

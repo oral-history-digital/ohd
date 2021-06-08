@@ -1,10 +1,19 @@
-<% url = "#{@resource.user_registration.projects.last.archive_domain}/#{I18n.locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}" %>
+<% 
+  if @resource.active_projects.count > 1
+    project_name = 'OHD'
+    url = "#{OHD_DOMAIN}/#{@resource.default_locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}"
+  else
+    project = @resource.active_projects.last
+    project_name = project.name(@resource.default_locale)
+    url = "#{project.domainWithOptinalIdentifier}/#{@resource.default_locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}" %>
+  end
+%>
 
-<% case I18n.locale
+<% case @resource.default_locale.to_sym || I18n.locale
 when :en -%>
 Dear <%= @user_account.display_name %>,
 
-You have changed the e-mail address for your account in the application "<%= @user_account.user_registration.projects.last.name('en') %>".
+You have changed the e-mail address for your account in the application "<%= project_name %>".
 
 Please confirm this modification by clicking the following link:
 
@@ -12,11 +21,11 @@ Please confirm this modification by clicking the following link:
 
 Yours sincerely,
 
-The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
+The project team "<%= project_name %>"
 <% when :ru -%>
 Уважаемый(-ая) <%= @user_account.display_name %>,
 
-Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>".
+Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= project_name %>".
 
 Пожалуйста, подтвердите изменение, перейдя за линком:
 
@@ -24,11 +33,11 @@ The project team "<%= @user_account.user_registration.projects.last.name('en') %
 
 С уважением,
 
-сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"
+сотрудники проекта "<%= project_name %>"
 <% when :el -%>
 Αγαπητή/-έ <%= @user_account.display_name %>,
 
-έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>".
+έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή "<%= project_name %>".
 
 Παρακαλώ επιβεβαιώστε την αλλαγή ακολουθώντας τον παρακάτω σύνδεσμο:
 
@@ -36,11 +45,11 @@ The project team "<%= @user_account.user_registration.projects.last.name('en') %
 
 Με εκτίμηση,
 
-Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"
+Η ομάδα του προγράμματος "<%= project_name %>"
 <% when :es -%>
 Estimada/o <%= @user_account.display_name %>,
 
-Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".
+Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= project_name %>".
 
 Por favor, confirme los cambios haciendo clic en el siguiente enlace:
 
@@ -48,11 +57,11 @@ Por favor, confirme los cambios haciendo clic en el siguiente enlace:
 
 Con saludos cordiales,
 
-El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"
+El equipo del proyecto "<%= project_name %>"
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 
-Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" geändert.
+Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= project_name %>" geändert.
 
 Bitte bestätigen Sie diese Änderung mit dem folgenden Link:
 
@@ -60,5 +69,5 @@ Bitte bestätigen Sie diese Änderung mit dem folgenden Link:
 
 Mit freundlichen Grüßen,
 
-Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"
+Das Projekt-Team "<%= project_name %>"
 <% end -%>

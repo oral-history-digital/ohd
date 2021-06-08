@@ -5,7 +5,8 @@ import { AuthShowContainer } from 'modules/auth';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
-import LoginFormContainer from './LoginFormContainer'
+import LoginFormContainer from './LoginFormContainer';
+import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 
 export default class Account extends Component {
     static propTypes = {
@@ -66,7 +67,30 @@ export default class Account extends Component {
 
     // FIXME: show this alert ifLoggedIn && ifNoProject
     projectAccessAlert() {
-        return <div className='error'>{`${t(this.props, 'not_your_project')}`}</div>
+        const { account, project } = this.props;
+        const unactivatedProject = account && Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at === null);
+
+        if (unactivatedProject) {
+            return <div className='error'>{`${t(this.props, 'project_access_in_process')}`}</div>
+        } else {
+            return (
+                <>
+                    <p className='error'>
+                        {t(this.props, 'request_project_access_explanation')}
+                    </p>
+                    <div
+                        className='flyout-sub-tabs-content-ico-link'
+                        title={t(this.props, 'request_project_access_explanation')}
+                        onClick={() => this.props.openArchivePopup({
+                            title: t(this.props, 'request_project_access_link'),
+                            content: <RequestProjectAccessFormContainer project={project} />
+                        })}
+                    >
+                        {t(this.props, 'request_project_access_link')}
+                    </div>
+                </>
+            )
+        }
     }
 
     render() {

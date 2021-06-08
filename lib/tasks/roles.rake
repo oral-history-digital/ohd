@@ -65,7 +65,7 @@ namespace :roles do
         {
           :name=>"Benutzer verwalten", 
           :permissions=>[
-            {:name=>"UserRegistration update", :klass=>"UserRegistration", :action_name=>"update"},
+            {:name=>"UserRegistrationProject update", :klass=>"UserRegistrationProject", :action_name=>"update"},
             {:name=>"UserRole create", :klass=>"UserRole", :action_name=>"create"},
             {:name=>"UserRole destroy", :klass=>"UserRole", :action_name=>"destroy"}
           ]
@@ -107,7 +107,7 @@ namespace :roles do
         {
           :name=>"Nutzerfreischaltung und Rollenzuweisung",
           :permissions=>[
-            {:name=>"UserRegistration update", :klass=>"UserRegistration", :action_name=>"update"},
+            {:name=>"UserRegistrationProject update", :klass=>"UserRegistrationProject", :action_name=>"update"},
             {:name=>"UserRole create", :klass=>"UserRole", :action_name=>"create"},
             {:name=>"UserRole destroy", :klass=>"UserRole", :action_name=>"destroy"},
           ]

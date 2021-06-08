@@ -1,41 +1,41 @@
 <%
   my_locale = @user_account.locale_with_project_fallback
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}"
+  url = "#{@project.domainWithOptinalIdentifier}/#{my_locale}"
   case my_locale.to_sym
   when :en
 -%>
   <p>Dear <%= @user_account.display_name %>,</p>
-  <p>We hereby confirm your account for the application "<%= @user_account.user_registration.projects.last.name('en') %>".</p>
+  <p>We hereby confirm your account for the application "<%= @project.name('en') %>".</p>
   <p>With your account: <%= @user_account.email %></p>
   <p>you can now <%= link_to 'log in here', url %> and access all functions of the interview archive.</p>
   <p>Yours sincerely,</p>
-  <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
+  <p>The project team "<%= @project.name('en') %>"</p>
 <% when :ru -%>
   <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
-  <p>мы подтверждаем Ваш аккаунт для доступа к проекту "<%= @user_account.user_registration.projects.last.name('ru') %>".</p>
+  <p>мы подтверждаем Ваш аккаунт для доступа к проекту "<%= @project.name('ru') %>".</p>
   <p>С Вашим аккаунтом: <%= @user_account.email %></p>
   <p>Вы можете подтвердить регистрацию за линком: <%= url %> и получить доступ ко всем функциям Архива интервью.</p>
   <p>С уважением,</p>
-  <p>сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <p>сотрудники проекта "<%= @project.name('ru') %>"</p>
 <% when :es -%>
   <p>Estimada/o <%= @user_account.display_name %>,</p>
-  <p>por la presente le confirmamos su cuenta para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
+  <p>por la presente le confirmamos su cuenta para la aplicación "<%= @project.name('es') %>".</p>
   <p>Con su cuenta: <%= @user_account.email %></p>
   <p>puede <%= link_to 'registrarse aquí', url %> y acceder a todas las funciones del archivo de entrevistas.</p>
   <p>Con saludos cordiales,</p>
-  <p>El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"</p>
+  <p>El equipo del proyecto "<%= @project.name('es') %>"</p>
 <% when :el -%>
   <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
-  <p>Θέλουμε να σας πληροφορήσουμε ότι η πρόσβασή σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>" εγκρίθηκε.</p>
+  <p>Θέλουμε να σας πληροφορήσουμε ότι η πρόσβασή σας στην εφαρμογή "<%= @project.name('el') %>" εγκρίθηκε.</p>
   <p>Με τον λογαριασμό σας: <%= @user_account.email %></p>
   <p>μπορείτε να <%= link_to 'εγγραφείτε εδώ', url %> και να έχετε πρόσβαση σε όλες τις λειτουργίες του Αρχείου Προφορικών Μαρτυριών.</p>
   <p>Με εκτίμηση,</p>
-  <p>Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"</p>
+  <p>Η ομάδα του προγράμματος "<%= @project.name('el') %>"</p>
 <% else -%>
   <p>Sehr geehrte/r <%= @user_account.display_name %>,</p></p>
-  <p>hiermit bestätigen wir Ihren Zugang für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>".</p>
+  <p>hiermit bestätigen wir Ihren Zugang für die Anwendung "<%= @project.name('de') %>".</p>
   <p>Mit Ihrem Account: <%= @user_account.email %></p>
   <p>können Sie sich nun <%= link_to 'hier anmelden', url %> und auf alle Funktionen des Interview-Archivs zugreifen.</p>
   <p>Mit freundlichen Grüßen,</p>
-  <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
+  <p>Das Projekt-Team "<%= @project.name('de') %>"</p>
 <% end -%>

@@ -31,7 +31,9 @@ en:
     es: Spanish
   in: in
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
-  not_your_project: Your registration is currently being reviewed by the project team, this review may take up to two working days.
+  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
+  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
+  project_access_in_process: Your registration is currently being reviewed by the project team, this review may take up to two working days.
     Only then your access will be activated and you can access the contents of the interview archive.
   registration_needed: For reasons of privacy you have to register. After registration
     you have access to all testimonies in full length.
@@ -485,9 +487,6 @@ en:
     account_created: angelegt
     account_confirmed: ungeprüft
     account_deactivated: gesperrt
-    project_access_granted: freigeschaltet
-    project_access_rejected: abgelehnt
-    project_access_postponed: zurückgestellt
     all: alle
     unchecked: unbeantwortet
     preliminary: preliminary
@@ -504,6 +503,14 @@ en:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
+  user_registration_projects:
+    workflow_states:
+      project_access_granted: freigeschaltet
+      project_access_rejected: abgelehnt
+      project_access_postponed: zurückgestellt
+      account_confirmed: ungeprüft
+      account_deactivated: gesperrt
+      all: alle
   help_texts:
     metadata_fields:
       registry_reference_type_id: "Für Metadaten die aus Verknüpfungen zum Register resultieren z.B. Gruppe oder Geburtsort. Weitere Verküpfungsarten können unter 'Erschliessung' => 'Verknüpfungsarten bearbeiten' angelegt werden."
@@ -972,6 +979,11 @@ en:
         priv_agreement: Priv Agreement
         register: Register
         workflow_state: Workflow state
+        user_registration_projects:
+          workflow_state: Status
+      user_registration_project:
+        workflow_state: Status
+        admin_comments: Kommentar
       user_role:
         role_id: Rolle
       role:

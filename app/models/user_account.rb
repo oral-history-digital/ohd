@@ -31,6 +31,10 @@ class UserAccount < ApplicationRecord
   validates_format_of :email, :with => Devise.email_regexp
   validates_length_of :password, :within => 5..50, :allow_blank => true
 
+  def active_projects
+    user_registration.user_registration_projects.where.not(activated_at: nil)
+  end
+
   def all_tasks
     tasks | supervised_tasks
   end
@@ -75,7 +79,6 @@ class UserAccount < ApplicationRecord
     end
   end
 
-
   def generate_confirmation_token
     self.confirmation_token = Devise.friendly_token
     self.confirmation_sent_at = Time.now.utc
@@ -116,7 +119,10 @@ class UserAccount < ApplicationRecord
       self.deactivated_at = nil
       # theoretically we do not need this check, but unfortunately we have some legacy accounts without UserRegistration
       unless self.user_registration.nil?
-        self.user_registration.confirm_account! if self.user_registration.account_created?
+        self.user_registration.update_attributes activated_at: Time.now
+        self.user_registration.projects.each do |project|
+          AdminMailer.with(registration: self, project: project).new_registration_info.deliver
+        end
       end
       save(validate: false)
     end

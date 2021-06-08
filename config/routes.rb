@@ -158,6 +158,7 @@ Rails.application.routes.draw do
         get :activate
       end
     end
+    resources :user_registration_projects, only: [:create, :update]
   end
 
   # devise_for creates named routes
@@ -182,7 +183,7 @@ Rails.application.routes.draw do
   # for development it is now set to either localhost or ohd.dev
   # in production this should be the ohd-domain
   #
-    constraints(lambda { |request| ['localhost:3000', 'da03.cedis.fu-berlin.de:100'].include?("#{request.host}:#{request.port}") }) do
+  constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
       root to: "projects#index"
     end
@@ -217,7 +218,7 @@ Rails.application.routes.draw do
   get "photos/thumb/:name" => "photos#thumb"
 
   mount OaiRepository::Engine => "/oai_repository"
-  root to: redirect("#{Rails.env.development? ? 'http://localhost:3000/de' : 'http://da03.cedis.fu-berlin.de:100/de'}")
+  root to: redirect("#{OHD_DOMAIN}/de")
 
   devise_for :user_accounts,
     controllers: { sessions: "sessions", passwords: "passwords" },
