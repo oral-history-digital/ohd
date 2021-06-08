@@ -79,7 +79,7 @@ export default class InterviewInfo extends Component {
                             metadataField={descriptionMetadataField}
                             elementType="textarea"
                             multiLocale
-                            validate={v => v?.length <= 300}
+                            validate={v => v?.length > 3}
                         />
                     }
                     {
