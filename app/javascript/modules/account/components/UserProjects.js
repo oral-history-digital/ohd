@@ -24,7 +24,7 @@ function UserProjects() {
     return (
         <>
             {
-                currentProject &&
+                currentProject && currentUserRegistrationProject &&
                 <UserProject
                     key={currentProject.id}
                     userRegistrationProject={currentUserRegistrationProject}
