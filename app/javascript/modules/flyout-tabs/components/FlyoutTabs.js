@@ -52,6 +52,9 @@ export default class FlyoutTabs extends Component {
                 history.push(`${pathBase(this.props)}/searches/map`);
             }
             break;
+        case indexes.INDEX_INDEXING:
+            history.push(`${pathBase(this.props)}/people`);
+            break;
         default:
         }
     }

@@ -1,5 +1,6 @@
 export { NAME as FLYOUT_TABS_NAME, INDEX_NONE, INDEX_ACCOUNT, INDEX_SEARCH,
-    INDEX_INTERVIEW, INDEX_REGISTRY_ENTRIES, INDEX_MAP } from './constants';
+    INDEX_INTERVIEW, INDEX_REGISTRY_ENTRIES, INDEX_MAP, INDEX_INDEXING
+} from './constants';
 
 export { showFlyoutTabs, hideFlyoutTabs, toggleFlyoutTabs, setFlyoutTabsIndex }
     from './actions';

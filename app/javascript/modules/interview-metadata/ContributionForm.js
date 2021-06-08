@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
+import { INDEX_INDEXING } from 'modules/flyout-tabs';
+import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 
 export default class ContributionForm extends Component {
@@ -60,7 +62,7 @@ export default class ContributionForm extends Component {
     }
 
     render() {
-        const { closeArchivePopup, submitData, onSubmit } = this.props;
+        const { setFlyoutTabsIndex, closeArchivePopup, submitData, onSubmit } = this.props;
 
         return (
             <div>
@@ -84,9 +86,10 @@ export default class ContributionForm extends Component {
                 />
                 <p />
                 <Link
-                    to={`/${this.props.locale}/people`}
+                    to={`${pathBase(this.props)}/people`}
                     className='admin'
                     onClick={() => {
+                        setFlyoutTabsIndex(INDEX_INDEXING);
                         closeArchivePopup();
                         if (typeof onSubmit === 'function') {
                             onSubmit();
