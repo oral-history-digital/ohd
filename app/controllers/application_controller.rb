@@ -124,9 +124,7 @@ class ApplicationController < ActionController::Base
         people: {},
         interviews: {},
         registry_entries: {},
-        registry_name_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_name_types-#{RegistryNameType.maximum(:updated_at)}") do
-          policy_scope(RegistryNameType).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-        end,
+        registry_name_types: policy_scope(RegistryNameType).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
         task_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
           policy_scope(TaskType).includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
         end,
