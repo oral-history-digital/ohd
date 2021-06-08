@@ -1,6 +1,6 @@
 class MvAdminCommentsToUserRegistrationProjects < ActiveRecord::Migration[5.2]
   def up
-    add_column :user_registration_projects, :admin_comments, :string
+    add_column :user_registration_projects, :admin_comments, :text
     UserRegistration.all.each do |ur| 
       ur.user_registration_projects.update_all admin_comments: ur.admin_comments
     end
