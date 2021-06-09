@@ -18,15 +18,7 @@ const errorRegistryTree = (error) => ({
     error,
 });
 
-export const fetchRegistryTree = () => {
-    return (dispatch, getState) => {
-        // TODO: Use local when response is delivered with locale as metadata.
-        //const locale = getState().archive.locale;
-
-        const url = `/de/registry_entry_tree.json`;
-
-        dispatch(requestRegistryTree());
-
-        Loader.getJson(url, null, dispatch, receiveRegistryTree);
-    };
+export const fetchRegistryTree = url => dispatch => {
+    dispatch(requestRegistryTree());
+    Loader.getJson(url, null, dispatch, receiveRegistryTree);
 };

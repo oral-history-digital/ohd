@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import DropdownTreeSelect from 'react-dropdown-tree-select';
 
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 
 export default function TreeSelect({
     locale,
@@ -15,10 +16,11 @@ export default function TreeSelect({
     fetchData,
 }) {
     const { t } = useI18n();
+    const pathBase = usePathBase();
 
     useEffect(() => {
         if (!dataAvailable) {
-            fetchRegistryTree();
+            fetchRegistryTree(`${pathBase}/registry_entry_tree.json`);
         }
     }, [])
 
