@@ -31,7 +31,7 @@ class ApplicationPolicy
     end
 
     def resolve
-      if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
+      #if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
         if project && scope.attribute_names.include?('project_id')
           scope.where(project_id: project.id)
         elsif project && scope.attribute_names.include?('interview_id')
@@ -39,9 +39,9 @@ class ApplicationPolicy
         else
           scope.all
         end
-      else
-        scope.none
-      end
+      #else
+        #scope.none
+      #end
     end
   end
 
