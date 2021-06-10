@@ -36,7 +36,7 @@ export default class InterviewData extends Component {
                     {this.props.title}
                 </button>
                 <div className={classNames('panel', { 'open': open })}>
-                    {this.props.content}
+                    {this.props.children}
                 </div>
             </div>
         );
@@ -46,7 +46,7 @@ export default class InterviewData extends Component {
 InterviewData.propTypes = {
     title: PropTypes.string.isRequired,
     open: PropTypes.bool,
-    content: PropTypes.element.isRequired,
+    children: PropTypes.element.isRequired,
     url: PropTypes.string,
     isLoggedIn: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,

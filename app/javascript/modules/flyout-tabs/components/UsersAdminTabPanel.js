@@ -6,7 +6,7 @@ import { UserRegistrationSearchFormContainer } from 'modules/admin';
 import { pathBase } from 'modules/routes';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
-import InterviewDataContainer from './InterviewDataContainer';
+import SubTab from './SubTab';
 
 class UsersAdminTabPanel extends Component {
     static propTypes = {
@@ -53,19 +53,6 @@ class UsersAdminTabPanel extends Component {
         this.setState({ selectedCountries: array });
     }
 
-    subTab(title, content, url, obj, condition = true) {
-        return (admin(this.props, obj, 'update') && condition) ?
-            (<div className='flyout-sub-tabs-container flyout-video'>
-                <InterviewDataContainer
-                    title={t(this.props, title)}
-                    content={content}
-                    url={url}
-                    open={false}
-                />
-            </div>) :
-            null;
-    }
-
     render() {
         return admin(this.props, {type: 'General'}, 'edit') ?
             (<Fragment>
@@ -73,8 +60,12 @@ class UsersAdminTabPanel extends Component {
                     { t(this.props, 'edit.administration') }
                 </div>
                 <div className='flyout-sub-tabs-container'>
-                    {this.subTab(
-                        'edit.users.admin',
+                    <SubTab
+                        title='edit.users.admin'
+                        url={`${pathBase(this.props)}/user_registrations`}
+                        obj={{type: 'UserRegistration'}}
+                        action='update'
+                    >
                         <div>
                             <div>
                                 <UserRegistrationSearchFormContainer/>
@@ -95,9 +86,7 @@ class UsersAdminTabPanel extends Component {
                                 placeholder="Statistik nach Ländern filtern (optional)"
                             />
                         </div>,
-                        `${pathBase(this.props)}/user_registrations`,
-                        {type: 'UserRegistration', action: 'update'}
-                    )}
+                    </SubTab>
                 </div>
             </Fragment>) :
             null;

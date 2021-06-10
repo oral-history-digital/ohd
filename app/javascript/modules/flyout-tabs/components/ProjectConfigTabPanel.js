@@ -7,7 +7,7 @@ import { PermissionSearchFormContainer,
 import { pathBase } from 'modules/routes';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
-import InterviewDataContainer from './InterviewDataContainer';
+import SubTab from './SubTab';
 
 class ProjectConfigTabPanel extends Component {
     static propTypes = {
@@ -19,19 +19,6 @@ class ProjectConfigTabPanel extends Component {
         editView: PropTypes.bool.isRequired,
     }
 
-    subTab(title, content, url, obj, condition = true) {
-        return (admin(this.props, obj, 'update') && condition) ?
-            (<div className='flyout-sub-tabs-container flyout-video'>
-                <InterviewDataContainer
-                    title={t(this.props, title)}
-                    content={content}
-                    url={url}
-                    open={false}
-                />
-            </div>) :
-            null;
-    }
-
     render() {
         return admin(this.props, {type: 'General'}, 'edit') ?
             (<Fragment>
@@ -39,48 +26,54 @@ class ProjectConfigTabPanel extends Component {
                     { t(this.props, 'edit.project.admin') }
                 </div>
                 <div className='flyout-sub-tabs-container'>
-                    {this.subTab(
-                        'edit.project.info',
-                        'description',
-                        `${pathBase(this.props)}/project/edit-info`,
-                        {type: 'Project', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.project.config',
-                        'description',
-                        `${pathBase(this.props)}/project/edit-config`,
-                        {type: 'Project', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.project.display',
-                        'description',
-                        `${pathBase(this.props)}/project/edit-display`,
-                        {type: 'Project', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.metadata_field.admin',
-                        'description',
-                        `${pathBase(this.props)}/metadata_fields`,
-                        {type: 'Project', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.role.admin',
-                        <RoleSearchFormContainer/>,
-                        `${pathBase(this.props)}/roles`,
-                        {type: 'Role', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.permission.admin',
-                        <PermissionSearchFormContainer/>,
-                        `${pathBase(this.props)}/permissions`,
-                        {type: 'Permission', action: 'update'}
-                    )}
-                    {this.subTab(
-                        'edit.task_type.admin',
-                        <TaskTypeSearchFormContainer/>,
-                        `${pathBase(this.props)}/task_types`,
-                        {type: 'TaskType', action: 'update'}
-                    )}
+                    <SubTab
+                        title='edit.project.info'
+                        url={`${pathBase(this.props)}/project/edit-info`}
+                        obj={{type: 'Project'}}
+                        action='update'
+                    />
+                    <SubTab
+                        title='edit.project.config'
+                        url={`${pathBase(this.props)}/project/edit-config`}
+                        obj={{type: 'Project'}}
+                        action='update'
+                    />
+                    <SubTab
+                        title='edit.project.display'
+                        url={`${pathBase(this.props)}/project/edit-display`}
+                        obj={{type: 'Project'}}
+                        action='update'
+                    />
+                    <SubTab
+                        title='edit.metadata_field.admin'
+                        url={`${pathBase(this.props)}/metadata_fields`}
+                        obj={{type: 'Project'}}
+                        action='update'
+                    />
+                    <SubTab
+                        title='edit.role.admin'
+                        url={`${pathBase(this.props)}/roles`}
+                        obj={{type: 'Role'}}
+                        action='update'
+                    >
+                        <RoleSearchFormContainer/>
+                    </SubTab>
+                    <SubTab
+                        title='edit.permission.admin'
+                        url={`${pathBase(this.props)}/permissions`}
+                        obj={{type: 'Permission'}}
+                        action='update'
+                    >
+                        <PermissionSearchFormContainer/>
+                    </SubTab>
+                    <SubTab
+                        title='edit.task_type.admin'
+                        url={`${pathBase(this.props)}/task_types`}
+                        obj={{type: 'TaskType'}}
+                        action='update'
+                    >
+                        <TaskTypeSearchFormContainer/>
+                    </SubTab>
                 </div>
             </Fragment>) :
             null;

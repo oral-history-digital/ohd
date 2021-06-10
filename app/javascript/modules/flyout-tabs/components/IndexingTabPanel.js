@@ -8,7 +8,7 @@ import { CollectionsSearchFormContainer, LanguagesSearchFormContainer,
 import { pathBase } from 'modules/routes';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
-import InterviewDataContainer from './InterviewDataContainer';
+import SubTab from './SubTab';
 
 class IndexingTabPanel extends Component {
     static propTypes = {
@@ -19,19 +19,6 @@ class IndexingTabPanel extends Component {
         editView: PropTypes.bool.isRequired,
     }
 
-    subTab(title, content, url, obj, condition = true) {
-        return (admin(this.props, obj, 'update') && condition) ?
-            (<div className='flyout-sub-tabs-container flyout-video'>
-                <InterviewDataContainer
-                    title={t(this.props, title)}
-                    content={content}
-                    url={url}
-                    open={false}
-                />
-            </div>) :
-            null;
-    }
-
     render() {
         return admin(this.props, {type: 'General'}, 'edit') ?
             (<Fragment>
@@ -39,14 +26,66 @@ class IndexingTabPanel extends Component {
                     { t(this.props, 'edit.indexing') }
                 </div>
                 <div className='flyout-sub-tabs-container'>
-                    {this.subTab('edit.interview.new', 'description', `${pathBase(this.props)}/interviews/new`, {type: 'Interview', action: 'create'})}
-                    {this.subTab('edit.upload.upload', '', `${pathBase(this.props)}/uploads/new`, {type: 'Upload', action: 'create'})}
-                    {this.subTab( 'edit.person.admin', <PeopleSearchFormContainer/>, `${pathBase(this.props)}/people`, {type: 'Person', action: 'update'})}
-                    {this.subTab( 'edit.registry_reference_type.admin', <RegistryReferenceTypesSearchFormContainer/>, `${pathBase(this.props)}/registry_reference_types`, {type: 'RegistryReferenceType', action: 'update'})}
-                    {this.subTab( 'edit.registry_name_type.admin', <RegistryNameTypesSearchFormContainer/>, `${pathBase(this.props)}/registry_name_types`, {type: 'RegistryNameType', action: 'update'})}
-                    {this.subTab( 'edit.contribution_type.admin', <ContributionTypesSearchFormContainer/>, `${pathBase(this.props)}/contribution_types`, {type: 'ContributionType', action: 'update'})}
-                    {this.subTab( 'edit.collection.admin', <CollectionsSearchFormContainer/>, `${pathBase(this.props)}/collections`, {type: 'Collection', action: 'update'})}
-                    {this.subTab( 'edit.language.admin', <LanguagesSearchFormContainer/>, `${pathBase(this.props)}/languages`, {type: 'Language', action: 'update'})}
+                    <SubTab
+                        title='edit.interview.new'
+                        url={`${pathBase(this.props)}/interviews/new`}
+                        obj={{type: 'Interview'}}
+                        action='create'
+                    />
+                    <SubTab
+                        title='edit.upload.upload'
+                        url={`${pathBase(this.props)}/uploads/new`}
+                        obj={{type: 'Upload'}}
+                        action='create'
+                    />
+                    <SubTab
+                        title= 'edit.person.admin'
+                        url={`${pathBase(this.props)}/people`}
+                        obj={{type: 'Person'}}
+                        action='update'
+                    >
+                        <PeopleSearchFormContainer />
+                    </SubTab>
+                    <SubTab
+                        title= 'edit.registry_reference_type.admin'
+                        url={`${pathBase(this.props)}/registry_reference_types`}
+                        obj={{type: 'RegistryReferenceType'}}
+                        action='update'
+                    >
+                        <RegistryReferenceTypesSearchFormContainer />
+                    </SubTab>
+                    <SubTab
+                        title= 'edit.registry_name_type.admin'
+                        url={`${pathBase(this.props)}/registry_name_types`}
+                        obj={{type: 'RegistryNameType'}}
+                        action='update'
+                    >
+                        <RegistryNameTypesSearchFormContainer />
+                    </SubTab>
+                    <SubTab
+                        title= 'edit.contribution_type.admin'
+                        url={`${pathBase(this.props)}/contribution_types`}
+                        obj={{type: 'ContributionType'}}
+                        action='update'
+                    >
+                        <ContributionTypesSearchFormContainer />
+                    </SubTab>
+                    <SubTab
+                        title= 'edit.collection.admin'
+                        url={`${pathBase(this.props)}/collections`}
+                        obj={{type: 'Collection'}}
+                        action='update'
+                    >
+                        <CollectionsSearchFormContainer />
+                    </SubTab>
+                    <SubTab
+                        title= 'edit.language.admin'
+                        url={`${pathBase(this.props)}/languages`}
+                        obj={{type: 'Language'}}
+                        action='update'
+                    >
+                        <LanguagesSearchFormContainer/>
+                    </SubTab>
                 </div>
             </Fragment>) :
             null;
