@@ -9,15 +9,6 @@ html
     javascript:
       var developmentMode = "#{Rails.env == 'development' ? true : false}"
 
-    css:
-      :root {
-        --primary-color: #{current_project ? current_project.primary_color : '#006169'};
-        --secondary-color: #{current_project ? current_project.secondary_color : '#efae0f'};
-        --editorial-color: #{current_project ? current_project.editorial_color : '#16aab6'};
-        --aspect-x: #{current_project ? current_project.aspect_x : 4};
-        --aspect-y: #{current_project ? current_project.aspect_y : 3};
-      }
-
     == javascript_pack_tag 'application'
     == stylesheet_pack_tag 'application'
 
