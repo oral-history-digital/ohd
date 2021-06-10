@@ -24,7 +24,7 @@ class UserRegistrationsController < ApplicationController
       render json: {registration_status: render_to_string("submitted.#{params[:locale]}.html", layout: false)}
     elsif !@user_registration.errors[:email].nil? && @user_registration.email =~ /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       @user_registration = UserRegistration.where(email: @user_registration.email).first
-      if @user_registration.account_created?
+      if @user_registration.user_account
         # re-send the activation instructions
         @user_registration.user_account.resend_confirmation_instructions
         @email = @user_registration.email
@@ -97,8 +97,10 @@ class UserRegistrationsController < ApplicationController
     user_registrations = policy_scope(UserRegistration).
       where(search_params).
       order("last_name ASC").
-      paginate(page: page).
-      includes(:user_registration_projects).
+      paginate(page: page)
+
+    total_pages = user_registrations.total_pages
+    user_registrations = user_registrations.includes(:user_registration_projects).
       inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
 
     update_initial_redux_state(user_registrations)
@@ -112,7 +114,7 @@ class UserRegistrationsController < ApplicationController
             data_type: 'user_registrations',
             extra_params: extra_params,
             page: params[:page],
-            result_pages_count: user_registrations.total_pages
+            result_pages_count: total_pages
           }
       end
       format.csv do
@@ -193,8 +195,9 @@ class UserRegistrationsController < ApplicationController
       :email,
       :default_locale,
       'user_registration_projects.workflow_state'
-    ).to_h.select{|k,v| !(v.blank? || v == 'all') }
+    ).to_h.select{|k,v| !(v.blank?) }
     permitted['user_registration_projects.workflow_state'] = 'account_confirmed' unless permitted['user_registration_projects.workflow_state']
+    permitted.delete('user_registration_projects.workflow_state') if permitted['user_registration_projects.workflow_state'] == 'all'
     permitted
   end
 
