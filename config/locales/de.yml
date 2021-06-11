@@ -1149,7 +1149,7 @@ de:
       back_to_top:
         label: "Zurück nach oben"
     map_filter:
-      multiple_types: mehrere Erwähnungsarten
+      multiple_types: Mehrere Ortstypen
     media_player:
       auto_scroll:
         enable: "mitlaufendes Transkript ein"
