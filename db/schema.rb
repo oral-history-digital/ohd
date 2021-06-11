@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_29_103017) do
+ActiveRecord::Schema.define(version: 2021_06_10_133942) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -408,6 +408,7 @@ ActiveRecord::Schema.define(version: 2021_05_29_103017) do
     t.integer "aspect_y"
     t.integer "archive_id_number_length"
     t.string "hidden_transcript_registry_entry_ids"
+    t.boolean "display_ohd_link", default: false
   end
 
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

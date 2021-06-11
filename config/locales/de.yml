@@ -884,7 +884,7 @@ de:
         more_text: Weiterer Text Startseite
         landing_page_text: Landingpage Text
         pseudo_view_modes: Ansichten
-        fullname_on_landing_page: Show full name on landing page
+        fullname_on_landing_page: Vollen Namen auf der Landingpage zeigen
         pseudo_upload_types: UploadTypen
         shortname: Kürzel
         initials: Initialen (Archiv-ID)
@@ -905,6 +905,7 @@ de:
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
+        display_ohd_link: OHD-Link zeigen
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color
