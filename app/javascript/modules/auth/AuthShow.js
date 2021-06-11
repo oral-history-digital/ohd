@@ -43,7 +43,7 @@ AuthShow.propTypes = {
     ifLoggedOut: PropTypes.bool,
     ifNoProject: PropTypes.bool,
     ifCatalog: PropTypes.bool,
-    project: PropTypes.object.isRequired,
+    project: PropTypes.object,
     account: PropTypes.object,
     children: PropTypes.node,
 };

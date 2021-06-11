@@ -7,7 +7,7 @@ class LocaleButtons extends Component {
     static propTypes = {
         currentLocale: PropTypes.string.isRequired,
         locales: PropTypes.array.isRequired,
-        projectId: PropTypes.string.isRequired,
+        projectId: PropTypes.string,
         setLocale: PropTypes.func.isRequired,
         history: PropTypes.object.isRequired,
         location: PropTypes.object.isRequired,

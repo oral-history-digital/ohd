@@ -44,7 +44,7 @@ function ProjectFooter({ project, locale }) {
 }
 
 ProjectFooter.propTypes = {
-    project: PropTypes.object.isRequired,
+    project: PropTypes.object,
     locale: PropTypes.string.isRequired,
 };
 

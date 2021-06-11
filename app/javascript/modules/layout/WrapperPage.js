@@ -123,7 +123,7 @@ WrapperPage.propTypes = {
     isLoggedOut: PropTypes.bool,
     loggedInAt: PropTypes.number,
     locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
+    projectId: PropTypes.string,
     projects: PropTypes.object.isRequired,
     accountsStatus: PropTypes.object,
     languagesStatus: PropTypes.object,
