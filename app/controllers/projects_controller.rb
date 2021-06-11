@@ -143,6 +143,7 @@ class ProjectsController < ApplicationController
           "has_newsletter",
           "has_map",
           "is_catalog",
+          "display_ohd_link",
           translations_attributes: [:locale, :name, :id, :introduction, :more_text, :landing_page_text]
       )
     end

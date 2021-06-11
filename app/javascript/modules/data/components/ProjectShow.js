@@ -17,7 +17,6 @@ function ProjectShow({
         <>
             <a
                 href={href}
-                target='_blank'
             >
                 { !hideLogo && <img className="logo-img" src={logo?.src} /> }
                 { data.name[locale] }

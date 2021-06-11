@@ -47,7 +47,8 @@ class ProjectSerializer < ApplicationSerializer
     :sponsor_logos,
     :list_columns,
     :grid_fields,
-    :root_registry_entry_id
+    :root_registry_entry_id,
+    :display_ohd_link
 
   def title
     object.shortname

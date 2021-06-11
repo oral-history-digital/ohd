@@ -53,6 +53,11 @@ const mapStateToProps = (state) => {
                 type: "checkbox"
             },
             {
+                elementType: 'input',
+                attribute: "display_ohd_link",
+                type: "checkbox"
+            },
+            {
                 attribute: "doi"
             },
             {
