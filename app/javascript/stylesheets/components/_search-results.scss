@@ -1,0 +1,35 @@
+.SearchResults {
+}
+
+.SearchResults-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-family: $font-family;
+  outline: none;
+  padding: 0;
+}
+
+.SearchResults-toggle:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
+.SearchResults-toggleIcon {
+  color: var(--primary-color);
+}
+
+.SearchResults-heading {
+  display: inline-block;
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: $base-unit;
+  margin: 0 0 0 ($base-unit / 2);
+}
+
+.SearchResults-results {
+  display: none;
+}
+
+.SearchResults-results.is-expanded {
+  display: initial;
+}

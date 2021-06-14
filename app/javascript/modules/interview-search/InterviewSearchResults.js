@@ -1,118 +1,63 @@
-import { createElement, Component } from 'react';
-import { Link } from 'react-router-dom';
-import Slider from "react-slick";
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { FaPlus, FaMinus } from 'react-icons/fa';
+import classNames from 'classnames';
 
-import { FoundSegmentContainer } from 'modules/transcript';
-import { PersonContainer } from 'modules/people';
-import { BiographicalEntryContainer } from 'modules/interviewee-metadata';
-import { PhotoContainer } from 'modules/gallery';
-import { RegistryEntryContainer } from 'modules/registry';
 import { pluralize } from 'modules/strings';
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
+import ResultListContainer from './ResultListContainer';
+import { MODEL_NAMES } from './constants';
 
-export default class InterviewSearchResults extends Component {
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-        this.state = {
-            open: Array(5).fill(false)
-        }
+export default function InterviewSearchResults({
+    isInterviewSearching,
+    interview,
+    searchResults,
+}) {
+    const [isOpen, setIsOpen] = useState(Array(MODEL_NAMES.length).fill(false));
+    const { t } = useI18n();
+
+    function handleClick(index) {
+        const nextIsOpen = isOpen.slice();
+        nextIsOpen[index] = !nextIsOpen[index]
+        setIsOpen(nextIsOpen);
     }
 
-    components() {
-        return {
-            Segment: FoundSegmentContainer,
-            Person: PersonContainer,
-            BiographicalEntry: BiographicalEntryContainer,
-            Photo: PhotoContainer,
-            RegistryEntry: RegistryEntryContainer,
-        }
-    }
-
-    handleClick(event, count, i) {
-      if (count > 0) {
-        let open = this.state.open.slice();
-        open[i] = !open[i]
-        this.setState({open: open})
-      }
-    }
-
-    renderResults(model) {
-        if(this.props.searchResults[`found${pluralize(model)}`]) {
-            let active = false;
-            return this.props.searchResults[`found${pluralize(model)}`].map( (data, index) => {
-                if (model === 'Segment') {
-                    if (data.time <= this.props.mediaTime + 10 && data.time >= this.props.mediaTime - 5) {
-                        active = true;
+    return MODEL_NAMES.map((model, modelIndex) => {
+        return !isInterviewSearching && searchResults && (
+            <div
+                key={modelIndex}
+                className="SearchResults u-mt"
+            >
+                <button
+                    type="button"
+                    className="SearchResults-toggle"
+                    aria-label="Toggle results"
+                    onClick={() => handleClick(modelIndex)}
+                >
+                    {isOpen[modelIndex] ?
+                        <FaMinus className="SearchResults-toggleIcon" /> :
+                        <FaPlus className="SearchResults-toggleIcon" />
                     }
-                }
-
-                let result = createElement(this.components()[model],
-                    {
-                        data: data,
-                        key: `search-result-${model}-${data.id}`,
-                        tape_count: this.props.interview.tape_count,
-                        active: false,
-                        // TODO: reintegrate counter with different models
-                        //index: index+1,
-                        //foundSegmentsAmount: this.props.searchResults.foundSegments.length
-                    }
-                )
-
-                if (this.props.asSlideShow) {
-                    return (
-                        <Link
-                            key={`search-result-link-${model}-${data.id}`}
-                            onClick={() => this.props.setArchiveId(this.props.interview.archive_id)}
-                            to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
-                        >
-                            {result}
-                        </Link>
-                    )
-                } else {
-                    return result;
-                }
-            });
-        }
-    }
-
-    searchResults(model, modelIndex) {
-        if (!this.props.isInterviewSearching && this.props.searchResults) {
-            let count = this.props.searchResults[`found${pluralize(model)}`] ? this.props.searchResults[`found${pluralize(model)}`].length : 0;
-            let iconCss = this.state.open[modelIndex] || count === 0 ? 'heading-ico active' : 'heading-ico inactive';
-            let expandedCss = this.state.open[modelIndex] ? 'expanded' : 'collapsed'
-
-            return (
-                <div className='heading' key={modelIndex} >
-                    <div className={iconCss} onClick={() => this.handleClick(event, count, modelIndex)}></div>
-                    <div className='mainheading' onClick={() => this.handleClick(event, count, modelIndex)}>{count} {t(this.props, model.toLowerCase() + '_results')}</div>
-                    <div className={expandedCss}>{this.renderResults(model)}</div>
+                    <h3 className="SearchResults-heading">
+                        {searchResults[`found${pluralize(model)}`] ? searchResults[`found${pluralize(model)}`].length : 0}
+                        {' '}
+                        {t(model.toLowerCase() + '_results')}
+                    </h3>
+                </button>
+                <div className={classNames('SearchResults-results', { 'is-expanded': isOpen[modelIndex] })}>
+                    <ResultListContainer
+                        model={model}
+                        searchResults={searchResults}
+                        interview={interview}
+                    />
                 </div>
-            );
-        }
-    }
-
-    render () {
-        if (this.props.asSlideShow) {
-            let settings = {
-                infinite: false,
-            };
-            return (
-                <Slider {...settings}>
-                    {['Segment', 'Person', 'BiographicalEntry', 'Photo', 'RegistryEntry'].map((model, modelIndex) => {
-                        return this.renderResults(model, modelIndex)
-                    })}
-                </Slider>
-            )
-        } else {
-            return (
-                <div className='content-index content-search-entries'>
-                    {['Segment', 'Person', 'BiographicalEntry', 'Photo', 'RegistryEntry'].map((model, modelIndex) => {
-                        return this.searchResults(model, modelIndex)
-                    })}
-                </div>
-            )
-        }
-    }
+            </div>
+        );
+    });
 }
+
+InterviewSearchResults.propTypes = {
+    interview: PropTypes.object.isRequired,
+    isInterviewSearching: PropTypes.bool.isRequired,
+    searchResults: PropTypes.object,
+};

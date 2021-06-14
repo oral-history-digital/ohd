@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import classNames from 'classnames';
 
-import { InterviewSearchResultsContainer } from 'modules/interview-search';
+import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { humanReadable } from 'modules/data';
 import { pathBase } from 'modules/routes';
@@ -76,10 +76,9 @@ export default class InterviewPreview extends Component {
             return (
                 <div className='slider'>
                     <div className={'archive-search-found-segments'}>
-                        <InterviewSearchResultsContainer
+                        <SlideShowSearchResults
                             interview={this.props.interview}
                             searchResults={this.interviewSearchResults()}
-                            asSlideShow={true}
                         />
                     </div>
                 </div>
