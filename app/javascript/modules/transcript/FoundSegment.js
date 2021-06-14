@@ -5,7 +5,6 @@ import moment from 'moment';
 import { useI18n } from 'modules/i18n';
 
 export default function FoundSegment({
-    interview,
     tape_count,
     index,
     foundSegmentsAmount,
@@ -13,7 +12,6 @@ export default function FoundSegment({
     data,
     locale,
     sendTimeChangeRequest,
-    setInterviewTabIndex,
 }) {
     const { t } = useI18n();
 
@@ -21,10 +19,7 @@ export default function FoundSegment({
         <button
             type="button"
             className={classNames('FoundSegment', {'is-active': active})}
-            onClick={() => {
-                sendTimeChangeRequest(data.tape_nbr, data.time);
-                setInterviewTabIndex(interview?.lang === locale ? 0 : 1);
-            }}
+            onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
         >
             {index && foundSegmentsAmount && (
                 <div className="hits-count">
@@ -58,12 +53,10 @@ export default function FoundSegment({
 
 FoundSegment.propTypes = {
     data: PropTypes.object.isRequired,
-    interview: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     tape_count: PropTypes.number,
     active: PropTypes.bool.isRequired,
     index: PropTypes.number,
     foundSegmentsAmount: PropTypes.number,
     sendTimeChangeRequest: PropTypes.func.isRequired,
-    setInterviewTabIndex: PropTypes.func.isRequired,
 };

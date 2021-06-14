@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { ScrollToTop } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
 import InterviewSearchFormContainer from './InterviewSearchFormContainer';
 import InterviewSearchResults from './InterviewSearchResults';
@@ -11,7 +12,7 @@ export default function InterviewSearch({
     isInterviewSearching = false,
 }) {
     return (
-        <div>
+        <ScrollToTop>
             <InterviewSearchFormContainer />
             {isInterviewSearching ?
                 <Spinner /> : (
@@ -20,7 +21,7 @@ export default function InterviewSearch({
                     searchResults={interviewSearchResults[archiveId]}
                 />
             )}
-        </div>
+        </ScrollToTop>
     );
 }
 

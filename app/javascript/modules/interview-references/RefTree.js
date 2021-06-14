@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { ScrollToTop } from 'modules/user-agent';
 import { FoundSegmentContainer } from 'modules/transcript';
 import RefTreeEntryContainer from './RefTreeEntryContainer';
 
@@ -66,9 +67,11 @@ export default class RefTree extends Component {
 
     render() {
         return (
-            <div className={'content-index content-ref-tree'}>
-                {this.refTree()}
-            </div>
+            <ScrollToTop>
+                <div className="content-index content-ref-tree">
+                    {this.refTree()}
+                </div>
+            </ScrollToTop>
         );
     }
 }
