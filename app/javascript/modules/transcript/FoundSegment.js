@@ -1,79 +1,59 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import moment from 'moment';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 
-export default class FoundSegment extends Component {
-    constructor(props) {
-        super(props);
+export default function FoundSegment({
+    interview,
+    tape_count,
+    index,
+    foundSegmentsAmount,
+    active,
+    data,
+    locale,
+    sendTimeChangeRequest,
+    setInterviewTabIndex,
+}) {
+    const { t } = useI18n();
 
-        this.state = {
-            contentOpen: false,
-            contentType: 'none',
-        };
-    }
-
-    heading() {
-        if (this.props.data.last_heading && this.props.data.last_heading[this.props.locale]) {
-            return (
-                <span>
-                    {t(this.props, 'in')}: "{this.props.data.last_heading[this.props.locale]}"
-                    &nbsp;|&nbsp;
-                </span>
-            )
-        }
-    }
-
-    tape() {
-        if (this.props.tape_count > 1){
-            return (
-                <span>
-                    {t(this.props, 'tape')} {this.props.data.tape_nbr}/{this.props.tape_count}
-                    &nbsp;|&nbsp;
-                </span>
-            )
-        }
-    }
-
-    counter() {
-        if(this.props.index && this.props.foundSegmentsAmount){
-            return (
-                <div className={'hits-count'}>
-                        <div>{this.props.index}/{this.props.foundSegmentsAmount}</div>
+    return (
+        <button
+            type="button"
+            className={classNames('FoundSegment', {'is-active': active})}
+            onClick={() => {
+                sendTimeChangeRequest(data.tape_nbr, data.time);
+                setInterviewTabIndex(interview?.lang === locale ? 0 : 1);
+            }}
+        >
+            {index && foundSegmentsAmount && (
+                <div className="hits-count">
+                    <div>
+                        {index}/{foundSegmentsAmount}
                     </div>
-            )
-        } else {
-            return null;
-        }
-    }
-
-    css() {
-        return 'content-search-text ' + (this.props.active ? 'active' : 'inactive');
-    }
-
-    render() {
-        let tabIndex = (this.props.interview && this.props.locale === this.props.interview.lang) ? 0 : 1;
-        return (
-            <div
-                className="content-search-row"
-                onClick={() => {
-                    this.props.sendTimeChangeRequest(this.props.data.tape_nbr, this.props.data.time);
-                    this.props.setInterviewTabIndex(tabIndex);
-                }}
-            >
-                {this.counter()}
-                <p className="content-search-timecode">
-                    {this.heading()}
-                    {this.tape()}
-                    {moment.utc(this.props.data.time * 1000).format("HH:mm:ss")}
-                </p>
-                <div className={this.css()}>
-                    <p>{this.props.data.text[this.props.locale]}</p>
                 </div>
-            </div>
-        )
-    }
+            )}
+            <p className="FoundSegment-meta">
+                {data.last_heading?.[locale] && (
+                    <span>
+                        {t('in')}: {data.last_heading[locale]}
+                        &nbsp;|&nbsp;
+                    </span>
+                )}
+                {(tape_count > 1) && (
+                    <span>
+                        {t('tape')} {data.tape_nbr}/{tape_count}
+                        &nbsp;|&nbsp;
+                    </span>
+                )}
+                {moment.utc(data.time * 1000).format('HH:mm:ss')}
+            </p>
+            <p
+                className="FoundSegment-text"
+                dangerouslySetInnerHTML={{__html: data.text[locale]}}
+            />
+        </button>
+    );
 }
 
 FoundSegment.propTypes = {
@@ -82,7 +62,6 @@ FoundSegment.propTypes = {
     locale: PropTypes.string.isRequired,
     tape_count: PropTypes.number,
     active: PropTypes.bool.isRequired,
-    translations: PropTypes.object.isRequired,
     index: PropTypes.number,
     foundSegmentsAmount: PropTypes.number,
     sendTimeChangeRequest: PropTypes.func.isRequired,

@@ -1,7 +1,9 @@
 export const MODEL_NAMES = [
     'Segment',
-    'Person',
+    // TOC,
+    // Annotations,
+    'RegistryEntry',
     'BiographicalEntry',
     'Photo',
-    'RegistryEntry',
+    // Protocol/Observations/Record/Log
 ];

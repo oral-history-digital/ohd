@@ -133,55 +133,11 @@ div.mainheading + div {
 
 // Tab Content: Search / Suche im Interview
 
-.content-search-row {
-  display: inline-block;
-}
-
 .content-search-legend {
   margin-bottom: 20px;
   font-size: $font-size-medium;
 }
 
-.content-search-text {
-  //width: 100%;
-  padding: 2px;
-  display: inline-block;
-  margin: 0 0 11px 0;
-  &:hover{
-    p, span {
-      color: var(--primary-color) !important;
-    }
-  }
-  p {
-    display: inline-block;
-    color: #000; //$gray-dark;
-    cursor: pointer;
-    transition: 0.4s;
-    margin: 0;
-  }
-  p span.highlight {
-    padding: 0 4px;
-    background-color: rgba(255,250,129,0.6);
-    color: $gray-darkest;
-  }
-
-  &.active {
-    background-color: rgba(255,250,129,0.5);
-    color: $gray-darkest;
-  }
-}
-
-.content-search-row {
-  @include clearfix;
-  //margin-bottom: 15px;
-  padding-left: 2px;
-  .content-search-timecode {
-    font-size: $font-size-small;
-    margin-bottom: 0;
-    padding-left: 2px;
-    color: #666;
-  }
-}
 
 .content-search {
   font-size: $font-size-larger;

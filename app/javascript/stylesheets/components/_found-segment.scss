@@ -1,0 +1,51 @@
+.FoundSegment {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: block;
+  font-family: $font-family;
+  max-width: 40rem;
+  outline: none;
+  padding: none;
+  text-align: left;
+}
+
+.FoundSegment:not(:first-child) {
+  margin-top: $base-unit;
+}
+
+.FoundSegment:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
+.FoundSegment-meta {
+  font-size: 0.75rem !important;
+  margin: 0;
+  color: #666 !important;
+}
+
+.FoundSegment-text {
+  font-size: 1rem !important;
+  transition: background-color $transition-duration, color $transition-duration;
+}
+
+.FoundSegment-meta,
+.FoundSegment-text {
+  line-height: $base-unit !important;
+  margin: 0 !important;
+}
+
+.FoundSegment .highlight {
+  padding: 0 4px;
+  background-color: rgba(255,250,129,0.6);
+  color: $gray-darkest;
+}
+
+.FoundSegment.is-active .FoundSegment-text {
+  background-color: rgba(255,250,129,0.5);
+  color: $gray-darkest;
+}
+
+.FoundSegment:hover .FoundSegment-text {
+  color: var(--primary-color);
+}
