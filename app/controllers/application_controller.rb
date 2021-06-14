@@ -66,7 +66,7 @@ class ApplicationController < ActionController::Base
         selectedInterviewEditViewColumns: ['timecode', 'text_orig', 'text_translated', 'mainheading_orig', 'subheading_orig', 'registry_references', 'annotations'],
         skipEmptyRows: false,
         translations: translations,
-        countryKeys: current_project && country_keys,
+        countryKeys: country_keys,
       },
       account: {
         isLoggingIn: false,
@@ -223,9 +223,11 @@ class ApplicationController < ActionController::Base
   end
 
   def country_keys
-    current_project.available_locales.inject({}) do |mem, locale|
-      mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
-      mem
+    Rails.cache.fetch('country-keys') do
+      I18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
+        mem
+      end
     end
   end
 
