@@ -1,63 +1,48 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { PixelLoader } from 'modules/spinners';
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 
-export default class InterviewSearchForm extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: this.props.interviewFulltext ? this.props.interviewFulltext : "",
-        };
+export default function InterviewSearchForm({
+    archiveId,
+    isInterviewSearching,
+    interviewFulltext,
+    searchInInterview,
+}) {
+    const [searchTerm, setSearchTerm] = useState(interviewFulltext || '');
+    const pathBase = usePathBase();
+    const { t } = useI18n();
 
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-    }
-
-    handleChange(event) {
-        this.setState({value: event.target.value});
-    }
-
-    handleSubmit(event) {
+    function handleSubmit(event) {
         event.preventDefault();
-        this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.state.value, id: this.props.archiveId});
+        searchInInterview(`${pathBase}/searches/interview`, {fulltext: searchTerm, id: archiveId});
     }
 
-    loader(){
-        if (this.props.isInterviewSearching) {
-            return <PixelLoader />
-        }
-    }
+    return (
+        <div className="content-search">
+            <form onSubmit={handleSubmit}>
+                <label>
+                    <input
+                        type="search"
+                        className="search-input"
+                        value={searchTerm}
+                        onChange={event => setSearchTerm(event.target.value)}
+                        placeholder={t('enter_search_field')}
+                    />
+                </label>
+                <input type="submit" value="" className="search-button" />
+            </form>
 
-    render() {
-        return (
-            <div className={'content-search'}>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        <input type="text"
-                            className="search-input"
-                            value={this.state.value}
-                            onChange={this.handleChange}
-                            placeholder={t(this.props, 'enter_search_field')}
-                        />
-                    </label>
-                    <input type="submit" value="" className={'search-button'}/>
-                </form>
-                {this.loader()}
-            </div>
-        );
-    }
+            {isInterviewSearching && <PixelLoader />}
+        </div>
+    );
 }
 
 InterviewSearchForm.propTypes = {
     archiveId: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
-    interviewFulltext: PropTypes.bool,
+    interviewFulltext: PropTypes.string,
     isInterviewSearching: PropTypes.bool,
     searchInInterview: PropTypes.func.isRequired,
 };

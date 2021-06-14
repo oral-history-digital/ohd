@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
-import { getProjects } from 'modules/data';
+import { getArchiveId } from 'modules/archive';
 import { searchInInterview } from 'modules/search';
 import InterviewSearchForm from './InterviewSearchForm';
 
@@ -11,11 +10,7 @@ const mapStateToProps = (state) => {
 
     return {
         archiveId: getArchiveId(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
         interviewFulltext: data && data.fulltext,
-        translations: getTranslations(state),
-        locale: getLocale(state),
         isInterviewSearching: state.search.isInterviewSearching,
     }
 }
