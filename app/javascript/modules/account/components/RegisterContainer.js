@@ -6,12 +6,10 @@ import { getLocale, getTranslations } from 'modules/archive';
 import { getRegistrationStatus } from '../selectors';
 
 const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
-
     return {
         registrationStatus: getRegistrationStatus(state),
         translations: getTranslations(state),
-        externalLinks: project && project.external_links,
+        project: getCurrentProject(state),
         locale: getLocale(state),
     }
 }

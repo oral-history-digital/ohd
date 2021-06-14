@@ -7,14 +7,13 @@ import { submitRegister } from '../actions';
 import RegisterForm from './RegisterForm';
 
 const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
     return {
         projectId: getProjectId(state),
         projects: getProjects(state),
+        project: getCurrentProject(state),
         locale: getLocale(state),
         translations: getTranslations(state),
         countryKeys: getCountryKeys(state),
-        externalLinks: project && project.external_links,
     }
 }
 

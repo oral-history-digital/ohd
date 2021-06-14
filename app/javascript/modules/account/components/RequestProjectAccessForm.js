@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
+import findExternalLink from '../findExternalLink';
 
 export default function RequestProjectAccessForm({
     externalLinks,
@@ -16,10 +17,8 @@ export default function RequestProjectAccessForm({
 
     const { t } = useI18n();
 
-    let conditionsLink = Object.values(externalLinks).filter(link => link.internal_name === 'conditions')[0];
-    let privacyLink = Object.values(externalLinks).filter(link => link.internal_name === 'privacy_protection')[0];
-    conditionsLink =  (conditionsLink && conditionsLink.url) || {}
-    privacyLink =  (privacyLink && privacyLink.url) || {}
+    const conditionsLink = findExternalLink(project, 'conditions');
+    const privacyLink = findExternalLink(project, 'privacy_protection');
 
     return (
         <Form

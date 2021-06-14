@@ -2,14 +2,13 @@ import { Component } from 'react';
 import { Form } from 'modules/forms';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
+import findExternalLink from '../findExternalLink';
 
 export default class RegisterForm extends Component {
 
     formElements() {
-        let conditionsLink = Object.values(this.props.externalLinks).filter(link => link.internal_name === 'conditions')[0];
-        let privacyLink = Object.values(this.props.externalLinks).filter(link => link.internal_name === 'privacy_protection')[0];
-        conditionsLink =  (conditionsLink && conditionsLink.url) || {}
-        privacyLink =  (privacyLink && privacyLink.url) || {}
+        const conditionsLink = findExternalLink(this.props.project, 'conditions');
+        const privacyLink = findExternalLink(this.props.project, 'privacy_protection');
 
         let firstElements = [
             {

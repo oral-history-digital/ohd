@@ -3,15 +3,14 @@ import { Component } from 'react';
 import { t } from 'modules/i18n';
 import { ScrollToTop } from 'modules/user-agent';
 import RegisterFormContainer from './RegisterFormContainer';
+import findExternalLink from '../findExternalLink';
 
 export default class Register extends Component {
     content() {
         if (!this.props.registrationStatus) {
 
-            let conditionsLink = Object.values(this.props.externalLinks).filter(link => link.internal_name === 'conditions')[0];
-            let privacyLink = Object.values(this.props.externalLinks).filter(link => link.internal_name === 'privacy_protection')[0];
-            conditionsLink =  (conditionsLink && conditionsLink.url) || {}
-            privacyLink =  (privacyLink && privacyLink.url) || {}
+            const conditionsLink = findExternalLink(this.props.project, 'conditions');
+            const privacyLink = findExternalLink(this.props.project, 'privacy_protection');
 
             return (
                 <div>
