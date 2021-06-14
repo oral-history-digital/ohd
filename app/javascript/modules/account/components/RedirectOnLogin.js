@@ -17,10 +17,11 @@ export default function RedirectOnLogin({
     const isLoggedIn = useSelector(getIsLoggedIn);
 
     const prevIsLoggedIn = usePrevious(isLoggedIn);
+    const to = projectId ? `${pathBase({projectId, locale, projects})}${path}` : `/${locale}`;
 
     if (prevIsLoggedIn === false && isLoggedIn === true) {
         return (
-            <Redirect to={`${pathBase({projectId, locale, projects})}${path}`} />
+            <Redirect to={to} />
         );
     }
 
