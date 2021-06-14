@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useReducer } from 'react';
 import PropTypes from 'prop-types';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import classNames from 'classnames';
@@ -7,57 +7,73 @@ import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 import ResultListContainer from './ResultListContainer';
 import { MODEL_NAMES } from './constants';
+import reducer from './reducer';
 
 export default function InterviewSearchResults({
-    isInterviewSearching,
     interview,
     searchResults,
 }) {
-    const [isOpen, setIsOpen] = useState(Array(MODEL_NAMES.length).fill(false));
+    const modelsWithResults = MODEL_NAMES
+        .filter(name => searchResults?.[`found${pluralize(name)}`]?.length > 0)
+
+    const initialState = modelsWithResults.reduce((acc, name) => {
+        acc[name] = false;
+        return acc;
+    }, {});
+
+    const [state, dispatch] = useReducer(reducer, initialState);
     const { t } = useI18n();
 
-    function handleClick(index) {
-        const nextIsOpen = isOpen.slice();
-        nextIsOpen[index] = !nextIsOpen[index]
-        setIsOpen(nextIsOpen);
+    function handleClick(model) {
+        dispatch({
+            type: 'TOGGLE',
+            payload: model,
+        });
     }
 
-    return MODEL_NAMES.map((model, modelIndex) => {
-        return !isInterviewSearching && searchResults && (
-            <div
-                key={modelIndex}
-                className="SearchResults u-mt"
-            >
-                <button
-                    type="button"
-                    className="SearchResults-toggle"
-                    aria-label="Toggle results"
-                    onClick={() => handleClick(modelIndex)}
-                >
-                    {isOpen[modelIndex] ?
-                        <FaMinus className="SearchResults-toggleIcon" /> :
-                        <FaPlus className="SearchResults-toggleIcon" />
-                    }
-                    <h3 className="SearchResults-heading">
-                        {searchResults[`found${pluralize(model)}`] ? searchResults[`found${pluralize(model)}`].length : 0}
-                        {' '}
-                        {t(model.toLowerCase() + '_results')}
-                    </h3>
-                </button>
-                <div className={classNames('SearchResults-results', { 'is-expanded': isOpen[modelIndex] })}>
-                    <ResultListContainer
-                        model={model}
-                        searchResults={searchResults}
-                        interview={interview}
-                    />
-                </div>
-            </div>
+    if (!searchResults) {
+        return null;
+    }
+
+    if (modelsWithResults.length === 0) {
+        return (
+            <div>No results</div>
         );
-    });
+    }
+
+    return modelsWithResults.map(modelName => (
+        <div
+            key={modelName}
+            className="SearchResults u-mt"
+        >
+            <button
+                type="button"
+                className="SearchResults-toggle"
+                aria-label="Toggle results"
+                onClick={() => handleClick(modelName)}
+            >
+                {state[modelName] ?
+                    <FaMinus className="SearchResults-toggleIcon" /> :
+                    <FaPlus className="SearchResults-toggleIcon" />
+                }
+                <h3 className="SearchResults-heading">
+                    {searchResults[`found${pluralize(modelName)}`].length}
+                    {' '}
+                    {t(modelName.toLowerCase() + '_results')}
+                </h3>
+            </button>
+            <div className={classNames('SearchResults-results', { 'is-expanded': state[modelName] })}>
+                <ResultListContainer
+                    model={modelName}
+                    searchResults={searchResults[`found${pluralize(modelName)}`]}
+                    interview={interview}
+                />
+            </div>
+        </div>
+    ));
 }
 
 InterviewSearchResults.propTypes = {
     interview: PropTypes.object.isRequired,
-    isInterviewSearching: PropTypes.bool.isRequired,
     searchResults: PropTypes.object,
 };

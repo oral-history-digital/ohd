@@ -9,6 +9,7 @@ const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),
     interviews: getInterviews(state),
     interviewSearchResults: getInterviewSearch(state),
+    isInterviewSearching: state.search.isInterviewSearching,
 });
 
 export default connect(mapStateToProps)(InterviewSearch);

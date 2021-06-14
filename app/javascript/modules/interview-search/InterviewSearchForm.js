@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 
-import { PixelLoader } from 'modules/spinners';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
@@ -22,20 +21,24 @@ export default function InterviewSearchForm({
 
     return (
         <div className="content-search">
-            <form onSubmit={handleSubmit}>
-                <label>
-                    <input
-                        type="search"
-                        className="search-input"
-                        value={searchTerm}
-                        onChange={event => setSearchTerm(event.target.value)}
-                        placeholder={t('enter_search_field')}
-                    />
-                </label>
-                <input type="submit" value="" className="search-button" />
+            <form
+                onSubmit={handleSubmit}
+            >
+                <input
+                    type="search"
+                    className="search-input"
+                    value={searchTerm}
+                    onChange={event => setSearchTerm(event.target.value)}
+                    placeholder={t('enter_search_field')}
+                    aria-label={t('enter_search_field')}
+                />
+                <input
+                    type="submit"
+                    value=""
+                    className="search-button"
+                    disabled={isInterviewSearching}
+                />
             </form>
-
-            {isInterviewSearching && <PixelLoader />}
         </div>
     );
 }

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import Slider from "react-slick";
 
+import { pluralize } from 'modules/strings';
 import ResultListContainer from './ResultListContainer';
 import { MODEL_NAMES } from './constants';
 
@@ -14,7 +15,7 @@ export default function SlideShowSearchResults({
                 <ResultListContainer
                     key={model}
                     model={model}
-                    searchResults={searchResults}
+                    searchResults={searchResults[`found${pluralize(model)}`]}
                     interview={interview}
                     withLink
                 />

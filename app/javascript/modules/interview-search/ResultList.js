@@ -7,7 +7,6 @@ import { PersonContainer } from 'modules/people';
 import { BiographicalEntryContainer } from 'modules/interviewee-metadata';
 import { PhotoContainer } from 'modules/gallery';
 import { RegistryEntryContainer } from 'modules/registry';
-import { pluralize } from 'modules/strings';
 import { usePathBase } from 'modules/routes';
 
 const modelToComponent = {
@@ -28,12 +27,8 @@ export default function ResultList({
 }) {
     const pathBase = usePathBase();
 
-    if (!searchResults[`found${pluralize(model)}`]) {
-        return null;
-    }
-
     let active = false;
-    return searchResults[`found${pluralize(model)}`].map( (data) => {
+    return searchResults.map(data => {
         if (model === 'Segment') {
             if (data.time <= mediaTime + 10 && data.time >= mediaTime - 5) {
                 active = true;
