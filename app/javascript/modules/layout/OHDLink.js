@@ -15,7 +15,7 @@ function OHDLink() {
     return (
         !project || project.display_ohd_link ?
             (projectHasOwnDomain ?
-                <a title='OHD' href={`${OHD_DOMAIN}/${locale}`}>OHD</a> :
+                <a title='OHD' href={`${OHD_DOMAIN[developmentMode ? 'development' : 'production']}/${locale}`}>OHD</a> :
                 <Link
                     to={`/${locale}`}
                     title='OHD'
