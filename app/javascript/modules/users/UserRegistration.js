@@ -32,6 +32,7 @@ export default class UserRegistration extends Component {
     }
 
     baseData() {
+        const userRegistrationProject = Object.values(this.props.userRegistration.user_registration_projects).find(urp => urp.project_id === this.props.project.id)
         return (
             <div className='user-base-data box'>
                 <p className='name'>{`${this.props.userRegistration.first_name} ${this.props.userRegistration.last_name}`}</p>
@@ -41,7 +42,7 @@ export default class UserRegistration extends Component {
                 </p>
                 <p className='workflow-state'>
                     <span className='title'>{t(this.props, 'activerecord.attributes.user_registration.workflow_state') + ': '}</span>
-                    <span className='content'>{t(this.props,`workflow_states.${this.props.userRegistration.workflow_state}`)}</span>
+                    <span className='content'>{t(this.props,`user_registration_projects.workflow_states.${userRegistrationProject.workflow_state}`)}</span>
                 </p>
             </div>
         )
