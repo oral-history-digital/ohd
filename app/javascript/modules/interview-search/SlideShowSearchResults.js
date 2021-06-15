@@ -34,10 +34,7 @@ export default function SlideShowSearchResults({
                             onClick={() => dispatch(setArchiveId(interview.archive_id))}
                             to={`${pathBase}/interviews/${interview.archive_id}`}
                         >
-                            <FoundSegmentContainer
-                                data={data}
-                                tape_count={interview.tape_count}
-                            />
+                            <FoundSegmentContainer data={data} />
                         </Link>
                     </div>
                 ))

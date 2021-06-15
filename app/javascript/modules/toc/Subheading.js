@@ -5,9 +5,9 @@ import classNames from 'classnames';
 import { SCROLL_OFFSET } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
+import { TapeAndTime } from 'modules/interview-helpers';
 import { AuthorizedContent } from 'modules/auth';
 import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
-import formatTimecode from './formatTimecode';
 
 export default function Subheading({
     data,
@@ -41,7 +41,7 @@ export default function Subheading({
                     </div>
 
                     <div className="Heading-timecode">
-                        {t('tape')} {data.tape_nbr} | {formatTimecode(data.time)}
+                        <TapeAndTime tape={data.tape_nbr} time={data.time} />
                     </div>
                 </div>
             </button>

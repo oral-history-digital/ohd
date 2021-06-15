@@ -30,10 +30,6 @@ export default function InterviewSearchResults({
         });
     }
 
-    if (!searchResults) {
-        return null;
-    }
-
     if (filteredModelNames.length === 0) {
         return (
             <div>{t('modules.interview_search.no_results')}</div>
@@ -60,7 +56,7 @@ export default function InterviewSearchResults({
                     {t(modelName.toLowerCase() + '_results')}
                 </h3>
             </button>
-            <div className={classNames('Disclosure-content', { 'is-expanded': state[modelName] })}>
+            <div className={classNames('Disclosure-content', 'u-ml', { 'is-expanded': state[modelName] })}>
                 <ResultListContainer
                     model={modelName}
                     searchResults={resultsForModel(searchResults, modelName)}
