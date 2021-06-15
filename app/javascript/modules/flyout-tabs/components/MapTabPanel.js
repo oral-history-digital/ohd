@@ -6,6 +6,7 @@ import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import InterviewDataContainer from './InterviewDataContainer';
 import AdminActionsContainer from './AdminActionsContainer';
+import { AuthorizedContent } from 'modules/auth';
 
 function MapTabPanel(props) {
     return (
@@ -15,14 +16,11 @@ function MapTabPanel(props) {
             </div>
             <ArchiveSearchFormContainer map/>
             <div className='flyout-sub-tabs-container flyout-video'>
-                {
-                    admin(props, {type: 'General'}, 'edit') ?
-                        (<InterviewDataContainer
-                            title={t(props, 'admin_actions')}
-                            content={<AdminActionsContainer archiveIds={props.selectedArchiveIds} />}
-                        />) :
-                        null
-                }
+                <AuthorizedContent object={{type: 'General'}} action='edit'>
+                    <InterviewDataContainer title={t(props, 'admin_actions')} >
+                        <AdminActionsContainer archiveIds={props.selectedArchiveIds} />
+                    </InterviewDataContainer>
+                </AuthorizedContent>
             </div>
         </AuthShowContainer>
     );

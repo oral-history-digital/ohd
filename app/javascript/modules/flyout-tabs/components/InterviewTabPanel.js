@@ -98,21 +98,19 @@ class InterviewTabPanel extends Component {
                         <InterviewDataContainer
                             title={t(this.props, 'person_info')}
                             open={true}
-                            content={
-                                <div>
-                                    <PersonDataContainer/>
-                                    <SelectedRegistryReferencesContainer refObject={interviewee} />
-                                </div>
-                            }
-                        />
+                        >
+                            <PersonDataContainer/>
+                            <SelectedRegistryReferencesContainer refObject={interviewee} />
+                        </InterviewDataContainer>
                     </AuthorizedContent>
                     <AuthShowContainer ifLoggedOut={projectId !== "campscapes"} ifNoProject={true}>
                         <AuthorizedContent object={interview} action='show' showIfPublic>
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
-                                content={ <InterviewInfoContainer/> }
-                            />
+                            >
+                                <InterviewInfoContainer/>
+                            </InterviewDataContainer>
                         </AuthorizedContent>
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
@@ -120,8 +118,11 @@ class InterviewTabPanel extends Component {
                             <InterviewDataContainer
                                 title={t(this.props, 'interview_info')}
                                 open={true}
-                                content={ <div><InterviewInfoContainer/><InterviewContributorsContainer/> <InterviewTextMaterialsContainer/></div> }
-                            />
+                            >
+                                <InterviewInfoContainer/>
+                                <InterviewContributorsContainer/>
+                                <InterviewTextMaterialsContainer/>
+                            </InterviewDataContainer>
                         </AuthorizedContent>
                     </AuthShowContainer>
 
@@ -129,22 +130,21 @@ class InterviewTabPanel extends Component {
                         <InterviewDataContainer
                             title={t(this.props, 'edit.upload_transcript.title')}
                             open={false}
-                            content={<UploadTranscriptContainer />}
-                        />
+                        >
+                            <UploadTranscriptContainer />
+                        </InterviewDataContainer>
                     </AuthorizedContent>
 
                     <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='update_speakers'>
-                        <InterviewDataContainer
-                            title={t(this.props, 'assign_speakers')}
-                            content={<AssignSpeakersFormContainer interview={interview} />}
-                        />
+                        <InterviewDataContainer title={t(this.props, 'assign_speakers')}>
+                            <AssignSpeakersFormContainer interview={interview} />
+                        </InterviewDataContainer>
                     </AuthorizedContent>
 
                     <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='mark_texts'>
-                        <InterviewDataContainer
-                            title={t(this.props, 'mark_texts')}
-                            content={<MarkTextFormContainer interview={interview} />}
-                        />
+                        <InterviewDataContainer title={t(this.props, 'mark_texts')}>
+                            <MarkTextFormContainer interview={interview} />
+                        </InterviewDataContainer>
                     </AuthorizedContent>
 
                     <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
@@ -152,8 +152,9 @@ class InterviewTabPanel extends Component {
                             <InterviewDataContainer
                                 title={t(this.props, 'photos')}
                                 open={true}
-                                content={<GalleryContainer/>}
-                            />
+                            >
+                                <GalleryContainer/>
+                            </InterviewDataContainer>
                         </AuthorizedContent>
 
                         <AuthShowContainer ifLoggedIn={hasMap}>
@@ -161,8 +162,9 @@ class InterviewTabPanel extends Component {
                                 <InterviewDataContainer
                                     title={t(this.props, 'map')}
                                     open={true}
-                                    content={<InterviewLocationsContainer/>}
-                                />
+                                >
+                                    <InterviewLocationsContainer/>
+                                </InterviewDataContainer>
                             </AuthorizedContent>
                         </AuthShowContainer>
 
@@ -170,15 +172,15 @@ class InterviewTabPanel extends Component {
                             <InterviewDataContainer
                                 title={t(this.props, 'citation')}
                                 open={true}
-                                content={<CitationInfoContainer/>}
-                            />
+                            >
+                                <CitationInfoContainer/>
+                            </InterviewDataContainer>
                         </AuthorizedContent>
 
                         <AuthorizedContent object={interview} action='update'>
-                            <InterviewDataContainer
-                                title={t(this.props, 'admin_actions')}
-                                content={<AdminActionsContainer archiveIds={[archiveId]} />}
-                            />
+                            <InterviewDataContainer title={t(this.props, 'admin_actions')} >
+                                <AdminActionsContainer archiveIds={[archiveId]} />
+                            </InterviewDataContainer>
                         </AuthorizedContent>
                     </AuthShowContainer>
                 </div>
