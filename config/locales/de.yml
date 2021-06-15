@@ -1146,7 +1146,16 @@ de:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
     interview_search:
+      results: Suchergebnisse
       no_results: Keine Ergebnisse
+      models:
+        BiographicalEntry: Stellen in Biographie
+        TOC: Einträge im Inhaltsverzeichnis
+        Photo: Bildunterschriften
+        RegistryEntry: Registereinträge
+        Segment: Stellen im Transkript
+        Annotation: Anmerkungen
+        Observations: Stellen im Protokoll
     layout:
       back_to_top:
         label: "Zurück nach oben"

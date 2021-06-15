@@ -1579,7 +1579,16 @@ ru:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
     interview_search:
+      results: results
       no_results: No results
+      models:
+        BiographicalEntry: Stellen in Biographie
+        TOC: Einträge im Inhaltsverzeichnis
+        Photo: Bildunterschriften
+        RegistryEntry: Registereinträge
+        Segment: Stellen im Transkript
+        Annotation: Anmerkungen
+        Observations: Stellen im Protokoll
     layout:
       back_to_top:
         label: "Back to top"
