@@ -6,7 +6,6 @@ import InterviewSearchFormContainer from './InterviewSearchFormContainer';
 import InterviewSearchResults from './InterviewSearchResults';
 
 export default function InterviewSearch({
-    interviews,
     archiveId,
     interviewSearchResults,
     isInterviewSearching = false,
@@ -17,7 +16,6 @@ export default function InterviewSearch({
             {isInterviewSearching ?
                 <Spinner /> : (
                 <InterviewSearchResults
-                    interview={interviews[archiveId]}
                     searchResults={interviewSearchResults[archiveId]}
                 />
             )}
@@ -27,7 +25,6 @@ export default function InterviewSearch({
 
 InterviewSearch.propTypes = {
     archiveId: PropTypes.string.isRequired,
-    interviews: PropTypes.object.isRequired,
     interviewSearchResults: PropTypes.object.isRequired,
     isInterviewSearching: PropTypes.bool,
 };

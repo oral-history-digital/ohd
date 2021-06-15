@@ -14,6 +14,9 @@ export default function FoundSegment({
 }) {
     const { t } = useI18n();
 
+    // ${locale}-public is necessary for FoundSegments in RefTree.
+    const segmentText = data.text[locale] || data.text[`${locale}-public`];
+
     return (
         <button
             type="button"
@@ -38,7 +41,7 @@ export default function FoundSegment({
             </p>
             <p
                 className="SearchResult-text"
-                dangerouslySetInnerHTML={{__html: data.text[locale]}}
+                dangerouslySetInnerHTML={{__html: segmentText}}
             />
         </button>
     );

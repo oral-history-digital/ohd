@@ -4,13 +4,12 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
-import ResultListContainer from './ResultListContainer';
+import ResultList from './ResultList';
 import reducer from './reducer';
 import modelsWithResults from './modelsWithResults';
 import resultsForModel from './resultsForModel';
 
 export default function InterviewSearchResults({
-    interview,
     searchResults,
 }) {
     const filteredModelNames = modelsWithResults(searchResults);
@@ -57,10 +56,9 @@ export default function InterviewSearchResults({
                 </h3>
             </button>
             <div className={classNames('Disclosure-content', 'u-ml', { 'is-expanded': state[modelName] })}>
-                <ResultListContainer
+                <ResultList
                     model={modelName}
                     searchResults={resultsForModel(searchResults, modelName)}
-                    interview={interview}
                 />
             </div>
         </div>
@@ -68,6 +66,5 @@ export default function InterviewSearchResults({
 }
 
 InterviewSearchResults.propTypes = {
-    interview: PropTypes.object.isRequired,
     searchResults: PropTypes.object,
 };
