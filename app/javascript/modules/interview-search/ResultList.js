@@ -1,13 +1,11 @@
 import { createElement } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 
 import { FoundSegmentContainer } from 'modules/transcript';
 import { PersonContainer } from 'modules/people';
 import { BiographicalEntryContainer } from 'modules/interviewee-metadata';
 import { PhotoContainer } from 'modules/gallery';
 import { RegistryEntryContainer } from 'modules/registry';
-import { usePathBase } from 'modules/routes';
 
 const modelToComponent = {
     Segment: FoundSegmentContainer,
@@ -22,11 +20,7 @@ export default function ResultList({
     interview,
     searchResults,
     mediaTime,
-    withLink = false,
-    setArchiveId,
 }) {
-    const pathBase = usePathBase();
-
     let active = false;
     return searchResults.map(data => {
         if (model === 'Segment') {
@@ -47,19 +41,7 @@ export default function ResultList({
             }
         )
 
-        if (withLink) {
-            return (
-                <Link
-                    key={data.id}
-                    onClick={() => setArchiveId(interview.archive_id)}
-                    to={`${pathBase}/interviews/${interview.archive_id}`}
-                >
-                    {result}
-                </Link>
-            )
-        } else {
-            return result;
-        }
+        return result;
     });
 }
 
@@ -68,6 +50,5 @@ ResultList.propTypes = {
     interview: PropTypes.object.isRequired,
     searchResults: PropTypes.object.isRequired,
     mediaTime: PropTypes.number.isRequired,
-    withLink: PropTypes.bool,
     setArchiveId: PropTypes.func.isRequired,
 };

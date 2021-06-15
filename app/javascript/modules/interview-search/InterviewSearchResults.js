@@ -3,20 +3,19 @@ import PropTypes from 'prop-types';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 import ResultListContainer from './ResultListContainer';
-import { MODEL_NAMES } from './constants';
 import reducer from './reducer';
+import modelsWithResults from './modelsWithResults';
+import resultsForModel from './resultsForModel';
 
 export default function InterviewSearchResults({
     interview,
     searchResults,
 }) {
-    const modelsWithResults = MODEL_NAMES
-        .filter(name => searchResults?.[`found${pluralize(name)}`]?.length > 0)
+    const filteredModelNames = modelsWithResults(searchResults);
 
-    const initialState = modelsWithResults.reduce((acc, name) => {
+    const initialState = filteredModelNames.reduce((acc, name) => {
         acc[name] = false;
         return acc;
     }, {});
@@ -35,13 +34,13 @@ export default function InterviewSearchResults({
         return null;
     }
 
-    if (modelsWithResults.length === 0) {
+    if (filteredModelNames.length === 0) {
         return (
             <div>{t('modules.interview_search.no_results')}</div>
         );
     }
 
-    return modelsWithResults.map(modelName => (
+    return filteredModelNames.map(modelName => (
         <div
             key={modelName}
             className="Disclosure u-mt"
@@ -49,7 +48,6 @@ export default function InterviewSearchResults({
             <button
                 type="button"
                 className="Disclosure-toggle"
-                aria-label="Toggle results"
                 onClick={() => handleClick(modelName)}
             >
                 {state[modelName] ?
@@ -57,7 +55,7 @@ export default function InterviewSearchResults({
                     <FaPlus className="Disclosure-icon" />
                 }
                 <h3 className="Disclosure-heading">
-                    {searchResults[`found${pluralize(modelName)}`].length}
+                    {resultsForModel(searchResults, modelName).length}
                     {' '}
                     {t(modelName.toLowerCase() + '_results')}
                 </h3>
@@ -65,7 +63,7 @@ export default function InterviewSearchResults({
             <div className={classNames('Disclosure-content', { 'is-expanded': state[modelName] })}>
                 <ResultListContainer
                     model={modelName}
-                    searchResults={searchResults[`found${pluralize(modelName)}`]}
+                    searchResults={resultsForModel(searchResults, modelName)}
                     interview={interview}
                 />
             </div>

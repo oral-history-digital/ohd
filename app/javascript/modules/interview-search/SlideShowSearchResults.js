@@ -1,25 +1,52 @@
 import PropTypes from 'prop-types';
-import Slider from "react-slick";
+import Slider from 'react-slick';
+import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
+import { setArchiveId } from 'modules/archive';
+import { usePathBase } from 'modules/routes';
+import { FoundSegmentContainer } from 'modules/transcript';
 import { pluralize } from 'modules/strings';
-import ResultListContainer from './ResultListContainer';
-import { MODEL_NAMES } from './constants';
+import SlideShowSearchStats from './SlideShowSearchStats';
+
+const SEGMENT_NAME = 'Segment';
 
 export default function SlideShowSearchResults({
     interview,
     searchResults,
 }) {
+    const dispatch = useDispatch();
+    const pathBase = usePathBase();
+
+    const searchResultsForSegment = searchResults[`found${pluralize(SEGMENT_NAME)}`];
+
+    if (!searchResultsForSegment) {
+        return null;
+    }
+
     return (
-        <Slider infinite={false}>
-            {MODEL_NAMES.map(model => (
-                <ResultListContainer
-                    key={model}
-                    model={model}
-                    searchResults={searchResults[`found${pluralize(model)}`]}
-                    interview={interview}
-                    withLink
+        <Slider>
+            {
+                searchResultsForSegment.map(data => (
+                    <div key={data.id}>
+                        <Link
+                            key={data.id}
+                            onClick={() => dispatch(setArchiveId(interview.archive_id))}
+                            to={`${pathBase}/interviews/${interview.archive_id}`}
+                        >
+                            <FoundSegmentContainer
+                                data={data}
+                                tape_count={interview.tape_count}
+                            />
+                        </Link>
+                    </div>
+                ))
+            }
+            <div>
+                <SlideShowSearchStats
+                    searchResults={searchResults}
                 />
-            ))}
+            </div>
         </Slider>
     );
 }
