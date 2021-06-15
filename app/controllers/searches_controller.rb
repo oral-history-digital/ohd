@@ -68,7 +68,6 @@ class SearchesController < ApplicationController
       [Segment, :sort_key],
       [BiographicalEntry, :start_date],
       [Photo, :id],
-      [Person, "name_#{locale}".to_sym],
       [RegistryEntry, "text_#{locale}".to_sym],
     ]
 

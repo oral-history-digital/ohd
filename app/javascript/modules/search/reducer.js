@@ -74,7 +74,6 @@ const search = (state = initialState, action) => {
                 interviews: Object.assign({}, state.interviews, {
                     [action.archiveId]: {
                         foundSegments: action.foundSegments,
-                        foundPeople: action.foundPeople,
                         foundRegistryEntries: action.foundRegistryEntries,
                         foundBiographicalEntries: action.foundBiographicalEntries,
                         fulltext: action.fulltext

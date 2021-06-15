@@ -158,7 +158,7 @@ en:
   biographicalentry_results: Search results in the short biography
   person_results: Search results for persons
   user_registration_results: Suchergebnisse für Benutzer*innen
-  segment_hits: Number of search hits
+  segment_hits: search results
   no_interviews_results: No interviews found.
   interview_id: Interview ID
   interview_duration: Interview duration

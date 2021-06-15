@@ -48,7 +48,6 @@ export default class InterviewPreview extends Component {
         let count = 0;
         if (this.interviewSearchResults() && this.interviewSearchResults().foundSegments) {
             count += this.interviewSearchResults().foundSegments.length +
-                this.interviewSearchResults().foundPeople.length +
                 this.interviewSearchResults().foundRegistryEntries.length +
                 this.interviewSearchResults().foundBiographicalEntries.length;
         }
@@ -58,7 +57,11 @@ export default class InterviewPreview extends Component {
     renderBadge() {
         if (this.resultsCount() > 0) {
             return (
-                <div className={'badge'} onClick={this.handleClick} title={`${t(this.props, 'segment_hits')}: ${this.resultsCount()}`}>
+                <div
+                    className="badge"
+                    onClick={this.handleClick}
+                    title={`${this.resultsCount()} ${t(this.props, 'segment_hits')}`}
+                >
                     <i className="fa fa-align-justify" aria-hidden="true" />
                     &nbsp;
                     {this.resultsCount()}

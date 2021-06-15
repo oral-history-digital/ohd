@@ -110,7 +110,6 @@ function receiveInterviewSearchResults(json){
     return {
         type: RECEIVE_INTERVIEW_SEARCH,
         foundSegments: json.found_segments,
-        foundPeople: json.found_people,
         foundPhotos: json.found_photos,
         foundRegistryEntries: json.found_registry_entries,
         foundBiographicalEntries: json.found_biographical_entries,
