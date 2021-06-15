@@ -1578,6 +1578,8 @@ ru:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview_search:
+      no_results: No results
     layout:
       back_to_top:
         label: "Back to top"

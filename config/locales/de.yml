@@ -1145,6 +1145,8 @@ de:
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
+    interview_search:
+      no_results: Keine Ergebnisse
     layout:
       back_to_top:
         label: "Zurück nach oben"

@@ -37,32 +37,32 @@ export default function InterviewSearchResults({
 
     if (modelsWithResults.length === 0) {
         return (
-            <div>No results</div>
+            <div>{t('modules.interview_search.no_results')}</div>
         );
     }
 
     return modelsWithResults.map(modelName => (
         <div
             key={modelName}
-            className="SearchResults u-mt"
+            className="Disclosure u-mt"
         >
             <button
                 type="button"
-                className="SearchResults-toggle"
+                className="Disclosure-toggle"
                 aria-label="Toggle results"
                 onClick={() => handleClick(modelName)}
             >
                 {state[modelName] ?
-                    <FaMinus className="SearchResults-toggleIcon" /> :
-                    <FaPlus className="SearchResults-toggleIcon" />
+                    <FaMinus className="Disclosure-icon" /> :
+                    <FaPlus className="Disclosure-icon" />
                 }
-                <h3 className="SearchResults-heading">
+                <h3 className="Disclosure-heading">
                     {searchResults[`found${pluralize(modelName)}`].length}
                     {' '}
                     {t(modelName.toLowerCase() + '_results')}
                 </h3>
             </button>
-            <div className={classNames('SearchResults-results', { 'is-expanded': state[modelName] })}>
+            <div className={classNames('Disclosure-content', { 'is-expanded': state[modelName] })}>
                 <ResultListContainer
                     model={modelName}
                     searchResults={searchResults[`found${pluralize(modelName)}`]}

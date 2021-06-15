@@ -18,7 +18,7 @@ export default function FoundSegment({
     return (
         <button
             type="button"
-            className={classNames('FoundSegment', {'is-active': active})}
+            className={classNames('SearchResult', {'is-highlighted': active})}
             onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
         >
             {index && foundSegmentsAmount && (
@@ -28,7 +28,7 @@ export default function FoundSegment({
                     </div>
                 </div>
             )}
-            <p className="FoundSegment-meta">
+            <p className="SearchResult-meta">
                 {data.last_heading?.[locale] && (
                     <span>
                         {t('in')}: {data.last_heading[locale]}
@@ -44,7 +44,7 @@ export default function FoundSegment({
                 {moment.utc(data.time * 1000).format('HH:mm:ss')}
             </p>
             <p
-                className="FoundSegment-text"
+                className="SearchResult-text"
                 dangerouslySetInnerHTML={{__html: data.text[locale]}}
             />
         </button>

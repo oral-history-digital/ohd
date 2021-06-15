@@ -1,7 +1,7 @@
-.SearchResults {
+.Disclosure {
 }
 
-.SearchResults-toggle {
+.Disclosure-toggle {
   background: transparent;
   border: none;
   cursor: pointer;
@@ -10,15 +10,15 @@
   padding: 0;
 }
 
-.SearchResults-toggle:focus {
+.Disclosure-toggle:focus {
   box-shadow: 0 0 0 $focus-radius $focus-color;
 }
 
-.SearchResults-toggleIcon {
+.Disclosure-icon {
   color: var(--primary-color);
 }
 
-.SearchResults-heading {
+.Disclosure-heading {
   display: inline-block;
   font-size: 1rem;
   font-weight: bold;
@@ -26,10 +26,10 @@
   margin: 0 0 0 ($base-unit / 2);
 }
 
-.SearchResults-results {
+.Disclosure-content {
   display: none;
 }
 
-.SearchResults-results.is-expanded {
+.Disclosure-content.is-expanded {
   display: block;
 }
