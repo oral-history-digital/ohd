@@ -180,12 +180,16 @@ Rails.application.routes.draw do
 
   # these are the routes with :project_id as first part of path
   #
-  # for development it is now set to either localhost or ohd.dev
+  # for development it is now set to portal.oral-history.localhost:3000
+  # you should write portal.oral-history.localhost to your /etc/hosts file
+  #
   # in production this should be the ohd-domain
   #
   constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
       root to: "projects#index"
+      concerns :account
+      concerns :unnamed_devise_routes
     end
     scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
       root to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}

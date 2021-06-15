@@ -31,8 +31,12 @@ class UserAccount < ApplicationRecord
   validates_format_of :email, :with => Devise.email_regexp
   validates_length_of :password, :within => 5..50, :allow_blank => true
 
+  def projects
+    user_registration.user_registration_projects.map(&:project)
+  end
+
   def active_projects
-    user_registration.user_registration_projects.where.not(activated_at: nil)
+    user_registration.user_registration_projects.where.not(activated_at: nil).map(&:project)
   end
 
   def all_tasks

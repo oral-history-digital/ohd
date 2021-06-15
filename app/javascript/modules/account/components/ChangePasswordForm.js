@@ -33,7 +33,8 @@ export default class ChangePasswordForm extends Component {
 
     componentWillReceiveProps(nextProps) {
         if (nextProps.account.email && !this.props.account.email) {
-            this.props.history.push(`${pathBase(this.props)}/searches/archive`);
+            const to = this.props.projectId ? `${pathBase(this.props)}/searches/archive` : `/${this.props.locale}`;
+            this.props.history.push(to);
         }
     }
 

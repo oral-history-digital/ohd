@@ -1,17 +1,17 @@
 <% 
-  if @resource.active_projects.count > 1
+  if @resource.projects.count == 1
+    project = @resource.projects.last
+    project_name = project.name(@resource.default_locale)
+    url = "#{project.domain_with_optional_identifier}/#{@resource.default_locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}" %>
+  else # if no project or more than one
     project_name = 'OHD'
     url = "#{OHD_DOMAIN}/#{@resource.default_locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}"
-  else
-    project = @resource.active_projects.last
-    project_name = project.name(@resource.default_locale)
-    url = "#{project.domainWithOptinalIdentifier}/#{@resource.default_locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}" %>
   end
 %>
 
 <% case @resource.default_locale.to_sym || I18n.locale
 when :en -%>
-Dear <%= @user_account.display_name %>,
+Dear <%= @resource.display_name %>,
 
 You have changed the e-mail address for your account in the application "<%= project_name %>".
 
@@ -23,7 +23,7 @@ Yours sincerely,
 
 The project team "<%= project_name %>"
 <% when :ru -%>
-Уважаемый(-ая) <%= @user_account.display_name %>,
+Уважаемый(-ая) <%= @resource.display_name %>,
 
 Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= project_name %>".
 
@@ -35,7 +35,7 @@ The project team "<%= project_name %>"
 
 сотрудники проекта "<%= project_name %>"
 <% when :el -%>
-Αγαπητή/-έ <%= @user_account.display_name %>,
+Αγαπητή/-έ <%= @resource.display_name %>,
 
 έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή "<%= project_name %>".
 
@@ -47,7 +47,7 @@ The project team "<%= project_name %>"
 
 Η ομάδα του προγράμματος "<%= project_name %>"
 <% when :es -%>
-Estimada/o <%= @user_account.display_name %>,
+Estimada/o <%= @resource.display_name %>,
 
 Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= project_name %>".
 
@@ -59,7 +59,7 @@ Con saludos cordiales,
 
 El equipo del proyecto "<%= project_name %>"
 <% else -%>
-Sehr geehrte/r <%= @user_account.display_name %>,
+Sehr geehrte/r <%= @resource.display_name %>,
 
 Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= project_name %>" geändert.
 

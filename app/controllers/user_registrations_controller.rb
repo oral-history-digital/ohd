@@ -81,8 +81,6 @@ class UserRegistrationsController < ApplicationController
     @project = current_project
     @user_registration = UserRegistration.find(params[:id])
     authorize @user_registration
-    # workflow gem uses update_column which does not update updated_at!
-    @user_registration.updated_at = DateTime.now
     @user_registration.update_attributes(user_registration_params)
 
     respond_to do |format|

@@ -1,19 +1,18 @@
 <h1>Ya existe un registro para <span><%= @email %></span></h1>
 
-<p>El correo electrónico que usted proporcionó ya existe para <%= current_project.name('es') %>.</p>
+<% if current_project %>
+  <p>El correo electrónico que usted proporcionó ya existe para <%= current_project.name('es') %>.</p>
+<% end %>
 
 <% if @user_registration %>
-  <% case @user_registration.workflow_state
-     when 'account_created' %>
-  <p>Usted tiene que activar todavía el acceso. Las informaciones sobre cómo activar su acceso se le acaban de enviar nuevamente por correo electrónico.</p>
-  <% when 'account_confirmed', 'project_access_postponed' %>
-  <p>Su acceso está en revisión por nuestro equipo. Le pedimos paciencia. También puede contactarnos bajo <a href="mailto:<%= Project.contact_email %>"><%= Project.contact_email %></a>.</p>
-  <%  else %>
-  <p>Su acceso ya está activo. Si ha perdido sus datos de acceso, por favor haga clic en el siguiente enlace: <%= link_to t('devise.passwords.link'), new_password_path('user_account', :email => @user_registration.email), :class => 'new_password link' %></p>
+  <% unless @user_registration.activated_at %>
+    <p>Usted tiene que activar todavía el acceso. Las informaciones sobre cómo activar su acceso se le acaban de enviar nuevamente por correo electrónico.</p>
+  <% else %>
+    <p>Su acceso ya está activo. Si ha perdido sus datos de acceso, por favor haga clic en el siguiente enlace:
+      <%= link_to t('devise.passwords.link'), "#{current_project ? current_project.domain_with_optinal_identifier : OHD_DOMAIN}/#{new_user_account_password_path}", :class => 'new_password link' %>
+    </p>
   <% end %>
 <% end %>
 
 
 <br/>
-
-<p><a href="http://<%= current_project.domain %>/sammlung" style="font-weight: bold;">Hier</a> erfahren Sie mehr &uuml;ber die Sammlung des Projektes "<%= current_project.name('de') %>".</p>

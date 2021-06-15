@@ -1,13 +1,21 @@
-<%
-  my_locale = @user_account.default_locale || I18n.locale
-  last_project = @resource.user_registration.projects.last
-  url = "#{last_project.domainWithOptinalIdentifier}/#{my_locale}/user_registrations/#{@user_account.confirmation_token}/activate"
+<% 
+  my_locale = @resource.default_locale || I18n.locale
+  if @resource.projects.count == 1
+    project = @resource.projects.last
+    project_name = project.name(@resource.default_locale)
+    url = "#{project.domain_with_optional_identifier}/#{my_locale}/user_registrations/#{@resource.confirmation_token}/activate"
+  else # if no project or more than one
+    project_name = 'OHD'
+    url = "#{OHD_DOMAIN}/#{my_locale}/user_registrations/#{@resource.confirmation_token}/activate"
+  end
+
   case my_locale.to_sym
   when :en
 -%>
-Dear <%= @user_account.display_name %>,
 
-You have registered for the application "<%= @user_account.user_registration.projects.last.name('en') %>".
+Dear <%= @resource.display_name %>,
+
+You have registered for the application "<%= project_name %>".
 
 Please confirm your registration within the next 14 days by setting a password:
 
@@ -19,11 +27,11 @@ If you have not registered for the interview archive, you can ignore this e-mail
 
 Yours sincerely,
 
-The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
+The project team "<%= project_name %>"
 <% when :ru -%>
-Уважаемый(-ая) <%= @user_account.display_name %>,
+Уважаемый(-ая) <%= @resource.display_name %>,
 
-Вы зарегистрировались как пользователь проекта  "<%= @user_account.user_registration.projects.last.name('ru') %>".
+Вы зарегистрировались как пользователь проекта  "<%= project_name %>".
 
 Пожалуйста, подтвердите Вашу регистрацию в течение следующих 14-ти дней путем введения пароля:
 
@@ -35,11 +43,11 @@ The project team "<%= @user_account.user_registration.projects.last.name('en') %
 
 С уважением,
 
-сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"
+сотрудники проекта "<%= project_name %>"
 <% when :el -%>
-Αγαπητή/-έ <%= @user_account.display_name %>,
+Αγαπητή/-έ <%= @resource.display_name %>,
 
-πραγματοποιήσατε την εγγραφή σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>".
+πραγματοποιήσατε την εγγραφή σας στην εφαρμογή "<%= project_name %>".
 
 Σας παρακαλούμε να επιβεβαιώσετε την εγγραφή σας εντός 14 ημερών επιλέγοντας έναν κωδικό πρόσβασης.
 
@@ -51,12 +59,12 @@ The project team "<%= @user_account.user_registration.projects.last.name('en') %
 
 Με εκτίμηση,
 
-Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"
+Η ομάδα του προγράμματος "<%= project_name %>"
 
 <% when :es -%>
-Estimada/o <%= @user_account.display_name %>,
+Estimada/o <%= @resource.display_name %>,
 
-Usted se ha registrado para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".
+Usted se ha registrado para la aplicación "<%= project_name %>".
 
 Por favor, confirme su registro dentro de 14 días eligiendo una contraseña:
 
@@ -68,11 +76,11 @@ Si no se ha registrado para el archivo de entrevistas, puede hacer caso omiso de
 
 Con saludos cordiales,
 
-El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"
+El equipo del proyecto "<%= project_name %>"
 <% else -%>
-Sehr geehrte/r <%= @user_account.display_name %>,
+Sehr geehrte/r <%= @resource.display_name %>,
 
-Sie haben sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.
+Sie haben sich für die Anwendung "<%= project_name %>" registriert.
 
 Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:
 
@@ -84,5 +92,5 @@ Sollten Sie sich nicht für das Interview-Archiv registriert haben, können Sie 
 
 Mit freundlichen Grüßen,
 
-Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"
+Das Projekt-Team "<%= project_name %>"
 <% end -%>

@@ -1,6 +1,6 @@
 <%
   my_locale = @user_account.locale_with_project_fallback
-  url = "#{@project.domainWithOptinalIdentifier}/#{my_locale}"
+  url = "#{@project.domain_with_optional_identifier}/#{my_locale}"
   case my_locale.to_sym
   when :en
 -%>

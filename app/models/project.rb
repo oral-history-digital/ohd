@@ -158,7 +158,7 @@ class Project < ApplicationRecord
     shortname.downcase
   end
 
-  def domainWithOptinalIdentifier
+  def domain_with_optional_identifier
     archive_domain.blank? ? "#{OHD_DOMAIN}/#{identifier}" : archive_domain
   end
 

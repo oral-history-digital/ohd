@@ -80,11 +80,20 @@ export const RoutesWithProjectId = () => (
         <Route path="/:projectId/:locale/roles" component={props => <ErrorBoundary><WrappedRolesContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/permissions" component={props => <ErrorBoundary><WrappedPermissionsContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/task_types" component={props => <ErrorBoundary><WrappedTaskTypesContainer {...props} /></ErrorBoundary>} />
+
+        {/* registration- and account- routes with project_id */}
         <Route path="/:projectId/:locale/user_accounts/password/new" component={props => <ErrorBoundary><OrderNewPasswordContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/user_accounts/password/edit" component={props => <ErrorBoundary><ActivateAccount {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale/user_registrations/:resetPasswordToken/activate" component={props => <ErrorBoundary><ActivateAccount {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale/user_registrations/new" component={props => <ErrorBoundary><RegisterContainer {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale/user_registrations" component={props => <ErrorBoundary><UserRegistrationsContainer {...props} /></ErrorBoundary>} />
+
+        {/* registration- and account- routes without project_id */}
+        <Route path="/:locale/user_accounts/password/new" component={props => <ErrorBoundary><OrderNewPasswordContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:locale/user_accounts/password/edit" component={props => <ErrorBoundary><ActivateAccount {...props} /></ErrorBoundary>} />
+        <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" component={props => <ErrorBoundary><ActivateAccount {...props} /></ErrorBoundary>} />
+        <Route exact path="/:locale/user_registrations/new" component={props => <ErrorBoundary><RegisterContainer {...props} /></ErrorBoundary>} />
+        <Route exact path="/:locale/user_registrations" component={props => <ErrorBoundary><UserRegistrationsContainer {...props} /></ErrorBoundary>} />
     </Switch>
 );
 
