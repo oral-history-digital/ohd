@@ -3,14 +3,14 @@ import PropTypes from 'prop-types';
 
 import { FoundSegmentContainer } from 'modules/transcript';
 import { PersonContainer } from 'modules/people';
-import { BiographicalEntryContainer } from 'modules/interviewee-metadata';
 import { RegistryEntryContainer } from 'modules/registry';
 import PhotoResult from './PhotoResult';
+import BiographyResult from './BiographyResult';
 
 const modelToComponent = {
     Segment: FoundSegmentContainer,
     Person: PersonContainer,
-    BiographicalEntry: BiographicalEntryContainer,
+    BiographicalEntry: BiographyResult,
     Photo: PhotoResult,
     RegistryEntry: RegistryEntryContainer,
 };
