@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { ScrollToTop } from 'modules/user-agent';
@@ -6,10 +7,21 @@ import InterviewSearchFormContainer from './InterviewSearchFormContainer';
 import InterviewSearchResults from './InterviewSearchResults';
 
 export default function InterviewSearch({
+    locale,
+    projectId,
+    projects,
     archiveId,
     interviewSearchResults,
     isInterviewSearching = false,
+    refTreeStatus,
+    fetchData,
 }) {
+    useEffect(() => {
+        if (refTreeStatus === 'n/a') {
+            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'ref_tree');
+        }
+    });
+
     return (
         <ScrollToTop>
             <InterviewSearchFormContainer />
@@ -24,7 +36,12 @@ export default function InterviewSearch({
 }
 
 InterviewSearch.propTypes = {
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     interviewSearchResults: PropTypes.object.isRequired,
     isInterviewSearching: PropTypes.bool,
+    refTreeStatus: PropTypes.string.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };

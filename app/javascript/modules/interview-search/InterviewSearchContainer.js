@@ -1,13 +1,23 @@
 import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
-import { getArchiveId } from 'modules/archive';
+import { fetchData, getProjects, getCurrentRefTreeStatus } from 'modules/data';
+import { getArchiveId, getLocale, getProjectId } from 'modules/archive';
 import { getInterviewSearch } from 'modules/search';
 import InterviewSearch from './InterviewSearch';
 
 const mapStateToProps = (state) => ({
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
     archiveId: getArchiveId(state),
     interviewSearchResults: getInterviewSearch(state),
     isInterviewSearching: state.search.isInterviewSearching,
+    refTreeStatus: getCurrentRefTreeStatus(state),
 });
 
-export default connect(mapStateToProps)(InterviewSearch);
+const mapDispatchToProps = dispatch => bindActionCreators({
+    fetchData,
+}, dispatch);
+
+export default connect(mapStateToProps, mapDispatchToProps)(InterviewSearch);
