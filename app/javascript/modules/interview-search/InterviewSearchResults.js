@@ -1,11 +1,8 @@
-import { useReducer } from 'react';
 import PropTypes from 'prop-types';
-import { FaPlus, FaMinus } from 'react-icons/fa';
-import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
+import { Disclosure } from 'modules/ui';
 import ResultList from './ResultList';
-import reducer from './reducer';
 import modelsWithResults from './modelsWithResults';
 import resultsForModel from './resultsForModel';
 
@@ -14,20 +11,7 @@ export default function InterviewSearchResults({
 }) {
     const filteredModelNames = modelsWithResults(searchResults);
 
-    const initialState = filteredModelNames.reduce((acc, name) => {
-        acc[name] = false;
-        return acc;
-    }, {});
-
-    const [state, dispatch] = useReducer(reducer, initialState);
     const { t } = useI18n();
-
-    function handleClick(model) {
-        dispatch({
-            type: 'TOGGLE',
-            payload: model,
-        });
-    }
 
     if (filteredModelNames.length === 0) {
         return (
@@ -36,32 +20,15 @@ export default function InterviewSearchResults({
     }
 
     return filteredModelNames.map(modelName => (
-        <div
+        <Disclosure
             key={modelName}
-            className="Disclosure u-mt"
+            title={`${resultsForModel(searchResults, modelName).length} ${t(modelName.toLowerCase() + '_results')}`}
         >
-            <button
-                type="button"
-                className="Disclosure-toggle"
-                onClick={() => handleClick(modelName)}
-            >
-                {state[modelName] ?
-                    <FaMinus className="Disclosure-icon" /> :
-                    <FaPlus className="Disclosure-icon" />
-                }
-                <p className="Disclosure-title">
-                    {resultsForModel(searchResults, modelName).length}
-                    {' '}
-                    {t(modelName.toLowerCase() + '_results')}
-                </p>
-            </button>
-            <div className={classNames('Disclosure-content', 'u-ml', { 'is-expanded': state[modelName] })}>
-                <ResultList
-                    model={modelName}
-                    searchResults={resultsForModel(searchResults, modelName)}
-                />
-            </div>
-        </div>
+            <ResultList
+                model={modelName}
+                searchResults={resultsForModel(searchResults, modelName)}
+            />
+        </Disclosure>
     ));
 }
 
