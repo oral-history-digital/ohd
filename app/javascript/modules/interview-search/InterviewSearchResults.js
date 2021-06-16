@@ -49,11 +49,11 @@ export default function InterviewSearchResults({
                     <FaMinus className="Disclosure-icon" /> :
                     <FaPlus className="Disclosure-icon" />
                 }
-                <h3 className="Disclosure-heading">
+                <p className="Disclosure-title">
                     {resultsForModel(searchResults, modelName).length}
                     {' '}
                     {t(modelName.toLowerCase() + '_results')}
-                </h3>
+                </p>
             </button>
             <div className={classNames('Disclosure-content', 'u-ml', { 'is-expanded': state[modelName] })}>
                 <ResultList

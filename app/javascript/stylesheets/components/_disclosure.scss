@@ -6,6 +6,7 @@
   border: none;
   cursor: pointer;
   font-family: $font-family;
+  margin: ($base-unit / 2) 0;
   outline: none;
   padding: 0;
 }
@@ -18,16 +19,16 @@
   color: var(--primary-color);
 }
 
-.Disclosure-heading {
+.Disclosure-title {
   display: inline-block;
-  font-size: 1rem;
-  font-weight: bold;
+  font-size: 1rem !important;
   line-height: $base-unit;
-  margin: 0 0 0 ($base-unit / 2);
+  margin: 0 0 0 ($base-unit / 3) !important;
 }
 
 .Disclosure-content {
   display: none;
+  margin-left: $base-unit;
 }
 
 .Disclosure-content.is-expanded {

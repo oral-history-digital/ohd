@@ -5,7 +5,7 @@ import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 import { FoundSegmentContainer } from 'modules/transcript';
-import RefTreeEntryContainer from './RefTreeEntryContainer';
+import RefTreeEntry from './RefTreeEntry';
 
 export default class RefTree extends Component {
     componentDidMount() {
@@ -33,7 +33,7 @@ export default class RefTree extends Component {
                     />
                 )
             } else {
-                return <RefTreeEntryContainer
+                return <RefTreeEntry
                     key={index}
                     entry={entry}
                     index={index}
