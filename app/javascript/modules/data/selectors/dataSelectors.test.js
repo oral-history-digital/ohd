@@ -167,17 +167,29 @@ const state = {
                         {
                             id: 11786,
                             type: 'node',
-                            children: [],
-                        },
-                        {
-                            id: 9216,
-                            type: 'node',
-                            children: [],
-                        },
-                        {
-                            id: 11271,
-                            type: 'node',
-                            children: [],
+                            children: [
+                                {
+                                    type: 'leafe',
+                                    time: 25.2,
+                                    tape_nbr: 1,
+                                },
+                                {
+                                    id: 11310,
+                                    type: 'node',
+                                    children: [
+                                        {
+                                            type: 'leafe',
+                                            time: 1472.18,
+                                            tape_nbr: 1,
+                                        },
+                                        {
+                                            type: 'leafe',
+                                            time: 2103.32,
+                                            tape_nbr: 1,
+                                        },
+                                    ],
+                                }
+                            ],
                         },
                     ],
                 },
@@ -498,7 +510,36 @@ test('getCurrentRefTree retrieves ref tree of current interview', () => {
 
 test('getFlattenedRefTree retrieves flattened version of ref tree', () => {
     const actual = selectors.getFlattenedRefTree(state);
-    const expected = [];
+    const expected = {
+        '11310': {
+            id: 11310,
+            type: 'node',
+            children: [
+                {
+                    type: 'leafe',
+                    time: 1472.18,
+                    tape_nbr: 1,
+                },
+                {
+                    type: 'leafe',
+                    time: 2103.32,
+                    tape_nbr: 1,
+                },
+            ],
+        },
+        '11786': {
+            id: 11786,
+            type: 'node',
+            children: [
+                {
+                    type: 'leafe',
+                    time: 25.2,
+                    tape_nbr: 1,
+                },
+            ],
+        },
+    };
+
     expect(actual).toEqual(expected);
 });
 

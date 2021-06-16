@@ -140,7 +140,34 @@ export const getCurrentRefTree = state => getCurrentInterview(state)?.ref_tree;
 export const getFlattenedRefTree = createSelector(
     getCurrentRefTree,
     refTree => {
-        return [];
+        if (!refTree) {
+            return null;
+        }
+
+        function buildTree(acc, node) {
+            const children = node.children;
+
+            children.forEach(child => {
+                if (child.type === 'node') {
+                    buildTree(acc, child);
+                }
+            })
+
+            const hasLeaves = children.some(child => child.type === 'leafe');
+
+            if (hasLeaves) {
+                const clonedNode = {
+                    ...node,
+                    children: node.children.filter(child => child.type === 'leafe'),
+                };
+
+                acc[clonedNode.id] = clonedNode;
+            }
+
+            return acc;
+        }
+
+        return buildTree({}, refTree);
     }
 );
 
