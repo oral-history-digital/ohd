@@ -160,6 +160,27 @@ const state = {
                 first_segments_ids: {
                     1: 199498,
                 },
+                ref_tree: {
+                    id: 1,
+                    type: 'node',
+                    children: [
+                        {
+                            id: 11786,
+                            type: 'node',
+                            children: [],
+                        },
+                        {
+                            id: 9216,
+                            type: 'node',
+                            children: [],
+                        },
+                        {
+                            id: 11271,
+                            type: 'node',
+                            children: [],
+                        },
+                    ],
+                },
                 segments: {
                     1: {
                         199498: {
@@ -469,6 +490,16 @@ test('getCurrentInterview retrieves current interview', () => {
 
 test('getCurrentInterviewFetched retrieves if current interview has been fetched', () => {
     expect(selectors.getCurrentInterviewFetched(state)).toBe(true);
+});
+
+test('getCurrentRefTree retrieves ref tree of current interview', () => {
+    expect(selectors.getCurrentRefTree(state)).toEqual(state.data.interviews.cd003.ref_tree);
+});
+
+test('getFlattenedRefTree retrieves flattened version of ref tree', () => {
+    const actual = selectors.getFlattenedRefTree(state);
+    const expected = [];
+    expect(actual).toEqual(expected);
 });
 
 test('getCurrentInterviewee retrieves first interviewee of current interview', () => {

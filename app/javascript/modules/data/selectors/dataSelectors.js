@@ -135,6 +135,15 @@ export const getCurrentInterviewFetched = state => {
     return !(Object.is(currentInterview, undefined) || Object.is(currentInterview, null));
 };
 
+export const getCurrentRefTree = state => getCurrentInterview(state)?.ref_tree;
+
+export const getFlattenedRefTree = createSelector(
+    getCurrentRefTree,
+    refTree => {
+        return [];
+    }
+);
+
 export const getTranscriptFetched = createSelector(
     [getSegmentsStatus, getArchiveId],
     (segmentsStatus, archiveId) => {
