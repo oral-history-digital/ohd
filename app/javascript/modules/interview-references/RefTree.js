@@ -9,7 +9,7 @@ import RefTreeEntry from './RefTreeEntry';
 
 export default function RefTree({
     refTreeStatus,
-    interview,
+    refTree,
     archiveId,
     locale,
     projectId,
@@ -52,8 +52,8 @@ export default function RefTree({
     return (
         <ScrollToTop>
             <div className="content-index content-ref-tree">
-                {interview.ref_tree?.children ?
-                    renderChildren(interview.ref_tree.children) :
+                {refTree?.children ?
+                    renderChildren(refTree.children) :
                     t('without_ref_tree')
                 }
             </div>
@@ -66,7 +66,7 @@ RefTree.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
-    interview: PropTypes.object.isRequired,
+    refTree: PropTypes.object,
     refTreeStatus: PropTypes.string.isRequired,
     fetchData: PropTypes.func.isRequired,
 };
