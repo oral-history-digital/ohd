@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { getFlattenedRefTree } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { FoundSegmentContainer } from 'modules/transcript';
 
 export default function RegistryResult({
     data,
@@ -21,7 +22,7 @@ export default function RegistryResult({
                     {data.notes[locale]}
                 </p>
             )}
-            <div>
+            <div className="u-mt-small">
                 {
                     flattenedRefTree[data.id].children.map((leaf, index) => (
                         <FoundSegmentContainer
