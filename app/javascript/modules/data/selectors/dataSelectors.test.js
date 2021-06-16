@@ -50,7 +50,7 @@ const state = {
                 all: 'fetched-Thu Dec 17 2020 18:20:22 GMT+0100 (Central European Standard Time)',
             },
             ref_tree: {
-                for_interviews_za003: 'fetched-Mon',
+                for_interviews_cd003: 'fetched-Mon',
             },
             registry_entries: {
                 1: 'fetched-Thu Jan 07 2021 21:17:39 GMT+0100 (Central European Standard Time)',
@@ -315,6 +315,22 @@ test('getInterviewsStatus gets interviews status object', () => {
 
 test('getRefTreeStatus gets ref tree status object', () => {
     expect(selectors.getRefTreeStatus(state)).toEqual(state.data.statuses.ref_tree);
+});
+
+describe('getCurrentRefTreeStatus', () => {
+    it("is 'fetched' if ref tree has been loaded", () => {
+        expect(selectors.getCurrentRefTreeStatus(state)).toBe('fetched');
+    });
+
+    it("is 'fetching' if ref tree is loading", () => {
+        const _state = dotProp.set(state, 'data.statuses.ref_tree.for_interviews_cd003', 'fetching');
+        expect(selectors.getCurrentRefTreeStatus(_state)).toBe('fetching');
+    });
+
+    it("is 'n/a' otherwise", () => {
+        const _state = dotProp.set(state, 'archive.archiveId', 'za053');
+        expect(selectors.getCurrentRefTreeStatus(_state)).toBe('n/a');
+    });
 });
 
 test('getRegistryEntriesStatus gets registry entries status object', () => {

@@ -1,28 +1,30 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 import { FoundSegmentContainer } from 'modules/transcript';
 import RefTreeEntry from './RefTreeEntry';
 
-export default class RefTree extends Component {
-    componentDidMount() {
-        this.loadRefTree();
-    }
+export default function RefTree({
+    refTreeStatus,
+    interview,
+    archiveId,
+    locale,
+    projectId,
+    projects,
+    fetchData,
+}) {
+    const { t } = useI18n();
 
-    componentDidUpdate() {
-        this.loadRefTree();
-    }
-
-    loadRefTree() {
-        if (!this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`]) {
-            this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'ref_tree');
+    useEffect(() => {
+        if (refTreeStatus === 'n/a') {
+            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'ref_tree');
         }
-    }
+    });
 
-    renderChildren(children) {
+    function renderChildren(children) {
         return children.map((entry, index) => {
             if (entry.type === 'leafe') {
                 return (
@@ -37,43 +39,26 @@ export default class RefTree extends Component {
                     key={index}
                     entry={entry}
                     index={index}
-                    renderChildren={this.renderChildren.bind(this)}
+                    renderChildren={renderChildren}
                 />
             }
         })
     }
 
-    refTree() {
-        if (
-            this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`] &&
-            this.props.refTreeStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched'
-        ) {
-            if (this.props.interview.ref_tree && this.props.interview.ref_tree.children) {
-                return this.renderChildren(this.props.interview.ref_tree.children);
-            } else {
-                return this.emptyRefTree();
-            }
-        } else {
-            return <Spinner />;
-        }
+    if (refTreeStatus !== 'fetched') {
+        return <Spinner />;
     }
 
-    emptyRefTree() {
-        if(this.props.translations !== undefined) {
-            return t(this.props, 'without_ref_tree');
-        }
-        return null;
-    }
-
-    render() {
-        return (
-            <ScrollToTop>
-                <div className="content-index content-ref-tree">
-                    {this.refTree()}
-                </div>
-            </ScrollToTop>
-        );
-    }
+    return (
+        <ScrollToTop>
+            <div className="content-index content-ref-tree">
+                {interview.ref_tree?.children ?
+                    renderChildren(interview.ref_tree.children) :
+                    t('without_ref_tree')
+                }
+            </div>
+        </ScrollToTop>
+    );
 }
 
 RefTree.propTypes = {
@@ -81,8 +66,7 @@ RefTree.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
-    refTreeStatus: PropTypes.object.isRequired,
+    refTreeStatus: PropTypes.string.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

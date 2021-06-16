@@ -17,7 +17,7 @@ export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getCollectionsStatus, getLanguagesStatus, getPeopleStatus, getSegmentsStatus, getAccountsStatus,
     getRolesStatus, getPermissionsStatus, getProjectsStatus, getTaskTypesStatus, getUserContentsStatus,
     getContributionsStatus, getUserRegistrationsStatus, getHeadingsStatus, getSpeakerDesignationsStatus,
-    getRefTreeStatus, getTasksStatus, getMarkTextStatus,
+    getRefTreeStatus, getCurrentRefTreeStatus, getTasksStatus, getMarkTextStatus,
     getHeadingsFetched, getHeadings, getPreparedHeadings,
     getMediaStreamsForCurrentProject, getInterviews, getTaskTypesForCurrentProject, getUserContents,
     getTaskTypesForCurrentProjectFetched, getCollectionsForCurrentProjectFetched } from './selectors/dataSelectors';

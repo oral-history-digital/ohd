@@ -65,6 +65,24 @@ export const getProjectsStatus = state => getStatuses(state).projects;
 
 export const getRefTreeStatus = state => getStatuses(state).ref_tree;
 
+export const getCurrentRefTreeStatus = createSelector(
+    [getRefTreeStatus, getArchiveId],
+    (refTreeStatus, archiveId) => {
+        const status = refTreeStatus[`for_interviews_${archiveId}`];
+
+        const isFetched =  /^fetched/;
+        const isFetching = /^fetching/;
+
+        if (isFetched.test(status)) {
+            return 'fetched';
+        } else if (isFetching.test(status)) {
+            return 'fetching';
+        } else {
+            return 'n/a';
+        }
+    }
+);
+
 export const getRegistryEntriesStatus = state => getStatuses(state).registry_entries;
 
 export const getRegistryReferenceTypesStatus = state => getStatuses(state).registry_reference_types;
