@@ -1,14 +1,15 @@
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
 import { Disclosure } from 'modules/ui';
+import { getCurrentInterviewSearch } from 'modules/search';
 import ResultList from './ResultList';
 import modelsWithResults from './modelsWithResults';
 import resultsForModel from './resultsForModel';
 
-export default function InterviewSearchResults({
-    searchResults,
-}) {
+export default function InterviewSearchResults() {
+    const searchResults = useSelector(getCurrentInterviewSearch);
+
     const filteredModelNames = modelsWithResults(searchResults);
 
     const { t } = useI18n();
@@ -31,7 +32,3 @@ export default function InterviewSearchResults({
         </Disclosure>
     ));
 }
-
-InterviewSearchResults.propTypes = {
-    searchResults: PropTypes.object,
-};

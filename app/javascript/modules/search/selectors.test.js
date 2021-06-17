@@ -4,6 +4,10 @@ import { NAME  } from './constants';
 import * as selectors from './selectors';
 
 const state = {
+    archive: {
+        archiveId: 'cd003',
+        projectId: 'cdoh',
+    },
     [NAME]: {
         archive: {
             facets: {
@@ -74,6 +78,9 @@ const state = {
             filter: [1, 2],
         },
         interviews: {
+            cd003: {
+                fulltext: 'berlin',
+            },
             za003: {
                 fulltext: 'poland',
             },
@@ -284,4 +291,8 @@ test('getUserRegistrationsQuery retrieves user registrations query params', () =
 
 test('getInterviewSearch retrieves interview search results', () => {
     expect(selectors.getInterviewSearch(state)).toEqual(state[NAME].interviews);
+});
+
+test('getCurrentInterviewSearch retrieves current interview search results', () => {
+    expect(selectors.getCurrentInterviewSearch(state)).toEqual(state[NAME].interviews.cd003);
 });

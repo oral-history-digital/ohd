@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData, getProjects, getCurrentRefTreeStatus } from 'modules/data';
 import { getArchiveId, getLocale, getProjectId } from 'modules/archive';
-import { getInterviewSearch } from 'modules/search';
 import InterviewSearch from './InterviewSearch';
 
 const mapStateToProps = (state) => ({
@@ -11,7 +10,6 @@ const mapStateToProps = (state) => ({
     projectId: getProjectId(state),
     projects: getProjects(state),
     archiveId: getArchiveId(state),
-    interviewSearchResults: getInterviewSearch(state),
     isInterviewSearching: state.search.isInterviewSearching,
     refTreeStatus: getCurrentRefTreeStatus(state),
 });

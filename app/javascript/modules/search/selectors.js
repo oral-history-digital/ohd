@@ -1,4 +1,6 @@
 import { createSelector } from 'reselect';
+
+import { getArchiveId  } from 'modules/archive';
 import { NAME } from './constants';
 
 const getState = state => state[NAME];
@@ -118,3 +120,10 @@ export const getTaskTypesQuery = state => getState(state).task_types.query;
 export const getUserRegistrationsQuery = state => getState(state).user_registrations.query;
 
 export const getInterviewSearch = state => getState(state).interviews;
+
+export const getCurrentInterviewSearch = createSelector(
+    [getInterviewSearch, getArchiveId],
+    (searchResults, archiveId) => {
+        return searchResults?.[archiveId];
+    }
+);

@@ -11,7 +11,6 @@ export default function InterviewSearch({
     projectId,
     projects,
     archiveId,
-    interviewSearchResults,
     isInterviewSearching = false,
     refTreeStatus,
     fetchData,
@@ -27,9 +26,7 @@ export default function InterviewSearch({
             <InterviewSearchFormContainer />
             {isInterviewSearching ?
                 <Spinner /> : (
-                <InterviewSearchResults
-                    searchResults={interviewSearchResults[archiveId]}
-                />
+                <InterviewSearchResults />
             )}
         </ScrollToTop>
     );
