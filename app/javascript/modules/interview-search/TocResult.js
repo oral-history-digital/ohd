@@ -5,7 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { TapeAndTime } from 'modules/interview-helpers';
 
-export default function HeadingResult({
+export default function TocResult({
     data,
 }) {
     const dispatch = useDispatch();
@@ -31,6 +31,6 @@ export default function HeadingResult({
     );
 }
 
-HeadingResult.propTypes = {
+TocResult.propTypes = {
     data: PropTypes.object.isRequired,
 };

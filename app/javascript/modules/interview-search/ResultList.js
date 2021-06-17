@@ -1,28 +1,12 @@
-import { createElement } from 'react';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { Disclosure } from 'modules/ui';
-import { PersonContainer } from 'modules/people';
-import PhotoResult from './PhotoResult';
-import BiographyResult from './BiographyResult';
-import RegistryResult from './RegistryResult';
-import TranscriptResult from './TranscriptResult';
-import HeadingResult from './HeadingResult';
-
-const modelToComponent = {
-    Segment: TranscriptResult,
-    Heading: HeadingResult,
-    Person: PersonContainer,
-    BiographicalEntry: BiographyResult,
-    Photo: PhotoResult,
-    RegistryEntry: RegistryResult,
-};
 
 export default function ResultList({
-    model,
+    tKey,
     searchResults,
-    onlyStats = false,
+    component: Component,
 }) {
     const { t } = useI18n();
 
@@ -30,9 +14,9 @@ export default function ResultList({
         return null;
     }
 
-    const title = `${searchResults.length} ${t(`${model.toLowerCase()}_results`)}`;
+    const title = `${searchResults.length} ${t(`${tKey}_results`)}`;
 
-    if (onlyStats) {
+    if (typeof Component === 'undefined') {
         return (
             <p style={{ fontSize: '1rem', marginLeft: '1.5rem' }}>
                 {title}
@@ -43,20 +27,14 @@ export default function ResultList({
     return (
         <Disclosure title={title}>
             {
-                searchResults.map(data => createElement(
-                    modelToComponent[model],
-                    {
-                        key: data.id,
-                        data: data,
-                    }
-                ))
+                searchResults.map(data => <Component key={data.id} data={data} />)
             }
         </Disclosure>
     );
 }
 
 ResultList.propTypes = {
-    model: PropTypes.string.isRequired,
+    tKey: PropTypes.string.isRequired,
     searchResults: PropTypes.object.isRequired,
-    onlyStats: PropTypes.bool,
+    component: PropTypes.elementType,
 };

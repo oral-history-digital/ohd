@@ -6,6 +6,10 @@ import { getCurrentInterviewSearch } from 'modules/search';
 import ResultList from './ResultList';
 import modelsWithResults from './modelsWithResults';
 import resultsForModel from './resultsForModel';
+import PhotoResult from './PhotoResult';
+import RegistryResult from './RegistryResult';
+import TranscriptResult from './TranscriptResult';
+import TocResult from './TocResult';
 
 export default function InterviewSearchResults() {
     const searchResults = useSelector(getCurrentInterviewSearch);
@@ -30,11 +34,30 @@ export default function InterviewSearchResults() {
 
     return (
         <div>
-            <ResultList model="Segment" searchResults={filteredSegments} />
-            <ResultList model="Heading" searchResults={toc} />
-            <ResultList model="RegistryEntry" searchResults={registryEntries} />
-            <ResultList model="BiographicalEntry" searchResults={biographicalEntries} onlyStats />
-            <ResultList model="Photo" searchResults={photos} />
+            <ResultList
+                tKey="segment"
+                searchResults={filteredSegments}
+                component={TranscriptResult}
+            />
+            <ResultList
+                tKey="heading"
+                searchResults={toc}
+                component={TocResult}
+            />
+            <ResultList
+                tKey="registryentry"
+                searchResults={registryEntries}
+                component={RegistryResult}
+            />
+            <ResultList
+                tKey="biographicalentry"
+                searchResults={biographicalEntries}
+            />
+            <ResultList
+                tKey="photo"
+                searchResults={photos}
+                component={PhotoResult}
+            />
         </div>
     );
 }
