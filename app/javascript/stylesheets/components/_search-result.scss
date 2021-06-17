@@ -23,6 +23,14 @@
   color: #666 !important;
 }
 
+.SearchResult-heading {
+  font-size: 1rem !important;
+  font-weight: bold;
+  line-height: $base-unit;
+  margin: 0;
+  transition: background-color $transition-duration, color $transition-duration;
+}
+
 .SearchResult-text {
   font-size: 1rem !important;
   transition: background-color $transition-duration, color $transition-duration;

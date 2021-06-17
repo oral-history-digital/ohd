@@ -18,8 +18,8 @@ export default function RegistryResult({
 
     return (
         <div className="SearchResult">
-            <p
-                className="SearchResult-text"
+            <h3
+                className="SearchResult-heading"
                 dangerouslySetInnerHTML={{__html: data.text[locale]}}
             />
             {data.notes[locale] && (

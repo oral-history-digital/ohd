@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
-import { Disclosure } from 'modules/ui';
+
 import { getCurrentInterviewSearch } from 'modules/search';
 import ResultList from './ResultList';
 import modelsWithResults from './modelsWithResults';
@@ -12,7 +12,7 @@ export default function InterviewSearchResults() {
 
     const filteredModelNames = modelsWithResults(searchResults);
 
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     if (filteredModelNames.length === 0) {
         return (
@@ -20,15 +20,21 @@ export default function InterviewSearchResults() {
         );
     }
 
-    return filteredModelNames.map(modelName => (
-        <Disclosure
-            key={modelName}
-            title={`${resultsForModel(searchResults, modelName).length} ${t(modelName.toLowerCase() + '_results')}`}
-        >
-            <ResultList
-                model={modelName}
-                searchResults={resultsForModel(searchResults, modelName)}
-            />
-        </Disclosure>
-    ));
+    const segments = resultsForModel(searchResults, 'Segment');
+    const registryEntries = resultsForModel(searchResults, 'RegistryEntry');
+    const biographicalEntries = resultsForModel(searchResults, 'BiographicalEntry');
+    const photos = resultsForModel(searchResults, 'Photo');
+
+    const filteredSegments = segments.filter(segment => segment.text[locale] !== '');
+    const toc = segments.filter(segment => segment.text[locale] === '');
+
+    return (
+        <div>
+            <ResultList model="Segment" searchResults={filteredSegments} />
+            <ResultList model="Heading" searchResults={toc} />
+            <ResultList model="RegistryEntry" searchResults={registryEntries} />
+            <ResultList model="BiographicalEntry" searchResults={biographicalEntries} onlyStats />
+            <ResultList model="Photo" searchResults={photos} />
+        </div>
+    );
 }
