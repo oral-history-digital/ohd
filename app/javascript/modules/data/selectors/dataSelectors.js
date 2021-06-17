@@ -144,12 +144,12 @@ export const getFlattenedRefTree = createSelector(
             return null;
         }
 
-        function buildTree(acc, node) {
+        function flattenTree(acc, node) {
             const children = node.children;
 
             children.forEach(child => {
                 if (child.type === 'node') {
-                    buildTree(acc, child);
+                    flattenTree(acc, child);
                 }
             })
 
@@ -167,7 +167,7 @@ export const getFlattenedRefTree = createSelector(
             return acc;
         }
 
-        return buildTree({}, refTree);
+        return flattenTree({}, refTree);
     }
 );
 
