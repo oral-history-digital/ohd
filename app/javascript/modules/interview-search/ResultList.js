@@ -1,14 +1,14 @@
 import { createElement } from 'react';
 import PropTypes from 'prop-types';
 
-import { FoundSegmentContainer } from 'modules/transcript';
 import { PersonContainer } from 'modules/people';
 import PhotoResult from './PhotoResult';
 import BiographyResult from './BiographyResult';
 import RegistryResult from './RegistryResult';
+import TranscriptResult from './TranscriptResult';
 
 const modelToComponent = {
-    Segment: FoundSegmentContainer,
+    Segment: TranscriptResult,
     Person: PersonContainer,
     BiographicalEntry: BiographyResult,
     Photo: PhotoResult,

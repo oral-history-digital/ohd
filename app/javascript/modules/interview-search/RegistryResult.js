@@ -3,8 +3,8 @@ import { useSelector } from 'react-redux';
 
 import { getFlattenedRefTree } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { FoundSegmentContainer } from 'modules/transcript';
 import { Spinner } from 'modules/spinners';
+import TranscriptResult from './TranscriptResult';
 
 export default function RegistryResult({
     data,
@@ -30,7 +30,7 @@ export default function RegistryResult({
             <div className="u-mt-small">
                 {
                     flattenedRefTree[data.id].children.map((leaf, index) => (
-                        <FoundSegmentContainer
+                        <TranscriptResult
                             key={index}
                             data={leaf}
                         />

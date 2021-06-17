@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
-import { FoundSegmentContainer } from 'modules/transcript';
+import { TranscriptResult } from 'modules/interview-search';
 import RefTreeEntry from './RefTreeEntry';
 
 export default function RefTree({
@@ -28,7 +28,7 @@ export default function RefTree({
         return children.map((entry, index) => {
             if (entry.type === 'leafe') {
                 return (
-                    <FoundSegmentContainer
+                    <TranscriptResult
                         className='heading'
                         key={index}
                         data={entry}

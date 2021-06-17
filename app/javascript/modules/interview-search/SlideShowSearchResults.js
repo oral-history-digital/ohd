@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux';
 
 import { setArchiveId } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
-import { FoundSegmentContainer } from 'modules/transcript';
 import { pluralize } from 'modules/strings';
 import SlideShowSearchStats from './SlideShowSearchStats';
+import TranscriptResult from './TranscriptResult';
 
 const SEGMENT_NAME = 'Segment';
 
@@ -34,7 +34,7 @@ export default function SlideShowSearchResults({
                             onClick={() => dispatch(setArchiveId(interview.archive_id))}
                             to={`${pathBase}/interviews/${interview.archive_id}`}
                         >
-                            <FoundSegmentContainer data={data} />
+                            <TranscriptResult data={data} />
                         </Link>
                     </div>
                 ))

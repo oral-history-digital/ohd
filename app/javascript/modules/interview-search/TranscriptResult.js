@@ -1,27 +1,32 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { useDispatch } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
-import { TapeAndTime } from '../interview-helpers';
+import { sendTimeChangeRequest } from 'modules/media-player';
+import { TapeAndTime } from 'modules/interview-helpers';
 
-export default function FoundSegment({
+export default function TranscriptResult({
     index,
     foundSegmentsAmount,
     active,
     data,
-    locale,
-    sendTimeChangeRequest,
 }) {
-    const { t } = useI18n();
+    const dispatch = useDispatch();
+    const { t, locale } = useI18n();
 
     // ${locale}-public is necessary for FoundSegments in RefTree.
     const segmentText = data.text[locale] || data.text[`${locale}-public`];
+
+    function handleClick() {
+        dispatch(sendTimeChangeRequest(data.tape_nbr, data.time));
+    }
 
     return (
         <button
             type="button"
             className={classNames('SearchResult', {'is-highlighted': active})}
-            onClick={() => sendTimeChangeRequest(data.tape_nbr, data.time)}
+            onClick={handleClick}
         >
             {index && foundSegmentsAmount && (
                 <div className="hits-count">
@@ -47,11 +52,9 @@ export default function FoundSegment({
     );
 }
 
-FoundSegment.propTypes = {
+TranscriptResult.propTypes = {
     data: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     active: PropTypes.bool.isRequired,
     index: PropTypes.number,
     foundSegmentsAmount: PropTypes.number,
-    sendTimeChangeRequest: PropTypes.func.isRequired,
 };
