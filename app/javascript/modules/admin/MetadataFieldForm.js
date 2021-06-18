@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import { Fetch, getRegistryReferenceTypesFetched } from 'modules/data';
+import { Fetch, getRegistryReferenceTypesForCurrentProjectFetched } from 'modules/data';
 
 const NAME_VALUES = {
     Interview: [
@@ -49,8 +49,8 @@ export default function MetadataFieldForm({
 
     return (
         <Fetch
-            fetchParams={['registry_reference_types', null, null, 'all']}
-            testSelector={getRegistryReferenceTypesFetched}
+            fetchParams={['registry_reference_types', null, null, [`for_projects=${this.props.project?.id}`]]}
+            testSelector={getRegistryReferenceTypesForCurrentProjectFetched}
             alwaysRenderChildren
         >
             <Form

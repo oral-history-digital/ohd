@@ -42,9 +42,11 @@ class MediaStreamsController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          data_type: 'media_streams',
-          id: media_stream.id,
-          data: ::MediaStreamSerializer.new(media_stream).as_json
+          nested_data_type: 'media_streams',
+          nested_id: media_stream.id,
+          data: ::MediaStreamSerializer.new(media_stream).as_json,
+          data_type: 'projects',
+          id: current_project.id,
         }
       end
     end

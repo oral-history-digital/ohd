@@ -4,7 +4,6 @@ class MetadataFieldsController < ApplicationController
   def create
     authorize MetadataField
     @metadata_field = MetadataField.create metadata_field_params
-    @metadata_field.project.touch
 
     respond_to do |format|
       format.json do
@@ -21,7 +20,6 @@ class MetadataFieldsController < ApplicationController
 
   def update
     @metadata_field.update_attributes(metadata_field_params)
-    @metadata_field.project.touch
 
     respond_to do |format|
       format.json do
@@ -57,9 +55,7 @@ class MetadataFieldsController < ApplicationController
 
   def destroy
     @metadata_field = MetadataField.find(params[:id])
-    project = @metadata_field.project
     @metadata_field.destroy
-    project.touch
 
     respond_to do |format|
       format.html do

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getProjects, getCurrentAccount, getTaskTypes } from 'modules/data';
+import { fetchData, deleteData, submitData, getProjects, getCurrentAccount, getTaskTypesForCurrentProject } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { DataList } from 'modules/admin';
 import TaskPreviewContainer from './TaskPreviewContainer';
@@ -39,7 +39,7 @@ const mapStateToProps = (state) => {
             {
                 attribute: 'task_type_id',
                 elementType: 'select',
-                values: getTaskTypes(state),
+                values: getTaskTypesForCurrentProject(state),
                 withEmpty: true,
                 validate: function(v){return /\d+/.test(v)}
             },

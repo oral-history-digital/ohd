@@ -86,12 +86,8 @@ class ApplicationController < ActionController::Base
           headings: {},
           ref_tree: {},
           registry_references: {},
-          registry_reference_types: {},
-          registry_name_types: {},
-          contribution_types: {},
           registry_entries: {},
           contributions: {},
-          people: {},
           user_contents: {},
           annotations: {},
           uploads: {},
@@ -102,14 +98,15 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          task_types: {all: 'fetched'},
           projects: {all: 'fetched'},
-          collections: {all: 'fetched'},
           languages: {all: 'fetched'},
+          collections: {},
+          people: {},
+          task_types: {},
+          registry_reference_types: {},
+          registry_name_types: {},
+          contribution_types: {},
         },
-        collections: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-collections-collections_for_project_#{current_project.identifier}-#{Collection.maximum(:updated_at)}") do
-          policy_scope(Collection).includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-        end,
         projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
           Project.all.
             includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
@@ -121,17 +118,8 @@ class ApplicationController < ActionController::Base
         accounts: {
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || nil #{}
         },
-        people: {},
-        interviews: {},
         registry_entries: {},
-        registry_name_types: policy_scope(RegistryNameType).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
-        task_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
-          policy_scope(TaskType).includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-        end,
-        contribution_types: current_project && Rails.cache.fetch("#{current_project.cache_key_prefix}-contribution_types-#{ContributionType.maximum(:updated_at)}") do
-          policy_scope(ContributionType).includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-        end,
-        media_streams: policy_scope(MediaStream).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+        interviews: {},
       },
       popup: {
         show: false,

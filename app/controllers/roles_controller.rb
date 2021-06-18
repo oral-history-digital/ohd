@@ -3,36 +3,38 @@ class RolesController < ApplicationController
   def create
     authorize Role
     @role = Role.create role_params
-    respond_to do |format|
-      format.json do
-        render json: data_json(@role, msg: 'processed')
-      end
-    end
+    respond @role
   end
 
   def update
     @role = Role.find params[:id]
     authorize @role
     @role.update_attributes role_params
-    respond_to do |format|
-      format.json do
-        render json: data_json(@role, msg: 'processed')
-      end
-    end
+    respond @role
   end
 
   def index
-    page = params[:page] || 1
-    roles = policy_scope(Role).where(search_params).order("created_at DESC").paginate page: page
-    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
-
     respond_to do |format|
       format.html { render :template => '/react/app.html' }
       format.json do
         json = #Rails.cache.fetch "#{current_project.cache_key_prefix}-roles-visible-for-#{current_user_account.id}-#{extra_params}-#{Role.maximum(:updated_at)}" do
+          if params[:for_projects]
+            data = policy_scope(Role).
+              order("name ASC")
+            extra_params = "for_projects_#{current_project.id}"
+          else
+            page = params[:page] || 1
+            data = policy_scope(Role).
+              where(search_params).order("name ASC").
+              paginate(page: page)
+            paginate = true
+            extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
+          end
           {
-            data: roles.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
-            data_type: 'roles',
+            data: data.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            nested_data_type: 'roles',
+            data_type: 'projects',
+            id: current_project.id,
             extra_params: extra_params,
             page: params[:page], 
             result_pages_count: roles.total_pages
@@ -54,6 +56,20 @@ class RolesController < ApplicationController
   end
 
   private
+
+  def respond role
+    respond_to do |format|
+      format.json do
+        render json: {
+          nested_id: role.id,
+          data: cache_single(role)
+          nested_data_type: "roles",
+          data_type: 'projects',
+          id: current_project.id,
+        }
+      end
+    end
+  end
 
   def role_params
     params.require(:role).

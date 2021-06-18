@@ -30,7 +30,7 @@ export default class WrapperPage extends Component {
 
     loadStuff() {
         this.loadAccount()
-        this.loadCollections();
+        //this.loadCollections();
         this.loadProjects();
         this.loadLanguages();
     }
@@ -49,9 +49,9 @@ export default class WrapperPage extends Component {
 
     loadCollections() {
         if (
-            !this.props.collectionsStatus.all
+            this.props.project && !this.props.collectionsStatus[`for_projects=${this.props.project?.id}`]
         ) {
-            this.props.fetchData(this.props, 'collections', null, null, 'all');
+            this.props.fetchData(this.props, 'collections', null, null, `for_projects=${this.props.project?.id}`);
         }
     }
 

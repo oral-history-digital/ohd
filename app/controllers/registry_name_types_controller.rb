@@ -4,22 +4,14 @@ class RegistryNameTypesController < ApplicationController
     authorize RegistryNameType
     @registry_name_type = RegistryNameType.create(registry_name_type_params)
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@registry_name_type, msg: "processed")
-      end
-    end
+    respond @registry_name_type
   end
 
   def show
     @registry_name_type = RegistryNameType.find params[:id]
     authorize @registry_name_type
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@registry_name_type)
-      end
-    end
+    respond @registry_name_type
   end
 
   def update
@@ -27,11 +19,7 @@ class RegistryNameTypesController < ApplicationController
     authorize @registry_name_type
     @registry_name_type.update_attributes registry_name_type_params
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@registry_name_type, msg: "processed")
-      end
-    end
+    respond @registry_name_type
   end
 
   def destroy 
@@ -88,6 +76,20 @@ class RegistryNameTypesController < ApplicationController
   end
 
   private
+
+    def respond registry_name_type
+      respond_to do |format|
+        format.json do
+          render json: {
+            nested_id: registry_name_type.id,
+            data: cache_single(registry_name_type)
+            nested_data_type: "registry_name_types",
+            data_type: 'projects',
+            id: current_project.id,
+          }
+        end
+      end
+    end
 
     def registry_name_type_params
       params.require(:registry_name_type).permit(

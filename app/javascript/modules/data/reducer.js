@@ -156,7 +156,7 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.nestedDataType) {
-                let statuses = updateStatus(state.statuses, action.nestedDataType, {[`for_${action.dataType}_${action.id}`]: action.msg || `fetched-${new Date()}`});
+                let statuses = updateStatus(state.statuses, action.nestedDataType, {[action.extraParams || `for_${action.dataType}_${action.id}`]: action.msg || `fetched-${new Date()}`});
                 statuses = updateStatus(statuses, action.reloadDataType, {[action.reloadId]: `reload-${new Date()}`});
                 let nestedData = (state[action.dataType] && state[action.dataType][action.id] && state[action.dataType][action.id][action.nestedDataType]) || {};
                 return Object.assign({}, state, {

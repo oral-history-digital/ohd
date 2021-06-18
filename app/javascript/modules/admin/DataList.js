@@ -21,7 +21,10 @@ export default class DataList extends Component {
 
     loadJoinData() {
          if (
-            this.props.joinDataStatus && !this.props.joinDataStatus.all
+            this.props.joinDataStatus && !(
+                this.props.joinDataStatus[`for_projects_${this.props.project?.id}`] ||
+                this.props.joinDataStatus.all
+            )
          ) {
             this.props.fetchData(this.props, this.props.joinDataScope, null, null, null);
          }

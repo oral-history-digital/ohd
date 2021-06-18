@@ -14,10 +14,10 @@ export default class UserRoleForm extends Component {
 
     loadRoles() {
         if (
-            !this.props.rolesStatus.all ||
-            this.props.rolesStatus.all.split('-')[0] === 'reload'
+            !this.props.rolesStatus[`for_projects_${this.props.project?.id}`] ||
+            this.props.rolesStatus[`for_projects_${this.props.project?.id}`].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData(this.props, 'roles');
+            this.props.fetchData(this.props, 'roles', null, null, [`for_projects_${this.props.project?.id}`]);
         }
     }
 

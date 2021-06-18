@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getLocales, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
-import { fetchData, submitData, getCurrentProject, getProjects, getCurrentAccount, getPeople,
+import { fetchData, submitData, getCurrentProject, getProjects, getCurrentAccount, getPeopleForCurrentProject,
     getPeopleStatus, getSpeakerDesignationsStatus } from 'modules/data';
 import AssignSpeakersForm from './AssignSpeakersForm';
 
@@ -16,7 +16,7 @@ const mapStateToProps = (state) => {
         projects: getProjects(state),
         translations: getTranslations(state),
         account: getCurrentAccount(state),
-        people: getPeople(state),
+        people: getPeopleForCurrentProject(state),
         peopleStatus: getPeopleStatus(state),
         speakerDesignationsStatus: getSpeakerDesignationsStatus(state),
     }

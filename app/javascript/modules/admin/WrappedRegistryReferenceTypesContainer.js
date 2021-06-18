@@ -5,7 +5,7 @@ import { getLocale, getLocales, getProjectId, getTranslations, getEditView } fro
 import { setQueryParams, getRegistryReferenceTypesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getRegistryReferenceTypes, getRegistryReferenceTypesStatus } from 'modules/data';
+    getRegistryReferenceTypesForCurrentProject, getRegistryReferenceTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
         translations: getTranslations(state),
         account: getCurrentAccount(state),
         editView: getEditView(state),
-        data: getRegistryReferenceTypes(state),
+        data: getRegistryReferenceTypesForCurrentProject(state),
         dataStatus: getRegistryReferenceTypesStatus(state),
         resultPagesCount: getRegistryReferenceTypesStatus(state).resultPagesCount,
         query: getRegistryReferenceTypesQuery(state),

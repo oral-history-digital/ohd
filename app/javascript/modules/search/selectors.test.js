@@ -88,46 +88,48 @@ const state = {
                 page: 1,
             },
         },
-        roles: {
-            query: {
-                desc: 'interview',
-                page: 1,
-            },
-        },
-        task_types: {
-            query: {
-                label: 'protocol',
-                page: 1,
-            },
-        },
         permissions: {
             query: {
                 name: 'account',
                 page: 2,
             },
         },
-        people: {
-            query: {
-                first_name: 'marina',
-                page: 2,
-            },
-        },
-        registry_reference_types: {
-            query: {
-                name: 'acquaintance',
-                page: 1,
-            },
-        },
-        registry_name_types: {
-
-        },
         projects: {
+            1: {
+                name: 'cdoh',
+                roles: {
+                    query: {
+                        desc: 'interview',
+                        page: 1,
+                    },
+                },
+                task_types: {
+                    query: {
+                        label: 'protocol',
+                        page: 1,
+                    },
+                },
+                people: {
+                    query: {
+                        first_name: 'marina',
+                        page: 2,
+                    },
+                },
+                registry_reference_types: {
+                    query: {
+                        name: 'acquaintance',
+                        page: 1,
+                    },
+                },
+                registry_name_types: {
 
-        },
-        collections: {
-            query: {
-                name: 'israel',
-                page: 1,
+                },
+                collections: {
+                    query: {
+                        name: 'israel',
+                        page: 1,
+                    },
+                },
             },
         },
         languages: {

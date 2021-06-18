@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { setQueryParams, getTaskTypesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getTaskTypes, getTaskTypesStatus } from 'modules/data';
+    getTaskTypesForCurrentProject, getTaskTypesStatus } from 'modules/data';
 import { getLocale, getProjectId, getLocales, getTranslations, getEditView } from 'modules/archive';
 import TaskTypePermissionsContainer from './TaskTypePermissionsContainer';
 import WrappedDataList from './WrappedDataList';
@@ -19,7 +19,7 @@ const mapStateToProps = (state) => {
         translations: getTranslations(state),
         account: getCurrentAccount(state),
         editView: getEditView(state),
-        data: getTaskTypes(state),
+        data: getTaskTypesForCurrentProject(state),
         dataStatus: getTaskTypesStatus(state),
         resultPagesCount: getTaskTypesStatus(state).resultPagesCount,
         query: getTaskTypesQuery(state),

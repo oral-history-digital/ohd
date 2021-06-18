@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { searchInInterview, getArchiveQueryFulltext, getInterviewSearch } from 'modules/search';
 import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations, getEditView,
     getSelectedArchiveIds } from 'modules/archive';
-import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeople,
-    getLanguages, getCollections, getPeopleStatus, getCollectionsStatus, getLanguagesStatus } from 'modules/data';
+import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeopleForCurrentProject,
+    getLanguages, getCollectionsForCurrentProject, getPeopleStatus, getCollectionsStatus, getLanguagesStatus } from 'modules/data';
 import InterviewListRow from './InterviewListRow';
 
 const mapStateToProps = (state, props) => {
@@ -21,11 +21,11 @@ const mapStateToProps = (state, props) => {
         editView: getEditView(state),
         account: getCurrentAccount(state),
         selectedArchiveIds: getSelectedArchiveIds(state),
-        people: getPeople(state),
+        people: getPeopleForCurrentProject(state),
         peopleStatus: getPeopleStatus(state),
         languages: getLanguages(state),
         languagesStatus: getLanguagesStatus(state),
-        collections: getCollections(state),
+        collections: getCollectionsForCurrentProject(state),
         collectionsStatus: getCollectionsStatus(state),
         interviewee: getInterviewee(state, props),
     }

@@ -4,22 +4,14 @@ class ContributionTypesController < ApplicationController
     authorize ContributionType
     @contribution_type = ContributionType.create(contribution_type_params)
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@contribution_type, msg: "processed")
-      end
-    end
+    respond @contribution_type
   end
 
   def show
     @contribution_type = ContributionType.find params[:id]
     authorize @contribution_type
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@contribution_type)
-      end
-    end
+    respond @contribution_type
   end
 
   def update
@@ -27,11 +19,7 @@ class ContributionTypesController < ApplicationController
     authorize @contribution_type
     @contribution_type.update_attributes contribution_type_params
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@contribution_type, msg: "processed")
-      end
-    end
+    respond @contribution_type
   end
 
   def destroy 
@@ -85,6 +73,20 @@ class ContributionTypesController < ApplicationController
   end
 
   private
+
+    def respond contribution_type
+      respond_to do |format|
+        format.json do
+          render json: {
+            nested_id: contribution_type.id,
+            data: cache_single(contribution_type)
+            nested_data_type: "contribution_types",
+            data_type: 'projects',
+            id: current_project.id,
+          }
+        end
+      end
+    end
 
     def contribution_type_params
       params.require(:contribution_type).permit(

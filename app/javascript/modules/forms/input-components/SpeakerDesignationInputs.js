@@ -3,7 +3,8 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
-import { getPeople } from 'modules/data';
+import { getPeopleForCurrentProject, getPeopleForCurrentProjectFetched,
+    getCurrentProject, Fetch } from 'modules/data';
 import { fullname } from 'modules/people';
 import InputContainer from './InputContainer';
 
@@ -13,7 +14,8 @@ export default function SpeakerDesignationInputs({
     handleChange,
 }) {
     const { t, locale } = useI18n();
-    const people = useSelector(getPeople);
+    const people = useSelector(getPeopleForCurrentProject);
+    const project = useSelector(getCurrentProject);
 
     const onChange = (name, v) => {
         const index = contributions.findIndex(c => c.id.toString() === name);
@@ -32,19 +34,24 @@ export default function SpeakerDesignationInputs({
     }
 
     return (
-        <div className="speaker-designation-input">
-            <h4>{t('speaker_designations')}</h4>
-            {
-                contributions.map(contribution => createElement(InputContainer, {
-                    key: contribution.id,
-                    scope: attribute,
-                    attribute: contribution.id,
-                    label: fullname({ locale }, people[contribution.person_id]),
-                    value: contribution.speaker_designation,
-                    handleChange: onChange,
-                }))
-            }
-        </div>
+        <Fetch
+            fetchParams={['people', null, null, `for_projects=${project?.id}`]}
+            testSelector={getPeopleForCurrentProjectFetched}
+        >
+            <div className="speaker-designation-input">
+                <h4>{t('speaker_designations')}</h4>
+                {
+                    contributions.map(contribution => createElement(InputContainer, {
+                        key: contribution.id,
+                        scope: attribute,
+                        attribute: contribution.id,
+                        label: fullname({ locale }, people[contribution.person_id]),
+                        value: contribution.speaker_designation,
+                        handleChange: onChange,
+                    }))
+                }
+            </div>
+        </Fetch>
     );
 }
 

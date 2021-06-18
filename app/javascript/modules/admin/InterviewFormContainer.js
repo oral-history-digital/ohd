@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getLocales, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
-import { submitData, getCurrentProject, getProjects, getCollections, getContributionTypes,
-    getPeople, getLanguages } from 'modules/data';
+import { submitData, getCurrentProject, getProjects, getCollectionsForCurrentProject, getContributionTypesForCurrentProject,
+    getPeopleForCurrentProject, getLanguages } from 'modules/data';
 import InterviewForm from './InterviewForm';
 
 const mapStateToProps = (state) => {
@@ -16,9 +16,9 @@ const mapStateToProps = (state) => {
         projects: getProjects(state),
         project: project,
         translations: getTranslations(state),
-        collections: getCollections(state),
-        contributionTypes: getContributionTypes(state),
-        people: getPeople(state),
+        collections: getCollectionsForCurrentProject(state),
+        contributionTypes: getContributionTypesForCurrentProject(state),
+        people: getPeopleForCurrentProject(state),
         languages: getLanguages(state),
     }
 }

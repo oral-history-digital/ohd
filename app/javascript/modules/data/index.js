@@ -6,20 +6,20 @@ export { default as dataReducer } from './reducer';
 
 export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getCurrentInterviewFetched, getCurrentProject, getFeaturedInterviewsArray,
-    getFeaturedInterviewsFetched, getLanguages, getPeople, getProjects,
+    getFeaturedInterviewsFetched, getLanguages, getPeopleForCurrentProjectFetched, getPeopleForCurrentProject, getProjects,
     getRootRegistryEntry, getRootRegistryEntryFetched, getPermissions,
-    getRegistryReferenceTypesFetched, getRoles, getTasks, getAccounts,
-    getRootRegistryEntryReload, getRegistryEntries, getRegistryReferenceTypes,
-    getRegistryNameTypes, getCollections, getCurrentInterviewee, getInterviewee,
+    getRegistryReferenceTypesForCurrentProjectFetched, getRolesForCurrentProject, getTasks, getAccounts,
+    getRootRegistryEntryReload, getRegistryEntries, getRegistryReferenceTypesForCurrentProject,
+    getRegistryNameTypesForCurrentProject, getCollectionsForCurrentProject, getCurrentInterviewee, getInterviewee,
     getUserRegistrations, getSegments, getTranscriptFetched, getTranscriptLocale, getHasTranscript,
-    getContributionTypes, getInterviewsStatus, getRegistryEntriesStatus, getRegistryReferenceTypesStatus,
+    getContributionTypesForCurrentProject, getInterviewsStatus, getRegistryEntriesStatus, getRegistryReferenceTypesStatus,
     getRegistryNameTypesStatus, getContributionTypesStatus,
     getCollectionsStatus, getLanguagesStatus, getPeopleStatus, getSegmentsStatus, getAccountsStatus,
     getRolesStatus, getPermissionsStatus, getProjectsStatus, getTaskTypesStatus, getUserContentsStatus,
     getContributionsStatus, getUserRegistrationsStatus, getHeadingsStatus, getSpeakerDesignationsStatus,
     getRefTreeStatus, getTasksStatus, getMarkTextStatus,
     getHeadingsFetched, getHeadings, getPreparedHeadings,
-    getMediaStreams, getInterviews, getTaskTypes, getUserContents }
+    getMediaStreamsForCurrentProject, getInterviews, getTaskTypesForCurrentProject, getUserContents }
     from './selectors/dataSelectors';
 export { getIsCatalog, getIsCampscapesProject, getProjectTranslation,
     getShowFeaturedInterviews, getShowStartPageVideo } from './selectors/projectSelectors';

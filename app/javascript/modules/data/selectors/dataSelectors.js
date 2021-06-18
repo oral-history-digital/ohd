@@ -6,14 +6,6 @@ export const getData = state => state.data;
 
 export const getLanguages = state => getData(state).languages;
 
-export const getMediaStreams = state => getData(state).media_streams;
-
-export const getContributionTypes = state => getData(state).contribution_types;
-
-export const getPeople = state => getData(state).people;
-
-export const getCollections = state => getData(state).collections;
-
 export const getProjects = state => getData(state).projects;
 
 export const getInterviews = state => getData(state).interviews;
@@ -26,17 +18,9 @@ export const getPermissions = state => getData(state).permissions;
 
 export const getRegistryEntries = state => getData(state).registry_entries;
 
-export const getRegistryReferenceTypes = state => getData(state).registry_reference_types;
-
-export const getRegistryNameTypes = state => getData(state).registry_name_types;
-
-export const getRoles = state => getData(state).roles;
-
 export const getSegments = state => getData(state).segments;
 
 export const getTasks = state => getData(state).tasks;
-
-export const getTaskTypes = state => getData(state).task_types;
 
 export const getUserContents = state => getData(state).user_contents;
 
@@ -133,32 +117,6 @@ export const getCurrentInterviewFetched = state => {
     return !(Object.is(currentInterview, undefined) || Object.is(currentInterview, null));
 };
 
-export const getCurrentInterviewee = createSelector(
-    [getCurrentInterview, getPeople],
-    (interview, people) => {
-        if (interview?.contributions && people) {
-            const intervieweeContribution = Object.values(interview.contributions)
-                .find(c => c.contribution_type === 'interviewee');
-            return people[intervieweeContribution?.person_id];
-        }
-    }
-);
-
-const getInterviewFromProps = (_, props) =>
-    props.interview;
-
-// Eventually, only use getCurrentInterviewee above.
-export const getInterviewee = createSelector(
-    [getInterviewFromProps, getPeople],
-    (interview, people) => {
-        if (interview?.contributions && people) {
-            const intervieweeContribution = Object.values(interview.contributions)
-                .find(c => c.contribution_type === 'interviewee');
-            return people[intervieweeContribution?.person_id];
-        }
-    }
-);
-
 export const getTranscriptFetched = createSelector(
     [getSegmentsStatus, getArchiveId],
     (segmentsStatus, archiveId) => {
@@ -203,13 +161,14 @@ export const getHasTranscript = createSelector(
 );
 
 export const getContributorsFetched = createSelector(
-    [getCurrentInterview, getPeopleStatus],
-    (interview, peopleStatus) => {
+    [getCurrentInterview, getPeopleStatus, getCurrentProject],
+    (interview, peopleStatus, currentProject) => {
+        const fetched = /^fetched/;
         if (
             interview &&
             (
-                (peopleStatus[`contributors_for_interview_${interview.id}`] && peopleStatus[`contributors_for_interview_${interview.id}`].split('-')[0] === 'fetched') ||
-                (peopleStatus.all && peopleStatus.all.split('-')[0] === 'fetched')
+                fetched.test(peopleStatus[`for_projects_${currentProject?.id}`]) ||
+                fetched.test(peopleStatus[`contributors_for_interview_${interview.id}`])
             )
         ) {
             return true;
@@ -236,13 +195,6 @@ export const getFeaturedInterviewsFetched = state => {
     return fetched.test(status);
 };
 
-export const getRegistryReferenceTypesFetched = state => {
-    const status = getStatuses(state).registry_reference_types.all;
-    const fetched = /^fetched/;
-
-    return fetched.test(status);
-};
-
 export const getRootRegistryEntryFetched = createSelector(
     [getRegistryEntriesStatus, getCurrentProject],
     (status, currentProject) => {
@@ -263,6 +215,128 @@ export const getRootRegistryEntryReload = createSelector(
     (status, currentProject) => {
         const reload = /^reload/;
         return reload.test(status[currentProject.root_registry_entry_id]);
+    }
+);
+
+export const getPeopleForCurrentProjectFetched = createSelector(
+    [getPeopleStatus, getCurrentProject],
+    (peopleStatus, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(peopleStatus[`for_projects_${currentProject?.id}`]);
+    }
+);
+
+export const getPeopleForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.people;
+    }
+);
+
+export const getCollectionsForCurrentProjectFetched = createSelector(
+    [getCollectionsStatus, getCurrentProject],
+    (collectionsStatus, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(collectionsStatus[`for_projects_${currentProject?.id}`]);
+    }
+);
+
+export const getCollectionsForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.collections;
+    }
+);
+
+export const getTaskTypesForCurrentProjectFetched = createSelector(
+    [getTaskTypesStatus, getCurrentProject],
+    (taskTypesStatus, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(taskTypesStatus[`for_projects_${currentProject?.id}`]);
+    }
+);
+
+export const getTaskTypesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.task_types;
+    }
+);
+
+export const getRolesForCurrentProjectFetched = createSelector(
+    [getRolesStatus, getCurrentProject],
+    (rolesStatus, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(rolesStatus[`for_projects_${currentProject?.id}`]);
+    }
+);
+
+export const getRolesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.roles;
+    }
+);
+
+export const getRegistryReferenceTypesForCurrentProjectFetched = createSelector(
+    [getRegistryReferenceTypesStatus, getCurrentProject],
+    (registryReferenceTypesStatus, currentProject) => {
+        const fetched = /^fetched/;
+        return fetched.test(registryReferenceTypesStatus[`for_projects_${currentProject?.id}`]);
+    }
+);
+
+export const getRegistryReferenceTypesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.registry_reference_types;
+    }
+);
+
+export const getRegistryNameTypesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.registry_name_types;
+    }
+);
+
+export const getMediaStreamsForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.media_streams;
+    }
+);
+
+export const getContributionTypesForCurrentProject = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.contribution_types;
+    }
+);
+
+export const getCurrentInterviewee = createSelector(
+    [getCurrentInterview, getPeopleForCurrentProject],
+    (interview, people) => {
+        if (interview?.contributions && people) {
+            const intervieweeContribution = Object.values(interview.contributions)
+                .find(c => c.contribution_type === 'interviewee');
+            return people[intervieweeContribution?.person_id];
+        }
+    }
+);
+
+const getInterviewFromProps = (_, props) =>
+    props.interview;
+
+// Eventually, only use getCurrentInterviewee above.
+export const getInterviewee = createSelector(
+    [getInterviewFromProps, getPeopleForCurrentProject],
+    (interview, people) => {
+        if (interview?.contributions && people) {
+            const intervieweeContribution = Object.values(interview.contributions)
+                .find(c => c.contribution_type === 'interviewee');
+            return people[intervieweeContribution?.person_id];
+        }
     }
 );
 

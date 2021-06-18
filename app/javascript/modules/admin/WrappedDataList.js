@@ -28,7 +28,7 @@ export default class WrappedDataList extends Component {
     loadData() {
          if (
              this.props.query &&
-             !(this.props.dataStatus.all || this.props.dataStatus[statifiedQuery(this.props.query)])
+             !(this.props.dataStatus[`for_projects_${this.props.project?.id}`] || this.props.dataStatus.all || this.props.dataStatus[statifiedQuery(this.props.query)])
          ) {
             this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
          }

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { closeArchivePopup } from 'modules/ui';
 import { getCurrentProject, fetchData, deleteData, submitData, getProjects,
-    getCurrentAccount, getMediaStreams } from 'modules/data';
+    getCurrentAccount, getMediaStreamsForCurrentProject } from 'modules/data';
 import { getLocale, getLocales, getProjectId, getTranslations } from 'modules/archive';
 import DataList from './DataList';
 
@@ -17,7 +17,7 @@ const mapStateToProps = state => {
         account: getCurrentAccount(state),
         editView: true,
         //
-        data: getMediaStreams(state),
+        data: getMediaStreamsForCurrentProject(state),
         scope: 'media_stream',
         detailsAttributes: ['path', 'media_type'],
         initialFormValues: {project_id: project.id},

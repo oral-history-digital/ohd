@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
+import { Fetch, getPeopleForCurrentProjectFetched } from 'modules/data';
 import { INDEX_INDEXING } from 'modules/flyout-tabs';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
@@ -18,8 +19,8 @@ export default class ContributionForm extends Component {
     }
 
     loadAllPeople() {
-        if (!this.props.peopleStatus.all) {
-            this.props.fetchData(this.props, 'people', null, null, 'all');
+        if (!this.props.peopleStatus[`for_projects_${this.props.project?.id}`]) {
+            this.props.fetchData(this.props, 'people', null, null, `for_projects=${this.props.project?.id}`);
         }
     }
 
@@ -62,10 +63,13 @@ export default class ContributionForm extends Component {
     }
 
     render() {
-        const { setFlyoutTabsIndex, closeArchivePopup, submitData, onSubmit } = this.props;
+        const { setFlyoutTabsIndex, closeArchivePopup, submitData, onSubmit, project } = this.props;
 
         return (
-            <div>
+            <Fetch
+                fetchParams={['people', null, null, `for_projects=${project?.id}`]}
+                testSelector={getPeopleForCurrentProjectFetched}
+            >
                 <Form
                     scope='contribution'
                     data={this.props.contribution}
@@ -98,7 +102,7 @@ export default class ContributionForm extends Component {
                 >
                     {t(this.props, "edit.person.admin")}
                 </Link>
-            </div>
+            </Fetch>
         );
     }
 }

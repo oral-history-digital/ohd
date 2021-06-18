@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { searchInInterview, getArchiveQuery, getArchiveQueryFulltext, getInterviewSearch } from 'modules/search';
 import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations, getSelectedArchiveIds } from 'modules/archive';
-import { getInterviewee, getCurrentProject, getProjects, getInterviewsStatus, getPeople, getPeopleStatus, fetchData } from 'modules/data';
+import { getInterviewee, getCurrentProject, getProjects, getInterviewsStatus, getPeopleForCurrentProject, getPeopleStatus, fetchData } from 'modules/data';
 import InterviewPreview from './InterviewPreview';
 
 const mapStateToProps = (state, props) => ({
@@ -18,7 +18,7 @@ const mapStateToProps = (state, props) => ({
     statuses: getInterviewsStatus(state),
     interviewSearchResults: getInterviewSearch(state),
     interviewee: getInterviewee(state, props),
-    people: getPeople(state),
+    people: getPeopleForCurrentProject(state),
     peopleStatus: getPeopleStatus(state),
     optionsScope: 'search_facets' // for the humanReadable function
 });

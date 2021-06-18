@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { toggleFlyoutTabs, getFlyoutTabsVisible } from 'modules/flyout-tabs';
 import { getEditView, getLocale, getProjectId } from 'modules/archive';
 import { fetchData, deleteData, getCurrentAccount, getProjects, getCollectionsStatus,
-    getLanguagesStatus, getAccountsStatus, getProjectsStatus } from 'modules/data';
+    getLanguagesStatus, getAccountsStatus, getProjectsStatus, getCurrentProject } from 'modules/data';
 import { getIsLoggedIn, getIsLoggedOut, getLoggedInAt } from 'modules/account';
 import WrapperPage from './WrapperPage';
 
@@ -13,6 +13,7 @@ const mapStateToProps = state => ({
     projectId: getProjectId(state),
     projects: getProjects(state),
     projectsStatus: getProjectsStatus(state),
+    project: getCurrentProject(state),
     locale: getLocale(state),
     flyoutTabsVisible: getFlyoutTabsVisible(state),
     loggedInAt: getLoggedInAt(state),

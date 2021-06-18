@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { fetchData, getProjects, getInterviews, getRegistryEntries, getInterviewsStatus,
-    getRegistryEntriesStatus, getRegistryReferenceTypes, getRegistryReferenceTypesStatus,
+    getRegistryEntriesStatus, getRegistryReferenceTypesForCurrentProject, getRegistryReferenceTypesStatus,
     getSegments, getSegmentsStatus, getCurrentAccount, getCurrentProject } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
 import { setArchiveId, getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
@@ -20,8 +20,8 @@ const mapStateToProps = (state) => {
         segments: getSegments(state),
         segmentsStatus: getSegmentsStatus(state),
         translations: getTranslations(state),
-        registryReferenceTypes: getRegistryReferenceTypes(state),
-        registryReferenceTypesStatus: getRegistryReferenceTypesStatus(state).all,
+        registryReferenceTypes: getRegistryReferenceTypesForCurrentProject(state),
+        registryReferenceTypesStatus: getRegistryReferenceTypesStatus(state),
         registryEntriesStatus:getRegistryEntriesStatus(state),
         registryEntries: getRegistryEntries(state),
         editView: getEditView(state),

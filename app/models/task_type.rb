@@ -1,5 +1,5 @@
 class TaskType < ApplicationRecord
-  belongs_to :project, touch: true
+  belongs_to :project
   has_many :tasks, dependent: :destroy
   has_many :task_type_permissions, dependent: :destroy
   has_many :permissions, through: :task_type_permissions

@@ -5,7 +5,7 @@ import { getLocale, getLocales, getProjectId, getTranslations, getEditView } fro
 import { setQueryParams, getContributionTypesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getContributionTypes, getContributionTypesStatus } from 'modules/data';
+    getContributionTypesForCurrentProject, getContributionTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => {
         translations: getTranslations(state),
         account: getCurrentAccount(state),
         editView: getEditView(state),
-        data: getContributionTypes(state),
+        data: getContributionTypesForCurrentProject(state),
         dataStatus: getContributionTypesStatus(state),
         resultPagesCount: getContributionTypesStatus(state).resultPagesCount,
         query: getContributionTypesQuery(state),

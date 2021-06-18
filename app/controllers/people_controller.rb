@@ -13,11 +13,8 @@ class PeopleController < ApplicationController
     authorize Person
     params[:person][:project_id] = current_project.id
     @person = Person.create person_params
-    respond_to do |format|
-      format.json do
-        render json: data_json(@person, msg: "processed")
-      end
-    end
+
+    respond @person
   end
 
   def update
@@ -25,27 +22,14 @@ class PeopleController < ApplicationController
     authorize @person
     @person.update_attributes person_params
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@person)
-      end
-    end
+    respond @person
   end
 
   def show
     @person = Person.find params[:id]
     authorize @person
 
-    respond_to do |format|
-      format.json do
-        render json: {
-          id: @person.id,
-          data_type: 'people',
-          data: params[:with_associations] ? cache_single(@person, 'PersonWithAssociations') : cache_single(@person)
-          #data: params[:with_associations] ? ::PersonWithAssociationsSerializer.new(@person).as_json : ::PersonSerializer.new(@person).as_json,
-        }
-      end
-    end
+    respond @person
   end
 
   def index
@@ -56,11 +40,11 @@ class PeopleController < ApplicationController
       format.json do
         paginate = false
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{cache_key_params}-#{Person.maximum(:updated_at)}" do
-          if params.keys.include?("all")
+          if params[:for_projects]
             data = policy_scope(Person).
               includes(:translations, :project).
               order("person_translations.last_name ASC")
-            extra_params = "all"
+            extra_params = "for_projects_#{current_project.id}"
           elsif params[:contributors_for_interview]
             data = policy_scope(Person).
               includes(:translations, :project).
@@ -78,7 +62,9 @@ class PeopleController < ApplicationController
           
           {
             data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
-            data_type: "people",
+            nested_data_type: "people",
+            data_type: 'projects',
+            id: current_project.id,
             extra_params: extra_params,
             page: params[:page] || 1,
             result_pages_count: paginate ? data.total_pages : nil,
@@ -104,6 +90,20 @@ class PeopleController < ApplicationController
   end
 
   private
+
+  def respond person
+    respond_to do |format|
+      format.json do
+        render json: {
+          nested_id: person.id,
+          data: params[:with_associations] ? cache_single(person, 'PersonWithAssociations') : cache_single(person),
+          nested_data_type: "people",
+          data_type: 'projects',
+          id: current_project.id,
+        }
+      end
+    end
+  end
 
   def person_params
     params.require(:person).

@@ -13,24 +13,12 @@ const state = {
                 admin: true,
             },
         },
-        collections: {
-            1: {
-                id: 1,
-                type: 'Collection',
-            },
-        },
-        people: {
-            4: {
-                id: 4,
-                type: 'Person',
-            },
-        },
         statuses: {
             accounts: {
                 current: 'fetched',
             },
             collections: {
-                all: 'fetched',
+                for_projects_1: 'fetched',
             },
             contributions: {
                 14: 'fetched-Mon',
@@ -50,6 +38,7 @@ const state = {
             people: {
                 12: 'fetched',
                 contributors_for_interview_22: 'fetched',
+                for_projects_1: 'fetched',
             },
             permissions: {
                 page_1: 'fetched-Mon',
@@ -80,7 +69,7 @@ const state = {
                 35: 'processed',
             },
             task_types: {
-                all: 'fetched',
+                'for_projects_1': 'fetched',
             },
             user_contents: {
                 all: 'fetched-Mon',
@@ -95,6 +84,62 @@ const state = {
                 type: 'Project',
                 identifier: 'cdoh',
                 root_registry_entry_id: 1,
+                collections: {
+                    1: {
+                        id: 1,
+                        type: 'Collection',
+                    },
+                },
+                people: {
+                    4: {
+                        id: 4,
+                        type: 'Person',
+                    },
+                },
+                registry_name_types: {
+                    2: {
+                        id: 2,
+                        type: 'RegistryNameType',
+                        code: 'first_name',
+                        name: 'Vorname',
+                    },
+                },
+                roles: {
+                    1: {
+                        id: 1,
+                        type: 'Role',
+                    },
+                },
+                task_types: {
+                    3: {
+                        id: 3,
+                        type: 'TaskType',
+                        key: 'protocol',
+                        abbreviation: 'Pro',
+                    },
+                },
+                contribution_types: {
+                    1: {
+                        id: 1,
+                        type: 'ContributionType',
+                        code: 'interviewee',
+                        project_id: 1,
+                        label: {
+                            de: 'Interviewte*r',
+                            en: 'Interviewee',
+                        },
+                    },
+                },
+                media_streams: {
+                    1: {
+                        id: 1,
+                        type: 'MediaStream',
+                        project_id: 1,
+                        path: 'https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4',
+                        media_type: 'video',
+                        resolution: '480p',
+                    },
+                },
             },
         },
         interviews: {
@@ -157,20 +202,6 @@ const state = {
                 children_count: 77,
             },
         },
-        registry_name_types: {
-            2: {
-                id: 2,
-                type: 'RegistryNameType',
-                code: 'first_name',
-                name: 'Vorname',
-            },
-        },
-        roles: {
-            1: {
-                id: 1,
-                type: 'Role',
-            },
-        },
         permissions: {
             92: {
                 id: 92,
@@ -188,14 +219,6 @@ const state = {
                 type: 'Task',
             },
         },
-        task_types: {
-            3: {
-                id: 3,
-                type: 'TaskType',
-                key: 'protocol',
-                abbreviation: 'Pro',
-            },
-        },
         user_contents: {
             3596: {
                 id: 3596,
@@ -211,28 +234,6 @@ const state = {
                 type: 'Interview',
             },
         },
-        contribution_types: {
-            1: {
-                id: 1,
-                type: 'ContributionType',
-                code: 'interviewee',
-                project_id: 1,
-                label: {
-                    de: 'Interviewte*r',
-                    en: 'Interviewee',
-                },
-            },
-        },
-        MediaStream: {
-            1: {
-                id: 1,
-                type: 'MediaStream',
-                project_id: 1,
-                path: 'https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_0#{tape_number}_sd480p.mp4',
-                media_type: 'video',
-                resolution: '480p',
-            },
-        },
     },
 };
 
@@ -244,12 +245,20 @@ test('getLanguages gets languages object', () => {
     expect(selectors.getLanguages(state)).toEqual(state.data.languages);
 });
 
-test('getCollections gets collections object', () => {
-    expect(selectors.getCollections(state)).toEqual(state.data.collections);
+test('getCollectionsForCurrentProject gets collections object', () => {
+    expect(selectors.getCollectionsForCurrentProject(state)).toEqual(state.data.projects[1].collections);
 });
 
-test('getPeople gets people object', () => {
-    expect(selectors.getPeople(state)).toEqual(state.data.people);
+test('getPeopleForCurrentProject gets people object', () => {
+    expect(selectors.getPeopleForCurrentProject(state)).toEqual(state.data.projects[1].people);
+});
+
+test('getTaskTypesForCurrentProject gets task_types object', () => {
+    expect(selectors.getTaskTypesForCurrentProject(state)).toEqual(state.data.projects[1].task_types);
+});
+
+test('getRolesForCurrentProject gets roles object', () => {
+    expect(selectors.getRolesForCurrentProject(state)).toEqual(state.data.projects[1].roles);
 });
 
 test('getStatuses gets statuses object', () => {
@@ -356,10 +365,6 @@ test('getPermissions gets permissions object', () => {
     expect(selectors.getPermissions(state)).toEqual(state.data.permissions);
 });
 
-test('getRoles gets roles object', () => {
-    expect(selectors.getRoles(state)).toEqual(state.data.roles);
-});
-
 test('getRegistryEntries gets registry entries object', () => {
     expect(selectors.getRegistryEntries(state)).toEqual(state.data.registry_entries);
 });
@@ -372,8 +377,8 @@ test('getRootRegistryEntryFetched is true if entry is fetched', () => {
     expect(selectors.getRootRegistryEntryFetched(state)).toBeTruthy();
 });
 
-test('getRegistryNameTypes gets registry name types object', () => {
-    expect(selectors.getRegistryNameTypes(state)).toEqual(state.data.registry_name_types);
+test('getRegistryNameTypesForCurrentProject gets registry name types object', () => {
+    expect(selectors.getRegistryNameTypesForCurrentProject(state)).toEqual(state.data.registry_name_types);
 });
 
 test('getSegments gets segments object', () => {
@@ -384,8 +389,8 @@ test('getTasks gets tasks object', () => {
     expect(selectors.getTasks(state)).toEqual(state.data.tasks);
 });
 
-test('getTaskTypes gets task types object', () => {
-    expect(selectors.getTaskTypes(state)).toEqual(state.data.task_types);
+test('getTaskTypesForCurrentProject gets task types object', () => {
+    expect(selectors.getTaskTypesForCurrentProject(state)).toEqual(state.data.task_types);
 });
 
 test('getUserContents gets user contents object', () => {
@@ -451,7 +456,7 @@ test('getCurrentInterviewFetched retrieves if current interview has been fetched
 });
 
 test('getCurrentInterviewee retrieves first interviewee of current interview', () => {
-    expect(selectors.getCurrentInterviewee(state)).toEqual(state.data.people[4]);
+    expect(selectors.getCurrentInterviewee(state)).toEqual(state.data.projects[1].people[4]);
 });
 
 test('getInterviewee retrieves first interviewee of a given interview', () => {
@@ -470,7 +475,7 @@ test('getInterviewee retrieves first interviewee of a given interview', () => {
             },
         },
     };
-    expect(selectors.getInterviewee(state, props)).toEqual(state.data.people[4]);
+    expect(selectors.getInterviewee(state, props)).toEqual(state.data.projects[1].people[4]);
 });
 
 describe('getTranscriptFetched', () => {
@@ -516,10 +521,10 @@ test('getFeaturedInterviewsFetched retrieves if featured interviews have been fe
     expect(selectors.getFeaturedInterviewsFetched(state)).toBe(true);
 });
 
-test('getContributionTypes retrieves contributionTypes object', () => {
-    expect(selectors.getContributionTypes(state)).toEqual(state.data.contribution_types);
+test('getContributionTypesForCurrentProject retrieves contributionTypes object', () => {
+    expect(selectors.getContributionTypesForCurrentProject(state)).toEqual(state.data.contribution_types);
 });
 
-test('getMediaStreams retrieves media streams', () => {
-    expect(selectors.getMediaStreams(state)).toEqual(state.data.mediaStreams);
+test('getMediaStreamsForCurrentProject retrieves media streams', () => {
+    expect(selectors.getMediaStreamsForCurrentProject(state)).toEqual(state.data.mediaStreams);
 });

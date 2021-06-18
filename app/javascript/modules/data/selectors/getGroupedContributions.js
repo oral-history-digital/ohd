@@ -1,10 +1,10 @@
 import { createSelector } from 'reselect'
 
 import { getEditView } from 'modules/archive';
-import { getCurrentInterview, getContributionTypes } from './dataSelectors';
+import { getCurrentInterview, getContributionTypesForCurrentProject } from './dataSelectors';
 
 const getGroupedContributions = createSelector(
-    [getEditView, getCurrentInterview, getContributionTypes],
+    [getEditView, getCurrentInterview, getContributionTypesForCurrentProject],
     (editView, currentInterview, contributionTypes) => {
         if (!currentInterview || !currentInterview.contributions) {
             return null;
