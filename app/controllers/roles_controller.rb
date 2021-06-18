@@ -62,7 +62,7 @@ class RolesController < ApplicationController
       format.json do
         render json: {
           nested_id: role.id,
-          data: cache_single(role)
+          data: cache_single(role),
           nested_data_type: "roles",
           data_type: 'projects',
           id: current_project.id,

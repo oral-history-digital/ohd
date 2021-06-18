@@ -44,11 +44,11 @@ class ContributionTypesController < ApplicationController
       format.json do
         paginate = false
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-contribution_types-#{cache_key_params}-#{ContributionType.maximum(:updated_at)}" do
-          if params.keys.include?("all")
+          if params[:for_projects]
             data = current_project.contribution_types.
               includes(:translations).
               order("contribution_type_translations.label ASC")
-            extra_params = "all"
+            extra_params = "for_projects_#{current_project.id}"
           else
             page = params[:page] || 1
             data = current_project.contribution_types.
@@ -79,7 +79,7 @@ class ContributionTypesController < ApplicationController
         format.json do
           render json: {
             nested_id: contribution_type.id,
-            data: cache_single(contribution_type)
+            data: cache_single(contribution_type),
             nested_data_type: "contribution_types",
             data_type: 'projects',
             id: current_project.id,

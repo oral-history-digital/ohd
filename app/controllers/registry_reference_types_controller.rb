@@ -80,7 +80,7 @@ class RegistryReferenceTypesController < ApplicationController
         format.json do
           render json: {
             nested_id: registry_reference_type.id,
-            data: cache_single(registry_reference_type)
+            data: cache_single(registry_reference_type),
             nested_data_type: "registry_reference_types",
             data_type: 'projects',
             id: current_project.id,

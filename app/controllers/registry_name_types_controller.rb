@@ -44,18 +44,14 @@ class RegistryNameTypesController < ApplicationController
       format.json do
         paginate = false
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_name_types-#{cache_key_params}-#{RegistryNameType.maximum(:updated_at)}" do
-          if params.keys.include?("all")
+          if params[:for_projects]
             data = current_project.registry_name_types.
-              #includes(:translations).
-              #order("registry_name_type_translations.name ASC")
               order("name ASC")
-            extra_params = "all"
+            extra_params = "for_projects_#{current_project.id}"
           else
             page = params[:page] || 1
             data = current_project.registry_name_types.
-              #includes(:translations).
               where(search_params).
-              #order("registry_name_type_translations.name ASC").
               order("name ASC").
               paginate(page: page)
             paginate = true
@@ -82,7 +78,7 @@ class RegistryNameTypesController < ApplicationController
         format.json do
           render json: {
             nested_id: registry_name_type.id,
-            data: cache_single(registry_name_type)
+            data: cache_single(registry_name_type),
             nested_data_type: "registry_name_types",
             data_type: 'projects',
             id: current_project.id,
