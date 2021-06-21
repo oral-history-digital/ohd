@@ -36,6 +36,6 @@ export const getIsCampscapesProject = state => {
 export const getIsCatalog = createSelector(
     [getCurrentProject],
     (currentProject) => {
-        return (currentProject.is_catalog === true);
+        return (currentProject?.is_catalog === true);
     }
 );
