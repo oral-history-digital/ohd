@@ -4,6 +4,7 @@ class UserContentsController < ApplicationController
     authorize(UserContent)
     @user_content = UserContent.new(user_content_params)
     @user_content.user_account_id = current_user_account.id
+    @user_content.project_id = current_project.id
     @user_content.save
     @user_content.submit! if @user_content.type == 'UserAnnotation' && @user_content.private? && params[:publish]
     @user_content.reference.touch if @user_content.type == 'UserAnnotation'
