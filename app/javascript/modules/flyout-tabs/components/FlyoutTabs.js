@@ -134,7 +134,7 @@ export default class FlyoutTabs extends Component {
                 </TabPanel>
 
                 <TabPanel key="archive-search">
-                    <ArchiveSearchTabPanelContainer selectedArchiveIds={this.props.selectedArchiveIds} />
+                    { project && <ArchiveSearchTabPanelContainer selectedArchiveIds={this.props.selectedArchiveIds} /> }
                 </TabPanel>
 
                 <TabPanel key="interview">
@@ -147,11 +147,11 @@ export default class FlyoutTabs extends Component {
                 </TabPanel>
 
                 <TabPanel key="tabpanel-registry-entries">
-                    <RegistryEntriesTabPanelContainer />
+                    { project && <RegistryEntriesTabPanelContainer /> }
                 </TabPanel>
 
                 {
-                    hasMap ?
+                    hasMap && project ?
                         (<TabPanel key='map'>
                             <MapTabPanelContainer />
                         </TabPanel>) :
@@ -163,15 +163,15 @@ export default class FlyoutTabs extends Component {
                 </TabPanel>
 
                 <TabPanel key="tabpanel-indexing">
-                    <IndexingTabPanelContainer />
+                    { project && <IndexingTabPanelContainer /> }
                 </TabPanel>
 
                 <TabPanel key="tabpanel-users-admin">
-                    <UsersAdminTabPanelContainer />
+                    { project && <UsersAdminTabPanelContainer /> }
                 </TabPanel>
 
                 <TabPanel key="tabpanel-project-config">
-                    <ProjectConfigTabPanelContainer />
+                    { project && <ProjectConfigTabPanelContainer /> }
                 </TabPanel>
             </Tabs>
         );
