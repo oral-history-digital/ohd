@@ -77,6 +77,7 @@ const search = (state = initialState, action) => {
                         foundRegistryEntries: action.foundRegistryEntries,
                         foundBiographicalEntries: action.foundBiographicalEntries,
                         foundPhotos: action.foundPhotos,
+                        foundAnnotations: action.foundAnnotations,
                         fulltext: action.fulltext
                     }
                 })

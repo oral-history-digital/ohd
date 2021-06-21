@@ -49,7 +49,7 @@ class SearchesController < ApplicationController
         end
       end
       with(:archive_id, params[:id])
-      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'General', 'edit'))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
+      #with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'General', 'edit'))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
       order_by(order, :asc)
       paginate page: params[:page] || 1, per_page: 2000
     end
@@ -69,11 +69,14 @@ class SearchesController < ApplicationController
       [BiographicalEntry, :start_date],
       [Photo, :id],
       [RegistryEntry, "text_#{locale}".to_sym],
+      [Annotation, :id],
     ]
 
     models_and_order.each do |model, order|
       instance_variable_set "@#{model.name.underscore}_search", search(model, order)
     end
+
+    #byebug
 
     respond_to do |format|
       format.html do

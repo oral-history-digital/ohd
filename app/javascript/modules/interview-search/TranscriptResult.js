@@ -54,7 +54,7 @@ export default function TranscriptResult({
 
 TranscriptResult.propTypes = {
     data: PropTypes.object.isRequired,
-    active: PropTypes.bool.isRequired,
+    active: PropTypes.bool,
     index: PropTypes.number,
     foundSegmentsAmount: PropTypes.number,
 };

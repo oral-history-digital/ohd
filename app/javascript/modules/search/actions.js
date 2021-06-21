@@ -113,6 +113,7 @@ function receiveInterviewSearchResults(json){
         foundPhotos: json.found_photos,
         foundRegistryEntries: json.found_registry_entries,
         foundBiographicalEntries: json.found_biographical_entries,
+        foundAnnotations: json.found_annotations,
         fulltext: json.fulltext,
         archiveId: json.archiveId,
         receivedAt: Date.now()

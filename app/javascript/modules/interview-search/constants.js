@@ -1,7 +1,7 @@
 export const MODEL_NAMES = [
     'Segment',
     // TOC,
-    // Annotations,
+    'Annotations',
     'RegistryEntry',
     'BiographicalEntry',
     'Photo',

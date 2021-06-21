@@ -6,9 +6,10 @@ import { getCurrentInterviewSearch } from 'modules/search';
 import ResultList from './ResultList';
 import modelsWithResults from './modelsWithResults';
 import resultsForModel from './resultsForModel';
-import PhotoResult from './PhotoResult';
-import RegistryResult from './RegistryResult';
 import TranscriptResult from './TranscriptResult';
+import AnnotationResult from './AnnotationResult';
+import RegistryResult from './RegistryResult';
+import PhotoResult from './PhotoResult';
 import TocResult from './TocResult';
 
 export default function InterviewSearchResults() {
@@ -25,6 +26,7 @@ export default function InterviewSearchResults() {
     }
 
     const segments = resultsForModel(searchResults, 'Segment');
+    const annotations = resultsForModel(searchResults, 'Annotation');
     const registryEntries = resultsForModel(searchResults, 'RegistryEntry');
     const biographicalEntries = resultsForModel(searchResults, 'BiographicalEntry');
     const photos = resultsForModel(searchResults, 'Photo');
@@ -43,6 +45,11 @@ export default function InterviewSearchResults() {
                 tKey="heading"
                 searchResults={toc}
                 component={TocResult}
+            />
+            <ResultList
+                tKey="annotation"
+                searchResults={annotations}
+                component={AnnotationResult}
             />
             <ResultList
                 tKey="registryentry"
