@@ -7,7 +7,7 @@ html
     meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"
 
     javascript:
-      var developmentMode = "#{Rails.env == 'development' ? true : false}"
+      var developmentMode = #{Rails.env == 'development' ? true : false};
 
     == javascript_pack_tag 'application'
     == stylesheet_pack_tag 'application'
