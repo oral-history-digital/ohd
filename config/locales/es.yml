@@ -160,6 +160,7 @@ es:
   annotation_results: Search results in annotations
   registryentry_results: Resultados de búsqueda en el índice
   biographicalentry_results: Resultados de búsqueda en la biografía breve
+  observation_results: Search results in the protocol
   person_results: Resultados de búsqueda para personas
   user_registration_results: Resultados de búsqueda para usuaria/os
   segment_hits: Resultados en la transcripción

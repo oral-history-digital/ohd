@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 import { useI18n } from 'modules/i18n';
 
 import { getCurrentInterviewSearch } from 'modules/search';
+import { getCurrentInterview } from 'modules/data';
 import ResultList from './ResultList';
 import modelsWithResults from './modelsWithResults';
 import resultsForModel from './resultsForModel';
@@ -11,15 +12,21 @@ import AnnotationResult from './AnnotationResult';
 import RegistryResult from './RegistryResult';
 import PhotoResult from './PhotoResult';
 import TocResult from './TocResult';
+import numObservationResults from './numObservationResults';
 
 export default function InterviewSearchResults() {
     const searchResults = useSelector(getCurrentInterviewSearch);
+    const interview = useSelector(getCurrentInterview);
 
     const filteredModelNames = modelsWithResults(searchResults);
 
     const { t, locale } = useI18n();
 
-    if (filteredModelNames.length === 0) {
+    const numResults = searchResults ?
+        numObservationResults(interview.observations[locale], searchResults.fulltext) :
+        0;
+
+    if (filteredModelNames.length === 0 && numResults === 0) {
         return (
             <div>{t('modules.interview_search.no_results')}</div>
         );
@@ -65,6 +72,11 @@ export default function InterviewSearchResults() {
                 searchResults={photos}
                 component={PhotoResult}
             />
+            {numResults > 0 &&
+                <p style={{ fontSize: '1rem', marginLeft: '1.5rem' }}>
+                    {`${numResults} ${t('observation_results')}`}
+                </p>
+            }
         </div>
     );
 }

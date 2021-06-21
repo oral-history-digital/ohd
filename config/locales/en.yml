@@ -157,6 +157,7 @@ en:
   annotation_results: Search results in annotations
   registryentry_results: Search results in registry
   biographicalentry_results: Search results in the short biography
+  observation_results: Search results in the protocol
   person_results: Search results for persons
   user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: search results

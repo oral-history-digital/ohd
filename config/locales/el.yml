@@ -163,6 +163,7 @@ el:
   photo_results: Αποτελέσματα αναζήτησης στις φωτογραφίες
   annotation_results: Search results in annotations
   biographicalentry_results: Αποτελέσματα αναζήτησης στο σύντομο βιογραφικό
+  observation_results: Search results in the protocol
   person_results: Αποτελέσματα αναζήτησης στα ονόματα
   user_registration_results: Αποτελέσματα αναζήτησης στους χρήστες
   segment_hits: Αποτελέσματα αναζήτησης στην απομαγνητοφώνηση
