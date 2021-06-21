@@ -77,14 +77,19 @@ export default class UserContent extends Component {
 
     goTo() {
         let callKey = "call" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
-        const pathBase = `/${this.props.projects[this.props.data.project_id].shortname.toLowerCase()}/${this.props.locale}`;
+        const projectId = this.props.projects[this.props.data.project_id].identifier;
+        const pathBase = `/${projectId}/${this.props.locale}`;
 
         if (this.props.data.type === 'InterviewReference') {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
-                    onClick={() => this.hideFlyoutTabsIfMobile()}
-                    to={pathBase + '/interviews/' + this.props.data.media_id}>
+                    onClick={() => {
+                        this.hideFlyoutTabsIfMobile();
+                        this.props.setProjectId(projectId);
+                    }}
+                    to={pathBase + '/interviews/' + this.props.data.media_id}
+                >
                     {t(this.props, callKey)}
                 </Link>
             </p>
@@ -93,6 +98,7 @@ export default class UserContent extends Component {
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
                     onClick={() => {
+                        this.props.setProjectId(projectId);
                         this.props.setArchiveId(this.props.data.properties.interview_archive_id);
                         this.props.sendTimeChangeRequest(this.props.data.properties.tape_nbr, this.props.data.properties.time)
                         this.hideFlyoutTabsIfMobile();
@@ -108,6 +114,7 @@ export default class UserContent extends Component {
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
                 <Link
                     onClick={() => {
+                        this.props.setProjectId(projectId);
                         this.props.searchInArchive(url, this.props.data.properties);
                         this.hideFlyoutTabsIfMobile();
                     }}
