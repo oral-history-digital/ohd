@@ -102,7 +102,7 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def still_url
-    still_media_stream = MediaStream.where(project_id: object.project.id, media_type: 'still').first
+    still_media_stream = MediaStream.where(project_id: object.project_id, media_type: 'still').first
     still_media_stream && still_media_stream.path.gsub(/INTERVIEW_ID/, object.archive_id)
   end
 

@@ -18,7 +18,7 @@ export default function AuthShow({
             Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
         ) ||
         // catalog-project
-        (ifCatalog && project.isCatalog)
+        (ifCatalog && project?.isCatalog)
     ) {
         return children;
     } else if (

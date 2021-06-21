@@ -145,7 +145,7 @@ export default class FlyoutTabs extends Component {
                         testSelector={getCurrentInterviewFetched}
                         fallback={<Spinner withPadding />}
                     >
-                        <InterviewTabPanelContainer />
+                        { project && <InterviewTabPanelContainer /> }
                     </StateCheck>
                 </TabPanel>
 

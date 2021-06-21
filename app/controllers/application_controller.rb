@@ -153,19 +153,19 @@ class ApplicationController < ActionController::Base
     dropdown_values = current_project && Interview.dropdown_search_values(current_project, current_user_account)
     facets = current_project && current_project.updated_search_facets(search)
     {
-      archive: current_project && {
+      archive: {
         facets: facets,
         query: search_query,
-        allInterviewsTitles: dropdown_values[:all_interviews_titles],
-        allInterviewsPseudonyms: dropdown_values[:all_interviews_pseudonyms],
-        allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
-        sortedArchiveIds: Rails.cache.fetch("sorted_archive_ids-#{current_project.cache_key_prefix}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
-        foundInterviews: search.results.map{|i| cache_single(i)},
-        allInterviewsCount: search.total,
-        resultPagesCount: search.results.total_pages,
-        resultsCount: search.total,
+        allInterviewsTitles: current_project && dropdown_values[:all_interviews_titles],
+        allInterviewsPseudonyms: current_project && dropdown_values[:all_interviews_pseudonyms],
+        allInterviewsPlacesOfBirth: current_project && dropdown_values[:all_interviews_birth_locations],
+        sortedArchiveIds: current_project && Rails.cache.fetch("sorted_archive_ids-#{current_project.cache_key_prefix}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
+        foundInterviews: current_project && search.results.map{|i| cache_single(i)},
+        allInterviewsCount: current_project && search.total,
+        resultPagesCount: current_project && search.results.total_pages,
+        resultsCount: current_project && search.total,
       },
-      map: current_project && {
+      map: {
         facets: facets,
         query: search_query,
         foundMarkers: nil,
@@ -204,9 +204,13 @@ class ApplicationController < ActionController::Base
   private
 
   def search_query
-    current_project.search_facets_names.inject({page: 1}) do |mem, facet|
-      mem["#{facet}[]"] = params[facet] if params[facet]
-      mem
+    if current_project
+      current_project.search_facets_names.inject({page: 1}) do |mem, facet|
+        mem["#{facet}[]"] = params[facet] if params[facet]
+        mem
+      end
+    else
+      {}
     end
   end
 

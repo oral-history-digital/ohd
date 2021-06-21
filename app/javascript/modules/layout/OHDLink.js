@@ -1,5 +1,5 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useEffect, useCallback } from 'react';
+import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { getCurrentProject, getProjects } from 'modules/data';
@@ -22,7 +22,9 @@ function OHDLink() {
     return (
         !project || project.display_ohd_link ?
             (projectHasOwnDomain ?
-                <a title='OHD' href={`${developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION}/${locale}`}>OHD</a> :
+                <a title='OHD' href={`${developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION}/${locale}`}>
+                    <img className="logo-img" src='/ohd-logo-gr.png' />
+                </a> :
                 <Link
                     to={`/${locale}`}
                     title='OHD'
