@@ -24,6 +24,7 @@ class Annotation < ApplicationRecord
       interview ? interview.archive_id : nil
     end
 
+    string :workflow_state
     integer :id
     integer :segment_id
 
