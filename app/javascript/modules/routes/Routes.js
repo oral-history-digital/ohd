@@ -58,7 +58,6 @@ export const RoutesWithProjectId = () => (
     <Switch>
         <Route exact path="/:locale" component={props => <ErrorBoundary><WrappedProjectsContainer {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale" component={props => <ErrorBoundary><HomeContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:projectId/:locale/accounts/current" component={props => <ErrorBoundary><WrappedAccountContainer {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale/interviews/new" component={props => <ErrorBoundary><EditInterviewContainer {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale/interviews/:archiveId" component={props => <ErrorBoundary><InterviewContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/uploads/new" component={props => <ErrorBoundary><UploadsContainer {...props} /></ErrorBoundary>} />
@@ -87,6 +86,7 @@ export const RoutesWithProjectId = () => (
         <Route exact path="/:projectId/:locale/user_registrations/:resetPasswordToken/activate" component={props => <ErrorBoundary><ActivateAccount {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale/user_registrations/new" component={props => <ErrorBoundary><RegisterContainer {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale/user_registrations" component={props => <ErrorBoundary><UserRegistrationsContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:projectId/:locale/accounts/current" component={props => <ErrorBoundary><WrappedAccountContainer {...props} /></ErrorBoundary>} />
 
         {/* registration- and account- routes without project_id */}
         <Route path="/:locale/user_accounts/password/new" component={props => <ErrorBoundary><OrderNewPasswordContainer {...props} /></ErrorBoundary>} />
@@ -94,6 +94,7 @@ export const RoutesWithProjectId = () => (
         <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" component={props => <ErrorBoundary><ActivateAccount {...props} /></ErrorBoundary>} />
         <Route exact path="/:locale/user_registrations/new" component={props => <ErrorBoundary><RegisterContainer {...props} /></ErrorBoundary>} />
         <Route exact path="/:locale/user_registrations" component={props => <ErrorBoundary><UserRegistrationsContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:locale/accounts/current" component={props => <ErrorBoundary><WrappedAccountContainer {...props} /></ErrorBoundary>} />
     </Switch>
 );
 

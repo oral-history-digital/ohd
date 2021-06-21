@@ -22,7 +22,7 @@ export default class WrappedAccount extends Component {
 
         return (
             <div className='wrapper-content register'>
-                <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
+                <AuthShowContainer ifLoggedIn={true} >
                     <h1>{t(this.props, `activerecord.models.user_account.one`)}</h1>
                     <div className='user-registration boxes'>
                         {
