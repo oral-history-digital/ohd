@@ -19,6 +19,7 @@ solr/pids/
 yarn-debug.log*
 .yarn-integrity
 coverage
+.byebug_history
 
 # Ignore uploaded files in development.
 /storage/*
