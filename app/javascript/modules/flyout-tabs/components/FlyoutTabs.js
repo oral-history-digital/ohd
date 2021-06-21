@@ -101,7 +101,7 @@ export default class FlyoutTabs extends Component {
                             null
                     }
 
-                    <Tab className={isLoggedIn && project ? 'flyout-tab' : 'hidden'} key='user-content'>
+                    <Tab className={isLoggedIn ? 'flyout-tab' : 'hidden'} key='user-content'>
                         { t(this.props, 'user_content') }
                     </Tab>
 

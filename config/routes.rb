@@ -89,22 +89,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :user_contents do
-      collection do
-        get :segment_annotation
-        post :create_annotation
-        post :sort
-      end
-      member do
-        patch :publish
-        get :topics
-        post :retract
-        put :update_topics
-        put :update_annotation
-        get :publish_notice
-      end
-    end
-
     resources :user_roles, only: [:create, :destroy]
     resources :roles
     resources :role_permissions, only: [:create, :destroy]
@@ -159,6 +143,22 @@ Rails.application.routes.draw do
       end
     end
     resources :user_registration_projects, only: [:create, :update]
+    resources :user_contents do
+      collection do
+        get :segment_annotation
+        post :create_annotation
+        post :sort
+      end
+      member do
+        patch :publish
+        get :topics
+        post :retract
+        put :update_topics
+        put :update_annotation
+        get :publish_notice
+      end
+    end
+
   end
 
   # devise_for creates named routes
