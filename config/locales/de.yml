@@ -159,10 +159,10 @@ de:
   archive_results: Suchergebnisse
   segment_results: Suchergebnisse im Transkript
   heading_results: Suchergebnisse im Inhaltsverzeichnis
-  photo_results: Suchergebnisse in Fotos
-  annotation_results: Suchergebnisse in Anmerkungen
+  photo_results: Suchergebnisse in den Bildunterschriften
+  annotation_results: Suchergebnisse in den Anmerkungen
   registryentry_results: Suchergebnisse im Register
-  biographicalentry_results: Einträge in der Kurzbiografie
+  biographicalentry_results: Suchergebnisse in der Kurzbiografie
   observation_results: Suchergebnisse im Protokoll
   person_results: Suchergebnisse für Personen
   user_registration_results: Suchergebnisse für Benutzer*innen
