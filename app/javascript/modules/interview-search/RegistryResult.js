@@ -29,7 +29,7 @@ export default function RegistryResult({
             )}
             <div className="u-mt-small">
                 {
-                    flattenedRefTree[data.id].children.map((leaf, index) => (
+                    flattenedRefTree[data.id]?.children.map((leaf, index) => (
                         <TranscriptResult
                             key={index}
                             data={leaf}

@@ -144,6 +144,9 @@ export const getFlattenedRefTree = createSelector(
             return null;
         }
 
+        /*
+        * Flattened tree only contains nodes with direct children, not all nodes.
+        */
         function flattenTree(acc, node) {
             const children = node.children;
 
