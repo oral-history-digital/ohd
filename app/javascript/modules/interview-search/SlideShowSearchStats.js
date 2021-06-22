@@ -13,9 +13,6 @@ export default function SlideShowSearchStats({
 
     return (
         <div className="SearchStats">
-            <h3 className="SearchStats-heading u-mt-none">
-                {t('modules.interview_search.results')}
-            </h3>
             <ul className="SearchStats-list">
                 {
                     names.map(name => (
@@ -25,7 +22,7 @@ export default function SlideShowSearchStats({
                         >
                             {resultsForModel(searchResults, name).length}
                             {' '}
-                            {t(`modules.interview_search.models.${name}`)}
+                            {t(`${name.toLowerCase()}_results`)}
                         </li>
                     ))
                 }
