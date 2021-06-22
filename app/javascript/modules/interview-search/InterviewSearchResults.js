@@ -22,7 +22,7 @@ export default function InterviewSearchResults() {
 
     const { t, locale } = useI18n();
 
-    const numResults = searchResults ?
+    const numResults = searchResults && interview.observations[locale] ?
         numObservationResults(interview.observations[locale], searchResults.fulltext) :
         0;
 

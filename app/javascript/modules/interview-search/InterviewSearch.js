@@ -37,7 +37,6 @@ InterviewSearch.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
-    interviewSearchResults: PropTypes.object.isRequired,
     isInterviewSearching: PropTypes.bool,
     refTreeStatus: PropTypes.string.isRequired,
     fetchData: PropTypes.func.isRequired,

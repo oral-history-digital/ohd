@@ -1,7 +1,9 @@
+import { typeOfWithNull } from 'modules/user-agent';
+
 export default function numObservationResults(observations, searchTerm) {
     // Preconditions
     if (typeof observations !== 'string') {
-        throw new TypeError('observations argument must be string');
+        throw new TypeError(`observations argument must be string, but is ${typeOfWithNull(observations)}`);
     }
 
     if (searchTerm === '') {
