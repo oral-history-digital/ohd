@@ -60,19 +60,21 @@ export default function MapFilter({
                     })
                 }
             </form>
-            <div>
-                <p>
-                    {t('modules.map_filter.multiple_types')}
-                    {' '}
-                    <svg
-                        className="MapFilter-icon"
-                        viewBox="0 0 100 100"
-                        xmlns="http://www.w3.org/2000/svg"
-                    >
-                        <circle cx="50" cy="50" r="40" stroke="none" fill={MARKER_COLOR_MULTIPLE_TYPES} />
-                    </svg>
-                </p>
-            </div>
+            {availableTypeIds.length > 1 && (
+                <div>
+                    <p>
+                        {t('modules.map_filter.multiple_types')}
+                        {' '}
+                        <svg
+                            className="MapFilter-icon"
+                            viewBox="0 0 100 100"
+                            xmlns="http://www.w3.org/2000/svg"
+                        >
+                            <circle cx="50" cy="50" r="40" stroke="none" fill={MARKER_COLOR_MULTIPLE_TYPES} />
+                        </svg>
+                    </p>
+                </div>
+            )}
         </div>
     );
 }
