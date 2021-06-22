@@ -99,6 +99,6 @@ class RegistryNameTypesController < ApplicationController
       params.permit(
         :name,
         :code
-      ).to_h
+      ).to_h.select{|k,v| !v.blank? }
     end
 end

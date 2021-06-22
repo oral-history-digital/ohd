@@ -103,6 +103,6 @@ class ContributionTypesController < ApplicationController
       params.permit(
         :label,
         :code
-      ).to_h
+      ).to_h.select{|k,v| !v.blank? }
     end
 end

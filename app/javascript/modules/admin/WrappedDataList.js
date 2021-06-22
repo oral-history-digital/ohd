@@ -37,11 +37,13 @@ export default class WrappedDataList extends Component {
     renderScrollObserver() {
         if (this.props.query) {
             if (
-                this.props.dataStatus.all !== 'fetched'
+                 !(
+                     /^fetched/.test(this.props.dataStatus[`for_projects_${this.props.project?.id}`]) ||
+                     /^fetched/.test(this.props.dataStatus.all)
+                 )
             ) {
                 if (
-                    this.props.dataStatus[statifiedQuery(this.props.query)] &&
-                    this.props.dataStatus[statifiedQuery(this.props.query)].split('-')[0] === 'fetching'
+                    this.props.dataStatus[statifiedQuery(this.props.query)]?.split('-')[0] === 'fetching'
                 ) {
                     return <Spinner />;
                 } else if (!this.props.resultPagesCount || this.props.resultPagesCount > parseInt(this.props.query.page)) {

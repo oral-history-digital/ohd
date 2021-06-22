@@ -102,8 +102,7 @@ class CollectionsController < ApplicationController
 
   def search_params
     params.permit(
-      :name,
-      :project_id
-    ).to_h
+      :name
+    ).to_h.select{|k,v| !v.blank? }
   end
 end

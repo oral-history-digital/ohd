@@ -126,6 +126,6 @@ class PeopleController < ApplicationController
       :last_name,
       :birth_name,
       :alias_names
-    ).to_h
+    ).to_h.select{|k,v| !v.blank? }
   end
 end

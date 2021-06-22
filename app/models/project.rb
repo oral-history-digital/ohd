@@ -11,6 +11,7 @@ class Project < ApplicationRecord
   has_many :media_streams
   has_many :metadata_fields
   has_many :task_types
+  has_many :roles
   has_many :external_links
   has_many :registry_entries
   has_many :user_registration_projects
