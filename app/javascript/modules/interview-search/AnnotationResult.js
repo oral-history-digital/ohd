@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
+import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { getCurrentInterview } from 'modules/data';
 import TranscriptResult from './TranscriptResult';
@@ -14,7 +15,7 @@ export default function AnnotationResult({
     let segment = null;
     const { segments } = interview;
 
-    if (segments) {
+    if (segments && Object.keys(segments).length > 0) {
         segment = getSegmentById(segments, data.segment_id);
     }
 
@@ -31,7 +32,10 @@ export default function AnnotationResult({
                 className="SearchResult-text"
                 dangerouslySetInnerHTML={{__html: annotationText}}
             />
-            {segment && <TranscriptResult data={segment} />}
+            {segment ?
+                <TranscriptResult data={segment} /> :
+                <Spinner small />
+            }
         </div>
     );
 }
