@@ -39,7 +39,7 @@ class RolesController < ApplicationController
             id: current_project.id,
             extra_params: extra_params,
             page: params[:page], 
-            result_pages_count: data.respond_to?(:total_pages) ? data.total_pages : nil
+            result_pages_count: paginate ? data.total_pages : nil
           }
         end
         render json: json
