@@ -14,10 +14,12 @@ class RolesController < ApplicationController
   end
 
   def index
+    policy_scope(Role)
+
     respond_to do |format|
       format.html { render :template => '/react/app.html' }
       format.json do
-        json = #Rails.cache.fetch "#{current_project.cache_key_prefix}-roles-visible-for-#{current_user_account.id}-#{extra_params}-#{Role.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-roles-visible-for-#{current_user_account.id}-#{extra_params}-#{Role.maximum(:updated_at)}" do
           if params[:for_projects]
             data = policy_scope(Role).
               order("name ASC")
@@ -37,9 +39,9 @@ class RolesController < ApplicationController
             id: current_project.id,
             extra_params: extra_params,
             page: params[:page], 
-            result_pages_count: roles.total_pages
+            result_pages_count: data.respond_to?(:total_pages) ? data.total_pages : nil
           }
-        #end
+        end
         render json: json
       end
     end

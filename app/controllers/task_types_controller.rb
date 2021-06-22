@@ -16,10 +16,12 @@ class TaskTypesController < ApplicationController
   end
 
   def index
+    policy_scope(TaskType)
+
     respond_to do |format|
       format.html { render :template => '/react/app.html' }
       format.json do
-        json = #Rails.cache.fetch "#{current_project.cache_key_prefix}-task_types-visible-for-#{current_user_account.id}-#{extra_params}-#{TaskType.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-task_types-visible-for-#{current_user_account.id}-#{extra_params}-#{TaskType.maximum(:updated_at)}" do
           if params[:for_projects]
             data = policy_scope(TaskType).
               includes(:translations, :project).
@@ -41,9 +43,9 @@ class TaskTypesController < ApplicationController
             id: current_project.id,
             extra_params: extra_params,
             page: params[:page], 
-            result_pages_count: task_types.total_pages
+            result_pages_count: data.respond_to?(:total_pages) ? data.total_pages : nil
           }
-        #end
+        end
         render json: json
       end
     end
