@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { SingleValueWithFormContainer } from 'modules/forms';
+import { Fetch, getCollectionsForCurrentProjectFetched } from 'modules/data';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
@@ -122,17 +123,22 @@ export default class InterviewInfo extends Component {
                     }
                     {
                         collectionIdMetadataField?.use_in_details_view &&
-                        <SingleValueWithFormContainer
-                            elementType={'select'}
-                            obj={this.props.interview}
-                            values={this.props.collections}
-                            withEmpty={true}
-                            validate={function(v){return /^\d+$/.test(v)}}
-                            individualErrorMsg={'empty'}
-                            metadataField={collectionIdMetadataField}
+                        <Fetch
+                            fetchParams={['collections', null, null, `for_projects=${this.props.project?.id}`]}
+                            testSelector={getCollectionsForCurrentProjectFetched}
                         >
-                            {this.collection()}
-                        </SingleValueWithFormContainer>
+                            <SingleValueWithFormContainer
+                                elementType={'select'}
+                                obj={this.props.interview}
+                                values={this.props.collections}
+                                withEmpty={true}
+                                validate={function(v){return /^\d+$/.test(v)}}
+                                individualErrorMsg={'empty'}
+                                metadataField={collectionIdMetadataField}
+                            >
+                                {this.collection()}
+                            </SingleValueWithFormContainer>
+                        </Fetch>
                     }
 
                     <AuthorizedContent object={this.props.interview} action='update'>

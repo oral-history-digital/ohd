@@ -7,11 +7,11 @@ class BiographicalEntriesController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          data_type: 'people',
-          id: @biographical_entry.person_id,
-          nested_data_type: 'biographical_entries',
-          nested_id: @biographical_entry.id,
-          data: ::BiographicalEntrySerializer.new(@biographical_entry).as_json
+          nested_id: @biographical_entry.person_id,
+          data: cache_single(@biographical_entry.person),
+          nested_data_type: "people",
+          data_type: 'projects',
+          id: current_project.id,
         }
       end
     end
@@ -41,11 +41,11 @@ class BiographicalEntriesController < ApplicationController
     respond_to do |format|
       format.json do
         render json: {
-          data_type: 'people',
-          id: @biographical_entry.person_id,
-          nested_data_type: 'biographical_entries',
-          nested_id: @biographical_entry.id,
-          data: ::BiographicalEntrySerializer.new(@biographical_entry).as_json
+          nested_id: @biographical_entry.person_id,
+          data: cache_single(@biographical_entry.person),
+          nested_data_type: "people",
+          data_type: 'projects',
+          id: current_project.id,
         }
       end
     end
@@ -60,7 +60,15 @@ class BiographicalEntriesController < ApplicationController
       format.html do
         render :action => 'index'
       end
-      format.json { render json: {}, status: :ok }
+      format.json do
+        render json: {
+          nested_id: @biographical_entry.person_id,
+          data: cache_single(@biographical_entry.person),
+          nested_data_type: "people",
+          data_type: 'projects',
+          id: current_project.id,
+        }
+      end
     end
   end
 

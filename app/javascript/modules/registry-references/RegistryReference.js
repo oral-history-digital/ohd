@@ -67,16 +67,16 @@ export default class RegistryReference extends Component {
     }
 
     destroy() {
-        if (this.props.refObject.type === 'Segment') {
-            this.props.deleteData(this.props, 'registry_references', this.props.registryReference.id, null, null, true);
-        } else {
-            // refObject.type === Person || Interview
+        if (this.props.refObject.type === 'Interview') {
             this.props.deleteData(
-                this.props, pluralize(underscore(this.props.refObject.type)),
+                this.props, 'interviews',
                 this.props.refObject.archiveId || this.props.refObject.archive_id || this.props.refObject.id,
                 'registry_references',
                 this.props.registryReference.id
             );
+        } else {
+            // refObject.type === Person || Segment
+            this.props.deleteData(this.props, 'registry_references', this.props.registryReference.id, null, null, true);
         }
     }
 

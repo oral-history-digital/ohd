@@ -45,7 +45,15 @@ class RegistryReferencesController < ApplicationController
             nested_data_type: 'segments',
             nested_id: ref_object.id,
             extra_id: ref_object.tape.number,
-            data: ::SegmentSerializer.new(ref_object).as_json
+            data: cache_single(ref_object)
+          }
+        elsif ref_object.class.name == 'Person'
+          json = {
+            nested_id: ref_object.id,
+            data: cache_single(ref_object, 'PersonWithAssociations'),
+            nested_data_type: "people",
+            data_type: 'projects',
+            id: current_project.id,
           }
         end
         render json: json, status: :ok
@@ -110,13 +118,21 @@ class RegistryReferencesController < ApplicationController
     respond_to do |format|
       format.json do
         json = {}
-        if registry_reference.ref_object_type == 'Interview' || registry_reference.ref_object_type == 'Person'
+        if registry_reference.ref_object_type == 'Interview'
           json = {
-            data_type: registry_reference.ref_object_type.underscore.pluralize,
-            "#{registry_reference.ref_object.identifier_method}": registry_reference.ref_object.identifier,
+            archive_id: registry_reference.ref_object.interview.archive_id,
+            data_type: 'interviews',
             nested_data_type: 'registry_references',
             nested_id: registry_reference.id,
-            data: ::RegistryReferenceSerializer.new(registry_reference).as_json
+            data: cache_single(registry_reference)
+          }
+        elsif registry_reference.ref_object_type == 'Person'
+          json = {
+            nested_id: registry_reference.ref_object_id,
+            data: cache_single(registry_reference.ref_object, 'PersonWithAssociations'),
+            nested_data_type: "people",
+            data_type: 'projects',
+            id: current_project.id
           }
         elsif registry_reference.ref_object_type == 'Segment'
           json = {
@@ -125,7 +141,7 @@ class RegistryReferencesController < ApplicationController
             nested_data_type: 'segments',
             nested_id: registry_reference.ref_object.id,
             extra_id: registry_reference.ref_object.tape.number,
-            data: ::SegmentSerializer.new(registry_reference.ref_object).as_json
+            data: cache_single(registry_reference.ref_object)
           }
         end
         render json: json

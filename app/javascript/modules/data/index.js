@@ -20,7 +20,7 @@ export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getRefTreeStatus, getTasksStatus, getMarkTextStatus,
     getHeadingsFetched, getHeadings, getPreparedHeadings,
     getMediaStreamsForCurrentProject, getInterviews, getTaskTypesForCurrentProject, getUserContents,
-    getTaskTypesForCurrentProjectFetched } from './selectors/dataSelectors';
+    getTaskTypesForCurrentProjectFetched, getCollectionsForCurrentProjectFetched } from './selectors/dataSelectors';
 export { getIsCatalog, getIsCampscapesProject, getProjectTranslation,
     getShowFeaturedInterviews, getShowStartPageVideo } from './selectors/projectSelectors';
 export { default as getGroupedContributions } from './selectors/getGroupedContributions';

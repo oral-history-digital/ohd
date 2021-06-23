@@ -14,7 +14,7 @@ export default class RegistryReferenceForm extends Component {
 
     loadRegistryReferenceTypes() {
         if (!this.props.registryReferenceTypesStatus[`for_projects_${this.props.project?.id}`]) {
-            this.props.fetchData(this.props, 'registry_reference_types', null, null, [`for_projects=${this.props.project?.id}`]);
+            this.props.fetchData(this.props, 'registry_reference_types', null, null, `for_projects=${this.props.project?.id}`);
         }
     }
 
