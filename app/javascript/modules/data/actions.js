@@ -61,7 +61,7 @@ export function fetchData(props, dataType, id, nestedDataType, extraParams) {
         url += `?${extraParams}`
 
     return dispatch => {
-        dispatch(requestData(dataType, id, nestedDataType, extraParams && extraParams.replace(/[=&]/g, '_')))
+        dispatch(requestData(dataType, id, nestedDataType, extraParams?.replace(/[=&]/g, '_')))
         Loader.getJson(url, null, dispatch, receiveData);
     }
 }
