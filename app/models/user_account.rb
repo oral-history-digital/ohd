@@ -23,6 +23,7 @@ class UserAccount < ApplicationRecord
 
   has_many :user_contents
   has_many :searches
+  has_many :comments, foreign_key: :author_id, dependent: :destroy
 
   validates_uniqueness_of :login
   validates_presence_of :login
