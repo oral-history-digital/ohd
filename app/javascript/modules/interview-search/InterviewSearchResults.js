@@ -1,45 +1,35 @@
-import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-
-import { getCurrentInterviewSearch } from 'modules/search';
-import { getCurrentInterview } from 'modules/data';
 import ResultList from './ResultList';
 import modelsWithResults from './modelsWithResults';
-import resultsForModel from './resultsForModel';
 import TranscriptResult from './TranscriptResult';
 import AnnotationResult from './AnnotationResult';
 import RegistryResult from './RegistryResult';
 import PhotoResult from './PhotoResult';
 import TocResult from './TocResult';
-import numObservationResults from './numObservationResults';
 
-export default function InterviewSearchResults() {
-    const searchResults = useSelector(getCurrentInterviewSearch);
-    const interview = useSelector(getCurrentInterview);
-
-    const filteredModelNames = modelsWithResults(searchResults);
+export default function InterviewSearchResults({
+    currentInterviewSearchResults,
+    segmentResults,
+    registryEntryResults,
+    photoResults,
+    biographyResults,
+    annotationResults,
+    numObservationsResults,
+}) {
+    const filteredModelNames = modelsWithResults(currentInterviewSearchResults);
 
     const { t, locale } = useI18n();
 
-    const numResults = searchResults && interview.observations[locale] ?
-        numObservationResults(interview.observations[locale], searchResults.fulltext) :
-        0;
-
-    if (filteredModelNames.length === 0 && numResults === 0) {
+    if (filteredModelNames.length === 0 && numObservationsResults === 0) {
         return (
             <div>{t('modules.interview_search.no_results')}</div>
         );
     }
 
-    const segments = resultsForModel(searchResults, 'Segment');
-    const annotations = resultsForModel(searchResults, 'Annotation');
-    const registryEntries = resultsForModel(searchResults, 'RegistryEntry');
-    const biographicalEntries = resultsForModel(searchResults, 'BiographicalEntry');
-    const photos = resultsForModel(searchResults, 'Photo');
-
-    const filteredSegments = segments.filter(segment => segment.text[locale] !== '');
-    const toc = segments.filter(segment => segment.text[locale] === '');
+    const filteredSegments = segmentResults.filter(segment => segment.text[locale] !== '');
+    const toc = segmentResults.filter(segment => segment.text[locale] === '');
 
     return (
         <div>
@@ -55,28 +45,38 @@ export default function InterviewSearchResults() {
             />
             <ResultList
                 tKey="annotation"
-                searchResults={annotations}
+                searchResults={annotationResults}
                 component={AnnotationResult}
             />
             <ResultList
                 tKey="registryentry"
-                searchResults={registryEntries}
+                searchResults={registryEntryResults}
                 component={RegistryResult}
             />
             <ResultList
                 tKey="biographicalentry"
-                searchResults={biographicalEntries}
+                searchResults={biographyResults}
             />
             <ResultList
                 tKey="photo"
-                searchResults={photos}
+                searchResults={photoResults}
                 component={PhotoResult}
             />
-            {numResults > 0 &&
+            {numObservationsResults > 0 &&
                 <p style={{ fontSize: '1rem', marginLeft: '1.5rem' }}>
-                    {`${numResults} ${t('observation_results')}`}
+                    {`${numObservationsResults} ${t('observation_results')}`}
                 </p>
             }
         </div>
     );
 }
+
+InterviewSearchResults.propTypes = {
+    currentInterviewSearchResults: PropTypes.object.isRequired,
+    segmentResults: PropTypes.array,
+    registryEntryResults: PropTypes.array,
+    photoResults: PropTypes.array,
+    biographyResults: PropTypes.array,
+    annotationResults: PropTypes.array,
+    numObservationsResults: PropTypes.number,
+};

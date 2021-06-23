@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
-import { getArchiveId  } from 'modules/archive';
+import { getArchiveId, getLocale } from 'modules/archive';
+import { getCurrentInterview } from 'modules/data';
 import { NAME } from './constants';
 
 const getState = state => state[NAME];
@@ -119,11 +120,42 @@ export const getTaskTypesQuery = state => getState(state).task_types.query;
 
 export const getUserRegistrationsQuery = state => getState(state).user_registrations.query;
 
-export const getInterviewSearch = state => getState(state).interviews;
+export const getInterviewSearchResults = state => getState(state).interviews;
 
-export const getCurrentInterviewSearch = createSelector(
-    [getInterviewSearch, getArchiveId],
+export const getCurrentInterviewSearchResults = createSelector(
+    [getInterviewSearchResults, getArchiveId],
     (searchResults, archiveId) => {
         return searchResults?.[archiveId];
+    }
+);
+
+export const getSegmentResults = state => getCurrentInterviewSearchResults(state)?.foundSegments;
+
+export const getRegistryEntryResults = state => getCurrentInterviewSearchResults(state)?.foundRegistryEntries;
+
+export const getPhotoResults = state => getCurrentInterviewSearchResults(state)?.foundPhotos;
+
+export const getBiographyResults = state => getCurrentInterviewSearchResults(state)?.foundBiographicalEntries;
+
+export const getAnnotationResults = state => getCurrentInterviewSearchResults(state)?.foundAnnotations;
+
+export const getNumObservationsResults = createSelector(
+    [getCurrentInterview, getCurrentInterviewSearchResults, getLocale],
+    (interview, searchResults, locale) => {
+        const observations = interview?.observations?.[locale];
+        const searchTerm = searchResults?.fulltext;
+
+        if (!observations || !searchTerm || searchTerm === '') {
+            return 0;
+        }
+
+        const regex = new RegExp(searchTerm, 'gi');
+        const matches = observations.match(regex);
+
+        if (matches === null) {
+            return 0;
+        }
+
+        return matches.length;
     }
 );

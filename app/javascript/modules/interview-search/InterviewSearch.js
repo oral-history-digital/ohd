@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { ScrollToTop } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
 import InterviewSearchFormContainer from './InterviewSearchFormContainer';
-import InterviewSearchResults from './InterviewSearchResults';
+import InterviewSearchResultsContainer from './InterviewSearchResultsContainer';
 
 export default function InterviewSearch({
     locale,
@@ -12,6 +12,7 @@ export default function InterviewSearch({
     projects,
     archiveId,
     isInterviewSearching = false,
+    currentInterviewSearchResults,
     refTreeStatus,
     fetchData,
 }) {
@@ -25,9 +26,9 @@ export default function InterviewSearch({
         <ScrollToTop>
             <InterviewSearchFormContainer />
             {isInterviewSearching ?
-                <Spinner /> : (
-                <InterviewSearchResults />
-            )}
+                <Spinner /> :
+                (currentInterviewSearchResults && <InterviewSearchResultsContainer />)
+            }
         </ScrollToTop>
     );
 }
@@ -38,6 +39,7 @@ InterviewSearch.propTypes = {
     projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
     isInterviewSearching: PropTypes.bool,
+    currentInterviewSearchResults: PropTypes.object,
     refTreeStatus: PropTypes.string.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

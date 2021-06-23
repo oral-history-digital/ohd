@@ -7,6 +7,18 @@ const state = {
     archive: {
         archiveId: 'cd003',
         projectId: 'cdoh',
+        locale: 'de',
+    },
+    data: {
+        interviews: {
+            cd003: {
+                id: 22,
+                type: 'Interview',
+                observations: {
+                    de: 'Berlin Berlin Berlin',
+                },
+            },
+        },
     },
     [NAME]: {
         archive: {
@@ -80,6 +92,11 @@ const state = {
         interviews: {
             cd003: {
                 fulltext: 'berlin',
+                foundSegments: ['dummySegment'],
+                foundRegistryEntries: ['dummyRegistryEntry'],
+                foundBiographicalEntries: ['dummyBiographicalEntry'],
+                foundPhotos: [],
+                foundAnnotations: ['dummyAnnotation'],
             },
             za003: {
                 fulltext: 'poland',
@@ -289,10 +306,38 @@ test('getUserRegistrationsQuery retrieves user registrations query params', () =
     expect(selectors.getUserRegistrationsQuery(state)).toEqual(state[NAME].user_registrations.query);
 });
 
-test('getInterviewSearch retrieves interview search results', () => {
-    expect(selectors.getInterviewSearch(state)).toEqual(state[NAME].interviews);
+test('getInterviewSearchResults retrieves interview search results', () => {
+    expect(selectors.getInterviewSearchResults(state)).toEqual(state[NAME].interviews);
 });
 
-test('getCurrentInterviewSearch retrieves current interview search results', () => {
-    expect(selectors.getCurrentInterviewSearch(state)).toEqual(state[NAME].interviews.cd003);
+test('getCurrentInterviewSearchResults retrieves current interview search results', () => {
+    expect(selectors.getCurrentInterviewSearchResults(state)).toEqual(state[NAME].interviews.cd003);
+});
+
+test('getSegmentResults retrieves current interview segment search results', () => {
+    expect(selectors.getSegmentResults(state)).toEqual(state[NAME].interviews.cd003.foundSegments);
+});
+
+test('getRegistryEntryResults retrieves current interview registry entry search results', () => {
+    expect(selectors.getRegistryEntryResults(state)).toEqual(state[NAME].interviews.cd003.foundRegistryEntries);
+});
+
+test('getPhotoResults retrieves current interview photo search results', () => {
+    expect(selectors.getPhotoResults(state)).toEqual(state[NAME].interviews.cd003.foundPhotos);
+});
+
+test('getBiographyResults retrieves current interview biography search results', () => {
+    expect(selectors.getBiographyResults(state)).toEqual(state[NAME].interviews.cd003.foundBiographicalEntries);
+});
+
+test('getAnnotationResults retrieves current interview annotation search results', () => {
+    expect(selectors.getAnnotationResults(state)).toEqual(state[NAME].interviews.cd003.foundAnnotations);
+});
+
+test('getAnnotationResults retrieves current interview annotation search results', () => {
+    expect(selectors.getAnnotationResults(state)).toEqual(state[NAME].interviews.cd003.foundAnnotations);
+});
+
+test('getNumObservationsResults gets number of search results in observations', () => {
+    expect(selectors.getNumObservationsResults(state)).toBe(3);
 });
