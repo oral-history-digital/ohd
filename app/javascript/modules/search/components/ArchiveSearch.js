@@ -9,6 +9,7 @@ import { InterviewPreviewContainer, InterviewListRowContainer } from 'modules/in
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
 import { UserContentFormContainer } from 'modules/workbook';
 import { AuthShowContainer, admin } from 'modules/auth';
+import { Fetch, getTaskTypesForCurrentProjectFetched } from 'modules/data';
 import { Modal } from 'modules/ui';
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
@@ -173,7 +174,10 @@ export default class ArchiveSearch extends Component {
                 )
             } else if (displayType === 'workflow' && admin(this.props, {type: 'General'}, 'edit')) {
                 return (
-                    <div>
+                    <Fetch
+                        fetchParams={['task_types', null, null, `for_projects=${this.props.project?.id}`]}
+                        testSelector={getTaskTypesForCurrentProjectFetched}
+                    >
                         {this.workflowHeader()}
                         {this.props.foundInterviews?.map((interview, index) => {
                             return <InterviewWorkflowRowContainer
@@ -181,7 +185,7 @@ export default class ArchiveSearch extends Component {
                                 key={"interview-row-" + interview.archive_id + "-" + index}
                             />;
                         })}
-                    </div>
+                    </Fetch>
                 )
             }
         }
