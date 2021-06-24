@@ -28,6 +28,7 @@ const mapStateToProps = (state) => {
         baseTabIndex: 4 + project.has_map,
         //detailsAttributes: ['name'],
         detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth', 'typology'],
+        initialFormValues: {project_id: project.id},
         formElements: [
             {
                 elementType: 'select',

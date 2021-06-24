@@ -26,6 +26,7 @@ const mapStateToProps = (state) => {
         scope: 'role',
         baseTabIndex: 5 + project.has_map,
         detailsAttributes: ['name', 'desc'],
+        initialFormValues: {project_id: project.id},
         formElements: [
             {
                 attribute: 'name',

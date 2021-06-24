@@ -77,7 +77,8 @@ class RolesController < ApplicationController
     params.require(:role).
       permit(
         :name,
-        :desc
+        :desc,
+        :project_id
     )
   end
 
