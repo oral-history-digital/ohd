@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 import { getFlattenedRefTree } from 'modules/data';
 import { useI18n } from 'modules/i18n';
+import { Disclosure } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
 import TranscriptResult from './TranscriptResult';
 
@@ -16,27 +17,32 @@ export default function RegistryResult({
         return <Spinner small />;
     }
 
+    const title = (<>
+        <h3
+            className="SearchResult-heading"
+            dangerouslySetInnerHTML={{__html: data.text[locale]}}
+        />
+        {data.notes[locale] && (
+            <p className="SearchResult-meta">
+                {data.notes[locale]}
+            </p>
+        )}
+    </>);
+
     return (
         <div className="SearchResult">
-            <h3
-                className="SearchResult-heading"
-                dangerouslySetInnerHTML={{__html: data.text[locale]}}
-            />
-            {data.notes[locale] && (
-                <p className="SearchResult-meta">
-                    {data.notes[locale]}
-                </p>
-            )}
-            <div className="u-mt-small">
-                {
-                    flattenedRefTree[data.id]?.children.map((leaf, index) => (
-                        <TranscriptResult
-                            key={index}
-                            data={leaf}
-                        />
-                    ))
-                }
-            </div>
+            <Disclosure title={title}>
+                <div className="u-mt-small">
+                    {
+                        flattenedRefTree[data.id]?.children.map((leaf, index) => (
+                            <TranscriptResult
+                                key={index}
+                                data={leaf}
+                            />
+                        ))
+                    }
+                </div>
+            </Disclosure>
         </div>
     );
 }

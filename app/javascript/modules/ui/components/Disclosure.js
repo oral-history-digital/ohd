@@ -24,9 +24,9 @@ export default function Disclosure({
                     <FaMinus className="Disclosure-icon" /> :
                     <FaPlus className="Disclosure-icon" />
                 }
-                <p className={classNames('Disclosure-title', titleClassName)}>
+                <div className={classNames('Disclosure-title', titleClassName)}>
                     {title}
-                </p>
+                </div>
             </button>
             <div className={classNames('Disclosure-content', contentClassName, { 'is-expanded': isOpen })}>
                 {children}
@@ -40,7 +40,10 @@ Disclosure.propTypes = {
     className: PropTypes.string,
     titleClassName: PropTypes.string,
     contentClassName: PropTypes.string,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.oneOfType([
+        PropTypes.string,
+        PropTypes.element,
+    ]),
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,
