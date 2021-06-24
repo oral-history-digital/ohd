@@ -163,6 +163,10 @@ class Interview < ApplicationRecord
     end
 
     Rails.configuration.i18n.available_locales.each do |locale|
+      text :"observations_#{locale}", stored: true do
+        observations(locale)
+      end
+
       string :"person_name_#{locale}", :stored => true do
         if full_title(locale)
           title = full_title(locale).mb_chars.normalize(:kd)
@@ -377,7 +381,7 @@ class Interview < ApplicationRecord
 
   def to_vtt(lang, tape_number=1)
     vtt = "WEBVTT\n"
-    tapes.where(number: tape_number).first.segments.includes(:translations).each_with_index do |segment, index | 
+    tapes.where(number: tape_number).first.segments.includes(:translations).each_with_index do |segment, index |
       vtt << "\n#{index + 1}\n#{segment.as_vtt_subtitles(lang)}\n"
     end
     vtt
@@ -459,7 +463,7 @@ class Interview < ApplicationRecord
       # get speaker_id
       #
       speaker_match = cue.text.match(/<v (\S+)>/)
-      speaker_designation = speaker_match && speaker_match[1] 
+      speaker_designation = speaker_match && speaker_match[1]
       contribution = contributions.select{|c| c.speaker_designation == speaker_designation}.first
       speaker_id = contribution && contribution.person_id
       #
