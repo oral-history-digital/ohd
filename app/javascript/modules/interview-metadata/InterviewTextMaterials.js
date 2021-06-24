@@ -31,6 +31,7 @@ export default class InterviewTextMaterials extends Component {
 
     render() {
         const { interview, project, locale } = this.props;
+        const observationsMetadataField = Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations');
 
         if (!interview.language_id) {
             return null;
@@ -39,13 +40,16 @@ export default class InterviewTextMaterials extends Component {
         return (
             <>
                 <AuthorizedContent object={interview} action='update'>
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        collapse
-                        elementType="textarea"
-                        multiLocale
-                        metadataField={Object.values(project.metadata_fields).find(m => m.name === 'observations')}
-                    />
+                    {
+                        observationsMetadataField?.use_in_details_view &&
+                        <SingleValueWithFormContainer
+                            obj={interview}
+                            collapse
+                            elementType="textarea"
+                            multiLocale
+                            metadataField={Object.values(project.metadata_fields).find(m => m.name === 'observations')}
+                        />
+                    }
                 </AuthorizedContent>
                 <AuthShowContainer ifLoggedIn={true}>
                     <p>
