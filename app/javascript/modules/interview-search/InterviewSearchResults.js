@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 
+import { Disclosure } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
 import ResultList from './ResultList';
 import modelsWithResults from './modelsWithResults';
@@ -33,40 +34,56 @@ export default function InterviewSearchResults({
 
     return (
         <div>
-            <ResultList
-                tKey="segment"
-                searchResults={filteredSegments}
-                component={TranscriptResult}
-            />
-            <ResultList
-                tKey="heading"
-                searchResults={toc}
-                component={TocResult}
-            />
-            <ResultList
-                tKey="annotation"
-                searchResults={annotationResults}
-                component={AnnotationResult}
-            />
-            <ResultList
-                tKey="registryentry"
-                searchResults={registryEntryResults}
-                component={RegistryResult}
-            />
-            <ResultList
-                tKey="biographicalentry"
-                searchResults={biographyResults}
-            />
-            <ResultList
-                tKey="photo"
-                searchResults={photoResults}
-                component={PhotoResult}
-            />
-            {numObservationsResults > 0 &&
-                <p style={{ fontSize: '1rem', marginLeft: '1.5rem' }}>
+            {filteredSegments.length > 0 && (
+                <ResultList
+                    tKey="segment"
+                    searchResults={filteredSegments}
+                    component={TranscriptResult}
+                    className="u-mt"
+                />
+            )}
+            {toc.length > 0 && (
+                <ResultList
+                    tKey="heading"
+                    searchResults={toc}
+                    component={TocResult}
+                    className="u-mt"
+                />
+            )}
+            {annotationResults.length > 0 && (
+                <ResultList
+                    tKey="annotation"
+                    searchResults={annotationResults}
+                    component={AnnotationResult}
+                    className="u-mt"
+                />
+            )}
+            {registryEntryResults.length > 0 && (
+                <ResultList
+                    tKey="registryentry"
+                    searchResults={registryEntryResults}
+                    component={RegistryResult}
+                    className="u-mt"
+                />
+            )}
+            {biographyResults.length > 0 && (
+                <p style={{ fontSize: '1rem', lineHeight: '1.5rem', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
+                    {`${biographyResults.length} ${t('biographicalentry_results')}`}
+                </p>
+            )}
+            {photoResults.length > 0 && (
+                <ResultList
+                    tKey="photo"
+                    searchResults={photoResults}
+                    component={PhotoResult}
+                    className="u-mt"
+                />
+            )}
+            {numObservationsResults > 0 && (
+                <p style={{ fontSize: '1rem', lineHeight: '1.5rem', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
                     {`${numObservationsResults} ${t('observation_results')}`}
                 </p>
-            }
+            )}
         </div>
     );
 }

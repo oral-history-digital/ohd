@@ -6,7 +6,9 @@
   border: none;
   cursor: pointer;
   font-family: $font-family;
-  margin: ($base-unit / 2) 0;
+  font-size: 1rem;
+  line-height: $base-unit;
+  margin: 0;
   outline: none;
   padding: 0;
 }

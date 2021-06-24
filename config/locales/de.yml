@@ -1150,6 +1150,7 @@ de:
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
     interview_search:
       no_results: Keine Ergebnisse
+      annotation_for: Anmerkung zu
     layout:
       back_to_top:
         label: "Zurück nach oben"

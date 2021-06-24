@@ -1582,6 +1582,7 @@ ru:
       tree_select: "Tree select for registry entries"
     interview_search:
       no_results: No results
+      annotation_for: Annotation for
     layout:
       back_to_top:
         label: "Back to top"
