@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 
-import { Disclosure } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
 import ResultList from './ResultList';
 import modelsWithResults from './modelsWithResults';
@@ -67,7 +66,7 @@ export default function InterviewSearchResults({
                 />
             )}
             {biographyResults.length > 0 && (
-                <p style={{ fontSize: '1rem', lineHeight: '1.5rem', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
+                <p className="u-mt u-ml" style={{ fontSize: '1rem', lineHeight: '1.5rem' }}>
                     {`${biographyResults.length} ${t('biographicalentry_results')}`}
                 </p>
             )}
@@ -80,7 +79,7 @@ export default function InterviewSearchResults({
                 />
             )}
             {numObservationsResults > 0 && (
-                <p style={{ fontSize: '1rem', lineHeight: '1.5rem', marginLeft: '1.5rem', marginTop: '1.5rem' }}>
+                <p className="u-mt u-ml" style={{ fontSize: '1rem', lineHeight: '1.5rem' }}>
                     {`${numObservationsResults} ${t('observation_results')}`}
                 </p>
             )}
