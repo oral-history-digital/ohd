@@ -18,7 +18,7 @@ function AuthorizedContent({
         (showIfPublic && object.workflow_state === 'public') || isAuthorized(object, action)
     )
     {
-        return children;
+        return children || null;
     }
 
     if (showUnauthorizedMsg) {
