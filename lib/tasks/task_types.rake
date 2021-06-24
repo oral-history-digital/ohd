@@ -2,8 +2,8 @@ namespace :task_types do
 
   desc 'create default_task_types_and permissions' 
   task :create_default_task_types_and_permissions, [:project_initials] => :environment do |t, args|
+    project = Project.where(initials: args.project_initials).first
     default_task_types.each do |key, (label, abbreviation)|
-      project = Project.where(initials: args.project_initials).first
       I18n.locale = project.default_locale
       TaskType.create key: key, label: label, abbreviation: abbreviation, project_id: project.id, use: true
     end
@@ -39,7 +39,7 @@ namespace :task_types do
       register: ['Register', 'Reg'],
       translation_register: ['Übersetzung/Register', 'Ü/Reg'],
       annotations: ['Anmerkungen', 'Anm'],
-      anonymisation: ['Anonymisierung' 'Ano']
+      anonymisation: ['Anonymisierung', 'Ano']
     }
   end
 
