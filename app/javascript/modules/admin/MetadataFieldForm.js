@@ -49,7 +49,7 @@ export default function MetadataFieldForm({
 
     return (
         <Fetch
-            fetchParams={['registry_reference_types', null, null, `for_projects=${this.props.project?.id}`]}
+            fetchParams={['registry_reference_types', null, null, `for_projects=${project?.id}`]}
             testSelector={getRegistryReferenceTypesForCurrentProjectFetched}
             alwaysRenderChildren
         >

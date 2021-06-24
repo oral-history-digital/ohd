@@ -129,8 +129,8 @@ export default class RegistryEntryShow extends Component {
     registryReferences() {
         let references = []
         if (
-            this.props.registryReferenceTypesStatus &&
-            this.props.registryReferenceTypesStatus.split('-')[0] === 'fetched'
+            this.props.registryReferenceTypesStatus[`for_projects_${this.props.project?.id}`] &&
+            this.props.registryReferenceTypesStatus[`for_projects_${this.props.project?.id}`].split('-')[0] === 'fetched'
         ) {
             for (var r in this.registryEntry().registry_references) {
                 let rr = this.registryEntry().registry_references[r]
