@@ -46,7 +46,7 @@ export default class BiographicalEntry extends Component {
                                 type="button"
                                 className="any-button"
                                 onClick={() => {
-                                    deleteData(this.props, 'people', data.person_id, 'biographical_entries', data.id);
+                                    deleteData(this.props, 'people', data.person_id, 'biographical_entries', data.id, true);
                                     close();
                                 }}
                             >

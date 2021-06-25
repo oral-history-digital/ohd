@@ -113,7 +113,7 @@ export default class InterviewWorkflowRow extends Component {
                         // (this.props.tasks[taskId].task_type.use would be easier)
                         // otherwise all tasks cache would have to be cleared on project configuration changes
                         //
-                        if (this.props.project.task_types[this.props.tasks[taskId].task_type.id].use) {
+                        if (this.props.project.task_types[this.props.tasks[taskId].task_type.id]?.use) {
                             return this.symbol(this.props.tasks[taskId]);
                         }
                     })}
@@ -132,7 +132,7 @@ export default class InterviewWorkflowRow extends Component {
             return (
                 <div className='workflow-active tasks'>
                     {this.props.interview.task_ids.map((taskId, index) => {
-                        if (this.props.project.task_types[this.props.tasks[taskId].task_type.id].use) {
+                        if (this.props.project.task_types[this.props.tasks[taskId].task_type.id]?.use) {
                             return <TaskContainer task={this.props.tasks[taskId]} interview={this.props.interview} />
                         }
                     })}
