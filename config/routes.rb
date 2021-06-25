@@ -44,7 +44,7 @@ Rails.application.routes.draw do
     resources :annotations, only: [:create, :update, :destroy]
     get "locations", to: "registry_references#locations"
 
-    resources :people, only: [:create, :update, :index] do
+    resources :people, only: [:show, :create, :update, :index] do
       resources :biographical_entries, only: [:destroy]
       resources :registry_references, only: [:create, :update, :destroy]
     end
