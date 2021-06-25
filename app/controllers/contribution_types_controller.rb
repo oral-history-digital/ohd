@@ -61,7 +61,9 @@ class ContributionTypesController < ApplicationController
 
           {
             data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
-            data_type: "contribution_types",
+            nested_data_type: "contribution_types",
+            data_type: 'projects',
+            id: current_project.id,
             extra_params: extra_params,
             page: params[:page] || 1,
             result_pages_count: paginate ? data.total_pages : nil,
