@@ -43,6 +43,12 @@ const mapStateToProps = (state) => {
                 attribute: "pseudo_available_locales",
             },
             {
+                elementType: 'input',
+                attribute: 'contact_email',
+                type: 'email',
+                validate: function(v){return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)}
+            },
+            {
                 attribute: "archive_domain",
                 //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
                 help: 'activerecord.attributes.project.archive_domain_help'

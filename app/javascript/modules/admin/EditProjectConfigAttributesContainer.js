@@ -37,7 +37,10 @@ const mapStateToProps = (state) => {
                 help: 'activerecord.attributes.project.archive_domain_help'
             },
             {
-                attribute: "contact_email"
+                elementType: 'input',
+                attribute: 'contact_email',
+                type: 'email',
+                validate: function(v){return /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.test(v)}
             },
             {
                 attribute: "smtp_server"
