@@ -164,7 +164,7 @@ const data = (state = initialState, action) => {
                     statuses: statuses,
                     [action.dataType]: Object.assign({}, state[action.dataType], {
                         [action.id]: Object.assign({}, state[action.dataType] && state[action.dataType][action.id], {
-                            [action.nestedDataType]: Object.assign({}, nestedData, action.data)
+                            [action.nestedDataType]: (action.page === '1') ? action.data : Object.assign({}, nestedData, action.data)
                         })
                     })
                 })
