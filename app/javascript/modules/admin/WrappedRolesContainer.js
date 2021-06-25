@@ -23,6 +23,8 @@ const mapStateToProps = (state) => {
         dataStatus: getRolesStatus(state),
         resultPagesCount: getRolesStatus(state).resultPagesCount,
         query: getRolesQuery(state),
+        outerScope: 'project',
+        outerScopeId: project.id,
         scope: 'role',
         baseTabIndex: 5 + project.has_map,
         detailsAttributes: ['name', 'desc'],

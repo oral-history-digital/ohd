@@ -37,6 +37,8 @@ export default class DataList extends Component {
                     <DataContainer
                         data={this.props.data[c]}
                         scope={this.props.scope}
+                        outerScope={this.props.outerScope}
+                        outerScopeId={this.props.outerScopeId}
                         optionsScope={this.props.optionsScope}
                         detailsAttributes={this.props.detailsAttributes}
                         joinedData={this.props.joinedData}

@@ -22,6 +22,8 @@ const mapStateToProps = (state) => {
         dataStatus: getRegistryReferenceTypesStatus(state),
         resultPagesCount: getRegistryReferenceTypesStatus(state).resultPagesCount,
         query: getRegistryReferenceTypesQuery(state),
+        outerScope: 'project',
+        outerScopeId: project.id,
         scope: 'registry_reference_type',
         sortAttribute: 'name',
         sortAttributeTranslated: true,

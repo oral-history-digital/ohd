@@ -5,7 +5,7 @@ class TaskTypePermissionsController < ApplicationController
     @task_type_permission = TaskTypePermission.create task_type_permission_params
     @task_type_permission.task_type.touch 
 
-    respond @task_type
+    respond @task_type_permission.task_type
   end
 
   def destroy 

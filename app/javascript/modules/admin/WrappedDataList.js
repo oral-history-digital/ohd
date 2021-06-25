@@ -30,7 +30,13 @@ export default class WrappedDataList extends Component {
              this.props.query &&
              !(this.props.dataStatus[`for_projects_${this.props.project?.id}`] || this.props.dataStatus.all || this.props.dataStatus[statifiedQuery(this.props.query)])
          ) {
-            this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
+            this.props.fetchData(
+                this.props,
+                pluralize(this.props.scope),
+                this.props.scopeId || null,
+                this.props.nestedScope ? pluralize(this.props.nestedScope) : null,
+                parametrizedQuery(this.props.query)
+            );
          }
      }
 
@@ -59,8 +65,14 @@ export default class WrappedDataList extends Component {
 
     handleScroll(inView) {
         if(inView){
-            this.props.setQueryParams(pluralize(this.props.scope), {page: this.props.query.page + 1});
-            this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
+            this.props.setQueryParams(pluralize(this.props.nestedScope || this.props.scope), {page: this.props.query.page + 1});
+            this.props.fetchData(
+                this.props,
+                pluralize(this.props.scope),
+                this.props.scopeId || null,
+                this.props.nestedScope ? pluralize(this.props.nestedScope) : null,
+                parametrizedQuery(this.props.query)
+            );
         }
     }
 
@@ -91,6 +103,8 @@ export default class WrappedDataList extends Component {
                 <DataContainer
                     data={data}
                     scope={this.props.scope}
+                    outerScope={this.props.outerScope}
+                    outerScopeId={this.props.outerScopeId}
                     detailsAttributes={this.props.detailsAttributes}
                     joinedData={this.props.joinedData}
                     form={this.form}
@@ -114,6 +128,7 @@ export default class WrappedDataList extends Component {
                     scope={this.props.scope}
                     onSubmit={(params) => {
                         this.props.submitData(this.props, params);
+                        this.props.closeArchivePopup();
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }

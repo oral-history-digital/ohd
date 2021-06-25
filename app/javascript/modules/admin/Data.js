@@ -65,14 +65,23 @@ export default class Data extends Component {
                 title={`${this.name()} ${t(this.props, `edit.${this.props.scope}.edit`)}`}
                 buttonFaKey='pencil'
             >
-                {this.props.hideShow && this.details()}
-                {this.props.form(this.props.data)}
+                <>
+                    {this.props.hideShow && this.details()}
+                    {this.props.form(this.props.data)}
+                </>
             </ArchivePopupButton>
         )
     }
 
     destroy() {
-        this.props.deleteData(this.props, pluralize(this.props.scope), this.props.data.id, null, null, false);
+        this.props.deleteData(
+            this.props,
+            this.props.outerScope ? pluralize(this.props.outerScope) : pluralize(this.props.scope),
+            this.props.outerScopeId || this.props.data.id,
+            this.props.outerScope ? pluralize(this.props.scope) : null,
+            this.props.outerScope ? this.props.data.id : null,
+            false
+        );
         this.props.closeArchivePopup();
     }
 
@@ -82,10 +91,12 @@ export default class Data extends Component {
                 title={t(this.props, 'delete')}
                 buttonFaKey='trash-o'
             >
-                <p>{this.name()}</p>
-                <div className='any-button' onClick={() => this.destroy()}>
-                    {t(this.props, 'delete')}
-                </div>
+                <>
+                    <p>{this.name()}</p>
+                    <div className='any-button' onClick={() => this.destroy()}>
+                        {t(this.props, 'delete')}
+                    </div>
+                </>
             </ArchivePopupButton>
         )
     }

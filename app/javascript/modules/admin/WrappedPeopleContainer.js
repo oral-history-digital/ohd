@@ -22,6 +22,8 @@ const mapStateToProps = (state) => {
         dataStatus: getPeopleStatus(state),
         resultPagesCount: getPeopleStatus(state).resultPagesCount,
         query: getPeopleQuery(state),
+        outerScope: 'project',
+        outerScopeId: project.id,
         scope: 'person',
         sortAttribute: 'name',
         sortAttributeTranslated: true,

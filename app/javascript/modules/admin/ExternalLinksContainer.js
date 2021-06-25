@@ -16,6 +16,8 @@ const mapStateToProps = state => {
         account: getCurrentAccount(state),
         editView: true,
         data: project.external_links,
+        outerScope: 'project',
+        outerScopeId: project.id,
         scope: 'external_link',
         detailsAttributes: ['name', 'url'],
         initialFormValues: {project_id: project.id},

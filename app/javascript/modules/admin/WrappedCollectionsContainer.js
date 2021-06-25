@@ -23,6 +23,8 @@ const mapStateToProps = (state) => {
         dataStatus: getCollectionsStatus(state),
         resultPagesCount: getCollectionsStatus(state).resultPagesCount,
         query: getCollectionsQuery(state),
+        outerScope: 'project',
+        outerScopeId: project.id,
         scope: 'collection',
         baseTabIndex: 4 + project.has_map,
         //detailsAttributes: ['name'],

@@ -1,11 +1,9 @@
-class UploadedFilesController < ApplicationController
+class LogosController < ApplicationController
   require 'open-uri'
 
   def create
     authorize UploadedFile
-    #data = params[:uploaded_file].delete(:data)
-    @uploaded_file = UploadedFile.create(uploaded_file_params)
-    #@uploaded_file.uploaded_file.attach(io: data, filename: "#{@uploaded_file.interview.archive_id.upcase}_#{str = format('%02d', @uploaded_file.interview.uploaded_files.count)}", metadata: {title: uploaded_file_params[:caption]})
+    @uploaded_file = UploadedFile.create(logo_params)
 
     respond @uploaded_file
   end
@@ -13,22 +11,20 @@ class UploadedFilesController < ApplicationController
   def update
     @uploaded_file = UploadedFile.find(params[:id])
     authorize @uploaded_file
-    @uploaded_file.update_attributes(uploaded_file_params)
+    @uploaded_file.update_attributes(logo_params)
     respond @uploaded_file
   end
 
   def destroy 
     @uploaded_file = UploadedFile.find(params[:id])
     authorize @uploaded_file
-    ref = @uploaded_file.ref
     @uploaded_file.destroy
-    ref.touch
 
     respond_to do |format|
       format.html do
         render :action => 'index'
       end
-      format.json { render json: data_json(ref, msg: 'processed') }
+      format.json { render json: {}, status: :ok }
     end
   end
 
@@ -57,8 +53,8 @@ class UploadedFilesController < ApplicationController
     end
   end
 
-  def uploaded_file_params
-    params.require(:uploaded_file).permit(
+  def logo_params
+    params.require(:logo).permit(
       :id, 
       :type,
       :ref_id, 

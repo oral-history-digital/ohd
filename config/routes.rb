@@ -4,38 +4,52 @@ Rails.application.routes.draw do
     get "random_featured_interviews", to: "interviews#random_featured"
     resources :texts
 
-    resources :projects, only: [:create, :update, :destroy]
+    resources :projects, only: [:create, :update, :destroy] do
+      resources :roles, only: [:destroy]
+      resources :task_types, only: [:destroy]
+      resources :collections, only: [:destroy]
+      resources :people, only: [:destroy]
+      resources :registry_name_types, only: [:destroy]
+      resources :registry_reference_types, only: [:destroy]
+      resources :contribution_types, only: [:destroy]
+      resources :metadata_fields, only: [:destroy]
+      resources :external_links, only: [:destroy]
+      resources :logos, only: [:destroy]
+      resources :sponsor_logos, only: [:destroy]
+      resources :media_streams, only: [:destroy]
+    end
     get "project/edit-info", to: "projects#edit_info"
     get "project/edit-config", to: "projects#edit_config"
     get "project/edit-display", to: "projects#edit_display"
 
     resources :languages
-    resources :metadata_fields
-    resources :external_links
+    resources :metadata_fields, only: [:create, :update, :index]
+    resources :external_links, only: [:create, :update, :index]
     resources :comments
 
     resources :contributions, only: [:create, :update, :destroy]
     resources :biographical_entries, only: [:create, :show, :update]
     resources :photos, only: [:create, :update, :destroy]
-    resources :uploaded_files, only: [:create, :update, :destroy]
-    resources :media_streams, only: [:create, :update, :destroy]
+    resources :logos, only: [:create, :update]
+    resources :sponsor_logos, only: [:create, :update]
+    resources :media_streams, only: [:create, :update]
     resources :segments, only: [:create, :update, :index, :destroy, :show]
     resources :registry_entries, only: [:create, :show, :update, :index, :destroy]
     resources :registry_hierarchies, only: [:create, :destroy]
     resources :registry_names, only: [:create, :update, :destroy]
     resources :registry_references, only: [:create, :update, :destroy, :index]
-    resources :registry_reference_types, only: [:create, :update, :index, :destroy]
-    resources :registry_name_types, only: [:create, :update, :index, :destroy]
-    resources :contribution_types, only: [:create, :update, :index, :destroy]
+    resources :registry_reference_types, only: [:create, :update, :index]
+    resources :registry_name_types, only: [:create, :update, :index]
+    resources :contribution_types, only: [:create, :update, :index]
     resources :annotations, only: [:create, :update, :destroy]
     get "locations", to: "registry_references#locations"
 
-    resources :people do
+    resources :people, only: [:create, :update, :index] do
       resources :biographical_entries, only: [:destroy]
       resources :registry_references, only: [:create, :update, :destroy]
     end
 
-    resources :collections do
+    resources :collections, only: [:create, :update, :index] do
       collection do
         get :countries
       end
@@ -90,12 +104,12 @@ Rails.application.routes.draw do
     end
 
     resources :user_roles, only: [:create, :destroy]
-    resources :roles
+    resources :roles, only: [:create, :update, :index]
     resources :role_permissions, only: [:create, :destroy]
     resources :permissions
 
     resources :tasks
-    resources :task_types
+    resources :task_types, only: [:create, :update, :index]
     resources :task_type_permissions, only: [:create, :destroy]
 
     namespace :admin do

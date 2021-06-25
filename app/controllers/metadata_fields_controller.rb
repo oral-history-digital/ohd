@@ -62,7 +62,7 @@ class MetadataFieldsController < ApplicationController
         render :action => 'index'
       end
       format.js
-      format.json { render json: data_json(project, msg: 'processed') }
+      format.json { render json: {}, status: :ok }
     end
   end
 

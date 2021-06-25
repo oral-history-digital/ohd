@@ -19,6 +19,8 @@ const mapStateToProps = state => {
         editView: true,
         //
         data: project.metadata_fields,
+        outerScope: 'project',
+        outerScopeId: project.id,
         scope: 'metadata_field',
         joinDataStatus: getRegistryReferenceTypesStatus(state),
         joinDataScope: 'registry_reference_types',

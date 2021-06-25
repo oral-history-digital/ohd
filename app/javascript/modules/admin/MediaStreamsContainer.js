@@ -18,6 +18,8 @@ const mapStateToProps = state => {
         editView: true,
         //
         data: getMediaStreamsForCurrentProject(state),
+        outerScope: 'project',
+        outerScopeId: project.id,
         scope: 'media_stream',
         detailsAttributes: ['path', 'media_type'],
         initialFormValues: {project_id: project.id},

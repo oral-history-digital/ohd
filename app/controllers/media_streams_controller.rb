@@ -23,7 +23,7 @@ class MediaStreamsController < ApplicationController
       format.html do
         render :action => 'index'
       end
-      format.json { render json: data_json(ref, msg: 'processed') }
+      format.json { render json: {}, status: :ok }
     end
   end
 

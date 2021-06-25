@@ -17,7 +17,9 @@ const mapStateToProps = state => {
         editView: true,
         //
         data: project.logos,
-        scope: 'uploaded_file',
+        outerScope: 'project',
+        outerScopeId: project.id,
+        scope: 'logo',
         detailsAttributes: ['src', 'locale'],
         initialFormValues: {ref_id: project.id, ref_type: 'Project', type: 'Logo'},
         formElements: [

@@ -22,6 +22,8 @@ const mapStateToProps = (state) => {
         dataStatus: getContributionTypesStatus(state),
         resultPagesCount: getContributionTypesStatus(state).resultPagesCount,
         query: getContributionTypesQuery(state),
+        outerScope: 'project',
+        outerScopeId: project.id,
         scope: 'contribution_type',
         sortAttribute: 'name',
         sortAttributeTranslated: true,

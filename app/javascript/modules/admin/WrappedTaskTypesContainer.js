@@ -23,9 +23,12 @@ const mapStateToProps = (state) => {
         dataStatus: getTaskTypesStatus(state),
         resultPagesCount: getTaskTypesStatus(state).resultPagesCount,
         query: getTaskTypesQuery(state),
+        outerScope: 'project',
+        outerScopeId: project.id,
         scope: 'task_type',
         baseTabIndex: 5 + project.has_map,
         detailsAttributes: ['name', 'desc'],
+        initialFormValues: {project_id: project.id},
         formElements: [
             {
                 attribute: 'label',
@@ -42,12 +45,6 @@ const mapStateToProps = (state) => {
                 elementType: 'input',
                 attribute: 'use',
                 type: 'checkbox',
-            },
-            {
-                elementType: 'select',
-                attribute: 'project_id',
-                values: getProjects(state),
-                withEmpty: true,
             },
         ],
         joinedData: {task_type_permission: TaskTypePermissionsContainer},
