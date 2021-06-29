@@ -212,6 +212,11 @@ class Interview < ApplicationRecord
       text :"photo_captions_#{locale}" do
         photos.map{|p| p.caption(locale)}.join(' ')
       end
+
+      # annotations
+      text :"annotations_#{locale}" do
+        annotations.map{|a| a.text(locale)}.join(' ')
+      end
     end
 
     text :interviewer_property do
