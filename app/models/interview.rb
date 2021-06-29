@@ -588,6 +588,16 @@ class Interview < ApplicationRecord
     }
   end
 
+  def observations_search_results(search_term)
+    search = Regexp.new(Regexp.escape(search_term), Regexp::IGNORECASE)
+
+    unless observations
+      return []
+    end
+
+    observations.scan(search_term)
+  end
+
   # TODO: remove or replace this
   # segmented, researched, proofread
   def set_workflow_flags!

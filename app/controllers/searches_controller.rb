@@ -82,6 +82,7 @@ class SearchesController < ApplicationController
       end
       format.json do
         interview = Interview.find_by_archive_id(params[:id])
+
         json = {
           fulltext: params[:fulltext],
           archiveId: params[:id],
@@ -90,6 +91,8 @@ class SearchesController < ApplicationController
         models_and_order.each do |model, order|
           json["found_#{model.name.underscore.pluralize}"] = found_instances(model, instance_variable_get("@#{model.name.underscore}_search"))
         end
+
+        json['found_observations'] = interview.observations_search_results(params[:fulltext])
 
         render plain: json.to_json
       end
