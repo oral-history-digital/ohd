@@ -3,6 +3,7 @@ import { createSelector } from 'reselect';
 import { getArchiveId, getLocale } from 'modules/archive';
 import { getCurrentInterview } from 'modules/data';
 import { NAME } from './constants';
+import numObservationsResults from './numObservationsResults';
 
 const getState = state => state[NAME];
 
@@ -145,17 +146,10 @@ export const getNumObservationsResults = createSelector(
         const observations = interview?.observations?.[locale];
         const searchTerm = searchResults?.fulltext;
 
-        if (!observations || !searchTerm || searchTerm === '') {
+        if (!observations || !searchTerm) {
             return 0;
         }
 
-        const regex = new RegExp(searchTerm, 'gi');
-        const matches = observations.match(regex);
-
-        if (matches === null) {
-            return 0;
-        }
-
-        return matches.length;
+        return numObservationsResults(observations, searchTerm);
     }
 );

@@ -23,3 +23,4 @@ export { default as ArchiveSearchContainer } from './components/ArchiveSearchCon
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';
 
 export { default as queryToText } from './queryToText';
+export { default as numObservationsResults } from './numObservationsResults';

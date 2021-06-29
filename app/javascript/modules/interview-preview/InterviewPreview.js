@@ -45,7 +45,7 @@ export default function InterviewPreview({
     });
 
     const searchResults = interviewSearchResults[interview.archive_id];
-    const resultCount = searchResultCount(searchResults);
+    const resultCount = searchResultCount(searchResults, interview.observations?.[locale], fulltext || '');
 
     if (statuses[interview.archive_id] === 'deleted') {
         return null;
@@ -56,7 +56,7 @@ export default function InterviewPreview({
             'detailed': isExpanded,
         })}>
             {
-                resultCount > 0 && (
+                searchResults && resultCount > 0 && (
                     <ThumbnailBadge
                         numberOfSearchResults={resultCount}
                         onClick={() => setIsExpanded(prev => !prev)}
@@ -96,7 +96,7 @@ export default function InterviewPreview({
             </Link>
 
             {
-                resultCount > 0 && (
+                searchResults && resultCount > 0 && (
                     <div className="slider">
                         <div className="archive-search-found-segments">
                             <SlideShowSearchResults

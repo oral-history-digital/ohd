@@ -5,11 +5,9 @@ import { useDispatch } from 'react-redux';
 
 import { setArchiveId } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
-import { pluralize } from 'modules/strings';
+import { useI18n } from 'modules/i18n';
 import SlideShowSearchStats from './SlideShowSearchStats';
 import TranscriptResult from './TranscriptResult';
-
-const SEGMENT_NAME = 'Segment';
 
 export default function SlideShowSearchResults({
     interview,
@@ -17,17 +15,20 @@ export default function SlideShowSearchResults({
 }) {
     const dispatch = useDispatch();
     const pathBase = usePathBase();
+    const { locale } = useI18n();
 
-    const searchResultsForSegment = searchResults[`found${pluralize(SEGMENT_NAME)}`];
+    const segments = searchResults.foundSegments;
 
-    if (!searchResultsForSegment) {
+    if (!segments) {
         return null;
     }
+
+    const filteredSegments = segments.filter(segment => segment.text[locale] !== '');
 
     return (
         <Slider>
             {
-                searchResultsForSegment.map(data => (
+                filteredSegments.map(data => (
                     <div key={data.id}>
                         <Link
                             key={data.id}

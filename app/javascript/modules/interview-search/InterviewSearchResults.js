@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
+import { searchResultCount } from 'modules/interview-preview';
 import ResultList from './ResultList';
-import modelsWithResults from './modelsWithResults';
 import TranscriptResult from './TranscriptResult';
 import AnnotationResult from './AnnotationResult';
 import RegistryResult from './RegistryResult';
@@ -10,6 +10,7 @@ import PhotoResult from './PhotoResult';
 import TocResult from './TocResult';
 
 export default function InterviewSearchResults({
+    interview,
     currentInterviewSearchResults,
     segmentResults,
     registryEntryResults,
@@ -18,11 +19,12 @@ export default function InterviewSearchResults({
     annotationResults,
     numObservationsResults,
 }) {
-    const filteredModelNames = modelsWithResults(currentInterviewSearchResults);
-
     const { t, locale } = useI18n();
 
-    if (filteredModelNames.length === 0 && numObservationsResults === 0) {
+    const observations = interview.observations[locale];
+    const numResults = searchResultCount(currentInterviewSearchResults, observations, currentInterviewSearchResults.fulltext);
+
+    if (numResults === 0) {
         return (
             <div>{t('modules.interview_search.no_results')}</div>
         );
@@ -88,6 +90,7 @@ export default function InterviewSearchResults({
 }
 
 InterviewSearchResults.propTypes = {
+    interview: PropTypes.object.isRequired,
     currentInterviewSearchResults: PropTypes.object.isRequired,
     segmentResults: PropTypes.array,
     registryEntryResults: PropTypes.array,

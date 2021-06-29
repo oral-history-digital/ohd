@@ -1,6 +1,6 @@
-export default function searchResultCount(interviewSearchResults) {
-    console.log(interviewSearchResults);
+import { numObservationsResults } from 'modules/search';
 
+export default function searchResultCount(interviewSearchResults, observations, searchTerm) {
     let count = 0;
     if (interviewSearchResults?.foundSegments) {
         count
@@ -10,5 +10,10 @@ export default function searchResultCount(interviewSearchResults) {
             + interviewSearchResults.foundAnnotations.length
             + interviewSearchResults.foundPhotos.length;
     }
+
+    if (observations) {
+        count += numObservationsResults(observations, searchTerm);
+    }
+
     return count;
 }

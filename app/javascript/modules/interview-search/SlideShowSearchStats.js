@@ -1,21 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-
-function getNumObservationsResults(observations, searchTerm) {
-    if (searchTerm === '') {
-        return 0;
-    }
-
-    const regex = new RegExp(searchTerm, 'gi');
-    const matches = observations.match(regex);
-
-    if (matches === null) {
-        return 0;
-    }
-
-    return matches.length;
-}
+import { numObservationsResults } from 'modules/search';
 
 export default function SlideShowSearchStats({
     interview,
@@ -39,8 +25,8 @@ export default function SlideShowSearchStats({
     const observations = interview.observations[locale];
     const searchTerm = searchResults.fulltext;
 
-    const numObservationsResults = observations && searchTerm ?
-        getNumObservationsResults(observations, searchTerm) :
+    const numObsResults = observations && searchTerm ?
+        numObservationsResults(observations, searchTerm) :
         0;
 
     return (
@@ -89,9 +75,9 @@ export default function SlideShowSearchStats({
                     )
                 }
                 {
-                    numObservationsResults > 0 && (
+                    numObsResults > 0 && (
                         <li className="SearchStats-item">
-                            {numObservationsResults} {t('observation_results')}
+                            {numObsResults} {t('observation_results')}
                         </li>
                     )
                 }
