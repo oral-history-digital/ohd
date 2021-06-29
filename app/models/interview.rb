@@ -774,6 +774,8 @@ class Interview < ApplicationRecord
           order_by("person_name_#{locale}".to_sym, :asc)
         elsif params[:order]
           order_by(params[:order].split('-')[0].to_sym, params[:order].split('-')[1].to_sym)
+        else
+          order_by(:score, :desc)
         end
         # TODO: sort linguistically
         paginate page: params[:page] || 1, per_page: per_page
