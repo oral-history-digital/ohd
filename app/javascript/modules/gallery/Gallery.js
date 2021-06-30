@@ -1,71 +1,67 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { admin, AuthorizedContent } from 'modules/auth';
-import { t } from 'modules/i18n';
+import { AuthorizedContent, useAuthorization } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import CarouselContainer from './CarouselContainer';
 import PhotoFormContainer from './PhotoFormContainer';
+import photoComparator from './photoComparator';
 
-export default class Gallery extends Component {
-    renderPhotos() {
-        let photos = [];
-        let n = 0;
-        if (
-            this.props.interview && this.props.interview.photos
-        ) {
-            for (var c in this.props.interview.photos) {
-                let photo = this.props.interview.photos[c];
-                if (photo.workflow_state === 'public' || admin(this.props, photo, 'show')) {
-                    photos.push(this.photo(photo, n));
-                    n+=1;
-                }
+export default function Gallery({
+    interview,
+    openArchivePopup,
+}) {
+    const { isAuthorized } = useAuthorization();
+    const { t } = useI18n();
+
+    let visiblePhotos = [];
+    if (interview.photos) {
+        visiblePhotos = Object.values(interview.photos)
+            .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'show'))
+            .sort(photoComparator);
+    }
+
+    return (
+        <div>
+            <div className="explanation">
+                {t(visiblePhotos.length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation')}
+            </div>
+
+            {
+                visiblePhotos.length > 0 && (
+                    <div className="Gallery">
+                        {visiblePhotos.map((photo, index) => (
+                            <button
+                                type="button"
+                                key={photo.id}
+                                className="Gallery-thumbnail"
+                                onClick={() => openArchivePopup({
+                                    title: null,
+                                    big: true,
+                                    content: <CarouselContainer n={index} />
+                                })}
+
+                            >
+                                <img
+                                    className="Gallery-image"
+                                    src={photo.thumb_src}
+                                    alt=""
+                                />
+                            </button>
+                        ))}
+                    </div>
+                )
             }
-        }
-        if (photos.length > 0) {
-            return (
-                <div className="Gallery">
-                    {photos}
-                </div>
-            )
-        } else {
-            return null;
-        }
-    }
 
-    photo(photo, n) {
-        return (
-            <button
-                type="button"
-                key={photo.id}
-                className="Gallery-thumbnail"
-                onClick={() => this.props.openArchivePopup({
-                    title: null,
-                    big: true,
-                    content: <CarouselContainer n={n} />
-                })}
-
-            >
-                <img
-                    className="Gallery-image"
-                    src={photo.thumb_src}
-                    alt=""
-                />
-            </button>
-        )
-    }
-
-    addPhoto() {
-        return (
-            <AuthorizedContent object={{ type: 'Photo', interview_id: this.props.interview.id }} action='create'>
+            <AuthorizedContent object={{ type: 'Photo', interview_id: interview.id }} action='create'>
                 <Modal
-                    title={t(this.props, 'edit.photo.new')}
+                    title={t('edit.photo.new')}
                     trigger={<i className="fa fa-plus"></i>}
                 >
                     {
                         closeModal => (
                             <PhotoFormContainer
-                                interview={this.props.interview}
+                                interview={interview}
                                 withUpload
                                 onSubmit={closeModal}
                             />
@@ -73,26 +69,11 @@ export default class Gallery extends Component {
                     }
                 </Modal>
             </AuthorizedContent>
-        );
-    }
-
-    render() {
-        let explanation = this.props.interview.photos && Object.keys(this.props.interview.photos).length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation'
-        return (
-            <div>
-                <div className='explanation'>{t(this.props, explanation)}</div>
-                {this.renderPhotos()}
-                {this.addPhoto()}
-            </div>
-        );
-    }
+        </div>
+    );
 }
 
 Gallery.propTypes = {
     interview: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
-    editView: PropTypes.bool.isRequired,
-    account: PropTypes.object.isRequired,
     openArchivePopup: PropTypes.func.isRequired,
 };
