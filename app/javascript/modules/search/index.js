@@ -16,11 +16,10 @@ export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
     getArchiveResultPagesCount, getArchiveResultsCount, getArchiveFoundInterviews,
     getInterviewSearchResults, getCurrentInterviewSearchResults,
     getSegmentResults, getRegistryEntryResults, getPhotoResults, getBiographyResults,
-    getAnnotationResults, getNumObservationsResults
+    getAnnotationResults, getObservationsResults
 } from './selectors';
 
 export { default as ArchiveSearchContainer } from './components/ArchiveSearchContainer';
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';
 
 export { default as queryToText } from './queryToText';
-export { default as numObservationsResults } from './numObservationsResults';

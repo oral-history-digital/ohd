@@ -1,9 +1,7 @@
 import { createSelector } from 'reselect';
 
-import { getArchiveId, getLocale } from 'modules/archive';
-import { getCurrentInterview } from 'modules/data';
+import { getArchiveId } from 'modules/archive';
 import { NAME } from './constants';
-import numObservationsResults from './numObservationsResults';
 
 const getState = state => state[NAME];
 
@@ -140,16 +138,4 @@ export const getBiographyResults = state => getCurrentInterviewSearchResults(sta
 
 export const getAnnotationResults = state => getCurrentInterviewSearchResults(state)?.foundAnnotations;
 
-export const getNumObservationsResults = createSelector(
-    [getCurrentInterview, getCurrentInterviewSearchResults, getLocale],
-    (interview, searchResults, locale) => {
-        const observations = interview?.observations?.[locale];
-        const searchTerm = searchResults?.fulltext;
-
-        if (!observations || !searchTerm) {
-            return 0;
-        }
-
-        return numObservationsResults(observations, searchTerm);
-    }
-);
+export const getObservationsResults = state => getCurrentInterviewSearchResults(state)?.foundObservations;

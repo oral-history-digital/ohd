@@ -41,10 +41,7 @@ export default function SlideShowSearchResults({
                 ))
             }
             <div>
-                <SlideShowSearchStats
-                    interview={interview}
-                    searchResults={searchResults}
-                />
+                <SlideShowSearchStats searchResults={searchResults} />
             </div>
         </Slider>
     );

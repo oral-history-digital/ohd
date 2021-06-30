@@ -97,6 +97,7 @@ const state = {
                 foundBiographicalEntries: ['dummyBiographicalEntry'],
                 foundPhotos: [],
                 foundAnnotations: ['dummyAnnotation'],
+                foundObservations: ['dummy', 'dummy', 'dummy'],
             },
             za003: {
                 fulltext: 'poland',
@@ -334,10 +335,6 @@ test('getAnnotationResults retrieves current interview annotation search results
     expect(selectors.getAnnotationResults(state)).toEqual(state[NAME].interviews.cd003.foundAnnotations);
 });
 
-test('getAnnotationResults retrieves current interview annotation search results', () => {
-    expect(selectors.getAnnotationResults(state)).toEqual(state[NAME].interviews.cd003.foundAnnotations);
-});
-
-test('getNumObservationsResults gets number of search results in observations', () => {
-    expect(selectors.getNumObservationsResults(state)).toBe(3);
+test('getObservationsResults retrieves current interview observations search results', () => {
+    expect(selectors.getObservationsResults(state)).toEqual(state[NAME].interviews.cd003.foundObservations);
 });

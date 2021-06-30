@@ -595,7 +595,7 @@ class Interview < ApplicationRecord
       return []
     end
 
-    observations.scan(search_term)
+    observations.scan(search)
   end
 
   # TODO: remove or replace this

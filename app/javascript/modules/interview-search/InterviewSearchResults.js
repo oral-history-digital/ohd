@@ -10,19 +10,17 @@ import PhotoResult from './PhotoResult';
 import TocResult from './TocResult';
 
 export default function InterviewSearchResults({
-    interview,
     currentInterviewSearchResults,
     segmentResults,
     registryEntryResults,
     photoResults,
     biographyResults,
     annotationResults,
-    numObservationsResults,
+    observationsResults,
 }) {
     const { t, locale } = useI18n();
 
-    const observations = interview.observations[locale];
-    const numResults = searchResultCount(currentInterviewSearchResults, observations, currentInterviewSearchResults.fulltext);
+    const numResults = searchResultCount(currentInterviewSearchResults);
 
     if (numResults === 0) {
         return (
@@ -80,9 +78,9 @@ export default function InterviewSearchResults({
                     className="u-mt"
                 />
             )}
-            {numObservationsResults > 0 && (
+            {observationsResults.length > 0 && (
                 <p className="u-mt u-ml" style={{ fontSize: '1rem', lineHeight: '1.5rem' }}>
-                    {`${numObservationsResults} ${t('observation_results')}`}
+                    {`${observationsResults.length} ${t('observation_results')}`}
                 </p>
             )}
         </div>
@@ -90,12 +88,11 @@ export default function InterviewSearchResults({
 }
 
 InterviewSearchResults.propTypes = {
-    interview: PropTypes.object.isRequired,
     currentInterviewSearchResults: PropTypes.object.isRequired,
     segmentResults: PropTypes.array,
     registryEntryResults: PropTypes.array,
     photoResults: PropTypes.array,
     biographyResults: PropTypes.array,
     annotationResults: PropTypes.array,
-    numObservationsResults: PropTypes.number,
+    observationsResults: PropTypes.array,
 };

@@ -1,10 +1,8 @@
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-import { numObservationsResults } from 'modules/search';
 
 export default function SlideShowSearchStats({
-    interview,
     searchResults,
 }) {
     const { t, locale } = useI18n();
@@ -18,16 +16,10 @@ export default function SlideShowSearchStats({
     const registryEntries = searchResults.foundRegistryEntries;
     const biographicalEntries = searchResults.foundBiographicalEntries;
     const photos = searchResults.foundPhotos;
+    const observations = searchResults.foundObservations;
 
     const filteredSegments = segments.filter(segment => segment.text[locale] !== '');
     const toc = segments.filter(segment => segment.text[locale] === '');
-
-    const observations = interview.observations[locale];
-    const searchTerm = searchResults.fulltext;
-
-    const numObsResults = observations && searchTerm ?
-        numObservationsResults(observations, searchTerm) :
-        0;
 
     return (
         <div className="SearchStats">
@@ -75,9 +67,9 @@ export default function SlideShowSearchStats({
                     )
                 }
                 {
-                    numObsResults > 0 && (
+                    observations.length > 0 && (
                         <li className="SearchStats-item">
-                            {numObsResults} {t('observation_results')}
+                            {observations.length} {t('observation_results')}
                         </li>
                     )
                 }
@@ -87,6 +79,5 @@ export default function SlideShowSearchStats({
 }
 
 SlideShowSearchStats.propTypes = {
-    interview: PropTypes.object.isRequired,
     searchResults: PropTypes.object,
 };

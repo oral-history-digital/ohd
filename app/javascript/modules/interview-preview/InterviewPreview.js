@@ -45,7 +45,7 @@ export default function InterviewPreview({
     });
 
     const searchResults = interviewSearchResults[interview.archive_id];
-    const resultCount = searchResultCount(searchResults, interview.observations?.[locale], fulltext || '');
+    const resultCount = searchResultCount(searchResults);
 
     if (statuses[interview.archive_id] === 'deleted') {
         return null;
