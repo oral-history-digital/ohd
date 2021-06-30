@@ -25,7 +25,7 @@ export default function Carousel({
         <Slider {...settings}>
             {
                 Object.values(interview.photos)
-                    .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'update'))
+                    .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'show'))
                     .map(photo => (<PhotoContainer key={photo.id} data={photo} />))
             }
         </Slider>
