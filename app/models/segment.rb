@@ -285,28 +285,28 @@ class Segment < ApplicationRecord
       text :"text_#{locale}", stored: true
     end
 
-    text :mainheading, :boost => 10 do
+    text :mainheading do
       mainheading = ''
       translations.each do |translation|
         mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
       end
       mainheading.strip
     end
-    text :subheading, :boost => 10 do
+    text :subheading do
       subheading = ''
       translations.each do |translation|
         subheading << ' ' + translation.subheading unless translation.subheading.blank?
       end
       subheading.strip
     end
-    #text :registry_entries, :boost => 5 do
+    #text :registry_entries do
       #registry_references.map do |reference|
         #reference.registry_entry.search_string
       #end.join(' ')
     #end
     ## Also index the reference by all parent entries (classification)
     ## of the registry entry and its respective alias names.
-    #text :classification, :boost => 6 do
+    #text :classification do
       #registry_references.map do |reference|
         #reference.registry_entry.ancestors.map do |ancestor|
           #ancestor.search_string

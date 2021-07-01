@@ -122,14 +122,14 @@ class Interview < ApplicationRecord
     # in order to fast access places of birth for all interviews
     # string :birth_location, :stored => true
 
-    text :transcript, :boost => 5 do
+    text :transcript do
       segments.includes(:translations).inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
         all
       end.join(' ')
     end
 
-    text :headings, :boost => 10 do
+    text :headings do
       segments.with_heading.inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << "#{t.mainheading} #{t.subheading}"; mem}.join(' ')
         all
@@ -174,14 +174,14 @@ class Interview < ApplicationRecord
           title.downcase.to_s
         end
       end
-      text :"person_name_#{locale}", :stored => true, :boost => 20 do
+      text :"person_name_#{locale}", :stored => true do
         full_title(locale)
       end
 
       string :"alias_names_#{locale}", :stored => true do
         (interviewee && interviewee.alias_names(locale)) || ''
       end
-      text :"alias_names_#{locale}", :stored => true, :boost => 20 do
+      text :"alias_names_#{locale}", :stored => true do
         (interviewee && interviewee.alias_names(locale)) || ''
       end
 
