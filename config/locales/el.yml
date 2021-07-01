@@ -160,6 +160,7 @@ el:
   change_password: Αλλαγή κωδικού
   archive_results: Αποτελέσματα αναζήτησης
   segment_results: Αποτελέσματα αναζήτησης στην απομαγνητοφώνηση
+  heading_results: Search results in the table of contents
   photo_results: Αποτελέσματα αναζήτησης στις φωτογραφίες
   annotation_results: Search results in annotations
   biographicalentry_results: Αποτελέσματα αναζήτησης στο σύντομο βιογραφικό

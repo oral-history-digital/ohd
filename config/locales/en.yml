@@ -153,6 +153,7 @@ en:
   change_password: Change password
   archive_results: Search results
   segment_results: Search results in transcript
+  heading_results: Search results in the table of contents
   photo_results: Search results in photo captions
   annotation_results: Search results in annotations
   registryentry_results: Search results in registry
