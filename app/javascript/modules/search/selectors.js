@@ -130,6 +130,8 @@ export const getCurrentInterviewSearchResults = createSelector(
 
 export const getSegmentResults = state => getCurrentInterviewSearchResults(state)?.foundSegments;
 
+export const getHeadingResults = state => getCurrentInterviewSearchResults(state)?.foundHeadings;
+
 export const getRegistryEntryResults = state => getCurrentInterviewSearchResults(state)?.foundRegistryEntries;
 
 export const getPhotoResults = state => getCurrentInterviewSearchResults(state)?.foundPhotos;

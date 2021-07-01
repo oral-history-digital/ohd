@@ -42,8 +42,11 @@ class SearchesController < ApplicationController
   end
 
   def search(model, order)
+    search_term = params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]
+    fields_to_search = current_project.available_locales.map { |locale| "text_#{locale}".to_sym }
+
     model.search do
-      fulltext params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext] do
+      fulltext search_term, fields: fields_to_search do
         current_project.available_locales.each do |locale|
           highlight :"text_#{locale}"
         end
@@ -55,10 +58,64 @@ class SearchesController < ApplicationController
     end
   end
 
+  def search_headings
+    search_term = params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]
+    fields_to_search = current_project.available_locales.map { |locale| "mainheading_#{locale}".to_sym }
+
+    Segment.search do
+      fulltext search_term, fields: fields_to_search do
+        current_project.available_locales.each do |locale|
+          highlight :"mainheading_#{locale}"
+        end
+      end
+
+      with :has_heading, true
+      with(:archive_id, params[:id])
+      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'General', 'edit'))) && Segment.respond_to?(:workflow_spec) ? Segment.workflow_spec.states.keys : "public")
+      order_by(:sort_key, :asc)
+      paginate page: params[:page] || 1, per_page: 2000
+    end
+  end
+
+  def search_subheadings
+    search_term = params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]
+    fields_to_search = current_project.available_locales.map { |locale| "subheading_#{locale}".to_sym }
+
+    Segment.search do
+      fulltext search_term, fields: fields_to_search do
+        current_project.available_locales.each do |locale|
+          highlight :"subheading_#{locale}"
+        end
+      end
+
+      with :has_heading, true
+      with(:archive_id, params[:id])
+      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'General', 'edit'))) && Segment.respond_to?(:workflow_spec) ? Segment.workflow_spec.states.keys : "public")
+      order_by(:sort_key, :asc)
+      paginate page: params[:page] || 1, per_page: 2000
+    end
+  end
+
   def found_instances(model, search)
     search.hits.select { |h| h.instance }.map do |hit|
       instance = cache_single(hit.instance, model == Segment ? "SegmentHit" : nil)
       instance[:text] = highlighted_text(hit)
+      instance
+    end
+  end
+
+  def found_headings
+    search_headings.hits.select { |h| h.instance }.map do |hit|
+      instance = cache_single(hit.instance, "SegmentHit")
+      instance[:text] = highlighted_heading(hit)
+      instance
+    end
+  end
+
+  def found_subheadings
+    search_subheadings.hits.select { |h| h.instance }.map do |hit|
+      instance = cache_single(hit.instance, "SegmentHit")
+      instance[:text] = highlighted_subheading(hit)
       instance
     end
   end
@@ -92,6 +149,10 @@ class SearchesController < ApplicationController
           json["found_#{model.name.underscore.pluralize}"] = found_instances(model, instance_variable_get("@#{model.name.underscore}_search"))
         end
 
+        all_headings = found_headings.concat(found_subheadings)
+        sorted_headings = all_headings.sort { |a, b| a[:sort_key] <=> b[:sort_key] }
+
+        json['found_headings'] = sorted_headings
         json['found_observations'] = interview.observations_search_results(params[:fulltext])
 
         render plain: json.to_json
@@ -196,6 +257,28 @@ class SearchesController < ApplicationController
   def highlighted_text(hit)
     current_project.available_locales.inject({}) do |mem, locale|
       mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
+        highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
+        m << highlighted.sub(/:/, "").strip()
+        m
+      end.join(" ").gsub("&nbsp;", " ").strip
+      mem
+    end
+  end
+
+  def highlighted_heading(hit)
+    current_project.available_locales.inject({}) do |mem, locale|
+      mem[locale] = hit.highlights("mainheading_#{locale}").inject([]) do |m, highlight|
+        highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
+        m << highlighted.sub(/:/, "").strip()
+        m
+      end.join(" ").gsub("&nbsp;", " ").strip
+      mem
+    end
+  end
+
+  def highlighted_subheading(hit)
+    current_project.available_locales.inject({}) do |mem, locale|
+      mem[locale] = hit.highlights("subheading_#{locale}").inject([]) do |m, highlight|
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
         m << highlighted.sub(/:/, "").strip()
         m

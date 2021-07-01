@@ -12,13 +12,14 @@ import TocResult from './TocResult';
 export default function InterviewSearchResults({
     currentInterviewSearchResults,
     segmentResults,
+    headingResults,
     registryEntryResults,
     photoResults,
     biographyResults,
     annotationResults,
     observationsResults,
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
 
     const numResults = searchResultCount(currentInterviewSearchResults);
 
@@ -28,23 +29,20 @@ export default function InterviewSearchResults({
         );
     }
 
-    const filteredSegments = segmentResults.filter(segment => segment.text[locale] !== '');
-    const toc = segmentResults.filter(segment => segment.text[locale] === '');
-
     return (
         <div>
-            {filteredSegments.length > 0 && (
+            {segmentResults.length > 0 && (
                 <ResultList
                     tKey="segment"
-                    searchResults={filteredSegments}
+                    searchResults={segmentResults}
                     component={TranscriptResult}
                     className="u-mt"
                 />
             )}
-            {toc.length > 0 && (
+            {headingResults.length > 0 && (
                 <ResultList
                     tKey="heading"
-                    searchResults={toc}
+                    searchResults={headingResults}
                     component={TocResult}
                     className="u-mt"
                 />
@@ -90,6 +88,7 @@ export default function InterviewSearchResults({
 InterviewSearchResults.propTypes = {
     currentInterviewSearchResults: PropTypes.object.isRequired,
     segmentResults: PropTypes.array,
+    headingResults: PropTypes.array,
     registryEntryResults: PropTypes.array,
     photoResults: PropTypes.array,
     biographyResults: PropTypes.array,

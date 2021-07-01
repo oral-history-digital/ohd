@@ -15,7 +15,7 @@ export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
     getArchiveFacets, getArchiveQuery, getArchiveQueryFulltext,
     getArchiveResultPagesCount, getArchiveResultsCount, getArchiveFoundInterviews,
     getInterviewSearchResults, getCurrentInterviewSearchResults,
-    getSegmentResults, getRegistryEntryResults, getPhotoResults, getBiographyResults,
+    getSegmentResults, getHeadingResults, getRegistryEntryResults, getPhotoResults, getBiographyResults,
     getAnnotationResults, getObservationsResults
 } from './selectors';
 

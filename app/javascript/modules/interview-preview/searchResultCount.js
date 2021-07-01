@@ -3,6 +3,7 @@ export default function searchResultCount(interviewSearchResults) {
     if (interviewSearchResults?.foundSegments) {
         count
             += interviewSearchResults.foundSegments.length
+            + interviewSearchResults.foundHeadings.length
             + interviewSearchResults.foundRegistryEntries.length
             + interviewSearchResults.foundBiographicalEntries.length
             + interviewSearchResults.foundAnnotations.length

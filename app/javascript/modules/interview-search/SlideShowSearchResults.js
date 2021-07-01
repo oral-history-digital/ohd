@@ -5,7 +5,6 @@ import { useDispatch } from 'react-redux';
 
 import { setArchiveId } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
-import { useI18n } from 'modules/i18n';
 import SlideShowSearchStats from './SlideShowSearchStats';
 import TranscriptResult from './TranscriptResult';
 
@@ -15,7 +14,6 @@ export default function SlideShowSearchResults({
 }) {
     const dispatch = useDispatch();
     const pathBase = usePathBase();
-    const { locale } = useI18n();
 
     const segments = searchResults.foundSegments;
 
@@ -23,12 +21,10 @@ export default function SlideShowSearchResults({
         return null;
     }
 
-    const filteredSegments = segments.filter(segment => segment.text[locale] !== '');
-
     return (
         <Slider>
             {
-                filteredSegments.map(data => (
+                segments.map(data => (
                     <div key={data.id}>
                         <Link
                             key={data.id}

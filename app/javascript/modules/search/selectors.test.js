@@ -93,6 +93,7 @@ const state = {
             cd003: {
                 fulltext: 'berlin',
                 foundSegments: ['dummySegment'],
+                foundHeadings: ['dummyHeading'],
                 foundRegistryEntries: ['dummyRegistryEntry'],
                 foundBiographicalEntries: ['dummyBiographicalEntry'],
                 foundPhotos: [],
@@ -317,6 +318,10 @@ test('getCurrentInterviewSearchResults retrieves current interview search result
 
 test('getSegmentResults retrieves current interview segment search results', () => {
     expect(selectors.getSegmentResults(state)).toEqual(state[NAME].interviews.cd003.foundSegments);
+});
+
+test('getHeadingResults retrieves current interview heading search results', () => {
+    expect(selectors.getHeadingResults(state)).toEqual(state[NAME].interviews.cd003.foundHeadings);
 });
 
 test('getRegistryEntryResults retrieves current interview registry entry search results', () => {

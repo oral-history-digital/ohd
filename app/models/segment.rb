@@ -276,6 +276,8 @@ class Segment < ApplicationRecord
       speaking_person && speaking_person.name.inject(""){|mem, (k,v)| mem << v; mem}
     end
 
+    boolean :has_heading
+
     # dummy method, necessary for generic search
     string :workflow_state do
       'public'
@@ -285,35 +287,15 @@ class Segment < ApplicationRecord
       text :"text_#{locale}", stored: true
     end
 
-    text :mainheading do
-      mainheading = ''
-      translations.each do |translation|
-        mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
+    I18n.available_locales.each do |locale|
+      text :"mainheading_#{locale}", stored: true do
+        mainheading(locale)
       end
-      mainheading.strip
-    end
-    text :subheading do
-      subheading = ''
-      translations.each do |translation|
-        subheading << ' ' + translation.subheading unless translation.subheading.blank?
-      end
-      subheading.strip
-    end
-    #text :registry_entries do
-      #registry_references.map do |reference|
-        #reference.registry_entry.search_string
-      #end.join(' ')
-    #end
-    ## Also index the reference by all parent entries (classification)
-    ## of the registry entry and its respective alias names.
-    #text :classification do
-      #registry_references.map do |reference|
-        #reference.registry_entry.ancestors.map do |ancestor|
-          #ancestor.search_string
-        #end.join(' ')
-      #end.join(' ')
-    #end
 
+      text :"subheading_#{locale}", stored: true do
+        subheading(locale)
+      end
+    end
   end
 
   I18n.available_locales.each do |locale|
