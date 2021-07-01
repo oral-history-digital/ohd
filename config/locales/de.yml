@@ -1151,6 +1151,15 @@ de:
     interview_search:
       no_results: Keine Ergebnisse
       annotation_for: Anmerkung zu
+      search_results:
+        heading: Suchergebnisse
+        in_transcript: im Transkript
+        in_toc: im Inhaltsverzeichnis
+        in_photo_captions: in den Bildunterschriften
+        in_annotations: in den Anmerkungen
+        in_registry: im Register
+        in_biography: in der Kurzbiografie
+        in_observations: im Protokoll
     layout:
       back_to_top:
         label: "Zurück nach oben"

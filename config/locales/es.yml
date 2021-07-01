@@ -1128,6 +1128,15 @@ es:
     interview_search:
       no_results: No results
       annotation_for: Annotation for
+      search_results:
+        heading: Search results
+        in_transcript: in the transcript
+        in_toc: in the table of contents
+        in_photo_captions: in photo captions
+        in_annotations: in annotations
+        in_registry: in the registry
+        in_biography: in the short biography
+        in_observations: in the protocol
     layout:
       back_to_top:
         label: "Back to top"
