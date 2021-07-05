@@ -118,6 +118,14 @@ class Project < ApplicationRecord
     end
   end
 
+  class Translation
+    belongs_to :project
+
+    after_save do
+      project.interviews.update_all(updated_at: DateTime.now) if landing_page_text_previously_changed?
+    end
+  end
+
   class << self
     def config
       @config ||= Rails.configuration.project
