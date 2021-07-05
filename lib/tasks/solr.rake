@@ -35,8 +35,16 @@ namespace :solr do
     end
 
     desc 'reindex all'
-    task :all => ['solr:reindex:interviews', 'solr:reindex:people', 'solr:reindex:biographical_entries', 'solr:reindex:photos', 'solr:reindex:segments', 'solr:reindex:registry_entries', 'solr:reindex:commit']
-
+    task :all => [
+      'solr:reindex:interviews',
+      'solr:reindex:people',
+      'solr:reindex:biographical_entries',
+      'solr:reindex:photos',
+      'solr:reindex:segments',
+      'solr:reindex:registry_entries',
+      'solr:reindex:annotations',
+      'solr:reindex:commit'
+    ]
   end
 
 end
