@@ -22,11 +22,18 @@ export default function TocResult({
             onClick={handleClick}
         >
             <p className="SearchResult-meta">
+                {data.last_heading?.[locale] && (
+                    <span>
+                        {data.last_heading[locale]}
+                        &nbsp;|&nbsp;
+                    </span>
+                )}
                 <TapeAndTime tape={data.tape_nbr} time={data.time} />
             </p>
-            <p className="SearchResult-text">
-                {data.last_heading?.[locale]}
-            </p>
+            <p
+                className="SearchResult-text"
+                dangerouslySetInnerHTML={{__html: data.text[locale]}}
+            />
         </button>
     );
 }
