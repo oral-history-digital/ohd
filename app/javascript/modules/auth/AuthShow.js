@@ -12,11 +12,11 @@ export default function AuthShow({
 }) {
     if (
         // logged in and registered for the current project
-        (isLoggedIn && ifLoggedIn) ||
-        //(
-            //isLoggedIn && ifLoggedIn && account &&
-            //Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
-        //) ||
+        //(isLoggedIn && ifLoggedIn) ||
+        (
+            isLoggedIn && ifLoggedIn && account &&
+            Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
+        ) ||
         // catalog-project
         (ifCatalog && project?.isCatalog)
     ) {
