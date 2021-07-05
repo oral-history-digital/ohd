@@ -3,6 +3,7 @@ import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { getLocale, setProjectId } from 'modules/archive';
+import { INDEX_ACCOUNT, setFlyoutTabsIndex } from 'modules/flyout-tabs';
 
 function ProjectShow({
     data,
@@ -19,6 +20,11 @@ function ProjectShow({
         [dispatch]
     )
 
+    const doSetFlyoutTabsIndex = useCallback(
+        () => dispatch(setFlyoutTabsIndex(INDEX_ACCOUNT)),
+        [dispatch]
+    )
+
     return (
         data.archive_domain ?
             <>
@@ -31,7 +37,7 @@ function ProjectShow({
             <>
                 <Link
                     to={`/${data.identifier}/${locale}/`}
-                    onClick={doSetProjectId}
+                    onClick={ () => { doSetProjectId(); doSetFlyoutTabsIndex()} }
                 >
                     { !hideLogo && <img className="logo-img" src={logo?.src} /> }
                     { data.name[locale] }
