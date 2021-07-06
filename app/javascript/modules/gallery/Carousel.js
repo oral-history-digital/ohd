@@ -3,6 +3,7 @@ import Slider from 'react-slick';
 
 import PhotoContainer from './PhotoContainer';
 import { useAuthorization } from 'modules/auth';
+import photoComparator from './photoComparator';
 
 export default function Carousel({
     interview,
@@ -21,12 +22,14 @@ export default function Carousel({
         initialSlide: n || 0,
     };
 
+    const photos = Object.values(interview.photos)
+        .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'show'))
+        .sort(photoComparator);
+
     return (
         <Slider {...settings}>
             {
-                Object.values(interview.photos)
-                    .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'show'))
-                    .map(photo => (<PhotoContainer key={photo.id} data={photo} />))
+                photos.map(photo => <PhotoContainer key={photo.id} data={photo} />)
             }
         </Slider>
     );
