@@ -37,7 +37,6 @@ export default class InterviewListRow extends Component {
             this.props.interviewSearchResults[this.props.interview.archive_id].foundSegments
         ) {
             count += this.props.interviewSearchResults[this.props.interview.archive_id].foundSegments.length +
-                this.props.interviewSearchResults[this.props.interview.archive_id].foundPeople.length +
                 this.props.interviewSearchResults[this.props.interview.archive_id].foundRegistryEntries.length +
                 this.props.interviewSearchResults[this.props.interview.archive_id].foundBiographicalEntries.length;
         }

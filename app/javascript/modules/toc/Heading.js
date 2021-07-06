@@ -6,10 +6,10 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import { SCROLL_OFFSET } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
+import { TapeAndTime } from 'modules/interview-helpers';
 import { AuthorizedContent } from 'modules/auth';
 import SubheadingContainer from './SubheadingContainer';
 import SegmentHeadingFormContainer from './SegmentHeadingFormContainer';
-import formatTimecode from './formatTimecode';
 
 export default function Heading({
     data,
@@ -63,7 +63,7 @@ export default function Heading({
                         </div>
 
                         <div className="Heading-timecode">
-                            {t('tape')} {data.tape_nbr} | {formatTimecode(data.time)}
+                            <TapeAndTime tape={data.tape_nbr} time={data.time} />
                         </div>
                     </div>
                 </button>

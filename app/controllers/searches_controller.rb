@@ -41,11 +41,14 @@ class SearchesController < ApplicationController
     end
   end
 
-  def search(model, order)
+  def search(model, order, field_name = 'text')
+    search_term = params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]
+    fields_to_search = current_project.available_locales.map { |locale| "#{field_name}_#{locale}".to_sym }
+
     model.search do
-      fulltext params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext] do
+      fulltext search_term, fields: fields_to_search do
         current_project.available_locales.each do |locale|
-          highlight :"text_#{locale}"
+          highlight :"#{field_name}_#{locale}"
         end
       end
       with(:archive_id, params[:id])
@@ -55,10 +58,10 @@ class SearchesController < ApplicationController
     end
   end
 
-  def found_instances(model, search)
+  def found_instances(model, search, field_name = 'text')
     search.hits.select { |h| h.instance }.map do |hit|
       instance = cache_single(hit.instance, model == Segment ? "SegmentHit" : nil)
-      instance[:text] = highlighted_text(hit)
+      instance[:text] = highlighted_text(hit, field_name)
       instance
     end
   end
@@ -68,13 +71,15 @@ class SearchesController < ApplicationController
       [Segment, :sort_key],
       [BiographicalEntry, :start_date],
       [Photo, :id],
-      [Person, "name_#{locale}".to_sym],
       [RegistryEntry, "text_#{locale}".to_sym],
+      [Annotation, :id],
     ]
 
     models_and_order.each do |model, order|
       instance_variable_set "@#{model.name.underscore}_search", search(model, order)
     end
+    @mainheading_search = search(Segment, :sort_key, 'mainheading')
+    @subheading_search = search(Segment, :sort_key, 'subheading')
 
     respond_to do |format|
       format.html do
@@ -82,6 +87,7 @@ class SearchesController < ApplicationController
       end
       format.json do
         interview = Interview.find_by_archive_id(params[:id])
+
         json = {
           fulltext: params[:fulltext],
           archiveId: params[:id],
@@ -90,6 +96,15 @@ class SearchesController < ApplicationController
         models_and_order.each do |model, order|
           json["found_#{model.name.underscore.pluralize}"] = found_instances(model, instance_variable_get("@#{model.name.underscore}_search"))
         end
+
+        mainheadings = found_instances(Segment, @mainheading_search, 'mainheading')
+        subheadings = found_instances(Segment, @subheading_search, 'subheading')
+
+        all_headings = mainheadings.concat(subheadings)
+        sorted_headings = all_headings.sort { |a, b| a[:sort_key] <=> b[:sort_key] }
+
+        json['found_headings'] = sorted_headings
+        json['found_observations'] = interview.observations_search_results(params[:fulltext])
 
         render plain: json.to_json
       end
@@ -190,9 +205,9 @@ class SearchesController < ApplicationController
     interviewee_ids
   end
 
-  def highlighted_text(hit)
+  def highlighted_text(hit, field_name = 'text')
     current_project.available_locales.inject({}) do |mem, locale|
-      mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
+      mem[locale] = hit.highlights("#{field_name}_#{locale}").inject([]) do |m, highlight|
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
         m << highlighted.sub(/:/, "").strip()
         m

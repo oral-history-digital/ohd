@@ -1,0 +1,42 @@
+.Disclosure {
+}
+
+.Disclosure-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-family: $font-family;
+  font-size: 1rem;
+  line-height: $base-unit;
+  margin: 0;
+  outline: none;
+  padding: 0;
+  text-align: left;
+}
+
+.Disclosure-toggle:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
+.Disclosure-icon {
+  color: var(--primary-color);
+}
+
+.Disclosure-title {
+  display: inline-block;
+  font-size: 1rem !important;
+  line-height: $base-unit;
+  margin: 0 0 0 ($base-unit / 3) !important;
+}
+
+.Disclosure-content {
+  display: none;
+  margin-left: $base-unit;
+  margin-top: $base-unit / 2;
+}
+
+.Disclosure-content.is-expanded {
+  display: block;
+}

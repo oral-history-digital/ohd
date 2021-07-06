@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_10_133942) do
+ActiveRecord::Schema.define(version: 2021_06_21_144653) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -50,6 +50,7 @@ ActiveRecord::Schema.define(version: 2021_06_10_133942) do
     t.integer "user_content_id"
     t.integer "segment_id"
     t.integer "author_id"
+    t.string "workflow_state", default: "public"
     t.index ["interview_id"], name: "index_annotations_on_interview_id"
     t.index ["segment_id"], name: "index_annotations_on_segment_id"
   end
@@ -145,6 +146,27 @@ ActiveRecord::Schema.define(version: 2021_06_10_133942) do
     t.string "speaker_designation"
     t.integer "contribution_type_id"
     t.index ["interview_id"], name: "index_contributions_on_interview_id"
+  end
+
+  create_table "contributor_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "contributor_id"
+    t.string "locale", limit: 255
+    t.string "last_name", limit: 255
+    t.string "first_name", limit: 255
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.index ["contributor_id"], name: "index_contributor_translations_on_contributor_id"
+  end
+
+  create_table "contributors", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.boolean "interview", default: false
+    t.boolean "camera", default: false
+    t.boolean "transcription", default: false
+    t.boolean "translation", default: false
+    t.boolean "proofreading", default: false
+    t.boolean "segmentation", default: false
+    t.boolean "documentation", default: false
+    t.boolean "other", default: false
   end
 
   create_table "delayed_jobs", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -778,7 +800,7 @@ ActiveRecord::Schema.define(version: 2021_06_10_133942) do
     t.datetime "activated_at"
     t.integer "user_account_id"
     t.string "workflow_state"
-    t.string "admin_comments"
+    t.text "admin_comments"
   end
 
   create_table "user_registrations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

@@ -150,9 +150,12 @@ ru:
   change_password: Passwort ändern
   archive_results: Результаты поиска
   segment_results: Результаты поиска транскриптов
+  heading_results: Search results in the table of contents
   photo_results: Результаты поиска на фотографиях
+  annotation_results: Search results in annotations
   registryentry_results: Результаты поиска Регистр
   biographicalentry_results: Результаты поиска в Краткой биографии
+  observation_results: Search results in the protocol
   person_results: Результаты поиска для людей
   user_registration_results: Suchergebnisse für Benutzer*innen
   segment_hits: Результаты в тексте
@@ -1578,6 +1581,18 @@ ru:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview_search:
+      no_results: No results
+      annotation_for: Annotation for
+      search_results:
+        heading: Search results
+        in_transcript: in the transcript
+        in_toc: in the table of contents
+        in_photo_captions: in photo captions
+        in_annotations: in annotations
+        in_registry: in the registry
+        in_biography: in the short biography
+        in_observations: in the protocol
     layout:
       back_to_top:
         label: "Back to top"

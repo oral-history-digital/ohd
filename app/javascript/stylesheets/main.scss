@@ -60,6 +60,7 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/content-tabs";
 @import "components/contribution-list";
 @import "components/detail-list";
+@import "components/disclosure";
 @import "components/features";
 @import "components/form-label";
 @import "components/icon-button";
@@ -81,6 +82,8 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/registry-entry-list";
 @import "components/registry-reference";
 @import "components/registry-references";
+@import "components/search-result";
+@import "components/search-stats";
 @import "components/segment";
 @import "components/segment-popup";
 @import "components/sidebar";
@@ -88,6 +91,7 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/site-header";
 @import "components/spinner";
 @import "components/state-button";
+@import "components/thumbnail-badge";
 @import "components/wrapper-page";
 
 /* Modules */

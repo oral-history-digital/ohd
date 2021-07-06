@@ -30,8 +30,8 @@ $spacing-properties: (
 
 $spacing-sizes: (
   '-none':  0,
-  '-small': 0.5rem,
-  null:       1rem,
+  '-small': 0.5 * $base-unit,
+  null:       1 * $base-unit,
 ) !default;
 
 @each $property, $property-namespace in $spacing-properties {

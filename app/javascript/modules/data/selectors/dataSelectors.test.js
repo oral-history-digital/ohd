@@ -50,7 +50,7 @@ const state = {
                 all: 'fetched-Thu Dec 17 2020 18:20:22 GMT+0100 (Central European Standard Time)',
             },
             ref_tree: {
-                for_interviews_za003: 'fetched-Mon',
+                for_interviews_cd003: 'fetched-Mon',
             },
             registry_entries: {
                 1: 'fetched-Thu Jan 07 2021 21:17:39 GMT+0100 (Central European Standard Time)',
@@ -159,6 +159,39 @@ const state = {
                 },
                 first_segments_ids: {
                     1: 199498,
+                },
+                ref_tree: {
+                    id: 1,
+                    type: 'node',
+                    children: [
+                        {
+                            id: 11786,
+                            type: 'node',
+                            children: [
+                                {
+                                    type: 'leafe',
+                                    time: 25.2,
+                                    tape_nbr: 1,
+                                },
+                                {
+                                    id: 11310,
+                                    type: 'node',
+                                    children: [
+                                        {
+                                            type: 'leafe',
+                                            time: 1472.18,
+                                            tape_nbr: 1,
+                                        },
+                                        {
+                                            type: 'leafe',
+                                            time: 2103.32,
+                                            tape_nbr: 1,
+                                        },
+                                    ],
+                                }
+                            ],
+                        },
+                    ],
                 },
                 segments: {
                     1: {
@@ -317,6 +350,22 @@ test('getRefTreeStatus gets ref tree status object', () => {
     expect(selectors.getRefTreeStatus(state)).toEqual(state.data.statuses.ref_tree);
 });
 
+describe('getCurrentRefTreeStatus', () => {
+    it("is 'fetched' if ref tree has been loaded", () => {
+        expect(selectors.getCurrentRefTreeStatus(state)).toBe('fetched');
+    });
+
+    it("is 'fetching' if ref tree is loading", () => {
+        const _state = dotProp.set(state, 'data.statuses.ref_tree.for_interviews_cd003', 'fetching');
+        expect(selectors.getCurrentRefTreeStatus(_state)).toBe('fetching');
+    });
+
+    it("is 'n/a' otherwise", () => {
+        const _state = dotProp.set(state, 'archive.archiveId', 'za053');
+        expect(selectors.getCurrentRefTreeStatus(_state)).toBe('n/a');
+    });
+});
+
 test('getRegistryEntriesStatus gets registry entries status object', () => {
     expect(selectors.getRegistryEntriesStatus(state)).toEqual(state.data.statuses.registry_entries);
 });
@@ -453,6 +502,45 @@ test('getCurrentInterview retrieves current interview', () => {
 
 test('getCurrentInterviewFetched retrieves if current interview has been fetched', () => {
     expect(selectors.getCurrentInterviewFetched(state)).toBe(true);
+});
+
+test('getCurrentRefTree retrieves ref tree of current interview', () => {
+    expect(selectors.getCurrentRefTree(state)).toEqual(state.data.interviews.cd003.ref_tree);
+});
+
+test('getFlattenedRefTree retrieves flattened version of ref tree', () => {
+    const actual = selectors.getFlattenedRefTree(state);
+    const expected = {
+        '11310': {
+            id: 11310,
+            type: 'node',
+            children: [
+                {
+                    type: 'leafe',
+                    time: 1472.18,
+                    tape_nbr: 1,
+                },
+                {
+                    type: 'leafe',
+                    time: 2103.32,
+                    tape_nbr: 1,
+                },
+            ],
+        },
+        '11786': {
+            id: 11786,
+            type: 'node',
+            children: [
+                {
+                    type: 'leafe',
+                    time: 25.2,
+                    tape_nbr: 1,
+                },
+            ],
+        },
+    };
+
+    expect(actual).toEqual(expected);
 });
 
 test('getCurrentInterviewee retrieves first interviewee of current interview', () => {
