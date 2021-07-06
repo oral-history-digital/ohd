@@ -1154,10 +1154,10 @@ ru:
         order: Reihenfolge
     errors:
       default:
-        empty: Bitte auswählen
-        select: Bitte auswählen
+        empty: Пожалуйста, выберите
+        select: Пожалуйста, выберите
         textarea: Введите адрес
-        checkbox_input: Bitte zustimmen
+        checkbox_input: Пожалуйста, подтвердите
         text_input: Введите адрес
         file_input: Bitte Datei auswählen
         password_input: Ваш пароль должен содержать не менее семи символов. Убедитесь, что оба пароля совпадают.
