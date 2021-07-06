@@ -216,6 +216,27 @@ namespace :roles do
             {:name=>"UploadedFile create", :klass=>"UploadedFile", :action_name=>"create"},
             {:name=>"UploadedFile destroy", :klass=>"UploadedFile", :action_name=>"destroy"},
             {:name=>"UploadedFile update", :klass=>"UploadedFile", :action_name=>"update"},
+
+            {:name=>"MediaStream create", :klass=>"MediaStream", :action_name=>"create"},
+            {:name=>"MediaStream destroy", :klass=>"MediaStream", :action_name=>"destroy"},
+            {:name=>"MediaStream update", :klass=>"MediaStream", :action_name=>"update"},
+
+            {:name=>"RegistryReferenceType create", :klass=>"RegistryReferenceType", :action_name=>"create"},
+            {:name=>"RegistryReferenceType destroy", :klass=>"RegistryReferenceType", :action_name=>"destroy"},
+            {:name=>"RegistryReferenceType update", :klass=>"RegistryReferenceType", :action_name=>"update"},
+
+            {:name=>"RegistryNameType create", :klass=>"RegistryNameType", :action_name=>"create"},
+            {:name=>"RegistryNameType destroy", :klass=>"RegistryNameType", :action_name=>"destroy"},
+            {:name=>"RegistryNameType update", :klass=>"RegistryNameType", :action_name=>"update"},
+
+            {:name=>"ContributionType create", :klass=>"ContributionType", :action_name=>"create"},
+            {:name=>"ContributionType destroy", :klass=>"ContributionType", :action_name=>"destroy"},
+            {:name=>"ContributionType update", :klass=>"ContributionType", :action_name=>"update"},
+
+            {:name=>"Language create", :klass=>"Language", :action_name=>"create"},
+            {:name=>"Language destroy", :klass=>"Language", :action_name=>"destroy"},
+            {:name=>"Language update", :klass=>"Language", :action_name=>"update"},
+
             {:name=>"MediaStream create", :klass=>"MediaStream", :action_name=>"create"},
             {:name=>"MediaStream destroy", :klass=>"MediaStream", :action_name=>"destroy"},
             {:name=>"MediaStream update", :klass=>"MediaStream", :action_name=>"update"},
