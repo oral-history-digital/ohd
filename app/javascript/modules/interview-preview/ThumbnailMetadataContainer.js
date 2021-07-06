@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 
 import { getLocale, getTranslations } from 'modules/archive';
-import { getInterviewee, getCurrentProject } from 'modules/data';
+import { getInterviewee, getCurrentProject, getLanguages } from 'modules/data';
 import ThumbnailMetadata from './ThumbnailMetadata';
 
 const mapStateToProps = (state, props) => ({
@@ -9,6 +9,7 @@ const mapStateToProps = (state, props) => ({
     project: getCurrentProject(state),
     translations: getTranslations(state),
     interviewee: getInterviewee(state, props),
+    languages: getLanguages(state), // needed for humanReadable function
 });
 
 

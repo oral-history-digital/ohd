@@ -9,14 +9,16 @@ export default function ThumbnailMetadata({
     project,
     locale,
     translations,
+    languages,
 }) {
     return (
         <ul className="DetailList" lang={locale}>
             {
                 project.grid_fields.map((field) => {
-                    let obj = (field.ref_object_type === 'Interview' || field.source === 'Interview') ?
+                    const obj = (field.ref_object_type === 'Interview' || field.source === 'Interview') ?
                         interview :
                         interviewee;
+
                     return (
                         <li
                             key={field.name}
@@ -24,7 +26,8 @@ export default function ThumbnailMetadata({
                                 'DetailList-item--shortened': field.name === 'description',
                             })}
                         >
-                            {humanReadable(obj, field.name, { locale, translations, optionsScope: 'search_facets' }, {}, '') + ' '}
+                            {humanReadable(obj, field.name, { locale, translations, languages, optionsScope: 'search_facets' }, {}, '')}
+                            {' '}
                         </li>
                     );
                 })
@@ -39,4 +42,5 @@ ThumbnailMetadata.propTypes = {
     project: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
+    languages: PropTypes.object.isRequired,
 };
