@@ -39,7 +39,7 @@ export default class ArchiveSearch extends Component {
     }
 
     componentDidMount() {
-        this.search()
+        //this.search()
     }
 
     componentDidUpdate(prevProps) {

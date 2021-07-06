@@ -5,7 +5,7 @@ function WorkbookTabPanel() {
     const { t } = useI18n();
 
     return (
-        <AuthShowContainer ifLoggedIn>
+        <AuthShowContainer ifLoggedIn ifNoProject>
             <div className='flyout-tab-title'>
                 { t('user_content') }
             </div>

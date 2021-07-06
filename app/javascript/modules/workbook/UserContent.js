@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 import { queryToText } from 'modules/search';
+import { OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT } from 'modules/layout';
+import parametrizedQuery from 'modules/admin/parametrizedQuery';
 import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
@@ -77,51 +79,72 @@ export default class UserContent extends Component {
 
     goTo() {
         let callKey = "call" + this.props.data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
-        const projectId = this.props.projects[this.props.data.project_id].identifier;
-        const pathBase = `/${projectId}/${this.props.locale}`;
+
+        const project = this.props.projects[this.props.data.project_id];
+        const projectId = project.identifier;
+        const pathBase = [OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT].indexOf(window.location.origin) > -1 ?
+            `/${project.identifier}/${this.props.locale}` : `/${this.props.locale}`;
+        const isOtherDomain = project.archive_domain !== window.location.origin;
+        const domainWithOptionalProjectId = project.archive_domain ||
+            `${developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION}/${project.identifier}`;
 
         if (this.props.data.type === 'InterviewReference') {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
-                <Link
-                    onClick={() => {
-                        this.hideFlyoutTabsIfMobile();
-                        this.props.setProjectId(projectId);
-                    }}
-                    to={pathBase + '/interviews/' + this.props.data.media_id}
-                >
-                    {t(this.props, callKey)}
-                </Link>
+                { isOtherDomain ? 
+                    <a href={`${domainWithOptionalProjectId}/${this.props.locale}/interviews/${this.props.data.media_id}`}>
+                        {t(this.props, callKey)}
+                    </a> :
+                    <Link
+                        onClick={() => {
+                            this.hideFlyoutTabsIfMobile();
+                            this.props.setProjectId(projectId);
+                        }}
+                        to={pathBase + '/interviews/' + this.props.data.media_id}
+                    >
+                        {t(this.props, callKey)}
+                    </Link>
+                }
             </p>
         } else if (this.props.data.type === 'UserAnnotation') {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
-                <Link
-                    onClick={() => {
-                        this.props.setProjectId(projectId);
-                        this.props.setArchiveId(this.props.data.properties.interview_archive_id);
-                        this.props.sendTimeChangeRequest(this.props.data.properties.tape_nbr, this.props.data.properties.time)
-                        this.hideFlyoutTabsIfMobile();
-                    }}
-                    to={pathBase + '/interviews/' + this.props.data.properties.interview_archive_id}
-                >
-                    {t(this.props, callKey)}
-                </Link>
+                { isOtherDomain ? 
+                    <a href={`${domainWithOptionalProjectId}/${this.props.locale}/interviews/${this.props.data.properties.interview_archive_id}`}>
+                        {t(this.props, callKey)}
+                    </a> :
+                    <Link
+                        onClick={() => {
+                            this.props.setProjectId(projectId);
+                            this.props.setArchiveId(this.props.data.properties.interview_archive_id);
+                            this.props.sendTimeChangeRequest(this.props.data.properties.tape_nbr, this.props.data.properties.time)
+                            this.hideFlyoutTabsIfMobile();
+                        }}
+                        to={pathBase + '/interviews/' + this.props.data.properties.interview_archive_id}
+                    >
+                        {t(this.props, callKey)}
+                    </Link>
+                }
             </p>
         } else if (this.props.data.type === 'Search') {
             let url = `${pathBase}/searches/archive`;
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
-                <Link
-                    onClick={() => {
-                        this.props.setProjectId(projectId);
-                        this.props.searchInArchive(url, this.props.data.properties);
-                        this.hideFlyoutTabsIfMobile();
-                    }}
-                    to={url}
-                >
-                    {t(this.props, callKey)}
-                </Link>
+                { isOtherDomain ? 
+                    <a href={`${domainWithOptionalProjectId}/${this.props.locale}/searches/archive?${new URLSearchParams(this.props.data.properties)}`}>
+                        {t(this.props, callKey)}
+                    </a> :
+                    <Link
+                        onClick={() => {
+                            this.props.setProjectId(projectId);
+                            this.props.searchInArchive(url, this.props.data.properties);
+                            this.hideFlyoutTabsIfMobile();
+                        }}
+                        to={`${pathBase}/searches/archive`}
+                    >
+                        {t(this.props, callKey)}
+                    </Link>
+                }
             </p>
         } else {
             return null

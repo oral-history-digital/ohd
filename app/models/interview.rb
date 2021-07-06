@@ -758,7 +758,9 @@ class Interview < ApplicationRecord
         dynamic :search_facets do
           facet *project.search_facets_names
           project.search_facets_names.each do |facet|
-            with(facet.to_sym).any_of(params[facet]) if params[facet]
+            facet_value = params[facet]
+            facet_value.delete_if(&:blank?) if facet_value.is_a?(Array)
+            with(facet.to_sym).any_of(facet_value) unless facet_value.blank?
           end
         end
         if params[:fulltext].blank? && params[:order].blank?
