@@ -237,9 +237,9 @@ namespace :roles do
             {:name=>"Language destroy", :klass=>"Language", :action_name=>"destroy"},
             {:name=>"Language update", :klass=>"Language", :action_name=>"update"},
 
-            {:name=>"MediaStream create", :klass=>"MediaStream", :action_name=>"create"},
-            {:name=>"MediaStream destroy", :klass=>"MediaStream", :action_name=>"destroy"},
-            {:name=>"MediaStream update", :klass=>"MediaStream", :action_name=>"update"},
+            {:name=>"Permission create", :klass=>"Permission", :action_name=>"create"},
+            {:name=>"Permission destroy", :klass=>"Permission", :action_name=>"destroy"},
+            {:name=>"Permission update", :klass=>"Permission", :action_name=>"update"},
           ]
         },
         {
