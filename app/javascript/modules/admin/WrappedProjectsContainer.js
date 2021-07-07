@@ -26,6 +26,7 @@ const mapStateToProps = (state) => {
         scope: 'project',
         baseTabIndex: 5 + (project ? project.has_map : 0),
         detailsAttributes: ['title'],
+        initialFormValues: {display_ohd_link: true},
         formElements: [
             {
                 attribute: 'name',
@@ -41,6 +42,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: "pseudo_available_locales",
+                validate: function(v){return /^([a-z]{2},?)+$/.test(v)}
             },
             {
                 elementType: 'input',

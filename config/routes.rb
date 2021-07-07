@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     get "random_featured_interviews", to: "interviews#random_featured"
     resources :texts
 
-    resources :projects, only: [:create, :update, :destroy] do
+    resources :projects, only: [:update] do
       resources :roles, only: [:destroy]
       resources :task_types, only: [:destroy]
       resources :collections, only: [:destroy]
@@ -202,6 +202,7 @@ Rails.application.routes.draw do
   constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
       root to: "projects#index"
+      resources :projects, only: [:create, :destroy]
       concerns :account
       concerns :unnamed_devise_routes
     end

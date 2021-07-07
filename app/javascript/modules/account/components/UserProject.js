@@ -20,44 +20,46 @@ function UserProject({
     const [showProject, setShowProject] = useState(false);
     const [showRoles, setShowRoles] = useState(false);
 
-    const projectId = userRegistrationProject.project_id;
+    const project = projects[userRegistrationProject.project_id];
 
     return (
-        <ProjectShow data={projects[projectId]} hideLogo >
-            <i className={`fa fa-angle-${showProject ? 'up' : 'down'}`} onClick={() => setShowProject(!showProject)}></i>
-            <ContentField label={t('activerecord.attributes.user_registration.activated_at')} value={userRegistrationProject.activated_at} />
-            {
-                showProject ?
-                <>
-                    <p>
-                        <div className={'roles box'}>
-                            <h4 className='title' onClick={() => setShowRoles(!showRoles)} >
-                                {t('activerecord.models.role.other')}
-                                <i className={`fa fa-angle-${showRoles ? 'up' : 'down'}`}></i>
-                            </h4>
-                            {
-                                showRoles ?
-                                <UserRolesContainer
-                                    userRoles={roles || {}}
-                                    userAccountId={account.id}
-                                    hideEdit={true}
-                                    hideAdd={true}
-                                /> : null
-                            }
-                        </div>
-                    </p>
-                    <p>
-                        <div className={'tasks box'}>
-                            <h4 className='title'>{t('activerecord.models.task.other')}</h4>
-                            <UserTasks
-                                tasks={tasks || {}}
-                                supervisedTasks={supervisedTasks || {}}
-                            />
-                        </div>
-                    </p>
-                </> : null
-            }
-        </ProjectShow>
+        project ?
+            <ProjectShow data={project} hideLogo >
+                <i className={`fa fa-angle-${showProject ? 'up' : 'down'}`} onClick={() => setShowProject(!showProject)}></i>
+                <ContentField label={t('activerecord.attributes.user_registration.activated_at')} value={userRegistrationProject.activated_at} />
+                {
+                    showProject ?
+                    <>
+                        <p>
+                            <div className={'roles box'}>
+                                <h4 className='title' onClick={() => setShowRoles(!showRoles)} >
+                                    {t('activerecord.models.role.other')}
+                                    <i className={`fa fa-angle-${showRoles ? 'up' : 'down'}`}></i>
+                                </h4>
+                                {
+                                    showRoles ?
+                                    <UserRolesContainer
+                                        userRoles={roles || {}}
+                                        userAccountId={account.id}
+                                        hideEdit={true}
+                                        hideAdd={true}
+                                    /> : null
+                                }
+                            </div>
+                        </p>
+                        <p>
+                            <div className={'tasks box'}>
+                                <h4 className='title'>{t('activerecord.models.task.other')}</h4>
+                                <UserTasks
+                                    tasks={tasks || {}}
+                                    supervisedTasks={supervisedTasks || {}}
+                                />
+                            </div>
+                        </p>
+                    </> : null
+                }
+            </ProjectShow> :
+            null
     )
 }
 
