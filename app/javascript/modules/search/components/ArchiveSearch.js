@@ -5,7 +5,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Observer from 'react-intersection-observer'
 import moment from 'moment';
 
-import { InterviewPreviewContainer, InterviewListRowContainer } from 'modules/interview-preview';
+import { InterviewPreviewContainer } from 'modules/interview-preview';
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
 import { UserContentFormContainer } from 'modules/workbook';
 import { AuthShowContainer, admin } from 'modules/auth';
@@ -37,12 +37,18 @@ export default class ArchiveSearch extends Component {
 
     componentDidMount() {
         this.props.setFlyoutTabsIndex(INDEX_SEARCH);
-        this.search();
+        this.search({
+            ...this.props.query,
+            page: 1,
+        });
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.isLoggedIn !== this.props.isLoggedIn) {
-            this.search()
+            this.search({
+                ...this.props.query,
+                page: 1,
+            });
         }
     }
 
@@ -159,6 +165,7 @@ export default class ArchiveSearch extends Component {
 
     search(query={page: 1}) {
         let url = `${pathBase(this.props)}/searches/archive`;
+
         this.props.searchInArchive(url, query);
     }
 
