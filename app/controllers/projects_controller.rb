@@ -71,6 +71,8 @@ class ProjectsController < ApplicationController
   def create
     authorize Project
     @project = Project.create(project_params)
+    current_user_registration_project = UserRegistrationProject.create project_id: @project.id, user_registration_id: current_user_account.user_registration.id
+    current_user_registration_project.grant_project_access!
 
     respond_to do |format|
       format.json do
