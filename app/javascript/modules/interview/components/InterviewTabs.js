@@ -21,7 +21,6 @@ export default class InterviewTabs extends Component {
         let count = 0;
         if (this.props.interviewSearchResults && this.props.interviewSearchResults.foundSegments) {
             count += this.props.interviewSearchResults.foundSegments.length +
-                this.props.interviewSearchResults.foundPeople.length +
                 this.props.interviewSearchResults.foundRegistryEntries.length +
                 this.props.interviewSearchResults.foundBiographicalEntries.length;
         }

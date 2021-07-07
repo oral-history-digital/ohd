@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { getLocale, getProjectId } from 'modules/archive';
 import { getCurrentProject, getCurrentInterview } from 'modules/data';
 import CitationInfo from './CitationInfo';
 
@@ -8,7 +8,6 @@ const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
         locale: getLocale(state),
-        translations: getTranslations(state),
         projectId: getProjectId(state),
         interview: getCurrentInterview(state),
         projectDoi: project && project.doi,

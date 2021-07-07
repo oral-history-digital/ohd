@@ -31,6 +31,7 @@ $focus-radius: $base-unit / 8;
 
 // z-indexes
 
+$z-index-thumbnail-badge:       1;
 $z-index-content-tabs:        100;
 $z-index-media-player:        100;
 $z-index-color-picker:        100;
@@ -109,6 +110,8 @@ $font-path: "../fonts/" !default;
 
 
 // Widths and heights
+
+$line-length:                 32.5rem;
 
 $site-header-height-mobile:   5rem;
 $site-header-height-desktop:  6.25rem;

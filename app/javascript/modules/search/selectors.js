@@ -1,4 +1,6 @@
 import { createSelector } from 'reselect';
+
+import { getArchiveId } from 'modules/archive';
 import { NAME } from './constants';
 
 const getState = state => state[NAME];
@@ -117,4 +119,25 @@ export const getTaskTypesQuery = state => getState(state).task_types.query;
 
 export const getUserRegistrationsQuery = state => getState(state).user_registrations.query;
 
-export const getInterviewSearch = state => getState(state).interviews;
+export const getInterviewSearchResults = state => getState(state).interviews;
+
+export const getCurrentInterviewSearchResults = createSelector(
+    [getInterviewSearchResults, getArchiveId],
+    (searchResults, archiveId) => {
+        return searchResults?.[archiveId];
+    }
+);
+
+export const getSegmentResults = state => getCurrentInterviewSearchResults(state)?.foundSegments;
+
+export const getHeadingResults = state => getCurrentInterviewSearchResults(state)?.foundHeadings;
+
+export const getRegistryEntryResults = state => getCurrentInterviewSearchResults(state)?.foundRegistryEntries;
+
+export const getPhotoResults = state => getCurrentInterviewSearchResults(state)?.foundPhotos;
+
+export const getBiographyResults = state => getCurrentInterviewSearchResults(state)?.foundBiographicalEntries;
+
+export const getAnnotationResults = state => getCurrentInterviewSearchResults(state)?.foundAnnotations;
+
+export const getObservationsResults = state => getCurrentInterviewSearchResults(state)?.foundObservations;

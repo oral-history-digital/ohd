@@ -1,11 +1,9 @@
 export const MARKER_COLOR_MULTIPLE_TYPES = 'black';
 
 /**
- * Bounds are set up so that they include Chile for the
- * Colonia Dignidad project but center on central Europe.
+ * At the moment this is the preferred card detail for the ZWAR project.
+ * Center is Letovice, Czech Republic.
+ * TODO: Make it configurable.
  */
-const LAT_SOUTH = -35;
-const LAT_NORTH = 83;
-const LNG_WEST  = -75;
-const LNG_EAST  = 105;
-export const MAP_DEFAULT_BOUNDS = [[[LAT_SOUTH, LNG_WEST], [LAT_NORTH, LNG_EAST]]];
+export const INITIAL_MAP_CENTER = [49.546944, 16.573333];
+export const INITIAL_MAP_ZOOM = 4;

@@ -65,6 +65,24 @@ export const getProjectsStatus = state => getStatuses(state).projects;
 
 export const getRefTreeStatus = state => getStatuses(state).ref_tree;
 
+export const getCurrentRefTreeStatus = createSelector(
+    [getRefTreeStatus, getArchiveId],
+    (refTreeStatus, archiveId) => {
+        const status = refTreeStatus[`for_interviews_${archiveId}`];
+
+        const isFetched =  /^fetched/;
+        const isFetching = /^fetching/;
+
+        if (isFetched.test(status)) {
+            return 'fetched';
+        } else if (isFetching.test(status)) {
+            return 'fetching';
+        } else {
+            return 'n/a';
+        }
+    }
+);
+
 export const getRegistryEntriesStatus = state => getStatuses(state).registry_entries;
 
 export const getRegistryReferenceTypesStatus = state => getStatuses(state).registry_reference_types;
@@ -116,6 +134,45 @@ export const getCurrentInterviewFetched = state => {
 
     return !(Object.is(currentInterview, undefined) || Object.is(currentInterview, null));
 };
+
+export const getCurrentRefTree = state => getCurrentInterview(state)?.ref_tree;
+
+export const getFlattenedRefTree = createSelector(
+    getCurrentRefTree,
+    refTree => {
+        if (!refTree) {
+            return null;
+        }
+
+        /*
+        * Flattened tree only contains nodes with direct children, not all nodes.
+        */
+        function flattenTree(acc, node) {
+            const children = node.children;
+
+            children.forEach(child => {
+                if (child.type === 'node') {
+                    flattenTree(acc, child);
+                }
+            })
+
+            const hasLeaves = children.some(child => child.type === 'leafe');
+
+            if (hasLeaves) {
+                const clonedNode = {
+                    ...node,
+                    children: node.children.filter(child => child.type === 'leafe'),
+                };
+
+                acc[clonedNode.id] = clonedNode;
+            }
+
+            return acc;
+        }
+
+        return flattenTree({}, refTree);
+    }
+);
 
 export const getTranscriptFetched = createSelector(
     [getSegmentsStatus, getArchiveId],

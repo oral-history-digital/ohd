@@ -14,7 +14,11 @@ export default function InterviewLoggedOut({
                     </h1>
                 </header>
                 <div className="MediaElement">
-                    <img src={interview.still_url} alt="Video preview" />
+                    <img
+                        className="MediaElement-element"
+                        src={interview.still_url}
+                        alt="Video preview"
+                    />
                 </div>
             </div>
             <div

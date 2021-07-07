@@ -1,26 +1,45 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import { ScrollToTop } from 'modules/user-agent';
+import { Spinner } from 'modules/spinners';
 import InterviewSearchFormContainer from './InterviewSearchFormContainer';
 import InterviewSearchResultsContainer from './InterviewSearchResultsContainer';
 
 export default function InterviewSearch({
-    interviews,
+    locale,
+    projectId,
+    projects,
     archiveId,
-    interviewSearchResults,
+    isInterviewSearching = false,
+    currentInterviewSearchResults,
+    refTreeStatus,
+    fetchData,
 }) {
+    useEffect(() => {
+        if (refTreeStatus === 'n/a') {
+            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'ref_tree');
+        }
+    });
+
     return (
-        <div>
+        <ScrollToTop>
             <InterviewSearchFormContainer />
-            <InterviewSearchResultsContainer
-                interview={interviews[archiveId]}
-                searchResults={interviewSearchResults[archiveId]}
-            />
-        </div>
+            {isInterviewSearching ?
+                <Spinner /> :
+                (currentInterviewSearchResults && <InterviewSearchResultsContainer />)
+            }
+        </ScrollToTop>
     );
 }
 
 InterviewSearch.propTypes = {
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
-    interviews: PropTypes.object.isRequired,
-    interviewSearchResults: PropTypes.object.isRequired,
+    isInterviewSearching: PropTypes.bool,
+    currentInterviewSearchResults: PropTypes.object,
+    refTreeStatus: PropTypes.string.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };

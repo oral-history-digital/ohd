@@ -70,27 +70,13 @@ form.default {
 
   /* Checkboxes */
 
-  input[type='checkbox']:checked,
-  input[type='checkbox']:not(:checked) {
+  input[type="checkbox"] {
     background: transparent;
     border: none;
     margin: 0 0 1rem 0;
     padding: 0;
     position: relative;
     width: initial;
-  }
-
-  input[type='checkbox']:checked::after,
-  input[type='checkbox']:not(:checked)::after {
-    content: "\f096";
-    cursor: pointer;
-    display: inline-block;
-    font-family: FontAwesome;
-    font-size: 1rem;
-  }
-
-  input[type='checkbox']:checked::after {
-    content: "\f046";
   }
 
   .has-error {

@@ -14,7 +14,10 @@ export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
     getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
     getArchiveFacets, getArchiveQuery, getArchiveQueryFulltext,
     getArchiveResultPagesCount, getArchiveResultsCount, getArchiveFoundInterviews,
-    getInterviewSearch } from './selectors';
+    getInterviewSearchResults, getCurrentInterviewSearchResults,
+    getSegmentResults, getHeadingResults, getRegistryEntryResults, getPhotoResults, getBiographyResults,
+    getAnnotationResults, getObservationsResults
+} from './selectors';
 
 export { default as ArchiveSearchContainer } from './components/ArchiveSearchContainer';
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';

@@ -122,14 +122,14 @@ class Interview < ApplicationRecord
     # in order to fast access places of birth for all interviews
     # string :birth_location, :stored => true
 
-    text :transcript, :boost => 5 do
+    text :transcript do
       segments.includes(:translations).inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
         all
       end.join(' ')
     end
 
-    text :headings, :boost => 10 do
+    text :headings do
       segments.with_heading.inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << "#{t.mainheading} #{t.subheading}"; mem}.join(' ')
         all
@@ -163,6 +163,10 @@ class Interview < ApplicationRecord
     end
 
     Rails.configuration.i18n.available_locales.each do |locale|
+      text :"observations_#{locale}", stored: true do
+        observations(locale)
+      end
+
       string :"person_name_#{locale}", :stored => true do
         if full_title(locale)
           title = full_title(locale).mb_chars.normalize(:kd)
@@ -170,14 +174,14 @@ class Interview < ApplicationRecord
           title.downcase.to_s
         end
       end
-      text :"person_name_#{locale}", :stored => true, :boost => 20 do
+      text :"person_name_#{locale}", :stored => true do
         full_title(locale)
       end
 
       string :"alias_names_#{locale}", :stored => true do
         (interviewee && interviewee.alias_names(locale)) || ''
       end
-      text :"alias_names_#{locale}", :stored => true, :boost => 20 do
+      text :"alias_names_#{locale}", :stored => true do
         (interviewee && interviewee.alias_names(locale)) || ''
       end
 
@@ -207,6 +211,11 @@ class Interview < ApplicationRecord
       #
       text :"photo_captions_#{locale}" do
         photos.map{|p| p.caption(locale)}.join(' ')
+      end
+
+      # annotations
+      text :"annotations_#{locale}" do
+        annotations.map{|a| a.text(locale)}.join(' ')
       end
     end
 
@@ -377,7 +386,7 @@ class Interview < ApplicationRecord
 
   def to_vtt(lang, tape_number=1)
     vtt = "WEBVTT\n"
-    tapes.where(number: tape_number).first.segments.includes(:translations).each_with_index do |segment, index | 
+    tapes.where(number: tape_number).first.segments.includes(:translations).each_with_index do |segment, index |
       vtt << "\n#{index + 1}\n#{segment.as_vtt_subtitles(lang)}\n"
     end
     vtt
@@ -459,7 +468,7 @@ class Interview < ApplicationRecord
       # get speaker_id
       #
       speaker_match = cue.text.match(/<v (\S+)>/)
-      speaker_designation = speaker_match && speaker_match[1] 
+      speaker_designation = speaker_match && speaker_match[1]
       contribution = contributions.select{|c| c.speaker_designation == speaker_designation}.first
       speaker_id = contribution && contribution.person_id
       #
@@ -577,6 +586,16 @@ class Interview < ApplicationRecord
         :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
         :position => Timecode.new(read_attribute(:citation_timecode)).time.round
     }
+  end
+
+  def observations_search_results(search_term)
+    search = Regexp.new(Regexp.escape(search_term), Regexp::IGNORECASE)
+
+    unless observations
+      return []
+    end
+
+    observations.scan(search)
   end
 
   # TODO: remove or replace this
@@ -767,6 +786,8 @@ class Interview < ApplicationRecord
           order_by("person_name_#{locale}".to_sym, :asc)
         elsif params[:order]
           order_by(params[:order].split('-')[0].to_sym, params[:order].split('-')[1].to_sym)
+        else
+          order_by(:score, :desc)
         end
         # TODO: sort linguistically
         paginate page: params[:page] || 1, per_page: per_page

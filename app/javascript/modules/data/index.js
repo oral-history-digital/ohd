@@ -6,6 +6,7 @@ export { default as dataReducer } from './reducer';
 
 export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getCurrentInterviewFetched, getCurrentProject, getFeaturedInterviewsArray,
+    getCurrentRefTree, getFlattenedRefTree,
     getFeaturedInterviewsFetched, getLanguages, getPeopleForCurrentProjectFetched, getPeopleForCurrentProject, getProjects,
     getRootRegistryEntry, getRootRegistryEntryFetched, getPermissions,
     getRegistryReferenceTypesForCurrentProjectFetched, getRolesForCurrentProject, getTasks, getAccounts,
@@ -17,7 +18,7 @@ export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getCollectionsStatus, getLanguagesStatus, getPeopleStatus, getSegmentsStatus, getAccountsStatus,
     getRolesStatus, getPermissionsStatus, getProjectsStatus, getTaskTypesStatus, getUserContentsStatus,
     getContributionsStatus, getUserRegistrationsStatus, getHeadingsStatus, getSpeakerDesignationsStatus,
-    getRefTreeStatus, getTasksStatus, getMarkTextStatus,
+    getRefTreeStatus, getCurrentRefTreeStatus, getTasksStatus, getMarkTextStatus,
     getHeadingsFetched, getHeadings, getPreparedHeadings,
     getMediaStreamsForCurrentProject, getInterviews, getTaskTypesForCurrentProject, getUserContents,
     getTaskTypesForCurrentProjectFetched, getCollectionsForCurrentProjectFetched } from './selectors/dataSelectors';

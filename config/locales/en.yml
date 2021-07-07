@@ -153,12 +153,15 @@ en:
   change_password: Change password
   archive_results: Search results
   segment_results: Search results in transcript
-  photo_results: Search results in photos
+  heading_results: Search results in the table of contents
+  photo_results: Search results in photo captions
+  annotation_results: Search results in annotations
   registryentry_results: Search results in registry
   biographicalentry_results: Search results in the short biography
+  observation_results: Search results in the protocol
   person_results: Search results for persons
   user_registration_results: Suchergebnisse für Benutzer*innen
-  segment_hits: Number of search hits
+  segment_hits: search results
   no_interviews_results: No interviews found.
   interview_id: Interview ID
   interview_duration: Interview duration
@@ -1162,6 +1165,18 @@ en:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview_search:
+      no_results: No results
+      annotation_for: Annotation for
+      search_results:
+        heading: Search results
+        in_transcript: in the transcript
+        in_toc: in the table of contents
+        in_photo_captions: in photo captions
+        in_annotations: in annotations
+        in_registry: in the registry
+        in_biography: in the short biography
+        in_observations: in the protocol
     layout:
       back_to_top:
         label: "Back to top"

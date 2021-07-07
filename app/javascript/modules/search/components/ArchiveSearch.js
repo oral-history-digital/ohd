@@ -5,7 +5,7 @@ import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Observer from 'react-intersection-observer'
 import moment from 'moment';
 
-import { InterviewPreviewContainer, InterviewListRowContainer } from 'modules/interview-preview';
+import { InterviewPreviewContainer } from 'modules/interview-preview';
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
 import { UserContentFormContainer } from 'modules/workbook';
 import { AuthShowContainer, admin } from 'modules/auth';
@@ -17,6 +17,7 @@ import { INDEX_SEARCH } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 import queryToText from '../queryToText';
+import ResultTableContainer from './ResultTableContainer';
 
 export default class ArchiveSearch extends Component {
     constructor(props) {
@@ -36,15 +37,18 @@ export default class ArchiveSearch extends Component {
 
     componentDidMount() {
         this.props.setFlyoutTabsIndex(INDEX_SEARCH);
-    }
-
-    componentDidMount() {
-        //this.search()
+        //this.search({
+            //...this.props.query,
+            //page: 1,
+        //});
     }
 
     componentDidUpdate(prevProps) {
         if (prevProps.isLoggedIn !== this.props.isLoggedIn) {
-            this.search()
+            this.search({
+                ...this.props.query,
+                page: 1,
+            });
         }
     }
 
@@ -61,30 +65,6 @@ export default class ArchiveSearch extends Component {
                 </div>
             )
         }
-    }
-
-    listHeader() {
-        let props = this.props
-        let headers = [];
-
-        if (admin(this.props, {type: 'General'}, 'edit')) {
-            // the following column header will be shown above the second column (tested in FF and Chrome). Why?
-            headers.push(<td key={'list-header-column-selected'}></td>);
-            //headers.push(<td key={'list-header-column-selected'}><strong>{t(this.props, 'selected')}</strong></td>);
-        }
-
-        props.listColumns.map(function(column, i){
-            let label = (props.project && props.project.metadata_fields[column.id].label[props.locale]) || t(props, column.name);
-            headers.push (
-                <td key={`list-header-column-${i}`}><strong>{label}</strong></td>
-            )
-        })
-
-        if (this.props.query.fulltext) {
-            headers.push(<td key={'list-header-column-count'}><strong>{t(this.props, 'archive_results')}</strong></td>);
-        }
-
-        return headers;
     }
 
     sort(column, direction) {
@@ -155,23 +135,8 @@ export default class ArchiveSearch extends Component {
                 )
             } else if (displayType === 'list') {
                 return (
-                    <table style={{padding: '0 20px', width: '100%'}}>
-                        <thead>
-                            <tr>
-                                <td><strong>{t(this.props, 'interviewee_name')}</strong></td>
-                                {this.listHeader()}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {this.props.foundInterviews?.map((interview, index) => {
-                                return <InterviewListRowContainer
-                                    interview={interview}
-                                    key={"interview-row-" + interview.archive_id + "-" + index}
-                                />;
-                            })}
-                        </tbody>
-                    </table>
-                )
+                    <ResultTableContainer/>
+                );
             } else if (displayType === 'workflow' && admin(this.props, {type: 'General'}, 'edit')) {
                 return (
                     <Fetch
@@ -200,6 +165,7 @@ export default class ArchiveSearch extends Component {
 
     search(query={page: 1}) {
         let url = `${pathBase(this.props)}/searches/archive`;
+
         this.props.searchInArchive(url, query);
     }
 

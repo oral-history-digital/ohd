@@ -110,10 +110,12 @@ function receiveInterviewSearchResults(json){
     return {
         type: RECEIVE_INTERVIEW_SEARCH,
         foundSegments: json.found_segments,
-        foundPeople: json.found_people,
+        foundHeadings: json.found_headings,
         foundPhotos: json.found_photos,
         foundRegistryEntries: json.found_registry_entries,
         foundBiographicalEntries: json.found_biographical_entries,
+        foundAnnotations: json.found_annotations,
+        foundObservations: json.found_observations,
         fulltext: json.fulltext,
         archiveId: json.archiveId,
         receivedAt: Date.now()

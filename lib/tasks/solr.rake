@@ -2,11 +2,11 @@ namespace :solr do
 
   namespace :reindex do
 
-    desc 'reindex segments in interview-chunks, and by this making use of the fact the includes(:translations) on interview#has_many :segments' 
+    desc 'reindex segments in interview-chunks, and by this making use of the fact the includes(:translations) on interview#has_many :segments'
     task :segments => :environment do
       start = Time.now
       p "starting to reindex segments per interview ..."
-      Interview.all.each do |i|  
+      Interview.all.each do |i|
         start_interview = Time.now
         i.segments.includes(:translations).each_slice(100) do |batch|
           Sunspot.index batch
@@ -18,7 +18,7 @@ namespace :solr do
       p "finished all segments in #{(finish - start)} seconds."
     end
 
-    %w(interview person biographical_entry photo registry_entry).each do |that|
+    %w(interview person biographical_entry photo registry_entry annotation).each do |that|
       desc "reindex #{that.pluralize}"
       task that.pluralize.to_sym => :environment do
         start = Time.now
@@ -35,8 +35,16 @@ namespace :solr do
     end
 
     desc 'reindex all'
-    task :all => ['solr:reindex:interviews', 'solr:reindex:people', 'solr:reindex:biographical_entries', 'solr:reindex:photos', 'solr:reindex:segments', 'solr:reindex:registry_entries', 'solr:reindex:commit'] 
-
+    task :all => [
+      'solr:reindex:interviews',
+      'solr:reindex:people',
+      'solr:reindex:biographical_entries',
+      'solr:reindex:photos',
+      'solr:reindex:segments',
+      'solr:reindex:registry_entries',
+      'solr:reindex:annotations',
+      'solr:reindex:commit'
+    ]
   end
 
 end
