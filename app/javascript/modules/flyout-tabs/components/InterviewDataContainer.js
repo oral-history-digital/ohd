@@ -1,5 +1,4 @@
 import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
 
 import { getLocale } from 'modules/archive';
 import { getIsLoggedIn } from 'modules/account';
@@ -10,6 +9,4 @@ const mapStateToProps = state => ({
     isLoggedIn: getIsLoggedIn(state),
 });
 
-export default withRouter(connect(
-    mapStateToProps
-)(InterviewData));
+export default connect(mapStateToProps)(InterviewData);

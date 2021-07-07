@@ -1,55 +1,61 @@
-import { Component } from 'react';
+import { useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-export default class InterviewData extends Component {
-    constructor(props) {
-        super(props);
+export default function InterviewData({
+    title,
+    open = false,
+    url,
+    isLoggedIn,
+    locale,
+    children,
+}) {
+    const history = useHistory();
+    const location = useLocation();
+    const [isOpen, setIsOpen] = useState(!isLoggedIn || open);
 
-        this.state = {
-            open: !this.props.isLoggedIn || this.props.open
-        };
-
-        this.handleClick = this.handleClick.bind(this);
-    }
-
-    handleClick(){
-        if (this.props.url && this.props.location.pathname !== this.props.url) {
-            this.setState({ open: true });
-            this.props.history.push(this.props.url);
+    function handleClick() {
+        if (url && location.pathname !== url) {
+            setIsOpen(true);
+            history.push(url);
         } else {
-            this.setState({ open: !this.state.open });
+            setIsOpen(prev => !prev);
         }
     }
 
-    render() {
-        const { open } = this.state;
-
-        return (
-            <div>
-                <button
-                    type="button"
-                    className={classNames('accordion', { 'active': open })}
-                    lang={this.props.locale}
-                    onClick={this.handleClick}
-                >
-                    {this.props.title}
-                </button>
-                <div className={classNames('panel', { 'open': open })}>
-                    {this.props.children}
-                </div>
-            </div>
-        );
-    }
+    return (
+        <div>
+            <button
+                type="button"
+                className={classNames('accordion', {
+                    'active': isOpen,
+                    'only-link': typeof children === 'undefined',
+                })}
+                lang={locale}
+                onClick={handleClick}
+            >
+                {title}
+            </button>
+            {
+                children && (
+                    <div className={classNames('panel', { 'open': isOpen })}>
+                        {children}
+                    </div>
+                )
+            }
+        </div>
+    );
 }
 
 InterviewData.propTypes = {
     title: PropTypes.string.isRequired,
     open: PropTypes.bool,
-    children: PropTypes.element.isRequired,
     url: PropTypes.string,
     isLoggedIn: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
-    history: PropTypes.object.isRequired,
-    location: PropTypes.object.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
 };
