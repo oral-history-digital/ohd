@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { t } from 'modules/i18n';
-import missingStill from 'assets/images/missing_still.png';
+import speakerImage from 'assets/images/speaker.png';
 
 export default class MediaElement extends Component {
     constructor(props) {
@@ -120,47 +120,32 @@ export default class MediaElement extends Component {
         }
     }
 
-    subtitles() {
-        return this.props.interview.languages.map((language) => {
-            return (
-                <track
-                    key={`subtitle-${language}-${this.props.locale}-${this.props.tape}`}
-                    kind="subtitles"
-                    label={t(this.props, language)}
-                    src={this.props.archiveId + '.vtt?lang=' + language + '&tape_number=' + this.props.tape}
-                    srcLang={language}
-                />
-            )
-        })
-    }
-
     render() {
-        const { projectId, interview, className } = this.props;
+        const { interview, className, tape, archiveId } = this.props;
 
-        const isAudio = interview.media_type === 'audio';
+        const isVideo = interview.media_type === 'video';
 
         return (
-            <div className={classNames('MediaElement', className, isAudio ? 'MediaElement--audio' : 'MediaElement--video')}>
-                {
-                    isAudio ? (
-                        <audio
-                            ref={this.mediaElement}
-                            className="MediaElement-element"
-                            controls
-                            src={this.src()}
-                        />
-                    ) : (
-                        <video
-                            ref={this.mediaElement}
-                            className="MediaElement-element"
-                            controls
-                            poster={interview.still_url || missingStill}
-                            src={this.src()}
-                        >
-                            {this.subtitles()}
-                        </video>
-                    )
-                }
+            <div className={classNames('MediaElement', className, isVideo ? 'MediaElement--video' : 'MediaElement--audio')}>
+                <video
+                    ref={this.mediaElement}
+                    className="MediaElement-element"
+                    controls
+                    poster={interview.still_url || speakerImage}
+                    src={this.src()}
+                >
+                    {
+                        isVideo && interview.languages.map(language => (
+                            <track
+                                key={language}
+                                kind="subtitles"
+                                label={t(this.props, language)}
+                                src={`${archiveId}.vtt?lang=${language}&tape_number=${tape}`}
+                                srcLang={language}
+                            />
+                        ))
+                    }
+                </video>
             </div>
         );
     }
