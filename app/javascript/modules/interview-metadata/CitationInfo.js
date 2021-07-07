@@ -1,53 +1,58 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 
-export default class CitationInfo extends Component {
-    content(label, value, className) {
-        return (
+export default function CitationInfo({
+    interview,
+    locale,
+    projectDoi,
+    projectId,
+    projectName,
+    archiveDomain,
+}) {
+    const { t } = useI18n();
+    const pathBase = usePathBase();
+
+    let selfLink;
+    if (archiveDomain) {
+        selfLink = `${archiveDomain}${pathBase}/interviews/${interview.archive_id}`;
+    }
+
+    let doiLink;
+    if (interview.doi_status === 'created') {
+        doiLink = `https://doi.org/${projectDoi}/${projectId}.${interview.archive_id}`;
+    }
+
+    return (
+        <div>
             <p>
-                <span className="flyout-content-label">{label}:</span>
-                <span className={"flyout-content-data "+className}>{value}</span>
+                <span className="flyout-content-label">
+                    {t('citation')}:
+                </span>
+                <span className="flyout-content-data">
+                    {interview.short_title && `${interview.short_title?.[locale]}, `}
+                    {t('interview')}
+                    {' '}
+                    {`${interview.archive_id}, `}
+                    {`${interview.interview_date}, `}
+                    {projectName && `${projectName[locale]}, `}
+                    {selfLink && <a href={selfLink}>{selfLink}</a>}
+                    {
+                        doiLink && (<>
+                            {', '}
+                            {t('doi.name')}:
+                            {' '}
+                            <a href={doiLink}>{doiLink}</a>
+                            {' '}
+                            {`(${t('called')}: ${moment().format('DD.MM.YYYY')})`}
+                        </>)
+                    }
+                </span>
             </p>
-        )
-    }
-
-    project(){
-        if (this.props.projectName && this.props.archiveDomain){
-            return `${this.props.projectName[this.props.locale]}, ${this.props.archiveDomain}`;
-        }
-        return "";
-    }
-
-    doi() {
-        if (this.props.interview.doi_status === 'created') {
-            let doi = `https://doi.org/${this.props.projectDoi}/${this.props.projectId}.${this.props.interview.archive_id}`;
-            let called = ` (${t(this.props, 'called')}: ${moment().format('DD.MM.YYYY')})`;
-            return `, ${t(this.props, 'doi.name')}: ${doi}${called}`;
-        } else {
-            return '';
-        }
-    }
-
-    render() {
-        if (this.props.interview) {
-            let citation = `${this.props.interview.short_title && this.props.interview.short_title[this.props.locale]},
-            ${t(this.props, 'interview')}
-            ${this.props.interview.archive_id},
-            ${this.props.interview.interview_date},
-            ${this.project()}${this.doi()}`
-
-            return (
-                <div>
-                    {this.content(t(this.props, 'citation'), citation)}
-                </div>
-            );
-        } else {
-            return null;
-        }
-    }
+        </div>
+    );
 }
 
 CitationInfo.propTypes = {
@@ -57,5 +62,4 @@ CitationInfo.propTypes = {
     projectName: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
 };
