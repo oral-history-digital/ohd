@@ -28,6 +28,16 @@ export default function InterviewLocations({
         return null;
     }
 
+    console.log(currentLocations);
+
+    const markers = currentLocations.map(location => ({
+        id: location.id,
+        lat: location.latitude,
+        long: location.longitude,
+        radius: 7.5,
+        color: 'red',
+    }));
+
     return (
         <div>
             <div className="explanation">
@@ -35,6 +45,7 @@ export default function InterviewLocations({
             </div>
             <MapComponent
                 loading={loading}
+                markers={markers}
             />
         </div>
     );

@@ -20,10 +20,10 @@ class RegistryReferencesController < ApplicationController
     respond @registry_reference
   end
 
-  def destroy 
+  def destroy
     @registry_reference = RegistryReference.find(params[:id])
     authorize @registry_reference
-    ref_object = @registry_reference.ref_object 
+    ref_object = @registry_reference.ref_object
     @registry_reference.destroy
     ref_object.touch
 
@@ -31,7 +31,7 @@ class RegistryReferencesController < ApplicationController
       format.html do
         render :action => 'index'
       end
-      format.json do 
+      format.json do
         json = {}
         #
         # if ref_object is a segment we do not delete the reference client-side
@@ -70,6 +70,12 @@ class RegistryReferencesController < ApplicationController
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
 
+        registry_entries = RegistryEntry.for_interview_map('de', interview.id)
+
+        json2 = ActiveModelSerializers::SerializableResource.new(registry_entries,
+          each_serializer: SlimRegistryEntryMapSerializer
+        ).as_json
+
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-locations-#{interview.id}-#{interview.updated_at}" do
           segment_ref_locations = RegistryReference.segments_for_interview(interview.id).with_locations.first(100)
           #interview_ref_locations = RegistryReference.for_interview(interview.id).with_locations
@@ -79,14 +85,15 @@ class RegistryReferencesController < ApplicationController
             #interview_ref_locations: interview_ref_locations.map{|e| ::LocationSerializer.new(e).as_json},
           }.to_json
         end
-        render plain: json
+
+        render json: json2
       end
     end
   end
 
   def index
     policy_scope(RegistryReference)
-    @registry_references, extra_params = 
+    @registry_references, extra_params =
     if params[:registry_entry_id]
       [
         policy_scope(RegistryReference).where(registry_entry_id: params[:registry_entry_id]),

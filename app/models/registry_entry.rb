@@ -159,6 +159,19 @@ class RegistryEntry < ApplicationRecord
     .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC SEPARATOR \', \') AS label, registry_hierarchies.ancestor_id AS parent')
   }
 
+  scope :for_interview_map, -> (locale, interview_id) {
+    joins('INNER JOIN registry_names ON registry_names.registry_entry_id = registry_entries.id')
+    .joins('INNER JOIN registry_name_translations ON registry_name_translations.registry_name_id = registry_names.id')
+    .joins('INNER JOIN registry_references ON registry_references.registry_entry_id = registry_entries.id')
+    .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
+    .where('interviews.id = ?', interview_id)
+    .where('registry_references.ref_object_type = "Segment"')
+    .where('registry_name_translations.locale = ?', locale)
+    .where('registry_entries.longitude IS NOT NULL AND registry_entries.latitude IS NOT NULL')
+    .group('registry_entries.id')
+    .select('registry_entries.id, registry_name_translations.descriptor AS name, registry_entries.longitude, registry_entries.latitude, GROUP_CONCAT(registry_references.ref_object_type) AS ref_types')
+  }
+
   scope :for_map, -> (locale, person_ids) {
     joins('INNER JOIN registry_names ON registry_names.registry_entry_id = registry_entries.id')
     .joins('INNER JOIN registry_name_translations ON registry_name_translations.registry_name_id = registry_names.id')

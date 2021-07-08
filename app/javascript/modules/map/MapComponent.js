@@ -1,25 +1,24 @@
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
-import { Map, TileLayer } from 'react-leaflet';
+import { Map, TileLayer, CircleMarker, Popup } from 'react-leaflet';
 
 import MapOverlay from './MapOverlay';
 import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from './constants';
 
-const leafletOptions = {
-    center: INITIAL_MAP_CENTER,
-    zoom: INITIAL_MAP_ZOOM,
-    maxZoom: 16,
-    scrollWheelZoom: false,
-    zoomAnimation: false,
-};
-
 export default function MapComponent({
     loading = false,
+    initialCenter = INITIAL_MAP_CENTER,
+    initialZoom = INITIAL_MAP_ZOOM,
+    markers = [],
 }) {
     return (
         <Map
             className="Map Map--search"
-            {...leafletOptions}
+            center={initialCenter}
+            maxZoom={16}
+            scrollWheelZoom={false}
+            zoom={initialZoom}
+            zoomAnimation={false}
         >
             {
                 loading && <MapOverlay />
@@ -28,10 +27,33 @@ export default function MapComponent({
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
                 attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
             />
+            {
+                markers.map(marker => (
+                    <CircleMarker
+                        key={marker.id}
+                        center={[marker.lat, marker.long]}
+                        radius={marker.radius}
+                        fillColor={marker.color}
+                        fillOpacity={0.5}
+                        stroke={0}
+                    >
+                        <Popup>Hallo</Popup>
+                    </CircleMarker>
+                ))
+            }
         </Map>
     );
 }
 
 MapComponent.propTypes = {
     loading: PropTypes.bool,
+    initialCenter: PropTypes.arrayOf(PropTypes.number),
+    initialZoom: PropTypes.number,
+    markers: PropTypes.arrayOf(PropTypes.shape({
+        id: PropTypes.number.isRequired,
+        lat: PropTypes.number.isRequired,
+        long: PropTypes.number.isRequired,
+        radius: PropTypes.number.isRequired,
+        color: PropTypes.string.isRequired,
+    })),
 };
