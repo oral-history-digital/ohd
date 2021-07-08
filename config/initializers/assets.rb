@@ -8,9 +8,4 @@ Rails.application.config.assets.version = '1.0'
 
 # Precompile additional assets.
 # application.js, application.css, and all non-JS/CSS in app/assets folder are already added.
-begin
-  if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-    Rails.application.config.assets.precompile += %w( cluster.js responsive.js ) + Project.all.map{|i| "responsive-#{i.shortname.downcase}.css"} 
-  end
-rescue ActiveRecord::NoDatabaseError
-end
+#Rails.application.config.assets.precompile += %w( cluster.js responsive.js )
