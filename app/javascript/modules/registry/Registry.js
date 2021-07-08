@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { INDEX_REGISTRY_ENTRIES } from 'modules/flyout-tabs';
+import { INDEX_REGISTRY_ENTRIES, INDEX_ACCOUNT } from 'modules/flyout-tabs';
 import { Fetch, getRootRegistryEntryFetched, getRootRegistryEntryReload } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ScrollToTop } from 'modules/user-agent';
@@ -17,11 +17,12 @@ export default function Registry({
     showRegistryEntriesTree,
     isRegistryEntrySearching,
     setFlyoutTabsIndex,
+    isLoggedIn,
 }) {
     const { t } = useI18n();
 
     useEffect(() => {
-        setFlyoutTabsIndex(INDEX_REGISTRY_ENTRIES);
+        setFlyoutTabsIndex(isLoggedIn ? INDEX_REGISTRY_ENTRIES : INDEX_ACCOUNT);
     }, []);
 
     return (

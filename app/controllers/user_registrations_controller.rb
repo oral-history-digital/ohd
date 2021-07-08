@@ -1,7 +1,7 @@
 class UserRegistrationsController < ApplicationController
   include Devise::Controllers::Helpers
 
-  skip_before_action :authenticate_user_account!, only: [:new, :create, :activate, :confirm]
+  skip_before_action :authenticate_user_account!, only: [:new, :create, :activate, :confirm, :index]
   skip_after_action :verify_authorized, only: [:new, :create, :activate, :confirm]
   skip_after_action :verify_policy_scoped, only: [:new, :create, :activate, :confirm]
 

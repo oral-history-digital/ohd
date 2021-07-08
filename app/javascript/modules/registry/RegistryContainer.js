@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getRootRegistryEntry, getCurrentProject, getProjects } from 'modules/data';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree } from 'modules/search';
+import { getIsLoggedIn } from 'modules/account';
 import Registry from './Registry';
 
 const mapStateToProps = (state) => ({
@@ -13,6 +14,7 @@ const mapStateToProps = (state) => ({
     foundRegistryEntries: getRegistryEntriesSearch(state),
     showRegistryEntriesTree: getShowRegistryEntriesTree(state),
     isRegistryEntrySearching: getIsRegistryEntrySearching(state),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
