@@ -366,7 +366,7 @@ de:
     registry_name_type:
       admin: Registernamensarten bearbeiten
     contribution_type:
-      admin: Mitwirkkungsarten bearbeiten
+      admin: Mitwirkungsarten bearbeiten
     registry_entry:
       new: Neuen Untereintrag hinzufügen
       edit: Registereintrag bearbeiten
