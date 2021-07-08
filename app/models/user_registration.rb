@@ -141,6 +141,7 @@ EVAL
     user_attrs.delete('id')
     user_attrs.delete('first_name') # names were taken from registration attrs
     user_attrs.delete('last_name')
+    user_attrs.delete('comments') # comments conflicts with UserAccount#has_many :comments
     self.user_account.update_attributes(user_attrs)
   end
 
