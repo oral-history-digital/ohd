@@ -2,25 +2,25 @@ require "globalize"
 
 class Project < ApplicationRecord
 
-  has_many :logos, as: :ref
-  has_many :sponsor_logos, as: :ref
+  has_many :logos, as: :ref, dependent: :destroy
+  has_many :sponsor_logos, as: :ref, dependent: :destroy
 
-  has_many :interviews
-  has_many :collections
-  has_many :contribution_types
-  has_many :media_streams
-  has_many :metadata_fields
-  has_many :task_types
-  has_many :roles
-  has_many :external_links
-  has_many :registry_entries
-  has_many :user_registration_projects
+  has_many :interviews, dependent: :destroy
+  has_many :collections, dependent: :destroy
+  has_many :contribution_types, dependent: :destroy
+  has_many :media_streams, dependent: :destroy
+  has_many :metadata_fields, dependent: :destroy
+  has_many :task_types, dependent: :destroy
+  has_many :roles, dependent: :destroy
+  has_many :external_links, dependent: :destroy
+  has_many :registry_entries, dependent: :destroy
+  has_many :user_registration_projects, dependent: :destroy
   has_many :user_registrations,
     through: :user_registration_projects
 
-  has_many :registry_reference_types
-  has_many :registry_name_types
-  has_many :people
+  has_many :registry_reference_types, dependent: :destroy
+  has_many :registry_name_types, dependent: :destroy
+  has_many :people, dependent: :destroy
 
   translates :name, :introduction, :more_text, :landing_page_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
