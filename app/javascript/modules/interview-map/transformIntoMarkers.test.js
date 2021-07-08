@@ -1,4 +1,4 @@
-import transformLocations from './transformLocations';
+import transformIntoMarkers from './transformIntoMarkers';
 
 test('getInterviewMapMarkers gets locations transformed into markers', () => {
     const locations = [
@@ -25,7 +25,7 @@ test('getInterviewMapMarkers gets locations transformed into markers', () => {
         },
     ];
 
-    const actual = transformLocations(locations);
+    const actual = transformIntoMarkers(locations);
     const expected = [
         {
             id: 18220,

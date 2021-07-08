@@ -1,11 +1,10 @@
 import PropTypes from 'prop-types';
-import useSWR from 'swr';
+import { useQuery } from 'react-query';
 
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
-import fetcher from '../fetcher';
-import transformLocations from '../transformLocations';
+import fetchInterviewMap from '../fetchInterviewMap';
 
 export default function InterviewLocations({
     archiveId,
@@ -13,12 +12,14 @@ export default function InterviewLocations({
     const pathBase = usePathBase();
     const { t } = useI18n();
 
-    const { data, error } = useSWR(`${pathBase}/locations.json?archive_id=${archiveId}`, fetcher, {
-        revalidateOnFocus: false,
-    });
-
-    console.log('rendering');
-    const markers = transformLocations(data || []);
+    const { isLoading, data, error } = useQuery(
+        ['interview-map', archiveId],
+        () => fetchInterviewMap(pathBase, archiveId),
+        {
+            staleTime: 10*60*1000,
+            cacheTime: 60*60*1000,
+        }
+    );
 
     return (
         <>
@@ -32,8 +33,8 @@ export default function InterviewLocations({
                     </div>
                 ) : (
                     <MapComponent
-                        loading={!data}
-                        markers={markers}
+                        loading={isLoading}
+                        markers={data || []}
                     />
                 )
             }

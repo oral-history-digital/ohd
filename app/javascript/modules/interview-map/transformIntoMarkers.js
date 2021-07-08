@@ -5,7 +5,7 @@
  * @param {array} registry entries from the server
  * @return {array} markers for map component
  */
-export default function transformLocations(locations) {
+export default function transformIntoMarkers(locations) {
     if (!Array.isArray(locations)) {
         throw new TypeError('locations must be Array');
     }
