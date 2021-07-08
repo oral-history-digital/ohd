@@ -8,6 +8,7 @@ export default function MapPopupContent({
     return (
         <div className="MapPopup">
             <h3 className="MapPopup-heading">{name}</h3>
+            <p>{registryEntryId}</p>
         </div>
     );
 }

@@ -2,7 +2,7 @@ require 'action_dispatch/routing/mapper'
 
 class RegistryReferencesController < ApplicationController
 
-  after_action :verify_authorized, except: [:index, :locations]
+  after_action :verify_authorized, except: [:index, :locations, :location_references]
   after_action :verify_policy_scoped, only: [:index, :locations]
 
   def create
@@ -91,6 +91,21 @@ class RegistryReferencesController < ApplicationController
         end
 
         render json: json2
+      end
+    end
+  end
+
+  def location_references
+    respond_to do |format|
+      format.json do
+        interview = Interview.find_by(archive_id: params[:archive_id])
+        registry_entry_id = params[:registry_entry_id]
+        interviewee = interview.interviewee
+
+        registry_references = RegistryReference.for_interview_map_registry_entry(registry_entry_id, I18n.locale, interviewee.id)
+        #authorize registry_references
+
+        render json: registry_references, each_serializer: SlimRegistryReferenceInterviewMapSerializer
       end
     end
   end
