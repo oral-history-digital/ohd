@@ -69,8 +69,12 @@ class RegistryReferencesController < ApplicationController
       end
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
+        interviewee = interview.interviewee
 
-        registry_entries = RegistryEntry.for_interview_map('de', interview.id)
+        segment_entries = RegistryEntry.for_interview_map('de', interview.id)
+        person_entries = RegistryEntry.for_map('de', [interviewee.id])
+
+        registry_entries = segment_entries.to_a.concat(person_entries.to_a)
 
         json2 = ActiveModelSerializers::SerializableResource.new(registry_entries,
           each_serializer: SlimRegistryEntryMapSerializer
