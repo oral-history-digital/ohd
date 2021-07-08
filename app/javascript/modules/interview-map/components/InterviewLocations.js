@@ -1,23 +1,24 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import useSWR from 'swr';
 
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
+import fetcher from '../fetcher';
+import transformLocations from '../transformLocations';
 
 export default function InterviewLocations({
-    markers,
-    loading,
-    error,
     archiveId,
-    fetchLocations,
 }) {
     const pathBase = usePathBase();
     const { t } = useI18n();
 
-    useEffect(() => {
-        fetchLocations(pathBase, archiveId);
-    }, [fetchLocations, pathBase, archiveId]);
+    const { data, error } = useSWR(`${pathBase}/locations.json?archive_id=${archiveId}`, fetcher, {
+        revalidateOnFocus: false,
+    });
+
+    console.log('rendering');
+    const markers = transformLocations(data || []);
 
     return (
         <>
@@ -27,12 +28,12 @@ export default function InterviewLocations({
             {
                 error ? (
                     <div className="explanation">
-                        {t('modules.interview_map.error')}: {error}
+                        {t('modules.interview_map.error')}: {error.message}
                     </div>
                 ) : (
                     <MapComponent
-                        loading={loading}
-                        markers={markers || []}
+                        loading={!data}
+                        markers={markers}
                     />
                 )
             }
@@ -41,9 +42,5 @@ export default function InterviewLocations({
 }
 
 InterviewLocations.propTypes = {
-    markers: PropTypes.array,
-    loading: PropTypes.bool.isRequired,
-    error: PropTypes.string,
     archiveId: PropTypes.string.isRequired,
-    fetchLocations: PropTypes.func.isRequired,
 };

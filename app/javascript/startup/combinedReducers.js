@@ -5,7 +5,6 @@ import { archiveReducer, ARCHIVE_NAME } from 'modules/archive';
 import { dataReducer, DATA_NAME } from 'modules/data';
 import { featuresReducer, FEATURES_NAME } from 'modules/features';
 import { flyoutTabsReducer, FLYOUT_TABS_NAME } from 'modules/flyout-tabs';
-import { interviewMapReducer, INTERVIEW_MAP_NAME } from 'modules/interview-map';
 import { interviewReducer, INTERVIEW_NAME } from 'modules/interview';
 import { mediaPlayerReducer, MEDIA_PLAYER_NAME } from 'modules/media-player';
 import { popupReducer, POPUP_NAME } from 'modules/ui';
@@ -18,7 +17,6 @@ const combinedReducer = combineReducers({
     [DATA_NAME]: dataReducer,
     [FEATURES_NAME]: featuresReducer,
     [FLYOUT_TABS_NAME]: flyoutTabsReducer,
-    [INTERVIEW_MAP_NAME]: interviewMapReducer,
     [INTERVIEW_NAME]: interviewReducer,
     [MEDIA_PLAYER_NAME]: mediaPlayerReducer,
     [POPUP_NAME]: popupReducer,
