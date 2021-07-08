@@ -19,8 +19,6 @@
     text-transform: uppercase;
     transition: 0.4s;
     margin-bottom: 2px;
-    //border-bottom: 1px solid $gray-warm;
-    //&.active,
     &:hover {
       color: $gray-dark;
     }
@@ -33,6 +31,10 @@
     &.active::after {
       content: "\f068";
     }
+
+    &.only-link::after {
+      content: '';
+    }
   }
   .panel {
     padding: 0;
@@ -43,7 +45,6 @@
       overflow: initial;
       padding: 10px 0 20px 0;
       max-height: 100%;
-      //padding-left: 20px;
     }
   }
   p, form {
@@ -55,7 +56,6 @@
   .flyout-content-label {
     display: inline-block;
     margin-right: 10px;
-    //margin-bottom: 5px;
     color: var(--primary-color);
   }
   .flyout-content-item:not(:last-child) {
@@ -224,19 +224,6 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
   button[disabled],
   html input[disabled] {
     cursor: default;
-  }
-}
-
-.interview-preview.search-result {
-  .panel {
-    padding: 0;
-    max-height: 0;
-    overflow: hidden;
-    transition: 0.2s ease-out;
-    &.open {
-      max-height: 100%;
-      padding: 10px 0 20px 0;
-    }
   }
 }
 
