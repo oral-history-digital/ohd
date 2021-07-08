@@ -1,25 +1,10 @@
-import { Loader } from 'modules/api';
+import { CALL_API } from 'modules/api';
+import { FETCH_LOCATIONS_STARTED, FETCH_LOCATIONS_SUCCEEDED, FETCH_LOCATIONS_FAILED }
+    from './action-types';
 
-import { REQUEST_LOCATIONS, RECEIVE_LOCATIONS } from './action-types';
-
-const requestLocations = (archiveId) => ({
-  type: REQUEST_LOCATIONS,
-  archiveId: archiveId,
+export const fetchLocations = (pathBase, archiveId) => ({
+    [CALL_API]: {
+        types: [FETCH_LOCATIONS_STARTED, FETCH_LOCATIONS_SUCCEEDED, FETCH_LOCATIONS_FAILED],
+        endpoint: `${pathBase}/locations?archive_id=${archiveId}`,
+    },
 });
-
-function receiveLocations(json){
-  return {
-    type: RECEIVE_LOCATIONS,
-    archiveId: json.archive_id,
-    segmentRefLocations: json.segment_ref_locations,
-    interviewRefLocations: json.interview_ref_locations,
-    receivedAt: Date.now()
-  }
-}
-
-export function fetchLocations(url, archiveId) {
-  return dispatch => {
-    dispatch(requestLocations(archiveId))
-    Loader.getJson(`${url}?archive_id=${archiveId}`, null, dispatch, receiveLocations);
-  }
-}

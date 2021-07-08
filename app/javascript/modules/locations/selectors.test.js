@@ -7,6 +7,8 @@ const state = {
         archiveId: 'za283',
     },
     locations: {
+        isLoading: false,
+        error: 'not found',
         za283: [
             {
                 id: 18220,
@@ -33,7 +35,7 @@ test('getLocations retrieves locations object', () => {
     expect(selectors.getLocations(state)).toEqual(state.locations);
 });
 
-test('getCurrentLocations retrieves locations for archivId', () => {
+test('getCurrentLocations retrieves locations for archiveId', () => {
     expect(selectors.getCurrentLocations(state)).toEqual(state.locations.za283);
 });
 
@@ -55,6 +57,14 @@ describe('getCurrentLocationsWithRefs', () => {
 })
 
 
-test('getLocationsFetched retrieves if locations for archivId are present', () => {
+test('getLocationsFetched retrieves if locations for archiveId are present', () => {
     expect(selectors.getLocationsFetched(state)).toBeTruthy();
+});
+
+test('getLocationsLoading retrieves loading state', () => {
+    expect(selectors.getLocationsLoading(state)).toEqual(state.locations.isLoading);
+});
+
+test('getLocationsError retrieves error message', () => {
+    expect(selectors.getLocationsError(state)).toEqual(state.locations.error);
 });
