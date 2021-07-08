@@ -56,6 +56,7 @@ class Project < ApplicationRecord
   validates :aspect_y, numericality: { only_integer: true },  allow_nil: true
   validates :archive_id_number_length, numericality: { only_integer: true },  allow_nil: true
   validates :initials, format: { with: /\A[a-zA-Z]+\z/ },  allow_nil: true
+  validates :shortname, format: { with: /\A[a-zA-Z]+\z/ },  presence: true
 
   before_save :touch_interviews
   def touch_interviews

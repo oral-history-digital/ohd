@@ -26,7 +26,7 @@ const mapStateToProps = (state) => {
         scope: 'project',
         baseTabIndex: 5 + (project ? project.has_map : 0),
         detailsAttributes: ['title'],
-        initialFormValues: {display_ohd_link: true},
+        initialFormValues: {display_ohd_link: true, pseudo_view_modes: 'grid,list,workflow'},
         formElements: [
             {
                 attribute: 'name',
