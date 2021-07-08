@@ -1,6 +1,18 @@
 import request from 'superagent';
+import memoize from 'memoizee';
 
 export const CALL_API = 'CALL_API';
+
+const memoizeOptions = {
+    promise: true,
+    maxAge: 60 * 60 * 1000,  // 1 hour
+    max: 1000,  // 1000 results are approx. 10MB max
+};
+
+const fetch = memoize(url => {
+    return request.get(url).set('Accept', 'application/json')
+        .then(res => res.body);
+}, memoizeOptions);
 
 const apiMiddleware = store => next => async action => {
     const callApi = action[CALL_API];
@@ -14,12 +26,11 @@ const apiMiddleware = store => next => async action => {
     next({ type: requestStartedType });
 
     try {
-        const res = await request.get(callApi.endpoint)
-            .set('Accept', 'application/json');
+        const payload = await fetch(callApi.endpoint);
 
         next({
             type: successType,
-            payload: res.body,
+            payload,
         });
     } catch(err) {
         next({
