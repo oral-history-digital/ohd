@@ -74,22 +74,14 @@ class ProjectsController < ApplicationController
     current_user_registration_project = UserRegistrationProject.create project_id: @project.id, user_registration_id: current_user_account.user_registration.id
     current_user_registration_project.grant_project_access!
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@project, msg: 'processed')
-      end
-    end
+    respond @project
   end
 
   # PATCH/PUT /projects/1
   def update
     @project.update(project_params)
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@project)
-      end
-    end
+    respond @project
   end
 
   # DELETE /projects/1
@@ -106,10 +98,24 @@ class ProjectsController < ApplicationController
   end
 
   private
-  # if a project is updated or destroyed from ohd.de
+    # if a project is updated or destroyed from ohd.de
     def set_project
       @project = current_project || Project.find(params[:id])
       authorize @project
+    end
+
+    def respond project
+      respond_to do |format|
+        format.json do
+          render json: {
+            data: cache_single(project),
+            data_type: 'projects',
+            id: project.id,
+            reload_data_type: 'accounts',
+            reload_id: 'current' 
+          }
+        end
+      end
     end
 
     # Only allow a trusted parameter "white list" through.
