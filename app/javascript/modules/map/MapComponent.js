@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
-import { Map, TileLayer, CircleMarker, Popup } from 'react-leaflet';
+import { Map, TileLayer, CircleMarker, Popup, Tooltip } from 'react-leaflet';
 
 import MapOverlay from './MapOverlay';
 import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from './constants';
@@ -37,6 +37,9 @@ export default function MapComponent({
                         fillOpacity={0.5}
                         stroke={0}
                     >
+                        <Tooltip>
+                            {marker.name} ({marker.numReferences})
+                        </Tooltip>
                         <Popup>Hallo</Popup>
                     </CircleMarker>
                 ))
@@ -53,6 +56,8 @@ MapComponent.propTypes = {
         id: PropTypes.number.isRequired,
         lat: PropTypes.number.isRequired,
         long: PropTypes.number.isRequired,
+        name: PropTypes.string.isRequired,
+        numReferences: PropTypes.number.isRequired,
         radius: PropTypes.number.isRequired,
         color: PropTypes.string.isRequired,
     })),

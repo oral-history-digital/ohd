@@ -6,8 +6,7 @@ import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
 
 export default function InterviewLocations({
-    locationsFetched,
-    currentLocations,
+    markers,
     loading,
     error,
     archiveId,
@@ -17,43 +16,32 @@ export default function InterviewLocations({
     const { t } = useI18n();
 
     useEffect(() => {
-        if (locationsFetched) {
-            return;
-        }
-
         fetchLocations(pathBase, archiveId);
-    }, []);
-
-    if (!currentLocations || currentLocations.length === 0) {
-        return null;
-    }
-
-    console.log(currentLocations);
-
-    const markers = currentLocations.map(location => ({
-        id: location.id,
-        lat: location.latitude,
-        long: location.longitude,
-        radius: 7.5,
-        color: 'red',
-    }));
+    }, [fetchLocations, pathBase, archiveId]);
 
     return (
-        <div>
+        <>
             <div className="explanation">
-                {t('interview_map_explanation')}
+                {t('modules.interview_map.description')}
             </div>
-            <MapComponent
-                loading={loading}
-                markers={markers}
-            />
-        </div>
+            {
+                error ? (
+                    <div className="explanation">
+                        {t('modules.interview_map.error')}: {error}
+                    </div>
+                ) : (
+                    <MapComponent
+                        loading={loading}
+                        markers={markers || []}
+                    />
+                )
+            }
+        </>
     );
 }
 
 InterviewLocations.propTypes = {
-    locationsFetched: PropTypes.bool.isRequired,
-    currentLocations: PropTypes.array,
+    markers: PropTypes.array,
     loading: PropTypes.bool.isRequired,
     error: PropTypes.string,
     archiveId: PropTypes.string.isRequired,

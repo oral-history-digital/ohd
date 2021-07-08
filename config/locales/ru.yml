@@ -98,7 +98,6 @@ ru:
   interview_location_desc_one: " упоминается в главе "
   interview_location_desc_two: "."
   archive_map_explanation: Die Karte stellt die Geburtsorte der Interviewten dar.
-  interview_map_explanation: Обозначение мест, упомянутых в интервью
   interview_gallery_explanation: Фотогалерея содержит фотографии интервью, а также
     семейные и другие исторические фотографии из частной коллекции интервьюируемого
     лица.
@@ -1581,6 +1580,9 @@ ru:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview_map:
+      description: Обозначение мест, упомянутых в интервью
+      error: Error loading map
     interview_search:
       no_results: No results
       annotation_for: Annotation for

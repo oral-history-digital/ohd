@@ -100,7 +100,6 @@ en:
   interview_location_desc_one: " wird in Kapitel "
   interview_location_desc_two: " erwähnt."
   archive_map_explanation: Die Karte stellt die Geburtsorte der Interviewten dar.
-  interview_map_explanation: Places mentioned in the interview
   interview_gallery_explanation: The picture gallery contains photos of the interview
     situation as well as family photos and other historical photos from the interviewed
     person's private collection.
@@ -1165,6 +1164,9 @@ en:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview_map:
+      description: Places mentioned in the interview
+      error: Error loading map
     interview_search:
       no_results: No results
       annotation_for: Annotation for

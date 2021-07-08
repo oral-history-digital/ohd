@@ -108,7 +108,6 @@ el:
   interview_location_desc_one: " αναφέρεται στο κεφάλαιο "
   interview_location_desc_two: "."
   archive_map_explanation: Ο χάρτης παρουσιάζει τους τόπους γέννησης των συνεντευξιαζόμενων
-  interview_map_explanation: Παρουσίαση των τόπων που αναφέρονται στη συνέντευξη
   interview_gallery_explanation: Η φωτογραφική συλλογή αποτελείται από φωτογραφίες
     που αποτυπώνουν τη συνέντευξη ή στιγμιότυπα μετά το τέλος της καθώς και φωτογραφίες
     που ανήκουν στην ιδιοκτησία του συνεντευξιαζόμενου.
@@ -1167,6 +1166,9 @@ el:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview_map:
+      description: Παρουσίαση των τόπων που αναφέρονται στη συνέντευξη
+      error: Error loading map
     interview_search:
       no_results: No results
       annotation_for: Annotation for

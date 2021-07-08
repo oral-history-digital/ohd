@@ -106,7 +106,6 @@ es:
   interview_location_desc_one: " se menciona en capítulo "
   interview_location_desc_two: " ."
   archive_map_explanation: El mapa muestra los lugares de nacimiento de las personas entrevistadas.
-  interview_map_explanation: Presentación de los lugares que se mencionan en la entrevista.
   interview_gallery_explanation: La galería de imágenes muestra fotos de la entrevista, fotos familiares y otras fotos históricas, propiedad de la persona entrevistada
   interview_empty_gallery_explanation: No hay fotos relacionadas con esta entrevista.
   transcript_header: Transcripción de la entrevsita con
@@ -1126,6 +1125,9 @@ es:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview_map:
+      description: Presentación de los lugares que se mencionan en la entrevista.
+      error: Error loading map
     interview_search:
       no_results: No results
       annotation_for: Annotation for

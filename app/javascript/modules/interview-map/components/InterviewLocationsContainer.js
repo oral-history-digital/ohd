@@ -3,14 +3,12 @@ import { bindActionCreators } from 'redux';
 
 import { getArchiveId } from 'modules/archive';
 import { fetchLocations } from '../actions';
-import { getCurrentLocationsWithRefs, getInterviewMapFetched, getInterviewMapLoading,
-    getInterviewMapError } from '../selectors';
+import { getInterviewMapMarkers, getInterviewMapLoading, getInterviewMapError } from '../selectors';
 import InterviewLocations from './InterviewLocations';
 
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
-    currentLocations: getCurrentLocationsWithRefs(state),
-    locationsFetched: getInterviewMapFetched(state),
+    markers: getInterviewMapMarkers(state),
     loading: getInterviewMapLoading(state),
     error: getInterviewMapError(state),
 });

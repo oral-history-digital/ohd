@@ -1,33 +1,32 @@
 import { createSelector } from 'reselect';
 
-import { getArchiveId } from 'modules/archive';
 import { NAME } from './constants';
 
 export const getInterviewMap = state => state[NAME];
 
-export const getCurrentLocations = state => {
-    const locations = getInterviewMap(state);
-    const archiveId = getArchiveId(state);
-
-    return locations[archiveId];
-};
-
-export const getCurrentLocationsWithRefs = createSelector(
-    [getCurrentLocations],
-    currentLocations => currentLocations?.filter(location => (
-        location.ref_object &&
-        location.latitude &&
-        location.longitude
-    ))
-);
-
-export const getInterviewMapFetched = state => {
-    const locations = getInterviewMap(state);
-    const archiveId = getArchiveId(state);
-
-    return Object.prototype.hasOwnProperty.call(locations, archiveId);
-};
+export const getInterviewMapLocations = state => getInterviewMap(state).locations;
 
 export const getInterviewMapLoading = state => getInterviewMap(state).isLoading;
 
 export const getInterviewMapError = state => getInterviewMap(state).error;
+
+export const getInterviewMapMarkers = createSelector(
+    [getInterviewMapLocations],
+    locations => {
+        if (!locations) {
+            return null;
+        }
+
+        const markers = locations.map(location => ({
+            id: location.id,
+            lat: Number.parseFloat(location.lat),
+            long: Number.parseFloat(location.lon),
+            name: location.name,
+            numReferences: location.ref_types.split(',').length,
+            radius: 7.5,
+            color: 'red',
+        }));
+
+        return markers;
+    }
+);

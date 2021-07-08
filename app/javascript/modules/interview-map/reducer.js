@@ -2,6 +2,7 @@ import { FETCH_LOCATIONS_STARTED, FETCH_LOCATIONS_SUCCEEDED, FETCH_LOCATIONS_FAI
     from './action-types';
 
 export const initialState = {
+    locations: null,
     isLoading: false,
     error: null,
 };
@@ -16,12 +17,12 @@ const locations = (state = initialState, action) => {
         case FETCH_LOCATIONS_SUCCEEDED:
             return {
                 ...state,
-                [action.payload.archive_id]: action.payload.segment_ref_locations,
+                locations: action.payload,
                 isLoading: false,
-                error: null,
             };
         case FETCH_LOCATIONS_FAILED:
             return {
+                ...state,
                 isLoading: false,
                 error: action.error,
             };

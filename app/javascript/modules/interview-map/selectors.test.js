@@ -1,34 +1,26 @@
-import dotProp from 'dot-prop-immutable';
-
 import { NAME } from './constants';
 import * as selectors from './selectors';
 
 const state = {
-    archive: {
-        archiveId: 'za283',
-    },
     [NAME]: {
         isLoading: false,
-        error: 'not found',
-        za283: [
+        locations: [
             {
                 id: 18220,
-                type: 'RegistryReference',
-                latitude: 52.21,
-                longitude: 21.03,
+                lat: '52.21',
+                lon: '21.03',
+                name: 'Deutschland',
+                ref_types: 'Segment',
             },
             {
                 id: 18221,
-                type: 'RegistryReference',
-                latitude: 53.66,
-                longitude: 23.81,
-                ref_object: {
-                    id: 15650,
-                    type: 'Segment',
-                    time: 33,
-                },
+                lat: '53.66',
+                lon: '23.81',
+                name: 'Berlin',
+                ref_types: 'Segment,Segment,Segment',
             },
         ],
+        error: 'not found',
     },
 };
 
@@ -36,30 +28,8 @@ test('getInterviewMap retrieves locations object', () => {
     expect(selectors.getInterviewMap(state)).toEqual(state[NAME]);
 });
 
-test('getCurrentLocations retrieves locations for archiveId', () => {
-    expect(selectors.getCurrentLocations(state)).toEqual(state[NAME].za283);
-});
-
-describe('getCurrentLocationsWithRefs', () => {
-    test('retrieves locations that have ref objects', () => {
-        const actual = selectors.getCurrentLocationsWithRefs(state);
-        const expected = [state[NAME].za283[1]];
-        expect(actual).toEqual(expected);
-    });
-
-    test('filters out locations without geodata', () => {
-        const _state = dotProp.delete(state, `${NAME}.za283.1.latitude`);
-        const _state2 = dotProp.delete(_state, `${NAME}.za283.1.longitude`);
-
-        const actual = selectors.getCurrentLocationsWithRefs(_state2);
-        const expected = [];
-        expect(actual).toEqual(expected);
-    });
-})
-
-
-test('getInterviewMapFetched retrieves if locations for archiveId are present', () => {
-    expect(selectors.getInterviewMapFetched(state)).toBeTruthy();
+test('getInterviewMapLocations retrieves current locations', () => {
+    expect(selectors.getInterviewMapLocations(state)).toEqual(state[NAME].locations);
 });
 
 test('getInterviewMapLoading retrieves loading state', () => {
@@ -68,4 +38,29 @@ test('getInterviewMapLoading retrieves loading state', () => {
 
 test('getInterviewMapError retrieves error message', () => {
     expect(selectors.getInterviewMapError(state)).toEqual(state[NAME].error);
+});
+
+test('getInterviewMapMarkers gets locations transformed into markers', () => {
+    const actual = selectors.getInterviewMapMarkers(state);
+    const expected = [
+        {
+            id: 18220,
+            lat: 52.21,
+            long: 21.03,
+            name: 'Deutschland',
+            numReferences: 1,
+            radius: 7.5,
+            color: 'red',
+        },
+        {
+            id: 18221,
+            lat: 53.66,
+            long: 23.81,
+            name: 'Berlin',
+            numReferences: 3,
+            radius: 7.5,
+            color: 'red',
+        },
+    ];
+    expect(actual).toEqual(expected);
 });
