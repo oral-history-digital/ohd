@@ -1,8 +1,8 @@
-export { NAME as LOCATIONS_NAME } from './constants';
+export { NAME as INTERVIEW_MAP_NAME } from './constants';
 
 export { } from './actions';
 
-export { default as locationsReducer } from './reducer';
+export { default as interviewMapReducer } from './reducer';
 
 export {  } from './selectors';
 

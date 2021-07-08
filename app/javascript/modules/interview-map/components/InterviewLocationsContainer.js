@@ -3,16 +3,16 @@ import { bindActionCreators } from 'redux';
 
 import { getArchiveId } from 'modules/archive';
 import { fetchLocations } from '../actions';
-import { getCurrentLocationsWithRefs, getLocationsFetched, getLocationsLoading,
-    getLocationsError } from '../selectors';
+import { getCurrentLocationsWithRefs, getInterviewMapFetched, getInterviewMapLoading,
+    getInterviewMapError } from '../selectors';
 import InterviewLocations from './InterviewLocations';
 
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
     currentLocations: getCurrentLocationsWithRefs(state),
-    locationsFetched: getLocationsFetched(state),
-    loading: getLocationsLoading(state),
-    error: getLocationsError(state),
+    locationsFetched: getInterviewMapFetched(state),
+    loading: getInterviewMapLoading(state),
+    error: getInterviewMapError(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

@@ -1,12 +1,13 @@
 import dotProp from 'dot-prop-immutable';
 
+import { NAME } from './constants';
 import * as selectors from './selectors';
 
 const state = {
     archive: {
         archiveId: 'za283',
     },
-    locations: {
+    [NAME]: {
         isLoading: false,
         error: 'not found',
         za283: [
@@ -31,24 +32,24 @@ const state = {
     },
 };
 
-test('getLocations retrieves locations object', () => {
-    expect(selectors.getLocations(state)).toEqual(state.locations);
+test('getInterviewMap retrieves locations object', () => {
+    expect(selectors.getInterviewMap(state)).toEqual(state[NAME]);
 });
 
 test('getCurrentLocations retrieves locations for archiveId', () => {
-    expect(selectors.getCurrentLocations(state)).toEqual(state.locations.za283);
+    expect(selectors.getCurrentLocations(state)).toEqual(state[NAME].za283);
 });
 
 describe('getCurrentLocationsWithRefs', () => {
     test('retrieves locations that have ref objects', () => {
         const actual = selectors.getCurrentLocationsWithRefs(state);
-        const expected = [state.locations.za283[1]];
+        const expected = [state[NAME].za283[1]];
         expect(actual).toEqual(expected);
     });
 
     test('filters out locations without geodata', () => {
-        const _state = dotProp.delete(state, 'locations.za283.1.latitude');
-        const _state2 = dotProp.delete(_state, 'locations.za283.1.longitude');
+        const _state = dotProp.delete(state, `${NAME}.za283.1.latitude`);
+        const _state2 = dotProp.delete(_state, `${NAME}.za283.1.longitude`);
 
         const actual = selectors.getCurrentLocationsWithRefs(_state2);
         const expected = [];
@@ -57,14 +58,14 @@ describe('getCurrentLocationsWithRefs', () => {
 })
 
 
-test('getLocationsFetched retrieves if locations for archiveId are present', () => {
-    expect(selectors.getLocationsFetched(state)).toBeTruthy();
+test('getInterviewMapFetched retrieves if locations for archiveId are present', () => {
+    expect(selectors.getInterviewMapFetched(state)).toBeTruthy();
 });
 
-test('getLocationsLoading retrieves loading state', () => {
-    expect(selectors.getLocationsLoading(state)).toEqual(state.locations.isLoading);
+test('getInterviewMapLoading retrieves loading state', () => {
+    expect(selectors.getInterviewMapLoading(state)).toEqual(state[NAME].isLoading);
 });
 
-test('getLocationsError retrieves error message', () => {
-    expect(selectors.getLocationsError(state)).toEqual(state.locations.error);
+test('getInterviewMapError retrieves error message', () => {
+    expect(selectors.getInterviewMapError(state)).toEqual(state[NAME].error);
 });
