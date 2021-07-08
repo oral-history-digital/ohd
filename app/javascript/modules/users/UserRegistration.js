@@ -31,8 +31,7 @@ export default class UserRegistration extends Component {
         )
     }
 
-    baseData() {
-        const userRegistrationProject = Object.values(this.props.userRegistration.user_registration_projects).find(urp => urp.project_id === this.props.project.id)
+    baseData(userRegistrationProject) {
         return (
             <div className='user-base-data box'>
                 <p className='name'>{`${this.props.userRegistration.first_name} ${this.props.userRegistration.last_name}`}</p>
@@ -88,9 +87,8 @@ export default class UserRegistration extends Component {
         )
     }
 
-    show() {
+    show(userRegistrationProject) {
         if (this.props.userRegistration.user_account_id) {
-            const userRegistrationProject = Object.values(this.props.userRegistration.user_registration_projects).find(urp => urp.project_id === this.props.project.id)
             return (
                 <Modal
                     title={t(this.props, 'edit.user_registration.edit')}
@@ -111,11 +109,11 @@ export default class UserRegistration extends Component {
         }
     }
 
-    buttons() {
+    buttons(userRegistrationProject) {
         if (admin(this.props, {type: 'UserRegistration'}, 'update')) {
             return (
                 <div className={'buttons box'}>
-                    {this.show()}
+                    {this.show(userRegistrationProject)}
                     {/* {this.edit()} */}
                 </div>
             )
@@ -171,11 +169,12 @@ export default class UserRegistration extends Component {
     }
 
     render() {
-        if (this.props.userRegistration) {
+        const userRegistrationProject = Object.values(this.props.userRegistration.user_registration_projects).find(urp => urp.project_id === this.props.project.id)
+        if (userRegistrationProject) {
             return (
                 <div className='user-registration boxes'>
-                    {this.baseData()}
-                    {this.buttons()}
+                    {this.baseData(userRegistrationProject)}
+                    {this.buttons(userRegistrationProject)}
                     {this.roles()}
                     {this.tasks()}
                 </div>
