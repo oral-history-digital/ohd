@@ -3,8 +3,7 @@ import PropTypes from 'prop-types';
 
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
-import LocationsContainer from './LocationsContainer'
-import MapPopupContent from './MapPopupContent';
+import { MapComponent } from 'modules/map';
 
 export default function InterviewLocations({
     locationsFetched,
@@ -31,13 +30,11 @@ export default function InterviewLocations({
 
     return (
         <div>
-            <div className='explanation'>
+            <div className="explanation">
                 {t('interview_map_explanation')}
             </div>
-            <LocationsContainer
-                data={currentLocations}
-                loaded={locationsFetched}
-                popupContent={location => <MapPopupContent location={location} />}
+            <MapComponent
+                loading={loading}
             />
         </div>
     );
