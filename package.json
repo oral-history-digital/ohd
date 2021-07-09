@@ -65,7 +65,7 @@
     "slick-carousel": "^1.8.1",
     "superagent": "^5.0.2",
     "superagent-no-cache": "^0.1.1",
-    "swr": "^0.5.6"
+    "swr": "^1.0.0-beta.8"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

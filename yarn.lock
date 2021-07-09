@@ -11619,10 +11619,10 @@ svgo@^1.0.0:
     unquote "~1.1.1"
     util.promisify "~1.0.0"
 
-swr@^0.5.6:
-  version "0.5.6"
-  resolved "https://registry.yarnpkg.com/swr/-/swr-0.5.6.tgz#70bfe9bc9d7ac49a064be4a0f4acf57982e55a31"
-  integrity sha512-Bmx3L4geMZjYT5S2Z6EE6/5Cx6v1Ka0LhqZKq8d6WL2eu9y6gHWz3dUzfIK/ymZVHVfwT/EweFXiYGgfifei3w==
+swr@^1.0.0-beta.8:
+  version "1.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/swr/-/swr-1.0.0-beta.8.tgz#a187cfb5fbc9817f58a3b905f40bcff6152a8c28"
+  integrity sha512-OoSuJ7UomJW9/zcSmrXSYjSOzmevSPCTfgw52xS17DxPNpOp5StiqotGZK+NP5QWGKr+10TKodlC0aADb0KuGw==
   dependencies:
     dequal "2.0.2"
 

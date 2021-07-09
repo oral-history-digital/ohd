@@ -1,22 +1,16 @@
-import { useQuery } from 'react-query';
+import useSWRImmutable from 'swr/immutable';
 import flow from 'lodash.flow';
 
 import { usePathBase } from 'modules/routes';
-import fetchInterviewMap from './fetchInterviewMap';
 import mergeLocations from './mergeLocations';
 import transformIntoMarkers from './transformIntoMarkers';
 
+const fetcher = url => fetch(url).then(res => res.json());
+
 export default function useInterviewMap(archiveId) {
     const pathBase = usePathBase();
-
-    const { isLoading, data, error } = useQuery(
-        ['interview-map', archiveId],
-        () => fetchInterviewMap(pathBase, archiveId),
-        {
-            staleTime: 10*60*1000,
-            cacheTime: 60*60*1000,
-        }
-    );
+    const url = `${pathBase}/locations.json?archive_id=${archiveId}`;
+    const { isValidating, data, error } = useSWRImmutable(url, fetcher);
 
     const transformData = flow(
         mergeLocations,
@@ -24,5 +18,5 @@ export default function useInterviewMap(archiveId) {
     );
     const markers = transformData(data || []);
 
-    return { isLoading, markers, error };
+    return { isLoading: isValidating, markers, error };
 }
