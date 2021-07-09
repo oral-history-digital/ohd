@@ -1,25 +1,14 @@
 import PropTypes from 'prop-types';
-import { useQuery } from 'react-query';
 
-import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
-import fetchInterviewMap from '../fetchInterviewMap';
+import useInterviewMap from '../useInterviewMap';
 
 export default function InterviewLocations({
     archiveId,
 }) {
-    const pathBase = usePathBase();
     const { t } = useI18n();
-
-    const { isLoading, data, error } = useQuery(
-        ['interview-map', archiveId],
-        () => fetchInterviewMap(pathBase, archiveId),
-        {
-            staleTime: 10*60*1000,
-            cacheTime: 60*60*1000,
-        }
-    );
+    const { isLoading, markers, error } = useInterviewMap(archiveId);
 
     return (
         <>
@@ -34,7 +23,7 @@ export default function InterviewLocations({
                 ) : (
                     <MapComponent
                         loading={isLoading}
-                        markers={data || []}
+                        markers={markers}
                     />
                 )
             }
