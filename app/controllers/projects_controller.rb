@@ -1,5 +1,5 @@
 class ProjectsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:show, :index]
+  skip_before_action :authenticate_user_account!, only: [:show, :index, :edit_info, :edit_display, :edit_config]
   before_action :set_project, only: [:show, :edit_info, :edit_display, :edit_config, :edit, :update, :destroy]
 
   # GET /projects

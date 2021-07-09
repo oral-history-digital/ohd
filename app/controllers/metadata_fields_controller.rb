@@ -1,4 +1,5 @@
 class MetadataFieldsController < ApplicationController
+  skip_before_action :authenticate_user_account!, only: [:index]
   before_action :set_metadata_field, only: [:update, :destroy]
 
   def create

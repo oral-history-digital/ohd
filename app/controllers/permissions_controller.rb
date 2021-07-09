@@ -1,4 +1,5 @@
 class PermissionsController < ApplicationController
+  skip_before_action :authenticate_user_account!, only: [:index]
 
   def create
     authorize Permission
