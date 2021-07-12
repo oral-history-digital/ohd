@@ -1,10 +1,3 @@
-/**
- * Merges locations for segments and for the interviewee which are
- * just concatenated on the server.
- *
- * @param {array} registry entries from the server
- * @return {array} markers for map component
- */
 export default function transformIntoMarkers(locations) {
     if (!Array.isArray(locations)) {
         throw new TypeError('locations must be Array');

@@ -2,10 +2,9 @@ import useSWRImmutable from 'swr/immutable';
 import flow from 'lodash.flow';
 
 import { usePathBase } from 'modules/routes';
+import fetcher from './fetcher';
 import mergeLocations from './mergeLocations';
 import transformIntoMarkers from './transformIntoMarkers';
-
-const fetcher = url => fetch(url).then(res => res.json());
 
 export default function useInterviewMap(archiveId) {
     const pathBase = usePathBase();

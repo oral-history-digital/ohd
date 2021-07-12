@@ -1,8 +1,8 @@
-/**
- * Merges locations for segments and for the interviewee which are
- * just concatenated on the server.
- */
 export default function mergeLocations(locations) {
+    if (!Array.isArray(locations)) {
+        throw new TypeError('locations must be Array');
+    }
+
     const mergedLocations = locations.reduce((acc, location) => {
         if (location.id in acc) {
             const storedLocation = acc[location.id];

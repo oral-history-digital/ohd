@@ -1,6 +1,6 @@
 import transformIntoMarkers from './transformIntoMarkers';
 
-test('getInterviewMapMarkers gets locations transformed into markers', () => {
+test('transforms registry location data into markers for map component', () => {
     const locations = [
         {
             id: 18220,
@@ -14,14 +14,7 @@ test('getInterviewMapMarkers gets locations transformed into markers', () => {
             lat: '53.66',
             lon: '23.81',
             name: 'Berlin',
-            ref_types: 'Segment,Segment,Segment',
-        },
-        {
-            id: 18221,
-            lat: '53.66',
-            lon: '23.81',
-            name: 'Berlin',
-            ref_types: '4,14',
+            ref_types: 'Segment,Segment,Segment,4,14',
         },
     ];
 
