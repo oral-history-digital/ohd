@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
 import useInterviewMap from '../useInterviewMap';
+import InterviewMapPopup from './InterviewMapPopup';
 
 export default function InterviewLocations({
     archiveId,
@@ -24,6 +25,7 @@ export default function InterviewLocations({
                     <MapComponent
                         loading={isLoading}
                         markers={markers}
+                        popupComponent={InterviewMapPopup}
                     />
                 )
             }

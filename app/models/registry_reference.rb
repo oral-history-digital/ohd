@@ -53,11 +53,13 @@ class RegistryReference < BaseRegistryReference
     joins('INNER JOIN registry_entries ON registry_references.registry_entry_id = registry_entries.id')
     .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
     .joins('LEFT OUTER JOIN registry_reference_types ON registry_references.registry_reference_type_id = registry_reference_types.id')
+    .joins('INNER JOIN segments ON registry_references.ref_object_id = segments.id')
+    .joins('INNER JOIN tapes ON segments.tape_id = tapes.id')
     .where('interviews.id = ?', interview_id)
     .where('registry_entries.id = ?', registry_entry_id)
     .where('registry_entries.longitude IS NOT NULL AND registry_entries.latitude IS NOT NULL')
     .where('registry_references.ref_object_type = "Segment"')
-    .select('registry_references.id, registry_references.ref_object_type, registry_reference_types.id AS registry_reference_type_id')
+    .select('registry_references.id, registry_references.ref_object_type, registry_reference_types.id AS registry_reference_type_id, segments.timecode, tapes.number AS tape_number')
   }
 
   scope :for_interview_map, -> (locale, interview_id) {

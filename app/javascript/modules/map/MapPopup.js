@@ -2,10 +2,9 @@ import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import { Popup } from 'react-leaflet';
 
-import MapPopupContent from './MapPopupContent';
-
 export default function MapPopup(props) {
     const popupEl = useRef(null);
+    const MapPopupContent = props.popupComponent;
 
     return (
         <Popup ref={popupEl}>
@@ -18,6 +17,7 @@ export default function MapPopup(props) {
 }
 
 MapPopup.propTypes = {
+    title: PropTypes.string.isRequired,
     registryEntryId: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
+    popupComponent: PropTypes.node.isRequired,
 };

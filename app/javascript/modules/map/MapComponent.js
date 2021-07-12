@@ -11,6 +11,7 @@ export default function MapComponent({
     initialCenter = INITIAL_MAP_CENTER,
     initialZoom = INITIAL_MAP_ZOOM,
     markers = [],
+    popupComponent,
 }) {
     return (
         <Map
@@ -42,8 +43,9 @@ export default function MapComponent({
                             {marker.name} ({marker.numReferences})
                         </Tooltip>
                         <MapPopup
-                            name={marker.name}
+                            title={marker.name}
                             registryEntryId={marker.id}
+                            popupComponent={popupComponent}
                         />
                     </CircleMarker>
                 ))
@@ -65,4 +67,5 @@ MapComponent.propTypes = {
         radius: PropTypes.number.isRequired,
         color: PropTypes.string.isRequired,
     })),
+    popupComponent: PropTypes.node.isRequired,
 };
