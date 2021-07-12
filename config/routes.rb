@@ -90,19 +90,6 @@ Rails.application.routes.draw do
       end
     end
 
-    resources :searches, only: [:new, :facets, :archive, :interview, :map] do
-      collection do
-        get :facets
-        get :archive
-        get :export_archive_search
-        get :interview
-        get :registry_entry
-        get :map
-        get 'map_references/:id', action: :map_references
-        get :map_reference_types
-      end
-    end
-
     resources :user_roles, only: [:create, :destroy]
     resources :roles, only: [:create, :update, :index]
     resources :role_permissions, only: [:create, :destroy]
@@ -175,6 +162,21 @@ Rails.application.routes.draw do
 
   end
 
+  concern :search do
+    resources :searches, only: [:new, :facets, :archive, :interview, :map] do
+      collection do
+        get :facets
+        get :archive
+        get :export_archive_search
+        get :interview
+        get :registry_entry
+        get :map
+        get 'map_references/:id', action: :map_references
+        get :map_reference_types
+      end
+    end
+  end
+
   # devise_for creates named routes
   # these named routes can NOT be reused in different scopes or constraints
   # but we need them in the routes version with and without :project_id
@@ -204,7 +206,7 @@ Rails.application.routes.draw do
       root to: "projects#index"
       resources :projects, only: [:create, :destroy]
       concerns :account
-      concerns :unnamed_devise_routes
+      concerns :unnamed_devise_routes, :search
     end
     scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
       root to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
@@ -213,7 +215,7 @@ Rails.application.routes.draw do
         resources :projects, only: [:update, :destroy]
         concerns :archive
         concerns :account
-        concerns :unnamed_devise_routes
+        concerns :unnamed_devise_routes, :search
       end
     end
   end
@@ -229,7 +231,7 @@ Rails.application.routes.draw do
       root to: "projects#show"
       concerns :archive
       concerns :account
-      concerns :unnamed_devise_routes
+      concerns :unnamed_devise_routes, :search
     end
   end
 

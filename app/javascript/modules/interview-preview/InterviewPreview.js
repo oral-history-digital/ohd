@@ -6,7 +6,6 @@ import classNames from 'classnames';
 
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { usePathBase } from 'modules/routes';
 import missingStill from 'assets/images/missing_still.png';
 import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 import ThumbnailBadge from './ThumbnailBadge';
@@ -20,11 +19,10 @@ export default function InterviewPreview({
     interviewee,
     locale,
     project,
-    projectId,
     projects,
-    people,
     peopleStatus,
     setArchiveId,
+    setProjectId,
     selectedArchiveIds,
     addRemoveArchiveId,
     interviewSearchResults,
@@ -32,16 +30,19 @@ export default function InterviewPreview({
     fetchData,
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const pathBase = usePathBase();
+    const interviewProject = projects[interview.project_id];
+    const hrefOrPathBase = interviewProject.archive_domain ? `${interviewProject.archive_domain}/${locale}` : `/${interviewProject.identifier}/${locale}`
+    const hrefOrPath = hrefOrPathBase + '/interviews/' + interview.archive_id;
+    const projectId = interviewProject.identifier;
 
     useEffect(() => {
-        if (fulltext) {
-            searchInInterview(`${pathBase}/searches/interview`, {fulltext, id: interview.archive_id});
+        if (fulltext && !interviewProject.archive_domain) {
+            searchInInterview(`${hrefOrPathBase}/searches/interview`, {fulltext, id: interview.archive_id});
         }
     }, []);
 
     useEffect(() => {
-        loadIntervieweeWithAssociations({ interview, people, peopleStatus, fetchData, locale, projectId, projects });
+        loadIntervieweeWithAssociations({ interview, peopleStatus, fetchData, locale, projectId, projects });
     });
 
     const searchResults = interviewSearchResults[interview.archive_id];
@@ -63,37 +64,23 @@ export default function InterviewPreview({
                     />
                 )
             }
-            <Link
-                className="search-result-link"
-                onClick={() => setArchiveId(interview.archive_id)}
-                to={pathBase + '/interviews/' + interview.archive_id}
-            >
-                <div className="search-result-img aspect-ratio">
-                    <img
-                        className="aspect-ratio__inner"
-                        src={interview.still_url || 'missing_still'}
-                        onError={ (e) => { e.target.src = missingStill; }}
-                        alt=""
-                    />
-                </div>
-
-                <AuthShowContainer ifLoggedIn>
-                    <p className="search-result-name">
-                        {interview.workflow_state === 'unshared' && <FaEyeSlash />}
-                        {interview.short_title && interview.short_title[locale]}
-                    </p>
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut ifNoProject>
-                    <p className="search-result-name">
-                        {interview.workflow_state === 'unshared' && <FaEyeSlash />}
-                        {project.fullname_on_landing_page ? interview.title[locale] : interview.anonymous_title[locale]}
-                    </p>
-                </AuthShowContainer>
-
-                {interviewee?.associations_loaded && !isExpanded && (
-                    <ThumbnailMetadataContainer interview={interview} />
-                )}
-            </Link>
+            { interviewProject.archive_domain ?
+                <a href={hrefOrPath }
+                    className="search-result-link"
+                >
+                    <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
+                </a> :
+                <Link
+                    className="search-result-link"
+                    onClick={() => {
+                        setArchiveId(interview.archive_id);
+                        setProjectId(projectId);
+                    }}
+                    to={hrefOrPath}
+                >
+                    <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
+                </Link>
+            }
 
             {
                 searchResults && resultCount > 0 && (
@@ -122,19 +109,52 @@ export default function InterviewPreview({
     );
 }
 
+function InnerContent({
+    interview,
+    interviewee,
+    project,
+    locale,
+    isExpanded
+}) {
+    return (
+        <>
+            <div className="search-result-img aspect-ratio">
+                <img
+                    className="aspect-ratio__inner"
+                    src={interview.still_url || 'missing_still'}
+                    onError={ (e) => { e.target.src = missingStill; }}
+                    alt=""
+                />
+            </div>
+
+            <AuthShowContainer ifLoggedIn>
+                <p className="search-result-name">
+                    {interview.workflow_state === 'unshared' && <FaEyeSlash />}
+                    {interview.short_title && interview.short_title[locale]}
+                </p>
+            </AuthShowContainer>
+            <AuthShowContainer ifLoggedOut ifNoProject>
+                <p className="search-result-name">
+                    {interview.workflow_state === 'unshared' && <FaEyeSlash />}
+                    {(project && project.fullname_on_landing_page) ? interview.title[locale] : interview.anonymous_title[locale]}
+                </p>
+            </AuthShowContainer>
+
+            {interviewee?.associations_loaded && !isExpanded && (
+                <ThumbnailMetadataContainer interview={interview} />
+            )}
+        </>
+    );
+};
 InterviewPreview.propTypes = {
     fulltext: PropTypes.string,
     interview: PropTypes.object.isRequired,
-    interviewee: PropTypes.object.isRequired,
     interviewSearchResults: PropTypes.object.isRequired,
     query: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     statuses: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array,
-    people: PropTypes.object.isRequired,
     peopleStatus: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,

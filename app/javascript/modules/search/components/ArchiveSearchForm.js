@@ -170,7 +170,7 @@ export default class ArchiveSearchForm extends Component {
                             (this.props.projectId === 'mog') ?
                                 this.renderInputField()
                             :
-                            <AuthShowContainer ifLoggedIn={true} ifCatalog={true}>
+                            <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
                                 {this.renderInputField()}
                             </AuthShowContainer>
                         }

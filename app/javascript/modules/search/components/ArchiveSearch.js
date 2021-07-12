@@ -349,8 +349,6 @@ ArchiveSearch.propTypes = {
     viewModes: PropTypes.array.isRequired,
     viewMode: PropTypes.string.isRequired,
     foundInterviews: PropTypes.array.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
