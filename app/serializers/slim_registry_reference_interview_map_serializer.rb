@@ -1,3 +1,3 @@
 class SlimRegistryReferenceInterviewMapSerializer < ActiveModel::Serializer
-  attributes :id, :registry_reference_type_id, :map_color, :label
+  attributes :id, :ref_object_type, :registry_reference_type_id#, :map_color, :label
 end

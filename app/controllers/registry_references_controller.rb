@@ -102,8 +102,9 @@ class RegistryReferencesController < ApplicationController
         registry_entry_id = params[:registry_entry_id]
         interviewee = interview.interviewee
 
-        registry_references = RegistryReference.for_interview_map_registry_entry(registry_entry_id, I18n.locale, interviewee.id)
-        #authorize registry_references
+        person_references = RegistryReference.for_interview_map_registry_entry(registry_entry_id, I18n.locale, interviewee.id)
+        segment_references = RegistryReference.for_interview_map_segment_references(registry_entry_id, interview.id)
+        registry_references = person_references.to_a.concat(segment_references.to_a)
 
         render json: registry_references, each_serializer: SlimRegistryReferenceInterviewMapSerializer
       end
