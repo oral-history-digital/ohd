@@ -87,7 +87,7 @@ export function searchInArchive(url, searchQuery) {
 export function searchInMap(url, searchQuery) {
     return dispatch => {
         dispatch(requestMapSearch(searchQuery))
-        Loader.getJson(url, searchQuery, dispatch, receiveMapSearchResults);
+        //Loader.getJson(url, searchQuery, dispatch, receiveMapSearchResults);
     }
 }
 

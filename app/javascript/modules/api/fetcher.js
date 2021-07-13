@@ -1,3 +1,7 @@
-export default function fetcher(...args) {
-    return fetch(...args).then(res => res.json());
+export default function fetcher(url) {
+    return fetch(url, {
+        headers: {
+            'Accept': 'application/json',
+        },
+    }).then(res => res.json());
 }

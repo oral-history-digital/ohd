@@ -104,7 +104,7 @@ export default class ArchiveSearchForm extends Component {
     }
 
     submit(params) {
-        if(this.props.map && !this.props.isMapSearching ) {
+        if(this.props.map) {
             let url = `${pathBase(this.props)}/searches/map`;
             this.props.searchInMap(url, params);
             this.props.history.push(url);
