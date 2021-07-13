@@ -1,12 +1,15 @@
 import useSWRImmutable from 'swr/immutable';
 
 import { usePathBase } from 'modules/routes';
-import { fetcher } from 'modules/api';
+import fetchMapReferenceTypes from './fetchMapReferenceTypes';
 
 export default function useMapReferenceTypes() {
     const pathBase = usePathBase();
-    const url = `${pathBase}/searches/map_reference_types`;
-    const { isValidating, data, error } = useSWRImmutable(url, fetcher);
+
+    const { isValidating, data, error } = useSWRImmutable(
+        fetchMapReferenceTypes.name,
+        () => fetchMapReferenceTypes(pathBase)
+    );
 
     return {
         isLoading: isValidating,

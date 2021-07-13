@@ -7,11 +7,6 @@ import curry from 'lodash.curry';
 import { getMapQuery } from 'modules/search';
 import { usePathBase } from 'modules/routes';
 import { getMapFilter } from './selectors';
-import referenceTypesToColorMap from './referenceTypesToColorMap';
-import filterReferenceTypes from './filterReferenceTypes';
-import filterLocations from './filterLocations';
-import transformIntoMarkers from './transformIntoMarkers';
-import sortMarkers from './sortMarkers';
 import fetchMapReferenceTypes from './fetchMapReferenceTypes';
 import fetchMapLocations from './fetchMapLocations';
 
@@ -29,19 +24,6 @@ export default function useSearchMap() {
         fetchMapLocations.name + queryString.stringify(query),
         () => fetchMapLocations(pathBase, query)
     );
-
-    let markers = [];
-    if (types && locations && filter) {
-        const colorMap = referenceTypesToColorMap(types);
-
-        const transformData = flow(
-            curry(filterReferenceTypes)(filter),
-            filterLocations,
-            curry(transformIntoMarkers)(colorMap),
-            sortMarkers
-        );
-        markers = transformData(locations);
-    }
 
     return { isLoading: !(types && locations), markers, locationsError };
 }
