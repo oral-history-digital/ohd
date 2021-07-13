@@ -1583,6 +1583,10 @@ ru:
     interview_map:
       description: Обозначение мест, упомянутых в интервью
       error: Error loading map
+      error_references: Error loading references
+      person_references: Person references
+      segment_references: References in the transcript
+      at: at
     interview_search:
       no_results: No results
       annotation_for: Annotation for

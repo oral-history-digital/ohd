@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getArchiveId } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { Spinner } from 'modules/spinners';
+import { useI18n } from 'modules/i18n';
 import { TapeAndTime } from 'modules/interview-helpers';
 import useInterviewMapReferences from '../useInterviewMapReferences';
 
@@ -13,13 +14,14 @@ export default function InterviewMapPopup({
     registryEntryId,
     onUpdate = f => f,
 }) {
+    const { t } = useI18n();
     const archiveId = useSelector(getArchiveId);
     const dispatch = useDispatch();
-    const { isLoading, data, error } = useInterviewMapReferences(archiveId, registryEntryId);
+    const { isLoading, personReferences, segmentReferences, error } = useInterviewMapReferences(archiveId, registryEntryId);
 
     useEffect(() => {
         onUpdate();
-    }, [data]);
+    }, [personReferences, segmentReferences]);
 
     function handleClick(tape, time) {
         dispatch(sendTimeChangeRequest(tape, time));
@@ -31,38 +33,64 @@ export default function InterviewMapPopup({
             {
                 isLoading && <Spinner small />
             }
-            <h4 className="MapPopup-subHeading">
-                Verknüpfungen
-            </h4>
-            <h4 className="MapPopup-subHeading">
-                Erwähnungen im Transkript
-            </h4>
-            <ul className="MapPopup-list">
-                {
-                    data && data.map(ref => (
-                        <li key={ref.id}>
+            {
+                error && (
+                    <p>
+                        {t('modules.interview_map.error_references')}: {error.message}
+                    </p>
+                )
+            }
+            {
+                personReferences && personReferences.length > 0 && (
+                    <>
+                        <h4 className="MapPopup-subHeading">
+                            {t('modules.interview_map.person_references')}
+                        </h4>
+                        <ul className="MapPopup-list">
                             {
-                                ref.label ?
-                                    (
-                                        <span style={{ color: ref.map_color }}>{ref.label}</span>
-                                    ) :
-                                    (
-                                        <span>
-                                            Erwähnung in
-                                            {' '}
-                                            <button
-                                                type="button"
-                                                onClick={() => handleClick(ref.tape_nbr, ref.time)}
-                                            >
-                                                <TapeAndTime tape={ref.tape_nbr} time={ref.time} />
-                                            </button>
-                                        </span>
-                                    )
+                                personReferences.map(ref => (
+                                    <li
+                                        key={ref.id}
+                                        className="MapPopup-listItem"
+                                        style={{ color: ref.map_color }}
+                                    >
+                                        {ref.label}
+                                    </li>
+                                ))
                             }
-                        </li>
-                    ))
-                }
-            </ul>
+                        </ul>
+                    </>
+                )
+            }
+            {
+                segmentReferences && segmentReferences.length > 0 && (
+                    <>
+                        <h4 className="MapPopup-subHeading">
+                            {t('modules.interview_map.segment_references')}
+                        </h4>
+                        <ul className="MapPopup-list">
+                            {
+                                segmentReferences.map(ref => (
+                                    <li
+                                        key={ref.id}
+                                        className="MapPopup-listItem"
+                                    >
+                                        {t('modules.interview_map.at')}
+                                        {' '}
+                                        <button
+                                            type="button"
+                                            className="MapPopup-button"
+                                            onClick={() => handleClick(ref.tape_nbr, ref.time)}
+                                        >
+                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} />
+                                        </button>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </>
+                )
+            }
         </div>
     );
 }

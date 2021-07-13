@@ -104,9 +104,21 @@ class RegistryReferencesController < ApplicationController
 
         person_references = RegistryReference.for_interview_map_registry_entry(registry_entry_id, I18n.locale, interviewee.id)
         segment_references = RegistryReference.for_interview_map_segment_references(registry_entry_id, interview.id)
-        registry_references = person_references.to_a.concat(segment_references.to_a)
 
-        render json: registry_references, each_serializer: SlimRegistryReferenceInterviewMapSerializer
+        persons = ActiveModelSerializers::SerializableResource.new(person_references,
+          each_serializer: InterviewMapPersonReferencesSerializer
+        )
+
+        segments = ActiveModelSerializers::SerializableResource.new(segment_references,
+          each_serializer: InterviewMapSegmentReferencesSerializer
+        )
+
+        references = {
+          person_references: persons,
+          segment_references: segments
+        }
+
+        render json: references
       end
     end
   end

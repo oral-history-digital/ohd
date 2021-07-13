@@ -59,7 +59,7 @@ class RegistryReference < BaseRegistryReference
     .where('registry_entries.id = ?', registry_entry_id)
     .where('registry_entries.longitude IS NOT NULL AND registry_entries.latitude IS NOT NULL')
     .where('registry_references.ref_object_type = "Segment"')
-    .select('registry_references.id, registry_references.ref_object_type, registry_reference_types.id AS registry_reference_type_id, segments.timecode, tapes.number AS tape_number')
+    .select('registry_references.id, registry_references.ref_object_type, registry_reference_types.id AS registry_reference_type_id, segments.timecode, tapes.number AS tape_nbr')
   }
 
   scope :for_interview_map, -> (locale, interview_id) {
@@ -74,8 +74,6 @@ class RegistryReference < BaseRegistryReference
     .group('registry_entries.id')
     .select('registry_entries.id, registry_name_translations.descriptor AS name, registry_entries.longitude, registry_entries.latitude, GROUP_CONCAT(registry_references.ref_object_type) AS ref_types')
   }
-
-
 
   def write_archive_id
     if ref_object_type == "Interview"
