@@ -8,14 +8,25 @@ import transformIntoMarkers from './transformIntoMarkers';
 
 export default function useInterviewMap(archiveId) {
     const pathBase = usePathBase();
-    const url = `${pathBase}/locations.json?archive_id=${archiveId}`;
-    const { isValidating, data, error } = useSWRImmutable(url, fetcher);
+    const typesUrl = `${pathBase}/searches/map_reference_types`;
+    const { data: types, error: typesError } = useSWRImmutable(typesUrl, fetcher);
+    const locationsUrl = `${pathBase}/locations.json?archive_id=${archiveId}`;
+    const { data: locations, error: locationsError } = useSWRImmutable(locationsUrl, fetcher);
 
-    const transformData = flow(
-        mergeLocations,
-        transformIntoMarkers
-    );
-    const markers = transformData(data || []);
+    let markers = [];
+    if (types && locations) {
+        const colorMap = new Map();
+        types.forEach(type => {
+            colorMap.set(type.id, type.color);
+        });
 
-    return { isLoading: isValidating, markers, error };
+        const curriedTransformIntoMarkers = locations => transformIntoMarkers(colorMap, locations);
+        const transformData = flow(
+            mergeLocations,
+            curriedTransformIntoMarkers
+        );
+        markers = transformData(locations);
+    }
+
+    return { isLoading: !(types && locations), markers, locationsError };
 }

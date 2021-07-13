@@ -1,1 +1,1 @@
-export { default as InterviewLocationsContainer } from './components/InterviewLocationsContainer';
+export { default as InterviewMap } from './components/InterviewMap';

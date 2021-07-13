@@ -1,14 +1,14 @@
-import PropTypes from 'prop-types';
+import { useSelector } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
 import { MapComponent } from 'modules/map';
+import { getArchiveId } from 'modules/archive';
 import useInterviewMap from '../useInterviewMap';
 import InterviewMapPopup from './InterviewMapPopup';
 
-export default function InterviewLocations({
-    archiveId,
-}) {
+export default function InterviewMap() {
     const { t } = useI18n();
+    const archiveId = useSelector(getArchiveId);
     const { isLoading, markers, error } = useInterviewMap(archiveId);
 
     return (
@@ -32,7 +32,3 @@ export default function InterviewLocations({
         </>
     );
 }
-
-InterviewLocations.propTypes = {
-    archiveId: PropTypes.string.isRequired,
-};
