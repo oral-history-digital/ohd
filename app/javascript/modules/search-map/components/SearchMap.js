@@ -28,7 +28,7 @@ export default function SearchMap({
 
     return (
         <ScrollToTop>
-            <div className='wrapper-content map'>
+            <div className="wrapper-content map">
                 {
                     <MapComponent
                         loading={isLoading}

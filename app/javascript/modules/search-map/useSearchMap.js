@@ -7,11 +7,16 @@ import queryString from 'query-string';
 import { getMapQuery } from 'modules/search';
 import { usePathBase } from 'modules/routes';
 import { fetcher } from 'modules/api';
-import transformIntoMarkers from './transformIntoMarkers';
+import { getMapFilter } from './selectors';
 import referenceTypesToColorMap from './referenceTypesToColorMap';
+import filterReferenceTypes from './filterReferenceTypes';
+import filterLocations from './filterLocations';
+import transformIntoMarkers from './transformIntoMarkers';
+import sortMarkers from './sortMarkers';
 
 export default function useSearchMap() {
     const query = useSelector(getMapQuery);
+    const filter = useSelector(getMapFilter);
     const pathBase = usePathBase();
     const typesUrl = `${pathBase}/searches/map_reference_types`;
     const { data: types, error: typesError } = useSWRImmutable(typesUrl, fetcher);
@@ -22,11 +27,14 @@ export default function useSearchMap() {
     const { data: locations, error: locationsError } = useSWRImmutable(locationsUrl, fetcher);
 
     let markers = [];
-    if (types && locations) {
+    if (types && locations && filter) {
         const colorMap = referenceTypesToColorMap(types);
 
         const transformData = flow(
-            curry(transformIntoMarkers)(colorMap)
+            curry(filterReferenceTypes)(filter),
+            filterLocations,
+            curry(transformIntoMarkers)(colorMap),
+            sortMarkers
         );
         markers = transformData(locations);
     }
