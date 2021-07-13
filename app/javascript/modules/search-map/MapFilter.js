@@ -3,15 +3,17 @@ import classNames from 'classnames';
 import keyBy from 'lodash.keyby';
 
 import { useI18n } from 'modules/i18n';
-import { MARKER_COLOR_MULTIPLE_TYPES } from './constants';
+import useMapReferenceTypes from './useMapReferenceTypes';
+
+const MARKER_COLOR_MULTIPLE_TYPES = 'black';
 
 export default function MapFilter({
     filter,
-    mapReferenceTypes,
     locationCountByReferenceType,
     toggleMapFilter,
 }) {
     const { t } = useI18n();
+    const { mapReferenceTypes } = useMapReferenceTypes();
 
     if (!mapReferenceTypes) {
         return null;

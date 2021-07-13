@@ -3,7 +3,7 @@ import flow from 'lodash.flow';
 import curry from 'lodash.curry';
 
 import { usePathBase } from 'modules/routes';
-import fetcher from './fetcher';
+import { fetcher } from 'modules/api';
 import mergeLocations from './mergeLocations';
 import transformIntoMarkers from './transformIntoMarkers';
 

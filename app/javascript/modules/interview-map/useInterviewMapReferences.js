@@ -1,7 +1,7 @@
 import useSWRImmutable from 'swr/immutable';
 
 import { usePathBase } from 'modules/routes';
-import fetcher from './fetcher';
+import { fetcher } from 'modules/api';
 
 export default function useInterviewMapReferences(archiveId, registryEntryId) {
     const pathBase = usePathBase();

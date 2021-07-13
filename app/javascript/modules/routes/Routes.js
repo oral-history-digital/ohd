@@ -9,7 +9,7 @@ import { InterviewContainer } from 'modules/interview';
 import { UserRegistrationsContainer } from 'modules/users';
 import { RegistryContainer } from 'modules/registry';
 import { ArchiveSearchContainer } from 'modules/search';
-import { MapSearchContainer } from 'modules/map-search';
+import { MapSearchContainer } from 'modules/search-map';
 import { WrappedProjectsContainer, WrappedRolesContainer,
     WrappedPermissionsContainer, WrappedTaskTypesContainer, WrappedRegistryReferenceTypesContainer,
     WrappedContributionTypesContainer, WrappedRegistryNameTypesContainer,
