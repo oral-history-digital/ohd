@@ -1,29 +1,17 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
-import { Tooltip, Map, CircleMarker, TileLayer } from 'react-leaflet';
 
 import { usePathBase } from 'modules/routes';
 import { ScrollToTop } from 'modules/user-agent';
 import { INDEX_MAP } from 'modules/flyout-tabs';
-import MapOverlay from './MapOverlay';
-import MapPopup from './MapPopup';
-import MapFilterContainer from './MapFilterContainer';
-import markerColor from './markerColor';
-import markerRadius from './markerRadius';
-import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from './constants';
 
-const leafletOptions = {
-    center: INITIAL_MAP_CENTER,
-    zoom: INITIAL_MAP_ZOOM,
-    maxZoom: 16,
-    scrollWheelZoom: false,
-    zoomAnimation: false,
-};
+import { MapComponent } from 'modules/map';
+import MapPopupContent from './MapPopupContent';
+import MapFilterContainer from './MapFilterContainer';
 
 export default function MapSearch({
     mapMarkers,
-    mapReferenceTypes,
     isMapSearching,
     query,
     flyoutTabsVisible,
@@ -33,6 +21,8 @@ export default function MapSearch({
 }) {
     const pathBase = usePathBase();
     const mapEl = useRef(null);
+
+    console.log(mapMarkers);
 
     useEffect(() => {
         setFlyoutTabsIndex(INDEX_MAP);
@@ -56,43 +46,13 @@ export default function MapSearch({
     return (
         <ScrollToTop>
             <div className='wrapper-content map'>
-                <Map
-                    className="Map Map--search"
-                    ref={mapEl}
-                    {...leafletOptions}
-                >
-                    {
-                        isMapSearching && <MapOverlay />
-                    }
-                    <TileLayer
-                        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                        attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                {
+                    true && <MapComponent
+                        loading={isMapSearching}
+                        markers={mapMarkers || []}
+                        popupComponent={MapPopupContent}
                     />
-                    {
-                        mapReferenceTypes && mapMarkers?.map(marker => {
-                            return (
-                                <CircleMarker
-                                    key={marker.id}
-                                    center={[marker.lat, marker.lon]}
-                                    radius={markerRadius(marker.numReferences)}
-                                    fillColor={markerColor(mapReferenceTypes, marker.referenceTypes)}
-                                    fillOpacity={0.5}
-                                    stroke={0}
-                                >
-                                    <Tooltip>
-                                        {marker.name} ({marker.numReferences})
-                                    </Tooltip>
-                                    <MapPopup
-                                        name={marker.name}
-                                        registryEntryId={marker.id}
-                                        query={query}
-                                    />
-                                </CircleMarker>
-                            );
-                        })
-                    }
-                </Map>
-
+                }
                 <MapFilterContainer />
             </div>
         </ScrollToTop>

@@ -25,6 +25,10 @@ export const getFoundMarkers = state => getMapSearch(state).foundMarkers;
 
 export const getMapFilter = state => getMapSearch(state).filter;
 
+function markerRadius(numReferences) {
+    return Math.cbrt(numReferences + 3) * 4;
+}
+
 export const getMapMarkers = createSelector(
     [getFoundMarkers, getMapFilter],
     (markers, filter) => {
@@ -45,9 +49,11 @@ export const getMapMarkers = createSelector(
                     id: marker.id,
                     name: marker.name,
                     lat: Number.parseFloat(marker.lat),
-                    lon: Number.parseFloat(marker.lon),
+                    long: Number.parseFloat(marker.lon),
                     numReferences,
                     referenceTypes: uniqueTypes,
+                    color: 'red',
+                    radius: markerRadius(numReferences),
                 };
             })
             .filter(marker => marker.numReferences > 0)

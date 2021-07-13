@@ -7,17 +7,17 @@ import request from 'superagent';
 
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import { getMapReferenceTypes, getMapFilter } from 'modules/search';
+import { getMapReferenceTypes, getMapFilter, getMapQuery } from 'modules/search';
 import groupAndFilterReferences from './groupAndFilterReferences';
 
 export default function MapPopupContent({
-    name,
+    title,
     registryEntryId,
-    query,
     onUpdate = f => f,
 }) {
     const pathBase = usePathBase();
     const referenceTypes = useSelector(getMapReferenceTypes);
+    const query = useSelector(getMapQuery);
     const filter = useSelector(getMapFilter);
     const mapReferenceTypes = useSelector(getMapReferenceTypes);
 
@@ -56,7 +56,7 @@ export default function MapPopupContent({
 
     return (
         <div className="MapPopup">
-            <h3 className="MapPopup-heading">{name}</h3>
+            <h3 className="MapPopup-heading">{title}</h3>
             {
                 groupedReferences !== null ?
                     groupedReferences.map(group => (
@@ -88,7 +88,6 @@ export default function MapPopupContent({
 
 MapPopupContent.propTypes = {
     registryEntryId: PropTypes.number.isRequired,
-    name: PropTypes.string.isRequired,
-    query: PropTypes.object.isRequired,
-    onUpdate: PropTypes.func,
+    title: PropTypes.string.isRequired,
+    onUpdate: PropTypes.func.isRequired,
 };
