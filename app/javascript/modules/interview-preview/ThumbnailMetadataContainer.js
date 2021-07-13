@@ -6,9 +6,7 @@ import ThumbnailMetadata from './ThumbnailMetadata';
 
 const mapStateToProps = (state, props) => ({
     locale: getLocale(state),
-    project: getCurrentProject(state),
     translations: getTranslations(state),
-    interviewee: getInterviewee(state, props),
     languages: getLanguages(state), // needed for humanReadable function
 });
 

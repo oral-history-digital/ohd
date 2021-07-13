@@ -16,9 +16,7 @@ export default function InterviewPreview({
     fulltext,
     statuses,
     interview,
-    interviewee,
     locale,
-    project,
     projects,
     peopleStatus,
     setArchiveId,
@@ -30,13 +28,19 @@ export default function InterviewPreview({
     fetchData,
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const interviewProject = projects[interview.project_id];
-    const hrefOrPathBase = interviewProject.archive_domain ? `${interviewProject.archive_domain}/${locale}` : `/${interviewProject.identifier}/${locale}`
+    const project = projects[interview.project_id];
+    const hrefOrPathBase = project.archive_domain ? `${project.archive_domain}/${locale}` : `/${project.identifier}/${locale}`
     const hrefOrPath = hrefOrPathBase + '/interviews/' + interview.archive_id;
-    const projectId = interviewProject.identifier;
+    const projectId = project.identifier;
+
+    const intervieweeContribution = Object.values(interview.contributions)
+        .find(c => c.contribution_type === 'interviewee');
+    const interviewee = project.people[intervieweeContribution?.person_id];
 
     useEffect(() => {
-        if (fulltext && !interviewProject.archive_domain) {
+        if ( fulltext && (
+            !project.archive_domain || project.archive_domain === window.location.origin
+        )) {
             searchInInterview(`${hrefOrPathBase}/searches/interview`, {fulltext, id: interview.archive_id});
         }
     }, []);
@@ -64,7 +68,7 @@ export default function InterviewPreview({
                     />
                 )
             }
-            { interviewProject.archive_domain ?
+            { project.archive_domain ?
                 <a href={hrefOrPath }
                     className="search-result-link"
                 >
@@ -89,6 +93,8 @@ export default function InterviewPreview({
                             <SlideShowSearchResults
                                 interview={interview}
                                 searchResults={searchResults}
+                                hrefOrPath={hrefOrPath}
+                                projectId={projectId}
                             />
                         </div>
                     </div>
@@ -141,7 +147,7 @@ function InnerContent({
             </AuthShowContainer>
 
             {interviewee?.associations_loaded && !isExpanded && (
-                <ThumbnailMetadataContainer interview={interview} />
+                <ThumbnailMetadataContainer interview={interview} interviewee={interviewee} project={project} />
             )}
         </>
     );
