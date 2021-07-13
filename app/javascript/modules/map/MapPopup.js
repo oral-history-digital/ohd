@@ -19,5 +19,5 @@ export default function MapPopup(props) {
 MapPopup.propTypes = {
     title: PropTypes.string.isRequired,
     registryEntryId: PropTypes.number.isRequired,
-    popupComponent: PropTypes.node.isRequired,
+    popupComponent: PropTypes.elementType.isRequired,
 };

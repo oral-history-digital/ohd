@@ -1,5 +1,6 @@
 import useSWRImmutable from 'swr/immutable';
 import flow from 'lodash.flow';
+import curry from 'lodash.curry';
 
 import { usePathBase } from 'modules/routes';
 import fetcher from './fetcher';
@@ -20,10 +21,9 @@ export default function useInterviewMap(archiveId) {
             colorMap.set(type.id, type.color);
         });
 
-        const curriedTransformIntoMarkers = locations => transformIntoMarkers(colorMap, locations);
         const transformData = flow(
             mergeLocations,
-            curriedTransformIntoMarkers
+            curry(transformIntoMarkers)(colorMap)
         );
         markers = transformData(locations);
     }

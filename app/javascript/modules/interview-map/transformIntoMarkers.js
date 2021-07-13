@@ -1,6 +1,4 @@
 export default function transformIntoMarkers(colorMap, locations) {
-    console.log(colorMap, locations);
-
     if (!Array.isArray(locations)) {
         throw new TypeError('locations must be Array');
     }

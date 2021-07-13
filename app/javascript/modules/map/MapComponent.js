@@ -67,5 +67,5 @@ MapComponent.propTypes = {
         radius: PropTypes.number.isRequired,
         color: PropTypes.string.isRequired,
     })),
-    popupComponent: PropTypes.node.isRequired,
+    popupComponent: PropTypes.elementType.isRequired,
 };
