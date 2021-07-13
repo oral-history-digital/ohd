@@ -11,7 +11,6 @@ import {
     RECEIVE_MAP_SEARCH,
     REQUEST_MAP_REFERENCE_TYPES,
     RECEIVE_MAP_REFERENCE_TYPES,
-    TOGGLE_MAP_FILTER,
 
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
@@ -95,11 +94,6 @@ export const fetchMapReferenceTypes = url => dispatch => {
     dispatch(requestMapReferenceTypes());
     Loader.getJson(url, null, dispatch, receiveMapReferenceTypes);
 };
-
-export const toggleMapFilter = referenceTypeId => ({
-    type: TOGGLE_MAP_FILTER,
-    payload: referenceTypeId,
-});
 
 const requestInterviewSearch = (searchQuery) => ({
     type: REQUEST_INTERVIEW_SEARCH,

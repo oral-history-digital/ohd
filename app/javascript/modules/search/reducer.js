@@ -17,9 +17,7 @@ import {
     REQUEST_MAP_SEARCH,
     RECEIVE_MAP_SEARCH,
     RECEIVE_MAP_REFERENCE_TYPES,
-    TOGGLE_MAP_FILTER,
 } from './action-types';
-import { MAP_NUM_INITIALLY_SELECTED_TYPES } from './constants';
 
 export const initialState = {
     archive: {
@@ -40,7 +38,6 @@ export const initialState = {
         query: {},
         foundMarkers: null,
         referenceTypes: null,
-        filter: null,
     },
     interviews: {},
     registryEntries: {
@@ -173,15 +170,7 @@ const search = (state = initialState, action) => {
                         referenceTypes: action.payload,
                         filter: action.payload
                             .map(type => type.id)
-                            .slice(0, MAP_NUM_INITIALLY_SELECTED_TYPES),
-                    },
-                };
-            case TOGGLE_MAP_FILTER:
-                return {
-                    ...state,
-                    map: {
-                        ...state.map,
-                        filter: xor(state.map.filter, [action.payload]),
+                            .slice(0, 2),
                     },
                 };
         default:

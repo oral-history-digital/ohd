@@ -1,7 +1,9 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocationCountByReferenceType, getMapFilter, toggleMapFilter } from 'modules/search';
+import { getLocationCountByReferenceType } from 'modules/search';
+import { initializeMapFilter, toggleMapFilter } from '../actions';
+import { getMapFilter } from '../selectors';
 import MapFilter from './MapFilter';
 
 const mapStateToProps = state => ({
@@ -10,6 +12,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+    initializeMapFilter,
     toggleMapFilter,
 }, dispatch);
 

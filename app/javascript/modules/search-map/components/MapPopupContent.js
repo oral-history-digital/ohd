@@ -7,8 +7,10 @@ import request from 'superagent';
 
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import { getMapReferenceTypes, getMapFilter, getMapQuery } from 'modules/search';
-import groupAndFilterReferences from './groupAndFilterReferences';
+import { getMapQuery } from 'modules/search';
+import { getMapFilter } from '../selectors';
+import groupAndFilterReferences from '../groupAndFilterReferences';
+import useMapReferenceTypes from '../useMapReferenceTypes';
 
 export default function MapPopupContent({
     title,
@@ -16,12 +18,12 @@ export default function MapPopupContent({
     onUpdate = f => f,
 }) {
     const pathBase = usePathBase();
-    const referenceTypes = useSelector(getMapReferenceTypes);
     const query = useSelector(getMapQuery);
     const filter = useSelector(getMapFilter);
-    const mapReferenceTypes = useSelector(getMapReferenceTypes);
 
-    const typesById = keyBy(referenceTypes, type => type.id);
+    const { mapReferenceTypes } = useMapReferenceTypes();
+
+    const typesById = keyBy(mapReferenceTypes, type => type.id);
 
     const [references, setReferences] = useState(null);
     const [error, setError] = useState(null);

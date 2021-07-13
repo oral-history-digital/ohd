@@ -1,21 +1,32 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import keyBy from 'lodash.keyby';
 
 import { useI18n } from 'modules/i18n';
-import useMapReferenceTypes from './useMapReferenceTypes';
+import useMapReferenceTypes from '../useMapReferenceTypes';
 
 const MARKER_COLOR_MULTIPLE_TYPES = 'black';
 
 export default function MapFilter({
     filter,
     locationCountByReferenceType,
+    initializeMapFilter,
     toggleMapFilter,
 }) {
     const { t } = useI18n();
     const { mapReferenceTypes } = useMapReferenceTypes();
 
-    if (!mapReferenceTypes) {
+    useEffect(() => {
+        if (!filter && mapReferenceTypes) {
+            const initialFilter = mapReferenceTypes
+                .map(type => type.id)
+                .slice(0, 2);
+            initializeMapFilter(initialFilter);
+        }
+    }, [mapReferenceTypes]);
+
+    if (!mapReferenceTypes || !filter) {
         return null;
     }
 
@@ -56,7 +67,7 @@ export default function MapFilter({
                                         fill={referenceType.color}
                                     />
                                 </svg>
-                                {` (${locationCountByReferenceType[id]})`}
+                                {` (${0/*locationCountByReferenceType[id]*/})`}
                             </label>
                         );
                     })
@@ -85,5 +96,6 @@ MapFilter.propTypes = {
     mapReferenceTypes: PropTypes.array,
     locationCountByReferenceType: PropTypes.object,
     filter: PropTypes.array,
+    initializeMapFilter: PropTypes.func.isRequired,
     toggleMapFilter: PropTypes.func.isRequired,
 };
