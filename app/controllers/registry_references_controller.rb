@@ -69,28 +69,19 @@ class RegistryReferencesController < ApplicationController
       end
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
-        interviewee = interview.interviewee
 
-        segment_entries = RegistryEntry.for_interview_map('de', interview.id)
-        person_entries = RegistryEntry.for_map('de', [interviewee.id])
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-locations-#{interview.id}-#{I18n.locale}-#{interview.updated_at}" do
+          interviewee = interview.interviewee
+          segment_entries = RegistryEntry.for_interview_map(I18n.locale, interview.id)
+          person_entries = RegistryEntry.for_map(I18n.locale, [interviewee.id])
+          registry_entries = segment_entries.to_a.concat(person_entries.to_a)
 
-        registry_entries = segment_entries.to_a.concat(person_entries.to_a)
-
-        json2 = ActiveModelSerializers::SerializableResource.new(registry_entries,
-          each_serializer: SlimRegistryEntryMapSerializer
-        ).as_json
-
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-locations-#{interview.id}-#{interview.updated_at}" do
-          segment_ref_locations = RegistryReference.segments_for_interview(interview.id).with_locations.first(100)
-          #interview_ref_locations = RegistryReference.for_interview(interview.id).with_locations
-          {
-            archive_id: params[:archive_id],
-            segment_ref_locations: segment_ref_locations.map{|e| ::LocationSerializer.new(e).as_json},
-            #interview_ref_locations: interview_ref_locations.map{|e| ::LocationSerializer.new(e).as_json},
-          }.to_json
+          ActiveModelSerializers::SerializableResource.new(registry_entries,
+            each_serializer: SlimRegistryEntryMapSerializer
+          ).as_json
         end
 
-        render json: json2
+        render json: json
       end
     end
   end
@@ -105,17 +96,12 @@ class RegistryReferencesController < ApplicationController
         person_references = RegistryReference.for_interview_map_registry_entry(registry_entry_id, I18n.locale, interviewee.id)
         segment_references = RegistryReference.for_interview_map_segment_references(registry_entry_id, interview.id)
 
-        persons = ActiveModelSerializers::SerializableResource.new(person_references,
-          each_serializer: InterviewMapPersonReferencesSerializer
-        )
-
-        segments = ActiveModelSerializers::SerializableResource.new(segment_references,
-          each_serializer: InterviewMapSegmentReferencesSerializer
-        )
+        persons_serialized = ActiveModelSerializers::SerializableResource.new(person_references, each_serializer: InterviewMapPersonReferencesSerializer)
+        segments_serialized = ActiveModelSerializers::SerializableResource.new(segment_references, each_serializer: InterviewMapSegmentReferencesSerializer)
 
         references = {
-          person_references: persons,
-          segment_references: segments
+          person_references: persons_serialized,
+          segment_references: segments_serialized
         }
 
         render json: references
