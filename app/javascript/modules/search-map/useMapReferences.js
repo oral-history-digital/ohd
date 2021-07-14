@@ -2,9 +2,9 @@ import { useSelector } from 'react-redux';
 import useSWRImmutable from 'swr/immutable';
 import flow from 'lodash.flow';
 import curry from 'lodash.curry';
+import request from 'superagent';
 
 import { usePathBase } from 'modules/routes';
-import { fetcher } from 'modules/api';
 import { getMapQuery } from 'modules/search';
 import { getMapFilter } from './selectors';
 import fetchMapReferenceTypes from './fetchMapReferenceTypes';
@@ -12,14 +12,25 @@ import filterReferences from './filterReferences';
 import groupByType from './groupByType';
 import sortGroups from './sortGroups';
 
+function fetchMapReferences(pathBase, registryEntryId, query) {
+    const url = `${pathBase}/searches/map_references/${registryEntryId}`;
+    return request
+        .get(url)
+        .set('Accept', 'application/json')
+        .query(query)
+        .then(res => res.body);
+}
+
 export default function useMapReferences(registryEntryId) {
     const pathBase = usePathBase();
     const filter = useSelector(getMapFilter);
     const query = useSelector(getMapQuery);
 
-    // TODO: We need the query here, too.
-    const url = `${pathBase}/searches/map_references/${registryEntryId}`;
-    const { isValidating, data, error } = useSWRImmutable(url, fetcher);
+    const key = `map_references_${JSON.stringify(query)}`;
+    const { isValidating, data, error } = useSWRImmutable(
+        key,
+        () => fetchMapReferences(pathBase, registryEntryId, query)
+    );
 
     const { data: types, error: typesError } = useSWRImmutable(
         fetchMapReferenceTypes.name,
