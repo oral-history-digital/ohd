@@ -26,7 +26,7 @@ export default function useMapReferences(registryEntryId) {
     const filter = useSelector(getMapFilter);
     const query = useSelector(getMapQuery);
 
-    const key = `map_references_${JSON.stringify(query)}`;
+    const key = `map_references_${registryEntryId}_${JSON.stringify(query)}`;
     const { isValidating, data, error } = useSWRImmutable(
         key,
         () => fetchMapReferences(pathBase, registryEntryId, query)
