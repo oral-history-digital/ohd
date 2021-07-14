@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
 import useMapReferenceTypes from '../useMapReferenceTypes';
-import useMapFilter from '../useMapFilter';
+import useMapFilter from '../map-filter/useMapFilter';
 import { MAP_NUM_INITIALLY_SELECTED_TYPES } from '../constants';
 
 const MARKER_COLOR_MULTIPLE_TYPES = 'black';

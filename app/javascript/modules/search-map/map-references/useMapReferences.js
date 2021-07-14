@@ -6,8 +6,8 @@ import request from 'superagent';
 
 import { usePathBase } from 'modules/routes';
 import { getMapQuery } from 'modules/search';
-import { getMapFilter } from './selectors';
-import fetchMapReferenceTypes from './fetchMapReferenceTypes';
+import { getMapFilter } from '../selectors';
+import fetchMapReferenceTypes from '../fetchMapReferenceTypes';
 import filterReferences from './filterReferences';
 import groupByType from './groupByType';
 import sortGroups from './sortGroups';

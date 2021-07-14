@@ -3,19 +3,12 @@ import { Loader } from 'modules/api';
 import {
     SET_QUERY_PARAMS,
     RESET_QUERY,
-
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
-
     REQUEST_MAP_SEARCH,
-    RECEIVE_MAP_SEARCH,
-    REQUEST_MAP_REFERENCE_TYPES,
-    RECEIVE_MAP_REFERENCE_TYPES,
-
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
-
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
 } from './action-types';
@@ -45,8 +38,6 @@ export const requestMapSearch = (searchQuery) => ({
     searchQuery: searchQuery,
 });
 
-export const requestMapReferenceTypes = () => ({ type: REQUEST_MAP_REFERENCE_TYPES });
-
 function receiveArchiveSearchResults(json){
     return {
         type: RECEIVE_ARCHIVE_SEARCH,
@@ -64,18 +55,6 @@ function receiveArchiveSearchResults(json){
     }
 }
 
-export function receiveMapSearchResults(json){
-    return {
-        type: RECEIVE_MAP_SEARCH,
-        payload: json,
-    };
-}
-
-export const receiveMapReferenceTypes = (json) => ({
-    type: RECEIVE_MAP_REFERENCE_TYPES,
-    payload: json,
-});
-
 export function searchInArchive(url, searchQuery) {
     return dispatch => {
         dispatch(requestArchiveSearch(searchQuery))
@@ -86,14 +65,8 @@ export function searchInArchive(url, searchQuery) {
 export function searchInMap(url, searchQuery) {
     return dispatch => {
         dispatch(requestMapSearch(searchQuery))
-        //Loader.getJson(url, searchQuery, dispatch, receiveMapSearchResults);
     }
 }
-
-export const fetchMapReferenceTypes = url => dispatch => {
-    dispatch(requestMapReferenceTypes());
-    Loader.getJson(url, null, dispatch, receiveMapReferenceTypes);
-};
 
 const requestInterviewSearch = (searchQuery) => ({
     type: REQUEST_INTERVIEW_SEARCH,

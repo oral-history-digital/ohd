@@ -13,6 +13,3 @@ export const REQUEST_ARCHIVE_SEARCH = `${NAME}/requestArchiveSearch`;
 export const RECEIVE_ARCHIVE_SEARCH = `${NAME}/receiveArchiveSearch`;
 
 export const REQUEST_MAP_SEARCH = `${NAME}/requestMapSearch`;
-export const RECEIVE_MAP_SEARCH = `${NAME}/receiveMapSearch`;
-export const REQUEST_MAP_REFERENCE_TYPES = `${NAME}/requestMapReferenceTypes`;
-export const RECEIVE_MAP_REFERENCE_TYPES = `${NAME}/receiveMapReferenceTypes`;

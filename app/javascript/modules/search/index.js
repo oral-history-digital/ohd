@@ -1,14 +1,13 @@
 export { NAME as SEARCH_NAME } from './constants';
 
 export { resetQuery, setQueryParams, searchInArchive, searchInInterview, searchRegistryEntry,
-    changeRegistryEntriesViewMode, searchInMap, fetchMapReferenceTypes } from './actions';
+    changeRegistryEntriesViewMode, searchInMap } from './actions';
 
 export { default as searchReducer } from './reducer';
 
 export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree,
-    getFoundMarkers, getMapQuery, getMapFacets,
-    getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery, getLanguagesQuery,
-    getContributionTypesQuery, getRegistryNameTypesQuery,
+    getMapQuery, getMapFacets, getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery,
+    getLanguagesQuery, getContributionTypesQuery, getRegistryNameTypesQuery,
     getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
     getArchiveFacets, getArchiveQuery, getArchiveQueryFulltext,
     getArchiveResultPagesCount, getArchiveResultsCount, getArchiveFoundInterviews,

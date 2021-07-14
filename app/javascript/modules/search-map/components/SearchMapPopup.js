@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import useMapReferences from '../useMapReferences';
+import useMapReferences from '../map-references/useMapReferences';
 
 export default function SearchMapPopup({
     title,

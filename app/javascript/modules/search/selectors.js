@@ -21,54 +21,6 @@ export const getArchiveResultsCount = state => getArchiveSearch(state).resultsCo
 
 export const getMapSearch = state => getState(state).map;
 
-export const getFoundMarkers = state => getMapSearch(state).foundMarkers;
-
-export const getMapFilter = state => getMapSearch(state).filter;
-
-function markerRadius(numReferences) {
-    return Math.cbrt(numReferences + 3) * 4;
-}
-
-export const getMapMarkers = createSelector(
-    [getFoundMarkers, getMapFilter],
-    (markers, filter) => {
-        if (!markers || !filter) {
-            return null;
-        }
-
-        const convertedMarkers = markers
-            .map(marker => {
-                const types = marker.ref_types
-                    .split(',')
-                    .map(type => Number.parseInt(type))
-                    .filter(type => filter.includes(type));
-                const numReferences = types.length;
-                const uniqueTypes = [...new Set(types)];
-
-                return {
-                    id: marker.id,
-                    name: marker.name,
-                    lat: Number.parseFloat(marker.lat),
-                    long: Number.parseFloat(marker.lon),
-                    numReferences,
-                    referenceTypes: uniqueTypes,
-                    color: 'red',
-                    radius: markerRadius(numReferences),
-                };
-            })
-            .filter(marker => marker.numReferences > 0)
-            // Markers with more references should be first so that
-            // they don't mask smaller markers on the Leaflet marker pane.
-            .sort((markerA, markerB) => markerB.numReferences - markerA.numReferences);
-
-        return convertedMarkers;
-    }
-);
-
-export const getMarkersFetched = state => getFoundMarkers(state) !== null;
-
-export const getMapReferenceTypes = state => getMapSearch(state).referenceTypes;
-
 export const getMapQuery = state => getMapSearch(state).query;
 
 export const getMapFacets = state => getMapSearch(state).facets;

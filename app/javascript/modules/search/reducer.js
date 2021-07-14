@@ -1,5 +1,3 @@
-import xor from 'lodash.xor';
-
 import {
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
@@ -15,8 +13,6 @@ import {
     RECEIVE_ARCHIVE_SEARCH,
 
     REQUEST_MAP_SEARCH,
-    RECEIVE_MAP_SEARCH,
-    RECEIVE_MAP_REFERENCE_TYPES,
 } from './action-types';
 
 export const initialState = {
@@ -36,8 +32,6 @@ export const initialState = {
     map: {
         facets: null,
         query: {},
-        foundMarkers: null,
-        referenceTypes: null,
     },
     interviews: {},
     registryEntries: {
@@ -56,7 +50,6 @@ export const initialState = {
     projects: { query: {page: 1} },
     collections: { query: {page: 1} },
     languages: { query: {page: 1} },
-    isMapSearching: false,
 }
 
 const search = (state = initialState, action) => {
@@ -150,27 +143,6 @@ const search = (state = initialState, action) => {
                             ...state.map.query,
                             ...action.searchQuery,
                         },
-                    },
-                    isMapSearching: true,
-                };
-            case RECEIVE_MAP_SEARCH:
-                return {
-                    ...state,
-                    map: {
-                        ...state.map,
-                        foundMarkers: action.payload,
-                    },
-                    isMapSearching: false,
-                };
-            case RECEIVE_MAP_REFERENCE_TYPES:
-                return {
-                    ...state,
-                    map: {
-                        ...state.map,
-                        referenceTypes: action.payload,
-                        filter: action.payload
-                            .map(type => type.id)
-                            .slice(0, 2),
                     },
                 };
         default:

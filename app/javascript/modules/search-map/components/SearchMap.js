@@ -7,7 +7,7 @@ import { setFlyoutTabsIndex, INDEX_MAP } from 'modules/flyout-tabs';
 import { MapComponent } from 'modules/map';
 import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
-import useSearchMap from '../useSearchMap';
+import useSearchMap from '../search-map/useSearchMap';
 
 export default function SearchMap() {
     const dispatch = useDispatch();

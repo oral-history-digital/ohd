@@ -6,14 +6,14 @@ import curry from 'lodash.curry';
 
 import { getMapQuery } from 'modules/search';
 import { usePathBase } from 'modules/routes';
-import { getMapFilter } from './selectors';
+import { getMapFilter } from '../selectors';
+import fetchMapReferenceTypes from '../fetchMapReferenceTypes';
+import fetchMapLocations from '../fetchMapLocations';
 import referenceTypesToColorMap from './referenceTypesToColorMap';
 import filterReferenceTypes from './filterReferenceTypes';
 import filterLocations from './filterLocations';
 import transformIntoMarkers from './transformIntoMarkers';
 import sortMarkers from './sortMarkers';
-import fetchMapReferenceTypes from './fetchMapReferenceTypes';
-import fetchMapLocations from './fetchMapLocations';
 
 export default function useSearchMap() {
     const query = useSelector(getMapQuery);

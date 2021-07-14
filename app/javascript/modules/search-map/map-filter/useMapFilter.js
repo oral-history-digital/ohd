@@ -6,9 +6,9 @@ import curry from 'lodash.curry';
 
 import { getMapQuery } from 'modules/search';
 import { usePathBase } from 'modules/routes';
-import { getMapFilter } from './selectors';
-import fetchMapReferenceTypes from './fetchMapReferenceTypes';
-import fetchMapLocations from './fetchMapLocations';
+import { getMapFilter } from '../selectors';
+import fetchMapReferenceTypes from '../fetchMapReferenceTypes';
+import fetchMapLocations from '../fetchMapLocations';
 import addFilterInformation from './addFilterInformation';
 import addLocationCount from './addLocationCount';
 
