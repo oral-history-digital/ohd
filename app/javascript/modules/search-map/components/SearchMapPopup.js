@@ -6,7 +6,7 @@ import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
 import useMapReferences from '../useMapReferences';
 
-export default function MapPopupContent({
+export default function SearchMapPopup({
     title,
     registryEntryId,
     onUpdate = f => f,
@@ -58,7 +58,7 @@ export default function MapPopupContent({
     );
 }
 
-MapPopupContent.propTypes = {
+SearchMapPopup.propTypes = {
     registryEntryId: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     onUpdate: PropTypes.func.isRequired,

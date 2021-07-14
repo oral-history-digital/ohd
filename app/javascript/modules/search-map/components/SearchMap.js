@@ -5,7 +5,7 @@ import 'leaflet/dist/leaflet.css';
 import { ScrollToTop } from 'modules/user-agent';
 import { INDEX_MAP } from 'modules/flyout-tabs';
 import { MapComponent } from 'modules/map';
-import MapPopupContent from './MapPopupContent';
+import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
 import useSearchMap from '../useSearchMap';
 
@@ -33,7 +33,7 @@ export default function SearchMap({
                     <MapComponent
                         loading={isLoading}
                         markers={markers || []}
-                        popupComponent={MapPopupContent}
+                        popupComponent={SearchMapPopup}
                     />
                 }
                 <MapFilterContainer />

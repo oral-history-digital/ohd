@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
 import { Map, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
@@ -13,8 +14,15 @@ export default function MapComponent({
     markers = [],
     popupComponent,
 }) {
+    const mapEl = useRef(null);
+
+    function redraw() {
+        mapEl.current?.leafletElement?.invalidateSize();
+    }
+
     return (
         <Map
+            ref={mapEl}
             className="Map Map--search"
             center={initialCenter}
             maxZoom={16}
