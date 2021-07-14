@@ -6,7 +6,7 @@ export { resetQuery, setQueryParams, searchInArchive, searchInInterview, searchR
 export { default as searchReducer } from './reducer';
 
 export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree,
-    getFoundMarkers, getMapQuery, getMapFacets, getLocationCountByReferenceType,
+    getFoundMarkers, getMapQuery, getMapFacets,
     getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery, getLanguagesQuery,
     getContributionTypesQuery, getRegistryNameTypesQuery,
     getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,

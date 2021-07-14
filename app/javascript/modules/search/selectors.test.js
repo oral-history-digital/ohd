@@ -239,15 +239,6 @@ test('getMapReferenceTypes retrieves map reference types array', () => {
     expect(selectors.getMapReferenceTypes(state)).toEqual(state[NAME].map.referenceTypes);
 });
 
-test('getLocationCountByReferenceType retrieves location number for each type', () => {
-    const actual = selectors.getLocationCountByReferenceType(state);
-    const expected = {
-        '1': 2,
-        '2': 1,
-    };
-    expect(actual).toEqual(expected);
-});
-
 test('getMapFilter retrieves map filter array', () => {
     expect(selectors.getMapFilter(state)).toEqual(state[NAME].map.filter);
 });
@@ -266,10 +257,6 @@ test('getRegistryEntriesSearch retrieves registry entries part of search state',
 
 test('getShowRegistryEntriesTree get wether to show search results', () => {
     expect(selectors.getShowRegistryEntriesTree(state)).toEqual(state[NAME].registryEntries.showRegistryEntriesTree);
-});
-
-test('getIsMapSearching retrieves map search state', () => {
-    expect(selectors.getIsMapSearching(state)).toEqual(state[NAME].isMapSearching);
 });
 
 test('getIsRegistryEntrySearching retrieves registry entry search state', () => {

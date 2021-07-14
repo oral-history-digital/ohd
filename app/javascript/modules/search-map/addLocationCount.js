@@ -9,9 +9,25 @@ export default function addLocationCount(locations, referenceTypes) {
     const transformedTypes = referenceTypes.map(type => {
         return {
             ...type,
-            locationCount: 5,
+            locationCount: locationCountFor(locations, type.id),
         };
     });
 
     return transformedTypes;
+}
+
+function locationCountFor(locations, referenceTypeId) {
+    let numLocations = 0;
+
+    locations.forEach(location => {
+        const types = location.ref_types
+            .split(',')
+            .map(type => Number.parseInt(type));
+
+        if (types.includes(referenceTypeId)) {
+            numLocations += 1;
+        }
+    });
+
+    return numLocations;
 }
