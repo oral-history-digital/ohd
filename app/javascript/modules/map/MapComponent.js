@@ -1,4 +1,5 @@
-import { useRef } from 'react';
+import { useEffect, useRef } from 'react';
+import useResizeAware from 'react-resize-aware';
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
 import { Map, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
@@ -14,51 +15,55 @@ export default function MapComponent({
     markers = [],
     popupComponent,
 }) {
+    const [resizeListener, sizes] = useResizeAware();
     const mapEl = useRef(null);
 
-    function redraw() {
+    useEffect(() => {
         mapEl.current?.leafletElement?.invalidateSize();
-    }
+    }, [sizes.width, sizes.height]);
 
     return (
-        <Map
-            ref={mapEl}
-            className="Map Map--search"
-            center={initialCenter}
-            maxZoom={16}
-            scrollWheelZoom={false}
-            zoom={initialZoom}
-            zoomAnimation={false}
-        >
-            {
-                loading && <MapOverlay />
-            }
-            <TileLayer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-            />
-            {
-                markers.map(marker => (
-                    <CircleMarker
-                        key={marker.id}
-                        center={[marker.lat, marker.long]}
-                        radius={marker.radius}
-                        fillColor={marker.color}
-                        fillOpacity={0.5}
-                        stroke={0}
-                    >
-                        <Tooltip>
-                            {marker.name} ({marker.numReferences})
-                        </Tooltip>
-                        <MapPopup
-                            title={marker.name}
-                            registryEntryId={marker.id}
-                            popupComponent={popupComponent}
-                        />
-                    </CircleMarker>
-                ))
-            }
-        </Map>
+        <div style={{ position: 'relative' }}>
+            {resizeListener}
+            <Map
+                ref={mapEl}
+                className="Map Map--search"
+                center={initialCenter}
+                maxZoom={16}
+                scrollWheelZoom={false}
+                zoom={initialZoom}
+                zoomAnimation={false}
+            >
+                {
+                    loading && <MapOverlay />
+                }
+                <TileLayer
+                    url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                    attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                />
+                {
+                    markers.map(marker => (
+                        <CircleMarker
+                            key={marker.id}
+                            center={[marker.lat, marker.long]}
+                            radius={marker.radius}
+                            fillColor={marker.color}
+                            fillOpacity={0.5}
+                            stroke={0}
+                        >
+                            <Tooltip>
+                                {marker.name} ({marker.numReferences})
+                            </Tooltip>
+                            <MapPopup
+                                title={marker.name}
+                                registryEntryId={marker.id}
+                                popupComponent={popupComponent}
+                            />
+                        </CircleMarker>
+                    ))
+                }
+            </Map>
+        </div>
     );
 }
 

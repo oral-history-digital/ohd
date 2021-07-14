@@ -43,5 +43,5 @@ export default function useSearchMap() {
         markers = transformData(locations);
     }
 
-    return { isLoading: !(types && locations), markers, locationsError };
+    return { isLoading: !(types && locations), markers, error: locationsError };
 }
