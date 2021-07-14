@@ -42,8 +42,7 @@ export default class ArchiveSearchForm extends Component {
         }
         if(this.props.map){
             this.props.resetQuery('map');
-            let url = `${pathBase(this.props)}/searches/map`;
-            this.props.searchInMap(url, {});
+            this.props.setMapQuery({});
         } else {
             this.props.resetQuery('archive');
             let url = `${pathBase(this.props)}/searches/archive`;
@@ -105,9 +104,7 @@ export default class ArchiveSearchForm extends Component {
 
     submit(params) {
         if(this.props.map) {
-            let url = `${pathBase(this.props)}/searches/map`;
-            this.props.searchInMap(url, params);
-            this.props.history.push(url);
+            this.props.setMapQuery(params);
         } else if (!this.props.map && !this.props.isArchiveSearching) {
             let url = `${pathBase(this.props)}/searches/archive`;
             this.props.searchInArchive(url, params);

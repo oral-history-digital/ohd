@@ -6,6 +6,7 @@ import {
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
     REQUEST_MAP_SEARCH,
+    SET_MAP_QUERY,
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
@@ -33,9 +34,9 @@ const requestArchiveSearch = (searchQuery) => ({
     searchQuery: searchQuery,
 });
 
-export const requestMapSearch = (searchQuery) => ({
-    type: REQUEST_MAP_SEARCH,
-    searchQuery: searchQuery,
+export const setMapQuery = (query) => ({
+    type: SET_MAP_QUERY,
+    payload: query,
 });
 
 function receiveArchiveSearchResults(json){
@@ -59,12 +60,6 @@ export function searchInArchive(url, searchQuery) {
     return dispatch => {
         dispatch(requestArchiveSearch(searchQuery))
         Loader.getJson(url, searchQuery, dispatch, receiveArchiveSearchResults);
-    }
-}
-
-export function searchInMap(url, searchQuery) {
-    return dispatch => {
-        dispatch(requestMapSearch(searchQuery))
     }
 }
 

@@ -5,7 +5,7 @@ import { withRouter } from 'react-router-dom';
 import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import { getProjects, getCurrentAccount, getCurrentProject } from 'modules/data';
-import { resetQuery, setQueryParams, searchInArchive, searchInMap } from '../actions';
+import { resetQuery, setQueryParams, searchInArchive, setMapQuery } from '../actions';
 import { getArchiveFacets, getArchiveQuery, getMapFacets } from '../selectors';
 import ArchiveSearchForm from './ArchiveSearchForm';
 
@@ -32,7 +32,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setQueryParams,
     resetQuery,
     searchInArchive,
-    searchInMap,
+    setMapQuery,
     hideFlyoutTabs,
 }, dispatch);
 

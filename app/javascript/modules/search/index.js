@@ -1,7 +1,7 @@
 export { NAME as SEARCH_NAME } from './constants';
 
 export { resetQuery, setQueryParams, searchInArchive, searchInInterview, searchRegistryEntry,
-    changeRegistryEntriesViewMode, searchInMap } from './actions';
+    changeRegistryEntriesViewMode, setMapQuery } from './actions';
 
 export { default as searchReducer } from './reducer';
 

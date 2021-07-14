@@ -12,7 +12,7 @@ import {
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
 
-    REQUEST_MAP_SEARCH,
+    SET_MAP_QUERY,
 } from './action-types';
 
 export const initialState = {
@@ -134,14 +134,14 @@ const search = (state = initialState, action) => {
                 }),
                 isArchiveSearching: false,
             })
-            case REQUEST_MAP_SEARCH:
+            case SET_MAP_QUERY:
                 return {
                     ...state,
                     map: {
                         ...state.map,
                         query: {
                             ...state.map.query,
-                            ...action.searchQuery,
+                            ...action.payload,
                         },
                     },
                 };
