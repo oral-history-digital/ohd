@@ -37,10 +37,12 @@ export default class ArchiveSearch extends Component {
 
     componentDidMount() {
         this.props.setFlyoutTabsIndex(INDEX_SEARCH);
-        //this.search({
-            //...this.props.query,
-            //page: 1,
-        //});
+        if (window.location.href.indexOf('?') === -1) {
+            this.search({
+                ...this.props.query,
+                page: 1,
+            });
+        }
     }
 
     componentDidUpdate(prevProps) {
