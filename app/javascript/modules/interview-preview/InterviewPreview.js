@@ -29,7 +29,10 @@ export default function InterviewPreview({
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const project = projects[interview.project_id];
-    const hrefOrPathBase = project.archive_domain ? `${project.archive_domain}/${locale}` : `/${project.identifier}/${locale}`
+    const hrefOrPathBase = !project.archive_domain ?`/${project.identifier}/${locale}` :
+        project.archive_domain === window.location.origin ?
+        `/${locale}` :
+        `${project.archive_domain}/${locale}`;
     const hrefOrPath = hrefOrPathBase + '/interviews/' + interview.archive_id;
     const projectId = project.identifier;
 
