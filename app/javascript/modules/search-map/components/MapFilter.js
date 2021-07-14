@@ -1,59 +1,54 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import keyBy from 'lodash.keyby';
 
 import { useI18n } from 'modules/i18n';
 import useMapReferenceTypes from '../useMapReferenceTypes';
+import useMapFilter from '../useMapFilter';
+import { MAP_NUM_INITIALLY_SELECTED_TYPES } from '../constants';
 
 const MARKER_COLOR_MULTIPLE_TYPES = 'black';
 
 export default function MapFilter({
     filter,
-    locationCountByReferenceType,
     initializeMapFilter,
     toggleMapFilter,
 }) {
     const { t } = useI18n();
     const { mapReferenceTypes } = useMapReferenceTypes();
+    const { locationTypes } = useMapFilter();
 
     useEffect(() => {
         if (!filter && mapReferenceTypes) {
             const initialFilter = mapReferenceTypes
                 .map(type => type.id)
-                .slice(0, 2);
+                .slice(0, MAP_NUM_INITIALLY_SELECTED_TYPES);
             initializeMapFilter(initialFilter);
         }
     }, [mapReferenceTypes]);
 
-    if (!mapReferenceTypes || !filter) {
+    if (!locationTypes) {
         return null;
     }
-
-    const availableTypeIds = mapReferenceTypes.map(type => type.id);
-    const typesById = keyBy(mapReferenceTypes, type => type.id);
 
     return (
         <div className="MapFilter">
             <form className="MapFilter-form">
                 {
-                    availableTypeIds.map(id => {
-                        const referenceType = typesById[id];
-                        const isActive = filter.includes(id);
-
+                    locationTypes.map(type => {
                         return (
                             <label
-                                key={id}
-                                className={classNames('MapFilter-label', { 'is-active': isActive })}
+                                key={type.id}
+                                className={classNames('MapFilter-label', { 'is-active': type.filterIsSet })}
                             >
                                 <input
                                     className="MapFilter-checkbox"
-                                    name={referenceType.name}
+                                    name={type.name}
                                     type="checkbox"
-                                    checked={isActive}
-                                    onChange={() => toggleMapFilter(id)}
+                                    checked={type.filterIsSet}
+                                    onChange={() => toggleMapFilter(type.id)}
                                 />
-                                {`${referenceType.name} `}
+                                {`${type.name} `}
                                 <svg
                                     className="MapFilter-icon"
                                     viewBox="0 0 100 100"
@@ -64,16 +59,16 @@ export default function MapFilter({
                                         cy="50"
                                         r="40"
                                         stroke="none"
-                                        fill={referenceType.color}
+                                        fill={type.color}
                                     />
                                 </svg>
-                                {` (${0/*locationCountByReferenceType[id]*/})`}
+                                {` (${type.locationCount})`}
                             </label>
                         );
                     })
                 }
             </form>
-            {availableTypeIds.length > 1 && (
+            {locationTypes.length > 1 && (
                 <div>
                     <p>
                         {t('modules.map_filter.multiple_types')}
@@ -93,8 +88,6 @@ export default function MapFilter({
 }
 
 MapFilter.propTypes = {
-    mapReferenceTypes: PropTypes.array,
-    locationCountByReferenceType: PropTypes.object,
     filter: PropTypes.array,
     initializeMapFilter: PropTypes.func.isRequired,
     toggleMapFilter: PropTypes.func.isRequired,

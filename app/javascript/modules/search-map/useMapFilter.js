@@ -9,6 +9,8 @@ import { usePathBase } from 'modules/routes';
 import { getMapFilter } from './selectors';
 import fetchMapReferenceTypes from './fetchMapReferenceTypes';
 import fetchMapLocations from './fetchMapLocations';
+import addFilterInformation from './addFilterInformation';
+import addLocationCount from './addLocationCount';
 
 export default function useSearchMap() {
     const query = useSelector(getMapQuery);
@@ -25,5 +27,14 @@ export default function useSearchMap() {
         () => fetchMapLocations(pathBase, query)
     );
 
-    return { isLoading: !(types && locations), markers, locationsError };
+    let locationTypes = [];
+    if (types && locations && filter) {
+        const transformData = flow(
+            curry(addFilterInformation)(filter),
+            curry(addLocationCount)(locations)
+        );
+        locationTypes = transformData(types);
+    }
+
+    return { isLoading: !(types && locations), locationTypes, locationsError };
 }
