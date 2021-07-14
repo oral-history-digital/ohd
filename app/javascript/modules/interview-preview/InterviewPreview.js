@@ -68,12 +68,7 @@ export default function InterviewPreview({
                     />
                 )
             }
-            { project.archive_domain ?
-                <a href={hrefOrPath }
-                    className="search-result-link"
-                >
-                    <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
-                </a> :
+            { !project.archive_domain || project.archive_domain === window.location.origin ?
                 <Link
                     className="search-result-link"
                     onClick={() => {
@@ -83,7 +78,12 @@ export default function InterviewPreview({
                     to={hrefOrPath}
                 >
                     <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
-                </Link>
+                </Link> :
+                <a href={hrefOrPath }
+                    className="search-result-link"
+                >
+                    <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
+                </a>
             }
 
             {
