@@ -29,7 +29,6 @@
     "lodash.keyby": "^4.6.0",
     "lodash.throttle": "^4.1.1",
     "lodash.xor": "^4.5.0",
-    "memoizee": "^0.4.15",
     "moment": "^2.24.0",
     "path-complete-extname": "^1.0.0",
     "prop-types": "^15.7.2",
