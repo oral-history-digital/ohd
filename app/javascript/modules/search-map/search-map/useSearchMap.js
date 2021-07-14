@@ -4,13 +4,12 @@ import flow from 'lodash.flow';
 import curry from 'lodash.curry';
 
 import { getMapQuery } from 'modules/search';
+import { referenceTypesToColorMap, transformIntoMarkers } from 'modules/map';
 import { getMapFilter } from '../selectors';
 import useFetchMapReferenceTypes from '../useFetchMapReferenceTypes';
 import useFetchMapLocations from '../useFetchMapLocations';
-import referenceTypesToColorMap from './referenceTypesToColorMap';
 import filterReferenceTypes from './filterReferenceTypes';
 import filterLocations from './filterLocations';
-import transformIntoMarkers from './transformIntoMarkers';
 import sortMarkers from './sortMarkers';
 
 export default function useSearchMap() {

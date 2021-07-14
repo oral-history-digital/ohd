@@ -6,7 +6,7 @@ import { Map, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
 
 import MapPopup from './MapPopup';
 import MapOverlay from './MapOverlay';
-import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from './constants';
+import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from '../constants';
 
 export default function MapComponent({
     loading = false,

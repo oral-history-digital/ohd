@@ -1,4 +1,4 @@
-export default function toColorMap(referenceTypes) {
+export default function referenceTypesToColorMap(referenceTypes) {
     if (!Array.isArray(referenceTypes)) {
         throw new TypeError('referenceTypes must be Array');
     }

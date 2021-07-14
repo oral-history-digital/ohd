@@ -4,8 +4,8 @@ import curry from 'lodash.curry';
 
 import { usePathBase } from 'modules/routes';
 import { fetcher } from 'modules/api';
+import { referenceTypesToColorMap, transformIntoMarkers } from 'modules/map';
 import mergeLocations from './mergeLocations';
-import transformIntoMarkers from './transformIntoMarkers';
 
 export default function useInterviewMap(archiveId) {
     const pathBase = usePathBase();
@@ -16,10 +16,7 @@ export default function useInterviewMap(archiveId) {
 
     let markers = [];
     if (types && locations) {
-        const colorMap = new Map();
-        types.forEach(type => {
-            colorMap.set(type.id, type.color);
-        });
+        const colorMap = referenceTypesToColorMap(types);
 
         const transformData = flow(
             mergeLocations,
