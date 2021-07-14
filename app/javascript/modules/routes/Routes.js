@@ -9,7 +9,7 @@ import { InterviewContainer } from 'modules/interview';
 import { UserRegistrationsContainer } from 'modules/users';
 import { RegistryContainer } from 'modules/registry';
 import { ArchiveSearchContainer } from 'modules/search';
-import { SearchMapContainer } from 'modules/search-map';
+import { SearchMap } from 'modules/search-map';
 import { WrappedProjectsContainer, WrappedRolesContainer,
     WrappedPermissionsContainer, WrappedTaskTypesContainer, WrappedRegistryReferenceTypesContainer,
     WrappedContributionTypesContainer, WrappedRegistryNameTypesContainer,
@@ -28,7 +28,7 @@ export const Routes = () => (
         <Route path="/:locale/uploads/new" component={props => <ErrorBoundary><UploadsContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/registry_entries" component={props => <ErrorBoundary><RegistryContainer {...props} /></ErrorBoundary>} />
         <Route path="/:locale/searches/archive" component={props => <ErrorBoundary><ArchiveSearchContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:locale/searches/map" component={props => <ErrorBoundary><SearchMapContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:locale/searches/map" component={props => <ErrorBoundary><SearchMap {...props} /></ErrorBoundary>} />
 
         <Route path="/:locale/project/edit-info" component={props => <ErrorBoundary><EditProjectInfo {...props} /></ErrorBoundary>} />
         <Route path="/:locale/project/edit-config" component={props => <ErrorBoundary><EditProjectConfig {...props} /></ErrorBoundary>} />
@@ -63,7 +63,7 @@ export const RoutesWithProjectId = () => (
         <Route path="/:projectId/:locale/uploads/new" component={props => <ErrorBoundary><UploadsContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/registry_entries" component={props => <ErrorBoundary><RegistryContainer {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/searches/archive" component={props => <ErrorBoundary><ArchiveSearchContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:projectId/:locale/searches/map" component={props => <ErrorBoundary><SearchMapContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:projectId/:locale/searches/map" component={props => <ErrorBoundary><SearchMap {...props} /></ErrorBoundary>} />
 
         <Route path="/:projectId/:locale/project/edit-info" component={props => <ErrorBoundary><EditProjectInfo {...props} /></ErrorBoundary>} />
         <Route path="/:projectId/:locale/project/edit-config" component={props => <ErrorBoundary><EditProjectConfig {...props} /></ErrorBoundary>} />
