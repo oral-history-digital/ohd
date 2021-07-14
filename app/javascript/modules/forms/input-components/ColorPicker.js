@@ -20,7 +20,7 @@ export default function ColorPicker({
 }) {
     const [open, setOpen] = useState(false);
 
-    const color = value || data?.[attribute];
+    const color = value || data?.[attribute] || '';
     const onChange = color => handleChange(attribute, color);
     const onKeyDown = event => {
         if (event.key === 'Enter') {
