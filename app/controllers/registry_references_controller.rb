@@ -2,7 +2,7 @@ require 'action_dispatch/routing/mapper'
 
 class RegistryReferencesController < ApplicationController
 
-  after_action :verify_authorized, except: [:index, :locations]
+  after_action :verify_authorized, except: [:index, :locations, :location_references]
   after_action :verify_policy_scoped, only: [:index, :locations]
 
   def create
@@ -20,10 +20,10 @@ class RegistryReferencesController < ApplicationController
     respond @registry_reference
   end
 
-  def destroy 
+  def destroy
     @registry_reference = RegistryReference.find(params[:id])
     authorize @registry_reference
-    ref_object = @registry_reference.ref_object 
+    ref_object = @registry_reference.ref_object
     @registry_reference.destroy
     ref_object.touch
 
@@ -31,7 +31,7 @@ class RegistryReferencesController < ApplicationController
       format.html do
         render :action => 'index'
       end
-      format.json do 
+      format.json do
         json = {}
         #
         # if ref_object is a segment we do not delete the reference client-side
@@ -70,23 +70,48 @@ class RegistryReferencesController < ApplicationController
       format.json do
         interview = Interview.find_by(archive_id: params[:archive_id])
 
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-locations-#{interview.id}-#{interview.updated_at}" do
-          segment_ref_locations = RegistryReference.segments_for_interview(interview.id).with_locations.first(100)
-          #interview_ref_locations = RegistryReference.for_interview(interview.id).with_locations
-          {
-            archive_id: params[:archive_id],
-            segment_ref_locations: segment_ref_locations.map{|e| ::LocationSerializer.new(e).as_json},
-            #interview_ref_locations: interview_ref_locations.map{|e| ::LocationSerializer.new(e).as_json},
-          }.to_json
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-locations-#{interview.id}-#{I18n.locale}-#{interview.updated_at}" do
+          interviewee = interview.interviewee
+          segment_entries = RegistryEntry.for_interview_map(I18n.locale, interview.id)
+          person_entries = RegistryEntry.for_map(I18n.locale, [interviewee.id])
+          registry_entries = segment_entries.to_a.concat(person_entries.to_a)
+
+          ActiveModelSerializers::SerializableResource.new(registry_entries,
+            each_serializer: SlimRegistryEntryMapSerializer
+          ).as_json
         end
-        render plain: json
+
+        render json: json
+      end
+    end
+  end
+
+  def location_references
+    respond_to do |format|
+      format.json do
+        interview = Interview.find_by(archive_id: params[:archive_id])
+        registry_entry_id = params[:registry_entry_id]
+        interviewee = interview.interviewee
+
+        person_references = RegistryReference.for_interview_map_registry_entry(registry_entry_id, I18n.locale, interviewee.id)
+        segment_references = RegistryReference.for_interview_map_segment_references(registry_entry_id, interview.id)
+
+        persons_serialized = ActiveModelSerializers::SerializableResource.new(person_references, each_serializer: InterviewMapPersonReferencesSerializer)
+        segments_serialized = ActiveModelSerializers::SerializableResource.new(segment_references, each_serializer: InterviewMapSegmentReferencesSerializer)
+
+        references = {
+          person_references: persons_serialized,
+          segment_references: segments_serialized
+        }
+
+        render json: references
       end
     end
   end
 
   def index
     policy_scope(RegistryReference)
-    @registry_references, extra_params = 
+    @registry_references, extra_params =
     if params[:registry_entry_id]
       [
         policy_scope(RegistryReference).where(registry_entry_id: params[:registry_entry_id]),

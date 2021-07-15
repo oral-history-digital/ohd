@@ -7,7 +7,7 @@ import { PersonDataContainer } from 'modules/interviewee-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { InterviewInfoContainer, InterviewContributorsContainer, InterviewTextMaterialsContainer,
     CitationInfoContainer } from 'modules/interview-metadata';
-import { InterviewLocationsContainer } from 'modules/locations';
+import { InterviewMap } from 'modules/interview-map';
 import { GalleryContainer } from 'modules/gallery';
 import { AssignSpeakersFormContainer, MarkTextFormContainer, UploadTranscriptContainer } from 'modules/interview-actions';
 import { pathBase } from 'modules/routes';
@@ -163,7 +163,7 @@ class InterviewTabPanel extends Component {
                                     title={t(this.props, 'map')}
                                     open={true}
                                 >
-                                    <InterviewLocationsContainer/>
+                                    <InterviewMap/>
                                 </InterviewDataContainer>
                             </AuthorizedContent>
                         </AuthShowContainer>
