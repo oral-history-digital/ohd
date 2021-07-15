@@ -1170,7 +1170,6 @@ el:
       description: Παρουσίαση των τόπων που αναφέρονται στη συνέντευξη
       error: Error loading map
       error_references: Error loading references
-      person_references: Person references
       segment_references: References in the transcript
       at: at
     interview_search:

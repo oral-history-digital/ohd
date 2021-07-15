@@ -1151,9 +1151,8 @@ de:
       description: Darstellung der im Interview erwähnten Orte
       error: Fehler beim Laden der Karte
       error_references: Fehler beim Laden von Verknüpfungen
-      person_references: Verknüpfungen der Person
-      segment_references: Erwähnungen im Transkript
-      at: an
+      segment_references: Verknüpfungen im Transkript
+      at: in
     interview_search:
       no_results: Keine Ergebnisse
       annotation_for: Anmerkung zu

@@ -1168,7 +1168,6 @@ en:
       description: Places mentioned in the interview
       error: Error loading map
       error_references: Error loading references
-      person_references: Person references
       segment_references: References in the transcript
       at: at
     interview_search:

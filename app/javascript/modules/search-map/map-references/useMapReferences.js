@@ -5,13 +5,12 @@ import flow from 'lodash.flow';
 import curry from 'lodash.curry';
 
 import { fetcher } from 'modules/api';
-import { useMapReferenceTypes } from 'modules/map';
+import { useMapReferenceTypes, sortByReferenceTypeOrder } from 'modules/map';
 import { usePathBase } from 'modules/routes';
 import { getMapQuery } from 'modules/search';
 import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';
 import groupByType from './groupByType';
-import sortGroups from './sortGroups';
 
 export default function useMapReferences(registryEntryId) {
     const pathBase = usePathBase();
@@ -29,7 +28,7 @@ export default function useMapReferences(registryEntryId) {
         const transformData = flow(
             curry(filterReferences)(filter),
             curry(groupByType)(referenceTypes),
-            curry(sortGroups)(referenceTypes)
+            curry(sortByReferenceTypeOrder)(referenceTypes, 'id')
         );
         referenceGroups = transformData(data);
     }
