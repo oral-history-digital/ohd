@@ -52,7 +52,6 @@ export default function InterviewMapPopup({
                                     <li
                                         key={ref.id}
                                         className="MapPopup-listItem"
-                                        style={{ color: ref.map_color }}
                                     >
                                         {ref.label}
                                     </li>
