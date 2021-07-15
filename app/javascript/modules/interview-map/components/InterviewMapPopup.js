@@ -44,7 +44,7 @@ export default function InterviewMapPopup({
                 personReferences && personReferences.length > 0 && (
                     <>
                         <h4 className="MapPopup-subHeading">
-                            {t('modules.interview_map.person_references')}
+                            {t('modules.interview_map.person_references')} ({personReferences.length})
                         </h4>
                         <ul className="MapPopup-list">
                             {
@@ -65,7 +65,7 @@ export default function InterviewMapPopup({
                 segmentReferences && segmentReferences.length > 0 && (
                     <>
                         <h4 className="MapPopup-subHeading">
-                            {t('modules.interview_map.segment_references')}
+                            {t('modules.interview_map.segment_references')} ({segmentReferences.length})
                         </h4>
                         <ul className="MapPopup-list">
                             {

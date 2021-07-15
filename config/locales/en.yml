@@ -1186,8 +1186,9 @@ en:
     layout:
       back_to_top:
         label: "Back to top"
-    map_filter:
+    search_map:
       multiple_types: Multiple location types
+      error: Error loading map
     media_player:
       auto_scroll:
         enable: "enable auto-scrolling transcript"

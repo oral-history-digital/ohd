@@ -26,5 +26,5 @@ export default function useInterviewMap(archiveId) {
         markers = transformData(locations);
     }
 
-    return { isLoading: !(referenceTypes && locations), markers, locationsError };
+    return { isLoading: !(referenceTypes && locations), markers, error: locationsError };
 }

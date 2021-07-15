@@ -22,7 +22,6 @@ export default function useMapReferences(registryEntryId) {
 
     const params = queryString.stringify(query);
     const path = `${pathBase}/searches/map_references/${registryEntryId}?${params}`;
-
     const { isValidating, data, error } = useSWRImmutable(path, fetcher);
 
     let referenceGroups = [];

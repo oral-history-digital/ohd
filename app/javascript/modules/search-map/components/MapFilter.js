@@ -69,7 +69,7 @@ export default function MapFilter({
             {locationTypes.length > 1 && (
                 <div>
                     <p>
-                        {t('modules.map_filter.multiple_types')}
+                        {t('modules.search_map.multiple_types')}
                         {' '}
                         <svg
                             className="MapFilter-icon"

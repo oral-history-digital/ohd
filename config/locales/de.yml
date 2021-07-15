@@ -1169,8 +1169,9 @@ de:
     layout:
       back_to_top:
         label: "Zurück nach oben"
-    map_filter:
+    search_map:
       multiple_types: Mehrere Ortstypen
+      error: Fehler beim Laden der Karte
     media_player:
       auto_scroll:
         enable: "mitlaufendes Transkript ein"
