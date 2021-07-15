@@ -9,7 +9,6 @@ import useMapFilter from '../map-filter/useMapFilter';
 import { MAP_NUM_INITIALLY_SELECTED_TYPES } from '../constants';
 
 export default function MapFilter({
-    filter,
     initializeMapFilter,
     toggleMapFilter,
 }) {
@@ -18,7 +17,7 @@ export default function MapFilter({
     const { locationTypes } = useMapFilter();
 
     useEffect(() => {
-        if (!filter && referenceTypes) {
+        if (referenceTypes) {
             const initialFilter = referenceTypes
                 .map(type => type.id)
                 .slice(0, MAP_NUM_INITIALLY_SELECTED_TYPES);
@@ -87,7 +86,6 @@ export default function MapFilter({
 }
 
 MapFilter.propTypes = {
-    filter: PropTypes.array,
     initializeMapFilter: PropTypes.func.isRequired,
     toggleMapFilter: PropTypes.func.isRequired,
 };
