@@ -1,17 +1,22 @@
-.Map {}
-
-.Map--search {
-  height: 66vh;
+.Map {
   margin-bottom: $base-unit;
-  max-height: $base-unit * 30;
-  min-height: $base-unit * 10;
   width: 100%;
 }
 
-.Map--search .leaflet-overlay-pane {
+.Map .leaflet-overlay-pane {
   filter: grayscale(0);
 }
 
-.Map--search .leaflet-tile-pane {
+.Map .leaflet-tile-pane {
   filter: grayscale(0.75);
+}
+
+.Map--search {
+  height: 66vh;
+  max-height: $base-unit * 30;
+  min-height: $base-unit * 10;
+}
+
+.Map--interview {
+  height: $base-unit * 14;
 }

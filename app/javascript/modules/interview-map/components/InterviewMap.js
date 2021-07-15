@@ -23,6 +23,7 @@ export default function InterviewMap() {
                     </div>
                 ) : (
                     <MapComponent
+                        className="Map--interview"
                         loading={isLoading}
                         markers={markers}
                         popupComponent={InterviewMapPopup}

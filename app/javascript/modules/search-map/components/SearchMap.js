@@ -28,6 +28,7 @@ export default function SearchMap() {
                             {t('modules.search_map.error')}: {error.message}
                         </div>) :
                         (<MapComponent
+                            className="Map--search"
                             loading={isLoading}
                             markers={markers || []}
                             popupComponent={SearchMapPopup}

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import classNames from 'classnames';
 import useResizeAware from 'react-resize-aware';
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
@@ -10,6 +11,7 @@ import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from '../constants';
 
 export default function MapComponent({
     loading = false,
+    className,
     initialCenter = INITIAL_MAP_CENTER,
     initialZoom = INITIAL_MAP_ZOOM,
     markers = [],
@@ -27,7 +29,7 @@ export default function MapComponent({
             {resizeListener}
             <Map
                 ref={mapEl}
-                className="Map Map--search"
+                className={classNames('Map', className)}
                 center={initialCenter}
                 maxZoom={16}
                 scrollWheelZoom={false}
@@ -69,6 +71,7 @@ export default function MapComponent({
 
 MapComponent.propTypes = {
     loading: PropTypes.bool,
+    className: PropTypes.string,
     initialCenter: PropTypes.arrayOf(PropTypes.number),
     initialZoom: PropTypes.number,
     markers: PropTypes.arrayOf(PropTypes.shape({
