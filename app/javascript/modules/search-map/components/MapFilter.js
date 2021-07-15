@@ -3,11 +3,10 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
-import useMapReferenceTypes from '../useMapReferenceTypes';
+import { MARKER_COLOR_MULTIPLE_TYPES, useMapReferenceTypes } from 'modules/map';
+
 import useMapFilter from '../map-filter/useMapFilter';
 import { MAP_NUM_INITIALLY_SELECTED_TYPES } from '../constants';
-
-const MARKER_COLOR_MULTIPLE_TYPES = 'black';
 
 export default function MapFilter({
     filter,
@@ -15,17 +14,17 @@ export default function MapFilter({
     toggleMapFilter,
 }) {
     const { t } = useI18n();
-    const { mapReferenceTypes } = useMapReferenceTypes();
+    const { referenceTypes } = useMapReferenceTypes();
     const { locationTypes } = useMapFilter();
 
     useEffect(() => {
-        if (!filter && mapReferenceTypes) {
-            const initialFilter = mapReferenceTypes
+        if (!filter && referenceTypes) {
+            const initialFilter = referenceTypes
                 .map(type => type.id)
                 .slice(0, MAP_NUM_INITIALLY_SELECTED_TYPES);
             initializeMapFilter(initialFilter);
         }
-    }, [mapReferenceTypes]);
+    }, [referenceTypes]);
 
     if (!locationTypes) {
         return null;

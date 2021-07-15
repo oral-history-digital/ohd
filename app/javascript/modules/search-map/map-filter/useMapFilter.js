@@ -1,40 +1,27 @@
 import { useSelector } from 'react-redux';
-import queryString from 'query-string';
-import useSWRImmutable from 'swr/immutable';
 import flow from 'lodash.flow';
 import curry from 'lodash.curry';
 
-import { getMapQuery } from 'modules/search';
-import { usePathBase } from 'modules/routes';
+import { useMapReferenceTypes } from 'modules/map';
 import { getMapFilter } from '../selectors';
-import fetchMapReferenceTypes from '../fetchMapReferenceTypes';
-import fetchMapLocations from '../fetchMapLocations';
+import useMapLocations from '../useMapLocations';
 import addFilterInformation from './addFilterInformation';
 import addLocationCount from './addLocationCount';
 
 export default function useSearchMap() {
-    const query = useSelector(getMapQuery);
     const filter = useSelector(getMapFilter);
-    const pathBase = usePathBase();
 
-    const { data: types, error: typesError } = useSWRImmutable(
-        fetchMapReferenceTypes.name,
-        () => fetchMapReferenceTypes(pathBase)
-    );
-
-    const { data: locations, error: locationsError } = useSWRImmutable(
-        fetchMapLocations.name + queryString.stringify(query),
-        () => fetchMapLocations(pathBase, query)
-    );
+    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
+    const { locations, error: locationsError } = useMapLocations();
 
     let locationTypes = [];
-    if (types && locations && filter) {
+    if (referenceTypes && locations && filter) {
         const transformData = flow(
             curry(addFilterInformation)(filter),
             curry(addLocationCount)(locations)
         );
-        locationTypes = transformData(types);
+        locationTypes = transformData(referenceTypes);
     }
 
-    return { isLoading: !(types && locations), locationTypes, locationsError };
+    return { isLoading: !(referenceTypes && locations), locationTypes, locationsError };
 }

@@ -1,48 +1,36 @@
+import queryString from 'query-string';
 import { useSelector } from 'react-redux';
 import useSWRImmutable from 'swr/immutable';
 import flow from 'lodash.flow';
 import curry from 'lodash.curry';
-import request from 'superagent';
 
+import { fetcher } from 'modules/api';
+import { useMapReferenceTypes } from 'modules/map';
 import { usePathBase } from 'modules/routes';
 import { getMapQuery } from 'modules/search';
 import { getMapFilter } from '../selectors';
-import fetchMapReferenceTypes from '../fetchMapReferenceTypes';
 import filterReferences from './filterReferences';
 import groupByType from './groupByType';
 import sortGroups from './sortGroups';
-
-function fetchMapReferences(pathBase, registryEntryId, query) {
-    const url = `${pathBase}/searches/map_references/${registryEntryId}`;
-    return request
-        .get(url)
-        .set('Accept', 'application/json')
-        .query(query)
-        .then(res => res.body);
-}
 
 export default function useMapReferences(registryEntryId) {
     const pathBase = usePathBase();
     const filter = useSelector(getMapFilter);
     const query = useSelector(getMapQuery);
 
-    const key = `map_references_${registryEntryId}_${JSON.stringify(query)}`;
-    const { isValidating, data, error } = useSWRImmutable(
-        key,
-        () => fetchMapReferences(pathBase, registryEntryId, query)
-    );
+    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
 
-    const { data: types, error: typesError } = useSWRImmutable(
-        fetchMapReferenceTypes.name,
-        () => fetchMapReferenceTypes(pathBase)
-    );
+    const params = queryString.stringify(query);
+    const path = `${pathBase}/searches/map_references/${registryEntryId}?${params}`;
+
+    const { isValidating, data, error } = useSWRImmutable(path, fetcher);
 
     let referenceGroups = [];
-    if (types && data && filter) {
+    if (referenceTypes && data && filter) {
         const transformData = flow(
             curry(filterReferences)(filter),
-            curry(groupByType)(types),
-            curry(sortGroups)(types)
+            curry(groupByType)(referenceTypes),
+            curry(sortGroups)(referenceTypes)
         );
         referenceGroups = transformData(data);
     }

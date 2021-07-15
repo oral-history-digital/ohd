@@ -4,19 +4,20 @@ import curry from 'lodash.curry';
 
 import { usePathBase } from 'modules/routes';
 import { fetcher } from 'modules/api';
-import { referenceTypesToColorMap, transformIntoMarkers } from 'modules/map';
+import { useMapReferenceTypes, referenceTypesToColorMap, transformIntoMarkers } from 'modules/map';
 import mergeLocations from './mergeLocations';
 
 export default function useInterviewMap(archiveId) {
     const pathBase = usePathBase();
-    const typesUrl = `${pathBase}/searches/map_reference_types`;
-    const { data: types, error: typesError } = useSWRImmutable(typesUrl, fetcher);
-    const locationsUrl = `${pathBase}/locations.json?archive_id=${archiveId}`;
-    const { data: locations, error: locationsError } = useSWRImmutable(locationsUrl, fetcher);
+
+    const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
+
+    const path = `${pathBase}/locations?archive_id=${archiveId}`;
+    const { data: locations, error: locationsError } = useSWRImmutable(path, fetcher);
 
     let markers = [];
-    if (types && locations) {
-        const colorMap = referenceTypesToColorMap(types);
+    if (referenceTypes && locations) {
+        const colorMap = referenceTypesToColorMap(referenceTypes);
 
         const transformData = flow(
             mergeLocations,
@@ -25,5 +26,5 @@ export default function useInterviewMap(archiveId) {
         markers = transformData(locations);
     }
 
-    return { isLoading: !(types && locations), markers, locationsError };
+    return { isLoading: !(referenceTypes && locations), markers, locationsError };
 }

@@ -1,3 +1,5 @@
+import { MARKER_COLOR_MULTIPLE_TYPES, MARKER_COLOR_SEGMENT_TYPE } from '../constants';
+
 export default function transformIntoMarkers(colorMap, locations) {
     if (!Array.isArray(locations)) {
         throw new TypeError('locations must be Array');
@@ -28,12 +30,12 @@ function color(colorMap, location) {
     const typesArray = location.ref_types.split(',');
 
     if ((new Set(typesArray)).size > 1) {
-        return 'black';
+        return MARKER_COLOR_MULTIPLE_TYPES;
     } else {
         const type = location.ref_types.split(',')[0];
 
         if (type === 'Segment') {
-            return 'var(--primary-color)';
+            return MARKER_COLOR_SEGMENT_TYPE;
         } else {
             return colorMap.get(Number.parseInt(type));
         }
