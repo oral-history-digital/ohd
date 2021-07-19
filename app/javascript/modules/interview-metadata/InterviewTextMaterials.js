@@ -2,14 +2,11 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
+import { pathBase } from 'modules/routes';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { SingleValueWithFormContainer } from 'modules/forms';
 
 export default class InterviewTextMaterials extends Component {
-    to() {
-        return '/' + this.props.locale + '/interviews/' + this.props.interview.archive_id;
-    }
-
     firstSegment() {
         // here the index ([1]) stands for the tape number. Therefore it is not 0-basded.
         return this.props.interview.segments[1] && this.props.interview.segments[1][this.props.interview.first_segments_ids[1]];
@@ -17,9 +14,8 @@ export default class InterviewTextMaterials extends Component {
 
     download(lang, condition) {
         if (condition && this.firstSegment()) {
-            // let textKey = this.props.interview.lang === lang ? 'transcript' : 'translation';
             return (
-                <a href={`${this.to()}.pdf?lang=${lang}`} className='flyout-content-data'>
+                <a href={`${pathBase(this.props)}/interviews/${this.props.interview.archive_id}.pdf?lang=${lang}`} className='flyout-content-data'>
                     <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                     <span>{t(this.props, lang)}</span>
                 </a>
