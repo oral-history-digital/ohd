@@ -354,7 +354,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   def notes(locale)
-    registry_names.first.notes(locale)
+    registry_names.first && registry_names.first.notes(locale)
   end
 
   def notes=(notes)
