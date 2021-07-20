@@ -3,20 +3,13 @@ import { Loader } from 'modules/api';
 import {
     SET_QUERY_PARAMS,
     RESET_QUERY,
-
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
-
     REQUEST_MAP_SEARCH,
-    RECEIVE_MAP_SEARCH,
-    REQUEST_MAP_REFERENCE_TYPES,
-    RECEIVE_MAP_REFERENCE_TYPES,
-    TOGGLE_MAP_FILTER,
-
+    SET_MAP_QUERY,
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
-
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
 } from './action-types';
@@ -41,12 +34,10 @@ const requestArchiveSearch = (searchQuery) => ({
     searchQuery: searchQuery,
 });
 
-export const requestMapSearch = (searchQuery) => ({
-    type: REQUEST_MAP_SEARCH,
-    searchQuery: searchQuery,
+export const setMapQuery = (query) => ({
+    type: SET_MAP_QUERY,
+    payload: query,
 });
-
-export const requestMapReferenceTypes = () => ({ type: REQUEST_MAP_REFERENCE_TYPES });
 
 function receiveArchiveSearchResults(json){
     return {
@@ -65,41 +56,12 @@ function receiveArchiveSearchResults(json){
     }
 }
 
-export function receiveMapSearchResults(json){
-    return {
-        type: RECEIVE_MAP_SEARCH,
-        payload: json,
-    };
-}
-
-export const receiveMapReferenceTypes = (json) => ({
-    type: RECEIVE_MAP_REFERENCE_TYPES,
-    payload: json,
-});
-
 export function searchInArchive(url, searchQuery) {
     return dispatch => {
         dispatch(requestArchiveSearch(searchQuery))
         Loader.getJson(url, searchQuery, dispatch, receiveArchiveSearchResults);
     }
 }
-
-export function searchInMap(url, searchQuery) {
-    return dispatch => {
-        dispatch(requestMapSearch(searchQuery))
-        Loader.getJson(url, searchQuery, dispatch, receiveMapSearchResults);
-    }
-}
-
-export const fetchMapReferenceTypes = url => dispatch => {
-    dispatch(requestMapReferenceTypes());
-    Loader.getJson(url, null, dispatch, receiveMapReferenceTypes);
-};
-
-export const toggleMapFilter = referenceTypeId => ({
-    type: TOGGLE_MAP_FILTER,
-    payload: referenceTypeId,
-});
 
 const requestInterviewSearch = (searchQuery) => ({
     type: REQUEST_INTERVIEW_SEARCH,

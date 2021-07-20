@@ -168,9 +168,6 @@ class ApplicationController < ActionController::Base
       map: {
         facets: facets,
         query: search_query,
-        foundMarkers: nil,
-        referenceTypes: nil,
-        filter: nil
       },
       interviews: {},
       registryEntries: {
