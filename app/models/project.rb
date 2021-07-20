@@ -26,6 +26,7 @@ class Project < ApplicationRecord
   accepts_nested_attributes_for :translations
 
   validates_uniqueness_of :initials, allow_blank: true
+  validates_uniqueness_of :cache_key_prefix
 
   serialize :view_modes, Array
   serialize :available_locales, Array
@@ -128,24 +129,6 @@ class Project < ApplicationRecord
   end
 
   class << self
-    def config
-      @config ||= Rails.configuration.project
-    end
-
-    def method_missing(n, *args, &block)
-      if config.has_key? n.to_s
-        config[n.to_s]
-      else
-        #raise "#{self} does NOT have a key named #{n}"
-        nil
-      end
-    end
-
-    # TODO: fit this method
-    def current
-      first
-    end
-
     def archive_domains
       where.not(shortname: 'ohd').map do |project| 
         uri = Addressable::URI.parse(project.archive_domain)
