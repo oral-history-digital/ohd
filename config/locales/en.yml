@@ -652,7 +652,7 @@ en:
     diverse: Diverse
     video: Video
     audio: Audio
-    born: born
+    born: née
     typology: Experience background
     resistance: Resistance
     occupation: Occupation
@@ -1040,7 +1040,7 @@ en:
       registry_entry:
         descriptor: Name
         notes: Anmerkungen
-        born: geb.
+        born: née
         latitude: Latitude
         longitude: Longitude
         lang: Sprache

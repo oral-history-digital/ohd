@@ -698,7 +698,7 @@ ru:
     diverse: другие
     video: Видео
     audio: Аудио
-    born: geb.
+    born: урожд.
     typology: Erfahrungen
     resistance: Widerstand
     occupation: Besatzungsalltag
@@ -1087,7 +1087,7 @@ ru:
       registry_entry:
         descriptor: Name
         notes: Anmerkungen
-        born: geb.
+        born: урожд.
         latitude: Latitude
         longitude: Longitude
         lang: Sprache

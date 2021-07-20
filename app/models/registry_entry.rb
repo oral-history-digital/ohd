@@ -386,9 +386,16 @@ class RegistryEntry < ApplicationRecord
       includes(:translations, :registry_name_type).
       #where("registry_name_translations.locale": locale).
       order('registry_name_types.order_priority').
-      map do |rn|
-        rn.descriptor(locale)
-      end.flatten.uniq.join(', ')
+      group_by{|rn| rn.registry_name_type_id}.
+      map do |tid, rns| 
+        birth_name = rns.first.registry_name_type && rns.first.registry_name_type.code == 'birth_name'
+        names = rns.map{|rn| rn.descriptor(locale)}.join(" ")
+        birth_name ? "#{I18n.backend.translate(locale, 'search_facets.born')} #{names}" : names
+      end.
+      join(", ")
+      #group_by{|rn| rn.registry_name_type_id}.
+      #map{|tid, rns| rns.map(&:descriptor).join(" ")}.
+      #join(", ")
   end
 
 end
