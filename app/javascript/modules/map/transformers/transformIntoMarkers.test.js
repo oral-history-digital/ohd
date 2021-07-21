@@ -1,10 +1,10 @@
 import transformIntoMarkers from './transformIntoMarkers';
 
-test('transforms registry location data into markers for map component', () => {
-    const colorMap = new Map();
-    colorMap.set(4, 'blue');
-    colorMap.set(14, 'red');
+const colorMap = new Map();
+colorMap.set(4, 'blue');
+colorMap.set(14, 'red');
 
+test('transforms registry location data into markers for map component', () => {
     const locations = [
         {
             id: 18220,
@@ -44,4 +44,20 @@ test('transforms registry location data into markers for map component', () => {
         },
     ];
     expect(actual).toEqual(expected);
+});
+
+test('throws when lat lon data is empty', () => {
+    const locations = [
+        {
+            id: 18221,
+            lat: '',
+            lon: '',
+            name: 'Berlin',
+            ref_types: 'Segment,Segment,Segment,4,14',
+        },
+    ];
+
+    expect(() => {
+        transformIntoMarkers(colorMap, locations);
+    }).toThrow(ReferenceError);
 });

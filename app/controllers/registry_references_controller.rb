@@ -93,7 +93,7 @@ class RegistryReferencesController < ApplicationController
         registry_entry_id = params[:registry_entry_id]
         interviewee = interview.interviewee
 
-        person_references = RegistryReference.for_interview_map_registry_entry(registry_entry_id, I18n.locale, interviewee.id)
+        person_references = RegistryReference.for_interview_map_person_references(registry_entry_id, I18n.locale, interviewee.id)
         segment_references = RegistryReference.for_interview_map_segment_references(registry_entry_id, interview.id)
 
         persons_serialized = ActiveModelSerializers::SerializableResource.new(person_references, each_serializer: InterviewMapPersonReferencesSerializer)
