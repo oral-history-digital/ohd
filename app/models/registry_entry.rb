@@ -166,7 +166,8 @@ class RegistryEntry < ApplicationRecord
     .where('interviews.id = ?', interview_id)
     .where('registry_references.ref_object_type = "Segment"')
     .where('registry_name_translations.locale = ?', locale)
-    .where('registry_entries.longitude IS NOT NULL AND registry_entries.latitude IS NOT NULL')
+    .where.not('registry_entries.latitude': [nil, ''])
+    .where.not('registry_entries.longitude': [nil, ''])
     .group('registry_entries.id')
     .select('registry_entries.id, registry_name_translations.descriptor AS name, registry_entries.longitude, registry_entries.latitude, GROUP_CONCAT(registry_references.ref_object_type) AS ref_types')
   }
@@ -178,7 +179,8 @@ class RegistryEntry < ApplicationRecord
     .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
     .joins('INNER JOIN registry_reference_types ON registry_references.registry_reference_type_id = registry_reference_types.id')
     .joins('INNER JOIN metadata_fields ON registry_reference_types.id = metadata_fields.registry_reference_type_id')
-    .where('registry_entries.longitude IS NOT NULL AND registry_entries.latitude IS NOT NULL')
+    .where.not('registry_entries.latitude': [nil, ''])
+    .where.not('registry_entries.longitude': [nil, ''])
     .where('metadata_fields.ref_object_type="Person"')
     .where('metadata_fields.use_in_map_search IS TRUE')
     .where(['registry_references.ref_object_id IN (:ids)', { ids: person_ids }])
@@ -400,7 +402,7 @@ class RegistryEntry < ApplicationRecord
       #where("registry_name_translations.locale": locale).
       order('registry_name_types.order_priority').
       group_by{|rn| rn.registry_name_type_id}.
-      map do |tid, rns| 
+      map do |tid, rns|
         birth_name = rns.first.registry_name_type && rns.first.registry_name_type.code == 'birth_name'
         names = rns.map{|rn| rn.descriptor(locale)}.join(" ")
         birth_name ? "#{I18n.backend.translate(locale, 'search_facets.born')} #{names}" : names
