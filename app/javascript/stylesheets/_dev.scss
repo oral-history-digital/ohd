@@ -34,7 +34,7 @@
     /////
   }
   .slick-arrow {
-    bottom: -12px;
+    bottom: $base-unit * -1;
     position: absolute;
     top: auto !important;
     font-size: auto !important;
