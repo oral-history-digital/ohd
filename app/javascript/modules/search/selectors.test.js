@@ -1,5 +1,3 @@
-import dotProp from 'dot-prop-immutable';
-
 import { NAME  } from './constants';
 import * as selectors from './selectors';
 
@@ -53,41 +51,6 @@ const state = {
             query: {
                 page: 1,
             },
-            foundMarkers: [
-                {
-                    id: 12,
-                    name: 'London',
-                    lat: '51.51',
-                    lon: '-0.11',
-                    ref_types: '1,2,7,8,1',
-                },
-                {
-                    id: 13,
-                    name: 'Paris',
-                    lat: '48.85',
-                    lon: '2.35',
-                    ref_types: '3',
-                },
-                {
-                    id: 14,
-                    name: 'New York City',
-                    lat: '40.71',
-                    lon: '-74.00',
-                    ref_types: '7,8,1,1,1,1,1,1,1',
-                },
-            ],
-            referenceTypes: [
-                {
-                    id: 1,
-                    name: 'Habitation',
-                    color: '#1c2d8f',
-                },
-                {
-                    id: 2,
-                    name: 'Birthplace',
-                    color: '#1c2d8f',
-                }],
-            filter: [1, 2],
         },
         interviews: {
             cd003: {
@@ -193,65 +156,6 @@ test('getArchiveResultsCount retrieves number of archive results', () => {
     expect(selectors.getArchiveResultsCount(state)).toEqual(state[NAME].archive.resultsCount);
 });
 
-test('getMapSearch retrieves map part of search state', () => {
-    expect(selectors.getMapSearch(state)).toEqual(state[NAME].map);
-});
-
-test('getFoundMarkers retrieves found map markers', () => {
-    expect(selectors.getFoundMarkers(state)).toEqual(state[NAME].map.foundMarkers);
-});
-
-test('getMapMarkers retrieves filtered and converted map markers', () => {
-    const actual = selectors.getMapMarkers(state);
-    const expected = [
-        {
-            id: 14,
-            name: 'New York City',
-            lat: 40.71,
-            lon: -74,
-            numReferences: 7,
-            referenceTypes: [1],
-        },
-        {
-            id: 12,
-            name: 'London',
-            lat: 51.51,
-            lon: -0.11,
-            numReferences: 3,
-            referenceTypes: [1, 2],
-        },
-    ];
-    expect(actual).toEqual(expected);
-});
-
-describe('getMarkersFetched', () => {
-    test('is true if markers have been loaded', () => {
-        expect(selectors.getMarkersFetched(state)).toBeTruthy();
-    });
-
-    test('is false if markers have not been loaded', () => {
-        const _state = dotProp.set(state, `${NAME}.map.foundMarkers`, null);
-        expect(selectors.getMarkersFetched(_state)).toBeFalsy();
-    });
-});
-
-test('getMapReferenceTypes retrieves map reference types array', () => {
-    expect(selectors.getMapReferenceTypes(state)).toEqual(state[NAME].map.referenceTypes);
-});
-
-test('getLocationCountByReferenceType retrieves location number for each type', () => {
-    const actual = selectors.getLocationCountByReferenceType(state);
-    const expected = {
-        '1': 2,
-        '2': 1,
-    };
-    expect(actual).toEqual(expected);
-});
-
-test('getMapFilter retrieves map filter array', () => {
-    expect(selectors.getMapFilter(state)).toEqual(state[NAME].map.filter);
-});
-
 test('getMapQuery retrieves map query object', () => {
     expect(selectors.getMapQuery(state)).toEqual(state[NAME].map.query);
 });
@@ -266,10 +170,6 @@ test('getRegistryEntriesSearch retrieves registry entries part of search state',
 
 test('getShowRegistryEntriesTree get wether to show search results', () => {
     expect(selectors.getShowRegistryEntriesTree(state)).toEqual(state[NAME].registryEntries.showRegistryEntriesTree);
-});
-
-test('getIsMapSearching retrieves map search state', () => {
-    expect(selectors.getIsMapSearching(state)).toEqual(state[NAME].isMapSearching);
 });
 
 test('getIsRegistryEntrySearching retrieves registry entry search state', () => {

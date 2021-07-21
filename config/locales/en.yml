@@ -100,7 +100,6 @@ en:
   interview_location_desc_one: " wird in Kapitel "
   interview_location_desc_two: " erwähnt."
   archive_map_explanation: Die Karte stellt die Geburtsorte der Interviewten dar.
-  interview_map_explanation: Places mentioned in the interview
   interview_gallery_explanation: The picture gallery contains photos of the interview
     situation as well as family photos and other historical photos from the interviewed
     person's private collection.
@@ -652,7 +651,7 @@ en:
     diverse: Diverse
     video: Video
     audio: Audio
-    born: born
+    born: née
     typology: Experience background
     resistance: Resistance
     occupation: Occupation
@@ -1040,7 +1039,7 @@ en:
       registry_entry:
         descriptor: Name
         notes: Anmerkungen
-        born: geb.
+        born: née
         latitude: Latitude
         longitude: Longitude
         lang: Sprache
@@ -1165,6 +1164,12 @@ en:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview_map:
+      description: Places mentioned in the interview
+      error: Error loading map
+      error_references: Error loading references
+      segment_references: References in the transcript
+      at: at
     interview_search:
       no_results: No results
       annotation_for: Annotation for
@@ -1180,8 +1185,9 @@ en:
     layout:
       back_to_top:
         label: "Back to top"
-    map_filter:
+    search_map:
       multiple_types: Multiple location types
+      error: Error loading map
     media_player:
       auto_scroll:
         enable: "enable auto-scrolling transcript"

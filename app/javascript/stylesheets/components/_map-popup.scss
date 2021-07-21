@@ -31,6 +31,10 @@
   padding: 0;
 }
 
+.MapPopup-listItem {
+  line-height: $base-unit;
+}
+
 .MapPopup-link:link,
 .MapPopup-link:visited {
   color: var(--primary-color);
@@ -42,4 +46,20 @@
 .MapPopup-link:active {
   color: var(--primary-color) !important;
   text-decoration: underline !important;
+}
+
+.MapPopup-button {
+  background: transparent;
+  border: none;
+  color: var(--primary-color) !important;
+  cursor: pointer;
+  font-family: $font-family;
+  font-size: inherit;
+  margin: 0;
+  outline: none;
+  padding: 0;
+}
+
+.MapPopup-button:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
 }

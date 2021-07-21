@@ -43,9 +43,8 @@ export default class RegistryEntries extends Component {
 
     hideRegistryEntry(id) {
         if (
-            this.props.project.hidden_registry_entry_ids &&
-            this.props.project.hidden_registry_entry_ids.indexOf(id.toString()) !== -1 &&
-            !admin(this.props, {type: 'RegistryEntry'}, 'show')
+            this.props.project.hidden_registry_entry_ids?.indexOf(id.toString()) > -1 &&
+            !admin(this.props, {type: 'RegistryEntry'}, 'update')
         ) {
             return true;
         }

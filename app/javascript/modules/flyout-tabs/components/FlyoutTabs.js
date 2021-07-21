@@ -79,7 +79,7 @@ export default class FlyoutTabs extends Component {
 
                     <LocaleButtonsContainer />
 
-                    <Tab className={isLoggedIn ? 'flyout-tab' : 'hidden'} key='archive-search'>
+                    <Tab className={'flyout-tab'} key='archive-search'>
                         { t(this.props, (projectId === 'campscapes' && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search') }
                     </Tab>
 

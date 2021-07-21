@@ -70,7 +70,7 @@ export default class InterviewTabs extends Component {
                             <FaRegFileAlt />
                             <span>{t(this.props, 'transcript')}</span>
                         </Tab>
-                        <Tab className={`content-tabs-nav-link ${(this.props.interview.lang === 'de' && this.props.locale === 'de') ? 'hidden' : ''}`}>
+                        <Tab className={`content-tabs-nav-link ${(this.props.interview.lang === 'de') ? 'hidden' : ''}`}>
                             <FaRegClone />
                             <span>{t(this.props, 'translation')}</span>
                         </Tab>
