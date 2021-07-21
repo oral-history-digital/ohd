@@ -63,6 +63,7 @@ class UserAccount < ApplicationRecord
   end
 
   def roles?(project, klass, action_name)
+    project &&
     !roles.joins(:permissions).
       where(project_id: project.id).
       where("permissions.klass": klass, "permissions.action_name": action_name).

@@ -13,8 +13,8 @@ namespace :roles do
     end
 
     desc 'create default roles and permissions' 
-    task :create_default_roles_and_permissions, [:cache_key_prefix] => :environment do |t, args|
-      project = Project.where(cache_key_prefix: args.cache_key_prefix).first
+    task :create_default_roles_and_permissions, [:shortname] => :environment do |t, args|
+      project = Project.where(shortname: args.shorname).first
       full_role_permissions.each do |role_permission|
         role = Role.find_or_create_by(name: role_permission[:name], project_id: project.id)
         role_permission[:permissions].each do |permission|
