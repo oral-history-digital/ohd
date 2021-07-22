@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 import { useSelector } from 'react-redux';
-import useSWRImmutable from 'swr/immutable';
+import useSWR from 'swr';
 import flow from 'lodash.flow';
 import curry from 'lodash.curry';
 
@@ -22,7 +22,7 @@ export default function useMapReferences(registryEntryId) {
 
     const params = queryString.stringify(query);
     const path = `${pathBase}/searches/map_references/${registryEntryId}?${params}`;
-    const { isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isValidating, data, error } = useSWR(path, fetcher);
 
     let referenceGroups = [];
     if (referenceTypes && data && filter) {
