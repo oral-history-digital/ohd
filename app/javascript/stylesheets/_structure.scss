@@ -313,7 +313,6 @@ a.search-result-link {
 
 .slider {
   transition: max-height 0.2s ease-out;
-  // display: none;
   max-height: 0;
   overflow: hidden;
 }
@@ -326,7 +325,6 @@ a.search-result-link {
 
 .search-result-img {
   margin-bottom: 10px;
-  transition: max-height 0.4s ease;
   max-height: 250px;
 }
 

@@ -136,25 +136,6 @@ class Interview < ApplicationRecord
       end.join(' ')
     end
 
-    #dynamic_integer :registry_entry_and_registry_reference_type_search_facets do
-      #(project.registry_entry_search_facets + project.registry_reference_type_search_facets).inject({}) do |mem, facet|
-        #mem[facet.name.to_sym] = facet.name.to_sym#, :multiple => true, :stored => true, :references => RegistryEntry
-        ##integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
-      #end
-    #end
-
-    #dynamic_string :person_search_facets do
-      #project.person_search_facets.inject({}) do |mem, facet|
-        #mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
-      #end
-    #end
-
-    #dynamic_string :interview_search_facets do
-      #project.interview_search_facets.inject({}) do |mem, facet|
-        #mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
-      #end
-    #end
-
     dynamic_string :search_facets, :multiple => true, :stored => true do
       project.search_facets.inject({}) do |mem, facet|
         mem[facet.name] = (self.respond_to?(facet.name) ? self.send(facet.name) : (interviewee && interviewee.send(facet.name))) || ''
@@ -586,16 +567,6 @@ class Interview < ApplicationRecord
         :item => ((read_attribute(:media_id) || '')[/\d{2}_\d{4}$/] || '')[/^\d{2}/].to_i,
         :position => Timecode.new(read_attribute(:citation_timecode)).time.round
     }
-  end
-
-  def observations_search_results(search_term)
-    search = Regexp.new(Regexp.escape(search_term), Regexp::IGNORECASE)
-
-    unless observations
-      return []
-    end
-
-    observations.scan(search)
   end
 
   # TODO: remove or replace this
