@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData, getCurrentInterview, getCurrentProject, getProjects,
     getRegistryEntries, getRegistryEntriesStatus } from 'modules/data';
-import { getProjectId, getTranslations, getLocale } from 'modules/archive';
+import { getProjectId, getLocale } from 'modules/archive';
 import RegistryReferences from './RegistryReferences';
 
 const mapStateToProps = state => ({
@@ -12,7 +12,6 @@ const mapStateToProps = state => ({
     projects: getProjects(state),
     project: getCurrentProject(state),
     interview: getCurrentInterview(state),
-    translations: getTranslations(state),
     registryEntries: getRegistryEntries(state),
     registryEntriesStatus: getRegistryEntriesStatus(state),
 });

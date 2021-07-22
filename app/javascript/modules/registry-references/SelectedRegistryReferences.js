@@ -22,8 +22,7 @@ export default function SelectedRegistryReferences({
             className="RegistryReferences u-mb-small"
         >
             <span className="RegistryReferences-label flyout-content-label">
-                {field.label[locale] ||
-                    t(`activerecord.attributes.${underscore(refObject.type)}.${field.name}`)}
+                {field.label[locale] || t(`activerecord.attributes.${underscore(refObject.type)}.${field.name}`)}
                 :
             </span>
             <RegistryReferencesContainer
