@@ -56,11 +56,6 @@ export default class FlyoutTabs extends Component {
         }
     }
 
-    activeCss(index) {
-        let offset = this.props.hasMap;
-        return ((index === 5 + offset || index === 6 + offset) ? 'active activeadmin' : 'active')
-    }
-
     render() {
         const { className, flyoutTabsIndex, interview, projectId, project, archiveId, isLoggedIn, hasMap } = this.props;
 
