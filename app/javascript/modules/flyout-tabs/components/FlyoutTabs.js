@@ -92,13 +92,11 @@ export default class FlyoutTabs extends Component {
                     </Tab>
 
                     {
-                        hasMap ?
-                            (<AuthShowContainer ifLoggedIn={hasMap}>
-                                <Tab className='flyout-tab' key='map'>
-                                    { t(this.props, 'map') }
-                                </Tab>
-                            </AuthShowContainer>) :
-                            null
+                        hasMap && (
+                            <Tab className='flyout-tab' key='map'>
+                                { t(this.props, 'map') }
+                            </Tab>
+                        )
                     }
 
                     <Tab className={isLoggedIn ? 'flyout-tab' : 'hidden'} key='user-content'>
@@ -181,7 +179,14 @@ export default class FlyoutTabs extends Component {
 FlyoutTabs.propTypes = {
     className: PropTypes.string,
     visible: PropTypes.bool.isRequired,
+    interview: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    project: PropTypes.object.isRequired,
+    archiveId: PropTypes.string.isRequired,
+    hasMap: PropTypes.bool,
+    isLoggedIn: PropTypes.bool,
     flyoutTabsIndex: PropTypes.number.isRequired,
+    selectedArchiveIds: PropTypes.array,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
     history: PropTypes.object.isRequired,
 };

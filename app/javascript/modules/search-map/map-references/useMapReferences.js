@@ -10,6 +10,7 @@ import { usePathBase } from 'modules/routes';
 import { getMapQuery } from 'modules/search';
 import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';
+import addAbbreviationPoint from './addAbbreviationPoint';
 import groupByType from './groupByType';
 
 export default function useMapReferences(registryEntryId) {
@@ -27,6 +28,7 @@ export default function useMapReferences(registryEntryId) {
     if (referenceTypes && data && filter) {
         const transformData = flow(
             curry(filterReferences)(filter),
+            addAbbreviationPoint,
             curry(groupByType)(referenceTypes),
             curry(sortByReferenceTypeOrder)(referenceTypes, 'id')
         );

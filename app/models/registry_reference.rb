@@ -19,7 +19,9 @@ class RegistryReference < BaseRegistryReference
             where.not('registry_entries.longitude': '-0.376295').where.not('registry_entries.latitude': '39.462571')
         }
 
-  scope :for_map_registry_entry, -> (registry_entry_id, locale, person_ids) {
+  scope :for_map_registry_entry, -> (registry_entry_id, locale, person_ids, signed_in) {
+    last_name_select = signed_in ? 'person_translations.last_name' : 'SUBSTRING(person_translations.last_name,1,1) AS last_name'
+
     joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
     .joins('INNER JOIN people ON people.id = registry_references.ref_object_id')
     .joins('INNER JOIN person_translations ON people.id = person_translations.person_id')
@@ -33,7 +35,7 @@ class RegistryReference < BaseRegistryReference
     .where(ref_object_id: person_ids)
     .where('person_translations.locale = ?', locale)
     .where('interviews.workflow_state="public"')
-    .select('registry_references.id, registry_reference_types.id as registry_reference_type_id, interviews.archive_id, person_translations.first_name, person_translations.last_name')
+    .select("registry_references.id, registry_reference_types.id as registry_reference_type_id, interviews.archive_id, person_translations.first_name, #{last_name_select}")
   }
 
   scope :for_interview_map_person_references, -> (registry_entry_id, locale, person_id) {
