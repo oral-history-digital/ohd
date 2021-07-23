@@ -7,15 +7,16 @@ import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { SingleValueWithFormContainer } from 'modules/forms';
 
 export default class InterviewTextMaterials extends Component {
-    firstSegment() {
-        // here the index ([1]) stands for the tape number. Therefore it is not 0-basded.
-        return this.props.interview.segments[1] && this.props.interview.segments[1][this.props.interview.first_segments_ids[1]];
-    }
-
     download(lang, condition) {
-        if (condition && this.firstSegment()) {
+        const { interview } = this.props;
+
+        // here the index ([1]) stands for the tape number. Therefore it is not 0-basded.
+        if (condition && interview.segments[1]?.[interview.first_segments_ids[1]]) {
             return (
-                <a href={`${pathBase(this.props)}/interviews/${this.props.interview.archive_id}.pdf?lang=${lang}`} className='flyout-content-data'>
+                <a
+                    href={`${pathBase(this.props)}/interviews/${interview.archive_id}.pdf?lang=${lang}`}
+                    className="flyout-content-data"
+                >
                     <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
                     <span>{t(this.props, lang)}</span>
                 </a>
@@ -27,7 +28,7 @@ export default class InterviewTextMaterials extends Component {
 
     render() {
         const { interview, project, locale } = this.props;
-        const observationsMetadataField = Object.values(this.props.project.metadata_fields).find(m => m.name === 'observations');
+        const observationsMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'observations');
 
         if (!interview.language_id) {
             return null;
@@ -35,7 +36,7 @@ export default class InterviewTextMaterials extends Component {
 
         return (
             <>
-                <AuthorizedContent object={interview} action='update'>
+                <AuthorizedContent object={interview} action="show">
                     {
                         observationsMetadataField?.use_in_details_view &&
                         <SingleValueWithFormContainer
@@ -47,7 +48,7 @@ export default class InterviewTextMaterials extends Component {
                         />
                     }
                 </AuthorizedContent>
-                <AuthShowContainer ifLoggedIn={true}>
+                <AuthShowContainer ifLoggedIn>
                     <p>
                         <span className='flyout-content-label'>{t(this.props, 'transcript')}:</span>
                         {this.download(interview.lang, true)}

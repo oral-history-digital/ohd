@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { searchInInterview, getArchiveQuery, getArchiveQueryFulltext, getInterviewSearchResults } from 'modules/search';
-import { setArchiveId, setProjectId, addRemoveArchiveId, getLocale, getProjectId, getTranslations, getSelectedArchiveIds } from 'modules/archive';
+import { setArchiveId, setProjectId, addRemoveArchiveId, getLocale, getProjectId, getSelectedArchiveIds } from 'modules/archive';
 import { getInterviewee, getCurrentProject, getProjects, getInterviewsStatus, getPeopleForCurrentProject, getPeopleStatus, fetchData } from 'modules/data';
 import InterviewPreview from './InterviewPreview';
 

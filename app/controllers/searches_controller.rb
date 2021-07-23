@@ -80,6 +80,7 @@ class SearchesController < ApplicationController
     end
     @mainheading_search = search(Segment, :sort_key, 'mainheading')
     @subheading_search = search(Segment, :sort_key, 'subheading')
+    @observations_search = search(Interview, :archive_id, 'observations')
 
     respond_to do |format|
       format.html do
@@ -99,12 +100,11 @@ class SearchesController < ApplicationController
 
         mainheadings = found_instances(Segment, @mainheading_search, 'mainheading')
         subheadings = found_instances(Segment, @subheading_search, 'subheading')
-
         all_headings = mainheadings.concat(subheadings)
         sorted_headings = all_headings.sort { |a, b| a[:sort_key] <=> b[:sort_key] }
 
         json['found_headings'] = sorted_headings
-        json['found_observations'] = interview.observations_search_results(params[:fulltext])
+        json['found_observations'] = found_instances(Interview, @observations_search, 'observations')
 
         render plain: json.to_json
       end

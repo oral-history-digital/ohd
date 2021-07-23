@@ -60,9 +60,7 @@ export default function InterviewPreview({
     }
 
     return (
-        <div className={classNames('interview-preview', 'search-result', {
-            'detailed': isExpanded,
-        })}>
+        <div className={classNames('search-result', { 'detailed': isExpanded })}>
             {
                 searchResults && resultCount > 0 && (
                     <ThumbnailBadge
@@ -90,7 +88,7 @@ export default function InterviewPreview({
             }
 
             {
-                searchResults && resultCount > 0 && (
+                isExpanded && searchResults && resultCount > 0 && (
                     <div className="slider">
                         <div className="archive-search-found-segments">
                             <SlideShowSearchResults
