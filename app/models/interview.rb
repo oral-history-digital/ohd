@@ -145,7 +145,11 @@ class Interview < ApplicationRecord
 
     Rails.configuration.i18n.available_locales.each do |locale|
       text :"observations_#{locale}", stored: true do
-        observations(locale)
+        if index_observations?
+          observations(locale)
+        else
+          ''
+        end
       end
 
       string :"person_name_#{locale}", :stored => true do
@@ -363,6 +367,22 @@ class Interview < ApplicationRecord
       .where('segments.interview_id': id, 'segment_translations.locale': "#{locale}-public")
       .count
     segment_count > 0
+  end
+
+  def index_observations?
+    public_attributes = properties.fetch(:public_attributes, {})
+    observations_public = public_attributes.fetch('observations', true)
+
+    if observations_public != true
+      false
+    else
+      field = project.metadata_fields.where(name: 'observations').first
+      if field.present?
+        field.use_in_details_view
+      else
+        true
+      end
+    end
   end
 
   def to_vtt(lang, tape_number=1)
