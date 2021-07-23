@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { FaEyeSlash } from 'react-icons/fa';
 import classNames from 'classnames';
 
+import { OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT } from 'modules/layout';
+import { LinkOrA } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import missingStill from 'assets/images/missing_still.png';
@@ -29,12 +30,10 @@ export default function InterviewPreview({
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
     const project = projects[interview.project_id];
-    const hrefOrPathBase = !project.archive_domain ?`/${project.identifier}/${locale}` :
-        project.archive_domain === window.location.origin ?
-        `/${locale}` :
-        `${project.archive_domain}/${locale}`;
-    const hrefOrPath = hrefOrPathBase + '/interviews/' + interview.archive_id;
     const projectId = project.identifier;
+
+    const onOHD = [OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT].indexOf(window.location.origin) > -1;
+    const showSlideShow = (onOHD && !project.archive_domain) || project.archive_domain === window.location.origin;
 
     const intervieweeContribution = Object.values(interview.contributions)
         .find(c => c.contribution_type === 'interviewee');
@@ -42,7 +41,7 @@ export default function InterviewPreview({
 
     useEffect(() => {
         if ( fulltext && (
-            !project.archive_domain || project.archive_domain === window.location.origin
+            project.archive_domain === window.location.origin
         )) {
             searchInInterview(`${hrefOrPathBase}/searches/interview`, {fulltext, id: interview.archive_id});
         }
@@ -51,6 +50,8 @@ export default function InterviewPreview({
     useEffect(() => {
         loadIntervieweeWithAssociations({ interview, peopleStatus, fetchData, locale, projectId, projects });
     });
+
+    const doSetArchiveId = () => setArchiveId(interview.archive_id);
 
     const searchResults = interviewSearchResults[interview.archive_id];
     const resultCount = searchResultCount(searchResults);
@@ -69,26 +70,18 @@ export default function InterviewPreview({
                     />
                 )
             }
-            { !project.archive_domain || project.archive_domain === window.location.origin ?
-                <Link
-                    className="search-result-link"
-                    onClick={() => {
-                        setArchiveId(interview.archive_id);
-                        setProjectId(projectId);
-                    }}
-                    to={hrefOrPath}
-                >
-                    <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
-                </Link> :
-                <a href={hrefOrPath }
-                    className="search-result-link"
-                >
-                    <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
-                </a>
-            }
+
+            <LinkOrA
+                project={project}
+                to={`interviews/${interview.archive_id}`}
+                onLinkClick={doSetArchiveId}
+                className="search-result-link"
+            >
+                <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
+            </LinkOrA> :
 
             {
-                isExpanded && searchResults && resultCount > 0 && (
+                showSlideShow && isExpanded && searchResults && resultCount > 0 && (
                     <div className="slider">
                         <div className="archive-search-found-segments">
                             <SlideShowSearchResults

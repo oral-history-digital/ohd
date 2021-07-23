@@ -60,6 +60,10 @@ class ProjectSerializer < ApplicationSerializer
     object.shortname
   end
 
+  def archive_domain
+    object.archive_domain.blank? ? nil : object.archive_domain
+  end
+
   # light-weight data.
   # can be loaded with the project for now.
   %w(
