@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 import { useSelector } from 'react-redux';
-import useSWRImmutable from 'swr/immutable';
+import useSWR from 'swr';
 import flow from 'lodash.flow';
 import curry from 'lodash.curry';
 
@@ -10,6 +10,7 @@ import { usePathBase } from 'modules/routes';
 import { getMapQuery } from 'modules/search';
 import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';
+import addAbbreviationPoint from './addAbbreviationPoint';
 import groupByType from './groupByType';
 
 export default function useMapReferences(registryEntryId) {
@@ -21,12 +22,13 @@ export default function useMapReferences(registryEntryId) {
 
     const params = queryString.stringify(query);
     const path = `${pathBase}/searches/map_references/${registryEntryId}?${params}`;
-    const { isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isValidating, data, error } = useSWR(path, fetcher);
 
     let referenceGroups = [];
     if (referenceTypes && data && filter) {
         const transformData = flow(
             curry(filterReferences)(filter),
+            addAbbreviationPoint,
             curry(groupByType)(referenceTypes),
             curry(sortByReferenceTypeOrder)(referenceTypes, 'id')
         );

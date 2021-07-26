@@ -1,7 +1,6 @@
 require 'action_dispatch/routing/mapper'
 
 class RegistryReferencesController < ApplicationController
-
   after_action :verify_authorized, except: [:index, :locations, :location_references]
   after_action :verify_policy_scoped, only: [:index, :locations]
 
