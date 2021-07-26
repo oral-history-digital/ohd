@@ -1,0 +1,18 @@
+.PhotoAdminButtons {
+  margin-top: $base-unit;
+
+  @include screen-m {
+    margin-bottom: $base-unit;
+    margin-left: $base-unit;
+    margin-top: 0;
+  }
+}
+
+.PhotoAdminButtons svg {
+  color: white;
+  vertical-align: -0.1rem;
+}
+
+.PhotoAdminButtons-edit {
+  margin-right: $base-unit / 2;
+}

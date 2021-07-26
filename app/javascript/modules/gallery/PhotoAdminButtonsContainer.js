@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { deleteData, getProjects } from 'modules/data';
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
-import Photo from './Photo';
+import PhotoAdminButtons from './PhotoAdminButtons';
 
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
@@ -16,4 +16,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     deleteData,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(Photo);
+export default connect(mapStateToProps, mapDispatchToProps)(PhotoAdminButtons);

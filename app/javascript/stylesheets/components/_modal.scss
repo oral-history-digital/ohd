@@ -34,15 +34,20 @@
 
 .Modal-close {
   background-color: transparent;
-  border: 1px solid lightgray;
+  border: none;
   color: gray;
   font-size: 1.5rem;
+  line-height: 1;
   outline: none;
-  padding: 0 0.5rem;
+  padding: 0;
   position: absolute;
   right: 1rem;
   top: 1rem;
   transition: box-shadow $transition-duration;
+}
+
+.Modal-icon {
+  vertical-align: top;
 }
 
 .Modal-trigger:focus,
