@@ -1043,12 +1043,12 @@ es:
         path: Pfad
         resolution: Auflösung
       photo:
-        public_id: Öffentl. ID
-        caption: Descripción de la foto
-        place: Place
-        date: Date
-        photographer: Photographer
-        license: License
+        public_id: ID de la foto
+        caption: Descripción
+        place: Lugar
+        date: Fecha
+        photographer: Foto/Fuente
+        license: Licencia
         data: Archivo de la foto
         caption_explanation: Este pie de foto sólo está disponible en alemán.
         workflow_state: 'estatus'
