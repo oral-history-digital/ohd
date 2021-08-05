@@ -1,31 +1,48 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
+import PropTypes from 'prop-types';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import UserContentsContainer from './UserContentsContainer';
 
-export default class Workbook extends Component {
-    componentDidMount() {
-        if (!this.props.userContentsStatus && this.props.account.email && !this.props.account.error) {
-            this.props.fetchData(this.props, 'user_contents');
-        }
-    }
+export default function Workbook({
+    projectId,
+    projects,
+    locale,
+    account,
+    userContentsStatus,
+    fetchData,
+}) {
+    const { t } = useI18n();
 
-    render() {
-        return (
-            <div>
-                <UserContentsContainer
-                    type='Search'
-                    title={t(this.props, 'saved_searches')}
-                />
-                <UserContentsContainer
-                    type='InterviewReference'
-                    title={t(this.props, 'saved_interviews')}
-                />
-                <UserContentsContainer
-                    type='UserAnnotation'
-                    title={t(this.props, 'saved_annotations')}
-                />
-            </div>
-        );
-    }
+    useEffect(() => {
+        if (!userContentsStatus && account.email && !account.error) {
+            fetchData({ projectId, projects, locale }, 'user_contents');
+        }
+    }, []);
+
+    return (
+        <div>
+            <UserContentsContainer
+                type='Search'
+                title={t('saved_searches')}
+            />
+            <UserContentsContainer
+                type='InterviewReference'
+                title={t('saved_interviews')}
+            />
+            <UserContentsContainer
+                type='UserAnnotation'
+                title={t('saved_annotations')}
+            />
+        </div>
+    );
 }
+
+Workbook.propTypes = {
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    account: PropTypes.object,
+    userContentsStatus: PropTypes.object,
+    fetchData: PropTypes.func.isRequired,
+};

@@ -1,24 +1,18 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { fetchData, getProjects, getUserContents, getCurrentAccount } from 'modules/data';
+import { getLocale, getProjectId } from 'modules/archive';
+import { fetchData, getProjects, getCurrentAccount } from 'modules/data';
 import Workbook from './Workbook';
 import { getUserContentsStatus } from '../data';
 
-const mapStateToProps = (state) => {
-    return {
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        contents: getUserContents(state),
-        userContentsStatus: getUserContentsStatus(state).all,
-        // the following is just a trick to force rerender after deletion
-        lastModified: getUserContentsStatus(state).lastModified,
-        locale: getLocale(state),
-        translations: getTranslations(state),
-        account: getCurrentAccount(state),
-    }
-}
+const mapStateToProps = state => ({
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    userContentsStatus: getUserContentsStatus(state).all,
+    locale: getLocale(state),
+    account: getCurrentAccount(state),
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,

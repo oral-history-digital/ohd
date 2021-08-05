@@ -1,43 +1,52 @@
-import { Component } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import UserContentContainer from './UserContentContainer';
 
-export default class UserContents extends Component {
+export default function UserContents({
+    contents,
+    type,
+    locale,
+    title,
+}) {
+    const [open, setOpen] = useState(false);
 
-    constructor(props) {
-        super(props);
-        this.handleClick = this.handleClick.bind(this);
-        this.state = {
-            open: false
-        };
+    function handleClick() {
+        setOpen(prev => !prev);
     }
 
-    sortedContent() {
-        let userContentByType = [];
-        for(var i in this.props.contents) {
-            if(this.props.contents[i].type === this.props.type) {
-                userContentByType.push(<UserContentContainer
-                    data={this.props.contents[i]}
-                    key={`${this.props.type}-${i}`}/>);
-            }
-        }
-        return userContentByType;
-    }
+    const contentsForType = contents ?
+        Object.values(contents).filter(content => content.type === type) :
+        [];
 
-    handleClick(){
-        this.setState({['open']: !this.state.open});
-    }
-
-    render() {
-        let headerCss =   this.state.open ? "accordion active" : 'accordion';
-        let panelCss =   this.state.open ? "panel open" : 'panel';
-        return (
-            <div className='userContents'>
-                <button className={headerCss} lang={this.props.locale} onClick={this.handleClick}>
-                    {this.props.title}
-                </button>
-                <div className={panelCss}>{this.sortedContent()} </div>
+    return (
+        <div className="userContents">
+            <button
+                type="button"
+                className={classNames('accordion', {'active': open})}
+                lang={locale}
+                onClick={handleClick}
+            >
+                {title}
+            </button>
+            <div className={classNames('panel', {'open': open})}>
+                {
+                    contentsForType.map(content => (
+                        <UserContentContainer
+                            key={content.id}
+                            data={content}
+                        />
+                    ))
+                }
             </div>
-        );
-    }
+        </div>
+    );
 }
+
+UserContents.propTypes = {
+    contents: PropTypes.object,
+    type: PropTypes.string,
+    title: PropTypes.string,
+    locale: PropTypes.string.isRequired,
+};
