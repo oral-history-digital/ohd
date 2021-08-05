@@ -38,5 +38,5 @@ export default function SelectedRegistryReferences({
 SelectedRegistryReferences.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     project: PropTypes.object.isRequired,
-    refObject: PropTypes.object,
+    refObject: PropTypes.object.isRequired,
 };
