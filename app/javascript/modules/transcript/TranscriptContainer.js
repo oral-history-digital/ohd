@@ -3,9 +3,10 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
 import { fetchData, getCurrentInterview, getCurrentInterviewee, getProjects, getTranscriptFetched,
-    getTranscriptLocale, getHasTranscript, getUserContentsStatus } from 'modules/data';
+    getTranscriptLocale, getHasTranscript } from 'modules/data';
 import { getCurrentTape, getMediaTime, getIsIdle } from 'modules/media-player';
 import { getAutoScroll } from 'modules/interview';
+import { getWorkbookData, fetchWorkbook } from 'modules/workbook';
 import Transcript from './Transcript';
 
 const mapStateToProps = (state, props) => ({
@@ -22,11 +23,12 @@ const mapStateToProps = (state, props) => ({
     transcriptFetched: getTranscriptFetched(state),
     transcriptLocale: getTranscriptLocale(state, props),
     hasTranscript: getHasTranscript(state, props),
-    userContentsStatus: getUserContentsStatus(state).all,
+    workbookData: getWorkbookData(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
+    fetchWorkbook,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Transcript);

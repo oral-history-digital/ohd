@@ -1,11 +1,12 @@
 import { connect } from 'react-redux';
 
 import { getLocale } from 'modules/archive';
-import { getUserContents } from 'modules/data';
+import { getWorkbookData } from '../selectors';
 import UserContents from './UserContents';
 
+
 const mapStateToProps = state => ({
-    contents: getUserContents(state),
+    workbookData: getWorkbookData(state),
     locale: getLocale(state),
 });
 

@@ -2,23 +2,27 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { Spinner } from 'modules/spinners';
 import UserContentsContainer from './UserContentsContainer';
 
 export default function Workbook({
-    projectId,
-    projects,
-    locale,
     account,
-    userContentsStatus,
-    fetchData,
+    workbookIsLoading,
+    fetchWorkbook,
 }) {
     const { t } = useI18n();
+    const pathBase = usePathBase();
 
     useEffect(() => {
-        if (!userContentsStatus && account.email && !account.error) {
-            fetchData({ projectId, projects, locale }, 'user_contents');
+        if (account.email && !account.error) {
+            fetchWorkbook(pathBase);
         }
-    }, []);
+    }, [account.email]);
+
+    if (workbookIsLoading) {
+        return <Spinner />;
+    }
 
     return (
         <div>
@@ -39,10 +43,7 @@ export default function Workbook({
 }
 
 Workbook.propTypes = {
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     account: PropTypes.object,
-    userContentsStatus: PropTypes.object,
-    fetchData: PropTypes.func.isRequired,
+    workbookIsLoading: PropTypes.bool.isRequired,
+    fetchWorkbook: PropTypes.func.isRequired,
 };

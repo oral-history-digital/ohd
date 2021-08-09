@@ -10,14 +10,14 @@ export default function SegmentPopup({
     data,
     openReference,
     popupType,
-    userContents,
+    workbookData,
     setOpenReference,
 }) {
     const { isAuthorized } = useAuthorization();
 
     const userAnnotations = data
         .user_annotation_ids
-        .map(id => userContents?.[id])
+        .map(id => workbookData?.[id])
         .filter(annotation => typeof annotation !== 'undefined');
 
     const hasReferences = data.registry_references_count > 0;
@@ -88,6 +88,6 @@ SegmentPopup.propTypes = {
     data: PropTypes.object.isRequired,
     openReference: PropTypes.object,
     popupType: PropTypes.string,
-    userContents: PropTypes.object,
+    workbookData: PropTypes.object,
     setOpenReference: PropTypes.func.isRequired,
 };

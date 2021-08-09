@@ -5,7 +5,7 @@ import classNames from 'classnames';
 import UserContentContainer from './UserContentContainer';
 
 export default function UserContents({
-    contents,
+    workbookData,
     type,
     locale,
     title,
@@ -16,8 +16,8 @@ export default function UserContents({
         setOpen(prev => !prev);
     }
 
-    const contentsForType = contents ?
-        Object.values(contents).filter(content => content.type === type) :
+    const contentsForType = workbookData ?
+        Object.values(workbookData).filter(content => content.type === type) :
         [];
 
     return (
@@ -45,7 +45,7 @@ export default function UserContents({
 }
 
 UserContents.propTypes = {
-    contents: PropTypes.object,
+    workbookData: PropTypes.object,
     type: PropTypes.string,
     title: PropTypes.string,
     locale: PropTypes.string.isRequired,

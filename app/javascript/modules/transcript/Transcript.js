@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
+import { usePathBase } from 'modules/routes';
 import SegmentContainer from './SegmentContainer';
 import sortedSegmentsWithActiveIndex from './sortedSegmentsWithActiveIndex';
 import isSegmentActive from './isSegmentActive';
@@ -23,8 +24,9 @@ export default function Transcript({
     projectId,
     projects,
     autoScroll,
-    userContentsStatus,
+    workbookData,
     fetchData,
+    fetchWorkbook,
 }) {
     const [popupState, setPopupState] = useState({
         popupSegmentId: null,
@@ -32,16 +34,19 @@ export default function Transcript({
         openReference: null,
     });
     const { t } = useI18n();
+    const pathBase = usePathBase();
 
     useEffect(() => {
-        if (!userContentsStatus) {
-            fetchData({ locale, projectId, projects }, 'user_contents');
-        }
-
         // Only scroll to top if media has not started yet and auto scroll is off.
         // Otherwise, scrolling is handled in Segment component.
         if (!autoScroll && isIdle) {
             window.scrollTo(0, 0);
+        }
+    }, []);
+
+    useEffect(() => {
+        if (!workbookData) {
+            fetchWorkbook(pathBase);
         }
     }, []);
 
@@ -145,8 +150,9 @@ Transcript.propTypes = {
     transcriptFetched: PropTypes.bool.isRequired,
     hasTranscript: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,
-    userContentsStatus: PropTypes.string,
+    workbookData: PropTypes.string,
     fetchData: PropTypes.func.isRequired,
+    fetchWorkbook: PropTypes.func.isRequired,
 };
 
 Transcript.defaultProps = {

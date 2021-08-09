@@ -22,8 +22,6 @@ export const getSegments = state => getData(state).segments;
 
 export const getTasks = state => getData(state).tasks;
 
-export const getUserContents = state => getData(state).user_contents;
-
 export const getUserRegistrations = state => getData(state).user_registrations;
 
 export const getRandomFeaturedInterviews = state => getData(state).random_featured_interviews;
@@ -100,8 +98,6 @@ export const getSpeakerDesignationsStatus = state => getStatuses(state).speaker_
 export const getTasksStatus = state => getStatuses(state).tasks;
 
 export const getTaskTypesStatus = state => getStatuses(state).task_types;
-
-export const getUserContentsStatus = state => getStatuses(state).user_contents;
 
 export const getUserRegistrationsStatus = state => getStatuses(state).user_registrations;
 
