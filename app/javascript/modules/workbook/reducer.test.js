@@ -89,6 +89,41 @@ test('handles the CREATE_WORKBOOK_SUCCEEDED action', () => {
     expect(reducer(state, action)).toEqual(expectedState);
 });
 
+test('handles the UPDATE_WORKBOOK_SUCCEEDED action', () => {
+    const state = {
+        ...initialState,
+        data: {
+            1: 'dummy',
+            2: 'dummy',
+            3: {
+                id: 3,
+                title: 'dummy',
+            },
+        },
+    };
+    const action = {
+        type: types.UPDATE_WORKBOOK_SUCCEEDED,
+        payload: {
+            data: {
+                id: 3,
+                title: 'new-dummy',
+            },
+            id: 3,
+        },
+    };
+    const expectedState = {
+        ...initialState,
+        data: {
+            1: 'dummy',
+            2: 'dummy',
+            3: {
+                id: 3,
+                title: 'new-dummy',
+            },
+        },
+    };
+    expect(reducer(state, action)).toEqual(expectedState);
+});
 
 test('handles the DELETE_WORKBOOK_SUCCEEDED action', () => {
     const state = {

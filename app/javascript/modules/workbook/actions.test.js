@@ -26,6 +26,19 @@ test('createWorkbook', () => {
     expect(actual).toEqual(expected);
 });
 
+test('updateWorkbook', () => {
+    const actual = actions.updateWorkbook('/de', 3, 'dummy-params');
+    const expected = {
+        [CALL_API]: {
+            types: [types.UPDATE_WORKBOOK_STARTED, types.UPDATE_WORKBOOK_SUCCEEDED, types.UPDATE_WORKBOOK_FAILED],
+            method: 'PUT',
+            endpoint: '/de/user_contents/3',
+            body: 'dummy-params',
+        },
+    };
+    expect(actual).toEqual(expected);
+});
+
 test('deleteWorkbook', () => {
     const actual = actions.deleteWorkbook('/de', 3);
     const expected = {

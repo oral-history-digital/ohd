@@ -7,6 +7,9 @@ import {
     CREATE_WORKBOOK_STARTED,
     CREATE_WORKBOOK_SUCCEEDED,
     CREATE_WORKBOOK_FAILED,
+    UPDATE_WORKBOOK_STARTED,
+    UPDATE_WORKBOOK_SUCCEEDED,
+    UPDATE_WORKBOOK_FAILED,
     DELETE_WORKBOOK_STARTED,
     DELETE_WORKBOOK_SUCCEEDED,
     DELETE_WORKBOOK_FAILED,
@@ -27,6 +30,17 @@ export function createWorkbook(pathBase, params) {
             types: [CREATE_WORKBOOK_STARTED, CREATE_WORKBOOK_SUCCEEDED, CREATE_WORKBOOK_FAILED],
             method: 'POST',
             endpoint: `${pathBase}/user_contents`,
+            body: params,
+        },
+    };
+}
+
+export function updateWorkbook(pathBase, id, params) {
+    return {
+        [CALL_API]: {
+            types: [UPDATE_WORKBOOK_STARTED, UPDATE_WORKBOOK_SUCCEEDED, UPDATE_WORKBOOK_FAILED],
+            method: 'PUT',
+            endpoint: `${pathBase}/user_contents/${id}`,
             body: params,
         },
     };

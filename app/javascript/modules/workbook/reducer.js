@@ -3,6 +3,7 @@ import {
     FETCH_WORKBOOK_SUCCEEDED,
     FETCH_WORKBOOK_FAILED,
     CREATE_WORKBOOK_SUCCEEDED,
+    UPDATE_WORKBOOK_SUCCEEDED,
     DELETE_WORKBOOK_SUCCEEDED,
 } from './action-types';
 
@@ -32,6 +33,7 @@ const workbook = (state = initialState, action) => {
                 error: action.error,
             };
         case CREATE_WORKBOOK_SUCCEEDED:
+        case UPDATE_WORKBOOK_SUCCEEDED:
             return {
                 ...state,
                 data: {
