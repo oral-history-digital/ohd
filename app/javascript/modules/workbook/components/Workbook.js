@@ -9,13 +9,14 @@ import UserContentsContainer from './UserContentsContainer';
 export default function Workbook({
     account,
     workbookIsLoading,
+    workbookLoaded,
     fetchWorkbook,
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
 
     useEffect(() => {
-        if (account.email && !account.error) {
+        if (account.email && !account.error && !workbookLoaded && !workbookIsLoading) {
             fetchWorkbook(pathBase);
         }
     }, [account.email]);
@@ -45,5 +46,6 @@ export default function Workbook({
 Workbook.propTypes = {
     account: PropTypes.object,
     workbookIsLoading: PropTypes.bool.isRequired,
+    workbookLoaded: PropTypes.bool.isRequired,
     fetchWorkbook: PropTypes.func.isRequired,
 };

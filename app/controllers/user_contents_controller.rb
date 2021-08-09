@@ -36,13 +36,15 @@ class UserContentsController < ApplicationController
 
   def index
     user_contents = policy_scope(UserContent)
+
     respond_to do |format|
       format.html
       format.js
       format.json do
         render json: {
             data: user_contents.inject({}){|mem, s| mem[s.id] = ::UserContentSerializer.new(s).as_json; mem},
-            data_type: 'user_contents'
+            data_type: 'user_contents',
+            user_account_id: current_user_account&.id
           }
       end
     end
@@ -77,7 +79,7 @@ class UserContentsController < ApplicationController
              :reference_type,
              :type,
              :link_url,
-             :workflow_state, 
+             :workflow_state,
              :shared,
              :persistent).
       tap do |whitelisted|

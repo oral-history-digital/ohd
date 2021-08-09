@@ -19,8 +19,9 @@ const workbook = (state = initialState, action) => {
         case FETCH_WORKBOOK_SUCCEEDED:
             return {
                 ...state,
-                data: action.payload.data,
                 isLoading: false,
+                data: action.payload.data,
+                userAccountId: action.payload.user_account_id,
             };
         case FETCH_WORKBOOK_FAILED:
             return {

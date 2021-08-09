@@ -6,10 +6,14 @@ test('returns the initial state', () => {
 });
 
 test('handles the FETCH_WORKBOOK_STARTED action', () => {
-    const state = initialState;
+    const state = {
+        ...initialState,
+        data: 'dummy',
+        userAccountId: 3,
+    };
     const action = { type: types.FETCH_WORKBOOK_STARTED };
     const expectedState = {
-        ...state,
+        ...initialState,
         isLoading: true,
     };
     expect(reducer(state, action)).toEqual(expectedState);
@@ -24,12 +28,14 @@ test('handles the FETCH_WORKBOOK_SUCCEEDED action', () => {
         type: types.FETCH_WORKBOOK_SUCCEEDED,
         payload: {
             data: { 1: 'dummy' },
+            user_account_id: 3,
         },
     };
     const expectedState = {
         ...state,
         isLoading: false,
         data: { 1: 'dummy' },
+        userAccountId: 3,
     };
     expect(reducer(state, action)).toEqual(expectedState);
 });

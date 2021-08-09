@@ -24,7 +24,8 @@ export default function Transcript({
     projectId,
     projects,
     autoScroll,
-    workbookData,
+    workbookIsLoading,
+    workbookLoaded,
     fetchData,
     fetchWorkbook,
 }) {
@@ -45,7 +46,7 @@ export default function Transcript({
     }, []);
 
     useEffect(() => {
-        if (!workbookData) {
+        if (!workbookLoaded && !workbookIsLoading) {
             fetchWorkbook(pathBase);
         }
     }, []);
@@ -150,7 +151,8 @@ Transcript.propTypes = {
     transcriptFetched: PropTypes.bool.isRequired,
     hasTranscript: PropTypes.bool.isRequired,
     transcriptLocale: PropTypes.string,
-    workbookData: PropTypes.string,
+    workbookIsLoading: PropTypes.bool.isRequired,
+    workbookLoaded: PropTypes.bool.isRequired,
     fetchData: PropTypes.func.isRequired,
     fetchWorkbook: PropTypes.func.isRequired,
 };
