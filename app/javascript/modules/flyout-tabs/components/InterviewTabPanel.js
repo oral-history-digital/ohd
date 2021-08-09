@@ -100,7 +100,9 @@ class InterviewTabPanel extends Component {
                             open={true}
                         >
                             <PersonDataContainer/>
-                            <SelectedRegistryReferencesContainer refObject={interviewee} />
+                            {
+                                interviewee && <SelectedRegistryReferencesContainer refObject={interviewee} />
+                            }
                         </InterviewDataContainer>
                     </AuthorizedContent>
                     <AuthShowContainer ifLoggedOut={projectId !== "campscapes"} ifNoProject={true}>

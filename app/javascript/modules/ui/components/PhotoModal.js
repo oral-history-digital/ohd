@@ -5,11 +5,11 @@ import classNames from 'classnames';
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
 
-export default function Modal({
+export default function PhotoModal({
     title,
     className,
     triggerClassName,
-    trigger = <i className="fa fa-ellipsis-h" />,
+    trigger,
     children,
 }) {
     const [showDialog, setShowDialog] = useState(false);
@@ -25,7 +25,7 @@ export default function Modal({
         <>
             <button
                 type="button"
-                className={classNames('Modal-trigger', triggerClassName)}
+                className={classNames('PhotoModal-trigger', triggerClassName)}
                 title={title}
                 onClick={open}
             >
@@ -33,7 +33,7 @@ export default function Modal({
             </button>
 
             <Dialog
-                className={classNames('Modal-dialog', className)}
+                className={classNames('PhotoModal-dialog', className)}
                 isOpen={showDialog}
                 aria-label={title}
                 onDismiss={close}
@@ -47,23 +47,16 @@ export default function Modal({
                 onTouchMove={handleClick}
                 onTouchCancel={handleClick}
             >
-                <h3 className="Modal-heading">{title}</h3>
-
-                {
-                    typeof children === 'function' ?
-                        children(close) :
-                        children
-                }
-
-                <button className="Modal-close" onClick={close}>
-                    <FaTimes className="Modal-icon" />
+                {children}
+                <button className="PhotoModal-close" onClick={close}>
+                    <FaTimes className="PhotoModal-icon" />
                 </button>
             </Dialog>
         </>
     );
 }
 
-Modal.propTypes = {
+PhotoModal.propTypes = {
     trigger: PropTypes.node.isRequired,
     title: PropTypes.string.isRequired,
     className: PropTypes.string,
@@ -71,6 +64,5 @@ Modal.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,
-        PropTypes.func,
     ]),
 };

@@ -16,7 +16,7 @@ export default function useInterviewMap(archiveId) {
     const { data: locations, error: locationsError } = useSWRImmutable(path, fetcher);
 
     let markers = [];
-    if (referenceTypes && locations) {
+    if (referenceTypes && locations && !locationsError) {
         const colorMap = referenceTypesToColorMap(referenceTypes);
 
         const transformData = flow(

@@ -122,7 +122,6 @@ class SearchesController < ApplicationController
 
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}-#{cache_key_permissions}-#{params[:project_id]}" do
           registry_entries = RegistryEntry.for_map(I18n.locale, map_interviewee_ids)
-          authorize registry_entries
 
           ActiveModelSerializers::SerializableResource.new(registry_entries,
             each_serializer: SlimRegistryEntryMapSerializer
@@ -138,8 +137,8 @@ class SearchesController < ApplicationController
     respond_to do |format|
       format.json do
         registry_entry_id = params[:id]
-        registry_references = RegistryReference.for_map_registry_entry(registry_entry_id, I18n.locale, map_interviewee_ids)
-        authorize registry_references
+        signed_in = current_user_account.present?
+        registry_references = RegistryReference.for_map_registry_entry(registry_entry_id, I18n.locale, map_interviewee_ids, signed_in)
 
         render json: registry_references, each_serializer: SlimRegistryReferenceMapSerializer
       end
@@ -150,7 +149,6 @@ class SearchesController < ApplicationController
     respond_to do |format|
       format.json do
         registry_reference_types = RegistryReferenceType.for_map(I18n.locale)
-        authorize registry_reference_types
 
         render json: registry_reference_types, each_serializer: SlimRegistryReferenceTypeMapSerializer
       end
