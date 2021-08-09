@@ -5,23 +5,23 @@ import { submitData, getCurrentProject, getCurrentInterview, getProjects } from 
 import { getLocale, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
 import { closeArchivePopup } from 'modules/ui';
 import { getCurrentTape } from 'modules/media-player';
+import { createWorkbook } from '../actions';
 import UserContentForm from './UserContentForm';
 
-const mapStateToProps = (state) => {
-    return {
-        archiveId: getArchiveId(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        project: getCurrentProject(state),
-        interview: getCurrentInterview(state),
-        tape: getCurrentTape(state),
-        locale: getLocale(state),
-        translations: getTranslations(state),
-    }
-}
+const mapStateToProps = state => ({
+    archiveId: getArchiveId(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    project: getCurrentProject(state),
+    interview: getCurrentInterview(state),
+    tape: getCurrentTape(state),
+    locale: getLocale(state),
+    translations: getTranslations(state),
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     submitData,
+    createWorkbook,
     closeArchivePopup,
 }, dispatch);
 

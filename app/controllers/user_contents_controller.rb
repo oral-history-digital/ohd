@@ -72,7 +72,8 @@ class UserContentsController < ApplicationController
   private
 
   def user_content_params
-    properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
+    #byebug
+    #properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
     params.require(:user_content).
       permit(:description,
              :title,
@@ -83,10 +84,13 @@ class UserContentsController < ApplicationController
              :link_url,
              :workflow_state,
              :shared,
-             :persistent).
-      tap do |whitelisted|
-        whitelisted[:properties] = ActionController::Parameters.new(JSON.parse(properties)).permit!
-      end
+             :persistent,
+             properties: [:time, :tape_nbr, :segmentIndex, :interview_archive_id]
+      )
+
+      #       tap do |whitelisted|
+      #  whitelisted[:properties] = ActionController::Parameters.new(JSON.parse(properties)).permit!
+      #end
   end
 
 end

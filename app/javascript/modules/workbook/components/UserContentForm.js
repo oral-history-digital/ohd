@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 
 import { t } from 'modules/i18n';
+import { pathBase } from 'modules/routes';
 
 export default class UserContentForm extends Component {
     constructor(props) {
@@ -44,10 +45,14 @@ export default class UserContentForm extends Component {
 
 
     handleSubmit(event) {
+        const { projectId, projects, locale, createWorkbook, onSubmit } = this.props;
+
         event.preventDefault();
         if (this.valid()) {
-            this.props.submitData(this.props, {user_content: this.state});
-            this.props.onSubmit();
+            createWorkbook(pathBase({ locale, projectId, projects }), {user_content: this.state})
+
+            //this.props.submitData(this.props, {user_content: this.state});
+            onSubmit();
         } else {
             this.setErrors();
         }
@@ -188,5 +193,10 @@ export default class UserContentForm extends Component {
 }
 
 UserContentForm.propTypes = {
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    createWorkbook: PropTypes.func.isRequired,
+    submitData: PropTypes.func.isRequired,
 };

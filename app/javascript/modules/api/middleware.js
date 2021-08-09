@@ -9,20 +9,23 @@ const apiMiddleware = store => next => async action => {
 
     const [requestStartedType, successType, failureType] = callApi.types;
     const method = callApi.method || 'GET';
+    const requestBody = JSON.stringify(callApi.body);
 
     next({ type: requestStartedType });
 
     try {
-        const body = await fetch(callApi.endpoint, {
+        const responseBody = await fetch(callApi.endpoint, {
             method,
             headers: {
                 'Accept': 'application/json',
+                'Content-Type': 'application/json',
             },
+            body: requestBody,
         }).then(res => res.json());
 
         next({
             type: successType,
-            payload: body,
+            payload: responseBody,
         });
     } catch(err) {
         next({

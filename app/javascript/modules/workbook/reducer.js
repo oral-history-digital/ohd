@@ -2,6 +2,7 @@ import {
     FETCH_WORKBOOK_STARTED,
     FETCH_WORKBOOK_SUCCEEDED,
     FETCH_WORKBOOK_FAILED,
+    CREATE_WORKBOOK_SUCCEEDED,
     DELETE_WORKBOOK_SUCCEEDED,
 } from './action-types';
 
@@ -29,6 +30,14 @@ const workbook = (state = initialState, action) => {
             return {
                 isLoading: false,
                 error: action.error,
+            };
+        case CREATE_WORKBOOK_SUCCEEDED:
+            return {
+                ...state,
+                data: {
+                    ...state.data,
+                    [action.payload.id]: action.payload.data,
+                },
             };
         case DELETE_WORKBOOK_SUCCEEDED:
             nextData = {

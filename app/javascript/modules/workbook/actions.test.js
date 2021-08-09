@@ -13,6 +13,19 @@ test('fetchWorkbook', () => {
     expect(actual).toEqual(expected);
 });
 
+test('createWorkbook', () => {
+    const actual = actions.createWorkbook('/de', 'dummy-params');
+    const expected = {
+        [CALL_API]: {
+            types: [types.CREATE_WORKBOOK_STARTED, types.CREATE_WORKBOOK_SUCCEEDED, types.CREATE_WORKBOOK_FAILED],
+            method: 'POST',
+            endpoint: '/de/user_contents',
+            body: 'dummy-params',
+        },
+    };
+    expect(actual).toEqual(expected);
+});
+
 test('deleteWorkbook', () => {
     const actual = actions.deleteWorkbook('/de', 3);
     const expected = {
