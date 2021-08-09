@@ -1,0 +1,45 @@
+.PhotoSlide {
+  align-items: center;
+  min-width: 1px;
+
+  padding: $base-unit 0;
+
+  @include screen-m {
+    display: flex;
+    height: 100vh;
+    padding: 0;
+  }
+}
+
+.PhotoSlide-photo {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+
+  @include screen-m {
+    width: 50%;
+  }
+}
+
+.PhotoSlide-image {
+  color: white;
+  height: auto;
+  max-height: 50vh;
+  max-width: 100%;
+  object-fit: contain;
+
+  @include screen-m {
+    max-height: 85vh;
+  }
+}
+
+.PhotoSlide-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  @include screen-m {
+    width: 50%;
+  }
+}

@@ -12,10 +12,10 @@ const metadata = [
 ];
 
 export default function PhotoCaption({
+    className,
     photo,
-    locale,
 }) {
-    const { t } = useI18n();
+    const { t, locale } = useI18n();
 
     const caption = photo.captions[locale] || photo.captions['de'];
     const photoExplanation = photo.captions[locale] ? null : t('activerecord.attributes.photo.caption_explanation');
@@ -23,7 +23,7 @@ export default function PhotoCaption({
     const translations = photo.translations.find(t => t.locale === locale);
 
     return (
-        <div className={classNames('PhotoCaption', 'slider-text')}>
+        <div className={classNames('PhotoCaption', 'slider-text', className)}>
             {
                 photoExplanation ?
                     (<p className='photo-explanation'>
@@ -31,7 +31,9 @@ export default function PhotoCaption({
                     </p>) :
                     null
             }
-            <p className="PhotoCaption-paragraph">{caption}</p>
+            <h3 className="PhotoCaption-heading">
+                {caption}
+            </h3>
 
             {
                 translations && metadata.map(metadatum => {
@@ -52,6 +54,6 @@ export default function PhotoCaption({
 }
 
 PhotoCaption.propTypes = {
+    className: PropTypes.string,
     photo: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
 };

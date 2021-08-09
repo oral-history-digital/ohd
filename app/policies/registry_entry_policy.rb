@@ -6,8 +6,4 @@ class RegistryEntryPolicy < ApplicationPolicy
   def tree?
     index?
   end
-
-  def map?
-    index?
-  end
 end

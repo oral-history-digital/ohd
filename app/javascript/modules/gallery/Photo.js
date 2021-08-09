@@ -1,73 +1,32 @@
 import PropTypes from 'prop-types';
-import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
-import { AuthorizedContent } from 'modules/auth';
-import { Modal } from 'modules/ui';
 import { useI18n } from 'modules/i18n';
-import PhotoFormContainer from './PhotoFormContainer';
 import PhotoCaption from './PhotoCaption';
+import PhotoAdminButtonsContainer from './PhotoAdminButtonsContainer';
 
 export default function Photo({
-    data,
-    archiveId,
-    locale,
-    projectId,
-    projects,
-    deleteData,
+    photo,
 }) {
-    const { t } = useI18n();
-
-    const destroy = () => deleteData({ locale, projectId, projects }, 'interviews', archiveId, 'photos', data.id);
+    const { locale } = useI18n();
 
     return (
-        <div className="Photo">
-            <AuthorizedContent object={data} action='update'>
-                <div className="Photo-admin">
-                    <Modal
-                        title={t('edit.photo.edit')}
-                        trigger={<FaPencilAlt />}
-                        triggerClassName="Photo-editButton"
-                    >
-                        {closeModal => (
-                            <PhotoFormContainer
-                                photo={data}
-                                onSubmit={closeModal} />
-                        )}
-                    </Modal>
-                    <Modal
-                        title={t('edit.photo.delete')}
-                        trigger={<FaTrash />}
-                    >
-                        {closeModal => (
-                            <div>
-                                <button className="any-button" onClick={() => { destroy(); closeModal(); }}>
-                                    {t('delete')}
-                                </button>
-                            </div>
-                        )}
-                    </Modal>
-                </div>
-            </AuthorizedContent>
+        <div className="PhotoSlide">
+            <div className="PhotoSlide-photo">
+                <img
+                    className="PhotoSlide-image"
+                    src={photo.src}
+                    alt={photo.captions[locale] || photo.captions['de']}
+                />
+            </div>
 
-            <img
-                className="Photo-image"
-                src={data.src}
-                alt={data.captions[locale] || data.captions['de']}
-            />
-
-            <PhotoCaption
-                photo={data}
-                locale={locale}
-            />
+            <div className="PhotoSlide-text">
+                <PhotoAdminButtonsContainer photo={photo} />
+                <PhotoCaption photo={photo} />
+            </div>
         </div>
     );
 }
 
 Photo.propTypes = {
-    data: PropTypes.object.isRequired,
-    archiveId: PropTypes.string.isRequired,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    deleteData: PropTypes.func.isRequired,
+    photo: PropTypes.object.isRequired,
 };

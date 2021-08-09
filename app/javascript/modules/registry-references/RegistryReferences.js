@@ -1,127 +1,109 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthorizedContent } from 'modules/auth';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 import RegistryReferenceContainer from './RegistryReferenceContainer';
 
-export default class RegistryReferences extends Component {
-    componentDidMount() {
-        this.loadRegistryEntries();
-        this.loadRootRegistryEntry();
-    }
+export default function RegistryReferences({
+    registryEntriesStatus,
+    registryEntries,
+    registryReferenceTypeId,
+    refObject,
+    project,
+    interview,
+    projectId,
+    projects,
+    inTranscript,
+    lowestAllowedRegistryEntryId,
+    locale,
+    fetchData,
+    setOpenReference,
+}) {
+    const { t } = useI18n();
 
-    componentDidUpdate() {
-        this.loadRegistryEntries();
-        this.loadRootRegistryEntry();
-    }
+    useEffect(() => {
+        loadRegistryEntries();
+        loadRootRegistryEntry();
+    })
 
-    loadRegistryEntries() {
-        if (!this.props.registryEntriesStatus[`ref_object_type_${this.props.refObject.type}_ref_object_id_${this.props.refObject.id}`]) {
-            this.props.fetchData(this.props, 'registry_entries', null, null, `ref_object_type=${this.props.refObject.type}&ref_object_id=${this.props.refObject.id}`);
+    function loadRegistryEntries() {
+        if (!registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`]) {
+            fetchData({ projectId, locale, projects }, 'registry_entries', null, null, `ref_object_type=${refObject.type}&ref_object_id=${refObject.id}`);
         }
     }
 
-    loadRootRegistryEntry() {
+    function loadRootRegistryEntry() {
         if (
-            !this.props.registryEntriesStatus[this.props.project.root_registry_entry_id] ||
-            this.props.registryEntriesStatus[this.props.project.root_registry_entry_id].split('-')[0] === 'reload'
+            !registryEntriesStatus[project.root_registry_entry_id] ||
+            registryEntriesStatus[project.root_registry_entry_id].split('-')[0] === 'reload'
         ) {
-            this.props.fetchData(this.props, 'registry_entries', this.props.project.root_registry_entry_id);
+            fetchData({ projectId, locale, projects }, 'registry_entries', project.root_registry_entry_id);
         }
     }
 
-    registryReferences() {
-        let registryReferences = [];
-
-        // only show registryEntries once, even if they have multiple references
-        let usedRegistryEntryIds = [];
-
-        if (
-            this.props.refObject &&
-            this.props.registryEntriesStatus[`ref_object_type_${this.props.refObject.type}_ref_object_id_${this.props.refObject.id}`] &&
-            this.props.registryEntriesStatus[`ref_object_type_${this.props.refObject.type}_ref_object_id_${this.props.refObject.id}`].split('-')[0] === 'fetched'
-        ) {
-            for (var c in this.props.refObject.registry_references) {
-
-                let registryReference = this.props.refObject.registry_references[c];
-                let registryEntry = this.props.registryEntries[registryReference.registry_entry_id];
-
-                if (
-                    registryEntry &&
-                    registryEntry.name[this.props.locale] &&
-                    usedRegistryEntryIds.indexOf(registryEntry.id) === -1 &&
-                    (
-                        // select on this.props.registryReferenceTypeId only if defined
-                        (this.props.registryReferenceTypeId && (this.props.registryReferenceTypeId === registryReference.registry_reference_type_id)) ||
-                        !this.props.registryReferenceTypeId
-                    )
-                ) {
-                    registryReferences.push(
-                        <RegistryReferenceContainer
-                            registryEntry={registryEntry}
-                            registryReference={registryReference}
-                            registryReferenceTypeId={this.props.registryReferenceTypeId}
-                            refObject={this.props.refObject}
-                            lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
-                            inTranscript={this.props.inTranscript}
-                            locale={this.props.locale}
-                            key={`registry_reference-${registryReference.id}`}
-                            setOpenReference={this.props.setOpenReference}
-                        />
-                    );
-                    usedRegistryEntryIds.push(registryEntry.id);
-                }
-            }
-
-            return registryReferences.length > 0 && (
-                <ul className="RegistryReferences-list">
-                    {registryReferences}
-                </ul>
-            );
-        }
+    if (!registryEntriesStatus[project.root_registry_entry_id] || registryEntriesStatus[project.root_registry_entry_id].split('-')[0] !== 'fetched') {
+        return null;
     }
 
-    addRegistryReference() {
-        if (
-            this.props.registryEntriesStatus[this.props.project.root_registry_entry_id] &&
-            this.props.registryEntriesStatus[this.props.project.root_registry_entry_id].split('-')[0] === 'fetched'
-        ) {
-            return (
-                <AuthorizedContent object={{type: 'RegistryReference', interview_id: this.props.interview.id}} action='create'>
-                    <Modal
-                        title={t(this.props, 'edit.registry_reference.new')}
-                        trigger={<i className="fa fa-plus"/>}
-                        triggerClassName="RegistryReferences-addButton"
-                    >
-                        {close => (
-                            <RegistryReferenceFormContainer
-                                refObject={this.props.refObject}
-                                interview={this.props.interview}
-                                lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
-                                inTranscript={this.props.inTranscript}
-                                registryReferenceTypeId={this.props.registryReferenceTypeId}
-                                locale={this.props.locale}
-                                goDeeper={true}
-                                onSubmit={close}
+    if (!refObject || !registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`] ||
+        registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`].split('-')[0] !== 'fetched') {
+        return null;
+    }
+
+    if (!refObject.registry_references) {
+        return null;
+    }
+
+    const refs = Object.values(refObject.registry_references)
+        .filter(ref => (typeof registryEntries[ref.registry_entry_id]?.name[locale] === 'string'))
+        .filter(ref => (registryReferenceTypeId && registryReferenceTypeId === ref.registry_reference_type_id) || !registryReferenceTypeId);
+
+    return (
+        <>
+            {
+                refs.length > 0 && (
+                    <ul className="RegistryReferences-list">
+                        {refs.map(ref => (
+                            <RegistryReferenceContainer
+                                key={ref.id}
+                                registryEntry={registryEntries[ref.registry_entry_id]}
+                                registryReference={ref}
+                                registryReferenceTypeId={registryReferenceTypeId}
+                                refObject={refObject}
+                                lowestAllowedRegistryEntryId={lowestAllowedRegistryEntryId}
+                                inTranscript={inTranscript}
+                                locale={locale}
+                                setOpenReference={setOpenReference}
                             />
-                        )}
-                    </Modal>
-                </AuthorizedContent>
-            );
-        }
-    }
-
-    render() {
-        return (
-            <>
-                {this.registryReferences()}
-                {this.addRegistryReference()}
-            </>
-        )
-    }
+                        ))}
+                    </ul>
+                )
+            }
+            <AuthorizedContent object={{type: 'RegistryReference', interview_id: interview.id}} action='create'>
+                <Modal
+                    title={t('edit.registry_reference.new')}
+                    trigger={<i className="fa fa-plus"/>}
+                    triggerClassName="RegistryReferences-addButton"
+                >
+                    {close => (
+                        <RegistryReferenceFormContainer
+                            refObject={refObject}
+                            interview={interview}
+                            lowestAllowedRegistryEntryId={lowestAllowedRegistryEntryId}
+                            inTranscript={inTranscript}
+                            registryReferenceTypeId={registryReferenceTypeId}
+                            locale={locale}
+                            goDeeper
+                            onSubmit={close}
+                        />
+                    )}
+                </Modal>
+            </AuthorizedContent>
+        </>
+    );
 }
 
 RegistryReferences.propTypes = {
@@ -134,7 +116,6 @@ RegistryReferences.propTypes = {
     projects: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
-    translations: PropTypes.object.isRequired,
     registryEntries: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,

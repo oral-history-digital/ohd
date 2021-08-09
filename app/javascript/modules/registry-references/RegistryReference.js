@@ -1,166 +1,138 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { Modal } from 'modules/ui';
-import { pluralize, underscore } from 'modules/strings';
-import { admin } from 'modules/auth'
-import { t } from 'modules/i18n';
+import { useAuthorization } from 'modules/auth'
+import { useI18n } from 'modules/i18n';
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 
-export default class RegistryReference extends Component {
-    componentDidMount() {
-        this.loadRegistryEntry(this.props.registryReference.registry_entry_id);
-    }
+export default function RegistryReference({
+    registryEntry,
+    registryReference,
+    registryEntriesStatus,
+    refObject,
+    hideEdit,
+    locale,
+    projectId,
+    projects,
+    registryEntries,
+    lowestAllowedRegistryEntryId,
+    inTranscript,
+    registryReferenceTypeId,
+    setOpenReference,
+    fetchData,
+    deleteData,
+}) {
+    const { t } = useI18n();
+    const { isAuthorized } = useAuthorization();
 
-    componentDidUpdate() {
-        this.loadRegistryEntry(this.props.registryReference.registry_entry_id);
-    }
+    useEffect(() => {
+        loadRegistryEntry();
+    })
 
-    loadRegistryEntry(id) {
+    function loadRegistryEntry() {
+        const id = registryReference.registry_entry_id;
+
         if (
             id &&
-            (
-                !this.props.registryEntriesStatus[id] ||
-                this.props.registryEntriesStatus[id] !== 'fetching'
-            ) && (
-                !this.props.registryEntries[id] ||
-                (
-                    this.props.registryEntries[id] &&
-                    !this.props.registryEntries[id].associations_loaded
-                )
-            )
+            (!registryEntriesStatus[id] || registryEntriesStatus[id] !== 'fetching') &&
+            (!registryEntries[id] || (registryEntries[id] && !registryEntries[id].associations_loaded))
         ) {
-            this.props.fetchData(this.props, 'registry_entries', id, null, 'with_associations=true');
+            fetchData({ locale, projectId, projects }, 'registry_entries', id, null, 'with_associations=true');
         }
     }
 
-    edit() {
-        if (
-            this.props.registryReference &&
-            !this.props.hideEdit &&
-            admin(this.props, this.props.registryReference, 'update') &&
-            this.props.registryEntries[this.props.registryReference.registry_entry_id] &&
-            this.props.registryEntries[this.props.registryReference.registry_entry_id].associations_loaded
-        ) {
-            return (
-                <Modal
-                    title={t(this.props, 'edit.registry_reference.edit')}
-                    trigger={<i className="fa fa-pencil"/>}
-                    triggerClassName="flyout-sub-tabs-content-ico-link"
-                >
-                    {close => (
-                        <RegistryReferenceFormContainer
-                            registryReference={this.props.registryReference}
-                            lowestAllowedRegistryEntryId={this.props.lowestAllowedRegistryEntryId}
-                            inTranscript={this.props.inTranscript}
-                            registryReferenceTypeId={this.props.registryReferenceTypeId}
-                            locale={this.props.locale}
-                            goDeeper={true}
-                            onSubmit={close}
-                        />
-                    )}
-                </Modal>
-            )
-        } else {
-            return null;
-        }
-    }
-
-    destroy() {
-        if (this.props.refObject.type === 'Interview') {
-            this.props.deleteData(
-                this.props, 'interviews',
-                this.props.refObject.archiveId || this.props.refObject.archive_id || this.props.refObject.id,
-                'registry_references',
-                this.props.registryReference.id
-            );
+    function destroy() {
+        if (refObject.type === 'Interview') {
+            deleteData({ locale, projectId, projects }, 'interviews', refObject.archiveId || refObject.archive_id || refObject.id,
+                'registry_references', registryReference.id);
         } else {
             // refObject.type === Person || Segment
-            this.props.deleteData(this.props, 'registry_references', this.props.registryReference.id, null, null, true);
+            deleteData({ locale, projectId, projects }, 'registry_references', registryReference.id, null, null, true);
         }
     }
 
-    delete() {
-        if (
-            this.props.registryReference &&
-            !this.props.hideEdit &&
-            admin(this.props, this.props.registryReference, 'destroy')
-        ) {
-            return (
-                <Modal
-                    title={t(this.props, 'edit.registry_reference.delete')}
-                    trigger={<i className="fa fa-trash-o"/>}
-                    triggerClassName="flyout-sub-tabs-content-ico-link"
-                >
-                    {close => (
-                        <div>
-                            <p>{this.props.registryEntry.name[this.props.locale]}</p>
-                            <button
-                                type="button"
-                                className='any-button'
-                                onClick={() => {
-                                    this.destroy();
-                                    close();
-                                }}
-                            >
-                                {t(this.props, 'edit.registry_reference.delete')}
-                            </button>
-                        </div>
-                    )}
-                </Modal>
-            );
-        } else {
-            return null;
-        }
-    }
+    const hasNote = !!registryEntry.notes[locale];
 
-    buttons() {
-        return (
+    return (
+        <li className="RegistryReference registry-reference">
+            {
+                hasNote ? (
+                    <button
+                        type="button"
+                        id={"reference-" + registryReference.id}
+                        className="RegistryReference-name RegistryReference-name--link"
+                        onClick={() => setOpenReference(registryEntry)}
+                    >
+                        {registryEntry.name[locale]}
+                    </button>
+                ) : (
+                    <span
+                        id={"reference-" + registryReference.id}
+                        className="RegistryReference-name"
+                    >
+                        {registryEntry.name[locale]}
+                    </span>
+                )
+            }
             <span className="RegistryReference-buttons flyout-sub-tabs-content-ico">
-                {this.edit()}
-                {this.delete()}
+                {
+                    registryReference && !hideEdit && isAuthorized(registryReference, 'update') &&
+                    registryEntries[registryReference.registry_entry_id] &&
+                    registryEntries[registryReference.registry_entry_id].associations_loaded && (
+                        <Modal
+                            title={t('edit.registry_reference.edit')}
+                            trigger={<i className="fa fa-pencil"/>}
+                            triggerClassName="flyout-sub-tabs-content-ico-link"
+                        >
+                            {close => (
+                                <RegistryReferenceFormContainer
+                                    registryReference={registryReference}
+                                    lowestAllowedRegistryEntryId={lowestAllowedRegistryEntryId}
+                                    inTranscript={inTranscript}
+                                    registryReferenceTypeId={registryReferenceTypeId}
+                                    locale={locale}
+                                    onSubmit={close}
+                                    goDeeper
+                                />
+                            )}
+                        </Modal>
+                    )
+                }
+                {
+                    registryReference && !hideEdit && isAuthorized(registryReference, 'destroy') && (
+                        <Modal
+                            title={t('edit.registry_reference.delete')}
+                            trigger={<i className="fa fa-trash-o"/>}
+                            triggerClassName="flyout-sub-tabs-content-ico-link"
+                        >
+                            {close => (
+                                <div>
+                                    <p>{registryEntry.name[locale]}</p>
+                                    <button
+                                        type="button"
+                                        className='any-button'
+                                        onClick={() => {
+                                            destroy();
+                                            close();
+                                        }}
+                                    >
+                                        {t('edit.registry_reference.delete')}
+                                    </button>
+                                </div>
+                            )}
+                        </Modal>
+                    )
+                }
             </span>
-        )
-    }
-
-    entry() {
-        const { registryEntry, registryReference, locale, setOpenReference } = this.props;
-
-        const hasNote = !!registryEntry.notes[locale];
-
-        return (
-            hasNote ? (
-                <button
-                    type="button"
-                    id={"reference-" + registryReference.id}
-                    className="RegistryReference-name RegistryReference-name--link"
-                    onClick={() => setOpenReference(registryEntry)}
-                >
-                    {registryEntry.name[locale]}
-                </button>
-            ) : (
-                <span
-                    id={"reference-" + registryReference.id}
-                    className="RegistryReference-name"
-                >
-                    {registryEntry.name[locale]}
-                </span>
-            )
-        );
-    }
-
-    render() {
-        return (
-            <li className="RegistryReference registry-reference">
-                {this.entry()}
-                {this.buttons()}
-            </li>
-        )
-    }
+        </li>
+    );
 }
 
 RegistryReference.propTypes = {
     locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     hideEdit: PropTypes.bool,
     inTranscript: PropTypes.bool,
     lowestAllowedRegistryEntryId: PropTypes.number,

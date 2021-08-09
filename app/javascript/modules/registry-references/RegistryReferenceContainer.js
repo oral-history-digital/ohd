@@ -1,21 +1,17 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { deleteData, fetchData, getCurrentAccount, getProjects, getRegistryEntries,
-    getRegistryEntriesStatus, getCurrentProject } from 'modules/data';
-import { getArchiveId, getEditView, getProjectId, getTranslations } from 'modules/archive';
+import { getProjectId } from 'modules/archive';
+import { deleteData, fetchData, getProjects, getRegistryEntries, getRegistryEntriesStatus,
+    getCurrentProject } from 'modules/data';
 import RegistryReference from './RegistryReference';
 
 const mapStateToProps = state => ({
     // locale is set via props.
-    archiveId: getArchiveId(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
     project: getCurrentProject(state),
-    translations: getTranslations(state),
     registryEntries: getRegistryEntries(state),
-    account: getCurrentAccount(state),
-    editView: getEditView(state),
     registryEntriesStatus: getRegistryEntriesStatus(state),
 });
 

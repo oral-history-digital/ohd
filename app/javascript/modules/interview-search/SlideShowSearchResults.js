@@ -22,10 +22,14 @@ export default function SlideShowSearchResults({
     }
 
     return (
-        <Slider>
+        <Slider
+            className="Slider Slider--thumbnail"
+            dots={false}
+        >
             {
                 segments.map(data => (
                     <div key={data.id}>
+                        <div style={{marginBottom: '24px'}}>
                         <Link
                             key={data.id}
                             onClick={() => dispatch(setArchiveId(interview.archive_id))}
@@ -33,6 +37,7 @@ export default function SlideShowSearchResults({
                         >
                             <TranscriptResult data={data} />
                         </Link>
+                        </div>
                     </div>
                 ))
             }
