@@ -24,7 +24,8 @@ function LinkOrA({
 
     const ohdDomain = developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION;
 
-    const path = project.archive_domain ? `/${locale}/${to}` : `/${project.identifier}/${locale}/${to}`;
+    const pathBase = project.archive_domain ? `/${locale}` : `/${project.identifier}/${locale}`;
+    const path = `${pathBase}/${to}`;
     const domain = project.archive_domain || ohdDomain;
 
     return (
@@ -32,7 +33,7 @@ function LinkOrA({
             <Link
                 className={className}
                 to={path}
-                onClick={() => dispatch( setProjectId(project.identifier), onLinkClick() )}
+                onClick={() => dispatch( setProjectId(project.identifier), onLinkClick(pathBase) )}
             >
                 { children }
             </Link> :

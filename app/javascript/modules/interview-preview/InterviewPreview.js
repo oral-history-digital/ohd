@@ -4,7 +4,7 @@ import { FaEyeSlash } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT } from 'modules/layout';
-import { LinkOrA } from 'modules/routes';
+import { LinkOrA, usePathBase } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import missingStill from 'assets/images/missing_still.png';
@@ -28,6 +28,7 @@ export default function InterviewPreview({
     searchInInterview,
     fetchData,
 }) {
+    const pathBase = usePathBase();
     const [isExpanded, setIsExpanded] = useState(false);
     const project = projects[interview.project_id];
     const projectId = project.identifier;
@@ -43,7 +44,7 @@ export default function InterviewPreview({
         if ( fulltext && (
             project.archive_domain === window.location.origin
         )) {
-            searchInInterview(`${hrefOrPathBase}/searches/interview`, {fulltext, id: interview.archive_id});
+            searchInInterview(`${pathBase}/searches/interview`, {fulltext, id: interview.archive_id});
         }
     }, []);
 

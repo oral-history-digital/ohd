@@ -15,6 +15,8 @@ export default class UserContent extends Component {
         super(props);
 
         this.hideFlyoutTabsIfMobile = this.hideFlyoutTabsIfMobile.bind(this);
+        this.onSearchClick = this.onSearchClick.bind(this);
+        this.onAnnotationClick = this.onAnnotationClick.bind(this);
     }
 
     hideFlyoutTabsIfMobile() {
@@ -82,8 +84,8 @@ export default class UserContent extends Component {
         this.hideFlyoutTabsIfMobile();
     }
 
-    onSearchClick() {
-        this.props.searchInArchive(url, this.props.data.properties);
+    onSearchClick(pathBase) {
+        this.props.searchInArchive(`${pathBase}/searches/archive`, this.props.data.properties);
         this.hideFlyoutTabsIfMobile();
     }
 
