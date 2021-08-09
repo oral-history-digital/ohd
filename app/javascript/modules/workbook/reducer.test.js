@@ -56,3 +56,26 @@ test('handles the FETCH_WORKBOOK_FAILED action', () => {
     };
     expect(reducer(state, action)).toEqual(expectedState);
 });
+
+test('handles the DELETE_WORKBOOK_SUCCEEDED action', () => {
+    const state = {
+        ...initialState,
+        data: {
+            1: 'dummy',
+            2: 'dummy',
+        },
+    };
+    const action = {
+        type: types.DELETE_WORKBOOK_SUCCEEDED,
+        payload: {
+            id: '2',
+        },
+    };
+    const expectedState = {
+        ...initialState,
+        data: {
+            1: 'dummy',
+        },
+    };
+    expect(reducer(state, action)).toEqual(expectedState);
+});

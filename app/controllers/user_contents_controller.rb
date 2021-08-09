@@ -30,7 +30,9 @@ class UserContentsController < ApplicationController
         render :action => 'index'
       end
       format.js
-      format.json { render json: {}, status: :ok }
+      format.json do
+        render json: { id: params[:id] }, status: :ok
+      end
     end
   end
 

@@ -1,7 +1,8 @@
 import {
     FETCH_WORKBOOK_STARTED,
     FETCH_WORKBOOK_SUCCEEDED,
-    FETCH_WORKBOOK_FAILED
+    FETCH_WORKBOOK_FAILED,
+    DELETE_WORKBOOK_SUCCEEDED,
 } from './action-types';
 
 export const initialState = {
@@ -10,6 +11,7 @@ export const initialState = {
 };
 
 const workbook = (state = initialState, action) => {
+    let nextData;
     switch (action.type) {
         case FETCH_WORKBOOK_STARTED:
             return {
@@ -27,6 +29,15 @@ const workbook = (state = initialState, action) => {
             return {
                 isLoading: false,
                 error: action.error,
+            };
+        case DELETE_WORKBOOK_SUCCEEDED:
+            nextData = {
+                ...state.data,
+            };
+            delete nextData[action.payload.id];
+            return {
+                ...state,
+                data: nextData,
             };
         default:
             return state;

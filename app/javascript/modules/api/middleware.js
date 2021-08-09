@@ -1,5 +1,3 @@
-import request from 'superagent';
-
 export const CALL_API = 'CALL_API';
 
 const apiMiddleware = store => next => async action => {
@@ -10,16 +8,21 @@ const apiMiddleware = store => next => async action => {
     }
 
     const [requestStartedType, successType, failureType] = callApi.types;
+    const method = callApi.method || 'GET';
 
     next({ type: requestStartedType });
 
     try {
-        const res = await request.get(callApi.endpoint)
-            .set('Accept', 'application/json');
+        const body = await fetch(callApi.endpoint, {
+            method,
+            headers: {
+                'Accept': 'application/json',
+            },
+        }).then(res => res.json());
 
         next({
             type: successType,
-            payload: res.body,
+            payload: body,
         });
     } catch(err) {
         next({
