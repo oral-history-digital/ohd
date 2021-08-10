@@ -33,15 +33,15 @@ export function submitLogin(url, params) {
     }
 }
 
-const authError = (json) => ({
-        type: AUTH_ERROR,
-        error: json.error || "devise.failure.invalid",
-        active: json.active,
-        email: json.email,
+const authError = json => ({
+    type: AUTH_ERROR,
+    error: json.error || 'devise.failure.invalid',
+    active: json.active,
+    email: json.email,
 })
 
 const logout = () => ({
-        type: LOGOUT,
+    type: LOGOUT,
 })
 
 export function submitLogout(url) {
@@ -52,12 +52,12 @@ export function submitLogout(url) {
 }
 
 const register = () => ({
-        type: REGISTER,
+    type: REGISTER,
 })
 
 const registered = (json) => ({
-        type: REGISTERED,
-        registrationStatus: json.registration_status
+    type: REGISTERED,
+    registrationStatus: json.registration_status
 })
 
 export function submitRegister(url, params) {
@@ -68,12 +68,12 @@ export function submitRegister(url, params) {
 }
 
 const changePassword = () => ({
-        type: CHANGE_PASSWORD,
+    type: CHANGE_PASSWORD,
 })
 
 const changedPassword = (json) => ({
-        type: CHANGED_PASSWORD,
-        changePasswordStatus: json
+    type: CHANGED_PASSWORD,
+    changePasswordStatus: json
 })
 
 export function submitChangePassword(url, method, params) {
@@ -88,12 +88,12 @@ export function submitChangePassword(url, method, params) {
 }
 
 const orderNewPassword = () => ({
-        type: ORDER_NEW_PASSWORD,
+    type: ORDER_NEW_PASSWORD,
 })
 
 const orderedNewPassword = (json) => ({
-        type: ORDERED_NEW_PASSWORD,
-        //orderNewPasswordStatus: json
+    type: ORDERED_NEW_PASSWORD,
+    //orderNewPasswordStatus: json
 })
 
 export function submitOrderNewPassword(url, params) {

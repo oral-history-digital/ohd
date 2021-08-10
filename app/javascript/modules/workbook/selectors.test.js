@@ -3,13 +3,6 @@ import * as selectors from './selectors';
 import { NAME } from './constants';
 
 const state = {
-    data: {
-        accounts: {
-            current: {
-                id: 3,
-            },
-        },
-    },
     [NAME]: {
         isLoading: false,
         error: null,
@@ -27,7 +20,6 @@ const state = {
                 type: 'InterviewReference',
             },
         },
-        userAccountId: 3,
     },
 };
 
@@ -51,18 +43,13 @@ test('getWorkbookInterviews retrieves saved interviews', () => {
     expect(selectors.getWorkbookInterviews(state)).toEqual([state[NAME].data[3]]);
 });
 
-test('getWorkbookAccountId retrieves workbook account id', () => {
-    expect(selectors.getWorkbookAccountId(state)).toEqual(state[NAME].userAccountId);
-});
-
 describe('getWorkbookLoaded', () => {
-    test('is true if correct workbook has been loaded', () => {
+    test('is true if workbook has been loaded', () => {
         expect(selectors.getWorkbookLoaded(state)).toBeTruthy();
     });
 
-    test('is false if wrong workbook has been loaded', () => {
-        const _state = dotProp.set(state, 'data.accounts.current.id', 1);
-
+    test('is false if workbook has not been loaded', () => {
+        const _state = dotProp.set(state, `${NAME}.data`, undefined);
         expect(selectors.getWorkbookLoaded(_state)).toBeFalsy();
     });
 });

@@ -1,4 +1,5 @@
 import reducer, { initialState } from './reducer';
+import { LOGOUT } from 'modules/account';
 import * as types from './action-types';
 
 test('returns the initial state', () => {
@@ -9,7 +10,6 @@ test('handles the FETCH_WORKBOOK_STARTED action', () => {
     const state = {
         ...initialState,
         data: 'dummy',
-        userAccountId: 3,
     };
     const action = { type: types.FETCH_WORKBOOK_STARTED };
     const expectedState = {
@@ -28,14 +28,12 @@ test('handles the FETCH_WORKBOOK_SUCCEEDED action', () => {
         type: types.FETCH_WORKBOOK_SUCCEEDED,
         payload: {
             data: { 1: 'dummy' },
-            user_account_id: 3,
         },
     };
     const expectedState = {
         ...state,
         isLoading: false,
         data: { 1: 'dummy' },
-        userAccountId: 3,
     };
     expect(reducer(state, action)).toEqual(expectedState);
 });
@@ -144,6 +142,22 @@ test('handles the DELETE_WORKBOOK_SUCCEEDED action', () => {
         data: {
             1: 'dummy',
         },
+    };
+    expect(reducer(state, action)).toEqual(expectedState);
+});
+
+test('delete workbook data on LOGOUT action', () => {
+    const state = {
+        ...initialState,
+        data: {
+            1: 'dummy',
+            2: 'dummy',
+        },
+    };
+    const action = { type: LOGOUT };
+    const expectedState = {
+        ...initialState,
+        data: null,
     };
     expect(reducer(state, action)).toEqual(expectedState);
 });

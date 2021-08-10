@@ -46,7 +46,6 @@ class UserContentsController < ApplicationController
         render json: {
             data: user_contents.inject({}){|mem, s| mem[s.id] = ::UserContentSerializer.new(s).as_json; mem},
             data_type: 'user_contents',
-            user_account_id: current_user_account&.id
           }
       end
     end

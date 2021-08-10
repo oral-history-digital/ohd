@@ -1,3 +1,5 @@
+import { LOGOUT } from 'modules/account';
+
 import {
     FETCH_WORKBOOK_STARTED,
     FETCH_WORKBOOK_SUCCEEDED,
@@ -9,6 +11,7 @@ import {
 
 export const initialState = {
     isLoading: false,
+    data: null,
     error: null,
 };
 
@@ -18,6 +21,7 @@ const workbook = (state = initialState, action) => {
         case FETCH_WORKBOOK_STARTED:
             return {
                 isLoading: true,
+                data: null,
                 error: null,
             };
         case FETCH_WORKBOOK_SUCCEEDED:
@@ -25,10 +29,10 @@ const workbook = (state = initialState, action) => {
                 ...state,
                 isLoading: false,
                 data: action.payload.data,
-                userAccountId: action.payload.user_account_id,
             };
         case FETCH_WORKBOOK_FAILED:
             return {
+                ...state,
                 isLoading: false,
                 error: action.error,
             };
@@ -49,6 +53,11 @@ const workbook = (state = initialState, action) => {
             return {
                 ...state,
                 data: nextData,
+            };
+        case LOGOUT:
+            return {
+                ...state,
+                data: null,
             };
         default:
             return state;

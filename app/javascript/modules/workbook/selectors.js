@@ -1,6 +1,5 @@
 import { createSelector } from 'reselect';
 
-import { getCurrentAccount } from 'modules/data';
 import { NAME } from './constants';
 
 const getState = state => state[NAME];
@@ -45,12 +44,10 @@ export const getWorkbookInterviews = createSelector(
     }
 );
 
-export const getWorkbookAccountId = state => getState(state).userAccountId;
-
 export const getWorkbookLoaded = createSelector(
-    [getWorkbookData, getWorkbookAccountId, getCurrentAccount],
-    (data, workbookAccountId, account) => {
-        return (data !== null) && (typeof data !== 'undefined') && (workbookAccountId === account.id);
+    [getWorkbookData],
+    data => {
+        return (data !== null) && (typeof data !== 'undefined');
     }
 );
 
