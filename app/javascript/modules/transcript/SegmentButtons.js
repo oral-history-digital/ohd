@@ -12,7 +12,7 @@ export default function SegmentButtons({
     contentLocale,
     data,
     popupType,
-    workbookData,
+    workbookAnnotations,
     tabIndex,
     active,
     openPopup,
@@ -21,11 +21,10 @@ export default function SegmentButtons({
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
 
-    const userAnnotations = data.user_annotation_ids
-        .map(id => workbookData?.[id])
-        .filter(annotation => typeof annotation !== 'undefined');
+    const annotationsForSegment = workbookAnnotations.filter(annotation =>
+        data.user_annotation_ids.includes(annotation.id));
 
-    const hasAnnotations = (data.annotations_count + userAnnotations.length) > 0;
+    const hasAnnotations = (data.annotations_count + annotationsForSegment.length) > 0;
     const hasReferences = data.registry_references_count > 0;
     const showAnnotationsButton = isAuthorized({type: 'Annotation', interview_id: data.interview_id}, 'update') || hasAnnotations;
     const showReferencesButton = isAuthorized({type: 'RegistryReference', interview_id: data.interview_id}, 'update') || hasReferences;
@@ -91,7 +90,7 @@ SegmentButtons.propTypes = {
     data: PropTypes.object.isRequired,
     contentLocale: PropTypes.string.isRequired,
     popupType: PropTypes.string,
-    workbookData: PropTypes.object,
+    workbookAnnotations: PropTypes.array,
     tabIndex: PropTypes.number.isRequired,
     active: PropTypes.bool,
     openPopup: PropTypes.func.isRequired,

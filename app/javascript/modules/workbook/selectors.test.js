@@ -14,7 +14,18 @@ const state = {
         isLoading: false,
         error: null,
         data: {
-            1: 'dummy',
+            1: {
+                id: 1,
+                type: 'UserAnnotation',
+            },
+            2: {
+                id: 2,
+                type: 'Search',
+            },
+            3: {
+                id: 3,
+                type: 'InterviewReference',
+            },
         },
         userAccountId: 3,
     },
@@ -26,6 +37,18 @@ test('getWorkbookIsLoading retrieves loading state', () => {
 
 test('getWorkbookData retrieves workbook data', () => {
     expect(selectors.getWorkbookData(state)).toEqual(state[NAME].data);
+});
+
+test('getWorkbookAnnotations retrieves user annotations', () => {
+    expect(selectors.getWorkbookAnnotations(state)).toEqual([state[NAME].data[1]]);
+});
+
+test('getWorkbookSearches retrieves saved searches', () => {
+    expect(selectors.getWorkbookSearches(state)).toEqual([state[NAME].data[2]]);
+});
+
+test('getWorkbookInterviews retrieves saved interviews', () => {
+    expect(selectors.getWorkbookInterviews(state)).toEqual([state[NAME].data[3]]);
 });
 
 test('getWorkbookAccountId retrieves workbook account id', () => {

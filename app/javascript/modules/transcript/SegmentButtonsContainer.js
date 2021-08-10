@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 
-import { getWorkbookData } from 'modules/workbook';
+import { getWorkbookAnnotations } from 'modules/workbook';
 import SegmentButtons from './SegmentButtons';
 
 const mapStateToProps = state => ({
-    workbookData: getWorkbookData(state),
+    workbookAnnotations: getWorkbookAnnotations(state),
 });
 
 export default connect(mapStateToProps)(SegmentButtons);

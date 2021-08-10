@@ -5,9 +5,7 @@ import classNames from 'classnames';
 import UserContentContainer from './UserContentContainer';
 
 export default function UserContents({
-    workbookData,
-    type,
-    locale,
+    contents,
     title,
 }) {
     const [open, setOpen] = useState(false);
@@ -16,23 +14,18 @@ export default function UserContents({
         setOpen(prev => !prev);
     }
 
-    const contentsForType = workbookData ?
-        Object.values(workbookData).filter(content => content.type === type) :
-        [];
-
     return (
         <div className="userContents">
             <button
                 type="button"
                 className={classNames('accordion', {'active': open})}
-                lang={locale}
                 onClick={handleClick}
             >
                 {title}
             </button>
             <div className={classNames('panel', {'open': open})}>
                 {
-                    contentsForType.map(content => (
+                    contents && contents.map(content => (
                         <UserContentContainer
                             key={content.id}
                             data={content}
@@ -45,8 +38,6 @@ export default function UserContents({
 }
 
 UserContents.propTypes = {
-    workbookData: PropTypes.object,
-    type: PropTypes.string,
+    contents: PropTypes.array,
     title: PropTypes.string,
-    locale: PropTypes.string.isRequired,
 };
