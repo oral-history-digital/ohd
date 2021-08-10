@@ -73,7 +73,7 @@ export default class AssignSpeakersForm extends Component {
                     }}
                     elements={this.formElements()}
                     nestedForm={this.allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer}
-                    nestedFormProps={{withSpeakerDesignation: true}}
+                    nestedFormProps={{withSpeakerDesignation: true, interview: this.props.interview}}
                     nestedFormScope='contribution'
                     nestedScopeRepresentation={this.showContribution}
                 />
