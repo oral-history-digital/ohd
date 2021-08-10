@@ -16,7 +16,7 @@ export default class MarkTextForm extends Component {
 
     showMarkedText(value) {
         return (
-            <span>{value.text_to_mark}</span>
+            <span>{value.text_to_mark}: {value.replacement}</span>
         )
     }
 

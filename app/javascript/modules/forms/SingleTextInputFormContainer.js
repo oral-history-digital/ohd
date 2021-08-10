@@ -14,7 +14,10 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     closeArchivePopup,
-    submitData,
+    // please NO submitData in here: it would disable
+    // this form`s functionality
+    // as sub-form
+    //submitData,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(SingleTextInputForm);
