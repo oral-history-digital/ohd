@@ -37,10 +37,12 @@ export default class ArchiveSearch extends Component {
 
     componentDidMount() {
         this.props.setFlyoutTabsIndex(INDEX_SEARCH);
-        this.search({
-            ...this.props.query,
-            page: 1,
-        });
+        if (window.location.href.indexOf('?') === -1) {
+            this.search({
+                ...this.props.query,
+                page: 1,
+            });
+        }
     }
 
     componentDidUpdate(prevProps) {
@@ -349,8 +351,6 @@ ArchiveSearch.propTypes = {
     viewModes: PropTypes.array.isRequired,
     viewMode: PropTypes.string.isRequired,
     foundInterviews: PropTypes.array.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,

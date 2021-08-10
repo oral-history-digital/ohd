@@ -170,13 +170,13 @@ class SearchesController < ApplicationController
           all_interviews_pseudonyms: dropdown_values[:all_interviews_pseudonyms],
           all_interviews_birth_locations: dropdown_values[:all_interviews_birth_locations],
           all_interviews_count: search.total,
-          sorted_archive_ids: Rails.cache.fetch("#{current_project.cache_key_prefix}-sorted_archive_ids-#{Interview.maximum(:created_at)}") { Interview.archive_ids_by_alphabetical_order(locale) },
+          sorted_archive_ids: Rails.cache.fetch("#{current_project ? current_project.cache_key_prefix : 'OHD'}-sorted_archive_ids-#{Interview.maximum(:created_at)}") { Interview.archive_ids_by_alphabetical_order(locale) },
           result_pages_count: search.results.total_pages,
           results_count: search.total,
           interviews: search.results.map { |i| cache_single(i) },
           # found_segments_for_interviews: number_of_found_segments,
           # found_segments_for_interviews: found_segments,
-          facets: current_project.updated_search_facets(search),
+          facets: current_project ? current_project.updated_search_facets(search) : {},
           page: params[:page] || 1,
         }
       end

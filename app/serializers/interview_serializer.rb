@@ -2,6 +2,7 @@ class InterviewSerializer < ApplicationSerializer
   attributes [
     :id,
     :archive_id,
+    :project_id,
     :collection_id,
     :tape_count,
     :video,

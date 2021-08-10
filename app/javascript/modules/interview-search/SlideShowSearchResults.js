@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
-import { setArchiveId } from 'modules/archive';
+import { setArchiveId, setProjectId } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
 import SlideShowSearchStats from './SlideShowSearchStats';
 import TranscriptResult from './TranscriptResult';
@@ -32,7 +32,10 @@ export default function SlideShowSearchResults({
                         <div style={{marginBottom: '24px'}}>
                         <Link
                             key={data.id}
-                            onClick={() => dispatch(setArchiveId(interview.archive_id))}
+                            onClick={() => dispatch(
+                                setProjectId(projectId),
+                                setArchiveId(interview.archive_id)
+                            )}
                             to={`${pathBase}/interviews/${interview.archive_id}`}
                         >
                             <TranscriptResult data={data} />

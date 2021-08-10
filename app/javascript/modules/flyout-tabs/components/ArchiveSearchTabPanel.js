@@ -6,7 +6,7 @@ import { AuthorizedContent } from 'modules/auth';
 import InterviewDataContainer from './InterviewDataContainer';
 import AdminActionsContainer from './AdminActionsContainer';
 
-function ArchiveSearchTabPanel({ selectedArchiveIds }) {
+function ArchiveSearchTabPanel({ selectedArchiveIds, project }) {
     const { t } = useI18n();
 
     return (
@@ -17,13 +17,15 @@ function ArchiveSearchTabPanel({ selectedArchiveIds }) {
 
             <ArchiveSearchFormContainer/>
 
-            <div className='flyout-sub-tabs-container flyout-video'>
-                <AuthorizedContent object={{type: 'General'}} action='edit'>
-                    <InterviewDataContainer title={t('admin_actions')} >
-                        <AdminActionsContainer archiveIds={selectedArchiveIds} />
-                    </InterviewDataContainer>
-                </AuthorizedContent>
-            </div>
+            { project && 
+                <div className='flyout-sub-tabs-container flyout-video'>
+                    <AuthorizedContent object={{type: 'General'}} action='edit'>
+                        <InterviewDataContainer title={t('admin_actions')} >
+                            <AdminActionsContainer archiveIds={selectedArchiveIds} />
+                        </InterviewDataContainer>
+                    </AuthorizedContent>
+                </div>
+            }
         </>
     );
 }

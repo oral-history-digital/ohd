@@ -728,16 +728,16 @@ class Interview < ApplicationRecord
     # in order to get a dropdown list in search field
     def dropdown_search_values(project, user_account)
       wf_state = user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ["public", "unshared"] : 'public'
-      cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), project.updated_at]
+      cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), (project ? project.updated_at : Project.maximum(:updated_at))]
         .compact.max.strftime("%d.%m-%H:%M")
 
-      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
+      Rails.cache.fetch("#{project ? project.cache_key_prefix : 'ohd'}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
         search = Interview.search do
           adjust_solr_params do |params|
-            params[:rows] = project.interviews.size
+            params[:rows] = project ? project.interviews.size : Interview.count
           end
           with(:workflow_state, wf_state)
-          with(:project_id, project.id)
+          with(:project_id, project.id) if project
         end
 
         all_interviews_titles = search.hits.map{ |hit| eval hit.stored(:title) }
@@ -745,7 +745,7 @@ class Interview < ApplicationRecord
         #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
         #    ...]
         all_interviews_pseudonyms = search.hits.map do |hit|
-          project.available_locales.inject({}) do |mem, locale|
+          (project || I18n).send(:available_locales).inject({}) do |mem, locale|
             mem[locale] = hit.stored("alias_names_#{locale}")
             mem
           end
@@ -763,14 +763,16 @@ class Interview < ApplicationRecord
       search = Interview.search do
         fulltext params[:fulltext]
         with(:workflow_state, user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
-        with(:project_id, project.id)
+        with(:project_id, project.id) if project
         with(:archive_id, params[:archive_id]) if params[:archive_id]
-        dynamic :search_facets do
-          facet *project.search_facets_names
-          project.search_facets_names.each do |facet|
-            facet_value = params[facet]
-            facet_value.delete_if(&:blank?) if facet_value.is_a?(Array)
-            with(facet.to_sym).any_of(facet_value) unless facet_value.blank?
+        if project
+          dynamic :search_facets do
+            facet *project.search_facets_names
+            project.search_facets_names.each do |facet|
+              facet_value = params[facet]
+              facet_value.delete_if(&:blank?) if facet_value.is_a?(Array)
+              with(facet.to_sym).any_of(facet_value) unless facet_value.blank?
+            end
           end
         end
         if params[:fulltext].blank? && params[:order].blank?

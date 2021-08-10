@@ -335,7 +335,7 @@ class InterviewsController < ApplicationController
   def update_speakers_params
     params.require(:update_speaker).
       permit(
-      contributions_attributes: [:person_id, :contribution_type, :speaker_designation],
+      contributions_attributes: [:person_id, :interview_id, :contribution_type_id, :speaker_designation],
       speakers: {},
     )
   end

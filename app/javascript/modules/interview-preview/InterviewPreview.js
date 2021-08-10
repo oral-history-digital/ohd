@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
 import { FaEyeSlash } from 'react-icons/fa';
 import classNames from 'classnames';
 
+import { OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT } from 'modules/layout';
+import { LinkOrA, usePathBase } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { usePathBase } from 'modules/routes';
 import missingStill from 'assets/images/missing_still.png';
 import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 import ThumbnailBadge from './ThumbnailBadge';
@@ -17,32 +17,42 @@ export default function InterviewPreview({
     fulltext,
     statuses,
     interview,
-    interviewee,
     locale,
-    project,
-    projectId,
     projects,
-    people,
     peopleStatus,
     setArchiveId,
+    setProjectId,
     selectedArchiveIds,
     addRemoveArchiveId,
     interviewSearchResults,
     searchInInterview,
     fetchData,
 }) {
-    const [isExpanded, setIsExpanded] = useState(false);
     const pathBase = usePathBase();
+    const [isExpanded, setIsExpanded] = useState(false);
+    const project = projects[interview.project_id];
+    const projectId = project.identifier;
+
+    const onOHD = [OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT].indexOf(window.location.origin) > -1;
+    const showSlideShow = (onOHD && !project.archive_domain) || project.archive_domain === window.location.origin;
+
+    const intervieweeContribution = Object.values(interview.contributions)
+        .find(c => c.contribution_type === 'interviewee');
+    const interviewee = project.people[intervieweeContribution?.person_id];
 
     useEffect(() => {
-        if (fulltext) {
+        if ( fulltext && (
+            project.archive_domain === window.location.origin
+        )) {
             searchInInterview(`${pathBase}/searches/interview`, {fulltext, id: interview.archive_id});
         }
     }, []);
 
     useEffect(() => {
-        loadIntervieweeWithAssociations({ interview, people, peopleStatus, fetchData, locale, projectId, projects });
+        loadIntervieweeWithAssociations({ interview, peopleStatus, fetchData, locale, projectId, projects });
     });
+
+    const doSetArchiveId = () => setArchiveId(interview.archive_id);
 
     const searchResults = interviewSearchResults[interview.archive_id];
     const resultCount = searchResultCount(searchResults);
@@ -61,45 +71,25 @@ export default function InterviewPreview({
                     />
                 )
             }
-            <Link
+
+            <LinkOrA
+                project={project}
+                to={`interviews/${interview.archive_id}`}
+                onLinkClick={doSetArchiveId}
                 className="search-result-link"
-                onClick={() => setArchiveId(interview.archive_id)}
-                to={pathBase + '/interviews/' + interview.archive_id}
             >
-                <div className="search-result-img aspect-ratio">
-                    <img
-                        className="aspect-ratio__inner"
-                        src={interview.still_url || 'missing_still'}
-                        onError={ (e) => { e.target.src = missingStill; }}
-                        alt=""
-                    />
-                </div>
-
-                <AuthShowContainer ifLoggedIn>
-                    <p className="search-result-name">
-                        {interview.workflow_state === 'unshared' && <FaEyeSlash />}
-                        {interview.short_title && interview.short_title[locale]}
-                    </p>
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut ifNoProject>
-                    <p className="search-result-name">
-                        {interview.workflow_state === 'unshared' && <FaEyeSlash />}
-                        {project.fullname_on_landing_page ? interview.title[locale] : interview.anonymous_title[locale]}
-                    </p>
-                </AuthShowContainer>
-
-                {interviewee?.associations_loaded && !isExpanded && (
-                    <ThumbnailMetadataContainer interview={interview} />
-                )}
-            </Link>
+                <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
+            </LinkOrA> :
 
             {
-                isExpanded && searchResults && resultCount > 0 && (
+                showSlideShow && isExpanded && searchResults && resultCount > 0 && (
                     <div className="slider">
                         <div className="archive-search-found-segments">
                             <SlideShowSearchResults
                                 interview={interview}
                                 searchResults={searchResults}
+                                hrefOrPath={hrefOrPath}
+                                projectId={projectId}
                             />
                         </div>
                     </div>
@@ -120,19 +110,52 @@ export default function InterviewPreview({
     );
 }
 
+function InnerContent({
+    interview,
+    interviewee,
+    project,
+    locale,
+    isExpanded
+}) {
+    return (
+        <>
+            <div className="search-result-img aspect-ratio">
+                <img
+                    className="aspect-ratio__inner"
+                    src={interview.still_url || 'missing_still'}
+                    onError={ (e) => { e.target.src = missingStill; }}
+                    alt=""
+                />
+            </div>
+
+            <AuthShowContainer ifLoggedIn>
+                <p className="search-result-name">
+                    {interview.workflow_state === 'unshared' && <FaEyeSlash />}
+                    {interview.short_title && interview.short_title[locale]}
+                </p>
+            </AuthShowContainer>
+            <AuthShowContainer ifLoggedOut ifNoProject>
+                <p className="search-result-name">
+                    {interview.workflow_state === 'unshared' && <FaEyeSlash />}
+                    {(project && project.fullname_on_landing_page) ? interview.title[locale] : interview.anonymous_title[locale]}
+                </p>
+            </AuthShowContainer>
+
+            {interviewee?.associations_loaded && !isExpanded && (
+                <ThumbnailMetadataContainer interview={interview} interviewee={interviewee} project={project} />
+            )}
+        </>
+    );
+};
 InterviewPreview.propTypes = {
     fulltext: PropTypes.string,
     interview: PropTypes.object.isRequired,
-    interviewee: PropTypes.object.isRequired,
     interviewSearchResults: PropTypes.object.isRequired,
     query: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     statuses: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array,
-    people: PropTypes.object.isRequired,
     peopleStatus: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,

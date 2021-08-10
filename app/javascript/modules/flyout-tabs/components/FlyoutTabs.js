@@ -74,7 +74,7 @@ export default class FlyoutTabs extends Component {
 
                     <LocaleButtonsContainer />
 
-                    <Tab className={project ? 'flyout-tab' : 'hidden'}>
+                    <Tab className={'flyout-tab'} key='archive-search'>
                         { t(this.props, (projectId === 'campscapes' && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search') }
                     </Tab>
 
@@ -123,8 +123,8 @@ export default class FlyoutTabs extends Component {
                     <AccountContainer/>
                 </TabPanel>
 
-                <TabPanel>
-                    { project && <ArchiveSearchTabPanelContainer selectedArchiveIds={this.props.selectedArchiveIds} /> }
+                <TabPanel key="archive-search">
+                    { <ArchiveSearchTabPanelContainer selectedArchiveIds={this.props.selectedArchiveIds} /> }
                 </TabPanel>
 
                 <TabPanel>

@@ -24,7 +24,7 @@ const mapStateToProps = (state) => {
         project: project,
         projectId: getProjectId(state),
         projects: getProjects(state),
-        viewModes: project && project.view_modes,
+        viewModes: project ? project.view_modes : ["grid"],
         viewMode: getViewMode(state),
         listColumns: project && project.list_columns,
         editView: getEditView(state),
