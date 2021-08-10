@@ -172,7 +172,7 @@ class RegistryEntry < ApplicationRecord
     .select('registry_entries.id, registry_name_translations.descriptor AS name, registry_entries.longitude, registry_entries.latitude, GROUP_CONCAT(registry_references.ref_object_type) AS ref_types')
   }
 
-  scope :for_map, -> (locale, person_ids) {
+  scope :for_map, -> (locale, person_ids, scope) {
     joins('INNER JOIN registry_names ON registry_names.registry_entry_id = registry_entries.id')
     .joins('INNER JOIN registry_name_translations ON registry_name_translations.registry_name_id = registry_names.id')
     .joins('INNER JOIN registry_references ON registry_references.registry_entry_id = registry_entries.id')
@@ -184,7 +184,7 @@ class RegistryEntry < ApplicationRecord
     .where('metadata_fields.ref_object_type="Person"')
     .where('metadata_fields.use_in_map_search IS TRUE')
     .where(['registry_references.ref_object_id IN (:ids)', { ids: person_ids }])
-    .where('interviews.workflow_state="public"')
+    .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
     .where('registry_name_translations.locale = ?', locale)
     .group('registry_entries.id')
     .select('registry_entries.id, registry_name_translations.descriptor AS name, registry_entries.longitude, registry_entries.latitude, GROUP_CONCAT(registry_reference_types.id) AS ref_types')
