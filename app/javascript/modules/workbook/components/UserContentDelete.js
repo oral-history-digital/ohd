@@ -1,21 +1,20 @@
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
 
 export default function UserContentDelete({
     id,
     title,
     description,
-    locale,
-    projectId,
-    projects,
-    deleteData,
     onSubmit,
+    deleteWorkbook,
 }) {
     const { t } = useI18n();
+    const pathBase = usePathBase();
 
     const destroy = () => {
-        deleteData({ locale, projectId, projects }, 'user_contents', id);
+        deleteWorkbook(pathBase, id);
         onSubmit();
     };
 
@@ -43,9 +42,6 @@ UserContentDelete.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
-    locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    deleteData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    deleteWorkbook: PropTypes.func.isRequired,
 };

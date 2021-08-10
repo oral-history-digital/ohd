@@ -35,7 +35,7 @@ export default function PhotoModal({
             <Dialog
                 className={classNames('PhotoModal-dialog', className)}
                 isOpen={showDialog}
-                aria-label={title}
+                aria-label={title || 'n/a'}
                 onDismiss={close}
 
                 onMouseDown={handleClick}
@@ -58,7 +58,7 @@ export default function PhotoModal({
 
 PhotoModal.propTypes = {
     trigger: PropTypes.node.isRequired,
-    title: PropTypes.string.isRequired,
+    title: PropTypes.string,
     className: PropTypes.string,
     triggerClassName: PropTypes.string,
     children: PropTypes.oneOfType([
