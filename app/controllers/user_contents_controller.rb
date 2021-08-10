@@ -30,19 +30,22 @@ class UserContentsController < ApplicationController
         render :action => 'index'
       end
       format.js
-      format.json { render json: {}, status: :ok }
+      format.json do
+        render json: { id: params[:id] }, status: :ok
+      end
     end
   end
 
   def index
     user_contents = policy_scope(UserContent)
+
     respond_to do |format|
       format.html
       format.js
       format.json do
         render json: {
             data: user_contents.inject({}){|mem, s| mem[s.id] = ::UserContentSerializer.new(s).as_json; mem},
-            data_type: 'user_contents'
+            data_type: 'user_contents',
           }
       end
     end
@@ -68,7 +71,6 @@ class UserContentsController < ApplicationController
   private
 
   def user_content_params
-    properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
     params.require(:user_content).
       permit(:description,
              :title,
@@ -77,12 +79,11 @@ class UserContentsController < ApplicationController
              :reference_type,
              :type,
              :link_url,
-             :workflow_state, 
+             :workflow_state,
              :shared,
-             :persistent).
-      tap do |whitelisted|
-        whitelisted[:properties] = ActionController::Parameters.new(JSON.parse(properties)).permit!
-      end
+             :persistent,
+             properties: [:time, :tape_nbr, :segmentIndex, :interview_archive_id]
+      )
   end
 
 end

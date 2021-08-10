@@ -8,15 +8,13 @@ import { sendTimeChangeRequest } from 'modules/media-player';
 import { hideFlyoutTabs } from 'modules/flyout-tabs';
 import UserContent from './UserContent';
 
-const mapStateToProps = (state) => {
-    return {
-        locale: getLocale(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        editView: getEditView(state),
-    }
-}
+const mapStateToProps = state => ({
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    translations: getTranslations(state),
+    editView: getEditView(state),
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     sendTimeChangeRequest,

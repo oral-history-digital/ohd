@@ -71,9 +71,6 @@ const state = {
             task_types: {
                 'for_projects_1': 'fetched',
             },
-            user_contents: {
-                all: 'fetched-Mon',
-            },
             user_registrations: {
                 resultPagesCount: 1,
             },
@@ -252,14 +249,6 @@ const state = {
                 type: 'Task',
             },
         },
-        user_contents: {
-            3596: {
-                id: 3596,
-                type: 'InterviewReference',
-                user_account_id: 45,
-                media_id: 'za003',
-            },
-        },
         user_registrations: {},
         random_featured_interviews: {
             'cd009': {
@@ -390,10 +379,6 @@ test('getTaskTypesStatus gets task types status object', () => {
     expect(selectors.getTaskTypesStatus(state)).toEqual(state.data.statuses.task_types);
 });
 
-test('getUserContentsStatus gets user contents status object', () => {
-    expect(selectors.getUserContentsStatus(state)).toEqual(state.data.statuses.user_contents);
-});
-
 test('getUserRegistrationsStatus gets user registrations status object', () => {
     expect(selectors.getUserRegistrationsStatus(state)).toEqual(state.data.statuses.user_registrations);
 });
@@ -440,10 +425,6 @@ test('getTasks gets tasks object', () => {
 
 test('getTaskTypesForCurrentProject gets task types object', () => {
     expect(selectors.getTaskTypesForCurrentProject(state)).toEqual(state.data.task_types);
-});
-
-test('getUserContents gets user contents object', () => {
-    expect(selectors.getUserContents(state)).toEqual(state.data.user_contents);
 });
 
 test('getUserRegistrations gets user registrations object', () => {
