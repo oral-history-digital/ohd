@@ -55,7 +55,7 @@ export default function Transcript({
         if (loadSegments && !transcriptFetched) {
             fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'segments');
         }
-    }, [loadSegments, transcriptFetched]);
+    }, [loadSegments, transcriptFetched, archiveId]);
 
 
     const openSegmentPopup = useCallback((segmentId, popupType) => setPopupState({

@@ -17,6 +17,7 @@ export default class UserContent extends Component {
         this.hideFlyoutTabsIfMobile = this.hideFlyoutTabsIfMobile.bind(this);
         this.onSearchClick = this.onSearchClick.bind(this);
         this.onAnnotationClick = this.onAnnotationClick.bind(this);
+        this.onInterviewReferenceClick = this.onInterviewReferenceClick.bind(this);
     }
 
     hideFlyoutTabsIfMobile() {
@@ -78,6 +79,11 @@ export default class UserContent extends Component {
         );
     }
 
+    onInterviewReferenceClick() {
+        this.props.setArchiveId(this.props.data.media_id);
+        this.hideFlyoutTabsIfMobile();
+    }
+
     onAnnotationClick() {
         this.props.setArchiveId(this.props.data.properties.interview_archive_id);
         this.props.sendTimeChangeRequest(this.props.data.properties.tape_nbr, this.props.data.properties.time);
@@ -96,7 +102,7 @@ export default class UserContent extends Component {
         if (this.props.data.type === 'InterviewReference') {
             return <p className={'flyout-sub-tabs-content-link'}>
                 <i className={'fa fa-angle-right flyout-content-ico'}> </i>
-                <LinkOrA project={project} to={`interviews/${this.props.data.media_id}`} onLinkClick={this.hideFlyoutTabsIfMobile} >
+                    <LinkOrA project={project} to={`interviews/${this.props.data.media_id}`} onLinkClick={this.onInterviewReferenceClick} >
                     {t(this.props, callKey)}
                 </LinkOrA>
             </p>
