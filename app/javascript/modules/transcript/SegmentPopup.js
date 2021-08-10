@@ -15,7 +15,7 @@ export default function SegmentPopup({
 }) {
     const { isAuthorized } = useAuthorization();
 
-    const annotationsForSegment = workbookAnnotations.filter(annotation =>
+    const annotationsForSegment = workbookAnnotations?.filter(annotation =>
         data.user_annotation_ids.includes(annotation.id));
 
     const hasReferences = data.registry_references_count > 0;
@@ -33,7 +33,7 @@ export default function SegmentPopup({
                         )
                     }
                     {
-                        popupType === 'annotations' && annotationsForSegment.map(userAnnotation => (
+                        popupType === 'annotations' && annotationsForSegment?.map(userAnnotation => (
                             <p
                                 key={userAnnotation.id}
                                 className=""
