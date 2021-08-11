@@ -74,7 +74,7 @@ class RegistryReferencesController < ApplicationController
           segment_entries = RegistryEntry.for_interview_map(I18n.locale, interview.id)
 
           if (interviewee)
-            person_entries = RegistryEntry.for_map(I18n.locale, [interviewee.id])
+            person_entries = RegistryEntry.for_map(I18n.locale, [interviewee.id], 'public')
             registry_entries = segment_entries.to_a.concat(person_entries.to_a)
           else
             registry_entries = segment_entries
