@@ -79,7 +79,7 @@ export default function InterviewPreview({
                 className="search-result-link"
             >
                 <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
-            </LinkOrA> :
+            </LinkOrA>
 
             {
                 showSlideShow && isExpanded && searchResults && resultCount > 0 && (
