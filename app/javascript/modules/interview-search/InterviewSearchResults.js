@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
+import { showTranslationTab } from 'modules/interview';
 import { searchResultCount } from 'modules/interview-preview';
 import ResultList from './ResultList';
 import TranscriptResult from './TranscriptResult';
@@ -10,6 +11,9 @@ import PhotoResult from './PhotoResult';
 import TocResult from './TocResult';
 
 export default function InterviewSearchResults({
+    interview,
+    locale,
+    projectId,
     currentInterviewSearchResults,
     segmentResults,
     headingResults,
@@ -29,19 +33,38 @@ export default function InterviewSearchResults({
         );
     }
 
+    const locales = interview.languages;
+    const interviewLang = interview.lang;
+
+    const resultsPerLocale = locales.map(resultLocale => [
+        resultLocale,
+        segmentResults.filter(segment => segment.text[resultLocale].length > 0),
+    ])
+        .filter(([_, results]) => results.length > 0)
+        .filter(([resultLocale, _]) => resultLocale === interviewLang || showTranslationTab(projectId, interviewLang, locale));
+
     return (
         <div>
-            {segmentResults.length > 0 && (
-                <ResultList
-                    tKey="segment"
-                    searchResults={segmentResults}
-                    component={TranscriptResult}
-                    className="u-mt"
-                />
-            )}
+            {
+                resultsPerLocale.map(([resultLocale, results]) => {
+                    const heading = resultLocale === interviewLang ?
+                        t('segment_results') :
+                        t('translation_results');
+                    return (
+                        <ResultList
+                            key={resultLocale}
+                            heading={heading}
+                            searchResults={results}
+                            component={TranscriptResult}
+                            locale={resultLocale}
+                            className="u-mt"
+                        />
+                    );
+                })
+            }
             {headingResults.length > 0 && (
                 <ResultList
-                    tKey="heading"
+                    heading={t('heading_results')}
                     searchResults={headingResults}
                     component={TocResult}
                     className="u-mt"
@@ -49,7 +72,7 @@ export default function InterviewSearchResults({
             )}
             {annotationResults.length > 0 && (
                 <ResultList
-                    tKey="annotation"
+                    heading={t('annotation_results')}
                     searchResults={annotationResults}
                     component={AnnotationResult}
                     className="u-mt"
@@ -57,7 +80,7 @@ export default function InterviewSearchResults({
             )}
             {registryEntryResults.length > 0 && (
                 <ResultList
-                    tKey="registryentry"
+                    heading={t('registryentry_results')}
                     searchResults={registryEntryResults}
                     component={RegistryResult}
                     className="u-mt"
@@ -70,7 +93,7 @@ export default function InterviewSearchResults({
             )}
             {photoResults.length > 0 && (
                 <ResultList
-                    tKey="photo"
+                    heading={t('photo_results')}
                     searchResults={photoResults}
                     component={PhotoResult}
                     className="u-mt"
@@ -86,6 +109,9 @@ export default function InterviewSearchResults({
 }
 
 InterviewSearchResults.propTypes = {
+    interview: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
     currentInterviewSearchResults: PropTypes.object.isRequired,
     segmentResults: PropTypes.array,
     headingResults: PropTypes.array,
