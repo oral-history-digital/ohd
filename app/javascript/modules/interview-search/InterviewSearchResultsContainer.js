@@ -1,10 +1,13 @@
 import { connect } from 'react-redux';
 
-import { getCurrentInterviewSearchResults, getSegmentResults, getHeadingResults, getRegistryEntryResults,
-    getPhotoResults, getBiographyResults, getAnnotationResults, getObservationsResults } from 'modules/search';
+import { getCurrentInterview } from 'modules/data';
+import { getCurrentInterviewSearchResults, getSegmentResults, getHeadingResults,
+    getRegistryEntryResults, getPhotoResults, getBiographyResults, getAnnotationResults,
+    getObservationsResults } from 'modules/search';
 import InterviewSearchResults from './InterviewSearchResults';
 
 const mapStateToProps = state => ({
+    interview: getCurrentInterview(state),
     currentInterviewSearchResults: getCurrentInterviewSearchResults(state),
     segmentResults: getSegmentResults(state),
     headingResults: getHeadingResults(state),
