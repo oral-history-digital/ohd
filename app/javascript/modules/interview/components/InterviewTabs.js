@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { FaRegFileAlt, FaRegClone, FaList, FaSearch, FaTags } from 'react-icons/fa';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 
@@ -8,6 +9,8 @@ import { TranscriptContainer } from 'modules/transcript';
 import { InterviewSearchContainer } from 'modules/interview-search';
 import { RefTreeContainer } from 'modules/interview-references';
 import { t } from 'modules/i18n';
+import showTranslationTab from './showTranslationTab';
+import showTocTab from './showTocTab';
 
 export default class InterviewTabs extends Component {
     constructor(props) {
@@ -57,6 +60,8 @@ export default class InterviewTabs extends Component {
     }
 
     render() {
+        const { interview, projectId, locale } = this.props;
+
         return (
             <Tabs
                 selectedTabClassName='active'
@@ -70,11 +75,19 @@ export default class InterviewTabs extends Component {
                             <FaRegFileAlt />
                             <span>{t(this.props, 'transcript')}</span>
                         </Tab>
-                        <Tab className={`content-tabs-nav-link ${(this.props.interview.lang === 'de') ? 'hidden' : ''}`}>
+                        <Tab
+                            className={classNames('content-tabs-nav-link', {
+                                'hidden': showTranslationTab(projectId, interview.lang, locale),
+                            })}
+                        >
                             <FaRegClone />
                             <span>{t(this.props, 'translation')}</span>
                         </Tab>
-                        <Tab className={`content-tabs-nav-link ${this.props.projectId == 'dg' ? 'hidden' : ''}`}>
+                        <Tab
+                            className={classNames('content-tabs-nav-link', {
+                                'hidden': showTocTab(projectId),
+                            })}
+                        >
                             <FaList />
                             <span>{t(this.props, 'table_of_contents')}</span>
                         </Tab>
