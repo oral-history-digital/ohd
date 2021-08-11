@@ -7,3 +7,5 @@ export { default as interviewReducer } from './reducer';
 export { getTabIndex, getAutoScroll } from './selectors';
 
 export { default as InterviewContainer } from './components/InterviewContainer';
+
+export { default as showTranslationTab } from './components/showTranslationTab';

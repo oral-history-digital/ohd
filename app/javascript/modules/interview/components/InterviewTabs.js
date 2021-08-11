@@ -45,7 +45,6 @@ export default class InterviewTabs extends Component {
         }
     }
 
-
     componentDidUpdate(prevProps) {
         if (
             !(prevProps.interviewSearchResults && prevProps.interviewSearchResults.fulltext) &&
@@ -77,7 +76,7 @@ export default class InterviewTabs extends Component {
                         </Tab>
                         <Tab
                             className={classNames('content-tabs-nav-link', {
-                                'hidden': showTranslationTab(projectId, interview.lang, locale),
+                                'hidden': !showTranslationTab(projectId, interview.lang, locale),
                             })}
                         >
                             <FaRegClone />
@@ -85,7 +84,7 @@ export default class InterviewTabs extends Component {
                         </Tab>
                         <Tab
                             className={classNames('content-tabs-nav-link', {
-                                'hidden': showTocTab(projectId),
+                                'hidden': !showTocTab(projectId),
                             })}
                         >
                             <FaList />

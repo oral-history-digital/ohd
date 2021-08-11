@@ -2,29 +2,29 @@ import { PROJECT_ZWAR, PROJECT_CDOH, PROJECT_MOG } from 'modules/constants';
 import showTranslationTab from './showTranslationTab';
 
 describe('ZWAR', () => {
-    test('is true if interview lang is German', () => {
+    test('is false if interview lang is German', () => {
         const actual = showTranslationTab(PROJECT_ZWAR, 'de', 'en');
-        const expected = true;
+        const expected = false;
         expect(actual).toBe(expected);
     });
 
-    test('is false otherwise', () => {
+    test('is true otherwise', () => {
         const actual = showTranslationTab(PROJECT_ZWAR, 'ru', 'en');
-        const expected = false;
+        const expected = true;
         expect(actual).toBe(expected);
     });
 });
 
 describe('CDOH', () => {
-    test('is true if interview lang is locale', () => {
+    test('is false if interview lang is locale', () => {
         const actual = showTranslationTab(PROJECT_CDOH, 'es', 'es');
-        const expected = true;
+        const expected = false;
         expect(actual).toBe(expected);
     });
 
-    test('is false otherwise', () => {
+    test('is true otherwise', () => {
         const actual = showTranslationTab(PROJECT_CDOH, 'es', 'de');
-        const expected = false;
+        const expected = true;
         expect(actual).toBe(expected);
     });
 });
