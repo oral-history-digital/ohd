@@ -46,6 +46,7 @@ class UserContentsController < ApplicationController
         render json: {
             data: user_contents.inject({}){|mem, s| mem[s.id] = ::UserContentSerializer.new(s).as_json; mem},
             data_type: 'user_contents',
+            user_account_id: current_user_account&.id
           }
       end
     end
@@ -71,6 +72,8 @@ class UserContentsController < ApplicationController
   private
 
   def user_content_params
+    #byebug
+    #properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
     params.require(:user_content).
       permit(:description,
              :title,
@@ -82,8 +85,12 @@ class UserContentsController < ApplicationController
              :workflow_state,
              :shared,
              :persistent,
-             properties: [:time, :tape_nbr, :segmentIndex, :interview_archive_id]
+             properties: {}
       )
+
+      #       tap do |whitelisted|
+      #  whitelisted[:properties] = ActionController::Parameters.new(JSON.parse(properties)).permit!
+      #end
   end
 
 end
