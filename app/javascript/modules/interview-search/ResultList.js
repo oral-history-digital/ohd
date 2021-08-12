@@ -1,23 +1,22 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { useI18n } from 'modules/i18n';
 import { Disclosure } from 'modules/ui';
 
 export default function ResultList({
-    tKey,
+    heading,
     searchResults,
     component: Component,
+    locale,
     className,
 }) {
-    const { t } = useI18n();
-    const title = `${searchResults.length} ${t(`${tKey}_results`)}`;
+    const title = `${searchResults.length} ${heading}`;
 
     return (
         <div className={classNames('ResultList', className)}>
             <Disclosure title={title}>
                 <div className="ResultList-list">
-                    {searchResults.map(data => <Component key={data.id} data={data} />)}
+                    {searchResults.map(data => <Component key={data.id} data={data} locale={locale} />)}
                 </div>
             </Disclosure>
         </div>
@@ -25,8 +24,9 @@ export default function ResultList({
 }
 
 ResultList.propTypes = {
-    tKey: PropTypes.string.isRequired,
-    searchResults: PropTypes.object.isRequired,
+    heading: PropTypes.string.isRequired,
+    searchResults: PropTypes.array.isRequired,
     component: PropTypes.elementType,
+    locale: PropTypes.string,
     className: PropTypes.string,
 };

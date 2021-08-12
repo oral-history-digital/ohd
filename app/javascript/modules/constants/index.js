@@ -14,3 +14,8 @@ export const CONTENT_TABS_HEIGHT =         3    * ONE_REM;
 const SPACE_BEFORE_ACTIVE_ELEMENT =        1.5  * CSS_BASE_UNIT;
 
 export const SCROLL_OFFSET = MEDIA_PLAYER_HEIGHT_STICKY + CONTENT_TABS_HEIGHT + SPACE_BEFORE_ACTIVE_ELEMENT;
+
+export const PROJECT_CDOH = 'cdoh'
+export const PROJECT_DG   = 'dg';
+export const PROJECT_MOG  = 'mog';
+export const PROJECT_ZWAR = 'zwar';

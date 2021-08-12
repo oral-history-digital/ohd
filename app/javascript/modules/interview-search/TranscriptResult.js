@@ -11,12 +11,15 @@ export default function TranscriptResult({
     foundSegmentsAmount,
     active,
     data,
+    locale,
 }) {
     const dispatch = useDispatch();
-    const { t, locale } = useI18n();
+    const { t, locale: localeFromUi } = useI18n();
+
+    const localeUsed = locale || localeFromUi;
 
     // ${locale}-public is necessary for FoundSegments in RefTree.
-    const segmentText = data.text[locale] || data.text[`${locale}-public`];
+    const segmentText = data.text[localeUsed] || data.text[`${localeUsed}-public`];
 
     function handleClick() {
         dispatch(sendTimeChangeRequest(data.tape_nbr, data.time));
@@ -36,9 +39,9 @@ export default function TranscriptResult({
                 </div>
             )}
             <p className="SearchResult-meta">
-                {data.last_heading?.[locale] && (
+                {data.last_heading?.[localeUsed] && (
                     <span>
-                        {t('in')}: {data.last_heading[locale]}
+                        {t('in')}: {data.last_heading[localeUsed]}
                         &nbsp;|&nbsp;
                     </span>
                 )}
@@ -54,6 +57,7 @@ export default function TranscriptResult({
 
 TranscriptResult.propTypes = {
     data: PropTypes.object.isRequired,
+    locale: PropTypes.string,
     active: PropTypes.bool,
     index: PropTypes.number,
     foundSegmentsAmount: PropTypes.number,
