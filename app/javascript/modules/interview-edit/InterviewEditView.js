@@ -18,8 +18,10 @@ export default class InterviewEditView extends Component {
     }
 
     loadSegments() {
-        if (!this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`]) {
-            this.props.fetchData(this.props, 'interviews', this.props.archiveId, 'segments');
+        const { segmentsStatus, archiveId, fetchData } = this.props;
+
+        if (!segmentsStatus[`for_interviews_${archiveId}`]) {
+            fetchData(this.props, 'interviews', archiveId, 'segments');
         }
     }
 
@@ -36,7 +38,9 @@ export default class InterviewEditView extends Component {
     }
 
     tableHeader() {
-        let columns = this.props.selectedInterviewEditViewColumns.filter(v => permittedColumns(this.props, this.props.interview.id).includes(v))
+        const { interview, selectedInterviewEditViewColumns } = this.props;
+
+        let columns = selectedInterviewEditViewColumns.filter(v => permittedColumns(this.props, interview.id).includes(v))
         let row = columns.map((column, index) => {
             let className = column === 'timecode' ? 'small' : ''
             return <th className={className} key={`edit-column-header-${index}`}>{t(this.props, `edit_column_header.${column}`)}</th>
@@ -45,7 +49,9 @@ export default class InterviewEditView extends Component {
     }
 
     tableRows() {
-        let translationLocale = this.props.interview.languages.filter(locale => locale !== this.props.interview.lang)[0]
+        const { interview, project, locale, mediaTime, tape, skipEmptyRows } = this.props;
+
+        let translationLocale = interview.languages.filter(locale => locale !== interview.lang)[0];
         //
         // use project.default_locale if no translation-locale given and if it differs from interview-language
         //
@@ -56,13 +62,13 @@ export default class InterviewEditView extends Component {
         //
         // use interface-locale if no translation-locale given and if it differs from interview-language
         //
-        translationLocale ||= this.props.interview.lang === this.props.locale ?
-            this.props.project.available_locales.filter(locale => locale !== this.props.interview.lang)[0] :
-            this.props.locale;
+        translationLocale ||= interview.lang === locale ?
+            project.available_locales.filter(locale => locale !== interview.lang)[0] :
+            locale;
 
-        let sortedWithIndex = sortedSegmentsWithActiveIndex(this.props.mediaTime, this.props);
+        let sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, this.props);
         let shownSegments = []
-        if (this.props.skipEmptyRows) {
+        if (skipEmptyRows) {
             shownSegments = this.allFilledRows(sortedWithIndex);
         } else {
             shownSegments = this.shownSegmentsAround(sortedWithIndex);
@@ -70,18 +76,18 @@ export default class InterviewEditView extends Component {
             return shownSegments.map((segment) => {
                 let active = false;
                 if (
-                    segment.time <= this.props.mediaTime + 15 &&
-                    segment.time >= this.props.mediaTime - 15 &&
-                    segment.tape_nbr === this.props.tape
+                    segment.time <= mediaTime + 15 &&
+                    segment.time >= mediaTime - 15 &&
+                    segment.tape_nbr === tape
                 ) {
                     active = true;
                 }
                 return (
                   <SegmentEditViewContainer
                     segment={segment}
-                    originalLocale={this.props.interview.lang}
+                    originalLocale={interview.lang}
                     translationLocale={translationLocale}
-                    key={`segment-${segment.id}`}
+                    key={segment.id}
                     active={active}
                 />
             )
@@ -89,7 +95,9 @@ export default class InterviewEditView extends Component {
     }
 
     render () {
-        if (this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`] && this.props.segmentsStatus[`for_interviews_${this.props.archiveId}`].split('-')[0] === 'fetched') {
+        const { segmentsStatus, archiveId } = this.props;
+
+        if (segmentsStatus[`for_interviews_${archiveId}`] && segmentsStatus[`for_interviews_${archiveId}`].split('-')[0] === 'fetched') {
             return (
                 <ScrollToTop>
                     <table className='edit-interview'>

@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import VizSensor from 'react-visibility-sensor/visibility-sensor';
 import moment from 'moment';
 
@@ -19,24 +20,27 @@ export default class SegmentEditView extends Component {
     }
 
     columnElement(columnName) {
+        const { segment, active, sendTimeChangeRequest, originalLocale, translationLocale,
+            locale } = this.props;
+
         switch (columnName) {
             case 'timecode': {
               return (
                     <div
-                        id={`segment_${this.props.segment.id}`}
-                        className={this.css()}
-                        onClick={() => this.props.sendTimeChangeRequest(this.props.segment.tape_nbr, this.props.segment.time)}
+                        id={`segment_${segment.id}`}
+                        className={classNames('segment', active ? 'active' : 'inactive')}
+                        onClick={() => sendTimeChangeRequest(segment.tape_nbr, segment.time)}
                     >
-                        {`${this.props.segment.tape_nbr} - ${this.segmentTime()}`}
+                        {`${segment.tape_nbr} - ${this.segmentTime()}`}
                     </div>
               );
             }
             case 'text_orig': {
                 return (
                     <SubmitOnBlurForm
-                        data={this.props.segment}
+                        data={segment}
                         scope='segment'
-                        locale={this.props.originalLocale}
+                        locale={originalLocale}
                         attribute='text'
                         type='textarea'
                     />
@@ -45,9 +49,9 @@ export default class SegmentEditView extends Component {
             case 'text_translated': {
                 return (
                     <SubmitOnBlurForm
-                        data={this.props.segment}
+                        data={segment}
                         scope='segment'
-                        locale={this.props.translationLocale}
+                        locale={translationLocale}
                         attribute='text'
                         type='textarea'
                     />
@@ -56,9 +60,9 @@ export default class SegmentEditView extends Component {
             case 'mainheading_orig': {
                 return (
                     <SubmitOnBlurForm
-                        data={this.props.segment}
+                        data={segment}
                         scope='segment'
-                        locale={this.props.originalLocale}
+                        locale={originalLocale}
                         attribute='mainheading'
                         type='input'
                     />
@@ -67,9 +71,9 @@ export default class SegmentEditView extends Component {
             case 'mainheading_translated': {
                 return (
                     <SubmitOnBlurForm
-                        data={this.props.segment}
+                        data={segment}
                         scope='segment'
-                        locale={this.props.translationLocale}
+                        locale={translationLocale}
                         attribute='mainheading'
                         type='input'
                     />
@@ -78,9 +82,9 @@ export default class SegmentEditView extends Component {
             case 'subheading_orig': {
                 return (
                     <SubmitOnBlurForm
-                        data={this.props.segment}
+                        data={segment}
                         scope='segment'
-                        locale={this.props.originalLocale}
+                        locale={originalLocale}
                         attribute='subheading'
                         type='input'
                     />
@@ -89,9 +93,9 @@ export default class SegmentEditView extends Component {
             case 'subheading_translated': {
                 return (
                     <SubmitOnBlurForm
-                        data={this.props.segment}
+                        data={segment}
                         scope='segment'
-                        locale={this.props.translationLocale}
+                        locale={translationLocale}
                         attribute='subheading'
                         type='input'
                     />
@@ -100,45 +104,45 @@ export default class SegmentEditView extends Component {
             case 'registry_references': {
                 return (
                     <RegistryReferencesContainer
-                        refObject={this.props.segment}
+                        refObject={segment}
                         parentEntryId={1}
-                        locale={this.props.locale}
+                        locale={locale}
                     />
                 );
             }
             case 'annotations': {
                 return (
-                    <Annotations segment={this.props.segment} contentLocale={this.props.locale} />
+                    <Annotations segment={segment} contentLocale={locale} />
                 );
             }
         }
     }
 
     row(){
-        let _this = this;
-        let columns = this.props.selectedInterviewEditViewColumns.filter(v => permittedColumns(this.props, this.props.interview.id).includes(v))
-        return columns.map(function(column, i){
-            return (
-                <td key={`${_this.props.segment.id}-column-${i}`}>
-                    {_this.state.visible && _this.columnElement(column)}
-                </td>
-            )
-        })
-    }
+        const { account, editView, project, interview, selectedInterviewEditViewColumns,
+            segment } = this.props;
+        const { visible } = this.state;
 
-    css() {
-        return 'segment ' + (this.props.active ? 'active' : 'inactive');
+        let columns = selectedInterviewEditViewColumns.filter(
+            v => permittedColumns({ account, editView, project }, interview.id).includes(v)
+        );
+
+        return columns.map((column, i) => (
+            <td key={`${segment.id}-column-${i}`}>
+                {visible && this.columnElement(column)}
+            </td>
+        ));
     }
 
     render() {
         return (
             <VizSensor
-                partialVisibility={true}
+                partialVisibility
                 onChange={(isVisible) => {
                     this.setState({visible: isVisible})
                 }}
             >
-                <tr className='segment-row' key={`${this.props.segment.id}-row`}>
+                <tr className="segment-row">
                     {this.row()}
                 </tr>
             </VizSensor>
@@ -154,5 +158,8 @@ SegmentEditView.propTypes = {
     selectedInterviewEditViewColumns: PropTypes.array.isRequired,
     interview: PropTypes.object.isRequired,
     active: PropTypes.bool.isRequired,
+    account: PropTypes.object.isRequired,
+    editView: PropTypes.bool.isRequired,
+    project: PropTypes.object.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
 };
