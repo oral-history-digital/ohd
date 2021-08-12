@@ -1,28 +1,30 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import VizSensor from 'react-visibility-sensor/visibility-sensor';
-import moment from 'moment';
 
 import { RegistryReferencesContainer } from 'modules/registry-references';
 import { Annotations } from 'modules/annotations';
 import { SubmitOnBlurForm } from 'modules/forms';
+import { formatTimecode } from 'modules/interview-helpers';
 import permittedColumns from './permittedColumns';
 
-export default class SegmentEditView extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {visible: false};
-    }
+export default function SegmentEditView({
+    segment,
+    active,
+    originalLocale,
+    translationLocale,
+    locale,
+    account,
+    editView,
+    project,
+    interview,
+    selectedInterviewEditViewColumns,
+    sendTimeChangeRequest,
+}) {
+    const [isVisible, setIsVisible] = useState(false);
 
-    segmentTime() {
-        return moment.utc(this.props.segment.time * 1000).format("HH:mm:ss");
-    }
-
-    columnElement(columnName) {
-        const { segment, active, sendTimeChangeRequest, originalLocale, translationLocale,
-            locale } = this.props;
-
+    function columnElement(columnName) {
         switch (columnName) {
             case 'timecode': {
               return (
@@ -31,7 +33,7 @@ export default class SegmentEditView extends Component {
                         className={classNames('segment', active ? 'active' : 'inactive')}
                         onClick={() => sendTimeChangeRequest(segment.tape_nbr, segment.time)}
                     >
-                        {`${segment.tape_nbr} - ${this.segmentTime()}`}
+                        {`${segment.tape_nbr} - ${formatTimecode(segment.time)}`}
                     </div>
               );
             }
@@ -118,36 +120,26 @@ export default class SegmentEditView extends Component {
         }
     }
 
-    row(){
-        const { account, editView, project, interview, selectedInterviewEditViewColumns,
-            segment } = this.props;
-        const { visible } = this.state;
+    const columns = selectedInterviewEditViewColumns.filter(
+        v => permittedColumns({ account, editView, project }, interview.id).includes(v)
+    );
 
-        let columns = selectedInterviewEditViewColumns.filter(
-            v => permittedColumns({ account, editView, project }, interview.id).includes(v)
-        );
-
-        return columns.map((column, i) => (
-            <td key={`${segment.id}-column-${i}`}>
-                {visible && this.columnElement(column)}
-            </td>
-        ));
-    }
-
-    render() {
-        return (
-            <VizSensor
-                partialVisibility
-                onChange={(isVisible) => {
-                    this.setState({visible: isVisible})
-                }}
-            >
-                <tr className="segment-row">
-                    {this.row()}
-                </tr>
-            </VizSensor>
-        )
-    }
+    return (
+        <VizSensor
+            partialVisibility
+            onChange={setIsVisible}
+        >
+            <tr className="segment-row">
+                {
+                    columns.map(column => (
+                        <td key={column}>
+                            {isVisible && columnElement(column)}
+                        </td>
+                    ))
+                }
+            </tr>
+        </VizSensor>
+    );
 }
 
 SegmentEditView.propTypes = {
