@@ -2,11 +2,10 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
-import { t } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 import SegmentEditViewContainer from './SegmentEditViewContainer';
-import permittedColumns from './permittedColumns';
+import TableHeaderContainer from './TableHeaderContainer';
 
 export default class InterviewEditView extends Component {
     componentDidMount() {
@@ -18,10 +17,10 @@ export default class InterviewEditView extends Component {
     }
 
     loadSegments() {
-        const { segmentsStatus, archiveId, fetchData } = this.props;
+        const { segmentsStatus, archiveId, locale, projectId, projects, fetchData } = this.props;
 
         if (!segmentsStatus[`for_interviews_${archiveId}`]) {
-            fetchData(this.props, 'interviews', archiveId, 'segments');
+            fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'segments');
         }
     }
 
@@ -37,28 +36,10 @@ export default class InterviewEditView extends Component {
         return sortedWithIndex[1] ? sortedWithIndex[1].slice(start, end) : [];
     }
 
-    tableHeader() {
-        const { interview, selectedInterviewEditViewColumns } = this.props;
-
-        let columns = selectedInterviewEditViewColumns.filter(v => permittedColumns(this.props, interview.id).includes(v))
-        let row = columns.map((column, index) => {
-            let className = column === 'timecode' ? 'small' : ''
-            return <th className={className} key={`edit-column-header-${index}`}>{t(this.props, `edit_column_header.${column}`)}</th>
-        })
-        return <tr>{row}</tr>;
-    }
-
     tableRows() {
         const { interview, project, locale, mediaTime, tape, skipEmptyRows } = this.props;
 
         let translationLocale = interview.languages.filter(locale => locale !== interview.lang)[0];
-        //
-        // use project.default_locale if no translation-locale given and if it differs from interview-language
-        //
-        //translationLocale ||= this.props.interview.lang === this.props.project.default_locale ?
-            //this.props.project.available_locales.filter(locale => locale !== this.props.interview.lang)[0] :
-            //this.props.project.default_locale;
-
         //
         // use interface-locale if no translation-locale given and if it differs from interview-language
         //
@@ -66,7 +47,7 @@ export default class InterviewEditView extends Component {
             project.available_locales.filter(locale => locale !== interview.lang)[0] :
             locale;
 
-        let sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, this.props);
+        let sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape });
         let shownSegments = []
         if (skipEmptyRows) {
             shownSegments = this.allFilledRows(sortedWithIndex);
@@ -100,10 +81,8 @@ export default class InterviewEditView extends Component {
         if (segmentsStatus[`for_interviews_${archiveId}`] && segmentsStatus[`for_interviews_${archiveId}`].split('-')[0] === 'fetched') {
             return (
                 <ScrollToTop>
-                    <table className='edit-interview'>
-                        <thead>
-                            {this.tableHeader()}
-                        </thead>
+                    <table className="edit-interview">
+                        <TableHeaderContainer />
                         <tbody>
                             {this.tableRows()}
                         </tbody>
@@ -126,5 +105,7 @@ InterviewEditView.propTypes = {
     locale: PropTypes.string.isRequired,
     mediaTime: PropTypes.number.isRequired,
     tape: PropTypes.number.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

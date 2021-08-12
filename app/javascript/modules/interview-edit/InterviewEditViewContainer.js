@@ -1,9 +1,9 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getSelectedInterviewEditViewColumns, getProjectId, getTranslations, getArchiveId,
-    getSkipEmptyRows, getEditView } from 'modules/archive';
-import { fetchData, getCurrentInterview, getCurrentProject, getProjects, getCurrentAccount,
+import { getLocale, getSelectedInterviewEditViewColumns, getProjectId, getArchiveId,
+    getSkipEmptyRows } from 'modules/archive';
+import { fetchData, getCurrentInterview, getCurrentProject, getProjects,
     getSegmentsStatus } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
 import InterviewEditView from './InterviewEditView';
@@ -12,7 +12,6 @@ const mapStateToProps = (state) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
-    translations: getTranslations(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     tape: getCurrentTape(state),
@@ -20,8 +19,6 @@ const mapStateToProps = (state) => ({
     skipEmptyRows: getSkipEmptyRows(state),
     segmentsStatus: getSegmentsStatus(state),
     selectedInterviewEditViewColumns: getSelectedInterviewEditViewColumns(state),
-    account: getCurrentAccount(state),
-    editView: getEditView(state),
     project: getCurrentProject(state),
 });
 
