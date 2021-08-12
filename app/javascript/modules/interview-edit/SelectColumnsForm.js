@@ -28,8 +28,6 @@ export default function SelectColumnsForm({
         }));
 
     const handleSelect = (params) => {
-        console.log(params);
-        event.preventDefault;
         let values = [];
         Object.keys(params.select_interview_edit_columns).map( column => {
             if (params.select_interview_edit_columns[column])

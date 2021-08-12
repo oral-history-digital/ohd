@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { t } from 'modules/i18n';
@@ -12,7 +13,7 @@ export default class InterviewEditView extends Component {
         this.loadSegments();
     }
 
-    componentDidUpdate(prevProps) {
+    componentDidUpdate() {
         this.loadSegments();
     }
 
@@ -36,7 +37,6 @@ export default class InterviewEditView extends Component {
 
     tableHeader() {
         let columns = this.props.selectedInterviewEditViewColumns.filter(v => permittedColumns(this.props, this.props.interview.id).includes(v))
-        let count = columns.size
         let row = columns.map((column, index) => {
             let className = column === 'timecode' ? 'small' : ''
             return <th className={className} key={`edit-column-header-${index}`}>{t(this.props, `edit_column_header.${column}`)}</th>
@@ -67,7 +67,7 @@ export default class InterviewEditView extends Component {
         } else {
             shownSegments = this.shownSegmentsAround(sortedWithIndex);
         }
-            return shownSegments.map((segment, index) => {
+            return shownSegments.map((segment) => {
                 let active = false;
                 if (
                     segment.time <= this.props.mediaTime + 15 &&
@@ -107,3 +107,16 @@ export default class InterviewEditView extends Component {
         }
     }
 }
+
+InterviewEditView.propTypes = {
+    archiveId: PropTypes.string.isRequired,
+    segmentsStatus: PropTypes.object.isRequired,
+    selectedInterviewEditViewColumns: PropTypes.array.isRequired,
+    skipEmptyRows: PropTypes.bool.isRequired,
+    interview: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    mediaTime: PropTypes.number.isRequired,
+    tape: PropTypes.number.isRequired,
+    fetchData: PropTypes.func.isRequired,
+};

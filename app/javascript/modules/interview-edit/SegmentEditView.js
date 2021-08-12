@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import VizSensor from 'react-visibility-sensor/visibility-sensor';
 import moment from 'moment';
 
@@ -8,7 +9,6 @@ import { SubmitOnBlurForm } from 'modules/forms';
 import permittedColumns from './permittedColumns';
 
 export default class SegmentEditView extends Component {
-
     constructor(props) {
         super(props);
         this.state = {visible: false};
@@ -29,8 +29,7 @@ export default class SegmentEditView extends Component {
                     >
                         {`${this.props.segment.tape_nbr} - ${this.segmentTime()}`}
                     </div>
-              )
-              break;
+              );
             }
             case 'text_orig': {
                 return (
@@ -41,8 +40,7 @@ export default class SegmentEditView extends Component {
                         attribute='text'
                         type='textarea'
                     />
-                )
-                break;
+                );
             }
             case 'text_translated': {
                 return (
@@ -53,8 +51,7 @@ export default class SegmentEditView extends Component {
                         attribute='text'
                         type='textarea'
                     />
-                )
-                break;
+                );
             }
             case 'mainheading_orig': {
                 return (
@@ -65,8 +62,7 @@ export default class SegmentEditView extends Component {
                         attribute='mainheading'
                         type='input'
                     />
-                )
-                break;
+                );
             }
             case 'mainheading_translated': {
                 return (
@@ -77,8 +73,7 @@ export default class SegmentEditView extends Component {
                         attribute='mainheading'
                         type='input'
                     />
-                )
-                break;
+                );
             }
             case 'subheading_orig': {
                 return (
@@ -89,8 +84,7 @@ export default class SegmentEditView extends Component {
                         attribute='subheading'
                         type='input'
                     />
-                )
-                break;
+                );
             }
             case 'subheading_translated': {
                 return (
@@ -101,8 +95,7 @@ export default class SegmentEditView extends Component {
                         attribute='subheading'
                         type='input'
                     />
-                )
-                break;
+                );
             }
             case 'registry_references': {
                 return (
@@ -111,14 +104,12 @@ export default class SegmentEditView extends Component {
                         parentEntryId={1}
                         locale={this.props.locale}
                     />
-                )
-                break;
+                );
             }
             case 'annotations': {
                 return (
                     <Annotations segment={this.props.segment} contentLocale={this.props.locale} />
-                )
-                break;
+                );
             }
         }
     }
@@ -154,3 +145,14 @@ export default class SegmentEditView extends Component {
         )
     }
 }
+
+SegmentEditView.propTypes = {
+    segment: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    originalLocale: PropTypes.string.isRequired,
+    translationLocale: PropTypes.string.isRequired,
+    selectedInterviewEditViewColumns: PropTypes.array.isRequired,
+    interview: PropTypes.object.isRequired,
+    active: PropTypes.bool.isRequired,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
+};
