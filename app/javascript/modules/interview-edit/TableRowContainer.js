@@ -1,13 +1,10 @@
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
-import { getLocale, getSelectedInterviewEditViewColumns, getEditView } from 'modules/archive';
-import { sendTimeChangeRequest } from 'modules/media-player';
+import { getSelectedInterviewEditViewColumns, getEditView } from 'modules/archive';
 import { getCurrentInterview, getCurrentProject, getCurrentAccount, getSegmentsStatus } from 'modules/data';
-import SegmentEditView from './SegmentEditView';
+import TableRow from './TableRow';
 
 const mapStateToProps = (state) => ({
-    locale: getLocale(state),
     interview: getCurrentInterview(state),
     statuses: getSegmentsStatus(state),
     account: getCurrentAccount(state),
@@ -16,8 +13,4 @@ const mapStateToProps = (state) => ({
     project: getCurrentProject(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    sendTimeChangeRequest,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(SegmentEditView);
+export default connect(mapStateToProps)(TableRow);

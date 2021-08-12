@@ -4,10 +4,10 @@ import PropTypes from 'prop-types';
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
-import SegmentEditViewContainer from './SegmentEditViewContainer';
+import TableRowContainer from './TableRowContainer';
 import TableHeaderContainer from './TableHeaderContainer';
 
-export default function InterviewEditView({
+export default function InterviewEditTable({
     interview,
     project,
     locale,
@@ -76,7 +76,7 @@ export default function InterviewEditView({
                                 active = true;
                             }
                             return (
-                                <SegmentEditViewContainer
+                                <TableRowContainer
                                     segment={segment}
                                     originalLocale={interview.lang}
                                     translationLocale={translationLocale}
@@ -92,7 +92,7 @@ export default function InterviewEditView({
     );
 }
 
-InterviewEditView.propTypes = {
+InterviewEditTable.propTypes = {
     archiveId: PropTypes.string.isRequired,
     segmentsStatus: PropTypes.object.isRequired,
     skipEmptyRows: PropTypes.bool.isRequired,
