@@ -20,12 +20,14 @@ export default function TableCell({
     switch (type) {
     case 'timecode':
         return (
-            <div
+            <button
+                type="button"
                 id={`segment_${segment.id}`}
+                className="EditTable-button"
                 onClick={() => dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time))}
             >
                 {`${segment.tape_nbr} - ${formatTimecode(segment.time)}`}
-            </div>
+            </button>
         );
     case 'text_orig':
         return (

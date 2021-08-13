@@ -27,10 +27,13 @@ export default function TableRow({
             partialVisibility
             onChange={setIsVisible}
         >
-            <tr className="segment-row">
+            <tr className="EditTable-row segment-row_old">
                 {
                     columns.map(column => (
-                        <td key={column}>
+                        <td
+                            key={column}
+                            className="EditTable-cell"
+                        >
                             {
                                 isVisible && (
                                     <TableCell

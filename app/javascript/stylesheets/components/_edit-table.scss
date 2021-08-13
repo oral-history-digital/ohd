@@ -1,0 +1,25 @@
+.EditTable {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.EditTable-body .EditTable-row:nth-child(odd) {
+  background-color: white;
+}
+
+.EditTable-body .EditTable-row:nth-child(even) {
+  background-color: $gray-pale;
+}
+
+.EditTable-button {
+  font-family: $font-family;
+  border: none;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  margin: 0 $base-unit / 8;
+}
+
+.EditTable-button:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}

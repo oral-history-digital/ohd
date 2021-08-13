@@ -62,9 +62,9 @@ export default function InterviewEditTable({
 
     return (
         <ScrollToTop>
-            <table className="edit-interview">
+            <table className="EditTable edit-interview__old">
                 <TableHeaderContainer />
-                <tbody>
+                <tbody className="EditTable-body">
                     {
                         shownSegments.map(segment => {
                             let active = false;
@@ -77,10 +77,10 @@ export default function InterviewEditTable({
                             }
                             return (
                                 <TableRowContainer
+                                    key={segment.id}
                                     segment={segment}
                                     originalLocale={interview.lang}
                                     translationLocale={translationLocale}
-                                    key={segment.id}
                                     active={active}
                                 />
                             );

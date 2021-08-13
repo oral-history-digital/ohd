@@ -24,7 +24,9 @@ export default function TableHeader({
                     columns.map(column => (
                         <th
                             key={column}
-                            className={classNames({ 'small': column === 'timecode' })}
+                            className={classNames('EditTable-cell', 'EditTable-cell--header', {
+                                'EditTable-cell--narrow': column === 'timecode',
+                            })}
                         >
                             {t(`edit_column_header.${column}`)}
                         </th>
