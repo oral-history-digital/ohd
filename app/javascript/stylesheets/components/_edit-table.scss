@@ -11,15 +11,38 @@
   background-color: $gray-pale;
 }
 
-.EditTable-button {
-  font-family: $font-family;
-  border: none;
-  outline: none;
-  background: transparent;
+.EditTable-body .EditTable-row.is-active {
+  background-color: rgba(255, 250, 129, 0.5);
+}
+
+.EditTable-cell {
+  height: 4 * $base-unit;
+  min-width: 8 * $base-unit;
   padding: 0;
+}
+
+.EditTable-button {
+  background: transparent;
+  border: none;
+  font-family: $font-family;
   margin: 0 $base-unit / 8;
+  outline: none;
+  padding: 0;
 }
 
 .EditTable-button:focus {
   box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
+.EditTable-cell form {
+  margin: 0;
+}
+
+.EditTable-cell textarea {
+  border: none;
+  display: block;
+  height: 4 * $base-unit;
+  margin: 0;
+  padding: 0;
+  width: 100%;
 }

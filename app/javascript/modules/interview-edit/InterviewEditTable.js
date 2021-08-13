@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Virtuoso } from 'react-virtuoso';
 
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { Spinner } from 'modules/spinners';
@@ -60,32 +61,42 @@ export default function InterviewEditTable({
         shownSegments = shownSegmentsAround(sortedWithIndex);
     }
 
+    const segments = sortedWithIndex[1];
+
+    const content = index => {
+        const segment = segments[index];
+
+        let active = false;
+        if (
+            segment.time <= mediaTime + 15 &&
+            segment.time >= mediaTime - 15 &&
+            segment.tape_nbr === tape
+        ) {
+            active = true;
+        }
+        return (
+            <TableRowContainer
+                key={segment.id}
+                segment={segment}
+                originalLocale={interview.lang}
+                translationLocale={translationLocale}
+                active={active}
+            />
+        );
+    }
+
     return (
         <ScrollToTop>
             <table className="EditTable edit-interview__old">
                 <TableHeaderContainer />
                 <tbody className="EditTable-body">
-                    {
-                        shownSegments.map(segment => {
-                            let active = false;
-                            if (
-                                segment.time <= mediaTime + 15 &&
-                                segment.time >= mediaTime - 15 &&
-                                segment.tape_nbr === tape
-                            ) {
-                                active = true;
-                            }
-                            return (
-                                <TableRowContainer
-                                    key={segment.id}
-                                    segment={segment}
-                                    originalLocale={interview.lang}
-                                    translationLocale={translationLocale}
-                                    active={active}
-                                />
-                            );
-                        })
-                    }
+                    <Virtuoso
+                        style={{ height: '400px' }}
+                        totalCount={segments.length}
+                        itemContent={content}
+                        fixedItemHeight={96}
+                        useWindowScroll
+                    />
                 </tbody>
             </table>
         </ScrollToTop>
