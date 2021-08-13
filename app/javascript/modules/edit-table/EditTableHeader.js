@@ -4,7 +4,7 @@ import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import permittedColumns from './permittedColumns';
 
-export default function TableHeader({
+export default function EditTableHeader({
     account,
     editView,
     project,
@@ -37,7 +37,7 @@ export default function TableHeader({
     );
 }
 
-TableHeader.propTypes = {
+EditTableHeader.propTypes = {
     account: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
     project: PropTypes.object.isRequired,

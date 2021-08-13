@@ -5,10 +5,10 @@ import { Virtuoso } from 'react-virtuoso';
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
-import TableRowContainer from './TableRowContainer';
-import TableHeaderContainer from './TableHeaderContainer';
+import EditTableRowContainer from './EditTableRowContainer';
+import EditTableHeaderContainer from './EditTableHeaderContainer';
 
-export default function InterviewEditTable({
+export default function EditTable({
     interview,
     project,
     locale,
@@ -75,7 +75,7 @@ export default function InterviewEditTable({
             active = true;
         }
         return (
-            <TableRowContainer
+            <EditTableRowContainer
                 key={segment.id}
                 segment={segment}
                 originalLocale={interview.lang}
@@ -88,7 +88,7 @@ export default function InterviewEditTable({
     return (
         <ScrollToTop>
             <table className="EditTable edit-interview__old">
-                <TableHeaderContainer />
+                <EditTableHeaderContainer />
                 <tbody className="EditTable-body">
                     <Virtuoso
                         style={{ height: '400px' }}
@@ -103,7 +103,7 @@ export default function InterviewEditTable({
     );
 }
 
-InterviewEditTable.propTypes = {
+EditTable.propTypes = {
     archiveId: PropTypes.string.isRequired,
     segmentsStatus: PropTypes.object.isRequired,
     skipEmptyRows: PropTypes.bool.isRequired,

@@ -8,7 +8,7 @@ import { sendTimeChangeRequest } from 'modules/media-player';
 import { RegistryReferencesContainer } from 'modules/registry-references';
 import { Annotations } from 'modules/annotations';
 
-export default function TableCell({
+export default function EditTableCell({
     type,
     segment,
     originalLocale,
@@ -108,7 +108,7 @@ export default function TableCell({
     }
 }
 
-TableCell.propTypes = {
+EditTableCell.propTypes = {
     type: PropTypes.string.isRequired,
     segment: PropTypes.object.isRequired,
     originalLocale: PropTypes.string.isRequired,

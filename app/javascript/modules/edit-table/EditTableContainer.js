@@ -5,7 +5,7 @@ import { getLocale, getProjectId, getArchiveId, getSkipEmptyRows } from 'modules
 import { fetchData, getCurrentInterview, getCurrentProject, getProjects,
     getSegmentsStatus } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
-import InterviewEditTable from './InterviewEditTable';
+import EditTable from './EditTable';
 
 const mapStateToProps = (state) => ({
     locale: getLocale(state),
@@ -24,4 +24,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(InterviewEditTable);
+export default connect(mapStateToProps, mapDispatchToProps)(EditTable);

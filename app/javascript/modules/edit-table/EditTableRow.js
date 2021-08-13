@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import permittedColumns from './permittedColumns';
-import TableCell from './TableCell';
+import EditTableCell from './EditTableCell';
 
 export default function TableRow({
     segment,
@@ -29,7 +29,7 @@ export default function TableRow({
                         key={column}
                         className="EditTable-cell"
                     >
-                        <TableCell
+                        <EditTableCell
                             type={column}
                             segment={segment}
                             originalLocale={originalLocale}

@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { changeToInterviewEditView, setSkipEmptyRows, getInterviewEditView, getSkipEmptyRows } from 'modules/archive';
-import InterviewEditButtons from './InterviewEditButtons';
+import EditTableButtons from './EditTableButtons';
 
 const mapStateToProps = (state) => ({
     editViewEnabled: !!getInterviewEditView(state),
@@ -14,4 +14,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setSkipEmptyRows,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(InterviewEditButtons);
+export default connect(mapStateToProps, mapDispatchToProps)(EditTableButtons);

@@ -6,7 +6,7 @@ import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import SelectColumnsFormContainer from './SelectColumnsFormContainer';
 
-export default function InterviewEditButtons({
+export default function EditTableButtons({
     editViewEnabled,
     skipEmptyRows,
     changeToInterviewEditView,
@@ -50,7 +50,7 @@ export default function InterviewEditButtons({
     );
 }
 
-InterviewEditButtons.propTypes = {
+EditTableButtons.propTypes = {
     editViewEnabled: PropTypes.bool.isRequired,
     skipEmptyRows: PropTypes.bool.isRequired,
     changeToInterviewEditView: PropTypes.func.isRequired,

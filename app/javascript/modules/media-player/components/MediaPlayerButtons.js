@@ -4,7 +4,7 @@ import classNames from 'classnames';
 
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { InterviewEditButtonsContainer } from 'modules/interview-edit';
+import { EditTableButtonsContainer } from 'modules/edit-table';
 
 export default function MediaPlayerButtons({
     autoScroll,
@@ -27,7 +27,7 @@ export default function MediaPlayerButtons({
     return (
         <div className={classNames(className)}>
             <AuthorizedContent object={{type: 'General'}} action='edit'>
-                <InterviewEditButtonsContainer />
+                <EditTableButtonsContainer />
             </AuthorizedContent>
 
             <button
