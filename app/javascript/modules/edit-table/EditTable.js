@@ -28,20 +28,6 @@ export default function EditTable({
         }
     }, []);
 
-    function allFilledRows(sortedWithIndex) {
-        return sortedWithIndex[1].filter(
-            s => s.has_heading || s.annotations_count > 0 || s.registry_references_count > 0
-        );
-    }
-
-    function shownSegmentsAround(sortedWithIndex) {
-        const ROWS_BEFORE = 1;
-        const ROWS_AFTER = 40;
-        let start = sortedWithIndex[2] >= ROWS_BEFORE ? sortedWithIndex[2] - ROWS_BEFORE : 0
-        let end = sortedWithIndex[2] + ROWS_AFTER
-        return sortedWithIndex[1] ? sortedWithIndex[1].slice(start, end) : [];
-    }
-
     if (!segmentsStatus[`for_interviews_${archiveId}`] || segmentsStatus[`for_interviews_${archiveId}`].split('-')[0] !== 'fetched') {
         return <Spinner />;
     }
@@ -54,15 +40,14 @@ export default function EditTable({
         project.available_locales.filter(locale => locale !== interview.lang)[0] :
         locale;
 
-    const sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape });
-    let shownSegments = [];
-    if (skipEmptyRows) {
-        shownSegments = allFilledRows(sortedWithIndex);
-    } else {
-        shownSegments = shownSegmentsAround(sortedWithIndex);
-    }
+    const allSegments = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape })[1];
 
-    const segments = sortedWithIndex[1];
+    let segments;
+    if (skipEmptyRows) {
+        segments = allSegments.filter(s => s.has_heading || s.annotations_count > 0 || s.registry_references_count > 0);
+    } else {
+        segments = allSegments;
+    }
 
     const content = index => {
         const segment = segments[index];
@@ -92,15 +77,17 @@ export default function EditTable({
     return (
         <ScrollToTop>
             <div className="EditTable edit-interview__old">
-                <EditTableHeaderContainer />
-                <div className="EditTable-bodyContainer">
-                    <div className="EditTable-body">
-                        <Virtuoso
-                            totalCount={segments.length}
-                            itemContent={content}
-                            fixedItemHeight={96}
-                            useWindowScroll
-                        />
+                <div className="EditTable-inner">
+                    <EditTableHeaderContainer />
+                    <div className="EditTable-bodyContainer">
+                        <div className="EditTable-body">
+                            <Virtuoso
+                                totalCount={segments.length}
+                                itemContent={content}
+                                fixedItemHeight={96}
+                                useWindowScroll
+                            />
+                        </div>
                     </div>
                 </div>
             </div>

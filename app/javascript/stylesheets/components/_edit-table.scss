@@ -4,7 +4,12 @@
  */
 
 .EditTable {
+  overflow-x: auto;
   width: 100%;
+}
+
+.EditTable-inner {
+  min-width: 40 * $base-unit;
 }
 
 .EditTable-header {
@@ -52,8 +57,10 @@
 }
 
 .EditTable-cell {
-  padding: 0.25 * $base-unit;
   height: 4 * $base-unit;
+  overflow-x: hidden;
+  overflow-y: auto;
+  padding: 0.25 * $base-unit;
 }
 
 .EditTable-cell form {
@@ -66,7 +73,6 @@
   height: 3.5 * $base-unit;
   margin: 0;
   padding: 0;
-  width: 100%;
 }
 
 .EditTable-cell textarea,
@@ -74,6 +80,7 @@
   font-family: $font-family;
   font-size: 0.875rem;
   line-height: $base-unit;
+  width: 100%;
 }
 
 .EditTable-button {
