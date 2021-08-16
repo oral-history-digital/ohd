@@ -5,6 +5,7 @@ import { Virtuoso } from 'react-virtuoso';
 import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
+import { isSegmentActive } from 'modules/interview-helpers';
 import EditTableRowContainer from './EditTableRowContainer';
 import EditTableHeaderContainer from './EditTableHeaderContainer';
 
@@ -65,15 +66,17 @@ export default function EditTable({
 
     const content = index => {
         const segment = segments[index];
+        const nextSegment = segments[index + 1];
 
-        let active = false;
-        if (
-            segment.time <= mediaTime + 15 &&
-            segment.time >= mediaTime - 15 &&
-            segment.tape_nbr === tape
-        ) {
-            active = true;
-        }
+        const active = isSegmentActive({
+            thisSegmentTape: segment.tape_nbr,
+            thisSegmentTime: segment.time,
+            nextSegmentTape: nextSegment?.tape_nbr,
+            nextSegmentTime: nextSegment?.time,
+            currentTape: tape,
+            currentTime: mediaTime,
+        });
+
         return (
             <EditTableRowContainer
                 key={segment.id}

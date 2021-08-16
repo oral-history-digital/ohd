@@ -4,9 +4,9 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { usePathBase } from 'modules/routes';
+import { isSegmentActive } from 'modules/interview-helpers';
 import SegmentContainer from './SegmentContainer';
 import sortedSegmentsWithActiveIndex from './sortedSegmentsWithActiveIndex';
-import isSegmentActive from './isSegmentActive';
 
 export default function Transcript({
     interview,
