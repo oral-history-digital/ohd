@@ -26,7 +26,7 @@ export default function EditTableCell({
                 className="EditTable-button"
                 onClick={() => dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time))}
             >
-                {`${segment.tape_nbr} - ${formatTimecode(segment.time)}`}
+                {`${segment.tape_nbr} – ${formatTimecode(segment.time)}`}
             </button>
         );
     case 'text_orig':

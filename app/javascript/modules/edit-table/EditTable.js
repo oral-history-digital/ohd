@@ -93,13 +93,15 @@ export default function EditTable({
         <ScrollToTop>
             <div className="EditTable edit-interview__old">
                 <EditTableHeaderContainer />
-                <div className="EditTable-body">
-                    <Virtuoso
-                        totalCount={segments.length}
-                        itemContent={content}
-                        //fixedItemHeight={96}
-                        useWindowScroll
-                    />
+                <div className="EditTable-bodyContainer">
+                    <div className="EditTable-body">
+                        <Virtuoso
+                            totalCount={segments.length}
+                            itemContent={content}
+                            fixedItemHeight={96}
+                            useWindowScroll
+                        />
+                    </div>
                 </div>
             </div>
         </ScrollToTop>
