@@ -9,6 +9,10 @@ export default function Features() {
     const dispatch = useDispatch();
     const { t } = useI18n();
 
+    if (features.length === 0) {
+        return null;
+    }
+
     return (
         <section>
             <h4>{t('modules.features.experimental_features')}</h4>

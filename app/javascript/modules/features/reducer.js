@@ -1,10 +1,8 @@
 import { saveState } from 'modules/persistence';
-import { TREE_SELECT_NAME } from 'modules/tree-select';
 import { ENABLE, DISABLE } from './action-types';
 import { NAME } from './constants';
 
 export const initialState = {
-    [TREE_SELECT_NAME]: false,
 };
 
 const features = (state = initialState, action) => {
