@@ -5,6 +5,7 @@ import permittedColumns from './permittedColumns';
 import EditTableCell from './EditTableCell';
 
 export default function TableRow({
+    odd,
     segment,
     active,
     originalLocale,
@@ -20,12 +21,15 @@ export default function TableRow({
     );
 
     return (
-        <tr className={classNames('EditTable-row', 'segment-row_old', {
-            'is-active': active,
-        })}>
+        <div
+            className={classNames('EditTable-row', 'segment-row_old',
+                odd ? 'EditTable-row--odd' : 'EditTable-row--even',
+                { 'is-active': active })}
+            style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}
+        >
             {
                 columns.map(column => (
-                    <td
+                    <div
                         key={column}
                         className="EditTable-cell"
                     >
@@ -35,14 +39,15 @@ export default function TableRow({
                             originalLocale={originalLocale}
                             translationLocale={translationLocale}
                         />
-                    </td>
+                    </div>
                 ))
             }
-        </tr>
+        </div>
     );
 }
 
 TableRow.propTypes = {
+    odd: PropTypes.bool.isRequired,
     segment: PropTypes.object.isRequired,
     originalLocale: PropTypes.string.isRequired,
     translationLocale: PropTypes.string.isRequired,

@@ -1,37 +1,30 @@
 .EditTable {
-  border-collapse: collapse;
   width: 100%;
 }
 
-.EditTable-body .EditTable-row:nth-child(odd) {
+.EditTable-body {
+}
+
+.EditTable-row {
+  display: grid;
+  height: 4 * $base-unit;
+}
+
+.EditTable-row--odd {
   background-color: white;
 }
 
-.EditTable-body .EditTable-row:nth-child(even) {
+.EditTable-row--even {
   background-color: $gray-pale;
 }
 
-.EditTable-body .EditTable-row.is-active {
+.EditTable-row.is-active {
   background-color: rgba(255, 250, 129, 0.5);
 }
 
 .EditTable-cell {
+  padding: 0.25 * $base-unit;
   height: 4 * $base-unit;
-  min-width: 8 * $base-unit;
-  padding: 0;
-}
-
-.EditTable-button {
-  background: transparent;
-  border: none;
-  font-family: $font-family;
-  margin: 0 $base-unit / 8;
-  outline: none;
-  padding: 0;
-}
-
-.EditTable-button:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
 }
 
 .EditTable-cell form {
@@ -41,8 +34,29 @@
 .EditTable-cell textarea {
   border: none;
   display: block;
-  height: 4 * $base-unit;
+  height: 3.5 * $base-unit;
   margin: 0;
   padding: 0;
   width: 100%;
+}
+
+.EditTable-cell textarea,
+.EditTable-cell input {
+  font-family: $font-family;
+  font-size: 0.875rem;
+  line-height: $base-unit;
+}
+
+.EditTable-button {
+  background: transparent;
+  border: none;
+  font-family: $font-family;
+  line-height: $base-unit;
+  margin: 0 $base-unit / 8;
+  outline: none;
+  padding: 0;
+}
+
+.EditTable-button:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
 }

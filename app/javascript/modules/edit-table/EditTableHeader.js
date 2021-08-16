@@ -18,22 +18,25 @@ export default function EditTableHeader({
     );
 
     return (
-        <thead>
-            <tr>
+        <div>
+            <div
+                className="EditTable-row"
+                style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}
+            >
                 {
                     columns.map(column => (
-                        <th
+                        <div
                             key={column}
                             className={classNames('EditTable-cell', 'EditTable-cell--header', {
                                 'EditTable-cell--narrow': column === 'timecode',
                             })}
                         >
                             {t(`edit_column_header.${column}`)}
-                        </th>
+                        </div>
                     ))
                 }
-            </tr>
-        </thead>
+            </div>
+        </div>
     );
 }
 

@@ -80,6 +80,7 @@ export default function EditTable({
         return (
             <EditTableRowContainer
                 key={segment.id}
+                odd={index % 2 === 0}
                 segment={segment}
                 originalLocale={interview.lang}
                 translationLocale={translationLocale}
@@ -90,18 +91,17 @@ export default function EditTable({
 
     return (
         <ScrollToTop>
-            <table className="EditTable edit-interview__old">
+            <div className="EditTable edit-interview__old">
                 <EditTableHeaderContainer />
-                <tbody className="EditTable-body">
+                <div className="EditTable-body">
                     <Virtuoso
-                        style={{ height: '400px' }}
                         totalCount={segments.length}
                         itemContent={content}
-                        fixedItemHeight={96}
+                        //fixedItemHeight={96}
                         useWindowScroll
                     />
-                </tbody>
-            </table>
+                </div>
+            </div>
         </ScrollToTop>
     );
 }
