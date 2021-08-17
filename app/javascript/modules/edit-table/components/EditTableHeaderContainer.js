@@ -1,7 +1,8 @@
 import { connect } from 'react-redux';
 
-import { getSelectedInterviewEditViewColumns, getEditView } from 'modules/archive';
+import { getEditView } from 'modules/archive';
 import { getCurrentInterview, getCurrentProject, getCurrentAccount } from 'modules/data';
+import { getSelectedColumns } from '../selectors';
 import EditTableHeader from './EditTableHeader';
 
 const mapStateToProps = (state) => ({
@@ -9,7 +10,7 @@ const mapStateToProps = (state) => ({
     account: getCurrentAccount(state),
     editView: getEditView(state),
     project: getCurrentProject(state),
-    selectedInterviewEditViewColumns: getSelectedInterviewEditViewColumns(state),
+    selectedColumns: getSelectedColumns(state),
 });
 
 export default connect(mapStateToProps)(EditTableHeader);

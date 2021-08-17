@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import { setSkipEmptyRows, getSkipEmptyRows } from 'modules/archive';
+import { setSkipEmptyRows } from '../actions';
+import { getSkipEmptyRows } from '../selectors';
 import SelectColumnsFormContainer from './SelectColumnsFormContainer';
 
 export default function EditTableHeaderOptions({

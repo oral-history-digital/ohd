@@ -1,19 +1,19 @@
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import permittedColumns from './permittedColumns';
+import permittedColumns from '../permittedColumns';
 
 export default function SelectColumnsForm({
     interview,
-    selectedInterviewEditViewColumns,
+    selectedColumns,
     account,
     editView,
-    selectInterviewEditViewColumns,
+    setColumns,
     onSubmit,
 }) {
     const selectedValues = () => {
         let values = {};
-        selectedInterviewEditViewColumns.forEach( column => {
+        selectedColumns.forEach(column => {
             values[column] = true;
         })
         return values;
@@ -33,7 +33,7 @@ export default function SelectColumnsForm({
             if (params.select_interview_edit_columns[column])
                 values.push(column);
         })
-        selectInterviewEditViewColumns(values);
+        setColumns(values);
         onSubmit();
     };
 
@@ -51,9 +51,9 @@ export default function SelectColumnsForm({
 
 SelectColumnsForm.propTypes = {
     interview: PropTypes.object.isRequired,
-    selectedInterviewEditViewColumns: PropTypes.array.isRequired,
+    selectedColumns: PropTypes.array.isRequired,
     account: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
-    selectInterviewEditViewColumns: PropTypes.func.isRequired,
+    setColumns: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
 };

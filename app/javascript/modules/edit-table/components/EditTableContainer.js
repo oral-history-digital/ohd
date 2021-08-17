@@ -1,10 +1,11 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getProjectId, getArchiveId, getSkipEmptyRows } from 'modules/archive';
+import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
 import { fetchData, getCurrentInterview, getCurrentProject, getProjects,
     getSegmentsStatus } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
+import { getSkipEmptyRows } from '../selectors';
 import EditTable from './EditTable';
 
 const mapStateToProps = (state) => ({

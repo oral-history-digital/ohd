@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
-import permittedColumns from './permittedColumns';
+import permittedColumns from '../permittedColumns';
 import EditTableHeaderOptions from './EditTableHeaderOptions';
 
 export default function EditTableHeader({
@@ -11,11 +11,11 @@ export default function EditTableHeader({
     editView,
     project,
     interview,
-    selectedInterviewEditViewColumns,
+    selectedColumns,
 }) {
     const { t } = useI18n();
 
-    const columns = selectedInterviewEditViewColumns.filter(
+    const columns = selectedColumns.filter(
         v => permittedColumns({ account, editView, project }, interview.id).includes(v)
     );
 
@@ -50,5 +50,5 @@ EditTableHeader.propTypes = {
     editView: PropTypes.bool.isRequired,
     project: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
-    selectedInterviewEditViewColumns: PropTypes.array.isRequired,
+    selectedColumns: PropTypes.array.isRequired,
 };

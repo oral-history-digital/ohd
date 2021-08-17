@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import permittedColumns from './permittedColumns';
+import permittedColumns from '../permittedColumns';
 import EditTableCell from './EditTableCell';
 
 export default function TableRow({
@@ -14,9 +14,9 @@ export default function TableRow({
     editView,
     project,
     interview,
-    selectedInterviewEditViewColumns,
+    selectedColumns,
 }) {
-    const columns = selectedInterviewEditViewColumns.filter(
+    const columns = selectedColumns.filter(
         v => permittedColumns({ account, editView, project }, interview.id).includes(v)
     );
 
@@ -51,7 +51,7 @@ TableRow.propTypes = {
     segment: PropTypes.object.isRequired,
     originalLocale: PropTypes.string.isRequired,
     translationLocale: PropTypes.string.isRequired,
-    selectedInterviewEditViewColumns: PropTypes.array.isRequired,
+    selectedColumns: PropTypes.array.isRequired,
     interview: PropTypes.object.isRequired,
     active: PropTypes.bool.isRequired,
     account: PropTypes.object.isRequired,
