@@ -2,7 +2,7 @@ require "open-uri"
 
 namespace :cache do
 
-  def base_url
+  def base_url(project)
     if Rails.env.development?
       'http://localhost:3000'
     else
@@ -178,7 +178,7 @@ namespace :cache do
   end
 
   desc 'cache all'
-  task :all => [
+  task :all, [:cache_key_prefix] => [
     'cache:start',
     'cache:search',
     'cache:name_searches',
