@@ -6,7 +6,7 @@ class Contribution < ApplicationRecord
   belongs_to :interview
   belongs_to :person,
     -> { includes(:translations) }
-  belongs_to :contribution_type
+  #belongs_to :contribution_type
 
   validates_associated :interview, :person
   validates_presence_of :contribution_type_id
