@@ -25,7 +25,7 @@ export default function EditTableHeaderOptions({
             <span>
                 <Modal
                     title={t('edit_column_header.select_columns')}
-                    trigger={'Spalten auswählen'}
+                    trigger={t('edit_column_header.select_columns')}
                     triggerClassName="StateButton EditTableHeader-button"
                 >
                     {closeModal => <SelectColumnsFormContainer onSubmit={closeModal} />}
