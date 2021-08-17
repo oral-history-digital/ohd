@@ -197,8 +197,8 @@ es:
   max_300: 300 carácteres disponibles
   annotation_explanation: Puede revisar las anotaciones en esta carpeta.
   annotation_confirmation: Yo deseo que se publique esta anotación y que sea visible para toda/os la/os usuaria/os registrada/os. Con esto confirma las <a class="conditions-link" href="%{link}" target="_blank">pautas para anotaciones</a>.
-  save: guardar
-  cancel: cancelar
+  save: Guardar
+  cancel: Cancelar
   assign_speakers: Asignar hablantes
   speaker_designations: Sprecher*innen-Kürzel
   person_info: Sobre la persona

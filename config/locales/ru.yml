@@ -195,8 +195,8 @@ ru:
         так, чтобы он был виден всем пользователям архива? В таком случае, настоящим
         Вы принимаете наши <a class="conditions-link" href="%{link}"
     target="_blank">Правила публикации комментариев</a>.
-  save: сохранить
-  cancel: abbrechen
+  save: Сохранить
+  cancel: Abbrechen
   assign_speakers: Sprecher*innen zuordnen
   speaker_designations: Sprecher*innen-Kürzel
   person_info: О человеке

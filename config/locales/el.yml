@@ -203,8 +203,8 @@ el:
   annotation_confirmation: Επιθυμώ να δημοσιευτεί το σχόλιό μου σε όλους τους χρήστες.
     Συμφωνώ με τις  <a class="conditions-link" href="%{link}"
     target="_blank">οδηγίες συγγραφής σχολίων</a>.
-  save: αποθηκεύστε
-  cancel: διακοπή
+  save: Αποθηκεύστε
+  cancel: Διακοπή
   assign_speakers: Ανάθεση ομιλητών
   speaker_designations: Sprecher*innen-Kürzel
   person_info: Σχετικά με το άτομο

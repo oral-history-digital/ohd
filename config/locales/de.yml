@@ -203,8 +203,8 @@ de:
     angemeldeten Archivnutzer*innen angezeigt wird. Hiermit stimme ich
     den <a class="conditions-link" href="%{link}"
     target="_blank">Richtlinien für Anmerkungen</a> zu.
-  save: speichern
-  cancel: abbrechen
+  save: Speichern
+  cancel: Abbrechen
   assign_speakers: Sprecher*innen zuordnen
   speaker_designations: Sprecher*innen-Kürzel
   person_info: Zur Person
