@@ -183,7 +183,7 @@ export default class Form extends Component {
         return {
             select: SelectContainer,
             registryEntrySelect: RegistryEntrySelectContainer,
-            registryEntryTreeSelect: this.props.treeSelectEnabled ? TreeSelectContainer : RegistryEntrySelectContainer,
+            registryEntryTreeSelect: TreeSelectContainer,
             input: InputContainer,
             richTextEditor: RichTextEditor,
             textarea: Textarea,
@@ -255,7 +255,6 @@ export default class Form extends Component {
 }
 
 Form.propTypes = {
-    treeSelectEnabled: PropTypes.bool.isRequired,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
