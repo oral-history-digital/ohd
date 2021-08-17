@@ -17,7 +17,7 @@ export default function EditTableButtons({
     return (
         <>
             {
-                editViewEnabled ?
+                false ?
                     (<>
                         <Modal
                             title={t('edit_column_header.select_columns')}

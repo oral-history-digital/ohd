@@ -78,7 +78,7 @@ export default function EditTable({
         <ScrollToTop>
             <div className="EditTable edit-interview__old">
                 <div className="EditTable-inner">
-                    <EditTableHeaderContainer />
+                    <EditTableHeaderContainer numElements={segments.length} />
                     <div className="EditTable-bodyContainer">
                         <div className="EditTable-body">
                             <Virtuoso

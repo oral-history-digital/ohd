@@ -3,8 +3,10 @@ import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
 import permittedColumns from './permittedColumns';
+import EditTableHeaderOptions from './EditTableHeaderOptions';
 
 export default function EditTableHeader({
+    numElements,
     account,
     editView,
     project,
@@ -18,25 +20,32 @@ export default function EditTableHeader({
     );
 
     return (
-        <header
-            className="EditTable-header"
-            style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}
-        >
-            {
-                columns.map(column => (
-                    <div
-                        key={column}
-                        className="EditTable-headerCell"
-                    >
-                        {t(`edit_column_header.${column}`)}
-                    </div>
-                ))
-            }
+        <header className="EditTableHeader">
+            <EditTableHeaderOptions
+                numElements={numElements}
+            />
+            <div
+                className="EditTableHeader-columns"
+                style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}
+            >
+                {
+                    columns.map(column => (
+                        <div
+                            key={column}
+                            className="EditTableHeader-cell"
+                        >
+                            {t(`edit_column_header.${column}`)}
+                        </div>
+                    ))
+                }
+            </div>
+
         </header>
     );
 }
 
 EditTableHeader.propTypes = {
+    numElements: PropTypes.number.isRequired,
     account: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
     project: PropTypes.object.isRequired,

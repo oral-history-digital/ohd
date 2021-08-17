@@ -10,26 +10,6 @@
 .EditTable-inner {
 }
 
-.EditTable-header {
-  background-color: var(--primary-color);
-  color: white;
-  display: grid;
-  font-weight: bold;
-  height: 2 * $base-unit;
-  position: sticky;
-  top: 0;
-  z-index: $z-index-edit-table-header;
-}
-
-.Layout.is-sticky .EditTable-header {
-  box-shadow: 1px 1px 5px rgba(0, 0, 0, 0.5);
-  top: $media-player-height-sticky;
-}
-
-.EditTable-headerCell {
-  padding: (0.5 * $base-unit) (0.25 * $base-unit);
-}
-
 .Layout.is-sticky .EditTable-bodyContainer {
   margin-top: 28rem;  /* 1 */
 }
