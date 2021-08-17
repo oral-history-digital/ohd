@@ -57,7 +57,7 @@ export default function RegistryReference({
     return (
         <li className="RegistryReference registry-reference">
             {
-                hasNote ? (
+                hasNote && setOpenReference ? (
                     <button
                         type="button"
                         id={"reference-" + registryReference.id}
