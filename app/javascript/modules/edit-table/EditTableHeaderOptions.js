@@ -15,7 +15,6 @@ export default function EditTableHeaderOptions({
     const { t } = useI18n();
 
     function handleFilterChange(event) {
-        console.log(event);
         const checked = event.target.checked;
         dispatch(setSkipEmptyRows(checked));
     }
@@ -23,7 +22,13 @@ export default function EditTableHeaderOptions({
     return (
         <div className="EditTableHeader-options">
             <span>
-                {numElements} Segmente
+                <Modal
+                    title={t('edit_column_header.select_columns')}
+                    trigger={'Spalten auswählen'}
+                    triggerClassName="StateButton EditTableHeader-button"
+                >
+                    {closeModal => <SelectColumnsFormContainer onSubmit={closeModal} />}
+                </Modal>
             </span>
             <span>
                 <label>
@@ -37,13 +42,7 @@ export default function EditTableHeaderOptions({
                 </label>
             </span>
             <span>
-                <Modal
-                    title={t('edit_column_header.select_columns')}
-                    trigger={'Spalten auswählen'}
-                    triggerClassName="StateButton EditTableHeader-button"
-                >
-                    {closeModal => <SelectColumnsFormContainer onSubmit={closeModal} />}
-                </Modal>
+                {numElements} Segmente
             </span>
         </div>
     );
