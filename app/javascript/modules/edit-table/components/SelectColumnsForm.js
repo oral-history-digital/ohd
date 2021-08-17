@@ -1,16 +1,16 @@
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import permittedColumns from '../permittedColumns';
+import useColumns from './useColumns';
 
 export default function SelectColumnsForm({
     interview,
     selectedColumns,
-    account,
-    editView,
     setColumns,
     onSubmit,
 }) {
+    const { permittedColumns } = useColumns(interview);
+
     const selectedValues = () => {
         let values = {};
         selectedColumns.forEach(column => {
@@ -19,7 +19,7 @@ export default function SelectColumnsForm({
         return values;
     };
 
-    const formElements = () => permittedColumns({ account, editView }, interview.id)
+    const formElements = () => permittedColumns
         .map(column => ({
             elementType: 'input',
             type: 'checkbox',

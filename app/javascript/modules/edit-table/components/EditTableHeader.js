@@ -2,22 +2,15 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
-import permittedColumns from '../permittedColumns';
 import EditTableHeaderOptions from './EditTableHeaderOptions';
+import useColumns from './useColumns';
 
 export default function EditTableHeader({
     numElements,
-    account,
-    editView,
-    project,
     interview,
-    selectedColumns,
 }) {
     const { t } = useI18n();
-
-    const columns = selectedColumns.filter(
-        v => permittedColumns({ account, editView, project }, interview.id).includes(v)
-    );
+    const { columns, gridTemplateColumns } = useColumns(interview);
 
     return (
         <header className="EditTableHeader">
@@ -26,7 +19,7 @@ export default function EditTableHeader({
             />
             <div
                 className="EditTableHeader-columns"
-                style={{ gridTemplateColumns: `repeat(${columns.length}, 1fr)` }}
+                style={{ gridTemplateColumns }}
             >
                 {
                     columns.map(column => (
@@ -46,9 +39,5 @@ export default function EditTableHeader({
 
 EditTableHeader.propTypes = {
     numElements: PropTypes.number.isRequired,
-    account: PropTypes.object.isRequired,
-    editView: PropTypes.bool.isRequired,
-    project: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
-    selectedColumns: PropTypes.array.isRequired,
 };
