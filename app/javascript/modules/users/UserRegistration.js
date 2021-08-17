@@ -110,7 +110,7 @@ export default class UserRegistration extends Component {
     }
 
     buttons(userRegistrationProject) {
-        if (admin(this.props, {type: 'UserRegistration'}, 'update')) {
+        if (admin(this.props, {type: 'UserRegistrationProject'}, 'update')) {
             return (
                 <div className={'buttons box'}>
                     {this.show(userRegistrationProject)}
