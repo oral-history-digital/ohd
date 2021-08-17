@@ -12,11 +12,7 @@ class CollectionsController < ApplicationController
   def create
     authorize Collection
     @collection = Collection.create collection_params
-    respond_to do |format|
-      format.json do
-        render json: data_json(@collection, msg: "processed")
-      end
-    end
+    respond @collection
   end
 
   def update
@@ -24,11 +20,7 @@ class CollectionsController < ApplicationController
     authorize @collection
     @collection.update_attributes collection_params
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@collection)
-      end
-    end
+    respond @collection
   end
 
   def index
@@ -39,22 +31,17 @@ class CollectionsController < ApplicationController
       format.json do
         paginate = false
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-collections-#{cache_key_params}-#{Collection.maximum(:updated_at)}" do
-          if params.keys.include?("all")
-            data = Collection.all.
+          if params[:for_projects]
+            data = policy_scope(Collection).
               includes(:translations).
               order("collection_translations.name ASC")
-            extra_params = "all"
-          elsif params[:collections_for_project]
-            data = Collection.
-              includes(:translations).
-              where(project_id: current_project.id)
-            extra_params = "collections_for_project_#{}"
+            extra_params = "for_projects_#{current_project.id}"
           else
             page = params[:page] || 1
-            data = Collection.
+            data = policy_scope(Collection).
               includes(:translations).
-              where(project_id: current_project.id).
-              where(search_params).order("collection_translations.name ASC").
+              where(search_params).
+              order("collection_translations.name ASC").
               paginate(page: page)
             paginate = true
             extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
@@ -62,7 +49,9 @@ class CollectionsController < ApplicationController
           
           {
             data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
-            data_type: "collections",
+            nested_data_type: "collections",
+            data_type: 'projects',
+            id: current_project.id,
             extra_params: extra_params,
             page: params[:page] || 1,
             result_pages_count: paginate ? data.total_pages : nil
@@ -89,6 +78,20 @@ class CollectionsController < ApplicationController
 
   private
 
+  def respond collection
+    respond_to do |format|
+      format.json do
+        render json: {
+          nested_id: collection.id,
+          data: cache_single(collection),
+          nested_data_type: "collections",
+          data_type: 'projects',
+          id: current_project.id,
+        }
+      end
+    end
+  end
+
   def collection_params
     params.require(:collection).
       permit(
@@ -99,8 +102,7 @@ class CollectionsController < ApplicationController
 
   def search_params
     params.permit(
-      :name,
-      :project_id
-    ).to_h
+      :name
+    ).to_h.select{|k,v| !v.blank? }
   end
 end

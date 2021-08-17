@@ -1,0 +1,2 @@
+class RegistryNameTypePolicy < ApplicationPolicy
+end

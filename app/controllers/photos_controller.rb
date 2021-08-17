@@ -6,9 +6,7 @@ class PhotosController < ApplicationController
     data = params[:photo].delete(:data)
     @photo = Photo.create(photo_params)
     @photo.photo.attach(io: data, filename: "#{@photo.interview.archive_id.upcase}_#{str = format('%02d', @photo.interview.photos.count)}", metadata: {title: photo_params[:caption]})
-
-    WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]}) 
-    clear_cache @photo.interview
+    write_iptc_metadata
 
     respond_to do |format|
       format.json do
@@ -27,8 +25,7 @@ class PhotosController < ApplicationController
     @photo = Photo.find(params[:id])
     authorize @photo
     @photo.update_attributes(photo_params)
-    WriteImageIptcMetadataJob.perform_later(@photo.id, {title: photo_params[:caption]}) 
-    @photo.interview.touch
+    write_iptc_metadata
 
     respond_to do |format|
       format.json do
@@ -43,7 +40,7 @@ class PhotosController < ApplicationController
     end
   end
 
-  def destroy 
+  def destroy
     @photo = Photo.find(params[:id])
     authorize @photo
     @photo.destroy
@@ -69,9 +66,10 @@ class PhotosController < ApplicationController
 
   def photo_params
     params.require(:photo).permit(
-      :interview_id, 
+      :interview_id,
+      :public_id,
       :workflow_state,
-      translations_attributes: [:locale, :id, :caption]
+      translations_attributes: [:locale, :id, :caption, :place, :date, :photographer, :license]
     )
   end
 
@@ -84,6 +82,25 @@ class PhotosController < ApplicationController
 
   def sub_folder image_name
     ((image_name.split('_').last().to_i / 1000) * 1000).to_s;
+  end
+
+  def write_iptc_metadata
+    if photo_params[:translations_attributes].blank?
+      return
+    end
+
+    # we can write only one language version as IPTC
+    translation_params = photo_params[:translations_attributes].first
+    date = Date.parse(translation_params[:date]).strftime("%Y%m%d") rescue translation_params[:date]
+
+    WriteImageIptcMetadataJob.perform_later(@photo.id, {
+      caption: translation_params[:caption],
+      creator: translation_params[:photographer],
+      headline: "#{@photo.interview.archive_id}-Interview mit #{@photo.interview.short_title(locale)}",
+      copyright: translation_params[:license],
+      date: date,
+      city: translation_params[:place]
+    })
   end
 
 end

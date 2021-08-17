@@ -61,7 +61,6 @@ namespace :users do
       reg.research_intentions = 'other'
       reg.comments = 'keine Angaben'
       reg.organization = 'CeDiS FU-Berlin'
-      reg.homepage = "www.#{Project.first.domain}"
       reg.street = 'Ihnestr. 24'
       reg.zipcode = '14195'
       reg.city = 'Berlin'

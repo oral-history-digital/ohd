@@ -5,21 +5,33 @@ class RegistryReferenceType < ApplicationRecord
   translates :name, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
+  validates_uniqueness_of :code, scope: :project_id
+
   # The relation to a registry entry defines "allowed" registry
   # reference types for all registry entries that are descendants
   # of the entry pointed to here.
   belongs_to :registry_entry
+  belongs_to :project, touch: true
 
   # The relation to registry references defines "assigned"
   # reference types for registry references. These are reference
   # types actually in use to define the type of a reference.
   has_many :registry_references, :dependent => :nullify
 
-  has_many :metadata_fields
+  has_one :metadata_field
+
+  scope :for_map, -> (locale) {
+    joins('INNER JOIN metadata_fields ON registry_reference_types.id = metadata_fields.registry_reference_type_id')
+    .joins('INNER JOIN metadata_field_translations ON metadata_fields.id = metadata_field_translations.metadata_field_id')
+    .where('metadata_fields.ref_object_type="Person" AND metadata_fields.use_in_map_search IS TRUE')
+    .where('metadata_field_translations.locale = ?', locale)
+    .group('registry_reference_types.id')
+    .order('metadata_fields.facet_order')
+    .select('registry_reference_types.id, metadata_fields.map_color, metadata_field_translations.label')
+  }
 
   def to_s(locale = I18n.locale)
-    m = MetadataField.where(name: code, source: 'RegistryReferenceType').first
-    (m && m.label(locale)) || name(locale)
+    (metadata_field && metadata_field.label(locale)) || name(locale)
   end
 
   def to_sym

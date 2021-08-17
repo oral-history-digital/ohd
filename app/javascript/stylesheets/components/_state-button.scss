@@ -1,0 +1,24 @@
+.StateButton {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  margin-left: $base-unit / 8;
+  outline: none;
+  padding: 0.25rem 0.25rem;
+  transition-duration: $transition-duration;
+  transition-property: background-color, box-shadow, filter;
+}
+
+.StateButton:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
+.StateButton.is-pressed {
+  background-color: var(--primary-color);
+  outline: 1px inset white;
+}
+
+.StateButton-icon {
+  vertical-align: middle;
+}

@@ -1,0 +1,7 @@
+.Button {
+  outline: none;
+}
+
+.Button:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}

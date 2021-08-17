@@ -34,19 +34,6 @@ FactoryBot.define do
     more_text { nil }
   end
 
-  factory :interview do
-    sequence(:archive_id){|n| "za46#{n}" }
-    last_name { 'Baschlai' }
-    first_name { 'Sinaida' }
-    other_first_names { 'Iwanowna' }
-    project
-  end
-
-  factory :tape do
-    sequence(:media_id){|n| "ZA907_01_01_0#{n}" }
-    interview
-  end
-
   factory :usage_report do
     ip { '213.43.9.136' }
     logged_at { (Time.now - 2.months).to_s(:db) }

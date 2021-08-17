@@ -1,0 +1,93 @@
+.Heading {
+  align-items: flex-start;
+  display: flex;
+  padding-left: 2.5rem;
+  position: relative;
+}
+
+.Heading:not(:first-of-type) {
+  margin-top: 0.75rem;
+}
+
+.Heading-main {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-grow: 1;
+  font-family: $font-family;
+  line-height: 1.5rem;
+  outline: none;
+  padding: 0;
+  text-align: left;
+  transition: box-shadow $transition-duration;
+}
+
+.Heading-main:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
+.Heading-main.is-active {
+  background-color: rgba(255, 250, 129, 0.5);
+}
+
+.Heading-main:hover .heading,
+.Heading-main:hover .chapter,
+.Heading-main:focus .heading,
+.Heading-main:focus .chapter {
+  color: var(--primary-color);
+}
+
+.Heading-toggle {
+  background-color: transparent;
+  border: none;
+  color: var(--primary-color);
+  cursor: pointer;
+  height: 1.5rem;
+  left: 0;
+  margin-left: -0.5rem;
+  outline: none;
+  padding: 0.25rem 0.5rem;
+  position: absolute;
+  top: 0;
+  transition: box-shadow $transition-duration;
+}
+
+.Heading-chapter {
+  letter-spacing: 0.1rem;
+  min-width: 3rem;
+  transition: color $transition-duration;
+}
+
+.Heading-heading {
+  transition: color $transition-duration;
+}
+
+.Heading--main .Heading-chapter,
+.Heading--main .Heading-heading {
+  font-weight: bold;
+}
+
+.Heading--sub .Heading-chapter,
+.Heading--sub .Heading-heading {
+  font-size: 0.875rem;
+}
+
+.Heading-timecode {
+  color: $gray-dark;
+  font-size: 0.75rem;
+  margin-left: auto;
+}
+
+.Heading-subheadings {
+  display: none;
+}
+
+.Heading-subheadings.is-expanded {
+  display: initial;
+}
+
+.Heading-toggle:focus {
+  outline: none;
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}

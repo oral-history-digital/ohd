@@ -1,4 +1,5 @@
 class PermissionsController < ApplicationController
+  skip_before_action :authenticate_user_account!, only: [:index]
 
   def create
     authorize Permission
@@ -24,7 +25,7 @@ class PermissionsController < ApplicationController
   def index
     permissions, extra_params = params[:page] ?
       [
-        policy_scope(Permission).where(search_params).order("name DESC").paginate(page: params[:page]),
+        policy_scope(Permission).where(search_params).order("name ASC").paginate(page: params[:page]),
         search_params.update(page: params[:page]).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.sort().join("_")
       ] : 
       [

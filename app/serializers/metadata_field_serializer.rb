@@ -8,6 +8,8 @@ class MetadataFieldSerializer < ApplicationSerializer
     :facet_order,
     :use_in_results_table,
     :use_in_results_list,
+    :use_in_map_search,
+    :map_color,
     :list_columns_order,
     :use_in_details_view,
     :display_on_landing_page,

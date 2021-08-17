@@ -19,7 +19,7 @@ class RolePermissionSerializer < ApplicationSerializer
     :action_name
   ].each do |att|
     define_method att do 
-      object.permission.send(att)
+      object.permission && object.permission.send(att)
     end
   end
 

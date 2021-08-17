@@ -33,9 +33,9 @@ class ContributionsController < ApplicationController
   def respond(contribution)
     contribution.interview.touch
 
-    if contribution.contribution_type == Project.contribution_types['interviewee']
+    if contribution.contribution_type.code == 'interviewee'
       reload_data_type = 'interviews'
-      reload_id = contribution.interview_id
+      reload_id = contribution.interview.archive_id
     else
       reload_data_type = nil
       reload_id = nil
@@ -57,7 +57,7 @@ class ContributionsController < ApplicationController
   end
 
   def contribution_params
-    params.require(:contribution).permit(:contribution_type, :interview_id, :person_id, :workflow_state, :speaker_designation)
+    params.require(:contribution).permit(:contribution_type_id, :interview_id, :person_id, :workflow_state, :speaker_designation)
   end
 
 end

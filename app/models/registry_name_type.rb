@@ -1,5 +1,6 @@
 class RegistryNameType < ApplicationRecord
   has_many :registry_names
+  belongs_to :project, touch: true
 
   def to_s
     name

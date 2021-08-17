@@ -4,7 +4,6 @@ default: &default
     defaults:
       audio: 480p
     audio:
-      # 480p: https://medien.cedis.fu-berlin.de/zwar/hagen/#{archive_id}_#{tape_count}_0#{tape_number}.mp3
       480p: https://thigrandi.fernuni-hagen.de:8443/geschichte/ArchivDeutschesGedaechtnis/OnlineArchiv/#{archive_id}_#{tape_count}_#{tape_number}.mp3
     video:
       240p: https://thigrandi.fernuni-hagen.de:8443/geschichte/ArchivDeutschesGedaechtnis/OnlineArchiv/#{archive_id}_#{tape_count}_#{tape_number}_sd240p.mp4

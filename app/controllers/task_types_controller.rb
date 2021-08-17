@@ -1,18 +1,11 @@
 class TaskTypesController < ApplicationController
+  skip_before_action :authenticate_user_account!, only: [:index]
 
   def create
     authorize TaskType
     @task_type = TaskType.create task_type_params
 
-    respond_to do |format|
-      format.json do
-        render json: {
-          id: @task_type.id,
-          data_type: 'task_types',
-          data: cache_single(@task_type),
-        }
-      end
-    end
+    respond @task_type
   end
 
   def update
@@ -20,34 +13,40 @@ class TaskTypesController < ApplicationController
     authorize @task_type
     @task_type.update_attributes task_type_params
 
-    respond_to do |format|
-      format.json do
-        render json: {
-          id: @task_type.id,
-          data_type: 'task_types',
-          data: cache_single(@task_type),
-        }
-      end
-    end
+    respond @task_type
   end
 
   def index
-    page = params[:page] || 1
-    task_types = policy_scope(TaskType).where(search_params).order("created_at DESC").paginate page: page
-    extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
+    policy_scope(TaskType)
 
     respond_to do |format|
       format.html { render :template => '/react/app.html' }
       format.json do
-        json = #Rails.cache.fetch "#{current_project.cache_key_prefix}-task_types-visible-for-#{current_user_account.id}-#{extra_params}-#{TaskType.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-task_types-visible-for-#{current_user_account.id}-#{cache_key_params}-#{TaskType.maximum(:updated_at)}" do
+          if params[:for_projects]
+            data = policy_scope(TaskType).
+              includes(:translations, :project).
+              order("task_type_translations.label ASC")
+            extra_params = "for_projects_#{current_project.id}"
+          else
+            page = params[:page] || 1
+            data = policy_scope(TaskType).
+              includes(:translations, :project).
+              where(search_params).order("task_type_translations.label ASC").
+              paginate(page: page)
+            paginate = true
+            extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
+          end
           {
-            data: task_types.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
-            data_type: 'task_types',
+            data: data.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            nested_data_type: 'task_types',
+            data_type: 'projects',
+            id: current_project.id,
             extra_params: extra_params,
             page: params[:page], 
-            result_pages_count: task_types.total_pages
+            result_pages_count: paginate ? data.total_pages : nil
           }
-        #end
+        end
         render json: json
       end
     end
@@ -64,6 +63,20 @@ class TaskTypesController < ApplicationController
   end
 
   private
+
+  def respond task_type
+    respond_to do |format|
+      format.json do
+        render json: {
+          nested_id: task_type.id,
+          data: cache_single(task_type),
+          nested_data_type: "task_types",
+          data_type: 'projects',
+          id: current_project.id,
+        }
+      end
+    end
+  end
 
   def task_type_params
     params.require(:task_type).

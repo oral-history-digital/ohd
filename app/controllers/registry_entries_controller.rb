@@ -4,6 +4,7 @@ class RegistryEntriesController < ApplicationController
   def create
     authorize RegistryEntry
     @registry_entry = RegistryEntry.create(registry_entry_params)
+    @registry_entry.project_id = current_project.id
     @registry_entry.save validate: false # there is an ancestor validation from somewhere producing invalid entries
     current_project.touch
 
@@ -55,18 +56,18 @@ class RegistryEntriesController < ApplicationController
 
   def index
     policy_scope RegistryEntry
-    cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at)].max.strftime("%d.%m-%H:%M")
+    cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at)].max
 
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{cache_key_params}-#{RegistryEntry.maximum(:updated_at).strftime("%d.%m-%H:%M")}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{cache_key_params}-#{cache_key_date}" do
           registry_entries, extra_params =
             if params[:children_for_entry]
               [
                 RegistryEntry.find(params[:children_for_entry]).children.includes([
                   :parent_registry_hierarchies,
-                  {registry_names: :translations}
+                  {registry_names: [:translations, :registry_name_type]}
                 ]).inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
                 "children_for_entry_#{params[:children_for_entry]}",
               ]
@@ -74,7 +75,7 @@ class RegistryEntriesController < ApplicationController
               [
                 params[:ref_object_type].classify.constantize.find(params[:ref_object_id]).registry_entries.includes([
                   :parent_registry_hierarchies,
-                  {registry_names: :translations}
+                  {registry_names: [:translations, :registry_name_type]}
                 ]).inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
                 "ref_object_type_#{params[:ref_object_type]}_ref_object_id_#{params[:ref_object_id]}",
               ]
@@ -98,18 +99,33 @@ class RegistryEntriesController < ApplicationController
         send_data pdf, filename: "registry_entries_#{params[:lang]}.pdf", :type => "application/pdf" #, :disposition => "attachment"
       end
       format.csv do
-        root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.registry_entries.where(code: 'root').first
-        csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
-          CSV.generate(col_sep: "\t") do |row|
-            row << %w(parent_name parent_id name id description latitude longitude)
-            root.on_all_descendants do |entry|
-              entry.parents.each do |parent|
-                row << [parent && parent.descriptor(params[:lang]), parent && parent.id, entry.descriptor(params[:lang]), entry.id, entry.notes(params[:lang]), entry.latitude, entry.longitude]
+        if current_user_account && (current_user_account.admin? || current_user_account.roles?(project, 'RegistryEntry', 'show'))
+          root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
+          csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
+            CSV.generate(col_sep: "\t") do |row|
+              row << %w(parent_name parent_id name id description latitude longitude)
+              root.on_all_descendants do |entry|
+                entry.parents.each do |parent|
+                  row << [parent && parent.descriptor(params[:lang]), parent && parent.id, entry.descriptor(params[:lang]), entry.id, entry.notes(params[:lang]), entry.latitude, entry.longitude]
+                end
               end
             end
           end
+          send_data csv, filename: "registry_entries_#{params[:lang]}.csv"
+        else
+          redirect_to account_url('current')
         end
-        send_data csv, filename: "registry_entries_#{params[:lang]}.csv"
+      end
+    end
+  end
+
+  def tree
+    registry_entries = RegistryEntry.for_tree(I18n.locale, current_project.id)
+    authorize registry_entries
+
+    respond_to do |format|
+      format.json do
+        render json: registry_entries, each_serializer: SlimRegistryEntrySerializer
       end
     end
   end
@@ -161,17 +177,17 @@ class RegistryEntriesController < ApplicationController
 
   def registry_entry_params
     params.require(:registry_entry).permit(
-      :workflow_state, 
-      :parent_id, 
-      :latitude, 
-      :longitude, 
+      :workflow_state,
+      :parent_id,
+      :latitude,
+      :longitude,
       registry_names_attributes: [
         :id,
         :registry_entry_id,
-        :registry_name_type_id, 
-        :name_position, 
-        :descriptor, 
-        :notes, 
+        :registry_name_type_id,
+        :name_position,
+        :descriptor,
+        :notes,
         translations_attributes: [:locale, :id, :descriptor, :notes]
       ]
     )

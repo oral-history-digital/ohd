@@ -14,4 +14,8 @@ class RegistryNameSerializer < ApplicationSerializer
     object.localized_hash(:notes)
   end
 
+  def project_id
+    object.registry_entry.project_id
+  end
+
 end

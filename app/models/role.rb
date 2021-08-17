@@ -4,4 +4,6 @@ class Role < ApplicationRecord
 
   has_many :user_roles, dependent: :destroy
   has_many :users_accounts, through: :user_roles
+
+  belongs_to :project
 end

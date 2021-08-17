@@ -6,7 +6,7 @@ namespace :cache do
     if Rails.env.development?
       'http://localhost:3000'
     else
-      Project.first.archive_domain
+      project.archive_domain
     end
   end
 
@@ -23,23 +23,26 @@ namespace :cache do
   #end
 
   desc 'visit start page'
-  task :start => :environment do
+  task :start, [:cache_key_prefix] => :environment do |t, args|
     p "*** Getting start page"
-    uri = URI.parse("#{base_url}/#{I18n.default_locale}/")
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
+    uri = URI.parse("#{base_url(project)}/#{project.default_locale}/")
     get uri
   end
 
   desc 'visit all interviews to fill up cache'
-  task :interviews => :environment do
+  task :interviews, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each do |interview|
       p "*** Getting #{interview.archive_id}"
-      uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{interview.archive_id}.json")
+      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/interviews/#{interview.archive_id}.json")
       get uri
     end
   end
 
   desc 'visit all interviews-data-routes to fill up cache'
-  task :interview_data => :environment do
+  task :interview_data, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each do |interview|
       [
         :segments,
@@ -49,7 +52,7 @@ namespace :cache do
         :ref_tree
       ].each do |data_type|
         p "*** Getting #{data_type} for #{interview.archive_id}"
-        uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{interview.archive_id}/#{data_type}.json")
+        uri = URI.parse("#{base_url(project)}/#{project.default_locale}/interviews/#{interview.archive_id}/#{data_type}.json")
         get uri
       end
     end
@@ -59,43 +62,46 @@ namespace :cache do
   task :registry_references => :environment do
     Interview.all.each do |interview|
       p "*** Getting registry references for #{interview.archive_id}"
-      person_refs = URI.parse("#{base_url}/#{I18n.default_locale}/registry_entries?ref_object_type=Person&ref_object_id=#{interview.interviewee.id}")
+      person_refs = URI.parse("#{base_url(project)}/#{project.default_locale}/registry_entries?ref_object_type=Person&ref_object_id=#{interview.interviewee.id}")
       get person_refs
-      interview_refs = URI.parse("#{base_url}/#{I18n.default_locale}/registry_entries?ref_object_type=Interview&ref_object_id=#{interview.id}")
+      interview_refs = URI.parse("#{base_url(project)}/#{project.default_locale}/registry_entries?ref_object_type=Interview&ref_object_id=#{interview.id}")
       get interview_refs
     end
   end
 
   desc 'visit contributors for interview'
-  task :contributors => :environment do
+  task :contributors, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each do |interview|
       p "*** Getting contributors #{interview.archive_id}"
-      uri = URI.parse("#{base_url}/#{I18n.default_locale}/people?contributors_for_interview=#{interview.id}")
+      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/people?contributors_for_interview=#{interview.id}")
       get uri
     end
   end
 
   desc 'visit all other necessary data to fill up cache'
-  task :other_data => :environment do
+  task :other_data, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     [
       :people
     ].each do |data_type|
       p "*** Getting #{data_type}"
-      uri = URI.parse("#{base_url}/#{I18n.default_locale}/#{data_type}.json")
+      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/#{data_type}.json")
       get uri
     end
   end
 
   desc 'visit all interviews-download-routes to fill up cache'
-  task :interview_downloads => :environment do
+  task :interview_downloads, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each do |interview|
       [
         'history',
         'interview',
       ].each do |kind|
-        Project.available_locales.each do |locale|
+        project.available_locales.each do |locale|
           p "*** Getting download #{kind} in #{locale} for #{interview.archive_id}"
-          uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{interview.archive_id}.pdf?lang=#{locale}&kind=#{kind}")
+          uri = URI.parse("#{base_url(project)}/#{project.default_locale}/interviews/#{interview.archive_id}.pdf?lang=#{locale}&kind=#{kind}")
           get uri
         end
       end
@@ -103,63 +109,69 @@ namespace :cache do
   end
 
   desc 'visit all interviews locations to fill up cache'
-  task :locations => :environment do
+  task :locations, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each do |interview|
       p "*** Getting locations for #{interview.archive_id}"
-      uri = URI.parse("#{base_url}/#{I18n.default_locale}/locations.json?archive_id=#{interview.archive_id}")
+      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/locations.json?archive_id=#{interview.archive_id}")
       get uri
     end
   end
 
   desc 'visit many possible search pages to fill up cache'
-  task :search => :environment do
+  task :search, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     pages_count = Interview.count / 12
     (1..pages_count).each do |i|
       p "*** Getting search page #{i}"
-      uri = URI.parse("#{base_url}/#{I18n.default_locale}/searches/archive.json?page=#{i}")
+      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/searches/archive.json?page=#{i}")
       get uri
     end
   end
 
   desc 'search for all the names to fill up cache'
-  task :name_searches => :environment do
+  task :name_searches, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each  do |i|
       p "*** Getting search for #{i.title[:de]}"
-      uri = URI.parse("#{base_url}/#{I18n.default_locale}/searches/archive.json?fulltext=#{ERB::Util.url_encode(i.title[:de])}&page=1")
+      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/searches/archive.json?fulltext=#{ERB::Util.url_encode(i.title[:de])}&page=1")
       get uri
     end
   end
 
   desc 'visit all registry_entries to fill up cache'
-  task :registry_entries => :environment do
+  task :registry_entries, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     RegistryEntry.all.each do |registry_entry|
       p "*** Getting registry_entry #{registry_entry.id}"
-      uri = URI.parse("#{base_url}/#{I18n.default_locale}/registry_entries/#{registry_entry.id}.json")
+      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/registry_entries/#{registry_entry.id}.json")
       get uri
-      assoc_uri = URI.parse("#{base_url}/#{I18n.default_locale}/registry_entries/#{registry_entry.id}?with_associations=true")
+      assoc_uri = URI.parse("#{base_url(project)}/#{project.default_locale}/registry_entries/#{registry_entry.id}?with_associations=true")
       get assoc_uri
     end
   end
 
   desc 'visit all people to fill up cache'
-  task :people => :environment do
+  task :people, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Person.all.each do |person|
       p "*** Getting person #{person.id}"
-      people = URI.parse("#{base_url}/#{I18n.default_locale}/people/#{person.id}.json")
+      people = URI.parse("#{base_url}/#{project.default_locale}/people/#{person.id}.json")
       get people
       if person.interviews.first
-        people_with_assoc = URI.parse("#{base_url}/#{I18n.default_locale}/people/#{person.id}?with_associations=true")
+        people_with_assoc = URI.parse("#{base_url(project)}/#{project.default_locale}/people/#{person.id}?with_associations=true")
         get people_with_assoc
       end
     end
   end
 
  desc 'visit all inteview pages - this task is not part of cache_all'
-  task :interview_uris => :environment do
+  task :interview_uris, [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each  do |i|
     #Interview.where(archive_id: 'mog85').first  do |i|
       p "*** Getting interview of #{i.title[:de]} - #{i.archive_id}"
-      uri = URI.parse("#{base_url}/#{I18n.default_locale}/interviews/#{i.archive_id}")
+      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/interviews/#{i.archive_id}")
       get uri
       sleep(60)
     end

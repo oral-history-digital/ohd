@@ -41,24 +41,27 @@ class SearchesController < ApplicationController
     end
   end
 
-  def search(model, order)
+  def search(model, order, field_name = 'text')
+    search_term = params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext]
+    fields_to_search = current_project.available_locales.map { |locale| "#{field_name}_#{locale}".to_sym }
+
     model.search do
-      fulltext params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllSegmentsThisIsAComment" : params[:fulltext] do
+      fulltext search_term, fields: fields_to_search do
         current_project.available_locales.each do |locale|
-          highlight :"text_#{locale}"
+          highlight :"#{field_name}_#{locale}"
         end
       end
       with(:archive_id, params[:id])
-      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.roles?(Interview, :update))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
+      with(:workflow_state, (current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'General', 'edit'))) && model.respond_to?(:workflow_spec) ? model.workflow_spec.states.keys : "public")
       order_by(order, :asc)
       paginate page: params[:page] || 1, per_page: 2000
     end
   end
 
-  def found_instances(model, search)
+  def found_instances(model, search, field_name = 'text')
     search.hits.select { |h| h.instance }.map do |hit|
       instance = cache_single(hit.instance, model == Segment ? "SegmentHit" : nil)
-      instance[:text] = highlighted_text(hit)
+      instance[:text] = highlighted_text(hit, field_name)
       instance
     end
   end
@@ -68,13 +71,16 @@ class SearchesController < ApplicationController
       [Segment, :sort_key],
       [BiographicalEntry, :start_date],
       [Photo, :id],
-      [Person, "name_#{locale}".to_sym],
       [RegistryEntry, "text_#{locale}".to_sym],
+      [Annotation, :id],
     ]
 
     models_and_order.each do |model, order|
       instance_variable_set "@#{model.name.underscore}_search", search(model, order)
     end
+    @mainheading_search = search(Segment, :sort_key, 'mainheading')
+    @subheading_search = search(Segment, :sort_key, 'subheading')
+    @observations_search = search(Interview, :archive_id, 'observations')
 
     respond_to do |format|
       format.html do
@@ -82,6 +88,7 @@ class SearchesController < ApplicationController
       end
       format.json do
         interview = Interview.find_by_archive_id(params[:id])
+
         json = {
           fulltext: params[:fulltext],
           archiveId: params[:id],
@@ -90,6 +97,14 @@ class SearchesController < ApplicationController
         models_and_order.each do |model, order|
           json["found_#{model.name.underscore.pluralize}"] = found_instances(model, instance_variable_get("@#{model.name.underscore}_search"))
         end
+
+        mainheadings = found_instances(Segment, @mainheading_search, 'mainheading')
+        subheadings = found_instances(Segment, @subheading_search, 'subheading')
+        all_headings = mainheadings.concat(subheadings)
+        sorted_headings = all_headings.sort { |a, b| a[:sort_key] <=> b[:sort_key] }
+
+        json['found_headings'] = sorted_headings
+        json['found_observations'] = found_instances(Interview, @observations_search, 'observations')
 
         render plain: json.to_json
       end
@@ -102,60 +117,42 @@ class SearchesController < ApplicationController
         render :template => "/react/app.html"
       end
       format.json do
-        cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max.strftime("%d.%m-%H:%M")
+        cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max
+        scope = map_scope
 
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}" do
-          # define marker types
-          selected_registry_reference_types = RegistryReferenceType.
-            joins(:metadata_fields).
-            where("metadata_fields.use_in_map_search": true, "metadata_fields.project_id": current_project.id)
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}-#{scope}-#{params[:project_id]}" do
+          registry_entries = RegistryEntry.for_map(I18n.locale, map_interviewee_ids, scope)
 
-          top_registry_entries = RegistryEntry.where(code: %w(root)) | selected_registry_reference_types.map(&:registry_entry)
-
-          # all registry_references with the defined registry_reference_type_codes have 'Person' as ref_object_type
-          # so it is the interviewee
-          #
-          search = Interview.archive_search(current_user_account, current_project, locale, params, 1000)
-          interviewees_ids = search.hits.map{|hit| hit.stored(:interviewee_id)}
-
-          markers = selected_registry_reference_types.inject({}) do |mem, registry_reference_type|
-
-            data = registry_reference_type.registry_references.includes(:registry_entry, interview: {language: :translations}).
-              where.not("registry_entries.latitude": [nil, '']).
-              where.not("registry_entries.longitude": [nil, '']).
-              where(ref_object_id: interviewees_ids).
-              group_by(&:registry_entry_id).map do |registry_entry_id, registry_references|
-
-              links = registry_references.map{|rr| link_element(rr.interview, registry_reference_type, locale)}.join('<br/>')
-
-              registry_entry = RegistryEntry.find(registry_entry_id)
-              regions = (registry_entry.all_relatives(false) - top_registry_entries).map{|re| re.descriptor(locale)}
-              {
-                id: registry_entry_id,
-                lat: registry_entry.latitude,
-                lon: registry_entry.longitude,
-                regions: regions,
-                popup_text: "<strong title='#{registry_entry_id}'>#{registry_entry.descriptor(locale)}, #{regions.join(', ')}</strong><br/>#{links}",
-                icon: "fa-#{icon(registry_reference_type.code) && icon(registry_reference_type.code)[0]}",
-                icon_prefix: "fa",
-                icon_color: icon(registry_reference_type.code) && icon(registry_reference_type.code)[1],
-              }
-            end
-
-            mem[registry_reference_type.code] = {
-              title: "<strong>#{registry_reference_type.to_s(locale)}</strong>",
-              data: data
-            }
-            mem
-          end
-
-          {
-            markers: markers,
-            facets: current_project.updated_search_facets(search),
-          }
+          ActiveModelSerializers::SerializableResource.new(registry_entries,
+            each_serializer: SlimRegistryEntryMapSerializer
+          ).as_json
         end
 
         render json: json
+      end
+    end
+  end
+
+  def map_references
+    respond_to do |format|
+      format.json do
+        registry_entry_id = params[:id]
+        signed_in = current_user_account.present?
+        scope = map_scope
+
+        registry_references = RegistryReference.for_map_registry_entry(registry_entry_id, I18n.locale, map_interviewee_ids, signed_in, scope)
+
+        render json: registry_references, each_serializer: SlimRegistryReferenceMapSerializer
+      end
+    end
+  end
+
+  def map_reference_types
+    respond_to do |format|
+      format.json do
+        registry_reference_types = RegistryReferenceType.for_map(I18n.locale)
+
+        render json: registry_reference_types, each_serializer: SlimRegistryReferenceTypeMapSerializer
       end
     end
   end
@@ -173,13 +170,13 @@ class SearchesController < ApplicationController
           all_interviews_pseudonyms: dropdown_values[:all_interviews_pseudonyms],
           all_interviews_birth_locations: dropdown_values[:all_interviews_birth_locations],
           all_interviews_count: search.total,
-          sorted_archive_ids: Rails.cache.fetch("#{current_project.cache_key_prefix}-sorted_archive_ids-#{Interview.maximum(:created_at)}") { Interview.archive_ids_by_alphabetical_order(locale) },
+          sorted_archive_ids: Rails.cache.fetch("#{current_project ? current_project.cache_key_prefix : 'OHD'}-sorted_archive_ids-#{Interview.maximum(:created_at)}") { Interview.archive_ids_by_alphabetical_order(locale) },
           result_pages_count: search.results.total_pages,
           results_count: search.total,
           interviews: search.results.map { |i| cache_single(i) },
           # found_segments_for_interviews: number_of_found_segments,
           # found_segments_for_interviews: found_segments,
-          facets: current_project.updated_search_facets(search),
+          facets: current_project ? current_project.updated_search_facets(search) : {},
           page: params[:page] || 1,
         }
       end
@@ -202,9 +199,23 @@ class SearchesController < ApplicationController
 
   private
 
-  def highlighted_text(hit)
+  def map_interviewee_ids
+    search = Interview.archive_search(current_user_account, current_project, locale, params, 1000)
+    interviewee_ids = search.hits.map{|hit| hit.stored(:interviewee_id)}
+    interviewee_ids
+  end
+
+  def map_scope
+    show_all = ActiveModel::Type::Boolean.new.cast(params[:all])
+    scope = show_all &&
+            current_user_account &&
+            (current_user_account.admin? || current_user_account.roles?(current_project, 'General', 'edit')) ?
+            'all' : 'public'
+  end
+
+  def highlighted_text(hit, field_name = 'text')
     current_project.available_locales.inject({}) do |mem, locale|
-      mem[locale] = hit.highlights("text_#{locale}").inject([]) do |m, highlight|
+      mem[locale] = hit.highlights("#{field_name}_#{locale}").inject([]) do |m, highlight|
         highlighted = highlight.format { |word| "<span class='highlight'>#{word}</span>" }
         m << highlighted.sub(/:/, "").strip()
         m
@@ -228,7 +239,8 @@ class SearchesController < ApplicationController
   end
 
   def link_element(interview, rrt, locale)
-    "<a href='/de/interviews/#{interview.archive_id}'>#{rrt.to_s(locale)} - #{interview.short_title(locale)} (#{interview.archive_id})<br/><small>#{interview.language.name(locale)}</small></a>"
+    pathBase = params[:project_id] ? "#{params[:project_id]}/#{locale}" : locale
+    "<a href='/#{pathBase}/interviews/#{interview.archive_id}'>#{rrt.to_s(locale)} - #{interview.short_title(locale)} (#{interview.archive_id})<br/><small>#{interview.language.name(locale)}</small></a>"
   end
 
 end

@@ -1,8 +1,9 @@
 class PhotoSerializer < ApplicationSerializer
 
-  attributes :id, 
-             :captions, 
-             :src, 
+  attributes :id,
+             :captions,
+             :src,
+             :public_id,
              :thumb_src,
              :text,
              :interview_id,
@@ -18,14 +19,15 @@ class PhotoSerializer < ApplicationSerializer
   end
 
   def src
-    #url_for object.image
-    Rails.application.routes.url_helpers.rails_blob_path(object.photo, only_path: true) if object.photo.attachment
+    if object.photo.attachment
+      object.variant_path('1000x1000')
+    end
   end
 
   def thumb_src
-    #url_for object.photo.variant(resize_to_fit: [100, 100])
-    #rails_representation_url(variant)
-    Rails.application.routes.url_helpers.rails_blob_path(object.photo, only_path: true) if object.photo.attachment
+    if object.photo.attachment
+      object.variant_path('200x200')
+    end
   end
 
   # dummy. will be filled in search

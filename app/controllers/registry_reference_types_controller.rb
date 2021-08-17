@@ -1,25 +1,18 @@
 class RegistryReferenceTypesController < ApplicationController
+  skip_before_action :authenticate_user_account!, only: [:index]
 
   def create
     authorize RegistryReferenceType
     @registry_reference_type = RegistryReferenceType.create(registry_reference_type_params)
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@registry_reference_type, msg: "processed")
-      end
-    end
+    respond @registry_reference_type
   end
 
   def show
     @registry_reference_type = RegistryReferenceType.find params[:id]
     authorize @registry_reference_type
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@registry_reference_type)
-      end
-    end
+    respond @registry_reference_type
   end
 
   def update
@@ -27,11 +20,7 @@ class RegistryReferenceTypesController < ApplicationController
     authorize @registry_reference_type
     @registry_reference_type.update_attributes registry_reference_type_params
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@registry_reference_type, msg: "processed")
-      end
-    end
+    respond @registry_reference_type
   end
 
   def destroy 
@@ -56,24 +45,25 @@ class RegistryReferenceTypesController < ApplicationController
       format.json do
         paginate = false
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_reference_types-#{cache_key_params}-#{RegistryReferenceType.maximum(:updated_at)}" do
-          if params.keys.include?("all")
-            data = RegistryReferenceType.all.
-              includes(:translations).
+          if params[:for_projects]
+            data = policy_scope(RegistryReferenceType).
+              includes(:translations, :project).
               order("registry_reference_type_translations.name ASC")
-            extra_params = "all"
+            extra_params = "for_projects_#{current_project.id}"
           else
             page = params[:page] || 1
-            data = RegistryReferenceType.
-              includes(:translations).
+            data = policy_scope(RegistryReferenceType).
+              includes(:translations, :project).
               where(search_params).order("registry_reference_type_translations.name ASC").
               paginate(page: page)
             paginate = true
             extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
           end
-
           {
-            data: data.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
-            data_type: "registry_reference_types",
+            data: data.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+            nested_data_type: 'registry_reference_types',
+            data_type: 'projects',
+            id: current_project.id,
             extra_params: extra_params,
             page: params[:page] || 1,
             result_pages_count: paginate ? data.total_pages : nil,
@@ -86,11 +76,26 @@ class RegistryReferenceTypesController < ApplicationController
 
   private
 
+    def respond registry_reference_type
+      respond_to do |format|
+        format.json do
+          render json: {
+            nested_id: registry_reference_type.id,
+            data: cache_single(registry_reference_type),
+            nested_data_type: "registry_reference_types",
+            data_type: 'projects',
+            id: current_project.id,
+          }
+        end
+      end
+    end
+
     def registry_reference_type_params
       params.require(:registry_reference_type).permit(
         :code,
         :registry_entry_id,
         :use_in_transcript,
+        :project_id,
         translations_attributes: [:locale, :id, :name]
       )
     end
@@ -99,6 +104,6 @@ class RegistryReferenceTypesController < ApplicationController
       params.permit(
         :name,
         :code
-      ).to_h
+      ).to_h.select{|k,v| !v.blank? }
     end
 end

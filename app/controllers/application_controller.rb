@@ -1,4 +1,5 @@
 require 'exception_notification'
+require Rails.root.join('lib/project_context.rb') # autoload lib files in production not always works
 
 class ApplicationController < ActionController::Base
   include Pundit
@@ -12,14 +13,14 @@ class ApplicationController < ActionController::Base
   after_action :verify_policy_scoped, only: :index
 
   def pundit_user
-    current_user_account
+    ProjectContext.new(current_user_account, current_project)
   end
 
   rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
 
   prepend_before_action :set_locale
   def set_locale(locale = nil, valid_locales = [])
-    locale ||= (params[:locale] || current_project.default_locale).to_sym
+    locale ||= (params[:locale] || (current_project ? current_project.default_locale : :de)).to_sym
     #valid_locales = current_project.available_locales if valid_locales.empty?
     #locale = I18n.default_locale unless valid_locales.include?(locale)
     I18n.locale = locale
@@ -31,13 +32,13 @@ class ApplicationController < ActionController::Base
   end
 
   def current_project
-    #Rails.cache.fetch("project") do
-      Project.first
-    #end
-    #Rails.cache.fetch("params[:project_id]-#{Project.maximum(:updated_at)}") do
-    #  Project.where(shortname: params[:project_id].upcase).first
-    #end
+    @current_project = @current_project || (
+      params[:project_id].present? ?
+        Project.where("UPPER(shortname) = ?", params[:project_id].upcase).first :
+        Project.by_host(request.host)
+    )
   end
+
   helper_method :current_project
 
   #def set_variant
@@ -51,15 +52,13 @@ class ApplicationController < ActionController::Base
   # TODO: split this and compose it of smaller parts. E.g. initial_search_redux_state
   #
   def initial_redux_state
-    {
+    @initial_redux_state ||= {
       archive: {
-        locale: current_project.default_locale,
-        locales: current_project.available_locales,
-        projectId: current_project.identifier,
-        viewModes: current_project.view_modes,
-        viewMode: current_project.view_modes.first,
-        listColumns: current_project.list_columns,
-        randomFeaturedInterviews: {},
+        locale: current_project ? current_project.default_locale : I18n.locale,
+        locales: current_project ? current_project.available_locales : I18n.available_locales,
+        projectId: current_project ? current_project.identifier : nil,
+        viewModes: current_project ? current_project.view_modes : ['grid'],
+        viewMode: current_project ? current_project.view_modes.first : 'grid',
         editView: !!cookies["editView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],
@@ -68,8 +67,6 @@ class ApplicationController < ActionController::Base
         skipEmptyRows: false,
         translations: translations,
         countryKeys: country_keys,
-        contributionTypes: Project.contribution_types,
-        mediaStreams: Project.media_streams,
       },
       account: {
         isLoggingIn: false,
@@ -89,10 +86,8 @@ class ApplicationController < ActionController::Base
           headings: {},
           ref_tree: {},
           registry_references: {},
-          registry_reference_types: {},
           registry_entries: {},
           contributions: {},
-          people: {},
           user_contents: {},
           annotations: {},
           uploads: {},
@@ -103,34 +98,28 @@ class ApplicationController < ActionController::Base
           roles: {},
           permissions: {},
           tasks: {},
-          task_types: {all: 'fetched'},
           projects: {all: 'fetched'},
-          collections: {"collections_for_project_#{current_project.identifier}": 'fetched'},
           languages: {all: 'fetched'},
+          collections: {},
+          people: {},
+          task_types: {},
+          registry_reference_types: {},
+          registry_name_types: {},
+          contribution_types: {},
         },
-        collections: Rails.cache.fetch("#{current_project.cache_key_prefix}-collections-collections_for_project_#{current_project.identifier}-#{Collection.maximum(:updated_at)}") do
-          current_project.collections.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-        end,
         projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
           Project.all.
             includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
             inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
-        languages: Rails.cache.fetch("#{current_project.cache_key_prefix}-languages-#{Language.maximum(:updated_at)}") do
-          Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+        languages: Rails.cache.fetch("languages-#{Language.maximum(:updated_at)}") do
+          Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
         end,
         accounts: {
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || nil #{}
         },
-        people: {},
-        interviews: {},
         registry_entries: {},
-        registry_name_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_name_types-#{RegistryNameType.maximum(:updated_at)}") do
-          RegistryNameType.all.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-        end,
-        task_types: Rails.cache.fetch("#{current_project.cache_key_prefix}-task_types-#{TaskType.maximum(:updated_at)}") do
-          TaskType.all.includes(:translations).inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-        end,
+        interviews: {},
       },
       popup: {
         show: false,
@@ -144,25 +133,25 @@ class ApplicationController < ActionController::Base
           right: ['ok']
         }
       },
-      interview: {
+      'media-player': {
         tape: 1,
-        videoTime: 0,
-        videoStatus: 'pause',
-        transcriptTime: 0,
-        transcriptScrollEnabled: false,
-        resolution: '480p',
+        mediaTime: 0,
+        isPlaying: false,
+        resolution: nil,
+        timeChangeRequest: nil,
+      },
+      interview: {
+        autoScroll: true,
+        tabIndex: 0
       },
       search: initial_search_redux_state
     }
   end
 
   def initial_search_redux_state
-    cache_key_date = [Interview.maximum(:updated_at), current_project.updated_at]
-      .compact.max.strftime("%d.%m-%H:%M")
-
     search = Interview.archive_search(current_user_account, current_project, locale, params)
     dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
-    facets = current_project.updated_search_facets(search)
+    facets = current_project ? current_project.updated_search_facets(search) : {}
     {
       archive: {
         facets: facets,
@@ -170,7 +159,7 @@ class ApplicationController < ActionController::Base
         allInterviewsTitles: dropdown_values[:all_interviews_titles],
         allInterviewsPseudonyms: dropdown_values[:all_interviews_pseudonyms],
         allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
-        sortedArchiveIds: Rails.cache.fetch("sorted_archive_ids-#{current_project.cache_key_prefix}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
+        sortedArchiveIds: Rails.cache.fetch("sorted_archive_ids-#{current_project ? current_project.cache_key_prefix : 'OHD'}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
         foundInterviews: search.results.map{|i| cache_single(i)},
         allInterviewsCount: search.total,
         resultPagesCount: search.results.total_pages,
@@ -179,7 +168,6 @@ class ApplicationController < ActionController::Base
       map: {
         facets: facets,
         query: search_query,
-        foundMarkers: {},
       },
       interviews: {},
       registryEntries: {
@@ -188,7 +176,7 @@ class ApplicationController < ActionController::Base
       },
       user_registrations: {
         query: {
-          workflow_state: 'account_confirmed',
+          'user_registrations.workflow_state': 'account_confirmed',
           page: 1,
         },
       },
@@ -198,6 +186,7 @@ class ApplicationController < ActionController::Base
       people: { query: {page: 1} },
       registry_reference_types: { query: {page: 1} },
       registry_name_types: { query: {page: 1} },
+      contribution_types: { query: {page: 1} },
       projects: { query: {page: 1} },
       collections: { query: {page: 1} },
       languages: { query: {page: 1} }
@@ -212,15 +201,19 @@ class ApplicationController < ActionController::Base
   private
 
   def search_query
-    current_project.search_facets_names.inject({page: 1}) do |mem, facet|
-      mem["#{facet}[]"] = params[facet] if params[facet]
-      mem
+    if current_project
+      current_project.search_facets_names.inject({page: 1}) do |mem, facet|
+        mem["#{facet}[]"] = params[facet] if params[facet]
+        mem
+      end
+    else
+      {}
     end
   end
 
   def country_keys
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-country-keys") do
-      current_project.available_locales.inject({}) do |mem, locale|
+    Rails.cache.fetch('country-keys') do
+      I18n.available_locales.inject({}) do |mem, locale|
         mem[locale] = ISO3166::Country.translations(locale).sort_by { |key, value| value }.to_h.keys
         mem
       end
@@ -255,7 +248,8 @@ class ApplicationController < ActionController::Base
   # serialized compiled cache of an instance
   #
   def cache_single(data, name = nil, related = nil)
-    Rails.cache.fetch("#{current_project.cache_key_prefix}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}-#{related && data.send(related).updated_at}") do
+    cache_key_prefix = current_project ? current_project.cache_key_prefix : 'ohd'
+    Rails.cache.fetch("#{cache_key_prefix}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}-#{related && data.send(related).updated_at}") do
       raw = "#{name || data.class.name}Serializer".constantize.new(data)
       # compile raw-json to string first (making all db-requests!!) using to_json
       # without to_json the lazy serializers wouldn`t do the work to really request the db

@@ -1,0 +1,2 @@
+class MediaStreamPolicy < ApplicationPolicy
+end

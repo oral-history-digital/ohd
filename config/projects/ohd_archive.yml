@@ -1,0 +1,40 @@
+default: &default
+
+  media_streams:
+    defaults:
+      video: 480p
+      audio: 192k
+    video:
+      240p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_#{tape_number}_sd240p.mp4
+      480p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_#{tape_number}_sd480p.mp4
+      720p: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_#{tape_number}_sd720p.mp4
+    audio:
+      128k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_#{tape_number}_128k.mp3
+      192k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_#{tape_number}_192k.mp3
+      256k: https://medien.cedis.fu-berlin.de/zwar/zwar/#{archive_id}/#{archive_id}_#{tape_count}_#{tape_number}_256k.mp3
+
+  contribution_types:
+    interviewee: 'interviewee'
+    interviewer: 'interviewer'
+    cinematographer: 'cinematographer'
+    sound: 'sound'
+    producer: 'producer'
+    other_attender: 'other_attender'
+    quality_manager_interviewing: 'quality_manager_interviewing'
+    transcriptor: 'transcriptor'
+    segmentator: 'segmentator'
+    translator: 'translator'
+    proofreader: 'proofreader'
+    research: 'research'
+
+development:
+  <<: *default
+
+production:
+  <<: *default
+
+staging:
+  <<: *default
+
+test:
+  <<: *default

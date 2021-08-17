@@ -12,9 +12,6 @@ class Person < ApplicationRecord
   has_many :registry_entries, :through => :registry_references
 
   has_many :contributions, dependent: :destroy
-  has_many :interviews,
-    -> { where("contributions.contribution_type": "interviewee") },
-    through: :contributions
 
   has_many :histories, dependent: :destroy
   has_many :biographical_entries, dependent: :destroy
@@ -62,11 +59,15 @@ class Person < ApplicationRecord
   end
 
   after_initialize do 
-    project.registry_reference_type_metadata_fields.where(ref_object_type: 'Person').each do |field|
+    project && project.registry_reference_type_metadata_fields.where(ref_object_type: 'Person').each do |field|
       define_singleton_method field.name do
         registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id) || []
       end
     end
+  end
+
+  def interviews
+    contributions.joins(:contribution_type).where("contribution_types.code = ?", 'interviewee').map(&:interview)
   end
 
   def year_of_birth

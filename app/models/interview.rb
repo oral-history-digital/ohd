@@ -38,72 +38,6 @@ class Interview < ApplicationRecord
            :source => :person,
            :through => :contributions
 
-  has_many :interviewees,
-           -> {where("contributions.contribution_type = 'interviewee'")}, ## ZWAR
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  #has_many :interview_contributors,
-  has_many :interviewers,
-           -> {where("contributions.contribution_type = 'interviewer'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  #has_many :transcript_contributors,
-  has_many :transcriptors,
-           -> {where("contributions.contribution_type = 'transcriptor'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  #has_many :translation_contributors,
-  has_many :translators,
-           -> {where("contributions.contribution_type = 'translator'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  has_many :cinematographers,
-           -> {where("contributions.contribution_type = 'cinematographer'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  has_many :quality_managers,
-           -> {where("contributions.contribution_type = 'quality_manager'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-
-  #has_many :proofreading_contributors,
-  has_many :proofreaders,
-           -> {where("contributions.contribution_type": 'proofreader')},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  #has_many :segmentation_contributors,
-  has_many :segmentators,
-           -> {where("contributions.contribution_type = 'segmentator'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  #has_many :documentation_contributors,
-  has_many :researchers,
-           -> {where("contributions.contribution_type = 'research'")},
-           :class_name => 'Person',
-           :source => :person,
-           :through => :contributions
-
-  # TODO: rm this after integration of zwar-BE
-  #has_many :imports,
-           #:as => :importable,
-           #:dependent => :delete_all
-
   has_many :registry_references,
            -> {includes(registry_entry: {registry_names: :translations}, registry_reference_type: {})},
            :as => :ref_object,
@@ -139,7 +73,7 @@ class Interview < ApplicationRecord
 
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
-    atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id observations)
+    atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id)
     update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
   end
 
@@ -158,7 +92,6 @@ class Interview < ApplicationRecord
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
   validates :media_type, inclusion: {in: %w(video audio)}
-  validates :description, length: { maximum: 300 }
 
   #has_one_attached :still_image
 
@@ -189,38 +122,19 @@ class Interview < ApplicationRecord
     # in order to fast access places of birth for all interviews
     # string :birth_location, :stored => true
 
-    text :transcript, :boost => 5 do
+    text :transcript do
       segments.includes(:translations).inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << t.text; mem}.join(' ')
         all
       end.join(' ')
     end
 
-    text :headings, :boost => 10 do
+    text :headings do
       segments.with_heading.inject([]) do |all, segment|
         all << segment.translations.inject([]){|mem, t| mem << "#{t.mainheading} #{t.subheading}"; mem}.join(' ')
         all
       end.join(' ')
     end
-
-    #dynamic_integer :registry_entry_and_registry_reference_type_search_facets do
-      #(project.registry_entry_search_facets + project.registry_reference_type_search_facets).inject({}) do |mem, facet|
-        #mem[facet.name.to_sym] = facet.name.to_sym#, :multiple => true, :stored => true, :references => RegistryEntry
-        ##integer facet['id'].to_sym, :multiple => true, :stored => true, :references => RegistryEntry
-      #end
-    #end
-
-    #dynamic_string :person_search_facets do
-      #project.person_search_facets.inject({}) do |mem, facet|
-        #mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
-      #end
-    #end
-
-    #dynamic_string :interview_search_facets do
-      #project.interview_search_facets.inject({}) do |mem, facet|
-        #mem[facet.name] = facet.name.to_sym #, :multiple => true, :stored => true
-      #end
-    #end
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
       project.search_facets.inject({}) do |mem, facet|
@@ -230,6 +144,14 @@ class Interview < ApplicationRecord
     end
 
     Rails.configuration.i18n.available_locales.each do |locale|
+      text :"observations_#{locale}", stored: true do
+        if index_observations?
+          observations(locale)
+        else
+          ''
+        end
+      end
+
       string :"person_name_#{locale}", :stored => true do
         if full_title(locale)
           title = full_title(locale).mb_chars.normalize(:kd)
@@ -237,14 +159,14 @@ class Interview < ApplicationRecord
           title.downcase.to_s
         end
       end
-      text :"person_name_#{locale}", :stored => true, :boost => 20 do
+      text :"person_name_#{locale}", :stored => true do
         full_title(locale)
       end
 
       string :"alias_names_#{locale}", :stored => true do
         (interviewee && interviewee.alias_names(locale)) || ''
       end
-      text :"alias_names_#{locale}", :stored => true, :boost => 20 do
+      text :"alias_names_#{locale}", :stored => true do
         (interviewee && interviewee.alias_names(locale)) || ''
       end
 
@@ -275,10 +197,17 @@ class Interview < ApplicationRecord
       text :"photo_captions_#{locale}" do
         photos.map{|p| p.caption(locale)}.join(' ')
       end
+
+      # annotations
+      text :"annotations_#{locale}" do
+        annotations.map{|a| a.text(locale)}.join(' ')
+      end
     end
 
     text :interviewer_property do
       properties && properties[:interviewer]
+    rescue StandardError => e
+      puts "*** #{self.id}"
     end
 
   end
@@ -286,12 +215,14 @@ class Interview < ApplicationRecord
   scope :shared, -> {where(workflow_state: 'public')}
   scope :with_media_type, -> {where.not(media_type: nil)}
 
-  # TODO: remove or replace this
-  #scope :researched, -> {where(researched: true)}
-  #scope :with_still_image, -> {where.not(still_image_file_name: nil)}
-
   def interviewee_id
     interviewees.first && interviewees.first.id
+  end
+
+  %w(interviewee interviewer transcriptor translator cinematographer quality_manager proofreader segmentator research).each do |contributor|
+    define_method contributor.pluralize do
+      contributions.joins(:contribution_type).where("contribution_types.code = ?", contributor).map(&:person)
+    end
   end
 
   def biographies_workflow_state=(change)
@@ -334,11 +265,11 @@ class Interview < ApplicationRecord
     self.touch
   end
 
-  def self.random_featured(n = 1)
+  def self.random_featured(n = 1, project_id)
     if n == 1
-      shared.with_media_type.order(Arel.sql('RAND()')).first || first
+      shared.where(project_id: project_id).with_media_type.order(Arel.sql('RAND()')).first || first
     else
-      shared.with_media_type.order(Arel.sql('RAND()')).first(n) || first(n)
+      shared.where(project_id: project_id).with_media_type.order(Arel.sql('RAND()')).first(n) || first(n)
     end
   end
 
@@ -383,20 +314,6 @@ class Interview < ApplicationRecord
     localized_hash(:full_title)
   end
 
-  # this method is only used for the first version of the map atm.
-  # for other purposes, use the person model
-  # def birth_location
-  #   localized_hash = interviewees[0].try(:birth_location).try(:localized_hash) || Hash[Project.current.available_locales.collect { |i| [i, ""] } ]
-  #   return localized_hash.merge ({
-  #     descriptor: interviewees[0].try(:birth_location).try(:localized_hash),
-  #     id: interviewees[0].try(:birth_location).try(:id),
-  #     latitude: interviewees[0].try(:birth_location).try(:latitude),
-  #     longitude: interviewees[0].try(:birth_location).try(:longitude),
-  #     names: interviewees[0] ? PersonSerializer.new(interviewees[0]).names : {},
-  #     archive_id: archive_id
-  #   })
-  # end
-
   def reverted_short_title(locale)
     begin
       [interviewee.last_name(locale) || interviewee.last_name(I18n.defaut_locale), interviewee.first_name(locale) || interviewee.first_name(I18n.default_locale)].join(', ')
@@ -405,38 +322,28 @@ class Interview < ApplicationRecord
     end
   end
 
-  # after_initialize do
-  #   project.registry_entry_metadata_fields.each do |facet|
-  #     define_singleton_method facet.name do
-  #       if project.identifier.to_sym == :mog
-  #         segment_registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name, facet['entry_dedalo_code'])).map(&:registry_entry_id).uniq
-  #       else
-  #         registry_references.where(registry_entry_id: RegistryEntry.descendant_ids(facet.name)).map(&:registry_entry_id)
-  #       end
-  #     end
-  #   end
-  # end
-
   after_initialize do
-    project.registry_reference_type_metadata_fields.each do |field|
-      define_singleton_method field.name do
-        case field["ref_object_type"]
-        when "Person"
-          (interviewee && interviewee.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
-        when "Interview"
-          registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
-        when "Segment"
-          segment_registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq
-        else
-          []
+    if project
+      project.registry_reference_type_metadata_fields.each do |field|
+        define_singleton_method field.name do
+          case field["ref_object_type"]
+          when "Person"
+            (interviewee && interviewee.registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)) || []
+          when "Interview"
+            registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id)
+          when "Segment"
+            segment_registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id).uniq
+          else
+            []
+          end
         end
       end
-    end
 
-    OaiRepository.repository_name = project.name[project.default_locale]
-    OaiRepository.repository_url = project.archive_domain
-    OaiRepository.record_prefix = project.archive_domain
-    OaiRepository.admin_email = project.contact_email
+      OaiRepository.repository_name = project.name[project.default_locale]
+      OaiRepository.repository_url = project.archive_domain
+      OaiRepository.record_prefix = project.archive_domain
+      OaiRepository.admin_email = project.contact_email
+    end
   end
 
   def lang
@@ -462,19 +369,27 @@ class Interview < ApplicationRecord
     segment_count > 0
   end
 
-  def translated
-    # the attribute 'translated' is wrong on many interviews in zwar.
-    # this is why we use the languages-array for checking
-    if project.identifier == 'zwar'
-      (self.languages.size > 1) && ('de'.in? self.languages)
+  def index_observations?
+    public_attributes = properties.fetch(:public_attributes, {})
+    observations_public = public_attributes.fetch('observations', true)
+
+    if observations_public != true
+      false
     else
-      read_attribute :translated
+      field = project.metadata_fields.where(name: 'observations').first
+      if field.present?
+        field.use_in_details_view
+      else
+        true
+      end
     end
   end
 
   def to_vtt(lang, tape_number=1)
     vtt = "WEBVTT\n"
-    segments.select{|i| i.tape.number == tape_number.to_i}.each_with_index {|i, index | vtt << "\n#{index + 1}\n#{i.as_vtt_subtitles(lang)}\n"}
+    tapes.where(number: tape_number).first.segments.includes(:translations).each_with_index do |segment, index |
+      vtt << "\n#{index + 1}\n#{segment.as_vtt_subtitles(lang)}\n"
+    end
     vtt
   end
 
@@ -512,7 +427,7 @@ class Interview < ApplicationRecord
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
       parsed_sheet.each_with_index do |row, index|
-        contribution = contributions.select{|c| c.speaker_designation ==  row[:speaker]}.first
+        contribution = contributions.select{|c| c.speaker_designation == row[:speaker]}.first
         speaker_id = contribution && contribution.person_id
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2}\]*$/
           Segment.create_or_update_by({
@@ -550,26 +465,27 @@ class Interview < ApplicationRecord
     extension = File.extname(file_path).strip.downcase[1..-1]
     webvtt = extension == 'vtt' ? ::WebVTT.read(file_path) : WebVTT.convert_from_srt(file_path)
     webvtt.cues.each do |cue|
+      #
+      # get speaker_id
+      #
+      speaker_match = cue.text.match(/<v (\S+)>/)
+      speaker_designation = speaker_match && speaker_match[1]
+      contribution = contributions.select{|c| c.speaker_designation == speaker_designation}.first
+      speaker_id = contribution && contribution.person_id
+      #
+      # cut speaker-tag
+      #
+      text = cue.text.sub(/<v \S+> /, '')
+
       Segment.create_or_update_by({
         interview_id: id,
         timecode: cue.start.to_s,
         next_timecode: cue.end.to_s,
         tape_id: tape_id,
-        text: cue.text,
+        text: text,
         locale: locale,
+        speaker_id: speaker_id
       })
-    end
-  end
-
-  #def duration
-    #@duration ||= Timecode.new read_attribute(:duration)
-  #end
-
-  def duration_human
-    if duration && duration > 0
-      Time.at(duration).utc.strftime("%-Hh %Mmin")
-    else
-      "---"
     end
   end
 
@@ -811,17 +727,17 @@ class Interview < ApplicationRecord
     # https://github.com/sunspot/sunspot#stored-fields
     # in order to get a dropdown list in search field
     def dropdown_search_values(project, user_account)
-      wf_state = user_account && (user_account.admin? || user_account.permissions?('General', 'edit')) ? ["public", "unshared"] : 'public'
-      cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), project.updated_at]
+      wf_state = user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ["public", "unshared"] : 'public'
+      cache_key_date = [Interview.maximum(:updated_at), Person.maximum(:updated_at), (project ? project.updated_at : Project.maximum(:updated_at))]
         .compact.max.strftime("%d.%m-%H:%M")
 
-      Rails.cache.fetch("#{project.cache_key_prefix}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
+      Rails.cache.fetch("#{project ? project.cache_key_prefix : 'ohd'}-dropdown-search-values-#{wf_state}-#{cache_key_date}") do
         search = Interview.search do
           adjust_solr_params do |params|
-            params[:rows] = project.interviews.size
+            params[:rows] = project ? project.interviews.size : Interview.count
           end
           with(:workflow_state, wf_state)
-          with(:project_id, project.id)
+          with(:project_id, project.id) if project
         end
 
         all_interviews_titles = search.hits.map{ |hit| eval hit.stored(:title) }
@@ -829,7 +745,7 @@ class Interview < ApplicationRecord
         #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
         #    ...]
         all_interviews_pseudonyms = search.hits.map do |hit|
-          project.available_locales.inject({}) do |mem, locale|
+          (project || I18n).send(:available_locales).inject({}) do |mem, locale|
             mem[locale] = hit.stored("alias_names_#{locale}")
             mem
           end
@@ -846,19 +762,25 @@ class Interview < ApplicationRecord
     def archive_search(user_account, project, locale, params, per_page = 12)
       search = Interview.search do
         fulltext params[:fulltext]
-        with(:workflow_state, user_account && (user_account.admin? || user_account.permissions?('General', :edit)) ? ['public', 'unshared'] : 'public')
-        with(:project_id, project.id)
+        with(:workflow_state, user_account && (user_account.admin? || user_account.roles?(project, 'General', 'edit')) ? ['public', 'unshared'] : 'public')
+        with(:project_id, project.id) if project
         with(:archive_id, params[:archive_id]) if params[:archive_id]
-        dynamic :search_facets do
-          facet *project.search_facets_names
-          project.search_facets_names.each do |facet|
-            with(facet.to_sym).any_of(params[facet]) if params[facet]
+        if project
+          dynamic :search_facets do
+            facet *project.search_facets_names
+            project.search_facets_names.each do |facet|
+              facet_value = params[facet]
+              facet_value.delete_if(&:blank?) if facet_value.is_a?(Array)
+              with(facet.to_sym).any_of(facet_value) unless facet_value.blank?
+            end
           end
         end
         if params[:fulltext].blank? && params[:order].blank?
           order_by("person_name_#{locale}".to_sym, :asc)
         elsif params[:order]
           order_by(params[:order].split('-')[0].to_sym, params[:order].split('-')[1].to_sym)
+        else
+          order_by(:score, :desc)
         end
         # TODO: sort linguistically
         paginate page: params[:page] || 1, per_page: per_page

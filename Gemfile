@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 #ruby '2.6.6'
 
 gem 'rdoc'
-gem 'rails', '~>5.2.4'
+gem 'rails', '~> 5.2.5'
 gem 'mysql2'
 gem "redis", "~> 4.0"
 gem 'exception_notification'
@@ -40,6 +40,7 @@ gem 'iso-639'
 gem 'countries'
 gem 'font-awesome-rails'
 gem 'rack-brotli', '~> 1.0'
+gem 'rack-cors'
 
 # Gems specific to public archive app:
 gem 'sunspot_rails'
@@ -76,6 +77,7 @@ group :development do
   gem 'progress_bar'
   gem 'rb-readline'
   gem 'pry'
+  gem 'meta_request'
 end
 
 #

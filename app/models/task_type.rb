@@ -1,5 +1,5 @@
 class TaskType < ApplicationRecord
-  belongs_to :project, touch: true
+  belongs_to :project
   has_many :tasks, dependent: :destroy
   has_many :task_type_permissions, dependent: :destroy
   has_many :permissions, through: :task_type_permissions
@@ -13,7 +13,7 @@ class TaskType < ApplicationRecord
       INSERT INTO tasks (interview_id, task_type_id, workflow_state, created_at, updated_at)
       VALUES #{Interview.all.map {|i| "(#{i.id},#{self.id},'created','#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}','#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}')" }.join(",")}
     END_SQL
-    ActiveRecord::Base.connection.execute(sql)
+    Interview.count > 0 && ActiveRecord::Base.connection.execute(sql)
     project.clear_cache('interview')
   end
 

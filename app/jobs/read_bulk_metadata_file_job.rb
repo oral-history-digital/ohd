@@ -4,8 +4,6 @@ class ReadBulkMetadataFileJob < ApplicationJob
   def perform(file_path, receiver, project, locale)
     jobs_logger.info "*** uploading #{file_path} metadata"
     read_file(file_path, project, locale)
-    #Interview.reindex
-    #Rails.cache.redis.keys("#{Project.current.cache_key_prefix}-*").each{|k| Rails.cache.delete(k)}
 
     #WebNotificationsChannel.broadcast_to(
       #receiver,
@@ -70,7 +68,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
               interview.interviewee.update_attributes interviewee_data
             else
               interviewee = Person.find_or_create_by interviewee_data
-              Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type: 'interviewee'
+              Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type_id: ContributionType.find_by_code('interviewee').id
             end
 
             short_bio = BiographicalEntry.find_or_create_by(person_id: interview.interviewee.id)
@@ -78,8 +76,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
             create_contributions(interview, data[23], 'interviewer')
             create_contributions(interview, data[24], 'transcriptor')
-            create_contributions(interview, data[24], 'translator')
-            create_contributions(interview, data[24], 'research')
+            create_contributions(interview, data[25], 'translator')
+            create_contributions(interview, data[26], 'research')
             
             reference(interview, data[22], 'accessibility')
             reference(interview, data[28], 'camp')
@@ -101,6 +99,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
               destroy_reference(interview, interview_location_type.id)
               create_reference(place.id, interview, interview, interview_location_type.id) if place
             end
+            interview.touch
           end
           File.delete(file_path) if File.exist?(file_path)
         rescue StandardError => e
@@ -169,10 +168,10 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def create_contributions(interview, contributors_string, contribution_type)
-    contributors_string.split(';').each do |contributor_string|
+    contributors_string && contributors_string.gsub('"', '').split(/#\s*/).each do |contributor_string|
       last_name, first_name = contributor_string.split(/,\s*/)
       contributor = Person.find_or_create_by first_name: first_name, last_name: last_name, project_id: interview.project.id
-      Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type: contribution_type
+      Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type_id: ContributionType.find_by_code(contribution_type).id
     end
   end
 

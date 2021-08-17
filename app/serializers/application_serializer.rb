@@ -1,20 +1,8 @@
 class ApplicationSerializer < ActiveModel::Serializer
-  attributes :id, :type, :action, :translations
+  attributes :id, :type, :translations, :project_id
 
   def type 
     object.class.name
-  end
-
-  # this is to calculate  permissions on the serialized object
-  #
-  # so a user needs the permission with attributes type == object.class.name and action_name == update
-  # or a task with authorized_type == object.class.name and authorized_id == object.id
-  # to see all necessary buttons
-  #
-  # see the admin-function in app/javascript/lib/utils.js
-  #
-  def action
-    :update
   end
 
   # serialized translations are needed to construct 'translations_attributes' e.g. in MultiLocaleInput
@@ -36,8 +24,8 @@ class ApplicationSerializer < ActiveModel::Serializer
   #
   # serialized compiled cache of an instance
   #
-  def cache_single(data, name = nil, related = nil)
-    Rails.cache.fetch("#{Project.current.cache_key_prefix}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}-#{related && data.send(related).updated_at}") do
+  def cache_single(project, data, name = nil, related = nil)
+    Rails.cache.fetch("#{project.cache_key_prefix}-#{(name || data.class.name).underscore}-#{data.id}-#{data.updated_at}-#{related && data.send(related).updated_at}") do
       raw = "#{name || data.class.name}Serializer".constantize.new(data)
       # compile raw-json to string first (making all db-requests!!) using to_json
       # without to_json the lazy serializers wouldn`t do the work to really request the db
@@ -46,6 +34,11 @@ class ApplicationSerializer < ActiveModel::Serializer
       #
       JSON.parse(raw.to_json)
     end
+  end
+
+  def project_id
+    (object.respond_to?(:project_id) && object.project_id) || 
+      (object.respond_to?(:interview) && object.interview && object.interview.project_id)
   end
 
 end

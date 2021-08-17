@@ -1,4 +1,7 @@
 class UploadsController < ApplicationController
+
+  skip_before_action :authenticate_user_account!, only: [:new]
+
   def new
     authorize :upload, :new?
     respond_to do |format|

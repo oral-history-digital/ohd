@@ -1,0 +1,27 @@
+.LocaleButtons {
+    margin-bottom: 2rem;
+}
+
+.LocaleButtons-button {
+    background-color: transparent;
+    border: none;
+    outline: none;
+    border-left: 2px solid lighten($gray-warm, 10%);
+    color: $gray-warm;
+    cursor: pointer;
+    font-family: $font-family;;
+    font-size: $font-size-large;
+    line-height: 1.5rem;
+    padding: 6px 15px 0 6px;
+    text-transform: uppercase;
+    transition: color $transition-duration;
+}
+
+.LocaleButtons-button:disabled {
+    color: $gray-darkest;
+    cursor: default;
+}
+
+.LocaleButtons-button:hover {
+    color: $gray-darkest;
+}

@@ -1,10 +1,9 @@
 class ProjectsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:index]
-  before_action :set_project, only: [:show, :edit, :update, :destroy]
+  skip_before_action :authenticate_user_account!, only: [:show, :index, :edit_info, :edit_display, :edit_config]
+  before_action :set_project, only: [:show, :edit_info, :edit_display, :edit_config, :edit, :update, :destroy]
 
   # GET /projects
   def index
-    #if params[:all]
     if params.keys.include?('all')
       projects = policy_scope(Project).all
       extra_params = 'all'
@@ -19,7 +18,6 @@ class ProjectsController < ApplicationController
       format.json do
         json = Rails.cache.fetch "projects-#{extra_params}-#{Project.maximum(:updated_at)}" do
           {
-            #data: Project.includes(:translations, metadata_fields: [:translations], external_links: [:translations]).inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'projects',
             extra_params: extra_params,
@@ -34,12 +32,24 @@ class ProjectsController < ApplicationController
 
   # GET /projects/1
   def show
-    project = Project.find(params[:id])
     respond_to do |format|
+      format.html do
+        render :template => "/react/app.html"
+      end
       format.xml do
         exporter = ProjectMetadataExporter.new(@project)
         metadata = exporter.build
         render xml: metadata.to_xml
+      end
+    end
+  end
+
+  %w(edit_info edit_display edit_config).each do |m|
+    define_method m do
+      respond_to do |format|
+        format.html do
+          render :template => "/react/app.html"
+        end
       end
     end
   end
@@ -61,23 +71,17 @@ class ProjectsController < ApplicationController
   def create
     authorize Project
     @project = Project.create(project_params)
+    current_user_registration_project = UserRegistrationProject.create project_id: @project.id, user_registration_id: current_user_account.user_registration.id
+    current_user_registration_project.grant_project_access!
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@project, msg: 'processed')
-      end
-    end
+    respond @project
   end
 
   # PATCH/PUT /projects/1
   def update
     @project.update(project_params)
 
-    respond_to do |format|
-      format.json do
-        render json: data_json(@project)
-      end
-    end
+    respond @project
   end
 
   # DELETE /projects/1
@@ -94,10 +98,24 @@ class ProjectsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
+    # if a project is updated or destroyed from ohd.de
     def set_project
-      @project = Project.find(params[:id])
+      @project = current_project || Project.find(params[:id])
       authorize @project
+    end
+
+    def respond project
+      respond_to do |format|
+        format.json do
+          render json: {
+            data: cache_single(project),
+            data_type: 'projects',
+            id: project.id,
+            reload_data_type: 'accounts',
+            reload_id: 'current' 
+          }
+        end
+      end
     end
 
     # Only allow a trusted parameter "white list" through.
@@ -133,6 +151,7 @@ class ProjectsController < ApplicationController
           "has_newsletter",
           "has_map",
           "is_catalog",
+          "display_ohd_link",
           translations_attributes: [:locale, :name, :id, :introduction, :more_text, :landing_page_text]
       )
     end

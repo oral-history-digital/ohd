@@ -1,0 +1,16 @@
+/**
+ * SiteHeader component
+ */
+
+.SiteHeader {
+  align-items: center;
+  background: #fff;
+  display: flex;
+  height: $site-header-height-mobile;
+  overflow: hidden;
+  padding: 0 5%;
+
+  @include screen-m {
+    height: $site-header-height-desktop;
+  }
+}

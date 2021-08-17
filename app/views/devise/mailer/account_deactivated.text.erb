@@ -1,12 +1,21 @@
-<%
-  contact_email = @user_account.user_registration.projects.last.contact_email
-  my_locale = @user_account.locale_with_project_fallback
+<% 
+  my_locale = @user_account.default_locale || I18n.locale
+  if @resource.active_projects.count == 1
+    project = @resource.active_projects.last
+    project_name = project.name(@resource.default_locale)
+    contact_email = project.contact_email
+  else # if no project or more than one
+    project_name = 'OHD'
+    # TODO: change this email
+    contact_email = "mail@zwangsarbeit-archiv.de"
+  end
+
   case my_locale.to_sym
   when :en
 -%>
 Dear <%= @user_account.display_name %>,
 
-Your access to the application "<%= @user_account.user_registration.projects.last.name('en') %>" has been blocked.
+Your access to the application "<%= project_name %>" has been blocked.
 
 This happens if you have violated the Terms of Use.
 
@@ -14,11 +23,11 @@ If you have any questions regarding this procedure, please contact us at <%= con
 
 Yours sincerely,
 
-The project team "<%= @user_account.user_registration.projects.last.name('en') %>"
+The project team "<%= project_name %>"
 <% when :el -%>
 Αγαπητή/-έ <%= @user_account.display_name %>,
 
-Η πρόσβαση σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>" αποκλείστηκε.
+Η πρόσβαση σας στην εφαρμογή "<%= project_name %>" αποκλείστηκε.
 
 Αυτό συμβαίνει αν παραβιάσατε τους Όροι Χρήσης.
 
@@ -26,11 +35,11 @@ The project team "<%= @user_account.user_registration.projects.last.name('en') %
 
 Με εκτίμηση,
 
-Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"
+Η ομάδα του προγράμματος "<%= project_name %>"
 <% when :es -%>
 Estimada/o <%= @user_account.display_name %>,
 
-Su acceso a la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>" ha sido bloqueado.
+Su acceso a la aplicación "<%= project_name %>" ha sido bloqueado.
 
 Eso sucede si ha violado los Términos de uso.
 
@@ -38,11 +47,11 @@ Si tiene preguntas sobre el proceso, por favor contáctenos bajo <%= contact_ema
 
 Con saludos cordiales,
 
-El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"
+El equipo del proyecto "<%= project_name %>"
 <% when :ru -%>
 Уважаемый(-ая) <%= @user_account.display_name %>,
 
-Ваш доступ к ресурсу "<%= @user_account.user_registration.projects.last.name('ru') %>" был заблокирован.
+Ваш доступ к ресурсу "<%= project_name %>" был заблокирован.
 
 Это произошло, если Вы нарушили Условия пользовния.
 
@@ -50,11 +59,11 @@ El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('
 
 С уважением,
 
-сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"
+сотрудники проекта "<%= project_name %>"
 <% else -%>
 Sehr geehrte/r <%= @user_account.display_name %>,
 
-Ihr Zugang zu der Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" wurde gesperrt.
+Ihr Zugang zu der Anwendung "<%= project_name %>" wurde gesperrt.
 
 Dies geschieht, wenn Sie gegen die Nutzungsbedingungen verstoßen haben.
 
@@ -62,5 +71,5 @@ Wenn Sie Fragen zu diesem Vorgang haben, kontaktieren Sie uns bitte unter <%= co
 
 Mit freundlichen Grüßen,
 
-Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"
+Das Projekt-Team "<%= project_name %>"
 <% end -%>

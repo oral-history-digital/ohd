@@ -40,6 +40,7 @@ class ExternalLinksController < ApplicationController
     @project = Interview.find_by_archive_id(params[:project_id])
     policy_scope(ExternalLink)
     respond_to do |format|
+      format.html { render 'react/app' }
       format.json do
         json = Rails.cache.fetch("#{current_project.cache_key_prefix}-project-external_links-#{@project.id}-#{@project.external_links.maximum(:updated_at)}") do
           {

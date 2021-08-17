@@ -1,0 +1,79 @@
+.TreeSelect {
+  margin-bottom: 1.5rem;
+}
+
+/*
+ * Overwrite global styles
+ */
+
+.TreeSelect-select label {
+  float: none !important;
+  font-size: 0.875rem;
+  margin: 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+}
+
+.TreeSelect-select input {
+  margin: 0 0.25rem 0 0 !important;
+  padding: 0 !important;
+  width: auto !important;
+}
+
+.TreeSelect-select .search::placeholder {
+  color: $gray-darkest;
+}
+
+.TreeSelect-select .node {
+  margin-right: 0.75rem;
+}
+
+.TreeSelect-select .node.hide {
+  position: initial;
+}
+
+.TreeSelect-select .node.disabled > * {
+  cursor: initial;
+}
+
+.TreeSelect-select .node.disabled .radio-item {
+  display: none;
+}
+
+.TreeSelect-select .dropdown-trigger {
+  border-color: $gray-medium !important;
+  outline: none;
+  transition: box-shadow $transition-duration;
+}
+
+.TreeSelect-select .dropdown-trigger:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
+.TreeSelect-select .dropdown-content {
+  max-height: 25rem;
+  overflow-y: auto;
+}
+
+
+/* Individual toggle icon */
+
+.TreeSelect-select .toggle {
+  color: var(--primary-color) !important;
+  font: normal normal normal 16px/1 FontAwesome;
+  margin: 0 0.375rem 0 0.25rem;
+  padding: 0 0.25rem;
+  white-space: pre;
+}
+
+.TreeSelect-select .toggle.collapsed::after {
+  cursor: pointer;
+  content: "\F067";
+  vertical-align: middle;
+}
+
+.TreeSelect-select .toggle.expanded::after {
+  cursor: pointer;
+  content: "\F068";
+  vertical-align: middle;
+}

@@ -4,12 +4,11 @@ class AdminMailer < ApplicationMailer
     registration = params[:registration]
     @project = params[:project]
     @user_name = registration.full_name
-    uri = URI.parse(@project.archive_domain)
-    @url = user_registrations_url(protocol: uri.scheme, host: uri.host, locale: @project.available_locales.first)
+    @url = "#{@project.domain_with_optional_identifier}/#{@project.default_locale}/user_registrations"
 
     mail(
       subject: "Neue Registrierung zur Prüfung",
-      from: "info@cedis.fu-berlin.de",
+      from: "noreply@cedis.fu-berlin.de",
       to: @project.contact_email,
       date: Time.now
     )
@@ -22,7 +21,7 @@ class AdminMailer < ApplicationMailer
     @file = params[:file]
     mail(
       subject: 'finished job',
-      from: "info@cedis.fu-berlin.de",
+      from: "noreply@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )
@@ -35,7 +34,7 @@ class AdminMailer < ApplicationMailer
     @text = params[:text]
     mail(
       subject: 'Interview-Archiv: Neuer Kommentar',
-      from: "info@cedis.fu-berlin.de",
+      from: "noreply@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )
@@ -46,7 +45,7 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     mail(
       subject: 'Interview-Archiv: Aufgabe zugewiesen',
-      from: "info@cedis.fu-berlin.de",
+      from: "noreply@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )
@@ -57,7 +56,7 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     mail(
       subject: 'Interview-Archiv: Aufgabe abgeschlossen',
-      from: "info@cedis.fu-berlin.de",
+      from: "noreply@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )
@@ -68,7 +67,7 @@ class AdminMailer < ApplicationMailer
     @task = params[:task]
     mail(
       subject: 'Interview-Archiv: Aufgabe erneut geöffnet',
-      from: "info@cedis.fu-berlin.de",
+      from: "noreply@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now
     )

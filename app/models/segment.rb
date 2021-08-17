@@ -80,6 +80,7 @@ class Segment < ApplicationRecord
   end
 
   def enciphered_text(version, text_original='')
+    text_original ||= ''
     text_original = text_original.gsub('{{', '{[').gsub('}}', ']}') # replace wrong {{ with {[
     # TODO: replace with utf8 À
     text_enciphered =
@@ -114,8 +115,9 @@ class Segment < ApplicationRecord
           gsub(" [---]", "").                                                                                                                     # e.g. Ich war [---] bei Maria Malta, als das passierte.
           gsub("(???) ", "(...?)").                                                                                                               # e.g. Nice grandparents, we played football, (???) it’s
           gsub("<***>", "").                                                                                                                      # e.g. <***>
-          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace
-          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace
+          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace (more than one)
+          gsub(/\s+[\.\,\?\!\:]/, " ").                                                                                                           # cleanup whitespace (before .,?!:)
+          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace (beginning of phrase)
       when :public
         text_original.
           # colonia
@@ -132,8 +134,9 @@ class Segment < ApplicationRecord
           gsub(/\((.*?)\?\)/, '<?\1>').                                                                                                           # e.g. (By now?) it's the next generation
           gsub("<***>", "<i(Bandende)>").                                                                                                         # e.g. <***>
           gsub("(???) ", "<?>").                                                                                                                  # e.g. Nice grandparents, we played football, (???) it’s
-          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace
-          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace
+          gsub(/\s+/, " ").                                                                                                                       # cleanup whitespace (more than one)
+          gsub(/\s+[\.\,\?\!\:]/, " ").                                                                                                           # cleanup whitespace (before .,?!:)
+          gsub(/^\s+/, "")                                                                                                                        # cleanup whitespace (beginning of phrase)
       end
     text_enciphered
   end
@@ -152,16 +155,15 @@ class Segment < ApplicationRecord
   #validates_associated :interview
   validates_associated :tape
 
-  # TODO: rm this: segments won`t change id any more when platform and archive are joined together?!
-  #after_create :reassign_user_content
-
   before_validation :do_before_validation_on_create, :on => :create
 
   class << self
     def create_or_update_by(opts={})
       segment = find_or_create_by(interview_id: opts[:interview_id], timecode: opts[:timecode], tape_id: opts[:tape_id])
       if opts[:speaker_id]
-        opts.delete(:next_timecode)
+        next_time = Timecode.new(opts.delete(:next_timecode)).time
+        duration = next_time - Timecode.new(opts[:timecode]).time
+        opts.update(duration: duration) if duration > 0
         segment.update_attributes(opts)
       else
         assign_speakers_and_update_text(segment, opts)
@@ -264,10 +266,17 @@ class Segment < ApplicationRecord
   end
 
   searchable do
-    string :archive_id, :stored => true
+    string :archive_id, :stored => true do
+      interview.archive_id
+    end
     string :media_id, :stored => true
     string :timecode
     string :sort_key
+    text :speaker, stored: true do
+      speaking_person && speaking_person.name.inject(""){|mem, (k,v)| mem << v; mem}
+    end
+
+    boolean :has_heading
 
     # dummy method, necessary for generic search
     string :workflow_state do
@@ -278,35 +287,15 @@ class Segment < ApplicationRecord
       text :"text_#{locale}", stored: true
     end
 
-    text :mainheading, :boost => 10 do
-      mainheading = ''
-      translations.each do |translation|
-        mainheading << ' ' + translation.mainheading unless translation.mainheading.blank?
+    I18n.available_locales.each do |locale|
+      text :"mainheading_#{locale}", stored: true do
+        mainheading(locale)
       end
-      mainheading.strip
-    end
-    text :subheading, :boost => 10 do
-      subheading = ''
-      translations.each do |translation|
-        subheading << ' ' + translation.subheading unless translation.subheading.blank?
-      end
-      subheading.strip
-    end
-    #text :registry_entries, :boost => 5 do
-      #registry_references.map do |reference|
-        #reference.registry_entry.search_string
-      #end.join(' ')
-    #end
-    ## Also index the reference by all parent entries (classification)
-    ## of the registry entry and its respective alias names.
-    #text :classification, :boost => 6 do
-      #registry_references.map do |reference|
-        #reference.registry_entry.ancestors.map do |ancestor|
-          #ancestor.search_string
-        #end.join(' ')
-      #end.join(' ')
-    #end
 
+      text :"subheading_#{locale}", stored: true do
+        subheading(locale)
+      end
+    end
   end
 
   I18n.available_locales.each do |locale|
@@ -335,14 +324,6 @@ class Segment < ApplicationRecord
 
   def orig_locale
     interview.language && ISO_639.find(interview.language.first_code).alpha2
-  end
-
-  def archive_id
-    @archive_id || interview.archive_id
-  end
-
-  def archive_id=(code)
-    @archive_id = code
   end
 
   def media_id=(id)
@@ -394,15 +375,17 @@ class Segment < ApplicationRecord
 
   def as_vtt_subtitles(lang)
     # TODO: rm strip
-    raw_segment_text = text("#{lang}-subtitle") || text("#{lang}-public")
-    segment_text = speaker_changed(raw_segment_text) ? raw_segment_text.sub(/:/,"").strip() :  raw_segment_text
-    end_time = self.next.try(:time) || 9999
+    segment_text = text("#{lang}-subtitle") || text("#{lang}-public")
+    end_time = time
+    if duration
+      end_time += duration
+    else
+      # if there is no next segment add 7s (approximated segment time)
+      end_time = self.next ? self.next.time : self.time + 7
+      # lazy update duration
+      update_attributes duration: end_time - self.time
+    end
     "#{Time.at(time).utc.strftime('%H:%M:%S.%3N')} --> #{Time.at(end_time).utc.strftime('%H:%M:%S.%3N')}\n#{segment_text}"
-  end
-
-  def speaker_changed(raw_segment_text = false)
-    # TODO: rm this method after segment sanitation and replace it s occurences
-    raw_segment_text && raw_segment_text[1] == ":"
   end
 
   # returns the segment that leads the chapter
@@ -417,13 +400,13 @@ class Segment < ApplicationRecord
       subheadings = Segment.subheadings_until(self, mainheadings.last)
 
       if subheadings.count > 0
-        Project.current.available_locales.inject({}) do |mem, locale|
+        interview.project.available_locales.inject({}) do |mem, locale|
           subheading = subheadings.last.subheading(locale) || subheadings.last.subheading("#{locale}-public")
           mem[locale] = "#{mainheadings_count}.#{subheadings.count}. #{subheading}"
           mem
         end
       else
-        Project.current.available_locales.inject({}) do |mem, locale|
+        interview.project.available_locales.inject({}) do |mem, locale|
           mainheading = mainheadings.last.mainheading(locale) || mainheadings.last.mainheading("#{locale}-public")
           mem[locale] = "#{mainheadings_count}. #{mainheading}"
           mem

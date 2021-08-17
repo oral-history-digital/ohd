@@ -11,6 +11,7 @@ class UserContent < ApplicationRecord
   ANNOTATION_LIMIT = 300
 
   belongs_to :user_account
+  belongs_to :project
   belongs_to :reference, :polymorphic => true
 
   #before_validation :compile_id_hash, :on => :create
@@ -58,17 +59,6 @@ class UserContent < ApplicationRecord
     @properties ||= (YAML.load(read_attribute(:properties) || '') || {})
   end
 
-  def interview_references
-    YAML.load(read_attribute(:interview_references) || '') || []
-  end
-
-  def interview_references=(list_of_archive_ids)
-    if list_of_archive_ids.is_a?(String)
-      list_of_archive_ids = list_of_archive_ids.scan(Regexp.new("#{Project.current.initials}\\d{3}", Regexp::IGNORECASE)).map{|id| id.downcase }
-    end
-    write_attribute :interview_references, list_of_archive_ids.to_yaml
-  end
-
   # The title is usually created from (translated) attributes of the
   # referenced object (=default title) but may be overridden by the
   # end user.
@@ -88,23 +78,6 @@ class UserContent < ApplicationRecord
     read_attribute(:description) || [I18n.t(:no_placeholder, :content => UserContent.human_attribute_name(:description))].join(' ')
   end
 
-  def self.default_id_hash(instance)
-    refs = (instance.send(:interview_references) || %w(blank)).join(',')
-    Base64.encode64(refs).sub(/\\n$/,'')
-  end
-
-  #def id_hash
-    #@id_hash ||= read_attribute :id_hash
-    #@id_hash = compile_id_hash if @id_hash.blank?
-    #@id_hash
-  #end
-
-  # path to show the resource
-  # TODO: cleanup: delete this method!
-  #def get_content_path
-    #user_content_path(self)
-  #end
-
   def reverse_position_order_str
     "#{100000 - position} #{created_at}"
   end
@@ -114,24 +87,5 @@ class UserContent < ApplicationRecord
   def store_properties
     write_attribute :properties, properties.stringify_keys.to_yaml
   end
-
-  #def compile_id_hash
-    #@id_hash = read_attribute(:type).camelize.constantize.default_id_hash(self)
-    #write_attribute :id_hash, @id_hash
-    #@id_hash
-  #end
-
-  #def set_link_url
-    ## TODO: is this necessary?
-    ##update_attribute :link_url, get_content_path.sub(Regexp.new("$#{ActionController::Base.relative_url_root}"),'')
-  #end
-
-  #def check_persistence
-    #if read_attribute(:persistence).nil?
-      #false
-    #else
-      #true
-    #end
-  #end
 
 end

@@ -1,0 +1,56 @@
+.Modal-trigger {
+  background-color: transparent;
+  border: none;
+  font-family: $font-family;
+  line-height: $base-unit;
+  outline: none;
+  padding: 0 0.5rem;
+  transition: box-shadow $transition-duration;
+}
+
+.Modal-dialog {
+  margin: 2vh auto;
+  padding: 1.5rem;
+  position: relative;
+  width: 96vw;
+
+  @include screen-m {
+    margin: 10vh auto;
+    padding: 1.5rem;
+    width: 70vw;
+  }
+
+  @include screen-xl {
+    padding: 1.5rem;
+    width: 60vw;
+  }
+
+}
+
+.Modal-heading {
+  margin-top: 0;
+  margin-bottom: 0.75rem;
+}
+
+.Modal-close {
+  background-color: transparent;
+  border: none;
+  color: gray;
+  font-size: 1.5rem;
+  line-height: 1;
+  outline: none;
+  padding: 0;
+  position: absolute;
+  right: 1rem;
+  top: 1rem;
+  transition: box-shadow $transition-duration;
+}
+
+.Modal-icon {
+  vertical-align: top;
+}
+
+.Modal-trigger:focus,
+.Modal-close:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}

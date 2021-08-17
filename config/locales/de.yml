@@ -30,8 +30,11 @@ de:
     en: englisch
     es: spanisch
     ru: russisch
+  unauthorized: Keine Berechtigung diesen Inhalt zu sehen
   in: bei
-  not_your_project: Ihre Registrierung wird derzeit inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktagen dauern. Erst danach wird Ihr Zugang aktiviert und Sie können auf die Inhalte des Interview-Archivs zugreifen.
+  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
+  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
+  project_access_in_process: Ihre Registrierung wird derzeit inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktagen dauern. Erst danach wird Ihr Zugang aktiviert und Sie können auf die Inhalte des Interview-Archivs zugreifen.
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
   change_to_bcrypt: Wir haben kürzlich die Speichermethode unserer Passwörter überarbeitet.
@@ -96,14 +99,13 @@ de:
   selected: Selected
   archive_id: Archiv-ID
   noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
-  compress_video: "Video: Ansicht verkleinern"
-  expand_video: "Video: Ansicht vergrößern"
+  compress_media_player: "Medienspieler verkleinern"
+  expand_media_player: "Medienspieler vergrößern"
   interviews: Interviews
   places: Geburtsorte
   interview_location_desc_one: " wird in Kapitel "
   interview_location_desc_two: " erwähnt."
   archive_map_explanation: Die Karte stellt die Geburtsorte der Interviewten dar.
-  interview_map_explanation: Darstellung der im Interview erwähnten Orte
   interview_gallery_explanation: Die Bildergalerie zeigt Fotos von der Interviewsituation
     sowie Familienfotos und andere historische Fotos aus dem Besitz der interviewten
     Person.
@@ -155,12 +157,16 @@ de:
   change_password: Passwort ändern
   archive_results: Suchergebnisse
   segment_results: Suchergebnisse im Transkript
-  photo_results: Suchergebnisse in Fotos
+  translation_results: Suchergebnisse in Übersetzungen
+  heading_results: Suchergebnisse im Inhaltsverzeichnis
+  photo_results: Suchergebnisse in den Bildunterschriften
+  annotation_results: Suchergebnisse in den Anmerkungen
   registryentry_results: Suchergebnisse im Register
-  biographicalentry_results: Einträge in der Kurzbiografie
+  biographicalentry_results: Suchergebnisse in der Kurzbiografie
+  observation_results: Suchergebnisse im Protokoll
   person_results: Suchergebnisse für Personen
   user_registration_results: Suchergebnisse für Benutzer*innen
-  segment_hits: Treffer im Transkript
+  segment_hits: Suchergebnisse
   no_interviews_results: Keine Interviews gefunden.
   interview_id: Interview-ID
   interview_duration: Interviewdauer
@@ -197,8 +203,8 @@ de:
     angemeldeten Archivnutzer*innen angezeigt wird. Hiermit stimme ich
     den <a class="conditions-link" href="%{link}"
     target="_blank">Richtlinien für Anmerkungen</a> zu.
-  save: speichern
-  cancel: abbrechen
+  save: Speichern
+  cancel: Abbrechen
   assign_speakers: Sprecher*innen zuordnen
   speaker_designations: Sprecher*innen-Kürzel
   person_info: Zur Person
@@ -305,11 +311,11 @@ de:
       processed: 'Person angelegt: '
       return: Weitere Person anlegen
     collection:
-      admin: Sammlungen bearbeiten
-      new: Sammlung hinzufügen
-      edit: Sammlung bearbeiten
-      processed: 'Sammlung angelegt: '
-      return: Weitere Sammlung anlegen
+      admin: Teilsammlungen bearbeiten
+      new: Teilsammlung hinzufügen
+      edit: Teilsammlung bearbeiten
+      processed: 'Teilsammlung angelegt: '
+      return: Weitere Teilsammlung anlegen
     language:
       admin: Sprachen bearbeiten
       new: Sprache hinzufügen
@@ -317,15 +323,18 @@ de:
       processed: 'Sprache angelegt: '
       return: Weitere Sprache anlegen
     project:
-      new: Projekt hinzufügen
-      edit: Projekt bearbeiten
-      admin: Projekte bearbeiten
-      processed: 'Projekt angelegt: '
-      return: Weitere Projekt anlegen
+      new: Sammlung hinzufügen
+      edit: Sammlung bearbeiten
+      admin: Sammlungskonfiguration
+      info: Sammlungsinformation bearbeiten
+      config: Sammlung konfigurieren
+      display: Anzeigeoptionen bearbeiten
+      processed: 'Sammlung angelegt: '
+      return: Weitere Sammlung anlegen
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
-      admin: Metadatume bearbeiten
+      admin: Metadaten bearbeiten
       processed: 'Metadatum angelegt: '
       return: Weiteres Metadatum anlegen
     external_link:
@@ -334,6 +343,18 @@ de:
       admin: Externen Links bearbeiten
       processed: 'Externer Link angelegt: '
       return: Weiteren Externen Link anlegen
+    logo:
+      new: Logo hinzufügen
+      edit: Logo bearbeiten
+      admin: Logos bearbeiten
+    sponsor_logo:
+      new: Sponsor Logo hinzufügen
+      edit: Sponsor Logo bearbeiten
+      admin: Sponsor Logos bearbeiten
+    media_stream:
+      new: Medienpfad hinzufügen
+      edit: Medienpfad bearbeiten
+      admin: Medienpfade bearbeiten
     contribution:
       new: Mitwirkende*n hinzufügen
     registry_reference:
@@ -342,6 +363,10 @@ de:
       delete: Verknüpfung löschen
     registry_reference_type:
       admin: Verknüpfungsarten bearbeiten
+    registry_name_type:
+      admin: Registernamensarten bearbeiten
+    contribution_type:
+      admin: Mitwirkungsarten bearbeiten
     registry_entry:
       new: Neuen Untereintrag hinzufügen
       edit: Registereintrag bearbeiten
@@ -475,9 +500,6 @@ de:
     account_created: angelegt
     account_confirmed: ungeprüft
     account_deactivated: gesperrt
-    project_access_granted: freigeschaltet
-    project_access_rejected: abgelehnt
-    project_access_postponed: zurückgestellt
     all: alle
     unchecked: unbeantwortet
     preliminary: vorläufig
@@ -494,6 +516,25 @@ de:
     finish: dem QM einreichen
     clear: freigeben
     restart: Bearbeitung erneut beginnen
+  user_registration_projects:
+    workflow_states:
+      project_access_granted: freigeschaltet
+      project_access_rejected: abgelehnt
+      project_access_postponed: zurückgestellt
+      account_confirmed: ungeprüft
+      account_deactivated: gesperrt
+      all: alle
+  help_texts:
+    metadata_fields:
+      registry_reference_type_id: "Für Metadaten die aus Verknüpfungen zum Register resultieren z.B. Gruppe oder Geburtsort. Weitere Verküpfungsarten können unter 'Erschliessung' => 'Verknüpfungsarten bearbeiten' angelegt werden."
+      ref_object_type: Die andere Seite der Verknüpfung vom Register aus gesehen.
+    registry_reference_types:
+      code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Verknüpfungsart)
+      registry_entry_id: tiefst möglicher, z.B. der Registereintrag 'Orte' für die Verknüpfungsart 'Geburtsort'
+    contribution_types:
+      code: kleingeschrieben und u.U. mit Unterstrich verbunden (sonst frei wählbar aber eindeutig für jede Mitwirkungsart)
+    media_streams:
+      path: Variablen sind INTERVIEW_ID, TAPE_COUNT und TAPE_NUMBER. Sie müssen genauso in dem Pfad vorkommen.
   contributions:
     title: Mitwirkende
     add: Mitwirkende*n hinzufügen
@@ -632,7 +673,7 @@ de:
     retaliation: Vergeltungsaktionen und Massenhinrichtungen
     collaboration: Kollaboration
     interview_id: Interviews
-    archive_id: Name
+    archive_id: Interview-ID
     collection_id: Teilsammlung
     media_type: Medientyp
     language_id: Sprache
@@ -641,6 +682,15 @@ de:
     interview_date: Entstehungszeit
     public: öffentlich
     unshared: nicht öffentlich
+    description: Beschreibung
+    duration: Dauer
+    observations: Protokoll
+    tape_count: Anzahl der Bänder
+    tasks_supervisor_ids: Qualitätsmanagement
+    tasks_user_account_ids: Bearbeiter*innen
+    workflow_state: Status
+    date_of_birth: Geburtsdatum
+    signature_original: Originalsignatur
   activerecord:
     models:
       interview:
@@ -682,19 +732,22 @@ de:
       annotation:
         one: Anmerkung
         other: Anmerkungen
-      contributions:
+      contribution:
         one: Mitwirkende*r
         other: Mitwirkende
-      registry_references:
+      registry_reference:
         one: Verknüpfung
         other: Verknüpfungen
       registry_reference_type:
         one: Verknüpfungsart
         other: Verknüpfungsarten
-      registry_name_types:
+      registry_name_type:
         one: Registernamensart
         other: Registernamensarten
-      registry_entries:
+      contribution_type:
+        one: Mitwirkungsart
+        other: Mitwirkungsarten
+      registry_entry:
         one: Registereintrag
         other: Registereinträge
         actions:
@@ -718,9 +771,9 @@ de:
       task:
         one: Aufgabe
         other: Aufgaben
-        supervised_other: Betreute Aufgaben/ QM
+        supervised: Betreute Aufgaben/ QM
         closed_other: abgeschlossene Aufgaben
-        closed_supervised_other: abgeschlossene Aufgaben/ QM
+        closed_supervised: abgeschlossene Aufgaben/ QM
       task_type:
         one: Aufgabenart
         other: Aufgabenarten
@@ -734,8 +787,8 @@ de:
         one: 'Zur Rolle gehörende Berechtigung'
         other: 'Zur Rolle gehörende Berechtigungen'
       project:
-        one: Projekt
-        other: Projekte
+        one: Sammlung
+        other: Sammlungen
       person:
         one: Person
         other: Personen
@@ -762,11 +815,11 @@ de:
         end_date: Ende
         workflow_state: 'Status'
       contribution:
-        contribution_type: Art des Beitrags
+        contribution_type_id: Art des Beitrags
         person_id: Person
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
-        project_id: Projekt
+        project_id: Sammlung
         homepage: Website
         countries: Interviews in
         institution: Durchgeführt von
@@ -779,7 +832,7 @@ de:
         code: Code
       interview:
         person_name: Name
-        collection_id: Sammlung
+        collection_id: Teilsammlung
         archive_id: Archiv-ID
         forced_labor_groups: Gruppe
         forced_labor_fields: Einsatzbereich
@@ -812,7 +865,7 @@ de:
         observations: Protokoll
         description: Beschreibung
       transcript:
-        collection_id: Sammlung
+        collection_id: Teilsammlung
         archive_id: Archiv-ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
@@ -834,7 +887,7 @@ de:
         more_text: Weiterer Text Startseite
         landing_page_text: Landingpage Text
         pseudo_view_modes: Ansichten
-        fullname_on_landing_page: Show full name on landing page
+        fullname_on_landing_page: Vollen Namen auf der Landingpage zeigen
         pseudo_upload_types: UploadTypen
         shortname: Kürzel
         initials: Initialen (Archiv-ID)
@@ -843,8 +896,8 @@ de:
         archive_domain: Archivdomain
         doi: DOI
         cooperation_partner: Kooperationspartner
-        leader: Projektleiter
-        manager: Projektmanager
+        leader: Projektleitung
+        manager: Projektmanagement
         hosting_institution: Institution
         pseudo_funder_names: Finanzierung
         contact_email: Kontaktemail
@@ -855,6 +908,7 @@ de:
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
+        display_ohd_link: OHD-Link zeigen
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color
@@ -865,18 +919,21 @@ de:
         archive_domain_help: "This is used in all email traffic including registration!! It has to contain protocol (http[s]), subdomain(s), domain and potentially portnumber e.g. 'http://da03.cedis.fu-berlin.de:86/'"
       metadata_field:
         use_as_facet: als Facette benutzen
-        facet_order: Reihenfolge in den Suchfacetten
+        facet_order: Reihenfolge in Suchfacetten und Kartenfilter
         use_in_results_table: als Suchergebnis zeigen (Raster)
         use_in_results_list: als Suchergebnis zeigen (Liste)
         list_columns_order: Reihenfolge in den Suchergebnissen
-        use_in_details_view: in der Detailansicht zeigen
         use_in_map_search: in der Kartensuche zeigen
+        map_color: Farbe für Kartensuche
         display_on_landing_page: Auf der Landing-Page zeigen
-        ref_object_type: Bezugsobjekt bei RegistryReferenceType als Source
-        source: Source
+        ref_object_type: Verknüpfung mit
+        source: Datenquelle
         label: Label
-        values: Values
-        registry_reference_type_id: RegistryReferenceType
+        values: Werte
+        registry_reference_type_id: Verknüpfungsart
+        Person: Interviewte*r
+        Interview: Interview
+        RegistryReferenceType: Register (Verknüpfung)
       external_link:
         internal_name: Interner Name
       upload:
@@ -915,7 +972,6 @@ de:
         created_at: Erstellt am
         activated_at: Aktiviert am
         processed_at: Bearbeitet am
-        admin_comments: Kommentar
         default_locale: Sprache
         appellation: Titel
         first_name: Vorname
@@ -935,7 +991,11 @@ de:
         tos_agreement: Nutzungsbedingungen
         priv_agreement: Hinweise zum Datenschutz
         register: Registrierung senden
+        user_registration_projects:
+          workflow_state: Status
+      user_registration_project:
         workflow_state: Status
+        admin_comments: Kommentar
       user_role:
         role_id: Rolle
       role:
@@ -1000,13 +1060,23 @@ de:
       registry_hierarchy:
         ancestor_id: ID des Elternknoten
       annotation:
+      media_stream:
+        media_type: Medientyp
+        path: Pfad
+        resolution: Auflösung
       photo:
+        public_id: Öffentl. ID
         caption: Fotobeschreibung
+        place: Ort
+        date: Datum
+        photographer: Foto/Quelle
+        license: Lizenz
         data: Fotodatei
         caption_explanation: Die Beschreibung gibt es nur auf deutsch.
         workflow_state: 'Status'
       uploaded_file:
-        title: Title (hover)
+        href: Link
+        title: Mouseover-Text
       mark_text:
       text:
         text_to_mark: zu ersetzender Text
@@ -1016,7 +1086,7 @@ de:
       registry_reference_type:
         use_in_transcript: Im Transkript benutzen
         code: Code
-        registry_entry_id: Registereintrag (tiefst möglicher)
+        registry_entry_id: Registereintrag
       default:
         name: Name
         title: Name
@@ -1032,12 +1102,16 @@ de:
         href: Href
         file: Datei
         publish: Öffentlich
-        project_id: Projekt
+        project_id: Sammlung
         key: Schlüssel
         abbreviation: Abkürzung
         created_at: Angelegt am
+        code: Code
+        use_in_details_view: in der Detailansicht zeigen
+        order: Reihenfolge
     errors:
       default:
+        empty: Bitte auswählen
         select: Bitte auswählen
         textarea: Bitte angeben
         checkbox_input: Bitte zustimmen
@@ -1069,3 +1143,47 @@ de:
               too_long: Ihre Notizen dürfen eine Länge von 300 Zeichen nicht überschreiten.
 
   interview_title_patterns:
+
+  modules:
+    features:
+      experimental_features: "Experimentelle Funktionen"
+      tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
+    interview_map:
+      description: Darstellung der im Interview erwähnten Orte
+      error: Fehler beim Laden der Karte
+      error_references: Fehler beim Laden von Verknüpfungen
+      segment_references: Verknüpfungen im Transkript
+      at: in
+    interview_search:
+      no_results: Keine Ergebnisse
+      annotation_for: Anmerkung zu
+      search_results:
+        heading: Suchergebnisse
+        in_transcript: im Transkript
+        in_toc: im Inhaltsverzeichnis
+        in_photo_captions: in den Bildunterschriften
+        in_annotations: in den Anmerkungen
+        in_registry: im Register
+        in_biography: in der Kurzbiografie
+        in_observations: im Protokoll
+    layout:
+      back_to_top:
+        label: "Zurück nach oben"
+    search_map:
+      multiple_types: Mehrere Ortstypen
+      error: Fehler beim Laden der Karte
+    media_player:
+      auto_scroll:
+        enable: "mitlaufendes Transkript ein"
+        disable: "mitlaufendes Transkript aus"
+    toc:
+      collapse: Einklappen
+      expand: Ausklappen
+    transcript:
+      no_text: 'Segment enthält keinen Text'
+    tree_select:
+      enter_or_choose: 'Eingeben oder auswählen'
+      no_matches: 'keine Ergebnisse'
+      remove_selection: 'Auswahl entfernen'
+      loading: 'Lade Baumdaten…'
+      help_text: 'Mit Pfeil hoch/runter, Pos1/Ende zwischen Einträgen navigieren, mit Pfeil rechts/links Untereinträge aus- oder einklappen und mit Return/Rücktaste Eintrag auswählen oder entfernen.'

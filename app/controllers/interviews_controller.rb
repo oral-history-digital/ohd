@@ -1,5 +1,5 @@
 class InterviewsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:show, :random_featured]
+  skip_before_action :authenticate_user_account!, only: [:new, :show, :random_featured]
   skip_after_action :verify_authorized, only: [:show, :metadata, :cmdi_metadata, :random_featured]
   skip_after_action :verify_policy_scoped, only: [:show, :metadata, :cmdi_metadata, :random_featured]
 
@@ -263,7 +263,7 @@ class InterviewsController < ApplicationController
       format.json do
         json = Rails.cache.fetch("#{current_project.cache_key_prefix}-interview-random-featured", expires_in: 30.minutes) do
           {
-            data: Interview.random_featured(6).inject({}){|mem, s| mem[s.archive_id] = cache_single(s); mem},
+            data: Interview.random_featured(6, current_project.id).inject({}){|mem, s| mem[s.archive_id] = cache_single(s); mem},
             data_type: "random_featured_interviews",
           }
         end.to_json
@@ -282,7 +282,11 @@ class InterviewsController < ApplicationController
         ),
         data: initial_redux_state[:data].update(
           interviews: {"#{@interview.identifier}": cache_single(@interview)},
-          people: @interview.contributors.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
+          projects: initial_redux_state[:data][:projects].update(
+            "#{current_project.id}": initial_redux_state[:data][:projects][current_project.id].update(
+              people: @interview.contributors.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+            )
+          ),
           statuses: initial_redux_state[:data][:statuses].update(
             interviews: {"#{@interview.identifier}": 'fetched'},
             people: {"contributors_for_interview_#{@interview.id}": 'fetched'}
@@ -315,7 +319,7 @@ class InterviewsController < ApplicationController
       "biographies_workflow_state",
       properties: {},
       public_attributes: {},
-      contributions_attributes: [:person_id, :contribution_type, :speaker_designation],
+      contributions_attributes: [:person_id, :contribution_type_id, :speaker_designation],
       translations_attributes: [:locale, :id, :observations, :description]
     )
   end
@@ -331,7 +335,7 @@ class InterviewsController < ApplicationController
   def update_speakers_params
     params.require(:update_speaker).
       permit(
-      contributions_attributes: [:person_id, :contribution_type, :speaker_designation],
+      contributions_attributes: [:person_id, :interview_id, :contribution_type_id, :speaker_designation],
       speakers: {},
     )
   end

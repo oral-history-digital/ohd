@@ -8,7 +8,7 @@ class RegistryReferenceTypeSerializer < ApplicationSerializer
              :use_in_transcript
 
   def name
-    object.localized_hash(:name) || MetadataField.where(name: object.code, source: 'RegistryReferenceType').first.localized_hash(:label) 
+    object.localized_hash(:name) || object.metadata_field.localized_hash(:label) 
   end
 
   def registry_entry_code

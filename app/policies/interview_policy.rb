@@ -1,9 +1,4 @@
 class InterviewPolicy < ApplicationPolicy
-  class Scope < Scope
-    def resolve
-      scope.all
-    end
-  end
 
   def dois?
     create?

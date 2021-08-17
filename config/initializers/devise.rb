@@ -14,7 +14,7 @@ Devise.setup do |config|
   # with default "from" parameter.
   begin
     if ActiveRecord::Base.connection && ActiveRecord::Base.connection.table_exists?('projects')
-      config.mailer_sender =  Project.current.try(:contact_email) || 'mail@zwangsarbeit-archiv.de'
+      config.mailer_sender = 'mail@zwangsarbeit-archiv.de'
     end
   rescue ActiveRecord::NoDatabaseError
   end

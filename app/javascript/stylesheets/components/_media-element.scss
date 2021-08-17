@@ -1,0 +1,57 @@
+/**
+ * 1. Make element shrink correctly.
+ */
+
+.MediaElement {
+  display: flex;
+  justify-content: center;
+  min-height: 1rem;  /* 1 */
+}
+
+.Layout.is-sticky .MediaElement {
+  display: initial;
+  margin: $base-unit 0 0;
+
+  @include screen-m {
+    margin: 0;
+  }
+}
+
+.Layout.is-sticky .MediaElement-element {
+  background-color: black;
+  height: 7rem;
+  width: 12.4444rem;
+
+  @include screen-m {
+    height: 10rem;
+    width: 17.7777rem;
+  }
+}
+
+.MediaElement video::cue {
+	left: 0;
+	right: 0;
+	position: absolute;
+	padding: 1%;
+	margin: 0 3%;
+	font-family: $font-family;
+}
+
+.Layout.is-sticky .MediaElement video:not(:fullscreen)::cue {
+  visibility: hidden;
+}
+
+
+.MediaElement--poster {
+  background-color: #383838;
+  margin: 0;
+  padding: 0;
+
+  video{
+    display: block;
+  }
+
+  @include screen-l {
+    padding: 0;
+  }
+}

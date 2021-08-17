@@ -2,7 +2,6 @@ class SegmentSerializer < ApplicationSerializer
 
   attributes :id,
              :interview_id,
-             :archive_id,
              :sort_key,
              :time,
              :tape_nbr,
@@ -17,7 +16,6 @@ class SegmentSerializer < ApplicationSerializer
              :registry_references_count,
              :media_id,
              :timecode,
-             :speaker_changed,
              :speaker_id,
              :speaker
              #:speaker_is_interviewee

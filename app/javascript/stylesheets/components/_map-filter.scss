@@ -1,0 +1,40 @@
+.MapFilter {}
+
+.MapFilter-form {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 0;
+}
+
+.MapFilter-label {
+  font-size: 1rem;
+  line-height: $base-unit;
+  user-select: none;
+  opacity: 0.5;
+}
+
+.MapFilter-label.is-active {
+  opacity: 1;
+}
+
+.MapFilter p {
+  font-size: 1rem;
+  line-height: $base-unit;
+  margin-bottom: 0;
+  margin-left: $base-unit;
+  user-select: none;
+}
+
+.MapFilter-checkbox {
+  margin-right: 0.5rem;
+}
+
+.MapFilter-icon {
+  height: 1rem;
+}
+
+.MapFilter-icon,
+.MapFilter-checkbox {
+  vertical-align: middle;
+}

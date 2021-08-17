@@ -7,24 +7,15 @@ html
     meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=3.0"
 
     javascript:
-      var developmentMode = "#{Rails.env == 'development' ? true : false}"
-
-    css:
-      :root {
-        --primary-color: #{current_project.primary_color || '#006169'};
-        --secondary-color: #{current_project.secondary_color || '#efae0f'};
-        --editorial-color: #{current_project.editorial_color || '#16aab6'};
-        --aspect-x: #{current_project.aspect_x || 4};
-        --aspect-y: #{current_project.aspect_y || 3};
-      }
+      var developmentMode = #{Rails.env == 'development' ? true : false};
 
     == javascript_pack_tag 'application'
     == stylesheet_pack_tag 'application'
 
     = action_cable_meta_tag
-    == favicon_link_tag "/favicon-#{current_project.identifier}.ico"
+    == favicon_link_tag "/favicon-#{current_project ? current_project.identifier : 'ohd'}.ico"
 
-    title == current_project.name(I18n.locale.to_s)
+    title == current_project ? current_project.name(I18n.locale.to_s) : 'OHD'
 
   body
     .layout-indicator style="display: block;"

@@ -24,7 +24,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
       end
     end
 
-    import_photos(photos, csv_file_name)
+    import_photos(photos, csv_file_name, locale)
     File.delete(file_path) if File.exist?(file_path)
     File.delete(csv_file_name) if File.exist?(csv_file_name)
 
@@ -38,17 +38,21 @@ class ReadBulkPhotosFileJob < ApplicationJob
     AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
   end
 
-  def import_photos(photos, csv_file_name)
+  def import_photos(photos, csv_file_name, locale)
+    I18n.locale = locale
     csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00" }
+    #csv_options = { col_sep: ";", row_sep: :auto, quote_char: "\x00", liberal_parsing: true, encoding: "ISO8859-1:utf-8"  }
     csv = Roo::CSV.new(csv_file_name, csv_options: csv_options)
     if csv.first.length == 1
       csv_options.update(col_sep: "\t")
       csv = Roo::CSV.new(csv_file_name, csv_options: csv_options)
     end
 
+    interviews_to_reindex = []
+
     csv.each_with_index do |data, index|
       begin
-        unless data[0].blank? 
+        unless index == 0 || data[0].blank? 
           #
           # archive_id;photo_id;photo-file-name;description;date;place;photographer;license;format
           #
@@ -59,9 +63,13 @@ class ReadBulkPhotosFileJob < ApplicationJob
             log("*** no archive_id found in data: #{data}")
           end
 
-          photo_params = {
+          photo = Photo.find_or_create_by(
             interview_id: interview && interview.id,
-            photo_file_name: data[2],
+            photo_file_name: data[2]
+          )
+
+          photo_params = {
+            public_id: data[1],
             caption: data[3],
             date: data[4],
             place: data[5],
@@ -71,17 +79,27 @@ class ReadBulkPhotosFileJob < ApplicationJob
           }
 
           # publication state:
-          #photo_params.update(workflow_state: 'publish') if data[9] == 'Yes'
+          photo_params.update(workflow_state: 'publish') if %w(yes y ja j true t).include?(data[9] && data[9].downcase)
 
-          photo = Photo.create photo_params
+          photo.update_attributes photo_params
 
-          photo.photo.attach(io: File.open(photos[index]), filename: data[2], metadata: {title: data[3]})
+          tmp_photo_path = File.join(Rails.root, 'tmp', 'files', data[2])
+          photo.photo.attach(io: File.open(tmp_photo_path), filename: data[2])
+          #photo.photo.attach(io: File.open(File.join(Rails.root, 'tmp', 'files', data[2])), filename: data[2], metadata: {title: data[3]})
 
-          photo.write_iptc_metadata({title: data[3]}) if data[3]
+          date = Date.parse(data[4]).strftime("%Y%m%d") rescue data[4]
 
-          Sunspot.reindex interview
-          interview.touch
-          File.delete(photos[index]) if File.exist?(photos[index])
+          photo.write_iptc_metadata({
+            caption: data[3],
+            creator: data[6],
+            headline: "#{interview.archive_id}-Interview mit #{interview.short_title(locale)}",
+            copyright: data[7],
+            date: date,
+            city: data[5]
+          })
+
+          interviews_to_reindex << interview
+          File.delete(tmp_photo_path) if File.exist?(tmp_photo_path)
 
           if photo.id
             log("saved #{archive_id}: #{data[2]}", false)
@@ -92,11 +110,12 @@ class ReadBulkPhotosFileJob < ApplicationJob
       rescue StandardError => e
         log("#{e.message}: #{e.backtrace}")
       end
+      Sunspot.index interviews_to_reindex.uniq
     end
   end
 
   def log(text, error=true)
-    File.open(File.join(Rails.root, 'tmp', 'photo_import.log'), 'a') do |f|
+    File.open(File.join(Rails.root, 'log', 'photo_import.log'), 'a') do |f|
       f.puts "* #{DateTime.now} - #{error ? 'ERROR' : 'INFO'}: #{text}"
     end
   end

@@ -22,39 +22,39 @@ class TextMaterial < ApplicationRecord
     DOCUMENT_TYPES
   end
 
-  def document_file_name=(filename)
-    # assign the document - but skip this part on subsequent changes of the file name
-    # (because the filename gets assigned in the process of assigning the file)
-    return if filename.blank?
-    filename = (filename || '').sub!(/\w{3,4}$/,'pdf')
-    if !defined?(@assigned_filename) || @assigned_filename != filename
-      archive_id = ((filename || '')[Regexp.new("^#{Project.current.initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
-      @assigned_filename = filename
-      # Construct the import file path.
-      filepath = if !interview.nil? and interview.quality < 2.0
-        # use the original text materials
-        versions_dir = File.join(Project.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[Regexp.new("#{Project.current.initials.downcase}\\d{3}_\\w+/")])
-        ctime = Time.now
-        original_file = nil
-        Dir.glob(versions_dir + '*.pdf').each do |file|
-          original_file = file if File.ctime(file) < ctime
-        end
-        original_file
-      else
-        # use the specified document path or the default Repository content
-        doc_path = File.join(Project.archive_management_dir, archive_id, 'text', (filename || '').split('/').last.to_s)
-        unless File.exists?(doc_path)
-          doc_path = File.join(Project.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', (filename || '').split('/').last.to_s)
-        end
-        doc_path
-      end
-      return unless File.exists?(filepath)
-      File.open(filepath, 'r') do |file|
-        self.document = file
-      end
-    else
-      write_attribute :document_file_name, filename
-    end
-  end
+  #def document_file_name=(filename)
+    ## assign the document - but skip this part on subsequent changes of the file name
+    ## (because the filename gets assigned in the process of assigning the file)
+    #return if filename.blank?
+    #filename = (filename || '').sub!(/\w{3,4}$/,'pdf')
+    #if !defined?(@assigned_filename) || @assigned_filename != filename
+      #archive_id = ((filename || '')[Regexp.new("^#{Project.current.initials}\\d{3}", Regexp::IGNORECASE)] || '').downcase
+      #@assigned_filename = filename
+      ## Construct the import file path.
+      #filepath = if !interview.nil? and interview.quality < 2.0
+        ## use the original text materials
+        #versions_dir = File.join(Project.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'versions', 'bm', (filename || '').split('/').last.to_s[Regexp.new("#{Project.current.initials.downcase}\\d{3}_\\w+/")])
+        #ctime = Time.now
+        #original_file = nil
+        #Dir.glob(versions_dir + '*.pdf').each do |file|
+          #original_file = file if File.ctime(file) < ctime
+        #end
+        #original_file
+      #else
+        ## use the specified document path or the default Repository content
+        #doc_path = File.join(Project.archive_management_dir, archive_id, 'text', (filename || '').split('/').last.to_s)
+        #unless File.exists?(doc_path)
+          #doc_path = File.join(Project.repository_dir, archive_id.upcase, archive_id.upcase + '_archive', 'data', 'bm', (filename || '').split('/').last.to_s)
+        #end
+        #doc_path
+      #end
+      #return unless File.exists?(filepath)
+      #File.open(filepath, 'r') do |file|
+        #self.document = file
+      #end
+    #else
+      #write_attribute :document_file_name, filename
+    #end
+  #end
 
 end

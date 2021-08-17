@@ -86,6 +86,6 @@ class LanguagesController < ApplicationController
   def search_params
     params.permit(
       :name,
-    ).to_h
+    ).to_h.select{|k,v| !v.blank? }
   end
 end

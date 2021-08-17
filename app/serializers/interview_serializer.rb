@@ -2,17 +2,13 @@ class InterviewSerializer < ApplicationSerializer
   attributes [
     :id,
     :archive_id,
+    :project_id,
     :collection_id,
-    :collection,
     :tape_count,
     :video,
     :media_type,
     :duration,
-    :duration_seconds,
-    :duration_human,
-    :translated,
     :interview_date,
-    :language,
     :languages,
     :language_id,
     :lang,
@@ -34,28 +30,24 @@ class InterviewSerializer < ApplicationSerializer
     :landing_page_texts,
     :properties,
     :signature_original,
-    :task_ids
-  #] | Project.first.metadata_fields.map(&:name)
-  ] | Project.first.metadata_fields.where("source='Interview' OR ref_object_type='Interview'").map(&:name)
+    :task_ids,
+    :tasks_user_account_ids,
+    :tasks_supervisor_ids
+  ]
+
+  def attributes(*args)
+    hash = super
+    object.project.registry_reference_type_metadata_fields.where(ref_object_type: 'Interview').each do |m|
+      hash[m.name] = object.project.available_locales.inject({}) do |mem, locale|
+        mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+        mem
+      end
+    end
+    hash
+  end
 
   def collection
     object.collection && object.collection.localized_hash(:name) || {}
-  end
-
-  Project.current.registry_reference_type_metadata_fields.where(ref_object_type: 'Interview').each do |m|
-    define_method m.name do
-      # can handle object.send(m.name) = nil
-      json = Rails.cache.fetch("#{object.project.cache_key_prefix}-#{m.name}-#{object.id}-#{object.updated_at}-#{m.updated_at}") do
-        if !!object.send(m.name).try("any?")
-          I18n.available_locales.inject({}) do |mem, locale|
-            mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
-            mem
-          end
-        else
-          {}
-        end
-      end
-    end
   end
 
   def landing_page_texts
@@ -70,19 +62,19 @@ class InterviewSerializer < ApplicationSerializer
 
   def contributions
     json =  Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-contributions-#{object.id}-#{object.contributions.maximum(:updated_at)}") do
-      object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+      object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
     end
   end
 
   def registry_references
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-registry_references-#{object.id}-#{object.registry_references.maximum(:updated_at)}") do
-      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
     end
   end
 
   def photos
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-photos-#{object.id}-#{object.photos.maximum(:updated_at)}") do
-      object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+      object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
     end
   end
 
@@ -92,17 +84,6 @@ class InterviewSerializer < ApplicationSerializer
 
   def video
     object.video? ? true : false
-  end
-
-  def language
-    if object.language
-      I18n.available_locales.inject({}) do |mem, locale|
-        mem[locale] = "#{object.language.to_s(locale)} #{(object.translated) ? I18n.t("status.translated", locale: locale) : ""}"
-        mem
-      end
-    else
-      {}
-    end
   end
 
   def media_type
@@ -122,18 +103,8 @@ class InterviewSerializer < ApplicationSerializer
   end
 
   def still_url
-    case object.project.identifier.to_sym
-    when :cdoh
-      "https://medien.cedis.fu-berlin.de/cdoh/cdoh/#{object.archive_id}/#{object.archive_id}_2.jpg"
-    when :mog
-      "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub("mog", "")}_2.jpg"
-    when :zwar
-      if object.still_image_file_name
-        "https://medien.cedis.fu-berlin.de/zwar/stills/#{object.archive_id}_still_original.JPG"
-      else
-        "https://medien.cedis.fu-berlin.de/zwar/stills/missing_still.jpg"
-      end
-    end
+    still_media_stream = MediaStream.where(project_id: object.project_id, media_type: 'still').first
+    still_media_stream && still_media_stream.path.gsub(/INTERVIEW_ID/, object.archive_id)
   end
 
   def tape_count
@@ -146,10 +117,6 @@ class InterviewSerializer < ApplicationSerializer
     # Further a timecode is human readable sth like 14785 not so.
     #
     Timecode.new(object.duration).timecode
-  end
-
-  def duration_seconds
-    object.duration
   end
 
   def segments

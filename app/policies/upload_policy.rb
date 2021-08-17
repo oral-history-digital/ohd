@@ -1,13 +1,7 @@
-class UploadPolicy < Struct.new(:user, :upload)
-  attr_reader :user, :upload
-
-  def initialize(user, upload)
-    @user = user
-    @upload = upload
-  end
+class UploadPolicy < Struct.new(:project_context, :upload)
 
   def create?
-    user.admin? || user.permissions?('Upload', "create") 
+    project_context.user && (project_context.user.admin? || project_context.user.roles?(project_context.project, 'Upload', "create"))
   end
 
   def new?

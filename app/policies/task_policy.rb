@@ -9,7 +9,12 @@ class TaskPolicy < ApplicationPolicy
   end
 
   def update?
-    record.user_account == user || record.supervisor == user.permissions || user.admin?
+    user && (
+      user.admin? ||
+      user.roles?(project, 'Task', 'update') ||
+      record.user_account == user ||
+      record.supervisor == user.permissions
+    )
   end
 
   def edit?
@@ -20,10 +25,4 @@ class TaskPolicy < ApplicationPolicy
     create?
   end
 
-  class Scope < Scope
-    def resolve
-      #scope.where(user: user).or.where(supervisor: user)
-      scope.all
-    end
-  end
 end

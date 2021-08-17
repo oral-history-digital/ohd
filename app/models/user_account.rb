@@ -23,6 +23,7 @@ class UserAccount < ApplicationRecord
 
   has_many :user_contents
   has_many :searches
+  has_many :comments, foreign_key: :author_id, dependent: :destroy
 
   validates_uniqueness_of :login
   validates_presence_of :login
@@ -31,29 +32,42 @@ class UserAccount < ApplicationRecord
   validates_format_of :email, :with => Devise.email_regexp
   validates_length_of :password, :within => 5..50, :allow_blank => true
 
+  def projects
+    user_registration.user_registration_projects.map(&:project)
+  end
+
+  def active_projects
+    user_registration.user_registration_projects.where.not(activated_at: nil).map(&:project)
+  end
+
   def all_tasks
     tasks | supervised_tasks
   end
 
-  def task_permissions?(record, action_name)
+  def task_permissions?(project, record, action_name)
     if record.respond_to?(:class_name)
       # on create record is just a class not an object
       # and we can not really check for interview_id
       # so trust the checking in the frontend :(
       #
-      all_tasks.map(&:permissions).flatten.uniq.find{|p| p.klass == record.class_name && p.action_name == action_name}
+      all_tasks.select{|t| t.interview.project_id == project.id}.
+        map(&:permissions).flatten.uniq.
+        find{|p| p.klass == record.class_name && p.action_name == action_name}
     else
-      record_tasks = record.is_a?(Interview) ? all_tasks.select{|t| t.interview_id == record.id} : all_tasks.select{|t| t.interview_id == record.interview_id}
-      record_tasks.map(&:permissions).flatten.uniq.find{|p| p.klass == record.class.name && p.action_name == action_name}
+      record_tasks = record.is_a?(Interview) ?
+        all_tasks.select{|t| t.interview_id == record.id} :
+        all_tasks.select{|t| t.interview_id == record.interview_id}
+      record_tasks.map(&:permissions).flatten.uniq.
+        find{|p| p.klass == record.class.name && p.action_name == action_name}
     end
   end
 
-  def permissions?(klass, action_name)
-    !permissions.where(klass: klass, action_name: action_name).blank?
-  end
-
-  def roles?(klass, action_name)
-    !roles.joins(:permissions).where("permissions.klass": klass, "permissions.action_name": action_name).blank?
+  def roles?(project, klass, action_name)
+    project &&
+    !roles.joins(:permissions).
+      where(project_id: project.id).
+      where("permissions.klass": klass, "permissions.action_name": action_name).
+      blank?
   end
 
   # NOTE: validates_confirmation_of won't work on virtual attributes!
@@ -70,7 +84,6 @@ class UserAccount < ApplicationRecord
       end
     end
   end
-
 
   def generate_confirmation_token
     self.confirmation_token = Devise.friendly_token
@@ -112,7 +125,10 @@ class UserAccount < ApplicationRecord
       self.deactivated_at = nil
       # theoretically we do not need this check, but unfortunately we have some legacy accounts without UserRegistration
       unless self.user_registration.nil?
-        self.user_registration.confirm_account! if self.user_registration.account_created?
+        self.user_registration.update_attributes activated_at: Time.now
+        self.user_registration.projects.each do |project|
+          AdminMailer.with(registration: self, project: project).new_registration_info.deliver
+        end
       end
       save(validate: false)
     end

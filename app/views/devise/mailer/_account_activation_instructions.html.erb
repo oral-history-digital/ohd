@@ -1,51 +1,60 @@
-<%
-  my_locale = @user_account.default_locale || I18n.locale
-  url = "#{@resource.user_registration.projects.last.archive_domain}/#{my_locale}/user_registrations/#{@user_account.confirmation_token}/activate"
+<% 
+  my_locale = @resource.default_locale || I18n.locale
+  if @resource.projects.count == 1
+    project = @resource.projects.last
+    project_name = project.name(@resource.default_locale)
+    url = "#{project.domain_with_optional_identifier}/#{my_locale}/user_registrations/#{@resource.confirmation_token}/activate"
+  else # if no project or more than one
+    project_name = 'OHD'
+    url = "#{OHD_DOMAIN}/#{my_locale}/user_registrations/#{@resource.confirmation_token}/activate"
+  end
+
   case my_locale.to_sym
   when :en
 -%>
-  <p>Dear <%= @user_account.display_name %>,</p>
-  <p>You have registered for the application "<%= @user_account.user_registration.projects.last.name('en') %>".</p>
+
+  <p>Dear <%= @resource.display_name %>,</p>
+  <p>You have registered for the application "<%= project_name %>".</p>
   <p>Please confirm your registration within the next 14 days by setting a password:</p>
   <p><%= link_to 'Confirm Registration', url %></p>
   <p>After you have confirmed your registration, the project team will review your registration details. Within two working days you will be informed about the activation of your account for the interview archive.</p>
   <p>If you have not registered for the interview archive, you can ignore this e-mail. Your data will be deleted automatically after 14 days.</p>
   <p>Yours sincerely,</p>
-  <p>The project team "<%= @user_account.user_registration.projects.last.name('en') %>"</p>
+  <p>The project team "<%= project_name %>"</p>
 <% when :ru -%>
-  <p>Уважаемый(-ая) <%= @user_account.display_name %>,</p>
-  <p>Вы зарегистрировались как пользователь проекта  "<%= @user_account.user_registration.projects.last.name('ru') %>".</p>
+  <p>Уважаемый(-ая) <%= @resource.display_name %>,</p>
+  <p>Вы зарегистрировались как пользователь проекта  "<%= project_name %>".</p>
   <p>Пожалуйста, подтвердите Вашу регистрацию в течение следующих 14-ти дней путем введения пароля:</p>
   <p><%= link_to 'Подтвердить регистрацию', url %></p>
   <p>После подтверждения Вашей регистрации, Ваши данные будут проверены сотрудниками проекта. В течение двух дней Вы получите ответ об активации Вашего доступа к Архиву интервью.</p>
   <p>Если Вы не регистрировались в Архиву интервью, можете проигнорировать это сообщение. Ваши данные будут автоматически удалены в течение 14-ти дней.</p>
   <p>С уважением,</p>
-  <p>сотрудники проекта "<%= @user_account.user_registration.projects.last.name('ru') %>"</p>
+  <p>сотрудники проекта "<%= project_name %>"</p>
 <% when :es -%>
-  <p>Estimada/o <%= @user_account.display_name %>,</p>
-  <p>Usted se ha registrado para la aplicación "<%= @user_account.user_registration.projects.last.name('es') %>".</p>
+  <p>Estimada/o <%= @resource.display_name %>,</p>
+  <p>Usted se ha registrado para la aplicación "<%= project_name %>".</p>
   <p>Por favor, confirme su registro dentro de 14 días eligiendo una contraseña:</p>
   <p><%= link_to 'Confirmar registro', url %></p>
   <p>Después de confirmar su registro, el equipo del proyecto revisará los detalles de su registro. Dentro de dos días hábiles será informado si se ha activado su cuenta para el archivo de entrevistas.</p>
   <p>Si no se ha registrado para el archivo de entrevistas, puede hacer caso omiso de este mensaje. Sus datos se borrarán de manera automática después de 14 días.</p>
   <p>Con saludos cordiales,</p>
-  <p>El equipo del proyecto "<%= @user_account.user_registration.projects.last.name('es') %>"</p>
+  <p>El equipo del proyecto "<%= project_name %>"</p>
 <% when :el -%>
-  <p>Αγαπητή/-έ <%= @user_account.display_name %>,</p>
-  <p>πραγματοποιήσατε την εγγραφή σας στην εφαρμογή "<%= @user_account.user_registration.projects.last.name('el') %>".</p>
+  <p>Αγαπητή/-έ <%= @resource.display_name %>,</p>
+  <p>πραγματοποιήσατε την εγγραφή σας στην εφαρμογή "<%= project_name %>".</p>
   <p>Σας παρακαλούμε να επιβεβαιώσετε την εγγραφή σας εντός 14 ημερών επιλέγοντας έναν κωδικό πρόσβασης.</p>
   <p><%= link_to 'Επιβεβαίωση εγγραφής', url %></p>
   <p>Mετά την επιβεβαίωση η ομάδα του προγράμματος θα ελέγξει τα στοιχεία της εγγραφής σας. Η διαδικασία ελέγχου ενδεχομένως να διαρκέσει δύο εώς τρεις ημέρες.</p>
   <p>Μετά τον έλεγχο θα ειδοποιηθείτε για την ενεργοποίηση της πρόσβασής σας στο Αρχείο Προφορικών Μαρτυριών. Στην περίπτωση που δεν εγγραφήκατε στο Αρχείο Προφορικών Μαρτυριών, σας παρακαλούμε να αγνοήσετε αυτό το μήνυμα. Τα στοιχεία σας θα διαγραφούν αυτόματα μετά από 14 ημέρες.</p>
   <p>Με εκτίμηση,</p>
-  <p>Η ομάδα του προγράμματος "<%= @user_account.user_registration.projects.last.name('el') %>"</p>
+  <p>Η ομάδα του προγράμματος "<%= project_name %>"</p>
 <% else -%>
-  <p>Sehr geehrte/r <%= @user_account.display_name %>,</p>
-  <p>Sie haben sich für die Anwendung "<%= @user_account.user_registration.projects.last.name('de') %>" registriert.</p>
+  <p>Sehr geehrte/r <%= @resource.display_name %>,</p>
+  <p>Sie haben sich für die Anwendung "<%= project_name %>" registriert.</p>
   <p>Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:</p>
   <p><%= link_to 'Registrierung bestätigen', url %></p>
   <p>Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert.</p>
   <p>Sollten Sie sich nicht für das Interview-Archiv registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.</p>
   <p>Mit freundlichen Grüßen,</p>
-  <p>Das Projekt-Team "<%= @user_account.user_registration.projects.last.name('de') %>"</p>
+  <p>Das Projekt-Team "<%= project_name %>"</p>
 <% end -%>

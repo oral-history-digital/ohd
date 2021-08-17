@@ -19,4 +19,19 @@ class Annotation < ApplicationRecord
                             :less_than => 0,
                             :unless => Proc.new{|i| i.interview_id.nil?}
 
+  searchable do
+    string :archive_id do
+      interview ? interview.archive_id : nil
+    end
+
+    string :workflow_state
+    integer :id
+    integer :segment_id
+
+    I18n.available_locales.each do |locale|
+      text :"text_#{locale}", stored: true do
+        text(locale)
+      end
+    end
+  end
 end

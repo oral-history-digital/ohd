@@ -40,21 +40,55 @@ class ProjectSerializer < ApplicationSerializer
     :pseudo_pdf_registry_entry_ids,
     :hidden_transcript_registry_entry_ids,
     :pseudo_hidden_transcript_registry_entry_ids,
-    :metadata_fields,
+    :people,
+    :collections,
+    :registry_name_types,
+    :registry_reference_types,
     :task_types,
+    :contribution_types,
+    :metadata_fields,
     :external_links,
+    :media_streams,
     :logos,
     :sponsor_logos,
     :list_columns,
-    :grid_fields
+    :grid_fields,
+    :root_registry_entry_id,
+    :display_ohd_link
 
   def title
     object.shortname
   end
 
-  %w(metadata_fields task_types external_links).each do |m|
+  def archive_domain
+    object.archive_domain.blank? ? nil : object.archive_domain
+  end
+
+  # light-weight data.
+  # can be loaded with the project for now.
+  %w(
+    registry_name_types
+    registry_reference_types
+    contribution_types
+    metadata_fields
+    external_links
+    media_streams
+  ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
+    end
+  end
+
+  # more load-intense data. 
+  # should be loaded only where needed.
+  %w(
+    people
+    collections
+    task_types
+    roles
+  ).each do |m|
+    define_method m do
+      {}
     end
   end
 
@@ -76,4 +110,9 @@ class ProjectSerializer < ApplicationSerializer
   def has_map
     object.has_map ? 1 : 0
   end
+
+  def root_registry_entry_id
+    object.root_registry_entry.id
+  end
+
 end

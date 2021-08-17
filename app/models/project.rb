@@ -2,23 +2,30 @@ require "globalize"
 
 class Project < ApplicationRecord
 
-  has_many :logos, as: :ref
-  has_many :sponsor_logos, as: :ref
+  has_many :logos, as: :ref, dependent: :destroy
+  has_many :sponsor_logos, as: :ref, dependent: :destroy
 
-  has_many :interviews
-  has_many :collections
-  has_many :metadata_fields
-  has_many :task_types
-  has_many :external_links
-  has_many :registry_entry_projects
-  has_many :registry_entries,
-    through: :registry_entry_projects
-  has_many :user_registration_projects
+  has_many :interviews, dependent: :destroy
+  has_many :collections, dependent: :destroy
+  has_many :contribution_types, dependent: :destroy
+  has_many :media_streams, dependent: :destroy
+  has_many :metadata_fields, dependent: :destroy
+  has_many :task_types, dependent: :destroy
+  has_many :roles, dependent: :destroy
+  has_many :external_links, dependent: :destroy
+  has_many :registry_entries, dependent: :destroy
+  has_many :user_registration_projects, dependent: :destroy
   has_many :user_registrations,
     through: :user_registration_projects
 
+  has_many :registry_reference_types, dependent: :destroy
+  has_many :registry_name_types, dependent: :destroy
+  has_many :people, dependent: :destroy
+
   translates :name, :introduction, :more_text, :landing_page_text, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
+
+  validates_uniqueness_of :initials, allow_blank: true
 
   serialize :view_modes, Array
   serialize :available_locales, Array
@@ -45,14 +52,79 @@ class Project < ApplicationRecord
     end
   end
 
-  validates :aspect_x, numericality: { only_integer: true }
-  validates :aspect_y, numericality: { only_integer: true }
-  validates :archive_id_number_length, numericality: { only_integer: true }
-  validates :initials, format: { with: /\A[a-zA-Z]+\z/ }
+  validates :aspect_x, numericality: { only_integer: true },  allow_nil: true
+  validates :aspect_y, numericality: { only_integer: true },  allow_nil: true
+  validates :archive_id_number_length, numericality: { only_integer: true },  allow_nil: true
+  validates :initials, format: { with: /\A[a-zA-Z]+\z/ },  allow_nil: true
+  validates :shortname, format: { with: /\A[a-zA-Z]+\z/ },  presence: true
 
   before_save :touch_interviews
   def touch_interviews
     interviews.each(&:touch) if landing_page_text_changed?
+  end
+
+  after_create :create_root_registry_entry
+  def create_root_registry_entry
+    root = RegistryEntry.create(project_id: self.id, code: 'root', workflow_state: 'public')
+    RegistryName.create registry_entry_id: root.id, registry_name_type_id: 1, name_position: 0, descriptor: 'Register', locale: :de
+  end
+
+  after_create :create_default_registry_name_type
+  def create_default_registry_name_type
+    RegistryNameType.create code: "spelling", name: "Bezeichner", order_priority: 3, project_id: self.id
+  end
+
+  after_create :create_contribution_types
+  def create_contribution_types
+    %w(
+      interviewee
+      interviewer
+      cinematographer
+      sound
+      producer
+      other_attender
+      quality_manager_interviewing
+      transcriptor
+      segmentator
+      translator
+      proofreader
+      research
+    ).each do |code|
+      ContributionType.create code: code, label: I18n.t("contributions.#{code}", locale: :de), locale: :de
+    end
+  end
+
+  after_create :create_task_types
+  def create_task_types
+    {
+      media_import: ['Medienimport (A/V)', 'Med'],
+      approval: ['Einverständnis', 'EV'],
+      protocol: ['Protokoll', 'Pro'],
+      transcript: ['Transkript', 'Trans'],
+      translation_transcript: ['Übersetzung/Transkript', 'Ü/Trans'],
+      metadata: ['Metadaten', 'Met'],
+      translation_metadata: ['Übersetzung/Metadaten', 'Ü/Met'],
+      photos: ['Fotos', 'Fot'],
+      translation_photos: ['Übersetzung/ Fotos', 'Ü/Fot'],
+      biography: ['Kurzbiografie', 'Bio'],
+      translation_biography: ['Übersetzung/Kurzbiografie', 'Ü/Bio'],
+      table_of_contents: ['Inhaltsverzeichnis', 'Inh'],
+      translation_table_of_contents: ['Übersetzung/Inhaltsverzeichnis', 'Ü/Inh'],
+      register: ['Register', 'Reg'],
+      translation_register: ['Übersetzung/Register', 'Ü/Reg'],
+      annotations: ['Anmerkungen', 'Anm'],
+      anonymisation: ['Anonymisierung' 'Ano']
+    }.each do |key, (label, abbreviation)|
+      TaskType.create key: key, label: label, abbreviation: abbreviation, project_id: self.id, use: true
+    end
+  end
+
+  class Translation
+    belongs_to :project
+
+    after_save do
+      project.interviews.update_all(updated_at: DateTime.now) if landing_page_text_previously_changed?
+    end
   end
 
   class << self
@@ -73,10 +145,32 @@ class Project < ApplicationRecord
     def current
       first
     end
+
+    def archive_domains
+      where.not(shortname: 'ohd').map do |project| 
+        uri = Addressable::URI.parse(project.archive_domain)
+        uri && uri.host
+      end.compact
+    end
+
+    def by_host(host)
+      all.find do |project| 
+        uri = Addressable::URI.parse(project.archive_domain)
+        uri && uri.host == host
+      end
+    end
+
+    def by_identifier(identifier)
+      where(["lower(shortname) = :value", { value: identifier.downcase }]).first
+    end
   end
 
   def identifier
     shortname.downcase
+  end
+
+  def domain_with_optional_identifier
+    archive_domain.blank? ? "#{OHD_DOMAIN}/#{identifier}" : archive_domain
   end
 
   # there is a rails method available_locales as well.
@@ -86,8 +180,8 @@ class Project < ApplicationRecord
     read_attribute :available_locales
   end
 
-  def archive_domain
-    Rails.env == "development" ? "http://localhost:3000" : read_attribute(:archive_domain)
+  def root_registry_entry
+    registry_entries.where(code: 'root').first
   end
 
   def search_facets
@@ -108,10 +202,9 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_results_list: true).order(:list_columns_order)
   end
 
-  #def clear_cache(namespace)
-    ##Rails.cache.redis.keys("#{cache_key_prefix}-#{namespace}*").each{|k| Rails.cache.delete(k)}
-    #`rm -rf #{Rails.root}/tmp/cache/application/*`
-  #end
+  def clear_cache(namespace)
+    Rails.cache.delete_matched /^#{cache_key_prefix}-#{namespace}*/
+  end
 
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
   %w(RegistryReferenceType Person Interview).each do |m|
@@ -149,7 +242,8 @@ class Project < ApplicationRecord
       when "Person", "Interview"
         facet_label_hash = facet.localized_hash(:label)
         name = facet_label_hash || localized_hash_for("search_facets", facet.name)
-        if facet.name == "year_of_birth"
+        case facet.name
+        when "year_of_birth"
           mem[facet.name.to_sym] = {
             name: name,
             subfacets: min_to_max_birth_year_range.inject({}) do |subfacets, key|
@@ -162,22 +256,8 @@ class Project < ApplicationRecord
               subfacets
             end,
           }
-        #
-        # typology is a RegistryReferenceType now
-        #
-        #elsif facet.name == "typology"
-          #mem[facet.name.to_sym] = {
-            #name: name,
-            #subfacets: %w( collaboration concentration_camp flight occupation persecution_of_jews resistance retaliation ).inject({}) do |subfacets, key|
-              ##subfacets: [ "Collaboration", "Concentration camp", "Flight", "Occupation", "Persecution of Jews", "Resistance", "Retaliation" ].inject({}) do |subfacets, key|
-              #subfacets[key.to_s] = {
-                #name: localized_hash_for("search_facets", key),
-                #count: 0,
-              #}
-              #subfacets
-            #end,
-          #}
-        elsif %w(tasks_user_account_ids tasks_supervisor_ids).include?(facet.name)
+        # admin facets
+        when "tasks_user_account_ids", "tasks_supervisor_ids"
           # add filters for tasks
           mem[facet.name.to_sym] = {
             name: name,
@@ -189,6 +269,40 @@ class Project < ApplicationRecord
               subfacets
             end
           }
+        when "collection_id"
+          facet_label_hash = facet.localized_hash(:label)
+          cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+            {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: collections.includes(:translations).inject({}) do |subfacets, sf|
+                subfacets[sf.id.to_s] = {
+                  name: sf.localized_hash(:name),
+                  count: 0,
+                  homepage: sf.try(:localized_hash, :homepage),
+                  institution: sf.try(:localized_hash, :institution),
+                  notes: sf.try(:localized_hash, :notes),
+                }
+                subfacets
+              end
+            }
+          end
+        when /_id$/ # belongs_to associations like language on interview
+          facet_label_hash = facet.localized_hash(:label)
+          associatedModel = facet.name.sub('_id', '').classify.constantize
+          cache_key_date = [associatedModel.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+            {
+              name: facet_label_hash || localized_hash_for("search_facets", facet.name),
+              subfacets: associatedModel.all.includes(:translations).inject({}) do |subfacets, sf|
+                subfacets[sf.id.to_s] = {
+                  name: sf.localized_hash(:name),
+                  count: 0
+                }
+                subfacets
+              end
+            }
+          end
         else
           mem[facet.name.to_sym] = {
             name: name,
@@ -196,39 +310,6 @@ class Project < ApplicationRecord
               subfacets[key.to_s] = {
                 name: localized_hash_for("search_facets", key),
                 count: 0,
-              }
-              subfacets
-            end
-          }
-        end
-      when "Language"
-        facet_label_hash = facet.localized_hash(:label)
-        cache_key_date = [Language.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
-          {
-            name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
-              subfacets[sf.id.to_s] = {
-                name: sf.localized_hash(:name),
-                count: 0
-              }
-              subfacets
-            end
-          }
-        end
-      when "Collection"
-        facet_label_hash = facet.localized_hash(:label)
-        cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-        mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
-          {
-            name: facet_label_hash || localized_hash_for("search_facets", facet.name),
-            subfacets: facet.source.classify.constantize.all.includes(:translations).inject({}) do |subfacets, sf|
-              subfacets[sf.id.to_s] = {
-                name: sf.localized_hash(:name),
-                count: 0,
-                homepage: sf.try(:localized_hash, :homepage),
-                institution: sf.try(:localized_hash, :institution),
-                notes: sf.try(:localized_hash, :notes),
               }
               subfacets
             end

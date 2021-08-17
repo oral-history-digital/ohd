@@ -24,7 +24,7 @@ tape2 = Tape.create(
 )
 
 contribution1 = Contribution.create(
-  contribution_type: 'interviewee',
+  contribution_type: ContributionType.where(code: 'interviewee').first,
   interview: interview1,
   person: person1
 )
