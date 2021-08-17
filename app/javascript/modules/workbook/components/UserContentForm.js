@@ -185,7 +185,7 @@ export default class UserContentForm extends Component {
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>
                     {this.segmentSelect()}
-                    {this.annotationConfirmation()}
+                    {/*this.annotationConfirmation()*/}
                     <input type="submit" value={submitLabel}/>
                 </form>
             </div>
