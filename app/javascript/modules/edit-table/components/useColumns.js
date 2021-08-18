@@ -3,6 +3,18 @@ import { useSelector } from 'react-redux';
 import { useAuthorization } from 'modules/auth';
 import { getSelectedColumns } from '../selectors';
 
+const columnOrder = [
+    'timecode',
+    'text_orig',
+    'text_translated',
+    'mainheading_orig',
+    'subheading_orig',
+    'mainheading_translated',
+    'subheading_translated',
+    'registry_references',
+    'annotations',
+];
+
 export default function useColumns(interview) {
     const { isAuthorized } = useAuthorization();
     const selectedColumns = useSelector(getSelectedColumns);
@@ -20,9 +32,9 @@ export default function useColumns(interview) {
 
     const permittedColumns = getPermittedColumns(interview.id);
 
-    const columns = selectedColumns.filter(
-        column => permittedColumns.includes(column)
-    );
+    const columns = columnOrder
+        .filter(column => selectedColumns.includes(column))
+        .filter(column => permittedColumns.includes(column));
 
     const gridTemplateColumns = columns.map(column => {
         if (column === 'timecode') {
