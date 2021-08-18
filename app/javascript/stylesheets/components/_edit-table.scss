@@ -20,6 +20,7 @@
 }
 
 .EditTable-row {
+  border-bottom: 1px solid $gray-pale;
   display: grid;
   height: 4 * $base-unit;
 }
