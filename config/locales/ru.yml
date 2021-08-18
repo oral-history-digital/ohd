@@ -1578,6 +1578,12 @@ ru:
   interview_title_patterns:
 
   modules:
+    edit_table:
+      filter:
+        label: "Filter"
+        all: "all segments"
+        filtered: "headings, references a. annotations"
+      segments: "segments"
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"

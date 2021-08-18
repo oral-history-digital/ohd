@@ -11,9 +11,9 @@ import SelectColumnsFormContainer from './SelectColumnsFormContainer';
 export default function EditTableHeaderOptions({
     numElements,
 }) {
+    const { t } = useI18n();
     const skipEmptyRows = useSelector(getSkipEmptyRows);
     const dispatch = useDispatch();
-    const { t } = useI18n();
 
     const value = skipEmptyRows ? 'filtered' : 'all';
 
@@ -34,17 +34,21 @@ export default function EditTableHeaderOptions({
                 </Modal>
             </span>
             <span>
-                <select
-                    className="EditTableHeader-select"
-                    value={value}
-                    onChange={handleFilterChange}
-                >
-                    <option value="all">Alle Segmente</option>
-                    <option value="filtered">Überschriften, Verknüpfungen u. Anmerkungen</option>
-                </select>
+                <label>
+                    {t('modules.edit_table.filter.label')}:
+                    {' '}
+                    <select
+                        className="EditTableHeader-select"
+                        value={value}
+                        onChange={handleFilterChange}
+                    >
+                        <option value="all">{t('modules.edit_table.filter.all')}</option>
+                        <option value="filtered">{t('modules.edit_table.filter.filtered')}</option>
+                    </select>
+                </label>
             </span>
             <span>
-                {numElements} Segmente
+                {numElements} {t('modules.edit_table.segments')}
             </span>
         </div>
     );

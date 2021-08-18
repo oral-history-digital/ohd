@@ -1145,6 +1145,12 @@ de:
   interview_title_patterns:
 
   modules:
+    edit_table:
+      filter:
+        label: "Filter"
+        all: "alle Segmente"
+        filtered: "Überschriften, Verknüpfungen u. Anmerkungen"
+      segments: "Segmente"
     features:
       experimental_features: "Experimentelle Funktionen"
       tree_select: "Baumstruktur-Auswahlliste für Registereinträge"
