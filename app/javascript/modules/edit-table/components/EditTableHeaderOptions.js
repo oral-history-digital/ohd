@@ -15,9 +15,11 @@ export default function EditTableHeaderOptions({
     const dispatch = useDispatch();
     const { t } = useI18n();
 
+    const value = skipEmptyRows ? 'filtered' : 'all';
+
     function handleFilterChange(event) {
-        const checked = event.target.checked;
-        dispatch(setSkipEmptyRows(checked));
+        const filter = event.target.value === 'filtered';
+        dispatch(setSkipEmptyRows(filter));
     }
 
     return (
@@ -32,15 +34,14 @@ export default function EditTableHeaderOptions({
                 </Modal>
             </span>
             <span>
-                <label>
-                    <input
-                        type="checkbox"
-                        checked={skipEmptyRows}
-                        onChange={handleFilterChange}
-                    />
-                    {' '}
-                    nur Segmente mit Überschriften, Verknüpfungen oder Anmerkungen
-                </label>
+                <select
+                    className="EditTableHeader-select"
+                    value={value}
+                    onChange={handleFilterChange}
+                >
+                    <option value="all">Alle Segmente</option>
+                    <option value="filtered">Überschriften, Verknüpfungen u. Anmerkungen</option>
+                </select>
             </span>
             <span>
                 {numElements} Segmente
