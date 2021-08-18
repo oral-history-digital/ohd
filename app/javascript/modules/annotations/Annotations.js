@@ -32,6 +32,7 @@ export default function Annotations({
                     <Modal
                         title={t('edit.annotation.new')}
                         trigger={<FaPlus />}
+                        triggerClassName="flyout-sub-tabs-content-ico-link"
                     >
                         {closeModal => (
                             <AnnotationFormContainer

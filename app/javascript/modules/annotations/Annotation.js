@@ -28,6 +28,7 @@ export default function Annotation({
                     <Modal
                         title={t('edit.annotation.edit')}
                         trigger={<FaPencilAlt />}
+                        triggerClassName="flyout-sub-tabs-content-ico-link"
                     >
                         {closeModal => (
                             <AnnotationFormContainer
@@ -41,6 +42,7 @@ export default function Annotation({
                     <Modal
                         title={t('edit.annotation.delete')}
                         trigger={<FaTrash />}
+                        triggerClassName="flyout-sub-tabs-content-ico-link"
                     >
                         {closeModal => (
                             <div>
