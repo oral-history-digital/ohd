@@ -38,7 +38,7 @@ export default function InterviewSearchResults({
 
     const resultsPerLocale = locales.map(resultLocale => [
         resultLocale,
-        segmentResults.filter(segment => segment.text[resultLocale].length > 0),
+        segmentResults.filter(segment => segment.text[resultLocale]?.length > 0),
     ])
         .filter(([_, results]) => results.length > 0)
         .filter(([resultLocale, _]) => resultLocale === interviewLang || showTranslationTab(projectId, interviewLang, locale));
