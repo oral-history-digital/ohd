@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 import { Modal } from 'modules/ui';
 import { useAuthorization } from 'modules/auth'
@@ -82,7 +83,7 @@ export default function RegistryReference({
                     registryEntries[registryReference.registry_entry_id].associations_loaded && (
                         <Modal
                             title={t('edit.registry_reference.edit')}
-                            trigger={<i className="fa fa-pencil"/>}
+                            trigger={<FaPencilAlt />}
                             triggerClassName="flyout-sub-tabs-content-ico-link"
                         >
                             {close => (
@@ -103,7 +104,7 @@ export default function RegistryReference({
                     registryReference && !hideEdit && isAuthorized(registryReference, 'destroy') && (
                         <Modal
                             title={t('edit.registry_reference.delete')}
-                            trigger={<i className="fa fa-trash-o"/>}
+                            trigger={<FaTrash />}
                             triggerClassName="flyout-sub-tabs-content-ico-link"
                         >
                             {close => (

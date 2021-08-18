@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
 
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -85,7 +86,7 @@ export default function RegistryReferences({
             <AuthorizedContent object={{type: 'RegistryReference', interview_id: interview.id}} action='create'>
                 <Modal
                     title={t('edit.registry_reference.new')}
-                    trigger={<i className="fa fa-plus"/>}
+                    trigger={<FaPlus />}
                     triggerClassName="RegistryReferences-addButton"
                 >
                     {close => (

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
 
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -30,7 +31,7 @@ export default function Annotations({
                 <AuthorizedContent object={{type: 'Annotation', interview_id: segment.interview_id}} action='create'>
                     <Modal
                         title={t('edit.annotation.new')}
-                        trigger={<i className="fa fa-plus"/>}
+                        trigger={<FaPlus />}
                     >
                         {closeModal => (
                             <AnnotationFormContainer

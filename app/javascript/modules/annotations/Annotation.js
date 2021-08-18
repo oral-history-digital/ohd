@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -26,7 +27,7 @@ export default function Annotation({
                 <span className={'flyout-sub-tabs-content-ico'}>
                     <Modal
                         title={t('edit.annotation.edit')}
-                        trigger={<i className="fa fa-pencil"/>}
+                        trigger={<FaPencilAlt />}
                     >
                         {closeModal => (
                             <AnnotationFormContainer
@@ -39,7 +40,7 @@ export default function Annotation({
                     </Modal>
                     <Modal
                         title={t('edit.annotation.delete')}
-                        trigger={<i className="fa fa-trash-o"></i>}
+                        trigger={<FaTrash />}
                     >
                         {closeModal => (
                             <div>
