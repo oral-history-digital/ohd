@@ -9,8 +9,8 @@ import { sendTimeChangeRequest } from 'modules/media-player';
 import { RegistryReferencesContainer } from 'modules/registry-references';
 import { Annotations } from 'modules/annotations';
 
-function headingHasData(heading) {
-    return heading && heading.trim().length > 0;
+function fieldHasData(text) {
+    return text && text.trim().length > 0;
 }
 
 export default function EditTableCell({
@@ -40,7 +40,7 @@ export default function EditTableCell({
         return (
             <div
                 className={classNames('EditTable-cell', {
-                    'has-data': headingHasData(segment.text[originalLocale])
+                    'has-data': fieldHasData(segment.text[originalLocale])
                 })}
             >
                 <SubmitOnBlurForm
@@ -56,7 +56,7 @@ export default function EditTableCell({
         return (
             <div
                 className={classNames('EditTable-cell', {
-                    'has-data': headingHasData(segment.text[translationLocale])
+                    'has-data': fieldHasData(segment.text[translationLocale])
                 })}
             >
                 <SubmitOnBlurForm
@@ -72,7 +72,7 @@ export default function EditTableCell({
         return (
             <div
                 className={classNames('EditTable-cell', {
-                    'has-data': headingHasData(segment.mainheading[originalLocale])
+                    'has-data': fieldHasData(segment.mainheading[originalLocale])
                 })}
             >
                 <SubmitOnBlurForm
@@ -88,7 +88,7 @@ export default function EditTableCell({
         return (
             <div
                 className={classNames('EditTable-cell', {
-                    'has-data': headingHasData(segment.mainheading[translationLocale])
+                    'has-data': fieldHasData(segment.mainheading[translationLocale])
                 })}
             >
                 <SubmitOnBlurForm
@@ -104,7 +104,7 @@ export default function EditTableCell({
         return (
             <div
                 className={classNames('EditTable-cell', {
-                    'has-data': headingHasData(segment.subheading[originalLocale])
+                    'has-data': fieldHasData(segment.subheading[originalLocale])
                 })}
             >
                 <SubmitOnBlurForm
@@ -120,7 +120,7 @@ export default function EditTableCell({
         return (
             <div
                 className={classNames('EditTable-cell', {
-                    'has-data': headingHasData(segment.subheading[translationLocale])
+                    'has-data': fieldHasData(segment.subheading[translationLocale])
                 })}
             >
                 <SubmitOnBlurForm
