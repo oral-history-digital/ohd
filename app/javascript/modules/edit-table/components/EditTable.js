@@ -6,7 +6,8 @@ import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 import { isSegmentActive } from 'modules/interview-helpers';
-import { EDIT_TABLE_FILTER_FILTERED } from '../constants';
+import { EDIT_TABLE_FILTER_ALL, EDIT_TABLE_FILTER_SOME, EDIT_TABLE_FILTER_HEADINGS,
+    EDIT_TABLE_FILTER_REFERENCES, EDIT_TABLE_FILTER_ANNOTATIONS } from '../constants';
 import EditTableRowContainer from './EditTableRowContainer';
 import EditTableHeaderContainer from './EditTableHeaderContainer';
 
@@ -44,10 +45,23 @@ export default function EditTable({
     const allSegments = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape })[1];
 
     let segments;
-    if (filter === EDIT_TABLE_FILTER_FILTERED) {
+    switch (filter) {
+    case EDIT_TABLE_FILTER_SOME:
         segments = allSegments.filter(s => s.has_heading || s.annotations_count > 0 || s.registry_references_count > 0);
-    } else {
+        break;
+    case EDIT_TABLE_FILTER_HEADINGS:
+        segments = allSegments.filter(s => s.has_heading);
+        break;
+    case EDIT_TABLE_FILTER_REFERENCES:
+        segments = allSegments.filter(s => s.registry_references_count > 0);
+        break;
+    case EDIT_TABLE_FILTER_ANNOTATIONS:
+        segments = allSegments.filter(s => s.annotations_count > 0);
+        break;
+    case EDIT_TABLE_FILTER_ALL:
+    default:
         segments = allSegments;
+        break;
     }
 
     const content = index => {

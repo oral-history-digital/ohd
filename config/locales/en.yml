@@ -1166,7 +1166,10 @@ en:
       filter:
         label: "Filter"
         all: "all segments"
-        filtered: "headings, references a. annotations"
+        some: "headings, references a. annotations"
+        headings: "headings"
+        references: "references"
+        annotations: "annotations"
       segments: "segments"
     features:
       experimental_features: "Experimental Features"
