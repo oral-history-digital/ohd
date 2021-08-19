@@ -5,7 +5,7 @@ import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
 import { fetchData, getCurrentInterview, getCurrentProject, getProjects,
     getSegmentsStatus } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
-import { getSkipEmptyRows } from '../selectors';
+import { getFilter } from '../selectors';
 import EditTable from './EditTable';
 
 const mapStateToProps = (state) => ({
@@ -16,7 +16,7 @@ const mapStateToProps = (state) => ({
     interview: getCurrentInterview(state),
     tape: getCurrentTape(state),
     mediaTime: getMediaTime(state),
-    skipEmptyRows: getSkipEmptyRows(state),
+    filter: getFilter(state),
     segmentsStatus: getSegmentsStatus(state),
     project: getCurrentProject(state),
 });

@@ -6,6 +6,7 @@ import { sortedSegmentsWithActiveIndex } from 'modules/transcript';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 import { isSegmentActive } from 'modules/interview-helpers';
+import { EDIT_TABLE_FILTER_FILTERED } from '../constants';
 import EditTableRowContainer from './EditTableRowContainer';
 import EditTableHeaderContainer from './EditTableHeaderContainer';
 
@@ -15,7 +16,7 @@ export default function EditTable({
     locale,
     mediaTime,
     tape,
-    skipEmptyRows,
+    filter,
     segmentsStatus,
     archiveId,
     projectId,
@@ -43,7 +44,7 @@ export default function EditTable({
     const allSegments = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape })[1];
 
     let segments;
-    if (skipEmptyRows) {
+    if (filter === EDIT_TABLE_FILTER_FILTERED) {
         segments = allSegments.filter(s => s.has_heading || s.annotations_count > 0 || s.registry_references_count > 0);
     } else {
         segments = allSegments;
@@ -65,7 +66,6 @@ export default function EditTable({
         return (
             <EditTableRowContainer
                 key={segment.id}
-                odd={index % 2 === 0}
                 segment={segment}
                 originalLocale={interview.lang}
                 translationLocale={translationLocale}
@@ -76,7 +76,7 @@ export default function EditTable({
 
     return (
         <ScrollToTop>
-            <div className="EditTable edit-interview__old">
+            <div className="EditTable">
                 <div className="EditTable-inner">
                     <EditTableHeaderContainer numElements={segments.length} />
                     <div className="EditTable-bodyContainer">
@@ -98,7 +98,7 @@ export default function EditTable({
 EditTable.propTypes = {
     archiveId: PropTypes.string.isRequired,
     segmentsStatus: PropTypes.object.isRequired,
-    skipEmptyRows: PropTypes.bool.isRequired,
+    filter: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,

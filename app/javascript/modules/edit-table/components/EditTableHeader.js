@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
 import EditTableHeaderOptions from './EditTableHeaderOptions';

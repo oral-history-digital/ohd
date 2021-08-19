@@ -1,25 +1,22 @@
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import { setSkipEmptyRows } from '../actions';
-import { getSkipEmptyRows } from '../selectors';
+import { EDIT_TABLE_FILTER_ALL, EDIT_TABLE_FILTER_FILTERED } from '../constants';
+import { setFilter } from '../actions';
+import { getFilter } from '../selectors';
 import SelectColumnsFormContainer from './SelectColumnsFormContainer';
 
 export default function EditTableHeaderOptions({
     numElements,
 }) {
     const { t } = useI18n();
-    const skipEmptyRows = useSelector(getSkipEmptyRows);
+    const filter = useSelector(getFilter);
     const dispatch = useDispatch();
 
-    const value = skipEmptyRows ? 'filtered' : 'all';
-
     function handleFilterChange(event) {
-        const filter = event.target.value === 'filtered';
-        dispatch(setSkipEmptyRows(filter));
+        dispatch(setFilter(event.target.value));
     }
 
     return (
@@ -39,11 +36,15 @@ export default function EditTableHeaderOptions({
                     {' '}
                     <select
                         className="EditTableHeader-select"
-                        value={value}
+                        value={filter}
                         onChange={handleFilterChange}
                     >
-                        <option value="all">{t('modules.edit_table.filter.all')}</option>
-                        <option value="filtered">{t('modules.edit_table.filter.filtered')}</option>
+                        <option value={EDIT_TABLE_FILTER_ALL}>
+                            {t('modules.edit_table.filter.all')}
+                        </option>
+                        <option value={EDIT_TABLE_FILTER_FILTERED}>
+                            {t('modules.edit_table.filter.filtered')}
+                        </option>
                     </select>
                 </label>
             </span>

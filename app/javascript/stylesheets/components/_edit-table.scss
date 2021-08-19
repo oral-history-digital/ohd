@@ -3,12 +3,12 @@
  *    Maybe something to do with react-virtuoso virtual list.
  */
 
+$edit-table-row-height: 4 * $base-unit;
+
 .EditTable {
-  width: 100%;
 }
 
 .EditTable-inner {
-  width: 100%;
   min-width: 60rem;
 }
 
@@ -16,21 +16,10 @@
   margin-top: 28rem;  /* 1 */
 }
 
-.Layout.is-sticky .EditTable-body {
-}
-
 .EditTable-row {
   border-bottom: 1px solid $gray-pale;
   display: grid;
-  height: 4 * $base-unit;
-}
-
-.EditTable-row--odd {
-  background-color: white;
-}
-
-.EditTable-row--even {
-  background-color: white;// $gray-pale;
+  height: $edit-table-row-height;
 }
 
 .EditTable-row.is-active {
@@ -39,7 +28,7 @@
 
 .EditTable-cell {
   font-size: 0.875rem;
-  height: 4 * $base-unit;
+  height: $edit-table-row-height;
   overflow-x: hidden;
   overflow-y: auto;
   padding: 0.25 * $base-unit;
@@ -56,9 +45,10 @@
 .EditTable-cell textarea {
   border: none;
   display: block;
-  height: 3.5 * $base-unit;
+  height: $edit-table-row-height - 0.5 * $base-unit;
   margin: 0;
   padding: 0;
+  resize: none;
 }
 
 .EditTable-cell textarea,

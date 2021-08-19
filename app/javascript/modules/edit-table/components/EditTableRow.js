@@ -5,7 +5,6 @@ import EditTableCell from './EditTableCell';
 import useColumns from './useColumns';
 
 export default function TableRow({
-    odd,
     segment,
     active,
     originalLocale,
@@ -16,9 +15,9 @@ export default function TableRow({
 
     return (
         <div
-            className={classNames('EditTable-row', 'segment-row_old',
-                odd ? 'EditTable-row--odd' : 'EditTable-row--even',
-                { 'is-active': active })}
+            className={classNames('EditTable-row', {
+                'is-active': active,
+            })}
             style={{ gridTemplateColumns }}
         >
             {
@@ -37,7 +36,6 @@ export default function TableRow({
 }
 
 TableRow.propTypes = {
-    odd: PropTypes.bool.isRequired,
     segment: PropTypes.object.isRequired,
     originalLocale: PropTypes.string.isRequired,
     translationLocale: PropTypes.string.isRequired,

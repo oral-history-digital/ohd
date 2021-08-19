@@ -3,13 +3,13 @@ import { NAME } from './constants';
 
 const state = {
     [NAME]: {
-        skipEmptyRows: false,
+        filter: 'all',
         columns: ['timecode', 'text_orig'],
     },
 };
 
-test('getSkipEmptyRows retrieves skipEmptyRows status', () => {
-    expect(selectors.getSkipEmptyRows(state)).toEqual(state[NAME].skipEmptyRows);
+test('getFilter retrieves current filter', () => {
+    expect(selectors.getFilter(state)).toEqual(state[NAME].filter);
 });
 
 test('getSelectedColumns retrieves selected interview table columns', () => {

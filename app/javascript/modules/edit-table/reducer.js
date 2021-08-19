@@ -1,10 +1,8 @@
-import {
-    SET_SKIP_EMPTY_ROWS,
-    SET_COLUMNS,
-} from './action-types';
+import { SET_FILTER, SET_COLUMNS } from './action-types';
+import { EDIT_TABLE_FILTER_ALL } from './constants'
 
 export const initialState = {
-    skipEmptyRows: false,
+    filter: EDIT_TABLE_FILTER_ALL,
     columns: [
         'timecode',
         'text_orig',
@@ -18,10 +16,10 @@ export const initialState = {
 
 const editTable = (state = initialState, action) => {
     switch (action.type) {
-        case SET_SKIP_EMPTY_ROWS:
+        case SET_FILTER:
             return {
                 ...state,
-                skipEmptyRows: action.payload,
+                filter: action.payload,
             };
         case SET_COLUMNS:
             return {

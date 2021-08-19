@@ -11,14 +11,13 @@
   border-bottom: (0.0625 * $base-unit) solid rgba(255, 255, 255, 0.25);
   display: flex;
   font-size: 0.875rem;
-  margin-left: -0.5 * $base-unit;
-  margin-right: -0.5 * $base-unit;
+  //margin-left: -0.5 * $base-unit;
+  //margin-right: -0.5 * $base-unit;
   padding: 0.25 * $base-unit;
 }
 
-.EditTableHeader-options > * {
-  margin-left: 0.5 * $base-unit;
-  margin-right: 0.5 * $base-unit;
+.EditTableHeader-options > *:not(:first-child) {
+  margin-left: $base-unit;
 }
 
 .EditTableHeader-columns {

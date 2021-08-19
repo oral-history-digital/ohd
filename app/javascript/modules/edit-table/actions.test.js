@@ -1,11 +1,11 @@
 import * as types from './action-types';
 import * as actions from './actions';
 
-test('setSkipEmptyRows', () => {
-    const actual = actions.setSkipEmptyRows(true);
+test('setFilter', () => {
+    const actual = actions.setFilter('all');
     const expected = {
-        type: types.SET_SKIP_EMPTY_ROWS,
-        payload: true,
+        type: types.SET_FILTER,
+        payload: 'all',
     };
     expect(actual).toEqual(expected);
 });

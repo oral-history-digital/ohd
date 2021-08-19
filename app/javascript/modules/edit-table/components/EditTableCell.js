@@ -8,10 +8,7 @@ import { formatTimecode } from 'modules/interview-helpers';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { RegistryReferencesContainer } from 'modules/registry-references';
 import { Annotations } from 'modules/annotations';
-
-function fieldHasData(text) {
-    return text && text.trim().length > 0;
-}
+import fieldHasData from './fieldHasData';
 
 export default function EditTableCell({
     type,
@@ -25,7 +22,7 @@ export default function EditTableCell({
     switch (type) {
     case 'timecode':
         return (
-            <div className="EditTable-cell EditTable-cell--narrow">
+            <div className="EditTable-cell">
                 <button
                     type="button"
                     id={`segment_${segment.id}`}

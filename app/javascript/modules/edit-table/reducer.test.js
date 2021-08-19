@@ -5,15 +5,15 @@ test('returns the initial state', () => {
     expect(reducer(undefined, {})).toEqual(initialState);
 });
 
-test('handles the setSkipEmptyRows action', () => {
+test('handles the setFilter action', () => {
     const state = initialState;
     const action = {
-        type: types.SET_SKIP_EMPTY_ROWS,
-        payload: true,
+        type: types.SET_FILTER,
+        payload: 'filtered',
     };
     const expectedState = {
         ...state,
-        skipEmptyRows: true,
+        filter: 'filtered',
     };
     expect(reducer(state, action)).toEqual(expectedState);
 });

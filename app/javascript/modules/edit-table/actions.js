@@ -1,12 +1,12 @@
-import { SET_SKIP_EMPTY_ROWS, SET_COLUMNS }
+import { SET_FILTER, SET_COLUMNS }
     from './action-types';
 
-export const setSkipEmptyRows = skipEmptyRows => ({
-    type: SET_SKIP_EMPTY_ROWS,
-    payload: skipEmptyRows,
+export const setFilter = filter => ({
+    type: SET_FILTER,
+    payload: filter,
 });
 
-export const setColumns = params => ({
+export const setColumns = columns => ({
     type: SET_COLUMNS,
-    payload: params,
+    payload: columns,
 });
