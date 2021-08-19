@@ -11,7 +11,7 @@ export default class InterviewTextMaterials extends Component {
         const { interview } = this.props;
 
         // here the index ([1]) stands for the tape number. Therefore it is not 0-basded.
-        if (condition && interview.segments[1]?.[interview.first_segments_ids[1]]) {
+        if (condition && interview.segments && interview.segments[1]?.[interview.first_segments_ids[1]]) {
             return (
                 <a
                     href={`${pathBase(this.props)}/interviews/${interview.archive_id}.pdf?lang=${lang}`}

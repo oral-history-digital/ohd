@@ -12,20 +12,19 @@ class InterviewSerializer < ApplicationSerializer
     :languages,
     :language_id,
     :lang,
-    :title,
-    :short_title,
+    :title, # np
+    :short_title, # np
     :anonymous_title,
-    :description,
+    :description, # np
     :still_url,
-    :segments,
     :last_segments_ids,
     :first_segments_ids,
     :workflow_state,
     :workflow_states,
-    :contributions,
+    :contributions, # np
     :registry_references,
-    :photos,
-    :observations,
+    :photos, # np
+    :observations, # np
     :doi_status,
     :landing_page_texts,
     :properties,
@@ -117,11 +116,6 @@ class InterviewSerializer < ApplicationSerializer
     # Further a timecode is human readable sth like 14785 not so.
     #
     Timecode.new(object.duration).timecode
-  end
-
-  def segments
-    # this is a dummy! It will be filled later.
-    {}
   end
 
   def last_segments_ids

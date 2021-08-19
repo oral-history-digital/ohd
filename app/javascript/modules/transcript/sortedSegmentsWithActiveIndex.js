@@ -7,7 +7,7 @@ export default function sortedSegmentsWithActiveIndex(time, props) {
     let index = 0;
     let activeSegment = null;
 
-    if (props.interview && Object.keys(props.interview.first_segments_ids).length > 0) {
+    if (props.interview?.segments && Object.keys(props.interview.first_segments_ids).length > 0) {
         for (var i=1; i<= parseInt(props.interview.tape_count); i++) {
             if (props.tape === i) {
                 let sortedWActiveAIndex = sortedSegmentsWithActiveIndexForTape(time, props);
