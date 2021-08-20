@@ -145,7 +145,7 @@ ru:
   forget_password_question: Passwort wiederherstellen
   enter_email: Bitte geben Sie die E-Mail Adresse an, mit der Sie sich in dem Archiv
     registriert haben. Sie erhalten dann per E-Mail einen Link zur Passworterneuerung.
-  email: E-Mail
+  email: Адрес эл. почты
   change_password: Passwort ändern
   archive_results: Результаты поиска
   segment_results: Результаты поиска транскриптов
@@ -501,7 +501,7 @@ ru:
   saved_annotations: Сохраненные комментарии
   text_materials: текстовые материалы
   download_registry_entries: 'Gesamtes Register als %{format} herunterladen (%{locale})'
-  search_registry_entry: Registereintrag suchen
+  search_registry_entry: поиск в регистре
   grid: Вид на сетку
   list: Вид списка
   workflow: Workflow
@@ -632,7 +632,7 @@ ru:
         Dateien im .odt-Format sollten nur den Transkripttext (inkl. Sprecher/innenauszeichnungen) ohne Header, Footer oder anderen Text enthalten.
   admin:
     change_to_normal_view: Nutzeransicht
-    change_to_edit_view: Redaktionsansicht
+    change_to_edit_view: редакторский формат
   user_registration:
     registration: Регистрация
     registration_text_one: 'Для поиска информации в архиве "Принудительный труд 1939-1945"
@@ -790,7 +790,7 @@ ru:
           index: Registereinträge anzeigen
           merge: Registereinträge zusammenführen
           show_tree: Alle Einträge zeigen
-          show_search_results: Suchergebnisse zeigen
+          show_search_results: показать результат поиска
       biographical_entry:
         one: Краткая биография
         other: Краткие биографии
@@ -1003,11 +1003,11 @@ ru:
         password: Passwort
       account:
         gender: Geschlecht
-        first_name: Vorname
-        last_name: Nachname
+        first_name: Имя
+        last_name: Фамилия
       user_registration:
         created_at: Erstellt am
-        activated_at: Aktiviert am
+        activated_at: активирован
         processed_at: Bearbeitet am
         default_locale: Sprache
         appellation: Обращение
@@ -1140,7 +1140,7 @@ ru:
         lang: Sprache
         desc: Beschreibung
         text: Text
-        email: Электр. адрес
+        email: Адрес эл. почты
         url: URL
         href: Href
         file: Datei
@@ -1161,7 +1161,7 @@ ru:
         text_input: Введите адрес
         file_input: Bitte Datei auswählen
         password_input: Ваш пароль должен содержать не менее семи символов. Убедитесь, что оба пароля совпадают.
-        email_input: Bitte berichtigen Sie Ihre Email
+        email_input: пожалуйста, укажите Ваш ел. адрес
       template:
         header: Мы не можем обработать Ваш запрос
         body: 'Возникла следующая проблема:'
