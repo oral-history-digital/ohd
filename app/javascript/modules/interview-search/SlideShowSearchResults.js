@@ -11,6 +11,7 @@ import TranscriptResult from './TranscriptResult';
 export default function SlideShowSearchResults({
     interview,
     searchResults,
+    projectId,
 }) {
     const dispatch = useDispatch();
     const pathBase = usePathBase();
