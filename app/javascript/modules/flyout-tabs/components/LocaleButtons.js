@@ -28,7 +28,7 @@ class LocaleButtons extends Component {
         if (/^\/[a-z]{2}\/{0,1}$/.test(location.pathname)) {
             newPath = `/${locale}/`;
         } else {
-            newPath = location.pathname.replace(/^\/[a-z]{2,4}\/[a-z]{2}\//, pathBase({projectId, locale, projects}) + '/');
+            newPath = location.pathname.replace(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})\//, '/' + '$1' + locale + '/');
         }
 
         history.push(newPath);
