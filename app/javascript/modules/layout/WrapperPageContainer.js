@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import { toggleFlyoutTabs, getFlyoutTabsVisible } from 'modules/flyout-tabs';
-import { getEditView, getLocale, getProjectId } from 'modules/archive';
+import { getEditView, getLocale, setLocale, getProjectId } from 'modules/archive';
 import { fetchData, deleteData, getCurrentAccount, getProjects, getCollectionsStatus,
     getLanguagesStatus, getAccountsStatus, getProjectsStatus, getCurrentProject } from 'modules/data';
 import { getIsLoggedIn, getIsLoggedOut, getLoggedInAt } from 'modules/account';
@@ -30,6 +30,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
     deleteData,
     toggleFlyoutTabs,
+    setLocale,
 }, dispatch);
 
 export default withRouter(connect(

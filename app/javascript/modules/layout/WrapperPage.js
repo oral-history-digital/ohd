@@ -12,6 +12,7 @@ import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
+import { pathBase } from 'modules/routes';
 
 export default class WrapperPage extends Component {
     constructor(props) {
@@ -21,11 +22,33 @@ export default class WrapperPage extends Component {
     }
 
     componentDidMount() {
+        this.fitLocale();
         this.loadStuff();
     }
 
-    componentDidUpdate() {
+    componentDidUpdate(prevProps) {
+        this.fitLocale(prevProps.locale);
         this.loadStuff();
+    }
+
+    fitLocale(prevLocale) {
+        const { history, location, project, projectId, projects, setLocale } = this.props;
+
+        let locale = this.props.locale;
+        const found = location.pathname.match(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})\//);
+        const pathLocale = Array.isArray(found) ? found[2] : null;
+
+        if (project?.available_locales.indexOf(pathLocale) === -1) {
+            locale = project.default_locale;
+            const newPath = location.pathname.replace(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})\//, pathBase({projectId, locale, projects}) + '/');
+            history.push(newPath);
+        } else if (pathLocale) {
+            locale = pathLocale;
+        }
+
+        if (prevLocale && locale !== prevLocale) {
+            setLocale(locale);
+        }
     }
 
     loadStuff() {
@@ -141,3 +164,4 @@ WrapperPage.propTypes = {
     fetchData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
 };
+

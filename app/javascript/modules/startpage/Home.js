@@ -30,13 +30,13 @@ export default function Home({
                         null
                 }
                 <div className='home-text'>
-                    <h1>{projectTranslation.name}</h1>
-                    <div dangerouslySetInnerHTML={{__html: projectTranslation.introduction}} />
+                    <h1>{projectTranslation?.name}</h1>
+                    <div dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}} />
                 </div>
                 <div className="search-results-container">
                     {
                         projectTranslation.more_text &&
-                        (<p dangerouslySetInnerHTML={{__html: projectTranslation.more_text}} />)
+                        (<p dangerouslySetInnerHTML={{__html: projectTranslation?.more_text}} />)
                     }
                     {
                         showFeaturedInterviews ?
