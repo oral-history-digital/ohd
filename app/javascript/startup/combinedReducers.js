@@ -3,6 +3,7 @@ import { combineReducers } from 'redux';
 import { accountReducer, ACCOUNT_NAME } from 'modules/account';
 import { archiveReducer, ARCHIVE_NAME } from 'modules/archive';
 import { dataReducer, DATA_NAME } from 'modules/data';
+import { editTableReducer, EDIT_TABLE_NAME } from 'modules/edit-table';
 import { featuresReducer, FEATURES_NAME } from 'modules/features';
 import { flyoutTabsReducer, FLYOUT_TABS_NAME } from 'modules/flyout-tabs';
 import { interviewReducer, INTERVIEW_NAME } from 'modules/interview';
@@ -17,6 +18,7 @@ const combinedReducer = combineReducers({
     [ACCOUNT_NAME]: accountReducer,
     [ARCHIVE_NAME]: archiveReducer,
     [DATA_NAME]: dataReducer,
+    [EDIT_TABLE_NAME]: editTableReducer,
     [FEATURES_NAME]: featuresReducer,
     [FLYOUT_TABS_NAME]: flyoutTabsReducer,
     [INTERVIEW_NAME]: interviewReducer,

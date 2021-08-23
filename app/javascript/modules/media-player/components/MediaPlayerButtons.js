@@ -1,16 +1,17 @@
 import PropTypes from 'prop-types';
-import { FaSortAmountDown } from 'react-icons/fa';
+import { FaEdit, FaSortAmountDown } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { InterviewEditButtonsContainer } from 'modules/interview-edit';
 
 export default function MediaPlayerButtons({
     autoScroll,
     className,
+    editViewEnabled,
     enableAutoScroll,
     disableAutoScroll,
+    changeToInterviewEditView,
 }) {
     const { t } = useI18n();
 
@@ -27,7 +28,14 @@ export default function MediaPlayerButtons({
     return (
         <div className={classNames(className)}>
             <AuthorizedContent object={{type: 'General'}} action='edit'>
-                <InterviewEditButtonsContainer />
+                <button
+                    className={classNames('StateButton', { 'is-pressed': editViewEnabled })}
+                    type="button"
+                    title={t(`edit_column_header.${editViewEnabled ? 'close_table' : 'open_table'}`)}
+                    onClick={() => changeToInterviewEditView(!editViewEnabled)}
+                >
+                    <FaEdit className="StateButton-icon" />
+                </button>
             </AuthorizedContent>
 
             <button
@@ -46,6 +54,8 @@ export default function MediaPlayerButtons({
 MediaPlayerButtons.propTypes = {
     autoScroll: PropTypes.bool.isRequired,
     className: PropTypes.string,
+    editViewEnabled: PropTypes.bool.isRequired,
     enableAutoScroll: PropTypes.func.isRequired,
     disableAutoScroll: PropTypes.func.isRequired,
+    changeToInterviewEditView: PropTypes.func.isRequired,
 };

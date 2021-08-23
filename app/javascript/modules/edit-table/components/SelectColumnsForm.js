@@ -1,25 +1,25 @@
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import permittedColumns from './permittedColumns';
+import useColumns from './useColumns';
 
 export default function SelectColumnsForm({
     interview,
-    selectedInterviewEditViewColumns,
-    account,
-    editView,
-    selectInterviewEditViewColumns,
+    selectedColumns,
+    setColumns,
     onSubmit,
 }) {
+    const { permittedColumns } = useColumns(interview);
+
     const selectedValues = () => {
         let values = {};
-        selectedInterviewEditViewColumns.forEach( column => {
+        selectedColumns.forEach(column => {
             values[column] = true;
         })
         return values;
     };
 
-    const formElements = () => permittedColumns({ account, editView }, interview.id)
+    const formElements = () => permittedColumns
         .map(column => ({
             elementType: 'input',
             type: 'checkbox',
@@ -28,14 +28,12 @@ export default function SelectColumnsForm({
         }));
 
     const handleSelect = (params) => {
-        console.log(params);
-        event.preventDefault;
         let values = [];
         Object.keys(params.select_interview_edit_columns).map( column => {
             if (params.select_interview_edit_columns[column])
                 values.push(column);
         })
-        selectInterviewEditViewColumns(values);
+        setColumns(values);
         onSubmit();
     };
 
@@ -53,9 +51,9 @@ export default function SelectColumnsForm({
 
 SelectColumnsForm.propTypes = {
     interview: PropTypes.object.isRequired,
-    selectedInterviewEditViewColumns: PropTypes.array.isRequired,
+    selectedColumns: PropTypes.array.isRequired,
     account: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
-    selectInterviewEditViewColumns: PropTypes.func.isRequired,
+    setColumns: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
 };

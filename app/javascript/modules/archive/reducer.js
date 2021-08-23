@@ -7,8 +7,6 @@ import {
     RECEIVE_STATIC_CONTENT,
     CHANGE_TO_EDIT_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
-    SET_SKIP_EMPTY_ROWS,
-    SELECT_INTERVIEW_EDIT_VIEW_COLUMNS,
     RECEIVE_RESULT,
     UPDATE_SELECTED_ARCHIVE_IDS,
     SET_SELECTED_ARCHIVE_IDS,
@@ -91,12 +89,6 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 interviewEditView: action.interviewEditView
             })
-        case SET_SKIP_EMPTY_ROWS:
-            return Object.assign({}, state, {
-                skipEmptyRows: action.skipEmptyRows
-            })
-        case SELECT_INTERVIEW_EDIT_VIEW_COLUMNS:
-            return Object.assign({}, state, { selectedInterviewEditViewColumns: action.interviewEditViewColumns })
         case RECEIVE_RESULT:
             return Object.assign({}, state, {
                 doiResult: action.result
