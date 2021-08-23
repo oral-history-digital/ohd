@@ -1,27 +1,23 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getSelectedInterviewEditViewColumns, getProjectId, getTranslations, getArchiveId,
-    getSkipEmptyRows, getEditView } from 'modules/archive';
-import { fetchData, getCurrentInterview, getCurrentProject, getProjects, getCurrentAccount,
+import { getLocale, getProjectId, getArchiveId } from 'modules/archive';
+import { fetchData, getCurrentInterview, getCurrentProject, getProjects,
     getSegmentsStatus } from 'modules/data';
 import { getCurrentTape, getMediaTime } from 'modules/media-player';
-import InterviewEditView from './InterviewEditView';
+import { getFilter } from '../selectors';
+import EditTable from './EditTable';
 
 const mapStateToProps = (state) => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
-    translations: getTranslations(state),
     archiveId: getArchiveId(state),
     interview: getCurrentInterview(state),
     tape: getCurrentTape(state),
     mediaTime: getMediaTime(state),
-    skipEmptyRows: getSkipEmptyRows(state),
+    filter: getFilter(state),
     segmentsStatus: getSegmentsStatus(state),
-    selectedInterviewEditViewColumns: getSelectedInterviewEditViewColumns(state),
-    account: getCurrentAccount(state),
-    editView: getEditView(state),
     project: getCurrentProject(state),
 });
 
@@ -29,4 +25,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(InterviewEditView);
+export default connect(mapStateToProps, mapDispatchToProps)(EditTable);

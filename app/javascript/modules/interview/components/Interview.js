@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 
-import { InterviewEditViewContainer } from 'modules/interview-edit';
+import { EditTableLoader } from 'modules/edit-table';
 import { MediaPlayerContainer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
@@ -61,7 +61,7 @@ export default function Interview({
                                     <MediaPlayerContainer />
                                     {
                                         interviewEditView ?
-                                            <InterviewEditViewContainer /> :
+                                            <EditTableLoader /> :
                                             <InterviewTabsContainer />
 
                                     }
