@@ -106,6 +106,34 @@ class InterviewsController < ApplicationController
     end
   end
 
+  Interview.non_public_method_names.each do |m|
+    define_method m do
+      @interview = Interview.find_by_archive_id(params[:id])
+      authorize @interview
+
+      # associations need to be serialized
+      if %w(contributions photos registry_references).include?(m)
+        data = @interview.send(m)
+        data_json = Rails.cache.fetch("#{@interview.project.cache_key_prefix}-interview-#{m}s-#{@interview.id}-#{data.maximum(:updated_at)}") do
+          data.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+        end
+      else
+        data_json = @interview.send(m)
+      end
+
+      respond_to do |format|
+        format.json do
+          render json: {
+            id: @interview.archive_id,
+            data_type: "interviews",
+            nested_data_type: m,
+            data: data_json
+          }, status: :ok
+        end
+      end
+    end
+  end
+
   def show
     @interview = Interview.find_by_archive_id(params[:id])
     interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym

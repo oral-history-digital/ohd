@@ -73,6 +73,9 @@ Rails.application.routes.draw do
         get :headings
         get :speaker_designations
         get :ref_tree
+        Interview.non_public_method_names.each do |m|
+          get m
+        end
       end
       collection do
         post :dois

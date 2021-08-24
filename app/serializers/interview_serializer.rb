@@ -12,19 +12,19 @@ class InterviewSerializer < ApplicationSerializer
     :languages,
     :language_id,
     :lang,
-    :title, # np
-    :short_title, # np
+    #:title, # np
+    #:short_title, # np
     :anonymous_title,
-    :description, # np
+    #:description, # np
     :still_url,
     :last_segments_ids,
     :first_segments_ids,
     :workflow_state,
     :workflow_states,
-    :contributions, # np
-    :registry_references,
-    :photos, # np
-    :observations, # np
+    #:contributions, # np
+    #:registry_references,
+    #:photos, # np
+    #:observations, # np
     :doi_status,
     :landing_page_texts,
     :properties,
@@ -59,23 +59,23 @@ class InterviewSerializer < ApplicationSerializer
     end
   end
 
-  def contributions
-    json =  Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-contributions-#{object.id}-#{object.contributions.maximum(:updated_at)}") do
-      object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
-  end
+  #def contributions
+    #json =  Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-contributions-#{object.id}-#{object.contributions.maximum(:updated_at)}") do
+      #object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
+    #end
+  #end
 
-  def registry_references
-    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-registry_references-#{object.id}-#{object.registry_references.maximum(:updated_at)}") do
-      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
-  end
+  #def registry_references
+    #json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-registry_references-#{object.id}-#{object.registry_references.maximum(:updated_at)}") do
+      #object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
+    #end
+  #end
 
-  def photos
-    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-photos-#{object.id}-#{object.photos.maximum(:updated_at)}") do
-      object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
-  end
+  #def photos
+    #json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-photos-#{object.id}-#{object.photos.maximum(:updated_at)}") do
+      #object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
+    #end
+  #end
 
   def observations
     object.localized_hash(:observations)
