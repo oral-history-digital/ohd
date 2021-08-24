@@ -54,7 +54,7 @@ class ApplicationController < ActionController::Base
   def initial_redux_state
     @initial_redux_state ||= {
       archive: {
-        locale: current_project ? current_project.default_locale : I18n.locale,
+        locale: I18n.locale,
         locales: current_project ? current_project.available_locales : I18n.available_locales,
         projectId: current_project ? current_project.identifier : nil,
         viewModes: current_project ? current_project.view_modes : ['grid'],
