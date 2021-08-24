@@ -35,8 +35,8 @@ export default function Home({
                 </div>
                 <div className="search-results-container">
                     {
-                        projectTranslation.more_text &&
-                        (<p dangerouslySetInnerHTML={{__html: projectTranslation?.more_text}} />)
+                        projectTranslation?.more_text &&
+                        (<p dangerouslySetInnerHTML={{__html: projectTranslation.more_text}} />)
                     }
                     {
                         showFeaturedInterviews ?
