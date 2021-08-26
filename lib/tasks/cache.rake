@@ -59,7 +59,8 @@ namespace :cache do
   end
 
   desc 'visit registry references for interview'
-  task :registry_references => :environment do
+  task :registry_references , [:cache_key_prefix] => :environment do |t, args|
+    project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each do |interview|
       p "*** Getting registry references for #{interview.archive_id}"
       person_refs = URI.parse("#{base_url(project)}/#{project.default_locale}/registry_entries?ref_object_type=Person&ref_object_id=#{interview.interviewee.id}")
