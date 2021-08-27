@@ -26,7 +26,6 @@ class InterviewSerializer < ApplicationSerializer
     :task_ids,
     :tasks_user_account_ids,
     :tasks_supervisor_ids,
-    :registry_references,
   ]
 
   def attributes(*args)
@@ -111,12 +110,6 @@ class InterviewSerializer < ApplicationSerializer
 
   def properties
     object.properties || {}
-  end
-
-  def registry_references
-    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-registry_references-#{object.id}-#{object.registry_references.maximum(:updated_at)}") do
-      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
   end
 
 end
