@@ -117,7 +117,7 @@ export default class InterviewListRow extends Component {
                         }
                     </AuthShowContainer>
                     <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                        {project.fullname_on_landing_page ? interview.title[locale] : interview.anonymous_title[locale]}
+                        {interview.anonymous_title[locale]}
                     </AuthShowContainer>
                 </div>
             )

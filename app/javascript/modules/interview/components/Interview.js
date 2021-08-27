@@ -24,6 +24,7 @@ export default function Interview({
     setFlyoutTabsIndex,
     setArchiveId,
     fetchData,
+    isLoggedIn,
 }) {
     const { archiveId } = useParams();
 
@@ -40,6 +41,18 @@ export default function Interview({
             fetchData({ projectId, locale, projects }, 'interviews', archiveId);
         }
     }, [projectId, locale, archiveId, status]);
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'title');
+            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'short_title');
+            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'description');
+            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'observations');
+            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'contributions');
+            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'registry_references');
+            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'photos');
+        }
+    }, [archiveId, isLoggedIn]);
 
     if (!interviewIsFetched) {
         return <Spinner withPadding />;

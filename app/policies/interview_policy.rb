@@ -28,4 +28,10 @@ class InterviewPolicy < ApplicationPolicy
     dois?
   end
 
+  Interview.non_public_method_names.each do |m|
+    define_method "#{m}?" do
+      user
+    end
+  end
+
 end

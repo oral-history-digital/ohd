@@ -314,8 +314,8 @@ class Interview < ApplicationRecord
      ref && ref.registry_entry
    end
 
-  def title
-    localized_hash(:full_title)
+  def title(locale)
+    full_title(locale)
   end
 
   def reverted_short_title(locale)
@@ -560,12 +560,16 @@ class Interview < ApplicationRecord
   end
 
   def anonymous_title(locale=project.default_locale)
-    name_parts = []
-    unless interviewees.blank?
-      name_parts << interviewee.first_name(locale) unless interviewee.first_name(locale).blank?
-      name_parts << "#{(interviewee.last_name(locale).blank? ? '' : interviewee.last_name(locale)).strip.chars.first}."
+    if project.fullname_on_landing_page
+      title(locale)
+    else
+      name_parts = []
+      unless interviewees.blank?
+        name_parts << interviewee.first_name(locale) unless interviewee.first_name(locale).blank?
+        name_parts << "#{(interviewee.last_name(locale).blank? ? '' : interviewee.last_name(locale)).strip.chars.first}."
+      end
+      name_parts.join(' ')
     end
-    name_parts.join(' ')
   end
 
   def video

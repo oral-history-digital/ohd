@@ -111,14 +111,12 @@ class InterviewsController < ApplicationController
       @interview = Interview.find_by_archive_id(params[:id])
       authorize @interview
 
-      # associations need to be serialized
       if %w(contributions photos registry_references).include?(m)
-        data = @interview.send(m)
-        data_json = Rails.cache.fetch("#{@interview.project.cache_key_prefix}-interview-#{m}s-#{@interview.id}-#{data.maximum(:updated_at)}") do
-          data.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+        data = Rails.cache.fetch("#{@interview.project.cache_key_prefix}-interview-#{m}s-#{@interview.id}-#{data.maximum(:updated_at)}") do
+          @interview.send(m).inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
         end
       else
-        data_json = @interview.send(m)
+        data = @interview.localized_hash(m)
       end
 
       respond_to do |format|
@@ -127,7 +125,7 @@ class InterviewsController < ApplicationController
             id: @interview.archive_id,
             data_type: "interviews",
             nested_data_type: m,
-            data: data_json
+            data: data
           }, status: :ok
         end
       end
