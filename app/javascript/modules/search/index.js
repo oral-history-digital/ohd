@@ -1,6 +1,6 @@
 export { NAME as SEARCH_NAME } from './constants';
 
-export { resetQuery, setQueryParams, searchInArchive, searchInInterview, searchRegistryEntry,
+export { clearSearch, resetQuery, setQueryParams, searchInArchive, searchInInterview, searchRegistryEntry,
     changeRegistryEntriesViewMode, setMapQuery } from './actions';
 
 export { default as searchReducer } from './reducer';
