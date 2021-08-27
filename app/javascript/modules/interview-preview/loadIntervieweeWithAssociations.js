@@ -1,11 +1,8 @@
 export default function loadIntervieweeWithAssociations(props) {
-    let intervieweeContribution = Object.values(props.interview.contributions).find(c => c.contribution_type === 'interviewee');
-    let intervieweeId = intervieweeContribution && intervieweeContribution.person_id;
-    let interviewee = props.projects[props.interview.project_id].people[intervieweeId]
     if (
-           ((interviewee && !interviewee.associations_loaded) || !interviewee) &&
-           intervieweeId && !props.peopleStatus[intervieweeId]
+           ((props.interviewee && !props.interviewee.associations_loaded) || !props.interviewee) &&
+           props.intervieweeId && !props.peopleStatus[props.intervieweeId]
     ) {
-        props.fetchData(props, 'people', intervieweeId, null, 'with_associations=true');
+        props.fetchData(props, 'people', props.intervieweeId, null, 'with_associations=true');
     }
 }
