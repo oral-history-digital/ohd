@@ -287,6 +287,8 @@ class Project < ApplicationRecord
               end
             }
           end
+        when "archive_id"
+          # do nothing: should not be a facet!
         when /_id$/ # belongs_to associations like language on interview
           facet_label_hash = facet.localized_hash(:label)
           associatedModel = facet.name.sub('_id', '').classify.constantize
@@ -303,6 +305,8 @@ class Project < ApplicationRecord
               end
             }
           end
+        when "observations", "description"
+          # do nothing: facets on individual free-text do not make sense
         else
           mem[facet.name.to_sym] = {
             name: name,
