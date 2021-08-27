@@ -112,8 +112,9 @@ class InterviewsController < ApplicationController
       authorize @interview
 
       if %w(contributions photos registry_references).include?(m)
-        data = Rails.cache.fetch("#{@interview.project.cache_key_prefix}-interview-#{m}s-#{@interview.id}-#{data.maximum(:updated_at)}") do
-          @interview.send(m).inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
+        association = @interview.send(m)
+        data = Rails.cache.fetch("#{@interview.project.cache_key_prefix}-interview-#{m}s-#{@interview.id}-#{association.maximum(:updated_at)}") do
+          association.inject({}) { |mem, c| mem[c.id] = cache_single(c); mem }
         end
       else
         data = @interview.localized_hash(m)
