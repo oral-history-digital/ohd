@@ -117,6 +117,7 @@ export default class Account extends Component {
                                 this.props.clearStateData('interviews', this.props.archiveId, 'photos');
                                 this.props.clearStateData('interviews', this.props.archiveId, 'registry_references');
                                 this.props.clearStateData('interviews', this.props.archiveId, 'segments');
+                                this.props.clearStateData('user_registrations');
                                 this.props.clearSearch();
                                 this.props.submitLogout(`${pathBase(this.props)}/user_accounts/sign_out`);
                             }}

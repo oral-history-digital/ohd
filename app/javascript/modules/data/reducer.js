@@ -102,7 +102,7 @@ const data = (state = initialState, action) => {
                         })
                     })
                 })
-            } else {
+            } else if (action.id) {
                 if(state[action.id]) {
                     return Object.assign({}, state, {
                         statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}),
@@ -116,6 +116,13 @@ const data = (state = initialState, action) => {
                 } else {
                     return state;
                 }
+            } else if (action.dataType) {
+                return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}),
+                    [action.dataType]: {}
+                })
+            } else {
+                return state;
             }
         case REQUEST_DATA:
             if (action.nestedDataType) {
