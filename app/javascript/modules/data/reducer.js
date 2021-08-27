@@ -93,8 +93,17 @@ const data = (state = initialState, action) => {
                 } else {
                     return state;
                 }
+            } else if (action.nestedDataType) {
+                return Object.assign({}, state, {
+                    statuses: updateStatus(state.statuses, action.nestedDataType, {lastModified: new Date()}),
+                    [action.dataType]: Object.assign({}, state[action.dataType], {
+                        [action.id]: Object.assign({}, state[action.dataType][action.id], {
+                            [action.nestedDataType]: {}
+                        })
+                    })
+                })
             } else {
-                if(state[action.dataType]) {
+                if(state[action.id]) {
                     return Object.assign({}, state, {
                         statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}),
                         [action.dataType]: Object.keys(state[action.dataType]).reduce((acc, key) => {

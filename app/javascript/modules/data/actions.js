@@ -107,6 +107,12 @@ export function deleteData(props, dataType, id, nestedDataType, nestedId, skipRe
     }
 }
 
+export function clearStateData(dataType, id, nestedDataType, nestedId) {
+    return dispatch => {
+        dispatch(removeData(id, dataType, nestedDataType, nestedId))
+    }
+}
+
 export function cleanStatusMsg(dataType, msgOrIndex) {
     return dispatch => {
         dispatch(deleteStatusMsg(dataType, msgOrIndex))
