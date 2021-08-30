@@ -15,6 +15,7 @@ import { admin, AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { t } from 'modules/i18n';
 import InterviewDataContainer from './InterviewDataContainer';
 import AdminActionsContainer from './AdminActionsContainer';
+import SubTab from './SubTab';
 
 class InterviewTabPanel extends Component {
     static propTypes = {
@@ -29,18 +30,19 @@ class InterviewTabPanel extends Component {
         editView: PropTypes.bool.isRequired,
     }
 
-    subTab(title, content, url, obj, condition = true) {
-        return (admin(this.props, obj, 'update') && condition) ?
-            (<div className='flyout-sub-tabs-container flyout-video'>
-                <InterviewDataContainer
-                    title={t(this.props, title)}
-                    content={content}
-                    url={url}
-                    open={false}
-                />
-            </div>) :
-            null;
-    }
+    //subTab(title, content, url, obj, condition = true) {
+        //debugger
+        //return (admin(this.props, obj, 'update') && condition) ?
+            //(<div className='flyout-sub-tabs-container flyout-video'>
+                //<InterviewDataContainer
+                    //title={t(this.props, title)}
+                    //content={content}
+                    //url={url}
+                    //open={false}
+                ///>
+            //</div>) :
+            //null;
+    //}
 
     downloads() {
         const { interview, archiveId } = this.props;
@@ -186,7 +188,13 @@ class InterviewTabPanel extends Component {
                         </AuthorizedContent>
                     </AuthShowContainer>
                 </div>
-                {this.subTab('edit.downloads.title', this.downloads(), null, {type: 'Interview', action: 'download', id: archiveId}, archiveId && projectId !== "campscapes")}
+                <SubTab
+                    title='edit.downloads.title'
+                    obj={this.props.interview}
+                    action='download'
+                >
+                    {this.downloads()}
+                </SubTab>
             </Fragment>) :
             null;
     }

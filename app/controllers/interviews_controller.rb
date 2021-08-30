@@ -142,8 +142,8 @@ class InterviewsController < ApplicationController
         render json: data_json(@interview)
       end
       format.vtt do
-        vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{params[:lang]}-#{params[:tape_number]}" do
-          @interview.to_vtt(params[:lang] || interview_locale, params[:tape_number])
+        vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{locale}-#{params[:tape_number]}" do
+          @interview.to_vtt(locale, params[:tape_number])
         end
         render plain: vtt
       end
@@ -160,7 +160,7 @@ class InterviewsController < ApplicationController
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{params[:lang]}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
       format.ods do
-        send_data @interview.to_ods(interview_locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet" #, :disposition => "attachment"
+        send_data @interview.to_ods(locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet" #, :disposition => "attachment"
       end
       format.html
     end
