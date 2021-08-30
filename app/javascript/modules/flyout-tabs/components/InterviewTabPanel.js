@@ -30,43 +30,25 @@ class InterviewTabPanel extends Component {
         editView: PropTypes.bool.isRequired,
     }
 
-    //subTab(title, content, url, obj, condition = true) {
-        //debugger
-        //return (admin(this.props, obj, 'update') && condition) ?
-            //(<div className='flyout-sub-tabs-container flyout-video'>
-                //<InterviewDataContainer
-                    //title={t(this.props, title)}
-                    //content={content}
-                    //url={url}
-                    //open={false}
-                ///>
-            //</div>) :
-            //null;
-    //}
-
     downloads() {
         const { interview, archiveId } = this.props;
 
-        if (admin(this.props, this.props.interview, 'download')) {
-            let links = [];
-            for (var i=1; i <= parseInt(interview.tape_count); i++) {
-                links.push(
-                    <div key={`downloads-for-tape-${i}`}>
-                        <h4>{`${t(this.props, 'tape')} ${i}:`}</h4>
-                        <a href={`${pathBase(this.props)}/interviews/${archiveId}.ods?tape_number=${i}`} download>ods</a>&#44;&#xa0;
-                        <a href={`${pathBase(this.props)}/interviews/${archiveId}.vtt?tape_number=${i}`} download>vtt</a>
-                    </div>
-                );
-            }
-            return (
-                <div>
-                    <h4>{archiveId}:</h4>
-                    {links}
+        let links = [];
+        for (var i=1; i <= parseInt(interview.tape_count); i++) {
+            links.push(
+                <div key={`downloads-for-tape-${i}`}>
+                    <h4>{`${t(this.props, 'tape')} ${i}:`}</h4>
+                    <a href={`${pathBase(this.props)}/interviews/${archiveId}.ods?tape_number=${i}`} download>ods</a>&#44;&#xa0;
+                    <a href={`${pathBase(this.props)}/interviews/${archiveId}.vtt?tape_number=${i}`} download>vtt</a>
                 </div>
             );
-        } else {
-            return null;
         }
+        return (
+            <div>
+                <h4>{archiveId}:</h4>
+                {links}
+            </div>
+        );
     }
 
     render() {
