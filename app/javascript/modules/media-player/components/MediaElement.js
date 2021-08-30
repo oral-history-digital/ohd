@@ -131,6 +131,7 @@ export default class MediaElement extends Component {
                     ref={this.mediaElement}
                     className="MediaElement-element"
                     controls
+                    controlsList="nodownload"
                     poster={interview.still_url || speakerImage}
                     src={this.src()}
                 >
