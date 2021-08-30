@@ -63,10 +63,10 @@ export default class MediaElement extends Component {
     }
 
     handleEndedEvent() {
-        const { tape, interview, setTape } = this.props;
+        const { tape, interview, sendTimeChangeRequest } = this.props;
 
         if (tape < interview.tape_count) {
-            setTape(tape);
+            sendTimeChangeRequest(tape + 1, 0);
         }
     }
 
@@ -166,8 +166,8 @@ MediaElement.propTypes = {
     translations: PropTypes.object.isRequired,
     updateMediaTime: PropTypes.func.isRequired,
     updateIsPlaying: PropTypes.func.isRequired,
-    setTape: PropTypes.func.isRequired,
     setResolution: PropTypes.func.isRequired,
     resetMedia: PropTypes.func.isRequired,
+    sendTimeChangeRequest: PropTypes.func.isRequired,
     clearTimeChangeRequest: PropTypes.func.isRequired,
 };
