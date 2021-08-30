@@ -133,7 +133,7 @@ export default class PersonData extends Component {
     }
 
     info() {
-        const { interviewee } = this.props;
+        const { interviewee, interview, project, submitData, locale } = this.props;
 
         return (
             <div>
@@ -146,10 +146,10 @@ export default class PersonData extends Component {
                             >
                                 {close => (
                                     <ContributionFormContainer
-                                        contribution={Object.values(this.props.interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]}
-                                        interview={this.props.interview}
+                                        contribution={interview.contributions && Object.values(interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]}
+                                        interview={interview}
                                         withSpeakerDesignation
-                                        submitData={this.props.submitData}
+                                        submitData={submitData}
                                         onSubmit={close}
                                     />
                                 )}
@@ -160,7 +160,7 @@ export default class PersonData extends Component {
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                     <ContentField
                         label={t(this.props, 'interviewee_name')}
-                        value={this.props.project.fullname_on_landing_page ? fullname(this.props, interviewee) : this.props.interview.anonymous_title[this.props.locale]}
+                        value={project.fullname_on_landing_page ? fullname(this.props, interviewee) : interview.anonymous_title[locale]}
                     />
                 </AuthShowContainer>
                 {this.personMetadataFields()}
