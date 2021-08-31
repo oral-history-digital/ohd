@@ -34,17 +34,21 @@ export default function ThumbnailMetadata({
                         interview :
                         interviewee;
 
-                    return (
-                        <li
-                            key={field.name}
-                            className={classNames('DetailList-item', {
-                                'DetailList-item--shortened': field.name === 'description',
-                            })}
-                        >
-                            {humanReadable(obj, field.name, { locale, translations, languages, optionsScope: 'search_facets' }, {}, '')}
-                            {' '}
-                        </li>
-                    );
+                    if (obj) {
+                        return (
+                            <li
+                                key={field.name}
+                                className={classNames('DetailList-item', {
+                                    'DetailList-item--shortened': field.name === 'description',
+                                })}
+                            >
+                                {humanReadable(obj, field.name, { locale, translations, languages, optionsScope: 'search_facets' }, {}, '')}
+                                {' '}
+                            </li>
+                        );
+                    } else {
+                        return null;
+                    }
                 })
             }
         </ul>
