@@ -242,6 +242,8 @@ Rails.application.routes.draw do
   get "photos/src/:name" => "photos#src"
   get "photos/thumb/:name" => "photos#thumb"
 
+  get "norm_data" => "registry_names#norm_data"
+
   mount OaiRepository::Engine => "/oai_repository"
   root to: redirect("#{OHD_DOMAIN}/de")
 

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { t } from 'modules/i18n';
+import NormDataSelect from './NormDataSelect';
 import RegistryNameContainer from './RegistryNameContainer';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 
@@ -72,6 +73,7 @@ export default class RegistryEntryForm extends Component {
             <div>
                 {this.parentRegistryEntry()}
                 {this.registryNames()}
+                <NormDataSelect />
                 <Form
                     key={`registry-entry-form-${this.props.registryEntryId}`}
                     scope='registry_entry'
