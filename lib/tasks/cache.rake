@@ -134,8 +134,8 @@ namespace :cache do
   task :name_searches, [:cache_key_prefix] => :environment do |t, args|
     project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each  do |i|
-      p "*** Getting search for #{i.title[:de]}"
-      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/searches/archive.json?fulltext=#{ERB::Util.url_encode(i.title[:de])}&page=1")
+      p "*** Getting search for #{i.title(:de)}"
+      uri = URI.parse("#{base_url(project)}/#{project.default_locale}/searches/archive.json?fulltext=#{ERB::Util.url_encode(i.title(:de))}&page=1")
       get uri
     end
   end
@@ -171,7 +171,7 @@ namespace :cache do
     project = Project.where(cache_key_prefix: args.cache_key_prefix).first
     Interview.all.each  do |i|
     #Interview.where(archive_id: 'mog85').first  do |i|
-      p "*** Getting interview of #{i.title[:de]} - #{i.archive_id}"
+      p "*** Getting interview of #{i.title(:de)} - #{i.archive_id}"
       uri = URI.parse("#{base_url(project)}/#{project.default_locale}/interviews/#{i.archive_id}")
       get uri
       sleep(60)
