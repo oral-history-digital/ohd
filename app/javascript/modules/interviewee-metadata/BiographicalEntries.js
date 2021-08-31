@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
 
 import { AuthorizedContent, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
@@ -25,8 +26,7 @@ export default class BiographicalEntries extends Component {
                 <p>
                     <Modal
                         title={t(this.props, 'edit.biographical_entry.new')}
-                        trigger={<><i className="fa fa-plus"/> {t(this.props, 'edit.biographical_entry.new')}</>}
-                        triggerClassName="flyout-sub-tabs-content-ico-link"
+                        trigger={<><FaPlus className="AdminIcon AdminIcon--small" /> {t(this.props, 'edit.biographical_entry.new')}</>}
                     >
                         {close => (
                             <BiographicalEntryFormContainer

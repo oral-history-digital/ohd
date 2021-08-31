@@ -31,8 +31,7 @@ export default function Annotations({
                 <AuthorizedContent object={{type: 'Annotation', interview_id: segment.interview_id}} action='create'>
                     <Modal
                         title={t('edit.annotation.new')}
-                        trigger={<FaPlus />}
-                        triggerClassName="flyout-sub-tabs-content-ico-link"
+                        trigger={<FaPlus className="AdminIcon AdminIcon--small"/>}
                     >
                         {closeModal => (
                             <AnnotationFormContainer
