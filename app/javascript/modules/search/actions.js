@@ -1,6 +1,7 @@
 import { Loader } from 'modules/api';
 
 import {
+    CLEAR_SEARCH,
     SET_QUERY_PARAMS,
     RESET_QUERY,
     REQUEST_ARCHIVE_SEARCH,
@@ -33,6 +34,12 @@ const requestArchiveSearch = (searchQuery) => ({
     type: REQUEST_ARCHIVE_SEARCH,
     searchQuery: searchQuery,
 });
+
+export function clearSearch() {
+    return dispatch => {
+        dispatch({type: CLEAR_SEARCH})
+    }
+}
 
 export const setMapQuery = (query) => ({
     type: SET_MAP_QUERY,

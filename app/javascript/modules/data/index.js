@@ -1,6 +1,6 @@
 export { NAME as DATA_NAME } from './constants';
 
-export { deleteData, fetchData, submitData } from './actions';
+export { clearStateData, deleteData, fetchData, submitData } from './actions';
 
 export { default as dataReducer } from './reducer';
 

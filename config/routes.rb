@@ -73,6 +73,9 @@ Rails.application.routes.draw do
         get :headings
         get :speaker_designations
         get :ref_tree
+        Interview.non_public_method_names.each do |m|
+          get m
+        end
       end
       collection do
         post :dois
@@ -238,6 +241,8 @@ Rails.application.routes.draw do
 
   get "photos/src/:name" => "photos#src"
   get "photos/thumb/:name" => "photos#thumb"
+
+  get "norm_data" => "registry_names#norm_data"
 
   mount OaiRepository::Engine => "/oai_repository"
   root to: redirect("#{OHD_DOMAIN}/de")

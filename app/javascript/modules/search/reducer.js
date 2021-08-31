@@ -1,4 +1,6 @@
 import {
+    CLEAR_SEARCH,
+
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
 
@@ -134,17 +136,31 @@ const search = (state = initialState, action) => {
                 }),
                 isArchiveSearching: false,
             })
-            case SET_MAP_QUERY:
-                return {
-                    ...state,
-                    map: {
-                        ...state.map,
-                        query: {
-                            ...state.map.query,
-                            ...action.payload,
-                        },
+        case SET_MAP_QUERY:
+            return {
+                ...state,
+                map: {
+                    ...state.map,
+                    query: {
+                        ...state.map.query,
+                        ...action.payload,
                     },
-                };
+                },
+            };
+        case CLEAR_SEARCH:
+            return Object.assign({}, state, {
+                archive: Object.assign({}, state.archive, {
+                    foundInterviews: [],
+                    allInterviewsTitles: [],
+                    allInterviewsPseudonyms: [],
+                    allInterviewsPlacesOfBirth: [],
+                    allInterviewsCount: null,
+                    resultPagesCount: null,
+                    resultsCount: null,
+                    sortedArchiveIds: [],
+                }),
+                isArchiveSearching: false,
+            })
         default:
             return state;
     }

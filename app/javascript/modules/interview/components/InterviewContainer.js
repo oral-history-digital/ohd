@@ -2,6 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
+import { getIsLoggedIn } from 'modules/account';
 import { setArchiveId, getInterviewEditView, getProjectId, getLocale } from 'modules/archive';
 import { getCurrentInterview, getCurrentInterviewFetched, getIsCatalog, getProjects,
     fetchData } from 'modules/data';
@@ -15,6 +16,7 @@ const mapStateToProps = state => ({
     projectId: getProjectId(state),
     locale: getLocale(state),
     projects: getProjects(state),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

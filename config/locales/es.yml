@@ -1032,6 +1032,7 @@ es:
         notes: Anmerkungen
         registry_name_type_id: Registernamensart
         name_position: Position
+        from_norm_data: Anfrage an Normdaten-API
       registry_reference:
         registry_entry_id: Registereintrag
         registry_reference_type_id: Art der Beziehung

@@ -11,5 +11,6 @@ export const SET_QUERY_PARAMS = `${NAME}/setQueryParams`;
 export const RESET_QUERY = `${NAME}/resetQuery`;
 export const REQUEST_ARCHIVE_SEARCH = `${NAME}/requestArchiveSearch`;
 export const RECEIVE_ARCHIVE_SEARCH = `${NAME}/receiveArchiveSearch`;
+export const CLEAR_SEARCH = `${NAME}/clearSearch`;
 
 export const SET_MAP_QUERY = `${NAME}/setMapQuery`;

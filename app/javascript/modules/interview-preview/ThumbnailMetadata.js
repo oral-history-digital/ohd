@@ -1,16 +1,31 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { humanReadable } from 'modules/data';
+import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 
 export default function ThumbnailMetadata({
     interview,
-    interviewee,
     project,
+    projects,
     locale,
     translations,
     languages,
+    isLoggedIn,
+    peopleStatus,
+    fetchData,
 }) {
+    const intervieweeId = interview.interviewee_id;
+    const interviewee = project.people[intervieweeId];
+    const projectId = project.identifier;
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            loadIntervieweeWithAssociations({ interviewee, intervieweeId, peopleStatus, fetchData, locale, projectId, projects });
+        }
+    });
+
     return (
         <ul className="DetailList" lang={locale}>
             {
@@ -43,4 +58,6 @@ ThumbnailMetadata.propTypes = {
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
+    peopleStatus: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };

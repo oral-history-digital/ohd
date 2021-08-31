@@ -10,7 +10,7 @@ export default function InterviewLoggedOut({
             <div className="MediaPlayer">
                 <header className="MediaHeader">
                     <h1 className="MediaHeader-title">
-                        {project.fullname_on_landing_page ? interview.title[locale] : interview.anonymous_title[locale]}
+                        {interview.anonymous_title[locale]}
                     </h1>
                 </header>
                 <div className="MediaElement">

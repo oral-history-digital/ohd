@@ -1,53 +1,17 @@
-class InterviewSerializer < ApplicationSerializer
+class InterviewSerializer < InterviewBaseSerializer
   attributes [
-    :id,
-    :archive_id,
-    :project_id,
-    :collection_id,
-    :tape_count,
-    :video,
-    :media_type,
-    :duration,
-    :interview_date,
-    :languages,
-    :language_id,
-    :lang,
-    :title, # np
-    :short_title, # np
-    :anonymous_title,
-    :description, # np
-    :still_url,
     :last_segments_ids,
     :first_segments_ids,
     :workflow_state,
     :workflow_states,
-    :contributions, # np
-    :registry_references,
-    :photos, # np
-    :observations, # np
     :doi_status,
     :landing_page_texts,
     :properties,
     :signature_original,
     :task_ids,
     :tasks_user_account_ids,
-    :tasks_supervisor_ids
+    :tasks_supervisor_ids,
   ]
-
-  def attributes(*args)
-    hash = super
-    object.project.registry_reference_type_metadata_fields.where(ref_object_type: 'Interview').each do |m|
-      hash[m.name] = object.project.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
-        mem
-      end
-    end
-    hash
-  end
-
-  def collection
-    object.collection && object.collection.localized_hash(:name) || {}
-  end
 
   def landing_page_texts
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-landing-page-texts-#{object.archive_id}-#{object.project.updated_at}") do
@@ -57,65 +21,6 @@ class InterviewSerializer < ApplicationSerializer
         mem
       end
     end
-  end
-
-  def contributions
-    json =  Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-contributions-#{object.id}-#{object.contributions.maximum(:updated_at)}") do
-      object.contributions.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
-  end
-
-  def registry_references
-    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-registry_references-#{object.id}-#{object.registry_references.maximum(:updated_at)}") do
-      object.registry_references.inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
-  end
-
-  def photos
-    json = Rails.cache.fetch("#{object.project.cache_key_prefix}-interview-photos-#{object.id}-#{object.photos.maximum(:updated_at)}") do
-      object.photos.includes(:translations).inject({}) { |mem, c| mem[c.id] = cache_single(object.project, c); mem }
-    end
-  end
-
-  def observations
-    object.localized_hash(:observations)
-  end
-
-  def video
-    object.video? ? true : false
-  end
-
-  def media_type
-    object.media_type && object.media_type.downcase
-  end
-
-  def short_title
-    object.localized_hash(:reverted_short_title)
-  end
-
-  def anonymous_title
-    object.localized_hash(:anonymous_title)
-  end
-
-  def description
-    object.localized_hash(:description)
-  end
-
-  def still_url
-    still_media_stream = MediaStream.where(project_id: object.project_id, media_type: 'still').first
-    still_media_stream && still_media_stream.path.gsub(/INTERVIEW_ID/, object.archive_id)
-  end
-
-  def tape_count
-    format("%02d", object.tapes.count)
-  end
-
-  def duration
-    # interview can update duration with a timecode.
-    # Therefore duration as timecode can be duration's value in a form.
-    # Further a timecode is human readable sth like 14785 not so.
-    #
-    Timecode.new(object.duration).timecode
   end
 
   def last_segments_ids

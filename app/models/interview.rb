@@ -238,6 +238,10 @@ class Interview < ApplicationRecord
     self[:properties] = self.properties.update(public_attributes: public_atts)
   end
 
+  def self.non_public_method_names
+    %w(title short_title description observations contributions photos registry_references)
+  end
+
   def tasks_user_account_ids
     tasks.map(&:user_account_id).compact.uniq
   end
@@ -310,8 +314,8 @@ class Interview < ApplicationRecord
      ref && ref.registry_entry
    end
 
-  def title
-    localized_hash(:full_title)
+  def title(locale)
+    full_title(locale)
   end
 
   def reverted_short_title(locale)
@@ -398,7 +402,9 @@ class Interview < ApplicationRecord
       csv << %w(Timecode Speaker Transkript)
 
       tapes[tape_number.to_i - 1].segments.each do |segment|
-        csv << [segment.timecode, segment.speaking_person && segment.speaking_person.full_name(locale), segment.text(locale) || segment.text("#{locale}-public")]
+        contribution = contributions.where(person_id: segment.speaker_id).first
+        speaker_designation = contribution && contribution.speaker_designation
+        csv << [segment.timecode, speaker_designation || "", segment.text(locale) || segment.text("#{locale}-public")]
       end
     end
   end
@@ -556,12 +562,16 @@ class Interview < ApplicationRecord
   end
 
   def anonymous_title(locale=project.default_locale)
-    name_parts = []
-    unless interviewees.blank?
-      name_parts << interviewee.first_name(locale) unless interviewee.first_name(locale).blank?
-      name_parts << "#{(interviewee.last_name(locale).blank? ? '' : interviewee.last_name(locale)).strip.chars.first}."
+    if project.fullname_on_landing_page
+      title(locale)
+    else
+      name_parts = []
+      unless interviewees.blank?
+        name_parts << interviewee.first_name(locale) unless interviewee.first_name(locale).blank?
+        name_parts << "#{(interviewee.last_name(locale).blank? ? '' : interviewee.last_name(locale)).strip.chars.first}."
+      end
+      name_parts.join(' ')
     end
-    name_parts.join(' ')
   end
 
   def video

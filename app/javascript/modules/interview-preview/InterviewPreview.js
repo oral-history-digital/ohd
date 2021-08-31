@@ -8,7 +8,6 @@ import { LinkOrA, usePathBase } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import missingStill from 'assets/images/missing_still.png';
-import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 import ThumbnailBadge from './ThumbnailBadge';
 import ThumbnailMetadataContainer from './ThumbnailMetadataContainer';
 import searchResultCount from './searchResultCount';
@@ -19,14 +18,12 @@ export default function InterviewPreview({
     interview,
     locale,
     projects,
-    peopleStatus,
     setArchiveId,
     setProjectId,
     selectedArchiveIds,
     addRemoveArchiveId,
     interviewSearchResults,
     searchInInterview,
-    fetchData,
 }) {
     const pathBase = usePathBase();
     const [isExpanded, setIsExpanded] = useState(false);
@@ -36,10 +33,6 @@ export default function InterviewPreview({
     const onOHD = [OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT].indexOf(window.location.origin) > -1;
     const showSlideShow = (onOHD && !project.archive_domain) || project.archive_domain === window.location.origin;
 
-    const intervieweeContribution = Object.values(interview.contributions)
-        .find(c => c.contribution_type === 'interviewee');
-    const interviewee = project.people[intervieweeContribution?.person_id];
-
     useEffect(() => {
         if ( fulltext && (
             project.archive_domain === window.location.origin
@@ -47,10 +40,6 @@ export default function InterviewPreview({
             searchInInterview(`${pathBase}/searches/interview`, {fulltext, id: interview.archive_id});
         }
     }, []);
-
-    useEffect(() => {
-        loadIntervieweeWithAssociations({ interview, peopleStatus, fetchData, locale, projectId, projects });
-    });
 
     const doSetArchiveId = () => setArchiveId(interview.archive_id);
 
@@ -78,7 +67,7 @@ export default function InterviewPreview({
                 onLinkClick={doSetArchiveId}
                 className="search-result-link"
             >
-                <InnerContent interview={interview} project={project} locale={locale} interviewee={interviewee} isExpanded={isExpanded} />
+                <InnerContent interview={interview} project={project} locale={locale} isExpanded={isExpanded} />
             </LinkOrA>
 
             {
@@ -111,7 +100,6 @@ export default function InterviewPreview({
 
 function InnerContent({
     interview,
-    interviewee,
     project,
     locale,
     isExpanded
@@ -136,12 +124,12 @@ function InnerContent({
             <AuthShowContainer ifLoggedOut ifNoProject>
                 <p className="search-result-name">
                     {interview.workflow_state === 'unshared' && <FaEyeSlash />}
-                    {(project && project.fullname_on_landing_page) ? interview.title[locale] : interview.anonymous_title[locale]}
+                    {interview.anonymous_title[locale]}
                 </p>
             </AuthShowContainer>
 
-            {interviewee?.associations_loaded && !isExpanded && (
-                <ThumbnailMetadataContainer interview={interview} interviewee={interviewee} project={project} />
+            {!isExpanded && (
+                <ThumbnailMetadataContainer interview={interview} project={project} />
             )}
         </>
     );
@@ -155,9 +143,7 @@ InterviewPreview.propTypes = {
     locale: PropTypes.string.isRequired,
     statuses: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array,
-    peopleStatus: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,
     searchInInterview: PropTypes.func.isRequired,
-    fetchData: PropTypes.func.isRequired,
 };

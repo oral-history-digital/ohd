@@ -27,10 +27,11 @@ export default class MediaControls extends Component {
 
     rememberInterviewLink() {
         const { locale, translations } = this.props;
+        const shortTitle = this.props.interview.short_title && this.props.interview.short_title[locale];
 
         return (
             <Modal
-                title={t({ locale, translations }, 'save_interview_reference') + ": " + this.props.interview.short_title[locale]}
+                title={t({ locale, translations }, 'save_interview_reference') + ": " + shortTitle}
                 trigger={<><FaStar /> <span>{t({ locale, translations }, 'save_interview_reference')}</span></>}
                 triggerClassName="MediaControls-bookmark"
             >
@@ -52,9 +53,10 @@ export default class MediaControls extends Component {
     }
 
     defaultTitle() {
+        const shortTitle = this.props.interview.short_title && this.props.interview.short_title[this.props.locale];
         moment.locale(this.props.locale);
         let now = moment().format('lll');
-        return `${this.props.archiveId} - ${this.props.interview.short_title[this.props.locale]} - ${now}`;
+        return `${this.props.archiveId} - ${shortTitle} - ${now}`;
     }
 
     annotateOnSegmentLink() {
