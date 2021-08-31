@@ -1,5 +1,24 @@
 class RegistryEntriesController < ApplicationController
   skip_before_action :authenticate_user_account!, only: [:index, :show]
+  skip_after_action :verify_authorized, only: [:norm_data]
+  skip_after_action :verify_policy_scoped, only: [:norm_data]
+
+  def norm_data
+    uri = URI.parse("https://c105-230.cloud.gwdg.de/transformation/api/610819aba6ab26663fe6163d")
+    results = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
+      request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
+      request.body = {expression: params[:expression]}.to_json
+      response = http.request request
+      response.body
+    end
+
+    respond_to do |format|
+      format.json do
+        render json: JSON.parse(results)["response"]["items"].to_json
+      end
+    end
+  end
+
 
   def create
     authorize RegistryEntry
@@ -61,7 +80,7 @@ class RegistryEntriesController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{cache_key_params}-#{cache_key_date}" do
+        #json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{cache_key_params}-#{cache_key_date}" do
           registry_entries, extra_params =
             if params[:children_for_entry]
               [
@@ -81,12 +100,12 @@ class RegistryEntriesController < ApplicationController
               ]
             end
 
-          {
+        json =  {
             data: registry_entries,
             data_type: "registry_entries",
             extra_params: extra_params,
-          }
-        end.to_json
+        }.to_json
+        #end.to_json
         render plain: json
       end
       format.pdf do
