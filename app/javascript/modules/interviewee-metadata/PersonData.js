@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaPencilAlt } from 'react-icons/fa';
 
 import { ContentField } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
@@ -142,7 +143,7 @@ export default class PersonData extends Component {
                         <AuthorizedContent object={interviewee} action='update'>
                             <Modal
                                 title={t(this.props, 'edit.contribution.edit')}
-                                trigger={<><i className="fa fa-pencil" />{t(this.props, 'edit.contribution.edit')}</>}
+                                trigger={<><FaPencilAlt className="AdminIcon AdminIcon--small" /> {t(this.props, 'edit.contribution.edit')}</>}
                             >
                                 {close => (
                                     <ContributionFormContainer
@@ -188,4 +189,5 @@ PersonData.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
+    submitData: PropTypes.func.isRequired,
 };

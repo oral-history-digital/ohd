@@ -1,5 +1,6 @@
 import Popup from 'reactjs-popup';
 import PropTypes from 'prop-types';
+import { FaEllipsisV } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
@@ -12,7 +13,7 @@ function PopupMenu({ className, children }) {
             className="PopupMenu-trigger"
             title={t('more')}
         >
-            <i className={classNames('PopupMenu-triggerIcon', 'fa', 'fa-ellipsis-v')} />
+            <FaEllipsisV className={classNames('PopupMenu-triggerIcon')} />
         </button>
     );
 

@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTrash, FaMinusCircle, FaSitemap, FaGlobeEurope } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { PopupMenu } from 'modules/ui';
@@ -58,7 +59,8 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <i className="fa fa-pencil" />
+                <FaPencilAlt className="AdminIcon" />
+                {' '}
                 {t(this.props, 'edit.registry_entry.edit')}
             </div>
         )
@@ -89,7 +91,8 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <i className="fa fa-trash-o" />
+                <FaTrash className="AdminIcon" />
+                {' '}
                 {t(this.props, 'delete')}
             </div>
         } else {
@@ -126,7 +129,8 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <i className="fa fa-minus-circle" />
+                <FaMinusCircle className="AdminIcon"/>
+                {' '}
                 {t(this.props, 'edit.registry_entry.delete_parent')}
             </div>
         } else {
@@ -147,7 +151,8 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <i className="fa fa-sitemap" style={{'transform': 'rotate(180deg)'}} />
+                <FaSitemap className="AdminIcon" style={{'transform': 'rotate(180deg)'}} />
+                {' '}
                 {t(this.props, 'edit.registry_entry.add_parent')}
             </div>
         )
@@ -166,7 +171,8 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <i className="fa fa-sitemap" />
+                <FaSitemap className="AdminIcon" />
+                {' '}
                 {t(this.props, 'edit.registry_entry.new')}
             </div>
         )
@@ -182,8 +188,7 @@ export default class RegistryEntry extends Component {
                     className="flyout-sub-tabs-content-ico-link"
                     title={`${this.props.data.latitude}, ${this.props.data.longitude}`}
                 >
-                    <i className='fa fa-globe' />
-                    &nbsp;
+                    <FaGlobeEurope style={{ color: 'var(--primary-color)' }} />
                 </a>
             )
         }
@@ -194,7 +199,7 @@ export default class RegistryEntry extends Component {
 
     buttons() {
         return (
-            <div className="flyout-sub-tabs-content-ico">
+            <div>
                 {this.osmLink()}
                 {this.editButtons()}
             </div>

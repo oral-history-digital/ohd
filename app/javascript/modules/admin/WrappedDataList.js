@@ -1,5 +1,6 @@
 import { createElement, Component } from 'react';
 import Observer from 'react-intersection-observer'
+import { FaPlus } from 'react-icons/fa';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
@@ -146,7 +147,7 @@ export default class WrappedDataList extends Component {
                 <AuthorizedContent object={[{type: camelCase(this.props.scope), interview_id: this.props.interview?.id}, this.props.task]} action='create'>
                     <Modal
                         title={t(this.props, `edit.${this.props.scope}.new`)}
-                        trigger={<><i className="fa fa-plus"/>{t(this.props, `edit.${this.props.scope}.new`)}</>}
+                        trigger={<><FaPlus className="AdminIcon" /> {t(this.props, `edit.${this.props.scope}.new`)}</>}
                     >
                         {close => this.form(undefined, close)}
                     </Modal>

@@ -1,6 +1,7 @@
 import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-17';
+import { FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
 
 import { TreeSelectContainer } from 'modules/tree-select';
 import InputContainer from './input-components/InputContainer';
@@ -97,7 +98,7 @@ export default class Form extends Component {
                 })
             }}
         >
-            <i className="fa fa-trash-o"></i>
+            <FaTrash className="AdminIcon"/>
         </span>
     }
 
@@ -155,7 +156,11 @@ export default class Form extends Component {
                 >
                     <div>
                         {t(this.props, `${pluralize(this.props.nestedFormScope)}.add`) + '  '}
-                        <i className={`fa fa-${this.state.showNestedForm ? 'times' : 'plus'}`}></i>
+                        {
+                            this.state.showNestedForm ?
+                                <FaTimes className="AdminIcon" /> :
+                                <FaPlus className="AdminIcon" />
+                        }
                     </div>
                 </div>
             )
