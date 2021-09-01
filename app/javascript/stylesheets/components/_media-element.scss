@@ -49,6 +49,7 @@
 
   video{
     display: block;
+    max-width: 100%;
   }
 
   @include screen-l {
