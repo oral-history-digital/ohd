@@ -1,6 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaPencilAlt } from 'react-icons/fa';
+import { FaPencilAlt, FaDownload } from 'react-icons/fa';
 
 import { ContentField } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
@@ -50,8 +50,9 @@ export default class PersonData extends Component {
     download(lang) {
         return (
             <a href={pathBase(this.props) + '/biographical_entries/' + this.props.archiveId + '.pdf?lang=' + lang}>
-                <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
-                <span>{t(this.props, lang)}</span>
+                <FaDownload className="Icon Icon--small" title={t(this.props, 'download')} />
+                {' '}
+                {t(this.props, lang)}
             </a>
         )
     }
@@ -62,6 +63,7 @@ export default class PersonData extends Component {
             return (
                 <span>
                     {publicBioEntry.text[this.props.interview.lang] && this.download(this.props.interview.lang)}
+                    {' '}
                     {publicBioEntry.text[this.props.locale] &&
                             this.props.interview.lang !== this.props.locale &&
                             this.download(this.props.locale)

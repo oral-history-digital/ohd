@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaDownload } from 'react-icons/fa';
 
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
@@ -17,8 +18,9 @@ export default class InterviewTextMaterials extends Component {
                     href={`${pathBase(this.props)}/interviews/${interview.archive_id}.pdf?lang=${lang}`}
                     className="flyout-content-data"
                 >
-                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download')}></i>
-                    <span>{t(this.props, lang)}</span>
+                    <FaDownload className="Icon Icon--small" title={t(this.props, 'download')} />
+                    {' '}
+                    {t(this.props, lang)}
                 </a>
             )
         } else {

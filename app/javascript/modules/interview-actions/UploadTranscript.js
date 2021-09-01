@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { FaDownload } from 'react-icons/fa';
 
 import { Form, validateTapeNumber } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
@@ -70,8 +71,9 @@ export default function UploadTranscript({
             <p>
                 <a href="/transcript-import-template.ods" download>
                     <span className="flyout-sub-tabs-content-ico-link">
-                    <i className="fa fa-download flyout-content-ico" title={t('download')}></i>
-                    {t('transcript_template')}
+                        <FaDownload className="Icon Icon--small" title={t('download')} />
+                        {' '}
+                        {t('transcript_template')}
                     </span>
                 </a>
             </p>
