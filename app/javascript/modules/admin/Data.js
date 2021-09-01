@@ -74,13 +74,17 @@ export default class Data extends Component {
     }
 
     destroy() {
+        // skip remove from state, only remove server-side
+        this.props.deleteData(this.props, pluralize(this.props.scope), this.props.data.id, null, null, true);
+        // only remove from state
         this.props.deleteData(
             this.props,
             this.props.outerScope ? pluralize(this.props.outerScope) : pluralize(this.props.scope),
             this.props.outerScopeId || this.props.data.id,
             this.props.outerScope ? pluralize(this.props.scope) : null,
             this.props.outerScope ? this.props.data.id : null,
-            false
+            null,
+            true
         );
         this.props.closeArchivePopup();
     }
