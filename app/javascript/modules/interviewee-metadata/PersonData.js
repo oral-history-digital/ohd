@@ -160,7 +160,7 @@ export default class PersonData extends Component {
                 <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                     <ContentField
                         label={t(this.props, 'interviewee_name')}
-                        value={project.fullname_on_landing_page ? fullname(this.props, interviewee) : interview.anonymous_title[locale]}
+                        value={interview.anonymous_title && interview.anonymous_title[locale]}
                     />
                 </AuthShowContainer>
                 {this.personMetadataFields()}
