@@ -30,6 +30,7 @@ export default class RegistryEntryShow extends Component {
     fetchInterview(archiveId) {
         if(archiveId && !this.props.interviewsStatus[archiveId]) {
             this.props.fetchData(this.props, 'interviews', archiveId)
+            this.props.fetchData(this.props, 'interviews', archiveId, 'short_title')
         }
     }
 
