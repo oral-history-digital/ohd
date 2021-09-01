@@ -94,7 +94,7 @@ export default class WrappedDataList extends Component {
                 sorted = Object.values(this.props.data)
             }
         }
-        return sorted;
+        return sorted.filter(s => s);
     }
 
     data() {

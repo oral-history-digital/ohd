@@ -12,7 +12,7 @@ function MetadataFieldShow({data}) {
     if (translations[locale].search_facets.hasOwnProperty(data.name)) {
         name = t(`search_facets.${data.name}`);
     } else {
-        name = data.label[locale];
+        name = data.label && data.label[locale];
     }
 
     return (
