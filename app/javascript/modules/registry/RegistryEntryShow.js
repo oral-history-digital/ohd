@@ -35,7 +35,9 @@ export default class RegistryEntryShow extends Component {
     }
 
     interviewIsFetched(archiveId) {
-        return this.props.interviewsStatus[archiveId] && this.props.interviewsStatus[archiveId].split('-')[0] === 'fetched'
+        return this.props.interviewsStatus[archiveId] &&
+            this.props.interviewsStatus[archiveId].split('-')[0] === 'fetched' &&
+            this.props.interviews[archiveId].short_title
     }
 
     fetchSegment(id) {
