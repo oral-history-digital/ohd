@@ -111,7 +111,12 @@ class Interview < ApplicationRecord
     #(text :pseudonym_string, :stored => true) if project.identifier == 'dg'
 
     # in order to fast access a list of titles for the name and alias_names autocomplete:
-    string :title, :stored => true
+    string :title, :stored => true do
+      Rails.configuration.i18n.available_locales.inject({}) do |mem, locale|
+        mem[locale] = title(locale)
+        mem
+      end
+    end
     string :media_type, :stored => true
     string :duration, :stored => true
     string :language, :stored => true do
