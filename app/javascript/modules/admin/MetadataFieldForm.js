@@ -25,7 +25,7 @@ export default function MetadataFieldForm({
     registryReferenceTypes,
     data,
     submitData,
-    closeArchivePopup,
+    onSubmit,
 }) {
     const { t } = useI18n();
     const [source, setSource] = useState(data?.source);
@@ -57,7 +57,7 @@ export default function MetadataFieldForm({
                 scope='metadata_field'
                 onSubmit={(params) => {
                     submitData({ locale, projectId, projects }, params);
-                    closeArchivePopup()
+                    onSubmit();
                 }}
                 data={data}
                 values={{

@@ -60,7 +60,7 @@ export default class DataList extends Component {
 
     form(data, onSubmit) {
         if (this.props.form) {
-            return createElement(this.props.form, {data: data, values: this.props.initialFormValues});
+            return createElement(this.props.form, {data: data, values: this.props.initialFormValues, onSubmit: onSubmit});
         } else {
             return (
                 <Form
