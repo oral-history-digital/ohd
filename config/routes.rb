@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  get "norm_data" => "registry_entries#norm_data"
+
   concern :archive do
     get "random_featured_interviews", to: "interviews#random_featured"
     resources :texts
@@ -227,8 +229,6 @@ Rails.application.routes.draw do
 
   get "photos/src/:name" => "photos#src"
   get "photos/thumb/:name" => "photos#thumb"
-
-  get "norm_data" => "registry_entries#norm_data"
 
   mount OaiRepository::Engine => "/oai_repository"
   root to: redirect("#{OHD_DOMAIN}/de")
