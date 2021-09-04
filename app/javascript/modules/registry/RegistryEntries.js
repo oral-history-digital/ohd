@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -8,6 +8,7 @@ import { Modal } from 'modules/ui';
 import { t } from 'modules/i18n';
 import RegistryEntryContainer from './RegistryEntryContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
+import RegistryEntryFromNormDataFormContainer from './RegistryEntryFromNormDataFormContainer';
 
 export default class RegistryEntries extends Component {
     componentDidMount() {
@@ -78,22 +79,20 @@ export default class RegistryEntries extends Component {
         }
     }
 
-    addRegistryEntry() {
+    addRegistryEntry(component, titlePart) {
         return (
             <AuthorizedContent object={{type: 'RegistryEntry'}} action='create'>
                 <Modal
-                    title={t(this.props, 'edit.registry_entry.new')}
-                    trigger={t(this.props, 'edit.registry_entry.new')}
+                    title={t(this.props, `edit.registry_entry.${titlePart}`)}
+                    trigger={t(this.props, `edit.registry_entry.${titlePart}`)}
                     triggerClassName="flyout-sub-tabs-content-ico-link"
                 >
-                    {
-                        close => (
-                            <RegistryEntryFormContainer
-                                registryEntryParent={this.props.registryEntryParent}
-                                onSubmit={close}
-                            />
-                        )
-                    }
+                    { close => createElement(component,
+                        {
+                            registryEntryParent: this.props.registryEntryParent,
+                            onSubmit: close
+                        }
+                    ) }
                 </Modal>
             </AuthorizedContent>
         );
@@ -107,7 +106,8 @@ export default class RegistryEntries extends Component {
                 })}>
                     {this.registryEntries()}
                 </ul>
-                {this.addRegistryEntry()}
+                {this.addRegistryEntry(RegistryEntryFormContainer, 'new')}
+                {this.addRegistryEntry(RegistryEntryFromNormDataFormContainer, 'from_norm_data')}
             </div>
         )
     }
