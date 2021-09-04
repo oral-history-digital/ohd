@@ -77,6 +77,7 @@ export default class Form extends Component {
         let _this = this;
         event.preventDefault();
         if(this.valid()) {
+            debugger
             this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
             if (typeof(this.props.onSubmitCallback) === "function") {
                 this.props.onSubmitCallback()

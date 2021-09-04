@@ -4,11 +4,16 @@ import request from 'superagent';
 
 import { useI18n } from 'modules/i18n';
 
-function NormDataSelect({setRegistryEntryAttributes}) {
+function NormDataSelect({
+    setRegistryEntryAttributes,
+    registryEntryParent,
+    registryNameTypes,
+}) {
     const { t } = useI18n();
     const [inputValue, setValue] = useState('');
     const [selectedValue, setSelectedValue] = useState(null);
 
+    const normDataRegistryNameType = Object.values(registryNameTypes).filter(r => r.code === 'norm_data')[0];
     const handleInputChange = value => {
         setValue(value);
     };
@@ -17,20 +22,19 @@ function NormDataSelect({setRegistryEntryAttributes}) {
 
     const handleChange = value => {
         setSelectedValue(value);
-        if (selectedValue) {
-            debugger
+        if (value) {
             const preparedAttributes = {
-                latitude: selectedValue.Location?.Coord[0],
-                longitude: selectedValue.Location?.Coord[1],
+                parent_id: registryEntryParent?.id,
+                workflow_state: 'preliminary',
+                latitude: value.Entry.Location?.Latitude,
+                longitude: value.Entry.Location?.Longitude,
                 registry_names_attributes: [{
-                    registry_name_type_id: 4,
+                    registry_name_type_id: normDataRegistryNameType.id,
                     name_position: 1,
-                    translations_attributes: {
-                        0: {
-                            descriptor: selectedValue.Name,
-                            locale: 'de'
-                        }
-                    }
+                    translations_attributes: [{
+                        descriptor: value.Entry.Name,
+                        locale: 'de'
+                    }],
                 }],
             };
             setRegistryEntryAttributes(preparedAttributes);
