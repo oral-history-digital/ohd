@@ -47,8 +47,7 @@ function NormDataSelect({
 
     return (
         <div className="NormData">
-            <h3>{t('activerecord.attributes.registry_entries.from_norm_data')}</h3>
-            <pre>Input Value: "{inputValue}"</pre>
+        {/*<pre>Input Value: "{inputValue}"</pre>*/}
             <AsyncSelect
                 cacheOptions
                 defaultOptions
@@ -59,7 +58,7 @@ function NormDataSelect({
                 onInputChange={handleInputChange}
                 onChange={handleChange}
             />
-            <pre>Selected Value: {JSON.stringify(selectedValue || {}, null, 2)}</pre>
+        {/*<pre>Selected Value: {JSON.stringify(selectedValue || {}, null, 2)}</pre>*/}
         </div>
     );
 }
