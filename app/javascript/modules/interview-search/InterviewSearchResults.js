@@ -33,10 +33,10 @@ export default function InterviewSearchResults({
         );
     }
 
-    const locales = interview.languages;
-    const interviewLang = interview.lang;
+    const locales = interview ? interview.languages : [];
+    const interviewLang = interview?.lang;
 
-    const resultsPerLocale = locales.map(resultLocale => [
+    const resultsPerLocale = locales?.map(resultLocale => [
         resultLocale,
         segmentResults.filter(segment => segment.text[resultLocale]?.length > 0),
     ])
@@ -46,7 +46,7 @@ export default function InterviewSearchResults({
     return (
         <div>
             {
-                resultsPerLocale.map(([resultLocale, results]) => {
+                resultsPerLocale?.map(([resultLocale, results]) => {
                     const heading = resultLocale === interviewLang ?
                         t('segment_results') :
                         t('translation_results');
