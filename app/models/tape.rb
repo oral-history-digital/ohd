@@ -74,10 +74,6 @@ class Tape < ApplicationRecord
     @language ||= self.interview.language
   end
 
-  def number
-    @number ||= (defined? tape_number) ? tape_number : media_id[/\d+$/].to_i
-  end
-
   def media_id=(id)
     write_attribute :media_id, id.upcase
   end
