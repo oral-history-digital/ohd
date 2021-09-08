@@ -35,7 +35,7 @@ export default function SegmentButtons({
                 <Modal
                     title={t(tabIndex === 1 ? 'edit.segment.translation' : 'edit.segment.transcript')}
                     trigger={<FaPencilAlt className="Icon Icon--editorial" />}
-                    triggerClassName="Button"
+                    triggerClassName="Button Button--icon"
                 >
                     {closeModal => (
                         <SegmentFormContainer
@@ -47,8 +47,8 @@ export default function SegmentButtons({
                 </Modal>
                 <Modal
                     title={t(data.has_heading ? 'edit.segment.heading.edit' : 'edit.segment.heading.new')}
-                    trigger={<FaHeading className="Button" />}
-                    triggerClassName={classNames('Icon', data.has_heading ? 'Icon--primary' : 'Icon--editorial')}
+                    trigger={<FaHeading className={classNames('Icon', data.has_heading ? 'Icon--primary' : 'Icon--editorial')} />}
+                    triggerClassName="Button Button--icon"
                 >
                     {closeModal => (
                         <SegmentHeadingFormContainer

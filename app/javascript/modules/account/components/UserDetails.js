@@ -25,7 +25,7 @@ export default function UserDetails({
             <div className="buttons box">
                 <Modal
                     title={t('edit.account.edit')}
-                    trigger={<FaPencilAlt />}
+                    trigger={<FaPencilAlt className="Icon Icon--primary" />}
                 >
                     {close => (
                         <UserDetailsFormContainer onSubmit={close} />
