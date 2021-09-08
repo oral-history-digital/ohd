@@ -86,8 +86,7 @@ export default function RegistryReferences({
             <AuthorizedContent object={{type: 'RegistryReference', interview_id: interview.id}} action='create'>
                 <Modal
                     title={t('edit.registry_reference.new')}
-                    trigger={<FaPlus />}
-                    triggerClassName="RegistryReferences-addButton"
+                    trigger={<FaPlus className="Icon Icon--editorial Icon--small"/>}
                 >
                     {close => (
                         <RegistryReferenceFormContainer

@@ -61,10 +61,10 @@ export default function SegmentPopup({
                             <div className="SegmentPopup-glossary">
                                 <button
                                     type="button"
-                                    className="IconButton SegmentPopup-collapse"
+                                    className="Button Button--transparent Button--icon SegmentPopup-collapse"
                                     onClick={() => setOpenReference(null)}
                                 >
-                                    <FaTimes className="IconButton-icon" />
+                                    <FaTimes className="Icon" />
                                 </button>
                                 <div className="SegmentPopup-term">
                                     {openReference.name[contentLocale]}

@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
@@ -22,8 +23,7 @@ export default class BiographicalEntry extends Component {
             <AuthorizedContent object={data} action='update'>
                 <Modal
                     title={t(this.props, 'edit.biographical_entry.edit')}
-                    trigger={<i className="fa fa-pencil"/>}
-                    triggerClassName="flyout-sub-tabs-content-ico-link"
+                    trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small"/>}
                 >
                     {close => (
                         <BiographicalEntryFormContainer
@@ -35,8 +35,7 @@ export default class BiographicalEntry extends Component {
 
                 <Modal
                     title={t(this.props, 'delete')}
-                    trigger={<i className="fa fa-trash-o"/>}
-                    triggerClassName="flyout-sub-tabs-content-ico-link"
+                    trigger={<FaTrash className="Icon Icon--editorial Icon--small" />}
                 >
                     {close => (
                         <div>

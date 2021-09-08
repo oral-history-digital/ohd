@@ -60,9 +60,9 @@ export default class MediaControls extends Component {
     }
 
     annotateOnSegmentLink() {
-        const { locale, translations, interview, tape } = this.props;
+        const { locale, translations, interview, tape, mediaTime } = this.props;
 
-        let sortedSegmentsWithIndex = sortedSegmentsWithActiveIndex(this.props.mediaTime, { interview, tape });
+        let sortedSegmentsWithIndex = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape });
 
         return (
             <Modal

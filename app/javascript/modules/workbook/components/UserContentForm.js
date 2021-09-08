@@ -1,6 +1,8 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import moment from 'moment';
+import classNames from 'classnames';
 
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
@@ -106,21 +108,33 @@ export default class UserContentForm extends Component {
     }
 
     previousSegment() {
-        if (this.state.segmentIndex > 0) {
-            return <i className='fa fa-arrow-left popup-segment-nav-before'
-                      onClick={() => this.setSegment(this.state.segmentIndex - 1)}/>
-        } else {
-            return <i className='fa fa-arrow-left popup-segment-nav-before inactive'/>
-        }
+        const isDisabled = this.state.segmentIndex === 0;
+
+        return (
+            <button
+                type="button"
+                className="Button Button--transparent Button--icon"
+                disabled={isDisabled}
+                onClick={() => this.setSegment(this.state.segmentIndex - 1)}
+            >
+                <FaArrowLeft className={classNames('Icon', {'Icon--primary': !isDisabled})} />
+            </button>
+        );
     }
 
     nextSegment() {
-        if (this.state.segmentIndex < this.props.sortedSegments.length - 1) {
-            return <i className='fa fa-arrow-right popup-segment-nav-after'
-                      onClick={() => this.setSegment(this.state.segmentIndex + 1)}/>
-        } else {
-            return <i className='fa fa-arrow-right popup-segment-nav-after inactive'/>
-        }
+        const isDisabled = this.state.segmentIndex >= this.props.sortedSegments.length - 1;
+
+        return (
+            <button
+                type="button"
+                className="Button Button--transparent Button--icon"
+                disabled={isDisabled}
+                onClick={() => this.setSegment(this.state.segmentIndex + 1)}
+            >
+                <FaArrowRight className={classNames('Icon', {'Icon--primary': !isDisabled})} />
+            </button>
+        );
     }
 
     setSegment(segmentIndex) {

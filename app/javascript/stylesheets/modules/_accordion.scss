@@ -169,7 +169,7 @@ span.registry-reference:not(:last-child), span.flyout-content-data:not(:last-chi
   &:last-child {
     margin-right: 0;
   }
- .fa {
+  .fa, svg {
       color: var(--editorial-color);
       margin-left: 1px;
   }

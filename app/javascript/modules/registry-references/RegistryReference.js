@@ -83,8 +83,7 @@ export default function RegistryReference({
                     registryEntries[registryReference.registry_entry_id].associations_loaded && (
                         <Modal
                             title={t('edit.registry_reference.edit')}
-                            trigger={<FaPencilAlt />}
-                            triggerClassName="flyout-sub-tabs-content-ico-link"
+                            trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small"/>}
                         >
                             {close => (
                                 <RegistryReferenceFormContainer
@@ -104,8 +103,7 @@ export default function RegistryReference({
                     registryReference && !hideEdit && isAuthorized(registryReference, 'destroy') && (
                         <Modal
                             title={t('edit.registry_reference.delete')}
-                            trigger={<FaTrash />}
-                            triggerClassName="flyout-sub-tabs-content-ico-link"
+                            trigger={<FaTrash className="Icon Icon--editorial Icon--small"/>}
                         >
                             {close => (
                                 <div>

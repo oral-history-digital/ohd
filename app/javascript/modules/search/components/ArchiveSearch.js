@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import { FaStar, FaDownload } from 'react-icons/fa';
 import Observer from 'react-intersection-observer'
 import moment from 'moment';
 
@@ -222,7 +223,7 @@ export default class ArchiveSearch extends Component {
         return (
             <Modal
                 title={t(this.props, 'save_search')}
-                trigger={<><i className="fa fa-star"></i><span>{t(this.props, 'save_search')}</span></>}
+                trigger={<><FaStar className="Icon" /> {t(this.props, 'save_search')}</>}
                 triggerClassName="search-results-ico-link"
             >
                 {close => this.saveSearchForm(close)}
@@ -253,7 +254,7 @@ export default class ArchiveSearch extends Component {
             return (
                 <Modal
                     title={t(this.props, 'export_search_results')}
-                    trigger={<><i className="fa fa-download"></i><span>{t(this.props, 'export_search_results')}</span></>}
+                    trigger={<><FaDownload className="Icon" /> {t(this.props, 'export_search_results')}</>}
                     triggerClassName="search-results-ico-link"
                 >
                     {this.exportSearch()}
@@ -319,7 +320,7 @@ export default class ArchiveSearch extends Component {
                     <h1 className="search-results-title">
                         {t(this.props, 'interviews')}
                     </h1>
-                    <div className="search-results-legend">
+                    <div className="SearchResults-legend search-results-legend">
                         <AuthShowContainer ifLoggedIn={true}>
                             {this.saveSearchLink()}
                             {this.exportSearchLink()}

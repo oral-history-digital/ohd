@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
 
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -23,8 +24,7 @@ export default function InterviewContributors({
                 <p>
                     <Modal
                         title={t('edit.contribution.new')}
-                        trigger={<i className="fa fa-plus" />}
-                        triggerClassName="flyout-sub-tabs-content-ico-link"
+                        trigger={<FaPlus className="Icon Icon--editorial Icon--small"/>}
                     >
                         {close => (
                             <ContributionFormContainer
