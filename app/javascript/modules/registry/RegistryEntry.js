@@ -59,7 +59,7 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <FaPencilAlt className="AdminIcon" />
+                <FaPencilAlt className="Icon Icon--editorial" />
                 {' '}
                 {t(this.props, 'edit.registry_entry.edit')}
             </div>
@@ -91,7 +91,7 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <FaTrash className="AdminIcon" />
+                <FaTrash className="Icon Icon--editorial" />
                 {' '}
                 {t(this.props, 'delete')}
             </div>
@@ -129,7 +129,7 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <FaMinusCircle className="AdminIcon"/>
+                <FaMinusCircle className="Icon Icon--editorial"/>
                 {' '}
                 {t(this.props, 'edit.registry_entry.delete_parent')}
             </div>
@@ -151,7 +151,7 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <FaSitemap className="AdminIcon" style={{'transform': 'rotate(180deg)'}} />
+                <FaSitemap className="Icon Icon--editorial" style={{'transform': 'rotate(180deg)'}} />
                 {' '}
                 {t(this.props, 'edit.registry_entry.add_parent')}
             </div>
@@ -171,7 +171,7 @@ export default class RegistryEntry extends Component {
                     })
                 }}
             >
-                <FaSitemap className="AdminIcon" />
+                <FaSitemap className="Icon Icon--editorial" />
                 {' '}
                 {t(this.props, 'edit.registry_entry.new')}
             </div>

@@ -24,10 +24,10 @@ export default function Annotation({
                 dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}}
             />
             <AuthorizedContent object={annotation} action='update'>
-                <span className={'flyout-sub-tabs-content-ico'}>
+                <span className="flyout-sub-tabs-content-ico">
                     <Modal
                         title={t('edit.annotation.edit')}
-                        trigger={<FaPencilAlt className="AdminIcon AdminIcon--small"/>}
+                        trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small"/>}
                     >
                         {closeModal => (
                             <AnnotationFormContainer
@@ -40,7 +40,7 @@ export default function Annotation({
                     </Modal>
                     <Modal
                         title={t('edit.annotation.delete')}
-                        trigger={<FaTrash className="AdminIcon AdminIcon--small"/>}
+                        trigger={<FaTrash className="Icon Icon--editorial Icon--small"/>}
                     >
                         {closeModal => (
                             <div>

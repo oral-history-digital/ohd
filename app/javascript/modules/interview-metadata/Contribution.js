@@ -40,7 +40,7 @@ export default function Contribution({
                     <span className="flyout-sub-tabs-content-ico">
                         <Modal
                             title={t('edit.contribution.edit')}
-                            trigger={<FaPencilAlt className="AdminIcon AdminIcon--small" />}
+                            trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small" />}
                         >
                             {close => (
                                 <ContributionFormContainer
@@ -53,7 +53,7 @@ export default function Contribution({
                         </Modal>
                         <Modal
                             title={`${t('delete')} ${t('contributions.' + contribution.contribution_type)}`}
-                            trigger={<FaTrash className="AdminIcon AdminIcon--small" />}
+                            trigger={<FaTrash className="Icon Icon--editorial Icon--small" />}
                         >
                             {close => (
                                 <div>

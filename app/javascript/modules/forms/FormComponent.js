@@ -98,7 +98,7 @@ export default class Form extends Component {
                 })
             }}
         >
-            <FaTrash className="AdminIcon"/>
+            <FaTrash className="Icon Icon--editorial"/>
         </span>
     }
 
@@ -158,8 +158,8 @@ export default class Form extends Component {
                         {t(this.props, `${pluralize(this.props.nestedFormScope)}.add`) + '  '}
                         {
                             this.state.showNestedForm ?
-                                <FaTimes className="AdminIcon" /> :
-                                <FaPlus className="AdminIcon" />
+                                <FaTimes className="Icon Icon--editorial" /> :
+                                <FaPlus className="Icon Icon--editorial" />
                         }
                     </div>
                 </div>

@@ -24,7 +24,7 @@ export default function InterviewContributors({
                 <p>
                     <Modal
                         title={t('edit.contribution.new')}
-                        trigger={<FaPlus className="AdminIcon AdminIcon--small"/>}
+                        trigger={<FaPlus className="Icon Icon--editorial Icon--small"/>}
                     >
                         {close => (
                             <ContributionFormContainer

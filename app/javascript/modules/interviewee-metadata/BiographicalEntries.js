@@ -26,7 +26,7 @@ export default class BiographicalEntries extends Component {
                 <p>
                     <Modal
                         title={t(this.props, 'edit.biographical_entry.new')}
-                        trigger={<><FaPlus className="AdminIcon AdminIcon--small" /> {t(this.props, 'edit.biographical_entry.new')}</>}
+                        trigger={<><FaPlus className="Icon Icon--editorial Icon--small" /> {t(this.props, 'edit.biographical_entry.new')}</>}
                     >
                         {close => (
                             <BiographicalEntryFormContainer

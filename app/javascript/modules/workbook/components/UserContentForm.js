@@ -113,7 +113,7 @@ export default class UserContentForm extends Component {
         return (
             <button
                 type="button"
-                className="IconButton"
+                className="Button Button--transparent Button--icon"
                 disabled={isDisabled}
                 onClick={() => this.setSegment(this.state.segmentIndex - 1)}
             >
@@ -128,7 +128,7 @@ export default class UserContentForm extends Component {
         return (
             <button
                 type="button"
-                className="IconButton"
+                className="Button Button--transparent Button--icon"
                 disabled={isDisabled}
                 onClick={() => this.setSegment(this.state.segmentIndex + 1)}
             >

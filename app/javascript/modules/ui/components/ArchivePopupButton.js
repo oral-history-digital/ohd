@@ -37,7 +37,7 @@ export default function ArchivePopupButton({
             title={title}
             onClick={open}
         >
-            <IconComponent className="PopupMenu-triggerIcon" />
+            <IconComponent className="Icon Icon--editorial" />
             {' '}
             {title}
         </button>

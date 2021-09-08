@@ -145,7 +145,7 @@ export default class PersonData extends Component {
                         <AuthorizedContent object={interviewee} action='update'>
                             <Modal
                                 title={t(this.props, 'edit.contribution.edit')}
-                                trigger={<><FaPencilAlt className="AdminIcon AdminIcon--small" /> {t(this.props, 'edit.contribution.edit')}</>}
+                                trigger={<><FaPencilAlt className="Icon Icon--editorial Icon--small" /> {t(this.props, 'edit.contribution.edit')}</>}
                             >
                                 {close => (
                                     <ContributionFormContainer

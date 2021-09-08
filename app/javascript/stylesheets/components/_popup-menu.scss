@@ -7,10 +7,6 @@
   transition: background-color $transition-duration;
 }
 
-.PopupMenu-triggerIcon {
-  color: var(--editorial-color) !important;
-}
-
 .PopupMenu-list {
   background-color: white;
   border: 1px solid $gray-light;

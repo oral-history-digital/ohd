@@ -23,7 +23,7 @@ export default class BiographicalEntry extends Component {
             <AuthorizedContent object={data} action='update'>
                 <Modal
                     title={t(this.props, 'edit.biographical_entry.edit')}
-                    trigger={<FaPencilAlt className="AdminIcon AdminIcon--small"/>}
+                    trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small"/>}
                 >
                     {close => (
                         <BiographicalEntryFormContainer
@@ -35,7 +35,7 @@ export default class BiographicalEntry extends Component {
 
                 <Modal
                     title={t(this.props, 'delete')}
-                    trigger={<FaTrash className="AdminIcon AdminIcon--small" />}
+                    trigger={<FaTrash className="Icon Icon--editorial Icon--small" />}
                 >
                     {close => (
                         <div>

@@ -88,7 +88,7 @@ export default class DataList extends Component {
                 <AuthorizedContent object={[{type: camelCase(this.props.scope), interview_id: this.props.interview?.id}, this.props.task]} action='create'>
                     <Modal
                         title={t(this.props, `edit.${this.props.scope}.new`)}
-                        trigger={<><FaPlus className="AdminIcon"/> {t(this.props, `edit.${this.props.scope}.new`)}</>}
+                        trigger={<><FaPlus className="Icon Icon--editorial"/> {t(this.props, `edit.${this.props.scope}.new`)}</>}
                     >
                         {close => this.form(undefined, close)}
                     </Modal>
