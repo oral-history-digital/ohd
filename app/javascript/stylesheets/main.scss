@@ -98,6 +98,9 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "../modules/toc/styles";
 @import "../modules/tree-select/styles";
 
+/* Vendor overwrites */
+@import "overwrites/react-rte";
+
 /* Print */
 @import "print";
 
