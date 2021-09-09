@@ -12,7 +12,7 @@ class InterviewMetadataExporter
 
     # Resources
     @md.media_type = @interview.media_type
-    @md.mime_type = @interview.media_type == 'video' ? 'video/mp4' : 'audio/x-wav'
+    @md.mime_type = mime_type
     @md.tape_paths = @interview.tapes.map { |tape| "#{@interview.archive_id.upcase}_original/#{tape.media_id}.wav" }
     @md.transcript_paths = transcript_languages.map { |lang| "#{@interview.archive_id}_transcript_#{lang}.pdf" }
     @md.project_id = @project.shortname.downcase  # must match element ID in corpus CMDI
@@ -29,6 +29,14 @@ class InterviewMetadataExporter
     @md.topic = @interview.collection&.name
 
     @md
+  end
+
+  def mime_type
+    if @interview.original_content_type?
+      @interview.original_content_type
+    else
+      @interview.media_type == 'video' ? 'video/mp4' : 'audio/x-wav'
+    end
   end
 
   def transcript_languages
