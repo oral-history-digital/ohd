@@ -92,6 +92,7 @@ class Interview < ApplicationRecord
   validates_presence_of :archive_id
   validates_uniqueness_of :archive_id
   validates :media_type, inclusion: {in: %w(video audio)}
+  validates :original_content_type, format: { with: /\A\w+\/[-+.\w]+\z/ }, allow_nil: true
 
   #has_one_attached :still_image
 
