@@ -60,7 +60,7 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/edit-table-header";
 @import "components/features";
 @import "components/form-label";
-@import "components/icon-button";
+@import "components/icon";
 @import "components/layout";
 @import "components/locale-buttons";
 @import "components/map";
@@ -97,6 +97,9 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "../modules/gallery/styles";
 @import "../modules/toc/styles";
 @import "../modules/tree-select/styles";
+
+/* Vendor overwrites */
+@import "overwrites/react-rte";
 
 /* Print */
 @import "print";

@@ -52,7 +52,7 @@ export default class Data extends Component {
         return (
             <ArchivePopupButton
                 title={this.name()}
-                buttonFaKey='eye'
+                type="show"
             >
                 {this.details()}
             </ArchivePopupButton>
@@ -63,7 +63,7 @@ export default class Data extends Component {
         return (
             <ArchivePopupButton
                 title={`${this.name()} ${t(this.props, `edit.${this.props.scope}.edit`)}`}
-                buttonFaKey='pencil'
+                type="edit"
             >
                 <>
                     {this.props.hideShow && this.details()}
@@ -93,7 +93,7 @@ export default class Data extends Component {
         return (
             <ArchivePopupButton
                 title={t(this.props, 'delete')}
-                buttonFaKey='trash-o'
+                type="delete"
             >
                 <>
                     <p>{this.name()}</p>

@@ -67,6 +67,8 @@ $segment-icon-width: 1rem;
 .Segment-buttons {
   align-self: flex-end;
   border-bottom: 2px solid transparent;
+  display: flex;
+  justify-content: flex-end;
   flex-grow: 1;
   margin-left: auto;
   min-width: $base-unit * 2;

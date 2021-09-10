@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
 
-import { useI18n } from 'modules/i18n';
+import useContributionTypeLabel from './useContributionTypeLabel';
 
 export default function ContributionGroup({
     contributionType,
     className,
     children
 }) {
-    const { t } = useI18n();
+    const label = useContributionTypeLabel(contributionType);
 
     return (
         <li className={className}>
             <span className="flyout-content-label">
-                {t(`contributions.${contributionType}`)}:
+                {label}:
             </span>
             {children}
         </li>

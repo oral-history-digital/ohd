@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 import { fullname } from 'modules/people';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
@@ -39,8 +40,7 @@ export default function Contribution({
                     <span className="flyout-sub-tabs-content-ico">
                         <Modal
                             title={t('edit.contribution.edit')}
-                            trigger={<i className="fa fa-pencil" />}
-                            triggerClassName="flyout-sub-tabs-content-ico-link"
+                            trigger={<FaPencilAlt className="Icon Icon--editorial Icon--small" />}
                         >
                             {close => (
                                 <ContributionFormContainer
@@ -53,8 +53,7 @@ export default function Contribution({
                         </Modal>
                         <Modal
                             title={`${t('delete')} ${t('contributions.' + contribution.contribution_type)}`}
-                            trigger={<i className="fa fa-trash-o" />}
-                            triggerClassName="flyout-sub-tabs-content-ico-link"
+                            trigger={<FaTrash className="Icon Icon--editorial Icon--small" />}
                         >
                             {close => (
                                 <div>

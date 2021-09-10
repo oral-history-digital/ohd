@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { FaPencilAlt } from 'react-icons/fa';
 
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
@@ -24,7 +25,7 @@ export default function UserDetails({
             <div className="buttons box">
                 <Modal
                     title={t('edit.account.edit')}
-                    trigger={<i className="fa fa-pencil"/>}
+                    trigger={<FaPencilAlt className="Icon Icon--primary" />}
                 >
                     {close => (
                         <UserDetailsFormContainer onSubmit={close} />
