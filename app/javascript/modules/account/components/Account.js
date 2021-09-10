@@ -109,14 +109,17 @@ export default class Account extends Component {
                             className='logout'
                             onClick={() => {
                                 // clear non-public data
-                                this.props.clearStateData('interviews', this.props.archiveId, 'title');
-                                this.props.clearStateData('interviews', this.props.archiveId, 'short_title');
-                                this.props.clearStateData('interviews', this.props.archiveId, 'description');
-                                this.props.clearStateData('interviews', this.props.archiveId, 'observations');
-                                this.props.clearStateData('interviews', this.props.archiveId, 'contributions');
-                                this.props.clearStateData('interviews', this.props.archiveId, 'photos');
-                                this.props.clearStateData('interviews', this.props.archiveId, 'registry_references');
-                                this.props.clearStateData('interviews', this.props.archiveId, 'segments');
+                                if (this.props.archiveId) {
+                                    this.props.clearStateData('interviews', this.props.archiveId, 'title');
+                                    this.props.clearStateData('interviews', this.props.archiveId, 'short_title');
+                                    this.props.clearStateData('interviews', this.props.archiveId, 'description');
+                                    this.props.clearStateData('interviews', this.props.archiveId, 'observations');
+                                    this.props.clearStateData('interviews', this.props.archiveId, 'contributions');
+                                    this.props.clearStateData('interviews', this.props.archiveId, 'photos');
+                                    this.props.clearStateData('interviews', this.props.archiveId, 'registry_references');
+                                    this.props.clearStateData('interviews', this.props.archiveId, 'segments');
+                                }
+                                this.props.clearStateData('accounts');
                                 this.props.clearStateData('user_registrations');
                                 this.props.clearSearch();
                                 this.props.submitLogout(`${pathBase(this.props)}/user_accounts/sign_out`);

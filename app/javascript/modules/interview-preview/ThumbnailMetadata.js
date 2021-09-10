@@ -4,6 +4,7 @@ import classNames from 'classnames';
 
 import { humanReadable } from 'modules/data';
 import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
+import { useProjectAccessStatus } from 'modules/auth';
 
 export default function ThumbnailMetadata({
     interview,
@@ -19,12 +20,13 @@ export default function ThumbnailMetadata({
     const intervieweeId = interview.interviewee_id;
     const interviewee = project.people[intervieweeId];
     const projectId = project.identifier;
+    const { projectAccessGranted } = useProjectAccessStatus();
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (projectAccessGranted) {
             loadIntervieweeWithAssociations({ interviewee, intervieweeId, peopleStatus, fetchData, locale, projectId, projects });
         }
-    });
+    }, [isLoggedIn]);
 
     return (
         <ul className="DetailList" lang={locale}>

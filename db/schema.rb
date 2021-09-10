@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_02_124454) do
+ActiveRecord::Schema.define(version: 2021_09_09_151340) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -95,7 +95,11 @@ ActiveRecord::Schema.define(version: 2021_09_02_124454) do
     t.string "countries", limit: 255
     t.text "interviewers", limit: 4294967295
     t.string "responsibles", limit: 255
+    t.text "interviewers", limit: 4294967295
+    t.string "name", limit: 255
     t.text "notes", limit: 4294967295
+    t.datetime "created_at"
+    t.datetime "updated_at"
     t.string "homepage"
     t.index ["collection_id"], name: "index_collection_translations_on_collection_id"
     t.index ["locale"], name: "index_collection_translations_on_locale", length: 191
@@ -213,7 +217,7 @@ ActiveRecord::Schema.define(version: 2021_09_02_124454) do
 
   create_table "interview_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "locale", limit: 255
-    t.text "observations", limit: 16777215
+    t.text "observations", limit: 4294967295
     t.integer "interview_id"
     t.text "description"
   end
@@ -244,9 +248,9 @@ ActiveRecord::Schema.define(version: 2021_09_02_124454) do
     t.integer "photos", comment: "image - oh26", unsigned: true
     t.string "workflow_state", limit: 255, default: "unshared"
     t.string "doi_status", limit: 255
-    t.integer "project_id"
-    t.text "properties"
+    t.text "properties", limit: 16777215
     t.string "media_type"
+    t.integer "project_id"
     t.string "signature_original"
     t.integer "registry_references_count", default: 0
     t.index ["archive_id"], name: "archive_id", length: 191
@@ -393,9 +397,9 @@ ActiveRecord::Schema.define(version: 2021_09_02_124454) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "name"
-    t.text "introduction"
-    t.text "more_text"
-    t.text "landing_page_text"
+    t.text "introduction", limit: 16777215
+    t.text "more_text", limit: 16777215
+    t.text "landing_page_text", limit: 16777215
     t.index ["locale"], name: "index_project_translations_on_locale"
     t.index ["project_id"], name: "index_project_translations_on_project_id"
   end
@@ -425,6 +429,7 @@ ActiveRecord::Schema.define(version: 2021_09_02_124454) do
     t.datetime "updated_at", null: false
     t.string "cache_key_prefix", default: "mog"
     t.boolean "fullname_on_landing_page"
+    t.string "cache_key_prefix", default: "cdoh"
     t.string "primary_color"
     t.string "secondary_color"
     t.string "editorial_color"
@@ -523,7 +528,7 @@ ActiveRecord::Schema.define(version: 2021_09_02_124454) do
     t.string "code", limit: 20
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.boolean "children_only", default: true
+    t.boolean "children_only", default: false
     t.boolean "use_in_transcript", default: false
     t.integer "project_id"
     t.index ["code"], name: "index_registry_reference_types_on_code"
@@ -794,8 +799,8 @@ ActiveRecord::Schema.define(version: 2021_09_02_124454) do
     t.integer "user_registration_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.datetime "activated_at"
     t.integer "user_account_id"
+    t.datetime "activated_at"
     t.string "workflow_state"
     t.text "admin_comments"
   end

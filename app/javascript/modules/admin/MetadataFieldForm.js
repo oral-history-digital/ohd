@@ -57,7 +57,9 @@ export default function MetadataFieldForm({
                 scope='metadata_field'
                 onSubmit={(params) => {
                     submitData({ locale, projectId, projects }, params);
-                    onSubmit();
+                    if (typeof onSubmit === 'function') {
+                        onSubmit();
+                    }
                 }}
                 data={data}
                 values={{
