@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { t } from 'modules/i18n';
+import { pathBase } from 'modules/routes';
+
 import speakerImage from 'assets/images/speaker.png';
 
 export default class MediaElement extends Component {
@@ -121,9 +123,10 @@ export default class MediaElement extends Component {
     }
 
     render() {
-        const { interview, className, tape, archiveId } = this.props;
+        const { interview, className, tape, archiveId, locale, projectId, projects } = this.props;
 
         const isVideo = interview.media_type === 'video';
+        const pathBaseStr = pathBase({projectId, locale, projects});
 
         return (
             <div className={classNames('MediaElement', className, isVideo ? 'MediaElement--video' : 'MediaElement--audio')}>
@@ -141,7 +144,7 @@ export default class MediaElement extends Component {
                                 key={language}
                                 kind="subtitles"
                                 label={t(this.props, language)}
-                                src={`${archiveId}.vtt?lang=${language}&tape_number=${tape}`}
+                                src={`${pathBaseStr}/interviews/${archiveId}.vtt?lang=${language}&tape_number=${tape}`}
                                 srcLang={language}
                             />
                         ))
@@ -159,6 +162,7 @@ MediaElement.propTypes = {
     locale: PropTypes.string.isRequired,
     mediaStreams: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     resolution: PropTypes.string,
     tape: PropTypes.number.isRequired,
     timeChangeRequest: PropTypes.number,
