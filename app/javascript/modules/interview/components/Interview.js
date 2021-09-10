@@ -12,6 +12,7 @@ import { Fetch, getContributorsFetched, getInterviewsStatus } from 'modules/data
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
 import InterviewTabsContainer from './InterviewTabsContainer';
 import InterviewLoggedOutContainer from './InterviewLoggedOutContainer';
+import { useProjectAccessStatus } from 'modules/auth';
 
 export default function Interview({
     interview,
@@ -28,6 +29,7 @@ export default function Interview({
 }) {
     const { archiveId } = useParams();
 
+    const { projectAccessGranted } = useProjectAccessStatus();
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
 
@@ -43,7 +45,7 @@ export default function Interview({
     }, [projectId, locale, archiveId, status]);
 
     useEffect(() => {
-        if (isLoggedIn) {
+        if (projectAccessGranted) {
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'title');
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'short_title');
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'description');
