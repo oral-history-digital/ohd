@@ -67,7 +67,7 @@ export default class Data extends Component {
             >
                 <>
                     {this.props.hideShow && this.details()}
-                    {this.props.form(this.props.data)}
+                    {this.props.form(this.props.data, this.props.closeArchivePopup)}
                 </>
             </ArchivePopupButton>
         )
