@@ -6,7 +6,6 @@ import InterviewInfo from './InterviewInfo';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
-    translations: getTranslations(state),
     project: getCurrentProject(state),
     collections: getCollectionsForCurrentProject(state),
     interview: getCurrentInterview(state),
