@@ -5,10 +5,10 @@ import { getCurrentProject } from 'modules/data';
 import MultiLocaleWrapper from './MultiLocaleWrapper';
 
 const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
+    const project = getCurrentProject(state);
     return {
         locale: getLocale(state),
-        locales: (project && project.locales) || getLocales(state),
+        locales: (project && project.available_locales) || getLocales(state),
         translations: getTranslations(state),
     }
 }
