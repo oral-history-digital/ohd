@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTimes, FaTrash } from 'react-icons/fa';
 
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
@@ -22,14 +23,21 @@ export default class RegistryName extends Component {
     }
 
     editButton() {
+        const { editing } = this.state;
+
         return (
-            <span
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, `edit.default.${this.state.editing ? 'cancel' : 'edit'}`)}
+            <button
+                type="button"
+                className="Button Button--transparent Button--icon"
+                title={t(this.props, `edit.default.${editing ? 'cancel' : 'edit'}`)}
                 onClick={() => this.setEditing()}
             >
-                <i className={`fa fa-${this.state.editing ? 'times' : 'pencil'}`}></i>
-            </span>
+                {
+                    editing ?
+                        <FaTimes className="Icon Icon--editorial" /> :
+                        <FaPencilAlt className="Icon Icon--editorial" />
+                }
+            </button>
         )
     }
 
@@ -43,13 +51,16 @@ export default class RegistryName extends Component {
             admin(this.props, this.props.registryName, 'destroy') &&
             this.state.showConfirmDeleteButton
         ) {
-            return <div
-                className='flyout-sub-tabs-content-ico-link warn'
-                title={t(this.props, 'really_destroy')}
-                onClick={() => this.destroy()}
-            >
-                <i className="fa fa-trash-o"></i>
-            </div>
+            return (
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
+                    title={t(this.props, 'really_destroy')}
+                    onClick={() => this.destroy()}
+                >
+                    <FaTrash className="Icon Icon--danger" />
+                </button>
+            );
         }
     }
 
@@ -59,13 +70,16 @@ export default class RegistryName extends Component {
             admin(this.props, this.props.registryName, 'destroy') &&
             !this.state.showConfirmDeleteButton
         ) {
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'delete')}
-                onClick={() => this.setState({showConfirmDeleteButton: true})}
-            >
-                <i className="fa fa-trash-o"></i>
-            </div>
+            return (
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
+                    title={t(this.props, 'delete')}
+                    onClick={() => this.setState({showConfirmDeleteButton: true})}
+                >
+                    <FaTrash className="Icon Icon--editorial" />
+                </button>
+            );
         } else {
             return null;
         }

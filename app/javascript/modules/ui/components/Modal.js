@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FaTimes } from 'react-icons/fa';
+import { FaTimes, FaEllipsisH } from 'react-icons/fa';
 import classNames from 'classnames';
 import { Dialog } from '@reach/dialog';
 import '@reach/dialog/styles.css';
@@ -9,7 +9,7 @@ export default function Modal({
     title,
     className,
     triggerClassName,
-    trigger = <i className="fa fa-ellipsis-h" />,
+    trigger = <FaEllipsisH className="Icon Icon--primary" />,
     children,
 }) {
     const [showDialog, setShowDialog] = useState(false);

@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
 
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -45,7 +46,7 @@ export default function Gallery({
             <AuthorizedContent object={{ type: 'Photo', interview_id: interview.id }} action='create'>
                 <Modal
                     title={t('edit.photo.new')}
-                    trigger={<i className="fa fa-plus"></i>}
+                    trigger={<FaPlus className="Icon Icon--editorial" />}
                 >
                     {
                         closeModal => (

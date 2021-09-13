@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
 import { InterviewInfoContainer } from 'modules/interview-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
@@ -51,7 +52,7 @@ export default class InterviewDetailsLeftSide extends Component {
                     className={`search-result-link ${!!prevArchiveId || "hidden"}`}
                     to={ "/" + this.props.locale + "/interviews/" + prevArchiveId }
                 >
-                    <i className={"fa fa-chevron-left"} />
+                    <FaChevronLeft className="Icon Icon--text" />
                     {prevArchiveId}
                 </Link>
                 <Link
@@ -59,7 +60,7 @@ export default class InterviewDetailsLeftSide extends Component {
                     to={ "/" + this.props.locale + "/interviews/" + nextArchiveId }
                 >
                     {nextArchiveId}
-                    <i className={"fa fa-chevron-right"} />
+                    <FaChevronRight className="Icon Icon--text" />
                 </Link>
             </div>
         )

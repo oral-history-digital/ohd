@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaPlus } from 'react-icons/fa';
 
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
@@ -30,7 +31,7 @@ export default class UserRoles extends Component {
             return (
                 <Modal
                     title={t(this.props, 'edit.user_role.new')}
-                    trigger={<i className="fa fa-plus"/>}
+                    trigger={<FaPlus className="Icon Icon--editorial" />}
                 >
                     {closeModal => (
                         <UserRoleFormContainer
