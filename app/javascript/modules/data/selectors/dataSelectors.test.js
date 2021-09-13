@@ -1,6 +1,8 @@
 import dotProp from 'dot-prop-immutable';
 import * as selectors from './dataSelectors';
 
+import { DEFAULT_LOCALES } from 'modules/constants';
+
 const state = {
     archive: {
         archiveId: 'cd003',
@@ -80,7 +82,7 @@ const state = {
                 id: 1,
                 type: 'Project',
                 identifier: 'cdoh',
-                available_locales: ['de', 'en'],
+                available_locales: ['de', 'en', 'ru'],
                 has_map: true,
                 root_registry_entry_id: 1,
                 collections: {
@@ -475,8 +477,15 @@ describe('getCurrentProject', () => {
     });
 });
 
-test('getProjectLocales gets project locales', () => {
-    expect(selectors.getProjectLocales(state)).toEqual(state.data.projects[1].available_locales);
+describe('getProjectLocales', () => {
+    test('gets project locales', () => {
+        expect(selectors.getProjectLocales(state)).toEqual(state.data.projects[1].available_locales);
+    });
+
+    test('gets default locales if no project is selected', () => {
+        const _state = dotProp.set(state, 'archive.projectId', null);
+        expect(selectors.getProjectLocales(_state)).toEqual(DEFAULT_LOCALES);
+    });
 });
 
 test('getProjectHasMap gets if project has a mpa', () => {
