@@ -1,46 +1,43 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getLocales, getProjectId, getTranslations } from 'modules/archive';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getLanguagesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getLanguages, getLanguagesStatus } from 'modules/data';
+import { fetchData, deleteData, submitData, getProjects, getCurrentAccount,
+    getLanguages, getLanguagesStatus, getProjectLocales, getProjectHasMap } from 'modules/data';
 import { getCookie } from 'modules/persistence';
 import WrappedDataList from './WrappedDataList';
 
-const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
-    return {
-        locale: getLocale(state),
-        locales: (project && project.available_locales) || getLocales(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        account: getCurrentAccount(state),
-        editView: getCookie('editView') === 'true',
-        data: getLanguages(state),
-        dataStatus: getLanguagesStatus(state),
-        resultPagesCount: getLanguagesStatus(state).resultPagesCount,
-        query: getLanguagesQuery(state),
-        scope: 'language',
-        baseTabIndex: 4 + project.has_map,
-        //detailsAttributes: ['name'],
-        detailsAttributes: ['code', 'name'],
-        formElements: [
-            {
-                attribute: 'code',
-                validate: function(v){return /^[a-z]+$/.test(v)}
-            },
-            {
-                attribute: 'name',
-                multiLocale: true,
-                //validate: function(v){return v.length > 1}
-            },
-        ],
-        joinedData: { },
-    }
-}
+const mapStateToProps = state => ({
+    locale: getLocale(state),
+    locales: getProjectLocales(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    translations: getTranslations(state),
+    account: getCurrentAccount(state),
+    editView: getCookie('editView') === 'true',
+    data: getLanguages(state),
+    dataStatus: getLanguagesStatus(state),
+    resultPagesCount: getLanguagesStatus(state).resultPagesCount,
+    query: getLanguagesQuery(state),
+    scope: 'language',
+    baseTabIndex: 4 + getProjectHasMap(state),
+    //detailsAttributes: ['name'],
+    detailsAttributes: ['code', 'name'],
+    formElements: [
+        {
+            attribute: 'code',
+            validate: function(v){return /^[a-z]+$/.test(v)}
+        },
+        {
+            attribute: 'name',
+            multiLocale: true,
+            //validate: function(v){return v.length > 1}
+        },
+    ],
+    joinedData: { },
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,

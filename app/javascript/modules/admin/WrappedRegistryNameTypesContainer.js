@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams, getRegistryNameTypesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
         locale: getLocale(state),
-        locales: (project && project.available_locales) || getLocales(state),
+        locales: getProjectLocales(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),

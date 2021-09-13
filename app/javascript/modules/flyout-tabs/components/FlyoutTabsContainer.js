@@ -3,9 +3,9 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import { setLocale, getLocale, getArchiveId, getProjectId, getSelectedArchiveIds,
-    getLocales, getEditView, getTranslations, getCountryKeys } from 'modules/archive';
+    getEditView, getTranslations, getCountryKeys } from 'modules/archive';
 import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getProjects,
-    getCurrentAccount } from 'modules/data';
+    getCurrentAccount, getProjectLocales } from 'modules/data';
 import { getIsLoggedIn } from 'modules/account';
 import { setFlyoutTabsIndex } from '../actions';
 import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors';
@@ -19,10 +19,10 @@ const mapStateToProps = (state) => {
         archiveId: getArchiveId(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
-        project: project,
+        project: getCurrentProject(state),
         selectedArchiveIds: getSelectedArchiveIds(state),
         locale: getLocale(state),
-        locales: (project && project.available_locales) || getLocales(state),
+        locales: getProjectLocales(state),
         hasMap: project && project.has_map === 1,
         editView: getEditView(state),
         translations: getTranslations(state),

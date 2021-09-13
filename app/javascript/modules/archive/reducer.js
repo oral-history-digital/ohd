@@ -15,7 +15,6 @@ import {
 
 const initialState = {
     locale: 'de',
-    locales: ['de', 'en'],
     archiveId: null,
     projectId: null,
     viewModes: ['grid', 'list'],
