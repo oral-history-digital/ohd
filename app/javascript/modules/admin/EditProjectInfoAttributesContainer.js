@@ -13,8 +13,6 @@ const mapStateToProps = (state) => {
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),
-        account: getCurrentAccount(state),
-        editView: getEditView(state),
         data: project,
         scope: 'project',
         formElements: [
