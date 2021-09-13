@@ -221,6 +221,7 @@ Rails.application.routes.draw do
     root to: redirect {|params, request| "/#{Project.by_host(request.host).default_locale}"}
     scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
       root to: "projects#show"
+      resources :projects, only: [:update, :destroy]
       concerns :archive
       concerns :account
       concerns :unnamed_devise_routes, :search
