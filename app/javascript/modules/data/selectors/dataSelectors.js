@@ -1,6 +1,7 @@
 import { createSelector } from 'reselect';
 
 import { getArchiveId, getProjectId, getLocale  } from 'modules/archive';
+import { DEFAULT_LOCALES } from 'modules/constants';
 
 export const getData = state => state.data;
 
@@ -283,6 +284,22 @@ export const getPeopleForCurrentProject = createSelector(
     [getCurrentProject],
     (currentProject) => {
         return currentProject?.people;
+    }
+);
+
+export const getProjectLocales = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject ?
+            currentProject.available_locales :
+            DEFAULT_LOCALES;
+    }
+);
+
+export const getProjectHasMap = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.has_map;
     }
 );
 

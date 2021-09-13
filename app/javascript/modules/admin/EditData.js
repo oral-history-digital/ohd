@@ -1,75 +1,81 @@
-import { Component } from 'react';
+import { useState } from 'react';
+import PropTypes from 'prop-types';
+import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
 import { humanReadable } from 'modules/data';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 
-export default class EditData extends Component {
+export default function EditData({
+    data,
+    formElements,
+    initialFormValues,
+    translations,
+    locale,
+    projectId,
+    projects,
+    scope,
+    submitData,
+}) {
+    const [editing, setEditing] = useState(false);
+    const { t } = useI18n();
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            editing: false,
-            collapsed: true
-        };
-        this.setEditing = this.setEditing.bind(this);
+    function toggleEditing() {
+        setEditing(prev => !prev);
     }
 
-    setEditing() {
-        this.setState({editing: !this.state.editing});
-    }
-
-    editButton() {
-        return (
-            <span
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, `edit.default.${this.state.editing ? 'cancel' : 'edit'}`)}
-                onClick={() => this.setEditing()}
-            >
-                <i className={`fa fa-${this.state.editing ? 'times' : 'pencil'}`}></i>
-            </span>
-        )
-    }
-
-    form() {
-        return (
+    return editing ?
+        (
             <Form
-                data={this.props.data}
-                values={this.props.initialFormValues}
-                scope={this.props.scope}
-                onSubmit={(params) => {
-                    this.props.submitData(this.props, params);
-                    this.setEditing()
+                data={data}
+                values={initialFormValues}
+                scope={scope}
+                onSubmit={params => {
+                    submitData({ locale, projectId, projects }, params);
+                    toggleEditing();
                 }}
-                cancel={this.setEditing}
-                submitText='submit'
-                elements={this.props.formElements}
+                cancel={toggleEditing}
+                submitText="submit"
+                elements={formElements}
             />
-        )
-    }
-
-    show() {
-        const { data, translations, locale, scope } = this.props;
-        return (
+        ) :
+        (
             <>
-                {this.props.formElements.map((element) => {
-                    return (
-                        <p>
-                            <span className="flyout-content-label">
-                                {t({translations, locale}, `activerecord.attributes.${scope}.${element.attribute}`)}:
-                            </span>
-                            <span className={'flyout-content-data'}>
-                                {humanReadable(data, element.attribute, {translations, locale}, this.state)}
-                            </span>
-                        </p>
-                    )
-                })}
-                {this.editButton()}
+                {formElements.map(element => (
+                    <p key={element.key}>
+                        <span className="flyout-content-label">
+                            {t(`activerecord.attributes.${scope}.${element.attribute}`)}:
+                        </span>
+                        <span className="flyout-content-data">
+                            {humanReadable(data, element.attribute, { translations, locale }, { collapsed: true })}
+                        </span>
+                    </p>
+                ))}
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
+                    title={t('edit.default.edit')}
+                    onClick={toggleEditing}
+                >
+                    {
+                        editing ?
+                            <FaTimes className="Icon Icon--editorial" /> :
+                            <FaPencilAlt className="Icon Icon--editorial" />
+                    }
+                </button>
             </>
-        )
-    }
-
-    render() {
-        return <>{this.state.editing ? this.form() : this.show()}</>
-    }
+        );
 }
+
+EditData.propTypes = {
+    data: PropTypes.object.isRequired,
+    formElements: PropTypes.array.isRequired,
+    initialFormValues: PropTypes.array,
+    locale: PropTypes.string.isRequired,
+    locales: PropTypes.array.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    scope: PropTypes.string.isRequired,
+    translations: PropTypes.array.isRequired,
+    submitData: PropTypes.func.isRequired,
+};

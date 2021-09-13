@@ -2,8 +2,9 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { closeArchivePopup } from 'modules/ui';
-import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
-import { getLocale, getProjectId, getTranslations, getLocales } from 'modules/archive';
+import { getCurrentProject, getProjectLocales, fetchData, deleteData, submitData, getProjects,
+    getCurrentAccount } from 'modules/data';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import DataList from './DataList';
 
 const mapStateToProps = state => {
@@ -26,7 +27,7 @@ const mapStateToProps = state => {
             {
                 attribute: "locale",
                 elementType: 'select',
-                values: getLocales(state),
+                values: getProjectLocales(state),
                 withEmpty: true,
             },
             {

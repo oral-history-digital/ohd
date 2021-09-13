@@ -4,8 +4,8 @@ import { bindActionCreators } from 'redux';
 import { setQueryParams, getRolesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getRolesForCurrentProject, getRolesStatus } from 'modules/data';
-import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
+    getRolesForCurrentProject, getRolesStatus, getProjectLocales } from 'modules/data';
+import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import WrappedDataList from './WrappedDataList';
 import RolePermissionsContainer from './RolePermissionsContainer';
 
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
         locale: getLocale(state),
-        locales: (project && project.available_locales) || getLocales(state),
+        locales: getProjectLocales(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),
