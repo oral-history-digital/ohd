@@ -21,7 +21,7 @@ function PopupMenu({ className, children }) {
             className={className}
             trigger={trigger}
             on={['click']}
-            contentStyle={{ zIndex:1001 }}
+            contentStyle={{ zIndex:999 }}
             position={['right top', 'center top', 'left top']}
         >
             <ul className="PopupMenu-list">
