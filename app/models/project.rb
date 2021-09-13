@@ -45,7 +45,7 @@ class Project < ApplicationRecord
   # 
   [:view_modes, :available_locales, :upload_types, :funder_names, :hidden_registry_entry_ids, :pdf_registry_entry_ids, :hidden_transcript_registry_entry_ids].each do |m|
     define_method "pseudo_#{m}=" do |string|
-      write_attribute(m, string.strip.split(/,\s*/)
+      write_attribute(m, string.strip.split(/,\s*/))
     end
     define_method "pseudo_#{m}" do
       read_attribute m
