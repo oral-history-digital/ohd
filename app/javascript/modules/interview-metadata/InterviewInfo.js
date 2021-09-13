@@ -6,6 +6,7 @@ import { Fetch, getCollectionsForCurrentProjectFetched } from 'modules/data';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
+import { useProjectAccessStatus } from 'modules/auth';
 
 export default function InterviewInfo({
     interview,
@@ -15,110 +16,83 @@ export default function InterviewInfo({
     locale,
 }) {
     const { t } = useI18n();
+    const { projectAccessGranted } = useProjectAccessStatus();
     const collection = collections[interview.collection_id];
-
-    const archiveIdMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'archive_id');
-    const signatureOriginalMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'signature_original');
-    const interviewDateMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'interview_date');
-    const descriptionMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'description');
-    const mediaTypeMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'media_type');
-    const durationMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'duration');
-    const tapeCountMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'tape_count');
-    const languageIdMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'language_id');
-    const collectionIdMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'collection_id');
 
     if (interview?.language_id) {
         return (
             <div>
-                {
-                    archiveIdMetadataField?.use_in_details_view &&
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        validate={function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}}
-                        metadataField={archiveIdMetadataField}
-                    />
-                }
-                {
-                    signatureOriginalMetadataField?.use_in_details_view &&
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        metadataField={signatureOriginalMetadataField}
-                    />
-                }
-                {
-                    interviewDateMetadataField?.use_in_details_view &&
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        metadataField={interviewDateMetadataField}
-                    />
-                }
-                {
-                    descriptionMetadataField?.use_in_details_view &&
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        metadataField={descriptionMetadataField}
-                        elementType="textarea"
-                        multiLocale
-                        validate={v => v?.length > 3}
-                    />
-                }
-                {
-                    mediaTypeMetadataField?.use_in_details_view &&
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        optionsScope={'search_facets'}
-                        elementType={'select'}
-                        values={['video', 'audio']}
-                        value={t(`search_facets.${interview.media_type}`)}
-                        metadataField={mediaTypeMetadataField}
-                    />
-                }
-                {
-                    durationMetadataField?.use_in_details_view &&
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
-                        metadataField={durationMetadataField}
-                    />
-                }
-                {
-                    tapeCountMetadataField?.use_in_details_view &&
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        validate={function(v){return /^\d+$/.test(v)}}
-                        metadataField={tapeCountMetadataField}
-                    />
-                }
-                {
-                    languageIdMetadataField?.use_in_details_view &&
+                <SingleValueWithFormContainer
+                    obj={interview}
+                    validate={function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}}
+                    attribute={'archive_id'}
+                    projectAccessGranted={projectAccessGranted} 
+                />
+                <SingleValueWithFormContainer
+                    obj={interview}
+                    attribute={'signature_original'}
+                    projectAccessGranted={projectAccessGranted} 
+                />
+                <SingleValueWithFormContainer
+                    obj={interview}
+                    attribute={'interview_date'}
+                    projectAccessGranted={projectAccessGranted} 
+                />
+                <SingleValueWithFormContainer
+                    obj={interview}
+                    attribute={'description'}
+                    projectAccessGranted={projectAccessGranted} 
+                    elementType="textarea"
+                    multiLocale
+                    validate={v => v?.length > 3}
+                />
+                <SingleValueWithFormContainer
+                    obj={interview}
+                    optionsScope={'search_facets'}
+                    elementType={'select'}
+                    values={['video', 'audio']}
+                    value={t(`search_facets.${interview.media_type}`)}
+                    attribute={'media_type'}
+                    projectAccessGranted={projectAccessGranted} 
+                />
+                <SingleValueWithFormContainer
+                    obj={interview}
+                    validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
+                    attribute={'duration'}
+                    projectAccessGranted={projectAccessGranted} 
+                />
+                <SingleValueWithFormContainer
+                    obj={interview}
+                    validate={function(v){return /^\d+$/.test(v)}}
+                    attribute={'tape_count'}
+                    projectAccessGranted={projectAccessGranted} 
+                />
+                <SingleValueWithFormContainer
+                    elementType={'select'}
+                    obj={interview}
+                    values={languages}
+                    withEmpty={true}
+                    validate={function(v){return /^\d+$/.test(v)}}
+                    attribute={'language_id'}
+                    projectAccessGranted={projectAccessGranted} 
+                />
+                <Fetch
+                    fetchParams={['collections', null, null, `for_projects=${project?.id}`]}
+                    testSelector={getCollectionsForCurrentProjectFetched}
+                >
                     <SingleValueWithFormContainer
                         elementType={'select'}
                         obj={interview}
-                        values={languages}
+                        values={collections}
                         withEmpty={true}
                         validate={function(v){return /^\d+$/.test(v)}}
-                        metadataField={languageIdMetadataField}
-                    />
-                }
-                {
-                    collectionIdMetadataField?.use_in_details_view &&
-                    <Fetch
-                        fetchParams={['collections', null, null, `for_projects=${project?.id}`]}
-                        testSelector={getCollectionsForCurrentProjectFetched}
+                        individualErrorMsg={'empty'}
+                        attribute={'collection_id'}
+                        projectAccessGranted={projectAccessGranted} 
                     >
-                        <SingleValueWithFormContainer
-                            elementType={'select'}
-                            obj={interview}
-                            values={collections}
-                            withEmpty={true}
-                            validate={function(v){return /^\d+$/.test(v)}}
-                            individualErrorMsg={'empty'}
-                            metadataField={collectionIdMetadataField}
-                        >
-                            {collection && collectionLink(collection, locale)}
-                        </SingleValueWithFormContainer>
-                    </Fetch>
-                }
+                        {collection && collectionLink(collection, locale)}
+                    </SingleValueWithFormContainer>
+                </Fetch>
 
                 <AuthorizedContent object={interview} action='update'>
                     <SingleValueWithFormContainer

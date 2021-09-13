@@ -53,12 +53,8 @@ export default class SingleValueWithForm extends Component {
     }
 
     label() {
-        return this.props.metadataField && this.props.metadataField.label && this.props.metadataField.label[this.props.locale] ||
-            t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.attribute()}`);
-    }
-
-    attribute() {
-        return (this.props.metadataField && this.props.metadataField.name) || this.props.attribute;
+        return this.metadataField()?.label && this.metadataField().label[this.props.locale] ||
+            t(this.props, `activerecord.attributes.${underscore(this.props.obj.type)}.${this.props.attribute}`);
     }
 
     formElements() {
@@ -66,7 +62,7 @@ export default class SingleValueWithForm extends Component {
             {
                 elementType: this.props.elementType,
                 multiLocale: this.props.multiLocale,
-                attribute: this.attribute(),
+                attribute: this.props.attribute,
                 label: this.label(),
                 validate: this.props.validate,
                 data: this.props.obj,
@@ -80,8 +76,8 @@ export default class SingleValueWithForm extends Component {
 
         let statusCheckbox = {
             elementType: 'input',
-            attribute: `public_attributes[${this.attribute()}]`,
-            value: this.props.obj.properties.public_attributes && (this.props.obj.properties.public_attributes[this.attribute()] === 'true'),
+            attribute: `public_attributes[${this.props.attribute}]`,
+            value: this.props.obj.properties.public_attributes && (this.props.obj.properties.public_attributes[this.props.attribute] === 'true'),
             labelKey: 'activerecord.attributes.default.publish',
             type: 'checkbox',
         };
@@ -112,18 +108,22 @@ export default class SingleValueWithForm extends Component {
         )
     }
 
+    metadataField() {
+        return Object.values(this.props.project.metadata_fields).find(m => m.name === this.props.attribute);
+    }
+
     show() {
         if (
             admin(this.props, this.props.obj, 'show') ||
             (
                 (
-                    (this.props.isLoggedIn && this.props.metadataField && this.props.metadataField.use_in_details_view) ||
-                    (!this.props.isLoggedIn && this.props.metadataField && this.props.metadataField.display_on_landing_page)
+                    (this.props.projectAccessGranted && this.metadataField()?.use_in_details_view) ||
+                    (!this.props.projectAccessGranted && this.metadataField()?.display_on_landing_page)
                 ) &&
-                (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.attribute()])
+                (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.props.attribute])
             )
         ) {
-            let value = humanReadable(this.props.obj, this.attribute(), this.props, this.state);
+            let value = humanReadable(this.props.obj, this.props.attribute, this.props, this.state);
             return (
                 <ContentField noLabel={this.props.noLabel} label={this.label()} value={value} >
                     {this.toggle()}

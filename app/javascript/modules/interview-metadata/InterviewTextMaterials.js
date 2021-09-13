@@ -46,7 +46,7 @@ export default class InterviewTextMaterials extends Component {
                             collapse
                             elementType="textarea"
                             multiLocale
-                            metadataField={Object.values(project.metadata_fields).find(m => m.name === 'observations')}
+                            attribute={'observations'}
                         />
                     }
                 </AuthorizedContent>
