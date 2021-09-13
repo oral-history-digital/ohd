@@ -1,17 +1,14 @@
 import { connect } from 'react-redux';
 
-import { getCurrentProject } from 'modules/data';
-import { getLocale, getLocales, getTranslations } from 'modules/archive';
+import { getProjectLocales, getProjectHasMap } from 'modules/data';
+import { getLocale, getTranslations } from 'modules/archive';
 import EditInterview from './EditInterview';
 
-const mapStateToProps = (state) => {
-    let project = getCurrentProject(state);
-    return {
-        locale: getLocale(state),
-        locales: (project && project.available_locales) || getLocales(state),
-        translations: getTranslations(state),
-        hasMap: project && project.has_map,
-    }
-}
+const mapStateToProps = state => ({
+    locale: getLocale(state),
+    locales: getProjectLocales(state),
+    translations: getTranslations(state),
+    hasMap: getProjectHasMap(state),
+});
 
 export default connect(mapStateToProps)(EditInterview);

@@ -5,7 +5,6 @@ import { NAME } from './constants';
 const state = {
     [NAME]: {
         locale: 'de',
-        locales: ['de', 'es'],
         projectId: 'cdoh',
         viewModes: ['grid', 'list'],
         viewMode: 'grid',
@@ -30,10 +29,6 @@ const state = {
 
 test('getLocale retrieves current locale', () => {
     expect(selectors.getLocale(state)).toEqual(state[NAME].locale);
-});
-
-test('getLocales retrieves available locales', () => {
-    expect(selectors.getLocales(state)).toEqual(state[NAME].locales);
 });
 
 test('getProjectId retrieves project id', () => {

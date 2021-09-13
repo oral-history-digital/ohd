@@ -6,7 +6,7 @@ export { default as dataReducer } from './reducer';
 
 export { getContributorsFetched, getCurrentAccount, getCurrentInterview,
     getCurrentInterviewFetched, getCurrentProject, getFeaturedInterviewsArray,
-    getCurrentRefTree, getFlattenedRefTree,
+    getCurrentRefTree, getFlattenedRefTree, getProjectLocales, getProjectHasMap,
     getFeaturedInterviewsFetched, getLanguages, getPeopleForCurrentProjectFetched, getPeopleForCurrentProject, getProjects,
     getRootRegistryEntry, getRootRegistryEntryFetched, getPermissions,
     getRegistryReferenceTypesForCurrentProjectFetched, getRolesForCurrentProject, getTasks, getAccounts,

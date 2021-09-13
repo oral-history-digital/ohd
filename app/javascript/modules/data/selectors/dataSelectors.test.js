@@ -80,6 +80,8 @@ const state = {
                 id: 1,
                 type: 'Project',
                 identifier: 'cdoh',
+                available_locales: ['de', 'en'],
+                has_map: true,
                 root_registry_entry_id: 1,
                 collections: {
                     1: {
@@ -471,6 +473,14 @@ describe('getCurrentProject', () => {
 
         expect(selectors.getCurrentProject(state)).toBeNull();
     });
+});
+
+test('getProjectLocales gets project locales', () => {
+    expect(selectors.getProjectLocales(state)).toEqual(state.data.projects[1].available_locales);
+});
+
+test('getProjectHasMap gets if project has a mpa', () => {
+    expect(selectors.getProjectHasMap(state)).toEqual(state.data.projects[1].has_map);
 });
 
 test('getInterviews retrieves all interviews', () => {

@@ -1,10 +1,10 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getLocales, getProjectId, getTranslations } from 'modules/archive';
+import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getCollectionsQuery } from 'modules/search';
 import { openArchivePopup, closeArchivePopup } from 'modules/ui';
-import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
+import { fetchData, deleteData, submitData, getCurrentProject, getProjectLocales, getProjects, getCurrentAccount,
     getCollectionsForCurrentProject, getCollectionsStatus } from 'modules/data';
 import { getCookie } from 'modules/persistence';
 import WrappedDataList from './WrappedDataList';
@@ -13,7 +13,7 @@ const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
         locale: getLocale(state),
-        locales: (project && project.available_locales) || getLocales(state),
+        locales: getProjectLocales(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),

@@ -286,6 +286,20 @@ export const getPeopleForCurrentProject = createSelector(
     }
 );
 
+export const getProjectLocales = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.available_locales;
+    }
+);
+
+export const getProjectHasMap = createSelector(
+    [getCurrentProject],
+    (currentProject) => {
+        return currentProject?.has_map;
+    }
+);
+
 export const getCollectionsForCurrentProjectFetched = createSelector(
     [getCollectionsStatus, getCurrentProject],
     (collectionsStatus, currentProject) => {

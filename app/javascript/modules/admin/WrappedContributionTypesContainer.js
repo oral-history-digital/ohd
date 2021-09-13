@@ -1,18 +1,19 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getLocales, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams, getContributionTypesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getContributionTypesForCurrentProject, getContributionTypesStatus } from 'modules/data';
+    getContributionTypesForCurrentProject, getContributionTypesStatus, getProjectLocales,
+    getProjectHasMap } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
         locale: getLocale(state),
-        locales: (project && project.available_locales) || getLocales(state),
+        locales: getProjectLocales(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
         translations: getTranslations(state),
@@ -27,7 +28,7 @@ const mapStateToProps = (state) => {
         scope: 'contribution_type',
         sortAttribute: 'name',
         sortAttributeTranslated: true,
-        baseTabIndex: 4 + project.has_map,
+        baseTabIndex: 4 + getProjectHasMap(state),
         detailsAttributes: ['code'],
         initialFormValues: {project_id: project.id},
         formElements: [

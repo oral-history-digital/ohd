@@ -14,8 +14,6 @@ export const getDoiResult = state => getState(state).doiResult;
 // I18n
 export const getLocale = state => getState(state).locale;
 
-export const getLocales = state => getState(state).locales;
-
 export const getTranslations = state => getState(state).translations;
 
 export const getCountryKeys = state => getState(state).countryKeys;
