@@ -7,7 +7,7 @@ class InterviewMetadataExporter
 
   def build
     # Header
-    @md.self_link = "#{Rails.application.routes.url_helpers.cmdi_metadata_interview_url(id: @interview.archive_id, locale: 'de', host: @project.archive_domain)}.xml"
+    @md.self_link = self_url
     @md.creation_date = Date.today
 
     # Resources
@@ -23,12 +23,26 @@ class InterviewMetadataExporter
     @md.corpus_name = @interview.project.name  # must match element Title in corpus CMDI
     @md.recording_date = recording_date
     @md.dominant_language = @interview.language.code
-    interviewees = @interview.interviewees.map { |interviewee| contributor_details(interviewee, 'interviewee')  }
-    interviewers = @interview.interviewers.map { |interviewer| contributor_details(interviewer, 'interviewer')  }
+    interviewees = @interview.interviewees.map { |interviewee| contributor_details(interviewee, 'interviewee') }
+    interviewers = @interview.interviewers.map { |interviewer| contributor_details(interviewer, 'interviewer') }
     @md.actors = interviewees + interviewers
     @md.topic = @interview.collection&.name
 
     @md
+  end
+
+  def self_url
+    if @project.archive_domain.present?
+      "#{@project.archive_domain}/de/interviews/#{@interview.archive_id}/cmdi-metadata.xml"
+    else
+      Rails.application.routes.url_helpers.cmdi_metadata_interview_url(
+        id: @interview.archive_id,
+        locale: 'de',
+        project_id: @project.identifier,
+        host: OHD_DOMAIN,
+        format: :xml
+      )
+    end
   end
 
   def mime_type
@@ -49,7 +63,7 @@ class InterviewMetadataExporter
 
   def contributor_details(contributor, contribution_type)
     code = @interview.contributions.where(contribution_type: contribution_type,
-      person_id: contributor.id, workflow_state: 'public').first.speaker_designation
+      person_id: contributor.id, workflow_state: 'public').first&.speaker_designation
 
     { role: contribution_type, code: code, age: age(contributor), sex: contributor.gender }
   end
