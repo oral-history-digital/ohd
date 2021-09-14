@@ -1,14 +1,18 @@
 import PropTypes from 'prop-types';
 import { useHistory, useLocation } from 'react-router-dom';
 
-import { usePathBase } from 'modules/routes';
+import { pathBase } from 'modules/routes';
 
 export default function LocaleButtons({
     currentLocale,
     locales,
     setLocale,
+    projectId,
+    projects,
 }) {
-    const pathBase = usePathBase();
+    // do not use usePathBase() here!! we need locale from e.target.testContext!
+    //const pathBase = usePathBase();
+    //
     const history = useHistory();
     const location = useLocation();
 
@@ -19,7 +23,7 @@ export default function LocaleButtons({
         if (/^\/[a-z]{2}\/{0,1}$/.test(location.pathname)) {
             newPath = `/${locale}/`;
         } else {
-            newPath = location.pathname.replace(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})\//, pathBase + '/');
+            newPath = location.pathname.replace(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})\//, pathBase({projectId, locale, projects}) + '/');
         }
 
         history.push(newPath);
