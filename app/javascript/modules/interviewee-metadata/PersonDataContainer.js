@@ -2,9 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { submitData, fetchData, getCurrentInterview, getCurrentInterviewee,
-    getCurrentProject, getPeopleForCurrentProject, getProjects } from 'modules/data';
+    getCurrentProject, getPeopleForCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
-import { getIsLoggedIn } from 'modules/account';
 import PersonData from './PersonData';
 
 const mapStateToProps = state => ({
@@ -16,7 +15,7 @@ const mapStateToProps = state => ({
     interview: getCurrentInterview(state),
     interviewee: getCurrentInterviewee(state),
     people: getPeopleForCurrentProject(state),
-    isLoggedIn: getIsLoggedIn(state),
+    account: getCurrentAccount(state),
     project: getCurrentProject(state),
 });
 

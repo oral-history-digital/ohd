@@ -5,7 +5,7 @@ import { FaPencilAlt, FaDownload } from 'react-icons/fa';
 import { ContentField } from 'modules/forms';
 import { ContributionFormContainer } from 'modules/interview-metadata';
 import { Modal } from 'modules/ui';
-import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
+import { admin, AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { humanReadable } from 'modules/data';
 import { fullname } from 'modules/people';
 import { pathBase } from 'modules/routes';
@@ -113,7 +113,9 @@ export default class PersonData extends Component {
     // in FlyoutTabs
     //
     personMetadataFields(){
-        const { interviewee } = this.props;
+        const { interviewee, account, project } = this.props;
+        const projectRegistration = account && Object.values(account.user_registration_projects).find(urp => urp.project_id === project.id);
+        const projectAccessGranted = projectRegistration?.workflow_state === 'project_access_granted';
 
         let _this = this;
 
@@ -122,8 +124,9 @@ export default class PersonData extends Component {
             return Object.values(this.props.project.metadata_fields).filter(m => {
                 return (m.source === 'Person' &&
                     (
-                        (_this.props.isLoggedIn && m.use_in_details_view) ||
-                        (!_this.props.isLoggedIn && m.display_on_landing_page)
+                        admin(this.props, interviewee, 'show') ||
+                        (projectAccessGranted && m.use_in_details_view) ||
+                        (!projectAccessGranted && m.display_on_landing_page)
                     )
                 )
             }).map(function(metadataField, i){
