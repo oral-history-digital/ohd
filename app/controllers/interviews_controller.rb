@@ -136,20 +136,21 @@ class InterviewsController < ApplicationController
   def show
     @interview = Interview.find_by_archive_id(params[:id])
     interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
+    @locale = params[:lang] # change this to params[:locale] if  you want e.g. header and footer in locale
 
     respond_to do |format|
       format.json do
         render json: data_json(@interview)
       end
       format.vtt do
-        vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{locale}-#{params[:tape_number]}" do
-          @interview.to_vtt(locale, params[:tape_number])
+        vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{@locale}-#{params[:tape_number]}" do
+          @interview.to_vtt(@locale, params[:tape_number])
         end
         render plain: vtt
       end
       format.pdf do
         @lang = "#{params[:lang]}-public"
-        @locale = params[:lang] # change this to params[:locale] if  you want e.g. header and footer in locale
+        #@locale = params[:lang] # change this to params[:locale] if  you want e.g. header and footer in locale
         @lang_human = I18n.t(params[:lang], locale: @locale)
         @orig_lang = "#{interview_locale}-public"
         first_segment_with_heading = @interview.segments.with_heading.first
@@ -160,7 +161,7 @@ class InterviewsController < ApplicationController
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{params[:lang]}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
       format.ods do
-        send_data @interview.to_ods(locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet" #, :disposition => "attachment"
+        send_data @interview.to_ods(@locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{@locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet" #, :disposition => "attachment"
       end
       format.html
     end

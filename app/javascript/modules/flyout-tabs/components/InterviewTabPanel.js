@@ -38,8 +38,14 @@ class InterviewTabPanel extends Component {
             links.push(
                 <div key={`downloads-for-tape-${i}`}>
                     <h4>{`${t(this.props, 'tape')} ${i}:`}</h4>
-                    <a href={`${pathBase(this.props)}/interviews/${archiveId}.ods?tape_number=${i}`} download>ods</a>&#44;&#xa0;
-                    <a href={`${pathBase(this.props)}/interviews/${archiveId}.vtt?tape_number=${i}`} download>vtt</a>
+                    {interview.languages.map(locale => {
+                        return (
+                            <>
+                                <a href={`${pathBase(this.props)}/interviews/${archiveId}.ods?lang=${locale}&tape_number=${i}`} download>{`ods-${locale}`}</a>&#44;&#xa0;
+                                <a href={`${pathBase(this.props)}/interviews/${archiveId}.vtt?lang=${locale}&tape_number=${i}`} download>{`vtt-${locale}`}</a>&#44;&#xa0;
+                            </>
+                        )
+                    })}
                 </div>
             );
         }
