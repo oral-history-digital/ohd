@@ -1,4 +1,8 @@
 class ProjectPolicy < ApplicationPolicy
+  def cmdi_metadata?
+    show?
+  end
+
   def edit_info?
     update?
   end

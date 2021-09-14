@@ -9,6 +9,7 @@ Rails.application.routes.draw do
     get "project/edit-info", to: "projects#edit_info"
     get "project/edit-config", to: "projects#edit_config"
     get "project/edit-display", to: "projects#edit_display"
+    get "project/cmdi-metadata", to: "projects#cmdi_metadata"
 
     resources :languages
     resources :metadata_fields#, only: [:create, :update, :index]

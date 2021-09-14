@@ -6,7 +6,7 @@ class ProjectMetadataExporter
 
   def build
     # Header
-    @md.self_link = "#{Rails.application.routes.url_helpers.project_url(id: @project.id, locale: 'de', host: @project.archive_domain)}.xml"
+    @md.self_link = self_url
     @md.creation_date = Date.today
 
     # Resources
@@ -27,5 +27,18 @@ class ProjectMetadataExporter
     @md.mime_types = { 'video' => 'video/mp4', 'audio' => 'audio/x-wav' }
 
     @md
+  end
+
+  def self_url
+    if @project.archive_domain.present?
+      "#{@project.archive_domain}/de/project/cmdi-metadata.xml"
+    else
+      Rails.application.routes.url_helpers.project_cmdi_metadata_url(
+        locale: 'de',
+        project_id: @project.identifier,
+        host: OHD_DOMAIN,
+        format: :xml
+      )
+    end
   end
 end
