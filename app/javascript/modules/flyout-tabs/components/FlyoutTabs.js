@@ -171,10 +171,10 @@ export default class FlyoutTabs extends Component {
 FlyoutTabs.propTypes = {
     className: PropTypes.string,
     visible: PropTypes.bool.isRequired,
-    interview: PropTypes.object.isRequired,
+    interview: PropTypes.object,
     projectId: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
-    archiveId: PropTypes.string.isRequired,
+    archiveId: PropTypes.string,
     hasMap: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     flyoutTabsIndex: PropTypes.number.isRequired,
