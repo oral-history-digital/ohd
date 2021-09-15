@@ -123,9 +123,9 @@ class ProjectMetadata
             }
             xml.SpeechCorpus {
               xml.SpeechTechnicalMetadata {
-                media_types.each do |type|
+                mime_types.each do |type|
                   xml.MimeType {
-                    xml.MimeType mime_types[type]
+                    xml.MimeType type
                   }
                 end
               }

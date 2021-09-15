@@ -24,7 +24,7 @@ class ProjectMetadataExporter
     @md.description = ActionView::Base.full_sanitizer.sanitize(@project.introduction)
     @md.description_lang = I18n.locale.to_s
     @md.media_types = @project.interviews.pluck(:media_type).uniq
-    @md.mime_types = { 'video' => 'video/mp4', 'audio' => 'audio/x-wav' }
+    @md.mime_types = mime_types
 
     @md
   end
@@ -40,5 +40,14 @@ class ProjectMetadataExporter
         format: :xml
       )
     end
+  end
+
+  def mime_types
+    @project.interviews
+      .map { |interview| interview.original_content_type.present? ?
+        interview.original_content_type :
+        interview.media_type == 'video' ? 'video/mp4' : 'audio/x-wav'
+      }
+      .uniq
   end
 end
