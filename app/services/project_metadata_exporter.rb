@@ -31,7 +31,7 @@ class ProjectMetadataExporter
 
   def self_url
     if @project.archive_domain.present?
-      "#{@project.archive_domain}/de/project/cmdi-metadata.xml"
+      "#{@project.archive_domain}/de/project/cmdi_metadata.xml"
     else
       Rails.application.routes.url_helpers.project_cmdi_metadata_url(
         locale: 'de',

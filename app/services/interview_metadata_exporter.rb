@@ -33,7 +33,7 @@ class InterviewMetadataExporter
 
   def self_url
     if @project.archive_domain.present?
-      "#{@project.archive_domain}/de/interviews/#{@interview.archive_id}/cmdi-metadata.xml"
+      "#{@project.archive_domain}/de/interviews/#{@interview.archive_id}/cmdi_metadata.xml"
     else
       Rails.application.routes.url_helpers.cmdi_metadata_interview_url(
         id: @interview.archive_id,
