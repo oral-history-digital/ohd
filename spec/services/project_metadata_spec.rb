@@ -17,7 +17,7 @@ RSpec.describe ProjectMetadata do
     md.description = 'This archive exists for testing purposes only…'
     md.description_lang = 'en'
     md.media_types = ['video', 'audio']
-    md.mime_types = { 'video' => 'video/mp4', 'audio' => 'audio/x-wav' }
+    md.mime_types = ['video/mp4', 'audio/x-wav']
 
     expect(md.to_xml).to match_snapshot('test_project_cmdi')
   end
