@@ -2,23 +2,21 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import { FaStar, FaDownload, FaAngleUp, FaAngleDown } from 'react-icons/fa';
+import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
 import Observer from 'react-intersection-observer'
-import moment from 'moment';
 
 import { InterviewPreviewContainer } from 'modules/interview-preview';
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
-import { UserContentFormContainer } from 'modules/workbook';
 import { AuthShowContainer, admin } from 'modules/auth';
 import { Fetch, getTaskTypesForCurrentProjectFetched } from 'modules/data';
-import { Modal } from 'modules/ui';
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
 import { INDEX_SEARCH } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
-import queryToText from '../queryToText';
+
 import ResultTableContainer from './ResultTableContainer';
+import SearchActionsContainer from './SearchActionsContainer';
 
 export default class ArchiveSearch extends Component {
     constructor(props) {
@@ -129,7 +127,7 @@ export default class ArchiveSearch extends Component {
 
     foundInterviews(displayType) {
         if (this.props.foundInterviews?.length == 0 && !this.props.isArchiveSearching) {
-            return <div className={'search-result'}>{t(this.props, 'no_interviews_results')}</div>
+            return <div className="search-result">{t(this.props, 'no_interviews_results')}</div>
         }
         else {
             if(displayType === 'grid') {
@@ -208,66 +206,6 @@ export default class ArchiveSearch extends Component {
         return this.props.query['page'] != undefined ? this.props.query['page'] : 1;
     }
 
-    saveSearchForm(onSubmit) {
-        moment.locale(this.props.locale);
-        let now = moment().format('lll');
-        let queryText = queryToText(this.props.query, this.props);
-        let title = queryText === "" ? now : queryText + " - " + now;
-
-        return <UserContentFormContainer
-            title={title}
-            description=''
-            properties={this.props.query}
-            type='Search'
-            submitLabel={t(this.props, 'save_search')}
-            onSubmit={onSubmit}
-        />
-    }
-
-    saveSearchLink() {
-        return (
-            <Modal
-                title={t(this.props, 'save_search')}
-                trigger={<><FaStar className="Icon" /> {t(this.props, 'save_search')}</>}
-                triggerClassName="search-results-ico-link"
-            >
-                {close => this.saveSearchForm(close)}
-            </Modal>
-        );
-    }
-
-    exportSearch() {
-        let query = Object.assign({}, this.props.query);
-        delete query['page'];
-        let url = `${pathBase(this.props)}/searches/archive.csv`;
-        for (let i = 0, len = Object.keys(query).length; i < len; i++) {
-            let param = Object.keys(query)[i]
-            url += (i === 0) ? '?' : '&'
-            if(query[param] && query[param].length > 0) url += `${param}=${query[param]}`
-        }
-        return (
-            <ul>
-                <li>
-                    <a href={url} download>CSV</a>
-                </li>
-            </ul>
-        )
-    }
-
-    exportSearchLink() {
-        if(Object.keys(this.props.query).length > 0 && this.props.projectId !== "dg") {
-            return (
-                <Modal
-                    title={t(this.props, 'export_search_results')}
-                    trigger={<><FaDownload className="Icon" /> {t(this.props, 'export_search_results')}</>}
-                    triggerClassName="search-results-ico-link"
-                >
-                    {this.exportSearch()}
-                </Modal>
-            );
-        } else return null;
-    }
-
     renderArchiveResultsCount() {
         if(!this.props.isArchiveSearching || (this.props.query['page'] || 1) > 1) {
             return (
@@ -275,32 +213,6 @@ export default class ArchiveSearch extends Component {
                     {this.props.resultsCount} {t(this.props, 'archive_results')}
                 </div>
             )
-        }
-    }
-
-    searchResultTabs() {
-        const { viewModes } = this.props;
-
-        if (viewModes) {
-            return viewModes.map((viewMode, i) => {
-                let visibility = (
-                        viewModes.length < 2 ||
-                        (viewMode === 'workflow' && !admin(this.props, {type: 'General'}, 'edit'))
-                    ) ?
-                    'hidden' :
-                    '';
-
-                return (
-                    <Tab
-                        key={i}
-                        className={classNames('search-results-tab', visibility)}
-                    >
-                        <span>{t(this.props, viewMode)}</span>
-                    </Tab>
-                )
-            })
-        } else {
-            return null;
         }
     }
 
@@ -319,6 +231,8 @@ export default class ArchiveSearch extends Component {
     }
 
     render() {
+        const { viewModes } = this.props;
+
         return (
             <ScrollToTop>
                 <div className='wrapper-content interviews'>
@@ -326,9 +240,8 @@ export default class ArchiveSearch extends Component {
                         {t(this.props, 'interviews')}
                     </h1>
                     <div className="SearchResults-legend search-results-legend">
-                        <AuthShowContainer ifLoggedIn={true}>
-                            {this.saveSearchLink()}
-                            {this.exportSearchLink()}
+                        <AuthShowContainer ifLoggedIn>
+                            <SearchActionsContainer />
                         </AuthShowContainer>
                         {this.renderArchiveResultsCount()}
                     </div>
@@ -340,9 +253,28 @@ export default class ArchiveSearch extends Component {
                         selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
                         onSelect={tabIndex => this.handleTabClick(tabIndex)}
                     >
-                        <TabList className={'search-results-tabs'}>
-                            {this.searchResultTabs()}
+                        <TabList className="search-results-tabs">
+                            {
+                                viewModes?.map((viewMode, i) => {
+                                    let visibility = (
+                                            viewModes.length < 2 ||
+                                            (viewMode === 'workflow' && !admin(this.props, {type: 'General'}, 'edit'))
+                                        ) ?
+                                        'hidden' :
+                                        '';
+
+                                    return (
+                                        <Tab
+                                            key={i}
+                                            className={classNames('search-results-tab', visibility)}
+                                        >
+                                            <span>{t(this.props, viewMode)}</span>
+                                        </Tab>
+                                    );
+                                })
+                            }
                         </TabList>
+
                         {this.tabPanels()}
                     </Tabs>
                 </div>
