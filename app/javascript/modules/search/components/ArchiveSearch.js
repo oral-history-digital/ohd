@@ -2,240 +2,112 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
 import Observer from 'react-intersection-observer'
 
-import { InterviewPreviewContainer } from 'modules/interview-preview';
-import { InterviewWorkflowRowContainer } from 'modules/workflow';
-import { AuthShowContainer, admin } from 'modules/auth';
-import { Fetch, getTaskTypesForCurrentProjectFetched } from 'modules/data';
+import { AuthorizedContent, AuthShowContainer, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
 import { INDEX_SEARCH } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
+import { VIEWMODE_GRID, VIEWMODE_LIST, VIEWMODE_WORKFLOW } from 'modules/constants';
 
 import ResultTableContainer from './ResultTableContainer';
 import SearchActionsContainer from './SearchActionsContainer';
+import WorkflowResultsContainer from './WorkflowResultsContainer';
+import ResultGrid from './ResultGrid';
 
 export default class ArchiveSearch extends Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            sortables: {
-                title: 'asc',
-                archive_id: 'asc',
-                media_type: 'asc',
-                duration: 'asc',
-                language: 'asc',
-                workflow_state: 'asc',
-            }
-        }
+        this.handleTabClick = this.handleTabClick.bind(this);
+        this.search = this.search.bind(this);
     }
 
     componentDidMount() {
-        this.props.setFlyoutTabsIndex(INDEX_SEARCH);
+        const { setFlyoutTabsIndex, query } = this.props;
+
+        setFlyoutTabsIndex(INDEX_SEARCH);
         if (window.location.href.indexOf('?') === -1) {
             this.search({
-                ...this.props.query,
+                ...query,
                 page: 1,
             });
         }
     }
 
     componentDidUpdate(prevProps) {
-        if (prevProps.isLoggedIn !== this.props.isLoggedIn) {
+        const { isLoggedIn, query } = this.props;
+
+        if (prevProps.isLoggedIn !== isLoggedIn) {
             this.search({
-                ...this.props.query,
+                ...query,
                 page: 1,
             });
         }
     }
 
-    content(displayType) {
-        if (this.props.isArchiveSearching && this.props.query['page'] === 1) {
-            return <Spinner />;
-        } else {
-            return (
-                <div>
-                    <div className={'search-results-container'}>
-                        {this.foundInterviews(displayType)}
-                    </div>
-                    {this.renderScrollObserver()}
-                </div>
-            )
-        }
-    }
-
-    sort(column, direction) {
-        this.search(Object.assign({}, this.props.query, {order: `${column}-${direction}`, page: 1}));
-    }
-
-    sortButton(column) {
-        if (column) {
-            let _this = this;
-            let direction = this.state.sortables[column] === 'desc' ? 'asc' : 'desc';
-            return (
-                <button
-                    type="button"
-                    className="Button Button--transparent Button--icon"
-                    onClick={() => {
-                        _this.setState({sortables: Object.assign({}, _this.state.sortables, {[column]: direction})});
-                        _this.sort(column, direction);
-                    }}
-                >
-                    {
-                        direction === 'desc' ?
-                            <FaAngleDown className="Icon Icon--text" /> :
-                            <FaAngleUp className="Icon Icon--text" />
-                    }
-                </button>
-            );
-        } else {
-            return null;
-        }
-    }
-
-    // width is in percent - points in decimal numbers are replaced by '-'
-    // the classes have to exist in grid.scss.
-    // have a look for examples
-    //
-    box(value, width, sortColumn) {
-        return (
-            <div className={`box-${width} header`}>
-                {t(this.props, value)}
-                {this.sortButton(sortColumn)}
-            </div>
-        )
-    }
-
-    workflowHeader() {
-        return (
-            <div className='data boxes workflow-header' key='header-boxes'>
-                {this.box('interview', '10', 'title')}
-                {this.box('id', '10', 'archive_id')}
-                {this.box('activerecord.attributes.interview.media_type', '10', 'media_type')}
-                {this.box('activerecord.attributes.interview.duration', '10', 'duration')}
-                {this.box('activerecord.attributes.interview.language', '10', 'language')}
-                {this.box('activerecord.attributes.interview.collection_id', '10')}
-                {this.box('activerecord.attributes.interview.tasks_states', '30')}
-                {this.box('activerecord.attributes.interview.workflow_state', '10', 'workflow_state')}
-            </div>
-        )
-    }
-
     foundInterviews(displayType) {
-        if (this.props.foundInterviews?.length == 0 && !this.props.isArchiveSearching) {
-            return <div className="search-result">{t(this.props, 'no_interviews_results')}</div>
+        const { foundInterviews, isArchiveSearching } = this.props;
+
+        if (foundInterviews?.length === 0 && !isArchiveSearching) {
+            return (
+                <div className="search-result">
+                    {t(this.props, 'no_interviews_results')}
+                </div>
+            );
         }
-        else {
-            if(displayType === 'grid') {
-                return (
-                    this.props.foundInterviews?.map((interview, index) => {
-                        return <InterviewPreviewContainer
-                            interview={interview}
-                            key={"interview-" + interview.archive_id + "-" + index}
-                        />;
-                    })
-                )
-            } else if (displayType === 'list') {
-                return (
-                    <ResultTableContainer/>
-                );
-            } else if (displayType === 'workflow' && admin(this.props, {type: 'General'}, 'edit')) {
-                return (
-                    <Fetch
-                        fetchParams={['task_types', null, null, `for_projects=${this.props.project?.id}`]}
-                        testSelector={getTaskTypesForCurrentProjectFetched}
-                    >
-                        {this.workflowHeader()}
-                        {this.props.foundInterviews?.map((interview, index) => {
-                            return <InterviewWorkflowRowContainer
-                                interview={interview}
-                                key={"interview-row-" + interview.archive_id + "-" + index}
-                            />;
-                        })}
-                    </Fetch>
-                )
-            }
+
+        switch (displayType) {
+        case VIEWMODE_LIST:
+            return <ResultTableContainer/>;
+        case VIEWMODE_WORKFLOW:
+            return (
+                <AuthorizedContent object={{type: 'General'}} action="edit">
+                    <WorkflowResultsContainer search={this.search} />
+                </AuthorizedContent>
+            );
+        case VIEWMODE_GRID:
+        default:
+            return <ResultGrid interviews={foundInterviews} />;
         }
     }
 
     handleScroll(inView) {
-        if(inView){
-            let page = (parseInt(this.props.query.page) || 0) + 1;
-            this.search(Object.assign({}, this.props.query, {page: page}));
+        const { query } = this.props;
+
+        if (inView) {
+            let page = (parseInt(query.page) || 0) + 1;
+            this.search(Object.assign({}, query, {page: page}));
         }
     }
 
     search(query={page: 1}) {
+        const { searchInArchive } = this.props;
+
         let url = `${pathBase(this.props)}/searches/archive`;
 
-        this.props.searchInArchive(url, query);
+        searchInArchive(url, query);
     }
 
     handleTabClick(tabIndex) {
-        this.props.setViewMode(this.props.viewModes[tabIndex])
-        if (this.props.viewModes[tabIndex] === 'workflow') {
-            this.props.hideFlyoutTabs();
-        }
-    }
+        const { setViewMode, viewModes, hideFlyoutTabs } = this.props;
 
-    renderScrollObserver() {
-        if (this.props.isArchiveSearching) {
-            return <Spinner />;
-        }
-        else if (this.props.resultPagesCount > (parseInt(this.props.query.page) || 1)) {
-            return (
-                <Observer
-                    onChange={inView => this.handleScroll(inView)}
-                />
-            )
-        }
-    }
+        setViewMode(viewModes[tabIndex]);
 
-    resultsFromTo() {
-        let from = (this.currentPage() -1) * 12 + 1;
-        let to   = this.currentPage() * 12;
-        to = Math.min(to, this.props.resultsCount);
-        return `${t(this.props, 'archive_results')} ${from} - ${to}`;
-    }
-
-    currentPage() {
-        return this.props.query['page'] != undefined ? this.props.query['page'] : 1;
-    }
-
-    renderArchiveResultsCount() {
-        if(!this.props.isArchiveSearching || (this.props.query['page'] || 1) > 1) {
-            return (
-                <div className="search-results-legend-text">
-                    {this.props.resultsCount} {t(this.props, 'archive_results')}
-                </div>
-            )
-        }
-    }
-
-    tabPanels() {
-        const { viewModes } = this.props;
-
-        if (viewModes) {
-            return viewModes.map((viewMode, i) => (
-                <TabPanel key={i}>
-                    {this.content(viewMode)}
-                </TabPanel>
-            ));
-        } else {
-            return null;
+        if (viewModes[tabIndex] === VIEWMODE_WORKFLOW) {
+            hideFlyoutTabs();
         }
     }
 
     render() {
-        const { viewModes } = this.props;
+        const { isArchiveSearching, query, resultPagesCount, resultsCount, viewMode,
+            viewModes, foundInterviews } = this.props;
 
         return (
             <ScrollToTop>
-                <div className='wrapper-content interviews'>
+                <div className="wrapper-content interviews">
                     <h1 className="search-results-title">
                         {t(this.props, 'interviews')}
                     </h1>
@@ -243,39 +115,64 @@ export default class ArchiveSearch extends Component {
                         <AuthShowContainer ifLoggedIn>
                             <SearchActionsContainer />
                         </AuthShowContainer>
-                        {this.renderArchiveResultsCount()}
+                        {
+                            !isArchiveSearching || (query['page'] || 1) > 1 && (
+                                <div className="search-results-legend-text">
+                                    {resultsCount} {t(this.props, 'archive_results')}
+                                </div>
+                            )
+                        }
                     </div>
 
                     <Tabs
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        selectedIndex={(this.props.viewModes && this.props.viewModes.indexOf(this.props.viewMode)) || 0}
-                        onSelect={tabIndex => this.handleTabClick(tabIndex)}
+                        selectedIndex={(viewModes && viewModes.indexOf(viewMode)) || 0}
+                        onSelect={this.handleTabClick}
                     >
                         <TabList className="search-results-tabs">
                             {
-                                viewModes?.map((viewMode, i) => {
-                                    let visibility = (
-                                            viewModes.length < 2 ||
-                                            (viewMode === 'workflow' && !admin(this.props, {type: 'General'}, 'edit'))
-                                        ) ?
-                                        'hidden' :
-                                        '';
-
-                                    return (
-                                        <Tab
-                                            key={i}
-                                            className={classNames('search-results-tab', visibility)}
-                                        >
-                                            <span>{t(this.props, viewMode)}</span>
-                                        </Tab>
-                                    );
-                                })
+                                viewModes?.map(viewMode => (
+                                    <Tab
+                                        key={viewMode}
+                                        className={classNames('search-results-tab', {
+                                            'hidden': viewModes.length < 2 ||
+                                                (viewMode === VIEWMODE_WORKFLOW &&
+                                                !admin(this.props, {type: 'General'}, 'edit'))
+                                        })}
+                                    >
+                                        <span>{t(this.props, viewMode)}</span>
+                                    </Tab>
+                                ))
                             }
                         </TabList>
 
-                        {this.tabPanels()}
+                        {
+                            viewModes?.map(viewMode => (
+                                <TabPanel key={viewMode}>
+                                    {
+                                        isArchiveSearching && query['page'] === 1 && !foundInterviews ?
+                                            <Spinner /> :
+                                            (
+                                                <div>
+                                                    <div className="search-results-container">
+                                                        {this.foundInterviews(viewMode)}
+                                                    </div>
+                                                    {
+                                                        isArchiveSearching ?
+                                                            <Spinner /> :
+                                                            (
+                                                                resultPagesCount > (Number.parseInt(query.page) || 1) &&
+                                                                    <Observer onChange={inView => this.handleScroll(inView)} />
+                                                            )
+                                                    }
+                                                </div>
+                                            )
+                                    }
+                                </TabPanel>
+                            ))
+                        }
                     </Tabs>
                 </div>
             </ScrollToTop>
@@ -290,6 +187,7 @@ ArchiveSearch.propTypes = {
     viewMode: PropTypes.string.isRequired,
     foundInterviews: PropTypes.array.isRequired,
     locale: PropTypes.string.isRequired,
+    project: PropTypes.object.isRequired,
     translations: PropTypes.object.isRequired,
     editView: PropTypes.bool.isRequired,
     account: PropTypes.object,

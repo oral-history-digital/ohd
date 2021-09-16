@@ -21,3 +21,7 @@ export const PROJECT_MOG  = 'mog';
 export const PROJECT_ZWAR = 'zwar';
 
 export const DEFAULT_LOCALES = ['de', 'en'];
+
+export const VIEWMODE_GRID = 'grid';
+export const VIEWMODE_LIST = 'list';
+export const VIEWMODE_WORKFLOW = 'workflow';
