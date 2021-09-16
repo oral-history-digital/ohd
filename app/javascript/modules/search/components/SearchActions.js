@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { FaStar, FaDownload } from 'react-icons/fa';
 import moment from 'moment';
+import queryString from 'query-string';
 
 import { PROJECT_DG } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
@@ -19,8 +20,6 @@ export default function SearchActions({
     const { t } = useI18n();
     const pathBase = usePathBase();
 
-    const showExportSearchLink = Object.keys(query).length > 0 && projectId !== PROJECT_DG;
-
     function saveSearchForm(onSubmit) {
         moment.locale(locale);
         const now = moment().format('lll');
@@ -37,23 +36,15 @@ export default function SearchActions({
         />
     }
 
-    function exportSearchUrl() {
-        const modifiedQuery = {
-            ...query,
-        };
-        delete modifiedQuery['page'];
+    const showExportSearchLink = Object.keys(query).length > 0 && projectId !== PROJECT_DG;
 
-        let url = `${pathBase}/searches/archive.csv`;
-
-        for (let i = 0, len = Object.keys(modifiedQuery).length; i < len; i++) {
-            const param = Object.keys(modifiedQuery)[i];
-            url += (i === 0) ? '?' : '&'
-            if (modifiedQuery[param] && modifiedQuery[param].length > 0) {
-                url += `${param}=${modifiedQuery[param]}`;
-            }
-        }
-
-        return url;
+    let exportUrl = `${pathBase}/searches/archive.csv`;
+    const qs = queryString.stringify({
+        ...query,
+        page: undefined,
+    });
+    if (qs.length > 0) {
+        exportUrl += `?${qs}`;
     }
 
     return (
@@ -70,7 +61,7 @@ export default function SearchActions({
                         title={t('export_search_results')}
                         trigger={<><FaDownload className="Icon Icon--text" /> {t('export_search_results')}</>}
                     >
-                        <a href={exportSearchUrl()} download>
+                        <a href={exportUrl} download>
                             CSV
                         </a>
                     </Modal>
