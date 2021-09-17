@@ -93,6 +93,9 @@ export default class RegistryEntryForm extends Component {
                             attribute: 'longitude',
                         },
                         {
+                            attribute: 'code',
+                        },
+                        {
                             elementType: 'select',
                             attribute: 'workflow_state',
                             values: ['preliminary', 'public', 'rejected'],
