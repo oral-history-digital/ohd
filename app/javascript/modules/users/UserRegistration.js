@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaPencilAlt, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
 import { TasksContainer } from 'modules/workflow';
 import { Modal } from 'modules/ui';
@@ -20,14 +21,21 @@ export default class UserRegistration extends Component {
     }
 
     toggle(that) {
+        const isExpanded = !this.state.show[that];
+
         return (
-            <span
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, this.state.show[that] ? 'show' : 'hide')}
+            <button
+                type="button"
+                className="Button Button--transparent Button--icon"
+                title={t(this.props, isExpanded ? 'hide' : 'show')}
                 onClick={() => this.setState({show: Object.assign({}, this.state.show, {[that]: !this.state.show[that]})})}
             >
-                <i className={`fa fa-angle-${this.state.show[that] ? 'up' : 'down'}`}></i>
-            </span>
+                {
+                    isExpanded ?
+                        <FaAngleDown className="Icon Icon--primary" /> :
+                        <FaAngleUp className="Icon Icon--primary" />
+                }
+            </button>
         )
     }
 
@@ -92,8 +100,7 @@ export default class UserRegistration extends Component {
             return (
                 <Modal
                     title={t(this.props, 'edit.user_registration.edit')}
-                    trigger={<i className="fa fa-pencil"/>}
-                    triggerClassName="flyout-sub-tabs-content-ico-link"
+                    trigger={<FaPencilAlt className="Icon Icon--editorial" />}
                 >
                     {close => (
                         <div>

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 
 import missingStill from 'assets/images/missing_still.png';
 import { loadIntervieweeWithAssociations } from 'modules/interview-preview';
@@ -20,13 +21,22 @@ export default class InterviewWorkflowRow extends Component {
     }
 
     toggleButton() {
+        const { collapsed } = this.state;
+
         return (
-            <span
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, this.state.collapsed ? 'edit_workflow' : 'do_not_edit_workflow')}
-                onClick={() => this.setState({ collapsed: !this.state.collapsed })}
-            >
-                <i className={`fa fa-angle-${this.state.collapsed ? 'down' : 'up'}`}></i>
+            <span>
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
+                    title={t(this.props, this.state.collapsed ? 'edit_workflow' : 'do_not_edit_workflow')}
+                    onClick={() => this.setState({ collapsed: !this.state.collapsed })}
+                >
+                    {
+                        collapsed ?
+                            <FaAngleDown className="Icon Icon--text" /> :
+                            <FaAngleUp className="Icon Icon--text" />
+                    }
+                </button>
             </span>
         )
     }
@@ -95,7 +105,7 @@ export default class InterviewWorkflowRow extends Component {
 
     symbol(task) {
         return (
-            <span className={task.workflow_state} key={`task-symbol-${task.id}`} title={task.task_type.label[this.props.locale]} >
+            <span className={task.workflow_state} key={task.id} title={task.task_type.label[this.props.locale]} >
                 {task.task_type.abbreviation}
             </span>
         )

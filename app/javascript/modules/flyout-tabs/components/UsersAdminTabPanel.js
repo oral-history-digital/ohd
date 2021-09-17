@@ -1,6 +1,7 @@
 import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
+import { FaDownload } from 'react-icons/fa';
 
 import { UserRegistrationSearchFormContainer } from 'modules/admin';
 import { pathBase } from 'modules/routes';
@@ -70,8 +71,12 @@ class UsersAdminTabPanel extends Component {
                             <div>
                                 <UserRegistrationSearchFormContainer/>
                                 <a href={this.userStatisticsPath()}>
-                                    <i className="fa fa-download flyout-content-ico" title={t(this.props, 'download_user_statistics')}></i>
-                                    <span>{` ${t(this.props, 'download_user_statistics')}`}</span>
+                                    <FaDownload
+                                        className="Icon Icon--primary"
+                                        title={t(this.props, 'download_user_statistics')}
+                                    />
+                                    {' '}
+                                    {t(this.props, 'download_user_statistics')}
                                 </a>
                             </div>
                             <Select

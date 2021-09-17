@@ -1,4 +1,6 @@
 import { Component } from 'react';
+import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
+
 import YearRangeContainer from './YearRangeContainer';
 
 export default class Facet extends Component {
@@ -60,7 +62,7 @@ export default class Facet extends Component {
         // filter only where size of list >= 15
         if (Object.keys(this.props.data.subfacets).length >= 15) {
             return(
-                <div className={'facet-filter'}>
+                <div className="facet-filter">
                     <i className="fa fa-search"></i>
                     <input type='text' className={'filter ' + this.props.facet} value={this.state.filter}
                     onChange={this.handleChange}
@@ -149,22 +151,29 @@ export default class Facet extends Component {
     }
 
     collectionLink(subfacet) {
-        if (subfacet.homepage && subfacet.homepage[this.props.locale]) {
+        const { locale } = this.props;
+
+        if (subfacet.homepage && subfacet.homepage[locale]) {
             // apend 'http://' to homepage if not present
-            let href = /^http/.test(subfacet.homepage[this.props.locale]) ? subfacet.homepage[this.props.locale] : `http://${subfacet.homepage[this.props.locale]}`
+            let href = /^http/.test(subfacet.homepage[locale]) ? subfacet.homepage[locale] : `http://${subfacet.homepage[locale]}`
             return (
-                <a href={href} title={subfacet.homepage[this.props.locale]} target='_blank' rel="noopener">
-                    <i className="fa fa-external-link" aria-hidden="true"  style={{'color': 'grey'}} />
+                <a href={href} title={subfacet.homepage[locale]} target="_blank" rel="noreferrer">
+                    <FaExternalLinkAlt className="Icon Icon--unobtrusive" />
                 </a>
             )
         }
     }
 
     renderCollectionInfo(subfacet) {
-        if(this.props.facet === 'collection_id' && (subfacet.notes || subfacet.homepage)) {
+        const { facet, locale } = this.props;
+
+        if (facet === 'collection_id' && (subfacet.notes || subfacet.homepage)) {
             return (
                 <span>
-                    <i className="fa fa-info-circle" aria-hidden="true" title={subfacet.notes[this.props.locale]}  style={{'color': 'grey'}} />
+                    <FaInfoCircle
+                        className="Icon Icon--unobtrusive u-mr-tiny"
+                        title={subfacet.notes[locale]}
+                    />
                     {this.collectionLink(subfacet)}
                 </span>
             )

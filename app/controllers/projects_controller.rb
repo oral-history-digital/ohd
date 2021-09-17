@@ -1,6 +1,6 @@
 class ProjectsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:show, :index, :edit_info, :edit_display, :edit_config]
-  before_action :set_project, only: [:show, :edit_info, :edit_display, :edit_config, :edit, :update, :destroy]
+  skip_before_action :authenticate_user_account!, only: [:show, :cmdi_metadata, :index, :edit_info, :edit_display, :edit_config]
+  before_action :set_project, only: [:show, :cmdi_metadata, :edit_info, :edit_display, :edit_config, :edit, :update, :destroy]
 
   # GET /projects
   def index
@@ -36,6 +36,11 @@ class ProjectsController < ApplicationController
       format.html do
         render :template => "/react/app.html"
       end
+    end
+  end
+
+  def cmdi_metadata
+    respond_to do |format|
       format.xml do
         exporter = ProjectMetadataExporter.new(@project)
         metadata = exporter.build
@@ -112,7 +117,7 @@ class ProjectsController < ApplicationController
             data_type: 'projects',
             id: project.id,
             reload_data_type: 'accounts',
-            reload_id: 'current' 
+            reload_id: 'current'
           }
         end
       end

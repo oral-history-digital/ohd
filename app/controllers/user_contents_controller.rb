@@ -21,8 +21,9 @@ class UserContentsController < ApplicationController
   end
 
   def destroy
-    authorize(UserContent)
     @user_content = UserContent.find(params[:id])
+
+    authorize @user_content
     @user_content.destroy
 
     respond_to do |format|
@@ -72,7 +73,6 @@ class UserContentsController < ApplicationController
   private
 
   def user_content_params
-    #byebug
     #properties = params[:user_content].delete(:properties) if params[:user_content][:properties]
     params.require(:user_content).
       permit(:description,

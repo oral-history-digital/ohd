@@ -1,5 +1,5 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
 
 import { SingleValueWithFormContainer } from 'modules/forms';
 import { Fetch, getCollectionsForCurrentProjectFetched } from 'modules/data';
@@ -26,22 +26,22 @@ export default function InterviewInfo({
                     obj={interview}
                     validate={function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}}
                     attribute={'archive_id'}
-                    projectAccessGranted={projectAccessGranted} 
+                    projectAccessGranted={projectAccessGranted}
                 />
                 <SingleValueWithFormContainer
                     obj={interview}
                     attribute={'signature_original'}
-                    projectAccessGranted={projectAccessGranted} 
+                    projectAccessGranted={projectAccessGranted}
                 />
                 <SingleValueWithFormContainer
                     obj={interview}
                     attribute={'interview_date'}
-                    projectAccessGranted={projectAccessGranted} 
+                    projectAccessGranted={projectAccessGranted}
                 />
                 <SingleValueWithFormContainer
                     obj={interview}
                     attribute={'description'}
-                    projectAccessGranted={projectAccessGranted} 
+                    projectAccessGranted={projectAccessGranted}
                     elementType="textarea"
                     multiLocale
                     validate={v => v?.length > 3}
@@ -53,19 +53,19 @@ export default function InterviewInfo({
                     values={['video', 'audio']}
                     value={t(`search_facets.${interview.media_type}`)}
                     attribute={'media_type'}
-                    projectAccessGranted={projectAccessGranted} 
+                    projectAccessGranted={projectAccessGranted}
                 />
                 <SingleValueWithFormContainer
                     obj={interview}
                     validate={function(v){return /^[\d{2}:\d{2}:\d{2}.*]{1,}$/.test(v)}}
                     attribute={'duration'}
-                    projectAccessGranted={projectAccessGranted} 
+                    projectAccessGranted={projectAccessGranted}
                 />
                 <SingleValueWithFormContainer
                     obj={interview}
                     validate={function(v){return /^\d+$/.test(v)}}
                     attribute={'tape_count'}
-                    projectAccessGranted={projectAccessGranted} 
+                    projectAccessGranted={projectAccessGranted}
                 />
                 <SingleValueWithFormContainer
                     elementType={'select'}
@@ -74,7 +74,7 @@ export default function InterviewInfo({
                     withEmpty={true}
                     validate={function(v){return /^\d+$/.test(v)}}
                     attribute={'language_id'}
-                    projectAccessGranted={projectAccessGranted} 
+                    projectAccessGranted={projectAccessGranted}
                 />
                 <Fetch
                     fetchParams={['collections', null, null, `for_projects=${project?.id}`]}
@@ -88,7 +88,7 @@ export default function InterviewInfo({
                         validate={function(v){return /^\d+$/.test(v)}}
                         individualErrorMsg={'empty'}
                         attribute={'collection_id'}
-                        projectAccessGranted={projectAccessGranted} 
+                        projectAccessGranted={projectAccessGranted}
                     >
                         {collection && collectionLink(collection, locale)}
                     </SingleValueWithFormContainer>
@@ -126,11 +126,9 @@ function collectionLink(collection, locale) {
         const title = collection.notes && collection.notes[locale] || ''
         return (
             <span>
-                <i
-                    className="fa fa-info-circle"
-                    aria-hidden="true"
+                <FaInfoCircle
+                    className="Icon Icon--unobtrusive u-mr-tiny"
                     title={title}
-                    style={{'color': 'grey'}}
                 />
                 <a
                     href={collection.homepage[locale]}
@@ -138,13 +136,8 @@ function collectionLink(collection, locale) {
                     target="_blank"
                     rel="noreferrer"
                 >
-                    <i
-                        className="fa fa-external-link"
-                        aria-hidden="true"
-                        style={{'color': 'grey'}}
-                    />
+                    <FaExternalLinkAlt className="Icon Icon--unobtrusive u-mr-tiny" />
                 </a>
             </span>
         )
     }
-

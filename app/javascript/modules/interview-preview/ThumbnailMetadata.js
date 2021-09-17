@@ -59,7 +59,7 @@ export default function ThumbnailMetadata({
 
 ThumbnailMetadata.propTypes = {
     interview: PropTypes.object.isRequired,
-    interviewee: PropTypes.object.isRequired,
+    interviewee: PropTypes.object,
     project: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,

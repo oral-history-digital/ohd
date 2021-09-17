@@ -7,7 +7,7 @@
 }
 
 .Icon--primary {
-  color: var(--primary-color);
+  color: var(--primary-color) !important;
 }
 
 .Icon--secondary {
@@ -16,4 +16,16 @@
 
 .Icon--editorial {
   color: var(--editorial-color);
+}
+
+.Icon--danger {
+  color: $danger-color;
+}
+
+.Icon--text {
+  color: $gray-darkest;
+}
+
+.Icon--unobtrusive {
+  color: $gray-dark;
 }

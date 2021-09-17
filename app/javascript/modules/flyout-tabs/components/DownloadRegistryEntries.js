@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { FaDownload } from 'react-icons/fa';
 
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -10,13 +11,12 @@ function DownloadRegistryEntries(props) {
     return (
         <p>
             <a href={`${usePathBase()}/registry_entries.${format}?lang=${specificLocale}`}>
-                <i
-                    className="fa fa-download flyout-content-ico"
+                <FaDownload
+                    className="Icon Icon--primary"
                     title={t('download_registry_entries', { format: format, locale: specificLocale })}
                 />
-                <span>
-                    {` ${t('download_registry_entries', { format: format, locale: specificLocale })}`}
-                </span>
+                {' '}
+                {t('download_registry_entries', { format: format, locale: specificLocale })}
             </a>
         </p>
     );

@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
-import { FaStar, FaDownload } from 'react-icons/fa';
+import { FaStar, FaDownload, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 import Observer from 'react-intersection-observer'
 import moment from 'moment';
 
@@ -79,15 +79,20 @@ export default class ArchiveSearch extends Component {
             let _this = this;
             let direction = this.state.sortables[column] === 'desc' ? 'asc' : 'desc';
             return (
-                <span
-                    className='flyout-sub-tabs-content-ico-link'
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
                     onClick={() => {
                         _this.setState({sortables: Object.assign({}, _this.state.sortables, {[column]: direction})});
                         _this.sort(column, direction);
                     }}
                 >
-                    <i className={`fa fa-angle-${direction === 'desc' ? 'down' : 'up'}`}></i>
-                </span>
+                    {
+                        direction === 'desc' ?
+                            <FaAngleDown className="Icon Icon--text" /> :
+                            <FaAngleUp className="Icon Icon--text" />
+                    }
+                </button>
             );
         } else {
             return null;

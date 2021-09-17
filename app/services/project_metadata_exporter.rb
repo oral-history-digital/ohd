@@ -6,7 +6,7 @@ class ProjectMetadataExporter
 
   def build
     # Header
-    @md.self_link = "#{Rails.application.routes.url_helpers.project_url(id: @project.id, locale: 'de', host: @project.archive_domain)}.xml"
+    @md.self_link = self_url
     @md.creation_date = Date.today
 
     # Resources
@@ -24,8 +24,30 @@ class ProjectMetadataExporter
     @md.description = ActionView::Base.full_sanitizer.sanitize(@project.introduction)
     @md.description_lang = I18n.locale.to_s
     @md.media_types = @project.interviews.pluck(:media_type).uniq
-    @md.mime_types = { 'video' => 'video/mp4', 'audio' => 'audio/x-wav' }
+    @md.mime_types = mime_types
 
     @md
+  end
+
+  def self_url
+    if @project.archive_domain.present?
+      "#{@project.archive_domain}/de/project/cmdi_metadata.xml"
+    else
+      Rails.application.routes.url_helpers.project_cmdi_metadata_url(
+        locale: 'de',
+        project_id: @project.identifier,
+        host: OHD_DOMAIN,
+        format: :xml
+      )
+    end
+  end
+
+  def mime_types
+    @project.interviews
+      .map { |interview| interview.original_content_type.present? ?
+        interview.original_content_type :
+        interview.media_type == 'video' ? 'video/mp4' : 'audio/x-wav'
+      }
+      .uniq
   end
 end

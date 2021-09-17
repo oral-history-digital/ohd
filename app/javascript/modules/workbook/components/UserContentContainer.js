@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setArchiveId, getLocale, setProjectId, getProjectId, getTranslations, getEditView } from 'modules/archive';
+import { setArchiveId, getLocale, setProjectId } from 'modules/archive';
 import { searchInArchive } from 'modules/search';
 import { getProjects } from 'modules/data';
 import { sendTimeChangeRequest } from 'modules/media-player';
@@ -10,10 +10,7 @@ import UserContent from './UserContent';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
-    projectId: getProjectId(state),
     projects: getProjects(state),
-    translations: getTranslations(state),
-    editView: getEditView(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

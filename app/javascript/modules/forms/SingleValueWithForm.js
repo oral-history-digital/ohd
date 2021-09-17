@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { FaPencilAlt, FaTimes } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
 import { humanReadable } from 'modules/data';
@@ -25,15 +26,22 @@ export default class SingleValueWithForm extends Component {
     }
 
     editButton() {
+        const { editing } = this.state;
+
         if (admin(this.props, this.props.obj, 'update')) {
             return (
-                <span
-                    className='flyout-sub-tabs-content-ico-link'
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
                     title={t(this.props, `edit.default.${this.state.editing ? 'cancel' : 'edit'}`)}
                     onClick={() => this.setEditing()}
                 >
-                    <i className={`fa fa-${this.state.editing ? 'times' : 'pencil'}`}></i>
-                </span>
+                    {
+                        editing ?
+                            <FaTimes className="Icon Icon--editorial" /> :
+                            <FaPencilAlt className="Icon Icon--editorial" />
+                    }
+                </button>
             )
         }
     }

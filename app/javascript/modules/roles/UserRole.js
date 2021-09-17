@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { FaEye, FaTrash } from 'react-icons/fa';
 
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
@@ -10,7 +11,7 @@ export default class UserRole extends Component {
         return (
             <Modal
                 title={t(this.props, 'edit.user_role.show')}
-                trigger={<i className="fa fa-eye"/>}
+                trigger={<FaEye className="Icon Icon--editorial" />}
             >
                 {this.props.userRole.name}<br/>
                 {this.props.userRole.desc}
@@ -31,7 +32,7 @@ export default class UserRole extends Component {
             return (
                 <Modal
                     title={t(this.props, 'delete')}
-                    trigger={<i className="fa fa-trash-o"/>}
+                    trigger={<FaTrash className="Icon Icon--editorial" />}
                 >
                     {closeModal => (
                         <div>
@@ -54,7 +55,7 @@ export default class UserRole extends Component {
 
     buttons() {
         return (
-            <span className={'flyout-sub-tabs-content-ico'}>
+            <span>
                 {this.show()}
                 {this.delete()}
             </span>

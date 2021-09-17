@@ -1,10 +1,12 @@
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import { FaDownload } from 'react-icons/fa';
 
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { RegistrySearchFormContainer } from 'modules/registry';
 import DownloadRegistryEntriesContainer from './DownloadRegistryEntriesContainer';
+import { PROJECT_MOG } from 'modules/constants';
 
 function RegistryEntriesTabPanel(props) {
     const { t } = useI18n();
@@ -20,7 +22,7 @@ function RegistryEntriesTabPanel(props) {
                     </button>
                 </p>
                 {
-                    props.projectId != 'mog' ?
+                    props.projectId != PROJECT_MOG ?
                         props.locales.map((locale) => (
                             <AuthorizedContent key={locale} object={{type: 'General', action: 'edit'}}>
                                 <div key={locale}>
@@ -32,17 +34,16 @@ function RegistryEntriesTabPanel(props) {
                         null
                 }
                 {
-                    (props.projectId === 'mog') ?
+                    (props.projectId === PROJECT_MOG) ?
                             <div key={props.locale}>
                                 <p>
                                     <a href={`/alfa-${props.locale}.pdf`}>
-                                        <i
-                                            className="fa fa-download flyout-content-ico"
+                                        <FaDownload
+                                            className="Icon Icon--primary"
                                             title={t('download_registry_entries', { format: 'pdf' , locale: props.locale })}
                                         />
-                                        <span>
-                                            {` ${t('download_registry_entries', { format: 'pdf', locale: props.locale })}`}
-                                        </span>
+                                        {' '}
+                                        {t('download_registry_entries', { format: 'pdf', locale: props.locale })}
                                     </a>
                                 </p>
                             </div>

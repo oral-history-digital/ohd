@@ -188,7 +188,7 @@ export default class RegistryEntry extends Component {
                     className="flyout-sub-tabs-content-ico-link"
                     title={`${this.props.data.latitude}, ${this.props.data.longitude}`}
                 >
-                    <FaGlobeEurope style={{ color: 'var(--primary-color)' }} />
+                    <FaGlobeEurope className="Icon Icon--primary" />
                 </a>
             )
         }

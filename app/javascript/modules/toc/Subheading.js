@@ -1,6 +1,7 @@
 import { useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
+import { FaPencilAlt } from 'react-icons/fa';
 
 import { SCROLL_OFFSET } from 'modules/constants';
 import { useI18n } from 'modules/i18n';
@@ -49,7 +50,7 @@ export default function Subheading({
             <AuthorizedContent object={data.segment} action='update'>
                 <Modal
                     title=""
-                    trigger={<i className="fa fa-pencil" />}
+                    trigger={<FaPencilAlt className="Icon Icon--editorial" />}
                 >
                     {closeModal => (
                         <SegmentHeadingFormContainer

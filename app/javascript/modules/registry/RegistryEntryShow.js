@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { FaGlobeEurope } from 'react-icons/fa';
 
 import { PixelLoader } from 'modules/spinners';
 import { pathBase } from 'modules/routes';
@@ -198,7 +199,7 @@ export default class RegistryEntryShow extends Component {
         if((this.registryEntry().latitude + this.registryEntry().longitude) !== 0 ) {
             return(
                 <small style={{float: 'right'}}>
-                    <i className='fa fa-globe' />
+                    <FaGlobeEurope className="Icon Icon--text Icon--small" />
                     &nbsp;
                     <a
                         href={`https://www.openstreetmap.org/?mlat=${this.registryEntry().latitude}&mlon=${this.registryEntry().longitude}&zoom=6`}
