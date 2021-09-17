@@ -5,7 +5,7 @@ import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/a
 import { setQueryParams, getRegistryNameTypesQuery } from 'modules/search';
 import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
-    getRegistryNameTypesForCurrentProject, getRegistryNameTypesStatus } from 'modules/data';
+    getRegistryNameTypesForCurrentProject, getProjectLocales, getRegistryNameTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 
 const mapStateToProps = (state) => {
