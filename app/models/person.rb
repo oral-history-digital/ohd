@@ -48,12 +48,18 @@ class Person < ApplicationRecord
         "#{first_name(locale)} #{last_name(locale)}"
       end
 
-      # contributions
-      # find them through fulltext search
-      # e.g.: 'Kamera Hans Peter'
-      #
-      text :"contributions_#{locale}", stored: true do
-        contributions.map(&:contribution_type).uniq.map { |c| [I18n.t(c, locale: locale), first_name(locale), last_name(locale)] }.flatten.join(" ") rescue nil
+    end
+
+    # contributions
+    # find them through fulltext search
+    # e.g.: 'Kamera Hans Peter'
+    #
+    text :contributions, stored: true do
+      project.available_locales.inject({}) do |mem, locale|
+        mem[locale] = contributions.map{|contribution| contribution.contribution_type.code}.uniq.map do |c| 
+          [I18n.t(c, locale: locale), first_name(locale), last_name(locale)]
+        end.flatten.join(" ") rescue nil
+        mem
       end
     end
   end

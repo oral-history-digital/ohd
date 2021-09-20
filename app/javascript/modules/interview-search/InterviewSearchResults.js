@@ -12,6 +12,7 @@ import TocResult from './TocResult';
 
 export default function InterviewSearchResults({
     interview,
+    project,
     locale,
     projectId,
     currentInterviewSearchResults,
@@ -33,8 +34,8 @@ export default function InterviewSearchResults({
         );
     }
 
-    const locales = interview ? interview.languages : [];
-    const interviewLang = interview?.lang;
+    const locales = Object.assign([], interview?.languages, ['orig']);
+    const interviewLang = project.available_locales.indexOf(interview?.lang) > -1 ? interview?.lang : 'orig';
 
     const resultsPerLocale = locales?.map(resultLocale => [
         resultLocale,
