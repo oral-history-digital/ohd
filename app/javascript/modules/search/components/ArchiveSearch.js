@@ -29,12 +29,10 @@ export default class ArchiveSearch extends Component {
         const { setFlyoutTabsIndex, query } = this.props;
 
         setFlyoutTabsIndex(INDEX_SEARCH);
-        if (window.location.href.indexOf('?') === -1) {
-            this.search({
-                ...query,
-                page: 1,
-            });
-        }
+        this.search({
+            ...query,
+            page: 1,
+        });
     }
 
     componentDidUpdate(prevProps) {
@@ -46,6 +44,12 @@ export default class ArchiveSearch extends Component {
                 page: 1,
             });
         }
+    }
+
+    componentWillUnmount() {
+        const { clearSearch } = this.props;
+
+        clearSearch();
     }
 
     foundInterviews(displayType) {
@@ -200,4 +204,5 @@ ArchiveSearch.propTypes = {
     setFlyoutTabsIndex: PropTypes.func.isRequired,
     hideFlyoutTabs: PropTypes.func.isRequired,
     searchInArchive: PropTypes.func.isRequired,
+    clearSearch: PropTypes.func.isRequired,
 };

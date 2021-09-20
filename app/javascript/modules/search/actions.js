@@ -6,7 +6,6 @@ import {
     RESET_QUERY,
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
-    REQUEST_MAP_SEARCH,
     SET_MAP_QUERY,
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
@@ -35,11 +34,9 @@ const requestArchiveSearch = (searchQuery) => ({
     searchQuery: searchQuery,
 });
 
-export function clearSearch() {
-    return dispatch => {
-        dispatch({type: CLEAR_SEARCH})
-    }
-}
+export const clearSearch = () => ({
+    type: CLEAR_SEARCH,
+});
 
 export const setMapQuery = (query) => ({
     type: SET_MAP_QUERY,
