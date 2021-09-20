@@ -1,4 +1,5 @@
 import { createElement, Component } from 'react';
+import { FaPencilAlt} from 'react-icons/fa';
 
 import Element from '../Element';
 
@@ -69,7 +70,10 @@ export default class Input extends Component {
             return (
                 <div>
                     <img src={this.props.data.thumb_src} />
-                    <i className="fa fa-pencil" onClick={() => this.setState({changeFile: true})} ></i>
+                    <FaPencilAlt
+                        className="Icon Icon--primary"
+                        onClick={() => this.setState({changeFile: true})}
+                    />
                 </div>
             )
         } else {

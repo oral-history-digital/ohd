@@ -41,7 +41,13 @@ export default class UserRegistrations extends Component {
                 return <UserRegistrationContainer userRegistration={this.props.userRegistrations[c]} key={`userRegistration-${c}`} />
             })
         } else {
-            return (<div className="content-search-legend"><p>0 {t(this.props, 'user_registration_results')}</p></div>);
+            return (
+                <div className="content-search-legend">
+                    <p>
+                        0 {t(this.props, 'user_registration_results')}
+                    </p>
+                </div>
+            );
         }
     }
 

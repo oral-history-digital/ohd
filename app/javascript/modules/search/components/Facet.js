@@ -1,5 +1,7 @@
 import { Component } from 'react';
-import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
+import classNames from 'classnames';
+import { FaInfoCircle, FaExternalLinkAlt, FaSearch, FaPlus, FaMinus }
+    from 'react-icons/fa';
 
 import YearRangeContainer from './YearRangeContainer';
 
@@ -59,15 +61,20 @@ export default class Facet extends Component {
     }
 
     filterInput() {
+        const { data, facet } = this.props;
+
         // filter only where size of list >= 15
-        if (Object.keys(this.props.data.subfacets).length >= 15) {
+        if (Object.keys(data.subfacets).length >= 15) {
             return(
                 <div className="facet-filter">
-                    <i className="fa fa-search"></i>
-                    <input type='text' className={'filter ' + this.props.facet} value={this.state.filter}
-                    onChange={this.handleChange}
-                    onKeyDown={this.handleKeyDown}
-                    style={{borderBottom: '1px solid ', marginBottom: '0.7rem'}}
+                    <FaSearch className="Icon Icon--primary Icon--small" />
+                    <input
+                        type="text"
+                        className={classNames('filter', facet)}
+                        value={this.state.filter}
+                        onChange={this.handleChange}
+                        onKeyDown={this.handleKeyDown}
+                        style={{borderBottom: '1px solid ', marginBottom: '0.7rem'}}
                     />
                 </div>
             )
@@ -94,6 +101,11 @@ export default class Facet extends Component {
                 <div className="subfacet-container">
                     <button className={this.state.class} lang={this.props.locale} onClick={this.handleClick}>
                         {this.props.data.name[this.props.locale]}
+                        {
+                            this.state.open ?
+                                <FaMinus className="Icon Icon--primary" /> :
+                                <FaPlus className="Icon Icon--primary" />
+                        }
                     </button>
                     <div style={style} className={this.state.panelClass}>
                         <div className="flyout-radio-container">
@@ -114,6 +126,11 @@ export default class Facet extends Component {
                 <div className="subfacet-container">
                     <button className={`${this.state.class} ${this.props.admin ? 'admin' : ''}`} lang={this.props.locale} onClick={this.handleClick}>
                         {this.props.data.name[this.props.locale]}
+                        {
+                            this.state.open ?
+                                <FaMinus className="Icon Icon--primary" /> :
+                                <FaPlus className="Icon Icon--primary" />
+                        }
                     </button>
                     {this.panelContent()}
                 </div>
@@ -181,6 +198,8 @@ export default class Facet extends Component {
     }
 
     renderSubfacets() {
+        const { facet } = this.props;
+
         return this.sortedSubfacets().filter(subfacetId => {
             let subfacetName = this.props.data.subfacets[subfacetId].name[this.props.locale];
             if (subfacetName) {
@@ -193,13 +212,20 @@ export default class Facet extends Component {
                     checkedState = this.checkedFacets().indexOf(subfacetId.toString()) > -1;
                 }
                 return (
-                    <div key={"subfacet-" + index} className={'subfacet-entry' + (checkedState ? ' checked' : '')}>
-                        <input className={'with-font ' + this.props.facet + ' checkbox'}
-                               id={this.props.facet + "_" + subfacetId}
-                               name={this.props.facet + "[]"} checked={checkedState} type="checkbox"
-                               value={subfacetId}
-                               onChange={() => this.props.handleSubmit()}>
-                        </input>
+                    <div
+                        key={index}
+                        className={classNames('subfacet-entry', {
+                            'checked': checkedState,
+                        })}
+                    >
+                        <input
+                            className={classNames('with-font', this.props.facet, 'checkbox')}
+                            id={this.props.facet + "_" + subfacetId}
+                            name={this.props.facet + "[]"} checked={checkedState} type="checkbox"
+                            value={subfacetId}
+                            onChange={() => this.props.handleSubmit()}
+                        />
+                        {' '}
                         <label htmlFor={this.props.facet + "_" + subfacetId}>
                             {this.localDescriptor(subfacetId)}
                             <span className='flyout-radio-container-facet-count'>({this.props.data.subfacets[subfacetId].count})</span>

@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaPencilAlt, FaTrash, FaMinusCircle, FaSitemap, FaGlobeEurope } from 'react-icons/fa';
+import { FaPencilAlt, FaTrash, FaMinusCircle, FaSitemap, FaGlobeEurope, FaMinus, FaPlus }
+    from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { PopupMenu } from 'modules/ui';
@@ -259,22 +260,25 @@ export default class RegistryEntry extends Component {
 
     showHideChildren() {
         const { data } = this.props;
+        const { childrenVisible } = this.state;
 
         if (data.children_count > 0) {
             return (
-                <div
-                    className="RegistryEntry-toggleChildren"
+                <button
+                    className="Button Button--transparent Button--icon RegistryEntry-toggleChildren"
                     title={`${data.children_count} ${t(this.props, 'edit.registry_entry.show_children')}`}
                     onClick={this.showChildren}
                     >
-                    <i className={classNames('fa fa-fw', this.state.childrenVisible ? 'fa-minus' : 'fa-plus')}></i>
-                </div>
+                    {
+                        childrenVisible ?
+                            <FaMinus className="Icon Icon--primary" /> :
+                            <FaPlus className="Icon Icon--primary" />
+                    }
+                </button>
             );
         } else {
             return (
-                <div className="RegistryEntry-toggleChildren">
-                    <i className="fa fa-fw" />
-                </div>
+                <div className="RegistryEntry-toggleChildren" />
             );
         }
     }

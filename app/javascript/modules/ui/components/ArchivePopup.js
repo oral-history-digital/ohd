@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { FaTimes } from 'react-icons/fa';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 
@@ -22,9 +23,17 @@ export default class ArchivePopup extends Component {
     }
 
     buttons() {
-        return <div className='close' onClick={() => this.props.closeArchivePopup()}>
+        const { closeArchivePopup } = this.props;
 
-        </div>
+        return (
+            <button
+                type="button"
+                className="Button Button--transparent Button--icon close"
+                onClick={closeArchivePopup}
+            >
+                <FaTimes className="Icon Icon--large Icon--unobtrusive" />
+            </button>
+        );
     }
 
     header() {

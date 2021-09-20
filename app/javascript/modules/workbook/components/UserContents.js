@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
@@ -22,6 +23,11 @@ export default function UserContents({
                 onClick={handleClick}
             >
                 {title}
+                {
+                    open ?
+                        <FaMinus className="Icon Icon--primary" /> :
+                        <FaPlus className="Icon Icon--primary" />
+                }
             </button>
             <div className={classNames('panel', {'open': open})}>
                 {

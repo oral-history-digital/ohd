@@ -87,24 +87,20 @@
 }
 
 .flyout-search{
-  .input-list-search{
-    width: 100%;
-    margin-bottom: 30px;
-    padding: 10px;
-    border: 1px solid $gray-dark;
+  .flyout-search-input {
     background-color: $gray-paler;
+    border: 1px solid $gray-dark;
+    display: flex;
+    margin-bottom: $base-unit;
+
+    @include screen-xs-m {
+      margin-bottom: 0;
+    }
   }
   .search-input {
-    width: 80%;
-    margin-bottom: 30px;
-    padding: 10px;
-    border-top: 1px solid $gray-dark;
-    border-bottom: 1px solid $gray-dark;
-    border-left: 1px solid $gray-dark;
-    background-color: $gray-paler;
-    @include screen-xs-m {
-      margin-bottom: 0px;
-    }
+    flex-grow: 1;
+    line-height: $base-unit;
+    padding: (0.5 * $base-unit) 0 (0.5 * $base-unit) (0.5 * $base-unit);
   }
   ::placeholder {
     color: var(--primary-color);
@@ -113,18 +109,12 @@
     width: 100%;
   }
   .search-button {
-    width: 20%;
-    font-family: FontAwesome;
-    content: "\f067";
+    cursor: pointer;
     color: var(--primary-color);
-    float: right;
-    transition: color 0.3s;
-    padding: 10px;
-    border-top: 1px solid $gray-dark;
-    border-bottom: 1px solid $gray-dark;
-    border-right: 1px solid $gray-dark;
-    background-color: $gray-paler;
+    padding-left: 0.5 * $base-unit;
+    padding-right: 0.5 * $base-unit;
     text-align: right;
+    transition: color 0.3s;
     &:hover {
       color: $gray-light;
     }

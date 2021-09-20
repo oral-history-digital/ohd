@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { FaPlus, FaMinus } from 'react-icons/fa';
 import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
@@ -24,6 +25,13 @@ export default function InterviewData({
         }
     }
 
+    let buttonIcon;
+    if (typeof children !== 'undefined') {
+        buttonIcon = isOpen ?
+            <FaMinus className="Icon Icon--primary" /> :
+            <FaPlus className="Icon Icon--primary" />;
+    }
+
     return (
         <div>
             <button
@@ -36,6 +44,7 @@ export default function InterviewData({
                 onClick={handleClick}
             >
                 {title}
+                {buttonIcon}
             </button>
             {
                 children && (

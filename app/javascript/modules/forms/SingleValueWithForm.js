@@ -1,5 +1,5 @@
 import { Component } from 'react';
-import { FaPencilAlt, FaTimes } from 'react-icons/fa';
+import { FaPencilAlt, FaTimes, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
 import { humanReadable } from 'modules/data';
@@ -47,6 +47,8 @@ export default class SingleValueWithForm extends Component {
     }
 
     toggle() {
+        const { collapsed } = this.state;
+
         if (this.props.collapse) {
             return (
                 <span
@@ -54,7 +56,11 @@ export default class SingleValueWithForm extends Component {
                     title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
                     onClick={() => this.setState({ collapsed: !this.state.collapsed })}
                 >
-                    <i className={`fa fa-angle-${this.state.collapsed ? 'down' : 'up'}`}></i>
+                    {
+                        collapsed ?
+                            <FaAngleDown className="Icon Icon--editorial" /> :
+                            <FaAngleUp className="Icon Icon--editorial" />
+                    }
                 </span>
             )
         }

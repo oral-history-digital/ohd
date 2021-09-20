@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { FaArrowUp } from 'react-icons/fa';
 
 import Select from './SelectContainer';
 import { t } from 'modules/i18n';
@@ -121,7 +122,7 @@ export default class RegistryEntrySelect extends Component {
                     onClick={() => this.setState({selectedRegistryEntryId: this.parentRegistryEntryId()})}
                 >
                     {t(this.props, 'edit.registry_entry.go_up')}
-                    <i className="fa fa-arrow-alt-up"></i>
+                    <FaArrowUp className="Icon Icon--editorial" />
                 </div>
             )
         }

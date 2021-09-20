@@ -2,7 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@reach/disclosure';
-import { FaPencilAlt, FaTrash } from 'react-icons/fa';
+import { FaPencilAlt, FaTrash, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
 import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
@@ -93,11 +93,15 @@ export default class BiographicalEntry extends Component {
             <p>
                 <Disclosure open={open} onChange={() => this.setState({ open: !open })}>
                     <DisclosureButton
-                        className={classNames('Button', 'flyout-sub-tabs-content-ico-link')}
-                        title={t(this.props, this.state.open ? 'hide' : 'show')}
+                        className={classNames('Button', 'Button--transparent', 'Button--icon')}
+                        title={t(this.props, open ? 'hide' : 'show')}
                     >
                         {this.preview()}
-                        <i className={classNames('fa', open ? 'fa-angle-up' : 'fa-angle-down')}/>
+                        {
+                            open ?
+                                <FaAngleUp className="Icon Icon--text" /> :
+                                <FaAngleDown className="Icon Icon--text" />
+                        }
                     </DisclosureButton>
                     <DisclosurePanel>
                         {this.entries()}

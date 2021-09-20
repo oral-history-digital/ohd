@@ -22,18 +22,9 @@
     &:hover {
       color: $gray-dark;
     }
-    &::after {
-      font-family: FontAwesome;
-      content: "\f067";
+    svg {
       float: right;
-      font-size: $font-size-large;
-    }
-    &.active::after {
-      content: "\f068";
-    }
-
-    &.only-link::after {
-      content: '';
+      margin-top: 0.125 * $base-unit;
     }
   }
   .panel {

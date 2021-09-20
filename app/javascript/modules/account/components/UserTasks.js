@@ -1,6 +1,7 @@
 import React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
 import { getCurrentAccount } from 'modules/data';
 import { TasksOnlyStatusEditableContainer } from 'modules/workflow';
@@ -42,7 +43,11 @@ function taskGroup(header, data, hideShow=true) {
             <div className={'tasks box'}>
                 <h4 className='title' onClick={() => setShow(!show)} >
                     {data.length + ' ' + t(`activerecord.models.task.${header}`)}
-                    <i className={`fa fa-angle-${show ? 'up' : 'down'}`}></i>
+                    {
+                        show ?
+                            <FaAngleUp className="Icon Icon--editorial" /> :
+                            <FaAngleDown className="Icon Icon--editorial" />
+                    }
                 </h4>
                 {
                     show ?

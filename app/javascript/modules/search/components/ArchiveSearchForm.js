@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
+import { FaSearch, FaUndo } from 'react-icons/fa';
 
 import FacetContainer from './FacetContainer';
 import { pathBase } from 'modules/routes';
@@ -115,8 +116,12 @@ export default class ArchiveSearchForm extends Component {
     renderResetButton() {
         return (
             <button
-                className={'reset'}
-                onClick={this.handleReset}>{t(this.props, 'reset')}
+                type="button"
+                className="Button reset"
+                onClick={this.handleReset}
+            >
+                {t(this.props, 'reset')}
+                <FaUndo className="Icon" />
             </button>
         )
     }
@@ -125,7 +130,7 @@ export default class ArchiveSearchForm extends Component {
         let fulltext = this.props.query.fulltext ? this.props.query.fulltext : "";
         if(this.props.map !== true) {
             return (
-                <div>
+                <div className="flyout-search-input">
                     <input
                         className="search-input"
                         type="text"
@@ -137,13 +142,14 @@ export default class ArchiveSearchForm extends Component {
                         autoFocus
                     />
                     {this.renderDataList()}
-                    <input
-                        className="search-button"
-                        id="search-button"
-                        title={t(this.props, 'archive_search')}
+                    <button
                         type="submit"
-                        value=""
-                    />
+                        id="search-button"
+                        className="Button Button--transparent Button--icon search-button"
+                        title={t(this.props, 'archive_search')}
+                    >
+                        <FaSearch />
+                    </button>
                 </div>
             )
         } else {
@@ -160,7 +166,7 @@ export default class ArchiveSearchForm extends Component {
                     <form
                         ref={(form) => { this.form = form; }}
                         id="archiveSearchForm"
-                        className={'flyout-search'}
+                        className="flyout-search"
                         onSubmit={this.handleSubmit}
                     >
                         {
