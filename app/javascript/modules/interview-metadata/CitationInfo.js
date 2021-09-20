@@ -32,7 +32,7 @@ export default function CitationInfo({
                     {t('citation')}:
                 </span>
                 <span className="flyout-content-data">
-                    {interview.short_title && `${interview.short_title?.[locale]}, `}
+                    {interview.anonymous_title && `${interview.anonymous_title?.[locale]}, `}
                     {t('interview')}
                     {' '}
                     {`${interview.archive_id}, `}
