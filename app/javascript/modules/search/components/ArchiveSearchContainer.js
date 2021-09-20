@@ -6,7 +6,7 @@ import { setViewMode, getLocale, getViewMode, getTranslations, getProjectId,
     getEditView } from 'modules/archive';
 import { getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { getIsLoggedIn } from 'modules/account';
-import { searchInArchive } from '../actions';
+import { clearSearch, searchInArchive } from '../actions';
 import { getArchiveFacets, getArchiveFoundInterviews, getArchiveQuery, getArchiveResultPagesCount, getArchiveResultsCount } from '../selectors';
 import ArchiveSearch from './ArchiveSearch';
 
@@ -35,6 +35,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     searchInArchive,
+    clearSearch,
     setViewMode,
     hideFlyoutTabs,
     setFlyoutTabsIndex,
