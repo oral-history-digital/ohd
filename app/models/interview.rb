@@ -123,7 +123,7 @@ class Interview < ApplicationRecord
     string :language, :stored => true do
       language && language.translations.map(&:name).join(' ')
     end
-    #string :alias_names, :stored => true
+    string :alias_names, :stored => true
 
     # in order to fast access places of birth for all interviews
     # string :birth_location, :stored => true
@@ -761,7 +761,7 @@ class Interview < ApplicationRecord
           # => [{:de=>"Fomin, Dawid Samojlowitsch", :en=>"Fomin, Dawid Samojlowitsch", :ru=>"Фомин Давид Самойлович"},
           #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
           #    ...]
-          all_interviews_pseudonyms: search.hits.map{|hit| hit.stored(:alias_names)}
+          all_interviews_pseudonyms: search.hits.map{|hit| eval hit.stored(:alias_names)}
           #all_interviews_birth_locations: search.hits.map{|hit| hit.stored(:birth_location)}
         }
       end
