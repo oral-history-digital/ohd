@@ -5,6 +5,7 @@ import { submitData, fetchData, getCurrentInterview, getCurrentInterviewee,
     getCurrentProject, getPeopleForCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { getArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import PersonData from './PersonData';
+import { getIsLoggedIn } from 'modules/account';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
@@ -17,6 +18,7 @@ const mapStateToProps = state => ({
     people: getPeopleForCurrentProject(state),
     account: getCurrentAccount(state),
     project: getCurrentProject(state),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

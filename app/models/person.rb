@@ -77,7 +77,21 @@ class Person < ApplicationRecord
   end
 
   def year_of_birth
-    date_of_birth.blank? ? "" : date_of_birth[/\d{4}/]
+    dob = read_attribute(:date_of_birth)
+    dob.blank? ? "" : dob[/\d{4}/]
+  end
+
+  def date_of_birth
+    dob = read_attribute(:date_of_birth)
+    unless dob.blank?
+      if project.identifier.to_sym === :mog
+        dob.sub(/^\.+/, "").split(".").map { |i| "%.2i" % i }.join(".")
+      elsif project.identifier.to_sym === :zwar
+        dob.split("-").reverse.join(".")
+      else
+        dob
+      end
+    end
   end
 
   def country_of_birth
@@ -88,6 +102,18 @@ class Person < ApplicationRecord
     I18n.available_locales.inject({}) do |mem, locale|
       inital_or_last_name = last_name_as_inital ? "#{last_name(locale).first}." : last_name(locale)
       mem[locale] = "#{inital_or_last_name}, #{first_name(locale)}"
+      mem
+    end
+  end
+
+  def names
+    translations.inject({}) do |mem, translation|
+      mem[translation.locale] = {
+        firstname: translation.first_name || first_name(I18n.default_locale),
+        lastname: translation.last_name || last_name(I18n.default_locale),
+        aliasname: translation.alias_names || alias_names(I18n.default_locale),
+        birthname: translation.birth_name || birth_name(I18n.default_locale),
+      }
       mem
     end
   end
