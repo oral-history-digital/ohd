@@ -96,7 +96,7 @@ export const RoutesWithProjectId = () => (
 
         {/* search- routes with project_id */}
         <Route path="/:projectId/:locale/searches/archive" component={props => <ErrorBoundary><ArchiveSearchContainer {...props} /></ErrorBoundary>} />
-        <Route path="/:projectId/:locale/searches/map" component={props => <ErrorBoundary><MapSearchContainer {...props} /></ErrorBoundary>} />
+        <Route path="/:projectId/:locale/searches/map" component={props => <ErrorBoundary><SearchMap {...props} /></ErrorBoundary>} />
 
         {/* search- routes without project_id */}
         <Route path="/:locale/searches/archive" component={props => <ErrorBoundary><ArchiveSearchContainer {...props} /></ErrorBoundary>} />
