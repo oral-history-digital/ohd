@@ -18,7 +18,7 @@ export default function Biography() {
     const archiveId = useSelector(getArchiveId);
 
     const firstPublicEntry = Object.values(interviewee.biographical_entries).find(b => b.workflow_state === 'public');
-    const languagesOfPublicEntries = Object.keys(firstPublicEntry.text);
+    const languagesOfPublicEntries = firstPublicEntry ? Object.keys(firstPublicEntry.text) : [];
 
     return (
         <div>
