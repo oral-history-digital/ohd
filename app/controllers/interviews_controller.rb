@@ -305,14 +305,8 @@ class InterviewsController < ApplicationController
         ),
         data: initial_redux_state[:data].update(
           interviews: {"#{@interview.identifier}": cache_single(@interview)},
-          projects: initial_redux_state[:data][:projects].update(
-            "#{current_project.id}": initial_redux_state[:data][:projects][current_project.id].update(
-              people: @interview.contributors.inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
-            )
-          ),
           statuses: initial_redux_state[:data][:statuses].update(
             interviews: {"#{@interview.identifier}": 'fetched'},
-            people: {"contributors_for_interview_#{@interview.id}": 'fetched'}
           )
         )
       )
