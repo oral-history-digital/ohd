@@ -243,10 +243,11 @@ export default class ArchiveSearchForm extends Component {
 
     renderOptions() {
         return (this.props.allInterviewsTitles.concat(this.props.allInterviewsPseudonyms)).map((title, index) => {
+            if (title) {
                 return (
                     <option key={"option-" + index} value={`"${title[this.props.locale]}"`} />
                 )
             }
-        )
+        })
     }
 }
