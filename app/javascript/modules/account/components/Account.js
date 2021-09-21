@@ -118,6 +118,9 @@ export default class Account extends Component {
                                     this.props.clearStateData('interviews', this.props.archiveId, 'photos');
                                     this.props.clearStateData('interviews', this.props.archiveId, 'registry_references');
                                     this.props.clearStateData('interviews', this.props.archiveId, 'segments');
+                                    Object.keys(this.props.projects).map(pid => {
+                                        this.props.clearStateData('projects', pid, 'people');
+                                    })
                                 }
                                 this.props.clearStateData('accounts');
                                 this.props.clearStateData('user_registrations');
