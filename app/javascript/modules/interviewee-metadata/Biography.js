@@ -27,7 +27,7 @@ export default function Biography() {
                     <span className="flyout-content-label">
                         {t('history')}:
                     </span>
-                    { languagesOfPublicEntries.map(lang => {
+                    { languagesOfPublicEntries.length > 0 && languagesOfPublicEntries.map(lang => {
                         return (
                             <a href={pathBase + '/biographical_entries/' + archiveId + '.pdf?lang=' + lang}>
                                 <FaDownload className="Icon Icon--small" title={t('download')} />
