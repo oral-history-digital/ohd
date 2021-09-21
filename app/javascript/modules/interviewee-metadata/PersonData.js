@@ -22,18 +22,19 @@ export default function PersonData({
     translations,
     fetchData,
     submitData,
+    isLoggedIn,
 }) {
 
     const { t } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus();
 
     useEffect(() => {
-        if (!projectAccessGranted && interview) {
+        if (!projectAccessGranted) {
             fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, 'landing_page_metadata');
         } else if (projectAccessGranted && !interviewee?.associations_loaded) {
             fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, null, 'with_associations=true');
         }
-    }, [projectAccessGranted]);
+    }, [projectAccessGranted, isLoggedIn]);
 
     return (
         <>

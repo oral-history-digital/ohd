@@ -1,7 +1,7 @@
 class PeopleController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: Person.configured_public_method_names | [:index, :show, :landing_page_metadata]
-  skip_after_action :verify_authorized, only: Person.configured_public_method_names | [:show, :metadata, :cmdi_metadata, :random_featured, :landing_page_metadata]
-  skip_after_action :verify_policy_scoped, only: Person.configured_public_method_names | [:show, :metadata, :cmdi_metadata, :random_featured, :landing_page_metadata]
+  skip_before_action :authenticate_user_account!, only: [:index, :show, :landing_page_metadata]
+  skip_after_action :verify_authorized, only: [:show, :metadata, :cmdi_metadata, :random_featured, :landing_page_metadata]
+  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :cmdi_metadata, :random_featured, :landing_page_metadata]
 
   def new
     authorize Person
