@@ -17,10 +17,12 @@ import { useProjectAccessStatus } from 'modules/auth';
 export default function Interview({
     interview,
     interviewIsFetched,
+    contributorsAreFetched,
     interviewEditView,
     isCatalog,
     projectId,
     projects,
+    project,
     locale,
     setFlyoutTabsIndex,
     setArchiveId,
@@ -38,58 +40,56 @@ export default function Interview({
         setArchiveId(archiveId);
     }, []);
 
+    // fetch interview base data
     useEffect(() => {
         if (!status) {
             fetchData({ projectId, locale, projects }, 'interviews', archiveId);
         }
     }, [projectId, locale, archiveId, status]);
 
+    // fetch non-public data if project-access granted
     useEffect(() => {
         if (projectAccessGranted) {
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'title');
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'short_title');
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'description');
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'observations');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'contributions');
-            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'registry_references');
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'photos');
         }
     }, [archiveId, isLoggedIn]);
+
+    useEffect(() => {
+        if (projectAccessGranted && !contributorsAreFetched) {
+            fetchData({ projectId, locale, projects }, 'people', null, null, `contributors_for_interview=${interview?.id}`);
+        }
+    }, [archiveId, isLoggedIn, contributorsAreFetched]);
 
     if (!interviewIsFetched) {
         return <Spinner withPadding />;
     }
 
-    return (
-        <Fetch
-            fetchParams={['people', null, null, `contributors_for_interview=${interview?.id}`]}
-            testSelector={getContributorsFetched}
-            alwaysRenderChildren
-        >
-            {
-                isCatalog ?
-                    <InterviewDetailsLeftSideContainer /> :
-                    (
-                        <div>
-                            <AuthShowContainer ifLoggedIn>
-                                <AuthorizedContent  object={interview} action='show' showUnauthorizedMsg showIfPublic>
-                                    <MediaPlayerContainer />
-                                    {
-                                        interviewEditView ?
-                                            <EditTableLoader /> :
-                                            <InterviewTabsContainer />
+    if (isCatalog) {
+        return <InterviewDetailsLeftSideContainer />;
+    } else {
+        return (
+            <div>
+                <AuthShowContainer ifLoggedIn>
+                    <AuthorizedContent  object={interview} action='show' showUnauthorizedMsg showIfPublic>
+                        <MediaPlayerContainer />
+                        {
+                            interviewEditView ?
+                                <EditTableLoader /> :
+                                <InterviewTabsContainer />
 
-                                    }
-                                </AuthorizedContent>
-                            </AuthShowContainer>
-                            <AuthShowContainer ifLoggedOut ifNoProject>
-                                <InterviewLoggedOutContainer />
-                            </AuthShowContainer>
-                        </div>
-                    )
-            }
-        </Fetch>
-    );
+                        }
+                    </AuthorizedContent>
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut ifNoProject>
+                    <InterviewLoggedOutContainer />
+                </AuthShowContainer>
+            </div>
+        );
+    }
 }
 
 Interview.propTypes = {

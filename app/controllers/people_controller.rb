@@ -1,5 +1,7 @@
 class PeopleController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:index, :show]
+  skip_before_action :authenticate_user_account!, only: Person.configured_public_method_names | [:index, :show, :landing_page_metadata]
+  skip_after_action :verify_authorized, only: Person.configured_public_method_names | [:show, :metadata, :cmdi_metadata, :random_featured, :landing_page_metadata]
+  skip_after_action :verify_policy_scoped, only: Person.configured_public_method_names | [:show, :metadata, :cmdi_metadata, :random_featured, :landing_page_metadata]
 
   def new
     authorize Person
@@ -30,6 +32,42 @@ class PeopleController < ApplicationController
     authorize @person
 
     respond @person
+  end
+
+  def landing_page_metadata
+    @person = Person.find params[:person_id]
+
+    data = {
+      id: @person.id,
+      type: 'Person',
+      registry_references: {}
+    }
+
+    current_project.metadata_fields
+      .where(display_on_landing_page: true)
+      .where(ref_object_type: 'Person').each do |m|
+      @person.registry_references.where(registry_reference_type_id: m.registry_reference_type_id).each do |rr|
+        data[:registry_references][rr.id] = RegistryReferenceSerializer.new(rr)
+      end
+    end
+
+    current_project.metadata_fields
+      .where(display_on_landing_page: true)
+      .where(source: 'Person').each do |m|
+      data[m.name] = @person.send(m.name)
+    end
+
+    respond_to do |format|
+      format.json do
+        render json: {
+          nested_id: @person.id,
+          data: data,
+          nested_data_type: "people",
+          data_type: 'projects',
+          id: current_project.id,
+        }
+      end
+    end
   end
 
   def index
