@@ -31,7 +31,7 @@ append :linked_dirs, "solr", "node_modules", "tmp/pids", "tmp/files", "tmp/cache
 # set :local_user, -> { `git config user.name`.chomp }
 
 # Default value for keep_releases is 5
-set :keep_releases, 2
+set :keep_releases, 5
 
 # Which project file from the projects directory to copy to config/project.yml.
 # Overwrite this in stage configuration, please.
