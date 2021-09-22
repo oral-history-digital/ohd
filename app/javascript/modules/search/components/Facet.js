@@ -141,7 +141,9 @@ export default class Facet extends Component {
     }
 
     localDescriptor(subfacetId) {
-        return this.props.data.subfacets[subfacetId].name[this.props.locale];
+        const { data, locale } = this.props;
+
+        return data.subfacets[subfacetId].name[locale];
     }
 
     priority(subfacetId) {

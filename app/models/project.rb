@@ -39,10 +39,10 @@ class Project < ApplicationRecord
 
   #
   # define pseudo-methods for serialized attributes
-  # 
+  #
   # if params[:available_locales] = "de,en,ru" (a string!!) it can not be serialized
   # therefore the string-values from the params-hash are splitted  first
-  # 
+  #
   [:view_modes, :available_locales, :upload_types, :funder_names, :hidden_registry_entry_ids, :pdf_registry_entry_ids, :hidden_transcript_registry_entry_ids].each do |m|
     define_method "pseudo_#{m}=" do |string|
       write_attribute(m, string.strip.split(/,\s*/))
@@ -147,14 +147,14 @@ class Project < ApplicationRecord
     end
 
     def archive_domains
-      where.not(shortname: 'ohd').map do |project| 
+      where.not(shortname: 'ohd').map do |project|
         uri = Addressable::URI.parse(project.archive_domain)
         uri && uri.host
       end.compact
     end
 
     def by_host(host)
-      all.find do |project| 
+      all.find do |project|
         uri = Addressable::URI.parse(project.archive_domain)
         uri && uri.host == host
       end
@@ -242,6 +242,7 @@ class Project < ApplicationRecord
       when "Person", "Interview"
         facet_label_hash = facet.localized_hash(:label)
         name = facet_label_hash || localized_hash_for("search_facets", facet.name)
+
         case facet.name
         when "year_of_birth"
           mem[facet.name.to_sym] = {
@@ -256,6 +257,25 @@ class Project < ApplicationRecord
               subfacets
             end,
           }
+        when "interview_date"
+          begin
+            mem[facet.name.to_sym] = {
+              name: name,
+              subfacets: facet.source.classify.constantize.group(facet.name).count.keys.compact.inject({}) do |subfacets, key|
+                localized_hash = I18n.available_locales.inject({}) do |acc, locale|
+                  acc[locale] = key
+                  acc
+                end
+
+                subfacets[key.to_s] = {
+                  name: localized_hash,
+                  count: 0,
+                }
+                subfacets
+              end
+            }
+          rescue
+          end
         # admin facets
         when "tasks_user_account_ids", "tasks_supervisor_ids"
           # add filters for tasks
