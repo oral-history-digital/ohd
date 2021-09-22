@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { FaTimes } from 'react-icons/fa';
 
+import { Fetch } from 'modules/data';
 import { useAuthorization } from 'modules/auth';
 import { Annotations } from 'modules/annotations';
 import { RegistryReferencesContainer } from 'modules/registry-references';
@@ -46,13 +47,19 @@ export default function SegmentPopup({
                 <div className="SegmentPopup-references RegistryReferences">
                     {
                         popupType === 'references' && (hasReferences || isAuthorized({type: 'RegistryReference', interview_id: data.interview_id}, 'create')) && (
-                            <RegistryReferencesContainer
-                                refObject={data}
-                                lowestAllowedRegistryEntryId={1}
-                                inTranscript={true}
-                                locale={contentLocale}
-                                setOpenReference={setOpenReference}
-                            />
+                            <Fetch
+                                fetchParams={['registry_entries', null, null, `ref_object_type=Segment&ref_object_id=${data.id}`]}
+                                testDataType='registry_entries'
+                                testIdOrDesc={`ref_object_type_Segment_ref_object_id_${data.id}`}
+                            >
+                                <RegistryReferencesContainer
+                                    refObject={data}
+                                    lowestAllowedRegistryEntryId={1}
+                                    inTranscript={true}
+                                    locale={contentLocale}
+                                    setOpenReference={setOpenReference}
+                                />
+                            </Fetch>
                         )
                     }
 
