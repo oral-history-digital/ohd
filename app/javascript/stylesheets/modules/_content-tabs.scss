@@ -14,31 +14,6 @@
 
 .content-index {
   .heading {
-    .heading-ico {
-      display: inline-block;
-      vertical-align: top;
-      padding: 4px 0;
-      cursor: pointer;
-      width: 6%;
-      margin-right: 2%;
-      @include screen-m {
-        width: 2%;
-        margin-right: 2%;
-      }
-      &::before {
-        font-family: FontAwesome;
-        content: "\f067";
-        color: var(--primary-color);
-        font-size: $font-size-medium;
-        transition: 0.4s;
-      }
-      &.active::before{
-        content: "\f068";
-      }
-      &:hover::before{
-        color: $gray-dark;
-      }
-    }
     .mainheading {
       display: inline-block;
       width: 92%;
@@ -142,26 +117,26 @@ div.mainheading + div {
 .content-search {
   font-size: $font-size-larger;
   margin-bottom: 30px;
-  .search-input {
-    width: 80%;
-    padding: 10px;
+
+  .content-search-form {
+    display: flex;
     border-bottom: 2px solid $gray-light;
     border-top: 2px solid $gray-light;
+  }
+
+  .search-input {
+    flex-grow: 1;
+    padding: 10px;
   }
   ::placeholder {
     color: var(--primary-color);
   }
   .search-button {
     cursor: pointer;
-    width: 20%;
-    font-family: FontAwesome;
-    content: "\f067";
     color: var(--primary-color);
-    float: right;
     transition: color 0.3s;
+    margin-left: auto;
     padding: 10px;
-    border-bottom: 2px solid $gray-light;
-    border-top: 2px solid $gray-light;
     &:hover {
       color: $gray-light;
     }

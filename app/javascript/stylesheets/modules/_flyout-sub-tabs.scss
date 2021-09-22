@@ -22,43 +22,27 @@
 .flyout-radio-container-facet-count{
   margin-left: 5px;
 }
-//label { font-size: 24px; }
+
 .flyout-radio-container {
   width: 100%;
   padding: 0;
   font-size: $font-size-medium;
   color: var(--primary-color);
-  //input[type=radio].with-font,
+
   input[type=checkbox].with-font {
-    border: 0;
-    clip: rect(0 0 0 0);
-    height: 1px;
-    margin: -1px;
-    overflow: hidden;
-    padding: 0;
-    position: absolute;
-    width: 1px;
   }
+
+  input[type=checkbox].with-font:checked {
+  }
+
   input[type=checkbox].with-font ~ label {
     color: var(--primary-color);
+    user-select: none;
   }
-  input[type=checkbox].with-font ~ label:before {
-    font-family: FontAwesome;
-    display: inline-block;
-    content: "\f1db";
-    letter-spacing: 10px;
-    font-size: $font-size-medium;
-    color: var(--primary-color);
-    width: 1.4em;
-  }
+
   input[type=checkbox].with-font:checked ~ label {
     color: $gray-darker;
-  }
-  input[type=checkbox].with-font:checked ~ label:before {
-    content: "\f00c";
-    font-size: $font-size-medium;
-    color: $gray-darker;
-    letter-spacing: 5px;
+    margin-right: 0;
   }
 }
 
@@ -72,17 +56,19 @@
 
 .wrapper-flyout {
   button.reset {
+    align-items: center;
     background-color: $gray-warm;
+    border: none;
     color: #fff;
     cursor: pointer;
-    padding: 10px 15px;
-    width: 100%;
-    margin: 0 0 20px;
-    border: none;
-    text-align: left;
-    outline: none;
+    display: flex;
     font-size: $font-size-large;
-    transition: 0.4s;
+    margin: 0 0 20px;
+    outline: none;
+    padding: 10px 15px;
+    text-align: left;
+    transition: background-color 0.4s;
+    width: 100%;
   }
 
   button.reset.active,
@@ -90,11 +76,8 @@
     background-color: var(--secondary-color);
   }
 
-  button.reset:after {
-    font-family: FontAwesome;
-    display: inline-block;
-    content: "\f0e2";
-    float: right;
+  button.reset > svg {
+    margin-left: auto;
   }
 }
 

@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { FaSearch } from 'react-icons/fa';
 
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
@@ -37,16 +38,25 @@ export default class RegistrySearchForm extends Component {
 
     render() {
         return (
-            <div className={'content-search'}>
-                <form onSubmit={this.handleSubmit}>
-                    <label>
-                        <input type="text"
-                               className="search-input"
-                               value={this.state.value}
-                               onChange={this.handleChange}
-                               placeholder={t(this.props, 'search_registry_entry')}/>
-                    </label>
-                    <input type="submit" value="" className={'search-button'}/>
+            <div className="content-search">
+                <form
+                    className="content-search-form"
+                    onSubmit={this.handleSubmit}
+                >
+                    <input
+                        type="search"
+                        className="search-input"
+                        value={this.state.value}
+                        onChange={this.handleChange}
+                        placeholder={t(this.props, 'search_registry_entry')}
+                        aria-label={t(this.props, 'search_registry_entry')}
+                    />
+                    <button
+                        type="submit"
+                        className="Button Button--transparent Button--icon search-button"
+                    >
+                        <FaSearch className="Icon Icon--primary" />
+                    </button>
                 </form>
                 {this.loader()}
             </div>

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { FaSearch } from 'react-icons/fa';
 
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
@@ -22,6 +23,7 @@ export default function InterviewSearchForm({
     return (
         <div className="content-search">
             <form
+                className="content-search-form"
                 onSubmit={handleSubmit}
             >
                 <input
@@ -32,12 +34,13 @@ export default function InterviewSearchForm({
                     placeholder={t('enter_search_field')}
                     aria-label={t('enter_search_field')}
                 />
-                <input
+                <button
                     type="submit"
-                    value=""
-                    className="search-button"
+                    className="Button Button--transparent Button--icon search-button"
                     disabled={isInterviewSearching}
-                />
+                >
+                    <FaSearch className="Icon Icon--primary" />
+                </button>
             </form>
         </div>
     );

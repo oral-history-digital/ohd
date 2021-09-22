@@ -13,15 +13,10 @@
   background: rgba(0,0,0,0.7);
   z-index: $lightbox-z-index;
 
-  .close:after {
+  .close {
     position: absolute;
-    top:  1%;
-    right: 0;
-    font-family: FontAwesome;
-    content: "\f00d";
-    font-size: 1.5rem;
-    color: $gray-medium;
-    width: 1.5em;
+    top: 0.25 * $base-unit;
+    right: 0.25 * $base-unit;
   }
 }
 

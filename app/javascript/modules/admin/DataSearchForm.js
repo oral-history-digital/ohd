@@ -81,7 +81,7 @@ export default class DataSearchForm extends Component {
                 <form
                     ref={(form) => { this.form = form; }}
                     id={`${this.props.scope}_search_form`}
-                    className={'flyout-search default'}
+                    className="flyout-search default"
                     onSubmit={this.handleSubmit}
                 >
                     {this.props.searchableAttributes.map((element) => {

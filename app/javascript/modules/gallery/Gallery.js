@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { FaPlus } from 'react-icons/fa';
+import { FaPlus, FaExpandAlt } from 'react-icons/fa';
 
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -33,8 +33,13 @@ export default function Gallery({
                         {visiblePhotos.map((photo, index) => (
                             <PhotoModal
                                 key={photo.id}
-                                trigger={<img className="Gallery-image" src={photo.thumb_src} alt="" />}
-                                triggerClassName="Gallery-thumbnail"
+                                trigger={(
+                                    <>
+                                        <FaExpandAlt className="Gallery-icon" />
+                                        <img className="Gallery-image" src={photo.thumb_src} alt="" />
+                                    </>
+                                )}
+                                triggerClassName="Gallery-button"
                             >
                                 <CarouselContainer n={index} />
                             </PhotoModal>
