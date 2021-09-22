@@ -34,7 +34,7 @@ export default function PersonData({
         } else if (projectAccessGranted && !interviewee?.associations_loaded) {
             fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, null, 'with_associations=true');
         }
-    }, [projectAccessGranted, isLoggedIn]);
+    }, [projectAccessGranted, isLoggedIn, interviewee?.associations_loaded]);
 
     return (
         <>
