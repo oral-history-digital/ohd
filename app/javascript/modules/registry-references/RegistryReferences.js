@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
@@ -15,35 +14,12 @@ export default function RegistryReferences({
     refObject,
     project,
     interview,
-    projectId,
-    projects,
     inTranscript,
     lowestAllowedRegistryEntryId,
     locale,
-    fetchData,
     setOpenReference,
 }) {
     const { t } = useI18n();
-
-    useEffect(() => {
-        loadRegistryEntries();
-        loadRootRegistryEntry();
-    })
-
-    function loadRegistryEntries() {
-        if (!registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`]) {
-            fetchData({ projectId, locale, projects }, 'registry_entries', null, null, `ref_object_type=${refObject.type}&ref_object_id=${refObject.id}`);
-        }
-    }
-
-    function loadRootRegistryEntry() {
-        if (
-            !registryEntriesStatus[project.root_registry_entry_id] ||
-            registryEntriesStatus[project.root_registry_entry_id].split('-')[0] === 'reload'
-        ) {
-            fetchData({ projectId, locale, projects }, 'registry_entries', project.root_registry_entry_id);
-        }
-    }
 
     if (!registryEntriesStatus[project.root_registry_entry_id] || registryEntriesStatus[project.root_registry_entry_id].split('-')[0] !== 'fetched') {
         return null;
@@ -112,8 +88,6 @@ RegistryReferences.propTypes = {
     inTranscript: PropTypes.bool,
     lowestAllowedRegistryEntryId: PropTypes.number,
     locale: PropTypes.string.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     interview: PropTypes.object.isRequired,
     registryEntries: PropTypes.object.isRequired,

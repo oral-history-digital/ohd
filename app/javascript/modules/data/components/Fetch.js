@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 
 import { fetchData } from 'modules/data';
 import { getProjectId, getLocale } from 'modules/archive';
-import { getProjects } from 'modules/data';
+import { getProjects, getStatuses } from 'modules/data';
 import { Spinner } from 'modules/spinners';
 
 export default function Fetch({
@@ -14,11 +14,16 @@ export default function Fetch({
     fallback = <Spinner />,
     alwaysRenderChildren = false,
     children,
+    testDataType,
+    testIdOrDesc,
 }) {
     const projectId = useSelector(getProjectId);
     const projects = useSelector(getProjects);
     const locale = useSelector(getLocale);
-    const testResult = useSelector(testSelector);
+    const statuses = useSelector(getStatuses);
+    const testResult = (typeof testSelector === 'function') ?
+        useSelector(testSelector) :
+        !!(statuses[testDataType] && statuses[testDataType][testIdOrDesc]);
     const doReload = reloadSelector && useSelector(reloadSelector);
     const dispatch = useDispatch();
 
@@ -37,7 +42,12 @@ export default function Fetch({
 
 Fetch.propTypes = {
     fetchParams: PropTypes.array.isRequired,
-    testSelector: PropTypes.func.isRequired,
+    testSelector: PropTypes.func,
+    testDataType: PropTypes.string,
+    testIdOrDesc: PropTypes.oneOfType([
+        PropTypes.integer,
+        PropTypes.string,
+    ]),
     fallback: PropTypes.element,
     alwaysRenderChildren: PropTypes.bool,
     children: PropTypes.oneOfType([

@@ -59,10 +59,10 @@ export default function Interview({
     }, [archiveId, isLoggedIn]);
 
     useEffect(() => {
-        if (projectAccessGranted && !contributorsAreFetched) {
-            fetchData({ projectId, locale, projects }, 'people', null, null, `contributors_for_interview=${interview?.id}`);
+        if (projectAccessGranted && !contributorsAreFetched && interview?.id) {
+            fetchData({ projectId, locale, projects }, 'people', null, null, `contributors_for_interview=${interview.id}`);
         }
-    }, [archiveId, isLoggedIn, contributorsAreFetched]);
+    }, [archiveId, isLoggedIn, contributorsAreFetched, interview?.id]);
 
     if (!interviewIsFetched) {
         return <Spinner withPadding />;

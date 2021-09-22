@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { underscore } from 'modules/strings';
@@ -7,10 +8,35 @@ import { useProjectAccessStatus } from 'modules/auth';
 
 export default function SelectedRegistryReferences({
     project,
+    projects,
+    projectId,
+    locale,
     refObject,
+    fetchData,
+    registryEntriesStatus,
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus();
+
+    useEffect(() => {
+        loadRegistryEntries();
+        loadRootRegistryEntry();
+    })
+
+    function loadRegistryEntries() {
+        if (!registryEntriesStatus[`ref_object_type_${refObject.type}_ref_object_id_${refObject.id}`]) {
+            fetchData({ projectId, locale, projects }, 'registry_entries', null, null, `ref_object_type=${refObject.type}&ref_object_id=${refObject.id}`);
+        }
+    }
+
+    function loadRootRegistryEntry() {
+        if (
+            !registryEntriesStatus[project.root_registry_entry_id] ||
+            registryEntriesStatus[project.root_registry_entry_id].split('-')[0] === 'reload'
+        ) {
+            fetchData({ projectId, locale, projects }, 'registry_entries', project.root_registry_entry_id);
+        }
+    }
 
     const fields = Object.values(project.metadata_fields)
         .filter(field => field.registry_entry_id)
@@ -38,5 +64,8 @@ export default function SelectedRegistryReferences({
 
 SelectedRegistryReferences.propTypes = {
     project: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
     refObject: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
 };

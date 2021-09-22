@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import { useDispatch } from 'react-redux';
 import classNames from 'classnames';
 
+import { Fetch } from 'modules/data';
 import { SubmitOnBlurForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { formatTimecode } from 'modules/interview-helpers';
@@ -136,11 +137,17 @@ export default function EditTableCell({
                     'has-data': segment.registry_references_count !== 0,
                 })}
             >
-                <RegistryReferencesContainer
-                    refObject={segment}
-                    parentEntryId={1}
-                    locale={locale}
-                />
+                <Fetch
+                    fetchParams={['registry_entries', null, null, `ref_object_type=Segment&ref_object_id=${segment.id}`]}
+                    testDataType='registry_entries'
+                    testIdOrDesc={`ref_object_type_Segment_ref_object_id_${segment.id}`}
+                >
+                    <RegistryReferencesContainer
+                        refObject={segment}
+                        parentEntryId={1}
+                        locale={locale}
+                    />
+                </Fetch>
             </div>
         );
     case 'annotations':

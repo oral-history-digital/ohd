@@ -27,7 +27,7 @@ export default function Biography() {
                     <span className="flyout-content-label">
                         {t('history')}:
                     </span>
-                    { languagesOfPublicEntries.length > 0 && languagesOfPublicEntries.map(lang => {
+                    { firstPublicEntry ? languagesOfPublicEntries.map(lang => {
                         return (
                             <a href={pathBase + '/biographical_entries/' + archiveId + '.pdf?lang=' + lang}>
                                 <FaDownload className="Icon Icon--small" title={t('download')} />
@@ -35,8 +35,7 @@ export default function Biography() {
                                 {t(lang)}
                             </a>
                         )
-                    }).reduce((prev, curr) => [prev, ', ', curr])}
-                    { languagesOfPublicEntries.length < 1 && '---' }
+                    }).reduce((prev, curr) => [prev, ' ', curr]) : '---' }
                 </p>
             </AuthShowContainer>
             <AuthorizedContent object={{type: 'BiographicalEntry', interview_id: interview?.id}} action='create'>
