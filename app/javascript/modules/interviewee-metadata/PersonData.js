@@ -62,7 +62,7 @@ export default function PersonData({
             <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
                 <ContentField
                     label={t('interviewee_name')}
-                    value={interview?.anonymous_title[locale]}
+                    value={interview?.anonymous_title && interview?.anonymous_title[locale]}
                 />
             </AuthShowContainer>
 
