@@ -24,124 +24,82 @@ export default class InterviewListRow extends Component {
         loadIntervieweeWithAssociations(this.props);
     }
 
-    content(label, value) {
-        return (
-            <div>
-                {label}:&nbsp;
-                <span>{value}</span>
-            </div>
-        )
-    }
-
-    resultsCount() {
-        const { interview, interviewSearchResults } = this.props;
+    render() {
+        const { project, interview, interviewee, fulltext, interviewSearchResults,
+            selectedArchiveIds, locale, setArchiveId, searchInInterview,
+            addRemoveArchiveId } = this.props;
 
         const searchResults = interviewSearchResults[interview.archive_id];
-        return searchResultCount(searchResults);
-    }
-
-    typologies(){
-        const { interviewee, locale } = this.props;
-
-        if (interviewee?.typology && interviewee.typology[locale]) {
-            return this.content(t(this.props, 'typologies'), interviewee.typology[locale].join(', '), "");
-        }
-    }
-
-    columns(){
-        const { interviewee } = this.props;
-
-        let props = this.props;
-        let cols = this.props.project.list_columns.map(function(column, i){
-            let obj = (column.ref_object_type === 'Interview' || column.source === 'Interview') ?
-                props.interview :
-                interviewee;
-            if (obj) {
-                return (
-                    <td key={column.name} >
-                        {humanReadable(obj, column.name, props, {})}
-                    </td>
-                );
-            }
-        })
-        if (this.props.fulltext && this.resultsCount() > 0) {
-            cols.push(
-                <td>
-                    <Link className={'search-result-link'}
-                        onClick={() => {
-                            this.props.setArchiveId(this.props.interview.archive_id);
-                        }}
-                        to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
-                    >
-                        {this.resultsCount()}
-                    </Link>
-                </td>
-            );
-        }
-        return cols;
-    }
-
-    renderExportCheckbox() {
-        const { interview, selectedArchiveIds, addRemoveArchiveId } = this.props;
-
-        if (admin(this.props, interview, 'show') && admin(this.props, {type: 'General'}, 'edit')) {
-            return (
-                <td>
-                    <input
-                        type='checkbox'
-                        className='export-checkbox'
-                        checked={selectedArchiveIds.indexOf(interview.archive_id) > 0}
-                        onChange={() => {addRemoveArchiveId(interview.archive_id)}}
-                    />
-                </td>
-            );
-        } else {
-            return null;
-        }
-    }
-
-    title() {
-        const { interview, project, locale } = this.props;
-
-        if (project.is_catalog) {
-            return interview.title && interview.title[locale];
-        } else {
-            return (
-                <div>
-                    <AuthShowContainer ifLoggedIn={true}>
-                        {interview.short_title && interview.short_title[locale]}
-                        {
-                            interview.workflow_state === 'unshared' && (
-                                <FaEyeSlash />
-                            )
-                        }
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                        {interview.anonymous_title[locale]}
-                    </AuthShowContainer>
-                </div>
-            )
-        }
-    }
-
-    render() {
-        const { interview, fulltext, setArchiveId, searchInInterview } = this.props;
+        const resultCount = searchResultCount(searchResults);
 
         return (
             <tr>
-                {this.renderExportCheckbox()}
+                {
+                    admin(this.props, interview, 'show') && admin(this.props, {type: 'General'}, 'edit') && (
+                        <td>
+                            <input
+                                type='checkbox'
+                                className='export-checkbox'
+                                checked={selectedArchiveIds.indexOf(interview.archive_id) > 0}
+                                onChange={() => {addRemoveArchiveId(interview.archive_id)}}
+                            />
+                        </td>
+                    )
+                }
                 <td>
-                    <Link className={'search-result-link'}
+                    <Link className="search-result-link"
                         onClick={() => {
                             setArchiveId(interview.archive_id);
                             searchInInterview(`${pathBase(this.props)}/searches/interview`, { fulltext, id: interview.archive_id });
                         }}
                         to={pathBase(this.props) + '/interviews/' + interview.archive_id}
                     >
-                        {this.title()}
+                        {
+                            project.is_catalog ? (
+                                interview.title && interview.title[locale]
+                            ) : (
+                                <div>
+                                    <AuthShowContainer ifLoggedIn>
+                                        {interview.short_title && interview.short_title[locale]}
+                                        {
+                                            interview.workflow_state === 'unshared' && (
+                                                <FaEyeSlash />
+                                            )
+                                        }
+                                    </AuthShowContainer>
+                                    <AuthShowContainer ifLoggedOut ifNoProject>
+                                        {interview.anonymous_title[locale]}
+                                    </AuthShowContainer>
+                                </div>
+                            )
+                        }
                     </Link>
                 </td>
-                {this.columns()}
+                {
+                    project.list_columns.map(column => {
+                        let obj = (column.ref_object_type === 'Interview' || column.source === 'Interview') ?
+                            interview :
+                            interviewee;
+
+                        return (
+                            <td key={column.name}>
+                                {obj && humanReadable(obj, column.name, this.props, {})}
+                            </td>
+                        );
+                    })
+                }
+                {
+                    fulltext && resultCount > 0 && (
+                        <td>
+                            <Link className="search-result-link"
+                                onClick={() => setArchiveId(interview.archive_id)}
+                                to={pathBase(this.props) + '/interviews/' + interview.archive_id}
+                            >
+                                {resultCount}
+                            </Link>
+                        </td>
+                    )
+                }
             </tr>
         );
     }
