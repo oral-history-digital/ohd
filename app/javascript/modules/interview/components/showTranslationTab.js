@@ -8,6 +8,6 @@ export default function showTranslationTab(projectId, interviewLang, locale) {
         return interviewLang !== 'de';
     case PROJECT_MOG:
     default:
-        return true;
+        return interviewLang !== locale;
     }
 }
