@@ -89,7 +89,7 @@ export default function Transcript({
     let sortedWithIndex = sortedSegmentsWithActiveIndex(mediaTime, { interview, tape });
     let shownSegments = sortedWithIndex[1];
 
-    let speaker, speakerId;
+    let currentSpeakerName = '', currentSpeakerId = null;
 
     return (
         <div className="Transcript">
@@ -97,12 +97,12 @@ export default function Transcript({
                 shownSegments.map((segment, index, array) => {
                     segment.speaker_is_interviewee = interviewee && interviewee.id === segment.speaker_id;
                     if (
-                        (speakerId !== segment.speaker_id && segment.speaker_id !== null) ||
-                        (speaker !== segment.speaker && segment.speaker_id === null)
+                        (currentSpeakerId !== segment.speaker_id && segment.speaker_id !== null) ||
+                        (currentSpeakerName !== segment.speaker && segment.speaker !== null && segment.speaker_id === null)
                     ) {
                         segment.speakerIdChanged = true;
-                        speakerId = segment.speaker_id;
-                        speaker = segment.speaker;
+                        currentSpeakerId = segment.speaker_id;
+                        currentSpeakerName = segment.speaker;
                     }
 
                     const nextSegment = array[index + 1];
