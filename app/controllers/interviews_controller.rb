@@ -303,12 +303,12 @@ class InterviewsController < ApplicationController
           archiveId: @interview.archive_id,
           interviewEditView: cookies[:interviewEditView]
         ),
-        data: initial_redux_state[:data].update(
-          interviews: {"#{@interview.identifier}": cache_single(@interview)},
-          statuses: initial_redux_state[:data][:statuses].update(
-            interviews: {"#{@interview.identifier}": 'fetched'},
-          )
-        )
+        #data: initial_redux_state[:data].update(
+          #interviews: {"#{@interview.identifier}": cache_single(@interview)},
+          #statuses: initial_redux_state[:data][:statuses].update(
+            #interviews: {"#{@interview.identifier}": 'fetched'},
+          #)
+        #)
       )
     else
       initial_redux_state
