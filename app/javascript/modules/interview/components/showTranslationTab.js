@@ -6,7 +6,7 @@ export default function showTranslationTab(projectId, interviewLang, locale) {
         return interviewLang !== locale;
     case PROJECT_ZWAR:
         return interviewLang !== 'de';
-    case PROJECT_MOG:
+    //case PROJECT_MOG:
     default:
         return interviewLang !== locale;
     }
