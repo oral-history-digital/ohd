@@ -38,7 +38,7 @@ export default class Account extends Component {
 
     changeToEditView() {
         if (
-            this.props.account && (
+            this.props.account && Object.keys(this.props.account).length > 0 && (
                 this.props.account.admin ||
                 Object.keys(this.props.account.tasks).length > 0 ||
                 Object.keys(this.props.account.supervised_tasks).length > 0 ||
@@ -68,7 +68,7 @@ export default class Account extends Component {
     // FIXME: show this alert ifLoggedIn && ifNoProject
     projectAccessAlert() {
         const { account, project } = this.props;
-        const unactivatedProject = account && Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at === null);
+        const unactivatedProject = account?.user_registration_projects && Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at === null);
 
         if (unactivatedProject) {
             return <div className='error'>{`${t(this.props, 'project_access_in_process')}`}</div>

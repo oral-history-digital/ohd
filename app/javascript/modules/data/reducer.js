@@ -8,9 +8,7 @@ import {
 
 const initialState = {
     accounts: {
-        current: {
-            tasks: {},
-        },
+        current: null
     },
     projects: {},
     statuses: {
