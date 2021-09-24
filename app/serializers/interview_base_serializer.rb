@@ -43,8 +43,13 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def still_url
-    still_media_stream = MediaStream.where(project_id: object.project_id, media_type: 'still').first
-    still_media_stream && still_media_stream.path.gsub(/INTERVIEW_ID/, object.archive_id)
+    # mog still images have to be renamed!
+    if object.project.shortname == 'mog'
+      "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
+    else
+      still_media_stream = MediaStream.where(project_id: object.project_id, media_type: 'still').first
+      still_media_stream && still_media_stream.path.gsub(/INTERVIEW_ID/, object.archive_id)
+    end
   end
 
   def tape_count
