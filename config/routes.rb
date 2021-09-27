@@ -19,7 +19,7 @@ Rails.application.routes.draw do
     resources :contributions, only: [:create, :update, :destroy]
     resources :biographical_entries, only: [:create, :show, :update]
     resources :photos, only: [:create, :update, :destroy]
-    resources :logos, only: [:create, :update]
+    resources :logos, only: [:create, :update, :destroy]
     resources :sponsor_logos, only: [:create, :update, :destroy]
     resources :media_streams, only: [:create, :update, :destroy]
     resources :segments, only: [:create, :update, :index, :destroy, :show]
