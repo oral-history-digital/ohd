@@ -45,6 +45,7 @@ class UserRegistrationProject < ApplicationRecord
 
   def workflow_state=(change)
     self.send("#{change}!")
+    user_registration.touch
   end
 
   # TODO: check how the token expires
