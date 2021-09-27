@@ -6,7 +6,6 @@ import { InterviewListRowContainer } from 'modules/interview-preview';
 
 export default function ResultTable({
     foundInterviews,
-    listColumns,
     query,
     project,
 }) {
@@ -23,7 +22,7 @@ export default function ResultTable({
                         {t('interviewee_name')}
                     </th>
                     {
-                        listColumns.map((column) => (
+                        project.list_columns.map(column => (
                             <th key={column.name} className="Table-header">
                                 {project?.metadata_fields[column.id].label[locale] || t(column.name)}
                             </th>
@@ -52,7 +51,6 @@ export default function ResultTable({
 
 ResultTable.propTypes = {
     foundInterviews: PropTypes.array,
-    listColumns: PropTypes.array,
     project: PropTypes.object.isRequired,
     query: PropTypes.object.isRequired,
 };
