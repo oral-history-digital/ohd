@@ -5,8 +5,12 @@ import { InterviewPreviewContainer } from 'modules/interview-preview';
 export default function ResultGrid({
     interviews,
 }) {
+    if (!interviews) {
+        return null;
+    }
+
     return (
-        interviews?.map(interview => (
+        interviews.map(interview => (
             <InterviewPreviewContainer key={interview.archive_id} interview={interview} />
         ))
     );
