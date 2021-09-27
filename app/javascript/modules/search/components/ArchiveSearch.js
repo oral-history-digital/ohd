@@ -107,7 +107,7 @@ export default class ArchiveSearch extends Component {
 
     render() {
         const { isArchiveSearching, query, resultPagesCount, resultsCount, viewMode,
-            viewModes, foundInterviews } = this.props;
+            viewModes, foundInterviews, resultsAvailable } = this.props;
 
         return (
             <ScrollToTop>
@@ -120,7 +120,7 @@ export default class ArchiveSearch extends Component {
                             <SearchActionsContainer />
                         </AuthShowContainer>
                         {
-                            !isArchiveSearching || (query['page'] || 1) > 1 && (
+                            resultsAvailable && (
                                 <div className="search-results-legend-text">
                                     {resultsCount} {t(this.props, 'archive_results')}
                                 </div>
@@ -185,6 +185,7 @@ export default class ArchiveSearch extends Component {
 }
 
 ArchiveSearch.propTypes = {
+    resultsAvailable: PropTypes.bool.isRequired,
     isArchiveSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,
     viewModes: PropTypes.array.isRequired,

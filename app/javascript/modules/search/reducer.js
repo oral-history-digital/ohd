@@ -24,7 +24,7 @@ export const initialState = {
         allInterviewsTitles: [],
         allInterviewsPseudonyms: [],
         allInterviewsPlacesOfBirth: [],
-        foundInterviews: [],
+        foundInterviews: null,
         //foundSegmentsForInterviews: {},
         allInterviewsCount: 0,
         resultPagesCount: 1,
@@ -115,7 +115,7 @@ const search = (state = initialState, action) => {
                 })
             })
         case RECEIVE_ARCHIVE_SEARCH:
-            let foundInterviews = [];
+            let foundInterviews;
             if (parseInt(action.page) > 1){
                 foundInterviews = state.archive.foundInterviews.concat(action.foundInterviews);
             }
