@@ -15,7 +15,7 @@ export default class AdminActions extends Component {
         if (Object.keys(this.props.doiResult).length > 0) {
             return <h4>DOI Status:</h4> + Object.keys(this.props.doiResult).map((archiveId) => {
                 return (
-                    <div key={`doi-result-${archiveId}`}>
+                    <div key={archiveId}>
                         {`${archiveId}: ${this.props.doiResult[archiveId]}`}
                     </div>
                 )
@@ -27,7 +27,7 @@ export default class AdminActions extends Component {
         return this.selectedArchiveIds().map((archiveId) => {
             if (this.props.statuses[archiveId] !== undefined) {
                 return (
-                    <div key={`admin-action-message-${archiveId}`}>
+                    <div key={archiveId}>
                         {`${archiveId}: ${this.props.statuses[archiveId]}`}
                     </div>
                 )
@@ -170,10 +170,13 @@ export default class AdminActions extends Component {
     }
 
     setAll() {
+        const { archiveSearchResults, setArchiveIds } = this.props;
+
         return (
             <button
                 type="button"
-                onClick={() => { this.props.setArchiveIds(Object.values(this.props.archiveSearchResults.map(i =>  i.archive_id))); }}
+                className="Button"
+                onClick={() => setArchiveIds(archiveSearchResults.map(i => i.archive_id))}
             >
                 {t(this.props, 'set_all')}
             </button>

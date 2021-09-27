@@ -7,12 +7,14 @@ import { setViewMode, getLocale, getViewMode, getTranslations, getProjectId,
 import { getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { getIsLoggedIn } from 'modules/account';
 import { clearSearch, searchInArchive } from '../actions';
-import { getArchiveFacets, getArchiveFoundInterviews, getArchiveQuery, getArchiveResultPagesCount, getArchiveResultsCount } from '../selectors';
+import { getArchiveFacets, getArchiveFoundInterviews, getArchiveQuery, getArchiveResultPagesCount,
+    getArchiveResultsCount, getArchiveSearchResultsAvailable } from '../selectors';
 import ArchiveSearch from './ArchiveSearch';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
+        resultsAvailable: getArchiveSearchResultsAvailable(state),
         foundInterviews: getArchiveFoundInterviews(state),
         resultPagesCount: getArchiveResultPagesCount(state),
         resultsCount: getArchiveResultsCount(state),

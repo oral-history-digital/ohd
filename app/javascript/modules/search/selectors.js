@@ -15,6 +15,8 @@ export const getArchiveQueryFulltext = state => getArchiveQuery(state).fulltext;
 
 export const getArchiveFoundInterviews = state => getArchiveSearch(state).foundInterviews;
 
+export const getArchiveSearchResultsAvailable = state => Array.isArray(getArchiveFoundInterviews(state));
+
 export const getArchiveResultPagesCount = state => getArchiveSearch(state).resultPagesCount;
 
 export const getArchiveResultsCount = state => getArchiveSearch(state).resultsCount;

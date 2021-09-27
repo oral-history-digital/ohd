@@ -1,3 +1,5 @@
+import dotProp from 'dot-prop-immutable';
+
 import { NAME  } from './constants';
 import * as selectors from './selectors';
 
@@ -146,6 +148,17 @@ test('getArchiveQueryFulltext retrieves archive query object fulltext part', () 
 
 test('getArchiveFoundInterviews retrieves archive found interviews array', () => {
     expect(selectors.getArchiveFoundInterviews(state)).toEqual(state[NAME].archive.foundInterviews);
+});
+
+describe('getArchiveSearchResultsAvailable', () => {
+    test('is true if results are available', () => {
+        expect(selectors.getArchiveSearchResultsAvailable(state)).toBeTruthy();
+    });
+
+    test('is false if results are not available', () => {
+        const _state = dotProp.set(state, `${NAME}.archive.foundInterviews`, null);
+        expect(selectors.getArchiveSearchResultsAvailable(_state)).toBeFalsy();
+    });
 });
 
 test('getArchiveResultPagesCount retrieves number of archive result pages', () => {
