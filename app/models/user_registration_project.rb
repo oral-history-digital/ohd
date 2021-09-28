@@ -34,7 +34,7 @@ class UserRegistrationProject < ApplicationRecord
       #event :deactivate_account,        :transitions_to => :account_deactivated
     end
     state :account_deactivated do
-      event :reactivate_account, :transitions_to => :account_created
+      event :reactivate_account, :transitions_to => :project_access_granted
     end
 
   end
