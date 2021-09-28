@@ -44,7 +44,7 @@ class InterviewBaseSerializer < ApplicationSerializer
 
   def still_url
     # mog still images have to be renamed!
-    if object.project.shortname == 'mog'
+    if object.project.shortname.downcase == 'mog'
       "https://medien.cedis.fu-berlin.de/eog/interviews/mog/#{object.archive_id}/#{object.archive_id.sub('mog', '')}_2.jpg"
     else
       still_media_stream = MediaStream.where(project_id: object.project_id, media_type: 'still').first
