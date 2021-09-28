@@ -128,13 +128,13 @@ export default class SingleValueWithForm extends Component {
 
     show() {
         if (
-            admin(this.props, this.props.obj, 'show') ||
+            admin(this.props, this.props.obj, 'update') ||
             (
                 (
                     (this.props.projectAccessGranted && this.metadataField()?.use_in_details_view) ||
                     (!this.props.projectAccessGranted && this.metadataField()?.display_on_landing_page)
                 ) &&
-                (this.props.obj.properties.public_attributes && this.props.obj.properties.public_attributes[this.props.attribute])
+                (this.props.obj.properties.public_attributes?.[this.props.attribute] !== false)
             )
         ) {
             let value = humanReadable(this.props.obj, this.props.attribute, this.props, this.state);
