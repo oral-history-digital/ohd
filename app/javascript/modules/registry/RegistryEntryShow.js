@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaGlobeEurope } from 'react-icons/fa';
 
@@ -6,9 +7,9 @@ import { PixelLoader } from 'modules/spinners';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { admin } from 'modules/auth';
+import { formatTimecode } from 'modules/interview-helpers';
 
 export default class RegistryEntryShow extends Component {
-
     componentDidMount() {
         this.loadWithAssociations();
         this.loadRegistryReferenceTypes()
@@ -29,9 +30,11 @@ export default class RegistryEntryShow extends Component {
     }
 
     fetchInterview(archiveId) {
-        if(archiveId && !this.props.interviewsStatus[archiveId]) {
-            this.props.fetchData(this.props, 'interviews', archiveId)
-            this.props.fetchData(this.props, 'interviews', archiveId, 'short_title')
+        const { interviewsStatus, fetchData } = this.props;
+
+        if(archiveId && !interviewsStatus[archiveId]) {
+            fetchData(this.props, 'interviews', archiveId)
+            fetchData(this.props, 'interviews', archiveId, 'short_title')
         }
     }
 
@@ -57,12 +60,6 @@ export default class RegistryEntryShow extends Component {
         }
     }
 
-    loader(references){
-        if(!references || ( Object.keys(references).length !== Object.keys(this.registryEntry().registry_references).length ) ){
-            return <PixelLoader/>
-        }
-    }
-
     registryEntry() {
         return this.props.registryEntries[this.props.registryEntryId];
     }
@@ -78,14 +75,18 @@ export default class RegistryEntryShow extends Component {
 
     refObject(rr) {
         let ref_object_string = ''
-        let isAllowedToSee =  admin(this.props, {type: 'General'}, 'edit') ||
+        if (!this.interviewIsFetched(rr.archive_id)) {
+            this.fetchInterview(rr.archive_id);
+        }
+
+        const isAllowedToSee = admin(this.props, {type: 'General'}, 'edit') ||
             this.props.interviews[rr.archive_id]?.workflow_state === 'public'
 
         switch (rr.ref_object_type) {
             case 'Segment':
                 if(this.segmentIsFetched(rr.ref_object_id) && isAllowedToSee) {
                     if (this.interviewIsFetched(rr.archive_id)) {
-                        ref_object_string = this.props.segments[rr.ref_object_id].timecode + ' ' +
+                        ref_object_string = formatTimecode(this.props.segments[rr.ref_object_id].time) + ' ' +
                                             this.tape(this.props.segments[rr.ref_object_id]) + ' ' +
                                             t(this.props, 'in') + ' ' +
                                             this.props.interviews[rr.archive_id]?.short_title[this.props.locale] + ' ' +
@@ -131,14 +132,19 @@ export default class RegistryEntryShow extends Component {
     }
 
     registryReferences() {
-        let references = []
+        const { project, registryReferenceTypesStatus, registryReferenceTypes, locale } = this.props;
+
+        const registryEntry = this.registryEntry();
+
+        const references = [];
+
         if (
-            this.props.registryReferenceTypesStatus[`for_projects_${this.props.project?.id}`] &&
-            this.props.registryReferenceTypesStatus[`for_projects_${this.props.project?.id}`].split('-')[0] === 'fetched'
+            registryReferenceTypesStatus[`for_projects_${project?.id}`] &&
+            registryReferenceTypesStatus[`for_projects_${project?.id}`].split('-')[0] === 'fetched'
         ) {
-            for (var r in this.registryEntry().registry_references) {
-                let rr = this.registryEntry().registry_references[r]
-                let rr_type = this.props.registryReferenceTypes[rr.registry_reference_type_id]
+            for (var r in registryEntry.registry_references) {
+                let rr = registryEntry.registry_references[r]
+                let rr_type = registryReferenceTypes[rr.registry_reference_type_id]
                 let ro = this.refObject(rr);
 
                 if (ro) {
@@ -147,7 +153,7 @@ export default class RegistryEntryShow extends Component {
                             key={`this.registryEntry().registry_reference-${r}`}
                         >
                             <strong>
-                                {rr_type && `${rr_type.name[this.props.locale]} `}
+                                {rr_type && `${rr_type.name[locale]} `}
                             </strong>
                             {`${t(this.props, 'in')} ${t(this.props, rr.ref_object_type.toLowerCase())} `}
                             {ro}
@@ -156,6 +162,7 @@ export default class RegistryEntryShow extends Component {
                 }
             }
         }
+
         return references;
     }
 
@@ -204,7 +211,7 @@ export default class RegistryEntryShow extends Component {
                     <a
                         href={`https://www.openstreetmap.org/?mlat=${this.registryEntry().latitude}&mlon=${this.registryEntry().longitude}&zoom=6`}
                         target="_blank"
-                        rel="noopener"
+                        rel="noreferrer"
                         >
                         {`${this.registryEntry().latitude}, ${this.registryEntry().longitude}`}
                         &nbsp;
@@ -217,36 +224,47 @@ export default class RegistryEntryShow extends Component {
     }
 
     render() {
-        if (this.registryEntry()?.associations_loaded) {
-            let references = this.registryReferences();
-            return (
-                <div>
-                    <div>
-                    {this.osmLink()}
-                    {this.breadCrumb()}
-                    </div>
-                    <h3>
-                        {this.registryEntry().name[this.props.locale]}
-                    </h3>
-                    <p>
-                        {this.registryEntry().notes[this.props.locale]}
-                    </p>
-                    <h4>
-                        {references.length}
-                        &nbsp;
-                        {(references.length === 1) ? t(this.props, 'activerecord.models.registry_reference.one') : t(this.props, 'activerecord.models.registry_reference.other')}
-                        {references.length > 0 ? ':' : ''}
-                    </h4>
-                    <br/>
-                    <ul>
-                        {references}
-                    </ul>
-                    {this.loader(references)}
+        const { locale } = this.props;
 
-                </div>
-            );
-        } else {
+        if (!this.registryEntry()?.associations_loaded) {
             return null;
         }
+
+        const references = this.registryReferences();
+
+        return (
+            <div>
+                <div>
+                    {this.osmLink()}
+                    {this.breadCrumb()}
+                </div>
+                <h3>
+                    {this.registryEntry().name[locale]}
+                </h3>
+                <p>
+                    {this.registryEntry().notes[locale]}
+                </p>
+                <h4>
+                    {references.length}
+                    &nbsp;
+                    {(references.length === 1) ? t(this.props, 'activerecord.models.registry_reference.one') : t(this.props, 'activerecord.models.registry_reference.other')}
+                    {references.length > 0 ? ':' : ''}
+                </h4>
+                <br/>
+                <ul>
+                    {references}
+                </ul>
+                {
+                    !references || (references.length !== Object.keys(this.registryEntry().registry_references).length) && <PixelLoader/>
+                }
+            </div>
+        );
     }
 }
+
+RegistryEntryShow.propTypes = {
+    interviews: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    project: PropTypes.object.isRequired,
+    fetchData: PropTypes.func.isRequired,
+};
