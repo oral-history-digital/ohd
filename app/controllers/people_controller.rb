@@ -77,7 +77,7 @@ class PeopleController < ApplicationController
       format.html { render "react/app" }
       format.json do
         paginate = false
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{cache_key_params}-#{Person.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-people-#{cache_key_params}-#{Person.count}-#{Person.maximum(:updated_at)}" do
           if params[:for_projects]
             data = policy_scope(Person).
               includes(:translations, :project).

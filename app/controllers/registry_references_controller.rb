@@ -129,7 +129,7 @@ class RegistryReferencesController < ApplicationController
       format.html { render 'react/app' }
       format.json do
         json = {
-          data: @registry_references.inject({}){|mem, s| mem[s.id] = Rails.cache.fetch("#{current_project.cache_key_prefix}-registry_reference-#{s.id}-#{s.updated_at}"){::RegistryReferenceSerializer.new(s).as_json}; mem},
+          data: @registry_references.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
           data_type: 'registry_references',
           extra_params: extra_params
         }.to_json

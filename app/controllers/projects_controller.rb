@@ -16,7 +16,7 @@ class ProjectsController < ApplicationController
     respond_to do |format|
       format.html { render 'react/app' }
       format.json do
-        json = Rails.cache.fetch "projects-#{extra_params}-#{Project.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "projects-#{extra_params}-#{Project.count}-#{Project.maximum(:updated_at)}" do
           {
             data: projects.inject({}){|mem, s| mem[s.id] = cache_single(s); mem},
             data_type: 'projects',

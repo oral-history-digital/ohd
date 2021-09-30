@@ -80,7 +80,7 @@ class RegistryEntriesController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        #json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{cache_key_params}-#{cache_key_date}" do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry_entries-#{cache_key_params}-#{cache_key_date}-#{RegistryEntry.count}" do
           registry_entries, extra_params =
             if params[:children_for_entry]
               [
@@ -100,12 +100,12 @@ class RegistryEntriesController < ApplicationController
               ]
             end
 
-        json =  {
+          {
             data: registry_entries,
             data_type: "registry_entries",
             extra_params: extra_params,
-        }.to_json
-        #end.to_json
+          }
+        end.to_json
         render plain: json
       end
       format.pdf do

@@ -104,12 +104,12 @@ class ApplicationController < ActionController::Base
           registry_name_types: {},
           contribution_types: {},
         },
-        projects: Rails.cache.fetch("projects-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
+        projects: Rails.cache.fetch("projects-#{Project.count}-#{Project.maximum(:updated_at)}-#{MetadataField.maximum(:updated_at)}") do
           Project.all.
             includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
             inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
-        languages: Rails.cache.fetch("languages-#{Language.maximum(:updated_at)}") do
+        languages: Rails.cache.fetch("languages-#{Language.count}-#{Language.maximum(:updated_at)}") do
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
         end,
         accounts: {
