@@ -29,7 +29,7 @@ export default class InterviewDetailsLeftSide extends Component {
                     <h3>{t(this.props, "person_info")}</h3>
                     <div>
                         <PersonDataContainer />
-                        <SelectedRegistryReferencesContainer refObject={this.props.interviewee} />
+                        { this.props.interviewee && <SelectedRegistryReferencesContainer refObject={this.props.interviewee} /> }
                     </div>
                     <h3>{t(this.props, "interview_info")}</h3>
                     {<InterviewInfoContainer />}
