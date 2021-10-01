@@ -21,6 +21,8 @@ export default function InterviewListRow({
     selectedArchiveIds,
     locale,
     translations,
+    languages,
+    collections,
     peopleStatus,
     setArchiveId,
     searchInInterview,
@@ -97,7 +99,7 @@ export default function InterviewListRow({
 
                     return (
                         <td key={column.name}>
-                            {obj && humanReadable(obj, column.name, { locale, translations, optionsScope: 'search_facets' }, {})}
+                            {obj && humanReadable(obj, column.name, { locale, translations, languages, collections, optionsScope: 'search_facets' }, {})}
                         </td>
                     );
                 })
