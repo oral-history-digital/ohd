@@ -23,10 +23,13 @@ export default function ThumbnailMetadata({
     const { projectAccessGranted } = useProjectAccessStatus();
 
     useEffect(() => {
-        if (projectAccessGranted) {
-            loadIntervieweeWithAssociations({ interviewee, intervieweeId, peopleStatus, fetchData, locale, projectId, projects });
+        if (!projectAccessGranted) {
+            fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, 'landing_page_metadata');
+        } else if (projectAccessGranted && !interviewee?.associations_loaded) {
+            fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, null, 'with_associations=true');
         }
-    }, [isLoggedIn]);
+    }, [projectAccessGranted, isLoggedIn, interviewee?.associations_loaded]);
+
 
     return (
         <ul className="DetailList" lang={locale}>

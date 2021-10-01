@@ -36,14 +36,16 @@ export default function InterviewListRow({
     const intervieweeId = interview.interviewee_id;
 
     useEffect(() => {
-        if (projectAccessGranted) {
-            loadIntervieweeWithAssociations({ interviewee, intervieweeId, peopleStatus, fetchData, locale, projectId, projects });
+        if (!projectAccessGranted) {
+            fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, 'landing_page_metadata');
+        } else if (projectAccessGranted && !interviewee?.associations_loaded) {
+            fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, null, 'with_associations=true');
         }
 
         if (fulltext) {
             searchInInterview(`${pathBase}/searches/interview`, { fulltext, id: interview.archive_id });
         }
-    }, [isLoggedIn]);
+    }, [projectAccessGranted, isLoggedIn, interviewee?.associations_loaded]);
 
     const searchResults = interviewSearchResults[interview.archive_id];
     const resultCount = searchResultCount(searchResults);
@@ -72,7 +74,7 @@ export default function InterviewListRow({
                 >
                     {
                         project.is_catalog ? (
-                            interview.title?.[locale]
+                            interview.anonymous_title[locale]
                         ) : (
                             <div>
                                 <AuthShowContainer ifLoggedIn>

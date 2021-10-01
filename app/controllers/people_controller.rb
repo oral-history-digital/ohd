@@ -49,6 +49,10 @@ class PeopleController < ApplicationController
       @person.registry_references.where(registry_reference_type_id: m.registry_reference_type_id).each do |rr|
         data[:registry_references][rr.id] = RegistryReferenceSerializer.new(rr)
       end
+      data[m.name] = @person.project.available_locales.inject({}) do |mem, locale|
+        mem[locale] = @person.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+        mem
+      end
     end
 
     current_project.metadata_fields
