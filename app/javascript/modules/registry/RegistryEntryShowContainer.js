@@ -9,25 +9,23 @@ import { setArchiveId, getLocale, getProjectId, getTranslations, getEditView } f
 import { sendTimeChangeRequest } from 'modules/media-player';
 import RegistryEntryShow from './RegistryEntryShow';
 
-const mapStateToProps = (state) => {
-    return {
-        locale: getLocale(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        project: getCurrentProject(state),
-        interviews: getInterviews(state),
-        interviewsStatus: getInterviewsStatus(state),
-        segments: getSegments(state),
-        segmentsStatus: getSegmentsStatus(state),
-        translations: getTranslations(state),
-        registryReferenceTypes: getRegistryReferenceTypesForCurrentProject(state),
-        registryReferenceTypesStatus: getRegistryReferenceTypesStatus(state),
-        registryEntriesStatus:getRegistryEntriesStatus(state),
-        registryEntries: getRegistryEntries(state),
-        editView: getEditView(state),
-        account: getCurrentAccount(state),
-    }
-}
+const mapStateToProps = state => ({
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    project: getCurrentProject(state),
+    interviews: getInterviews(state),
+    interviewsStatus: getInterviewsStatus(state),
+    segments: getSegments(state),
+    segmentsStatus: getSegmentsStatus(state),
+    translations: getTranslations(state),
+    registryReferenceTypes: getRegistryReferenceTypesForCurrentProject(state),
+    registryReferenceTypesStatus: getRegistryReferenceTypesStatus(state),
+    registryEntriesStatus:getRegistryEntriesStatus(state),
+    registryEntries: getRegistryEntries(state),
+    editView: getEditView(state),
+    account: getCurrentAccount(state),
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,

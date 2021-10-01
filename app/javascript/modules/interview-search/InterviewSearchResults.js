@@ -34,10 +34,10 @@ export default function InterviewSearchResults({
         );
     }
 
-    const locales = Object.assign([], interview?.languages, ['orig']);
+    const locales = ['orig'].concat(interview?.languages);
     const interviewLang = project.available_locales.indexOf(interview?.lang) > -1 ? interview?.lang : 'orig';
 
-    const resultsPerLocale = locales?.map(resultLocale => [
+    const resultsPerLocale = locales.map(resultLocale => [
         resultLocale,
         segmentResults.filter(segment => segment.text[resultLocale]?.length > 0),
     ])
@@ -111,6 +111,7 @@ export default function InterviewSearchResults({
 
 InterviewSearchResults.propTypes = {
     interview: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
     currentInterviewSearchResults: PropTypes.object.isRequired,
