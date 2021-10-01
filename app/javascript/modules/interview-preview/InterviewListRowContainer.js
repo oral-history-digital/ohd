@@ -7,6 +7,7 @@ import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslati
 import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeopleForCurrentProject,
     getLanguages, getCollectionsForCurrentProject, getPeopleStatus, getCollectionsStatus, getLanguagesStatus } from 'modules/data';
 import InterviewListRow from './InterviewListRow';
+import { getIsLoggedIn } from 'modules/account';
 
 const mapStateToProps = (state, props) => ({
     fulltext: getArchiveQueryFulltext(state),
@@ -26,6 +27,7 @@ const mapStateToProps = (state, props) => ({
     collections: getCollectionsForCurrentProject(state),
     collectionsStatus: getCollectionsStatus(state),
     interviewee: getInterviewee(state, props),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

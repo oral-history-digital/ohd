@@ -5,6 +5,7 @@ import { FaEyeSlash } from 'react-icons/fa';
 
 import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
+import { useProjectAccessStatus } from 'modules/auth';
 import { AuthShowContainer, useAuthorization } from 'modules/auth';
 import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
 import searchResultCount from './searchResultCount';
@@ -25,17 +26,22 @@ export default function InterviewListRow({
     searchInInterview,
     addRemoveArchiveId,
     fetchData,
+    isLoggedIn,
 }) {
     const { isAuthorized } = useAuthorization();
+    const { projectAccessGranted } = useProjectAccessStatus();
     const pathBase = usePathBase();
+    const intervieweeId = interview.interviewee_id;
 
     useEffect(() => {
-        loadIntervieweeWithAssociations({ projectId, projects, locale, peopleStatus, interviewee, fetchData });
+        if (projectAccessGranted) {
+            loadIntervieweeWithAssociations({ interviewee, intervieweeId, peopleStatus, fetchData, locale, projectId, projects });
+        }
 
         if (fulltext) {
             searchInInterview(`${pathBase}/searches/interview`, { fulltext, id: interview.archive_id });
         }
-    }, []);
+    }, [isLoggedIn]);
 
     const searchResults = interviewSearchResults[interview.archive_id];
     const resultCount = searchResultCount(searchResults);
@@ -91,7 +97,7 @@ export default function InterviewListRow({
 
                     return (
                         <td key={column.name}>
-                            {obj && humanReadable(obj, column.name, { locale, translations }, {})}
+                            {obj && humanReadable(obj, column.name, { locale, translations, optionsScope: 'search_facets' }, {})}
                         </td>
                     );
                 })
