@@ -71,13 +71,13 @@ RSpec.describe ProjectCreator do
       expect(project.contribution_types.count).to eq(12)
     end
 
-    it 'creates 7 roles' do
-      expect(project.roles.count).to eq(7)
+    it 'creates 5 roles' do
+      expect(project.roles.count).to eq(5)
     end
 
-    it 'creates interview-management-role' do
-      expect(project.roles.where(name: 'Interview bearbeiten und anlegen')).to exist
-      expect(project.roles.where(name: 'Interview bearbeiten und anlegen').first.permissions.count).to eq(3)
+    it 'creates Erschliessung-role' do
+      expect(project.roles.where(name: 'Erschliessung')).to exist
+      expect(project.roles.where(name: 'Erschliessung').first.permissions.count).to eq(41)
     end
 
   end
