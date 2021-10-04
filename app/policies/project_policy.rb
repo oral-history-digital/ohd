@@ -1,4 +1,11 @@
 class ProjectPolicy < ApplicationPolicy
+
+  %w(create destroy).each do |m|
+    define_method "#{m}?" do
+      user && user.admin?
+    end
+  end
+
   def cmdi_metadata?
     show?
   end
