@@ -1,0 +1,14 @@
+---
+:media_type: true
+:archive_id: false
+:interview_date: false
+:duration: false
+:tape_count: false
+:language_id: false
+:observations: false
+:workflow_state: false
+:tasks_user_account_ids: false
+:tasks_supervisor_ids: false
+:description: false
+:collection_id: false
+:signature_original: false

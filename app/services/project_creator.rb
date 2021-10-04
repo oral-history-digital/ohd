@@ -137,21 +137,7 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_interview_metadata_fields
-    {
-      media_type: true,
-      archive_id: false,
-      interview_date: false,
-      duration: false,
-      tape_count: false,
-      language_id: false,
-      observations: false,
-      workflow_state: false,
-      tasks_user_account_ids: false,
-      tasks_supervisor_ids: false,
-      description: false,
-      collection_id: false,
-      signature_original: false,
-    }.each_with_index do |(name, use_as_facet), index|
+    YAML.load_file(File.join(Rails.root, 'config/interview_metadata_fields.yml')).each_with_index do |(name, use_as_facet), index|
       MetadataField.create(
         project_id: project.id,
         name: name,
@@ -169,20 +155,7 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_contribution_types
-    %w(
-      interviewee
-      interviewer
-      cinematographer
-      sound
-      producer
-      other_attender
-      quality_manager_interviewing
-      transcriptor
-      segmentator
-      translator
-      proofreader
-      research
-    ).each do |code|
+    YAML.load_file(File.join(Rails.root, 'config/contribution_types.yml')).each do |code|
       ContributionType.create(
         code: code,
         project_id: project.id,
@@ -193,25 +166,7 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_task_types
-    {
-      media_import: ['Medienimport (A/V)', 'Med'],
-      approval: ['Einverständnis', 'EV'],
-      protocol: ['Protokoll', 'Pro'],
-      transcript: ['Transkript', 'Trans'],
-      translation_transcript: ['Übersetzung/Transkript', 'Ü/Trans'],
-      metadata: ['Metadaten', 'Met'],
-      translation_metadata: ['Übersetzung/Metadaten', 'Ü/Met'],
-      photos: ['Fotos', 'Fot'],
-      translation_photos: ['Übersetzung/ Fotos', 'Ü/Fot'],
-      biography: ['Kurzbiografie', 'Bio'],
-      translation_biography: ['Übersetzung/Kurzbiografie', 'Ü/Bio'],
-      table_of_contents: ['Inhaltsverzeichnis', 'Inh'],
-      translation_table_of_contents: ['Übersetzung/Inhaltsverzeichnis', 'Ü/Inh'],
-      register: ['Register', 'Reg'],
-      translation_register: ['Übersetzung/Register', 'Ü/Reg'],
-      annotations: ['Anmerkungen', 'Anm'],
-      anonymisation: ['Anonymisierung' 'Ano']
-    }.each do |key, (label, abbreviation)|
+    YAML.load_file(File.join(Rails.root, 'config/task_types.yml')).each do |key, (label, abbreviation)|
       TaskType.create(
         key: key,
         label: label,
