@@ -59,25 +59,10 @@ class ProjectsController < ApplicationController
     end
   end
 
-  # GET /projects/new
-  def new
-    @project = Project.new
-    respond_to do |format|
-      format.html { render 'react/app' }
-      format.json { render json: {}, status: :ok }
-    end
-  end
-
-  # GET /projects/1/edit
-  def edit
-  end
-
   # POST /projects
   def create
     authorize Project
-    @project = Project.create(project_params)
-    current_user_registration_project = UserRegistrationProject.create project_id: @project.id, user_registration_id: current_user_account.user_registration.id
-    current_user_registration_project.grant_project_access!
+    @project = ProjectCreator.perform(project_params, current_user_account)
 
     respond @project
   end

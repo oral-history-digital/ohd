@@ -42,11 +42,11 @@ FactoryBot.define do
   end
 
   factory :user_account do
-    sequence(:login){|n| "aneumann#{n}" }
-    sequence(:email){|n| "a.neumann#{n}@mad.de" }
+    sequence(:login){|n| "aneumann#{format('%06d', n)}" }
+    sequence(:email){|n| "a.neumann#{format('%06d', n)}@mad.de" }
     password { "123456" }
     confirmed_at { Time.now - 1.day }
-    association :user_registration, factory: :user_registration_with_projects
+    association :user_registration#, factory: :user_registration_with_projects
   end
 
   factory :user_account_ip do
@@ -55,7 +55,7 @@ FactoryBot.define do
   end
 
   factory :user_registration do
-    sequence(:email){|n| "user#{n}@mad.de" }
+    sequence(:email){|n| "user#{format('%06d', n)}@mad.de" }
 
     appellation { 'Herr' }
     first_name { 'Florian' }

@@ -63,62 +63,6 @@ class Project < ApplicationRecord
     interviews.each(&:touch) if landing_page_text_changed?
   end
 
-  after_create :create_root_registry_entry
-  def create_root_registry_entry
-    root = RegistryEntry.create(project_id: self.id, code: 'root', workflow_state: 'public')
-    RegistryName.create registry_entry_id: root.id, registry_name_type_id: 1, name_position: 0, descriptor: 'Register', locale: :de
-  end
-
-  after_create :create_default_registry_name_type
-  def create_default_registry_name_type
-    RegistryNameType.create code: "spelling", name: "Bezeichner", order_priority: 3, project_id: self.id
-  end
-
-  after_create :create_contribution_types
-  def create_contribution_types
-    %w(
-      interviewee
-      interviewer
-      cinematographer
-      sound
-      producer
-      other_attender
-      quality_manager_interviewing
-      transcriptor
-      segmentator
-      translator
-      proofreader
-      research
-    ).each do |code|
-      ContributionType.create code: code, label: I18n.t("contributions.#{code}", locale: :de), locale: :de
-    end
-  end
-
-  after_create :create_task_types
-  def create_task_types
-    {
-      media_import: ['Medienimport (A/V)', 'Med'],
-      approval: ['Einverständnis', 'EV'],
-      protocol: ['Protokoll', 'Pro'],
-      transcript: ['Transkript', 'Trans'],
-      translation_transcript: ['Übersetzung/Transkript', 'Ü/Trans'],
-      metadata: ['Metadaten', 'Met'],
-      translation_metadata: ['Übersetzung/Metadaten', 'Ü/Met'],
-      photos: ['Fotos', 'Fot'],
-      translation_photos: ['Übersetzung/ Fotos', 'Ü/Fot'],
-      biography: ['Kurzbiografie', 'Bio'],
-      translation_biography: ['Übersetzung/Kurzbiografie', 'Ü/Bio'],
-      table_of_contents: ['Inhaltsverzeichnis', 'Inh'],
-      translation_table_of_contents: ['Übersetzung/Inhaltsverzeichnis', 'Ü/Inh'],
-      register: ['Register', 'Reg'],
-      translation_register: ['Übersetzung/Register', 'Ü/Reg'],
-      annotations: ['Anmerkungen', 'Anm'],
-      anonymisation: ['Anonymisierung' 'Ano']
-    }.each do |key, (label, abbreviation)|
-      TaskType.create key: key, label: label, abbreviation: abbreviation, project_id: self.id, use: true
-    end
-  end
-
   class Translation
     belongs_to :project
 
