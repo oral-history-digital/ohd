@@ -285,11 +285,13 @@ class Segment < ApplicationRecord
 
     (I18n.available_locales | [:orig]).each do |locale|
       text :"text_#{locale}", stored: true
+
       text :"mainheading_#{locale}", stored: true do
-        mainheading(locale)
+        mainheading_translations["#{locale}-public"] or mainheading_translations[locale] or nil
       end
+
       text :"subheading_#{locale}", stored: true do
-        subheading(locale)
+        subheading_translations["#{locale}-public"] or subheading_translations[locale] or nil
       end
     end
   end
