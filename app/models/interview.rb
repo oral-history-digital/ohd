@@ -260,6 +260,10 @@ class Interview < ApplicationRecord
     # dummy: build did not do the trick here. Therefore I implemented find_or_create_tapes
   end
 
+  def tape_count
+    tapes.count
+  end
+
   def find_or_create_tapes(d)
     tapes.where.not("media_id LIKE ?", "#{archive_id.upcase}_#{format('%02d', d)}_%").each do |tape|
       if tape.segments.count == 0
