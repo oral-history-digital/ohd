@@ -229,6 +229,8 @@ export default class RegistryEntry extends Component {
         const { data, locale, openArchivePopup } = this.props;
         const hasReferences = data.registry_references_count > 0;
 
+        const name = data.name[locale];
+
         return (
             <div
                 id={`entry_${data.id}`}
@@ -249,7 +251,11 @@ export default class RegistryEntry extends Component {
                     }
                 }}
             >
-                {data.name[locale]}
+                {
+                    name && name.length > 0 ?
+                        name :
+                        <i>{t(this.props, 'modules.registry.name_missing')}</i>
+                }
 
                 <AuthorizedContent object={data} action='update'>
                     {` (ID: ${data.id})`}

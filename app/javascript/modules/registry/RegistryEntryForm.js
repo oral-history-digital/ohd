@@ -68,17 +68,21 @@ export default class RegistryEntryForm extends Component {
     }
 
     render() {
+        const { submitData, closeArchivePopup, onSubmit } = this.props;
+
         return (
             <div>
                 {this.parentRegistryEntry()}
                 {this.registryNames()}
                 <Form
-                    key={`registry-entry-form-${this.props.registryEntryId}`}
+                    key={this.props.registryEntryId}
                     scope='registry_entry'
                     onSubmit={params => {
-                        this.props.submitData(this.props, params);
-                        this.props.closeArchivePopup();
-                        this.props?.onSubmit();
+                        submitData(this.props, params);
+                        closeArchivePopup();
+                        if (typeof onSubmit === 'function') {
+                            onSubmit();
+                        }
                     }}
                     data={this.registryEntry()}
                     values={{

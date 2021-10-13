@@ -61,7 +61,7 @@ export default class RegistryEntries extends Component {
             this.props.registryEntriesStatus[`children_for_entry_${this.props.registryEntryParent.id}`].split('-')[0] === 'fetched' &&
             this.props.registryEntryParent.associations_loaded
         ) {
-            return this.props.registryEntryParent.child_ids[this.props.locale].map((id, index) => {
+            return this.props.registryEntryParent.child_ids[this.props.locale].map((id) => {
                 let registryEntry = this.props.registryEntries[id]
 
                 if (registryEntry && !this.hideRegistryEntry(id)) {

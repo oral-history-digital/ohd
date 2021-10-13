@@ -119,8 +119,8 @@ class RegistryEntry < ApplicationRecord
   # consist of several distinct registry names (ie. several name
   # types or name positions).
   scope :ordered_by_name, ->(locale) {
-    joins(registry_names: [:translations, :registry_name_type]).
-    where('registry_name_translations.locale': locale).
+    left_outer_joins(registry_names: [:translations, :registry_name_type]).
+    where('registry_name_translations.locale = ? OR registry_name_translations.locale IS NULL', locale).
     group('registry_entries.id').
     order('GROUP_CONCAT(DISTINCT registry_name_translations.descriptor COLLATE utf8mb4_general_ci ORDER BY registry_name_types.order_priority, registry_names.name_position SEPARATOR " ")')
   }

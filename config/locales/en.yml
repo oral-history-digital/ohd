@@ -1198,6 +1198,8 @@ en:
     layout:
       back_to_top:
         label: "Back to top"
+    registry:
+      name_missing: "registry name missing"
     search_map:
       multiple_types: Multiple location types
       error: Error loading map
