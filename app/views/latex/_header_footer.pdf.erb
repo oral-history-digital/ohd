@@ -1,15 +1,23 @@
 \fancyhead{}
 \fancyfoot{}
 \fancyhead[L]{
-<% 
-  logo = File.join(Rails.root, 'tmp', 'files', "#{current_project.logos.where(locale: @locale).first.file.blob.filename}")
-  unless File.file?(logo)
-    File.symlink(ActiveStorage::Blob.service.send(:path_for, current_project.logos.where(locale: @locale).first.file.key), logo)
+<%
+  logo_record = current_project.logos.where(locale: @locale).first
+
+  if logo_record.present?
+    logo = File.join(Rails.root, 'tmp', 'files', "#{logo_record.file.blob.filename}")
+    unless File.file?(logo)
+      File.symlink(ActiveStorage::Blob.service.send(:path_for, logo_record.file.key), logo)
+    end
   end
 %>
-  \includegraphics[height=12mm]{<%= "#{logo}" %>}
-  \vspace*{0.2cm}
-  \newline{\fontsize{9}{11}\selectfont{\textcolor{primaryColor} {<%= header_text %> }}}
+  <% if logo.present? %>
+    \includegraphics[height=12mm]{<%= "#{logo}" %>}
+    \vspace*{0.2cm}
+    \newline
+  <% end %>
+  \fontsize{9}{11}
+  \selectfont{\textcolor{primaryColor} {<%= header_text %> }}
   \vspace*{0.1cm}
 }
 
