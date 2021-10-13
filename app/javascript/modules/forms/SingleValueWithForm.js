@@ -127,21 +127,25 @@ export default class SingleValueWithForm extends Component {
     }
 
     show() {
+        const { projectAccessGranted, obj, attribute, noLabel, children } = this.props;
+
+        const metadataField = this.metadataField();
+
         if (
-            admin(this.props, this.props.obj, 'update') ||
+            admin(this.props, obj, 'update') && typeof metadataField !== 'undefined' ||
             (
                 (
-                    (this.props.projectAccessGranted && this.metadataField()?.use_in_details_view) ||
-                    (!this.props.projectAccessGranted && this.metadataField()?.display_on_landing_page)
+                    (projectAccessGranted && metadataField?.use_in_details_view) ||
+                    (!projectAccessGranted && metadataField?.display_on_landing_page)
                 ) &&
-                (this.props.obj.properties.public_attributes?.[this.props.attribute] !== false)
+                (obj.properties.public_attributes?.[attribute] !== false)
             )
         ) {
-            let value = humanReadable(this.props.obj, this.props.attribute, this.props, this.state);
+            let value = humanReadable(obj, attribute, this.props, this.state);
             return (
-                <ContentField noLabel={this.props.noLabel} label={this.label()} value={value} >
+                <ContentField noLabel={noLabel} label={this.label()} value={value} >
                     {this.toggle()}
-                    {this.props.children}
+                    {children}
                     {this.editButton()}
                 </ContentField>
             )

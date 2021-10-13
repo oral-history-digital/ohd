@@ -327,6 +327,7 @@ class InterviewsController < ApplicationController
       "archive_id",
       "language_id",
       "interview_date",
+      "signature_original",
       "tape_count",
       "duration",
       "video",
