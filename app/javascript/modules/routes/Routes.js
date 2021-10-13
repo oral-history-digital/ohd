@@ -10,7 +10,7 @@ import { UserRegistrationsContainer } from 'modules/users';
 import { RegistryContainer } from 'modules/registry';
 import { ArchiveSearchContainer } from 'modules/search';
 import { SearchMap } from 'modules/search-map';
-import { WrappedProjectsContainer, WrappedRolesContainer,
+import { WrappedRolesContainer,
     WrappedPermissionsContainer, WrappedTaskTypesContainer, WrappedRegistryReferenceTypesContainer,
     WrappedContributionTypesContainer, WrappedRegistryNameTypesContainer,
     WrappedPeopleContainer, WrappedLanguagesContainer, WrappedCollectionsContainer,
@@ -18,6 +18,7 @@ import { WrappedProjectsContainer, WrappedRolesContainer,
     EditProjectDisplay, EditProjectConfig, EditProjectInfo,
     MetadataFieldsContainer
 } from 'modules/admin';
+import ProjectIndex from './ProjectIndex';
 
 export const Routes = () => (
     <Switch>
@@ -56,7 +57,7 @@ export const MemoizedRoutes = memo(Routes);
 
 export const RoutesWithProjectId = () => (
     <Switch>
-        <Route exact path="/:locale" component={props => <ErrorBoundary><WrappedProjectsContainer {...props} /></ErrorBoundary>} />
+        <Route exact path="/:locale" component={props => <ErrorBoundary><ProjectIndex /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale" component={props => <ErrorBoundary><HomeContainer {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale/interviews/new" component={props => <ErrorBoundary><EditInterviewContainer {...props} /></ErrorBoundary>} />
         <Route exact path="/:projectId/:locale/interviews/:archiveId" component={props => <ErrorBoundary><InterviewContainer {...props} /></ErrorBoundary>} />

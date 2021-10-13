@@ -1,17 +1,16 @@
-import { useSelector, useDispatch } from 'react-redux';
-import { useCallback } from 'react';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import { LinkOrA } from 'modules/routes';
 import { getLocale } from 'modules/archive';
 import { INDEX_ACCOUNT, setFlyoutTabsIndex } from 'modules/flyout-tabs';
 
-function ProjectShow({
+export default function ProjectShow({
     data,
     hideLogo,
     children
 }) {
     const locale = useSelector(getLocale);
-    const dispatch = useDispatch();
 
     const logo = data.logos && Object.values(data.logos).find(l => l.locale === locale);
 
@@ -19,8 +18,14 @@ function ProjectShow({
 
     return (
         <>
-            <LinkOrA project={data} to='' onLinkClick={setFlyoutTabsToAccount} >
-                { !hideLogo && <img className="logo-img" src={logo?.src} /> }
+            <LinkOrA
+                project={data}
+                to=""
+                onLinkClick={setFlyoutTabsToAccount}
+            >
+                {
+                    !hideLogo && <img className="logo-img" src={logo?.src} alt="project logo" />
+                }
                 { data.name[locale] }
             </LinkOrA>
             { children }
@@ -28,4 +33,11 @@ function ProjectShow({
     );
 }
 
-export default ProjectShow;
+ProjectShow.propTypes = {
+    data: PropTypes.object.isRequired,
+    hideLogo: PropTypes.bool,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
+};

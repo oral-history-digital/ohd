@@ -1,0 +1,21 @@
+.ProjectTile {
+  border: 1px solid $gray-medium;
+  display: block;
+  margin-top: $base-unit;
+  outline: none;
+}
+
+.ProjectTile-image {
+}
+
+.ProjectTile-text {
+  color: $body-text-color;
+  font-size: 1rem;
+  font-weight: bold;
+  padding: $base-unit;
+}
+
+.ProjectTile:focus {
+  border: 1px solid $gray-medium;
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}

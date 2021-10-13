@@ -7,7 +7,8 @@ import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getProjectLocales,
     getCurrentAccount } from 'modules/data';
 import DataList from './DataList';
-import { getProjectsStatus, ProjectShow } from 'modules/data';
+import WrappedDataList from './WrappedDataList';
+import { getProjectsStatus, ProjectTile } from 'modules/data';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
@@ -56,7 +57,7 @@ const mapStateToProps = (state) => {
                 help: 'activerecord.attributes.project.archive_domain_help'
             },
         ],
-        showComponent: ProjectShow,
+        showComponent: ProjectTile,
     }
 }
 
