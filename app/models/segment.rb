@@ -373,7 +373,7 @@ class Segment < ApplicationRecord
 
   def as_vtt_subtitles(lang)
     # TODO: rm strip
-    segment_text = text("#{lang}-subtitle") || text("#{lang}-public")
+    segment_text = text_translations["#{lang}-subtitle"] || text_translations["#{lang}-public"]
     end_time = time
     if duration
       end_time += duration

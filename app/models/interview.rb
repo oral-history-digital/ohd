@@ -414,7 +414,7 @@ class Interview < ApplicationRecord
       tapes[tape_number.to_i - 1].segments.each do |segment|
         contribution = contributions.where(person_id: segment.speaker_id).first
         speaker_designation = contribution && contribution.speaker_designation
-        csv << [segment.timecode, speaker_designation || "", segment.text(locale) || segment.text("#{locale}-public")]
+        csv << [segment.timecode, speaker_designation || "", segment.text_translations[locale] || segment.text_translations["#{locale}-public"]]
       end
     end
   end
