@@ -137,19 +137,19 @@ class InterviewsController < ApplicationController
     @interview = Interview.find_by_archive_id(params[:id])
     interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
 
-    @locale = params[:locale]
-
     respond_to do |format|
       format.json do
         render json: data_json(@interview)
       end
       format.vtt do
+        @locale = params[:lang]
         vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{@locale}-#{params[:tape_number]}" do
           @interview.to_vtt(@locale, params[:tape_number])
         end
         render plain: vtt
       end
       format.pdf do
+        @locale = params[:locale]
         @lang = "#{params[:lang]}-public"
         @lang_human = I18n.t(params[:lang], locale: @locale)
         @orig_lang = "#{interview_locale}-public"
@@ -161,6 +161,7 @@ class InterviewsController < ApplicationController
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{params[:lang]}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
       format.ods do
+        @locale = params[:lang]
         send_data @interview.to_ods(@locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{@locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet" #, :disposition => "attachment"
       end
       format.html
