@@ -6,6 +6,7 @@
 
   if logo_record.present?
     logo = File.join(Rails.root, 'tmp', 'files', "#{logo_record.file.blob.filename}")
+
     unless File.file?(logo)
       File.symlink(ActiveStorage::Blob.service.send(:path_for, logo_record.file.key), logo)
     end
