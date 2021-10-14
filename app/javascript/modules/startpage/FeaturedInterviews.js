@@ -1,24 +1,18 @@
-import { useSelector } from 'react-redux';
-
-import { Fetch, getFeaturedInterviewsFetched, getFeaturedInterviewsArray } from 'modules/data';
+import { Spinner } from 'modules/spinners';
 import { InterviewPreviewContainer } from 'modules/interview-preview';
+import useFeaturedInterviews from './useFeaturedInterviews';
 
 export default function FeaturedInterviews() {
-    const interviews = useSelector(getFeaturedInterviewsArray);
+    const { interviews } = useFeaturedInterviews();
 
-    return (
-        <Fetch
-            fetchParams={['random_featured_interviews']}
-            testSelector={getFeaturedInterviewsFetched}
-        >
-            {
-                interviews.map(interview => (
-                    <InterviewPreviewContainer
-                        key={interview.id}
-                        interview={interview}
-                    />
-                ))
-            }
-        </Fetch>
-    );
+    if (!interviews) {
+        return <Spinner />;
+    }
+
+    return interviews.map(interview => (
+        <InterviewPreviewContainer
+            key={interview.id}
+            interview={interview}
+        />
+    ));
 }

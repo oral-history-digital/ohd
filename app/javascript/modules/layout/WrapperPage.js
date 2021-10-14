@@ -88,7 +88,13 @@ export default class WrapperPage extends Component {
     }
 
     render() {
-        const { scrollPositionBelowThreshold, flyoutTabsVisible, children, match, toggleFlyoutTabs } = this.props;
+        const { scrollPositionBelowThreshold, flyoutTabsVisible, children, match, toggleFlyoutTabs,
+            locale, project } = this.props;
+
+        let title = 'Oral-History.Digital';
+        if (project) {
+            title = project.name[locale];
+        }
 
         return (
             <ResizeWatcherContainer>
@@ -97,7 +103,8 @@ export default class WrapperPage extends Component {
                     'is-sticky': scrollPositionBelowThreshold,
                 })}>
                     <Helmet>
-                        <html lang={match.params.locale} />
+                        <html lang={locale} />
+                        <title>{title}</title>
                     </Helmet>
 
                     <div className={classNames('Layout-page', 'Site')}>
@@ -145,6 +152,7 @@ WrapperPage.propTypes = {
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string,
     projects: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
     accountsStatus: PropTypes.object,
     languagesStatus: PropTypes.object,
     projectsStatus: PropTypes.object,
@@ -161,4 +169,3 @@ WrapperPage.propTypes = {
     fetchData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
 };
-

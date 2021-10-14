@@ -5,9 +5,9 @@ export { clearStateData, deleteData, fetchData, submitData } from './actions';
 export { default as dataReducer } from './reducer';
 
 export { getStatuses, getContributorsFetched, getCurrentAccount, getCurrentInterview,
-    getCurrentInterviewFetched, getCurrentProject, getFeaturedInterviewsArray,
+    getCurrentInterviewFetched, getCurrentProject,
     getCurrentRefTree, getFlattenedRefTree, getProjectLocales, getProjectHasMap,
-    getFeaturedInterviewsFetched, getLanguages, getPeopleForCurrentProjectFetched, getPeopleForCurrentProject, getProjects,
+    getLanguages, getPeopleForCurrentProjectFetched, getPeopleForCurrentProject, getProjects,
     getRootRegistryEntry, getRootRegistryEntryFetched, getPermissions,
     getRegistryReferenceTypesForCurrentProjectFetched, getRolesForCurrentProject, getTasks, getAccounts,
     getRootRegistryEntryReload, getRegistryEntries, getRegistryReferenceTypesForCurrentProject,

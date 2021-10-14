@@ -232,23 +232,6 @@ export const getContributorsFetched = createSelector(
     }
 );
 
-export const getFeaturedInterviewsArray = state => {
-    const interviews = getRandomFeaturedInterviews(state);
-
-    if (!interviews) {
-        return [];
-    }
-
-    return Object.values(interviews);
-}
-
-export const getFeaturedInterviewsFetched = state => {
-    const status = getStatuses(state).random_featured_interviews.all;
-    const fetched = /^fetched/;
-
-    return fetched.test(status);
-};
-
 export const getRootRegistryEntryFetched = createSelector(
     [getRegistryEntriesStatus, getCurrentProject],
     (status, currentProject) => {
