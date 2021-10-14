@@ -439,21 +439,6 @@ test('getRandomFeaturedInterviews gets featured interviews object', () => {
     expect(selectors.getRandomFeaturedInterviews(state)).toEqual(state.data.random_featured_interviews);
 });
 
-describe('getFeaturedInterviewsArray', () => {
-    test('gets featured interviews array', () => {
-        const actual = selectors.getFeaturedInterviewsArray(state);
-        const expected = [{ id: 23, type: 'Interview' }];
-        expect(actual).toEqual(expected);
-    });
-
-    test('gets empty array if interviews are not available', () => {
-        const _state = dotProp.set(state, 'data.random_featured_interviews', undefined);
-        const actual = selectors.getFeaturedInterviewsArray(_state);
-        const expected = [];
-        expect(actual).toEqual(expected);
-    });
-});
-
 test('getCurrentUserIsAdmin gets admin status of current account', () => {
     expect(selectors.getCurrentUserIsAdmin(state)).toEqual(state.data.accounts.current.admin);
 });
@@ -603,10 +588,6 @@ describe('getHasTranscript', () => {
 
 test('getContributorsFetched retrieves if contributors for current interview have been fetched', () => {
     expect(selectors.getContributorsFetched(state)).toBe(true);
-});
-
-test('getFeaturedInterviewsFetched retrieves if featured interviews have been fetched', () => {
-    expect(selectors.getFeaturedInterviewsFetched(state)).toBe(true);
 });
 
 test('getContributionTypesForCurrentProject retrieves contributionTypes object', () => {
