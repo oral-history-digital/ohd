@@ -97,7 +97,7 @@ de:
   mark_texts: Text ersetzen
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
-  archive_id: Archiv-ID
+  archive_id: Interview-ID
   noscript: Bitte aktivieren Sie Javascript um diese Seite vollständig nutzen zu können.
   compress_media_player: "Medienspieler verkleinern"
   expand_media_player: "Medienspieler vergrößern"
@@ -836,7 +836,7 @@ de:
       interview:
         person_name: Name
         collection_id: Teilsammlung
-        archive_id: Archiv-ID
+        archive_id: Interview-ID
         forced_labor_groups: Gruppe
         forced_labor_fields: Einsatzbereich
         forced_labor_habitations: Unterbringung / Inhaftierung
@@ -869,7 +869,7 @@ de:
         description: Beschreibung
       transcript:
         collection_id: Teilsammlung
-        archive_id: Archiv-ID
+        archive_id: Interview-ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
         transcript_language_id: Sprache der Transkriptdatei
@@ -893,8 +893,8 @@ de:
         fullname_on_landing_page: Vollen Namen auf der Landingpage zeigen
         pseudo_upload_types: UploadTypen
         shortname: Kürzel
-        initials: Initialen (Archiv-ID)
-        archive_id_number_length: Anzahl der Zahlen (Archiv-ID)
+        initials: Initialen (Interview-ID)
+        archive_id_number_length: Anzahl der Ziffern (Interview-ID)
         domain: Projektdomain
         archive_domain: Archivdomain
         doi: DOI
@@ -956,7 +956,7 @@ de:
         query: Suchkriterien
       user_annotation:
         author: Autor
-        archive_id: Archiv-ID
+        archive_id: Interview-ID
         timecode_string: Timecode
         submitted_at: Einreichung am
         description: Anmerkung
@@ -1094,7 +1094,7 @@ de:
         name: Name
         title: Name
         label: Label
-        archive_id: Archiv ID
+        archive_id: Interview-ID
         workflow_state: Status
         locale: Sprache
         lang: Sprache

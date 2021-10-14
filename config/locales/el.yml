@@ -98,7 +98,7 @@ el:
   mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
-  archive_id: Κωδικός συνέντευξης
+  archive_id: Interview ID
   noscript: Παρακαλώ ενεργοποιήστε το Javascript για να μπορέσετε να δείτε αυτή τη
     σελίδα.
   compress_media_player: "Compress media player"
@@ -667,7 +667,7 @@ el:
     retaliation: Αντίποινα και εκτελέσεις
     collaboration: Συνεργασία
     interview_id: Συνεντεύξεις
-    archive_id: Interview-ID
+    archive_id: Interview ID
     collection_id: Υποσυλλογή
     media_type: Τύπος μέσου
     language_id: Γλώσσα
@@ -828,7 +828,7 @@ el:
       interview:
         person_name: Όνομα
         collection_id: Υποσυλλογή
-        archive_id: ID Αρχείου
+        archive_id: Interview ID
         forced_labor_groups: Όμαδα
         forced_labor_fields: Τύπος εργασίας
         forced_labor_habitations: Εγκλεισμός
@@ -865,7 +865,7 @@ el:
         description: Description
       transcript:
         collection_id: Teilsammlung
-        archive_id: Archiv-ID
+        archive_id: Interview ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
         transcript_language_id: Sprache der Transkriptdatei
@@ -889,8 +889,8 @@ el:
         fullname_on_landing_page: Show full name on landing page
         pseudo_upload_types: UploadTypen
         shortname: Kürzel
-        initials: Initialen (Archiv-ID)
-        archive_id_number_length: Anzahl der Zahlen (Archiv-ID)
+        initials: Initials (interview ID)
+        archive_id_number_length: Number of figures (interview ID)
         domain: Projektdomain
         archive_domain: Archivdomain
         doi: DOI
@@ -952,7 +952,7 @@ el:
         query: Κριτήρια αναζήτησης
       user_annotation:
         author: Συντάκτης
-        archive_id: ID Αρχείου
+        archive_id: Interview ID
         timecode_string: Timecode
         submitted_at: Παράδωση στις
         description: Επισήμανση
@@ -1107,7 +1107,7 @@ el:
         name: Name
         title: Name
         label: Label
-        archive_id: Archiv ID
+        archive_id: Interview ID
         workflow_state: Status
         locale: Sprache
         lang: Sprache

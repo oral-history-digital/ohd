@@ -97,7 +97,7 @@ es:
   mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
   selected: seleccionado
-  archive_id: ID de archivo
+  archive_id: Interview ID
   noscript: Por favor, active JavaScript para garantizar la plena funcionalidad de la página web.
   compress_media_player: "Compress media player"
   expand_media_player: "Expand media player"
@@ -656,7 +656,7 @@ es:
     retaliation: Represalías y ejecuciones en masa
     collaboration: Colaboración
     interview_id: Entrevistas
-    archive_id: Interview-ID
+    archive_id: Interview ID
     collection_id: Colección parcial
     media_type: Formato de medio
     language_id: Idioma
@@ -816,7 +816,7 @@ es:
       interview:
         person_name: Apellido
         collection_id: Subcolección
-        archive_id: ID de archivo
+        archive_id: Interview ID
         forced_labor_groups: Grupo
         forced_labor_fields: Área de trabajo
         forced_labor_habitations: Internamiento / Detención
@@ -849,7 +849,7 @@ es:
         description: Description
       transcript:
         collection_id: Teilsammlung
-        archive_id: Archiv-ID
+        archive_id: Interview ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
         transcript_language_id: Sprache der Transkriptdatei
@@ -875,8 +875,8 @@ es:
         aspect_x: Bildformat x-Wert
         aspect_y: Bildformat y-Wert
         shortname: Kürzel
-        initials: Initialen (Archiv-ID)
-        archive_id_number_length: Anzahl der Zahlen (Archiv-ID)
+        initials: Initials (interview ID)
+        archive_id_number_length: Number of figures (interview ID)
         domain: Projektdomain
         archive_domain: Archivdomain
         doi: DOI
@@ -932,7 +932,7 @@ es:
         query: Criterios de búsqueda
       user_annotation:
         author: Autor/a
-        archive_id: ID de archivo
+        archive_id: Interview ID
         timecode_string: Código de tiemo
         submitted_at: Entregado el
         description: Anotación
@@ -1003,7 +1003,7 @@ es:
         task_type_id: Aufgabe
         comments: Bearbeitungsvermerke
         workflow_state: Bearbeitungsstand
-        archive_id: Interview
+        archive_id: Interview ID
         interviewee: Interviewte*r
         assigned_to_user_account_at: dem Bearbeiter zugewiesen am
         assigned_to_supervisor_at: dem QM zugewiesen am
@@ -1072,7 +1072,7 @@ es:
         name: Name
         title: Name
         label: Label
-        archive_id: Archiv ID
+        archive_id: Interview ID
         workflow_state: Status
         locale: Sprache
         lang: Sprache
