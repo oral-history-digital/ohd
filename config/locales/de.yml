@@ -1166,6 +1166,8 @@ de:
       error_references: Fehler beim Laden von Verknüpfungen
       segment_references: Verknüpfungen im Transkript
       at: in
+    interview_metadata:
+      add_contributors: Mitwirkende hinzufügen
     interview_search:
       no_results: Keine Ergebnisse
       annotation_for: Anmerkung zu

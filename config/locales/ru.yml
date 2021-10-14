@@ -1599,6 +1599,8 @@ ru:
       error_references: Error loading references
       segment_references: References in the transcript
       at: at
+    interview_metadata:
+      add_contributors: Add contributors
     interview_search:
       no_results: No results
       annotation_for: Annotation for

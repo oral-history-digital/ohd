@@ -10,7 +10,7 @@ import ContributionFormContainer from './ContributionFormContainer';
 export default function InterviewContributors({
     interview,
     withSpeakerDesignation,
-    submitData
+    submitData,
 }) {
     const { t } = useI18n();
 
@@ -24,7 +24,11 @@ export default function InterviewContributors({
                 <p>
                     <Modal
                         title={t('edit.contribution.new')}
-                        trigger={<FaPlus className="Icon Icon--editorial Icon--small"/>}
+                        trigger={<>
+                            <FaPlus className="Icon Icon--editorial Icon--small"/>
+                            {' '}
+                            {t('modules.interview_metadata.add_contributors')}
+                        </>}
                     >
                         {close => (
                             <ContributionFormContainer
@@ -45,6 +49,7 @@ export default function InterviewContributors({
 InterviewContributors.propTypes = {
     interview: PropTypes.object.isRequired,
     withSpeakerDesignation: PropTypes.bool.isRequired,
+    submitData: PropTypes.func.isRequired,
 };
 
 InterviewContributors.defaultProps = {
