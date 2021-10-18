@@ -58,21 +58,26 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_registry_entries
-    %w(place group).each do |code|
+    %w(place people subjects).each do |code|
       entry = RegistryEntry.create(
         project_id: project.id,
         code: code,
         workflow_state: 'public'
       )
-      RegistryName.create(
-        registry_entry_id: entry.id,
-        registry_name_type_id: default_registry_name_type.id,
-        name_position: 0,
-        descriptor: I18n.t(code, locale: project.default_locale),
-        locale: project.default_locale
-      )
+
+      locales = [project.default_locale, 'en'].uniq
+      locales.each do |locale|
+        RegistryName.create(
+          registry_entry_id: entry.id,
+          registry_name_type_id: default_registry_name_type.id,
+          name_position: 0,
+          descriptor: I18n.t(code, locale: locale),
+          locale: locale
+        )
+      end
+
       RegistryHierarchy.find_or_create_by(
-        ancestor_id: root_registry_entry.id, 
+        ancestor_id: root_registry_entry.id,
         descendant_id: entry.id
       )
     end
@@ -182,7 +187,7 @@ class ProjectCreator < ApplicationService
       role = Role.find_or_create_by(name: role_permission[:name], project_id: project.id)
       role_permission[:permissions].each do |permission|
         perm = Permission.find_or_create_by(klass: permission[:klass], action_name: permission[:action_name])
-        perm.update_attribute(:name, "#{permission[:klass]} #{permission[:action_name]}") 
+        perm.update_attribute(:name, "#{permission[:klass]} #{permission[:action_name]}")
         RolePermission.find_or_create_by(role_id: role.id, permission_id: perm.id)
       end
     end
