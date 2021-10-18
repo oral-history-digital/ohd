@@ -65,7 +65,7 @@ class ProjectCreator < ApplicationService
         workflow_state: 'public'
       )
 
-      locales = [project.default_locale, 'en'].uniq
+      locales = [project.default_locale, 'en'] & project.available_locales
       locales.each do |locale|
         RegistryName.create(
           registry_entry_id: entry.id,
