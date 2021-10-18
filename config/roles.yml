@@ -78,6 +78,9 @@
   - :name: Photo destroy
     :klass: Photo
     :action_name: destroy
+  - :name: Photo show
+    :klass: Photo
+    :action_name: show
   - :name: RegistryEntry create
     :klass: RegistryEntry
     :action_name: create
@@ -224,6 +227,9 @@
   - :name: Photo destroy
     :klass: Photo
     :action_name: destroy
+  - :name: Photo show
+    :klass: Photo
+    :action_name: show
   - :name: RegistryEntry create
     :klass: RegistryEntry
     :action_name: create
@@ -430,6 +436,9 @@
   - :name: Photo destroy
     :klass: Photo
     :action_name: destroy
+  - :name: Photo show
+    :klass: Photo
+    :action_name: show
   - :name: Project update
     :klass: Project
     :action_name: update
@@ -511,6 +520,9 @@
   - :name: RolePermission destroy
     :klass: RolePermission
     :action_name: destroy
+  - :name: RolePermission update
+    :klass: RolePermission
+    :action_name: update
   - :name: Segment update
     :klass: Segment
     :action_name: update
@@ -556,6 +568,15 @@
   - :name: Upload create
     :klass: Upload
     :action_name: create
+  - :name: UploadedFile create
+    :klass: UploadedFile
+    :action_name: create
+  - :name: UploadedFile destroy
+    :klass: UploadedFile
+    :action_name: destroy
+  - :name: UploadedFile update
+    :klass: UploadedFile
+    :action_name: update
   - :name: UserRegistration update
     :klass: UserRegistration
     :action_name: update

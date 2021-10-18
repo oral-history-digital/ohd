@@ -77,7 +77,7 @@ RSpec.describe ProjectCreator do
 
     it 'creates Erschliessung-role' do
       expect(project.roles.where(name: 'Erschliessung')).to exist
-      expect(project.roles.where(name: 'Erschliessung').first.permissions.count).to eq(41)
+      expect(project.roles.where(name: 'Erschliessung').first.permissions.count).to eq(42)
     end
 
   end
