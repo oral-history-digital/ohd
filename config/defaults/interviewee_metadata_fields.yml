@@ -1,0 +1,14 @@
+---
+:date_of_birth:
+  use_in_details_view: true
+:year_of_birth:
+  use_as_facet: true
+  facet_order: 5.0
+:gender:
+  use_as_facet: true
+  facet_order: 4.0
+  use_in_results_table: true
+  use_in_results_list: true
+  list_columns_order: 4.0
+  use_in_details_view: true
+  display_on_landing_page: true

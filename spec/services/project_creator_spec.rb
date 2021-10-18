@@ -43,7 +43,7 @@ RSpec.describe ProjectCreator do
       expect(name.translations.count).to eq(2)
     end
 
-    %w(birh_location home_location interview_location).each do |code|
+    %w(birth_location home_location interview_location).each do |code|
       it "creates default #{code} registry_reference_type" do
         expect(project.registry_reference_types.where(code: code)).to exist
       end
@@ -56,8 +56,19 @@ RSpec.describe ProjectCreator do
       end
     end
 
-    it 'creates 13 interview_metadata_fields' do
-      expect(project.metadata_fields.where(source: 'Interview').count).to eq(13)
+    it 'creates 11 interview_metadata_fields' do
+      expect(project.metadata_fields.where(source: 'Interview').count).to eq(11)
+    end
+
+    it 'creates an interview_metadata_field with the right attributes (sample)' do
+      record = project.metadata_fields.where(name: 'workflow_state').first
+
+      expect(record.use_as_facet).to eq(true)
+      expect(record.facet_order).to eq(8.0)
+      expect(record.use_in_details_view).to eq(true)
+      expect(record.use_in_map_search).to eq(false)
+      expect(record.list_columns_order).to eq(1.0)
+      expect(record.translations.count).to eq(2)
     end
 
     it 'creates 3 interviewee_metadata_fields' do

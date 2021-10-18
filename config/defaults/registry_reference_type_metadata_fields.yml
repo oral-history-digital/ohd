@@ -1,0 +1,18 @@
+---
+:birth_location:
+  ref_object_type: Person
+  use_as_facet: true
+  facet_order: 6.0
+  use_in_details_view: true
+  use_in_map_search: true
+:home_location:
+  ref_object_type: Person
+  use_as_facet: true
+  facet_order: 7.0
+  use_in_details_view: true
+  use_in_map_search: true
+:interview_location:
+  ref_object_type: Interview
+  use_in_details_view: true
+  display_on_landing_page: true
+  use_in_map_search: true

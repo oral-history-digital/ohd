@@ -71,13 +71,7 @@ class ProjectCreator < ApplicationService
         name_position: 0,
       )
 
-      locales = [project.default_locale, 'en'] & project.available_locales
-      locales.each do |locale|
-        I18n.locale = locale
-        registry_name.descriptor = I18n.t(code)
-      end
-      registry_name.save
-      I18n.locale = project.default_locale
+      add_translations(registry_name, 'descriptor', code)
 
       RegistryHierarchy.find_or_create_by(
         ancestor_id: root_registry_entry.id,
@@ -87,7 +81,7 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_registry_reference_types
-    %w(birh_location home_location interview_location).each do |code|
+    %w(birth_location home_location interview_location).each do |code|
       RegistryReferenceType.create(
         code: code,
         registry_entry_id: project.registry_entries.where(code: 'place').first.id,
@@ -99,66 +93,64 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_registry_reference_type_metadata_fields
-    {
-      birh_location: 'Person',
-      home_location: 'Person',
-      interview_location: 'Interview'
-    }.each_with_index do |(code, ref_object_type), index|
-      MetadataField.create(
-        registry_reference_type_id: project.registry_reference_types.where(code: code).first.id,
+    YAML.load_file(File.join(Rails.root, 'config/defaults/registry_reference_type_metadata_fields.yml')).each do |(name, settings)|
+      metadata_field = MetadataField.create(
+        registry_reference_type_id: project.registry_reference_types.where(code: name).first.id,
         project_id: project.id,
-        name: code,
-        ref_object_type: ref_object_type,
+        name: name,
         source: 'RegistryReferenceType',
-        label: code.to_s.humanize,
-        locale: project.default_locale,
-        use_as_facet: true,
-        use_in_results_table: true,
-        use_in_details_view: true,
-        display_on_landing_page: true,
-        list_columns_order: index,
-        facet_order: index
+        ref_object_type: settings['ref_object_type'],
+        use_as_facet: settings['use_as_facet'] || false,
+        use_in_results_table: settings['use_in_results_table'] || false,
+        use_in_results_list: settings['use_in_results_list'] || false,
+        use_in_details_view: settings['use_in_details_view'] || false,
+        display_on_landing_page: settings['display_on_landing_page'] || false,
+        use_in_map_search: settings['use_in_map_search'] || false,
+        list_columns_order: settings['list_columns_order'] || 1.0,
+        facet_order: settings['facet_order'] || 1.0
       )
+
+      add_translations(metadata_field, 'label', "metadata_labels.#{name}")
     end
   end
 
   def create_default_interviewee_metadata_fields
-    {
-      date_of_birth: false,
-      year_of_birth: false,
-      gender: true,
-    }.each_with_index do |(name, use_as_facet), index|
-      MetadataField.create(
+    YAML.load_file(File.join(Rails.root, 'config/defaults/interviewee_metadata_fields.yml')).each do |(name, settings)|
+      metadata_field = MetadataField.create(
         project_id: project.id,
         name: name,
         source: 'Person',
-        label: name.to_s.humanize,
-        locale: project.default_locale,
-        use_as_facet: true,
-        use_in_results_table: true,
-        use_in_details_view: true,
-        display_on_landing_page: true,
-        list_columns_order: index,
-        facet_order: index
+        use_as_facet: settings['use_as_facet'] || false,
+        use_in_results_table: settings['use_in_results_table'] || false,
+        use_in_results_list: settings['use_in_results_list'] || false,
+        use_in_details_view: settings['use_in_details_view'] || false,
+        display_on_landing_page: settings['display_on_landing_page'] || false,
+        use_in_map_search: settings['use_in_map_search'] || false,
+        list_columns_order: settings['list_columns_order'] || 1.0,
+        facet_order: settings['facet_order'] || 1.0
       )
+
+      add_translations(metadata_field, 'label', "metadata_labels.#{name}")
     end
   end
 
   def create_default_interview_metadata_fields
-    YAML.load_file(File.join(Rails.root, 'config/interview_metadata_fields.yml')).each_with_index do |(name, use_as_facet), index|
-      MetadataField.create(
+    YAML.load_file(File.join(Rails.root, 'config/defaults/interview_metadata_fields.yml')).each do |(name, settings)|
+      metadata_field = MetadataField.create(
         project_id: project.id,
         name: name,
         source: 'Interview',
-        label: name.to_s.humanize,
-        locale: project.default_locale,
-        use_as_facet: true,
-        use_in_results_table: true,
-        use_in_details_view: true,
-        display_on_landing_page: true,
-        list_columns_order: index,
-        facet_order: index
+        use_as_facet: settings['use_as_facet'] || false,
+        use_in_results_table: settings['use_in_results_table'] || false,
+        use_in_results_list: settings['use_in_results_list'] || false,
+        use_in_details_view: settings['use_in_details_view'] || false,
+        display_on_landing_page: settings['display_on_landing_page'] || false,
+        use_in_map_search: settings['use_in_map_search'] || false,
+        list_columns_order: settings['list_columns_order'] || 1.0,
+        facet_order: settings['facet_order'] || 1.0
       )
+
+      add_translations(metadata_field, 'label', "metadata_labels.#{name}")
     end
   end
 
@@ -194,6 +186,17 @@ class ProjectCreator < ApplicationService
         RolePermission.find_or_create_by(role_id: role.id, permission_id: perm.id)
       end
     end
+  end
+
+  private
+
+  def add_translations(record, attribute, translation_key)
+    project.available_locales.each do |locale|
+      I18n.locale = locale
+      record.send("#{attribute}=", I18n.t(translation_key))
+    end
+    record.save
+    I18n.locale = project.default_locale
   end
 
 end

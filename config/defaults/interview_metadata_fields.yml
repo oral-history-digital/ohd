@@ -1,0 +1,49 @@
+---
+:media_type:
+  use_as_facet: true
+  facet_order: 2.0
+  use_in_results_table: true
+  use_in_results_list: true
+  list_columns_order: 1.0
+  use_in_details_view: true
+  display_on_landing_page: true
+:archive_id:
+  use_in_details_view: true
+  display_on_landing_page: true
+:interview_date:
+  use_in_details_view: true
+  display_on_landing_page: true
+:duration:
+  use_in_results_table: true
+  use_in_results_list: true
+  list_columns_order: 3.0
+  use_in_details_view: true
+  display_on_landing_page: true
+:tape_count:
+  use_in_details_view: true
+:language_id:
+  use_as_facet: true
+  facet_order: 3.0
+  use_in_results_table: true
+  use_in_results_list: true
+  list_columns_order: 2.0
+  use_in_details_view: true
+  display_on_landing_page: true
+:observations:
+  use_in_details_view: true
+:workflow_state:
+  use_as_facet: true
+  facet_order: 8.0
+  use_in_details_view: true
+:description:
+  use_in_details_view: true
+:collection_id:
+  use_as_facet: true
+  facet_order: 1.0
+  use_in_results_table: true
+  use_in_results_list: true
+  list_columns_order: 5.0
+  use_in_details_view: true
+  display_on_landing_page: true
+:signature_original:
+  use_in_details_view: true

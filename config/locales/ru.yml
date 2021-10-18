@@ -301,6 +301,24 @@ ru:
   call_user_annotation: перейти к отрывку
   title: Название
   description: Описание
+  metadata_labels:
+    tape_count: Tape count
+    description: Description
+    duration: Duration
+    date_of_birth: Date of birth
+    year_of_birth: Year of birth
+    birth_location: Birth location
+    gender: Gender
+    interview_date: Interview date
+    archive_id: Interview ID
+    interview_location: Interview location
+    media_type: Media type
+    signature_original: Signature original
+    observations: Observations
+    language_id: Language
+    workflow_state: Workflow state
+    collection_id: Subcollection
+    home_location: Home location
   edit:
     text:
       new: Text auswählen

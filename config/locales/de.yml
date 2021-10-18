@@ -265,6 +265,24 @@ de:
   title: Titel
   description: Beschreibung
   # TODO: cleanup this scope: redundant bearbeiten, hinzufügen, ...
+  metadata_labels:
+    tape_count: Anzahl der Bänder
+    description: Beschreibung
+    duration: Dauer
+    date_of_birth: Geburtsdatum
+    year_of_birth: Geburtsjahr
+    birth_location: Geburtsort
+    gender: Geschlecht
+    interview_date: Interview-Datum
+    archive_id: Interview-ID
+    interview_location: Interview-Ort
+    media_type: Medientyp
+    signature_original: Originalsignatur
+    observations: Protokoll
+    language_id: Sprache
+    workflow_state: Status
+    collection_id: Teilsammlung
+    home_location: Wohnort
   edit:
     text:
       new: Text auswählen
