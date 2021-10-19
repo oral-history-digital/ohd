@@ -65,16 +65,19 @@ class ProjectCreator < ApplicationService
         workflow_state: 'public'
       )
 
+      registry_name = RegistryName.create(
+        registry_entry_id: entry.id,
+        registry_name_type_id: default_registry_name_type.id,
+        name_position: 0,
+      )
+
       locales = [project.default_locale, 'en'] & project.available_locales
       locales.each do |locale|
-        RegistryName.create(
-          registry_entry_id: entry.id,
-          registry_name_type_id: default_registry_name_type.id,
-          name_position: 0,
-          descriptor: I18n.t(code, locale: locale),
-          locale: locale
-        )
+        I18n.locale = locale
+        registry_name.descriptor = I18n.t(code)
       end
+      registry_name.save
+      I18n.locale = project.default_locale
 
       RegistryHierarchy.find_or_create_by(
         ancestor_id: root_registry_entry.id,

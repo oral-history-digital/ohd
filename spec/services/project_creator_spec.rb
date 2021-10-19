@@ -38,6 +38,11 @@ RSpec.describe ProjectCreator do
       end
     end
 
+    it 'creates two translations for registry names' do
+      name = project.registry_entries.where(code: 'place').first.registry_names.first
+      expect(name.translations.count).to eq(2)
+    end
+
     %w(birh_location home_location interview_location).each do |code|
       it "creates default #{code} registry_reference_type" do
         expect(project.registry_reference_types.where(code: code)).to exist
