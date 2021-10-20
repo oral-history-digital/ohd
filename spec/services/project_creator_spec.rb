@@ -32,14 +32,14 @@ RSpec.describe ProjectCreator do
       expect(project.registry_name_types.where(code: 'spelling')).to exist
     end
 
-    %w(root place people subjects).each do |code|
+    %w(root places people subjects).each do |code|
       it "creates default #{code} registry_entry" do
         expect(project.registry_entries.where(code: code)).to exist
       end
     end
 
     it 'creates two translations for registry names' do
-      name = project.registry_entries.where(code: 'place').first.registry_names.first
+      name = project.registry_entries.where(code: 'places').first.registry_names.first
       expect(name.translations.count).to eq(2)
     end
 

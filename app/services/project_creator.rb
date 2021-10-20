@@ -58,7 +58,7 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_registry_entries
-    %w(place people subjects).each do |code|
+    %w(places people subjects).each do |code|
       entry = RegistryEntry.create(
         project_id: project.id,
         code: code,
@@ -84,7 +84,7 @@ class ProjectCreator < ApplicationService
     %w(birth_location home_location interview_location).each do |code|
       ref_type = RegistryReferenceType.create(
         code: code,
-        registry_entry_id: project.registry_entries.where(code: 'place').first.id,
+        registry_entry_id: project.registry_entries.where(code: 'places').first.id,
         project_id: project.id,
       )
 
