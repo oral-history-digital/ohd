@@ -580,6 +580,8 @@ de:
     quality_manager_transcription: Qualitätsmanagement Transkription
     quality_manager_interviewing: Qualitätsmanagement Interview
     quality_manager_research: Qualitätsmanagement Erschließung
+    other_attendees: Sonstige Anwesende
+    transcript: Transkription
   registry_names:
     title: Registernamen
     new: Registernamen hinzufügen

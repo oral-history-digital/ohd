@@ -615,6 +615,8 @@ ru:
     quality_manager_transcription: Qualitätsmangement Transkription
     quality_manager_interviewing: Qualitätsmangement Interview
     quality_manager_research: Qualitätsmangement Erschließung
+    other_attendees: Other attendees
+    transcript: Transcript
   registry_names:
     title: Registernamen
     new: Registernamen hinzufügen

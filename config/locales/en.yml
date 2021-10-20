@@ -555,21 +555,23 @@ en:
     title: Contributors
     add: Add Contributor
     interviewee: Interviewee
-    interviewer: Interview
+    interviewer: Interviewer
     transcriptor: Transcript
     translator: Translation
     segmentator: Segmentation
     cinematographer: Camera
-    proofreader: Proof reading
+    proofreader: Proofreading
     research: Research
-    sound: Ton
-    other_attender: Sonstige Anwesende
-    producer: Produktion
-    quality_manager: Qualitätsmangement
+    sound: Sound
+    other_attender: Other attendees
+    producer: Producer
+    quality_manager: Quality management
     quality_manager_translation: Qualitätsmangement Übersetzung
     quality_manager_transcription: Qualitätsmangement Transkription
     quality_manager_interviewing: Qualitätsmangement Interview
     quality_manager_research: Qualitätsmangement Erschließung
+    other_attendees: Other attendees
+    transcript: Transcript
   registry_names:
     title: Registernamen
     new: Registernamen hinzufügen

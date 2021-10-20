@@ -155,18 +155,18 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_contribution_types
-    YAML.load_file(File.join(Rails.root, 'config/contribution_types.yml')).each do |code|
-      ContributionType.create(
+    YAML.load_file(File.join(Rails.root, 'config/defaults/contribution_types.yml')).each do |code|
+      contribution_type = ContributionType.create(
         code: code,
         project_id: project.id,
-        label: I18n.t("contributions.#{code}", locale: project.default_locale),
-        locale: project.default_locale
       )
+
+      add_translations(contribution_type, 'label', "contributions.#{code}")
     end
   end
 
   def create_default_task_types
-    YAML.load_file(File.join(Rails.root, 'config/task_types.yml')).each do |key, (label, abbreviation)|
+    YAML.load_file(File.join(Rails.root, 'config/defaults/task_types.yml')).each do |key, (label, abbreviation)|
       TaskType.create(
         key: key,
         label: label,
@@ -178,7 +178,7 @@ class ProjectCreator < ApplicationService
   end
 
   def create_default_roles
-    YAML.load_file(File.join(Rails.root, 'config/roles.yml')).each do |role_permission|
+    YAML.load_file(File.join(Rails.root, 'config/defaults/roles.yml')).each do |role_permission|
       role = Role.find_or_create_by(name: role_permission[:name], project_id: project.id)
       role_permission[:permissions].each do |permission|
         perm = Permission.find_or_create_by(klass: permission[:klass], action_name: permission[:action_name])
