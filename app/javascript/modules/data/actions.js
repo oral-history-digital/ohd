@@ -53,12 +53,16 @@ const receiveData = (json) => ({
 
 export function fetchData(props, dataType, id, nestedDataType, extraParams) {
     let url = `${pathBase(props)}/${dataType}`
-    if  (id)
-        url += `/${id}`
-    if  (nestedDataType)
-        url += `/${nestedDataType}`
-    if  (extraParams)
-        url += `?${extraParams}`
+    if (id) {
+        url += `/${id}`;
+    }
+    if (nestedDataType) {
+        url += `/${nestedDataType}`;
+    }
+    url += '.json';
+    if (extraParams) {
+        url += `?${extraParams}`;
+    }
 
     return dispatch => {
         dispatch(requestData(dataType, id, nestedDataType, extraParams?.replace(/[=&]/g, '_')))
