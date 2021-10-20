@@ -20,11 +20,12 @@ class RegistryReferenceType < ApplicationRecord
 
   has_one :metadata_field
 
-  scope :for_map, -> (locale) {
+  scope :for_map, -> (locale, project_id) {
     joins('INNER JOIN metadata_fields ON registry_reference_types.id = metadata_fields.registry_reference_type_id')
     .joins('INNER JOIN metadata_field_translations ON metadata_fields.id = metadata_field_translations.metadata_field_id')
+    .where('registry_reference_types.project_id': project_id)
     .where('metadata_fields.ref_object_type="Person" AND metadata_fields.use_in_map_search IS TRUE')
-    .where('metadata_field_translations.locale = ?', locale)
+    .where('metadata_field_translations.locale': locale)
     .group('registry_reference_types.id')
     .order('metadata_fields.facet_order')
     .select('registry_reference_types.id, metadata_fields.map_color, metadata_field_translations.label')

@@ -152,7 +152,7 @@ class SearchesController < ApplicationController
   def map_reference_types
     respond_to do |format|
       format.json do
-        registry_reference_types = RegistryReferenceType.for_map(I18n.locale)
+        registry_reference_types = RegistryReferenceType.for_map(I18n.locale, current_project.id)
 
         render json: registry_reference_types, each_serializer: SlimRegistryReferenceTypeMapSerializer
       end
