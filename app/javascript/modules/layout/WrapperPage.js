@@ -34,12 +34,13 @@ export default class WrapperPage extends Component {
     fitLocale(prevLocale) {
         const { history, location, locale, project, projectId, projects, setLocale } = this.props;
 
-        const found = location.pathname.match(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})[\/$]/);
+        const found = location.pathname.match(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})[/]?/);
         const pathLocale = Array.isArray(found) ? found[2] : null;
 
         if (pathLocale) {
             if (project?.available_locales.indexOf(pathLocale) === -1) {
                 const newPath = location.pathname.replace(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})\//, pathBase({projectId, locale: project.default_locale, projects}) + '/');
+
                 history.push(newPath);
                 setLocale(locale);
             } else if (pathLocale !== locale) {
