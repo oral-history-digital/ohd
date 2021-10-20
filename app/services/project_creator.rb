@@ -82,13 +82,13 @@ class ProjectCreator < ApplicationService
 
   def create_default_registry_reference_types
     %w(birth_location home_location interview_location).each do |code|
-      RegistryReferenceType.create(
+      ref_type = RegistryReferenceType.create(
         code: code,
         registry_entry_id: project.registry_entries.where(code: 'place').first.id,
         project_id: project.id,
-        name: code.humanize,
-        locale: project.default_locale
       )
+
+      add_translations(ref_type, 'name', "registry_reference_types.#{code}")
     end
   end
 

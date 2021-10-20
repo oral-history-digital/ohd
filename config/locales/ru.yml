@@ -301,6 +301,10 @@ ru:
   call_user_annotation: перейти к отрывку
   title: Название
   description: Описание
+  registry_reference_types:
+    birth_location: Birth location
+    interview_location: Interview location
+    home_location: Home location
   metadata_labels:
     tape_count: Tape count
     description: Description

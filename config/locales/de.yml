@@ -265,6 +265,10 @@ de:
   title: Titel
   description: Beschreibung
   # TODO: cleanup this scope: redundant bearbeiten, hinzufügen, ...
+  registry_reference_types:
+    birth_location: Geburtsort
+    interview_location: Ort des Interviews
+    home_location: Wohnort
   metadata_labels:
     tape_count: Anzahl der Bänder
     description: Beschreibung

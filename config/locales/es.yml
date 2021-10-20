@@ -251,6 +251,10 @@ es:
   call_user_annotation: Ir a un punto en la entrevista
   title: Título
   description: Descripción
+  registry_reference_types:
+    birth_location: Birth location
+    interview_location: Interview location
+    home_location: Home location
   metadata_labels:
     tape_count: Tape count
     description: Description

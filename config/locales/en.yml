@@ -256,6 +256,10 @@ en:
   call_user_annotation: View annotation
   title: Title
   description: Description
+  registry_reference_types:
+    birth_location: Birth location
+    interview_location: Interview location
+    home_location: Home location
   metadata_labels:
     tape_count: Tape count
     description: Description
