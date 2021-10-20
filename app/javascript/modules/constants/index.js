@@ -21,7 +21,11 @@ export const PROJECT_MOG  = 'mog';
 export const PROJECT_ZWAR = 'zwar';
 
 export const DEFAULT_LOCALES = ['de', 'en'];
+export const SYSTEM_LOCALES = ['de', 'en', 'el', 'es', 'ru'];
 
 export const VIEWMODE_GRID = 'grid';
 export const VIEWMODE_LIST = 'list';
 export const VIEWMODE_WORKFLOW = 'workflow';
+
+export const OHD_USAGE_URL = 'https://www.oral-history.digital/impressum/nutzungsbedingungen/index.html';
+export const OHD_PRIVACY_URL = 'https://www.oral-history.digital/impressum/datenschutzhinweise/index.html';
