@@ -280,7 +280,7 @@ de:
     gender: Geschlecht
     interview_date: Interview-Datum
     archive_id: Interview-ID
-    interview_location: Interview-Ort
+    interview_location: Ort des Interviews
     media_type: Medientyp
     signature_original: Originalsignatur
     observations: Protokoll

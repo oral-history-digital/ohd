@@ -676,7 +676,7 @@ en:
     forced_labor_group: Forced Labor Group
     periods: Time periods
     fulltext: Search Term
-    gender: gender
+    gender: Gender
     male: Male
     female: Female
     diverse: Diverse
@@ -694,22 +694,22 @@ en:
     interview_id: Interviews
     archive_id: Interview ID
     collection_id: Subcollection
-    media_type: Media Type
+    media_type: Media type
     language_id: Language
     age: Age
     year_of_birth: Year of birth
-    interview_date: Date of Interview
+    interview_date: Interview date
     public: öffentlich
     unshared: nicht öffentlich
-    description: Beschreibung
-    duration: Dauer
-    observations: Protokoll
-    tape_count: Anzahl der Bänder
+    description: Description
+    duration: Duration
+    observations: Observations
+    tape_count: Tape count
     tasks_supervisor_ids: Qualitätsmanagement
     tasks_user_account_ids: Bearbeiter*innen
-    workflow_state: Status
-    date_of_birth: Geburtsdatum
-    signature_original: Originalsignatur
+    workflow_state: Workflow state
+    date_of_birth: Date of birth
+    signature_original: Signature original
   activerecord:
     models:
       interview:
