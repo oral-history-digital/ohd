@@ -1,4 +1,4 @@
-<% 
+<%
   my_locale = @user_account.default_locale || I18n.locale
   if @resource.active_projects.count == 1
     project = @resource.active_projects.last
@@ -7,7 +7,7 @@
   else # if no project or more than one
     project_name = 'OHD'
     # TODO: change this email
-    contact_email = "mail@zwangsarbeit-archiv.de"
+    contact_email = "mail@oral-history.digital"
   end
 
   case my_locale.to_sym
