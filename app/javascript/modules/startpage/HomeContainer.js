@@ -3,11 +3,9 @@ import { bindActionCreators } from 'redux';
 
 import Home from './Home';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { getIsCampscapesProject, getProjectTranslation, getShowFeaturedInterviews,
-    getShowStartPageVideo } from 'modules/data';
+import { getProjectTranslation, getShowFeaturedInterviews, getShowStartPageVideo } from 'modules/data';
 
 const mapStateToProps = state => ({
-    isCampscapesProject: getIsCampscapesProject(state),
     projectTranslation: getProjectTranslation(state),
     showStartPageVideo: getShowStartPageVideo(state),
     showFeaturedInterviews: getShowFeaturedInterviews(state),

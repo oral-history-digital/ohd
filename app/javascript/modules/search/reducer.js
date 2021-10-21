@@ -25,7 +25,6 @@ export const initialState = {
         allInterviewsPseudonyms: [],
         allInterviewsPlacesOfBirth: [],
         foundInterviews: null,
-        //foundSegmentsForInterviews: {},
         allInterviewsCount: 0,
         resultPagesCount: 1,
         resultsCount: 0,
@@ -150,6 +149,8 @@ const search = (state = initialState, action) => {
         case CLEAR_SEARCH:
             return Object.assign({}, state, {
                 archive: Object.assign({}, state.archive, {
+                    facets: null,
+                    query: { page: 1 },
                     foundInterviews: [],
                     allInterviewsTitles: [],
                     allInterviewsPseudonyms: [],

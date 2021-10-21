@@ -8,16 +8,13 @@ import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';
 
 export default function Home({
-    isCampscapesProject,
     projectTranslation,
     showStartPageVideo,
     showFeaturedInterviews,
     setFlyoutTabsIndex,
 }) {
     useEffect(() => {
-        if (isCampscapesProject) {
-            setFlyoutTabsIndex(INDEX_NONE);
-        }
+        setFlyoutTabsIndex(INDEX_NONE);
     }, []);
 
     return (
