@@ -86,6 +86,7 @@ class ProjectCreator < ApplicationService
         code: code,
         registry_entry_id: project.registry_entries.where(code: 'places').first.id,
         project_id: project.id,
+        use_in_transcript: true,
       )
 
       add_translations(ref_type, 'name', "registry_reference_types.#{code}")
