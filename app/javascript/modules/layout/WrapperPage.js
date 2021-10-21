@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
@@ -13,28 +13,42 @@ import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
 import { pathBase } from 'modules/routes';
+import { useHistory, useLocation } from 'react-router';
 
-export default class WrapperPage extends Component {
-    constructor(props) {
-        super(props);
+export default function WrapperPage({
+    scrollPositionBelowThreshold,
+    flyoutTabsVisible,
+    children,
+    toggleFlyoutTabs,
+    locale,
+    project,
+    projectId,
+    projects,
+    accountsStatus,
+    account,
+    isLoggedIn,
+    isLoggedOut,
+    loggedInAt,
+    collectionsStatus,
+    projectsStatus,
+    languagesStatus,
+    setLocale,
+    fetchData,
+    deleteData,
+}) {
+    const location = useLocation();
+    const history = useHistory();
 
-        this.state = { notifications: [] };
-    }
+    useEffect(() => {
+        fitLocale();
+        loadStuff();
+    });
 
-    componentDidMount() {
-        this.fitLocale();
-        this.loadStuff();
-    }
-
-    componentDidUpdate(prevProps) {
-        this.fitLocale(prevProps.locale);
-        this.loadStuff();
-    }
-
-    fitLocale(prevLocale) {
-        const { history, location, locale, project, projectId, projects, setLocale } = this.props;
-
+    function fitLocale() {
         const found = location.pathname.match(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})[\/$]/);
+
+        console.log(location.pathname, found);
+
         const pathLocale = Array.isArray(found) ? found[2] : null;
 
         if (pathLocale) {
@@ -48,100 +62,95 @@ export default class WrapperPage extends Component {
         }
     }
 
-    loadStuff() {
-        this.loadAccount()
-        this.loadCollections();
-        this.loadProjects();
-        this.loadLanguages();
+    function loadStuff() {
+        loadAccount()
+        loadCollections();
+        loadProjects();
+        loadLanguages();
     }
 
-    loadAccount() {
+    function loadAccount() {
         if (
-            !this.props.accountsStatus.current ||
-            this.props.accountsStatus.current.split('-')[0] === 'reload' ||
-            (this.props.isLoggedIn && !this.props.account && this.props.accountsStatus.current.split('-')[0] === 'fetched')
+            !accountsStatus.current ||
+            accountsStatus.current.split('-')[0] === 'reload' ||
+            (isLoggedIn && !account && accountsStatus.current.split('-')[0] === 'fetched')
         ) {
-            this.props.fetchData(this.props, 'accounts', 'current');
-        } else if (this.props.isLoggedOut && this.props.account) {
-            this.props.deleteData(this.props, 'accounts', 'current', null, null, false, true)
+            fetchData({ projectId, locale, projects }, 'accounts', 'current');
+        } else if (isLoggedOut && account) {
+            deleteData({ projectId, locale, projects }, 'accounts', 'current', null, null, false, true)
         }
     }
 
-    loadCollections() {
+    function loadCollections() {
         if (
-            this.props.project && !this.props.collectionsStatus[`for_projects_${this.props.project?.id}`]
+            project && !collectionsStatus[`for_projects_${project?.id}`]
         ) {
-            this.props.fetchData(this.props, 'collections', null, null, `for_projects=${this.props.project?.id}`);
+            fetchData({ projectId, locale, projects }, 'collections', null, null, `for_projects=${project?.id}`);
         }
     }
 
-    loadProjects() {
-        if (this.props.projectId && !this.props.projectsStatus.all) {
-            this.props.fetchData(this.props, 'projects', null, null, 'all');
+    function loadProjects() {
+        if (projectId && !projectsStatus.all) {
+            fetchData({ projectId, locale, projects }, 'projects', null, null, 'all');
         }
     }
 
-    loadLanguages() {
-        if (!this.props.languagesStatus.all) {
-            this.props.fetchData(this.props, 'languages', null, null, 'all');
+    function loadLanguages() {
+        if (!languagesStatus.all) {
+            fetchData({ projectId, locale, projects }, 'languages', null, null, 'all');
         }
     }
 
-    render() {
-        const { scrollPositionBelowThreshold, flyoutTabsVisible, children, match, toggleFlyoutTabs,
-            locale, project } = this.props;
+    let title = 'Oral-History.Digital';
+    if (project) {
+        title = project.name[locale];
+    }
 
-        let title = 'Oral-History.Digital';
-        if (project) {
-            title = project.name[locale];
-        }
+    return (
+        <ResizeWatcherContainer>
+            <div className={classNames('Layout', {
+                'sidebar-is-visible': flyoutTabsVisible,
+                'is-sticky': scrollPositionBelowThreshold,
+            })}>
+                <Helmet>
+                    <html lang={locale} />
+                    <title>{title}</title>
+                </Helmet>
 
-        return (
-            <ResizeWatcherContainer>
-                <div className={classNames('Layout', {
-                    'sidebar-is-visible': flyoutTabsVisible,
-                    'is-sticky': scrollPositionBelowThreshold,
-                })}>
-                    <Helmet>
-                        <html lang={locale} />
-                        <title>{title}</title>
-                    </Helmet>
+                <div className={classNames('Layout-page', 'Site')}>
+                    <SiteHeader />
 
-                    <div className={classNames('Layout-page', 'Site')}>
-                        <SiteHeader />
-
-                        <MessagesContainer
-                            loggedInAt={this.props.loggedInAt}
-                            notifications={this.state.notifications}
-                        />
-
-                        <main className="Site-content">
-                            {children}
-                        </main>
-
-                        <SiteFooter />
-                    </div>
-
-                    <ErrorBoundary>
-                        <FlyoutTabs className="Layout-sidebar" />
-                    </ErrorBoundary>
-
-                    <BurgerButton
-                        className="Layout-sidebarToggle"
-                        open={flyoutTabsVisible}
-                        onClick={() => toggleFlyoutTabs(flyoutTabsVisible)}
+                    <MessagesContainer
+                        loggedInAt={loggedInAt}
+                        notifications={[]}
                     />
 
-                    <BackToTopButton
-                        visible={scrollPositionBelowThreshold}
-                        fullscreen={!flyoutTabsVisible}
-                    />
+                    <main className="Site-content">
+                        {children}
+                    </main>
 
-                    <ArchivePopupContainer/>
+                    <SiteFooter />
                 </div>
-            </ResizeWatcherContainer>
-        )
-    }
+
+                <ErrorBoundary>
+                    <FlyoutTabs className="Layout-sidebar" />
+                </ErrorBoundary>
+
+                <BurgerButton
+                    className="Layout-sidebarToggle"
+                    open={flyoutTabsVisible}
+                    onClick={() => toggleFlyoutTabs(flyoutTabsVisible)}
+                />
+
+                <BackToTopButton
+                    visible={scrollPositionBelowThreshold}
+                    fullscreen={!flyoutTabsVisible}
+                />
+
+                <ArchivePopupContainer/>
+            </div>
+        </ResizeWatcherContainer>
+    );
 }
 
 WrapperPage.propTypes = {
@@ -164,8 +173,8 @@ WrapperPage.propTypes = {
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
-    match: PropTypes.object.isRequired,
     toggleFlyoutTabs: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
+    setLocale: PropTypes.func.isRequired,
 };
