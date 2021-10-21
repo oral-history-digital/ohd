@@ -45,11 +45,9 @@ export default function WrapperPage({
     });
 
     function fitLocale() {
-        const found = location.pathname.match(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})[\/$]/);
+        const found = location.pathname.match(/^(?:\/[a-z]{2,4})?\/([a-z]{2})(?:\/|$)/);
 
-        console.log(location.pathname, found);
-
-        const pathLocale = Array.isArray(found) ? found[2] : null;
+        const pathLocale = Array.isArray(found) ? found[1] : null;
 
         if (pathLocale) {
             if (project?.available_locales.indexOf(pathLocale) === -1) {
@@ -161,7 +159,7 @@ WrapperPage.propTypes = {
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string,
     projects: PropTypes.object.isRequired,
-    project: PropTypes.object.isRequired,
+    project: PropTypes.object,
     accountsStatus: PropTypes.object,
     languagesStatus: PropTypes.object,
     projectsStatus: PropTypes.object,

@@ -7,7 +7,7 @@ import { getLocale, setProjectId, getProjectId } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
 
 function LinkOrA({
-    to,
+    to = '',
     className,
     project,
     children,
@@ -25,7 +25,7 @@ function LinkOrA({
     const ohdDomain = developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION;
 
     const pathBase = project.archive_domain ? `/${locale}` : `/${project.identifier}/${locale}`;
-    const path = `${pathBase}/${to}`;
+    const path = to.length > 0 ? `${pathBase}/${to}` : pathBase;
     const domain = project.archive_domain || ohdDomain;
 
     return (
@@ -37,7 +37,7 @@ function LinkOrA({
             >
                 { children }
             </Link> :
-            <a 
+            <a
                 className={className}
                 href={`${domain}${path}${params ? '?' + params : ''}`}
             >
