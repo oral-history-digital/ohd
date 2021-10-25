@@ -1,7 +1,6 @@
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-import { showTranslationTab } from 'modules/interview';
 import { searchResultCount } from 'modules/interview-preview';
 import ResultList from './ResultList';
 import TranscriptResult from './TranscriptResult';
@@ -13,8 +12,6 @@ import TocResult from './TocResult';
 export default function InterviewSearchResults({
     interview,
     project,
-    locale,
-    projectId,
     currentInterviewSearchResults,
     segmentResults,
     headingResults,
@@ -34,35 +31,39 @@ export default function InterviewSearchResults({
         );
     }
 
-    const locales = ['orig'].concat(interview?.languages);
     const interviewLang = project.available_locales.indexOf(interview?.lang) > -1 ? interview?.lang : 'orig';
 
-    const resultsPerLocale = locales.map(resultLocale => [
+    const originalTranscriptResults = segmentResults.filter(segment => segment.text[interviewLang]?.length > 0);
+
+    const translationLanguages = interview.languages.filter(lang => lang !== interview.lang);
+
+    const translatedTranscriptResultsPerLocale = translationLanguages.map(resultLocale => [
         resultLocale,
-        segmentResults.filter(segment => segment.text[resultLocale]?.length > 0),
+        segmentResults.filter(segment => segment.text[resultLocale]?.length > 0)
     ])
-        .filter(([_, results]) => results.length > 0)
-        .filter(([resultLocale, _]) => resultLocale === interviewLang || showTranslationTab(projectId, interviewLang, locale));
+        .filter(([_, results]) => results.length > 0);
 
     return (
         <div>
-            {
-                resultsPerLocale?.map(([resultLocale, results]) => {
-                    const heading = resultLocale === interviewLang ?
-                        t('segment_results') :
-                        t('translation_results');
-                    return (
-                        <ResultList
-                            key={resultLocale}
-                            heading={heading}
-                            searchResults={results}
-                            component={TranscriptResult}
-                            locale={resultLocale}
-                            className="u-mt"
-                        />
-                    );
-                })
-            }
+            {originalTranscriptResults.length > 0 && (
+                <ResultList
+                    heading={t('segment_results')}
+                    searchResults={originalTranscriptResults}
+                    component={TranscriptResult}
+                    locale={interviewLang}
+                    className="u-mt"
+                />
+            )}
+            {translatedTranscriptResultsPerLocale.map(([resultLocale, results]) => (
+                <ResultList
+                    key={resultLocale}
+                    heading={t('translation_results')}
+                    searchResults={results}
+                    component={TranscriptResult}
+                    locale={resultLocale}
+                    className="u-mt"
+                />
+            ))}
             {headingResults.length > 0 && (
                 <ResultList
                     heading={t('heading_results')}
