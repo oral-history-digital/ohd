@@ -6,7 +6,7 @@ import { useDispatch } from 'react-redux';
 import { setArchiveId, setProjectId } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
 import SlideShowSearchStats from './SlideShowSearchStats';
-import TranscriptResult from './TranscriptResult';
+import DumbTranscriptResult from './DumbTranscriptResult';
 
 export default function SlideShowSearchResults({
     interview,
@@ -39,7 +39,11 @@ export default function SlideShowSearchResults({
                             )}
                             to={`${pathBase}/interviews/${interview.archive_id}`}
                         >
-                            <TranscriptResult data={data} />
+                            <DumbTranscriptResult
+                                highlightedText={Object.values(data.text).find(text => text?.length > 0)}
+                                tapeNumber={data.tape_nbr}
+                                time={data.time}
+                            />
                         </Link>
                         </div>
                     </div>
@@ -55,4 +59,5 @@ export default function SlideShowSearchResults({
 SlideShowSearchResults.propTypes = {
     interview: PropTypes.object.isRequired,
     searchResults: PropTypes.object,
+    projectId: PropTypes.string.isRequired,
 };

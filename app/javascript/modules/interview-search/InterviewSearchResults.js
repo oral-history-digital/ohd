@@ -31,7 +31,11 @@ export default function InterviewSearchResults({
         );
     }
 
-    const interviewLang = project.available_locales.indexOf(interview?.lang) > -1 ? interview?.lang : 'orig';
+    if (!interview) {
+        return null;
+    }
+
+    const interviewLang = project.available_locales.indexOf(interview.lang) > -1 ? interview.lang : 'orig';
 
     const originalTranscriptResults = segmentResults.filter(segment => segment.text[interviewLang]?.length > 0);
 
