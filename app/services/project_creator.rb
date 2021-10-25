@@ -107,6 +107,7 @@ class ProjectCreator < ApplicationService
         use_in_details_view: settings['use_in_details_view'] || false,
         display_on_landing_page: settings['display_on_landing_page'] || false,
         use_in_map_search: settings['use_in_map_search'] || false,
+        map_color: settings['map_color'] || '#1c2d8f',
         list_columns_order: settings['list_columns_order'] || 1.0,
         facet_order: settings['facet_order'] || 1.0
       )
