@@ -1,5 +1,8 @@
+import { useEffect  } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 
+import { getProjectId, setArchiveId } from 'modules/archive';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { HomeContainer } from 'modules/startpage';
 import { InterviewContainer } from 'modules/interview';
@@ -19,7 +22,15 @@ import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer, 
 import { UserRegistrationsContainer } from 'modules/users';
 
 export default function ProjectRoutes() {
-    let { path } = useRouteMatch();
+    const projectId = useSelector(getProjectId);
+    const dispatch = useDispatch();
+    const { path } = useRouteMatch();
+
+    useEffect(() => {
+        return function unSetArchiveId() {
+            dispatch(setArchiveId(null));
+        };
+    }, [projectId, dispatch]);
 
     return (
         <ErrorBoundary>
