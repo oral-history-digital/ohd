@@ -62,7 +62,7 @@ class SearchesController < ApplicationController
 
   def found_instances(model, search, field_name = 'text')
     search.hits.select { |h| h.instance }.map do |hit|
-      instance = cache_single(hit.instance, model == Segment ? "SegmentHit" : nil)
+      instance = cache_single(hit.instance, model == Segment ? "SegmentHit" : nil, nil, field_name)
       instance[:text] = highlighted_text(hit, field_name)
       instance
     end
@@ -102,6 +102,7 @@ class SearchesController < ApplicationController
 
         mainheadings = found_instances(Segment, @mainheading_search, 'mainheading')
         subheadings = found_instances(Segment, @subheading_search, 'subheading')
+
         all_headings = mainheadings.concat(subheadings)
         sorted_headings = all_headings.sort { |a, b| a[:sort_key] <=> b[:sort_key] }
 
