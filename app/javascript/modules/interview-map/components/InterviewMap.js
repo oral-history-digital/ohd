@@ -9,7 +9,7 @@ import InterviewMapPopup from './InterviewMapPopup';
 export default function InterviewMap() {
     const { t } = useI18n();
     const archiveId = useSelector(getArchiveId);
-    const { isLoading, markers, error } = useInterviewMap(archiveId);
+    const { isLoading, markers, bounds, error } = useInterviewMap(archiveId);
 
     return (
         <>
@@ -26,6 +26,7 @@ export default function InterviewMap() {
                         className="Map--interview"
                         loading={isLoading}
                         markers={markers}
+                        bounds={bounds}
                         popupComponent={InterviewMapPopup}
                     />
                 )

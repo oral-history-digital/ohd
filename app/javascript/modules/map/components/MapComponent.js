@@ -15,6 +15,7 @@ export default function MapComponent({
     initialCenter = INITIAL_MAP_CENTER,
     initialZoom = INITIAL_MAP_ZOOM,
     markers = [],
+    bounds,
     popupComponent,
 }) {
     const [resizeListener, sizes] = useResizeAware();
@@ -31,6 +32,7 @@ export default function MapComponent({
                 ref={mapEl}
                 className={classNames('Map', className)}
                 center={initialCenter}
+                bounds={bounds}
                 maxZoom={16}
                 scrollWheelZoom={false}
                 zoom={initialZoom}
@@ -83,5 +85,6 @@ MapComponent.propTypes = {
         radius: PropTypes.number.isRequired,
         color: PropTypes.string.isRequired,
     })),
+    bounds: PropTypes.arrayOf(PropTypes.array),
     popupComponent: PropTypes.elementType.isRequired,
 };

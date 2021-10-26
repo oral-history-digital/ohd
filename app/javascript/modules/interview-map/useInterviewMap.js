@@ -6,6 +6,7 @@ import { usePathBase } from 'modules/routes';
 import { fetcher } from 'modules/api';
 import { useMapReferenceTypes, referenceTypesToColorMap, transformIntoMarkers } from 'modules/map';
 import mergeLocations from './mergeLocations';
+import getBounds from './getBounds';
 
 export default function useInterviewMap(archiveId) {
     const pathBase = usePathBase();
@@ -16,6 +17,7 @@ export default function useInterviewMap(archiveId) {
     const { data: locations, error: locationsError } = useSWRImmutable(path, fetcher);
 
     let markers = [];
+    let bounds = null;
     if (referenceTypes && locations && !locationsError) {
         const colorMap = referenceTypesToColorMap(referenceTypes);
 
@@ -24,7 +26,15 @@ export default function useInterviewMap(archiveId) {
             curry(transformIntoMarkers)(colorMap)
         );
         markers = transformData(locations);
+
+        bounds = getBounds(locations);
     }
 
-    return { isLoading: !(referenceTypes && locations), markers, error: locationsError };
+    return {
+        isLoading: !(referenceTypes && locations),
+        markers,
+        bounds,
+        error: locationsError,
+        isEmpty: markers?.length === 0,
+    };
 }
