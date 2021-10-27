@@ -1,20 +1,21 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { INDEX_NONE } from 'modules/flyout-tabs';
+import { INDEX_NONE, INDEX_ACCOUNT } from 'modules/flyout-tabs';
 import { RedirectOnLogin } from 'modules/account';
 import { ScrollToTop } from 'modules/user-agent';
 import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';
 
 export default function Home({
+    isCampscapesProject,
     projectTranslation,
     showStartPageVideo,
     showFeaturedInterviews,
     setFlyoutTabsIndex,
 }) {
     useEffect(() => {
-        setFlyoutTabsIndex(INDEX_NONE);
+        setFlyoutTabsIndex(isCampscapesProject ? INDEX_NONE : INDEX_ACCOUNT);
     }, []);
 
     return (
