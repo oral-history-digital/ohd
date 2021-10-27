@@ -2,8 +2,8 @@ class Person < ApplicationRecord
 
   #serialize :typology, Array
 
-  belongs_to :project
-  
+  belongs_to :project, touch: true
+
   has_many :registry_references,
            -> { includes(registry_entry: { registry_names: :translations }, registry_reference_type: {}) },
            :as => :ref_object,
@@ -56,7 +56,7 @@ class Person < ApplicationRecord
     #
     text :contributions, stored: true do
       project.available_locales.inject({}) do |mem, locale|
-        mem[locale] = contributions.map{|contribution| contribution.contribution_type.code}.uniq.map do |c| 
+        mem[locale] = contributions.map{|contribution| contribution.contribution_type.code}.uniq.map do |c|
           [I18n.t(c, locale: locale), first_name(locale), last_name(locale)]
         end.flatten.join(" ") rescue nil
         mem
@@ -64,7 +64,7 @@ class Person < ApplicationRecord
     end
   end
 
-  after_initialize do 
+  after_initialize do
     project && project.registry_reference_type_metadata_fields.where(ref_object_type: 'Person').each do |field|
       define_singleton_method field.name do
         registry_references.where(registry_reference_type_id: field.registry_reference_type_id).map(&:registry_entry_id) || []
