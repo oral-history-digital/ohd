@@ -26,9 +26,9 @@ export default function InterviewInfo({
         <div>
             <SingleValueWithFormContainer
                 obj={interview}
-                validate={function(v){return /^[A-z]{2,3}\d{3,4}$/.test(v)}}
-                attribute={'archive_id'}
+                attribute="archive_id"
                 projectAccessGranted={projectAccessGranted}
+                readOnly
             />
             <SingleValueWithFormContainer
                 obj={interview}

@@ -1,10 +1,11 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTimes, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 
 import { Form } from 'modules/forms';
 import { humanReadable } from 'modules/data';
 import { underscore } from 'modules/strings';
-import { admin } from 'modules/auth';
+import { admin, AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 import ContentField from './ContentField';
 
@@ -28,42 +29,7 @@ export default class SingleValueWithForm extends Component {
     editButton() {
         const { editing } = this.state;
 
-        if (admin(this.props, this.props.obj, 'update')) {
-            return (
-                <button
-                    type="button"
-                    className="Button Button--transparent Button--icon"
-                    title={t(this.props, `edit.default.${this.state.editing ? 'cancel' : 'edit'}`)}
-                    onClick={() => this.setEditing()}
-                >
-                    {
-                        editing ?
-                            <FaTimes className="Icon Icon--editorial" /> :
-                            <FaPencilAlt className="Icon Icon--editorial" />
-                    }
-                </button>
-            )
-        }
-    }
 
-    toggle() {
-        const { collapsed } = this.state;
-
-        if (this.props.collapse) {
-            return (
-                <span
-                    className='flyout-sub-tabs-content-ico-link'
-                    title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
-                    onClick={() => this.setState({ collapsed: !this.state.collapsed })}
-                >
-                    {
-                        collapsed ?
-                            <FaAngleDown className="Icon Icon--editorial" /> :
-                            <FaAngleUp className="Icon Icon--editorial" />
-                    }
-                </span>
-            )
-        }
     }
 
     label() {
@@ -127,7 +93,8 @@ export default class SingleValueWithForm extends Component {
     }
 
     show() {
-        const { projectAccessGranted, obj, attribute, noLabel, children } = this.props;
+        const { readOnly, projectAccessGranted, obj, attribute, noLabel, collapse, children } = this.props;
+        const { collapsed, editing } = this.state;
 
         const metadataField = this.metadataField();
 
@@ -144,9 +111,42 @@ export default class SingleValueWithForm extends Component {
             let value = humanReadable(obj, attribute, this.props, this.state);
             return (
                 <ContentField noLabel={noLabel} label={this.label()} value={value} >
-                    {this.toggle()}
-                    {children}
-                    {this.editButton()}
+                    {
+                        !readOnly && (
+                            <>
+                                {
+                                    collapse && (
+                                        <span
+                                            className='flyout-sub-tabs-content-ico-link'
+                                            title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
+                                            onClick={() => this.setState({ collapsed: !this.state.collapsed })}
+                                        >
+                                            {
+                                                collapsed ?
+                                                    <FaAngleDown className="Icon Icon--editorial" /> :
+                                                    <FaAngleUp className="Icon Icon--editorial" />
+                                            }
+                                        </span>
+                                    )
+                                }
+                                {children}
+                                <AuthorizedContent object={obj} action="update">
+                                    <button
+                                        type="button"
+                                        className="Button Button--transparent Button--icon"
+                                        title={t(this.props, `edit.default.${this.state.editing ? 'cancel' : 'edit'}`)}
+                                        onClick={() => this.setEditing()}
+                                    >
+                                        {
+                                            editing ?
+                                                <FaTimes className="Icon Icon--editorial" /> :
+                                                <FaPencilAlt className="Icon Icon--editorial" />
+                                        }
+                                    </button>
+                                </AuthorizedContent>
+                            </>
+                        )
+                    }
                 </ContentField>
             )
         } else {
@@ -159,3 +159,7 @@ export default class SingleValueWithForm extends Component {
         return isEditMode ? this.form() : this.show();
     }
 }
+
+SingleValueWithForm.propTypes = {
+    readOnly: PropTypes.bool,
+};
