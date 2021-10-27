@@ -54,7 +54,10 @@ class ProjectSerializer < ApplicationSerializer
     :list_columns,
     :grid_fields,
     :root_registry_entry_id,
-    :display_ohd_link
+    :display_ohd_link,
+    :map_initial_center_lat,
+    :map_initial_center_lon,
+    :map_initial_zoom
 
   def title
     object.shortname
@@ -79,7 +82,7 @@ class ProjectSerializer < ApplicationSerializer
     end
   end
 
-  # more load-intense data. 
+  # more load-intense data.
   # should be loaded only where needed.
   %w(
     people

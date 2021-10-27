@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import 'leaflet/dist/leaflet.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { ScrollToTop } from 'modules/user-agent';
+import { getCurrentProject } from 'modules/data';
 import { setFlyoutTabsIndex, INDEX_MAP } from 'modules/flyout-tabs';
 import { MapComponent } from 'modules/map';
 import { useI18n } from 'modules/i18n';
@@ -12,12 +13,20 @@ import useSearchMap from '../search-map/useSearchMap';
 
 export default function SearchMap() {
     const { t } = useI18n();
+    const project = useSelector(getCurrentProject);
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
 
     useEffect(() => {
         dispatch(setFlyoutTabsIndex(INDEX_MAP));
     }, []);
+
+    const mapCenter = project.map_initial_center_lat && project.map_initial_center_lon ?
+        [project.map_initial_center_lat, project.map_initial_center_lon] :
+        undefined;
+    const mapZoom = project.map_initial_zoom ?
+        project.map_initial_zoom :
+        undefined;
 
     return (
         <ScrollToTop>
@@ -30,6 +39,8 @@ export default function SearchMap() {
                         (<MapComponent
                             className="Map--search"
                             loading={isLoading}
+                            initialCenter={mapCenter}
+                            initialZoom={mapZoom}
                             markers={markers || []}
                             popupComponent={SearchMapPopup}
                         />)
