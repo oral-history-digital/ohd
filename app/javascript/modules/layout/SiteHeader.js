@@ -13,15 +13,16 @@ function SiteHeader() {
     const project = useSelector(getCurrentProject);
     const logos = project?.logos;
     const { t } = useI18n();
+    const defaultLocale = project?.default_locale;
 
     let src = null;
     if (logos) {
-        Object.keys(logos).map(k => {
-            if (logos[k].locale === locale) {
-                src = logos[k].src
-            }
-        })
-        src = src || (logos[0]?.src);
+        const logoArray = Object.values(logos);
+
+        const logoForLocale = logoArray.find(logo => logo.locale === locale);
+        const logoForDefaultLocale = logoArray.find(logo => logo.locale === defaultLocale);
+
+        src = logoForLocale?.src || logoForDefaultLocale?.src || null;
     }
 
     return (
@@ -32,7 +33,11 @@ function SiteHeader() {
                 className="logo-link"
                 title={t('home')}
             >
-                <img className="logo-img" src={src}/>
+                <img
+                    className="logo-img"
+                    src={src}
+                    alt="Collection logo"
+                />
             </Link>
         </header>
     );
