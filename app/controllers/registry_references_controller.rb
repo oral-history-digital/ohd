@@ -74,8 +74,8 @@ class RegistryReferencesController < ApplicationController
           segment_entries = RegistryEntry.for_interview_map(I18n.locale, interview.id)
 
           if (interviewee)
-            person_entries = RegistryEntry.for_map(I18n.locale, [interviewee.id], 'public')
-            registry_entries = segment_entries.to_a.concat(person_entries.to_a)
+            person_entries = RegistryEntry.for_map(I18n.locale, [interviewee.id], [interview.id], 'public')
+            registry_entries = segment_entries.to_a + person_entries.to_a
           else
             registry_entries = segment_entries
           end
@@ -98,9 +98,12 @@ class RegistryReferencesController < ApplicationController
         interviewee = interview.interviewee
 
         person_references = RegistryReference.for_interview_map_person_references(registry_entry_id, I18n.locale, interviewee.id)
+        interview_references = RegistryReference.for_interview_map_interview_references(registry_entry_id, I18n.locale, interview.id)
         segment_references = RegistryReference.for_interview_map_segment_references(registry_entry_id, interview.id)
 
-        persons_serialized = ActiveModelSerializers::SerializableResource.new(person_references, each_serializer: InterviewMapPersonReferencesSerializer)
+        combined_references = person_references.to_a + interview_references.to_a
+
+        persons_serialized = ActiveModelSerializers::SerializableResource.new(combined_references, each_serializer: InterviewMapPersonReferencesSerializer)
         segments_serialized = ActiveModelSerializers::SerializableResource.new(segment_references, each_serializer: InterviewMapSegmentReferencesSerializer)
 
         references = {

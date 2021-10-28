@@ -123,8 +123,8 @@ class SearchesController < ApplicationController
         cache_key_date = [Interview.maximum(:updated_at), RegistryEntry.maximum(:updated_at), MetadataField.maximum(:updated_at)].max
         scope = map_scope
 
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-map-search-#{cache_key_params}-#{cache_key_date}-#{scope}-#{params[:project_id]}" do
-          registry_entries = RegistryEntry.for_map(I18n.locale, map_interviewee_ids, scope)
+        json = Rails.cache.fetch "#{current_project.cache_key}-map-search-#{cache_key_params}-#{cache_key_date}-#{scope}" do
+          registry_entries = RegistryEntry.for_map(I18n.locale, map_interviewee_ids, map_interview_ids, scope)
 
           ActiveModelSerializers::SerializableResource.new(registry_entries,
             each_serializer: SlimRegistryEntryMapSerializer
@@ -143,7 +143,8 @@ class SearchesController < ApplicationController
         signed_in = current_user_account.present?
         scope = map_scope
 
-        registry_references = RegistryReference.for_map_registry_entry(registry_entry_id, I18n.locale, map_interviewee_ids, signed_in, scope)
+        registry_references = RegistryReference.for_map_registry_entry(registry_entry_id,
+          I18n.locale, map_interviewee_ids, map_interview_ids, signed_in, scope)
 
         render json: registry_references, each_serializer: SlimRegistryReferenceMapSerializer
       end
@@ -206,6 +207,12 @@ class SearchesController < ApplicationController
     search = Interview.archive_search(current_user_account, current_project, locale, params, 1000)
     interviewee_ids = search.hits.map{|hit| hit.stored(:interviewee_id)}
     interviewee_ids
+  end
+
+  def map_interview_ids
+    search = Interview.archive_search(current_user_account, current_project, locale, params, 1000)
+    interview_ids = search.hits.map { |hit| hit.primary_key.to_i }
+    interview_ids
   end
 
   def map_scope
