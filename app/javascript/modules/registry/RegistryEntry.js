@@ -297,34 +297,31 @@ export default class RegistryEntry extends Component {
         }
     }
 
-    renderCheckbox() {
-        return (
-            <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
-                <input
-                    type='checkbox'
-                    className='select-checkbox'
-                    checked={this.props.selectedRegistryEntryIds.indexOf(this.props.data.id) > 0}
-                    onChange={() => {this.props.addRemoveRegistryEntryId(this.props.data.id)}}
-                />
-            </AuthorizedContent>
-        );
-    }
-
     render() {
+        const { className, selectedRegistryEntryIds, data, addRemoveRegistryEntryId,
+            children } = this.props;
+
         return (
-            <li className={classNames('RegistryEntry', this.props.className)}>
+            <li className={classNames('RegistryEntry', className)}>
                 <div className="RegistryEntry-content">
-                    {this.renderCheckbox()}
+                    <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
+                        <input
+                            type='checkbox'
+                            className='select-checkbox'
+                            checked={selectedRegistryEntryIds.includes(data.id)}
+                            onChange={() => addRemoveRegistryEntryId(data.id)}
+                        />
+                    </AuthorizedContent>
                     {this.showHideChildren()}
                     {this.entry()}
                     {this.buttons()}
                 </div>
-                {this.props.children}
+                {children}
                 {
                     this.state.childrenVisible && (
                     <RegistryEntriesContainer
                         className="RegistryEntry-children"
-                        registryEntryParent={this.props.data}
+                        registryEntryParent={data}
                     />
                 )}
             </li>
