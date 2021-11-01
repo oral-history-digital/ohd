@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentInterview, getCurrentInterviewee, getCurrentProject } from 'modules/data';
+import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getIsCatalog } from 'modules/data';
 import { searchInArchive } from 'modules/search';
 import { setViewMode, getArchiveId, getProjectId } from 'modules/archive';
 import InterviewTabPanel from './InterviewTabPanel';
@@ -15,6 +15,7 @@ const mapStateToProps = (state) => {
         interview: getCurrentInterview(state),
         interviewee: getCurrentInterviewee(state),
         hasMap: project && project.has_map === 1,
+        isCatalog: getIsCatalog(state),
     };
 };
 

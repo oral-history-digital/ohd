@@ -25,6 +25,7 @@ export default function InterviewTabPanel({
     interview,
     interviewee,
     hasMap,
+    isCatalog,
     searchInArchive,
     setViewMode,
     hideFlyoutTabs,
@@ -65,16 +66,16 @@ export default function InterviewTabPanel({
                         </Link>
                     </p>
                 </AuthorizedContent>
-                <AuthorizedContent object={interview} action='show' showIfPublic>
-                    <InterviewDataContainer title={t('person_info')} open>
-                        <PersonDataContainer/>
-                        {
-                            interviewee && <SelectedRegistryReferencesContainer refObject={interviewee} />
-                        }
-                    </InterviewDataContainer>
-                </AuthorizedContent>
-                {projectId !== PROJECT_CAMPSCAPES && (
+                {!isCatalog && (
                     <>
+                        <AuthorizedContent object={interview} action='show' showIfPublic>
+                            <InterviewDataContainer title={t('person_info')} open>
+                                <PersonDataContainer/>
+                                {
+                                    interviewee && <SelectedRegistryReferencesContainer refObject={interviewee} />
+                                }
+                            </InterviewDataContainer>
+                        </AuthorizedContent>
                         <AuthShowContainer ifLoggedOut ifNoProject>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <InterviewDataContainer title={t('interview_info')} open>
@@ -93,7 +94,6 @@ export default function InterviewTabPanel({
                         </AuthShowContainer>
                     </>
                 )}
-
                 <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
                     <InterviewDataContainer
                         title={t('edit.upload_transcript.title')}
@@ -166,6 +166,7 @@ InterviewTabPanel.propTypes = {
     interview: PropTypes.object,
     interviewee: PropTypes.object,
     hasMap: PropTypes.bool.isRequired,
+    isCatalog: PropTypes.bool.isRequired,
     searchInArchive: PropTypes.func.isRequired,
     setViewMode: PropTypes.func.isRequired,
     hideFlyoutTabs: PropTypes.func.isRequired,
