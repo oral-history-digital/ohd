@@ -30,7 +30,6 @@ export default function ThumbnailMetadata({
         }
     }, [projectAccessGranted, isLoggedIn, interviewee?.associations_loaded]);
 
-
     return (
         <ul className="DetailList" lang={locale}>
             {
@@ -47,7 +46,13 @@ export default function ThumbnailMetadata({
                                     'DetailList-item--shortened': field.name === 'description',
                                 })}
                             >
-                                {humanReadable(obj, field.name, { locale, translations, languages, optionsScope: 'search_facets' }, {}, '')}
+                                {humanReadable(obj, field.name, { 
+                                    locale,
+                                    translations,
+                                    languages,
+                                    optionsScope: 'search_facets',
+                                    collections: project.collections,
+                                }, {}, '')}
                                 {' '}
                             </li>
                         );
