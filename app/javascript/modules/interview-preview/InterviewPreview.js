@@ -104,6 +104,8 @@ function InnerContent({
     locale,
     isExpanded
 }) {
+    console.log(interview);
+
     return (
         <>
             <div className="search-result-img aspect-ratio">
@@ -115,18 +117,10 @@ function InnerContent({
                 />
             </div>
 
-            <AuthShowContainer ifLoggedIn>
-                <p className="search-result-name">
-                    {interview.workflow_state === 'unshared' && <FaEyeSlash />}
-                    {interview.short_title && interview.short_title[locale]}
-                </p>
-            </AuthShowContainer>
-            <AuthShowContainer ifLoggedOut ifNoProject>
-                <p className="search-result-name">
-                    {interview.workflow_state === 'unshared' && <FaEyeSlash />}
-                    {interview.anonymous_title[locale]}
-                </p>
-            </AuthShowContainer>
+            <p className="search-result-name">
+                {interview.workflow_state === 'unshared' && <FaEyeSlash />}
+                {interview.short_title?.[locale] || interview.anonymous_title[locale]}
+            </p>
 
             {!isExpanded && (
                 <ThumbnailMetadataContainer interview={interview} project={project} />
