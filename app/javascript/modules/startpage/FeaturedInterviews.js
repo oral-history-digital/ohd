@@ -9,10 +9,16 @@ export default function FeaturedInterviews() {
         return <Spinner />;
     }
 
-    return interviews.map(interview => (
-        <InterviewPreviewContainer
-            key={interview.id}
-            interview={interview}
-        />
-    ));
+    return (
+        <div className="search-results-container">
+            {
+                interviews.map(interview => (
+                    <InterviewPreviewContainer
+                        key={interview.id}
+                        interview={interview}
+                    />
+                ))
+            }
+        </div>
+    );
 }
