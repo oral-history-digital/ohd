@@ -1,4 +1,4 @@
-import { Component, Fragment } from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import {Link} from 'react-router-dom';
 
@@ -10,182 +10,164 @@ import { InterviewInfoContainer, InterviewContributorsContainer, InterviewTextMa
 import { InterviewMap } from 'modules/interview-map';
 import { GalleryContainer } from 'modules/gallery';
 import { AssignSpeakersFormContainer, MarkTextFormContainer, UploadTranscriptContainer } from 'modules/interview-actions';
-import { pathBase } from 'modules/routes';
-import { admin, AuthorizedContent, AuthShowContainer } from 'modules/auth';
-import { t } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { PROJECT_CAMPSCAPES } from 'modules/constants';
 import InterviewDataContainer from './InterviewDataContainer';
 import AdminActionsContainer from './AdminActionsContainer';
 import SubTab from './SubTab';
+import DownloadLinks from './DownloadLinks';
 
-class InterviewTabPanel extends Component {
-    static propTypes = {
-        archiveId: PropTypes.string,
-        projectId: PropTypes.string.isRequired,
-        interview: PropTypes.object,
-        interviewee: PropTypes.object,
-        hasMap: PropTypes.bool.isRequired,
-        locale: PropTypes.string.isRequired,
-        translations: PropTypes.object.isRequired,
-        account: PropTypes.object,
-        editView: PropTypes.bool.isRequired,
+export default function InterviewTabPanel({
+    archiveId,
+    projectId,
+    interview,
+    interviewee,
+    hasMap,
+    isCatalog,
+    searchInArchive,
+    setViewMode,
+    hideFlyoutTabs,
+}) {
+    const pathBase = usePathBase();
+    const { t } = useI18n();
+
+    const searchPath = `${pathBase}/searches/archive`;
+
+    if (!archiveId || archiveId === 'new') {
+        return null;
     }
 
-    downloads() {
-        const { interview, archiveId } = this.props;
-
-        let links = [];
-        for (var i=1; i <= parseInt(interview.tape_count); i++) {
-            links.push(
-                <div key={`downloads-for-tape-${i}`}>
-                    <h4>{`${t(this.props, 'tape')} ${i}:`}</h4>
-                    {interview.languages.map(locale => {
-                        return (
-                            <>
-                                <a href={`${pathBase(this.props)}/interviews/${archiveId}.ods?lang=${locale}&tape_number=${i}`} download>{`ods-${locale}`}</a>&#44;&#xa0;
-                                <a href={`${pathBase(this.props)}/interviews/${archiveId}.vtt?lang=${locale}&tape_number=${i}`} download>{`vtt-${locale}`}</a>&#44;&#xa0;
-                            </>
-                        )
-                    })}
-                </div>
-            );
-        }
-        return (
-            <div>
-                <h4>{archiveId}:</h4>
-                {links}
+    return (
+        <>
+            <div className='flyout-tab-title'>
+                {t('interview')}
             </div>
-        );
-    }
-
-    render() {
-        const { archiveId, projectId, interview, interviewee, hasMap } = this.props;
-        const searchPath = `${pathBase(this.props)}/searches/archive`;
-
-        return (archiveId && archiveId !== 'new') ?
-            (<Fragment>
-                <div className='flyout-tab-title'>
-                    { t(this.props, 'interview') }
-                </div>
-                <AuthShowContainer ifLoggedOut={projectId !== "campscapes"} ifNoProject>
+            {projectId !== PROJECT_CAMPSCAPES && (
+                <AuthShowContainer ifLoggedOut ifNoProject>
                     <AccountContainer/>
                 </AuthShowContainer>
-                <div className={`flyout-sub-tabs-container flyout-video ${projectId === "campscapes" ? "hidden": ""}`}>
-                    <AuthorizedContent object={this.props.interview} action='update'>
-                        <p>
-                            <Link
-                                onClick={() => {
-                                    this.props.searchInArchive(searchPath, {archive_id: this.props.interview.archive_id});
-                                    this.props.setViewMode('workflow')
-                                    this.props.hideFlyoutTabs();
-                                }}
-                                to={searchPath}
-                            >
-                                {t(this.props, 'workflow')}
-                            </Link>
-                        </p>
-                    </AuthorizedContent>
-                    <AuthorizedContent object={interview} action='show' showIfPublic>
-                        <InterviewDataContainer
-                            title={t(this.props, 'person_info')}
-                            open={true}
+            )}
+            <div className={classNames('flyout-sub-tabs-container', 'flyout-video', {
+                'hidden': projectId === PROJECT_CAMPSCAPES,
+            })}>
+                <AuthorizedContent object={interview} action='update'>
+                    <p>
+                        <Link
+                            onClick={() => {
+                                searchInArchive(searchPath, {archive_id: interview.archive_id});
+                                setViewMode('workflow')
+                                hideFlyoutTabs();
+                            }}
+                            to={searchPath}
                         >
-                            <PersonDataContainer/>
-                            {
-                                interviewee && <SelectedRegistryReferencesContainer refObject={interviewee} />
-                            }
-                        </InterviewDataContainer>
-                    </AuthorizedContent>
-                    <AuthShowContainer ifLoggedOut={projectId !== "campscapes"} ifNoProject={true}>
+                            {t('workflow')}
+                        </Link>
+                    </p>
+                </AuthorizedContent>
+                {!isCatalog && (
+                    <>
                         <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <InterviewDataContainer
-                                title={t(this.props, 'interview_info')}
-                                open={true}
-                            >
-                                <InterviewInfoContainer/>
+                            <InterviewDataContainer title={t('person_info')} open>
+                                <PersonDataContainer/>
+                                {
+                                    interviewee && <SelectedRegistryReferencesContainer refObject={interviewee} />
+                                }
                             </InterviewDataContainer>
                         </AuthorizedContent>
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
+                        <AuthShowContainer ifLoggedOut ifNoProject>
+                            <AuthorizedContent object={interview} action='show' showIfPublic>
+                                <InterviewDataContainer title={t('interview_info')} open>
+                                    <InterviewInfoContainer/>
+                                </InterviewDataContainer>
+                            </AuthorizedContent>
+                        </AuthShowContainer>
+                        <AuthShowContainer ifLoggedIn>
+                            <AuthorizedContent object={interview} action='show' showIfPublic>
+                                <InterviewDataContainer title={t('interview_info')} open>
+                                    <InterviewInfoContainer/>
+                                    <InterviewContributorsContainer/>
+                                    <InterviewTextMaterialsContainer/>
+                                </InterviewDataContainer>
+                            </AuthorizedContent>
+                        </AuthShowContainer>
+                    </>
+                )}
+                <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
+                    <InterviewDataContainer
+                        title={t('edit.upload_transcript.title')}
+                        open={false}
+                    >
+                        <UploadTranscriptContainer />
+                    </InterviewDataContainer>
+                </AuthorizedContent>
+
+                <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='update_speakers'>
+                    <InterviewDataContainer title={t('assign_speakers')}>
+                        <AssignSpeakersFormContainer interview={interview} />
+                    </InterviewDataContainer>
+                </AuthorizedContent>
+
+                <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='mark_texts'>
+                    <InterviewDataContainer title={t('mark_texts')}>
+                        <MarkTextFormContainer interview={interview} />
+                    </InterviewDataContainer>
+                </AuthorizedContent>
+
+                {projectId !== PROJECT_CAMPSCAPES && (
+                    <AuthShowContainer ifLoggedIn>
                         <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <InterviewDataContainer
-                                title={t(this.props, 'interview_info')}
-                                open={true}
-                            >
-                                <InterviewInfoContainer/>
-                                <InterviewContributorsContainer/>
-                                <InterviewTextMaterialsContainer/>
-                            </InterviewDataContainer>
-                        </AuthorizedContent>
-                    </AuthShowContainer>
-
-                    <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
-                        <InterviewDataContainer
-                            title={t(this.props, 'edit.upload_transcript.title')}
-                            open={false}
-                        >
-                            <UploadTranscriptContainer />
-                        </InterviewDataContainer>
-                    </AuthorizedContent>
-
-                    <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='update_speakers'>
-                        <InterviewDataContainer title={t(this.props, 'assign_speakers')}>
-                            <AssignSpeakersFormContainer interview={interview} />
-                        </InterviewDataContainer>
-                    </AuthorizedContent>
-
-                    <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='mark_texts'>
-                        <InterviewDataContainer title={t(this.props, 'mark_texts')}>
-                            <MarkTextFormContainer interview={interview} />
-                        </InterviewDataContainer>
-                    </AuthorizedContent>
-
-                    <AuthShowContainer ifLoggedIn={projectId !== "campscapes"}>
-                        <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <InterviewDataContainer
-                                title={t(this.props, 'photos')}
-                                open={true}
-                            >
+                            <InterviewDataContainer title={t('photos')} open>
                                 <GalleryContainer/>
                             </InterviewDataContainer>
                         </AuthorizedContent>
 
                         <AuthShowContainer ifLoggedIn={hasMap}>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
-                                <InterviewDataContainer
-                                    title={t(this.props, 'map')}
-                                    open={true}
-                                >
+                                <InterviewDataContainer title={t('map')} open>
                                     <InterviewMap/>
                                 </InterviewDataContainer>
                             </AuthorizedContent>
                         </AuthShowContainer>
 
                         <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <InterviewDataContainer
-                                title={t(this.props, 'citation')}
-                                open={true}
-                            >
+                            <InterviewDataContainer title={t('citation')} open>
                                 <CitationInfoContainer/>
                             </InterviewDataContainer>
                         </AuthorizedContent>
 
                         <AuthorizedContent object={interview} action='update'>
-                            <InterviewDataContainer title={t(this.props, 'admin_actions')} >
+                            <InterviewDataContainer title={t('admin_actions')} >
                                 <AdminActionsContainer archiveIds={[archiveId]} />
                             </InterviewDataContainer>
                         </AuthorizedContent>
                     </AuthShowContainer>
-                </div>
-                <SubTab
-                    title='edit.downloads.title'
-                    obj={this.props.interview}
-                    action='download'
-                >
-                    {this.downloads()}
-                </SubTab>
-            </Fragment>) :
-            null;
-    }
+                )}
+            </div>
+            <SubTab
+                title='edit.downloads.title'
+                obj={interview}
+                action='download'
+            >
+                <DownloadLinks
+                    archiveId={archiveId}
+                    numTapes={Number.parseInt(interview.tape_count)}
+                    languages={interview.languages}
+                />
+            </SubTab>
+        </>
+    );
 }
 
-export default InterviewTabPanel;
+InterviewTabPanel.propTypes = {
+    archiveId: PropTypes.string,
+    projectId: PropTypes.string.isRequired,
+    interview: PropTypes.object,
+    interviewee: PropTypes.object,
+    hasMap: PropTypes.bool.isRequired,
+    isCatalog: PropTypes.bool.isRequired,
+    searchInArchive: PropTypes.func.isRequired,
+    setViewMode: PropTypes.func.isRequired,
+    hideFlyoutTabs: PropTypes.func.isRequired,
+};
