@@ -142,7 +142,7 @@ export default class MediaElement extends Component {
                         isVideo && interview.languages.map(language => (
                             <track
                                 key={language}
-                                kind="subtitles"
+                                kind="captions"
                                 label={t(this.props, language)}
                                 src={`${pathBaseStr}/interviews/${archiveId}.vtt?lang=${language}&tape_number=${tape}`}
                                 srcLang={language}
