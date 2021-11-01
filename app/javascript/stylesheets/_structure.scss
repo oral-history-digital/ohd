@@ -392,14 +392,21 @@ a.search-result-link {
 
 .wrapper-content.home-content {
   padding:0;
+
   .home-text {
     padding: 15px 5% 30px 5%;
     background-color: #ddd;
   }
+
+  .home-paragraph {
+    padding: 0 5% 0 5%;
+  }
+
   .search-results-container {
     padding: 40px 5%;
   }
 }
+
 .home-content-logos {
   padding:40px 5%;
   display: flex;

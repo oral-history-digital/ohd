@@ -285,7 +285,7 @@ class InterviewsController < ApplicationController
   def random_featured
     respond_to do |format|
       format.json do
-        json = Rails.cache.fetch("#{current_project.cache_key_prefix}-interview-random-featured", expires_in: 30.minutes) do
+        json = Rails.cache.fetch("#{current_project.cache_key}-interview-random-featured", expires_in: 30.minutes) do
           {
             data: Interview.random_featured(6, current_project.id).inject({}){|mem, s| mem[s.archive_id] = cache_single(s); mem},
             data_type: "random_featured_interviews",

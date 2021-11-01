@@ -19,6 +19,7 @@ export const PROJECT_CDOH = 'cdoh'
 export const PROJECT_DG   = 'dg';
 export const PROJECT_MOG  = 'mog';
 export const PROJECT_ZWAR = 'zwar';
+export const PROJECT_CAMPSCAPES = 'campscapes';
 
 export const DEFAULT_LOCALES = ['de', 'en'];
 export const SYSTEM_LOCALES = ['de', 'en', 'el', 'es', 'ru'];
