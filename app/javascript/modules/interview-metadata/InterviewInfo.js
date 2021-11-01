@@ -15,7 +15,7 @@ export default function InterviewInfo({
     languages,
 }) {
     const { t } = useI18n();
-    const { projectAccessGranted } = useProjectAccessStatus();
+    const { projectAccessGranted } = useProjectAccessStatus(project);
     const collection = collections[interview.collection_id];
 
     if (!interview?.language_id) {

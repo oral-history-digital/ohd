@@ -31,7 +31,7 @@ export default function Interview({
 }) {
     const { archiveId } = useParams();
 
-    const { projectAccessGranted } = useProjectAccessStatus();
+    const { projectAccessGranted } = useProjectAccessStatus(project);
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
 

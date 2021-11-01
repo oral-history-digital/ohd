@@ -16,7 +16,7 @@ export default function SelectedRegistryReferences({
     registryEntriesStatus,
 }) {
     const { t } = useI18n();
-    const { projectAccessGranted } = useProjectAccessStatus();
+    const { projectAccessGranted } = useProjectAccessStatus(project);
 
     useEffect(() => {
         loadRegistryEntries();

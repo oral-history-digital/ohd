@@ -31,7 +31,7 @@ export default function InterviewListRow({
     isLoggedIn,
 }) {
     const { isAuthorized } = useAuthorization();
-    const { projectAccessGranted } = useProjectAccessStatus();
+    const { projectAccessGranted } = useProjectAccessStatus(project);
     const pathBase = usePathBase();
     const intervieweeId = interview.interviewee_id;
 

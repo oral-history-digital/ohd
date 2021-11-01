@@ -1,10 +1,9 @@
 import { useSelector } from 'react-redux';
 
-import { getCurrentProject, getCurrentAccount } from 'modules/data';
+import { getCurrentAccount } from 'modules/data';
 
-export function useProjectAccessStatus() {
+export function useProjectAccessStatus(project) {
     const account = useSelector(getCurrentAccount);
-    const project = useSelector(getCurrentProject);
 
     const projectRegistration = account && Object.values(account.user_registration_projects).find(urp => urp.project_id === project.id);
     const projectAccessStatus = projectRegistration?.workflow_state;

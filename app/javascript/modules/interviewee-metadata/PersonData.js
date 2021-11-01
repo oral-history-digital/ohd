@@ -26,7 +26,7 @@ export default function PersonData({
 }) {
 
     const { t } = useI18n();
-    const { projectAccessGranted } = useProjectAccessStatus();
+    const { projectAccessGranted } = useProjectAccessStatus(project);
 
     useEffect(() => {
         if (!projectAccessGranted) {

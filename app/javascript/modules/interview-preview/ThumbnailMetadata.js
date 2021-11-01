@@ -20,7 +20,7 @@ export default function ThumbnailMetadata({
     const intervieweeId = interview.interviewee_id;
     const interviewee = project.people[intervieweeId];
     const projectId = project.identifier;
-    const { projectAccessGranted } = useProjectAccessStatus();
+    const { projectAccessGranted } = useProjectAccessStatus(project);
 
     useEffect(() => {
         if (!projectAccessGranted) {
