@@ -104,8 +104,6 @@ function InnerContent({
     locale,
     isExpanded
 }) {
-    console.log(interview);
-
     return (
         <>
             <div className="search-result-img aspect-ratio">
