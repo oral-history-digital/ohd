@@ -149,7 +149,7 @@ class RegistryReferencesController < ApplicationController
         json = {}
         if registry_reference.ref_object_type == 'Interview'
           json = {
-            archive_id: registry_reference.ref_object.interview.archive_id,
+            archive_id: registry_reference.ref_object.archive_id,
             data_type: 'interviews',
             nested_data_type: 'registry_references',
             nested_id: registry_reference.id,
