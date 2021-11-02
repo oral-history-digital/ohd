@@ -162,8 +162,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_place(name, country_name)
-    country = country_name && RegistryEntry.find_or_create_descendant('place', "#{I18n.locale}::#{country_name}")
-    place = name && RegistryEntry.find_or_create_descendant(country ? country.code : 'place', "#{I18n.locale}::#{name}")
+    country = country_name && RegistryEntry.find_or_create_descendant('places', "#{I18n.locale}::#{country_name}")
+    place = name && RegistryEntry.find_or_create_descendant(country ? country.code : 'places', "#{I18n.locale}::#{name}")
     place
   end
 
