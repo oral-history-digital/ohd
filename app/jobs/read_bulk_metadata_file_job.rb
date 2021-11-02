@@ -156,7 +156,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
       code = languages.map(&:alpha3).join('/')
       english_name = languages.map(&:english_name).join(' and ')
       language = Language.find_by_code(code)
-      language = Language.create(code: code, name: english_name) unless language
+      language = Language.create(code: code, name: english_name) if (!language && !code.blank?)
       language
     end
   end
