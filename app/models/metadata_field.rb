@@ -9,6 +9,8 @@ class MetadataField < ApplicationRecord
   translates :label, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
   serialize :values
+
+  validates_presence_of :name
   validates_uniqueness_of :name, :scope => [:project_id, :source]
 
   validates_format_of :map_color, with: /\A#([0-9a-f]{3}|[0-9a-f]{6})\z/i
