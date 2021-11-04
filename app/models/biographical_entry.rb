@@ -13,7 +13,7 @@ class BiographicalEntry < ApplicationRecord
 
   searchable do
     string :archive_id, :multiple => true, :stored => true do
-      person ? person.interviews.map{|i| i.archive_id } : ''
+      person ? person.interviews.map{|i| i && i.archive_id } : ''
     end
     string :workflow_state
     string :start_date, :stored => true
