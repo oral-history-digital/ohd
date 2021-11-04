@@ -20,10 +20,10 @@ export default function LocaleButtons({
         const locale = e.target.textContent;
 
         let newPath;
-        if (/^\/[a-z]{2}\/?$/.test(location.pathname)) {
-            newPath = `/${locale}`;
+        if (/^\/[a-z]{2}\/{0,1}$/.test(location.pathname)) {
+            newPath = `/${locale}/`;
         } else {
-            newPath = location.pathname.replace(/^(?:\/[a-z]{2,4})?\/[a-z]{2}/, pathBase({projectId, locale, projects}));
+            newPath = location.pathname.replace(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})\//, pathBase({projectId, locale, projects}) + '/');
         }
 
         history.push(newPath);
@@ -52,7 +52,5 @@ export default function LocaleButtons({
 LocaleButtons.propTypes = {
     currentLocale: PropTypes.string.isRequired,
     locales: PropTypes.array.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
     setLocale: PropTypes.func.isRequired,
 };
