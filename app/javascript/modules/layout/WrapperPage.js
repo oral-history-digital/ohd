@@ -45,13 +45,15 @@ export default function WrapperPage({
     });
 
     function fitLocale() {
-        const found = location.pathname.match(/^(?:\/[a-z]{2,4})?\/([a-z]{2})(?:\/|$)/);
+        const pathBasePart = /^(?:\/[a-z]{2,4})?\/([a-z]{2})(?:\/|$)/;
 
+        const found = location.pathname.match(pathBasePart);
         const pathLocale = Array.isArray(found) ? found[1] : null;
 
         if (pathLocale) {
             if (project?.available_locales.indexOf(pathLocale) === -1) {
-                const newPath = location.pathname.replace(/^(\/[a-z]{2,4}){0,1}\/([a-z]{2})\//, pathBase({projectId, locale: project.default_locale, projects}) + '/');
+                const newPathBase = pathBase({projectId, locale: project.default_locale, projects}) + '/';
+                const newPath = location.pathname.replace(pathBasePart, newPathBase);
                 history.push(newPath);
                 setLocale(locale);
             } else if (pathLocale !== locale) {
