@@ -10,20 +10,19 @@ export default function LocaleButtons({
     projectId,
     projects,
 }) {
-    // do not use usePathBase() here!! we need locale from e.target.testContext!
-    //const pathBase = usePathBase();
-    //
     const history = useHistory();
     const location = useLocation();
 
     function handleButtonClick(e) {
         const locale = e.target.textContent;
 
+        const pathBaseStr = pathBase({ projectId, locale, projects }) + '/';
+
         let newPath;
         if (/^\/[a-z]{2}\/?$/.test(location.pathname)) {
             newPath = `/${locale}`;
         } else {
-            newPath = location.pathname.replace(/^(?:\/[a-z]{2,4})?\/[a-z]{2}/, pathBase({projectId, locale, projects}));
+            newPath = location.pathname.replace(/^(?:\/[a-z]{2,4})?\/[a-z]{2}\//, pathBaseStr);
         }
 
         history.push(newPath);
