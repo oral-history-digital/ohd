@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-import { InterviewInfoContainer } from 'modules/interview-metadata';
+import { InterviewInfoContainer, InterviewContributorsContainer } from 'modules/interview-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { ContentField } from 'modules/forms';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
@@ -32,12 +32,15 @@ export default class InterviewDetailsLeftSide extends Component {
                         { this.props.interviewee && <SelectedRegistryReferencesContainer refObject={this.props.interviewee} /> }
                     </div>
                     <h3>{t(this.props, "interview_info")}</h3>
-                    {<InterviewInfoContainer />}
-                    <ContentField label={t(this.props, 'subcollection')} value={this.props.interview && this.props.interview.properties && this.props.interview.properties.subcollection} />
-                    <ContentField label={t(this.props, 'contributions.interviewer')} value={this.props.interview && this.props.interview.properties && this.props.interview.properties.interviewer} />
-                    <ContentField label={'Link'} value={this.props.interview && this.props.interview.properties && <a href={this.props.interview.properties.link} target='_blank'>{this.props.interview.properties.link}</a>} />
-                    <ContentField label={'Signature'} value={this.props.interview && this.props.interview.signature_original} />
-                    {this.footerNavigation()}
+                    <InterviewInfoContainer />
+                    <InterviewContributorsContainer/>
+                    { this.props.interview?.properties?.subcollection &&
+                        <ContentField label={t(this.props, 'subcollection')} value={this.props.interview.properties.subcollection} />
+                    }
+                    { this.props.interview?.properties?.link &&
+                        <ContentField label={'Link'} value={<a href={this.props.interview.properties.link} target='_blank'>{this.props.interview.properties.link}</a>} />
+                    }
+                    {this.props.projectId === 'CAMPSCAPES' && this.footerNavigation()}
                 </div>
             </div>
         )
