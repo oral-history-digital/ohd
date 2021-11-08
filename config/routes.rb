@@ -202,7 +202,7 @@ Rails.application.routes.draw do
       concerns :account
       concerns :unnamed_devise_routes, :search
     end
-    scope "/:project_id", :constraints => { project_id: /[a-z]{2,4}/ } do
+    scope "/:project_id", :constraints => { project_id: /[\-a-z]{2,7}/ } do
       root to: redirect {|params, request| project = Project.by_identifier(params[:project_id]); "/#{project.identifier}/#{project.default_locale}"}
       scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
         root to: "projects#show"
