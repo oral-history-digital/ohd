@@ -18,7 +18,7 @@ const mapStateToProps = state => ({
     formElements: [
         {
             attribute: 'shortname',
-            validate: function(v){return /^[a-zA-Z]{2,4}$/.test(v)}
+            validate: function(v){return /^[\-a-zA-Z]{2,7}$/.test(v)}
         },
         {
             attribute: "initials",
