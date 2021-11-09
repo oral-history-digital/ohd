@@ -45,31 +45,33 @@ export default function UserContent({
     let callKey = "call" + data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
     const project = projects[data.project_id];
 
-    let linkNode;
-    switch (data.type) {
-    case 'InterviewReference':
-        linkNode = (
-            <LinkOrA project={project} to={`interviews/${data.media_id}`} onLinkClick={onInterviewReferenceClick}>
-                {t(callKey)}
-            </LinkOrA>
-        );
-        break;
-    case 'UserAnnotation':
-        linkNode = (
-            <LinkOrA project={project} to={`interviews/${data.properties.interview_archive_id}`} onLinkClick={onAnnotationClick}>
-                {t(callKey)}
-            </LinkOrA>
-        );
-        break;
-    case 'Search':
-        linkNode = (
-            <LinkOrA project={project} to='searches/archive' params={`${new URLSearchParams(data.properties)}`} onLinkClick={onSearchClick}>
-                {t(callKey)}
-            </LinkOrA>
-        );
-        break;
-    default:
-        linkNode = null;
+    let linkNode = null;
+    if (project) {
+        switch (data.type) {
+        case 'InterviewReference':
+            linkNode = (
+                <LinkOrA project={project} to={`interviews/${data.media_id}`} onLinkClick={onInterviewReferenceClick}>
+                    {t(callKey)}
+                </LinkOrA>
+            );
+            break;
+        case 'UserAnnotation':
+            linkNode = (
+                <LinkOrA project={project} to={`interviews/${data.properties.interview_archive_id}`} onLinkClick={onAnnotationClick}>
+                    {t(callKey)}
+                </LinkOrA>
+            );
+            break;
+        case 'Search':
+            linkNode = (
+                <LinkOrA project={project} to='searches/archive' params={`${new URLSearchParams(data.properties)}`} onLinkClick={onSearchClick}>
+                    {t(callKey)}
+                </LinkOrA>
+            );
+            break;
+        default:
+            linkNode = null;
+        }
     }
 
     return (
@@ -91,12 +93,16 @@ export default function UserContent({
                     </p>
                 )
             }
-
-            <p className="flyout-sub-tabs-content-link">
-                <FaAngleRight className="Icon Icon--primary" />
-                {linkNode}
-            </p>
-
+            {
+                linkNode ? (
+                    <p className="flyout-sub-tabs-content-link">
+                        <FaAngleRight className="Icon Icon--primary" />
+                        {linkNode}
+                    </p>
+                ) : (
+                    <p>{t('modules.workbook.project_unavailable')}</p>
+                )
+            }
             <div className="flyout-sub-tabs-content-ico">
                 <Modal
                     title={t('edit')}
