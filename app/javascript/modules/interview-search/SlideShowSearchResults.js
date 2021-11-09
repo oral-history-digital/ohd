@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
 import Slider from 'react-slick';
-import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
+import { LinkOrA } from 'modules/routes';
 import { setArchiveId, setProjectId } from 'modules/archive';
 import { usePathBase } from 'modules/routes';
 import SlideShowSearchStats from './SlideShowSearchStats';
@@ -12,9 +12,9 @@ export default function SlideShowSearchResults({
     interview,
     searchResults,
     projectId,
+    project,
 }) {
     const dispatch = useDispatch();
-    const pathBase = usePathBase();
 
     const segments = searchResults.foundSegments;
 
@@ -31,20 +31,21 @@ export default function SlideShowSearchResults({
                 segments.map(data => (
                     <div key={data.id}>
                         <div style={{marginBottom: '24px'}}>
-                        <Link
+                        <LinkOrA
                             key={data.id}
-                            onClick={() => dispatch(
+                            project={project}
+                            onLinkClick={() => dispatch(
                                 setProjectId(projectId),
                                 setArchiveId(interview.archive_id)
                             )}
-                            to={`${pathBase}/interviews/${interview.archive_id}`}
+                            to={`interviews/${interview.archive_id}`}
                         >
                             <DumbTranscriptResult
                                 highlightedText={Object.values(data.text).find(text => text?.length > 0)}
                                 tapeNumber={data.tape_nbr}
                                 time={data.time}
                             />
-                        </Link>
+                        </LinkOrA>
                         </div>
                     </div>
                 ))

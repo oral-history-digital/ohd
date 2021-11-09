@@ -4,7 +4,7 @@ import { FaEyeSlash } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT } from 'modules/layout';
-import { LinkOrA, usePathBase } from 'modules/routes';
+import { LinkOrA, pathBase } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import missingStill from 'assets/images/missing_still.png';
@@ -25,19 +25,21 @@ export default function InterviewPreview({
     interviewSearchResults,
     searchInInterview,
 }) {
-    const pathBase = usePathBase();
     const [isExpanded, setIsExpanded] = useState(false);
     const project = projects[interview.project_id];
     const projectId = project.identifier;
+    const pathBaseStr = pathBase({projectId, locale: project.default_locale, projects});
 
     const onOHD = [OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT].indexOf(window.location.origin) > -1;
-    const showSlideShow = (onOHD && !project.archive_domain) || project.archive_domain === window.location.origin;
+    const showSlideShow = (onOHD && (!project.archive_domain || project.archive_domain === '')) || project.archive_domain === window.location.origin;
 
     useEffect(() => {
         if ( fulltext && (
-            project.archive_domain === window.location.origin
+            project.archive_domain === window.location.origin ||
+            !project.archive_domain ||
+            project.archive_domain === ''
         )) {
-            searchInInterview(`${pathBase}/searches/interview`, {fulltext, id: interview.archive_id});
+            searchInInterview(`${pathBaseStr}/searches/interview`, {fulltext, id: interview.archive_id});
         }
     }, []);
 
@@ -78,6 +80,7 @@ export default function InterviewPreview({
                                 interview={interview}
                                 searchResults={searchResults}
                                 projectId={projectId}
+                                project={project}
                             />
                         </div>
                     </div>

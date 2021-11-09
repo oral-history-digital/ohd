@@ -68,7 +68,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
               interview.interviewee.update_attributes interviewee_data
             else
               interviewee = Person.find_or_create_by interviewee_data
-              Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type_id: ContributionType.find_by_code('interviewee').id
+              Contribution.create person_id: interviewee.id, interview_id: interview.id, contribution_type_id: project.contribution_types.find_by_code('interviewee').id
             end
 
             short_bio = BiographicalEntry.find_or_create_by(person_id: interview.interviewee.id)
@@ -86,7 +86,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
             # create birth location and reference it
             if data[9] || data[10]
-              birth_location_type = RegistryReferenceType.find_by_code('birth_location')
+              birth_location_type = project.registry_reference_types.find_by_code('birth_location')
               place = find_or_create_place(data[9], data[10])
               destroy_reference(interview, birth_location_type.id)
               create_reference(place.id, interview, interview.interviewee, birth_location_type.id) if place
@@ -94,7 +94,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
 
             # create interview location and reference it
             if data[19] || data[20]
-              interview_location_type = RegistryReferenceType.find_by_code('interview_location')
+              interview_location_type = project.registry_reference_types.find_by_code('interview_location')
               place = find_or_create_place(data[19], data[20])
               destroy_reference(interview, interview_location_type.id)
               create_reference(place.id, interview, interview, interview_location_type.id) if place
@@ -118,7 +118,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
       case name.downcase
       when 'm', 'male', 'man', 'männlich', 'mann'
         'male'
-      when 'f', 'female', 'woman', 'weiblich', 'frau'
+      when 'f', 'female', 'w', 'woman', 'weiblich', 'frau'
         'female'
       else
         'diverse'
@@ -171,13 +171,13 @@ class ReadBulkMetadataFileJob < ApplicationJob
     contributors_string && contributors_string.gsub('"', '').split(/#\s*/).each do |contributor_string|
       last_name, first_name = contributor_string.split(/,\s*/)
       contributor = Person.find_or_create_by first_name: first_name, last_name: last_name, project_id: interview.project.id
-      Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type_id: ContributionType.find_by_code(contribution_type).id
+      Contribution.create person_id: contributor.id, interview_id: interview.id, contribution_type_id: interview.project.contribution_types.find_by_code(contribution_type).id
     end
   end
 
   def reference(interview, data, code)
     if data
-      registry_reference_type = RegistryReferenceType.find_by_code(code)
+      registry_reference_type = interview.project.registry_reference_types.find_by_code(code)
       registry_entry = data && RegistryEntry.find_or_create_descendant(code, "#{I18n.locale}::#{data}")
       destroy_reference(interview, registry_reference_type && registry_reference_type.id, code)
       create_reference(registry_entry.id, interview, interview, registry_reference_type && registry_reference_type.id) if registry_entry

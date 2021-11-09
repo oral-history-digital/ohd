@@ -16,13 +16,15 @@ export default function LocaleButtons({
     function handleButtonClick(e) {
         const locale = e.target.textContent;
 
-        const pathBaseStr = pathBase({ projectId, locale, projects }) + '/';
+        const pathBaseStr = pathBase({ projectId, locale, projects });
 
         let newPath;
         if (/^\/[a-z]{2}\/?$/.test(location.pathname)) {
             newPath = `/${locale}`;
+        } else if (/^(?:\/[a-z]{2,4})?\/[a-z]{2}$/.test(location.pathname)) {
+            newPath = pathBaseStr;
         } else {
-            newPath = location.pathname.replace(/^(?:\/[a-z]{2,4})?\/[a-z]{2}\//, pathBaseStr);
+            newPath = location.pathname.replace(/^(?:\/[a-z]{2,4})?\/[a-z]{2}\//, pathBaseStr + '/');
         }
 
         history.push(newPath);
