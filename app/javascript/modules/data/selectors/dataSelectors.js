@@ -147,13 +147,13 @@ export const getFlattenedRefTree = createSelector(
         function flattenTree(acc, node) {
             const children = node.children;
 
-            children.forEach(child => {
+            children?.forEach(child => {
                 if (child.type === 'node') {
                     flattenTree(acc, child);
                 }
             })
 
-            const hasLeaves = children.some(child => child.type === 'leafe');
+            const hasLeaves = children?.some(child => child.type === 'leafe');
 
             if (hasLeaves) {
                 const clonedNode = {

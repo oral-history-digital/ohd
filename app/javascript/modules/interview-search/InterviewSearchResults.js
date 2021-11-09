@@ -39,9 +39,9 @@ export default function InterviewSearchResults({
 
     const originalTranscriptResults = segmentResults.filter(segment => segment.text[interviewLang]?.length > 0);
 
-    const translationLanguages = interview.languages.filter(lang => lang !== interview.lang);
+    const translationLanguages = interview.languages?.filter(lang => lang !== interview.lang);
 
-    const translatedTranscriptResultsPerLocale = translationLanguages.map(resultLocale => [
+    const translatedTranscriptResultsPerLocale = translationLanguages?.map(resultLocale => [
         resultLocale,
         segmentResults.filter(segment => segment.text[resultLocale]?.length > 0)
     ])
@@ -49,7 +49,7 @@ export default function InterviewSearchResults({
 
     return (
         <div>
-            {originalTranscriptResults.length > 0 && (
+            {originalTranscriptResults?.length > 0 && (
                 <ResultList
                     heading={t('segment_results')}
                     searchResults={originalTranscriptResults}
@@ -58,7 +58,7 @@ export default function InterviewSearchResults({
                     className="u-mt"
                 />
             )}
-            {translatedTranscriptResultsPerLocale.map(([resultLocale, results]) => (
+            {translatedTranscriptResultsPerLocale?.map(([resultLocale, results]) => (
                 <ResultList
                     key={resultLocale}
                     heading={t('translation_results')}
