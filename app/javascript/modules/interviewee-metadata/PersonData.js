@@ -24,7 +24,6 @@ export default function PersonData({
     submitData,
     isLoggedIn,
 }) {
-
     const { t } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
 
@@ -36,9 +35,13 @@ export default function PersonData({
         }
     }, [projectAccessGranted, isLoggedIn, interviewee?.associations_loaded]);
 
+    const metadataFields = Object.values(project.metadata_fields).filter(
+        field => field.source === 'Person' && ((projectAccessGranted && field.use_in_details_view) || (!projectAccessGranted && field.display_on_landing_page))
+    )
+
     return (
         <>
-            <AuthShowContainer ifLoggedIn={true}>
+            <AuthShowContainer ifLoggedIn>
                 <ContentField label={t('interviewee_name')} value={fullname({locale}, interviewee, true)} >
                     <AuthorizedContent object={interviewee} action='update'>
                         <Modal
@@ -59,26 +62,27 @@ export default function PersonData({
                 </ContentField>
             </AuthShowContainer>
 
-            <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+            <AuthShowContainer ifLoggedOut ifNoProject>
                 <ContentField
                     label={t('interviewee_name')}
-                    value={interview?.anonymous_title && interview?.anonymous_title[locale]}
+                    value={interview?.anonymous_title?.[locale]}
                 />
             </AuthShowContainer>
 
-            <AuthorizedContent object={interviewee} action='show'>
-                { interviewee && Object.values(project.metadata_fields).filter(m => {
-                    return (m.source === 'Person' && (
-                            (projectAccessGranted && m.use_in_details_view) ||
-                            (!projectAccessGranted && m.display_on_landing_page)
-                    ))
-                }).map(function(metadataField, i) {
-                    let label = metadataField.label && metadataField.label[locale] || t(metadataField.name);
-                    let value = humanReadable(interviewee, metadataField.name, { locale, translations }, {});
+            {
+                interviewee && metadataFields.map(field => {
+                    const label = field.label?.[locale] || t(field.name);
+                    const value = humanReadable(interviewee, field.name, { locale, translations }, {});
 
-                    return <ContentField label={label} value={value} key={`detail-${i}`} />
-                })}
-            </AuthorizedContent>
+                    return (
+                        <ContentField
+                            key={field.name}
+                            label={label}
+                            value={value}
+                        />
+                    );
+                })
+            }
 
             { interviewee?.associations_loaded && <Biography /> }
         </>
@@ -87,6 +91,7 @@ export default function PersonData({
 
 PersonData.propTypes = {
     archiveId: PropTypes.string.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
     interview: PropTypes.object.isRequired,
     interviewee: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,

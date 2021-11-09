@@ -6,7 +6,7 @@ import classNames from 'classnames';
 import { OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT } from 'modules/layout';
 import { LinkOrA, pathBase } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
-import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
+import { AuthorizedContent } from 'modules/auth';
 import missingStill from 'assets/images/missing_still.png';
 import ThumbnailBadge from './ThumbnailBadge';
 import ThumbnailMetadataContainer from './ThumbnailMetadataContainer';
@@ -19,7 +19,6 @@ export default function InterviewPreview({
     locale,
     projects,
     setArchiveId,
-    setProjectId,
     selectedArchiveIds,
     addRemoveArchiveId,
     interviewSearchResults,

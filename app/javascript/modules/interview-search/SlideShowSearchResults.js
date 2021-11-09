@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 
 import { LinkOrA } from 'modules/routes';
 import { setArchiveId, setProjectId } from 'modules/archive';
-import { usePathBase } from 'modules/routes';
 import SlideShowSearchStats from './SlideShowSearchStats';
 import DumbTranscriptResult from './DumbTranscriptResult';
 
