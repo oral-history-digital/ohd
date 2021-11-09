@@ -9,40 +9,21 @@
   \par{<%= latex_escape( "#{I18n.t('tapes', locale: @locale)}: #{@interview.tapes.count}") %>}
 <% end %>
 
-
-<% unless @interview.interviewers.blank? %>
-  <% first_name = "#{@interview.interviewers.first.first_name(@locale)}" %>
-  <% last_name = "#{@interview.interviewers.first.last_name(@locale)}" %>
-  <% name = "#{first_name} #{last_name}" %>
-\par{<%= latex_escape( "#{I18n.t('interview', locale: @locale)}: #{name}" ) %>}
-<% end %>
-
-<% unless @interview.cinematographers.blank? %>
-<% first_name = "#{@interview.cinematographers.first.first_name(@locale)}" %>
-<% last_name = "#{@interview.cinematographers.first.last_name(@locale)}" %>
-<% name = "#{first_name} #{last_name}" %>
-\par{<%= latex_escape( "#{I18n.t('camera', locale: @locale)}: #{name}" ) %>}
-<% end %>
-
-<% unless @interview.transcriptors.blank? %>
-<% first_name = "#{@interview.transcriptors.first.first_name(@locale)}" %>
-<% last_name = "#{@interview.transcriptors.first.last_name(@locale)}" %>
-<% name = "#{first_name} #{last_name}" %>
-\par{<%= latex_escape( "#{I18n.t('transcript', locale: @locale)}: #{name}" ) %>}
-<% end %>
-
-<% unless @interview.translators.blank? %>
-<% first_name = "#{@interview.translators.first.first_name(@locale)}" %>
-<% last_name = "#{@interview.translators.first.last_name(@locale)}" %>
-<% name = "#{first_name} #{last_name}" %>
-\par{<%= latex_escape( "#{I18n.t('translation', locale: @locale)}: #{name}" ) %>}
-<% end %>
-
-<% unless false && @interview.segmentators.blank? %>
-<% names = @interview.segmentators.map{|i| "#{i.first_name(@locale)} #{i.last_name(@locale)}" }.join(", ") %>
-\par{<%= latex_escape( "#{I18n.t('segmentation', locale: @locale)}: #{names}" ) %> \newline}
-<% end %>
-
-
-
+<%
+  {
+    interviewers: 'interview',
+    cinematographers: 'camera',
+    transcriptors: 'transcript',
+    translators: 'translation',
+    segmentators: 'segmentation'
+  }.each do |contribution_type, translation_key|
+    contributors = @interview.send(contribution_type).compact
+    names = contributors.map{|i| "#{i.first_name(@locale)} #{i.last_name(@locale)}" }.join(", ")
+    unless names.blank?
+%>
+      \par{<%= latex_escape( "#{I18n.t(translation_key, locale: @locale)}: #{names}" ) %> \newline}
+<%
+    end
+  end
+%>
 
