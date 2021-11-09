@@ -159,6 +159,10 @@ export default class ArchiveSearchForm extends Component {
 
     searchform(){
         if (!this.facetsLoaded()) {
+            if (!this.props.isArchiveSearching) {
+                let url = `${pathBase(this.props)}/searches/archive`;
+                this.props.searchInArchive(url, this.props.query);
+            }
             return <Spinner withPadding />;
         } else {
             return(
