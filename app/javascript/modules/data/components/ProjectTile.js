@@ -26,8 +26,13 @@ export default function ProjectTile({
                 src={logo?.src}
                 alt="project logo"
             />
-            <div className="ProjectTile-text">
-                {data.name[locale]}
+            <div className="ProjectTile-body">
+                <p className="ProjectTile-text">
+                    {data.name[locale]}
+                </p>
+                <p className="ProjectTile-text ProjectTile-text--small">
+                    {data.hosting_institution}
+                </p>
             </div>
         </LinkOrA>
     );

@@ -8,6 +8,7 @@ import StartPageVideo from './StartPageVideo';
 import FeaturedInterviews from './FeaturedInterviews';
 
 export default function Home({
+    project,
     isCampscapesProject,
     projectTranslation,
     showStartPageVideo,
@@ -29,6 +30,7 @@ export default function Home({
                 }
                 <div className="home-text">
                     <h1>{projectTranslation?.name}</h1>
+                    <p><b>{project.hosting_institution}</b></p>
                     <div dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}} />
                 </div>
                 {
@@ -50,6 +52,7 @@ export default function Home({
 }
 
 Home.propTypes = {
+    project: PropTypes.object.isRequired,
     isCampscapesProject: PropTypes.bool.isRequired,
     projectTranslation: PropTypes.object.isRequired,
     showStartPageVideo: PropTypes.bool.isRequired,
