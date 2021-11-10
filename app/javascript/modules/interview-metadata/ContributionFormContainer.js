@@ -5,7 +5,7 @@ import { closeArchivePopup } from 'modules/ui';
 import { fetchData, getContributionTypesForCurrentProject,
     getPeopleStatus, getPeopleForCurrentProject,
     getProjects, getCurrentProject } from 'modules/data';
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { getLocale, getProjectId } from 'modules/archive';
 import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
 import ContributionForm from './ContributionForm';
 
@@ -14,7 +14,6 @@ const mapStateToProps = state => ({
     projectId: getProjectId(state),
     projects: getProjects(state),
     project: getCurrentProject(state),
-    translations: getTranslations(state),
     people: getPeopleForCurrentProject(state),
     peopleStatus: getPeopleStatus(state),
     contributionTypes: getContributionTypesForCurrentProject(state),
