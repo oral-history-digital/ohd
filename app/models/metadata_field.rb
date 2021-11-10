@@ -15,7 +15,8 @@ class MetadataField < ApplicationRecord
 
   validates_format_of :map_color, with: /\A#([0-9a-f]{3}|[0-9a-f]{6})\z/i
 
-  before_save :set_name
+  before_validation :set_name
+
   def set_name
     self.name = registry_reference_type.code if registry_reference_type
   end
