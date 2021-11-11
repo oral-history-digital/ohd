@@ -1165,6 +1165,9 @@ es:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview:
+      video_preview: Video preview
+      audio_preview: Audio preview
     interview_map:
       description: Presentación de los lugares que se mencionan en la entrevista.
       error: Error loading map
