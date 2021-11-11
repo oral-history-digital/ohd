@@ -1,12 +1,19 @@
+import { useState } from 'react';
 import { useSelector } from 'react-redux';
 
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import speakerImage from 'assets/images/speaker.png';
+import fallbackImage from 'assets/images/speaker.png';
 
 export default function InterviewLoggedOut() {
     const { t, locale } = useI18n();
     const interview = useSelector(getCurrentInterview);
+
+    const [imgUrl, setImgUrl] = useState(interview.still_url || fallbackImage);
+
+    function handleError() {
+        setImgUrl(fallbackImage);
+    }
 
     return (
         <div>
@@ -19,8 +26,9 @@ export default function InterviewLoggedOut() {
                 <div className="MediaElement">
                     <img
                         className="MediaElement-element"
-                        src={interview.still_url || speakerImage}
+                        src={imgUrl}
                         alt={interview.media_type === 'video' ? t('modules.interview.video_preview') : t('modules.interview.audio_preview')}
+                        onError={handleError}
                     />
                 </div>
             </div>
