@@ -143,9 +143,7 @@ export default class RegisterForm extends Component {
             },
         ];
 
-        if (this.props.projectId === 'mog') {
-            return firstElements.concat(addressElements).concat(countrySelect).concat(otherElements);
-        } else if (this.props.locale === 'de') {
+        if (this.props.locale === 'de') {
             return firstElements.concat(addressElements).concat(countrySelect).concat(newsletterElement).concat(otherElements);
         } else {
             return firstElements.concat(addressElements).concat(countrySelect).concat(otherElements);
