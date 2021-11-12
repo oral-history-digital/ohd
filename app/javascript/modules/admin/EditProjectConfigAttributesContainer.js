@@ -27,7 +27,7 @@ const mapStateToProps = state => ({
         {
             attribute: "domain",
             //validate: function(v){return /^https?:\/\/[a-zA-Z0-9.-]+(:\d+)?$/.test(v)},
-            help: 'activerecord.attributes.project.domain_help'
+            //help: 'activerecord.attributes.project.domain_help'
         },
         {
             attribute: "archive_domain",
