@@ -152,7 +152,7 @@ class InterviewsController < ApplicationController
         render plain: vtt
       end
       format.pdf do
-        @locale = current_project.default_locales.include?(params[:lang]) ? params[:lang] : params[:locale]
+        @locale = current_project.available_locales.include?(params[:lang]) ? params[:lang] : params[:locale]
         interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
         @lang = "#{params[:lang]}-public"
         @lang_human = I18n.t(params[:lang], locale: @locale)
