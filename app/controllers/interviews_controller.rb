@@ -149,7 +149,7 @@ class InterviewsController < ApplicationController
         render plain: vtt
       end
       format.pdf do
-        @locale = params[:locale]
+        @locale = current_project.default_locales.include?(params[:lang]) ? params[:lang] : params[:locale]
         @lang = "#{params[:lang]}-public"
         @lang_human = I18n.t(params[:lang], locale: @locale)
         @orig_lang = "#{interview_locale}-public"
