@@ -8,10 +8,10 @@ import { MediaPlayerContainer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
 import { Spinner } from 'modules/spinners';
-import { Fetch, getContributorsFetched, getInterviewsStatus } from 'modules/data';
+import { getInterviewsStatus } from 'modules/data';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
 import InterviewTabsContainer from './InterviewTabsContainer';
-import InterviewLoggedOutContainer from './InterviewLoggedOutContainer';
+import InterviewLoggedOut from './InterviewLoggedOut';
 import { useProjectAccessStatus } from 'modules/auth';
 
 export default function Interview({
@@ -85,7 +85,7 @@ export default function Interview({
                     </AuthorizedContent>
                 </AuthShowContainer>
                 <AuthShowContainer ifLoggedOut ifNoProject>
-                    <InterviewLoggedOutContainer />
+                    <InterviewLoggedOut />
                 </AuthShowContainer>
             </div>
         );

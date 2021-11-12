@@ -103,7 +103,7 @@ ru:
     лица.
   interview_empty_gallery_explanation: Фотографии для этого интервью отсутствуют.
   tapes: Записи
-  without_translation: Это интервью не переведено на немецкий язык.
+  without_translation: This interview has not yet been translated.
   without_transcript: Транскрипт данного интервью пока отсутствует.
   without_index: Оглавление данного интервью пока отсутствует.
   without_index_locale: Оглавление данного интервью не переведено на русский язык.
@@ -1620,6 +1620,9 @@ ru:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview:
+      video_preview: Video preview
+      audio_preview: Audio preview
     interview_map:
       description: Обозначение мест, упомянутых в интервью
       error: Error loading map

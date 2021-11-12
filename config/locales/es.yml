@@ -111,7 +111,7 @@ es:
   transcript_header: Transcripción de la entrevsita con
   translation_header: Traducción de la entrevista con
   tapes: Cintas
-  without_translation: Esta entrevista todavía no se ha traducido al alemán.
+  without_translation: Esta entrevista todavía no se ha traducido.
   without_transcript: Esta entrevista todavía no ha sido transcrito.
   without_index: No se ha elaborado una tabla de contenido para esta entrevista.
   without_index_locale: La tabla de contenido no ha sido traducida al español.
@@ -1165,6 +1165,9 @@ es:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview:
+      video_preview: Video preview
+      audio_preview: Audio preview
     interview_map:
       description: Presentación de los lugares que se mencionan en la entrevista.
       error: Error loading map

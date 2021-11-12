@@ -24,7 +24,7 @@ export default function ProjectTile({
             <img
                 className="ProjectTile-image logo-img"
                 src={logo?.src}
-                alt="project logo"
+                alt="Logo"
             />
             <div className="ProjectTile-body">
                 <p className="ProjectTile-text">

@@ -2,9 +2,10 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Modal } from 'modules/ui';
-import { pathBase } from 'modules/routes';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
+
+import DeleteInterviews from './DeleteInterviews';
 
 export default class AdminActions extends Component {
     selectedArchiveIds() {
@@ -35,17 +36,6 @@ export default class AdminActions extends Component {
         })
     }
 
-    deleteInterviews() {
-        this.selectedArchiveIds().forEach((archiveId) => {
-            this.props.deleteData(this.props, 'interviews', archiveId);
-        });
-        if (this.props.match.params.archiveId === undefined) {
-            // TODO: faster aproach would be to just hide or delete the dom-elements
-            location.reload();
-        } else {
-            this.props.history.push(`/${pathBase(this.props)}/searches/archive`);
-        }
-    }
 
     updateInterviews(params) {
         this.selectedArchiveIds().forEach((archiveId) => {
@@ -65,37 +55,8 @@ export default class AdminActions extends Component {
     links(archiveIds) {
         return archiveIds.map((archiveId, i) => [
             i > 0 && ", ",
-            <a href={`/${this.props.locale}/interviews/${archiveId}/metadata.xml`} target='_blank' key={`link-to-${archiveId}`}>{archiveId}</a>
+            <a href={`/${this.props.locale}/interviews/${archiveId}/metadata.xml`} target='_blank' rel="noreferrer" key={`link-to-${archiveId}`}>{archiveId}</a>
         ])
-    }
-
-    deleteButton() {
-        return (
-            <AuthorizedContent object={{ type: 'Interview' }} action='destroy'>
-                <Modal
-                    title={t(this.props, 'edit.interviews.delete.title')}
-                    trigger={t(this.props, 'edit.interviews.delete.title')}
-                    triggerClassName="flyout-sub-tabs-content-ico-link"
-                >
-                    {close => (
-                        <div>
-                            {t(this.props, 'edit.interviews.delete.confirm_text', {archive_ids: this.selectedArchiveIds().join(', ')})}
-
-                            <button
-                                type="button"
-                                className="any-button"
-                                onClick={() => {
-                                    this.deleteInterviews();
-                                    close();
-                                }}
-                            >
-                                {t(this.props, 'submit')}
-                            </button>
-                        </div>
-                    )}
-                </Modal>
-            </AuthorizedContent>
-        );
     }
 
     updateButton(params, action) {
@@ -189,7 +150,7 @@ export default class AdminActions extends Component {
                 {this.doiResults()}
                 {this.doiButton()}
                 {this.messages()}
-                {this.deleteButton()}
+                <DeleteInterviews selectedArchiveIds={this.selectedArchiveIds()} />
                 {this.updateButton({workflow_state: 'public'}, 'publish')}
                 {this.updateButton({workflow_state: 'unshared'}, 'unpublish')}
                 {this.updateButton({biographies_workflow_state: 'public'}, 'publish_biographies')}

@@ -135,7 +135,10 @@ class InterviewsController < ApplicationController
 
   def show
     @interview = Interview.find_by_archive_id(params[:id])
-    interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
+
+    unless @interview.present?
+      raise ActiveRecord::RecordNotFound
+    end
 
     respond_to do |format|
       format.json do
@@ -150,6 +153,7 @@ class InterviewsController < ApplicationController
       end
       format.pdf do
         @locale = current_project.default_locales.include?(params[:lang]) ? params[:lang] : params[:locale]
+        interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
         @lang = "#{params[:lang]}-public"
         @lang_human = I18n.t(params[:lang], locale: @locale)
         @orig_lang = "#{interview_locale}-public"

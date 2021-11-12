@@ -106,7 +106,7 @@ en:
   subcollection: Subcollection
   interview_empty_gallery_explanation: There are no photos available for this interview.
   tapes: Tapes
-  without_translation: This interview has not yet been translated into German.
+  without_translation: This interview has not yet been translated.
   without_transcript: This interview has not yet been transcribed.
   without_index: No table of contents was created for this interview.
   without_index_locale: The table of contents of this interview has not been translated into English.
@@ -1204,6 +1204,9 @@ en:
     features:
       experimental_features: "Experimental Features"
       tree_select: "Tree select for registry entries"
+    interview:
+      video_preview: Video preview
+      audio_preview: Audio preview
     interview_map:
       description: Places mentioned in the interview
       error: Error loading map

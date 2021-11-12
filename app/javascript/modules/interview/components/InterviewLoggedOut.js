@@ -1,10 +1,20 @@
-import PropTypes from 'prop-types';
+import { useState } from 'react';
+import { useSelector } from 'react-redux';
 
-export default function InterviewLoggedOut({
-    project,
-    interview,
-    locale,
-}) {
+import { getCurrentInterview } from 'modules/data';
+import { useI18n } from 'modules/i18n';
+import fallbackImage from 'assets/images/speaker.png';
+
+export default function InterviewLoggedOut() {
+    const { t, locale } = useI18n();
+    const interview = useSelector(getCurrentInterview);
+
+    const [imgUrl, setImgUrl] = useState(interview.still_url || fallbackImage);
+
+    function handleError() {
+        setImgUrl(fallbackImage);
+    }
+
     return (
         <div>
             <div className="MediaPlayer">
@@ -16,8 +26,9 @@ export default function InterviewLoggedOut({
                 <div className="MediaElement">
                     <img
                         className="MediaElement-element"
-                        src={interview.still_url}
-                        alt="Video preview"
+                        src={imgUrl}
+                        alt={interview.media_type === 'video' ? t('modules.interview.video_preview') : t('modules.interview.audio_preview')}
+                        onError={handleError}
                     />
                 </div>
             </div>
@@ -28,9 +39,3 @@ export default function InterviewLoggedOut({
         </div>
     );
 }
-
-InterviewLoggedOut.propTypes = {
-    project: PropTypes.object.isRequired,
-    interview: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
-};
