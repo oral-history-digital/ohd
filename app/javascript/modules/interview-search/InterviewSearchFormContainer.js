@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getArchiveId } from 'modules/archive';
-import { searchInInterview } from 'modules/search';
+import { clearSingleInterviewSearch, searchInInterview } from 'modules/search';
 import InterviewSearchForm from './InterviewSearchForm';
 
 const mapStateToProps = (state) => {
@@ -16,6 +16,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+    clearSingleInterviewSearch,
     searchInInterview,
 }, dispatch);
 
