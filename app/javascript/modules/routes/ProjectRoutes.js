@@ -8,7 +8,7 @@ import { getCurrentProject } from 'modules/data';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { HomeContainer } from 'modules/startpage';
 import { InterviewContainer } from 'modules/interview';
-import { ArchiveSearchContainer, clearAllInterviewSearch } from 'modules/search';
+import { ArchiveSearchContainer, clearSearch, clearAllInterviewSearch } from 'modules/search';
 import { SearchMap } from 'modules/search-map';
 import { RegistryContainer } from 'modules/registry';
 import { EditInterviewContainer } from 'modules/admin';
@@ -33,12 +33,14 @@ export default function ProjectRoutes() {
         // Set project-specific redux data here.
         dispatch(setAvailableViewModes(project.view_modes));
         dispatch(setViewMode(project.view_modes?.[0] || null));
+        dispatch(clearSearch());
 
         return function unsetCurrentProjectData() {
             // Unset project-specific redux data here.
             dispatch(clearViewModes());
             dispatch(setArchiveId(null));
             dispatch(clearAllInterviewSearch());
+            dispatch(clearSearch());
         };
     }, [projectId, dispatch]);
 
