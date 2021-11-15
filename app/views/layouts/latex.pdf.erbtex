@@ -20,7 +20,7 @@
 
 \usepackage{xcolor}
 \definecolor{textGrey}{rgb}{0.3,0.3,0.3}
-\definecolor{primaryColor}{HTML}{<%= "#{current_project.primary_color.sub('#', '')}" %>}
+\definecolor{primaryColor}{HTML}{<%= "#{(current_project.primary_color || DEFAULT_PRIMARY_COLOR).sub('#', '')}" %>}
 
 \usepackage{graphicx}
 \graphicspath{ {<%= "#{Rails.root}/app/assets/images/pdf/" %>} }
