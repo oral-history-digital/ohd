@@ -103,6 +103,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
           end
           File.delete(file_path) if File.exist?(file_path)
         rescue StandardError => e
+          log("*** #{project.shortname} - #{project.id}")
           log("#{e.message}: #{e.backtrace}")
         end
       end
