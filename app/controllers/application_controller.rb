@@ -56,8 +56,8 @@ class ApplicationController < ActionController::Base
       archive: {
         locale: I18n.locale,
         projectId: current_project ? current_project.identifier : nil,
-        viewModes: current_project ? current_project.view_modes : ['grid'],
-        viewMode: current_project ? current_project.view_modes.first : 'grid',
+        viewModes: nil,
+        viewMode: nil,
         editView: !!cookies["editView"],
         doiResult: {},
         selectedArchiveIds: ['dummy'],

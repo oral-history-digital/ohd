@@ -6,7 +6,9 @@ import {
     SET_LOCALE,
     SET_ARCHIVE_ID,
     SET_PROJECT_ID,
+    SET_AVAILABLE_VIEW_MODES,
     SET_VIEW_MODE,
+    CLEAR_VIEW_MODES,
     CHANGE_TO_EDIT_VIEW,
     CHANGE_TO_INTERVIEW_EDIT_VIEW,
     RECEIVE_RESULT,
@@ -32,9 +34,18 @@ export const setProjectId = (projectId) => ({
     projectId: projectId,
 });
 
-export const setViewMode = (viewMode) => ({
+export const setAvailableViewModes = viewModes => ({
+    type: SET_AVAILABLE_VIEW_MODES,
+    payload: viewModes,
+});
+
+export const setViewMode = viewMode => ({
     type: SET_VIEW_MODE,
-    viewMode: viewMode,
+    payload: viewMode,
+});
+
+export const clearViewModes = () => ({
+    type: CLEAR_VIEW_MODES,
 });
 
 const uploadedTranscript = (json) => ({

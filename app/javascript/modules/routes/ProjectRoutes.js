@@ -2,7 +2,9 @@ import { useEffect  } from 'react';
 import { Route, Switch, useRouteMatch } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getProjectId, setArchiveId } from 'modules/archive';
+import { getProjectId, setArchiveId, setAvailableViewModes, setViewMode,
+    clearViewModes } from 'modules/archive';
+import { getCurrentProject } from 'modules/data';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { HomeContainer } from 'modules/startpage';
 import { InterviewContainer } from 'modules/interview';
@@ -23,11 +25,18 @@ import { UserRegistrationsContainer } from 'modules/users';
 
 export default function ProjectRoutes() {
     const projectId = useSelector(getProjectId);
+    const project = useSelector(getCurrentProject);
     const dispatch = useDispatch();
     const { path } = useRouteMatch();
 
     useEffect(() => {
-        return function unSetArchiveId() {
+        // Set project-specific redux data here.
+        dispatch(setAvailableViewModes(project.view_modes));
+        dispatch(setViewMode(project.view_modes?.[0] || null));
+
+        return function unsetCurrentProjectData() {
+            // Unset project-specific redux data here.
+            dispatch(clearViewModes());
             dispatch(setArchiveId(null));
         };
     }, [projectId, dispatch]);

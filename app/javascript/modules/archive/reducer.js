@@ -2,7 +2,9 @@ import {
     SET_LOCALE,
     SET_ARCHIVE_ID,
     SET_PROJECT_ID,
+    SET_AVAILABLE_VIEW_MODES,
     SET_VIEW_MODE,
+    CLEAR_VIEW_MODES,
     REQUEST_STATIC_CONTENT,
     RECEIVE_STATIC_CONTENT,
     CHANGE_TO_EDIT_VIEW,
@@ -13,19 +15,16 @@ import {
     UPDATE_SELECTED_REGISTRY_ENTRY_IDS
 } from './action-types';
 
-const initialState = {
+export const initialState = {
     locale: 'de',
     archiveId: null,
     projectId: null,
-    viewModes: ['grid', 'list'],
-    viewMode: 'grid',
-
+    viewModes: null,
+    viewMode: null,
     listColumns: [],
     detailViewFields: [],
-
     homeContent: "",
     externalLinks: {},
-
     editView: false,
     doiResult: {},
     selectedArchiveIds: ['dummy']
@@ -46,10 +45,22 @@ const archive = (state = initialState, action) => {
             return Object.assign({}, state, {
                 projectId: action.projectId
             })
+        case SET_AVAILABLE_VIEW_MODES:
+            return {
+                ...state,
+                viewModes: action.payload,
+            };
         case SET_VIEW_MODE:
-            return Object.assign({}, state, {
-                viewMode: action.viewMode
-            })
+            return {
+                ...state,
+                viewMode: action.payload,
+            };
+        case CLEAR_VIEW_MODES:
+            return {
+                ...state,
+                viewModes: null,
+                viewMode: null,
+            };
         case SET_SELECTED_ARCHIVE_IDS:
             return Object.assign({}, state, { selectedArchiveIds: ['dummy'].concat(action.archiveIds) })
         case UPDATE_SELECTED_ARCHIVE_IDS:

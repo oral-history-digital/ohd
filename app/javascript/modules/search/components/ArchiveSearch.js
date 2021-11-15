@@ -106,7 +106,7 @@ export default class ArchiveSearch extends Component {
     }
 
     render() {
-        const { isArchiveSearching, query, resultPagesCount, resultsCount, viewMode,
+        const { isArchiveSearching, query, resultPagesCount, resultsCount, currentViewMode,
             viewModes, foundInterviews, resultsAvailable } = this.props;
 
         return (
@@ -132,7 +132,7 @@ export default class ArchiveSearch extends Component {
                         className='tabs'
                         selectedTabClassName='active'
                         selectedTabPanelClassName='active'
-                        selectedIndex={(viewModes && viewModes.indexOf(viewMode)) || 0}
+                        selectedIndex={(viewModes && viewModes.indexOf(currentViewMode)) || 0}
                         onSelect={this.handleTabClick}
                     >
                         <TabList className="search-results-tabs">
@@ -189,7 +189,7 @@ ArchiveSearch.propTypes = {
     isArchiveSearching: PropTypes.bool,
     query: PropTypes.object.isRequired,
     viewModes: PropTypes.array.isRequired,
-    viewMode: PropTypes.string.isRequired,
+    currentViewMode: PropTypes.string.isRequired,
     foundInterviews: PropTypes.array.isRequired,
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
