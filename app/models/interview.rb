@@ -144,7 +144,14 @@ class Interview < ApplicationRecord
 
     dynamic_string :search_facets, :multiple => true, :stored => true do
       project.search_facets.inject({}) do |mem, facet|
-        mem[facet.name] = (self.respond_to?(facet.name) ? self.send(facet.name) : (interviewee && interviewee.send(facet.name))) || ''
+        entry_ids = if facet.source == 'Interview'
+          registry_references.where(registry_reference_type_id: facet.registry_reference_type_id).map(&:registry_entry_id)
+        elsif interviewee && facet.source == 'Person'
+          interviewee.registry_references.where(registry_reference_type_id: facet.registry_reference_type_id).map(&:registry_entry_id)
+        else
+          []
+        end
+        mem[facet.name] = entry_ids
         mem
       end
     end
