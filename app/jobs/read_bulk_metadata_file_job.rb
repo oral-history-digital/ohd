@@ -35,7 +35,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
             interview_data = {
               project_id: project.id,
               interview_date: data[17] || data[18],
-              collection_id: data[12] && find_or_create_collection(data[12]).id,
+              collection_id: data[12] && find_or_create_collection(data[12], project).id,
               language_id: (language = find_or_create_language(data[16]); language ? language.id : nil),
               duration: data[21],
               media_type: data[15] && data[15].downcase,
@@ -132,15 +132,14 @@ class ReadBulkMetadataFileJob < ApplicationJob
     "new#{format("%04d", number)}"
   end
 
-  def find_or_create_collection(name)
+  def find_or_create_collection(name, project)
     collection = nil
-    Collection.all.each do |c| 
+    Collection.where(project_id: project.id).each do |c| 
       collection = c if c.translations.map(&:name).include?(name)
     end
 
-    if collection
-    else
-      collection = Collection.create(name: name[0..200])
+    unless collection
+      collection = Collection.create(name: name[0..200], project_id: project.id)
     end
     collection
   end
@@ -163,8 +162,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
   end
 
   def find_or_create_place(name, country_name)
-    country = country_name && RegistryEntry.find_or_create_descendant('places', "#{I18n.locale}::#{country_name}")
-    place = name && RegistryEntry.find_or_create_descendant(country ? country.code : 'places', "#{I18n.locale}::#{name}")
+    country = country_name && RegistryEntry.find_or_create_descendant(project, 'places', "#{I18n.locale}::#{country_name}")
+    place = name && RegistryEntry.find_or_create_descendant(project, country ? country.code : 'places', "#{I18n.locale}::#{name}")
     place
   end
 
@@ -179,7 +178,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
   def reference(interview, data, code)
     if data
       registry_reference_type = interview.project.registry_reference_types.find_by_code(code)
-      registry_entry = data && RegistryEntry.find_or_create_descendant(code, "#{I18n.locale}::#{data}")
+      registry_entry = data && RegistryEntry.find_or_create_descendant(project, code, "#{I18n.locale}::#{data}")
       destroy_reference(interview, registry_reference_type && registry_reference_type.id, code)
       create_reference(registry_entry.id, interview, interview, registry_reference_type && registry_reference_type.id) if registry_entry
     end

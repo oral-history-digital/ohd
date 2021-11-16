@@ -303,8 +303,8 @@ class RegistryEntry < ApplicationRecord
     # ; delimits between the different names of a registry_entry
     # name positions are given by the order
     #
-    def create_with_parent_and_names(parent_id, names_w_locales, code=nil)
-      registry_entry = RegistryEntry.create code: code, desc: code, workflow_state: "public", list_priority: false
+    def create_with_parent_and_names(project, parent_id, names_w_locales, code=nil)
+      registry_entry = RegistryEntry.create code: code, desc: code, workflow_state: "public", list_priority: false, project_id: project.id
       RegistryHierarchy.create(ancestor_id: parent_id, descendant_id: registry_entry.id) if parent_id
 
       names_w_locales.gsub("\"", '').split('#').each do |name_w_locale|
@@ -321,9 +321,9 @@ class RegistryEntry < ApplicationRecord
       registry_entry
     end
 
-    def find_or_create_descendant(parent_code, descendant_name)
+    def find_or_create_descendant(project, parent_code, descendant_name)
       descendant = nil
-      parent = find_by_code parent_code
+      parent = RegistryEntry.where(code: parent_code, project_id: project.id).first
       locale, names = descendant_name.split('::')
       parent.children.each do |c|
         descendant = c if c.names_w(locale) == names
@@ -331,7 +331,7 @@ class RegistryEntry < ApplicationRecord
       end
 
       if descendant.nil? && descendant_name.length > 2
-        descendant = RegistryEntry.create_with_parent_and_names(parent.id, descendant_name, names.gsub(/[\s+,]/, '_').downcase)
+        descendant = RegistryEntry.create_with_parent_and_names(project, parent.id, descendant_name, names.gsub(/[\s+,]/, '_').downcase)
       end
       descendant
     end
