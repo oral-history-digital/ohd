@@ -2,8 +2,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
-import { setViewMode, getLocale, getViewMode, getTranslations, getProjectId,
-    getEditView } from 'modules/archive';
+import { setViewMode, getLocale, getViewModes, getViewMode, getTranslations,
+    getProjectId, getEditView } from 'modules/archive';
 import { getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { getIsLoggedIn } from 'modules/account';
 import { clearSearch, searchInArchive } from '../actions';
@@ -26,7 +26,7 @@ const mapStateToProps = (state) => {
         project: project,
         projectId: getProjectId(state),
         projects: getProjects(state),
-        viewModes: project?.view_modes || ['grid'],
+        viewModes: getViewModes(state),
         currentViewMode: getViewMode(state),
         listColumns: project && project.list_columns,
         editView: getEditView(state),

@@ -1,6 +1,7 @@
-import { NAME } from './constants';
-
 import { createSelector } from 'reselect';
+
+import { VIEWMODE_GRID } from 'modules/constants';
+import { NAME } from './constants';
 
 const getState = state => state[NAME];
 
@@ -20,10 +21,27 @@ export const getCountryKeys = state => getState(state).countryKeys;
 
 
 // UI: Search results tabs
-export const getViewModes = state => getState(state).viewModes;
+export const getViewModes = createSelector(
+    [getState, getProjectId],
+    (archive, projectId) => {
+        if (projectId) {
+            return archive.viewModes;
+        } else {
+            return [VIEWMODE_GRID];
+        }
+    }
+);
 
-export const getViewMode = state => getState(state).viewMode;
-
+export const getViewMode = createSelector(
+    [getState, getProjectId],
+    (archive, projectId) => {
+        if (projectId) {
+            return archive.viewMode;
+        } else {
+            return VIEWMODE_GRID;
+        }
+    }
+);
 
 // UI: Admin
 export const getEditView = state => getState(state).editView;

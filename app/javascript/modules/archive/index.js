@@ -8,4 +8,4 @@ export { default as archiveReducer } from './reducer';
 
 export { getArchiveId, getEditView, getInterviewEditView, getLocale, getProjectId,
     getSelectedRegistryEntryIds, getTranslations, getDoiResult, getCountryKeys,
-    getSelectedArchiveIds, getViewMode } from './selectors';
+    getSelectedArchiveIds, getViewModes, getViewMode } from './selectors';
