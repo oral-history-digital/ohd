@@ -87,7 +87,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
             # create birth location and reference it
             if data[9] || data[10]
               birth_location_type = project.registry_reference_types.find_by_code('birth_location')
-              place = find_or_create_place(data[9], data[10])
+              place = find_or_create_place(data[9], data[10], project)
               destroy_reference(interview, birth_location_type.id)
               create_reference(place.id, interview, interview.interviewee, birth_location_type.id) if place
             end
@@ -95,7 +95,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
             # create interview location and reference it
             if data[19] || data[20]
               interview_location_type = project.registry_reference_types.find_by_code('interview_location')
-              place = find_or_create_place(data[19], data[20])
+              place = find_or_create_place(data[19], data[20], project)
               destroy_reference(interview, interview_location_type.id)
               create_reference(place.id, interview, interview, interview_location_type.id) if place
             end
@@ -161,7 +161,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     end
   end
 
-  def find_or_create_place(name, country_name)
+  def find_or_create_place(name, country_name, project)
     country = country_name && RegistryEntry.find_or_create_descendant(project, 'places', "#{I18n.locale}::#{country_name}")
     place = name && RegistryEntry.find_or_create_descendant(project, country ? country.code : 'places', "#{I18n.locale}::#{name}")
     place
