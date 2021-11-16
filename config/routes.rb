@@ -1,6 +1,8 @@
 Rails.application.routes.draw do
 
-  get "norm_data" => "registry_entries#norm_data"
+  scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
+    get "norm_data" => "registry_entries#norm_data"
+  end
 
   concern :archive do
     get "random_featured_interviews", to: "interviews#random_featured"

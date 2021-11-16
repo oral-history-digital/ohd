@@ -33,6 +33,7 @@ function NormDataSelect({
                     name_position: 1,
                     translations_attributes: [{
                         descriptor: value.Entry.Name,
+                        notes: `ID: ${value.Entry.ID}; Info: ${value.Entry.Label}`,
                         locale: 'de'
                     }],
                 }],
@@ -42,7 +43,7 @@ function NormDataSelect({
     }
 
     const loadOptions = (inputValue) => {
-        return fetch(`/norm_data?expression=${inputValue}`).then(res => res.json());
+        return fetch(`/de/norm_data?expression=${inputValue}`).then(res => res.json());
     };
 
     return (
@@ -52,7 +53,7 @@ function NormDataSelect({
                 cacheOptions
                 defaultOptions
                 value={selectedValue}
-                getOptionLabel={e => e.Entry.Name}
+                getOptionLabel={e => `${e.Entry.Name}: ${e.Entry.Label}`}
                 getOptionValue={e => e.Entry.ID}
                 loadOptions={loadOptions}
                 onInputChange={handleInputChange}

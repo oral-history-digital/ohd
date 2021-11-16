@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash, FaMinusCircle, FaSitemap, FaGlobeEurope, FaMinus, FaPlus }
     from 'react-icons/fa';
@@ -10,6 +10,7 @@ import { t } from 'modules/i18n';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
+import RegistryEntryFromNormDataFormContainer from './RegistryEntryFromNormDataFormContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
 
 export default class RegistryEntry extends Component {
@@ -159,22 +160,27 @@ export default class RegistryEntry extends Component {
         )
     }
 
-    addRegistryEntry() {
+    addRegistryEntry(component, titlePart) {
         return (
             <div
                 className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_entry.new')}
+                title={t(this.props, `edit.registry_entry.${titlePart}`)}
                 onClick={() => {
                     this.setState({ editButtonsVisible: false });
                     this.props.openArchivePopup({
-                        title: t(this.props, 'edit.registry_entry.new'),
-                        content: <RegistryEntryFormContainer registryEntryParent={this.props.data} />
+                        title: t(this.props, `edit.registry_entry.${titlePart}`),
+                        content: createElement(component,
+                            {
+                                registryEntryParent: this.props.data,
+                                onSubmit: close
+                            }
+                        )
                     })
                 }}
             >
                 <FaSitemap className="Icon Icon--editorial" />
                 {' '}
-                {t(this.props, 'edit.registry_entry.new')}
+                {t(this.props, `edit.registry_entry.${titlePart}`)}
             </div>
         )
     }
@@ -213,7 +219,8 @@ export default class RegistryEntry extends Component {
                 <PopupMenu>
                     <PopupMenu.Item>{this.edit()}</PopupMenu.Item>
                     <PopupMenu.Item>{this.delete()}</PopupMenu.Item>
-                    <PopupMenu.Item>{this.addRegistryEntry()}</PopupMenu.Item>
+                    <PopupMenu.Item>{this.addRegistryEntry(RegistryEntryFormContainer, 'new')}</PopupMenu.Item>
+                    <PopupMenu.Item>{this.addRegistryEntry(RegistryEntryFromNormDataFormContainer, 'from_norm_data')}</PopupMenu.Item>
                     <PopupMenu.Item>{this.addParent()}</PopupMenu.Item>
                     <PopupMenu.Item>{this.deleteParent()}</PopupMenu.Item>
                 </PopupMenu>
