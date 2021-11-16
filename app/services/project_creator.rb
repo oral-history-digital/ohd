@@ -11,6 +11,7 @@ class ProjectCreator < ApplicationService
     @project = Project.create(project_params)
     grant_access_to_creating_user
     create_default_registry_name_type
+    create_norm_data_registry_name_type
     create_root_registry_entry
     create_default_registry_entries
     create_default_registry_reference_types
@@ -37,6 +38,15 @@ class ProjectCreator < ApplicationService
     @default_registry_name_type = RegistryNameType.create(
       code: "spelling",
       name: "Bezeichner",
+      order_priority: 3,
+      project_id: project.id
+    )
+  end
+
+  def create_norm_data_registry_name_type
+    RegistryNameType.create(
+      code: "norm_data",
+      name: "Normdaten",
       order_priority: 3,
       project_id: project.id
     )
