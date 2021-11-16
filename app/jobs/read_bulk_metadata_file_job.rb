@@ -79,8 +79,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
             create_contributions(interview, data[25], 'translator')
             create_contributions(interview, data[26], 'research')
             
-            reference(interview, data[22], 'accessibility')
-            reference(interview, data[28], 'camp')
+            #reference(interview, data[22], 'accessibility')
+            #reference(interview, data[28], 'camp')
             reference(interview, data[7], 'group')
             reference(interview, data[8], 'group_detail')
 
@@ -178,7 +178,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
   def reference(interview, data, code)
     if data
       registry_reference_type = interview.project.registry_reference_types.find_by_code(code)
-      registry_entry = data && RegistryEntry.find_or_create_descendant(project, code, "#{I18n.locale}::#{data}")
+      registry_entry = data && RegistryEntry.find_or_create_descendant(interview.project, code, "#{I18n.locale}::#{data}")
       destroy_reference(interview, registry_reference_type && registry_reference_type.id, code)
       create_reference(registry_entry.id, interview, interview, registry_reference_type && registry_reference_type.id) if registry_entry
     end
