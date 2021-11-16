@@ -1,4 +1,6 @@
 import dotProp from 'dot-prop-immutable';
+
+import { VIEWMODE_GRID } from 'modules/constants';
 import * as selectors from './selectors';
 import { NAME } from './constants';
 
@@ -7,7 +9,7 @@ const state = {
         locale: 'de',
         projectId: 'cdoh',
         viewModes: ['grid', 'list'],
-        viewMode: 'grid',
+        viewMode: 'list',
         editView: true,
         translations: {
             de: 'dummy',
@@ -35,12 +37,26 @@ test('getProjectId retrieves project id', () => {
     expect(selectors.getProjectId(state)).toEqual(state[NAME].projectId);
 });
 
-test('getViewModes retrieves available view modes', () => {
-    expect(selectors.getViewModes(state)).toEqual(state[NAME].viewModes);
+describe('getViewModes', () => {
+    test('retrieves available view modes', () => {
+        expect(selectors.getViewModes(state)).toEqual(state[NAME].viewModes);
+    });
+
+    test('gets default view modes if no project is selected (for OHD)', () => {
+        const _state = dotProp.set(state, `${NAME}.projectId`, null);
+        expect(selectors.getViewModes(_state)).toEqual([VIEWMODE_GRID]);
+    })
 });
 
-test('getViewMode retrieves current view mode', () => {
-    expect(selectors.getViewMode(state)).toEqual(state[NAME].viewMode);
+describe('getViewMode', () => {
+    test('retrieves current view mode', () => {
+        expect(selectors.getViewMode(state)).toEqual(state[NAME].viewMode);
+    });
+
+    test('gets default view mode if no project is selected (for OHD)', () => {
+        const _state = dotProp.set(state, `${NAME}.projectId`, null);
+        expect(selectors.getViewMode(_state)).toEqual(VIEWMODE_GRID);
+    });
 });
 
 test('getEditView retrieves editView status', () => {

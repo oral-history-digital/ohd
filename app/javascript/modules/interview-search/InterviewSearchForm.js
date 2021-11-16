@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FaSearch } from 'react-icons/fa';
+import { FaSearch, FaTimesCircle } from 'react-icons/fa';
 
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
@@ -9,6 +9,7 @@ export default function InterviewSearchForm({
     archiveId,
     isInterviewSearching,
     interviewFulltext,
+    clearSingleInterviewSearch,
     searchInInterview,
 }) {
     const [searchTerm, setSearchTerm] = useState(interviewFulltext || '');
@@ -18,6 +19,11 @@ export default function InterviewSearchForm({
     function handleSubmit(event) {
         event.preventDefault();
         searchInInterview(`${pathBase}/searches/interview`, {fulltext: searchTerm, id: archiveId});
+    }
+
+    function handleClear() {
+        setSearchTerm('');
+        clearSingleInterviewSearch(archiveId);
     }
 
     return (
@@ -35,6 +41,14 @@ export default function InterviewSearchForm({
                     aria-label={t('enter_search_field')}
                 />
                 <button
+                    type="button"
+                    className="Button Button--transparent Button--icon search-button"
+                    disabled={isInterviewSearching}
+                    onClick={handleClear}
+                >
+                    <FaTimesCircle className="Icon Icon--primary" />
+                </button>
+                <button
                     type="submit"
                     className="Button Button--transparent Button--icon search-button"
                     disabled={isInterviewSearching}
@@ -50,5 +64,6 @@ InterviewSearchForm.propTypes = {
     archiveId: PropTypes.string.isRequired,
     interviewFulltext: PropTypes.string,
     isInterviewSearching: PropTypes.bool,
+    clearSingleInterviewSearch: PropTypes.func.isRequired,
     searchInInterview: PropTypes.func.isRequired,
 };

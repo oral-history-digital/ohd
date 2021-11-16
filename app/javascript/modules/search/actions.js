@@ -12,6 +12,8 @@ import {
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
+    CLEAR_SINGLE_INTERVIEW_SEARCH,
+    CLEAR_ALL_INTERVIEW_SEARCH,
 } from './action-types';
 
 export function setQueryParams(scope, params){
@@ -94,6 +96,15 @@ export function searchInInterview(url, searchQuery) {
         Loader.getJson(url, searchQuery, dispatch, receiveInterviewSearchResults);
     }
 }
+
+export const clearSingleInterviewSearch = archiveId => ({
+    type: CLEAR_SINGLE_INTERVIEW_SEARCH,
+    payload: archiveId,
+});
+
+export const clearAllInterviewSearch = () => ({
+    type: CLEAR_ALL_INTERVIEW_SEARCH,
+});
 
 const requestRegistryEntrySearch = (searchQuery) => ({
     type: REQUEST_REGISTRY_ENTRY_SEARCH,
