@@ -252,12 +252,16 @@ export default class ArchiveSearchForm extends Component {
     }
 
     renderOptions() {
-        return (this.props.allInterviewsTitles.concat(this.props.allInterviewsPseudonyms)).map((title, index) => {
-            if (title) {
-                return (
-                    <option key={"option-" + index} value={`"${title[this.props.locale]}"`} />
-                )
-            }
-        })
+        const { allInterviewsTitles, allInterviewsPseudonyms, locale } = this.props;
+
+        const titles = allInterviewsTitles
+            .concat(allInterviewsPseudonyms)
+            .map(title => title?.[locale])
+            .filter(title => title)
+            .filter(title => title !== 'no interviewee given');
+
+        return titles.map(title => (
+            <option key={title} value={`"${title}"`} />
+        ));
     }
 }
