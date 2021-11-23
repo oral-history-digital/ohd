@@ -24,11 +24,13 @@ class RegistryEntry < ApplicationRecord
 
   has_many :parent_registry_hierarchies,
            foreign_key: :descendant_id,
-           class_name: 'RegistryHierarchy'
+           class_name: 'RegistryHierarchy',
+           dependent: :destroy
 
   has_many :child_registry_hierarchies,
            foreign_key: :ancestor_id,
-           class_name: 'RegistryHierarchy'
+           class_name: 'RegistryHierarchy',
+           dependent: :destroy
 
   has_many :ancestors,
            through: :parent_registry_hierarchies
