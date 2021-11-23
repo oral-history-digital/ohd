@@ -24,14 +24,13 @@ export default class Task extends Component {
                 (
                     // supervisor-select
                     attribute === 'supervisor_id' &&
-                    (!!Object.values(u.user_roles).find(r => r.name === 'QM' || r.name === 'Qualitätsmanagement') || u.admin)
+                    (!!Object.values(u.user_roles).find(r => ['Qualitätsmanagement', 'QM'].indexOf(r.name) > -1) || u.admin)
                 ) ||
                 (
                     // assigned-user-select
                     attribute === 'user_account_id' &&
                     (
-                        !!Object.values(u.user_roles).find(r => r.name === 'Redaktion') ||
-                        !!Object.values(u.user_roles).find(r => r.name === 'QM' || r.name === 'Qualitätsmanagement') ||
+                        !!Object.values(u.user_roles).find(r => ['Qualitätsmanagement', 'QM', 'Redaktion', 'Erschließung', 'Sammlungsmanagement'].indexOf(r.name) > -1) ||
                         u.admin
                     )
                 )
