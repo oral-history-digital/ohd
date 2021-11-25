@@ -11,6 +11,6 @@ class UnauthorizedController < ActionController::Metal
   end
 
   def respond
-    render json: {error: 'registration_needed'}
+    render json: {}, status: :unauthorized
   end
 end
