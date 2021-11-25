@@ -5,7 +5,7 @@ class UploadedFile < ApplicationRecord
   after_save :symlink
   def symlink
     symlink_path = File.join(Rails.root, 'tmp', 'files', file.blob.filename.to_s)
-    File.delete(symlink_path) if File.file?(symlink_path)
+    File.delete(symlink_path) if File.symlink?(symlink_path)
     blob_path = ActiveStorage::Blob.service.send(:path_for, file.key)
     File.symlink(blob_path, symlink_path)
   end
