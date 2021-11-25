@@ -956,6 +956,7 @@ de:
         use_in_map_search: in der Kartensuche zeigen
         map_color: Farbe für Kartensuche
         display_on_landing_page: Auf der Landing-Page zeigen
+        use_in_metadata_import: im Metadatenimport benutzen
         ref_object_type: Verknüpfung mit
         source: Datenquelle
         label: Label

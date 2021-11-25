@@ -13,6 +13,8 @@ Rails.application.routes.draw do
     get "project/edit-display", to: "projects#edit_display"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
 
+    get 'metadata-import-template', to: "uploads#metadata_import_template"
+
     resources :languages
     resources :metadata_fields#, only: [:create, :update, :index]
     resources :external_links#, only: [:create, :update, :index]
@@ -49,7 +51,8 @@ Rails.application.routes.draw do
     end
 
     resources :transcripts, only: [:new, :create]
-    resources :uploads, only: [:new, :create]
+    resources :uploads, only: [:new, :create] do
+    end
 
     get "registry_entry_tree", to: "registry_entries#tree"
 
