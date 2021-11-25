@@ -7,15 +7,11 @@
   if logo_record.present?
     logo_tmp_path = File.join(Rails.root, 'tmp', 'files', "#{logo_record.file.blob.filename}")
     logo_blob_path = ActiveStorage::Blob.service.send(:path_for, logo_record.file.key)
-    logo = File.file?(logo_blob_path)
-
-    if File.file?(logo_blob_path) && !File.file?(logo_tmp_path)
-      File.symlink(logo_blob_path, logo_tmp_path)
-    end
+    logo = File.file?(logo_blob_path) && File.file?(logo_tmp_path)
   end
 %>
   <% if logo %>
-    \includegraphics[height=12mm]{<%= "#{logo}" %>}
+    \includegraphics[height=12mm]{<%= "#{logo_tmp_path}" %>}
     \vspace*{0.2cm}
     \newline
   <% end %>
