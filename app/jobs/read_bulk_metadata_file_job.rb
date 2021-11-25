@@ -53,7 +53,9 @@ class ReadBulkMetadataFileJob < ApplicationJob
             end
 
             # create default tape 
-            Tape.find_or_create_by interview_id: interview.id, media_id: "#{interview.archive_id.upcase}_01_01", workflow_state: "digitized", time_shift: 0, number: 1 
+            unless interview.tapes.any?
+              Tape.find_or_create_by interview_id: interview.id, media_id: "#{interview.archive_id.upcase}_01_01", workflow_state: "digitized", time_shift: 0, number: 1 
+            end
 
             interviewee_data = {
               first_name: data[1],
