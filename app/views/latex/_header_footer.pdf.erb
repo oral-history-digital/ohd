@@ -2,6 +2,7 @@
 \fancyfoot{}
 \fancyhead[L]{
 <%
+  logo = false
   logo_record = current_project.logos.where(locale: @locale).first
 
   if logo_record.present?
