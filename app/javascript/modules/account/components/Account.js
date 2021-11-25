@@ -5,7 +5,7 @@ import { AuthShowContainer } from 'modules/auth';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
-import LoginFormContainer from './LoginFormContainer';
+import LoginForm from './LoginForm';
 import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 
 export default class Account extends Component {
@@ -141,7 +141,7 @@ export default class Account extends Component {
                             {/* do not show t('registration_needed') in campscapes. TODO: generalize this*/}
                             {(this.props.error || this.props.projectId === 'campscapes') ? '' : t(this.props, 'registration_needed')}
                         </p>
-                        <LoginFormContainer/>
+                        <LoginForm />
                         <div className={'register-link'}>
                             <a href='' onClick={(e) => this.openLink(pathBase(this.props) + '/user_registrations/new', e)}>
                                 {t(this.props, 'user_registration.registration')}
