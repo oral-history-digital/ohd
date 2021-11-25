@@ -283,7 +283,7 @@ class Segment < ApplicationRecord
       'public'
     end
 
-    (I18n.available_locales | [:orig]).each do |locale|
+    I18n.available_locales.each do |locale|
       text :"text_#{locale}", stored: true do
         text_translations["#{locale}-public"] or nil
       end
@@ -296,6 +296,9 @@ class Segment < ApplicationRecord
         subheading_translations["#{locale}-public"] or subheading_translations[locale] or nil
       end
     end
+
+    # Original text for languages that are not in I18n.available_locales.
+    text :"text_orig", stored: true
   end
 
   I18n.available_locales.each do |locale|
