@@ -4,6 +4,7 @@ import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
 import { admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { pathBase } from 'modules/routes';
 
 export default class Uploads extends Component {
 
@@ -36,7 +37,7 @@ export default class Uploads extends Component {
 
     downloadLink() {
         if (this.state.explanation === 'bulk_metadata') {
-            return (<a href={`/metadata-import-template.csv`} download>{`metadata-import-template.csv`}</a>);
+            return (<a href={`${pathBase(this.props)}/metadata-import-template.csv`} download>{`metadata-import-template.csv`}</a>);
         } else if (this.state.explanation === 'bulk_registry_entries') {
             return (<a href={`/registry-entries-import-template.csv`} download>{`registry-entries-import-template.csv`}</a>);
         } else if (this.state.explanation === 'bulk_photos') {

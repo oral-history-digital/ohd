@@ -162,6 +162,10 @@ class Project < ApplicationRecord
     end
   end
 
+  def import_metadata_fields
+    metadata_fields.where(use_in_metadata_import: true)
+  end
+
   def min_to_max_birth_year_range
     Rails.cache.fetch("#{cache_key_with_version}/min_to_max_birth_year", expires_in: 12.hours) do
       first = (interviews.map { |i| i.interviewee.try(:year_of_birth).try(:to_i) } - [nil, 0]).min || 1900

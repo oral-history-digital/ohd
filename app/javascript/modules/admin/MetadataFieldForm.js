@@ -151,6 +151,11 @@ export default function MetadataFieldForm({
                         attribute: 'display_on_landing_page',
                         type: 'checkbox',
                     },
+                    {
+                        elementType: 'input',
+                        attribute: 'use_in_metadata_import',
+                        type: 'checkbox',
+                    },
                 ]}
             />
         </Fetch>

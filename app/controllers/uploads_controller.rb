@@ -1,6 +1,7 @@
 class UploadsController < ApplicationController
 
-  skip_before_action :authenticate_user_account!, only: [:new]
+  skip_before_action :authenticate_user_account!, only: [:new, :metadata_import_template]
+  skip_after_action :verify_authorized, only: [:metadata_import_template]
 
   def new
     authorize :upload, :new?
@@ -28,6 +29,18 @@ class UploadsController < ApplicationController
           id: file.original_filename,
           data_type: 'uploads'
         }, status: :ok
+      end
+    end
+  end
+
+  def metadata_import_template
+    import_template = CSV.generate(headers: true, col_sep: ";", row_sep: :auto, quote_char: "\x00") do |csv|
+      csv << ['Interview-Id'] + current_project.import_metadata_fields.map{|field| field.name}
+    end
+
+    respond_to do |format|
+      format.csv do
+        send_data import_template, filename: 'metadata-import-template.csv', type: 'text/csv'
       end
     end
   end
