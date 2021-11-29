@@ -34,13 +34,11 @@ class UploadsController < ApplicationController
   end
 
   def metadata_import_template
-    import_template = CSV.generate(headers: true, col_sep: ";", row_sep: :auto, quote_char: "\x00") do |csv|
-      csv << ['Interview-Id'] + current_project.import_metadata_fields.map{|field| field.name}
-    end
+    csv = MetadataImportTemplate.new(current_project).csv
 
     respond_to do |format|
       format.csv do
-        send_data import_template, filename: 'metadata-import-template.csv', type: 'text/csv'
+        send_data csv, filename: 'metadata-import-template.csv', type: 'text/csv'
       end
     end
   end
