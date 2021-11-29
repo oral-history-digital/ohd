@@ -86,6 +86,22 @@ class RegistryEntry < ApplicationRecord
     descendants
   end
 
+  def find_descendant_by_name(name, locale)
+    entry = descendants.joins(registry_names: :translations).
+      where("registry_name_translations.locale = ?", locale).
+      where("registry_name_translations.descriptor = ?", name).
+      first
+    if entry
+      return entry
+    else
+      descendants.each do |descendant|
+        entry = descendant.find_descendant_by_name(name, locale)
+        return entry if entry
+      end
+    end
+    nil
+  end
+
   # A registry entry may not be deleted if it still has children or
   # references pointing to it.
   def before_destroy
