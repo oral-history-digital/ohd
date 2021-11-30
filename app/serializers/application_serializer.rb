@@ -1,7 +1,7 @@
 class ApplicationSerializer < ActiveModel::Serializer
   attributes :id, :type, :translations, :project_id
 
-  def type 
+  def type
     object.class.name
   end
 
@@ -12,8 +12,12 @@ class ApplicationSerializer < ActiveModel::Serializer
   #
   def translations
     if object.respond_to? :translations
+      attribute_names = object.translated_attribute_names + [:id, :locale]
       object.translations.inject([]) do |mem, translation|
-        mem.push(translation.attributes.reject { |k, v| !(object.translated_attribute_names + [:id, :locale]).include?(k.to_sym) })
+        translation_with_selected_fields = translation.attributes.select do |k, v|
+          attribute_names.include?(k.to_sym)
+        end
+        mem.push(translation_with_selected_fields)
         mem
       end
     else
@@ -37,9 +41,8 @@ class ApplicationSerializer < ActiveModel::Serializer
   end
 
   def project_id
-    (object.respond_to?(:project_id) && object.project_id) || 
+    (object.respond_to?(:project_id) && object.project_id) ||
       (object.respond_to?(:interview) && object.interview && object.interview.project_id)
   end
 
 end
-
