@@ -155,6 +155,7 @@ export default function MetadataFieldForm({
                         elementType: 'input',
                         attribute: 'use_in_metadata_import',
                         type: 'checkbox',
+                        hidden: source !== 'RegistryReferenceType',
                     },
                 ]}
             />
