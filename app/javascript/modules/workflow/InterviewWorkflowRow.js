@@ -42,15 +42,13 @@ export default class InterviewWorkflowRow extends Component {
     }
 
     componentDidMount() {
-        this.loadUserAccounts();
-        this.loadTasks();
-        loadIntervieweeWithAssociations(this.props);
-    }
+        const { interviewee, intervieweeId, peopleStatus, locale, projectId,
+            projects, fetchData } = this.props;
 
-    componentDidUpdate() {
         this.loadUserAccounts();
         this.loadTasks();
-        loadIntervieweeWithAssociations(this.props);
+        loadIntervieweeWithAssociations({ interviewee, intervieweeId,
+            peopleStatus, locale, projectId, projects, fetchData });
     }
 
     loadUserAccounts() {

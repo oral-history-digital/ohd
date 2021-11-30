@@ -18,8 +18,6 @@ export default function SortHeader({
 }) {
     const { t } = useI18n();
 
-    console.log(direction);
-
     return (
         <div className={`box-${width} header`}>
             {t(tKey)}
