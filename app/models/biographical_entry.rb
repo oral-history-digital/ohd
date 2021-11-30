@@ -6,11 +6,6 @@ class BiographicalEntry < ApplicationRecord
 
   scope :with_public_state, ->{ where(workflow_state: 'public') }
 
-  after_save :touch_person
-  def touch_person
-    person.touch
-  end
-
   searchable do
     string :archive_id, :multiple => true, :stored => true do
       person ? person.interviews.map{|i| i && i.archive_id } : ''

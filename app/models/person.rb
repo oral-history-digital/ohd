@@ -129,4 +129,8 @@ class Person < ApplicationRecord
   def identifier_method
     'id'
   end
+
+  def biography=(text)
+    biographical_entries.build({text: text})
+  end
 end
