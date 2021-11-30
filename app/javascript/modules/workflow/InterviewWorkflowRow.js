@@ -42,15 +42,13 @@ export default class InterviewWorkflowRow extends Component {
     }
 
     componentDidMount() {
-        this.loadUserAccounts();
-        this.loadTasks();
-        loadIntervieweeWithAssociations(this.props);
-    }
+        const { interviewee, intervieweeId, peopleStatus, locale, projectId,
+            projects, fetchData } = this.props;
 
-    componentDidUpdate() {
         this.loadUserAccounts();
         this.loadTasks();
-        loadIntervieweeWithAssociations(this.props);
+        loadIntervieweeWithAssociations({ interviewee, intervieweeId,
+            peopleStatus, locale, projectId, projects, fetchData });
     }
 
     loadUserAccounts() {
@@ -78,25 +76,26 @@ export default class InterviewWorkflowRow extends Component {
     }
 
     intervieweeWithPhoto() {
-        const { interviewee } = this.props;
+        const { interview, interviewee, locale, setArchiveId,
+            searchInInterview, fulltext } = this.props;
 
-        if (interviewee && interviewee.names[this.props.locale]) {
+        if (interviewee?.names?.[locale]) {
             return (
                 <Link className={'search-result-link box-10'}
                     onClick={() => {
-                        this.props.setArchiveId(this.props.interview.archive_id);
-                        this.props.searchInInterview(`${pathBase(this.props)}/searches/interview`, {fulltext: this.props.fulltext, id: this.props.interview.archive_id});
+                        setArchiveId(interview.archive_id);
+                        searchInInterview(`${pathBase(this.props)}/searches/interview`, { fulltext, id: interview.archive_id});
                     }}
-                    to={pathBase(this.props) + '/interviews/' + this.props.interview.archive_id}
+                    to={pathBase(this.props) + '/interviews/' + interview.archive_id}
                 >
                     <img
                         className="workflow"
-                        src={this.props.interview.still_url || 'missing_still'}
+                        src={interview.still_url || 'missing_still'}
                         onError={(e)=> { e.target.src = missingStill; }}
                     />
                     <span className='workflow' >
-                        {interviewee && interviewee.names[this.props.locale].lastname + ', '}<br />
-                        {interviewee && interviewee.names[this.props.locale].firstname }
+                        {interviewee.names[locale].lastname + ', '}<br />
+                        {interviewee.names[locale].firstname }
                     </span>
                 </Link>
             )

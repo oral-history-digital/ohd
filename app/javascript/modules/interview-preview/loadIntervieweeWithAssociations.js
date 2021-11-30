@@ -1,8 +1,17 @@
-export default function loadIntervieweeWithAssociations(props) {
+export default function loadIntervieweeWithAssociations({
+    interviewee,
+    intervieweeId,
+    peopleStatus,
+    locale,
+    projects,
+    projectId,
+    fetchData,
+}) {
     if (
-           (props.interviewee && !props.interviewee.associations_loaded) ||
-           (props.intervieweeId && !props.peopleStatus[props.intervieweeId])
+        (interviewee && !interviewee.associations_loaded) ||
+        (intervieweeId && !peopleStatus[intervieweeId])
     ) {
-        props.fetchData(props, 'people', props.intervieweeId, null, 'with_associations=true');
+        fetchData({ locale, projects, projectId }, 'people', intervieweeId,
+            null, 'with_associations=true');
     }
 }
