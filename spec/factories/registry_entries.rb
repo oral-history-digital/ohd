@@ -4,6 +4,7 @@ FactoryBot.define do
     longitude { 13.40 }
     workflow_state { "public" }
     list_priority { 0 }
+    association :project 
 
     after :create do |registry_entry|
       create_list :registry_name, 2, registry_entry: registry_entry

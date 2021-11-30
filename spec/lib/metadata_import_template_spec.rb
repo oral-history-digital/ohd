@@ -8,7 +8,7 @@ describe MetadataImportTemplate, 'basic generation' do
   end
 
   it 'should contain all base column-headers' do
-    expect(@csv.parse_csv(col_sep: ";")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Teilsammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Geschlecht", "Geburtsdatum", "Biographie", "Interviewführung", "Transkription", "Übersetzung"])
+    expect(@csv.parse_csv(col_sep: ";")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Teilsammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Geschlecht", "Geburtsdatum", "Biographie", "Interviewführung", "Transkription", "Übersetzung", "Erschließung"])
   end
 
 end

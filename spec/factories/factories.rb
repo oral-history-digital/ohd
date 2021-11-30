@@ -9,7 +9,7 @@ FactoryBot.define do
     secondary_color { "#efae0f"}
     editorial_color { "#0ea6b3" }
     shortname { "CDOH" }
-    initials { "CD" }
+    sequence(:initials, ('a'..'z').to_a.shuffle[0,4].join)
     domain { "http://da03.cedis.fu-berlin.de:86" }
     archive_domain { "http://localhost:3000" }
     doi { "10.5072" }

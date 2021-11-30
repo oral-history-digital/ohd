@@ -58,7 +58,8 @@ class MetadataImportTemplate
     [
       'interviewer',
       'transcriptor',
-      'translator'
+      'translator',
+      'research',
     ].inject({}) do |mem, c| 
       mem[c] = I18n.t("contributions.#{c}", locale: @locale)
       mem

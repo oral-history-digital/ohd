@@ -86,22 +86,6 @@ class RegistryEntry < ApplicationRecord
     descendants
   end
 
-  def find_descendant_by_name(name, locale)
-    entry = descendants.joins(registry_names: :translations).
-      where("registry_name_translations.locale = ?", locale).
-      where("registry_name_translations.descriptor = ?", name).
-      first
-    if entry
-      return entry
-    else
-      descendants.each do |descendant|
-        entry = descendant.find_descendant_by_name(name, locale)
-        return entry if entry
-      end
-    end
-    nil
-  end
-
   # A registry entry may not be deleted if it still has children or
   # references pointing to it.
   def before_destroy
@@ -306,6 +290,30 @@ class RegistryEntry < ApplicationRecord
     if (parents - children).count > 0
       (parents - children).inject({}){|mem, parent| mem[parent.id] = parent.bread_crumb; mem}
     end
+  end
+
+  def find_descendant_by_name(name, locale)
+    return nil if name.blank?
+    entry = descendants.joins(registry_names: :translations).
+      where("registry_name_translations.locale = ?", locale).
+      where("registry_name_translations.descriptor = ?", name).
+      first
+    if entry
+      return entry
+    else
+      descendants.each do |descendant|
+        entry = descendant.find_descendant_by_name(name, locale)
+        return entry if entry
+      end
+    end
+    nil
+  end
+
+  def create_child(name, locale)
+    child = RegistryEntry.create workflow_state: "public", list_priority: false, project_id: project.id
+    RegistryHierarchy.create(ancestor_id: self.id, descendant_id: child.id)
+    child.registry_names << RegistryName.create(registry_entry_id: child.id, registry_name_type_id: 1, name_position: 0, descriptor: name, locale: locale)
+    child
   end
 
   class << self
