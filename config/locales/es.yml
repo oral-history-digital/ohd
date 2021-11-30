@@ -260,6 +260,7 @@ es:
     tape_count: Tape count
     description: Description
     duration: Duration
+    biography: Biographie
     date_of_birth: Date of birth
     year_of_birth: Year of birth
     birth_location: Birth location
@@ -1051,6 +1052,7 @@ es:
         alias_names: Alias Names (?)
         other_first_names: Otros nombres
         typology: Experiencias
+        biography: Biographie
       registry_entry:
         descriptor: Name
         notes: Anmerkungen

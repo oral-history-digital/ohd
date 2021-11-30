@@ -1115,6 +1115,7 @@ ru:
         alias_names: Alias Names
         other_first_names: Other First Names
         typology: Erfahrungen
+        biography: Biographie
       registry_entry:
         descriptor: Name
         notes: Anmerkungen

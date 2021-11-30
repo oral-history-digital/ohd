@@ -1086,6 +1086,7 @@ el:
         alias_names: Alias Names
         other_first_names: Άλλα ονόματα
         typology: Εμπειρίες
+        biography: Biographie
       registry_entry:
         descriptor: Name
         notes: Anmerkungen

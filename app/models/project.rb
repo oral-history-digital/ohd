@@ -162,8 +162,8 @@ class Project < ApplicationRecord
     end
   end
 
-  def import_metadata_fields
-    metadata_fields.where(use_in_metadata_import: true)
+  def registry_reference_type_import_metadata_fields
+    metadata_fields.where(use_in_metadata_import: true, source: 'RegistryReferenceType')
   end
 
   def min_to_max_birth_year_range
