@@ -1,10 +1,9 @@
 import { createElement, Component } from 'react';
 
-import { t } from 'modules/i18n';
 import InputContainer from './input-components/InputContainer';
-import RichTextareaContainer from './input-components/RichTextareaContainer';
 import Textarea from './input-components/Textarea';
-import filterEmptySegmentTranslations from './filterEmptySegmentTranslations';
+import RichTextareaContainer from './input-components/RichTextareaContainer';
+import { t } from 'modules/i18n';
 
 export default class MultiLocaleWrapper extends Component {
 
@@ -20,20 +19,15 @@ export default class MultiLocaleWrapper extends Component {
     }
 
     findTranslation(locale) {
-        const { data } = this.props;
-        const translations = data?.translations;
-
         let translation;
-        if (data?.type === 'Segment') {
-            const translationsWithContent = filterEmptySegmentTranslations(translations);
-
-            translation = translationsWithContent && (
-                translationsWithContent.find(t => t.locale === locale) ||
+        if (this.props.data && this.props.data.type === 'Segment') {
+            translation = this.props.data.translations && (
+                this.props.data.translations.find(t => t.locale === locale) ||
                 // in zwar there has not been an inital original version
-                translationsWithContent.find(t => t.locale === `${locale}-public`)
+                this.props.data.translations.find(t => t.locale === `${locale}-public`)
             )
         } else {
-            translation = translations?.find(t => t.locale === locale)
+            translation = this.props.data && this.props.data.translations && this.props.data.translations.find(t => t.locale === locale)
         }
         return translation;
     }
