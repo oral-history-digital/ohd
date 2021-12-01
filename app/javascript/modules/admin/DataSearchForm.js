@@ -6,7 +6,6 @@ import { isMobile } from 'modules/user-agent';
 import { pluralize } from 'modules/strings';
 import { t } from 'modules/i18n';
 import parametrizedQuery from './parametrizedQuery';
-import statifiedQuery from './statifiedQuery';
 
 export default class DataSearchForm extends Component {
     constructor(props) {
@@ -14,6 +13,10 @@ export default class DataSearchForm extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleReset = this.handleReset.bind(this);
+    }
+
+    componentWillUnmount() {
+        this.handleReset();
     }
 
     handleChange(event) {
@@ -28,7 +31,7 @@ export default class DataSearchForm extends Component {
         );
     }
 
-    handleReset(event) {
+    handleReset() {
         this.form.reset();
         this.props.resetQuery(pluralize(this.props.scope));
         this.props.fetchData(this.props, pluralize(this.props.scope), null, null, null);
@@ -77,27 +80,25 @@ export default class DataSearchForm extends Component {
 
     render() {
         return (
-            <div>
-                <form
-                    ref={(form) => { this.form = form; }}
-                    id={`${this.props.scope}_search_form`}
-                    className="flyout-search default"
-                    onSubmit={this.handleSubmit}
-                >
-                    {this.props.searchableAttributes.map((element) => {
-                        return (
-                            <FormElement label={t(this.props, `activerecord.attributes.${this.props.scope}.${element.attributeName}`)} key={`form-element-${element.attributeName}`}>
-                                {this.searchFormElement(element)}
-                            </FormElement>
-                        )
-                    })}
-                    <input
-                        className="lonely-search-button"
-                        value={t(this.props, this.props.submitText || 'search')}
-                        type="submit"
-                    />
-                </form>
-            </div>
+            <form
+                ref={(form) => { this.form = form; }}
+                id={`${this.props.scope}_search_form`}
+                className="flyout-search default"
+                onSubmit={this.handleSubmit}
+            >
+                {this.props.searchableAttributes.map((element) => {
+                    return (
+                        <FormElement label={t(this.props, `activerecord.attributes.${this.props.scope}.${element.attributeName}`)} key={`form-element-${element.attributeName}`}>
+                            {this.searchFormElement(element)}
+                        </FormElement>
+                    )
+                })}
+                <input
+                    className="lonely-search-button"
+                    value={t(this.props, this.props.submitText || 'search')}
+                    type="submit"
+                />
+            </form>
         );
     }
 }
