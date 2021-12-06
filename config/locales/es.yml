@@ -260,6 +260,7 @@ es:
     tape_count: Tape count
     description: Description
     duration: Duration
+    biography: Biographie
     date_of_birth: Date of birth
     year_of_birth: Year of birth
     birth_location: Birth location
@@ -932,6 +933,7 @@ es:
         use_in_map_search: in der Kartensuche zeigen
         map_color: color for map search
         display_on_landing_page: Auf der Landing-Page zeigen
+        use_in_metadata_import: im Metadatenimport benutzen
         ref_object_type: Verknüpfung mit
         source: Datenquelle
         label: Label
@@ -1050,6 +1052,7 @@ es:
         alias_names: Alias Names (?)
         other_first_names: Otros nombres
         typology: Experiencias
+        biography: Biographie
       registry_entry:
         descriptor: Name
         notes: Anmerkungen

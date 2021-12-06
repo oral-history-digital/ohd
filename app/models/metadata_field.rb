@@ -2,7 +2,6 @@ require 'globalize'
 class MetadataField < ApplicationRecord
 
   belongs_to :project, touch: true
-  belongs_to :registry_entry
   belongs_to :registry_reference_type
   validates_uniqueness_of :registry_reference_type_id,  allow_nil: true
 

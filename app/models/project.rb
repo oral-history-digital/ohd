@@ -130,7 +130,7 @@ class Project < ApplicationRecord
 
   def search_facets
     metadata_fields.where(use_as_facet: true).
-      includes(:translations, :registry_reference_type, registry_entry: {registry_names: :translations}).
+      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
       order(:facet_order)
   end
 
@@ -160,6 +160,10 @@ class Project < ApplicationRecord
     define_method "#{m.underscore}_metadata_fields" do
       metadata_fields.where(source: m)
     end
+  end
+
+  def registry_reference_type_import_metadata_fields
+    metadata_fields.where(use_in_metadata_import: true, source: 'RegistryReferenceType')
   end
 
   def min_to_max_birth_year_range

@@ -98,6 +98,7 @@ class MetadataFieldsController < ApplicationController
         :use_in_map_search,
         :map_color,
         :display_on_landing_page,
+        :use_in_metadata_import,
         :ref_object_type,
         :source,
         :values,

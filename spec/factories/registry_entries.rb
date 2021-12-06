@@ -4,6 +4,7 @@ FactoryBot.define do
     longitude { 13.40 }
     workflow_state { "public" }
     list_priority { 0 }
+    association :project 
 
     after :create do |registry_entry|
       create_list :registry_name, 2, registry_entry: registry_entry
@@ -29,7 +30,7 @@ FactoryBot.define do
     association :registry_name
     sequence(:locale){|n| "de_#{n}" }
     #locale { "de" }
-    descriptor { "Paul" }
+    descriptor { "Orte" }
   end
 
   factory :registry_name_type do
@@ -41,7 +42,13 @@ FactoryBot.define do
   factory :registry_name_type_translation do
     association :registry_name_type
     locale { "de" }
-    descriptor { "Paul" }
+    descriptor { "Orte" }
+  end
+
+  factory :registry_reference_type do
+    registry_entry
+    project
+    name { 'Geburtsort' }
   end
 
 end
