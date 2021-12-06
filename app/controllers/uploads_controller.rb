@@ -34,7 +34,7 @@ class UploadsController < ApplicationController
   end
 
   def metadata_import_template
-    csv = MetadataImportTemplate.new(current_project).csv
+    csv = MetadataImportTemplate.new(current_project, params[:locale]).csv
 
     respond_to do |format|
       format.csv do

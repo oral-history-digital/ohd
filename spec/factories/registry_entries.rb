@@ -30,7 +30,7 @@ FactoryBot.define do
     association :registry_name
     sequence(:locale){|n| "de_#{n}" }
     #locale { "de" }
-    descriptor { "Paul" }
+    descriptor { "Orte" }
   end
 
   factory :registry_name_type do
@@ -42,7 +42,13 @@ FactoryBot.define do
   factory :registry_name_type_translation do
     association :registry_name_type
     locale { "de" }
-    descriptor { "Paul" }
+    descriptor { "Orte" }
+  end
+
+  factory :registry_reference_type do
+    registry_entry
+    project
+    name { 'Geburtsort' }
   end
 
 end
