@@ -26,7 +26,6 @@ FactoryBot.define do
     speaker_designation { 'INT' }
     person
     interview
-    project
   end
 
   factory :contribution_type do
