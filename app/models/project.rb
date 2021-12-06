@@ -130,7 +130,7 @@ class Project < ApplicationRecord
 
   def search_facets
     metadata_fields.where(use_as_facet: true).
-      includes(:translations, :registry_reference_type, registry_entry: {registry_names: :translations}).
+      includes(:translations, registry_reference_type: {registry_entry: {registry_names: :translations}}).
       order(:facet_order)
   end
 
