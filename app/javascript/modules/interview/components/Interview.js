@@ -64,7 +64,10 @@ export default function Interview({
         }
     }, [archiveId, isLoggedIn, contributorsAreFetched, interview?.id]);
 
-    if (!interviewIsFetched) {
+
+    // Do not render InterviewTabs component as long as interview.lang is absent.
+    // (Strangely, it sometimes becomes present only shortly after this component is rendered.)
+    if (!interviewIsFetched || typeof interview?.lang !== 'string') {
         return <Spinner withPadding />;
     }
 
