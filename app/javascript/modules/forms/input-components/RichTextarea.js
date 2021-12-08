@@ -56,6 +56,7 @@ export default class RichTextarea extends Component {
             >
                 <div className='richtextarea'>
                     <RichTextEditor
+                        className="Input"
                         value={this.state.value}
                         onChange={this.handleChange}
                     />

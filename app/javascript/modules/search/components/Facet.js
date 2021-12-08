@@ -20,8 +20,6 @@ export default class Facet extends Component {
         this.state = {
             inputValue: "",
             open: openState,
-            class: openState ? "accordion active" : "accordion",
-            panelClass: openState ? "panel open" : "panel",
             filter: "",
         };
     }
@@ -44,19 +42,12 @@ export default class Facet extends Component {
     }
 
     handleClick(event) {
-        if (event !== undefined) event.preventDefault();
+        event?.preventDefault()
+
         if (this.state.open) {
-            this.setState({
-                ['open']: false,
-                ['class']: "accordion",
-                ['panelClass']: "panel"
-            });
+            this.setState({ open: false });
         } else {
-            this.setState({
-                ['open']: true,
-                ['class']: "accordion active",
-                ['panelClass']: "panel open"
-            });
+            this.setState({ open: true });
         }
     }
 
@@ -85,7 +76,7 @@ export default class Facet extends Component {
 
     panelContent() {
         return (
-            <div className={this.state.panelClass}>
+            <div className={classNames('panel', { 'open': this.state.open })}>
                 <div className="flyout-radio-container">
                     {this.filterInput()}
                     {this.renderSubfacets()}
@@ -95,19 +86,28 @@ export default class Facet extends Component {
     }
 
     render() {
+        const { open } = this.state;
+
         if (this.props.slider) {
             let style = { width: 400, paddingLeft: 11, paddingRight: 15 };
             return (
                 <div className="subfacet-container">
-                    <button className={this.state.class} lang={this.props.locale} onClick={this.handleClick}>
+                    <button
+                        className={classNames('Button', 'accordion', { 'active': open })}
+                        type="button"
+                        onClick={this.handleClick}
+                    >
                         {this.props.data.name[this.props.locale]}
                         {
-                            this.state.open ?
+                            open ?
                                 <FaMinus className="Icon Icon--primary" /> :
                                 <FaPlus className="Icon Icon--primary" />
                         }
                     </button>
-                    <div style={style} className={this.state.panelClass}>
+                    <div
+                        style={style}
+                        className={classNames('panel', { 'open': open })}
+                    >
                         <div className="flyout-radio-container">
                             <YearRangeContainer
                                 sliderMin={this.props.sliderMin}
@@ -124,10 +124,16 @@ export default class Facet extends Component {
         else if (this.props.show) {
             return (
                 <div className="subfacet-container">
-                    <button className={`${this.state.class} ${this.props.admin ? 'admin' : ''}`} lang={this.props.locale} onClick={this.handleClick}>
+                    <button
+                        className={classNames('Button', 'accordion', {
+                            'active': open,
+                            'admin': this.props.admin,
+                        })}
+                        onClick={this.handleClick}
+                    >
                         {this.props.data.name[this.props.locale]}
                         {
-                            this.state.open ?
+                            open ?
                                 <FaMinus className="Icon Icon--primary" /> :
                                 <FaPlus className="Icon Icon--primary" />
                         }
@@ -221,7 +227,7 @@ export default class Facet extends Component {
                         })}
                     >
                         <input
-                            className={classNames('with-font', this.props.facet, 'checkbox')}
+                            className={classNames('Input', 'with-font', this.props.facet, 'checkbox')}
                             id={this.props.facet + "_" + subfacetId}
                             name={this.props.facet + "[]"} checked={checkedState} type="checkbox"
                             value={subfacetId}

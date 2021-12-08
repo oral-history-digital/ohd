@@ -147,6 +147,9 @@ h1.search-results-title {
     background-color: var(--secondary-color);
     color: $flyout-tab-title-text-color;
   }
+  &:focus {
+    box-shadow: 0 0 0 $focus-radius $focus-color;
+  }
 }
 
 ul.search-results-pagination {
@@ -212,21 +215,16 @@ ul.search-results-pagination {
     vertical-align: top;
   }
 }
+
 a.search-result-link {
   overflow: hidden;
-  //img, p {
-  //  opacity: 1;
-  //  transition: opacity 0.3s;
-  //}
+
   p.search-result-name {
     font-size: $font-size-large;
     line-height: $line-height-large;
     color: var(--primary-color);
   }
   &:hover {
-    //img {
-    //  width: 110%;
-    //}
     .search-result-name {
       color: #666;
     }

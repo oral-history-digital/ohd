@@ -54,6 +54,7 @@ export default function Textarea({
         >
             <textarea
                 name={attribute}
+                className="Input"
                 defaultValue={actualValue}
                 onChange={onChange}
             />

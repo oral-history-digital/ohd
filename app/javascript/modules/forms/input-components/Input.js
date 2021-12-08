@@ -54,6 +54,7 @@ export default class Input extends Component {
         let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
         let props = {
             id: `${this.props.scope}_${this.props.attribute}`,
+            className: 'Input',
             type: this.props.type,
             name: this.props.attribute,
             defaultChecked: value,
