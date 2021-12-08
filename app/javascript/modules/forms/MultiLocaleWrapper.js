@@ -1,9 +1,10 @@
 import { createElement, Component } from 'react';
+import PropTypes from 'prop-types';
 
+import { t } from 'modules/i18n';
+import RichTextareaContainer from './input-components/RichTextareaContainer';
 import InputContainer from './input-components/InputContainer';
 import Textarea from './input-components/Textarea';
-import RichTextareaContainer from './input-components/RichTextareaContainer';
-import { t } from 'modules/i18n';
 
 export default class MultiLocaleWrapper extends Component {
 
@@ -19,15 +20,41 @@ export default class MultiLocaleWrapper extends Component {
     }
 
     findTranslation(locale) {
+        const { data } = this.props;
+
+        if (!data?.translations) {
+            return null;
+        }
+
+        const originalTranslation = data.translations.find(t => t.locale === locale);
+        const publicTranslation = data.translations.find(t => t.locale === `${locale}-public`);
+
+        if (data.type !== 'Segment') {
+            return originalTranslation;
+        }
+
+        // From here only for segments.
         let translation;
-        if (this.props.data && this.props.data.type === 'Segment') {
-            translation = this.props.data.translations && (
-                this.props.data.translations.find(t => t.locale === locale) ||
-                // in zwar there has not been an inital original version
-                this.props.data.translations.find(t => t.locale === `${locale}-public`)
-            )
+        if (originalTranslation) {
+            // Make clone because it will get mutated.
+            translation = {
+                ...originalTranslation,
+            };
+
+            // Copy over values from xx-public to xx if values in xx are empty.
+            if (!translation.text || translation.text === '') {
+                translation.text = publicTranslation?.text;
+            }
+            if (!translation.mainheading || translation.mainheading === '') {
+                translation.mainheading = publicTranslation?.mainheading;
+            }
+            if (!translation.subheading || translation.subheading === '') {
+                translation.subheading = publicTranslation?.subheading;
+            }
+
         } else {
-            translation = this.props.data && this.props.data.translations && this.props.data.translations.find(t => t.locale === locale)
+            // in zwar there has not been an initial original version
+            translation = publicTranslation;
         }
         return translation;
     }
@@ -55,14 +82,16 @@ export default class MultiLocaleWrapper extends Component {
     }
 
     render() {
-        let _this = this;
         return (
             <div className='multi-locale-input'>
-                {this.props.locales.map((locale, index) => {
-                    return createElement(_this.components()[_this.props.elementType], _this.preparedProps(locale));
+                {this.props.locales.map(locale => {
+                    return createElement(this.components()[this.props.elementType], this.preparedProps(locale));
                 })}
             </div>
         );
     }
-
 }
+
+MultiLocaleWrapper.propTypes = {
+    data: PropTypes.object.isRequired,
+};
