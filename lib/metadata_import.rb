@@ -161,7 +161,7 @@ class MetadataImport
     registry_entry = field_rrt_re.find_descendant_by_name(row[col_key], locale)
     unless registry_entry
       sub_category_registry_entry = field_rrt_re.find_descendant_by_name(row[sub_category_col_key], locale) ||
-        field_rrt_re.create_child(row[sub_category_col_key], locale)
+        (row[sub_category_col_key] && field_rrt_re.create_child(row[sub_category_col_key], locale))
       registry_entry = (sub_category_registry_entry || field_rrt_re).create_child(row[col_key], locale)
     end
     registry_entry
