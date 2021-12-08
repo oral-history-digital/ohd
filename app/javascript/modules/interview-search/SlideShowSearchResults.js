@@ -27,27 +27,42 @@ export default function SlideShowSearchResults({
             dots={false}
         >
             {
-                segments.map(data => (
-                    <div key={data.id}>
-                        <div style={{marginBottom: '24px'}}>
-                        <LinkOrA
-                            key={data.id}
-                            project={project}
-                            onLinkClick={() => dispatch(
-                                setProjectId(projectId),
-                                setArchiveId(interview.archive_id)
-                            )}
-                            to={`interviews/${interview.archive_id}`}
-                        >
-                            <DumbTranscriptResult
-                                highlightedText={Object.values(data.text).find(text => text?.length > 0)}
-                                tapeNumber={data.tape_nbr}
-                                time={data.time}
-                            />
-                        </LinkOrA>
+                segments.map(segment => {
+                    let lang;
+                    for (const [key, value] of Object.entries(segment.text)) {
+                        if (value?.length > 0) {
+                            if (key === 'orig') {
+                                lang = interview.lang;
+                            } else {
+                                lang = key;
+                            }
+                            break;
+                        }
+                    }
+
+                    return (
+                        <div key={segment.id}>
+                            <div style={{marginBottom: '24px'}}>
+                                <LinkOrA
+                                    key={segment.id}
+                                    project={project}
+                                    onLinkClick={() => dispatch(
+                                        setProjectId(projectId),
+                                        setArchiveId(interview.archive_id)
+                                    )}
+                                    to={`interviews/${interview.archive_id}`}
+                                >
+                                    <DumbTranscriptResult
+                                        highlightedText={Object.values(segment.text).find(text => text?.length > 0)}
+                                        tapeNumber={segment.tape_nbr}
+                                        time={segment.time}
+                                        lang={lang}
+                                    />
+                                </LinkOrA>
+                            </div>
                         </div>
-                    </div>
-                ))
+                    );
+                })
             }
             <div>
                 <SlideShowSearchStats searchResults={searchResults} />
@@ -60,4 +75,5 @@ SlideShowSearchResults.propTypes = {
     interview: PropTypes.object.isRequired,
     searchResults: PropTypes.object,
     projectId: PropTypes.string.isRequired,
+    project: PropTypes.object.isRequired,
 };
