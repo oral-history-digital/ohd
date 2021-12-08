@@ -12,6 +12,7 @@ export default function DumbTranscriptResult({
     tapeNumber,
     time,
     className,
+    lang,
 }) {
     const { t } = useI18n();
     const dispatch = useDispatch();
@@ -40,6 +41,7 @@ export default function DumbTranscriptResult({
             </p>
             <p
                 className="SearchResult-text"
+                lang={lang}
                 dangerouslySetInnerHTML={{__html: highlightedText}}
             />
         </button>
@@ -52,4 +54,5 @@ DumbTranscriptResult.propTypes = {
     tapeNumber: PropTypes.number.isRequired,
     time: PropTypes.number.isRequired,
     className: PropTypes.string,
+    lang: PropTypes.string.isRequired,
 };

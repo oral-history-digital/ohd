@@ -69,7 +69,7 @@ const search = (state = initialState, action) => {
                     foundPhotos: action.foundPhotos,
                     foundAnnotations: action.foundAnnotations,
                     foundObservations: action.foundObservations,
-                    fulltext: action.fulltext
+                    fulltext: action.fulltext,
                 }
             })
         });

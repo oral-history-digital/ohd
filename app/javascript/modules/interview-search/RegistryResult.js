@@ -1,17 +1,19 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 
-import { getFlattenedRefTree } from 'modules/data';
+import { getFlattenedRefTree, getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { Disclosure } from 'modules/ui';
 import { Spinner } from 'modules/spinners';
-import TranscriptResult from './TranscriptResult';
+import { getTextAndLang } from 'modules/interview-references';
+import DumbTranscriptResult from './DumbTranscriptResult';
 
 export default function RegistryResult({
     data,
 }) {
     const { locale } = useI18n();
     const flattenedRefTree = useSelector(getFlattenedRefTree);
+    const interview = useSelector(getCurrentInterview);
 
     if (!flattenedRefTree) {
         return <Spinner small />;
@@ -34,12 +36,19 @@ export default function RegistryResult({
             <Disclosure title={title}>
                 <div className="u-mt-small">
                     {
-                        flattenedRefTree[data.id]?.children.map((leaf, index) => (
-                            <TranscriptResult
-                                key={index}
-                                data={leaf}
-                            />
-                        ))
+                        flattenedRefTree[data.id]?.children.map((entry, index) => {
+                            const [text, lang] = getTextAndLang(entry.text, locale, interview.lang);
+
+                            return (
+                                <DumbTranscriptResult
+                                    key={index}
+                                    highlightedText={text}
+                                    tapeNumber={entry.tape_nbr}
+                                    time={entry.time}
+                                    lang={lang}
+                                />
+                            );
+                        })
                     }
                 </div>
             </Disclosure>

@@ -4,12 +4,14 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
-import { TranscriptResult } from 'modules/interview-search';
+import { DumbTranscriptResult } from 'modules/interview-search';
 import RefTreeEntry from './RefTreeEntry';
+import getTextAndLang from './getTextAndLang';
 
 export default function RefTree({
     refTreeStatus,
     refTree,
+    interview,
     archiveId,
     locale,
     projectId,
@@ -27,11 +29,15 @@ export default function RefTree({
     function renderChildren(children) {
         return children.map((entry, index) => {
             if (entry.type === 'leafe') {
+                const [text, lang] = getTextAndLang(entry.text, locale, interview.lang);
+
                 return (
-                    <TranscriptResult
-                        className='heading'
-                        key={index}
-                        data={entry}
+                    <DumbTranscriptResult
+                        highlightedText={text}
+                        tapeNumber={entry.tape_nbr}
+                        time={entry.time}
+                        lang={lang}
+                        className="heading"
                     />
                 )
             } else {
@@ -63,6 +69,7 @@ export default function RefTree({
 
 RefTree.propTypes = {
     locale: PropTypes.string.isRequired,
+    interview: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
