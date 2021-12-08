@@ -38,7 +38,7 @@ export default function LocaleButtons({
                     <button
                         key={locale}
                         type="button"
-                        className="LocaleButtons-button"
+                        className="Button LocaleButtons-button"
                         disabled={locale === currentLocale}
                         onClick={handleButtonClick}
                     >

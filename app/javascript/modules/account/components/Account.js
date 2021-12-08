@@ -143,12 +143,20 @@ export default class Account extends Component {
                         </p>
                         <LoginForm />
                         <div className={'register-link'}>
-                            <a href='' onClick={(e) => this.openLink(pathBase(this.props) + '/user_registrations/new', e)}>
+                            <a
+                                href=''
+                                className="Link"
+                                onClick={(e) => this.openLink(pathBase(this.props) + '/user_registrations/new', e)}
+                            >
                                 {t(this.props, 'user_registration.registration')}
                             </a>
                         </div>
                         <div className={'order-new-password-link'}>
-                            <a href='' onClick={(e) => this.openLink(pathBase(this.props) + '/user_accounts/password/new', e)}>
+                            <a
+                                href=''
+                                className="Link"
+                                onClick={(e) => this.openLink(pathBase(this.props) + '/user_accounts/password/new', e)}
+                            >
                                 {t(this.props, 'forget_password')}
                             </a>
                         </div>

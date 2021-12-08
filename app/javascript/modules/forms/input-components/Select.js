@@ -134,6 +134,7 @@ export default class Select extends Component {
             >
                 <select
                     name={this.props.attribute}
+                    className="Input"
                     value={value}
                     onChange={this.handleChange}
                     handlechangecallback={this.props.handlechangecallback}

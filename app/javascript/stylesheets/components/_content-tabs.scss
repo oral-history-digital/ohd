@@ -30,6 +30,10 @@
   background-color: var(--primary-color);
 }
 
+.content-tabs-nav-link:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
 .content-tabs-nav-link svg {
   display: block;
   margin: 0;

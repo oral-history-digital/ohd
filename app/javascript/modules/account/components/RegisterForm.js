@@ -124,7 +124,12 @@ export default class RegisterForm extends Component {
                 type: 'checkbox',
                 validate: function(v){return v && v !== '0'},
                 help: (
-                    <a href={conditionsLink[this.props.locale]} target="_blank" title="Externer Link" rel="noopener">
+                    <a
+                        className="Link"
+                        href={conditionsLink[this.props.locale]}
+                        target="_blank"
+                        title="Externer Link"
+                        rel="noreferrer">
                         {t(this.props, 'user_registration.notes_on_tos_agreement')}
                     </a>
                 )
@@ -136,7 +141,13 @@ export default class RegisterForm extends Component {
                 type: 'checkbox',
                 validate: function(v){return v && v !== '0'},
                 help: (
-                    <a href={privacyLink[this.props.locale]} target="_blank" title="Externer Link" rel="noopener">
+                    <a
+                        className="Link"
+                        href={privacyLink[this.props.locale]}
+                        target="_blank"
+                        title="Externer Link"
+                        rel="noreferrer"
+                    >
                         {t(this.props, 'user_registration.notes_on_priv_agreement')}
                     </a>
                 )

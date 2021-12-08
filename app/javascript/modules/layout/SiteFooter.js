@@ -19,8 +19,12 @@ function SiteFooter() {
                 {
                     Object.keys(links).map(key => (
                         <li key={'external-link-' + key}>
-                            <a href={links[key].url[locale]}
-                                target="_blank" rel="noopener">
+                            <a
+                                className="Link"
+                                href={links[key].url[locale]}
+                                target="_blank"
+                                rel="noreferrer"
+                            >
                                 {links[key].name[locale]}
                             </a>
                         </li>
@@ -35,12 +39,19 @@ function SiteFooter() {
                 project?.sponsor_logos ?
                 (
                     <div className='home-content-logos'>
-                        {Object.keys(project.sponsor_logos).map((k, index) => {
+                        {Object.keys(project.sponsor_logos).map(k => {
                             let logo = project.sponsor_logos[k];
                             if (logo.locale === locale) {
                                 return (
-                                    <a href={logo.href} target='_blank' rel='noopener' title={logo.title} key={`sponsor-logo-${k}`}>
-                                        <img src={ logo.src } />
+                                    <a
+                                        className="Link"
+                                        href={logo.href}
+                                        target='_blank'
+                                        rel='noreferrer'
+                                        title={logo.title}
+                                        key={`sponsor-logo-${k}`}
+                                    >
+                                        <img src={ logo.src } alt="" />
                                     </a>
                                 );
                             }

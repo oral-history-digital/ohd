@@ -10,7 +10,7 @@ function BurgerButton({
     return (
         <button
             type="button"
-            className={classNames(className, 'BurgerButton', {
+            className={classNames(className, 'Button', 'BurgerButton', {
                 'is-open': open,
                 'is-closed': !open,
             })}

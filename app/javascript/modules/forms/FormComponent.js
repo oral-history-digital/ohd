@@ -149,20 +149,19 @@ export default class Form extends Component {
     toggleNestedForm() {
         if (this.props.nestedForm) {
             return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link u-mb u-ml-none'
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
                     title={t(this.props, `edit.${this.props.nestedFormScope}.new`)}
                     onClick={() => this.setState({showNestedForm: !this.state.showNestedForm})}
                 >
-                    <div>
-                        {t(this.props, `${pluralize(this.props.nestedFormScope)}.add`) + '  '}
-                        {
-                            this.state.showNestedForm ?
-                                <FaTimes className="Icon Icon--editorial" /> :
-                                <FaPlus className="Icon Icon--editorial" />
-                        }
-                    </div>
-                </div>
+                    {t(this.props, `${pluralize(this.props.nestedFormScope)}.add`) + '  '}
+                    {
+                        this.state.showNestedForm ?
+                            <FaTimes className="Icon Icon--editorial" /> :
+                            <FaPlus className="Icon Icon--editorial" />
+                    }
+                </button>
             )
         }
     }
@@ -173,8 +172,7 @@ export default class Form extends Component {
             if (!this.props.data) {
                 this.props.nestedFormProps.submitData = this.handleNestedFormSubmit;
             } else {
-                let _this = this;
-                this.props.nestedFormProps.onSubmitCallback = function(props, params){_this.setState({showNestedForm: false})};
+                this.props.nestedFormProps.onSubmitCallback = () => this.setState({ showNestedForm: false });
             }
             return (
                 <div>
@@ -219,40 +217,42 @@ export default class Form extends Component {
         }
     }
 
-    cancelButton() {
-        if (typeof(this.props.cancel) === 'function') {
-            return (
-                <input
-                    type='button'
-                    value={t(this.props, 'cancel')}
-                    onClick={() => this.props.cancel()}
-                />
-            )
-        }
-    }
-
     render() {
+        const { cancel, className, children, elements, formId, formClasses,
+            scope, submitText } = this.props;
+
         return (
-            <div className={this.props.className}>
+            <div className={className}>
                 {this.showNewNestedObjects()}
                 {this.nestedForm()}
                 {this.toggleNestedForm()}
                 <form
-                    id={this.props.formId || this.props.scope}
-                    className={this.props.formClasses || `${this.props.scope} default`}
+                    id={formId || scope}
+                    className={formClasses || `${scope} default`}
                     onSubmit={this.handleSubmit}
                 >
 
-                    {this.props.elements.map((props, index) => {
+                    {elements.map(props => {
                         if(props.condition === undefined || props.condition === true) {
                             return this.elementComponent(props);
                         }
                     })}
 
-                    {this.props.children}
+                    {children}
 
-                    <input type="submit" value={t(this.props, this.props.submitText || 'submit')}/>
-                    {this.cancelButton()}
+                    <input
+                        type="submit"
+                        className="Button"
+                        value={t(this.props, submitText || 'submit')}
+                    />
+                    {typeof cancel === 'function' && (
+                        <input
+                            type="button"
+                            className="Button"
+                            value={t(this.props, 'cancel')}
+                            onClick={cancel}
+                        />
+                    )}
                 </form>
             </div>
         );
@@ -260,8 +260,10 @@ export default class Form extends Component {
 }
 
 Form.propTypes = {
+    className: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
+    cancel: PropTypes.func,
 };
