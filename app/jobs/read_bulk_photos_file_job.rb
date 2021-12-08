@@ -75,11 +75,12 @@ class ReadBulkPhotosFileJob < ApplicationJob
             place: data[5],
             photographer: data[6],
             license: data[7],
-            photo_content_type: data[8]
+            photo_content_type: data[8],
+            workflow_state: 'unshared'
           }
 
           # publication state:
-          photo_params.update(workflow_state: 'publish') if %w(yes y ja j true t).include?(data[9] && data[9].downcase)
+          photo_params.update(workflow_state: 'public') if %w(yes y ja j true t).include?(data[9] && data[9].downcase)
 
           photo.update_attributes photo_params
 
