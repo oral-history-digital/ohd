@@ -143,12 +143,11 @@ h1.search-results-title {
       color: #fff;
     }
   }
-  &:not(.active):hover {
-    background-color: var(--secondary-color);
-    color: $flyout-tab-title-text-color;
-  }
+
+  &:not(.active):hover,
   &:focus {
-    box-shadow: 0 0 0 $focus-radius $focus-color;
+    background-color: $focus-color-dark;
+    color: $flyout-tab-title-text-color;
   }
 }
 

@@ -19,19 +19,15 @@
   transition: background-color $transition-duration;
 }
 
-.content-tabs-nav-link:hover {
-  color: #fff;
-  text-decoration: none;
-  background-color: var(--primary-color);
-}
-
 .content-tabs-nav-link.active {
   color: #fff;
   background-color: var(--primary-color);
 }
 
+.content-tabs-nav-link:not(.active):hover,
 .content-tabs-nav-link:focus {
-  box-shadow: 0 0 0 $focus-radius $focus-color;
+  color: #fff;
+  background-color: $focus-color-dark;
 }
 
 .content-tabs-nav-link svg {

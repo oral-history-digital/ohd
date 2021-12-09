@@ -6,7 +6,7 @@
 
 .flyout-top-nav {
   @include clearfix;
-  color: $gray-warm;
+  color: $ui-background-color;
   cursor: pointer;
   float: left;
   font-size: $font-size-large;
@@ -25,14 +25,14 @@
   display: block;
   margin-top: 2px;
   padding: 20px;
-  background: $gray-warm;
+  background-color: $ui-background-color;
   color: #fff;
   font-size: 1.25rem;
   cursor: pointer;
-  transition: 0.4s;
+  transition: background-color $transition-duration;
 
-  &:hover {
-    filter: brightness(1.1);
+  &:hover:not(.active) {
+    background-color: $focus-color-dark;
   }
 
   &.admin {
@@ -41,6 +41,10 @@
 
   &.active {
     background-color: var(--primary-color);
+  }
+
+  &:focus {
+    background-color: $focus-color-dark;
   }
 
   animation-name: fade-in;
