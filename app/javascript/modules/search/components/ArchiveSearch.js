@@ -159,10 +159,8 @@ export default class ArchiveSearch extends Component {
                                         isArchiveSearching && query['page'] === 1 && !foundInterviews ?
                                             <Spinner /> :
                                             (
-                                                <div>
-                                                    <div className="search-results-container">
-                                                        {this.foundInterviews(viewMode)}
-                                                    </div>
+                                                <>
+                                                    {this.foundInterviews(viewMode)}
                                                     {
                                                         isArchiveSearching ?
                                                             <Spinner /> :
@@ -171,7 +169,7 @@ export default class ArchiveSearch extends Component {
                                                                     <Observer onChange={inView => this.handleScroll(inView)} />
                                                             )
                                                     }
-                                                </div>
+                                                </>
                                             )
                                     }
                                 </TabPanel>

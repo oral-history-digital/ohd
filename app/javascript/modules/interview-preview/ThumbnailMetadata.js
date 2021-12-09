@@ -46,7 +46,7 @@ export default function ThumbnailMetadata({
                                     'DetailList-item--shortened': field.name === 'description',
                                 })}
                             >
-                                {humanReadable(obj, field.name, { 
+                                {humanReadable(obj, field.name, {
                                     locale,
                                     translations,
                                     languages,
