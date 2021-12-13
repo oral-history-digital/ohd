@@ -445,7 +445,7 @@ class Interview < ApplicationRecord
       parsed_sheet.each_with_index do |row, index|
         contribution = contributions.select{|c| c.speaker_designation == row[:speaker]}.first
         speaker_id = contribution && contribution.person_id
-        if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}[:.,]{1}\d{2,3}\]*$/
+        if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}([:.,]{1}\d{2,3})*\]*$/
           Segment.create_or_update_by({
             interview_id: id,
             timecode: row[:timecode],
