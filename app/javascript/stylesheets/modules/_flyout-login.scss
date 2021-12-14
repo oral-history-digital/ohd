@@ -8,14 +8,15 @@
     margin-left: 0;
     margin-bottom: 5px;
     width: 100%;
-    background-color: #8b8b7a;
+    background-color: $ui-background-color;
     color: #fff;
     padding: 10px;
     border: none;
     text-align: center;
     cursor: pointer;
+		transition: background-color $transition-duration;
     &:hover {
-      background-color: lighten($gray-warm, 10%);
+      background-color: lighten($ui-background-color, 10%);
     }
   }
   .info {
@@ -84,7 +85,6 @@ form.flyout-login {
 	content: attr(data-off);
 	right: 11px;
 	color: white;
-	// text-shadow: 0 1px rgba(255, 255, 255, 0.5);
 }
 .switch-label:after {
 	content: attr(data-on);
@@ -135,10 +135,7 @@ form.flyout-login {
 /* Transition
 ========================== */
 .switch-label, .switch-handle {
-	transition: All 0.3s ease;
-	-webkit-transition: All 0.3s ease;
-	-moz-transition: All 0.3s ease;
-	-o-transition: All 0.3s ease;
+	transition: All $transition-duration ease;
 }
 
 /* Switch Light
@@ -149,11 +146,11 @@ form.flyout-login {
 	background-image: none;
 }
 .switch-light .switch-label {
-	background: #8b8b7a;
-	// border: solid 2px #eceeef;
+	background-color: $ui-background-color;
+
   box-shadow: none;
   &:hover {
-    background-color: #a3a395;
+    background-color: lighten($ui-background-color, 10%);
   }
 }
 .switch-light .switch-label:after {

@@ -10,9 +10,16 @@ export default function ResultGrid({
     }
 
     return (
-        interviews.map(interview => (
-            <InterviewPreviewContainer key={interview.archive_id} interview={interview} />
-        ))
+        <div className="Grid">
+            {
+                interviews.map(interview => (
+                    <InterviewPreviewContainer
+                        key={interview.archive_id}
+                        interview={interview}
+                    />
+                ))
+            }
+        </div>
     );
 }
 

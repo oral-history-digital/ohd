@@ -10,13 +10,13 @@ function SiteHeader() {
     return (
         <header className="SiteHeader">
             <OHDLink />
+
             {project && (
                 <ProjectLogo
                     logos={project.logos}
                     defaultLocale={project.default_locale}
                 />
             )}
-
         </header>
     );
 }

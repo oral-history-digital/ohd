@@ -48,14 +48,15 @@ form.default {
   input[type=submit], input[type=button] {
     margin-left: 0;
     width: 100%;
-    background-color: $gray-warm;
+    background-color: $ui-background-color;
+    transition: background-color $transition-duration;
     color: #fff;
     padding: 10px;
     border: none;
     cursor: pointer;
 
     &:hover {
-      background-color: lighten($gray-warm, 10%);
+      background-color: lighten($ui-background-color, 10%);
     }
     &.single-value {
       width: 48%;

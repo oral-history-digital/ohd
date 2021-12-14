@@ -42,9 +42,11 @@ export default function Home({
                     )
                 }
                 {
-                    showFeaturedInterviews ?
-                        <FeaturedInterviews /> :
-                        null
+                    showFeaturedInterviews && (
+                        <div className="Container u-mt u-mb-large">
+                            <FeaturedInterviews />
+                        </div>
+                    )
                 }
             </div>
         </ScrollToTop>

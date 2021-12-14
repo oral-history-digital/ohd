@@ -33,6 +33,7 @@ $spacing-sizes: (
   '-small': 0.5 * $base-unit,
   '-tiny': 0.25 * $base-unit,
   null:       1 * $base-unit,
+  '-large':   2 * $base-unit,
 ) !default;
 
 @each $property, $property-namespace in $spacing-properties {

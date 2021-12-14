@@ -52,7 +52,7 @@ export default function InterviewPreview({
     }
 
     return (
-        <div className={classNames('search-result', { 'detailed': isExpanded })}>
+        <div className={classNames('InterviewCard', { 'is-expanded': isExpanded })}>
             {
                 searchResults && resultCount > 0 && (
                     <ThumbnailBadge
@@ -66,7 +66,7 @@ export default function InterviewPreview({
                 project={project}
                 to={`interviews/${interview.archive_id}`}
                 onLinkClick={doSetArchiveId}
-                className="search-result-link"
+                className="InterviewCard-link"
             >
                 <InnerContent interview={interview} project={project} locale={locale} isExpanded={isExpanded} />
             </LinkOrA>
@@ -108,7 +108,7 @@ function InnerContent({
 }) {
     return (
         <>
-            <div className="search-result-img aspect-ratio">
+            <div className="InterviewCard-image aspect-ratio">
                 <img
                     className="aspect-ratio__inner"
                     src={interview.still_url || 'missing_still'}
@@ -117,7 +117,7 @@ function InnerContent({
                 />
             </div>
 
-            <p className="search-result-name">
+            <p className="InterviewCard-title">
                 {interview.workflow_state === 'unshared' && <FaEyeSlash />}
                 {interview.short_title?.[locale] || interview.anonymous_title[locale]}
             </p>

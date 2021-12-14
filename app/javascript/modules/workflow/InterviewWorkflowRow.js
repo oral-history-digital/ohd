@@ -81,7 +81,7 @@ export default class InterviewWorkflowRow extends Component {
 
         if (interviewee?.names?.[locale]) {
             return (
-                <Link className={'search-result-link box-10'}
+                <Link className="Link search-result-link box-10"
                     onClick={() => {
                         setArchiveId(interview.archive_id);
                         searchInInterview(`${pathBase(this.props)}/searches/interview`, { fulltext, id: interview.archive_id});
@@ -92,6 +92,7 @@ export default class InterviewWorkflowRow extends Component {
                         className="workflow"
                         src={interview.still_url || 'missing_still'}
                         onError={(e)=> { e.target.src = missingStill; }}
+                        alt=""
                     />
                     <span className='workflow' >
                         {interviewee.names[locale].lastname + ', '}<br />

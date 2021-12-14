@@ -10,7 +10,7 @@ export default function FeaturedInterviews() {
     }
 
     return (
-        <div className="search-results-container">
+        <div className="Grid">
             {
                 interviews.map(interview => (
                     <InterviewPreviewContainer

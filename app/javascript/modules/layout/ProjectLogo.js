@@ -24,7 +24,7 @@ export default function ProjectLogo({
     return (
         <Link
             to={pathBase}
-            className="logo-link"
+            className="Link logo-link"
             title={t('home')}
         >
             <img

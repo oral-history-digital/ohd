@@ -1,0 +1,49 @@
+.InterviewCard {
+  line-height: $base-unit;
+  position: relative;
+}
+
+.InterviewCard.is-expanded {
+
+}
+
+
+.InterviewCard-link {
+  display: block;
+}
+
+.InterviewCard-link:focus {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}
+
+.InterviewCard-image {
+
+}
+
+.InterviewCard.is-expanded .InterviewCard-image {
+  display: none;
+}
+
+.InterviewCard-image img {
+  max-width: 100%;
+  width: 100%;
+  transition: transform $transition-duration;
+  transform: scale(1.05);
+};
+
+.InterviewCard-link:hover img,
+.InterviewCard-link:focus img {
+  transform: scale(1.15);
+}
+
+.InterviewCard-title {
+  color: var(--primary-color) !important;
+  font-size: 1rem !important;
+  line-height: $base-unit !important;
+  margin: ($base-unit / 2) 0 !important;
+}
+
+.InterviewCard-link:hover .InterviewCard-title,
+.InterviewCard-link:focus .InterviewCard-title {
+  text-decoration: underline;
+}
