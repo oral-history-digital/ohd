@@ -127,7 +127,6 @@ class ProjectsController < ApplicationController
           "aspect_x",
           "aspect_y",
           "shortname",
-          "initials",
           "archive_id_number_length",
           "domain",
           "archive_domain",

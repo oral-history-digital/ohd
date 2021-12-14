@@ -1,10 +1,10 @@
 import humanReadable from "./humanReadable";
 
-test('project initials should not be translated', () => {
+test('project shortname should not be translated', () => {
     const project = {
-        initials: 'bg',
+        shortname: 'bg',
     };
-    const attribute = 'initials';
+    const attribute = 'shortname';
     const locale = 'de';
     const translations = {
         de: {

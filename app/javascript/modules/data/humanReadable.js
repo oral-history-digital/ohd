@@ -18,7 +18,7 @@ export default function humanReadable(obj, attribute, props, state, none='---') 
         value = t(props, `${attribute}.${value}`);
     }
 
-    if (typeof value === 'string' && props.translations[props.locale].hasOwnProperty(value) && attribute !== 'initials') {
+    if (typeof value === 'string' && props.translations[props.locale].hasOwnProperty(value) && attribute !== 'shortname') {
         value = t(props, value);
     }
 

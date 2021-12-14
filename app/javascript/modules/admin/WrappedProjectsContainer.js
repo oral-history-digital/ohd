@@ -35,7 +35,7 @@ const mapStateToProps = (state) => {
             },
             {
                 attribute: 'shortname',
-                validate: function(v){return /^[\-a-zA-Z]{2,7}$/.test(v)}
+                validate: function(v){return /^[\-a-z]{2,12}$/.test(v)}
             },
             {
                 attribute: 'default_locale',

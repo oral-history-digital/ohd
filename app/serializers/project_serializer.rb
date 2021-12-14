@@ -18,7 +18,6 @@ class ProjectSerializer < ApplicationSerializer
     :editorial_color,
     :aspect_x,
     :aspect_y,
-    :initials,
     :archive_id_number_length,
     :identifier,
     :is_catalog,

@@ -5,6 +5,7 @@ require "#{Rails.root}/lib/timecode.rb"
 
 class Interview < ApplicationRecord
   include OaiRepository::Set
+  include ActiveModel::Validations
 
   belongs_to :project
   belongs_to :collection
@@ -88,9 +89,15 @@ class Interview < ApplicationRecord
 
   accepts_nested_attributes_for :translations, :contributions
 
+  class ProjectConfigValidator < ActiveModel::EachValidator
+    def validate_each(record, attribute, value)
+      record.errors.add attribute, (options[:message] || "not a valid archive_id in this project") unless
+        value =~ /^#{record.project.shortname}\d{#{record.project.archive_id_number_length}}$/
+    end
+  end
+
   validates_associated :collection
-  validates_presence_of :archive_id
-  validates_uniqueness_of :archive_id
+  validates :archive_id, presence: true, uniqueness: true, project_config: true
   validates :media_type, inclusion: {in: %w(video audio)}
   validates :original_content_type, format: { with: /\A\w+\/[-+.\w]+\z/ }, allow_nil: true
 

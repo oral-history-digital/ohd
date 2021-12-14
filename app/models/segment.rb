@@ -257,7 +257,7 @@ class Segment < ApplicationRecord
     if self.tape.nil?
       raise "Interview ID missing." if self.interview_id.nil?
 
-      tape_media_id = (self.media_id || '')[Regexp.new("#{project.initials}\\d{3}_\\d{2}_\\d{2}", Regexp::IGNORECASE)]
+      tape_media_id = (self.media_id || '')[Regexp.new("#{project.shortname}\\d{3}_\\d{2}_\\d{2}", Regexp::IGNORECASE)]
       tape = Tape.where({media_id: tape_media_id, interview_id: self.interview_id}).first
       raise "No tape found for media_id='#{tape_media_id}' and interview_id=#{self.interview_id}" if tape.nil?
 

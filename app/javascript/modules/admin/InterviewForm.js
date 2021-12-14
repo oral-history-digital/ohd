@@ -52,7 +52,7 @@ export default class InterviewForm extends Component {
                 value: this.props.interview && this.props.interview.archive_id,
                 handlechangecallback: this.setArchiveId,
                 validate: function(v){
-                    let regexp = new RegExp(`^${_this.props.project.initials}\\d{${_this.props.project.archive_id_number_length}}$`);
+                    let regexp = new RegExp(`^${_this.props.project.shortname}\\d{${_this.props.project.archive_id_number_length}}$`);
                     return regexp.test(v);
                 },
             },
