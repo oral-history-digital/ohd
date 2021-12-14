@@ -60,9 +60,9 @@
   }
   a {
     color: var(--primary-color);
+
     &:hover {
-      color: $gray-dark;
-      text-decoration: none;
+      text-decoration: underline;
     }
   }
   .fa {
