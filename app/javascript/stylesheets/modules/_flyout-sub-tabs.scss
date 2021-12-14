@@ -57,7 +57,7 @@
 .wrapper-flyout {
   button.reset {
     align-items: center;
-    background-color: $gray-warm;
+    background-color: $gray-warm-dark;
     border: none;
     color: #fff;
     cursor: pointer;
@@ -67,13 +67,13 @@
     outline: none;
     padding: 10px 15px;
     text-align: left;
-    transition: background-color 0.4s;
+    transition: background-color $transition-duration;
     width: 100%;
   }
 
   button.reset.active,
   button.reset:hover {
-    background-color: var(--secondary-color);
+    background-color: lighten($gray-warm-dark, 10%);
   }
 
   button.reset > svg {
