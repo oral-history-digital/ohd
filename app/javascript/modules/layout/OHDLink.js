@@ -22,15 +22,20 @@ function OHDLink() {
     return (
         !project || project.display_ohd_link ?
             (projectHasOwnDomain ?
-                <a title='OHD' href={`${developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION}/${locale}`}>
-                    <img className="logo-img" src='/ohd-logo-gr.png' />
+                <a
+                    title='OHD'
+                    href={`${developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION}/${locale}`}
+                    className="u-mr"
+                >
+                    <img className="logo-img" src='/ohd-logo-gr.png' alt="" />
                 </a> :
                 <Link
                     to={`/${locale}`}
                     title='OHD'
                     onClick={unsetProjectId}
+                    className="u-mr"
                 >
-                    <img className="logo-img" src='/ohd-logo-gr.png' />
+                    <img className="logo-img" src='/ohd-logo-gr.png' alt="" />
                 </Link>
             ) :
             null
