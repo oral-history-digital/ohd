@@ -458,8 +458,8 @@ en:
       tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört, aus dem Dateinamen erschlossen werden. Dabei steht gg für die Gesamtzahl der Tapes und aa für die Nummer des aktuellen Tapes.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhalten Sie eine Email.'
     default:
-      show: Beschreibung
-      edit: Bearbeiten
+      show: Description
+      edit: Edit
       new: Hinzufügen
       return: Weiter
       processed: 'Die Datei %{file} ist nun fertig eingelesen: '

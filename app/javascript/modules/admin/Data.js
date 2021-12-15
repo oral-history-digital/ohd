@@ -69,7 +69,7 @@ export default function Data({
                     {!hideShow && (
                         <Item
                             name="show"
-                            label="Anzeigen"
+                            label={t('edit.default.show')}
                             dialogTitle={name}
                         >
                             <DataDetailsContainer
@@ -83,7 +83,7 @@ export default function Data({
                     {!hideEdit && (
                         <Item
                             name="edit"
-                            label="Bearbeiten"
+                            label={t('edit.default.edit')}
                             dialogTitle={`${name} ${t(`edit.${scope}.edit`)}`}
                         >
                             {close => (
