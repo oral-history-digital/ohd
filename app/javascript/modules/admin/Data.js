@@ -27,7 +27,6 @@ export default function Data({
     hideDelete,
     optionsScope,
     detailsAttributes,
-    closeArchivePopup,
     deleteData,
 }) {
     const { t } = useI18n();
@@ -46,7 +45,6 @@ export default function Data({
             null,
             true
         );
-        closeArchivePopup();
         close();
     }
 
@@ -150,6 +148,5 @@ Data.propTypes = {
     hideEdit: PropTypes.bool,
     hideDelete: PropTypes.bool,
     detailsAttributes: PropTypes.array,
-    closeArchivePopup: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
 };
