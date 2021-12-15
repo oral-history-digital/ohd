@@ -11,9 +11,6 @@ import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
 import useSearchMap from '../search-map/useSearchMap';
 
-import { AdminMenu } from 'modules/ui';
-const Item = AdminMenu.Item;
-
 export default function SearchMap() {
     const { t } = useI18n();
     const project = useSelector(getCurrentProject);
@@ -49,15 +46,6 @@ export default function SearchMap() {
                         />)
                 }
                 <MapFilterContainer />
-
-                <AdminMenu>
-                    <Item name="show" label="Anzeigen">
-                        Hallo
-                    </Item>
-                    <Item name="edit" label="Bearbeiten" dialogTitle="Etwas anderes bearbeiten">
-                        Welt
-                    </Item>
-                </AdminMenu>
             </div>
         </ScrollToTop>
     );

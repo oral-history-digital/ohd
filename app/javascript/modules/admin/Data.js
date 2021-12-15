@@ -1,18 +1,14 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
-import { FaTimes, FaEllipsisV } from 'react-icons/fa';
-import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
-import '@reach/menu-button/styles.css';
-import { Dialog } from '@reach/dialog';
-import '@reach/dialog/styles.css';
-import VisuallyHidden from '@reach/visually-hidden';
 
 import { AuthorizedContent } from 'modules/auth';
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
+import { AdminMenu } from 'modules/ui';
 import BaseData from './BaseData';
 import JoinedData from './JoinedData';
 import DataDetailsContainer from './DataDetailsContainer';
+
+const Item = AdminMenu.Item;
 
 export default function Data({
     data,
@@ -34,16 +30,6 @@ export default function Data({
     closeArchivePopup,
     deleteData,
 }) {
-    const [showVisible, setShowVisible] = useState(false);
-    const [editVisible, setEditVisible] = useState(false);
-    const [deleteVisible, setDeleteVisible] = useState(false);
-    const openShowDialog = () => setShowVisible(true);
-    const closeShowDialog = () => setShowVisible(false);
-    const openEditDialog = () => setEditVisible(true);
-    const closeEditDialog = () => setEditVisible(false);
-    const openDeleteDialog = () => setDeleteVisible(true);
-    const closeDeleteDialog = () => setDeleteVisible(false);
-
     const { t } = useI18n();
 
     function destroy() {
@@ -80,103 +66,51 @@ export default function Data({
             />
 
             <AuthorizedContent object={[data, task]} action='update'>
-                <Menu>
-                    <MenuButton className="Button Button--transparent Button--icon">
-                        <VisuallyHidden>Actions</VisuallyHidden>
-                        <FaEllipsisV className="Icon Icon--small Icon--editorial" />
-                    </MenuButton>
-                    <MenuList>
-                        {!hideShow && (
-                            <MenuItem
-                                className="ReachMenuItem"
-                                onSelect={openShowDialog}
-                            >
-                                Show
-                            </MenuItem>
-                        )}
-                        {!hideEdit && (
-                            <MenuItem
-                                className="ReachMenuItem"
-                                onSelect={openEditDialog}
-                            >
-                                Edit
-                            </MenuItem>
-                        )}
-                        {!hideDelete && (
-                            <MenuItem
-                                className="ReachMenuItem"
-                                onSelect={openDeleteDialog}
-                            >
-                                Delete
-                            </MenuItem>
-                        )}
-                    </MenuList>
-                </Menu>
-
-                <Dialog
-                    isOpen={showVisible}
-                    onDismiss={closeShowDialog}
-                    className="Modal-dialog"
-                >
-                    <h3 className="Modal-heading">
-                        {name}
-                    </h3>
-                    <DataDetailsContainer
-                        detailsAttributes={detailsAttributes}
-                        data={data}
-                        scope={scope}
-                        optionsScope={optionsScope}
-                    />
-                    <button className="Modal-close" onClick={closeShowDialog}>
-                        <VisuallyHidden>Close</VisuallyHidden>
-                        <FaTimes className="Modal-icon" />
-                    </button>
-                </Dialog>
-
-                <Dialog
-                    isOpen={editVisible}
-                    onDismiss={closeEditDialog}
-                    className="Modal-dialog"
-                >
-                    <h3 className="Modal-heading">
-                        {name} {t(`edit.${scope}.edit`)}
-                    </h3>
-                    {hideShow && (
-                        <DataDetailsContainer
-                            detailsAttributes={detailsAttributes}
-                            data={data}
-                            scope={scope}
-                            optionsScope={optionsScope}
-                        />
+                <AdminMenu>
+                    {!hideShow && (
+                        <Item
+                            name="show"
+                            label="Anzeigen"
+                            dialogTitle={name}
+                        >
+                            <DataDetailsContainer
+                                detailsAttributes={detailsAttributes}
+                                data={data}
+                                scope={scope}
+                                optionsScope={optionsScope}
+                            />
+                        </Item>
                     )}
-                    {form(data, closeArchivePopup)}
-                    <button className="Modal-close" onClick={closeEditDialog}>
-                        <VisuallyHidden>Close</VisuallyHidden>
-                        <FaTimes className="Modal-icon" />
-                    </button>
-                </Dialog>
-
-                <Dialog
-                    isOpen={deleteVisible}
-                    onDismiss={closeDeleteDialog}
-                    className="Modal-dialog"
-                >
-                    <h3 className="Modal-heading">
-                        {t('delete')}
-                    </h3>
-                    <p>{name}</p>
-                    <button
-                        type="button"
-                        className="Button any-button"
-                        onClick={destroy}
-                    >
-                        {t('delete')}
-                    </button>
-                    <button className="Modal-close" onClick={closeDeleteDialog}>
-                        <VisuallyHidden>Close</VisuallyHidden>
-                        <FaTimes className="Modal-icon" />
-                    </button>
-                </Dialog>
+                    {!hideEdit && (
+                        <Item
+                            name="edit"
+                            label="Bearbeiten"
+                            dialogTitle={`${name} ${t(`edit.${scope}.edit`)}`}
+                        >
+                            {hideShow && (
+                                <DataDetailsContainer
+                                    detailsAttributes={detailsAttributes}
+                                    data={data}
+                                    scope={scope}
+                                    optionsScope={optionsScope}
+                                />
+                            )}
+                            {form(data, closeArchivePopup)}
+                        </Item>
+                    )}
+                    {!hideDelete && (
+                        <Item name="delete" label={t('delete')}>
+                            <p>{name}</p>
+                            <button
+                                type="button"
+                                className="Button any-button"
+                                onClick={destroy}
+                            >
+                                {t('delete')}
+                            </button>
+                        </Item>
+                    )}
+                </AdminMenu>
             </AuthorizedContent>
 
             {joinedData && (
