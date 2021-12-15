@@ -22,6 +22,7 @@ export default function DataDetails({
                             <img
                                 key={attribute}
                                 src={data.src}
+                                style={{ maxWidth: '100%' }}
                                 alt=""
                             />
                         );

@@ -9,6 +9,7 @@
     "@reach/dialog": "^0.16.2",
     "@reach/disclosure": "^0.16.2",
     "@reach/menu-button": "^0.16.2",
+    "@reach/visually-hidden": "^0.16.0",
     "actioncable": "^5.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "babel-polyfill": "^6.23.0",

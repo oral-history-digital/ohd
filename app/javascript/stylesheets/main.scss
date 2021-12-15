@@ -103,6 +103,7 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/wrapper-page";
 
 /* Vendor overwrites */
+@import "overwrites/reach-ui";
 @import "overwrites/react-rte";
 
 /* Print */

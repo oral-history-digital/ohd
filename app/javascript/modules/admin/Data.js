@@ -1,7 +1,13 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
+import { FaTimes, FaEllipsisV } from 'react-icons/fa';
+import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
+import '@reach/menu-button/styles.css';
+import { Dialog } from '@reach/dialog';
+import '@reach/dialog/styles.css';
+import VisuallyHidden from '@reach/visually-hidden';
 
 import { AuthorizedContent } from 'modules/auth';
-import { ArchivePopupButton, PopupMenu } from 'modules/ui';
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 import BaseData from './BaseData';
@@ -28,6 +34,16 @@ export default function Data({
     closeArchivePopup,
     deleteData,
 }) {
+    const [showVisible, setShowVisible] = useState(false);
+    const [editVisible, setEditVisible] = useState(false);
+    const [deleteVisible, setDeleteVisible] = useState(false);
+    const openShowDialog = () => setShowVisible(true);
+    const closeShowDialog = () => setShowVisible(false);
+    const openEditDialog = () => setEditVisible(true);
+    const closeEditDialog = () => setEditVisible(false);
+    const openDeleteDialog = () => setDeleteVisible(true);
+    const closeDeleteDialog = () => setDeleteVisible(false);
+
     const { t } = useI18n();
 
     function destroy() {
@@ -64,60 +80,103 @@ export default function Data({
             />
 
             <AuthorizedContent object={[data, task]} action='update'>
-                <PopupMenu>
-                    <PopupMenu.Item>
+                <Menu>
+                    <MenuButton className="Button Button--transparent Button--icon">
+                        <VisuallyHidden>Actions</VisuallyHidden>
+                        <FaEllipsisV className="Icon Icon--small Icon--editorial" />
+                    </MenuButton>
+                    <MenuList>
                         {!hideShow && (
-                            <ArchivePopupButton
-                                title={name}
-                                type="show"
+                            <MenuItem
+                                className="ReachMenuItem"
+                                onSelect={openShowDialog}
                             >
-                                <DataDetailsContainer
-                                    detailsAttributes={detailsAttributes}
-                                    data={data}
-                                    scope={scope}
-                                    optionsScope={optionsScope}
-                                />
-                            </ArchivePopupButton>
+                                Show
+                            </MenuItem>
                         )}
-                    </PopupMenu.Item>
-                    <PopupMenu.Item>
                         {!hideEdit && (
-                            <ArchivePopupButton
-                                title={`${name} ${t(`edit.${scope}.edit`)}`}
-                                type="edit"
+                            <MenuItem
+                                className="ReachMenuItem"
+                                onSelect={openEditDialog}
                             >
-                                <>
-                                    {hideShow && (
-                                        <DataDetailsContainer
-                                            detailsAttributes={detailsAttributes}
-                                            data={data}
-                                            scope={scope}
-                                            optionsScope={optionsScope}
-                                        />
-                                    )}
-                                    {form(data, closeArchivePopup)}
-                                </>
-                            </ArchivePopupButton>
+                                Edit
+                            </MenuItem>
                         )}
-                    </PopupMenu.Item>
-                    <PopupMenu.Item>
                         {!hideDelete && (
-                            <ArchivePopupButton
-                                title={t('delete')}
-                                type="delete"
+                            <MenuItem
+                                className="ReachMenuItem"
+                                onSelect={openDeleteDialog}
                             >
-                                <p>{name}</p>
-                                <button
-                                    type="button"
-                                    className="Button any-button"
-                                    onClick={destroy}
-                                >
-                                    {t('delete')}
-                                </button>
-                            </ArchivePopupButton>
+                                Delete
+                            </MenuItem>
                         )}
-                    </PopupMenu.Item>
-                </PopupMenu>
+                    </MenuList>
+                </Menu>
+
+                <Dialog
+                    isOpen={showVisible}
+                    onDismiss={closeShowDialog}
+                    className="Modal-dialog"
+                >
+                    <h3 className="Modal-heading">
+                        {name}
+                    </h3>
+                    <DataDetailsContainer
+                        detailsAttributes={detailsAttributes}
+                        data={data}
+                        scope={scope}
+                        optionsScope={optionsScope}
+                    />
+                    <button className="Modal-close" onClick={closeShowDialog}>
+                        <VisuallyHidden>Close</VisuallyHidden>
+                        <FaTimes className="Modal-icon" />
+                    </button>
+                </Dialog>
+
+                <Dialog
+                    isOpen={editVisible}
+                    onDismiss={closeEditDialog}
+                    className="Modal-dialog"
+                >
+                    <h3 className="Modal-heading">
+                        {name} {t(`edit.${scope}.edit`)}
+                    </h3>
+                    {hideShow && (
+                        <DataDetailsContainer
+                            detailsAttributes={detailsAttributes}
+                            data={data}
+                            scope={scope}
+                            optionsScope={optionsScope}
+                        />
+                    )}
+                    {form(data, closeArchivePopup)}
+                    <button className="Modal-close" onClick={closeEditDialog}>
+                        <VisuallyHidden>Close</VisuallyHidden>
+                        <FaTimes className="Modal-icon" />
+                    </button>
+                </Dialog>
+
+                <Dialog
+                    isOpen={deleteVisible}
+                    onDismiss={closeDeleteDialog}
+                    className="Modal-dialog"
+                >
+                    <h3 className="Modal-heading">
+                        {t('delete')}
+                    </h3>
+                    <p>{name}</p>
+                    <button
+                        type="button"
+                        className="Button any-button"
+                        onClick={destroy}
+                    >
+                        {t('delete')}
+                    </button>
+                    <button className="Modal-close" onClick={closeDeleteDialog}>
+                        <VisuallyHidden>Close</VisuallyHidden>
+                        <FaTimes className="Modal-icon" />
+                    </button>
+                </Dialog>
             </AuthorizedContent>
 
             {joinedData && (
