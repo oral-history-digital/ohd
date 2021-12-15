@@ -1,20 +1,16 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getProjects, getLanguages } from 'modules/data';
+import { submitData, getProjects } from 'modules/data';
 import { closeArchivePopup } from 'modules/ui';
-import { getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { getLocale, getProjectId } from 'modules/archive';
 import RegistryHierarchyForm from './RegistryHierarchyForm';
 
-const mapStateToProps = (state) => {
-    return {
-        locale: getLocale(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        languages: getLanguages(state),
-    }
-}
+const mapStateToProps = state => ({
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     submitData,

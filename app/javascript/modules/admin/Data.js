@@ -32,7 +32,7 @@ export default function Data({
 }) {
     const { t } = useI18n();
 
-    function destroy() {
+    function destroy(close) {
         // skip remove from state, only remove server-side
         deleteData({ locale, projectId, projects }, pluralize(scope), data.id,
             null, null, true);
@@ -47,6 +47,7 @@ export default function Data({
             true
         );
         closeArchivePopup();
+        close();
     }
 
     if (!data) {
@@ -87,27 +88,35 @@ export default function Data({
                             label="Bearbeiten"
                             dialogTitle={`${name} ${t(`edit.${scope}.edit`)}`}
                         >
-                            {hideShow && (
-                                <DataDetailsContainer
-                                    detailsAttributes={detailsAttributes}
-                                    data={data}
-                                    scope={scope}
-                                    optionsScope={optionsScope}
-                                />
+                            {close => (
+                                <>
+                                    {hideShow && (
+                                        <DataDetailsContainer
+                                            detailsAttributes={detailsAttributes}
+                                            data={data}
+                                            scope={scope}
+                                            optionsScope={optionsScope}
+                                        />
+                                    )}
+                                    {form(data, close)}
+                                </>
                             )}
-                            {form(data, closeArchivePopup)}
                         </Item>
                     )}
                     {!hideDelete && (
                         <Item name="delete" label={t('delete')}>
-                            <p>{name}</p>
-                            <button
-                                type="button"
-                                className="Button any-button"
-                                onClick={destroy}
-                            >
-                                {t('delete')}
-                            </button>
+                            {close => (
+                                <>
+                                    <p>{name}</p>
+                                    <button
+                                        type="button"
+                                        className="Button any-button"
+                                        onClick={() => destroy(close)}
+                                    >
+                                        {t('delete')}
+                                    </button>
+                                </>
+                            )}
                         </Item>
                     )}
                 </AdminMenu>

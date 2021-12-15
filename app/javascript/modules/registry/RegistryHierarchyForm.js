@@ -1,45 +1,61 @@
-import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 
-export default class RegistryHierarchyForm extends Component {
+export default function RegistryHierarchyForm({
+    locale,
+    projectId,
+    projects,
+    registryHierarchy,
+    descendantRegistryEntry,
+    submitData,
+    closeArchivePopup,
+    onSubmit,
+}) {
+    const { t } = useI18n();
 
-    constructor(props) {
-        super(props);
-    }
-
-    descendantRegistryEntry() {
-        if (this.props.descendantRegistryEntry){
-            return (
+    return (
+        <div>
+            {descendantRegistryEntry && (
                 <div>
-                    <span><b>{t(this.props, 'edit.registry_entry.add_parent') + ': '}</b></span>
-                    <span>{this.props.descendantRegistryEntry.name[this.props.locale]}</span>
+                    <span>
+                        <b>{t('edit.registry_entry.add_parent') + ': '}</b>
+                    </span>
+                    <span>{descendantRegistryEntry.name[locale]}</span>
                 </div>
-            )
-        }
-    }
+            )}
 
-    render() {
-        let _this = this;
-        return (
-            <div>
-                {this.descendantRegistryEntry()}
-                <Form
-                    key={`registry-hierarchy-form-${this.props.descendantRegistryEntry && this.props.descendantRegistryEntry.id}`}
-                    scope='registry_hierarchy'
-                    onSubmit={function(params){_this.props.submitData(_this.props, params); _this.props.closeArchivePopup()}}
-                    data={this.props.registryHierarchy}
-                    values={{
-                        descendant_id: this.props.descendantRegistryEntry && this.props.descendantRegistryEntry.id,
-                    }}
-                    elements={[
-                        {
-                            attribute: 'ancestor_id',
-                        },
-                    ]}
-                />
-            </div>
-        );
-    }
+            <Form
+                scope='registry_hierarchy'
+                onSubmit={params => {
+                    submitData({ locale, projectId, projects }, params);
+                    closeArchivePopup();
+                    if (typeof onSubmit === 'function') {
+                        onSubmit();
+                    }
+                }}
+                data={registryHierarchy}
+                values={{
+                    descendant_id: descendantRegistryEntry?.id,
+                }}
+                elements={[
+                    {
+                        attribute: 'ancestor_id',
+                    },
+                ]}
+            />
+        </div>
+    );
 }
+
+RegistryHierarchyForm.propTypes = {
+    descendantRegistryEntry: PropTypes.object,
+    registryHierarchy: PropTypes.object,
+    locale: PropTypes.string.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    onSubmit: PropTypes.func.isRequired,
+    submitData: PropTypes.func.isRequired,
+    closeArchivePopup: PropTypes.func.isRequired,
+};

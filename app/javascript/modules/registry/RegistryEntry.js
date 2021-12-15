@@ -99,65 +99,90 @@ export default class RegistryEntry extends Component {
                         name="edit"
                         label={t(this.props, 'edit.registry_entry.edit')}
                     >
-                        <RegistryEntryFormContainer
-                            registryEntryId={data.id}
-                            registryEntryParent={registryEntryParent}
-                        />
+                        {close => (
+                            <RegistryEntryFormContainer
+                                registryEntryId={data.id}
+                                registryEntryParent={registryEntryParent}
+                                onSubmit={close}
+                            />
+                        )}
                     </Item>
                     <Item
                         name="delete"
                         label={t(this.props, 'delete')}
                     >
-                        <p>{data.name[locale]}</p>
-                        <button
-                            type="button"
-                            className="Button any-button"
-                            onClick={() => this.destroy()}
-                        >
-                            {t(this.props, 'delete')}
-                        </button>
+                        {close => (
+                            <>
+                                <p>{data.name[locale]}</p>
+                                <button
+                                    type="button"
+                                    className="Button any-button"
+                                    onClick={() => {
+                                        this.destroy();
+                                        close();
+                                    }}
+                                >
+                                    {t(this.props, 'delete')}
+                                </button>
+                            </>
+                        )}
                     </Item>
                     <Item
                         name="new_child"
                         label={t(this.props, `edit.registry_entry.new`)}
                     >
-                        <RegistryEntryFormContainer
-                            registryEntryParent={data}
-                        />
+                        {close => (
+                            <RegistryEntryFormContainer
+                                registryEntryParent={data}
+                                onSubmit={close}
+                            />
+                        )}
                     </Item>
                     <Item
                         name="new_child_from_normdata"
                         label={t(this.props, `edit.registry_entry.from_norm_data`)}
                     >
-                        <RegistryEntryFromNormDataFormContainer
-                            registryEntryParent={data}
-                            onSubmit={f => f}
-                        />
+                        {close => (
+                            <RegistryEntryFromNormDataFormContainer
+                                registryEntryParent={data}
+                                onSubmit={close}
+                            />
+                        )}
                     </Item>
                     <Item
                         name="add_parent"
                         label={t(this.props, 'edit.registry_entry.add_parent')}
                     >
-                        <RegistryHierarchyFormContainer
-                            descendantRegistryEntry={data}
-                            onSubmit={f => f}
-                        />
+                        {close => (
+                            <RegistryHierarchyFormContainer
+                                descendantRegistryEntry={data}
+                                onSubmit={close}
+                            />
+                        )}
+
                     </Item>
                     {registryEntryParent && (
                         <Item
                             name="delete_parent"
                             label={t(this.props, 'edit.registry_entry.delete_parent')}
                         >
-                            <p>
-                                {registryEntryParent.name[locale]}
-                            </p>
-                            <button
-                                type="button"
-                                className="Button any-button"
-                                onClick={() => this.rmParent()}
-                            >
-                                {t(this.props, 'delete')}
-                            </button>
+                            {close => (
+                                <>
+                                    <p>
+                                        {registryEntryParent.name[locale]}
+                                    </p>
+                                    <button
+                                        type="button"
+                                        className="Button any-button"
+                                        onClick={() => {
+                                            this.rmParent();
+                                            close();
+                                        }}
+                                    >
+                                        {t(this.props, 'delete')}
+                                    </button>
+                                </>
+                            )}
                         </Item>
                     )}
                 </AdminMenu>

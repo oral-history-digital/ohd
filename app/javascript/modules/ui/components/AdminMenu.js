@@ -1,5 +1,6 @@
 import { cloneElement, useState } from 'react';
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { FaTimes, FaEllipsisV } from 'react-icons/fa';
 import { Menu, MenuList, MenuButton, MenuItem } from '@reach/menu-button';
 import '@reach/menu-button/styles.css';
@@ -25,7 +26,7 @@ export default function AdminMenu({
 
     return (
         <>
-            <Menu>
+            <Menu className={classNames(className)}>
                 <MenuButton className="Button Button--transparent Button--icon">
                     <VisuallyHidden>
                         {t('modules.ui.admin_menu.actions')}
@@ -82,7 +83,11 @@ function AdminMenuItem({
                 {dialogTitle || label}
             </h3>
 
-            {children}
+            {
+                typeof children === 'function' ?
+                    children(onClose) :
+                    children
+            }
 
             <button className="Modal-close" onClick={onClose}>
                 <VisuallyHidden>Close</VisuallyHidden>
@@ -100,6 +105,7 @@ AdminMenuItem.propTypes = {
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,
+        PropTypes.func,
     ]),
     onClose: PropTypes.func.isRequired,
 };
