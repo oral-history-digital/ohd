@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { openArchivePopup, closeArchivePopup } from 'modules/ui';
+import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, getProjects, getRegistryEntries, getRegistryEntriesStatus } from 'modules/data';
 import { addRemoveRegistryEntryId, getLocale, getTranslations, getSelectedRegistryEntryIds,
     getProjectId } from 'modules/archive';
@@ -21,7 +21,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
     deleteData,
     addRemoveRegistryEntryId,
-    openArchivePopup,
     closeArchivePopup,
 }, dispatch);
 
