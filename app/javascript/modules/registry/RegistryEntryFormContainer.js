@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { submitData, getProjects, getRegistryEntries } from 'modules/data';
-import { closeArchivePopup } from 'modules/ui';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import RegistryEntryForm from './RegistryEntryForm';
 
@@ -16,7 +15,6 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     submitData,
-    closeArchivePopup,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryEntryForm);

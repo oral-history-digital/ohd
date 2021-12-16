@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { closeArchivePopup } from 'modules/ui';
 import { fetchData, getContributionTypesForCurrentProject,
     getPeopleStatus, getPeopleForCurrentProject,
     getProjects, getCurrentProject } from 'modules/data';
@@ -20,7 +19,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    closeArchivePopup,
     fetchData,
     setFlyoutTabsIndex,
     // please NO submitData in here: it would disable

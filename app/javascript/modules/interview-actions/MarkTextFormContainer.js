@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 
 import { fetchData, submitData, getCurrentInterview, getProjects, getCurrentAccount,
     getMarkTextStatus } from 'modules/data';
-import { closeArchivePopup } from 'modules/ui';
 import { getLocale, getProjectId, getArchiveId, getTranslations } from 'modules/archive';
 import MarkTextForm from './MarkTextForm';
 
@@ -23,7 +22,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
     submitData,
-    closeArchivePopup,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(MarkTextForm);

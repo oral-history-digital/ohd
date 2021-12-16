@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
 import { DataList } from 'modules/admin';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
@@ -30,7 +29,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
     deleteData,
     submitData,
-    closeArchivePopup,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataList);

@@ -49,12 +49,10 @@ export default class RegistryEntry extends Component {
 
     destroy() {
         this.props.deleteData(this.props, 'registry_entries', this.props.data.id, null, null, true);
-        this.props.closeArchivePopup();
     }
 
     rmParent() {
         this.props.deleteData(this.props, 'registry_hierarchies', this.parentRegistryHierarchyId(), null, null, true);
-        this.props.closeArchivePopup();
     }
 
     parentRegistryHierarchyId() {
@@ -216,10 +214,13 @@ export default class RegistryEntry extends Component {
                     triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
                     trigger={displayName}
                 >
-                    <RegistryEntryShowContainer
-                        registryEntryId={data.id}
-                        registryEntryParent={registryEntryParent}
-                    />
+                    {close => (
+                        <RegistryEntryShowContainer
+                            registryEntryId={data.id}
+                            registryEntryParent={registryEntryParent}
+                            onSubmit={close}
+                        />
+                    )}
                 </Modal>
             );
         } else {
@@ -309,7 +310,6 @@ RegistryEntry.propTypes = {
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
-    closeArchivePopup: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
     addRemoveRegistryEntryId: PropTypes.func.isRequired,

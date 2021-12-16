@@ -11,7 +11,6 @@ export default function RequestProjectAccessForm({
     projects,
     project,
     submitData,
-    closeArchivePopup,
     onSubmit,
 }) {
 
@@ -25,12 +24,11 @@ export default function RequestProjectAccessForm({
             scope='user_registration_project'
             onSubmit={(params) => {
                 submitData({ locale, projectId, projects }, params);
-                closeArchivePopup();
                 if (typeof onSubmit === 'function') {
                     onSubmit();
                 }
             }}
-            values={{ 
+            values={{
                 project_id: project.id,
             }}
             submitText='submit'
@@ -69,6 +67,5 @@ RequestProjectAccessForm.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
 };

@@ -68,7 +68,7 @@ export default class RegistryEntryForm extends Component {
     }
 
     render() {
-        const { submitData, closeArchivePopup, onSubmit } = this.props;
+        const { submitData, onSubmit } = this.props;
 
         return (
             <div>
@@ -79,7 +79,6 @@ export default class RegistryEntryForm extends Component {
                     scope='registry_entry'
                     onSubmit={params => {
                         submitData(this.props, params);
-                        closeArchivePopup();
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }
@@ -128,5 +127,4 @@ RegistryEntryForm.propTypes = {
     projects: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
     submitData: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
 };

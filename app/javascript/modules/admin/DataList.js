@@ -70,7 +70,6 @@ export default class DataList extends Component {
                     scope={this.props.scope}
                     onSubmit={(params) => {
                         this.props.submitData(this.props, params);
-                        this.props.closeArchivePopup();
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }
@@ -110,5 +109,4 @@ export default class DataList extends Component {
 DataList.propTypes = {
     fetchData: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
 };

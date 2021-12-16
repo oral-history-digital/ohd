@@ -8,7 +8,6 @@ export default function SegmentHeadingForm({
     projectId,
     projects,
     submitData,
-    closeArchivePopup,
     onSubmit,
 }) {
     return (
@@ -17,8 +16,7 @@ export default function SegmentHeadingForm({
                 scope='segment'
                 onSubmit={(params) => {
                     submitData({ locale, projectId, projects }, params);
-                    closeArchivePopup();
-                    if (onSubmit) {
+                    if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
                 }}
@@ -45,6 +43,5 @@ SegmentHeadingForm.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
 };

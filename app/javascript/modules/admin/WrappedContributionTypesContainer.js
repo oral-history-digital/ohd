@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { setQueryParams, getContributionTypesQuery } from 'modules/search';
-import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getCurrentAccount,
     getContributionTypesForCurrentProject, getContributionTypesStatus, getProjectLocales,
     getProjectHasMap } from 'modules/data';
@@ -64,7 +63,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     deleteData,
     submitData,
     setQueryParams,
-    closeArchivePopup,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

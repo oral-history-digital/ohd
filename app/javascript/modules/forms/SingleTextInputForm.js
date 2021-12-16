@@ -6,7 +6,9 @@ export default class SingleTextInputForm extends Component {
         return (
             <Form
                 scope='text'
-                onSubmit={(params) => {this.props.submitData(this.props, params); this.props.closeArchivePopup()}}
+                onSubmit={params => {
+                    this.props.submitData(this.props, params);
+                }}
                 formClasses={this.props.formClasses}
                 elements={[
                     {attribute: 'text_to_mark'},

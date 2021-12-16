@@ -4,7 +4,6 @@ import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
-import { ArchivePopupContainer } from 'modules/ui';
 import { ResizeWatcherContainer } from 'modules/user-agent';
 import { FlyoutTabs } from 'modules/flyout-tabs';
 import SiteHeader from './SiteHeader';
@@ -146,8 +145,6 @@ export default function WrapperPage({
                     visible={scrollPositionBelowThreshold}
                     fullscreen={!flyoutTabsVisible}
                 />
-
-                <ArchivePopupContainer/>
             </div>
         </ResizeWatcherContainer>
     );
