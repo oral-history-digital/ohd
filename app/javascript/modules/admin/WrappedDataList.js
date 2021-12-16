@@ -129,7 +129,6 @@ export default class WrappedDataList extends Component {
                     scope={this.props.scope}
                     onSubmit={(params) => {
                         this.props.submitData(this.props, params);
-                        this.props.closeArchivePopup();
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }

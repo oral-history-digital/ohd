@@ -101,11 +101,17 @@
       margin-bottom: 0;
     }
   }
+
   .search-input {
     flex-grow: 1;
     line-height: $base-unit;
     padding: (0.5 * $base-unit) 0 (0.5 * $base-unit) (0.5 * $base-unit);
   }
+
+  .search-input:focus {
+    box-shadow: 0 0 0 $focus-radius $focus-color;
+  }
+
   ::placeholder {
     color: var(--primary-color);
   }

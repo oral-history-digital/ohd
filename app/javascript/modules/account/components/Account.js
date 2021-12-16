@@ -2,6 +2,7 @@ import { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthShowContainer } from 'modules/auth';
+import { Modal } from 'modules/ui';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
@@ -78,16 +79,18 @@ export default class Account extends Component {
                     <p className='error'>
                         {t(this.props, 'request_project_access_explanation')}
                     </p>
-                    <div
-                        className='flyout-sub-tabs-content-ico-link'
-                        title={t(this.props, 'request_project_access_explanation')}
-                        onClick={() => this.props.openArchivePopup({
-                            title: t(this.props, 'request_project_access_link'),
-                            content: <RequestProjectAccessFormContainer project={project} />
-                        })}
+                    <Modal
+                        title={t(this.props, 'request_project_access_link')}
+                        triggerClassName="Button Button--transparent Button--withoutPadding Button--primary"
+                        trigger={t(this.props, 'request_project_access_link')}
                     >
-                        {t(this.props, 'request_project_access_link')}
-                    </div>
+                        {close => (
+                            <RequestProjectAccessFormContainer
+                                project={project}
+                                onSubmit={close}
+                            />
+                        )}
+                    </Modal>
                 </>
             )
         }

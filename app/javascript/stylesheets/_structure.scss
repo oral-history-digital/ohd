@@ -45,19 +45,23 @@ footer {
   margin: 0;
   padding: 0;
   font-size: $font-size-medium;
+
   li {
     background-image: none;
     display: inline-block;
     padding: 0 15px 0 0;
   }
+
   a:link,
-  a:visited {
+  a:visited,
+  a:hover,
+  a:active {
     color: var(--primary-color);
-    transition: color 0.3s;
   }
-  a[href]:hover, a:active {
-    text-decoration: none;
-    color: #ccc;
+
+  a:hover,
+  a:active {
+    text-decoration: underline;
   }
 }
 

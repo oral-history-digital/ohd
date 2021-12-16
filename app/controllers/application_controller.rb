@@ -118,18 +118,6 @@ class ApplicationController < ActionController::Base
         registry_entries: {},
         interviews: {},
       },
-      popup: {
-        show: false,
-        title: 'bla',
-        big: false,
-        content: 'bla bla',
-        className: 'popup',
-        closeOnOverlayClick: true,
-        buttons: {
-          left: ['cancel'],
-          right: ['ok']
-        }
-      },
       'media-player': {
         tape: 1,
         mediaTime: 0,

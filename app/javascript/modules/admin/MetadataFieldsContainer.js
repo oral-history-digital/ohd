@@ -2,7 +2,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getLocale, getTranslations, getProjectId } from 'modules/archive';
-import { closeArchivePopup } from 'modules/ui';
 import { getCurrentProject, fetchData, deleteData, submitData, getProjects, getCurrentAccount, getRegistryReferenceTypesStatus } from 'modules/data';
 import WrappedDataList from './WrappedDataList';
 import MetadataFieldFormContainer from './MetadataFieldFormContainer';
@@ -44,7 +43,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
     deleteData,
     submitData,
-    closeArchivePopup,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedDataList);

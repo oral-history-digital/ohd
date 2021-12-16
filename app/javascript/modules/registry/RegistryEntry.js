@@ -1,10 +1,10 @@
-import { createElement, Component } from 'react';
+import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaPencilAlt, FaTrash, FaMinusCircle, FaSitemap, FaGlobeEurope, FaMinus, FaPlus }
+import { FaGlobeEurope, FaMinus, FaPlus }
     from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { PopupMenu } from 'modules/ui';
+import { AdminMenu, Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
@@ -12,6 +12,8 @@ import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
 import RegistryEntryFromNormDataFormContainer from './RegistryEntryFromNormDataFormContainer';
 import RegistryEntriesContainer from './RegistryEntriesContainer';
+
+const Item = AdminMenu.Item;
 
 export default class RegistryEntry extends Component {
     constructor(props) {
@@ -45,144 +47,16 @@ export default class RegistryEntry extends Component {
         }
     }
 
-    edit() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_entry.edit')}
-                onClick={() => {
-                    this.setState({ editButtonsVisible: false });
-                    this.props.openArchivePopup({
-                        title: t(this.props, 'edit.registry_entry.edit'),
-                        content: <RegistryEntryFormContainer
-                            registryEntryId={this.props.data.id}
-                            registryEntryParent={this.props.registryEntryParent}
-                            />
-                    })
-                }}
-            >
-                <FaPencilAlt className="Icon Icon--editorial" />
-                {' '}
-                {t(this.props, 'edit.registry_entry.edit')}
-            </div>
-        )
-    }
-
     destroy() {
         this.props.deleteData(this.props, 'registry_entries', this.props.data.id, null, null, true);
-        this.props.closeArchivePopup();
-    }
-
-    delete() {
-        if (this.props.data) {
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'delete')}
-                onClick={() => {
-                    this.setState({ editButtonsVisible: false });
-                    this.props.openArchivePopup({
-                        title: t(this.props, 'delete'),
-                        content: (
-                            <div>
-                                <p>{this.props.data.name[this.props.locale]}</p>
-                                <div className='any-button' onClick={() => this.destroy()}>
-                                    {t(this.props, 'delete')}
-                                </div>
-                            </div>
-                        )
-                    })
-                }}
-            >
-                <FaTrash className="Icon Icon--editorial" />
-                {' '}
-                {t(this.props, 'delete')}
-            </div>
-        } else {
-            return null;
-        }
     }
 
     rmParent() {
         this.props.deleteData(this.props, 'registry_hierarchies', this.parentRegistryHierarchyId(), null, null, true);
-        this.props.closeArchivePopup();
     }
 
     parentRegistryHierarchyId() {
         return this.props.data.parent_registry_hierarchy_ids[this.props.registryEntryParent.id];
-    }
-
-    deleteParent() {
-        if (this.props.registryEntryParent) {
-            return <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_entry.delete_parent')}
-                onClick={() => {
-                    this.setState({ editButtonsVisible: false });
-                    this.props.openArchivePopup({
-                        title: t(this.props, 'edit.registry_entry.delete_parent'),
-                        content: (
-                            <div>
-                                <p>{this.props.registryEntryParent.name[this.props.locale]}</p>
-                                <div className='any-button' onClick={() => this.rmParent()}>
-                                    {t(this.props, 'delete')}
-                                </div>
-                            </div>
-                        )
-                    })
-                }}
-            >
-                <FaMinusCircle className="Icon Icon--editorial"/>
-                {' '}
-                {t(this.props, 'edit.registry_entry.delete_parent')}
-            </div>
-        } else {
-            return null;
-        }
-    }
-
-    addParent() {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, 'edit.registry_entry.add_parent')}
-                onClick={() => {
-                    this.setState({ editButtonsVisible: false });
-                    this.props.openArchivePopup({
-                        title: t(this.props, 'edit.registry_entry.add_parent'),
-                        content: <RegistryHierarchyFormContainer descendantRegistryEntry={this.props.data} />
-                    })
-                }}
-            >
-                <FaSitemap className="Icon Icon--editorial" style={{'transform': 'rotate(180deg)'}} />
-                {' '}
-                {t(this.props, 'edit.registry_entry.add_parent')}
-            </div>
-        )
-    }
-
-    addRegistryEntry(component, titlePart) {
-        return (
-            <div
-                className='flyout-sub-tabs-content-ico-link'
-                title={t(this.props, `edit.registry_entry.${titlePart}`)}
-                onClick={() => {
-                    this.setState({ editButtonsVisible: false });
-                    this.props.openArchivePopup({
-                        title: t(this.props, `edit.registry_entry.${titlePart}`),
-                        content: createElement(component,
-                            {
-                                registryEntryParent: this.props.data,
-                                onSubmit: close
-                            }
-                        )
-                    })
-                }}
-            >
-                <FaSitemap className="Icon Icon--editorial" />
-                {' '}
-                {t(this.props, `edit.registry_entry.${titlePart}`)}
-            </div>
-        )
     }
 
     osmLink() {
@@ -214,16 +88,102 @@ export default class RegistryEntry extends Component {
     }
 
     editButtons() {
+        const { data, registryEntryParent, locale } = this.props;
+
         return (
-            <AuthorizedContent object={this.props.data} action='update'>
-                <PopupMenu>
-                    <PopupMenu.Item>{this.edit()}</PopupMenu.Item>
-                    <PopupMenu.Item>{this.delete()}</PopupMenu.Item>
-                    <PopupMenu.Item>{this.addRegistryEntry(RegistryEntryFormContainer, 'new')}</PopupMenu.Item>
-                    <PopupMenu.Item>{this.addRegistryEntry(RegistryEntryFromNormDataFormContainer, 'from_norm_data')}</PopupMenu.Item>
-                    <PopupMenu.Item>{this.addParent()}</PopupMenu.Item>
-                    <PopupMenu.Item>{this.deleteParent()}</PopupMenu.Item>
-                </PopupMenu>
+            <AuthorizedContent object={data} action='update'>
+                <AdminMenu>
+                    <Item
+                        name="edit"
+                        label={t(this.props, 'edit.registry_entry.edit')}
+                    >
+                        {close => (
+                            <RegistryEntryFormContainer
+                                registryEntryId={data.id}
+                                registryEntryParent={registryEntryParent}
+                                onSubmit={close}
+                            />
+                        )}
+                    </Item>
+                    <Item
+                        name="delete"
+                        label={t(this.props, 'delete')}
+                    >
+                        {close => (
+                            <>
+                                <p>{data.name[locale]}</p>
+                                <button
+                                    type="button"
+                                    className="Button any-button"
+                                    onClick={() => {
+                                        this.destroy();
+                                        close();
+                                    }}
+                                >
+                                    {t(this.props, 'delete')}
+                                </button>
+                            </>
+                        )}
+                    </Item>
+                    <Item
+                        name="new_child"
+                        label={t(this.props, `edit.registry_entry.new`)}
+                    >
+                        {close => (
+                            <RegistryEntryFormContainer
+                                registryEntryParent={data}
+                                onSubmit={close}
+                            />
+                        )}
+                    </Item>
+                    <Item
+                        name="new_child_from_normdata"
+                        label={t(this.props, `edit.registry_entry.from_norm_data`)}
+                    >
+                        {close => (
+                            <RegistryEntryFromNormDataFormContainer
+                                registryEntryParent={data}
+                                onSubmit={close}
+                            />
+                        )}
+                    </Item>
+                    <Item
+                        name="add_parent"
+                        label={t(this.props, 'edit.registry_entry.add_parent')}
+                    >
+                        {close => (
+                            <RegistryHierarchyFormContainer
+                                descendantRegistryEntry={data}
+                                onSubmit={close}
+                            />
+                        )}
+
+                    </Item>
+                    {registryEntryParent && (
+                        <Item
+                            name="delete_parent"
+                            label={t(this.props, 'edit.registry_entry.delete_parent')}
+                        >
+                            {close => (
+                                <>
+                                    <p>
+                                        {registryEntryParent.name[locale]}
+                                    </p>
+                                    <button
+                                        type="button"
+                                        className="Button any-button"
+                                        onClick={() => {
+                                            this.rmParent();
+                                            close();
+                                        }}
+                                    >
+                                        {t(this.props, 'delete')}
+                                    </button>
+                                </>
+                            )}
+                        </Item>
+                    )}
+                </AdminMenu>
             </AuthorizedContent>
         );
     }
@@ -233,42 +193,41 @@ export default class RegistryEntry extends Component {
     }
 
     entry() {
-        const { data, locale, openArchivePopup } = this.props;
+        const { data, locale, registryEntryParent } = this.props;
+
         const hasReferences = data.registry_references_count > 0;
+        const localizedName = data.name[locale];
+        const name = localizedName && localizedName.length > 0 ?
+            localizedName :
+            <i>{t(this.props, 'modules.registry.name_missing')}</i>;
+        const displayName = (<>
+            {name}
+            <AuthorizedContent object={data} action='update'>
+                {` (ID: ${data.id})`}
+            </AuthorizedContent>
+        </>);
 
-        const name = data.name[locale];
-
-        return (
-            <div
-                id={`entry_${data.id}`}
-                key={data.id}
-                className={classNames('RegistryEntry-label', {
-                    'is-clickable': hasReferences,
-                })}
-                onClick={() => {
-                    if (hasReferences) {
-                        openArchivePopup({
-                            content: (
-                                <RegistryEntryShowContainer
-                                    registryEntryId={data.id}
-                                    registryEntryParent={this.props.registryEntryParent}
-                                />
-                            )
-                        });
-                    }
-                }}
-            >
-                {
-                    name && name.length > 0 ?
-                        name :
-                        <i>{t(this.props, 'modules.registry.name_missing')}</i>
-                }
-
-                <AuthorizedContent object={data} action='update'>
-                    {` (ID: ${data.id})`}
-                </AuthorizedContent>
-            </div>
-        )
+        if (hasReferences) {
+            return (
+                <Modal
+                    title={t(this.props, 'edit.annotation.edit')}
+                    triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
+                    trigger={displayName}
+                >
+                    {close => (
+                        <RegistryEntryShowContainer
+                            registryEntryId={data.id}
+                            registryEntryParent={registryEntryParent}
+                            onSubmit={close}
+                        />
+                    )}
+                </Modal>
+            );
+        } else {
+            return (
+                <span className="RegistryEntry-label">{displayName}</span>
+            );
+        }
     }
 
     showHideChildren() {
@@ -309,7 +268,10 @@ export default class RegistryEntry extends Component {
             children } = this.props;
 
         return (
-            <li className={classNames('RegistryEntry', className)}>
+            <li
+                id={`entry_${data.id}`}
+                className={classNames('RegistryEntry', className)}
+            >
                 <div className="RegistryEntry-content">
                     <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
                         <input
@@ -348,8 +310,6 @@ RegistryEntry.propTypes = {
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
-    openArchivePopup: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
     addRemoveRegistryEntryId: PropTypes.func.isRequired,

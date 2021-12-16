@@ -70,11 +70,14 @@ export default class Input extends Component {
         if (this.props.type === 'file' && this.props.data && this.props.data.src && !this.state.changeFile) {
             return (
                 <div>
-                    <img src={this.props.data.thumb_src} />
-                    <FaPencilAlt
-                        className="Icon Icon--primary"
-                        onClick={() => this.setState({changeFile: true})}
-                    />
+                    <img src={this.props.data.thumb_src} alt="" />
+                    <button
+                        type="button"
+                        className="Button Button--transparent Button--icon"
+                        onClick={() => this.setState({ changeFile: true })}
+                    >
+                        <FaPencilAlt className="Icon Icon--primary" />
+                    </button>
                 </div>
             )
         } else {
