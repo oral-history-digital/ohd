@@ -44,7 +44,7 @@ class MetadataImport
       interview.touch
     end
   rescue StandardError => e
-    log("*** #{project.initials} - #{project.id}")
+    log("*** #{project.shortname} - #{project.id}")
     log("#{e.message}: #{e.backtrace}")
   end
 
