@@ -5,7 +5,6 @@ import { submitData, fetchData, getProjects, getRegistryEntries, getRegistryEntr
     getRegistryReferenceTypesForCurrentProject, getRegistryReferenceTypesStatus,
     getCurrentProject
 } from 'modules/data';
-import { closeArchivePopup } from 'modules/ui';
 import { getLocale, getProjectId } from 'modules/archive';
 import RegistryReferenceForm from './RegistryReferenceForm';
 
@@ -24,7 +23,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
     submitData,
-    closeArchivePopup,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(RegistryReferenceForm);

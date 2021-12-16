@@ -18,7 +18,6 @@ export default function RegistryReferenceForm({
     inTranscript,
     fetchData,
     submitData,
-    closeArchivePopup,
     onSubmit,
 }) {
     useEffect(() => {
@@ -87,7 +86,6 @@ export default function RegistryReferenceForm({
                 }}
                 onSubmit={params => {
                     submitData({ locale, projectId, projects }, params);
-                    closeArchivePopup();
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -113,6 +111,5 @@ RegistryReferenceForm.propTypes = {
     interview: PropTypes.object,
     fetchData: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
 };

@@ -10,7 +10,6 @@ export default function RegistryHierarchyForm({
     registryHierarchy,
     descendantRegistryEntry,
     submitData,
-    closeArchivePopup,
     onSubmit,
 }) {
     const { t } = useI18n();
@@ -30,7 +29,6 @@ export default function RegistryHierarchyForm({
                 scope='registry_hierarchy'
                 onSubmit={params => {
                     submitData({ locale, projectId, projects }, params);
-                    closeArchivePopup();
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -57,5 +55,4 @@ RegistryHierarchyForm.propTypes = {
     projects: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
 };

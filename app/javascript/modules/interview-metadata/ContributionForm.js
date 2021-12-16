@@ -22,7 +22,6 @@ export default function ContributionForm({
     formClasses,
     onSubmit,
     setFlyoutTabsIndex,
-    closeArchivePopup,
     fetchData,
     submitData,
 }) {
@@ -83,7 +82,6 @@ export default function ContributionForm({
                     if (typeof submitData === 'function') {
                         submitData({ locale, projectId, projects }, params);
                     }
-                    closeArchivePopup();
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -97,7 +95,6 @@ export default function ContributionForm({
                 className='admin'
                 onClick={() => {
                     setFlyoutTabsIndex(INDEX_INDEXING);
-                    closeArchivePopup();
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -125,6 +122,5 @@ ContributionForm.propTypes = {
     submitData: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
-    closeArchivePopup: PropTypes.func.isRequired,
     setFlyoutTabsIndex: PropTypes.func.isRequired,
 };

@@ -74,6 +74,8 @@ export default class RegistryEntryShow extends Component {
     }
 
     refObject(rr) {
+        const { onSubmit } = this.props;
+
         let ref_object_string = ''
         if (!this.interviewIsFetched(rr.archive_id)) {
             this.fetchInterview(rr.archive_id);
@@ -94,13 +96,15 @@ export default class RegistryEntryShow extends Component {
                         return (
                             <Link className={'search-result-link'}
                                 onClick={() => {
-                                    this.props.closeArchivePopup();
                                     this.props.setArchiveId(rr.archive_id);
                                     this.props.sendTimeChangeRequest(this.props.segments[rr.ref_object_id].tape_nbr, this.props.segments[rr.ref_object_id].time)
+                                    if (typeof onSubmit === 'function') {
+                                        onSubmit();
+                                    }
                                 }}
                                 to={pathBase(this.props) + '/interviews/' + rr.archive_id}
                             >
-                                {`${ref_object_string}`}
+                                A{`${ref_object_string}`}
                             </Link>
                         )
                     } else if (rr.archive_id) {
@@ -116,12 +120,14 @@ export default class RegistryEntryShow extends Component {
                     return (
                         <Link className={'search-result-link'}
                             onClick={() => {
-                                this.props.closeArchivePopup();
                                 this.props.setArchiveId(rr.archive_id);
+                                if (typeof onSubmit === 'function') {
+                                    onSubmit();
+                                }
                             }}
                             to={pathBase(this.props) + '/interviews/' + rr.archive_id}
                         >
-                            {`${ref_object_string}`}
+                            B{`${ref_object_string}`}
                         </Link>
                     )
                 } else if (rr.archive_id) {
@@ -267,4 +273,5 @@ RegistryEntryShow.propTypes = {
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
+    onSubmit: PropTypes.func.isRequired,
 };

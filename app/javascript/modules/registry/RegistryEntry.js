@@ -4,7 +4,7 @@ import { FaGlobeEurope, FaMinus, FaPlus }
     from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { AdminMenu } from 'modules/ui';
+import { AdminMenu, Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
@@ -49,12 +49,10 @@ export default class RegistryEntry extends Component {
 
     destroy() {
         this.props.deleteData(this.props, 'registry_entries', this.props.data.id, null, null, true);
-        this.props.closeArchivePopup();
     }
 
     rmParent() {
         this.props.deleteData(this.props, 'registry_hierarchies', this.parentRegistryHierarchyId(), null, null, true);
-        this.props.closeArchivePopup();
     }
 
     parentRegistryHierarchyId() {
@@ -195,42 +193,41 @@ export default class RegistryEntry extends Component {
     }
 
     entry() {
-        const { data, locale, openArchivePopup } = this.props;
+        const { data, locale, registryEntryParent } = this.props;
+
         const hasReferences = data.registry_references_count > 0;
+        const localizedName = data.name[locale];
+        const name = localizedName && localizedName.length > 0 ?
+            localizedName :
+            <i>{t(this.props, 'modules.registry.name_missing')}</i>;
+        const displayName = (<>
+            {name}
+            <AuthorizedContent object={data} action='update'>
+                {` (ID: ${data.id})`}
+            </AuthorizedContent>
+        </>);
 
-        const name = data.name[locale];
-
-        return (
-            <div
-                id={`entry_${data.id}`}
-                key={data.id}
-                className={classNames('RegistryEntry-label', {
-                    'is-clickable': hasReferences,
-                })}
-                onClick={() => {
-                    if (hasReferences) {
-                        openArchivePopup({
-                            content: (
-                                <RegistryEntryShowContainer
-                                    registryEntryId={data.id}
-                                    registryEntryParent={this.props.registryEntryParent}
-                                />
-                            )
-                        });
-                    }
-                }}
-            >
-                {
-                    name && name.length > 0 ?
-                        name :
-                        <i>{t(this.props, 'modules.registry.name_missing')}</i>
-                }
-
-                <AuthorizedContent object={data} action='update'>
-                    {` (ID: ${data.id})`}
-                </AuthorizedContent>
-            </div>
-        )
+        if (hasReferences) {
+            return (
+                <Modal
+                    title={t(this.props, 'edit.annotation.edit')}
+                    triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
+                    trigger={displayName}
+                >
+                    {close => (
+                        <RegistryEntryShowContainer
+                            registryEntryId={data.id}
+                            registryEntryParent={registryEntryParent}
+                            onSubmit={close}
+                        />
+                    )}
+                </Modal>
+            );
+        } else {
+            return (
+                <span className="RegistryEntry-label">{displayName}</span>
+            );
+        }
     }
 
     showHideChildren() {
@@ -271,7 +268,10 @@ export default class RegistryEntry extends Component {
             children } = this.props;
 
         return (
-            <li className={classNames('RegistryEntry', className)}>
+            <li
+                id={`entry_${data.id}`}
+                className={classNames('RegistryEntry', className)}
+            >
                 <div className="RegistryEntry-content">
                     <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
                         <input
@@ -310,8 +310,6 @@ RegistryEntry.propTypes = {
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
-    openArchivePopup: PropTypes.func.isRequired,
-    closeArchivePopup: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
     addRemoveRegistryEntryId: PropTypes.func.isRequired,
