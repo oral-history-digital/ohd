@@ -131,6 +131,7 @@ class Person < ApplicationRecord
   end
 
   def biography=(text)
+    biographical_entries.destroy_all
     biographical_entries.build({text: text})
   end
 end
