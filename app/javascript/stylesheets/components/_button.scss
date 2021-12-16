@@ -18,6 +18,10 @@
   padding: 0 !important;
 }
 
+.Button--primary {
+  color: var(--primary-color);
+}
+
 .Button--icon {
   margin: 0;
   padding: 0 0.25rem;

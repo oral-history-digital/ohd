@@ -1,4 +1,4 @@
-import { OPEN_POPUP, CLOSE_POPUP } from './action-types';
+import { CLOSE_POPUP } from './action-types';
 
 const initialState = {
     show: false,
@@ -15,8 +15,6 @@ const initialState = {
 
 const popup = (state = initialState, action) => {
     switch (action.type) {
-        case OPEN_POPUP:
-            return Object.assign({}, action, {show: true})
         case CLOSE_POPUP:
             return Object.assign({}, state, {show: false})
 

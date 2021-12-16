@@ -1,6 +1,6 @@
 export { NAME as POPUP_NAME } from './constants';
 
-export { openArchivePopup, closeArchivePopup } from './actions';
+export { closeArchivePopup } from './actions';
 
 export { default as popupReducer } from './reducer';
 
