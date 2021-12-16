@@ -22,7 +22,10 @@ export default function AdminMenu({
         return null;
     }
 
-    const items = Array.isArray(children) ? children : [children];
+    const childrenArray = Array.isArray(children) ? children : [children];
+    // Filter out children that are not AdminMenuItem components.
+    const items = childrenArray.filter(child =>
+        child?.type?.name === 'AdminMenuItem');
 
     return (
         <>
