@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getCollectionsQuery } from 'modules/search';
-import { openArchivePopup, closeArchivePopup } from 'modules/ui';
+import { closeArchivePopup } from 'modules/ui';
 import { fetchData, deleteData, submitData, getCurrentProject, getProjectLocales, getProjects, getCurrentAccount,
     getCollectionsForCurrentProject, getCollectionsStatus } from 'modules/data';
 import { getCookie } from 'modules/persistence';
@@ -69,7 +69,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     deleteData,
     submitData,
     setQueryParams,
-    openArchivePopup,
     closeArchivePopup,
 }, dispatch);
 

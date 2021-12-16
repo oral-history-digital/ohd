@@ -21,19 +21,23 @@
 }
 
 .any-button {
-  margin-left: 0;
-  width: 30%;
-  background-color: #8b8b7a;
-  color: #fff;
-  padding: 10px;
+  background-color: $gray-warm-dark;
   border: none;
-  text-align: center;
+  color: #fff;
   cursor: pointer;
+  line-height: $base-unit;
+  margin-left: 0;
+  padding: $base-unit / 2;
+  text-align: center;
+  transition: background-color $transition-duration;
+  width: 30%;
+
   @include screen-m {
     margin-left: 28%;
   }
+
   &:hover {
-    background-color: lighten($gray-warm, 10%);
+    background-color: lighten($gray-warm-dark, 10%);
   }
 }
 

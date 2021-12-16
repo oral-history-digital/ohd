@@ -16,8 +16,9 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "~slick-carousel/slick/slick.scss";
 @import "~slick-carousel/slick/slick-theme.scss";
 
-// React-ui
-[data-reach-dialog-overlay] {
+// Reach-ui
+[data-reach-dialog-overlay],
+[data-reach-menu-popover] {
   z-index: $dialog-overlay-z-index;
 }
 
@@ -81,7 +82,6 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/photo-modal";
 @import "components/photo-slide";
 @import "components/pixel-loader";
-@import "components/popup-menu";
 @import "components/project-tile";
 @import "components/registry-entry";
 @import "components/registry-entry-list";
@@ -103,6 +103,7 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/wrapper-page";
 
 /* Vendor overwrites */
+@import "overwrites/reach-ui";
 @import "overwrites/react-rte";
 
 /* Print */
