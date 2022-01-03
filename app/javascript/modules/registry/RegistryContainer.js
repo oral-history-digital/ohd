@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getRootRegistryEntry, getCurrentProject, getProjects } from 'modules/data';
-import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
+import { setSidebarTabsIndex } from 'modules/sidebar';
 import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree } from 'modules/search';
 import { getIsLoggedIn } from 'modules/account';
 import Registry from './Registry';
@@ -18,7 +18,7 @@ const mapStateToProps = (state) => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setFlyoutTabsIndex,
+    setSidebarTabsIndex,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Registry);

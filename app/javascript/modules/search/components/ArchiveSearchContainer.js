@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { hideFlyoutTabs, setFlyoutTabsIndex } from 'modules/flyout-tabs';
+import { hideSidebar, setSidebarTabsIndex } from 'modules/sidebar';
 import { setViewMode, getLocale, getViewModes, getViewMode, getTranslations,
     getProjectId, getEditView } from 'modules/archive';
 import { getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
@@ -39,8 +39,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     searchInArchive,
     clearSearch,
     setViewMode,
-    hideFlyoutTabs,
-    setFlyoutTabsIndex,
+    hideSidebar,
+    setSidebarTabsIndex,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearch);

@@ -1,4 +1,4 @@
-import { SHOW_FLYOUT_TABS, HIDE_FLYOUT_TABS, TOGGLE_FLYOUT_TABS, SET_FLYOUT_TABS_INDEX }
+import { SHOW_SIDEBAR, HIDE_SIDEBAR, TOGGLE_SIDEBAR, SET_SIDEBAR_TABS_INDEX }
     from './action-types';
 import { INDEX_ACCOUNT } from './constants';
 
@@ -7,24 +7,24 @@ export const initialState = {
     index: INDEX_ACCOUNT,
 };
 
-export default function flyoutTabs(state = initialState, action) {
+export default function sidebar(state = initialState, action) {
     switch (action.type) {
-        case SHOW_FLYOUT_TABS:
+        case SHOW_SIDEBAR:
             return {
                 ...state,
                 visible: true,
             };
-        case HIDE_FLYOUT_TABS:
+        case HIDE_SIDEBAR:
             return {
                 ...state,
                 visible: false,
             };
-        case TOGGLE_FLYOUT_TABS:
+        case TOGGLE_SIDEBAR:
             return {
                 ...state,
                 visible: !state.visible,
             };
-        case SET_FLYOUT_TABS_INDEX:
+        case SET_SIDEBAR_TABS_INDEX:
             return {
                 ...state,
                 index: action.index,

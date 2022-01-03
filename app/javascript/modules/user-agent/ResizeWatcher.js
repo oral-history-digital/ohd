@@ -10,8 +10,8 @@ import {
 
 export default function ResizeWatcher({
     children,
-    hideFlyoutTabs,
-    showFlyoutTabs,
+    hideSidebar,
+    showSidebar,
 }) {
     const [screenWidth, setScreenWidth] = useState(null);
     const [resizeListener, sizes] = useResizeAware();
@@ -29,10 +29,10 @@ export default function ResizeWatcher({
         }
 
         if (newWidth === SCREEN_WIDTH_ABOVE_XL) {
-            showFlyoutTabs();
+            showSidebar();
         }
         if (newWidth === SCREEN_WIDTH_BELOW_M) {
-            hideFlyoutTabs();
+            hideSidebar();
         }
 
         setScreenWidth(newWidth);
@@ -48,6 +48,6 @@ export default function ResizeWatcher({
 
 ResizeWatcher.propTypes = {
     children: PropTypes.node.isRequired,
-    hideFlyoutTabs: PropTypes.func.isRequired,
-    showFlyoutTabs: PropTypes.func.isRequired,
+    hideSidebar: PropTypes.func.isRequired,
+    showSidebar: PropTypes.func.isRequired,
 };

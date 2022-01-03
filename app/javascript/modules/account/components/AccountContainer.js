@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import { changeToEditView, getLocale, getArchiveId, getProjectId, getTranslations, getEditView } from 'modules/archive';
-import { hideFlyoutTabs } from 'modules/flyout-tabs';
+import { hideSidebar } from 'modules/sidebar';
 import { getCookie } from 'modules/persistence';
 import { clearStateData, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { submitLogout } from '../actions';
@@ -32,7 +32,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => bindActionCreators({
     submitLogout,
     changeToEditView,
-    hideFlyoutTabs,
+    hideSidebar,
     clearStateData,
     clearSearch,
 }, dispatch);

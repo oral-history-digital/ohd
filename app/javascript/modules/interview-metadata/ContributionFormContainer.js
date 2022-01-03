@@ -5,7 +5,7 @@ import { fetchData, getContributionTypesForCurrentProject,
     getPeopleStatus, getPeopleForCurrentProject,
     getProjects, getCurrentProject } from 'modules/data';
 import { getLocale, getProjectId } from 'modules/archive';
-import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
+import { setSidebarTabsIndex } from 'modules/sidebar';
 import ContributionForm from './ContributionForm';
 
 const mapStateToProps = state => ({
@@ -20,7 +20,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
-    setFlyoutTabsIndex,
+    setSidebarTabsIndex,
     // please NO submitData in here: it would disable
     // ContributionForm`s functionality
     // as sub-form

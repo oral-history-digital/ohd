@@ -2,11 +2,11 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import ResizeWatcher from './ResizeWatcher';
-import { hideFlyoutTabs, showFlyoutTabs } from 'modules/flyout-tabs';
+import { hideSidebar, showSidebar } from 'modules/sidebar';
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    hideFlyoutTabs,
-    showFlyoutTabs,
+    hideSidebar,
+    showSidebar,
 }, dispatch);
 
 export default connect(null, mapDispatchToProps)(ResizeWatcher);

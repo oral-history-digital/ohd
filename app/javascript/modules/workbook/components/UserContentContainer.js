@@ -5,7 +5,7 @@ import { setArchiveId, getLocale  } from 'modules/archive';
 import { searchInArchive } from 'modules/search';
 import { getProjects } from 'modules/data';
 import { sendTimeChangeRequest } from 'modules/media-player';
-import { hideFlyoutTabs } from 'modules/flyout-tabs';
+import { hideSidebar } from 'modules/sidebar';
 import UserContent from './UserContent';
 
 const mapStateToProps = state => ({
@@ -17,7 +17,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     sendTimeChangeRequest,
     searchInArchive,
     setArchiveId,
-    hideFlyoutTabs,
+    hideSidebar,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContent);

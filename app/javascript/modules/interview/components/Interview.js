@@ -6,7 +6,7 @@ import { useParams } from 'react-router-dom';
 import { EditTableLoader } from 'modules/edit-table';
 import { MediaPlayerContainer } from 'modules/media-player';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { INDEX_INTERVIEW } from 'modules/flyout-tabs';
+import { INDEX_INTERVIEW } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
 import { getInterviewsStatus } from 'modules/data';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
@@ -24,7 +24,7 @@ export default function Interview({
     projects,
     project,
     locale,
-    setFlyoutTabsIndex,
+    setSidebarTabsIndex,
     setArchiveId,
     fetchData,
     isLoggedIn,
@@ -36,7 +36,7 @@ export default function Interview({
     const status = statuses[archiveId];
 
     useEffect(() => {
-        setFlyoutTabsIndex(INDEX_INTERVIEW);
+        setSidebarTabsIndex(INDEX_INTERVIEW);
         setArchiveId(archiveId);
     }, []);
 
@@ -103,7 +103,7 @@ Interview.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    setFlyoutTabsIndex: PropTypes.func.isRequired,
+    setSidebarTabsIndex: PropTypes.func.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

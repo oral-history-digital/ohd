@@ -2,13 +2,13 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 import { WrappedProjectsContainer } from 'modules/admin';
-import { setFlyoutTabsIndex, INDEX_NONE } from 'modules/flyout-tabs';
+import { setSidebarTabsIndex, INDEX_NONE } from 'modules/sidebar';
 
 export default function ProjectIndex() {
     const dispatch = useDispatch();
 
     useEffect(() => {
-        dispatch(setFlyoutTabsIndex(INDEX_NONE));
+        dispatch(setSidebarTabsIndex(INDEX_NONE));
     }, []);
 
     return (

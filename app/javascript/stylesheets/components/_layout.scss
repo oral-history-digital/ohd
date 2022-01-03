@@ -13,6 +13,7 @@
 }
 
 .Layout-contentTabs {
+  background-color: $gray-lighter;
   height: $base-unit * 2;
   overflow: hidden;
   z-index: $z-index-content-tabs;

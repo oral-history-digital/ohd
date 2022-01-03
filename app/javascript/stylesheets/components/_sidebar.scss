@@ -1,7 +1,8 @@
 .Sidebar {
-  background: rgba(232,232,228, 0.95);
+  background: $sidebar-background-color;
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: scroll;
+  padding-bottom: $base-unit * 2;
 
   @include screen-m {
     border-left: 1px solid $gray-light;

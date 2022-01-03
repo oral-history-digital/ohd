@@ -39,7 +39,7 @@ export default class ArchiveSearchForm extends Component {
     handleReset(event) {
         this.form.reset();
         if (isMobile()) {
-            this.props.hideFlyoutTabs();
+            this.props.hideSidebar();
         }
         if(this.props.map){
             this.props.resetQuery('map');
@@ -59,7 +59,7 @@ export default class ArchiveSearchForm extends Component {
         params = this.prepareQuery(params);
         params['page'] = 1;
         if (isMobile()) {
-            this.props.hideFlyoutTabs();
+            this.props.hideSidebar();
         }
         this.submit(params);
     }

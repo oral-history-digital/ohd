@@ -33,7 +33,7 @@ export default class Account extends Component {
         e.preventDefault();
         this.props.history.push(path);
         if (isMobile()) {
-            this.props.hideFlyoutTabs();
+            this.props.hideSidebar();
         }
     }
 
@@ -47,11 +47,15 @@ export default class Account extends Component {
             )
         ) {
             return (
-                <div className="switch switch-light" onClick={() => this.props.changeToEditView(!this.state.editView)}>
+                <button
+                    type="button"
+                    className="Button Button--transparent switch switch-light"
+                    onClick={() => this.props.changeToEditView(!this.state.editView)}
+                >
                     <span className={`switch-input ${this.state.editView ? 'checked' : ''}`} type="checkbox" />
                     <span className="switch-label" data-on={t(this.props, 'admin.change_to_edit_view')} data-off={t(this.props, 'admin.change_to_edit_view')}></span>
                     <span className="switch-handle"></span>
-                </div>
+                </button>
             )
         } else {
             return null;
@@ -108,8 +112,9 @@ export default class Account extends Component {
                             {`${t(this.props, 'logged_in_as')} ${this.props.firstName} ${this.props.lastName}`}
                         </div>
                         {this.changeToEditView()}
-                        <div
-                            className='logout'
+                        <button
+                            type="button"
+                            className='Button logout'
                             onClick={() => {
                                 // clear non-public data
                                 if (this.props.archiveId) {
@@ -131,7 +136,7 @@ export default class Account extends Component {
                             }}
                         >
                             {t(this.props, 'logout')}
-                        </div>
+                        </button>
                     </AuthShowContainer>
                     <AuthShowContainer ifNoProject={!!this.props.project}>
                         {this.projectAccessAlert()}

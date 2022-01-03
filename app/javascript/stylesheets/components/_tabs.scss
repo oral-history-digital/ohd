@@ -1,0 +1,51 @@
+.Tabs {
+}
+
+.Tabs-tabList {
+  background: transparent;
+}
+
+.Tabs-tab {
+  background-color: $gray-lighter;
+  border-bottom-color: $gray-lighter;
+  border-bottom-style: solid;
+  border-bottom-width: $base-unit / 8 !important;
+  margin-right: 1px;
+  padding: ($base-unit / 2) $base-unit ($base-unit / 2 - $base-unit / 8);
+}
+
+.Tabs-tab[data-selected] {
+  background-color: var(--primary-color);
+  border-bottom-color: var(--primary-color);
+  color: white;
+}
+
+.Tabs-tab:disabled {
+  display: none;
+}
+
+.Tabs-tab:focus {
+  border-bottom-color: $focus-color;
+}
+
+.Tabs-tab:active {
+  background-color: $gray-lighter;
+}
+
+.Tabs-tab[data-selected]:active {
+  background-color: var(--primary-color);
+}
+
+.Tabs-tabIcon {
+  @include screen-m {
+    display: none;
+  }
+}
+
+.Tabs-tabText {
+  display: none;
+
+  @include screen-m {
+    display: initial;
+  }
+}

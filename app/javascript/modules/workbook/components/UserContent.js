@@ -16,30 +16,30 @@ export default function UserContent({
     searchInArchive,
     setArchiveId,
     sendTimeChangeRequest,
-    hideFlyoutTabs,
+    hideSidebar,
 }) {
     const { t } = useI18n();
 
-    function hideFlyoutTabsIfMobile() {
+    function hideSidebarIfMobile() {
         if (isMobile()) {
-            hideFlyoutTabs();
+            hideSidebar();
         }
     }
 
     function onInterviewReferenceClick() {
         setArchiveId(data.media_id);
-        hideFlyoutTabsIfMobile();
+        hideSidebarIfMobile();
     }
 
     function onAnnotationClick() {
         setArchiveId(data.properties.interview_archive_id);
         sendTimeChangeRequest(data.properties.tape_nbr, data.properties.time);
-        hideFlyoutTabsIfMobile();
+        hideSidebarIfMobile();
     }
 
     function onSearchClick(pathBase) {
         searchInArchive(`${pathBase}/searches/archive`, data.properties);
-        hideFlyoutTabsIfMobile();
+        hideSidebarIfMobile();
     }
 
     let callKey = "call" + data.type.replace(/([A-Z])/g, function($1){return "_"+$1.toLowerCase();});
@@ -149,5 +149,5 @@ UserContent.propTypes = {
     searchInArchive: PropTypes.func.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
-    hideFlyoutTabs: PropTypes.func.isRequired,
+    hideSidebar: PropTypes.func.isRequired,
 };

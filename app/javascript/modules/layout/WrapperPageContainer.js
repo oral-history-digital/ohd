@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { toggleFlyoutTabs, getFlyoutTabsVisible } from 'modules/flyout-tabs';
+import { toggleSidebar, getSidebarVisible } from 'modules/sidebar';
 import { getEditView, getLocale, setLocale, getProjectId } from 'modules/archive';
 import { fetchData, deleteData, getCurrentAccount, getProjects, getCollectionsStatus,
     getLanguagesStatus, getAccountsStatus, getProjectsStatus, getCurrentProject } from 'modules/data';
@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
     projectsStatus: getProjectsStatus(state),
     project: getCurrentProject(state),
     locale: getLocale(state),
-    flyoutTabsVisible: getFlyoutTabsVisible(state),
+    sidebarVisible: getSidebarVisible(state),
     loggedInAt: getLoggedInAt(state),
     collectionsStatus: getCollectionsStatus(state),
     languagesStatus: getLanguagesStatus(state),
@@ -28,7 +28,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
     deleteData,
-    toggleFlyoutTabs,
+    toggleSidebar,
     setLocale,
 }, dispatch);
 

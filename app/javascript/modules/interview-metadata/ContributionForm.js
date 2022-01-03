@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { Fetch, getPeopleForCurrentProjectFetched } from 'modules/data';
-import { INDEX_INDEXING } from 'modules/flyout-tabs';
+import { INDEX_INDEXING } from 'modules/sidebar';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
@@ -21,7 +21,7 @@ export default function ContributionForm({
     interview,
     formClasses,
     onSubmit,
-    setFlyoutTabsIndex,
+    setSidebarTabsIndex,
     fetchData,
     submitData,
 }) {
@@ -94,7 +94,7 @@ export default function ContributionForm({
                 to={`${pathBase}/people`}
                 className='admin'
                 onClick={() => {
-                    setFlyoutTabsIndex(INDEX_INDEXING);
+                    setSidebarTabsIndex(INDEX_INDEXING);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -122,5 +122,5 @@ ContributionForm.propTypes = {
     submitData: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
-    setFlyoutTabsIndex: PropTypes.func.isRequired,
+    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

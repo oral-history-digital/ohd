@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { LinkOrA } from 'modules/routes';
 import { getLocale } from 'modules/archive';
-import { INDEX_ACCOUNT, setFlyoutTabsIndex } from 'modules/flyout-tabs';
+import { INDEX_ACCOUNT, setSidebarTabsIndex } from 'modules/sidebar';
 
 export default function ProjectShow({
     data,
@@ -14,7 +14,7 @@ export default function ProjectShow({
 
     const logo = data.logos && Object.values(data.logos).find(l => l.locale === locale);
 
-    const setFlyoutTabsToAccount = () => setFlyoutTabsIndex(INDEX_ACCOUNT);
+    const setFlyoutTabsToAccount = () => setSidebarTabsIndex(INDEX_ACCOUNT);
 
     return (
         <>

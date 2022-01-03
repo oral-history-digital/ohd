@@ -1,7 +1,7 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
+import { setSidebarTabsIndex } from 'modules/sidebar';
 import { getLocale, getTranslations } from 'modules/archive';
 import { getCurrentAccount, getProjects } from 'modules/data';
 import WrappedAccount from './WrappedAccount';
@@ -14,7 +14,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setFlyoutTabsIndex,
+    setSidebarTabsIndex,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(WrappedAccount);

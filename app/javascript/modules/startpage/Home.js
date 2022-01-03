@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { INDEX_NONE, INDEX_ACCOUNT } from 'modules/flyout-tabs';
+import { INDEX_NONE, INDEX_ACCOUNT } from 'modules/sidebar';
 import { RedirectOnLogin } from 'modules/account';
 import { ScrollToTop } from 'modules/user-agent';
 import StartPageVideo from './StartPageVideo';
@@ -13,10 +13,10 @@ export default function Home({
     projectTranslation,
     showStartPageVideo,
     showFeaturedInterviews,
-    setFlyoutTabsIndex,
+    setSidebarTabsIndex,
 }) {
     useEffect(() => {
-        setFlyoutTabsIndex(isCampscapesProject ? INDEX_NONE : INDEX_ACCOUNT);
+        setSidebarTabsIndex(isCampscapesProject ? INDEX_NONE : INDEX_ACCOUNT);
     }, []);
 
     return (
@@ -59,5 +59,5 @@ Home.propTypes = {
     projectTranslation: PropTypes.object.isRequired,
     showStartPageVideo: PropTypes.bool.isRequired,
     showFeaturedInterviews: PropTypes.bool.isRequired,
-    setFlyoutTabsIndex: PropTypes.func.isRequired,
+    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

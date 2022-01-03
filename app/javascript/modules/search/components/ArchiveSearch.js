@@ -1,13 +1,14 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
 import Observer from 'react-intersection-observer'
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
+import '@reach/tabs/styles.css';
 
 import { AuthorizedContent, AuthShowContainer, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
-import { INDEX_SEARCH } from 'modules/flyout-tabs';
+import { INDEX_SEARCH } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
 import { VIEWMODE_GRID, VIEWMODE_LIST, VIEWMODE_WORKFLOW } from 'modules/constants';
@@ -26,9 +27,9 @@ export default class ArchiveSearch extends Component {
     }
 
     componentDidMount() {
-        const { setFlyoutTabsIndex, query } = this.props;
+        const { setSidebarTabsIndex, query } = this.props;
 
-        setFlyoutTabsIndex(INDEX_SEARCH);
+        setSidebarTabsIndex(INDEX_SEARCH);
         this.search({
             ...query,
             page: 1,
@@ -96,12 +97,12 @@ export default class ArchiveSearch extends Component {
     }
 
     handleTabClick(tabIndex) {
-        const { setViewMode, viewModes, hideFlyoutTabs } = this.props;
+        const { setViewMode, viewModes, hideSidebar } = this.props;
 
         setViewMode(viewModes[tabIndex]);
 
         if (viewModes[tabIndex] === VIEWMODE_WORKFLOW) {
-            hideFlyoutTabs();
+            hideSidebar();
         }
     }
 
@@ -129,21 +130,18 @@ export default class ArchiveSearch extends Component {
                     </div>
 
                     <Tabs
-                        className='tabs'
-                        selectedTabClassName='active'
-                        selectedTabPanelClassName='active'
-                        selectedIndex={(viewModes && viewModes.indexOf(currentViewMode)) || 0}
-                        onSelect={this.handleTabClick}
+                        className="Tabs"
+                        keyboardActivation="manual"
+                        index={(viewModes && viewModes.indexOf(currentViewMode)) || 0}
+                        onChange={this.handleTabClick}
                     >
-                        <TabList className="search-results-tabs">
+                        <TabList className="Tabs-tabList">
                             {
                                 viewModes?.map(viewMode => (
                                     <Tab
                                         key={viewMode}
-                                        className={classNames('search-results-tab', {
-                                            'hidden': viewModes.length < 2 ||
-                                                (viewMode === VIEWMODE_WORKFLOW &&
-                                                !admin(this.props, {type: 'General'}, 'edit'))
+                                        className={classNames('Tabs-tab', {
+                                            'hidden': viewModes.length < 2 || (viewMode === VIEWMODE_WORKFLOW && !admin(this.props, {type: 'General'}, 'edit'))
                                         })}
                                     >
                                         <span>{t(this.props, viewMode)}</span>
@@ -152,29 +150,33 @@ export default class ArchiveSearch extends Component {
                             }
                         </TabList>
 
-                        {
-                            viewModes?.map(viewMode => (
-                                <TabPanel key={viewMode}>
-                                    {
-                                        isArchiveSearching && query['page'] === 1 && !foundInterviews ?
-                                            <Spinner /> :
-                                            (
-                                                <>
-                                                    {this.foundInterviews(viewMode)}
-                                                    {
-                                                        isArchiveSearching ?
-                                                            <Spinner /> :
-                                                            (
-                                                                resultPagesCount > (Number.parseInt(query.page) || 1) &&
-                                                                    <Observer onChange={inView => this.handleScroll(inView)} />
-                                                            )
-                                                    }
-                                                </>
-                                            )
-                                    }
-                                </TabPanel>
-                            ))
-                        }
+                        <hr className="Rule u-mt" />
+
+                        <TabPanels className="u-mt">
+                            {
+                                viewModes?.map(viewMode => (
+                                    <TabPanel key={viewMode}>
+                                        {
+                                            isArchiveSearching && query['page'] === 1 && !foundInterviews ?
+                                                <Spinner /> :
+                                                (
+                                                    <>
+                                                        {this.foundInterviews(viewMode)}
+                                                        {
+                                                            isArchiveSearching ?
+                                                                <Spinner /> :
+                                                                (
+                                                                    resultPagesCount > (Number.parseInt(query.page) || 1) &&
+                                                                        <Observer onChange={inView => this.handleScroll(inView)} />
+                                                                )
+                                                        }
+                                                    </>
+                                                )
+                                        }
+                                    </TabPanel>
+                                ))
+                            }
+                        </TabPanels>
                     </Tabs>
                 </div>
             </ScrollToTop>
@@ -200,8 +202,8 @@ ArchiveSearch.propTypes = {
     isLoggedIn: PropTypes.bool.isRequired,
     listColumns: PropTypes.array.isRequired,
     setViewMode: PropTypes.func.isRequired,
-    setFlyoutTabsIndex: PropTypes.func.isRequired,
-    hideFlyoutTabs: PropTypes.func.isRequired,
+    setSidebarTabsIndex: PropTypes.func.isRequired,
+    hideSidebar: PropTypes.func.isRequired,
     searchInArchive: PropTypes.func.isRequired,
     clearSearch: PropTypes.func.isRequired,
 };

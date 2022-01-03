@@ -1,8 +1,8 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import classNames from 'classnames';
 import { FaRegFileAlt, FaRegClone, FaList, FaSearch, FaTags } from 'react-icons/fa';
-import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
+import '@reach/tabs/styles.css';
 
 import { TableOfContentsContainer } from 'modules/toc';
 import { TranscriptContainer } from 'modules/transcript';
@@ -63,60 +63,70 @@ export default class InterviewTabs extends Component {
 
         return (
             <Tabs
-                selectedTabClassName='active'
-                selectedTabPanelClassName='active'
-                selectedIndex={this.state.tabIndex}
-                onSelect={tabIndex => {this.setState({tabIndex}); this.props.setInterviewTabIndex(tabIndex)}}
+                className="Tabs"
+                keyboardActivation="manual"
+                index={this.state.tabIndex}
+                onChange={tabIndex => {this.setState({tabIndex}); this.props.setInterviewTabIndex(tabIndex)}}
             >
                 <div className="Layout-contentTabs content-tabs">
-                    <TabList className="content-tabs-nav">
-                        <Tab className="content-tabs-nav-link">
-                            <FaRegFileAlt />
-                            <span>{t(this.props, 'transcript')}</span>
+                    <TabList className="Tabs-tabList">
+                        <Tab className="Tabs-tab">
+                            <FaRegFileAlt className="Tabs-tabIcon"/>
+                            <span className="Tabs-tabText">
+                                {t(this.props, 'transcript')}
+                            </span>
                         </Tab>
                         <Tab
-                            className={classNames('content-tabs-nav-link', {
-                                'hidden': !showTranslationTab(projectId, interview.lang, locale),
-                            })}
+                            className="Tabs-tab"
+                            disabled={!showTranslationTab(projectId, interview.lang, locale)}
                         >
-                            <FaRegClone />
-                            <span>{t(this.props, 'translation')}</span>
+                            <FaRegClone className="Tabs-tabIcon"/>
+                            <span className="Tabs-tabText">
+                                {t(this.props, 'translation')}
+                            </span>
                         </Tab>
                         <Tab
-                            className={classNames('content-tabs-nav-link', {
-                                'hidden': !showTocTab(projectId),
-                            })}
+                            className="Tabs-tab"
+                            disabled={!showTocTab(projectId)}
                         >
-                            <FaList />
-                            <span>{t(this.props, 'table_of_contents')}</span>
+                            <FaList className="Tabs-tabIcon"/>
+                            <span className="Tabs-tabText">
+                                {t(this.props, 'table_of_contents')}
+                            </span>
                         </Tab>
-                        <Tab className="content-tabs-nav-link">
-                            <FaSearch />
-                            <span>{t(this.props, 'interview_search')}</span>
+                        <Tab className="Tabs-tab">
+                            <FaSearch className="Tabs-tabIcon"/>
+                            <span className="Tabs-tabText">
+                                {t(this.props, 'interview_search')}
+                            </span>
                         </Tab>
-                        <Tab className="content-tabs-nav-link">
-                            <FaTags />
-                            <span>{t(this.props, 'keywords')}</span>
+                        <Tab className="Tabs-tab">
+                            <FaTags className="Tabs-tabIcon"/>
+                            <span className="Tabs-tabText">
+                                {t(this.props, 'keywords')}
+                            </span>
                         </Tab>
                     </TabList>
                 </div>
 
                 <div className='wrapper-content'>
-                    <TabPanel>
-                        <TranscriptContainer originalLocale loadSegments />
-                    </TabPanel>
-                    <TabPanel>
-                        <TranscriptContainer />
-                    </TabPanel>
-                    <TabPanel>
-                        <TableOfContentsContainer/>
-                    </TabPanel>
-                    <TabPanel>
-                        <InterviewSearchContainer/>
-                    </TabPanel>
-                    <TabPanel>
-                        <RefTreeContainer/>
-                    </TabPanel>
+                    <TabPanels>
+                        <TabPanel>
+                            <TranscriptContainer originalLocale loadSegments />
+                        </TabPanel>
+                        <TabPanel>
+                            <TranscriptContainer />
+                        </TabPanel>
+                        <TabPanel>
+                            <TableOfContentsContainer/>
+                        </TabPanel>
+                        <TabPanel>
+                            <InterviewSearchContainer/>
+                        </TabPanel>
+                        <TabPanel>
+                            <RefTreeContainer/>
+                        </TabPanel>
+                    </TabPanels>
                 </div>
             </Tabs>
         );

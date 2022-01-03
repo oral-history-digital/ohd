@@ -24,7 +24,7 @@ export default class RegistrySearchForm extends Component {
     handleSubmit(event) {
         event.preventDefault();
         if (isMobile()) {
-            this.props.hideFlyoutTabs();
+            this.props.hideSidebar();
         }
         let url = `${pathBase(this.props)}/searches/registry_entry`;
         this.props.searchRegistryEntry(url, {fulltext: this.state.value});

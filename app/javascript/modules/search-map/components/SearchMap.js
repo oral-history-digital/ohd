@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { ScrollToTop } from 'modules/user-agent';
 import { getCurrentProject } from 'modules/data';
-import { setFlyoutTabsIndex, INDEX_MAP } from 'modules/flyout-tabs';
+import { setSidebarTabsIndex, INDEX_MAP } from 'modules/sidebar';
 import { MapComponent } from 'modules/map';
 import { useI18n } from 'modules/i18n';
 import SearchMapPopup from './SearchMapPopup';
@@ -18,7 +18,7 @@ export default function SearchMap() {
     const { isLoading, markers, error } = useSearchMap();
 
     useEffect(() => {
-        dispatch(setFlyoutTabsIndex(INDEX_MAP));
+        dispatch(setSidebarTabsIndex(INDEX_MAP));
     }, []);
 
     const mapCenter = project.map_initial_center_lat && project.map_initial_center_lon ?

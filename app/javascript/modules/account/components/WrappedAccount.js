@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import UserProjects from './UserProjects';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { Features } from 'modules/features';
-import { INDEX_ACCOUNT } from 'modules/flyout-tabs';
+import { INDEX_ACCOUNT } from 'modules/sidebar';
 import { t } from 'modules/i18n';
 import UserDetailsContainer from './UserDetailsContainer';
 
@@ -14,7 +14,7 @@ export default class WrappedAccount extends Component {
     }
 
     componentDidMount() {
-        this.props.setFlyoutTabsIndex(INDEX_ACCOUNT);
+        this.props.setSidebarTabsIndex(INDEX_ACCOUNT);
     }
 
     render() {
@@ -50,5 +50,5 @@ WrappedAccount.propTypes = {
     account: PropTypes.object,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
-    setFlyoutTabsIndex: PropTypes.func.isRequired,
+    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

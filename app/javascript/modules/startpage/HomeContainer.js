@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Home from './Home';
-import { setFlyoutTabsIndex } from 'modules/flyout-tabs';
+import { setSidebarTabsIndex } from 'modules/sidebar';
 import { getCurrentProject, getProjectTranslation, getShowFeaturedInterviews, getShowStartPageVideo } from 'modules/data';
 
 const mapStateToProps = state => ({
@@ -13,7 +13,7 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    setFlyoutTabsIndex,
+    setSidebarTabsIndex,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

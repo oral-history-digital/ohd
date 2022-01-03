@@ -40,7 +40,7 @@ export default class DataSearchForm extends Component {
     handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
         if (isMobile()) {
-            this.props.hideFlyoutTabs();
+            this.props.hideSidebar();
         }
         this.props.fetchData(this.props, pluralize(this.props.scope), null, null, parametrizedQuery(this.props.query));
     }

@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
 import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
-import { hideFlyoutTabs } from 'modules/flyout-tabs';
+import { hideSidebar } from 'modules/sidebar';
 import { getProjects, getCurrentAccount, getCurrentProject } from 'modules/data';
 import { resetQuery, setQueryParams, searchInArchive, setMapQuery } from '../actions';
 import { getArchiveFacets, getArchiveQuery, getMapFacets } from '../selectors';
@@ -33,7 +33,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     resetQuery,
     searchInArchive,
     setMapQuery,
-    hideFlyoutTabs,
+    hideSidebar,
 }, dispatch);
 
 export default withRouter(connect(

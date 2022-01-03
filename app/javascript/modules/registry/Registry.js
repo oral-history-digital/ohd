@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
-import { INDEX_REGISTRY_ENTRIES, INDEX_ACCOUNT } from 'modules/flyout-tabs';
+import { INDEX_REGISTRY_ENTRIES, INDEX_ACCOUNT } from 'modules/sidebar';
 import { Fetch, getRootRegistryEntryFetched, getRootRegistryEntryReload } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { ScrollToTop } from 'modules/user-agent';
@@ -16,13 +16,13 @@ export default function Registry({
     foundRegistryEntries,
     showRegistryEntriesTree,
     isRegistryEntrySearching,
-    setFlyoutTabsIndex,
+    setSidebarTabsIndex,
     isLoggedIn,
 }) {
     const { t } = useI18n();
 
     useEffect(() => {
-        setFlyoutTabsIndex(isLoggedIn ? INDEX_REGISTRY_ENTRIES : INDEX_ACCOUNT);
+        setSidebarTabsIndex(isLoggedIn ? INDEX_REGISTRY_ENTRIES : INDEX_ACCOUNT);
     }, []);
 
     return (
@@ -76,5 +76,5 @@ Registry.propTypes = {
     foundRegistryEntries: PropTypes.object.isRequired,
     showRegistryEntriesTree: PropTypes.bool.isRequired,
     isRegistryEntrySearching: PropTypes.bool,
-    setFlyoutTabsIndex: PropTypes.func.isRequired,
+    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

@@ -36,7 +36,7 @@ export default function InterviewData({
         <div>
             <button
                 type="button"
-                className={classNames('accordion', {
+                className={classNames('Button', 'accordion', {
                     'active': isOpen,
                     'only-link': typeof children === 'undefined',
                 })}

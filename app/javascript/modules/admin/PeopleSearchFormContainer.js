@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getLocale, getTranslations, getProjectId } from 'modules/archive';
 import { resetQuery, setQueryParams, getPeopleQuery } from 'modules/search';
 import { fetchData, getProjects, getPeopleStatus } from 'modules/data';
-import { hideFlyoutTabs } from 'modules/flyout-tabs';
+import { hideSidebar } from 'modules/sidebar';
 import DataSearchForm from './DataSearchForm';
 
 const mapStateToProps = (state) => ({
@@ -27,7 +27,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
     setQueryParams,
     resetQuery,
-    hideFlyoutTabs,
+    hideSidebar,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(DataSearchForm);

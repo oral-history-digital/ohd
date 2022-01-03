@@ -1,27 +1,30 @@
 .LocaleButtons {
-    margin-bottom: 2rem;
+  padding: $base-unit $base-unit $base-unit ($base-unit * 0.75);
 }
 
 .LocaleButtons-button {
-    background-color: transparent;
-    border: none;
-    outline: none;
-    border-left: 2px solid lighten($ui-background-color, 10%);
-    color: $ui-background-color;
-    cursor: pointer;
-    font-family: $font-family;;
-    font-size: $font-size-large;
-    line-height: 1.5rem;
-    padding: 6px 15px 0 6px;
-    text-transform: uppercase;
-    transition: color $transition-duration;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  color: $ui-background-color;
+  cursor: pointer;
+  font-family: $font-family;;
+  font-size: $font-size-large;
+  line-height: $base-unit;
+  padding: 0 ($base-unit / 4);
+  text-transform: uppercase;
+  transition: color $transition-duration;
+}
+
+.LocaleButtons-button:not(:first-child) {
+  border-left: 0.125rem solid lighten($ui-background-color, 10%);
 }
 
 .LocaleButtons-button:disabled {
-    color: $gray-darkest;
-    cursor: default;
+  color: $gray-darkest;
+  cursor: default;
 }
 
 .LocaleButtons-button:hover {
-    color: $gray-darkest;
+  color: $gray-darkest;
 }

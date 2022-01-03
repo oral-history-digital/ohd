@@ -1,0 +1,47 @@
+.SidebarTabs {
+  display: block !important;
+}
+
+.SidebarTabs-tab {
+  background-color: $ui-background-color;
+  border-left: ($base-unit / 4) solid $ui-background-color;
+  border-bottom: 0 !important;
+  color: white;
+  font-size: 1.2rem;
+  line-height: $base-unit * 1.5;
+  margin-bottom: 1px;
+  padding: ($base-unit / 2) $base-unit ($base-unit / 2) ($base-unit * 0.75);
+  text-align: left;
+  transition-duration: $transition-duration;
+  transition-property: background-color, border-left-color;
+}
+
+.SidebarTabs-tab--admin {
+    background-color: var(--editorial-color);
+    border-left-color: var(--editorial-color);
+}
+
+.SidebarTabs-tab:disabled {
+    display: none;
+}
+
+.SidebarTabs-tab[data-selected] {
+    background-color: var(--primary-color);
+    border-left-color: var(--primary-color);
+}
+
+.SidebarTabs-tab:focus {
+    border-left-color: $focus-color;
+}
+
+.SidebarTabs-tab:active {
+    background-color: $ui-background-color;
+}
+
+.SidebarTabs-tab--admin:active {
+    background-color: var(--editorial-color);
+}
+
+.SidebarTabs-tab[data-selected]:active {
+    background-color: var(--primary-color);
+}

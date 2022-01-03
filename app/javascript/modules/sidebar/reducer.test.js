@@ -11,7 +11,7 @@ test('returns the initial state', () => {
 });
 
 test('handles the show action', () => {
-    const action = actions.showFlyoutTabs();
+    const action = actions.showSidebar();
     const expectedState = {
         ...state,
         visible: true,
@@ -20,7 +20,7 @@ test('handles the show action', () => {
 });
 
 test('handles the hide action', () => {
-    const action = actions.hideFlyoutTabs();
+    const action = actions.hideSidebar();
     const _state = {
         ...state,
         visible: true,
@@ -34,7 +34,7 @@ test('handles the hide action', () => {
 
 describe('toggle action', () => {
     test('shows if hidden', () => {
-        const action = actions.toggleFlyoutTabs();
+        const action = actions.toggleSidebar();
         const expectedState = {
             ...state,
             visible: true,
@@ -43,7 +43,7 @@ describe('toggle action', () => {
     });
 
     test('hides if shown', () => {
-        const action = actions.toggleFlyoutTabs();
+        const action = actions.toggleSidebar();
         const _state = {
             ...state,
             visible: true,
@@ -57,7 +57,7 @@ describe('toggle action', () => {
 });
 
 test('handles the set index action', () => {
-    const action = actions.setFlyoutTabsIndex(5);
+    const action = actions.setSidebarTabsIndex(5);
     const expectedState = {
         ...state,
         index: 5,

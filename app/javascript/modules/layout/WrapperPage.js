@@ -5,7 +5,7 @@ import { Helmet } from 'react-helmet';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
-import { FlyoutTabs } from 'modules/flyout-tabs';
+import { Sidebar } from 'modules/sidebar';
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
@@ -16,9 +16,9 @@ import { useHistory, useLocation } from 'react-router';
 
 export default function WrapperPage({
     scrollPositionBelowThreshold,
-    flyoutTabsVisible,
+    sidebarVisible,
     children,
-    toggleFlyoutTabs,
+    toggleSidebar,
     locale,
     project,
     projectId,
@@ -108,7 +108,7 @@ export default function WrapperPage({
     return (
         <ResizeWatcherContainer>
             <div className={classNames('Layout', {
-                'sidebar-is-visible': flyoutTabsVisible,
+                'sidebar-is-visible': sidebarVisible,
                 'is-sticky': scrollPositionBelowThreshold,
             })}>
                 <Helmet>
@@ -132,18 +132,18 @@ export default function WrapperPage({
                 </div>
 
                 <ErrorBoundary>
-                    <FlyoutTabs className="Layout-sidebar" />
+                    <Sidebar className="Layout-sidebar" />
                 </ErrorBoundary>
 
                 <BurgerButton
                     className="Layout-sidebarToggle"
-                    open={flyoutTabsVisible}
-                    onClick={() => toggleFlyoutTabs(flyoutTabsVisible)}
+                    open={sidebarVisible}
+                    onClick={() => toggleSidebar(sidebarVisible)}
                 />
 
                 <BackToTopButton
                     visible={scrollPositionBelowThreshold}
-                    fullscreen={!flyoutTabsVisible}
+                    fullscreen={!sidebarVisible}
                 />
             </div>
         </ResizeWatcherContainer>
@@ -163,14 +163,14 @@ WrapperPage.propTypes = {
     languagesStatus: PropTypes.object,
     projectsStatus: PropTypes.object,
     collectionsStatus: PropTypes.object,
-    flyoutTabsVisible: PropTypes.bool,
+    sidebarVisible: PropTypes.bool,
     editView: PropTypes.bool.isRequired,
     account: PropTypes.object,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
-    toggleFlyoutTabs: PropTypes.func.isRequired,
+    toggleSidebar: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
     setLocale: PropTypes.func.isRequired,

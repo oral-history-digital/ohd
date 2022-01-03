@@ -7,15 +7,15 @@ import { setLocale, getLocale, getArchiveId, getProjectId, getSelectedArchiveIds
 import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getProjects,
     getCurrentAccount, getProjectLocales } from 'modules/data';
 import { getIsLoggedIn } from 'modules/account';
-import { setFlyoutTabsIndex } from '../actions';
-import { getFlyoutTabsVisible, getFlyoutTabsIndex } from '../selectors';
-import FlyoutTabs from './FlyoutTabs';
+import { setSidebarTabsIndex } from '../actions';
+import { getSidebarVisible, getSidebarIndex } from '../selectors';
+import SidebarTabs from './SidebarTabs';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
     return {
-        flyoutTabsIndex: getFlyoutTabsIndex(state),
-        visible: getFlyoutTabsVisible(state),
+        sidebarTabsIndex: getSidebarIndex(state),
+        visible: getSidebarVisible(state),
         archiveId: getArchiveId(state),
         projectId: getProjectId(state),
         projects: getProjects(state),
@@ -36,10 +36,10 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setLocale,
-    setFlyoutTabsIndex,
+    setSidebarTabsIndex,
 }, dispatch);
 
 export default withRouter(connect(
     mapStateToProps,
     mapDispatchToProps
-)(FlyoutTabs));
+)(SidebarTabs));

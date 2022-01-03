@@ -28,7 +28,7 @@ export default function InterviewTabPanel({
     isCatalog,
     searchInArchive,
     setViewMode,
-    hideFlyoutTabs,
+    hideSidebar,
 }) {
     const pathBase = usePathBase();
     const { t } = useI18n();
@@ -58,7 +58,7 @@ export default function InterviewTabPanel({
                             onClick={() => {
                                 searchInArchive(searchPath, {archive_id: interview.archive_id});
                                 setViewMode('workflow')
-                                hideFlyoutTabs();
+                                hideSidebar();
                             }}
                             to={searchPath}
                         >
@@ -169,5 +169,5 @@ InterviewTabPanel.propTypes = {
     isCatalog: PropTypes.bool.isRequired,
     searchInArchive: PropTypes.func.isRequired,
     setViewMode: PropTypes.func.isRequired,
-    hideFlyoutTabs: PropTypes.func.isRequired,
+    hideSidebar: PropTypes.func.isRequired,
 };

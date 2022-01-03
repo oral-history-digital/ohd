@@ -1,4 +1,4 @@
-const NAME = 'flyout-tabs';
+const NAME = 'sidebar';
 
 export { NAME };
 

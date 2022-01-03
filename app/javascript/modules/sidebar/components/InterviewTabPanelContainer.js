@@ -5,7 +5,7 @@ import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getIsCat
 import { searchInArchive } from 'modules/search';
 import { setViewMode, getArchiveId, getProjectId } from 'modules/archive';
 import InterviewTabPanel from './InterviewTabPanel';
-import { hideFlyoutTabs } from '../actions';
+import { hideSidebar } from '../actions';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
@@ -21,7 +21,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     searchInArchive,
-    hideFlyoutTabs,
+    hideSidebar,
     setViewMode,
 }, dispatch);
 

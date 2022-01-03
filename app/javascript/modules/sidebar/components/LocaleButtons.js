@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { pathBase } from 'modules/routes';
 
 export default function LocaleButtons({
+    className,
     currentLocale,
     locales,
     setLocale,
@@ -32,7 +34,7 @@ export default function LocaleButtons({
     }
 
     return (
-        <div className="LocaleButtons">
+        <div className={classNames('LocaleButtons', className)}>
             {
                 locales?.map(locale => (
                     <button
@@ -51,6 +53,7 @@ export default function LocaleButtons({
 }
 
 LocaleButtons.propTypes = {
+    className: PropTypes.string,
     currentLocale: PropTypes.string.isRequired,
     locales: PropTypes.array.isRequired,
     projectId: PropTypes.string.isRequired,
