@@ -37,8 +37,11 @@ export default class InterviewDetailsLeftSide extends Component {
                     { this.props.interview?.properties?.subcollection &&
                         <ContentField label={t(this.props, 'subcollection')} value={this.props.interview.properties.subcollection} />
                     }
-                    { this.props.interview?.properties?.link &&
-                        <ContentField label={'Link'} value={<a href={this.props.interview.properties.link} target='_blank'>{this.props.interview.properties.link}</a>} />
+                    { this.props.interview?.properties?.link && (
+                        <ContentField
+                            label="Link"
+                            value={<a href={this.props.interview.properties.link} target='_blank' rel="noreferrer">{this.props.interview.properties.link}</a>}
+                        />)
                     }
                     {this.props.projectId === 'CAMPSCAPES' && this.footerNavigation()}
                 </div>

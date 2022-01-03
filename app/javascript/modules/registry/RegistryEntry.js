@@ -66,7 +66,7 @@ export default class RegistryEntry extends Component {
                     href={`https://www.openstreetmap.org/?mlat=${this.props.data.latitude}&mlon=${this.props.data.longitude}&zoom=6`}
                     target="_blank"
                     rel="noreferrer"
-                    className="flyout-sub-tabs-content-ico-link"
+                    className="Link flyout-sub-tabs-content-ico-link"
                     title={`${this.props.data.latitude}, ${this.props.data.longitude}`}
                 >
                     <FaGlobeEurope className="Icon Icon--primary" />
