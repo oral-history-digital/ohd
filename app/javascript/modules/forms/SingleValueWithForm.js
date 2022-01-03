@@ -116,8 +116,9 @@ export default class SingleValueWithForm extends Component {
                             <>
                                 {
                                     collapse && (
-                                        <span
-                                            className='flyout-sub-tabs-content-ico-link'
+                                        <button
+                                            type="button"
+                                            className="Button Button--transparent Button--icon"
                                             title={t(this.props, this.state.collapsed ? 'show' : 'hide')}
                                             onClick={() => this.setState({ collapsed: !this.state.collapsed })}
                                         >
@@ -126,7 +127,7 @@ export default class SingleValueWithForm extends Component {
                                                     <FaAngleDown className="Icon Icon--editorial" /> :
                                                     <FaAngleUp className="Icon Icon--editorial" />
                                             }
-                                        </span>
+                                        </button>
                                     )
                                 }
                                 {children}

@@ -19,11 +19,11 @@ export default class Register extends Component {
                     </h1>
                     <p>
                         {t(this.props, 'user_registration.registration_text_one')}
-                        <a href={conditionsLink[this.props.locale]} target="_blank" title="" rel="noopener">
+                        <a href={conditionsLink[this.props.locale]} target="_blank" title="" rel="noreferrer">
                             {t(this.props, 'user_registration.tos_agreement')}
                         </a>
                         {t(this.props, 'user_registration.registration_text_two')}
-                        <a href={privacyLink[this.props.locale]} target="_blank" title="" rel="noopener">
+                        <a href={privacyLink[this.props.locale]} target="_blank" title="" rel="noreferrer">
                             {t(this.props, 'user_registration.priv_agreement_alias')}
                         </a>
                         {t(this.props, 'user_registration.registration_text_three')}

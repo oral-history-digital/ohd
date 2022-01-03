@@ -1,4 +1,3 @@
-import React from 'react';
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
 import { FaAngleUp, FaAngleDown } from 'react-icons/fa';
@@ -40,15 +39,21 @@ function taskGroup(header, data, hideShow=true) {
 
     if (data?.length > 0) {
         return (
-            <div className={'tasks box'}>
-                <h4 className='title' onClick={() => setShow(!show)} >
-                    {data.length + ' ' + t(`activerecord.models.task.${header}`)}
-                    {
-                        show ?
-                            <FaAngleUp className="Icon Icon--editorial" /> :
-                            <FaAngleDown className="Icon Icon--editorial" />
-                    }
-                </h4>
+            <div className="tasks box">
+                <button
+                    type="button"
+                    className="Button Button--transparent"
+                    onClick={() => setShow(!show)}
+                >
+                    <h4 className="title">
+                        {data.length + ' ' + t(`activerecord.models.task.${header}`)}
+                        {
+                            show ?
+                                <FaAngleUp className="Icon Icon--editorial" /> :
+                                <FaAngleDown className="Icon Icon--editorial" />
+                        }
+                    </h4>
+                </button>
                 {
                     show ?
                         <TasksOnlyStatusEditableContainer

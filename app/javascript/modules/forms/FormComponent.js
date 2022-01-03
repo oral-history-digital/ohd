@@ -86,8 +86,9 @@ export default class Form extends Component {
     }
 
     deleteNestedObject(index) {
-        return <span
-            className='flyout-sub-tabs-content-ico-link'
+        return <button
+            type="button"
+            className="Button Button--transparent Button--icon"
             title={t(this.props, 'delete')}
             onClick={() => {
                 let nestedObjects = this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)];
@@ -99,7 +100,7 @@ export default class Form extends Component {
             }}
         >
             <FaTrash className="Icon Icon--editorial"/>
-        </span>
+        </button>
     }
 
     nestedRailsScopeName(scope) {

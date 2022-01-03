@@ -116,14 +116,15 @@ export default class RegistryEntrySelect extends Component {
             this.selectedRegistryEntry().associations_loaded
         ) {
             return (
-                <div
-                    className='flyout-sub-tabs-content-ico-link'
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
                     title={t(this.props, 'edit.registry_entry.go_up')}
                     onClick={() => this.setState({selectedRegistryEntryId: this.parentRegistryEntryId()})}
                 >
                     {t(this.props, 'edit.registry_entry.go_up')}
                     <FaArrowUp className="Icon Icon--editorial" />
-                </div>
+                </button>
             )
         }
     }

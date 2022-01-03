@@ -40,7 +40,7 @@ export default function RequestProjectAccessForm({
                     type: 'checkbox',
                     validate: function(v){return v && v !== '0'},
                     help: (
-                        <a href={conditionsLink[locale]} target="_blank" title="Externer Link" rel="noopener">
+                        <a href={conditionsLink[locale]} target="_blank" title="Externer Link" rel="noreferrer">
                             {t('user_registration.notes_on_tos_agreement')}
                         </a>
                     )
@@ -52,7 +52,7 @@ export default function RequestProjectAccessForm({
                     type: 'checkbox',
                     validate: function(v){return v && v !== '0'},
                     help: (
-                        <a href={privacyLink[locale]} target="_blank" title="Externer Link" rel="noopener">
+                        <a href={privacyLink[locale]} target="_blank" title="Externer Link" rel="noreferrer">
                             {t('user_registration.notes_on_priv_agreement')}
                         </a>
                     )
