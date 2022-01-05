@@ -10,6 +10,18 @@ import VisuallyHidden from '@reach/visually-hidden';
 
 import { useI18n } from 'modules/i18n';
 
+/**
+ * Usage:
+ *
+ * <AdminMenu>
+ *   <AdminMenu.Item name=... label=...>
+ *     ...content of dialog...
+ *   </AdminMenu.Item>
+ * </AdminMenu>
+ *
+ * AdminMenu can only have AdminMenu.Item components as children.
+ */
+
 export default function AdminMenu({
     className,
     children,
@@ -23,9 +35,6 @@ export default function AdminMenu({
     }
 
     const childrenArray = Array.isArray(children) ? children : [children];
-    // Filter out children that are not AdminMenuItem components.
-    const items = childrenArray.filter(child =>
-        child?.type?.name === 'AdminMenuItem');
 
     return (
         <>
@@ -38,7 +47,7 @@ export default function AdminMenu({
                 </MenuButton>
                 <MenuList>
                     {
-                        items.map(child => (
+                        childrenArray.map(child => (
                             <MenuItem
                                 key={child.props.name}
                                 className="ReachMenuItem"
@@ -52,7 +61,7 @@ export default function AdminMenu({
             </Menu>
 
             {
-                items.map(child => cloneElement(child, {
+                childrenArray.map(child => cloneElement(child, {
                     open: child.props.name === openDialog,
                     onClose: closeDialog,
                 }))
