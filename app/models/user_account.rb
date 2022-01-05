@@ -8,6 +8,8 @@ class UserAccount < ApplicationRecord
          :trackable
 
   has_one :user_registration
+  has_many :projects,
+           through: :user_registration_projects
 
   has_many :user_account_ips,
            :class_name => 'UserAccountIp'
