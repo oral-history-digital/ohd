@@ -8,16 +8,22 @@ class CustomDeviseMailer < Devise::Mailer
 
   def project_access_granted(record, opts={})
     @project = opts[:project]
+    opts[:from] = @project.contact_email
+    opts[:reply_to] = @project.contact_email
     devise_mail(record, :project_access_granted, opts)
   end
 
   def project_access_rejected(record, opts={})
     @project = opts[:project]
+    opts[:from] = @project.contact_email
+    opts[:reply_to] = @project.contact_email
     devise_mail(record, :project_access_rejected, opts)
   end
 
   def account_deactivated(record, opts={})
     @project = opts[:project]
+    opts[:from] = @project.contact_email
+    opts[:reply_to] = @project.contact_email
     devise_mail(record, :account_deactivated, opts)
   end
 
