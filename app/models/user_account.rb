@@ -181,6 +181,31 @@ class UserAccount < ApplicationRecord
     @skip_confirmation = true
   end
 
+  #
+  # overwritten from devise
+  #
+  # Attempt to find a user by its email. If a record is found, send new
+  # password instructions to it. If user is not found, returns a new user
+  # with an email not found error.
+  # Attributes must contain the user's email
+  def self.send_reset_password_instructions(attributes={}, opts={})
+    recoverable = find_or_initialize_with_errors(reset_password_keys, attributes, :not_found)
+    recoverable.send_reset_password_instructions(opts) if recoverable.persisted?
+    recoverable
+  end
+
+  #
+  # overwritten from devise
+  #
+  # Resets reset password token and send reset password instructions by email.
+  # Returns the token sent in the e-mail.
+  def send_reset_password_instructions(opts={})
+    token = set_reset_password_token
+    send_reset_password_instructions_notification(token, opts)
+
+    token
+  end
+
   protected
 
   # We don't use the Devise confirmation period. Instead we just
@@ -229,6 +254,13 @@ class UserAccount < ApplicationRecord
     elsif conditions.has_key?(:email)
       where(conditions.to_hash).first
     end
+  end
+
+  #
+  # overwritten from devise
+  #
+  def send_reset_password_instructions_notification(token, opts={})
+    send_devise_notification(:reset_password_instructions, token, opts)
   end
 
 end

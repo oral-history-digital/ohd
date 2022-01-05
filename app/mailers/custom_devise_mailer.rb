@@ -27,4 +27,10 @@ class CustomDeviseMailer < Devise::Mailer
     devise_mail(record, :account_deactivated, opts)
   end
 
+  def reset_password_instructions(record, token, opts={})
+    @project = opts[:project]
+    opts[:from] = @project.contact_email
+    opts[:reply_to] = @project.contact_email
+    devise_mail(record, :reset_password_instructions, opts)
+  end
 end
