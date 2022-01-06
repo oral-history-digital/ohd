@@ -107,6 +107,8 @@ const Loader = {
             }
         })
         req.set('Accept', 'application/json')
+        req.set('Content-Type', 'application/json')
+        req.set('Access-Control-Allow-Origin', '*')
         req.end( (error, res) => {
             if (error) {
                 console.log("loading json from " + url + " failed: " + error);
