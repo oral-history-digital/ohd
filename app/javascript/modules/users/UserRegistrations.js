@@ -15,6 +15,10 @@ export default class UserRegistrations extends Component {
         this.renderScrollObserver = this.renderScrollObserver.bind(this);
     }
 
+    componentDidMount() {
+        this.props.fetchData(this.props, 'user_registrations', null, null, parametrizedQuery(this.props.query));
+    }
+
     renderScrollObserver() {
         if (this.props.isUserRegistrationSearching) {
             return <Spinner />;
