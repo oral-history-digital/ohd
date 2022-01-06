@@ -34,7 +34,7 @@ export default function MergeRegistryEntriesButton({
                     <div>
                         <button
                             type="button"
-                            className="any-button"
+                            className="Button any-button"
                             onClick={() => {
                                 mergeRegistryEntries();
                                 close();

@@ -60,7 +60,7 @@ export default function Contribution({
                                     <p>{fullname({ locale }, person)}</p>
                                     <button
                                         type="button"
-                                        className="any-button"
+                                        className="Button any-button"
                                         onClick={() => { destroy(); close(); }}
                                     >
                                         {t('delete')}

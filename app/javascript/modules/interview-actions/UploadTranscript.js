@@ -45,7 +45,11 @@ export default function UploadTranscript({
                 <p>
                     {t('edit.upload.processing')}
                 </p>
-                <button type="button" className='return-to-upload' onClick={() => setShowForm(true)}>
+                <button
+                    type="button"
+                    className='Button return-to-upload'
+                    onClick={() => setShowForm(true)}
+                >
                     {t('edit.upload.return')}
                 </button>
             </>

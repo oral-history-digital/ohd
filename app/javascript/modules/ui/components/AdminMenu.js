@@ -101,7 +101,11 @@ function AdminMenuItem({
                     children
             }
 
-            <button className="Modal-close" onClick={onClose}>
+            <button
+                type="button"
+                className="Modal-close"
+                onClick={onClose}
+            >
                 <VisuallyHidden>Close</VisuallyHidden>
                 <FaTimes className="Modal-icon" />
             </button>

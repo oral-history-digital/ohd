@@ -125,6 +125,7 @@ export default class Facet extends Component {
             return (
                 <div className="subfacet-container">
                     <button
+                        type="button"
                         className={classNames('Button', 'accordion', {
                             'active': open,
                             'admin': this.props.admin,

@@ -27,7 +27,7 @@ export default function EditTableCell({
                 <button
                     type="button"
                     id={`segment_${segment.id}`}
-                    className="EditTable-button"
+                    className="Button EditTable-button"
                     onClick={() => dispatch(sendTimeChangeRequest(segment.tape_nbr, segment.time))}
                 >
                     {segment.tape_nbr} – {formatTimecode(segment.time)}

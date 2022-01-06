@@ -73,7 +73,7 @@ export default function InterviewMapPopup({
                                         {' '}
                                         <button
                                             type="button"
-                                            className="MapPopup-button"
+                                            className="Button MapPopup-button"
                                             onClick={() => handleClick(ref.tape_nbr, ref.time)}
                                         >
                                             <TapeAndTime tape={ref.tape_nbr} time={ref.time} />

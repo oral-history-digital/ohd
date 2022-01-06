@@ -73,7 +73,7 @@ export default class AdminActions extends Component {
 
                             <button
                                 type="button"
-                                className="any-button"
+                                className="Button any-button"
                                 onClick={() => {
                                     this.updateInterviews(params);
                                     close();
@@ -104,7 +104,7 @@ export default class AdminActions extends Component {
 
                             <button
                                 type="button"
-                                className="any-button"
+                                className="Button any-button"
                                 onClick={() => {
                                     this.exportDOI();
                                     close();
@@ -123,6 +123,7 @@ export default class AdminActions extends Component {
         return (
             <button
                 type="button"
+                className="Button"
                 onClick={() => { this.props.addRemoveArchiveId(-1); }}
             >
                 {t(this.props, 'reset')}

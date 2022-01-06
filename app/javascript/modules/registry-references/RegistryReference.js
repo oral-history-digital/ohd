@@ -110,7 +110,7 @@ export default function RegistryReference({
                                     <p>{registryEntry.name[locale]}</p>
                                     <button
                                         type="button"
-                                        className='any-button'
+                                        className='Button any-button'
                                         onClick={() => {
                                             destroy();
                                             close();

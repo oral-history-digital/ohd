@@ -36,7 +36,8 @@ export default class EditInterview extends Component {
                         {t(this.props, 'edit.interview.processed')}
                     </p>
                     <button
-                        className='return-to-upload'
+                        type="button"
+                        className='Button return-to-upload'
                         onClick={() => this.returnToForm()}
                     >
                         {t(this.props, 'edit.interview.return')}

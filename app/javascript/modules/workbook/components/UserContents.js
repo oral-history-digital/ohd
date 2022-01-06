@@ -19,7 +19,7 @@ export default function UserContents({
         <div className="userContents">
             <button
                 type="button"
-                className={classNames('accordion', {'active': open})}
+                className={classNames('Button', 'accordion', {'active': open})}
                 onClick={handleClick}
             >
                 {title}

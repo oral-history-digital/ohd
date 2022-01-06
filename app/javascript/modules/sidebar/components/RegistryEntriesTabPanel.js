@@ -17,7 +17,11 @@ function RegistryEntriesTabPanel(props) {
             <div className='flyout-sub-tabs-container'>
                 <RegistrySearchFormContainer />
                 <p>
-                    <button onClick={() => props.changeRegistryEntriesViewMode(!props.showRegistryEntriesTree)}>
+                    <button
+                        type="button"
+                        className="Button"
+                        onClick={() => props.changeRegistryEntriesViewMode(!props.showRegistryEntriesTree)}
+                    >
                         {t('activerecord.models.registry_entry.actions.' + (props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
                     </button>
                 </p>

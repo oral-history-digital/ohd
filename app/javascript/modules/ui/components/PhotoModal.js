@@ -48,7 +48,11 @@ export default function PhotoModal({
                 onTouchCancel={handleClick}
             >
                 {children}
-                <button className="PhotoModal-close" onClick={close}>
+                <button
+                    type="button"
+                    className="PhotoModal-close"
+                    onClick={close}
+                >
                     <FaTimes className="PhotoModal-icon" />
                 </button>
             </Dialog>

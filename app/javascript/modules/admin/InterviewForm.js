@@ -156,7 +156,8 @@ export default class InterviewForm extends Component {
                         </Link>
                     </p>
                     <button
-                        className='return-to-form'
+                        type="button"
+                        className='Button return-to-form'
                         onClick={() => this.returnToForm()}
                     >
                         {t(this.props, 'edit.interview.return')}

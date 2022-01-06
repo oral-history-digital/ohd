@@ -39,7 +39,7 @@ export default class UserRole extends Component {
                             <p>{this.props.userRole.name}</p>
                             <button
                                 type="button"
-                                className="any-button"
+                                className="Button any-button"
                                 onClick={() => { this.destroy(); closeModal(); }}
                             >
                                 {t(this.props, 'delete')}

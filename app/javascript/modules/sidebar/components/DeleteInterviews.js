@@ -46,7 +46,7 @@ export default function DeleteInterviews({
 
                         <button
                             type="button"
-                            className="any-button"
+                            className="Button any-button"
                             onClick={() => {
                                 deleteInterviews();
                                 close();

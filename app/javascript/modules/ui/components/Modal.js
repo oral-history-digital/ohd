@@ -55,7 +55,11 @@ export default function Modal({
                         children
                 }
 
-                <button className="Modal-close" onClick={close}>
+                <button
+                    type="button"
+                    className="Modal-close"
+                    onClick={close}
+                >
                     <FaTimes className="Modal-icon" />
                 </button>
             </Dialog>

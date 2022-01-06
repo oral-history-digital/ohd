@@ -29,7 +29,7 @@ export default function UserContentDelete({
 
             <button
                 type="button"
-                className="any-button"
+                className="Button any-button"
                 onClick={destroy}
             >
                 {t('delete')}

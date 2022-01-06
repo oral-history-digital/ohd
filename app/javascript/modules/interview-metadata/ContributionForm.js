@@ -92,7 +92,7 @@ export default function ContributionForm({
             <p />
             <Link
                 to={`${pathBase}/people`}
-                className='admin'
+                className='Link admin'
                 onClick={() => {
                     setSidebarTabsIndex(INDEX_INDEXING);
                     if (typeof onSubmit === 'function') {

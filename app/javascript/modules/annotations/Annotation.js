@@ -47,7 +47,7 @@ export default function Annotation({
                                 <p dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}} />
                                 <button
                                     type="button"
-                                    className="any-button"
+                                    className="Button any-button"
                                     onClick={() => {
                                         deleteData({ locale, projectId, projects }, 'annotations', annotation.id, null, null, true);
                                         closeModal();

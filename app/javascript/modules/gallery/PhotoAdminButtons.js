@@ -38,7 +38,11 @@ export default function PhotoAdminButtons({
                 >
                     {closeModal => (
                         <div>
-                            <button className="any-button" onClick={() => { destroy(); closeModal(); }}>
+                            <button
+                                type="button"
+                                className="Button any-button"
+                                onClick={() => { destroy(); closeModal(); }}
+                            >
                                 {t('delete')}
                             </button>
                         </div>

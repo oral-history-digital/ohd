@@ -64,7 +64,8 @@ export default class Uploads extends Component {
                             {t(this.props, 'edit.upload.processing')}
                         </p>
                         <button
-                            className='return-to-upload'
+                            type="button"
+                            className='Button return-to-upload'
                             onClick={() => this.returnToForm()}
                         >
                             {t(this.props, 'edit.upload.return')}
