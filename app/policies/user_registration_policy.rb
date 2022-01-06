@@ -33,7 +33,8 @@ class UserRegistrationPolicy < ApplicationPolicy
       if user && (user.admin? || user.permissions.map(&:klass).include?(scope.to_s))
         scope.joins(:user_registration_projects).
           where("user_registration_projects.project_id = ?", project.id).
-          where.not(user_account_id: nil)
+          where.not(user_account_id: nil).
+          where.not(activated_at: nil)
       else
         scope.none
       end
