@@ -107,7 +107,6 @@ const Loader = {
             }
         })
         req.set('Accept', 'application/json')
-        req.withCredentials()
         req.end( (error, res) => {
             if (error) {
                 console.log("loading json from " + url + " failed: " + error);
