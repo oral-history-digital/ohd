@@ -6,6 +6,7 @@ import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
 
 import DeleteInterviews from './DeleteInterviews';
+import UpdateInterviews from './UpdateInterviews';
 
 export default class AdminActions extends Component {
     selectedArchiveIds() {
@@ -36,20 +37,6 @@ export default class AdminActions extends Component {
         })
     }
 
-
-    updateInterviews(params) {
-        this.selectedArchiveIds().forEach((archiveId) => {
-            let updatedParams = Object.assign({}, params, {id: archiveId});
-            this.props.submitData(this.props, {interview: updatedParams});
-        });
-        if (this.props.match.params.archiveId === undefined) {
-            // TODO: faster aproach would be to just hide or delete the dom-elements
-            // location.reload()
-            // TODO: location.reload() cannot be used because it interrupts the
-            // XHR request.
-        }
-    }
-
     exportDOI() {
         this.props.submitDois(this.selectedArchiveIds(), this.props.locale)
     }
@@ -59,35 +46,6 @@ export default class AdminActions extends Component {
             i > 0 && ", ",
             <a href={`/${this.props.locale}/interviews/${archiveId}/metadata.xml`} target='_blank' rel="noreferrer" key={`link-to-${archiveId}`}>{archiveId}</a>
         ])
-    }
-
-    updateButton(params, action) {
-        return (
-            <AuthorizedContent object={{ type: 'Interview' }} action='update'>
-                <Modal
-                    title={t(this.props, `edit.interviews.${action}.title`)}
-                    trigger={t(this.props, `edit.interviews.${action}.title`)}
-                    triggerClassName="flyout-sub-tabs-content-ico-link"
-                >
-                    {close => (
-                        <div>
-                            {t(this.props, `edit.interviews.${action}.confirm_text`, {archive_ids: this.selectedArchiveIds().join(', ')})}
-
-                            <button
-                                type="button"
-                                className="Button any-button"
-                                onClick={() => {
-                                    this.updateInterviews(params);
-                                    close();
-                                }}
-                            >
-                                {t(this.props, 'submit')}
-                            </button>
-                        </div>
-                    )}
-                </Modal>
-            </AuthorizedContent>
-        );
     }
 
     doiButton() {
@@ -121,45 +79,57 @@ export default class AdminActions extends Component {
         );
     }
 
-    reset() {
-        return (
-            <button
-                type="button"
-                className="Button"
-                onClick={() => { this.props.addRemoveArchiveId(-1); }}
-            >
-                {t(this.props, 'reset')}
-            </button>
-        );
-    }
-
-    setAll() {
+    render() {
         const { archiveSearchResults, setArchiveIds } = this.props;
 
-        return (
-            <button
-                type="button"
-                className="Button"
-                onClick={() => setArchiveIds(archiveSearchResults.map(i => i.archive_id))}
-            >
-                {t(this.props, 'set_all')}
-            </button>
-        );
-    }
+        const selectedArchiveIds = this.selectedArchiveIds();
 
-    render() {
         return (
             <div>
                 {this.doiResults()}
                 {this.doiButton()}
+
                 {this.messages()}
-                <DeleteInterviews selectedArchiveIds={this.selectedArchiveIds()} />
-                {this.updateButton({workflow_state: 'public'}, 'publish')}
-                {this.updateButton({workflow_state: 'unshared'}, 'unpublish')}
-                {this.updateButton({biographies_workflow_state: 'public'}, 'publish_biographies')}
-                {this.updateButton({biographies_workflow_state: 'unshared'}, 'unpublish_biographies')}
-                {this.reset()}
-                {this.setAll()}
+
+                <DeleteInterviews selectedArchiveIds={selectedArchiveIds} />
+
+                <AuthorizedContent object={{ type: 'Interview' }} action='update'>
+                    <UpdateInterviews
+                        selectedArchiveIds={selectedArchiveIds}
+                        params={{workflow_state: 'public'}}
+                        action="publish"
+                    />
+                    <UpdateInterviews
+                        selectedArchiveIds={selectedArchiveIds}
+                        params={{workflow_state: 'unshared'}}
+                        action="unpublish"
+                    />
+                    <UpdateInterviews
+                        selectedArchiveIds={selectedArchiveIds}
+                        params={{biographies_workflow_state: 'public'}}
+                        action="publish_biographies"
+                    />
+                    <UpdateInterviews
+                        selectedArchiveIds={selectedArchiveIds}
+                        params={{biographies_workflow_state: 'unshared'}}
+                        action="publish_biographies"
+                    />
+                </AuthorizedContent>
+
+                <button
+                    type="button"
+                    className="Button"
+                    onClick={() => { this.props.addRemoveArchiveId(-1); }}
+                >
+                    {t(this.props, 'reset')}
+                </button>
+                <button
+                    type="button"
+                    className="Button"
+                    onClick={() => setArchiveIds(archiveSearchResults.map(i => i.archive_id))}
+                >
+                    {t(this.props, 'set_all')}
+                </button>
             </div>
         );
     }
