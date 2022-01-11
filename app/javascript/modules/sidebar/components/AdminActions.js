@@ -44,7 +44,9 @@ export default class AdminActions extends Component {
         });
         if (this.props.match.params.archiveId === undefined) {
             // TODO: faster aproach would be to just hide or delete the dom-elements
-            location.reload();
+            // location.reload()
+            // TODO: location.reload() cannot be used because it interrupts the
+            // XHR request.
         }
     }
 
