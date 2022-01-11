@@ -1,11 +1,23 @@
-<p>Dear <%= @receiver.display_name %>,</p>
+<p>Sehr geehrte/r <%= @receiver.display_name %>,</p>
 
-<% if @file %>
-  <p>the file <%= @file && @file.split('/').last %> has been processed.</p> 
-<% elsif @interview %>
-  <p><%= @interview.archive_id %> has been processed.</p> 
-<% end %>
+<p>Sie haben im Interview-Portal "Oral-History.Digital" folgenden Arbeitsschritt vorgenommen:</p>
 
-<p>Best regards,</p>
+<p><%= I18n.backend.translate(:de, 'jobs.'+@type) %>:</p>
 
-<p>the machine</p>
+<ul>
+  <li>Sammlungsname: <%= @project_name %></li>
+  <% if @interview %>
+    <li>Interview-ID: <%= @interview.archive_id %></li>
+  <% end %>
+  <% if @filename %>
+    <li>Dateiname: <%= @filename %></li>
+  <% end %>
+  <% if @locale %>
+    <li>Sprache: <%= @locale %></li>
+  <% end %>
+</ul>
+
+<p>Bitte prüfen Sie Vollständigkeit und Korrektheit der importierten Daten.</p>
+
+<p>Mit freundlichen Grüßen,</p>
+<p>Das Projekt-Team "Oral-History.Digital"</p>

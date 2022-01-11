@@ -24,7 +24,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
       end
     end
 
-    import_photos(photos, csv_file_name, locale)
+    interview = import_photos(photos, csv_file_name, locale)
     File.delete(file_path) if File.exist?(file_path)
     File.delete(csv_file_name) if File.exist?(csv_file_name)
 
@@ -35,7 +35,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
     #)
 
     jobs_logger.info "*** uploaded #{file_path} photos"
-    AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
+    AdminMailer.with(receiver: receiver, type: 'read_bulk_photos', file: file_path).finished_job.deliver_now
   end
 
   def import_photos(photos, csv_file_name, locale)
@@ -112,6 +112,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
         log("#{e.message}: #{e.backtrace}")
       end
       Sunspot.index interviews_to_reindex.uniq
+      interview
     end
   end
 
