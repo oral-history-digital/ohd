@@ -111,6 +111,7 @@ const Loader = {
             if (error) {
                 console.log("loading json from " + url + " failed: " + error);
                 console.log("original error: " + error.original);
+                console.log("url: " + url);
                 dispatch(errorCallback(error));
             } else if (res) {
                 let json = JSON.parse(res.text);
