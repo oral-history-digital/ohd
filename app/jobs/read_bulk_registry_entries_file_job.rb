@@ -12,7 +12,7 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
     #)
 
     jobs_logger.info "*** uploaded #{file_path} registry-entries"
-    AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
+    AdminMailer.with(project: project, receiver: receiver, type: 'read_bulk_registry_entries', file: file_path).finished_job.deliver_now
     File.delete(file_path) if File.exist?(file_path)
   end
 
@@ -47,7 +47,8 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
               longitude: longitude,
               notes: description,
               workflow_state: 'public',
-              list_priority: false
+              list_priority: false,
+              project_id: project.id
             }
             parent = nil
 

@@ -1,9 +1,12 @@
 FactoryBot.define do
 
   factory :interview do
-    sequence(:archive_id){|n| "za#{format('%03d', n)}" }
-    media_type { 'video' }
+    #transient do
+      #project { create(:project) }
+    #end
     project
+    sequence(:archive_id){|n| "#{project.shortname}#{format('%03d', n)}" }
+    media_type { 'video' }
     collection
     after :create do |interview|
       create_list :tape, 2, interview: interview
@@ -12,8 +15,8 @@ FactoryBot.define do
   end
 
   factory :tape do
-    sequence(:media_id){|n| "ZA907_01_01_0#{n}" }
     interview
+    sequence(:media_id){|n| "#{interview.archive_id.upcase}_01_01_0#{n}" }
   end
 
   factory :collection do

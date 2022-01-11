@@ -18,9 +18,14 @@ class AdminMailer < ApplicationMailer
     @receiver = params[:receiver]
     @type = params[:type]
     @interview = params[:interview]
+    @project = params[:project]
+    @project_name = (@project && @project.name) || (@interview && @interview.project.name)
     @file = params[:file]
+    @filename = @file && @file.split('/').last
+    @locale = params[:locale]
+    subject = "Interview-Archiv #{@project_name} - #{I18n.backend.translate(:de, 'jobs.'+@type)} #{@filename}"
     mail(
-      subject: 'finished job',
+      subject: subject,
       from: "noreply@cedis.fu-berlin.de",
       to: @receiver.email,
       date: Time.now

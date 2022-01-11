@@ -14,7 +14,7 @@ class ReadBulkMetadataFileJob < ApplicationJob
     #)
 
     jobs_logger.info "*** uploaded #{file_path} metadata"
-    AdminMailer.with(receiver: receiver, type: 'read_campscape', file: file_path).finished_job.deliver_now
+    AdminMailer.with(project: project, receiver: receiver, type: 'read_bulk_metadata', file: file_path).finished_job.deliver_now
     File.delete(file_path) if File.exist?(file_path)
   end
 

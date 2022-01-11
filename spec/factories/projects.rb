@@ -8,8 +8,7 @@ FactoryBot.define do
     primary_color { "#006169" }
     secondary_color { "#efae0f"}
     editorial_color { "#0ea6b3" }
-    shortname { "CDOH" }
-    sequence(:initials, ('a'..'z').to_a.shuffle[0,4].join)
+    sequence(:shortname, ('a'..'z').to_a.shuffle[0,4].join)
     domain { "http://da03.cedis.fu-berlin.de:86" }
     archive_domain { "http://localhost:3000" }
     doi { "10.5072" }

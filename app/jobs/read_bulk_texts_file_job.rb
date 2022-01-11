@@ -91,7 +91,7 @@ class ReadBulkTextsFileJob < ApplicationJob
     #)
 
     jobs_logger.info "*** uploaded #{file_path} text-files"
-    AdminMailer.with(receiver: receiver, type: 'read_protokolls', file: file_path).finished_job.deliver_now
+    AdminMailer.with(interview: interview, receiver: receiver, type: 'read_bulk_texts', file: file_path).finished_job.deliver_now
   end
 
 end

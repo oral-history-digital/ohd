@@ -266,6 +266,14 @@ de:
   call_user_annotation: Stelle im Interview aufrufen
   title: Titel
   description: Beschreibung
+  jobs:
+    read_transcript: Transkript Upload
+    read_bulk_metadata: Import von Metadaten
+    read_bulk_texts: Import von Textdateien
+    read_bulk_photos: Import von Fotos
+    read_bulk_registry_entries: Import von Registereinträgen
+    assign_speakers: Sprecher*innen zuordnen
+    mark_text: Text ersetzen
   # TODO: cleanup this scope: redundant bearbeiten, hinzufügen, ...
   registry_reference_types:
     birth_location: Geburtsort
