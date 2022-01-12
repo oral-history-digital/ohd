@@ -35,6 +35,7 @@ export default function AdminMenu({
     }
 
     const childrenArray = Array.isArray(children) ? children : [children];
+    const cleanedChildrenArray = childrenArray.filter(c => typeof(c) !== 'boolean');
 
     return (
         <>
@@ -47,7 +48,7 @@ export default function AdminMenu({
                 </MenuButton>
                 <MenuList>
                     {
-                        childrenArray.map(child => (
+                        cleanedChildrenArray.map(child => (
                             <MenuItem
                                 key={child.props.name}
                                 className="ReachMenuItem"
@@ -61,7 +62,7 @@ export default function AdminMenu({
             </Menu>
 
             {
-                childrenArray.map(child => cloneElement(child, {
+                cleanedChildrenArray.map(child => cloneElement(child, {
                     open: child.props.name === openDialog,
                     onClose: closeDialog,
                 }))
