@@ -1,3 +1,7 @@
+/**
+ * 1. Lines between tabs.
+ */
+
 .SidebarTabs {
   display: block !important;
 }
@@ -6,10 +10,11 @@
   background-color: $ui-background-color;
   border-left: ($base-unit / 4) solid $ui-background-color;
   border-bottom: 0 !important;
+  box-shadow: 0 -1px 1px $sidebar-background-color;  /* 1 */
   color: white;
   font-size: 1.2rem;
   line-height: $base-unit * 1.5;
-  margin-bottom: 1px;
+  outline: none;
   padding: ($base-unit / 2) $base-unit ($base-unit / 2) ($base-unit * 0.75);
   text-align: left;
   transition-duration: $transition-duration;
