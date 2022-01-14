@@ -3,3 +3,7 @@
   font-size: 0.875rem;
   line-height: $base-unit;
 }
+
+[data-reach-listbox-popover] {
+  z-index: $z-index-listbox;
+}

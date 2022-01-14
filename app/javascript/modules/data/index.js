@@ -22,7 +22,7 @@ export { getStatuses, getContributorsFetched, getCurrentAccount, getCurrentInter
     getHeadingsFetched, getHeadings, getPreparedHeadings,
     getMediaStreamsForCurrentProject, getInterviews, getTaskTypesForCurrentProject,
     getTaskTypesForCurrentProjectFetched, getCollectionsForCurrentProjectFetched } from './selectors/dataSelectors';
-export { getIsCatalog, getIsCampscapesProject, getProjectTranslation,
+export { getIsCatalog, getIsCampscapesProject, getProjectTranslation, getMapSections,
     getShowFeaturedInterviews, getShowStartPageVideo } from './selectors/projectSelectors';
 export { default as getGroupedContributions } from './selectors/getGroupedContributions';
 

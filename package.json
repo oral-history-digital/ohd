@@ -8,6 +8,7 @@
     "@rails/webpacker": "5.2.1",
     "@reach/dialog": "^0.16.2",
     "@reach/disclosure": "^0.16.2",
+    "@reach/listbox": "^0.16.2",
     "@reach/menu-button": "^0.16.2",
     "@reach/tabs": "^0.16.4",
     "@reach/visually-hidden": "^0.16.0",
