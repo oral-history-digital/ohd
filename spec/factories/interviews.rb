@@ -1,9 +1,6 @@
 FactoryBot.define do
 
   factory :interview do
-    #transient do
-      #project { create(:project) }
-    #end
     project
     sequence(:archive_id){|n| "#{project.shortname}#{format('%03d', n)}" }
     media_type { 'video' }

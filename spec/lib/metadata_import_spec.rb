@@ -5,22 +5,39 @@ describe MetadataImport do
   before(:all) do
     Person.destroy_all
     Interview.destroy_all
+    @language = FactoryBot.create(:language) #unless Language.where(name: 'Deutsch').first
 
     @project = project_with_contribution_types_and_metadata_fields
+
+    # create files with valid archive_id for @project
+    #
+    metadata_import_template = File.read('spec/files/metadata-import-template.csv')
+    metadata_import_template = metadata_import_template.sub('mog900', "#{@project.shortname}900")
+    File.write('spec/files/metadata-import-template-tmp.csv', metadata_import_template)
+
+    metadata_update_template = File.read('spec/files/metadata-update-template.csv')
+    metadata_update_template = metadata_update_template.sub('mog900', "#{@project.shortname}900")
+    File.write('spec/files/metadata-update-template-tmp.csv', metadata_update_template)
+  end
+
+  after(:all) do
+    File.delete('spec/files/metadata-import-template-tmp.csv')
+    File.delete('spec/files/metadata-update-template-tmp.csv')
   end
 
   describe 'processing a file' do
     subject(:project){ @project}
 
     it 'should create people and metadata from file entries' do
-      MetadataImport.new('spec/files/metadata-import-template.csv', project, :de).process
+      MetadataImport.new('spec/files/metadata-import-template-tmp.csv', project, :de).process
       expect(Person.count).to eq(5)
 
-      expect(Interview.last.language.name).to eq("German")
+      expect(Interview.last.language.name).to eq("Deutsch")
       expect(Interview.last.interview_date).to eq("03/03/20")
       expect(Interview.last.media_type).to eq("video")
       expect(Interview.last.duration).to eq(9000)
       expect(Interview.last.observations).to eq("am Abend sah man die Wolken")
+      expect(Interview.last.tape_count).to eq(3)
       expect(Interview.last.description).to eq("ging ganz gut")
 
       expect(Interview.last.interviewees.first.first_name).to eq('Maria')
@@ -57,15 +74,16 @@ describe MetadataImport do
     end
 
     it 'should update people and metadata from file entries' do
-      MetadataImport.new('spec/files/metadata-update-template.csv', project, :de).process
+      MetadataImport.new('spec/files/metadata-update-template-tmp.csv', project, :de).process
       expect(Person.count).to eq(5)
 
-      expect(Interview.last.language.name).to eq("German")
+      expect(Interview.last.language.name).to eq("Deutsch")
       expect(Interview.last.interview_date).to eq("05/03/20")
       expect(Interview.last.media_type).to eq("audio")
       expect(Interview.last.duration).to eq(9600)
       expect(Interview.last.observations).to eq("am Abend sah man die Schwalben")
       expect(Interview.last.description).to eq("ging besser")
+      expect(Interview.last.tape_count).to eq(5)
 
       expect(Interview.last.interviewees.first.first_name).to eq('Malehne')
       expect(Interview.last.interviewees.first.last_name).to eq('Schmidt')

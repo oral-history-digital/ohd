@@ -25,7 +25,7 @@ class MetadataImport
 
       interview = update_or_create_interview(project, row)
 
-      create_default_tape(interview) unless interview.tapes.any?
+      interview.find_or_create_tapes(row[:tape_count]) #create_default_tape(interview) unless interview.tapes.any?
 
       update_or_create_interviewee(project, interview, row)
 
@@ -53,7 +53,7 @@ class MetadataImport
       project_id: project.id,
       archive_id: row[:archive_id],
       signature_original: row[:signature_original],
-      language_id: (language = find_or_create_language(row[:language_id]); language ? language.id : nil),
+      language_id: (language = find_language(row[:language_id]); language ? language.id : nil),
       collection_id: row[:collection_id] && find_or_create_collection(row[:collection_id], project).id,
       interview_date: row[:interview_date],
       media_type: row[:media_type] && row[:media_type].downcase,
@@ -128,19 +128,21 @@ class MetadataImport
     collection
   end
 
-  def find_or_create_language(name)
+  def find_language(name)
     if name
-      languages = name.split(/\s+[ua]nd\s+/).map do |l| 
-        # ISO_639 knows only english  and french
-        ISO_639.find(l) ||
-        ISO_639.find(l[0..2].downcase) || # some german language names can be found like this 
-        ISO_639.find_by_english_name(l.classify) ||
-        ISO_639.search(l).first 
-      end.compact.uniq
-      code = languages.map(&:alpha3).join('/')
-      english_name = languages.map(&:english_name).join(' and ')
-      language = Language.find_by_code(code)
-      language = Language.create(code: code, name: english_name) if (!language && !code.blank?)
+      languages = name.split(/\s+[ua]nd\s+/)
+      language = Language.where(name: languages.join('/')).first
+      language = Language.where(code: languages.join('/')).first unless language
+      language = Language.where(code: languages.join('-')).first unless language
+      # try to find language by other codes provided by ISO_639
+      unless language
+        iso639_results = languages.map{|l| ISO_639.find(l) }
+        (0..4).each do |n|
+          name_or_code = iso639_results.map{|iso_codes| iso_codes[n]}.join('/')
+          language = Language.where(name: name_or_code).first unless language
+          language = Language.where(code: name_or_code).first unless language
+        end
+      end
       language
     end
   end

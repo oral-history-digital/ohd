@@ -3,7 +3,7 @@ class MetadataImportTemplate
   def initialize(project, locale)
     @locale = locale
     @project = project
-    @csv = CSV.generate(headers: true, col_sep: ";", row_sep: :auto, quote_char: "\x00") do |csv|
+    @csv = CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |csv|
       csv << columns_hash.values
     end
   end
@@ -32,6 +32,7 @@ class MetadataImportTemplate
       :duration,
       :observations,
       :description,
+      :tape_count,
     ].inject({}) do |mem, c| 
       mem[c] = I18n.t("metadata_labels.#{c}", locale: @locale)
       mem
