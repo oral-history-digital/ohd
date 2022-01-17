@@ -6,7 +6,6 @@ export default function filterReferenceTypes(filter, locations) {
     const filteredLocations = locations.map(location => {
         const referenceTypes = location.ref_types
             .split(',')
-            .map(type => Number.parseInt(type))
             .filter(type => filter.includes(type))
             .join(',');
 

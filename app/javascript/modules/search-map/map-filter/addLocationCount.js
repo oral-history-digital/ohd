@@ -20,11 +20,9 @@ function locationCountFor(locations, referenceTypeId) {
     let numLocations = 0;
 
     locations.forEach(location => {
-        const types = location.ref_types
-            .split(',')
-            .map(type => Number.parseInt(type));
+        const types = location.ref_types.split(',');
 
-        if (types.includes(referenceTypeId)) {
+        if (types.includes(referenceTypeId.toString())) {
             numLocations += 1;
         }
     });

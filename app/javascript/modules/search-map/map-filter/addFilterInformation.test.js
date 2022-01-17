@@ -1,7 +1,7 @@
 import addFilterInformation from './addFilterInformation';
 
 test('adds property to reference types whether they are filtered', () => {
-    const filter = [1];
+    const filter = ['1'];
     const referenceTypes = [
         {
             id: 1,

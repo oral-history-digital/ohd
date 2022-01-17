@@ -42,7 +42,7 @@ function color(colorMap, location) {
     } else {
         const type = location.ref_types.split(',')[0];
 
-        if (type === 'Segment') {
+        if (type === 'S') {
             return MARKER_COLOR_SEGMENT_TYPE;
         } else {
             return colorMap.get(Number.parseInt(type));
