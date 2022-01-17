@@ -272,16 +272,16 @@ class Interview < ApplicationRecord
   end
 
   def find_or_create_tapes(d)
-    tapes.where.not("media_id LIKE ?", "#{archive_id.upcase}_#{format('%02d', d)}_%").each do |tape|
+    tapes.where.not("media_id LIKE ?", "#{archive_id.upcase}_#{format('%02d', d.to_i)}_%").each do |tape|
       if tape.segments.count == 0
         tape.destroy
       else
-        tape.update_attributes media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', tape.number)}"
+        tape.update_attributes media_id: "#{archive_id.upcase}_#{format('%02d', d.to_i)}_#{format('%02d', tape.number)}"
       end
     end
 
     (1..d.to_i).each do |t|
-      tp = Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d)}_#{format('%02d', t)}", number: t, interview_id: id)
+      tp = Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d.to_i)}_#{format('%02d', t)}", number: t, interview_id: id)
     end
     self.touch
   end
