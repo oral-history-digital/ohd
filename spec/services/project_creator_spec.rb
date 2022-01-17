@@ -96,5 +96,8 @@ RSpec.describe ProjectCreator do
       expect(project.roles.where(name: 'Erschliessung').first.permissions.count).to eq(42)
     end
 
+    it 'has all upload-types' do
+      expect(project.upload_types).to eq(["bulk_metadata", "bulk_texts", "bulk_registry_entries", "bulk_photos"])
+    end
   end
 end

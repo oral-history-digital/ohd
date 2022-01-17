@@ -897,7 +897,7 @@ es:
         default_locale: default Sprachcode (alpha2)
         view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
-        upload_types: UploadTypen
+        pseudo_upload_types: Importarten
         primary_color: Primary color
         secondary_color: Secondary color
         editorial_color: Editorial color

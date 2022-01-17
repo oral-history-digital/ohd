@@ -909,7 +909,7 @@ en:
         landing_page_text: Landingpage Text
         pseudo_view_modes: Ansichten
         fullname_on_landing_page: Show full name on landing page
-        pseudo_upload_types: UploadTypen
+        pseudo_upload_types: Importarten
         shortname: Kürzel
         initials: Initials (interview ID)
         archive_id_number_length: Number of figures (interview ID)
