@@ -2,14 +2,6 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
-import PhotoMetadatum from './PhotoMetadatum';
-
-const metadata = [
-    'place',
-    'date',
-    'photographer',
-    'license',
-];
 
 export default function PhotoCaption({
     className,
@@ -35,20 +27,33 @@ export default function PhotoCaption({
                 {caption}
             </h3>
 
-            {
-                translations && metadata.map(metadatum => {
-                    if (!translations[metadatum]) {
-                        return null;
-                    }
-
-                    return (<PhotoMetadatum
-                        key={metadatum}
-                        className="PhotoCaption-paragraph"
-                        label={metadatum}
-                        value={translations[metadatum]}
-                    />);
-                })
-            }
+            <ul className="PhotoCaption-list">
+                {translations.place && (
+                    <li className="PhotoCaption-listItem">
+                        {t('activerecord.attributes.photo.place')}: {translations.place}
+                    </li>
+                )}
+                {translations.date && (
+                    <li className="PhotoCaption-listItem">
+                        {t('activerecord.attributes.photo.date')}: {translations.date}
+                    </li>
+                )}
+                {photo.public_id && (
+                    <li className="PhotoCaption-listItem">
+                        {t('activerecord.attributes.photo.public_id')}: {photo.public_id}
+                    </li>
+                )}
+                {translations.photographer && (
+                    <li className="PhotoCaption-listItem">
+                        {t('activerecord.attributes.photo.photographer')}: {translations.photographer}
+                    </li>
+                )}
+                {translations.license && (
+                    <li className="PhotoCaption-listItem">
+                        {t('activerecord.attributes.photo.license')}: {translations.license}
+                    </li>
+                )}
+            </ul>
         </div>
     );
 }
