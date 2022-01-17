@@ -18,7 +18,7 @@ test('transforms registry location data into markers for map component', () => {
             lat: '53.66',
             lon: '23.81',
             name: 'Berlin',
-            ref_types: 'Segment,Segment,Segment,4,14',
+            ref_types: 'S,S,S,4,14',
         },
     ];
 
@@ -53,7 +53,7 @@ test('throws when lat lon data is empty', () => {
             lat: '',
             lon: '',
             name: 'Berlin',
-            ref_types: 'Segment,Segment,Segment,4,14',
+            ref_types: 'S,S,S,4,14',
         },
     ];
 
