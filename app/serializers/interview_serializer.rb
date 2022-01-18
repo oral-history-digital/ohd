@@ -13,6 +13,10 @@ class InterviewSerializer < InterviewBaseSerializer
     :tasks_supervisor_ids,
   ]
 
+  def translations
+    object.translations.map(&:as_json)
+  end
+
   def landing_page_texts
     json = Rails.cache.fetch("#{object.project.cache_key_prefix}-landing-page-texts-#{object.archive_id}-#{object.project.updated_at}") do
       interviewee = object.interviewee

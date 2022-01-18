@@ -55,6 +55,7 @@ export default function Interview({
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'description');
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'observations');
             fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'photos');
+            fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'reload_translations');
         }
     }, [archiveId, isLoggedIn]);
 

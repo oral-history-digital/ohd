@@ -133,6 +133,24 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def reload_translations
+    @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
+
+    json = {
+      id: @interview.archive_id,
+      data_type: "interviews",
+      nested_data_type: 'translations',
+      data: @interview.translations,
+    }
+
+    respond_to do |format|
+      format.json do
+        render json: json
+      end
+    end
+  end
+
   def show
     @interview = Interview.find_by_archive_id(params[:id])
 

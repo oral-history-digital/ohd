@@ -26,8 +26,10 @@ export default class MultiLocaleWrapper extends Component {
             return null;
         }
 
-        const originalTranslation = data.translations.find(t => t.locale === locale);
-        const publicTranslation = data.translations.find(t => t.locale === `${locale}-public`);
+        const translationsArray = Array.isArray(data.translations) ? data.translations :
+            Object.values(data.translations);
+        const originalTranslation = translationsArray.find(t => t.locale === locale);
+        const publicTranslation = translationsArray.find(t => t.locale === `${locale}-public`);
 
         if (data.type !== 'Segment') {
             return originalTranslation;

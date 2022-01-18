@@ -17,7 +17,6 @@ class InterviewBaseSerializer < ApplicationSerializer
     :still_url,
     :contributions,
     :registry_references,
-    :translations,
   ]
 
   def attributes(*args)
@@ -32,18 +31,7 @@ class InterviewBaseSerializer < ApplicationSerializer
   end
 
   def translations
-    if object.respond_to? :translations
-      attribute_names = [:id, :locale]
-      object.translations.inject([]) do |mem, translation|
-        translation_with_selected_fields = translation.attributes.select do |k, v|
-          attribute_names.include?(k.to_sym)
-        end
-        mem.push(translation_with_selected_fields)
-        mem
-      end
-    else
-      []
-    end
+    []
   end
 
   def video
