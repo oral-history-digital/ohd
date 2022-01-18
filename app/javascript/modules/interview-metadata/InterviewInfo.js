@@ -46,7 +46,6 @@ export default function InterviewInfo({
                 projectAccessGranted={projectAccessGranted}
                 elementType="textarea"
                 multiLocale
-                validate={v => v?.length > 3}
             />
             <SingleValueWithFormContainer
                 obj={interview}
