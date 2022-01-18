@@ -28,6 +28,7 @@ class CustomDeviseMailer < Devise::Mailer
   end
 
   def confirmation_instructions(record, token, opts={})
+    @token = token
     @project = record.projects.first
     contact_email = @project ? @project.contact_email : 'mail@oral-history.digital'
     opts[:from] = contact_email
@@ -36,6 +37,7 @@ class CustomDeviseMailer < Devise::Mailer
   end
 
   def reset_password_instructions(record, token, opts={})
+    @token = token
     @project = opts[:project]
     opts[:from] = @project.contact_email
     opts[:reply_to] = @project.contact_email
