@@ -8,12 +8,15 @@ class SessionsController < Devise::SessionsController
   respond_to :json, :html
 
   def create
+    # Quickfix for user sometimes being still signed in after signout.
+    reset_session
+
     self.resource = warden.authenticate!(auth_options)
     #if resource.user_registration.projects.include?(current_project) && resource.user_registration.user_registration_projects.find_by_project_id(current_project).activated_at != nil
       set_flash_message!(:notice, :signed_in)
       sign_in(resource_name, resource)
       yield resource if block_given?
-      respond_with resource, location: "/#{params[:locale]}" 
+      respond_with resource, location: "/#{params[:locale]}"
     #else
       #sign_out
       #render json: {error: 'project_access_in_process'}
