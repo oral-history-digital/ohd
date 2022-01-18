@@ -10,6 +10,10 @@ import { AuthShowContainer, admin } from 'modules/auth';
 import { isMobile, isIOS } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
 
+function onlyUnique(value, index, self) {
+    return self.indexOf(value) === index;
+}
+
 export default class ArchiveSearchForm extends Component {
     static propTypes = {
         history: PropTypes.object.isRequired,
@@ -258,7 +262,8 @@ export default class ArchiveSearchForm extends Component {
             .concat(allInterviewsPseudonyms)
             .map(title => title?.[locale])
             .filter(title => title)
-            .filter(title => title !== 'no interviewee given');
+            .filter(title => title !== 'no interviewee given')
+            .filter(onlyUnique);
 
         return titles.map(title => (
             <option key={title} value={`"${title}"`} />
