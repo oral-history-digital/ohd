@@ -1,6 +1,9 @@
 class RemoveInitialsFromProjects < ActiveRecord::Migration[5.2]
   def change
-    remove_column :projects, :initials, :string
+    if ActiveRecord::Base.connection.column_exists?(:projects, :initials)
+      remove_column :projects, :initials, :string
+    end
+
     Project.all.each do |project|
       project.update_attributes shortname: project.shortname.downcase
     end
