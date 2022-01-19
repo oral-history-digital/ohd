@@ -1,17 +1,5 @@
 <%
-  my_locale = @resource.default_locale || I18n.locale
-  if @resource.projects.count == 1
-    project = @resource.projects.last
-    project_name = project.name(@resource.default_locale)
-    url = "#{project.domain_with_optional_identifier}/#{my_locale}/user_registrations/#{@resource.confirmation_token}/activate"
-    application_typ = :interview_archive
-  else # if no project or more than one
-    project_name = "Oral-History.Digital"
-    url = "#{OHD_DOMAIN}/#{my_locale}/user_registrations/#{@resource.confirmation_token}/activate"
-    application_typ = :interview_portal 
-  end
-
-  case my_locale.to_sym
+  case @resource.default_locale || I18n.locale
   when :en
 -%>
 

@@ -29,8 +29,26 @@ class CustomDeviseMailer < Devise::Mailer
 
   def confirmation_instructions(record, token, opts={})
     @token = token
-    @project = record.projects.first
-    contact_email = @project ? @project.contact_email : 'mail@oral-history.digital'
+
+    if record.projects.count == 1
+      project = record.projects.last
+      domain = project.domain_with_optional_identifier
+      contact_email = project.contact_email
+      @project_name = project.name(record.default_locale)
+      @application_typ = :interview_archive
+    else # if no project or more than one
+      domain = OHD_DOMAIN
+      contact_email = 'mail@oral-history.digital'
+      @project_name = 'Oral-History.Digital'
+      @application_typ = :interview_portal 
+    end
+
+    if record.unconfirmed_email
+      @url = "#{domain}/#{record.default_locale}/accounts/#{record.id}/confirm_new_email?confirmation_token=#{record.confirmation_token}"
+    else
+      @url = "#{domain}/#{record.default_locale}/user_registrations/#{record.confirmation_token}/activate"
+    end
+
     opts[:from] = contact_email
     opts[:reply_to] = contact_email
     devise_mail(record, :confirmation_instructions, opts)
@@ -43,4 +61,10 @@ class CustomDeviseMailer < Devise::Mailer
     opts[:reply_to] = @project.contact_email
     devise_mail(record, :reset_password_instructions, opts)
   end
+
+  def email_changed(record, opts={})
+    binding.pry
+    devise_mail(record, :email_changed, opts)
+  end
+
 end

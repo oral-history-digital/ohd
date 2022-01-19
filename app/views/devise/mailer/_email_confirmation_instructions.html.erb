@@ -1,48 +1,37 @@
-<% 
-  if @resource.projects.count == 1
-    project = @resource.projects.last
-    project_name = project.name(@resource.default_locale)
-    url = "#{project.domain_with_optional_identifier}/#{@resource.default_locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}" %>
-  else # if no project or more than one
-    project_name = 'OHD'
-    url = "#{OHD_DOMAIN}/#{@resource.default_locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}"
-  end
-%>
-
 <% case @resource.default_locale.to_sym || I18n.locale
   when :en -%>
   <p>Dear <%= @resource.display_name %>,</p>
-  <p>You have changed the e-mail address for your account in the application "<%= project_name %>".</p>
+  <p>You have changed the e-mail address for your account in the application "<%= @project_name %>".</p>
   <p>Please confirm this modification by clicking the following link:</p>
-  <p><%= link_to 'Confirm new e-mail address', url %></p>
+  <p><%= link_to 'Confirm new e-mail address', @url %></p>
   <p>Yours sincerely,</p>
-  <p>The project team "<%= project_name %>"</p>
+  <p>The project team "<%= @project_name %>"</p>
   <% when :ru -%>
   <p>Уважаемый(-ая) <%= @resource.display_name %>,</p>
-  <p>Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= project_name %>".</p>
+  <p>Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= @project_name %>".</p>
   <p>Пожалуйста, подтвердите изменение, перейдя за линком:</p>
-  <p><%= link_to 'Подтвердить новый адрес электронной почты', url %></p>
+  <p><%= link_to 'Подтвердить новый адрес электронной почты', @url %></p>
   <p>С уважением,</p>
-  <p>сотрудники проекта "<%= project_name %>"</p>
+  <p>сотрудники проекта "<%= @project_name %>"</p>
   <% when :el -%>
   <p>Αγαπητή/-έ <%= @resource.display_name %>,</p>
-  <p>έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή <"<%= project_name %>".</p>
+  <p>έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή <"<%= @project_name %>".</p>
   <p>Παρακαλώ επιβεβαιώστε την αλλαγή ακολουθώντας τον παρακάτω σύνδεσμο:</p>
-  <p><%= link_to 'Επιβεβαίωση νέας διεύθυνσης', url %></p>
+  <p><%= link_to 'Επιβεβαίωση νέας διεύθυνσης', @url %></p>
   <p>Με εκτίμηση,</p>
-  <p>Η ομάδα του προγράμματος "<%= project_name %>"</p>
+  <p>Η ομάδα του προγράμματος "<%= @project_name %>"</p>
   <% when :es -%>
   <p>Estimada/o <%= @resource.display_name %>,</p>
-  <p>Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= project_name %>".</p>
+  <p>Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= @project_name %>".</p>
   <p>Por favor, confirme los cambios haciendo clic en el siguiente enlace:</p>
-  <p><%= link_to 'Confirmar nuevo correo electrónico', url %></p>
+  <p><%= link_to 'Confirmar nuevo correo electrónico', @url %></p>
   <p>Con saludos cordiales,</p>
-  <p>El equipo del proyecto "<%= project_name %>"</p>
+  <p>El equipo del proyecto "<%= @project_name %>"</p>
   <% else -%>
   <p>Sehr geehrte/r <%= @resource.display_name %>,</p>
-  <p>Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= project_name %>" geändert.</p>
+  <p>Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= @project_name %>" geändert.</p>
   <p>Bitte bestätigen Sie diese Änderung mit dem folgenden Link:</p>
-  <p><%= link_to 'Neue E-Mail Adresse bestätigen', url %></p>
+  <p><%= link_to 'Neue E-Mail Adresse bestätigen', @url %></p>
   <p>Mit freundlichen Grüßen,</p>
-  <p>Das Projekt-Team "<%= project_name %>"</p>
+  <p>Das Projekt-Team "<%= @project_name %>"</p>
 <% end -%>

@@ -1,73 +1,65 @@
-<% 
-  if @resource.projects.count == 1
-    project = @resource.projects.last
-    project_name = project.name(@resource.default_locale)
-    url = "#{project.domain_with_optional_identifier}/#{@resource.default_locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}" %>
-  else # if no project or more than one
-    project_name = 'OHD'
-    url = "#{OHD_DOMAIN}/#{@resource.default_locale}/accounts/#{@resource.id}/confirm_new_email?confirmation_token=#{@resource.confirmation_token}"
-  end
-%>
+<%
+  case @resource.default_locale.to_sym || I18n.locale
+  when :en
+-%>
 
-<% case @resource.default_locale.to_sym || I18n.locale
-when :en -%>
 Dear <%= @resource.display_name %>,
 
-You have changed the e-mail address for your account in the application "<%= project_name %>".
+You have changed the e-mail address for your account in the application "<%= @project_name %>".
 
 Please confirm this modification by clicking the following link:
 
-<%= url %>
+<%= @url %>
 
 Yours sincerely,
 
-The project team "<%= project_name %>"
+The project team "<%= @project_name %>"
 <% when :ru -%>
 Уважаемый(-ая) <%= @resource.display_name %>,
 
-Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= project_name %>".
+Вы изменили адрес электронной почты в Вашем аккаунте для доступа к проекту "<%= @project_name %>".
 
 Пожалуйста, подтвердите изменение, перейдя за линком:
 
-<%= url %>
+<%= @url %>
 
 С уважением,
 
-сотрудники проекта "<%= project_name %>"
+сотрудники проекта "<%= @project_name %>"
 <% when :el -%>
 Αγαπητή/-έ <%= @resource.display_name %>,
 
-έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή "<%= project_name %>".
+έχετε αλλάξει την ηλεκτρονική διεύθυνση του λογαριασμού σας για την εφαρμογή "<%= @project_name %>".
 
 Παρακαλώ επιβεβαιώστε την αλλαγή ακολουθώντας τον παρακάτω σύνδεσμο:
 
-<%= url %>
+<%= @url %>
 
 Με εκτίμηση,
 
-Η ομάδα του προγράμματος "<%= project_name %>"
+Η ομάδα του προγράμματος "<%= @project_name %>"
 <% when :es -%>
 Estimada/o <%= @resource.display_name %>,
 
-Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= project_name %>".
+Usted ha cambiado el correo electrónico de su cuenta para la aplicación "<%= @project_name %>".
 
 Por favor, confirme los cambios haciendo clic en el siguiente enlace:
 
-<%= url %>
+<%= @url %>
 
 Con saludos cordiales,
 
-El equipo del proyecto "<%= project_name %>"
+El equipo del proyecto "<%= @project_name %>"
 <% else -%>
 Sehr geehrte/r <%= @resource.display_name %>,
 
-Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= project_name %>" geändert.
+Sie haben die E-Mail Adresse für Ihren Account in der Anwendung "<%= @project_name %>" geändert.
 
 Bitte bestätigen Sie diese Änderung mit dem folgenden Link:
 
-<%= url %>
+<%= @url %>
 
 Mit freundlichen Grüßen,
 
-Das Projekt-Team "<%= project_name %>"
+Das Projekt-Team "<%= @project_name %>"
 <% end -%>
