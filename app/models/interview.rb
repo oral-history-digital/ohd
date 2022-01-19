@@ -280,6 +280,13 @@ class Interview < ApplicationRecord
       end
     end
 
+    tapes.each do |tape|
+      archive_id, tc, tn = tape.media_id.split('_')
+      if tape.segments.count == 0 && tn > tc
+        tape.destroy
+      end
+    end
+
     (1..d.to_i).each do |t|
       tp = Tape.find_or_create_by(media_id: "#{archive_id.upcase}_#{format('%02d', d.to_i)}_#{format('%02d', t)}", number: t, interview_id: id)
     end
