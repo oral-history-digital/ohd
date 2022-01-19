@@ -110,7 +110,6 @@ export default function UploadTranscript({
                     },
                     {
                         attribute: 'tape_number',
-                        hidden: isOdt,
                         validate: validateTapeNumber,
                     },
                     {
