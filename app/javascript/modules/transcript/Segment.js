@@ -35,6 +35,12 @@ function Segment({
         // Checking for divEl.current is necessary because sometimes component returns null.
         if (active && divEl.current) {
             const topOfSegment = divEl.current.offsetTop;
+
+            // Quickfix for wrong offsetTop values.
+            if (topOfSegment === 0) {
+                return;
+            }
+
             window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
         }
     }, []);
@@ -43,6 +49,12 @@ function Segment({
         // Checking for divEl.current is necessary because sometimes component returns null.
         if (autoScroll && active && divEl.current) {
             const topOfSegment = divEl.current.offsetTop;
+
+            // Quickfix for wrong offsetTop values.
+            if (topOfSegment === 0) {
+                return;
+            }
+
             scrollSmoothlyTo(0, topOfSegment - SCROLL_OFFSET);
         }
     }, [autoScroll, active])
