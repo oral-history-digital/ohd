@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Listbox, ListboxInput, ListboxButton, ListboxPopover,  ListboxList,  ListboxOption,} from '@reach/listbox';
+import { Listbox, ListboxOption } from '@reach/listbox';
 import '@reach/listbox/styles.css';
 
 import { ScrollToTop } from 'modules/user-agent';
-import { getCurrentProject, getMapSections } from 'modules/data';
+import { getMapSections } from 'modules/data';
 import { setSidebarTabsIndex, INDEX_MAP } from 'modules/sidebar';
 import { MapComponent } from 'modules/map';
 import { useI18n } from 'modules/i18n';
@@ -17,20 +17,12 @@ export default function SearchMap() {
     const mapSections = useSelector(getMapSections);
     const [currentSection, setCurrentSection] = useState(mapSections[0].name);
     const { t, locale } = useI18n();
-    const project = useSelector(getCurrentProject);
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
 
     useEffect(() => {
         dispatch(setSidebarTabsIndex(INDEX_MAP));
     }, []);
-
-    const mapCenter = project.map_initial_center_lat && project.map_initial_center_lon ?
-        [project.map_initial_center_lat, project.map_initial_center_lon] :
-        undefined;
-    const mapZoom = project.map_initial_zoom ?
-        project.map_initial_zoom :
-        undefined;
 
     const defaultSection = mapSections.find(section => section.name === currentSection);
     const bounds = [
@@ -71,8 +63,6 @@ export default function SearchMap() {
                         (<MapComponent
                             className="Map--search"
                             loading={isLoading}
-                            initialCenter={mapCenter}
-                            initialZoom={mapZoom}
                             bounds={bounds}
                             markers={markers || []}
                             popupComponent={SearchMapPopup}

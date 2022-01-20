@@ -54,10 +54,7 @@ class ProjectSerializer < ApplicationSerializer
     :list_columns,
     :grid_fields,
     :root_registry_entry_id,
-    :display_ohd_link,
-    :map_initial_center_lat,
-    :map_initial_center_lon,
-    :map_initial_zoom
+    :display_ohd_link
 
   def title
     object.shortname
