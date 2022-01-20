@@ -1141,7 +1141,7 @@ ru:
         path: Pfad
         resolution: Auflösung
       photo:
-        public_id: Öffentl. ID
+        public_id: Image ID
         caption: Fotobeschreibung
         place: Place
         date: Date
