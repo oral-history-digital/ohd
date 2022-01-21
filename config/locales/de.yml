@@ -1106,7 +1106,7 @@ de:
         path: Pfad
         resolution: Auflösung
       photo:
-        public_id: Öffentl. ID
+        public_id: Bild-ID
         caption: Fotobeschreibung
         place: Ort
         date: Datum

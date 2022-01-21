@@ -1111,7 +1111,7 @@ el:
         path: Pfad
         resolution: Auflösung
       photo:
-        public_id: Öffentl. ID
+        public_id: Image ID
         caption: Λεζάντα
         place: Place
         date: Date

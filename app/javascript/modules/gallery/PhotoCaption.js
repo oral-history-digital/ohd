@@ -38,11 +38,6 @@ export default function PhotoCaption({
                         {t('activerecord.attributes.photo.date')}: {translations.date}
                     </li>
                 )}
-                {photo.public_id && (
-                    <li className="PhotoCaption-listItem">
-                        {t('activerecord.attributes.photo.public_id')}: {photo.public_id}
-                    </li>
-                )}
                 {translations.photographer && (
                     <li className="PhotoCaption-listItem">
                         {t('activerecord.attributes.photo.photographer')}: {translations.photographer}
@@ -51,6 +46,11 @@ export default function PhotoCaption({
                 {translations.license && (
                     <li className="PhotoCaption-listItem">
                         {t('activerecord.attributes.photo.license')}: {translations.license}
+                    </li>
+                )}
+                {photo.public_id && (
+                    <li className="PhotoCaption-listItem">
+                        {t('activerecord.attributes.photo.public_id')}: {photo.public_id}
                     </li>
                 )}
             </ul>
