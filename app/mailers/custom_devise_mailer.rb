@@ -35,12 +35,12 @@ class CustomDeviseMailer < Devise::Mailer
       domain = project.domain_with_optional_identifier
       contact_email = project.contact_email
       @project_name = project.name(record.default_locale)
-      @application_typ = :interview_archive
+      @application_type = :interview_archive
     else # if no project or more than one
       domain = OHD_DOMAIN
       contact_email = 'mail@oral-history.digital'
       @project_name = 'Oral-History.Digital'
-      @application_typ = :interview_portal 
+      @application_type = :interview_portal 
     end
 
     if record.unconfirmed_email

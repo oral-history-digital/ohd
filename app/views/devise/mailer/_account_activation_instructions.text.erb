@@ -5,11 +5,11 @@
 
 Dear <%= @resource.display_name %>,
 
-You have registered for the application "<%= project_name %>".
+You have registered for the application "<%= @project_name %>".
 
 Please confirm your registration within the next 14 days by setting a password:
 
-<%= url %>
+<%= @url %>
 
 After you have confirmed your registration, the project team will review your registration details. Within two working days you will be informed about the activation of your account for the interview archive.
 
@@ -17,15 +17,15 @@ If you have not registered for the interview archive, you can ignore this e-mail
 
 Yours sincerely,
 
-The project team "<%= project_name %>"
+The project team "<%= @project_name %>"
 <% when :ru -%>
 Уважаемый(-ая) <%= @resource.display_name %>,
 
-Вы зарегистрировались как пользователь проекта  "<%= project_name %>".
+Вы зарегистрировались как пользователь проекта  "<%= @project_name %>".
 
 Пожалуйста, подтвердите Вашу регистрацию в течение следующих 14-ти дней путем введения пароля:
 
-<%= url %>
+<%= @url %>
 
 После подтверждения Вашей регистрации, Ваши данные будут проверены сотрудниками проекта. В течение двух дней Вы получите ответ об активации Вашего доступа к Архиву интервью.
 
@@ -33,15 +33,15 @@ The project team "<%= project_name %>"
 
 С уважением,
 
-сотрудники проекта "<%= project_name %>"
+сотрудники проекта "<%= @project_name %>"
 <% when :el -%>
 Αγαπητή/-έ <%= @resource.display_name %>,
 
-πραγματοποιήσατε την εγγραφή σας στην εφαρμογή "<%= project_name %>".
+πραγματοποιήσατε την εγγραφή σας στην εφαρμογή "<%= @project_name %>".
 
 Σας παρακαλούμε να επιβεβαιώσετε την εγγραφή σας εντός 14 ημερών επιλέγοντας έναν κωδικό πρόσβασης.
 
-<%= url %>
+<%= @url %>
 
 Μετά την επιβεβαίωση η ομάδα του προγράμματος θα ελέγξει τα στοιχεία της εγγραφής σας. Η διαδικασία ελέγχου ενδεχομένως να διαρκέσει δύο εώς τρεις ημέρες.
 
@@ -49,16 +49,16 @@ The project team "<%= project_name %>"
 
 Με εκτίμηση,
 
-Η ομάδα του προγράμματος "<%= project_name %>"
+Η ομάδα του προγράμματος "<%= @project_name %>"
 
 <% when :es -%>
 Estimada/o <%= @resource.display_name %>,
 
-Usted se ha registrado para la aplicación "<%= project_name %>".
+Usted se ha registrado para la aplicación "<%= @project_name %>".
 
 Por favor, confirme su registro dentro de 14 días eligiendo una contraseña:
 
-<%= url %>
+<%= @url %>
 
 Después de confirmar su registro, el equipo del proyecto revisará los detalles de su registro. Dentro de dos días hábiles será informado si se ha activado su cuenta para el archivo de entrevistas.
 
@@ -66,15 +66,15 @@ Si no se ha registrado para el archivo de entrevistas, puede hacer caso omiso de
 
 Con saludos cordiales,
 
-El equipo del proyecto "<%= project_name %>"
+El equipo del proyecto "<%= @project_name %>"
 <% else -%>
 Sehr geehrte/r <%= @resource.display_name %>,
 
-Sie haben sich für das <%= I18n.backend.translate(:de, application_typ) %> "<%= project_name %>" registriert.
+Sie haben sich für das <%= I18n.backend.translate(:de, @application_type) %> "<%= @project_name %>" registriert.
 
 Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem Sie ein Passwort festlegen:
 
-<%= url %>
+<%= @url %>
 
 Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert.
 
@@ -84,9 +84,9 @@ Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam g
   Nach erfolgter Bestätigung können Sie im sammlungsübergreifenden Interview-Portal "Oral-History.Digital" recherchieren und für einzelne Interview-Sammlungen eine Freischaltung beantragen oder direkt auf sie zugreifen.
 <% end %>  
 
-Sollten Sie sich nicht für das <%= I18n.backend.translate(:de, application_typ) %> registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.
+Sollten Sie sich nicht für das <%= I18n.backend.translate(:de, @application_type) %> registriert haben, können Sie diese diese E-Mail ignorieren, Ihre Daten werden automatisch nach 14 Tagen gelöscht.
 
 Mit freundlichen Grüßen,
 
-Das Projekt-Team "<%= project_name %>"
+Das Projekt-Team "<%= @project_name %>"
 <% end -%>
