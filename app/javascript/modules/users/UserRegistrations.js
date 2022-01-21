@@ -16,7 +16,8 @@ export default class UserRegistrations extends Component {
     }
 
     componentDidMount() {
-        this.props.fetchData(this.props, 'user_registrations', null, null, parametrizedQuery(this.props.query));
+        const query =  'page=1&user_registrations.workflow_state=account_confirmed';
+        this.props.fetchData(this.props, 'user_registrations', null, null, query);
     }
 
     renderScrollObserver() {

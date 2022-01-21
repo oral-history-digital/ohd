@@ -29,11 +29,13 @@ const mapStateToProps = state => ({
         {
             attributeName: 'default_locale',
             type: 'select',
+            value: getLocale(state),
             values: getProjectLocales(state),
         },
         {
             attributeName: 'user_registration_projects.workflow_state',
             type: 'select',
+            value: 'account_confirmed',
             values: ['all', 'account_confirmed', 'project_access_granted', 'project_access_postponed', 'project_access_rejected', 'account_deactivated']
         }
     ],

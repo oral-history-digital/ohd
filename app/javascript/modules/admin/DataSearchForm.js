@@ -65,7 +65,7 @@ export default class DataSearchForm extends Component {
         let opts = {
             className: "search-input full" ,
             name: element.attributeName,
-            value: this.props.query[element.attributeName],
+            value: this.props.query[element.attributeName] || element.value,
             onChange: this.handleChange,
             key: `search-form-element-${element.attribute}`
         };
