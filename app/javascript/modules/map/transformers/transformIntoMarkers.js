@@ -10,7 +10,10 @@ export default function transformIntoMarkers(colorMap, locations) {
             throw new ReferenceError(`Lat/Lon values are empty for id ${location.id}`);
         }
 
-        const numReferences = location.ref_types.split(',').length;
+        const refs = location.ref_types.split(',');
+        const numReferences = refs.length;
+        const numMetadataReferences = refs.filter(ref => ref !== 'S').length;
+        const numSegmentReferences = numReferences - numMetadataReferences;
 
         return {
             id: location.id,
@@ -18,7 +21,9 @@ export default function transformIntoMarkers(colorMap, locations) {
             long: Number.parseFloat(location.lon),
             name: location.name,
             numReferences,
-            radius: markerRadius(numReferences),
+            numMetadataReferences,
+            numSegmentReferences,
+            radius: markerRadius(numMetadataReferences, numSegmentReferences),
             color: color(colorMap, location),
         };
     });
@@ -30,8 +35,8 @@ function isEmpty(geoCoordinate) {
     return (!geoCoordinate || geoCoordinate.length === 0);
 }
 
-function markerRadius(numReferences) {
-    return Math.cbrt(numReferences + 3) * 4;
+function markerRadius(numMetadataReferences, numSegmentReferences) {
+    return Math.cbrt(numMetadataReferences + 3) * 4;
 }
 
 function color(colorMap, location) {

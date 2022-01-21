@@ -5,9 +5,10 @@ import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
 import { Map, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
 
+import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from '../constants';
 import MapPopup from './MapPopup';
 import MapOverlay from './MapOverlay';
-import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from '../constants';
+import numReferencesString from './numReferencesString';
 
 export default function MapComponent({
     loading = false,
@@ -56,7 +57,8 @@ export default function MapComponent({
                             stroke={0}
                         >
                             <Tooltip>
-                                {marker.name} ({marker.numReferences})
+                                {marker.name} ({numReferencesString(marker.numMetadataReferences,
+                                                                    marker.numSegmentReferences)})
                             </Tooltip>
                             <MapPopup
                                 title={marker.name}
