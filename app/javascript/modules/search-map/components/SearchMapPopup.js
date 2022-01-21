@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 
 import { usePathBase } from 'modules/routes';
+import { setArchiveId } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
@@ -21,17 +22,13 @@ export default function SearchMapPopup({
 
     const { isLoading, referenceGroups, segmentReferences, error } = useMapReferences(registryEntryId);
 
-    console.log(segmentReferences?.length)
-    if (segmentReferences?.length > 0) {
-        console.log(segmentReferences[0])
-    }
-
     // Should run when references is updated.
     useEffect(() => {
         onUpdate();
     }, [referenceGroups]);
 
-    function handleClick(tape, time) {
+    function handleClick(archiveId, tape, time) {
+        dispatch(setArchiveId(archiveId));
         dispatch(sendTimeChangeRequest(tape, time));
     }
 
@@ -82,15 +79,14 @@ export default function SearchMapPopup({
                                         key={ref.id}
                                         className="MapPopup-listItem"
                                     >
-                                        {t('modules.interview_map.at')}
-                                        {' '}
-                                        <button
-                                            type="button"
-                                            className="Button MapPopup-button"
-                                            onClick={() => handleClick(ref.tape_nbr, ref.time)}
+                                        <Link className="search-result-link"
+                                            onClick={() => handleClick(ref.archive_id, ref.tape_nbr, ref.time)}
+                                            to={`${pathBase}/interviews/${ref.archive_id}`}
                                         >
+                                            {`${ref.first_name} ${ref.last_name}`}
+                                            {', '}
                                             <TapeAndTime tape={ref.tape_nbr} time={ref.time} />
-                                        </button>
+                                        </Link>
                                     </li>
                                 ))
                             }
