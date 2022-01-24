@@ -13,6 +13,7 @@ import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';
 import addAbbreviationPoint from './addAbbreviationPoint';
 import groupByType from './groupByType';
+import sortInterviewRefs from './sortInterviewRefs';
 import groupSegmentRefs from './groupSegmentRefs';
 import sortSegmentRefGroups from './sortSegmentRefGroups';
 import sortSegmentRefs from './sortSegmentRefs';
@@ -44,7 +45,8 @@ export default function useMapReferences(registryEntryId) {
             curry(filterReferences)(filter),
             addAbbreviationPoint,
             curry(groupByType)(referenceTypes),
-            curry(sortByReferenceTypeOrder)(referenceTypes, 'id')
+            curry(sortByReferenceTypeOrder)(referenceTypes, 'id'),
+            sortInterviewRefs,
         );
         referenceGroups = transformData(interviewReferences);
     }
