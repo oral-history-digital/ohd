@@ -15,6 +15,7 @@ import addAbbreviationPoint from './addAbbreviationPoint';
 import groupByType from './groupByType';
 import groupSegmentRefs from './groupSegmentRefs';
 import sortSegmentRefGroups from './sortSegmentRefGroups';
+import sortSegmentRefs from './sortSegmentRefs';
 
 export default function useMapReferences(registryEntryId) {
     const pathBase = usePathBase();
@@ -52,7 +53,8 @@ export default function useMapReferences(registryEntryId) {
     if (segmentReferences) {
         const transformData = flow(
             groupSegmentRefs,
-            sortSegmentRefGroups
+            sortSegmentRefs,
+            sortSegmentRefGroups,
         );
         segmentRefGroups = transformData(segmentReferences);
     }
