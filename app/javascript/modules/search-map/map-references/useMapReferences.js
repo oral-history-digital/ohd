@@ -13,6 +13,8 @@ import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';
 import addAbbreviationPoint from './addAbbreviationPoint';
 import groupByType from './groupByType';
+import groupSegmentRefs from './groupSegmentRefs';
+import sortSegmentRefGroups from './sortSegmentRefGroups';
 
 export default function useMapReferences(registryEntryId) {
     const pathBase = usePathBase();
@@ -46,10 +48,19 @@ export default function useMapReferences(registryEntryId) {
         referenceGroups = transformData(interviewReferences);
     }
 
+    let segmentRefGroups = [];
+    if (segmentReferences) {
+        const transformData = flow(
+            groupSegmentRefs,
+            sortSegmentRefGroups
+        );
+        segmentRefGroups = transformData(segmentReferences);
+    }
+
     return {
         isLoading: isValidating,
         referenceGroups,
-        segmentReferences,
+        segmentRefGroups,
         error,
     };
 }

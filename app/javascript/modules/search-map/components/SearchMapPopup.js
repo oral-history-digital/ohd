@@ -20,7 +20,7 @@ export default function SearchMapPopup({
     const pathBase = usePathBase();
     const dispatch = useDispatch();
 
-    const { isLoading, referenceGroups, segmentReferences, error } = useMapReferences(registryEntryId);
+    const { isLoading, referenceGroups, segmentRefGroups, error } = useMapReferences(registryEntryId);
 
     // Should run when references is updated.
     useEffect(() => {
@@ -67,26 +67,45 @@ export default function SearchMapPopup({
                     ))
             }
             {
-                segmentReferences && segmentReferences.length > 0 && (
+                segmentRefGroups?.length > 0 && (
                     <>
                         <h4 className="MapPopup-subHeading">
-                            {t('modules.map.mentions')} ({segmentReferences.length})
+                            {t('modules.map.mentions')}
                         </h4>
                         <ul className="MapPopup-list">
                             {
-                                segmentReferences.map(ref => (
+                                segmentRefGroups.map(refGroup => (
                                     <li
-                                        key={ref.id}
+                                        key={refGroup.archive_id}
                                         className="MapPopup-listItem"
                                     >
-                                        <Link className="search-result-link"
-                                            onClick={() => handleClick(ref.archive_id, ref.tape_nbr, ref.time)}
-                                            to={`${pathBase}/interviews/${ref.archive_id}`}
-                                        >
-                                            {`${ref.first_name} ${ref.last_name}`}
-                                            {', '}
-                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} />
-                                        </Link>
+                                        <h5 className="MapPopup-subSubHeading">
+                                            <Link
+                                                className="search-result-link"
+                                                to={`${pathBase}/interviews/${refGroup.archive_id}`}
+                                            >
+                                                {`${refGroup.first_name} ${refGroup.last_name}`} ({refGroup.refs.length})
+                                            </Link>
+                                        </h5>
+
+                                        <ul className="MapPopup-list">
+                                            {
+                                                refGroup.refs.map(ref => (
+                                                    <li
+                                                        key={ref.id}
+                                                        className="MapPopup-listItem"
+                                                    >
+                                                        <Link
+                                                            className="search-result-link"
+                                                            onClick={() => handleClick(ref.archive_id, ref.tape_nbr, ref.time)}
+                                                            to={`${pathBase}/interviews/${ref.archive_id}`}
+                                                        >
+                                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} />
+                                                        </Link>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
                                     </li>
                                 ))
                             }
