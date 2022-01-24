@@ -32,18 +32,18 @@ export default function useMapReferences(registryEntryId) {
     const path = `${pathBase}/searches/map_references/${registryEntryId}?${paramStr}`;
     const { isValidating, data, error } = useSWR(path, fetcher);
 
-    const normalReferences = data?.registry_references;
+    const interviewReferences = data?.interview_references;
     const segmentReferences = filter.includes('S') ? data?.segment_references : [];
 
     let referenceGroups = [];
-    if (referenceTypes && normalReferences && filter) {
+    if (referenceTypes && interviewReferences && filter) {
         const transformData = flow(
             curry(filterReferences)(filter),
             addAbbreviationPoint,
             curry(groupByType)(referenceTypes),
             curry(sortByReferenceTypeOrder)(referenceTypes, 'id')
         );
-        referenceGroups = transformData(normalReferences);
+        referenceGroups = transformData(interviewReferences);
     }
 
     return {
