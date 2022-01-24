@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
 import { Tooltip } from 'react-leaflet';
 
-import { MARKER_COLOR_SEGMENT_TYPE } from '../constants';
-
 export default function MapTooltip({
     placeName,
     numInterviewRefs,
@@ -11,7 +9,7 @@ export default function MapTooltip({
     let numRefs;
     if (numInterviewRefs === 0) {
         numRefs = (
-            <span style={{ color: MARKER_COLOR_SEGMENT_TYPE }}>
+            <span style={{ color: 'var(--secondary-color)' }}>
                 ({numSegmentRefs})
             </span>
         );
@@ -22,8 +20,8 @@ export default function MapTooltip({
             <>
                 (
                 {numInterviewRefs}
-                {' / '}
-                <span style={{ color: MARKER_COLOR_SEGMENT_TYPE }}>
+                {' + '}
+                <span style={{ color: 'var(--secondary-color)' }}>
                     {numSegmentRefs})
                 </span>
             </>

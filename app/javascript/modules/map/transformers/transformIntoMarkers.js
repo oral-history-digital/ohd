@@ -1,4 +1,4 @@
-import { MARKER_COLOR_MULTIPLE_TYPES, MARKER_COLOR_SEGMENT_TYPE } from '../constants';
+import { MARKER_COLOR_MULTIPLE_TYPES } from '../constants';
 
 export default function transformIntoMarkers(colorMap, locations) {
     if (!Array.isArray(locations)) {
@@ -47,10 +47,6 @@ function color(colorMap, location) {
     } else {
         const type = location.ref_types.split(',')[0];
 
-        if (type === 'S') {
-            return MARKER_COLOR_SEGMENT_TYPE;
-        } else {
-            return colorMap.get(Number.parseInt(type));
-        }
+        return colorMap.get(type);
     }
 }

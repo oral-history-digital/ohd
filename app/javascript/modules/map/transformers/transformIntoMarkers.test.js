@@ -1,8 +1,8 @@
 import transformIntoMarkers from './transformIntoMarkers';
 
 const colorMap = new Map();
-colorMap.set(4, 'blue');
-colorMap.set(14, 'red');
+colorMap.set('4', 'blue');
+colorMap.set('14', 'red');
 
 test('transforms registry location data into markers for map component', () => {
     const locations = [
