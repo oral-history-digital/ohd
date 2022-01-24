@@ -1224,6 +1224,8 @@ de:
     layout:
       back_to_top:
         label: "Zurück nach oben"
+    map:
+      mentions: Erwähnungen
     search_map:
       multiple_types: Mehrere Ortstypen
       error: Fehler beim Laden der Karte

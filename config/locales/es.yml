@@ -1197,6 +1197,8 @@ es:
         label: "Back to top"
     registry:
       name_missing: "registry name missing"
+    map:
+      mentions: Mentions
     search_map:
       multiple_types: Multiple location types
       error: Error loading map
