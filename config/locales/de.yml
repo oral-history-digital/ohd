@@ -1205,7 +1205,7 @@ de:
       description: Darstellung der im Interview erwähnten Orte
       error: Fehler beim Laden der Karte
       error_references: Fehler beim Laden von Verknüpfungen
-      segment_references: Verknüpfungen im Transkript
+      segment_references: Erwähnungen
       at: in
     interview_metadata:
       add_contributors: Mitwirkende hinzufügen

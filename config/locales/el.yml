@@ -1216,7 +1216,7 @@ el:
       description: Παρουσίαση των τόπων που αναφέρονται στη συνέντευξη
       error: Error loading map
       error_references: Error loading references
-      segment_references: References in the transcript
+      segment_references: Mentions
       at: at
     interview_metadata:
       add_contributors: Add contributors

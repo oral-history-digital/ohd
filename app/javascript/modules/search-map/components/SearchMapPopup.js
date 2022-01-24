@@ -70,7 +70,7 @@ export default function SearchMapPopup({
                 segmentReferences && segmentReferences.length > 0 && (
                     <>
                         <h4 className="MapPopup-subHeading">
-                            {t('modules.interview_map.segment_references')}
+                            {t('modules.map.mentions')} ({segmentReferences.length})
                         </h4>
                         <ul className="MapPopup-list">
                             {
