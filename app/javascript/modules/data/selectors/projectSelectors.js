@@ -54,6 +54,10 @@ export const getIsCatalog = createSelector(
 export const getMapSections = createSelector(
     [getCurrentProject],
     currentProject => {
+        if (!currentProject.map_sections) {
+            return [DEFAULT_MAP_SECTION];
+        }
+
         const sections = Object.values(currentProject.map_sections);
 
         if (sections.length === 0) {

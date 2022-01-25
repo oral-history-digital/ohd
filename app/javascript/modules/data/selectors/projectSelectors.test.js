@@ -123,4 +123,11 @@ describe('getMapSections', () => {
         const expected = [DEFAULT_MAP_SECTION];
         expect(actual).toEqual(expected);
     });
+
+    test('returns default section if map sections is undefined', () => {
+        const _state = dotProp.set(state, 'data.projects.1.map_sections', undefined);
+        const actual = selectors.getMapSections(_state);
+        const expected = [DEFAULT_MAP_SECTION];
+        expect(actual).toEqual(expected);
+    });
 });
