@@ -1513,6 +1513,27 @@
     "@reach/utils" "0.16.0"
     tslib "^2.3.0"
 
+"@reach/listbox@^0.16.2":
+  version "0.16.2"
+  resolved "https://registry.yarnpkg.com/@reach/listbox/-/listbox-0.16.2.tgz#2ed4b30ebdf9ce0addffb0207f843b8232a7db1c"
+  integrity sha512-UBotBw7X8e2ajHn6tg1M9ArinisvSvwtu/aP3edEQKCvobd95nAa+dqnfAdihPAQFH2AQ2NFfa/73yawWV3LOQ==
+  dependencies:
+    "@reach/auto-id" "0.16.0"
+    "@reach/descendants" "0.16.1"
+    "@reach/machine" "0.16.0"
+    "@reach/popover" "0.16.2"
+    "@reach/utils" "0.16.0"
+    prop-types "^15.7.2"
+
+"@reach/machine@0.16.0":
+  version "0.16.0"
+  resolved "https://registry.yarnpkg.com/@reach/machine/-/machine-0.16.0.tgz#0504ba47ac09ed495bd341bf5fdd6625bcade0e3"
+  integrity sha512-c8SRQz2xGtg5M9aXuuM5pFgaV1ZW5/nyMIYpZzBwHUlNFKGO+VBhwedbnqUxO0yLcbgl3wPvjPh740O3YjqiHg==
+  dependencies:
+    "@reach/utils" "0.16.0"
+    "@xstate/fsm" "1.4.0"
+    tslib "^2.3.0"
+
 "@reach/menu-button@^0.16.2":
   version "0.16.2"
   resolved "https://registry.yarnpkg.com/@reach/menu-button/-/menu-button-0.16.2.tgz#664e33e70de431f88abf1f8537c48b1b6ce87e88"
@@ -1997,6 +2018,11 @@
     object.assign "^4.1.0"
     object.fromentries "^2.0.0"
     prop-types "^15.7.0"
+
+"@xstate/fsm@1.4.0":
+  version "1.4.0"
+  resolved "https://registry.yarnpkg.com/@xstate/fsm/-/fsm-1.4.0.tgz#6fd082336fde4d026e9e448576189ee5265fa51a"
+  integrity sha512-uTHDeu2xI5E1IFwf37JFQM31RrH7mY7877RqPBS4ZqSNUwoLDuct8AhBWaXGnVizBAYyimVwgCyGa9z/NiRhXA==
 
 "@xtuc/ieee754@^1.2.0":
   version "1.2.0"

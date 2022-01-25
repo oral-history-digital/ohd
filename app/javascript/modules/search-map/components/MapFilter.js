@@ -9,6 +9,7 @@ import useMapFilter from '../map-filter/useMapFilter';
 import { MAP_NUM_INITIALLY_SELECTED_TYPES } from '../constants';
 
 export default function MapFilter({
+    className,
     initializeMapFilter,
     toggleMapFilter,
 }) {
@@ -30,7 +31,7 @@ export default function MapFilter({
     }
 
     return (
-        <div className="MapFilter">
+        <div className={classNames('MapFilter', className)}>
             <form className="MapFilter-form">
                 {
                     locationTypes.map(type => {
@@ -86,6 +87,7 @@ export default function MapFilter({
 }
 
 MapFilter.propTypes = {
+    className: PropTypes.string,
     initializeMapFilter: PropTypes.func.isRequired,
     toggleMapFilter: PropTypes.func.isRequired,
 };

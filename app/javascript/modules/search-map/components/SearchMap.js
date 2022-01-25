@@ -1,19 +1,21 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { ScrollToTop } from 'modules/user-agent';
-import { getCurrentProject } from 'modules/data';
+import { getMapSections } from 'modules/data';
 import { setSidebarTabsIndex, INDEX_MAP } from 'modules/sidebar';
 import { MapComponent } from 'modules/map';
 import { useI18n } from 'modules/i18n';
 import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
+import MapSectionsSelect from './MapSectionsSelect';
 import useSearchMap from '../search-map/useSearchMap';
 
 export default function SearchMap() {
+    const mapSections = useSelector(getMapSections);
+    const [currentSection, setCurrentSection] = useState(mapSections[0].name);
     const { t } = useI18n();
-    const project = useSelector(getCurrentProject);
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
 
@@ -21,16 +23,15 @@ export default function SearchMap() {
         dispatch(setSidebarTabsIndex(INDEX_MAP));
     }, []);
 
-    const mapCenter = project.map_initial_center_lat && project.map_initial_center_lon ?
-        [project.map_initial_center_lat, project.map_initial_center_lon] :
-        undefined;
-    const mapZoom = project.map_initial_zoom ?
-        project.map_initial_zoom :
-        undefined;
+    const defaultSection = mapSections.find(section => section.name === currentSection);
+    const bounds = [
+        [defaultSection.corner1_lat, defaultSection.corner1_lon],
+        [defaultSection.corner2_lat, defaultSection.corner2_lon]
+    ];
 
     return (
         <ScrollToTop>
-            <div className="wrapper-content map">
+            <div className="wrapper-content map SearchMap">
                 {
                     error ?
                         (<div>
@@ -39,13 +40,21 @@ export default function SearchMap() {
                         (<MapComponent
                             className="Map--search"
                             loading={isLoading}
-                            initialCenter={mapCenter}
-                            initialZoom={mapZoom}
+                            bounds={bounds}
                             markers={markers || []}
                             popupComponent={SearchMapPopup}
                         />)
                 }
-                <MapFilterContainer />
+
+                <div className="SearchMap-controls">
+                    <MapFilterContainer />
+
+                    <MapSectionsSelect
+                        className="SearchMap-sections"
+                        section={currentSection}
+                        onChange={setCurrentSection}
+                    />
+                </div>
             </div>
         </ScrollToTop>
     );

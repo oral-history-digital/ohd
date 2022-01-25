@@ -88,6 +88,7 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 @import "components/registry-reference";
 @import "components/registry-references";
 @import "components/rule";
+@import "components/search-map";
 @import "components/search-result";
 @import "components/search-stats";
 @import "components/segment";
@@ -114,3 +115,4 @@ $slick-font-path: "~slick-carousel/slick/fonts/";
 
 /* Utilities */
 @import "utilities/spacings";
+@import "utilities/display";

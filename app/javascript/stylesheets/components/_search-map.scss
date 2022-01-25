@@ -1,0 +1,17 @@
+.SearchMap {
+}
+
+.SearchMap-controls {
+  @include screen-m {
+    display: flex;
+  }
+}
+
+.SearchMap-sections {
+  margin-top: $base-unit;
+
+  @include screen-m {
+    margin-left: auto;
+    margin-top: 0;
+  }
+}

@@ -48,15 +48,13 @@ class ProjectSerializer < ApplicationSerializer
     :metadata_fields,
     :external_links,
     :media_streams,
+    :map_sections,
     :logos,
     :sponsor_logos,
     :list_columns,
     :grid_fields,
     :root_registry_entry_id,
-    :display_ohd_link,
-    :map_initial_center_lat,
-    :map_initial_center_lon,
-    :map_initial_zoom
+    :display_ohd_link
 
   def title
     object.shortname
@@ -75,6 +73,7 @@ class ProjectSerializer < ApplicationSerializer
     metadata_fields
     external_links
     media_streams
+    map_sections
   ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
