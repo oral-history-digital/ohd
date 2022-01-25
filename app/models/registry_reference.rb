@@ -67,6 +67,7 @@ class RegistryReference < BaseRegistryReference
       .where('contribution_types.code': 'interviewee')
       .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
       .where('person_translations.locale': locale)
+      .group('registry_references.id')
       .select("registry_references.id, registry_references.ref_object_type, registry_reference_types.id AS registry_reference_type_id, segments.timecode, tapes.number AS tape_nbr, interviews.archive_id, person_translations.first_name, #{last_name_select}")
   }
 
