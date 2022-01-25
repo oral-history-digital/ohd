@@ -7,7 +7,7 @@ export default function sortSegmentRefs(refGroups) {
 }
 
 function compareFunction(a, b) {
-    const tapeDiff = a.tape - b.tape;
+    const tapeDiff = a.tape_nbr - b.tape_nbr;
 
     if (tapeDiff === 0) {
         return a.time - b.time;

@@ -7,22 +7,22 @@ test('sort individual refs by tape and time', () => {
             refs: [
                 {
                     id: 52929,
-                    tape: 3,
+                    tape_nbr: 3,
                     time: 100,
                 },
                 {
                     id: 52930,
-                    tape: 2,
+                    tape_nbr: 2,
                     time: 222,
                 },
                 {
                     id: 52931,
-                    tape: 1,
+                    tape_nbr: 1,
                     time: 512,
                 },
                 {
                     id: 52932,
-                    tape: 1,
+                    tape_nbr: 1,
                     time: 430,
                 },
             ],
@@ -36,22 +36,22 @@ test('sort individual refs by tape and time', () => {
             refs: [
                 {
                     id: 52932,
-                    tape: 1,
+                    tape_nbr: 1,
                     time: 430,
                 },
                 {
                     id: 52931,
-                    tape: 1,
+                    tape_nbr: 1,
                     time: 512,
                 },
                 {
                     id: 52930,
-                    tape: 2,
+                    tape_nbr: 2,
                     time: 222,
                 },
                 {
                     id: 52929,
-                    tape: 3,
+                    tape_nbr: 3,
                     time: 100,
                 },
             ],
