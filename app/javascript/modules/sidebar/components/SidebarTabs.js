@@ -34,9 +34,7 @@ export default function SidebarTabs({
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
 
-    function handleTabClick(index, arg2) {
-        console.log(index, arg2)
-
+    function handleTabClick(index) {
         setSidebarTabsIndex(index);
 
         switch (index) {
