@@ -5,6 +5,7 @@ class Project < ApplicationRecord
   has_many :logos, as: :ref, dependent: :destroy
   has_many :sponsor_logos, as: :ref, dependent: :destroy
 
+  has_many :institutions, through: :institution_projects
   has_many :interviews, dependent: :destroy
   has_many :collections, dependent: :destroy
   has_many :contribution_types, dependent: :destroy
