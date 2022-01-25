@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_12_14_095858) do
+ActiveRecord::Schema.define(version: 2022_01_25_130712) do
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
     t.bigint "record_id", null: false
@@ -22,11 +22,11 @@ ActiveRecord::Schema.define(version: 2021_12_14_095858) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true, length: { record_type: 191, name: 191 }
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "key", limit: 255, null: false
     t.string "filename", limit: 255, null: false
     t.string "content_type", limit: 255
-    t.text "metadata", limit: 16777215
+    t.text "metadata", limit: 4294967295
     t.bigint "byte_size", null: false
     t.string "checksum", limit: 255, null: false
     t.datetime "created_at", null: false
@@ -211,6 +211,31 @@ ActiveRecord::Schema.define(version: 2021_12_14_095858) do
     t.string "content", limit: 400
     t.datetime "created_at"
     t.index ["importable_id", "importable_type"], name: "index_imports_on_importable_id_and_importable_type", length: { importable_type: 191 }
+  end
+
+  create_table "institution_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "institution_id"
+    t.integer "project_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "name"
+    t.string "shortname"
+    t.text "description"
+    t.string "street"
+    t.string "zip"
+    t.string "city"
+    t.string "country"
+    t.float "latitude"
+    t.float "longitude"
+    t.string "isil"
+    t.string "gnd"
+    t.string "website"
+    t.integer "parent_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "interview_translations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -644,7 +669,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_095858) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
-  create_table "text_materials", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "text_materials", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "interview_id"
     t.string "document_type", limit: 255
     t.string "document_file_name", limit: 255
@@ -700,7 +725,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_095858) do
     t.index ["user_account_id", "ip"], name: "index_user_account_ips_on_user_account_id_and_ip", length: { ip: 191 }
   end
 
-  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 128, default: "", null: false
     t.string "password_salt", limit: 255, default: "", null: false
@@ -723,7 +748,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_095858) do
     t.string "appellation"
     t.string "job_description"
     t.string "research_intentions"
-    t.text "comments"
+    t.text "comments", limit: 16777215
     t.string "organization"
     t.string "homepage"
     t.string "street"
@@ -739,7 +764,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_095858) do
     t.boolean "tos_agreement"
     t.boolean "receive_newsletter"
     t.string "default_locale"
-    t.text "admin_comments"
+    t.text "admin_comments", limit: 16777215
     t.datetime "processed_at"
     t.datetime "activated_at"
     t.boolean "anonymized", default: false
@@ -783,7 +808,7 @@ ActiveRecord::Schema.define(version: 2021_12_14_095858) do
     t.integer "user_account_id"
     t.datetime "activated_at"
     t.string "workflow_state"
-    t.text "admin_comments"
+    t.string "admin_comments"
   end
 
   create_table "user_registrations", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|

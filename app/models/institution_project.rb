@@ -1,0 +1,2 @@
+class InstitutionProject < ApplicationRecord
+end

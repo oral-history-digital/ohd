@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :institutions
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
     get "norm_data" => "registry_entries#norm_data"
   end
