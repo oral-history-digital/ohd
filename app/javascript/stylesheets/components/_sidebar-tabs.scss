@@ -50,3 +50,10 @@
 .SidebarTabs-tab[data-selected]:active {
     background-color: var(--primary-color);
 }
+
+.SidebarTabs-title {
+  font-size: 1.25rem;
+  line-height: $base-unit;
+  margin: 0;
+  padding: ($base-unit / 2) 20px;
+}

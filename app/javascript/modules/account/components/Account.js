@@ -103,9 +103,10 @@ export default class Account extends Component {
     render() {
         return (
             <Fragment>
-                <div className="flyout-tab-title">
+                <h3 className="SidebarTabs-title">
                     { t(this.props, this.props.isLoggedIn ? 'account_page' : 'login_page') }
-                </div>
+                </h3>
+
                 <div className={'flyout-login-container'}>
                     <AuthShowContainer ifLoggedIn={true} ifNoProject={true}>
                         <div className='info'>

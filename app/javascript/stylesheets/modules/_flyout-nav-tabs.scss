@@ -4,84 +4,6 @@
   padding: 0;
 }
 
-.flyout-top-nav {
-  @include clearfix;
-  color: $ui-background-color;
-  cursor: pointer;
-  float: left;
-  font-size: $font-size-large;
-  margin: 0;
-  margin-left: 20px;
-  padding: 6px 15px 0 0;
-  transition: color $transition-duration;
-
-  &.active {
-    color: var(--primary-color);
-  }
-}
-
-.flyout-tab {
-  clear: left;
-  display: block;
-  margin-top: 2px;
-  padding: 20px;
-  background-color: $ui-background-color;
-  color: #fff;
-  font-size: 1.25rem;
-  cursor: pointer;
-  transition: background-color $transition-duration;
-
-  &:hover:not(.active) {
-    background-color: $focus-color-dark;
-  }
-
-  &.admin {
-    background-color: var(--editorial-color);
-  }
-
-  &.active {
-    background-color: var(--primary-color);
-  }
-
-  &:focus {
-    background-color: $focus-color-dark;
-  }
-
-  animation-name: fade-in;
-  animation-duration: 1s;
-}
-
-@keyframes fade-in {
-  0%  {
-    background-color: transparent;
-    color: transparent;
-  }
-  25% {
-    background-color: transparent;
-    color: transparent;
-    opacity: 0.25;
-  }
-  50% {
-    background-color: $gray-warm;
-    color: #fff;
-    opacity: 0.50;
-  }
-  100% {
-    background-color: $gray-warm;
-    color: #fff;
-    opacity: 1;
-  }
-}
-
-.flyout-tab-title {
-  clear: left;
-  cursor: auto;
-  display: block;
-  font-size: 1.25rem;
-  margin: 0;
-  padding: 20px;
-}
-
 .flyout-search {
   margin: 0;
   padding: 0 20px;
@@ -90,7 +12,7 @@
   }
 }
 
-.flyout-search{
+.flyout-search {
   .flyout-search-input {
     background-color: $gray-paler;
     border: 1px solid $gray-dark;

@@ -41,9 +41,9 @@ export default function InterviewTabPanel({
 
     return (
         <>
-            <div className='flyout-tab-title'>
+            <h3 className='SidebarTabs-title'>
                 {t('interview')}
-            </div>
+            </h3>
             {projectId !== PROJECT_CAMPSCAPES && (
                 <AuthShowContainer ifLoggedOut ifNoProject>
                     <AccountContainer/>

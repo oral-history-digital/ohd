@@ -68,7 +68,7 @@ export default class InterviewTabs extends Component {
                 index={this.state.tabIndex}
                 onChange={tabIndex => {this.setState({tabIndex}); this.props.setInterviewTabIndex(tabIndex)}}
             >
-                <div className="Layout-contentTabs content-tabs">
+                <div className="Layout-contentTabs">
                     <TabList className="Tabs-tabList">
                         <Tab className="Tabs-tab">
                             <FaRegFileAlt className="Tabs-tabIcon"/>

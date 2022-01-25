@@ -13,7 +13,9 @@ function RegistryEntriesTabPanel(props) {
 
     return (
         <Fragment>
-            <div className='flyout-tab-title'>{t('registry')}</div>
+            <h3 className='SidebarTabs-title'>
+                {t('registry')}
+            </h3>
             <div className='flyout-sub-tabs-container'>
                 <RegistrySearchFormContainer />
                 <p>
