@@ -1227,6 +1227,7 @@ de:
     search_map:
       multiple_types: Mehrere Ortstypen
       error: Fehler beim Laden der Karte
+      map_section: Ausschnitt
     media_player:
       auto_scroll:
         enable: "mitlaufendes Transkript ein"

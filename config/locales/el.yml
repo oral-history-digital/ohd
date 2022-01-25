@@ -1240,6 +1240,7 @@ el:
     search_map:
       multiple_types: Multiple location types
       error: Error loading map
+      map_section: Section
     media_player:
       auto_scroll:
         enable: "enable auto-scrolling transcript"

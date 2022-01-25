@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { Listbox, ListboxOption } from '@reach/listbox';
-import '@reach/listbox/styles.css';
 
 import { ScrollToTop } from 'modules/user-agent';
 import { getMapSections } from 'modules/data';
@@ -11,12 +9,13 @@ import { MapComponent } from 'modules/map';
 import { useI18n } from 'modules/i18n';
 import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
+import MapSectionsSelect from './MapSectionsSelect';
 import useSearchMap from '../search-map/useSearchMap';
 
 export default function SearchMap() {
     const mapSections = useSelector(getMapSections);
     const [currentSection, setCurrentSection] = useState(mapSections[0].name);
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
 
@@ -32,29 +31,7 @@ export default function SearchMap() {
 
     return (
         <ScrollToTop>
-            <div className="wrapper-content map">
-                {mapSections.length > 1 && (
-                    <div className="u-mb">
-                        <span id="map_section">Kartenausschnitt</span>
-                        <Listbox
-                            aria-labelledby="map_section"
-                            value={currentSection}
-                            onChange={setCurrentSection}
-                        >
-                            {
-                                mapSections.map(section => (
-                                    <ListboxOption
-                                        key={section.name}
-                                        value={section.name}
-                                    >
-                                        {section.label[locale]}
-                                    </ListboxOption>
-                                ))
-                            }
-                        </Listbox>
-                    </div>
-                )}
-
+            <div className="wrapper-content map SearchMap">
                 {
                     error ?
                         (<div>
@@ -69,7 +46,15 @@ export default function SearchMap() {
                         />)
                 }
 
-                <MapFilterContainer />
+                <div className="SearchMap-controls">
+                    <MapFilterContainer />
+
+                    <MapSectionsSelect
+                        className="SearchMap-sections"
+                        section={currentSection}
+                        onChange={setCurrentSection}
+                    />
+                </div>
             </div>
         </ScrollToTop>
     );
