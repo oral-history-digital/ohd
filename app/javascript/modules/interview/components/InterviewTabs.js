@@ -60,12 +60,13 @@ export default class InterviewTabs extends Component {
 
     render() {
         const { interview, projectId, locale } = this.props;
+        const { tabIndex } = this.state;
 
         return (
             <Tabs
                 className="Tabs"
                 keyboardActivation="manual"
-                index={this.state.tabIndex}
+                index={tabIndex}
                 onChange={tabIndex => {this.setState({tabIndex}); this.props.setInterviewTabIndex(tabIndex)}}
             >
                 <div className="Layout-contentTabs">
@@ -112,10 +113,14 @@ export default class InterviewTabs extends Component {
                 <div className='wrapper-content'>
                     <TabPanels>
                         <TabPanel>
-                            <TranscriptContainer originalLocale loadSegments />
+                            {tabIndex === 0 &&  /* Needed for segment scroll effect to work on mount. */
+                                <TranscriptContainer originalLocale loadSegments />
+                            }
                         </TabPanel>
                         <TabPanel>
-                            <TranscriptContainer />
+                            {tabIndex === 1 &&  /* Needed for segment scroll effect to work on mount. */
+                                <TranscriptContainer />
+                            }
                         </TabPanel>
                         <TabPanel>
                             <TableOfContentsContainer/>
