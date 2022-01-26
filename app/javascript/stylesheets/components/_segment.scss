@@ -50,7 +50,7 @@ $segment-icon-width: 1rem;
   text-align: left;
   transition-property: background-color, box-shadow, color;
   transition-duration: $transition-duration;
-  user-select: all;
+  user-select: text;
 }
 
 .Segment-text.is-active {
