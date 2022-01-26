@@ -90,6 +90,7 @@ class RegistryReference < BaseRegistryReference
       .where.not('registry_entries.latitude': [nil, ''])
       .where.not('registry_entries.longitude': [nil, ''])
       .where('registry_references.ref_object_type': 'Segment')
+      .order('tapes.number ASC, segments.timecode ASC')
       .select('registry_references.id, registry_references.ref_object_type, registry_reference_types.id AS registry_reference_type_id, segments.timecode, tapes.number AS tape_nbr')
   }
 
