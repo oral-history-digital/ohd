@@ -309,6 +309,11 @@ en:
       delete:
         title: Interviews löschen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
+      export_photos:
+        title: Fotos exportieren
+        confirm_text: "Sollen die Fotos der Interviews %{archive_ids} wirklich exportiert werden?"
+      dois:
+        title: DOI registrieren
     segment:
       transcript: Transkript bearbeiten
       translation: Übersetzung bearbeiten

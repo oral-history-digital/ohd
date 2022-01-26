@@ -92,10 +92,10 @@ const receiveResult = (result) => ({
     result: result
 });
 
-export function submitDois(archiveIds, locale='de') {
+export function submitSelectedArchiveIds(archiveIds, action, pathBase) {
     return dispatch => {
         request
-            .post('/de/interviews/dois')
+            .post(`${pathBase}/interviews/${action}`)
             .send({ archive_ids: archiveIds })
             .set('Accept', 'application/json')
             .then(res => {

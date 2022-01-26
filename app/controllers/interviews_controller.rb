@@ -229,6 +229,10 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def export_photos
+    #TODO
+  end
+
   def dois
     results = {}
 

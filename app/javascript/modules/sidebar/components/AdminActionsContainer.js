@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { withRouter } from 'react-router-dom';
 
-import { submitDois, addRemoveArchiveId, setArchiveIds, getArchiveId, getLocale,
+import { addRemoveArchiveId, setArchiveIds, getArchiveId, getLocale,
     getProjectId, getTranslations, getDoiResult } from 'modules/archive';
 import { deleteData, submitData, getProjects, getInterviewsStatus } from 'modules/data';
 import { getArchiveFoundInterviews } from 'modules/search';
@@ -20,7 +20,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    submitDois,
     addRemoveArchiveId,
     setArchiveIds,
     deleteData,

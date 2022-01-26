@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { pathBase } from 'modules/routes';
 
 import DeleteInterviews from './DeleteInterviews';
 import UpdateInterviews from './UpdateInterviews';
+import SubmitInterviewIds from './SubmitInterviewIds';
 
 export default class AdminActions extends Component {
     selectedArchiveIds() {
@@ -37,45 +39,20 @@ export default class AdminActions extends Component {
         })
     }
 
-    exportDOI() {
-        this.props.submitDois(this.selectedArchiveIds(), this.props.locale)
-    }
-
-    links(archiveIds) {
+    metadataLinks(archiveIds) {
         return archiveIds.map((archiveId, i) => [
             i > 0 && ", ",
-            <a href={`/${this.props.locale}/interviews/${archiveId}/metadata.xml`} target='_blank' rel="noreferrer" key={`link-to-${archiveId}`}>{archiveId}</a>
+            <a href={`/${pathBase(this.props)}/interviews/${archiveId}/metadata.xml`} target='_blank' rel="noreferrer" key={`link-to-${archiveId}`}>{archiveId}</a>
         ])
     }
 
-    doiButton() {
+    doiText() {
         return (
-            <AuthorizedContent object={{type: 'Interview'}} action='dois'>
-                <Modal
-                    title={t(this.props, 'doi.title')}
-                    trigger={t(this.props, 'doi.title')}
-                    triggerClassName="flyout-sub-tabs-content-ico-link"
-                >
-                    {close => (
-                        <div>
-                            {t(this.props, 'doi.text1') + ' '}
-                            {this.links(this.selectedArchiveIds())}
-                            {' ' + t(this.props, 'doi.text2')}
-
-                            <button
-                                type="button"
-                                className="Button any-button"
-                                onClick={() => {
-                                    this.exportDOI();
-                                    close();
-                                }}
-                            >
-                                {t(this.props, 'doi.ok')}
-                            </button>
-                        </div>
-                    )}
-                </Modal>
-            </AuthorizedContent>
+            <p>
+                {t(this.props, 'doi.text1') + ' '}
+                {this.metadataLinks(this.selectedArchiveIds())}
+                {' ' + t(this.props, 'doi.text2')}
+            </p>
         );
     }
 
@@ -87,7 +64,20 @@ export default class AdminActions extends Component {
         return (
             <div>
                 {this.doiResults()}
-                {this.doiButton()}
+
+                <AuthorizedContent object={{type: 'Interview'}} action='dois'>
+                    <SubmitInterviewIds
+                        selectedArchiveIds={selectedArchiveIds}
+                        action='dois'
+                        confirmText={this.doiText()}
+                    />
+                </AuthorizedContent>
+                <AuthorizedContent object={{ type: 'Interview' }} action='update'>
+                    <SubmitInterviewIds
+                        selectedArchiveIds={selectedArchiveIds}
+                        action='export_photos'
+                    />
+                </AuthorizedContent>
 
                 {this.messages()}
 
@@ -150,5 +140,5 @@ AdminActions.propTypes = {
     addRemoveArchiveId: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
-    submitDois: PropTypes.func.isRequired,
+    submitSelectedArchiveIds: PropTypes.func.isRequired,
 };
