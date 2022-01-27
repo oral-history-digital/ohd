@@ -1,11 +1,8 @@
 import useSWRImmutable from 'swr/immutable';
-import flow from 'lodash.flow';
-import curry from 'lodash.curry';
 
 import { usePathBase } from 'modules/routes';
 import { fetcher } from 'modules/api';
 import { useMapReferenceTypes, referenceTypesToColorMap, transformIntoMarkers } from 'modules/map';
-import mergeLocations from './mergeLocations';
 import getBounds from './getBounds';
 
 export default function useInterviewMap(archiveId) {
@@ -21,11 +18,7 @@ export default function useInterviewMap(archiveId) {
     if (referenceTypes && locations && !locationsError) {
         const colorMap = referenceTypesToColorMap(referenceTypes);
 
-        const transformData = flow(
-            mergeLocations,
-            curry(transformIntoMarkers)(colorMap)
-        );
-        markers = transformData(locations);
+        markers = transformIntoMarkers(colorMap, locations);
 
         bounds = getBounds(locations);
     }

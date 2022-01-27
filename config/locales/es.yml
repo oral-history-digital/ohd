@@ -1176,7 +1176,7 @@ es:
       description: Presentación de los lugares que se mencionan en la entrevista.
       error: Error loading map
       error_references: Error loading references
-      segment_references: References in the transcript
+      segment_references: Mentions
       at: at
     interview_metadata:
       add_contributors: Add contributors
@@ -1197,6 +1197,8 @@ es:
         label: "Back to top"
     registry:
       name_missing: "registry name missing"
+    map:
+      mentions: Mentions
     search_map:
       multiple_types: Multiple location types
       error: Error loading map

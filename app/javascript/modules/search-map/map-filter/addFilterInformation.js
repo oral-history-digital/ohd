@@ -8,7 +8,7 @@ export default function addFilterInformation(filter, referenceTypes) {
 
     const transformedTypes = referenceTypes.map(type => ({
         ...type,
-        filterIsSet: filter.includes(type.id),
+        filterIsSet: filter.includes(type.id.toString()),
     }));
 
     return transformedTypes;

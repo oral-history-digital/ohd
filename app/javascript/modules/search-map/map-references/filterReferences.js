@@ -7,7 +7,7 @@ export default function filterReferences(filter, references) {
     }
 
     const filteredReferences = references.filter(reference =>
-        filter.includes(reference.registry_reference_type_id)
+        filter.includes(reference.registry_reference_type_id.toString())
     );
 
     return filteredReferences;

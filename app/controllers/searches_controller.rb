@@ -143,10 +143,21 @@ class SearchesController < ApplicationController
         signed_in = current_user_account.present?
         scope = map_scope
 
-        registry_references = RegistryReference.for_map_registry_entry(registry_entry_id,
-          I18n.locale, map_interviewee_ids, map_interview_ids, signed_in, scope)
+        interview_ids = map_interview_ids
 
-        render json: registry_references, each_serializer: SlimRegistryReferenceMapSerializer
+        interview_refs = RegistryReference.for_map_registry_entry(registry_entry_id,
+          I18n.locale, map_interviewee_ids, interview_ids, signed_in, scope)
+        interview_refs_serialized = ActiveModelSerializers::SerializableResource.new(interview_refs, each_serializer: SlimRegistryReferenceMapSerializer)
+
+        segment_refs = RegistryReference.for_map_segment_references(registry_entry_id, I18n.locale, interview_ids, signed_in, scope)
+        segment_refs_serialized = ActiveModelSerializers::SerializableResource.new(segment_refs, each_serializer: MapSegmentReferencesSerializer)
+
+        references = {
+          interview_references: interview_refs_serialized,
+          segment_references: segment_refs_serialized
+        }
+
+        render json: references
       end
     end
   end

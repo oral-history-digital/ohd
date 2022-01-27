@@ -3,11 +3,12 @@ import classNames from 'classnames';
 import useResizeAware from 'react-resize-aware';
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
-import { Map, TileLayer, CircleMarker, Tooltip } from 'react-leaflet';
+import { Map, TileLayer, CircleMarker } from 'react-leaflet';
 
+import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from '../constants';
 import MapPopup from './MapPopup';
 import MapOverlay from './MapOverlay';
-import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from '../constants';
+import MapTooltip from './MapTooltip';
 
 export default function MapComponent({
     loading = false,
@@ -55,9 +56,11 @@ export default function MapComponent({
                             fillOpacity={0.5}
                             stroke={0}
                         >
-                            <Tooltip>
-                                {marker.name} ({marker.numReferences})
-                            </Tooltip>
+                            <MapTooltip
+                                placeName={marker.name}
+                                numInterviewRefs={marker.numMetadataReferences}
+                                numSegmentRefs={marker.numSegmentReferences}
+                            />
                             <MapPopup
                                 title={marker.name}
                                 registryEntryId={marker.id}

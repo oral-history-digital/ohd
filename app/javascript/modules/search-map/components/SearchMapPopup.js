@@ -1,9 +1,14 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 
 import { usePathBase } from 'modules/routes';
+import { setArchiveId } from 'modules/archive';
+import { sendTimeChangeRequest } from 'modules/media-player';
 import { Spinner } from 'modules/spinners';
+import { useI18n } from 'modules/i18n';
+import { TapeAndTime } from 'modules/interview-helpers';
 import useMapReferences from '../map-references/useMapReferences';
 
 export default function SearchMapPopup({
@@ -11,14 +16,21 @@ export default function SearchMapPopup({
     registryEntryId,
     onUpdate = f => f,
 }) {
+    const { t } = useI18n();
     const pathBase = usePathBase();
+    const dispatch = useDispatch();
 
-    const { isLoading, referenceGroups, error } = useMapReferences(registryEntryId);
+    const { isLoading, referenceGroups, segmentRefGroups, error } = useMapReferences(registryEntryId);
 
     // Should run when references is updated.
     useEffect(() => {
         onUpdate();
     }, [referenceGroups]);
+
+    function handleClick(archiveId, tape, time) {
+        dispatch(setArchiveId(archiveId));
+        dispatch(sendTimeChangeRequest(tape, time));
+    }
 
     if (error) {
         return (
@@ -53,6 +65,53 @@ export default function SearchMapPopup({
                             </ul>
                         </div>
                     ))
+            }
+            {
+                segmentRefGroups?.length > 0 && (
+                    <>
+                        <h4 className="MapPopup-subHeading">
+                            {t('modules.map.mentions')}
+                        </h4>
+                        <ul className="MapPopup-list">
+                            {
+                                segmentRefGroups.map(refGroup => (
+                                    <li
+                                        key={refGroup.archive_id}
+                                        className="MapPopup-listItem"
+                                    >
+                                        <h5 className="MapPopup-subSubHeading">
+                                            <Link
+                                                className="search-result-link"
+                                                to={`${pathBase}/interviews/${refGroup.archive_id}`}
+                                            >
+                                                {`${refGroup.first_name} ${refGroup.last_name}`} ({refGroup.refs.length})
+                                            </Link>
+                                        </h5>
+
+                                        <ul className="MapPopup-list">
+                                            {
+                                                refGroup.refs.map(ref => (
+                                                    <li
+                                                        key={ref.id}
+                                                        className="MapPopup-listItem"
+                                                    >
+                                                        <Link
+                                                            className="search-result-link"
+                                                            onClick={() => handleClick(ref.archive_id, ref.tape_nbr, ref.time)}
+                                                            to={`${pathBase}/interviews/${ref.archive_id}`}
+                                                        >
+                                                            <TapeAndTime tape={ref.tape_nbr} time={ref.time} />
+                                                        </Link>
+                                                    </li>
+                                                ))
+                                            }
+                                        </ul>
+                                    </li>
+                                ))
+                            }
+                        </ul>
+                    </>
+                )
             }
         </div>
     );
