@@ -59,6 +59,9 @@ class InterviewMetadataExporter
 
   def recording_date
     Date.parse(@interview.interview_date)
+
+    rescue
+      nil
   end
 
   def contributor_details(contributor, contribution_type)
@@ -69,15 +72,13 @@ class InterviewMetadataExporter
   end
 
   def age(contributor)
-    if (contributor.date_of_birth.present?)
-      birthday = Date.parse(contributor.date_of_birth)
+    birthday = Date.parse(contributor.date_of_birth)
 
-      # Not sure if age calculation is exact.
-      # https://medium.com/@craigsheen/calculating-age-in-rails-9bb661f11303
-      ((recording_date.to_time - birthday.to_time) / 1.year.seconds).floor
-    else
+    # Not sure if age calculation is exact.
+    # https://medium.com/@craigsheen/calculating-age-in-rails-9bb661f11303
+    ((recording_date.to_time - birthday.to_time) / 1.year.seconds).floor
+    rescue
       nil
-    end
   end
 
   def xml

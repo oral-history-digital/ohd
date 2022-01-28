@@ -224,7 +224,12 @@ class InterviewsController < ApplicationController
       format.xml do
         exporter = InterviewMetadataExporter.new(interview)
         metadata = exporter.build
-        render xml: metadata.to_xml
+
+        if metadata.valid?
+          render xml: metadata.to_xml
+        else
+          render xml: metadata.errors, status: :unprocessable_entity
+        end
       end
     end
   end
