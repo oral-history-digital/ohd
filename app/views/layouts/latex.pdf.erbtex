@@ -1,4 +1,4 @@
-\documentclass[10pt]{article}
+\documentclass[fontsize=10pt]{article}
 
 <% @latex_config = {:parse_runs => 2, :recipe => [{:command => 'xelatex'}]} %>
 
@@ -15,6 +15,7 @@
 
 \setmainfont{FiraSans-Regular}
 
+\usepackage{parskip}
 \usepackage{setspace}
 \onehalfspacing
 
@@ -41,4 +42,3 @@
 <%= yield %>
 
 \end{document}
-
