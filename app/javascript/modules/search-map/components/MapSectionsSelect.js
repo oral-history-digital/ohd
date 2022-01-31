@@ -34,6 +34,7 @@ export default function MapSectionsSelect({
                         <ListboxOption
                             key={section.name}
                             value={section.name}
+                            label={section.label[locale]}
                         >
                             {section.label[locale]}
                         </ListboxOption>
