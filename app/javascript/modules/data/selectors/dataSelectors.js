@@ -210,7 +210,14 @@ export const getHasTranscript = createSelector(
         const firstSegmentId = interview.first_segments_ids[1];
         const firstSegment = segmentsOfFirstTape[firstSegmentId];
 
-        return firstSegment && (Object.prototype.hasOwnProperty.call(firstSegment.text, locale) || Object.prototype.hasOwnProperty.call(firstSegment.text, `${locale}-public`));
+        if (!firstSegment) {
+            return false;
+        }
+
+        const hasText = typeof firstSegment.text[locale] === 'string';
+        const hasPublicText = typeof firstSegment.text[`${locale}-public`] === 'string';
+
+        return hasText || hasPublicText;
     }
 );
 
