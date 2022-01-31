@@ -16,6 +16,7 @@ export { getStatuses, getContributorsFetched, getCurrentAccount, getCurrentInter
     getContributionTypesForCurrentProject, getInterviewsStatus, getRegistryEntriesStatus, getRegistryReferenceTypesStatus,
     getRegistryNameTypesStatus, getContributionTypesStatus,
     getCollectionsStatus, getLanguagesStatus, getPeopleStatus, getSegmentsStatus, getAccountsStatus,
+    getInstitutions, getInstitutionsStatus,
     getRolesStatus, getPermissionsStatus, getProjectsStatus, getTaskTypesStatus,
     getContributionsStatus, getUserRegistrationsStatus, getHeadingsStatus, getSpeakerDesignationsStatus,
     getRefTreeStatus, getCurrentRefTreeStatus, getTasksStatus, getMarkTextStatus,

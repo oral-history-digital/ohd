@@ -309,6 +309,11 @@ en:
       delete:
         title: Interviews löschen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
+      export_photos:
+        title: Fotos exportieren
+        confirm_text: "Sollen die Fotos der Interviews %{archive_ids} wirklich exportiert werden?"
+      dois:
+        title: DOI registrieren
     segment:
       transcript: Transkript bearbeiten
       translation: Übersetzung bearbeiten
@@ -725,6 +730,9 @@ en:
       language:
         one: Language
         other: Languages
+      institution:
+        one: Institution
+        other: Institutions
       collection:
         one: Collection
         other: Collections
@@ -851,6 +859,10 @@ en:
       language:
         code: Code
         name: Name
+      institution:
+        isil: ISIL
+        gnd: GND
+        parent_id: übergeordnete Institution
       interview:
         person_name: Name
         collection_id: Teilsammlung
@@ -1119,11 +1131,21 @@ en:
         name: Name
         title: Name
         label: Label
+        shortname: Shortname
+        abbreviation: Abbreviation
+        description: Description
+        desc: Description
+        street: Street
+        zip: ZIP
+        city: City
+        country: Country
+        latitude: Latitude
+        longitude: Longitude
+        website: Website
         archive_id: Interview ID
         workflow_state: State
         locale: Language
         lang: Language
-        desc: Description
         text: Text
         email: Email
         url: URL
@@ -1132,7 +1154,6 @@ en:
         publish: Public
         project_id: Sammlung
         key: Schlüssel
-        abbreviation: Abkürzung
         created_at: Angelegt am
         code: Code
         use_in_details_view: in der Detailansicht zeigen
@@ -1238,6 +1259,7 @@ en:
     search_map:
       multiple_types: Multiple location types
       error: Error loading map
+      map_section: Section
     media_player:
       auto_scroll:
         enable: "enable auto-scrolling transcript"

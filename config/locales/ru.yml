@@ -354,6 +354,11 @@ ru:
       delete:
         title: Interviews löschen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
+      export_photos:
+        title: Fotos exportieren
+        confirm_text: "Sollen die Fotos der Interviews %{archive_ids} wirklich exportiert werden?"
+      dois:
+        title: DOI registrieren
     segment:
       transcript: Transkript bearbeiten
       translation: Übersetzung bearbeiten
@@ -774,6 +779,9 @@ ru:
       language:
         one: Sprache
         other: Sprachen
+      institution:
+        one: Institution
+        other: Institutionen
       photo:
         one: Фотография
         other: Фотографии
@@ -897,6 +905,10 @@ ru:
       language:
         code: Code
         name: Name
+      institution:
+        isil: ISIL
+        gnd: GND
+        parent_id: übergeordnete Institution
       interview:
         person_name: Имя
         collection_id: Teilsammlung
@@ -1167,11 +1179,21 @@ ru:
         name: Name
         title: Name
         label: Label
+        shortname: Abkürzung
+        abbreviation: Abkürzung
+        description: Beschreibung
+        desc: Beschreibung
+        street: Strasse
+        zip: Postleitzahl
+        city: Ort
+        country: Land
+        latitude: Latitude
+        longitude: Longitude
+        website: Website
         archive_id: Interview ID
         workflow_state: Status
         locale: Sprache
         lang: Sprache
-        desc: Beschreibung
         text: Text
         email: Адрес эл. почты
         url: URL
@@ -1180,7 +1202,6 @@ ru:
         publish: Öffentlich
         project_id: Sammlung
         key: Schlüssel
-        abbreviation: Abkürzung
         created_at: Angelegt am
         code: Code
         use_in_details_view: in der Detailansicht zeigen
@@ -1654,6 +1675,7 @@ ru:
     search_map:
       multiple_types: Multiple location types
       error: Error loading map
+      map_section: Section
     media_player:
       auto_scroll:
         enable: "enable auto-scrolling transcript"

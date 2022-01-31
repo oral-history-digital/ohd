@@ -3,56 +3,88 @@ class InstitutionsController < ApplicationController
 
   # GET /institutions
   def index
-    @institutions = Institution.all
-  end
+    if params.keys.include?("all")
+      institutions = policy_scope(Institution).all
+      extra_params = "all"
+    else
+      page = params[:page] || 1
+      institutions = policy_scope(Institution).where(search_params).order("name ASC").paginate page: page
+      extra_params = search_params.update(page: page).inject([]) { |mem, (k, v)| mem << "#{k}_#{v}"; mem }.join("_")
+    end
 
-  # GET /institutions/1
-  def show
-  end
-
-  # GET /institutions/new
-  def new
-    @institution = Institution.new
-  end
-
-  # GET /institutions/1/edit
-  def edit
+    respond_to do |format|
+      format.html { render "react/app" }
+      format.json do
+        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-institutions-#{extra_params ? extra_params : "all"}-#{Institution.count}-#{Institution.maximum(:updated_at)}" do
+          {
+            data: institutions.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
+            data_type: "institutions",
+            extra_params: extra_params,
+            page: params[:page] || 1,
+            result_pages_count: institutions.respond_to?(:total_pages) ? institutions.total_pages : nil,
+          }
+        end
+        render json: json
+      end
+    end
   end
 
   # POST /institutions
   def create
-    @institution = Institution.new(institution_params)
+    authorize Institution
+    @institution = Institution.create(institution_params)
 
-    if @institution.save
-      redirect_to @institution, notice: 'Institution was successfully created.'
-    else
-      render :new
-    end
+    respond @institution
   end
 
   # PATCH/PUT /institutions/1
   def update
-    if @institution.update(institution_params)
-      redirect_to @institution, notice: 'Institution was successfully updated.'
-    else
-      render :edit
-    end
+    @institution.update(institution_params)
+    respond @institution
   end
 
   # DELETE /institutions/1
   def destroy
     @institution.destroy
-    redirect_to institutions_url, notice: 'Institution was successfully destroyed.'
+
+    respond_to do |format|
+      format.html do
+        render :action => "index"
+      end
+      format.js
+      format.json { render json: {}, status: :ok }
+    end
   end
 
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_institution
       @institution = Institution.find(params[:id])
+      authorize @institution
     end
 
     # Only allow a trusted parameter "white list" through.
     def institution_params
-      params.require(:institution).permit(:name, :shortname, :description, :street, :zip, :city, :country, :latitude, :longitude, :isil, :gnd, :logo, :website)
+      params.require(:institution).permit(:name, :shortname, :description, :street, :zip, :city, :country, :latitude, :longitude, :isil, :gnd, :website, :parent_id)
     end
+
+    def search_params
+      params.permit(
+        :name,
+        :shortname,
+      ).to_h.select{|k,v| !v.blank? }
+    end
+
+    def respond institution
+      respond_to do |format|
+        format.json do
+          render json: {
+            data: cache_single(institution),
+            data_type: 'institutions',
+            id: institution.id,
+          }
+        end
+      end
+    end
+
 end

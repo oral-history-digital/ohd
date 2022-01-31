@@ -1,6 +1,5 @@
 Rails.application.routes.draw do
 
-  resources :institutions
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
     get "norm_data" => "registry_entries#norm_data"
   end
@@ -206,6 +205,7 @@ Rails.application.routes.draw do
     scope "/:locale" do
       root to: "projects#index"
       resources :projects, only: [:create, :destroy]
+      resources :institutions
       concerns :account
       concerns :unnamed_devise_routes, :search
     end
