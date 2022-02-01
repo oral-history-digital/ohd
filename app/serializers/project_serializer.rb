@@ -75,6 +75,7 @@ class ProjectSerializer < ApplicationSerializer
     metadata_fields
     external_links
     media_streams
+    institution_projects
   ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }

@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     resources :languages
     resources :metadata_fields#, only: [:create, :update, :index]
     resources :external_links#, only: [:create, :update, :index]
+    resources :institution_projects
     resources :comments
 
     resources :contributions, only: [:create, :update, :destroy]

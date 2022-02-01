@@ -347,6 +347,12 @@ el:
       admin: Externen Links bearbeiten
       processed: 'Externer Link angelegt: '
       return: Weiteren Externen Link anlegen
+    institution_project:
+      new: Institution hinzufügen
+      edit: Institution bearbeiten
+      admin: Institutionen bearbeiten
+      processed: 'Institution angelegt: '
+      return: Weitere Institution anlegen
     logo:
       new: Logo hinzufügen
       edit: Logo bearbeiten
@@ -865,6 +871,8 @@ el:
         isil: ISIL
         gnd: GND
         parent_id: übergeordnete Institution
+      institution_project:
+        institution_id: Institution
       interview:
         person_name: Όνομα
         collection_id: Υποσυλλογή
