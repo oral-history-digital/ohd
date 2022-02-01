@@ -63,7 +63,12 @@ export const RoutesWithProjectId = () => (
                 <ProjectIndex />
             </ErrorBoundary>
         </Route>
-        <Route exact path="/:locale/:institutions">
+        <Route exact path="/:locale/projects">
+            <ErrorBoundary>
+                <ProjectIndex />
+            </ErrorBoundary>
+        </Route>
+        <Route exact path="/:locale/institutions">
             <ErrorBoundary>
                 <WrappedInstitutionsContainer />
             </ErrorBoundary>

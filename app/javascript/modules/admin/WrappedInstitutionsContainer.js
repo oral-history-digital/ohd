@@ -6,8 +6,8 @@ import { setQueryParams, getInstitutionsQuery } from 'modules/search';
 import { fetchData, deleteData, submitData, getProjects, getCurrentAccount,
     getInstitutions, getInstitutionsStatus, getProjectLocales, getProjectHasMap } from 'modules/data';
 import { getCookie } from 'modules/persistence';
-//import WrappedDataList from './WrappedDataList';
 import DataList from './DataList';
+import { INDEX_INSTITUTIONS } from 'modules/sidebar';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
@@ -22,8 +22,7 @@ const mapStateToProps = state => ({
     resultPagesCount: getInstitutionsStatus(state).resultPagesCount,
     query: getInstitutionsQuery(state),
     scope: 'institution',
-    baseTabIndex: 4 + getProjectHasMap(state),
-    //detailsAttributes: ['name'],
+    sidebarTabsIndex: INDEX_INSTITUTIONS ,
     detailsAttributes: ['name', 'description'],
     formElements: [
         {

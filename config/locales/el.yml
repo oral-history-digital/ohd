@@ -335,6 +335,10 @@ el:
       display: Anzeigeoptionen bearbeiten
       processed: 'Sammlung angelegt: '
       return: Weitere Sammlung anlegen
+    projects:
+      admin: Sammlungen bearbeiten
+    institution:
+      admin: Institutionen bearbeiten
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
