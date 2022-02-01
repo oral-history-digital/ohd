@@ -117,12 +117,6 @@ export default function InterviewTabPanel({
 
                 {projectId !== PROJECT_CAMPSCAPES && (
                     <AuthShowContainer ifLoggedIn>
-                        <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <InterviewDataContainer title={t('photos')} open>
-                                <GalleryContainer/>
-                            </InterviewDataContainer>
-                        </AuthorizedContent>
-
                         <AuthShowContainer ifLoggedIn={hasMap}>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <InterviewDataContainer title={t('map')} open>
@@ -130,6 +124,12 @@ export default function InterviewTabPanel({
                                 </InterviewDataContainer>
                             </AuthorizedContent>
                         </AuthShowContainer>
+
+                        <AuthorizedContent object={interview} action='show' showIfPublic>
+                            <InterviewDataContainer title={t('photos')} open>
+                                <GalleryContainer/>
+                            </InterviewDataContainer>
+                        </AuthorizedContent>
 
                         <AuthorizedContent object={interview} action='show' showIfPublic>
                             <InterviewDataContainer title={t('citation')} open>
