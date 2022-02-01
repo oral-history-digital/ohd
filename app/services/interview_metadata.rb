@@ -1,8 +1,14 @@
 class InterviewMetadata
+  include ActiveModel::Validations
+
   attr_accessor :self_link, :creation_date,
     :media_type, :mime_type, :tape_paths, :transcript_paths, :project_id,
     :name, :num_speakers, :corpus_name, :recording_date, :dominant_language,
     :actors, :topic
+
+  validates_each :recording_date do |record, attr, value|
+    record.errors.add attr, 'cannot be blank' if value.blank?
+  end
 
   def self.pad(number)
     number.to_s.rjust(10, '0')
