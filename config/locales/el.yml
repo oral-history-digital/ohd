@@ -336,9 +336,9 @@ el:
       processed: 'Sammlung angelegt: '
       return: Weitere Sammlung anlegen
     projects:
-      admin: Sammlungen bearbeiten
+      admin: Sammlungen
     institution:
-      admin: Institutionen bearbeiten
+      admin: Institutionen
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
