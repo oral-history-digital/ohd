@@ -112,6 +112,8 @@ export default class ArchiveSearchForm extends Component {
             this.props.setMapQuery(params);
         } else if (!this.props.map && !this.props.isArchiveSearching) {
             let url = `${pathBase(this.props)}/searches/archive`;
+            this.props.clearSearch();
+            this.props.clearAllInterviewSearch();
             this.props.searchInArchive(url, params);
             this.props.history.push(url);
         }

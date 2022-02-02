@@ -5,7 +5,8 @@ import { withRouter } from 'react-router-dom';
 import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { hideSidebar } from 'modules/sidebar';
 import { getProjects, getCurrentAccount, getCurrentProject } from 'modules/data';
-import { resetQuery, setQueryParams, searchInArchive, setMapQuery } from '../actions';
+import { resetQuery, setQueryParams, searchInArchive, setMapQuery, clearSearch,
+    clearAllInterviewSearch } from '../actions';
 import { getArchiveFacets, getArchiveQuery, getMapFacets } from '../selectors';
 import ArchiveSearchForm from './ArchiveSearchForm';
 
@@ -31,6 +32,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = dispatch => bindActionCreators({
     setQueryParams,
     resetQuery,
+    clearSearch,
+    clearAllInterviewSearch,
     searchInArchive,
     setMapQuery,
     hideSidebar,
