@@ -47,12 +47,6 @@ export default class ArchiveSearch extends Component {
         }
     }
 
-    componentWillUnmount() {
-        const { clearSearch } = this.props;
-
-        clearSearch();
-    }
-
     foundInterviews(displayType) {
         const { foundInterviews, isArchiveSearching } = this.props;
 
@@ -205,5 +199,4 @@ ArchiveSearch.propTypes = {
     setSidebarTabsIndex: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
     searchInArchive: PropTypes.func.isRequired,
-    clearSearch: PropTypes.func.isRequired,
 };
