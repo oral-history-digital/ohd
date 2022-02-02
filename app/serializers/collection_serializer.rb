@@ -6,4 +6,9 @@ class CollectionSerializer < ApplicationSerializer
       object.localized_hash(m)
     end
   end
+
+  def institution
+    object.institution ? object.institution.localized_hash(:name) : {}
+  end
+
 end

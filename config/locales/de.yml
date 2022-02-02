@@ -877,6 +877,7 @@ de:
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
         project_id: Sammlung
+        institution_id: Institution
         homepage: Website
         countries: Interviews in
         institution: Durchgeführt von

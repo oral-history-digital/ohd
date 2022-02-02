@@ -60,6 +60,7 @@ export const RoutesWithProjectId = () => (
         </Route>
         <Route exact path="/:locale">
             <ErrorBoundary>
+                {/* TODO: needs another startpage */}
                 <ProjectIndex />
             </ErrorBoundary>
         </Route>

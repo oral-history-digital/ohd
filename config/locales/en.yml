@@ -857,6 +857,7 @@ en:
         speaker_designation: speaker designation (e.g. *CG:*)
       collection:
         project_id: Sammlung
+        institution_id: Institution
         homepage: Website
         name: Name
         countries: Interviews in

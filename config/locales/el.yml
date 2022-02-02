@@ -859,6 +859,7 @@ el:
         speaker_designation: Υπόδειξη ομιλιτών (π.χ. *CG:*)
       collection:
         project_id: Πρόγραμμα
+        institution_id: Institution
         homepage: Ιστοσελίδα
         name: Name
         countries: Συνεντεύξεις στην

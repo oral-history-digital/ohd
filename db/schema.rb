@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_25_130712) do
+ActiveRecord::Schema.define(version: 2022_02_01_200923) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -90,7 +90,6 @@ ActiveRecord::Schema.define(version: 2022_01_25_130712) do
     t.integer "collection_id"
     t.string "locale", limit: 255
     t.string "countries", limit: 255
-    t.string "institution", limit: 255
     t.string "responsibles", limit: 255
     t.text "interviewers", limit: 4294967295
     t.string "name", limit: 255
@@ -105,6 +104,7 @@ ActiveRecord::Schema.define(version: 2022_01_25_130712) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer "project_id"
+    t.integer "institution_id"
   end
 
   create_table "comments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -220,10 +220,19 @@ ActiveRecord::Schema.define(version: 2022_01_25_130712) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "institution_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.integer "institution_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.string "name"
-    t.string "shortname"
     t.text "description"
+    t.index ["institution_id"], name: "index_institution_translations_on_institution_id"
+    t.index ["locale"], name: "index_institution_translations_on_locale"
+  end
+
+  create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+    t.string "shortname"
     t.string "street"
     t.string "zip"
     t.string "city"
@@ -290,6 +299,27 @@ ActiveRecord::Schema.define(version: 2022_01_25_130712) do
   create_table "languages", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "code", limit: 255
     t.datetime "updated_at"
+  end
+
+  create_table "map_section_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "map_section_id", null: false
+    t.string "locale", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "label"
+    t.index ["locale"], name: "index_map_section_translations_on_locale"
+    t.index ["map_section_id"], name: "index_map_section_translations_on_map_section_id"
+  end
+
+  create_table "map_sections", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.string "name", null: false
+    t.decimal "corner1_lat", precision: 10, scale: 6, null: false
+    t.decimal "corner1_lon", precision: 10, scale: 6, null: false
+    t.decimal "corner2_lat", precision: 10, scale: 6, null: false
+    t.decimal "corner2_lon", precision: 10, scale: 6, null: false
+    t.integer "order", default: 0, null: false
+    t.bigint "project_id", null: false
+    t.index ["project_id"], name: "index_map_sections_on_project_id"
   end
 
   create_table "media_streams", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -415,7 +445,6 @@ ActiveRecord::Schema.define(version: 2022_01_25_130712) do
     t.string "cooperation_partner"
     t.string "leader"
     t.string "manager"
-    t.string "hosting_institution"
     t.string "funder_names"
     t.string "contact_email"
     t.string "smtp_server"
@@ -436,9 +465,6 @@ ActiveRecord::Schema.define(version: 2022_01_25_130712) do
     t.integer "archive_id_number_length"
     t.string "hidden_transcript_registry_entry_ids"
     t.boolean "display_ohd_link", default: false
-    t.decimal "map_initial_center_lat", precision: 10, scale: 6, default: "49.546944"
-    t.decimal "map_initial_center_lon", precision: 10, scale: 6, default: "16.573333"
-    t.integer "map_initial_zoom", default: 4
   end
 
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -878,4 +904,5 @@ ActiveRecord::Schema.define(version: 2022_01_25_130712) do
   end
 
   add_foreign_key "histories", "people"
+  add_foreign_key "map_sections", "projects"
 end

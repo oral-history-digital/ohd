@@ -3,12 +3,14 @@ import PropTypes from 'prop-types';
 
 import { LinkOrA } from 'modules/routes';
 import { getLocale } from 'modules/archive';
+import { getInstitutions } from 'modules/data';
 import { INDEX_ACCOUNT, setSidebarTabsIndex } from 'modules/sidebar';
 
 export default function ProjectTile({
     data,
 }) {
     const locale = useSelector(getLocale);
+    const institutions = useSelector(getInstitutions);
 
     const logo = data.logos && Object.values(data.logos).find(l => l.locale === locale);
 
@@ -31,7 +33,11 @@ export default function ProjectTile({
                     {data.name[locale]}
                 </p>
                 <p className="ProjectTile-text ProjectTile-text--small">
-                    {data.hosting_institution}
+                    {Object.values(data.institution_projects).map(ip => {
+                        return (
+                            <p>{institutions[ip.institution_id].name[locale]}</p>
+                        )
+                    })}
                 </p>
             </div>
         </LinkOrA>

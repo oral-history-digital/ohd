@@ -205,7 +205,8 @@ Rails.application.routes.draw do
   constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
       root to: "projects#index"
-      resources :projects, only: [:create, :destroy]
+      #root to: redirect {|params, request| "/#{params[:locale]}/projects"}
+      resources :projects, only: [:create, :destroy, :index]
       resources :institutions
       concerns :account
       concerns :unnamed_devise_routes, :search

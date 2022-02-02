@@ -27,7 +27,7 @@ const mapStateToProps = state => ({
     formElements: [
         {
             attribute: 'name',
-            validate: function(v){return v.length > 1}
+            multiLocale: true,
         },
         {
             attribute: 'shortname',
@@ -35,6 +35,7 @@ const mapStateToProps = state => ({
         {
             attribute: 'description',
             elementType: 'textarea',
+            multiLocale: true,
         },
         {
             attribute: 'street',
