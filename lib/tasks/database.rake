@@ -17,7 +17,7 @@
 #
 # 3. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
 #
-# 4. on target-db: run rake database:unify_[user_accounts|languages|permissions]
+# 4. on target-db: run rake database:unify_[user_accounts|languages|permissions|institutions]
 
 namespace :database do
 
@@ -109,6 +109,19 @@ namespace :database do
             perm.task_type_permissions.update_all(permission_id: first_perm.id)
             perm.destroy
           end
+        end
+      end
+    end
+
+    desc 'unify institutions'
+    task :unify_institutions, [:max_id] => :environment do |t, args|
+      Institution.all.each do |institution|
+        first_institution = Institution.where(name: institution.name).where("institutions.id <= ?", args.max_id).first
+        other_institutions = Institution.where(name: institution.name).where("institutions.id > ?", args.max_id)
+        other_institutions.each do |other_institution|
+          other_institution.collections.update_all(institution_id: first_institution.id)
+          other_institution.institution_projects.update_all(institution_id: first_institution.id)
+          other_institution.destroy
         end
       end
     end
