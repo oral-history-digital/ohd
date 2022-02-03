@@ -35,7 +35,7 @@ export default function AdminMenu({
     }
 
     const childrenArray = Array.isArray(children) ? children : [children];
-    const cleanedChildrenArray = childrenArray.filter(c => typeof(c) !== 'boolean');
+    const cleanedChildrenArray = childrenArray.filter(c => c && c.props);
 
     return (
         <>
