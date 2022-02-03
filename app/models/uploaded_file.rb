@@ -1,6 +1,6 @@
 class UploadedFile < ApplicationRecord
   belongs_to :ref, polymorphic: true, touch: true
-  has_one_attached :file
+  has_one_attached :file, dependent: :purge_later
 
   after_save :symlink
   def symlink

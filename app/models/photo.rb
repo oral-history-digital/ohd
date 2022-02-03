@@ -2,7 +2,7 @@ require 'globalize'
 
 class Photo < ApplicationRecord
   belongs_to :interview, touch: true
-  has_one_attached :photo
+  has_one_attached :photo, dependent: :purge_later
 
   translates :caption, :date, :place, :photographer, :license, fallbacks_for_empty_translations: false, touch: true
   accepts_nested_attributes_for :translations
