@@ -18,6 +18,7 @@ class SearchesController < ApplicationController
   def registry_entry
     search = RegistryEntry.search do
       fulltext params[:fulltext].blank? ? "emptyFulltextShouldNotResultInAllRegistryEntriesThisIsAComment" : params[:fulltext]
+      with(:project_id, current_project.id)
       #order_by(:names, :asc)
       paginate page: params[:page] || 1, per_page: 200
     end

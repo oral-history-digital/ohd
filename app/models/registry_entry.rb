@@ -98,6 +98,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   searchable do
+    integer :project_id, :stored => true, :references => Project
     string :archive_id, :multiple => true, :stored => true do
       registry_references.map{|i| i.archive_id }
     end
@@ -278,6 +279,10 @@ class RegistryEntry < ApplicationRecord
       block.call d
       d.on_all_descendants(&block)
     end
+  end
+
+  def search_project_id
+    project_id || (parents.first && parents.first.search_project_id)
   end
 
   def bread_crumb
