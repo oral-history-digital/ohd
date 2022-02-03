@@ -45,6 +45,7 @@ export default function useMapReferences(registryEntryId) {
 
     const interviewReferences = data?.interview_references;
     const segmentReferences = filter.includes('S') ? data?.segment_references : [];
+    const numSegmentRefs = segmentReferences?.length;
 
     let referenceGroups = [];
     if (referenceTypes && interviewReferences && filter) {
@@ -72,6 +73,7 @@ export default function useMapReferences(registryEntryId) {
         isLoading: isValidating,
         referenceGroups,
         segmentRefGroups,
+        numSegmentRefs,
         error,
     };
 }

@@ -47,7 +47,7 @@ export default function InterviewMapPopup({
                             personReferences.map(ref => (
                                 <li
                                     key={ref.id}
-                                    className="MapPopup-listItem"
+                                    className="MapPopup-text"
                                 >
                                     {ref.label}
                                 </li>
@@ -60,17 +60,12 @@ export default function InterviewMapPopup({
                 segmentReferences && segmentReferences.length > 0 && (
                     <>
                         <h4 className="MapPopup-subHeading">
-                            {t('modules.interview_map.segment_references')}
+                            {t('modules.interview_map.segment_references')} ({segmentReferences.length})
                         </h4>
                         <ul className="MapPopup-list">
                             {
                                 segmentReferences.map(ref => (
-                                    <li
-                                        key={ref.id}
-                                        className="MapPopup-listItem"
-                                    >
-                                        {t('modules.interview_map.at')}
-                                        {' '}
+                                    <li key={ref.id}>
                                         <button
                                             type="button"
                                             className="Button MapPopup-button"

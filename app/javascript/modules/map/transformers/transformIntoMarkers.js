@@ -42,10 +42,13 @@ function markerRadius(numMetadataReferences, numSegmentReferences) {
 function color(colorMap, location) {
     const typesArray = location.ref_types.split(',');
 
-    if ((new Set(typesArray)).size > 1) {
+    const typesWithoutSegmentRefs = new Set(typesArray);
+    typesWithoutSegmentRefs.delete('S');
+
+    if (typesWithoutSegmentRefs.size > 1) {
         return MARKER_COLOR_MULTIPLE_TYPES;
     } else {
-        const type = location.ref_types.split(',')[0];
+        const type = typesArray[0];
 
         return colorMap.get(type);
     }

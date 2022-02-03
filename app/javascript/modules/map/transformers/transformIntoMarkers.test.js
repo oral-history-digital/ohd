@@ -15,6 +15,13 @@ test('transforms registry location data into markers for map component', () => {
         },
         {
             id: 18221,
+            lat: '52.21',
+            lon: '21.03',
+            name: 'Deutschland',
+            ref_types: '4,4,4,4,4,S,S',
+        },
+        {
+            id: 18222,
             lat: '53.66',
             lon: '23.81',
             name: 'Berlin',
@@ -37,6 +44,17 @@ test('transforms registry location data into markers for map component', () => {
         },
         {
             id: 18221,
+            lat: 52.21,
+            long: 21.03,
+            name: 'Deutschland',
+            numReferences: 7,
+            numMetadataReferences: 5,
+            numSegmentReferences: 2,
+            radius: 8,
+            color: 'blue',
+        },
+        {
+            id: 18222,
             lat: 53.66,
             long: 23.81,
             name: 'Berlin',
