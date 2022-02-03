@@ -18,6 +18,7 @@ Rails.application.routes.draw do
     resources :languages
     resources :metadata_fields#, only: [:create, :update, :index]
     resources :external_links#, only: [:create, :update, :index]
+    resources :institution_projects
     resources :comments
 
     resources :contributions, only: [:create, :update, :destroy]
@@ -204,7 +205,10 @@ Rails.application.routes.draw do
   constraints(lambda { |request| ohd = URI.parse(OHD_DOMAIN); [ohd.host].include?(request.host) }) do
     scope "/:locale" do
       root to: "projects#index"
-      resources :projects, only: [:create, :destroy]
+      #root to: redirect {|params, request| "/#{params[:locale]}/projects"}
+      resources :projects, only: [:create, :destroy, :index]
+      resources :institutions
+      resources :logos, only: [:create, :update, :destroy]
       concerns :account
       concerns :unnamed_devise_routes, :search
     end

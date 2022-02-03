@@ -44,9 +44,6 @@ const mapStateToProps = state => ({
             attribute: "manager"
         },
         {
-            attribute: "hosting_institution"
-        },
-        {
             attribute: "pseudo_funder_names"
         },
     ],

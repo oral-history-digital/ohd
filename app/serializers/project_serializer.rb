@@ -27,7 +27,6 @@ class ProjectSerializer < ApplicationSerializer
     :cooperation_partner,
     :leader,
     :manager,
-    :hosting_institution,
     :funder_names,
     :pseudo_funder_names,
     :contact_email,
@@ -49,6 +48,7 @@ class ProjectSerializer < ApplicationSerializer
     :external_links,
     :media_streams,
     :map_sections,
+    :institution_projects,
     :logos,
     :sponsor_logos,
     :list_columns,
@@ -74,6 +74,7 @@ class ProjectSerializer < ApplicationSerializer
     external_links
     media_streams
     map_sections
+    institution_projects
   ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }

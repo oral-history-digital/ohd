@@ -15,6 +15,7 @@ export { default as UserRegistrationSearchFormContainer } from './UserRegistrati
 
 export { default as WrappedCollectionsContainer } from './WrappedCollectionsContainer';
 export { default as WrappedLanguagesContainer } from './WrappedLanguagesContainer';
+export { default as WrappedInstitutionsContainer } from './WrappedInstitutionsContainer';
 export { default as WrappedPeopleContainer } from './WrappedPeopleContainer';
 export { default as WrappedPermissionsContainer } from './WrappedPermissionsContainer';
 export { default as WrappedProjectsContainer } from './WrappedProjectsContainer';

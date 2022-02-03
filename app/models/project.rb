@@ -5,6 +5,8 @@ class Project < ApplicationRecord
   has_many :logos, as: :ref, dependent: :destroy
   has_many :sponsor_logos, as: :ref, dependent: :destroy
 
+  has_many :institution_projects
+  has_many :institutions, through: :institution_projects
   has_many :interviews, dependent: :destroy
   has_many :collections, dependent: :destroy
   has_many :contribution_types, dependent: :destroy
@@ -246,7 +248,7 @@ class Project < ApplicationRecord
                   name: sf.localized_hash(:name),
                   count: 0,
                   homepage: sf.try(:localized_hash, :homepage),
-                  institution: sf.try(:localized_hash, :institution),
+                  institution: sf.institution.try(:localized_hash, :name),
                   notes: sf.try(:localized_hash, :notes),
                 }
                 subfacets

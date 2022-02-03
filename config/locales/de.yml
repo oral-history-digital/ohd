@@ -326,6 +326,11 @@ de:
       delete:
         title: Interviews löschen
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
+      export_photos:
+        title: Fotos exportieren
+        confirm_text: "Sollen die Fotos der Interviews %{archive_ids} wirklich exportiert werden?"
+      dois:
+        title: DOI registrieren
     segment:
       transcript: Transkript bearbeiten
       translation: Übersetzung bearbeiten
@@ -366,6 +371,10 @@ de:
       display: Anzeigeoptionen bearbeiten
       processed: 'Sammlung angelegt: '
       return: Weitere Sammlung anlegen
+    projects:
+      admin: Sammlungen
+    institution:
+      admin: Institutionen
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
@@ -378,6 +387,12 @@ de:
       admin: Externen Links bearbeiten
       processed: 'Externer Link angelegt: '
       return: Weiteren Externen Link anlegen
+    institution_project:
+      new: Institution hinzufügen
+      edit: Institution bearbeiten
+      admin: Institutionen bearbeiten
+      processed: 'Institution angelegt: '
+      return: Weitere Institution anlegen
     logo:
       new: Logo hinzufügen
       edit: Logo bearbeiten
@@ -747,6 +762,9 @@ de:
       language:
         one: Sprache
         other: Sprachen
+      institution:
+        one: Institution
+        other: Institutionen
       photo:
         one: Bild
         other: Bilder
@@ -859,6 +877,7 @@ de:
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
         project_id: Sammlung
+        institution_id: Institution
         homepage: Website
         countries: Interviews in
         institution: Durchgeführt von
@@ -869,6 +888,12 @@ de:
         interviews: Interviewte
       language:
         code: Code
+      institution:
+        isil: ISIL
+        gnd: GND
+        parent_id: übergeordnete Institution
+      institution_project:
+        institution_id: Institution
       interview:
         person_name: Name
         collection_id: Teilsammlung
@@ -1132,11 +1157,21 @@ de:
         name: Name
         title: Name
         label: Label
+        shortname: Abkürzung
+        abbreviation: Abkürzung
+        description: Beschreibung
+        desc: Beschreibung
+        street: Strasse
+        zip: Postleitzahl
+        city: Ort
+        country: Land
+        latitude: Latitude
+        longitude: Longitude
+        website: Website
         archive_id: Interview-ID
         workflow_state: Status
         locale: Sprache
         lang: Sprache
-        desc: Beschreibung
         text: Text
         email: E-Mail
         url: URL
@@ -1145,7 +1180,6 @@ de:
         publish: Öffentlich
         project_id: Sammlung
         key: Schlüssel
-        abbreviation: Abkürzung
         created_at: Angelegt am
         code: Code
         use_in_details_view: in der Detailansicht zeigen

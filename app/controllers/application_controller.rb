@@ -97,6 +97,7 @@ class ApplicationController < ActionController::Base
           tasks: {},
           projects: {all: 'fetched'},
           languages: {all: 'fetched'},
+          institutions: {all: 'fetched'},
           collections: {},
           people: {},
           task_types: {},
@@ -111,6 +112,9 @@ class ApplicationController < ActionController::Base
         end,
         languages: Rails.cache.fetch("languages-#{Language.count}-#{Language.maximum(:updated_at)}") do
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
+        end,
+        institutions: Rails.cache.fetch("institutions-#{Institution.count}-#{Institution.maximum(:updated_at)}") do
+          Institution.all.inject({}){|mem, s| mem[s.id] = InstitutionSerializer.new(s); mem}
         end,
         accounts: {
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || nil #{}
@@ -184,7 +188,8 @@ class ApplicationController < ActionController::Base
       contribution_types: { query: {page: 1} },
       projects: { query: {page: 1} },
       collections: { query: {page: 1} },
-      languages: { query: {page: 1} }
+      languages: { query: {page: 1} },
+      institutions: { query: {page: 1} }
     }
   end
   helper_method :initial_redux_state

@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
@@ -7,6 +8,7 @@ import { useAuthorization } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { getLocale } from 'modules/archive';
 import { StateCheck, getCurrentInterviewFetched } from 'modules/data';
 import ArchiveSearchTabPanelContainer from './ArchiveSearchTabPanelContainer';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
@@ -33,6 +35,7 @@ export default function SidebarTabs({
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
+    const locale = useSelector(getLocale);
 
     function handleTabClick(index) {
         setSidebarTabsIndex(index);
@@ -57,17 +60,25 @@ export default function SidebarTabs({
                 history.push(`${pathBase}/searches/map`);
             }
             break;
+        case indexes.INDEX_PROJECTS:
+            history.push(`/${locale}/projects`);
+            break;
+        case indexes.INDEX_INSTITUTIONS:
+            history.push(`/${locale}/institutions`);
+            break;
         default:
         }
     }
 
-    const showInterviewTab = interview && project;
+    const showInterviewTab = !!interview;
     const showRegistryTab = isLoggedIn && project;
     const showMapTab = hasMap && project;
     const showWorkbookTab = isLoggedIn;
     const showIndexingTab = project && isAuthorized({type: 'General'}, 'edit');
     const showAdministrationTab = project && isAuthorized({type: 'General'}, 'edit');
     const showProjectAdminTab = project && isAuthorized({type: 'Project'}, 'update');
+    const showProjectsTab = !project && isAuthorized({type: 'Project'}, 'create');
+    const showInstitutionsTab = !project && isAuthorized({type: 'Institution'}, 'create');
 
     return (
         <Tabs
@@ -147,6 +158,22 @@ export default function SidebarTabs({
                 >
                     {t('edit.project.admin')}
                 </Tab>
+
+                <Tab
+                    key="10"
+                    className="SidebarTabs-tab SidebarTabs-tab--admin"
+                    disabled={!showProjectsTab}
+                >
+                    {t('edit.projects.admin')}
+                </Tab>
+
+                <Tab
+                    key="11"
+                    className="SidebarTabs-tab SidebarTabs-tab--admin"
+                    disabled={!showInstitutionsTab}
+                >
+                    {t('edit.institution.admin')}
+                </Tab>
             </TabList>
 
             <TabPanels>
@@ -202,6 +229,18 @@ export default function SidebarTabs({
                 <TabPanel key="9">
                     {showProjectAdminTab && (
                         <ProjectConfigTabPanelContainer />
+                    )}
+                </TabPanel>
+
+                <TabPanel key="10">
+                    {false && showProjectsTab && (
+                        <div className='flyout-tab-title'>{t('edit.projects.admin')}</div>
+                    )}
+                </TabPanel>
+
+                <TabPanel key="11">
+                    {false && showInstitutionsTab && (
+                        <div className='flyout-tab-title'>{t('edit.institution.admin')}</div>
                     )}
                 </TabPanel>
             </TabPanels>

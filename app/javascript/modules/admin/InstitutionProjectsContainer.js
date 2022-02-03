@@ -1,8 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getCurrentProject, fetchData, deleteData, submitData, getProjects,
-    getCurrentAccount, getProjectLocales } from 'modules/data';
+import { getCurrentProject, getInstitutions, fetchData, deleteData, submitData, getProjects, getCurrentAccount } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import DataList from './DataList';
 
@@ -15,19 +14,18 @@ const mapStateToProps = state => {
         translations: getTranslations(state),
         account: getCurrentAccount(state),
         editView: true,
-        scope: 'logo',
-        detailsAttributes: ['src', 'locale'],
+        data: project.institution_projects,
+        outerScope: 'project',
+        outerScopeId: project.id,
+        scope: 'institution_project',
+        detailsAttributes: ['name', 'shortname'],
+        initialFormValues: {project_id: project.id},
         formElements: [
             {
-                attribute: "locale",
+                attribute: 'institution_id',
                 elementType: 'select',
-                values: getProjectLocales(state),
+                values: getInstitutions(state),
                 withEmpty: true,
-            },
-            {
-                attribute: 'file',
-                elementType: 'input',
-                type: 'file',
             },
         ],
     }

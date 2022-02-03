@@ -1,0 +1,2 @@
+class InstitutionProjectPolicy < ApplicationPolicy
+end

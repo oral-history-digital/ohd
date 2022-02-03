@@ -8,7 +8,7 @@ export { default as searchReducer } from './reducer';
 
 export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree,
     getMapQuery, getMapFacets, getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery,
-    getLanguagesQuery, getContributionTypesQuery, getRegistryNameTypesQuery,
+    getLanguagesQuery, getInstitutionsQuery, getContributionTypesQuery, getRegistryNameTypesQuery,
     getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
     getArchiveFacets, getArchiveQuery, getArchiveQueryFulltext,
     getArchiveResultPagesCount, getArchiveResultsCount, getArchiveFoundInterviews,
