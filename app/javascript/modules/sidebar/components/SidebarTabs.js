@@ -1,5 +1,6 @@
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useHistory } from 'react-router-dom';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
@@ -21,7 +22,6 @@ import ProjectConfigTabPanelContainer from './ProjectConfigTabPanelContainer';
 import * as indexes from '../constants';
 
 export default function SidebarTabs({
-    history,
     sidebarTabsIndex,
     selectedArchiveIds,
     interview,
@@ -36,6 +36,7 @@ export default function SidebarTabs({
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const locale = useSelector(getLocale);
+    const history = useHistory();
 
     function handleTabClick(index) {
         setSidebarTabsIndex(index);
@@ -259,5 +260,4 @@ SidebarTabs.propTypes = {
     sidebarTabsIndex: PropTypes.number.isRequired,
     selectedArchiveIds: PropTypes.array,
     setSidebarTabsIndex: PropTypes.func.isRequired,
-    history: PropTypes.object.isRequired,
 };

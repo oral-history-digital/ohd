@@ -1,5 +1,5 @@
 import { Component, Fragment } from 'react';
-import PropTypes from 'prop-types';
+import { Link } from 'react-router-dom';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Modal } from 'modules/ui';
@@ -10,13 +10,11 @@ import LoginForm from './LoginForm';
 import RequestProjectAccessFormContainer from './RequestProjectAccessFormContainer';
 
 export default class Account extends Component {
-    static propTypes = {
-        history: PropTypes.object.isRequired,
-    }
-
     constructor(props) {
         super(props);
         this.state = { editView: this.props.editViewCookie };
+
+        this.handleLinkClick = this.handleLinkClick.bind(this);
     }
 
     componentDidMount() {
@@ -29,9 +27,7 @@ export default class Account extends Component {
         }
     }
 
-    openLink(path, e) {
-        e.preventDefault();
-        this.props.history.push(path);
+    handleLinkClick() {
         if (isMobile()) {
             this.props.hideSidebar();
         }
@@ -151,28 +147,31 @@ export default class Account extends Component {
                             {(this.props.error || this.props.projectId === 'campscapes') ? '' : t(this.props, 'registration_needed')}
                         </p>
                         <LoginForm />
-                        <div className={'register-link'}>
-                            <a
-                                href=''
+                        <div
+                            className="register-link"
+                            onClick={this.handleLinkClick}
+                        >
+                            <Link
                                 className="Link"
-                                onClick={(e) => this.openLink(pathBase(this.props) + '/user_registrations/new', e)}
+                                to={pathBase(this.props) + '/user_registrations/new'}
                             >
                                 {t(this.props, 'user_registration.registration')}
-                            </a>
+                            </Link>
                         </div>
-                        <div className={'order-new-password-link'}>
-                            <a
-                                href=''
+                        <div
+                            className="order-new-password-link"
+                            onClick={this.handleLinkClick}
+                        >
+                            <Link
                                 className="Link"
-                                onClick={(e) => this.openLink(pathBase(this.props) + '/user_accounts/password/new', e)}
+                                to={pathBase(this.props) + '/user_accounts/password/new'}
                             >
                                 {t(this.props, 'forget_password')}
-                            </a>
+                            </Link>
                         </div>
                     </AuthShowContainer>
                 </div>
             </Fragment>
         )
     }
-
 }

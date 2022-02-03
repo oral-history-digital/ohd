@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
 
 import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
 import { hideSidebar } from 'modules/sidebar';
@@ -39,7 +38,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     hideSidebar,
 }, dispatch);
 
-export default withRouter(connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(ArchiveSearchForm));
+export default connect(mapStateToProps, mapDispatchToProps)(ArchiveSearchForm);

@@ -1,176 +1,139 @@
-import { Component } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
+import { useHistory, useLocation, useParams } from 'react-router-dom';
 
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { usePrevious } from 'modules/react-toolbox';
+import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import { InputContainer } from 'modules/forms';
 
-export default class ChangePasswordForm extends Component {
-    static propTypes = {
-        history: PropTypes.object.isRequired,
-        location: PropTypes.object.isRequired,
-        match: PropTypes.object.isRequired,
+export default function ChangePasswordForm({
+    account,
+    projectId,
+    locale,
+    submitChangePassword,
+}) {
+    const [showErrors, setShowErrors] = useState(false);
+    const [values, setValues] = useState({});
+    const [errors, setErrors] = useState({
+        password: true,
+        password_confirmation: true,
+    });
+
+    const { t } = useI18n();
+    const pathBase = usePathBase();
+
+    const history = useHistory();
+    const location = useLocation();
+    const { resetPasswordToken } = useParams();
+
+    // Does what? Redirect after login?
+    const prevAccount = usePrevious(account);
+    if (!prevAccount?.email && account.email) {
+        const to = projectId ? `${pathBase}/searches/archive` : `/${locale}`;
+        history.push(to);
     }
 
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            showErrors: false,
-            values: {
-            },
-            errors: {
-                password: true,
-                password_confirmation: true,
-            }
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleErrors = this.handleErrors.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
+    function handleChange(name, value) {
+        setValues(prev => ({
+            ...prev,
+            [name]: value,
+        }));
     }
 
-    componentWillReceiveProps(nextProps) {
-        if (nextProps.account.email && !this.props.account.email) {
-            const to = this.props.projectId ? `${pathBase(this.props)}/searches/archive` : `/${this.props.locale}`;
-            this.props.history.push(to);
-        }
+    function handleErrors(name, bool) {
+        setErrors(prev => ({
+            ...prev,
+            [name]: bool,
+        }));
     }
 
-    handleChange(name, value) {
-        this.setState({
-            values: Object.assign({}, this.state.values, {[name]: value})
-        })
+    function valid() {
+        const hasErrors = Object.values(errors).includes(true);
+
+        setShowErrors(hasErrors);
+        return !hasErrors;
     }
 
-    handleSubmit(event) {
+    function handleSubmit(event) {
         event.preventDefault();
-        if(this.valid()) {
-            let resetToken = this.props.match.params.resetPasswordToken;
-            if(!resetToken) {
-                let query = queryString.parse(this.props.location.search);
+        if(valid()) {
+            let resetToken = resetPasswordToken;
+            if (!resetToken) {
+                let query = queryString.parse(location.search);
                 resetToken = query.reset_password_token;
             }
             let url, method;
-            let params = this.state.values;
+            let params = values;
 
-            if (!this.props.account.active) {
-                url = `${pathBase(this.props)}/user_registrations/${resetToken}/confirm`;
+            if (!account.active) {
+                url = `${pathBase}/user_registrations/${resetToken}/confirm`;
                 method = 'post';
             } else {
-                url = `${pathBase(this.props)}/user_accounts/password`;
+                url = `${pathBase}/user_accounts/password`;
                 method = 'put';
                 params.reset_password_token = resetToken;
             }
-            this.props.submitChangePassword(url, method, {user_account: params});
+
+            submitChangePassword(url, method, {user_account: params});
         }
     }
 
-    handleErrors(name, bool) {
-        this.setState({
-            errors: Object.assign({}, this.state.errors, {[name]: bool})
-        })
-    }
-
-    valid() {
-        let errors = false;
-        Object.keys(this.state.errors).map((name, index) => {
-            errors = this.state.errors[name] || errors;
-        })
-        this.setState({showErrors: errors});
-        return !errors;
-    }
-
-    texts() {
-        let t = {}
-        try {
-            t.display_name = this.props.account.display_name;
-            t.accountLogin = this.props.account.login;
-        } catch(e) {
-        } finally {
-            return t;
-        }
-    }
-
-    header() {
-        if (!this.props.account.active) {
-            return (
+    return (
+        <div>
+            {account.active ? (
+                <h1>
+                    {t('devise.passwords.change')}
+                </h1>
+            ) : (
                 <div>
                     <h1>
-                        {t(this.props, 'devise.registrations.activate')}
+                        {t('devise.registrations.activate')}
                         &nbsp;
-                        <em>{this.texts().display_name}</em>
+                        <em>{account.display_name}</em>
                     </h1>
                     <p>
-                        {t(this.props, 'devise.registrations.activate_text')}
+                        {t('devise.registrations.activate_text')}
                     </p>
                 </div>
-            );
-        } else {
-            return (
-                <h1>
-                    {t(this.props, 'devise.passwords.change')}
-                </h1>
-            )
-        }
-    }
+            )}
 
-    userSalutation() {
-        if (this.props.account.active) {
-            return (
-                <span>
-                    <label>
-                        {t(this.props, 'devise.authentication_keys.login') + ": "}
-                        <b>{this.texts().accountLogin}</b>
-                    </label>
-                </span>
-            );
-        } else {
-            return null;
-        }
-    }
-
-    error() {
-        if (this.props.account.error) {
-            return (
-                <p className='error'>
-                    {t(this.props, this.props.account.error)}
+            {account.error && (
+                <p className="error">
+                    {t(account.error)}
                 </p>
-            )
-        }
-    }
+            )}
 
-    render() {
-        let _this = this;
-        return (
-            <div>
-                {this.header()}
-                {this.error()}
+            <form className='default' onSubmit={handleSubmit}>
+                <InputContainer
+                    label={t('devise.passwords.password')}
+                    attribute='password'
+                    type='password'
+                    showErrors={showErrors}
+                    validate={v => v.length > 6}
+                    handleChange={handleChange}
+                    handleErrors={handleErrors}
+                />
+                <InputContainer
+                    label={t('devise.passwords.password_confirmation')}
+                    attribute='password_confirmation'
+                    type='password'
+                    showErrors={showErrors}
+                    validate={v => v.length > 6 && v === values.password}
+                    handleChange={handleChange}
+                    handleErrors={handleErrors}
+                />
 
-                <form className='default' onSubmit={this.handleSubmit}>
-                    <InputContainer
-                        label={t(this.props, 'devise.passwords.password')}
-                        attribute='password'
-                        type='password'
-                        showErrors={this.state.showErrors}
-                        validate={function(v){return v.length > 6}}
-                        handleChange={this.handleChange}
-                        handleErrors={this.handleErrors}
-                    />
-                    <InputContainer
-                        label={t(this.props, 'devise.passwords.password_confirmation')}
-                        attribute='password_confirmation'
-                        type='password'
-                        showErrors={this.state.showErrors}
-                        validate={function(v){return v.length > 6 && v === _this.state.values.password}}
-                        handleChange={this.handleChange}
-                        handleErrors={this.handleErrors}
-                    />
-
-                    <input type="submit" value={t(this.props, 'devise.registrations.activate_submit')}/>
-                </form>
-            </div>
-        );
-    }
+                <input type="submit" value={t('devise.registrations.activate_submit')}/>
+            </form>
+        </div>
+    );
 }
+
+ChangePasswordForm.propTypes = {
+    projectId: PropTypes.string,
+    locale: PropTypes.string.isRequired,
+    account: PropTypes.object.isRequired,
+    submitChangePassword: PropTypes.func.isRequired,
+};

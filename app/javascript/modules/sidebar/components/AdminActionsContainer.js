@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
 
 import { submitDois, addRemoveArchiveId, setArchiveIds, getArchiveId, getLocale,
     getProjectId, getTranslations, getDoiResult } from 'modules/archive';
@@ -27,7 +26,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     submitData,
 }, dispatch);
 
-export default withRouter(connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(AdminActions));
+export default connect(mapStateToProps, mapDispatchToProps)(AdminActions);
