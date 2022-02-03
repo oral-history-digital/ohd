@@ -104,7 +104,7 @@ export default class RegistryEntryShow extends Component {
                                 }}
                                 to={pathBase(this.props) + '/interviews/' + rr.archive_id}
                             >
-                                A{`${ref_object_string}`}
+                                {`${ref_object_string}`}
                             </Link>
                         )
                     } else if (rr.archive_id) {
@@ -127,7 +127,7 @@ export default class RegistryEntryShow extends Component {
                             }}
                             to={pathBase(this.props) + '/interviews/' + rr.archive_id}
                         >
-                            B{`${ref_object_string}`}
+                            {`${ref_object_string}`}
                         </Link>
                     )
                 } else if (rr.archive_id) {
