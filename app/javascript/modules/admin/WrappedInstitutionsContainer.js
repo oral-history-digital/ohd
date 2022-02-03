@@ -7,6 +7,7 @@ import { fetchData, deleteData, submitData, getProjects, getCurrentAccount,
     getInstitutions, getInstitutionsStatus, getProjectLocales, getProjectHasMap } from 'modules/data';
 import { getCookie } from 'modules/persistence';
 import DataList from './DataList';
+import LogosContainer from './LogosContainer';
 import { INDEX_INSTITUTIONS } from 'modules/sidebar';
 
 const mapStateToProps = state => ({
@@ -71,7 +72,7 @@ const mapStateToProps = state => ({
             withEmpty: true,
         },
     ],
-    joinedData: { },
+    joinedData: { logo: LogosContainer },
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

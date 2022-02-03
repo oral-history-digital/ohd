@@ -15,13 +15,8 @@ const mapStateToProps = state => {
         translations: getTranslations(state),
         account: getCurrentAccount(state),
         editView: true,
-        //
-        data: project.logos,
-        outerScope: 'project',
-        outerScopeId: project.id,
         scope: 'logo',
         detailsAttributes: ['src', 'locale'],
-        initialFormValues: {ref_id: project.id, ref_type: 'Project', type: 'Logo'},
         formElements: [
             {
                 attribute: "locale",

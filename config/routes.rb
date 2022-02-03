@@ -208,6 +208,7 @@ Rails.application.routes.draw do
       #root to: redirect {|params, request| "/#{params[:locale]}/projects"}
       resources :projects, only: [:create, :destroy, :index]
       resources :institutions
+      resources :logos, only: [:create, :update, :destroy]
       concerns :account
       concerns :unnamed_devise_routes, :search
     end
