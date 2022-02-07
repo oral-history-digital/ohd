@@ -67,7 +67,7 @@ export default function MapFilter({
                     })
                 }
             </form>
-            {locationTypes.length > 1 && (
+            {locationTypes.length > 2 && (
                 <div>
                     <p>
                         {t('modules.search_map.multiple_types')}
