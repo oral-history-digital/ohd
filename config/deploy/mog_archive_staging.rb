@@ -1,7 +1,7 @@
 server "deploy_da03", roles: %w{app db web}
 
 set :application, "mog_archive_staging"
-set :branch, :development
+set :branch, ENV.fetch('BRANCH', 'development')
 
 # 1 st problem
 #set :branch, 'unteraufgabe/intarch-799-gender-divers-in-registrierung-einfuegen'
