@@ -4,7 +4,8 @@ import { bindActionCreators } from 'redux';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { setQueryParams, getInstitutionsQuery } from 'modules/search';
 import { fetchData, deleteData, submitData, getProjects, getCurrentAccount,
-    getInstitutions, getInstitutionsStatus, getProjectLocales, getProjectHasMap } from 'modules/data';
+    getInstitutions, getInstitutionsStatus, getProjectLocales,
+    getProjectHasMap, InstitutionTile } from 'modules/data';
 import { getCookie } from 'modules/persistence';
 import DataList from './DataList';
 import LogosContainer from './LogosContainer';
@@ -73,6 +74,7 @@ const mapStateToProps = state => ({
         },
     ],
     joinedData: { logo: LogosContainer },
+    showComponent: InstitutionTile,
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

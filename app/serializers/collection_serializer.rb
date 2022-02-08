@@ -1,5 +1,10 @@
 class CollectionSerializer < ApplicationSerializer
-  attributes :id, :name, :institution, :homepage, :notes
+  attributes :id,
+    :name,
+    :institution,
+    :project,
+    :homepage,
+    :notes
 
   %w(name homepage notes).each do |m|
     define_method m do
@@ -9,6 +14,10 @@ class CollectionSerializer < ApplicationSerializer
 
   def institution
     object.institution ? object.institution.localized_hash(:name) : {}
+  end
+
+  def project
+    object.project ? object.project.localized_hash(:name) : {}
   end
 
 end
