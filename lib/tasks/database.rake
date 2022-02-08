@@ -15,9 +15,11 @@
 #    )
 #    result: prepared-source-db-name.sql
 #
-# 3. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
+# 3. on target-db: run rake database:cleanup_active_storage
 #
-# 4. on target-db: run rake database:unify_[user_accounts|languages|permissions|institutions]
+# 4. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
+#
+# 5. on target-db: run rake database:unify_[user_accounts|languages|permissions|institutions]
 
 namespace :database do
 
@@ -61,6 +63,17 @@ namespace :database do
       cmd = "mysqldump -u #{args.user} -p #{args.db} -t --insert-ignore --complete-insert --ignore-table=#{args.db}.ar_internal_metadata --ignore-table=#{args.db}.schema_migrations > prepared-#{args.db}.sql"
        puts cmd
        exec cmd
+    end
+
+    desc 'cleanup active storage'
+    task :cleanup_active_storage => :environment do
+      ActiveStorage::Attachment.all.each do |attachment|
+        unless attachment.record
+          blob = attachment.blob
+          attachment.destroy
+          blob && blob.destroy
+        end
+      end
     end
 
     desc 'unify user_accounts'
