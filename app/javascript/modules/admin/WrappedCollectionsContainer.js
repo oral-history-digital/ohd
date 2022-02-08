@@ -44,6 +44,7 @@ const mapStateToProps = (state) => {
                 attribute: 'institution_id',
                 elementType: 'select',
                 values: getInstitutions(state),
+                withEmpty: true,
             },
             {
                 attribute: 'responsibles',
