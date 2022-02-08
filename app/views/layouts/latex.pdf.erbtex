@@ -4,7 +4,7 @@
 
 \usepackage[a4paper]{geometry}
 \setlength{\headheight}{54.0pt}
-\geometry{width=15cm, left=2.5cm, top=4cm, bottom=3cm}
+\geometry{width=15cm, left=2.5cm, top=4cm, bottom=4cm}
 \raggedright% flush left alignment
 
 \usepackage{fancyhdr}
