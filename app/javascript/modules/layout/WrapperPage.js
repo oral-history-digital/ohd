@@ -100,9 +100,9 @@ export default function WrapperPage({
         }
     }
 
-    let title = 'Oral-History.Digital';
+    let titleBase = 'Oral-History.Digital';
     if (project) {
-        title = project.name[locale];
+        titleBase = project?.display_name?.[locale] || project.name[locale];
     }
 
     return (
@@ -111,9 +111,11 @@ export default function WrapperPage({
                 'sidebar-is-visible': sidebarVisible,
                 'is-sticky': scrollPositionBelowThreshold,
             })}>
-                <Helmet>
+                <Helmet
+                    defaultTitle={titleBase}
+                    titleTemplate={`%s | ${titleBase}`}
+                >
                     <html lang={locale} />
-                    <title>{title}</title>
                 </Helmet>
 
                 <div className={classNames('Layout-page', 'Site')}>

@@ -1274,6 +1274,7 @@ el:
     map:
       mentions: Mentions
     search_map:
+      title: Map
       multiple_types: Multiple location types
       error: Error loading map
       map_section: Section

@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Helmet } from 'react-helmet';
 
 import { AuthShowContainer } from 'modules/auth';
 import { t } from 'modules/i18n';
@@ -54,14 +55,17 @@ export default class EditInterview extends Component {
     render() {
         return (
             <div className='wrapper-content register'>
+                <Helmet>
+                    <title>{t(this.props, `edit.interview.new`)}</title>
+                </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
-            <h1 className='registry-entries-title'>{t(this.props, `edit.interview.new`)}</h1>
-            {this.content()}
-            </AuthShowContainer>
-            <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                {t(this.props, 'devise.failure.unauthenticated')}
-            </AuthShowContainer>
-        </div>
+                    <h1 className='registry-entries-title'>{t(this.props, `edit.interview.new`)}</h1>
+                    {this.content()}
+                </AuthShowContainer>
+                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                    {t(this.props, 'devise.failure.unauthenticated')}
+                </AuthShowContainer>
+            </div>
         );
     }
 }

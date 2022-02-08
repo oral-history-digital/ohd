@@ -1,6 +1,7 @@
 class ProjectSerializer < ApplicationSerializer
   attributes :id,
     :name,
+    :display_name,
     :more_text,
     :shortname,
     :title,
@@ -105,6 +106,13 @@ class ProjectSerializer < ApplicationSerializer
   def name
     I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = object.name(locale)
+      mem
+    end
+  end
+
+  def display_name
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.display_name(locale)
       mem
     end
   end
