@@ -15,7 +15,7 @@
 
 \setmainfont{FiraSans-Regular}
 
-\usepackage{parskip}
+\usepackage[skip=\baselineskip]{parskip}
 \usepackage{setspace}
 \onehalfspacing
 
