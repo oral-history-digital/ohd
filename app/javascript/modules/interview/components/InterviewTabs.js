@@ -112,24 +112,32 @@ export default class InterviewTabs extends Component {
 
                 <div className='wrapper-content'>
                     <TabPanels>
+                        {/* The conditional renderings are needed to prevent
+                            various useEffect-related problems. */}
                         <TabPanel>
-                            {tabIndex === 0 &&  /* Needed for segment scroll effect to work on mount. */
+                            {tabIndex === 0 &&
                                 <TranscriptContainer originalLocale loadSegments />
                             }
                         </TabPanel>
                         <TabPanel>
-                            {tabIndex === 1 &&  /* Needed for segment scroll effect to work on mount. */
+                            {tabIndex === 1 &&
                                 <TranscriptContainer />
                             }
                         </TabPanel>
                         <TabPanel>
-                            <TableOfContentsContainer/>
+                            {tabIndex === 2 &&
+                                <TableOfContentsContainer/>
+                            }
                         </TabPanel>
                         <TabPanel>
-                            <InterviewSearchContainer/>
+                            {tabIndex === 3 &&
+                                <InterviewSearchContainer/>
+                            }
                         </TabPanel>
                         <TabPanel>
-                            <RefTreeContainer/>
+                            {tabIndex === 4 &&
+                                <RefTreeContainer/>
+                            }
                         </TabPanel>
                     </TabPanels>
                 </div>

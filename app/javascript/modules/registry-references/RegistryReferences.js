@@ -92,6 +92,5 @@ RegistryReferences.propTypes = {
     interview: PropTypes.object.isRequired,
     registryEntries: PropTypes.object.isRequired,
     registryEntriesStatus: PropTypes.object.isRequired,
-    fetchData: PropTypes.func.isRequired,
     setOpenReference: PropTypes.func,
 };
