@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
+import { Helmet } from 'react-helmet';
 
 import { ScrollToTop } from 'modules/user-agent';
 import { getMapSections } from 'modules/data';
@@ -31,6 +32,9 @@ export default function SearchMap() {
 
     return (
         <ScrollToTop>
+            <Helmet>
+                <title>{t('modules.search_map.title')}</title>
+            </Helmet>
             <div className="wrapper-content map SearchMap">
                 {
                     error ?

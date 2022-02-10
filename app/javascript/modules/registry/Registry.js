@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { INDEX_REGISTRY_ENTRIES, INDEX_ACCOUNT } from 'modules/sidebar';
@@ -27,6 +28,9 @@ export default function Registry({
 
     return (
         <ScrollToTop>
+            <Helmet>
+                <title>{t('registry')}</title>
+            </Helmet>
             <div className='wrapper-content register'>
                 <Fetch
                     fetchParams={['registry_entries', currentProject?.root_registry_entry_id, null, null, 'with_associations=true']}

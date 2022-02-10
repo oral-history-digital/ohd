@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Helmet } from 'react-helmet';
 
 import { t } from 'modules/i18n';
 import OrderNewPasswordFormContainer from './OrderNewPasswordFormContainer';
@@ -33,6 +34,9 @@ export default class OrderNewPassword extends Component {
     render() {
         return (
             <div className='wrapper-content register'>
+                <Helmet>
+                    <title>{t(this.props, 'devise.passwords.forgot')}</title>
+                </Helmet>
                 {this.content()}
             </div>
         )

@@ -3,11 +3,12 @@
  */
 
 .MapPopup {
+  font-family: $font-family;
   max-height: $base-unit * 10;
   min-height: $base-unit * 4;  /* 1 */
   overflow-y: auto;
-  width: $base-unit * 10;
   padding: 0;
+  width: $base-unit * 10;
 }
 
 .MapPopup-heading {
@@ -67,7 +68,6 @@
   border: none;
   color: var(--primary-color) !important;
   cursor: pointer;
-  font-family: $font-family;
   font-size: 0.75rem;
   line-height: $base-unit !important;
   margin: 0;

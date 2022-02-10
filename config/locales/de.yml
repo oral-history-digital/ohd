@@ -1261,6 +1261,7 @@ de:
     map:
       mentions: Erwähnungen
     search_map:
+      title: Karte
       multiple_types: Mehrere Ortstypen
       error: Fehler beim Laden der Karte
       map_section: Ausschnitt

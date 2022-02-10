@@ -1,5 +1,6 @@
 import AuthShowContainer from 'modules/auth/AuthShowContainer';
 import EditProjectConfigAttributesContainer from './EditProjectConfigAttributesContainer';
+import { Helmet } from 'react-helmet';
 
 import { useI18n } from 'modules/i18n';
 
@@ -8,6 +9,9 @@ export default function EditProjectConfig() {
 
     return (
         <div className='wrapper-content register'>
+            <Helmet>
+                <title>{t(`edit.project.config`)}</title>
+            </Helmet>
             <AuthShowContainer ifLoggedIn={true}>
                 <h1 className='registry-entries-title'>{t(`edit.project.config`)}</h1>
                 <EditProjectConfigAttributesContainer />

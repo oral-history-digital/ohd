@@ -1,6 +1,7 @@
 import { createElement, Component } from 'react';
 import Observer from 'react-intersection-observer'
 import { FaPlus } from 'react-icons/fa';
+import { Helmet } from 'react-helmet';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
@@ -158,6 +159,9 @@ export default class WrappedDataList extends Component {
     render() {
         return (
             <div className='wrapper-content register'>
+                <Helmet>
+                    <title>{t(this.props, `activerecord.models.${this.props.scope}.other`)}</title>
+                </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
                     <h1 className='registry-entries-title'>
                         {t(this.props, `activerecord.models.${this.props.scope}.other`)}

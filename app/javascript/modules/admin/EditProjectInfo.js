@@ -2,6 +2,7 @@ import AuthShowContainer from 'modules/auth/AuthShowContainer';
 import EditProjectInfoAttributesContainer from './EditProjectInfoAttributesContainer';
 import ExternalLinksContainer from './ExternalLinksContainer';
 import InstitutionProjectsContainer from './InstitutionProjectsContainer';
+import { Helmet } from 'react-helmet';
 
 import { useI18n } from 'modules/i18n';
 
@@ -10,6 +11,9 @@ export default function EditProjectInfo() {
 
     return (
         <div className='wrapper-content register'>
+            <Helmet>
+                <title>{t(`edit.project.info`)}</title>
+            </Helmet>
             <AuthShowContainer ifLoggedIn={true}>
                 <h1 className='registry-entries-title'>{t(`edit.project.info`)}</h1>
                 <EditProjectInfoAttributesContainer />

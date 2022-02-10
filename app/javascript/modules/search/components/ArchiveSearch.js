@@ -2,6 +2,7 @@ import { Component } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import Observer from 'react-intersection-observer'
+import { Helmet } from 'react-helmet';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
@@ -106,6 +107,9 @@ export default class ArchiveSearch extends Component {
 
         return (
             <ScrollToTop>
+                <Helmet>
+                    <title>{t(this.props, 'interviews')}</title>
+                </Helmet>
                 <div className="wrapper-content interviews">
                     <h1 className="search-results-title">
                         {t(this.props, 'interviews')}
