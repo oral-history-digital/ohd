@@ -313,18 +313,31 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       format.json do
         logged_in = current_user_account.present?
+        serializer_name = logged_in ? 'InterviewLoggedInSearchResult' : 'InterviewBase'
+        featured_interviews = current_project.featured_interviews
 
-        json = Rails.cache.fetch("#{current_project.shortname}-interview-random-featured-#{logged_in}", expires_in: 30.minutes) do
-          serializer_name = logged_in ? 'InterviewLoggedInSearchResult' : 'InterviewBase'
-          data = Interview.random_featured(6, current_project.id).inject({}) do |mem, interview|
+        if featured_interviews.present?
+          data = featured_interviews.inject({}) do |mem, interview|
             mem[interview.archive_id] = cache_single(interview, serializer_name)
             mem
           end
-          {
+          json = {
             data: data,
             data_type: "random_featured_interviews",
-          }
-        end.to_json
+        }.to_json
+        else
+          json = Rails.cache.fetch("#{current_project.shortname}-interview-random-featured-#{logged_in}", expires_in: 30.minutes) do
+            data = Interview.random_featured(6, current_project.id).inject({}) do |mem, interview|
+              mem[interview.archive_id] = cache_single(interview, serializer_name)
+              mem
+            end
+            {
+              data: data,
+              data_type: "random_featured_interviews",
+            }
+          end.to_json
+        end
+
         render plain: json
       end
     end

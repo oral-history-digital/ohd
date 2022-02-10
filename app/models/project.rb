@@ -175,6 +175,10 @@ class Project < ApplicationRecord
     end
   end
 
+  def featured_interviews
+    interviews.where.not(startpage_position: nil).order(startpage_position: :asc)
+  end
+
   def search_facets_hash
     # TODO: there is potential to make the following (uncached) faster
     #
