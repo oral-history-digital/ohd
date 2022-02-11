@@ -1,6 +1,7 @@
 require "globalize"
 
 class Project < ApplicationRecord
+  enum default_search_order: [:alphabetical, :collection]
 
   has_many :logos, as: :ref, dependent: :destroy
   has_many :sponsor_logos, as: :ref, dependent: :destroy
