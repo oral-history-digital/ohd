@@ -68,11 +68,6 @@ export default class RegisterForm extends Component {
                 attribute: 'organization',
                 type: 'text',
             },
-            {
-                elementType: 'input',
-                attribute: 'homepage',
-                type: 'text',
-            }
         ];
 
         let addressElements = [
@@ -86,7 +81,6 @@ export default class RegisterForm extends Component {
                 elementType: 'input',
                 attribute: 'zipcode',
                 type: 'text',
-                validate: this.props.projectId !== 'mog' && function(v){return v && v.length > 1}
             },
             {
                 elementType: 'input',
