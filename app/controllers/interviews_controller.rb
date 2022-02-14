@@ -235,6 +235,7 @@ class InterviewsController < ApplicationController
   end
 
   def export_photos
+    ExportPhotosJob.perform_later(params[:archive_ids], current_user_account, current_project, params[:locale])
     #TODO
   end
 
