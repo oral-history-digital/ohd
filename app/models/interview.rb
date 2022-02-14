@@ -75,7 +75,7 @@ class Interview < ApplicationRecord
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
     atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id)
-    update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
+    update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
   end
 
   after_create :create_tasks

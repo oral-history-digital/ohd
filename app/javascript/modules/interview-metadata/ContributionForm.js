@@ -58,7 +58,7 @@ export default function ContributionForm({
             elementType: 'select',
             attribute: 'workflow_state',
             values: ["unshared", "public"],
-            value: contribution?.workflow_state,
+            value: contribution ? contribution.workflow_state : 'public',
             optionsScope: 'workflow_states',
         }
     ]
@@ -77,7 +77,10 @@ export default function ContributionForm({
             <Form
                 scope='contribution'
                 data={contribution}
-                values={{ interview_id: interview?.id }}
+                values={{
+                    interview_id: interview?.id,
+                    workflow_state: contribution ? contribution.workflow_state : 'public'
+                }}
                 onSubmit={(params) => {
                     if (typeof submitData === 'function') {
                         submitData({ locale, projectId, projects }, params);
