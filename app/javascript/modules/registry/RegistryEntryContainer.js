@@ -1,9 +1,10 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchData, deleteData, getProjects, getRegistryEntries, getRegistryEntriesStatus } from 'modules/data';
-import { addRemoveRegistryEntryId, getLocale, getTranslations, getSelectedRegistryEntryIds,
-    getProjectId } from 'modules/archive';
+import { fetchData, deleteData, getProjects, getRegistryEntries,
+    getRegistryEntriesStatus, getCurrentAccount } from 'modules/data';
+import { addRemoveRegistryEntryId, getLocale, getTranslations,
+    getSelectedRegistryEntryIds, getProjectId, getEditView } from 'modules/archive';
 import RegistryEntry from './RegistryEntry';
 
 const mapStateToProps = (state) => ({
@@ -14,6 +15,8 @@ const mapStateToProps = (state) => ({
     registryEntriesStatus: getRegistryEntriesStatus(state),
     registryEntries: getRegistryEntries(state),
     selectedRegistryEntryIds: getSelectedRegistryEntryIds(state),
+    editView: getEditView(state),
+    account: getCurrentAccount(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
