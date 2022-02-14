@@ -802,7 +802,7 @@ class Interview < ApplicationRecord
           end
         end
         if params[:fulltext].blank? && params[:order].blank?
-          if project.default_search_order == 'collection'
+          if project && project.default_search_order == 'collection'
             order_by(:collection_id, :asc)
             order_by("person_name_#{locale}".to_sym, :asc)
           else
