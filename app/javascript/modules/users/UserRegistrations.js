@@ -1,6 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 import Observer from 'react-intersection-observer'
+import { Helmet } from 'react-helmet';
 
 import { AuthShowContainer } from 'modules/auth';
 import { parametrizedQuery } from 'modules/admin';
@@ -59,6 +60,9 @@ export default class UserRegistrations extends Component {
     render() {
         return (
             <div className='wrapper-content register'>
+                <Helmet>
+                    <title>{t(this.props, `edit.users.admin`)}</title>
+                </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
                     <h1 className='registry-entries-title'>
                         {t(this.props, `edit.users.admin`)}

@@ -1,5 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Helmet } from 'react-helmet';
 
 import UserProjects from './UserProjects';
 import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
@@ -22,6 +23,9 @@ export default class WrappedAccount extends Component {
 
         return (
             <div className='wrapper-content register'>
+                <Helmet>
+                    <title>{t(this.props, `activerecord.models.user_account.one`)}</title>
+                </Helmet>
                 <AuthShowContainer ifLoggedIn ifNoProject >
                     <h1>{t(this.props, `activerecord.models.user_account.one`)}</h1>
                     <div className='user-registration boxes'>

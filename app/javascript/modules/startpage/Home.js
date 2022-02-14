@@ -14,6 +14,7 @@ export default function Home({
     showStartPageVideo,
     showFeaturedInterviews,
     setSidebarTabsIndex,
+    institutions,
 }) {
     useEffect(() => {
         setSidebarTabsIndex(isCampscapesProject ? INDEX_NONE : INDEX_ACCOUNT);
@@ -30,7 +31,11 @@ export default function Home({
                 }
                 <div className="home-text">
                     <h1>{projectTranslation?.name}</h1>
-                    <p><b>{project.hosting_institution}</b></p>
+                    {Object.values(project.institution_projects).map(ip => {
+                        return (
+                            <p><b>{institutions[ip.institution_id].name[projectTranslation.locale]}</b></p>
+                        )
+                    })}
                     <div dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}} />
                 </div>
                 {

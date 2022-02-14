@@ -1,10 +1,13 @@
 require "globalize"
 
 class Project < ApplicationRecord
+  enum default_search_order: [:alphabetical, :collection]
 
   has_many :logos, as: :ref, dependent: :destroy
   has_many :sponsor_logos, as: :ref, dependent: :destroy
 
+  has_many :institution_projects, dependent: :destroy
+  has_many :institutions, through: :institution_projects
   has_many :interviews, dependent: :destroy
   has_many :collections, dependent: :destroy
   has_many :contribution_types, dependent: :destroy
@@ -23,7 +26,8 @@ class Project < ApplicationRecord
   has_many :people, dependent: :destroy
   has_many :map_sections, dependent: :destroy
 
-  translates :name, :introduction, :more_text, :landing_page_text, fallbacks_for_empty_translations: true, touch: true
+  translates :name, :display_name, :introduction, :more_text, :landing_page_text,
+    fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
   serialize :view_modes, Array
@@ -172,6 +176,10 @@ class Project < ApplicationRecord
     end
   end
 
+  def featured_interviews
+    interviews.where.not(startpage_position: nil).order(startpage_position: :asc)
+  end
+
   def search_facets_hash
     # TODO: there is potential to make the following (uncached) faster
     #
@@ -246,7 +254,7 @@ class Project < ApplicationRecord
                   name: sf.localized_hash(:name),
                   count: 0,
                   homepage: sf.try(:localized_hash, :homepage),
-                  institution: sf.try(:localized_hash, :institution),
+                  institution: sf.institution.try(:localized_hash, :name),
                   notes: sf.try(:localized_hash, :notes),
                 }
                 subfacets

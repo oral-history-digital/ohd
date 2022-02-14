@@ -4,8 +4,9 @@ class Collection < ApplicationRecord
 
   has_many :interviews
   belongs_to :project
+  belongs_to :institution
 
-  translates :name, :homepage, :institution, :countries, :interviewers, :responsibles, :notes, fallbacks_for_empty_translations: true, touch: true
+  translates :name, :homepage, :countries, :interviewers, :responsibles, :notes, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
 
   validates_presence_of :name, :project_id

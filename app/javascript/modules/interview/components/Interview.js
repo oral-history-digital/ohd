@@ -2,17 +2,18 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
 import { EditTableLoader } from 'modules/edit-table';
 import { MediaPlayerContainer } from 'modules/media-player';
-import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
+import { AuthShowContainer, AuthorizedContent, useProjectAccessStatus } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
 import { INDEX_INTERVIEW } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
 import { getInterviewsStatus } from 'modules/data';
 import InterviewDetailsLeftSideContainer from './InterviewDetailsLeftSideContainer';
 import InterviewTabsContainer from './InterviewTabsContainer';
 import InterviewLoggedOut from './InterviewLoggedOut';
-import { useProjectAccessStatus } from 'modules/auth';
 
 export default function Interview({
     interview,
@@ -30,7 +31,7 @@ export default function Interview({
     isLoggedIn,
 }) {
     const { archiveId } = useParams();
-
+    const { t } = useI18n();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const statuses = useSelector(getInterviewsStatus);
     const status = statuses[archiveId];
@@ -77,6 +78,9 @@ export default function Interview({
     } else {
         return (
             <div>
+                <Helmet>
+                    <title>{t('activerecord.models.interview.one')} {interview.archive_id}</title>
+                </Helmet>
                 <AuthShowContainer ifLoggedIn>
                     <AuthorizedContent  object={interview} action='show' showUnauthorizedMsg showIfPublic>
                         <MediaPlayerContainer />

@@ -60,15 +60,16 @@ export default class InterviewTabs extends Component {
 
     render() {
         const { interview, projectId, locale } = this.props;
+        const { tabIndex } = this.state;
 
         return (
             <Tabs
                 className="Tabs"
                 keyboardActivation="manual"
-                index={this.state.tabIndex}
+                index={tabIndex}
                 onChange={tabIndex => {this.setState({tabIndex}); this.props.setInterviewTabIndex(tabIndex)}}
             >
-                <div className="Layout-contentTabs content-tabs">
+                <div className="Layout-contentTabs">
                     <TabList className="Tabs-tabList">
                         <Tab className="Tabs-tab">
                             <FaRegFileAlt className="Tabs-tabIcon"/>
@@ -111,20 +112,32 @@ export default class InterviewTabs extends Component {
 
                 <div className='wrapper-content'>
                     <TabPanels>
+                        {/* The conditional renderings are needed to prevent
+                            various useEffect-related problems. */}
                         <TabPanel>
-                            <TranscriptContainer originalLocale loadSegments />
+                            {tabIndex === 0 &&
+                                <TranscriptContainer originalLocale loadSegments />
+                            }
                         </TabPanel>
                         <TabPanel>
-                            <TranscriptContainer />
+                            {tabIndex === 1 &&
+                                <TranscriptContainer />
+                            }
                         </TabPanel>
                         <TabPanel>
-                            <TableOfContentsContainer/>
+                            {tabIndex === 2 &&
+                                <TableOfContentsContainer/>
+                            }
                         </TabPanel>
                         <TabPanel>
-                            <InterviewSearchContainer/>
+                            {tabIndex === 3 &&
+                                <InterviewSearchContainer/>
+                            }
                         </TabPanel>
                         <TabPanel>
-                            <RefTreeContainer/>
+                            {tabIndex === 4 &&
+                                <RefTreeContainer/>
+                            }
                         </TabPanel>
                     </TabPanels>
                 </div>

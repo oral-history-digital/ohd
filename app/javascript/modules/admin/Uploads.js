@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Helmet } from 'react-helmet';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Form } from 'modules/forms';
@@ -115,6 +116,9 @@ export default class Uploads extends Component {
     render() {
         return (
             <div className='wrapper-content register'>
+                <Helmet>
+                    <title>{t(this.props, `edit.upload.upload`)}</title>
+                </Helmet>
                 <AuthShowContainer ifLoggedIn={true}>
                     <h1 className='registry-entries-title'>{t(this.props, `edit.upload.upload`)}</h1>
                     {this.content()}

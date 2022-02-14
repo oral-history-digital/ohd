@@ -8,6 +8,7 @@ import { Form } from 'modules/forms';
 import { camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 import DataContainer from './DataContainer';
+import { setSidebarTabsIndex } from 'modules/sidebar';
 
 export default class DataList extends Component {
 
@@ -18,6 +19,7 @@ export default class DataList extends Component {
 
     componentDidMount() {
         this.loadJoinData();
+        setSidebarTabsIndex(this.props.sidebarTabsIndex);
     }
 
     loadJoinData() {

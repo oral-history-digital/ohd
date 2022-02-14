@@ -15,7 +15,7 @@ test('filters references by reference type id', () => {
             registry_reference_type_id: 3,
         },
     ];
-    const filter = [1, 2];
+    const filter = ['1', '2'];
 
     const actual = filterReferences(filter, references);
     const expected = [

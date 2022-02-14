@@ -21,6 +21,13 @@ export default function Modal({
         event.stopPropagation();
     };
 
+    const dismiss = (event) => {
+        // Close if escape key was pressed, not if user clicked outside.
+        if (event.type === 'keydown') {
+            close();
+        }
+    };
+
     return (
         <>
             <button
@@ -36,8 +43,7 @@ export default function Modal({
                 className={classNames('Modal-dialog', className)}
                 isOpen={showDialog}
                 aria-label={title}
-                onDismiss={close}
-
+                onDismiss={dismiss}
                 onMouseDown={handleClick}
                 onMouseUp={handleClick}
                 onMouseMove={handleClick}

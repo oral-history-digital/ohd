@@ -335,6 +335,10 @@ el:
       display: Anzeigeoptionen bearbeiten
       processed: 'Sammlung angelegt: '
       return: Weitere Sammlung anlegen
+    projects:
+      admin: Sammlungen
+    institution:
+      admin: Institutionen
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
@@ -347,6 +351,12 @@ el:
       admin: Externen Links bearbeiten
       processed: 'Externer Link angelegt: '
       return: Weiteren Externen Link anlegen
+    institution_project:
+      new: Institution hinzufügen
+      edit: Institution bearbeiten
+      admin: Institutionen bearbeiten
+      processed: 'Institution angelegt: '
+      return: Weitere Institution anlegen
     logo:
       new: Logo hinzufügen
       edit: Logo bearbeiten
@@ -735,6 +745,9 @@ el:
       language:
         one: Sprache
         other: Sprachen
+      institution:
+        one: Institution
+        other: Institutions
       photo:
         one: Bild
         other: Bilder
@@ -846,6 +859,7 @@ el:
         speaker_designation: Υπόδειξη ομιλιτών (π.χ. *CG:*)
       collection:
         project_id: Πρόγραμμα
+        institution_id: Institution
         homepage: Ιστοσελίδα
         name: Name
         countries: Συνεντεύξεις στην
@@ -858,6 +872,12 @@ el:
       language:
         code: Κωδικός
         name: Name
+      institution:
+        isil: ISIL
+        gnd: GND
+        parent_id: übergeordnete Institution
+      institution_project:
+        institution_id: Institution
       interview:
         person_name: Όνομα
         collection_id: Υποσυλλογή
@@ -1142,11 +1162,21 @@ el:
         name: Name
         title: Name
         label: Label
+        shortname: Abkürzung
+        abbreviation: Abkürzung
+        description: Beschreibung
+        desc: Beschreibung
+        street: Strasse
+        zip: Postleitzahl
+        city: Ort
+        country: Land
+        latitude: Latitude
+        longitude: Longitude
+        website: Website
         archive_id: Interview ID
         workflow_state: Status
         locale: Sprache
         lang: Sprache
-        desc: Beschreibung
         text: Text
         email: Ηλεκτρονική διεύθυνση
         url: URL
@@ -1155,7 +1185,6 @@ el:
         publish: Δημόσιο
         project_id: Sammlung
         key: Schlüssel
-        abbreviation: Abkürzung
         created_at: Angelegt am
         code: Code
         use_in_details_view: in der Detailansicht zeigen
@@ -1221,7 +1250,7 @@ el:
       description: Παρουσίαση των τόπων που αναφέρονται στη συνέντευξη
       error: Error loading map
       error_references: Error loading references
-      segment_references: References in the transcript
+      segment_references: Mentions
       at: at
     interview_metadata:
       add_contributors: Add contributors
@@ -1242,7 +1271,10 @@ el:
         label: "Back to top"
     registry:
       name_missing: "registry name missing"
+    map:
+      mentions: Mentions
     search_map:
+      title: Map
       multiple_types: Multiple location types
       error: Error loading map
       map_section: Section

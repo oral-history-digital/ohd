@@ -22,9 +22,9 @@ class IndexingTabPanel extends Component {
     render() {
         return admin(this.props, {type: 'General'}, 'edit') ?
             (<Fragment>
-                <div className='flyout-tab-title'>
+                <h3 className='SidebarTabs-title'>
                     { t(this.props, 'edit.indexing') }
-                </div>
+                </h3>
                 <div className='flyout-sub-tabs-container'>
                     <SubTab
                         title='edit.interview.new'

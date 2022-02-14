@@ -117,43 +117,6 @@ h1.search-results-title {
     margin-bottom: 0;
   }
 }
-.search-results-tabs {
-  list-style: none;
-  margin: 0 0 20px 0;
-  padding: 0 0 10px 0;
-  border-bottom: 1px solid $gray-dark;
-  @include screen-m {
-
-  }
-}
-.search-results-tab {
-  display: inline-block;
-  margin-right: 4px;
-  padding: 10px 20px;
-  background-color: #ddd;
-  color: $gray-darker;
-  transition: color 0.3s;
-  transition: background-color 0.3s;
-  cursor: pointer;
-  .fa {
-    margin-right: 0;
-    @include screen-m {
-      margin-right: 10px;
-    }
-  }
-  &.active {
-    background-color: var(--primary-color);
-    .fa, span {
-      color: #fff;
-    }
-  }
-
-  &:not(.active):hover,
-  &:focus {
-    background-color: $focus-color-dark;
-    color: $flyout-tab-title-text-color;
-  }
-}
 
 ul.search-results-pagination {
   list-style: none;

@@ -1,10 +1,10 @@
-\documentclass[10pt]{article}
+\documentclass[fontsize=10pt]{article}
 
 <% @latex_config = {:parse_runs => 2, :recipe => [{:command => 'xelatex'}]} %>
 
 \usepackage[a4paper]{geometry}
 \setlength{\headheight}{54.0pt}
-\geometry{width=15cm, left=2.5cm, top=4cm, bottom=3cm}
+\geometry{width=15cm, left=2.5cm, top=4cm, bottom=4cm}
 \raggedright% flush left alignment
 
 \usepackage{fancyhdr}
@@ -41,4 +41,3 @@
 <%= yield %>
 
 \end{document}
-

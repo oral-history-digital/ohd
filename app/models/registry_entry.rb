@@ -98,6 +98,7 @@ class RegistryEntry < ApplicationRecord
   end
 
   searchable do
+    integer :project_id, :stored => true, :references => Project
     string :archive_id, :multiple => true, :stored => true do
       registry_references.map{|i| i.archive_id }
     end
@@ -160,41 +161,35 @@ class RegistryEntry < ApplicationRecord
     .select('registry_entries.id, GROUP_CONCAT(registry_name_translations.descriptor ORDER BY registry_names.name_position ASC, registry_name_types.order_priority ASC SEPARATOR \', \') AS label, registry_hierarchies.ancestor_id AS parent')
   }
 
-  scope :for_interview_map, -> (locale, interview_id) {
-    joins('INNER JOIN registry_names ON registry_names.registry_entry_id = registry_entries.id')
-    .joins('INNER JOIN registry_name_translations ON registry_name_translations.registry_name_id = registry_names.id')
-    .joins('INNER JOIN registry_references ON registry_references.registry_entry_id = registry_entries.id')
-    .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
-    .where('interviews.id': interview_id)
-    .where('registry_references.ref_object_type': 'Segment')
-    .where('registry_name_translations.locale': locale)
-    .where.not('registry_entries.latitude': [nil, ''])
-    .where.not('registry_entries.longitude': [nil, ''])
-    .group('registry_entries.id')
-    .select('registry_entries.id, registry_name_translations.descriptor AS name, registry_entries.longitude, registry_entries.latitude, GROUP_CONCAT(registry_references.ref_object_type) AS ref_types')
-  }
-
   scope :for_map, -> (locale, person_ids = [], interview_ids = [], scope = 'public') {
     entries = joins('INNER JOIN registry_names ON registry_names.registry_entry_id = registry_entries.id')
       .joins('INNER JOIN registry_name_translations ON registry_name_translations.registry_name_id = registry_names.id')
       .joins('INNER JOIN registry_references ON registry_references.registry_entry_id = registry_entries.id')
       .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
-      .joins('INNER JOIN registry_reference_types ON registry_references.registry_reference_type_id = registry_reference_types.id')
-      .joins('INNER JOIN metadata_fields ON registry_reference_types.id = metadata_fields.registry_reference_type_id')
+      .joins('LEFT JOIN registry_reference_types ON registry_references.registry_reference_type_id = registry_reference_types.id')
+      .joins('LEFT JOIN metadata_fields ON registry_reference_types.id = metadata_fields.registry_reference_type_id')
       .where.not('registry_entries.latitude': [nil, ''])
       .where.not('registry_entries.longitude': [nil, ''])
-      .where('metadata_fields.use_in_map_search': true)
       .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
       .where('registry_name_translations.locale': locale)
 
-    entries.where('metadata_fields.ref_object_type': 'Person')
+    entries
+      .where('metadata_fields.ref_object_type': 'Person')
       .where('registry_references.ref_object_id': person_ids)
+      .where('metadata_fields.use_in_map_search': true)
       .or(
-        entries.where('metadata_fields.ref_object_type': 'Interview')
+        entries
+          .where('metadata_fields.ref_object_type': 'Interview')
           .where('registry_references.ref_object_id': interview_ids)
-        )
+          .where('metadata_fields.use_in_map_search': true)
+      )
+      .or(
+        entries
+          .where('interviews.id': interview_ids)
+          .where('registry_references.ref_object_type': 'Segment')
+      )
       .group('registry_entries.id')
-      .select('registry_entries.id, registry_name_translations.descriptor AS name, registry_entries.longitude, registry_entries.latitude, GROUP_CONCAT(registry_reference_types.id) AS ref_types')
+      .select('registry_entries.id, registry_name_translations.descriptor AS name, registry_entries.longitude, registry_entries.latitude, GROUP_CONCAT(IF(registry_references.ref_object_type = "Segment", "S", registry_reference_types.id)) AS ref_types')
   }
 
   def identifier
@@ -284,6 +279,10 @@ class RegistryEntry < ApplicationRecord
       block.call d
       d.on_all_descendants(&block)
     end
+  end
+
+  def search_project_id
+    project_id || (parents.first && parents.first.search_project_id)
   end
 
   def bread_crumb

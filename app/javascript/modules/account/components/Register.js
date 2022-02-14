@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import { Helmet } from 'react-helmet';
 
 import { t } from 'modules/i18n';
 import { ScrollToTop } from 'modules/user-agent';
@@ -41,6 +42,9 @@ export default class Register extends Component {
     render() {
         return (
             <ScrollToTop>
+                <Helmet>
+                    <title>{t(this.props, 'devise.registrations.link')}</title>
+                </Helmet>
                 <div className='wrapper-content register'>
                     {this.content()}
                 </div>

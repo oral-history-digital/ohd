@@ -1,4 +1,4 @@
-<% 
+<%
   interviewee_name = "#{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}"
   title = "#{I18n.t('biographical_entries_title', locale: @locale)} #{interviewee_name}"
   header_text = "#{I18n.t('biographical_entries_title', locale: @locale)} #{interviewee_name}, #{@interview.archive_id}"
@@ -33,8 +33,6 @@
                      space_below: 0,
                      font_size: 12,
                  } %>
-  <% text = biographical_entry.translations.where(locale: @locale).first.text %>
-  \par{<%= latex_escape(ActionView::Base.full_sanitizer.sanitize(text).gsub("&amp;", "&")) %>}
+
+  <%= raw biographical_entry.for_latex(@locale) %>
 <% end %>
-
-

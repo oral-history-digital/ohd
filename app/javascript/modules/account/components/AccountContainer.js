@@ -1,6 +1,5 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { withRouter } from 'react-router-dom';
 
 import { changeToEditView, getLocale, getArchiveId, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { hideSidebar } from 'modules/sidebar';
@@ -37,7 +36,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     clearSearch,
 }, dispatch);
 
-export default withRouter(connect(
-    mapStateToProps,
-    mapDispatchToProps
-)(Account));
+export default connect(mapStateToProps, mapDispatchToProps)(Account);

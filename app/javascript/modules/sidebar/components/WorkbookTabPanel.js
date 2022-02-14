@@ -6,9 +6,9 @@ function WorkbookTabPanel() {
 
     return (
         <AuthShowContainer ifLoggedIn ifNoProject>
-            <div className='flyout-tab-title'>
+            <h3 className='SidebarTabs-title'>
                 { t('user_content') }
-            </div>
+            </h3>
             <div className='flyout-sub-tabs-container flyout-folder'>
                 <WorkbookContainer />
             </div>

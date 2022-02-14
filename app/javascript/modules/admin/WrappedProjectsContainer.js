@@ -7,6 +7,7 @@ import { fetchData, deleteData, submitData, getCurrentProject, getProjects, getP
     getCurrentAccount } from 'modules/data';
 import DataList from './DataList';
 import { getProjectsStatus, ProjectTile } from 'modules/data';
+import { INDEX_PROJECTS } from 'modules/sidebar';
 
 const mapStateToProps = (state) => {
     let project = getCurrentProject(state);
@@ -23,7 +24,7 @@ const mapStateToProps = (state) => {
         resultPagesCount: getProjectsStatus(state).resultPagesCount,
         query: state.search.projects.query,
         scope: 'project',
-        baseTabIndex: 5 + (project ? project.has_map : 0),
+        sidebarTabsIndex: INDEX_PROJECTS,
         detailsAttributes: ['title'],
         initialFormValues: {display_ohd_link: true, pseudo_view_modes: 'grid,list,workflow'},
         formElements: [

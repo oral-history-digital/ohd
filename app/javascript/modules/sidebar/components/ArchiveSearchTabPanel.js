@@ -11,13 +11,13 @@ function ArchiveSearchTabPanel({ selectedArchiveIds, project }) {
 
     return (
         <>
-            <div className='flyout-tab-title'>
+            <h3 className='SidebarTabs-title'>
                 {t('archive_search')}
-            </div>
+            </h3>
 
             <ArchiveSearchFormContainer/>
 
-            { project && 
+            { project &&
                 <div className='flyout-sub-tabs-container flyout-video'>
                     <AuthorizedContent object={{type: 'General'}} action='edit'>
                         <InterviewDataContainer title={t('admin_actions')} >

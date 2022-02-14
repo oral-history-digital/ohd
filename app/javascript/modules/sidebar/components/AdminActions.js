@@ -134,8 +134,6 @@ AdminActions.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     translations: PropTypes.object.isRequired,
-    history: PropTypes.object.isRequired,
-    match: PropTypes.object.isRequired,
     setArchiveIds: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,

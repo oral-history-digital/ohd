@@ -1,6 +1,7 @@
 class ProjectSerializer < ApplicationSerializer
   attributes :id,
     :name,
+    :display_name,
     :more_text,
     :shortname,
     :title,
@@ -27,7 +28,6 @@ class ProjectSerializer < ApplicationSerializer
     :cooperation_partner,
     :leader,
     :manager,
-    :hosting_institution,
     :funder_names,
     :pseudo_funder_names,
     :contact_email,
@@ -49,6 +49,7 @@ class ProjectSerializer < ApplicationSerializer
     :external_links,
     :media_streams,
     :map_sections,
+    :institution_projects,
     :logos,
     :sponsor_logos,
     :list_columns,
@@ -74,6 +75,7 @@ class ProjectSerializer < ApplicationSerializer
     external_links
     media_streams
     map_sections
+    institution_projects
   ).each do |m|
     define_method m do
       object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
@@ -104,6 +106,13 @@ class ProjectSerializer < ApplicationSerializer
   def name
     I18n.available_locales.inject({}) do |mem, locale|
       mem[locale] = object.name(locale)
+      mem
+    end
+  end
+
+  def display_name
+    I18n.available_locales.inject({}) do |mem, locale|
+      mem[locale] = object.display_name(locale)
       mem
     end
   end

@@ -1,4 +1,4 @@
-import { MARKER_COLOR_MULTIPLE_TYPES, MARKER_COLOR_SEGMENT_TYPE } from '../constants';
+import { MARKER_COLOR_MULTIPLE_TYPES } from '../constants';
 
 export default function transformIntoMarkers(colorMap, locations) {
     if (!Array.isArray(locations)) {
@@ -10,7 +10,10 @@ export default function transformIntoMarkers(colorMap, locations) {
             throw new ReferenceError(`Lat/Lon values are empty for id ${location.id}`);
         }
 
-        const numReferences = location.ref_types.split(',').length;
+        const refs = location.ref_types.split(',');
+        const numReferences = refs.length;
+        const numMetadataReferences = refs.filter(ref => ref !== 'S').length;
+        const numSegmentReferences = numReferences - numMetadataReferences;
 
         return {
             id: location.id,
@@ -18,7 +21,9 @@ export default function transformIntoMarkers(colorMap, locations) {
             long: Number.parseFloat(location.lon),
             name: location.name,
             numReferences,
-            radius: markerRadius(numReferences),
+            numMetadataReferences,
+            numSegmentReferences,
+            radius: markerRadius(numMetadataReferences, numSegmentReferences),
             color: color(colorMap, location),
         };
     });
@@ -30,22 +35,21 @@ function isEmpty(geoCoordinate) {
     return (!geoCoordinate || geoCoordinate.length === 0);
 }
 
-function markerRadius(numReferences) {
-    return Math.cbrt(numReferences + 3) * 4;
+function markerRadius(numMetadataReferences, numSegmentReferences) {
+    return Math.cbrt(numMetadataReferences + 3) * 4;
 }
 
 function color(colorMap, location) {
     const typesArray = location.ref_types.split(',');
 
-    if ((new Set(typesArray)).size > 1) {
+    const typesWithoutSegmentRefs = new Set(typesArray);
+    typesWithoutSegmentRefs.delete('S');
+
+    if (typesWithoutSegmentRefs.size > 1) {
         return MARKER_COLOR_MULTIPLE_TYPES;
     } else {
-        const type = location.ref_types.split(',')[0];
+        const type = typesArray[0];
 
-        if (type === 'Segment') {
-            return MARKER_COLOR_SEGMENT_TYPE;
-        } else {
-            return colorMap.get(Number.parseInt(type));
-        }
+        return colorMap.get(type);
     }
 }

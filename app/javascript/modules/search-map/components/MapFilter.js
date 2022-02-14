@@ -20,11 +20,11 @@ export default function MapFilter({
     useEffect(() => {
         if (referenceTypes) {
             const initialFilter = referenceTypes
-                .map(type => type.id)
+                .map(type => type.id.toString())
                 .slice(0, MAP_NUM_INITIALLY_SELECTED_TYPES);
             initializeMapFilter(initialFilter);
         }
-    }, [referenceTypes]);
+    }, [JSON.stringify(referenceTypes)]);
 
     if (!locationTypes) {
         return null;
@@ -45,7 +45,7 @@ export default function MapFilter({
                                     name={type.name}
                                     type="checkbox"
                                     checked={type.filterIsSet}
-                                    onChange={() => toggleMapFilter(type.id)}
+                                    onChange={() => toggleMapFilter(type.id.toString())}
                                 />
                                 {`${type.name} `}
                                 <svg
@@ -67,7 +67,7 @@ export default function MapFilter({
                     })
                 }
             </form>
-            {locationTypes.length > 1 && (
+            {locationTypes.length > 2 && (
                 <div>
                     <p>
                         {t('modules.search_map.multiple_types')}

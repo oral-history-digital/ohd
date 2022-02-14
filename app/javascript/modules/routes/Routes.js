@@ -8,6 +8,7 @@ import { UserRegistrationsContainer } from 'modules/users';
 import { ArchiveSearchContainer } from 'modules/search';
 import ProjectIndex from './ProjectIndex';
 import ProjectRoutes from './ProjectRoutes';
+import { WrappedInstitutionsContainer } from 'modules/admin';
 
 export const Routes = () => (
     <Switch>
@@ -59,7 +60,18 @@ export const RoutesWithProjectId = () => (
         </Route>
         <Route exact path="/:locale">
             <ErrorBoundary>
+                {/* TODO: needs another startpage */}
                 <ProjectIndex />
+            </ErrorBoundary>
+        </Route>
+        <Route exact path="/:locale/projects">
+            <ErrorBoundary>
+                <ProjectIndex />
+            </ErrorBoundary>
+        </Route>
+        <Route exact path="/:locale/institutions">
+            <ErrorBoundary>
+                <WrappedInstitutionsContainer />
             </ErrorBoundary>
         </Route>
 

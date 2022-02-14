@@ -96,7 +96,8 @@ class CollectionsController < ApplicationController
     params.require(:collection).
       permit(
         'project_id', 
-        translations_attributes: [:locale, :id, :name, :institution, :responsibles, :notes, :countries, :homepage, :interviewers]
+        'institution_id',
+        translations_attributes: [:locale, :id, :name, :responsibles, :notes, :countries, :homepage, :interviewers]
     )
   end
 

@@ -1,6 +1,6 @@
 import queryString from 'query-string';
 import { useSelector } from 'react-redux';
-import useSWR from 'swr';
+import useSWRImmutable from 'swr/immutable';
 import flow from 'lodash.flow';
 import curry from 'lodash.curry';
 
@@ -9,15 +9,21 @@ import { useMapReferenceTypes, sortByReferenceTypeOrder } from 'modules/map';
 import { usePathBase } from 'modules/routes';
 import { getMapQuery } from 'modules/search';
 import { getEditView } from 'modules/archive';
+import { getIsLoggedIn } from 'modules/account';
 import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';
 import addAbbreviationPoint from './addAbbreviationPoint';
 import groupByType from './groupByType';
+import sortInterviewRefs from './sortInterviewRefs';
+import groupSegmentRefs from './groupSegmentRefs';
+import sortSegmentRefGroups from './sortSegmentRefGroups';
+import sortSegmentRefs from './sortSegmentRefs';
 
 export default function useMapReferences(registryEntryId) {
     const pathBase = usePathBase();
     const filter = useSelector(getMapFilter);
     const isEditView = useSelector(getEditView);
+    const isLoggedIn = useSelector(getIsLoggedIn);
     const query = useSelector(getMapQuery);
 
     const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
@@ -28,24 +34,46 @@ export default function useMapReferences(registryEntryId) {
     if (isEditView) {
         params['all'] = true;
     }
-    const paramStr = queryString.stringify(params);
+    // This is ignored in backend and only needed to create different keys for SWR.
+    if (isLoggedIn) {
+        params['logged-in'] = true;
+    }
+    const paramStr = queryString.stringify(params)
+    ;
     const path = `${pathBase}/searches/map_references/${registryEntryId}?${paramStr}`;
-    const { isValidating, data, error } = useSWR(path, fetcher);
+    const { isValidating, data, error } = useSWRImmutable(path, fetcher);
+
+    const interviewReferences = data?.interview_references;
+    const segmentReferences = filter.includes('S') ? data?.segment_references : [];
+    const numSegmentRefs = segmentReferences?.length;
 
     let referenceGroups = [];
-    if (referenceTypes && data && filter) {
+    if (referenceTypes && interviewReferences && filter) {
         const transformData = flow(
             curry(filterReferences)(filter),
             addAbbreviationPoint,
             curry(groupByType)(referenceTypes),
-            curry(sortByReferenceTypeOrder)(referenceTypes, 'id')
+            curry(sortByReferenceTypeOrder)(referenceTypes, 'id'),
+            sortInterviewRefs,
         );
-        referenceGroups = transformData(data);
+        referenceGroups = transformData(interviewReferences);
+    }
+
+    let segmentRefGroups = [];
+    if (segmentReferences) {
+        const transformData = flow(
+            groupSegmentRefs,
+            sortSegmentRefs,
+            sortSegmentRefGroups,
+        );
+        segmentRefGroups = transformData(segmentReferences);
     }
 
     return {
         isLoading: isValidating,
         referenceGroups,
+        segmentRefGroups,
+        numSegmentRefs,
         error,
     };
 }

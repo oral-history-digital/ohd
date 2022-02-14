@@ -15,9 +15,11 @@
 #    )
 #    result: prepared-source-db-name.sql
 #
-# 3. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
+# 3. on target-db: run rake database:cleanup_active_storage
 #
-# 4. on target-db: run rake database:unify_[user_accounts|languages|permissions]
+# 4. on target-db: mysql -u user -p target-db-name < prepared-source-db-name.sql
+#
+# 5. on target-db: run rake database:unify_[user_accounts|languages|permissions|institutions]
 
 namespace :database do
 
@@ -39,7 +41,7 @@ namespace :database do
       Rails.application.eager_load!
       ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).each do |model|
         puts "updating #{model}"
-        id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id'])
+        id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id'])
         id_columns.each do |col|
           if ActiveRecord::Base.connection.table_exists? model.table_name
             puts "updating #{col}"
@@ -58,9 +60,20 @@ namespace :database do
     desc 'prepare for join (add x and dump)' 
     task :prepare_join, [:max_id, :user, :db] => :environment do |t, args|
       Rake::Task['database:add_to_all_id_fields'].invoke(args.max_id)
-      cmd = "mysqldump -u #{args.user} -p #{args.db} -t --complete-insert --ignore-table=#{args.db}.ar_internal_metadata --ignore-table=#{args.db}.schema_migrations > prepared-#{args.db}.sql"
+      cmd = "mysqldump -u #{args.user} -p #{args.db} -t --insert-ignore --complete-insert --ignore-table=#{args.db}.ar_internal_metadata --ignore-table=#{args.db}.schema_migrations > prepared-#{args.db}.sql"
        puts cmd
        exec cmd
+    end
+
+    desc 'cleanup active storage'
+    task :cleanup_active_storage => :environment do
+      ActiveStorage::Attachment.all.each do |attachment|
+        unless attachment.record
+          blob = attachment.blob
+          attachment.destroy
+          blob && blob.destroy
+        end
+      end
     end
 
     desc 'unify user_accounts'
@@ -88,9 +101,8 @@ namespace :database do
     desc 'unify languages'
     task :unify_languages, [:max_id] => :environment do |t, args|
       Language.all.each do |language|
-        codes = ISO_639.find(language.code)
-        first_language = Language.where(code: codes).where("id <= ?", args.max_id).first
-        other_languages = Language.where(code: codes).where("id > ?", args.max_id)
+        first_language = Language.where(name: language.name).where("languages.id <= ?", args.max_id).first
+        other_languages = Language.where(name: language.name).where("languages.id > ?", args.max_id)
         other_languages.each do |other_language|
           other_language.interviews.update_all(language_id: first_language.id)
           other_language.destroy
@@ -110,6 +122,19 @@ namespace :database do
             perm.task_type_permissions.update_all(permission_id: first_perm.id)
             perm.destroy
           end
+        end
+      end
+    end
+
+    desc 'unify institutions'
+    task :unify_institutions, [:max_id] => :environment do |t, args|
+      Institution.all.each do |institution|
+        first_institution = Institution.where(name: institution.name).where("institutions.id <= ?", args.max_id).first
+        other_institutions = Institution.where(name: institution.name).where("institutions.id > ?", args.max_id)
+        other_institutions.each do |other_institution|
+          other_institution.collections.update_all(institution_id: first_institution.id)
+          other_institution.institution_projects.update_all(institution_id: first_institution.id)
+          other_institution.destroy
         end
       end
     end

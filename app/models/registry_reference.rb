@@ -47,6 +47,30 @@ class RegistryReference < BaseRegistryReference
       .select("registry_references.id, registry_reference_types.id as registry_reference_type_id, interviews.archive_id, person_translations.first_name, #{last_name_select}")
   }
 
+  scope :for_map_segment_references, -> (registry_entry_id, locale, interview_ids, signed_in = false, scope = 'public') {
+    last_name_select = signed_in ? 'person_translations.last_name' : 'SUBSTRING(person_translations.last_name,1,1) AS last_name'
+
+    joins('INNER JOIN registry_entries ON registry_references.registry_entry_id = registry_entries.id')
+      .joins('INNER JOIN interviews ON registry_references.interview_id = interviews.id')
+      .joins('INNER JOIN contributions ON contributions.interview_id = interviews.id')
+      .joins('INNER JOIN contribution_types ON contributions.contribution_type_id = contribution_types.id')
+      .joins('INNER JOIN people ON contributions.person_id = people.id')
+      .joins('INNER JOIN person_translations ON people.id = person_translations.person_id')
+      .joins('LEFT OUTER JOIN registry_reference_types ON registry_references.registry_reference_type_id = registry_reference_types.id')
+      .joins('INNER JOIN segments ON registry_references.ref_object_id = segments.id')
+      .joins('INNER JOIN tapes ON segments.tape_id = tapes.id')
+      .where('interviews.id': interview_ids)
+      .where('registry_entries.id': registry_entry_id)
+      .where.not('registry_entries.latitude': [nil, ''])
+      .where.not('registry_entries.longitude': [nil, ''])
+      .where('registry_references.ref_object_type': 'Segment')
+      .where('contribution_types.code': 'interviewee')
+      .where('interviews.workflow_state': scope == 'all' ? ['public', 'unshared'] : 'public')
+      .where('person_translations.locale': locale)
+      .group('registry_references.id')
+      .select("registry_references.id, registry_references.ref_object_type, registry_reference_types.id AS registry_reference_type_id, segments.timecode, tapes.number AS tape_nbr, interviews.archive_id, person_translations.first_name, #{last_name_select}")
+  }
+
   scope :for_interview_map_person_references, -> (registry_entry_id, locale, person_id) {
     joins('INNER JOIN people ON people.id = registry_references.ref_object_id')
       .joins('INNER JOIN registry_entries ON registry_references.registry_entry_id = registry_entries.id')
@@ -90,6 +114,7 @@ class RegistryReference < BaseRegistryReference
       .where.not('registry_entries.latitude': [nil, ''])
       .where.not('registry_entries.longitude': [nil, ''])
       .where('registry_references.ref_object_type': 'Segment')
+      .order('tapes.number ASC, segments.timecode ASC')
       .select('registry_references.id, registry_references.ref_object_type, registry_reference_types.id AS registry_reference_type_id, segments.timecode, tapes.number AS tape_nbr')
   }
 

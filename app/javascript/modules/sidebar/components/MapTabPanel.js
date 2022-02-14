@@ -9,9 +9,9 @@ import { AuthorizedContent } from 'modules/auth';
 function MapTabPanel(props) {
     return (
         <>
-            <div className='flyout-tab-title'>
+            <h3 className='SidebarTabs-title'>
                 { t(props, 'map') }
-            </div>
+            </h3>
 
             <ArchiveSearchFormContainer map />
 

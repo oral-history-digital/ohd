@@ -41,9 +41,9 @@ export default function InterviewTabPanel({
 
     return (
         <>
-            <div className='flyout-tab-title'>
+            <h3 className='SidebarTabs-title'>
                 {t('interview')}
-            </div>
+            </h3>
             {projectId !== PROJECT_CAMPSCAPES && (
                 <AuthShowContainer ifLoggedOut ifNoProject>
                     <AccountContainer/>
@@ -117,12 +117,6 @@ export default function InterviewTabPanel({
 
                 {projectId !== PROJECT_CAMPSCAPES && (
                     <AuthShowContainer ifLoggedIn>
-                        <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <InterviewDataContainer title={t('photos')} open>
-                                <GalleryContainer/>
-                            </InterviewDataContainer>
-                        </AuthorizedContent>
-
                         <AuthShowContainer ifLoggedIn={hasMap}>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
                                 <InterviewDataContainer title={t('map')} open>
@@ -130,6 +124,12 @@ export default function InterviewTabPanel({
                                 </InterviewDataContainer>
                             </AuthorizedContent>
                         </AuthShowContainer>
+
+                        <AuthorizedContent object={interview} action='show' showIfPublic>
+                            <InterviewDataContainer title={t('photos')} open>
+                                <GalleryContainer/>
+                            </InterviewDataContainer>
+                        </AuthorizedContent>
 
                         <AuthorizedContent object={interview} action='show' showIfPublic>
                             <InterviewDataContainer title={t('citation')} open>

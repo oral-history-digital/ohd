@@ -1,5 +1,4 @@
 import { Component } from 'react';
-import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 import { FaSearch, FaUndo } from 'react-icons/fa';
 
@@ -15,10 +14,6 @@ function onlyUnique(value, index, self) {
 }
 
 export default class ArchiveSearchForm extends Component {
-    static propTypes = {
-        history: PropTypes.object.isRequired,
-    }
-
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -112,8 +107,9 @@ export default class ArchiveSearchForm extends Component {
             this.props.setMapQuery(params);
         } else if (!this.props.map && !this.props.isArchiveSearching) {
             let url = `${pathBase(this.props)}/searches/archive`;
+            this.props.clearSearch();
+            this.props.clearAllInterviewSearch();
             this.props.searchInArchive(url, params);
-            this.props.history.push(url);
         }
     }
 

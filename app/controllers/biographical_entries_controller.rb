@@ -51,7 +51,7 @@ class BiographicalEntriesController < ApplicationController
     end
   end
 
-  def destroy 
+  def destroy
     @biographical_entry = BiographicalEntry.find(params[:id])
     authorize @biographical_entry
     @biographical_entry.destroy
