@@ -71,14 +71,15 @@ class Timecode
 
   # yields the time in seconds from a timecode
   # needs to work for both '00:00:00.00' and '00:00:00' formats!
-  def self.parse_timecode(time)
-    time.gsub!(/^\[\d{1,2}\]\s*/,'')
-    duration_in_secs = (time[/\.\d{2}$/] || '0').sub('.','').to_f / 25
+  def self.parse_timecode(timecode)
+    timecode.gsub!(/^\[\d{1,2}\]\s*/,'')
+    duration_in_secs = (timecode[/\.\d{2}$/] || '0').sub('.','').to_f / 25
+    milliseconds = (timecode[/\.\d{3}$/] || '0').to_f
     levels = [3600, 60, 1, 0.01]
-    time.split(':').each_with_index do |part,index|
+    timecode.split(':').each_with_index do |part,index|
       duration_in_secs += (part[/^\d+/] || 0).to_f * levels[index]
     end
-    duration_in_secs
+    duration_in_secs + milliseconds
   end
 
   # yields the formatted timecode from a duration in secs

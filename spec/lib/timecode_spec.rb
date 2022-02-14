@@ -8,6 +8,12 @@ describe Timecode, 'when parsing timecodes' do
     expect(Timecode.parse_timecode(timecode)).to eq(time)
   end
 
+  it 'should parse the "02:01:50.105" format correctly' do
+    timecode = '[1] 02:01:50.105'
+    time = 7200 + 110.105
+    expect(Timecode.parse_timecode(timecode)).to eq(time)
+  end
+
   it 'should parse the "02:01:50" format correctly' do
     timecode = '[2] 02:01:50'
     time = 7200 + 110
