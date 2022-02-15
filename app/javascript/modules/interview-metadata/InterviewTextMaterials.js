@@ -8,14 +8,13 @@ import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
 import { SingleValueWithFormContainer } from 'modules/forms';
 
 export default class InterviewTextMaterials extends Component {
-    download(lang, condition) {
+    download(lang, type, condition) {
         const { interview } = this.props;
 
-        // here the index ([1]) stands for the tape number. Therefore it is not 0-basded.
-        if (condition && interview.segments && interview.segments[1]?.[interview.first_segments_ids[1]]) {
+        if (condition) {
             return (
                 <a
-                    href={`${pathBase(this.props)}/interviews/${interview.archive_id}.pdf?lang=${lang}`}
+                    href={`${pathBase(this.props)}/interviews/${interview.archive_id}/${type}.pdf?lang=${lang}`}
                     className="flyout-content-data"
                 >
                     <FaDownload className="Icon Icon--small" title={t(this.props, 'download')} />
@@ -53,8 +52,30 @@ export default class InterviewTextMaterials extends Component {
                 <AuthShowContainer ifLoggedIn>
                     <p>
                         <span className='flyout-content-label'>{t(this.props, 'transcript')}:</span>
-                        {this.download(interview.lang, true)}
-                        {this.download(locale, (interview.languages.indexOf(locale) > -1 && interview.lang !== locale))}
+                        { this.download(
+                            interview.lang,
+                            'transcript',
+                            (interview.segments && interview.segments[1]?.[interview.first_segments_ids[1]])
+                        )}
+                        { this.download(
+                            locale,
+                            'transcript',
+                            (interview.languages.indexOf(locale) > -1 && interview.lang !== locale) &&
+                            (interview.segments && interview.segments[1]?.[interview.first_segments_ids[1]])
+                        )}
+                    </p>
+                    <p>
+                        <span className='flyout-content-label'>{t(this.props, 'activerecord.attributes.interview.observations')}:</span>
+                        { this.download(
+                            interview.lang,
+                            'observations',
+                            (interview.observations && interview.observations[interview.lang])
+                        )}
+                        { this.download(
+                            locale,
+                            'observations',
+                            (interview.observations && interview.observations[locale] && interview.lang !== locale)
+                        )}
                     </p>
                 </AuthShowContainer>
             </>

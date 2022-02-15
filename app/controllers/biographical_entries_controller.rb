@@ -24,6 +24,7 @@ class BiographicalEntriesController < ApplicationController
     @biography = true
     respond_to do |format|
       format.pdf do
+        @doc_type = 'biographical_entries'
         pdf = Rails.cache.fetch("#{current_project.cache_key_prefix}-biographical-entries-#{@interview.archive_id}-#{@interview.interviewees.first.biographical_entries.count}-#{@interview.interviewees.first.biographical_entries.maximum(:updated_at)}-#{@locale}") do
           render_to_string(:template => '/latex/biographical_entries.pdf.erb', :layout => 'latex.pdf.erbtex')
         end

@@ -219,6 +219,9 @@ es:
   biographical_entries_header: 'Biografía breve:'
   biographical_entries_title: 'Biografía breve de'
   biographical_entries_footer: 'Cómo citar: Biografía breve de'
+  observations_header: 'Protokoll (%{lang}):'
+  observations_title: Protokoll (%{lang}) des Interviews mit
+  observations_footer: 'Zitiervorgabe: Protokoll von'
   interview_info: Sobre la entrevista
   place: Lugar
   group: Grupo

@@ -1,0 +1,24 @@
+<%
+  interviewee_name = "#{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}"
+  title = "#{I18n.t('observations_title', lang: @locale)} #{interviewee_name}"
+  header_text = "#{I18n.t('observations_header', lang: @locale)} #{interviewee_name}, #{@interview.archive_id}"
+%>
+
+\title{<%= title %>}
+
+\begin{document}
+
+<%= render partial: "./latex/header_footer",
+           locals: {
+               header_text: header_text
+           } %>
+<%= render partial: "./latex/title",
+           locals:
+               {
+                   title: title,
+                   space_above: 0.4,
+                   space_below: 0.4,
+                   font_size: 14,
+               } %>
+
+<%= @interview.observations(@lang) %>

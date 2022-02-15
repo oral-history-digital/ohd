@@ -231,6 +231,9 @@ de:
   biographical_entries_header: 'Kurzbiografie:'
   biographical_entries_title: 'Kurzbiografie von'
   biographical_entries_footer: 'Zitiervorgabe: Kurzbiografie von'
+  observations_header: 'Protokoll (%{lang}):'
+  observations_title: Protokoll (%{lang}) des Interviews mit
+  observations_footer: 'Zitiervorgabe: Protokoll von'
   interview_info: Zum Interview
   place: Ort
   group: Gruppe

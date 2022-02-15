@@ -32,6 +32,14 @@ class InterviewPolicy < ApplicationPolicy
     user
   end
 
+  def transcript?
+    user
+  end
+
+  def observations?
+    user
+  end
+
   Interview.non_public_method_names.each do |m|
     define_method "#{m}?" do
       user

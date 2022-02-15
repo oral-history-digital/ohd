@@ -70,6 +70,8 @@ Rails.application.routes.draw do
         get :speaker_designations
         get :ref_tree
         get :reload_translations
+        get :transcript
+        get :observations
         Interview.non_public_method_names.each do |m|
           get m
         end

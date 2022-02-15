@@ -225,6 +225,9 @@ el:
   biographical_entries_header: 'Σύντομο βιογραφικό:'
   biographical_entries_title: 'Σύντομο βιογραφικό της/του'
   biographical_entries_footer: 'Τρόπος παραπομπής: Σύντομο βιογραφικό της/του'
+  observations_header: 'Protokoll (%{lang}):'
+  observations_title: Protokoll (%{lang}) des Interviews mit
+  observations_footer: 'Zitiervorgabe: Protokoll von'
   interview_info: Σχετικά με τη συνέντευξη
   place: Τόπος
   group: Gruppe
