@@ -5,7 +5,7 @@ import { FaGlobeEurope, FaMinus, FaPlus }
 import classNames from 'classnames';
 
 import { AdminMenu, Modal } from 'modules/ui';
-import { AuthorizedContent } from 'modules/auth';
+import { AuthorizedContent, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
@@ -195,7 +195,10 @@ export default class RegistryEntry extends Component {
     entry() {
         const { data, locale, registryEntryParent } = this.props;
 
-        const hasReferences = data.registry_references_count > 0;
+        const hasReferences = admin(this.props, {type: 'General'}, 'edit') ?
+            data.registry_references_count > 0 :
+            data.public_registry_references_count > 0;
+
         const localizedName = data.name[locale];
         const name = localizedName && localizedName.length > 0 ?
             localizedName :
@@ -210,7 +213,7 @@ export default class RegistryEntry extends Component {
         if (hasReferences) {
             return (
                 <Modal
-                    title={t(this.props, 'edit.annotation.edit')}
+                    title={t(this.props, 'activerecord.models.registry_entry.actions.show')}
                     triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
                     trigger={displayName}
                 >

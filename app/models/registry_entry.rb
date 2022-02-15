@@ -77,6 +77,7 @@ class RegistryEntry < ApplicationRecord
 
   after_update :touch_objects
   after_create :touch_objects
+  before_destroy :touch_objects
 
   def parents
     ancestors
@@ -84,6 +85,13 @@ class RegistryEntry < ApplicationRecord
 
   def children
     descendants
+  end
+
+  def public_registry_references_count
+    registry_references.joins(:interview)
+      .where(workflow_state: 'checked')
+      .where('interviews.workflow_state': 'public')
+      .count
   end
 
   # A registry entry may not be deleted if it still has children or

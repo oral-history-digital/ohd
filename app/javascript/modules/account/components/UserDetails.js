@@ -28,7 +28,10 @@ export default function UserDetails({
                     trigger={<FaPencilAlt className="Icon Icon--primary" />}
                 >
                     {close => (
-                        <UserDetailsFormContainer onSubmit={close} />
+                        <UserDetailsFormContainer
+                            onSubmit={close}
+                            onCancel={close}
+                        />
                     )}
                 </Modal>
             </div>

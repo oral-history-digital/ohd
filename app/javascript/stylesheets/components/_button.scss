@@ -18,7 +18,7 @@
   padding: 0 !important;
 }
 
-.Button--primary {
+.Button--primaryColor {
   color: var(--primary-color);
 }
 
@@ -29,4 +29,25 @@
 
 .Button--icon > * {
   vertical-align: baseline;
+}
+
+.Button--primaryAction,
+.Button--secondaryAction {
+  border: 2px solid var(--primary-color) !important;
+  transition: filter $transition-duration !important;
+}
+
+.Button--primaryAction {
+  background-color: var(--primary-color) !important;
+}
+
+.Button--secondaryAction {
+  background-color: transparent !important;
+  color: var(--primary-color) !important;
+  margin-left: $base-unit / 2 !important;
+}
+
+.Button--primaryAction:hover,
+.Button--secondaryAction:hover {
+  filter: brightness(1.2);
 }

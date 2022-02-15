@@ -74,7 +74,7 @@ export default class RegistryEntryShow extends Component {
     }
 
     refObject(rr) {
-        const { onSubmit } = this.props;
+        const { interviews, onSubmit } = this.props;
 
         let ref_object_string = ''
         if (!this.interviewIsFetched(rr.archive_id)) {
@@ -82,7 +82,7 @@ export default class RegistryEntryShow extends Component {
         }
 
         const isAllowedToSee = admin(this.props, {type: 'General'}, 'edit') ||
-            this.props.interviews[rr.archive_id]?.workflow_state === 'public'
+            interviews[rr.archive_id]?.workflow_state === 'public';
 
         switch (rr.ref_object_type) {
             case 'Segment':

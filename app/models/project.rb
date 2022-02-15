@@ -188,7 +188,7 @@ class Project < ApplicationRecord
       when "RegistryReferenceType"
         rr = facet.registry_reference_type
         if rr
-          cache_key_date = [rr.updated_at, facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          cache_key_date = [rr.updated_at, facet.updated_at, RegistryEntry.maximum(:updated_at)].compact.max.strftime("%d.%m-%H:%M")
           mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
             ::FacetSerializer.new(rr).as_json
           end
