@@ -156,7 +156,7 @@ export default class UserContentForm extends Component {
     // TODO: currently unused - we have to implement the publication workflow first.
     publish() {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
-            return <div className={"form-group"}>
+            return <div className="form-group">
                 {this.label('publish')}
                 <input className={'publish-input'} type='checkbox' name='shared' checked={this.state.shared}
                        onChange={this.toggleValue}/>
@@ -190,11 +190,11 @@ export default class UserContentForm extends Component {
             <div>
                 <div className='errors'>{this.state.errors}</div>
                 <form className='default' onSubmit={this.handleSubmit}>
-                    <div className={"form-group"}>
+                    <div className="form-group">
                         {this.label('title')}
                         <input type="text" name='title' value={this.state.title} onChange={this.handleChange}/>
                     </div>
-                    <div className={"form-group"}>
+                    <div className="form-group">
                         {this.label('description')}
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>

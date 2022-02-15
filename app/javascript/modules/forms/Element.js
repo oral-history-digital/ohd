@@ -39,9 +39,11 @@ export default function Element({
 
             <div className='form-input'>
                 {children}
-                <p className='help-block'>
-                    {typeof help === 'string' ? t(help) : help}
-                </p>
+                {help && (
+                    <p className='help-block'>
+                        {typeof help === 'string' ? t(help) : help}
+                    </p>
+                )}
             </div>
 
             {

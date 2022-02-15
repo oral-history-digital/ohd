@@ -244,7 +244,7 @@ export default class FormComponent extends Component {
 
                     {children}
 
-                    <div className="Form-footer">
+                    <div className="Form-footer u-mt">
                         <input
                             type="submit"
                             className="Button Button--primaryAction"
