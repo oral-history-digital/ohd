@@ -79,7 +79,7 @@ export default class SingleValueWithForm extends Component {
             <Form
                 scope={underscore(this.props.obj.type)}
                 onSubmit={function(params){_this.props.submitData(_this.props, params, {updateStateBeforeSubmit: true}); _this.setEditing()}}
-                cancel={_this.setEditing}
+                onCancel={_this.setEditing}
                 formClasses='default single-value'
                 className="ContentField"
                 data={this.props.obj}

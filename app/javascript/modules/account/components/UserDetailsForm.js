@@ -9,12 +9,14 @@ export default function UserDetailsForm({
     projectId,
     onSubmit,
     submitData,
+    onCancel,
 }) {
     return (
         <Form
             data={account}
             scope="account"
             onSubmit={params => {submitData({ locale, projects, projectId }, params); onSubmit();}}
+            onCancel={onCancel}
             submitText='submit'
             elements={[
                 {
@@ -43,4 +45,5 @@ UserDetailsForm.propTypes = {
     account: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
 };

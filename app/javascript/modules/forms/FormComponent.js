@@ -2,6 +2,7 @@ import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-17';
 import { FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
+import classNames from 'classnames';
 
 import { TreeSelectContainer } from 'modules/tree-select';
 import InputContainer from './input-components/InputContainer';
@@ -14,7 +15,7 @@ import MultiLocaleWrapperContainer from './MultiLocaleWrapperContainer';
 import { pluralize } from 'modules/strings';
 import { t } from 'modules/i18n';
 
-export default class Form extends Component {
+export default class FormComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -219,7 +220,7 @@ export default class Form extends Component {
     }
 
     render() {
-        const { cancel, className, children, elements, formId, formClasses,
+        const { onCancel, className, children, elements, formId, formClasses,
             scope, submitText } = this.props;
 
         return (
@@ -229,7 +230,9 @@ export default class Form extends Component {
                 {this.toggleNestedForm()}
                 <form
                     id={formId || scope}
-                    className={formClasses || `${scope} default`}
+                    className={classNames('Form', formClasses, {
+                        [`${scope} default`]: !formClasses,
+                    })}
                     onSubmit={this.handleSubmit}
                 >
 
@@ -241,30 +244,32 @@ export default class Form extends Component {
 
                     {children}
 
-                    <input
-                        type="submit"
-                        className="Button"
-                        value={t(this.props, submitText || 'submit')}
-                    />
-                    {typeof cancel === 'function' && (
+                    <div className="Form-footer">
                         <input
-                            type="button"
-                            className="Button"
-                            value={t(this.props, 'cancel')}
-                            onClick={cancel}
+                            type="submit"
+                            className="Button Button--primaryAction"
+                            value={t(this.props, submitText || 'submit')}
                         />
-                    )}
+                        {typeof onCancel === 'function' && (
+                            <input
+                                type="button"
+                                className="Button Button--secondaryAction"
+                                value={t(this.props, 'cancel')}
+                                onClick={onCancel}
+                            />
+                        )}
+                    </div>
                 </form>
             </div>
         );
     }
 }
 
-Form.propTypes = {
+FormComponent.propTypes = {
     className: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node
     ]),
-    cancel: PropTypes.func,
+    onCancel: PropTypes.func,
 };

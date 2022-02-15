@@ -34,7 +34,7 @@ export default function EditData({
                     submitData({ locale, projectId, projects }, params);
                     toggleEditing();
                 }}
-                cancel={toggleEditing}
+                onCancel={toggleEditing}
                 submitText="submit"
                 elements={formElements}
             />

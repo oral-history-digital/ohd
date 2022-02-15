@@ -81,7 +81,7 @@ export default class Account extends Component {
                     </p>
                     <Modal
                         title={t(this.props, 'request_project_access_link')}
-                        triggerClassName="Button Button--transparent Button--withoutPadding Button--primary"
+                        triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
                         trigger={t(this.props, 'request_project_access_link')}
                     >
                         {close => (
