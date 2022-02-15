@@ -77,6 +77,7 @@ class RegistryEntry < ApplicationRecord
 
   after_update :touch_objects
   after_create :touch_objects
+  before_destroy :touch_objects
 
   def parents
     ancestors
