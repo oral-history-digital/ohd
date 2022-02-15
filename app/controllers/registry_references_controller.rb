@@ -8,6 +8,9 @@ class RegistryReferencesController < ApplicationController
     authorize RegistryReference
     @registry_reference = RegistryReference.create(registry_reference_params)
 
+    interview = Interview.find(registry_reference_params[:interview_id])
+    Sunspot.index! interview
+
     respond @registry_reference
   end
 
@@ -16,6 +19,8 @@ class RegistryReferencesController < ApplicationController
     authorize @registry_reference
     @registry_reference.update_attributes registry_reference_params
 
+    Sunspot.index! @registry_reference.interview
+
     respond @registry_reference
   end
 
@@ -23,8 +28,11 @@ class RegistryReferencesController < ApplicationController
     @registry_reference = RegistryReference.find(params[:id])
     authorize @registry_reference
     ref_object = @registry_reference.ref_object
+    interview = @registry_reference.interview
+
     @registry_reference.destroy
     ref_object.touch
+    Sunspot.index! interview
 
     respond_to do |format|
       format.html do
