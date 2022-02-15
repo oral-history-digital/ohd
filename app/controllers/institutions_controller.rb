@@ -15,7 +15,7 @@ class InstitutionsController < ApplicationController
     respond_to do |format|
       format.html { render "react/app" }
       format.json do
-        json = Rails.cache.fetch "#{current_project.cache_key_prefix}-institutions-#{extra_params ? extra_params : "all"}-#{Institution.count}-#{Institution.maximum(:updated_at)}" do
+        json = Rails.cache.fetch "institutions-#{Institution.count}-#{Institution.maximum(:updated_at)}" do
           {
             data: institutions.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem },
             data_type: "institutions",
@@ -65,7 +65,20 @@ class InstitutionsController < ApplicationController
 
     # Only allow a trusted parameter "white list" through.
     def institution_params
-      params.require(:institution).permit(:name, :shortname, :description, :street, :zip, :city, :country, :latitude, :longitude, :isil, :gnd, :website, :parent_id)
+      params.require(:institution).permit(
+        :shortname,
+        :street,
+        :zip,
+        :city,
+        :country,
+        :latitude,
+        :longitude,
+        :isil,
+        :gnd,
+        :website,
+        :parent_id,
+        translations_attributes: [:locale, :id, :name, :description]
+      )
     end
 
     def search_params
