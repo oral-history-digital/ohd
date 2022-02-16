@@ -15,10 +15,10 @@ import ArchiveSearchTabPanelContainer from './ArchiveSearchTabPanelContainer';
 import RegistryEntriesTabPanelContainer from './RegistryEntriesTabPanelContainer';
 import WorkbookTabPanel from './WorkbookTabPanel';
 import UsersAdminTabPanelContainer from './UsersAdminTabPanelContainer';
-import IndexingTabPanelContainer from './IndexingTabPanelContainer';
+import IndexingTabPanel from './IndexingTabPanel';
 import MapTabPanelContainer from './MapTabPanelContainer';
 import InterviewTabPanelContainer from './InterviewTabPanelContainer';
-import ProjectConfigTabPanelContainer from './ProjectConfigTabPanelContainer';
+import ProjectConfigTabPanel from './ProjectConfigTabPanel';
 import * as indexes from '../constants';
 
 export default function SidebarTabs({
@@ -217,7 +217,7 @@ export default function SidebarTabs({
 
                 <TabPanel key="7">
                     {showIndexingTab && (
-                        <IndexingTabPanelContainer />
+                        <IndexingTabPanel />
                     )}
                 </TabPanel>
 
@@ -229,7 +229,7 @@ export default function SidebarTabs({
 
                 <TabPanel key="9">
                     {showProjectAdminTab && (
-                        <ProjectConfigTabPanelContainer />
+                        <ProjectConfigTabPanel />
                     )}
                 </TabPanel>
 

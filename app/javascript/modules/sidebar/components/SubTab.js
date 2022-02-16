@@ -1,40 +1,65 @@
+import { useState } from 'react';
+import { FaPlus, FaMinus } from 'react-icons/fa';
+import { useHistory, useLocation } from 'react-router-dom';
 import PropTypes from 'prop-types';
-
-import { AuthorizedContent } from 'modules/auth';
-import { useI18n } from 'modules/i18n';
-import InterviewDataContainer from './InterviewDataContainer';
+import classNames from 'classnames';
 
 export default function SubTab({
     title,
-    children,
+    open = false,
     url,
-    obj,
-    action,
+    children,
 }) {
-    const { t } = useI18n();
+    const history = useHistory();
+    const location = useLocation();
+    const [isOpen, setIsOpen] = useState(open);
+
+    function handleClick() {
+        if (url && location.pathname !== url) {
+            setIsOpen(true);
+            history.push(url);
+        } else {
+            setIsOpen(prev => !prev);
+        }
+    }
+
+    let buttonIcon;
+    if (typeof children !== 'undefined') {
+        buttonIcon = isOpen ?
+            <FaMinus className="Icon Icon--primary" /> :
+            <FaPlus className="Icon Icon--primary" />;
+    }
 
     return (
-        <AuthorizedContent object={obj} action={action}>
-            <div className='flyout-sub-tabs-container flyout-video'>
-                <InterviewDataContainer
-                    title={t(title)}
-                    url={url}
-                    open={false}
-                >
-                   {children}
-                </InterviewDataContainer>
-            </div>
-        </AuthorizedContent>
+        <div>
+            <button
+                type="button"
+                className={classNames('Button', 'accordion', {
+                    'active': isOpen,
+                    'only-link': typeof children === 'undefined',
+                })}
+                onClick={handleClick}
+            >
+                {title}
+                {buttonIcon}
+            </button>
+            {
+                children && (
+                    <div className={classNames('panel', { 'open': isOpen })}>
+                        {children}
+                    </div>
+                )
+            }
+        </div>
     );
 }
 
 SubTab.propTypes = {
     title: PropTypes.string.isRequired,
+    open: PropTypes.bool,
     url: PropTypes.string,
-    obj: PropTypes.object,
-    action: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
-        PropTypes.node
+        PropTypes.node,
     ]),
 };

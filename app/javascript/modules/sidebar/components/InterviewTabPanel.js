@@ -14,9 +14,9 @@ import { usePathBase } from 'modules/routes';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { PROJECT_CAMPSCAPES } from 'modules/constants';
-import InterviewDataContainer from './InterviewDataContainer';
-import AdminActionsContainer from './AdminActionsContainer';
 import SubTab from './SubTab';
+import AdminActionsContainer from './AdminActionsContainer';
+import AdminSubTab from './AdminSubTab';
 import DownloadLinks from './DownloadLinks';
 
 export default function InterviewTabPanel({
@@ -29,6 +29,7 @@ export default function InterviewTabPanel({
     searchInArchive,
     setViewMode,
     hideSidebar,
+    isLoggedIn,
 }) {
     const pathBase = usePathBase();
     const { t } = useI18n();
@@ -69,83 +70,80 @@ export default function InterviewTabPanel({
                 {!isCatalog && (
                     <>
                         <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <InterviewDataContainer title={t('person_info')} open>
+                            <SubTab title={t('person_info')} open={!isLoggedIn}>
                                 <PersonDataContainer/>
                                 {
                                     interviewee && <SelectedRegistryReferencesContainer refObject={interviewee} />
                                 }
-                            </InterviewDataContainer>
+                            </SubTab>
                         </AuthorizedContent>
                         <AuthShowContainer ifLoggedOut ifNoProject>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
-                                <InterviewDataContainer title={t('interview_info')} open>
+                                <SubTab title={t('interview_info')} open={!isLoggedIn}>
                                     <InterviewInfoContainer/>
-                                </InterviewDataContainer>
+                                </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>
                         <AuthShowContainer ifLoggedIn>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
-                                <InterviewDataContainer title={t('interview_info')} open>
+                                <SubTab title={t('interview_info')}>
                                     <InterviewInfoContainer/>
                                     <InterviewContributorsContainer/>
                                     <InterviewTextMaterialsContainer/>
-                                </InterviewDataContainer>
+                                </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>
                     </>
                 )}
                 <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
-                    <InterviewDataContainer
-                        title={t('edit.upload_transcript.title')}
-                        open={false}
-                    >
+                    <SubTab title={t('edit.upload_transcript.title')}>
                         <UploadTranscriptContainer />
-                    </InterviewDataContainer>
+                    </SubTab>
                 </AuthorizedContent>
 
                 <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='update_speakers'>
-                    <InterviewDataContainer title={t('assign_speakers')}>
+                    <SubTab title={t('assign_speakers')}>
                         <AssignSpeakersFormContainer interview={interview} />
-                    </InterviewDataContainer>
+                    </SubTab>
                 </AuthorizedContent>
 
                 <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='mark_texts'>
-                    <InterviewDataContainer title={t('mark_texts')}>
+                    <SubTab title={t('mark_texts')}>
                         <MarkTextFormContainer interview={interview} />
-                    </InterviewDataContainer>
+                    </SubTab>
                 </AuthorizedContent>
 
                 {projectId !== PROJECT_CAMPSCAPES && (
                     <AuthShowContainer ifLoggedIn>
                         <AuthShowContainer ifLoggedIn={hasMap}>
                             <AuthorizedContent object={interview} action='show' showIfPublic>
-                                <InterviewDataContainer title={t('map')} open>
+                                <SubTab title={t('map')}>
                                     <InterviewMap/>
-                                </InterviewDataContainer>
+                                </SubTab>
                             </AuthorizedContent>
                         </AuthShowContainer>
 
                         <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <InterviewDataContainer title={t('photos')} open>
+                            <SubTab title={t('photos')}>
                                 <GalleryContainer/>
-                            </InterviewDataContainer>
+                            </SubTab>
                         </AuthorizedContent>
 
                         <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <InterviewDataContainer title={t('citation')} open>
+                            <SubTab title={t('citation')}>
                                 <CitationInfoContainer/>
-                            </InterviewDataContainer>
+                            </SubTab>
                         </AuthorizedContent>
 
                         <AuthorizedContent object={interview} action='update'>
-                            <InterviewDataContainer title={t('admin_actions')} >
+                            <SubTab title={t('admin_actions')} >
                                 <AdminActionsContainer archiveIds={[archiveId]} />
-                            </InterviewDataContainer>
+                            </SubTab>
                         </AuthorizedContent>
                     </AuthShowContainer>
                 )}
             </div>
-            <SubTab
+            <AdminSubTab
                 title='edit.downloads.title'
                 obj={interview}
                 action='download'
@@ -155,7 +153,7 @@ export default function InterviewTabPanel({
                     numTapes={Number.parseInt(interview.tape_count)}
                     languages={interview.languages}
                 />
-            </SubTab>
+            </AdminSubTab>
         </>
     );
 }
@@ -170,4 +168,5 @@ InterviewTabPanel.propTypes = {
     searchInArchive: PropTypes.func.isRequired,
     setViewMode: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
+    isLoggedIn: PropTypes.bool.isRequired,
 };
