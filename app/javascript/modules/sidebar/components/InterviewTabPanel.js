@@ -143,17 +143,19 @@ export default function InterviewTabPanel({
                     </AuthShowContainer>
                 )}
             </div>
-            <AdminSubTab
-                title='edit.downloads.title'
-                obj={interview}
-                action='download'
-            >
-                <DownloadLinks
-                    archiveId={archiveId}
-                    numTapes={Number.parseInt(interview.tape_count)}
-                    languages={interview.languages}
-                />
-            </AdminSubTab>
+            <div className="flyout-sub-tabs-container flyout-video">
+                <AdminSubTab
+                    title='edit.downloads.title'
+                    obj={interview}
+                    action='download'
+                    >
+                    <DownloadLinks
+                        archiveId={archiveId}
+                        numTapes={Number.parseInt(interview.tape_count)}
+                        languages={interview.languages}
+                        />
+                </AdminSubTab>
+            </div>
         </>
     );
 }
