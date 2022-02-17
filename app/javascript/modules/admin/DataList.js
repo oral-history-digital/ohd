@@ -61,7 +61,7 @@ export default class DataList extends Component {
         }
     }
 
-    form(data, onSubmit) {
+    form(data, onSubmit, onCancel) {
         if (this.props.form) {
             return createElement(this.props.form, {data: data, values: this.props.initialFormValues, onSubmit: onSubmit});
         } else {
@@ -76,6 +76,7 @@ export default class DataList extends Component {
                             onSubmit();
                         }
                     }}
+                    onCancel={onCancel}
                     submitText='submit'
                     elements={this.props.formElements}
                 />
@@ -91,7 +92,7 @@ export default class DataList extends Component {
                         title={t(this.props, `edit.${this.props.scope}.new`)}
                         trigger={<><FaPlus className="Icon Icon--editorial"/> {t(this.props, `edit.${this.props.scope}.new`)}</>}
                     >
-                        {close => this.form(undefined, close)}
+                        {close => this.form(undefined, close, close)}
                     </Modal>
                 </AuthorizedContent>
             )

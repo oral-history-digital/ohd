@@ -68,7 +68,7 @@ export default class RegistryEntryForm extends Component {
     }
 
     render() {
-        const { submitData, onSubmit } = this.props;
+        const { submitData, onSubmit, onCancel } = this.props;
 
         return (
             <div>
@@ -83,6 +83,7 @@ export default class RegistryEntryForm extends Component {
                             onSubmit();
                         }
                     }}
+                    onCancel={onCancel}
                     data={this.registryEntry()}
                     values={{
                         parent_id: this.props.registryEntryParent && this.props.registryEntryParent.id,
@@ -127,4 +128,5 @@ RegistryEntryForm.propTypes = {
     projects: PropTypes.object.isRequired,
     onSubmit: PropTypes.func,
     submitData: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
 };

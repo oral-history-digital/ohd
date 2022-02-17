@@ -185,11 +185,17 @@ export default class UserContentForm extends Component {
     }
 
     render() {
+        const { onCancel } = this.props;
+
         let submitLabel = this.props.submitLabel ? this.props.submitLabel : t(this.props, 'save');
+
         return (
             <div>
                 <div className='errors'>{this.state.errors}</div>
-                <form className='default' onSubmit={this.handleSubmit}>
+                <form
+                    className='Form default'
+                    onSubmit={this.handleSubmit}
+                >
                     <div className="form-group">
                         {this.label('title')}
                         <input type="text" name='title' value={this.state.title} onChange={this.handleChange}/>
@@ -199,8 +205,23 @@ export default class UserContentForm extends Component {
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>
                     {this.segmentSelect()}
-                    {/*this.annotationConfirmation()*/}
-                    <input type="submit" value={submitLabel}/>
+
+                    <div className="Form-footer">
+                        <input
+                            className="Button Button--primaryAction"
+                            type="submit"
+                            value={submitLabel}
+                        />
+                        {typeof onCancel === 'function' && (
+                            <button
+                                type="button"
+                                className="Button Button--secondaryAction"
+                                onClick={onCancel}
+                            >
+                                {t(this.props, 'cancel')}
+                            </button>
+                        )}
+                    </div>
                 </form>
             </div>
         );
@@ -212,6 +233,7 @@ UserContentForm.propTypes = {
     projects: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
     createWorkbook: PropTypes.func.isRequired,
     updateWorkbook: PropTypes.func.isRequired,
 };

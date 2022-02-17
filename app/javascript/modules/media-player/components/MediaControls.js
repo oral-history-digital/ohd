@@ -46,6 +46,7 @@ export default class MediaControls extends Component {
                         type='InterviewReference'
                         submitLabel={t({ locale, translations }, 'notice')}
                         onSubmit={closeModal}
+                        onCancel={closeModal}
                     />
                 )}
             </Modal>
@@ -75,7 +76,7 @@ export default class MediaControls extends Component {
         );
     }
 
-    annotateOnSegmentForm(sortedSegmentsWithIndex, onSubmit) {
+    annotateOnSegmentForm(sortedSegmentsWithIndex, closeModal) {
         let segment = sortedSegmentsWithIndex[0];
         let sortedSegments = sortedSegmentsWithIndex[1];
         let activeIndex =  sortedSegmentsWithIndex[2];
@@ -98,7 +99,8 @@ export default class MediaControls extends Component {
                 sortedSegments={sortedSegments}
                 type='UserAnnotation'
                 workflow_state='private'
-                onSubmit={onSubmit}
+                onSubmit={closeModal}
+                onCancel={closeModal}
             />
         }
     }

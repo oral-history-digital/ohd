@@ -20,7 +20,7 @@ export default function SearchActions({
     const { t } = useI18n();
     const pathBase = usePathBase();
 
-    function saveSearchForm(onSubmit) {
+    function saveSearchForm(closeModal) {
         moment.locale(locale);
         const now = moment().format('lll');
         const queryText = queryToText(query, { locale, translations, facets });
@@ -32,7 +32,8 @@ export default function SearchActions({
             properties={query}
             type='Search'
             submitLabel={t('save_search')}
-            onSubmit={onSubmit}
+            onSubmit={closeModal}
+            onCancel={closeModal}
         />
     }
 

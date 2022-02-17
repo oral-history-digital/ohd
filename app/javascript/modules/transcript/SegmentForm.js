@@ -11,12 +11,14 @@ export default function SegmentForm({
     segment,
     submitData,
     onSubmit,
+    onCancel,
 }) {
     return (
         <div>
             <Form
                 scope='segment'
                 onSubmit={(params) => { submitData({ locale, projectId, projects }, params); onSubmit(); }}
+                onCancel={onCancel}
                 data={segment}
                 values={{locale: contentLocale}}
                 submitText='submit'
@@ -49,4 +51,5 @@ SegmentForm.propTypes = {
     segment: PropTypes.object,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
 };

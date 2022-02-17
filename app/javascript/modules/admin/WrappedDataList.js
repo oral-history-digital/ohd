@@ -119,7 +119,7 @@ export default class WrappedDataList extends Component {
         })
     }
 
-    form(data, onSubmit) {
+    form(data, onSubmit, onCancel) {
         if (this.props.form) {
             return createElement(this.props.form, {data: data, values: this.props.initialFormValues, onSubmit: onSubmit});
         } else {
@@ -134,6 +134,7 @@ export default class WrappedDataList extends Component {
                             onSubmit();
                         }
                     }}
+                    onCancel={onCancel}
                     submitText='submit'
                     elements={this.props.formElements}
                 />

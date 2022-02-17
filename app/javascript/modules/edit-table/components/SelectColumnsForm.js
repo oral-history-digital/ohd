@@ -8,6 +8,7 @@ export default function SelectColumnsForm({
     selectedColumns,
     setColumns,
     onSubmit,
+    onCancel,
 }) {
     const { permittedColumns } = useColumns(interview);
 
@@ -42,6 +43,7 @@ export default function SelectColumnsForm({
             <Form
                 scope="select_interview_edit_columns"
                 onSubmit={handleSelect}
+                onCancel={onCancel}
                 values={selectedValues()}
                 elements={formElements()}
             />
@@ -56,4 +58,5 @@ SelectColumnsForm.propTypes = {
     editView: PropTypes.bool.isRequired,
     setColumns: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
 };

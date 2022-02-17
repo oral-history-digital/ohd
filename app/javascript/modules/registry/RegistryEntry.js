@@ -7,6 +7,7 @@ import classNames from 'classnames';
 import { AdminMenu, Modal } from 'modules/ui';
 import { AuthorizedContent, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { DeleteItemForm } from 'modules/forms';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
@@ -102,6 +103,7 @@ export default class RegistryEntry extends Component {
                                 registryEntryId={data.id}
                                 registryEntryParent={registryEntryParent}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
                     </Item>
@@ -110,19 +112,15 @@ export default class RegistryEntry extends Component {
                         label={t(this.props, 'delete')}
                     >
                         {close => (
-                            <>
+                            <DeleteItemForm
+                                onSubmit={() => {
+                                    this.destroy();
+                                    close();
+                                }}
+                                onCancel={close}
+                            >
                                 <p>{data.name[locale]}</p>
-                                <button
-                                    type="button"
-                                    className="Button any-button"
-                                    onClick={() => {
-                                        this.destroy();
-                                        close();
-                                    }}
-                                >
-                                    {t(this.props, 'delete')}
-                                </button>
-                            </>
+                            </DeleteItemForm>
                         )}
                     </Item>
                     <Item

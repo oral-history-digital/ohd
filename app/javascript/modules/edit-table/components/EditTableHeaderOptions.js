@@ -28,7 +28,12 @@ export default function EditTableHeaderOptions({
                     trigger={t('edit_column_header.select_columns')}
                     triggerClassName="StateButton EditTableHeader-button"
                 >
-                    {closeModal => <SelectColumnsFormContainer onSubmit={closeModal} />}
+                    {closeModal => (
+                        <SelectColumnsFormContainer
+                            onSubmit={closeModal}
+                            onCancel={closeModal}
+                        />
+                    )}
                 </Modal>
             </span>
             <span>

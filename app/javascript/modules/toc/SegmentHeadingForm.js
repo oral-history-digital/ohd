@@ -9,6 +9,7 @@ export default function SegmentHeadingForm({
     projects,
     submitData,
     onSubmit,
+    onCancel,
 }) {
     return (
         <div>
@@ -20,6 +21,7 @@ export default function SegmentHeadingForm({
                         onSubmit();
                     }
                 }}
+                onCancel={onCancel}
                 data={segment}
                 submitText='submit'
                 elements={[
@@ -44,4 +46,5 @@ SegmentHeadingForm.propTypes = {
     projects: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
 };

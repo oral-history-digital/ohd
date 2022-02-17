@@ -19,6 +19,7 @@ export default function RegistryReferenceForm({
     fetchData,
     submitData,
     onSubmit,
+    onCancel,
 }) {
     useEffect(() => {
         if (!registryReferenceTypesStatus[`for_projects_${project?.id}`]) {
@@ -90,6 +91,7 @@ export default function RegistryReferenceForm({
                         onSubmit();
                     }
                 }}
+                onCancel={onCancel}
                 elements={buildElements()}
             />
         </div>
@@ -112,4 +114,5 @@ RegistryReferenceForm.propTypes = {
     fetchData: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
 };

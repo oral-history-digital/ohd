@@ -21,6 +21,7 @@ export default function ContributionForm({
     interview,
     formClasses,
     onSubmit,
+    onCancel,
     setSidebarTabsIndex,
     fetchData,
     submitData,
@@ -89,6 +90,7 @@ export default function ContributionForm({
                         onSubmit();
                     }
                 }}
+                onCancel={onCancel}
                 formClasses={formClasses}
                 elements={formElements}
             />
@@ -125,5 +127,6 @@ ContributionForm.propTypes = {
     submitData: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
     setSidebarTabsIndex: PropTypes.func.isRequired,
 };

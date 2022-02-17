@@ -55,6 +55,7 @@ export default function PersonData({
                                     withSpeakerDesignation
                                     submitData={submitData}
                                     onSubmit={close}
+                                    onCancel={close}
                                 />
                             )}
                         </Modal>

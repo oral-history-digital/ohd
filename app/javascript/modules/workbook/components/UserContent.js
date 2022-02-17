@@ -121,6 +121,7 @@ export default function UserContent({
                             type={data.type}
                             workflow_state={data.workflow_state}
                             onSubmit={closeModal}
+                            onCancel={closeModal}
                         />
                     )}
                 </Modal>
@@ -134,6 +135,7 @@ export default function UserContent({
                             title={data.title}
                             description={data.description}
                             onSubmit={closeModal}
+                            onCancel={closeModal}
                         />
                     )}
                 </Modal>

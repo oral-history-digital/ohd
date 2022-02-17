@@ -42,6 +42,7 @@ export default function SegmentButtons({
                             segment={data}
                             contentLocale={contentLocale}
                             onSubmit={closeModal}
+                            onCancel={closeModal}
                         />
                     )}
                 </Modal>
@@ -54,6 +55,7 @@ export default function SegmentButtons({
                         <SegmentHeadingFormContainer
                             segment={data}
                             onSubmit={closeModal}
+                            onCancel={closeModal}
                         />
                     )}
                 </Modal>

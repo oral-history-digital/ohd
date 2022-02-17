@@ -3,4 +3,10 @@
 
 .Form-footer {
   display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.Form-footer > * {
+  flex-grow: 1;
 }

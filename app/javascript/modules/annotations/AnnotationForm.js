@@ -38,10 +38,12 @@ export default class AnnotationForm extends Component {
     }
 
     render () {
+        const { locale, translations, onCancel } = this.props;
+
         return (
             <form
                 id='annotation'
-                className='annotation default'
+                className='Form'
                 onSubmit={this.handleSubmit}
             >
                 <RichTextEditor
@@ -51,10 +53,21 @@ export default class AnnotationForm extends Component {
                     }}
                     onChange={this.handleChange}
                 />
-                <input
-                    type="submit"
-                    value={t({ locale: this.props.locale, translations: this.props.translations }, 'submit')}
-                />
+
+                <div className="Form-footer u-mt">
+                    <input
+                        type="submit"
+                        className="Button Button--primaryAction"
+                        value={t({ locale, translations }, 'submit')}
+                    />
+                    <button
+                        type="button"
+                        className="Button Button--secondaryAction"
+                        onClick={onCancel}
+                    >
+                        {t({ locale, translations }, 'cancel')}
+                    </button>
+                </div>
             </form>
         );
     }
@@ -71,4 +84,5 @@ AnnotationForm.propTypes = {
     translations: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
 };

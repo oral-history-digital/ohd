@@ -1,38 +1,23 @@
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
 
-export default function UserContentDelete({
-    id,
-    title,
-    description,
+export default function DeleteItemForm({
+    children,
     onSubmit,
     onCancel,
-    deleteWorkbook,
 }) {
     const { t } = useI18n();
-    const pathBase = usePathBase();
-
-    const destroy = () => {
-        deleteWorkbook(pathBase, id);
-        onSubmit();
-    };
 
     return (
         <form className="Form">
-            <p>{t('title') + ': '}
-                <span>{title}</span>
-            </p>
-            <p>{t('description') + ': '}
-                <span>{description}</span>
-            </p>
+            {children}
 
             <div className="Form-footer">
                 <button
                     type="button"
                     className="Button Button--primaryAction"
-                    onClick={destroy}
+                    onClick={onSubmit}
                 >
                     {t('delete')}
                 </button>
@@ -48,11 +33,11 @@ export default function UserContentDelete({
     );
 }
 
-UserContentDelete.propTypes = {
-    id: PropTypes.number.isRequired,
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string,
+DeleteItemForm.propTypes = {
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func.isRequired,
-    deleteWorkbook: PropTypes.func.isRequired,
 };

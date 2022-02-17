@@ -33,12 +33,15 @@
 
 .Button--primaryAction,
 .Button--secondaryAction {
-  border: 2px solid var(--primary-color) !important;
+  border: ($base-unit / 12) solid var(--primary-color) !important;
+  padding: ($base-unit / 2 - $base-unit / 12) ($base-unit - $base-unit / 12);
   transition: filter $transition-duration !important;
+  width: initial !important;
 }
 
 .Button--primaryAction {
   background-color: var(--primary-color) !important;
+  color: white;
 }
 
 .Button--secondaryAction {

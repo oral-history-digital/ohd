@@ -4,6 +4,7 @@ import { AuthorizedContent } from 'modules/auth';
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 import { AdminMenu } from 'modules/ui';
+import { DeleteItemForm } from 'modules/forms';
 import BaseData from './BaseData';
 import JoinedData from './JoinedData';
 import DataDetailsContainer from './DataDetailsContainer';
@@ -96,7 +97,7 @@ export default function Data({
                                             optionsScope={optionsScope}
                                         />
                                     )}
-                                    {form(data, close)}
+                                    {form(data, close, close)}
                                 </>
                             )}
                         </Item>
@@ -104,16 +105,12 @@ export default function Data({
                     {!hideDelete && (
                         <Item name="delete" label={t('delete')}>
                             {close => (
-                                <>
+                                <DeleteItemForm
+                                    onSubmit={() => destroy(close)}
+                                    onCancel={close}
+                                >
                                     <p>{name}</p>
-                                    <button
-                                        type="button"
-                                        className="Button any-button"
-                                        onClick={() => destroy(close)}
-                                    >
-                                        {t('delete')}
-                                    </button>
-                                </>
+                                </DeleteItemForm>
                             )}
                         </Item>
                     )}
