@@ -10,3 +10,8 @@
 .Form-footer > * {
   flex-grow: 1;
 }
+
+.Form-footer > button:not(:first-child),
+.Form-footer > input:not(:first-child) {
+  margin-left: $base-unit / 2 !important;
+}

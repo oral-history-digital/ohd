@@ -3,6 +3,7 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 
 import { fullname } from 'modules/people';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
+import { DeleteItemForm } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import ContributionFormContainer from './ContributionFormContainer';
@@ -48,6 +49,7 @@ export default function Contribution({
                                     withSpeakerDesignation
                                     submitData={submitData}
                                     onSubmit={close}
+                                    onCancel={close}
                                 />
                             )}
                         </Modal>
@@ -56,16 +58,12 @@ export default function Contribution({
                             trigger={<FaTrash className="Icon Icon--editorial Icon--small" />}
                         >
                             {close => (
-                                <div>
+                                <DeleteItemForm
+                                    onSubmit={() => { destroy(); close(); }}
+                                    onCancel={close}
+                                >
                                     <p>{fullname({ locale }, person)}</p>
-                                    <button
-                                        type="button"
-                                        className="Button any-button"
-                                        onClick={() => { destroy(); close(); }}
-                                    >
-                                        {t('delete')}
-                                    </button>
-                                </div>
+                                </DeleteItemForm>
                             )}
                         </Modal>
                     </span>

@@ -2,7 +2,6 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
-import { useI18n } from 'modules/i18n';
 import { Fetch, getRegistryReferenceTypesForCurrentProjectFetched } from 'modules/data';
 
 const NAME_VALUES = {
@@ -26,8 +25,8 @@ export default function MetadataFieldForm({
     data,
     submitData,
     onSubmit,
+    onCancel,
 }) {
-    const { t } = useI18n();
     const [source, setSource] = useState(data?.source);
     const [registryReferenceTypeId, setRegistryReferenceTypeId] = useState(data?.registry_reference_type_id);
 
@@ -61,6 +60,7 @@ export default function MetadataFieldForm({
                         onSubmit();
                     }
                 }}
+                onCancel={onCancel}
                 data={data}
                 values={{
                     project_id: project.id
@@ -170,4 +170,5 @@ MetadataFieldForm.propTypes = {
     projectId: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
 };

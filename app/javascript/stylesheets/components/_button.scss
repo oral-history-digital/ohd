@@ -18,6 +18,10 @@
   padding: 0 !important;
 }
 
+.Button--fullWidth {
+  width: 100% !important;
+}
+
 .Button--primaryColor {
   color: var(--primary-color);
 }
@@ -36,7 +40,7 @@
   border: ($base-unit / 12) solid var(--primary-color) !important;
   padding: ($base-unit / 2 - $base-unit / 12) ($base-unit - $base-unit / 12);
   transition: filter $transition-duration !important;
-  width: initial !important;
+  width: initial;
 }
 
 .Button--primaryAction {
@@ -47,7 +51,6 @@
 .Button--secondaryAction {
   background-color: transparent !important;
   color: var(--primary-color) !important;
-  margin-left: $base-unit / 2 !important;
 }
 
 .Button--primaryAction:hover,

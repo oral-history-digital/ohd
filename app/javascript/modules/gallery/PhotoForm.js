@@ -1,10 +1,19 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 
-export default class PhotoForm extends Component {
-    elements() {
+export default function PhotoForm({
+    interview,
+    photo,
+    withUpload,
+    locale,
+    projectId,
+    projects,
+    submitData,
+    onSubmit,
+    onCancel,
+}) {
+    function elements() {
         let elements = [
             {
                 attribute: 'public_id',
@@ -31,17 +40,17 @@ export default class PhotoForm extends Component {
             },
         ]
 
-        if (this.props.photo?.id) {
+        if (photo?.id) {
             elements.push({
                 elementType: 'select',
                 attribute: 'workflow_state',
-                values: Object.values(this.props.photo.workflow_states),
-                value: this.props.photo.workflow_state,
+                values: Object.values(photo.workflow_states),
+                value: photo.workflow_state,
                 optionsScope: 'workflow_states',
             })
         }
 
-        if (this.props.withUpload) {
+        if (withUpload) {
             elements.push({
                 attribute: 'data',
                 elementType: 'input',
@@ -53,33 +62,34 @@ export default class PhotoForm extends Component {
         return elements;
     }
 
-    render() {
-        const { submitData, onSubmit } = this.props;
-
-        return (
-            <Form
-                scope='photo'
-                onSubmit={(params) => {
-                    submitData(this.props, params);
-                    if (onSubmit) {
-                        onSubmit();
-                    }
-                }}
-                data={this.props.photo}
-                values={{
-                    interview_id: this.props.interview && this.props.interview.id,
-                    id: this.props.photo && this.props.photo.id
-                }}
-                elements={this.elements()}
-            />
-        );
-    }
+    return (
+        <Form
+            scope='photo'
+            onSubmit={params => {
+                submitData({ projectId, projects, locale }, params);
+                if (onSubmit) {
+                    onSubmit();
+                }
+            }}
+            onCancel={onCancel}
+            data={photo}
+            values={{
+                interview_id: interview?.id,
+                id: photo?.id
+            }}
+            elements={elements()}
+        />
+    );
 }
 
 PhotoForm.propTypes = {
     interview: PropTypes.object,
     photo: PropTypes.object,
     withUpload: PropTypes.bool,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
 };

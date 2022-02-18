@@ -13,7 +13,7 @@ export default function DeleteItemForm({
         <form className="Form">
             {children}
 
-            <div className="Form-footer">
+            <div className="Form-footer u-mt">
                 <button
                     type="button"
                     className="Button Button--primaryAction"

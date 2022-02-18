@@ -11,6 +11,7 @@ export default function RegistryHierarchyForm({
     descendantRegistryEntry,
     submitData,
     onSubmit,
+    onCancel,
 }) {
     const { t } = useI18n();
 
@@ -33,6 +34,7 @@ export default function RegistryHierarchyForm({
                         onSubmit();
                     }
                 }}
+                onCancel={onCancel}
                 data={registryHierarchy}
                 values={{
                     descendant_id: descendantRegistryEntry?.id,
@@ -54,5 +56,6 @@ RegistryHierarchyForm.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
     submitData: PropTypes.func.isRequired,
 };

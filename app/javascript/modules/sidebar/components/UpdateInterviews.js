@@ -34,20 +34,29 @@ export default function UpdateInterviews({
             triggerClassName="flyout-sub-tabs-content-ico-link"
         >
             {close => (
-                <div>
+                <form className="Form">
                     {t(`edit.interviews.${action}.confirm_text`, {archive_ids: selectedArchiveIds.join(', ')})}
 
-                    <button
-                        type="button"
-                        className="Button any-button"
-                        onClick={() => {
-                            updateInterviews(params);
-                            close();
-                        }}
-                    >
-                        {t('submit')}
-                    </button>
-                </div>
+                    <div className="Form-footer u-mt">
+                        <button
+                            type="button"
+                            className="Button Button--primaryAction"
+                            onClick={() => {
+                                updateInterviews(params);
+                                close();
+                            }}
+                        >
+                            {t('submit')}
+                        </button>
+                        <button
+                            type="button"
+                            className="Button Button--secondaryAction"
+                            onClick={close}
+                        >
+                            {t('cancel')}
+                        </button>
+                    </div>
+                </form>
             )}
         </Modal>
     );

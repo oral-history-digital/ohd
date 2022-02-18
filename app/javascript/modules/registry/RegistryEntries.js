@@ -90,7 +90,8 @@ export default class RegistryEntries extends Component {
                     { close => createElement(component,
                         {
                             registryEntryParent: this.props.registryEntryParent,
-                            onSubmit: close
+                            onSubmit: close,
+                            onCancel: close,
                         }
                     ) }
                 </Modal>
