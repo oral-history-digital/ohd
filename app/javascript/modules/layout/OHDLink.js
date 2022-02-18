@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 import { getCurrentProject, getProjects } from 'modules/data';
 import { getLocale, setProjectId } from 'modules/archive';
 import { projectByDomain } from 'modules/routes';
-import { OHD_DOMAIN_DEVELOPMENT, OHD_DOMAIN_PRODUCTION } from './constants';
+import { OHD_DOMAINS } from './constants';
 
 function OHDLink() {
     const locale = useSelector(getLocale);
@@ -24,7 +24,7 @@ function OHDLink() {
             (projectHasOwnDomain ?
                 <a
                     title='OHD'
-                    href={`${developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION}/${locale}`}
+                    href={`${OHD_DOMAINS[railsMode]}/${locale}`}
                     className="u-mr"
                 >
                     <img className="logo-img" src='/ohd-logo-gr.png' alt="" />

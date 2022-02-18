@@ -1,2 +1,5 @@
-export const OHD_DOMAIN_DEVELOPMENT = 'http://portal.oral-history.localhost:3000';
-export const OHD_DOMAIN_PRODUCTION = 'https://portal.oral-history.digital';
+export const OHD_DOMAINS = {
+    development: 'http://portal.oral-history.localhost:3000',
+    staging: 'https://test.oral-history.digital',
+    production: 'https://portal.oral-history.digital',
+}

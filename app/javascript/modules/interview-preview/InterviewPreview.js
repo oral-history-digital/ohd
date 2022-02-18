@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { FaEyeSlash } from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT } from 'modules/layout';
+import { OHD_DOMAINS } from 'modules/layout';
 import { LinkOrA, pathBase } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthorizedContent } from 'modules/auth';
@@ -29,7 +29,7 @@ export default function InterviewPreview({
     const projectId = project.identifier;
     const pathBaseStr = pathBase({projectId, locale: project.default_locale, projects});
 
-    const onOHD = [OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT].indexOf(window.location.origin) > -1;
+    const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;
     const showSlideShow = (onOHD && (!project.archive_domain || project.archive_domain === '')) || project.archive_domain === window.location.origin;
 
     useEffect(() => {
