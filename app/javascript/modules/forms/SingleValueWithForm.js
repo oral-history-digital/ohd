@@ -162,5 +162,7 @@ export default class SingleValueWithForm extends Component {
 }
 
 SingleValueWithForm.propTypes = {
+    obj: PropTypes.object,
+    attribute: PropTypes.string,
     readOnly: PropTypes.bool,
 };

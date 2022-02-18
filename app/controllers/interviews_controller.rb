@@ -415,6 +415,7 @@ class InterviewsController < ApplicationController
       "workflow_state",
       "media_type",
       "biographies_workflow_state",
+      :startpage_position,
       properties: {},
       public_attributes: {},
       contributions_attributes: [:person_id, :contribution_type_id, :speaker_designation],
