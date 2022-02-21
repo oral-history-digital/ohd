@@ -330,7 +330,7 @@ class InterviewsController < ApplicationController
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           {
-            data: ActiveRecord::Base.connection.column_exists?(:registry_entries, :entry_dedalo_code) ? ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id) : ref_tree.part(1),
+            data: ref_tree.part(current_project.root_registry_entry.id),
             nested_data_type: "ref_tree",
             data_type: "interviews",
             archive_id: params[:id],
