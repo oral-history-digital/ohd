@@ -109,6 +109,13 @@ export default function InterviewInfo({
                 />
             </AuthorizedContent>
 
+            <SingleValueWithFormContainer
+                obj={interview}
+                attribute="startpage_position"
+                projectAccessGranted={projectAccessGranted}
+                noStatusCheckbox
+            />
+
             <SelectedRegistryReferencesContainer refObject={interview} />
         </div>
     );

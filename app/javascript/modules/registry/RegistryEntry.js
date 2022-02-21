@@ -131,6 +131,7 @@ export default class RegistryEntry extends Component {
                             <RegistryEntryFormContainer
                                 registryEntryParent={data}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
                     </Item>
@@ -142,6 +143,7 @@ export default class RegistryEntry extends Component {
                             <RegistryEntryFromNormDataFormContainer
                                 registryEntryParent={data}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
                     </Item>
@@ -153,6 +155,7 @@ export default class RegistryEntry extends Component {
                             <RegistryHierarchyFormContainer
                                 descendantRegistryEntry={data}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
 
@@ -163,21 +166,12 @@ export default class RegistryEntry extends Component {
                             label={t(this.props, 'edit.registry_entry.delete_parent')}
                         >
                             {close => (
-                                <>
-                                    <p>
-                                        {registryEntryParent.name[locale]}
-                                    </p>
-                                    <button
-                                        type="button"
-                                        className="Button any-button"
-                                        onClick={() => {
-                                            this.rmParent();
-                                            close();
-                                        }}
-                                    >
-                                        {t(this.props, 'delete')}
-                                    </button>
-                                </>
+                                <DeleteItemForm
+                                    onSubmit={() => { this.rmParent(); close(); }}
+                                    onCancel={close}
+                                >
+                                    <p>{registryEntryParent.name[locale]}</p>
+                                </DeleteItemForm>
                             )}
                         </Item>
                     )}

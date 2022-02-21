@@ -177,7 +177,10 @@ class Project < ApplicationRecord
   end
 
   def featured_interviews
-    interviews.where.not(startpage_position: nil).order(startpage_position: :asc)
+    interviews
+      .where(workflow_state: 'public')
+      .where.not(startpage_position: nil)
+      .order(startpage_position: :asc)
   end
 
   def search_facets_hash

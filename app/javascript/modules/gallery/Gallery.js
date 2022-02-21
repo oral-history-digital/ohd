@@ -59,6 +59,7 @@ export default function Gallery({
                                 interview={interview}
                                 withUpload
                                 onSubmit={closeModal}
+                                onCancel={closeModal}
                             />
                         )
                     }

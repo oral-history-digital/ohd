@@ -57,22 +57,31 @@ export default class AdminActions extends Component {
                     triggerClassName="flyout-sub-tabs-content-ico-link"
                 >
                     {close => (
-                        <div>
+                        <form className="Form">
                             {t(this.props, 'doi.text1') + ' '}
                             {this.links(this.selectedArchiveIds())}
                             {' ' + t(this.props, 'doi.text2')}
 
-                            <button
-                                type="button"
-                                className="Button any-button"
-                                onClick={() => {
-                                    this.exportDOI();
-                                    close();
-                                }}
-                            >
-                                {t(this.props, 'doi.ok')}
-                            </button>
-                        </div>
+                            <div className="Form-footer u-mt">
+                                <button
+                                    type="button"
+                                    className="Button Button--primaryAction"
+                                    onClick={() => {
+                                        this.exportDOI();
+                                        close();
+                                    }}
+                                >
+                                    {t(this.props, 'doi.ok')}
+                                </button>
+                                <button
+                                    type="button"
+                                    className="Button Button--secondaryAction"
+                                    onClick={close}
+                                >
+                                    {t(this.props, 'cancel')}
+                                </button>
+                            </div>
+                        </form>
                     )}
                 </Modal>
             </AuthorizedContent>

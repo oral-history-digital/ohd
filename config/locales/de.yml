@@ -748,6 +748,7 @@ de:
     workflow_state: Status
     date_of_birth: Geburtsdatum
     signature_original: Originalsignatur
+    startpage_position: Startseitenposition
   activerecord:
     models:
       interview:

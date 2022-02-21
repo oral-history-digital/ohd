@@ -17,6 +17,7 @@ class InterviewBaseSerializer < ApplicationSerializer
     :still_url,
     :contributions,
     :registry_references,
+    :startpage_position,
   ]
 
   def attributes(*args)
