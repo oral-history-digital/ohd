@@ -57,13 +57,12 @@ class CustomDeviseMailer < Devise::Mailer
   def reset_password_instructions(record, token, opts={})
     @token = token
     @project = opts[:project]
-    opts[:from] = @project.contact_email
-    opts[:reply_to] = @project.contact_email
+    opts[:from] = @project ? @project.contact_email : 'mail@oral-history.digital'
+    opts[:reply_to] = @project ? @project.contact_email : 'mail@oral-history.digital'
     devise_mail(record, :reset_password_instructions, opts)
   end
 
   def email_changed(record, opts={})
-    binding.pry
     devise_mail(record, :email_changed, opts)
   end
 
