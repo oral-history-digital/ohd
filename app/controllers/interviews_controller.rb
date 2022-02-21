@@ -209,7 +209,7 @@ class InterviewsController < ApplicationController
         @lang = params[:lang]
         @doc_type = 'observations'
         pdf = render_to_string(:template => '/latex/interview_observations.pdf.erb', :layout => 'latex.pdf.erbtex')
-        send_data pdf, filename: "#{@interview.archive_id}_protocoll_#{params[:lang]}.pdf", :type => "application/pdf"
+        send_data pdf, filename: "#{@interview.archive_id}_protocol_#{params[:lang]}.pdf", :type => "application/pdf"
       end
       format.json do
         render json: {
