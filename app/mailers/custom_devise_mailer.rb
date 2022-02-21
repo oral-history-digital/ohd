@@ -34,19 +34,21 @@ class CustomDeviseMailer < Devise::Mailer
       project = record.projects.last
       domain = project.domain_with_optional_identifier
       contact_email = project.contact_email
+      locale = record.default_locale || project.default_locale
       @project_name = project.name(record.default_locale)
       @application_type = :interview_archive
     else # if no project or more than one
       domain = OHD_DOMAIN
       contact_email = 'mail@oral-history.digital'
+      locale = 'de'
       @project_name = 'Oral-History.Digital'
       @application_type = :interview_portal 
     end
 
     if record.unconfirmed_email
-      @url = "#{domain}/#{record.default_locale}/accounts/#{record.id}/confirm_new_email?confirmation_token=#{record.confirmation_token}"
+      @url = "#{domain}/#{locale}/accounts/#{record.id}/confirm_new_email?confirmation_token=#{record.confirmation_token}"
     else
-      @url = "#{domain}/#{record.default_locale}/user_registrations/#{record.confirmation_token}/activate"
+      @url = "#{domain}/#{locale}/user_registrations/#{record.confirmation_token}/activate"
     end
 
     opts[:from] = contact_email
@@ -55,10 +57,25 @@ class CustomDeviseMailer < Devise::Mailer
   end
 
   def reset_password_instructions(record, token, opts={})
-    @token = token
-    @project = opts[:project]
-    opts[:from] = @project ? @project.contact_email : 'mail@oral-history.digital'
-    opts[:reply_to] = @project ? @project.contact_email : 'mail@oral-history.digital'
+    token = token
+    project = opts[:project]
+
+    if project
+      domain = project.domain_with_optional_identifier
+      contact_email = project.contact_email
+      locale = record.default_locale || project.default_locale
+      @project_name = project.name(record.default_locale)
+    else # if no project or more than one
+      domain = OHD_DOMAIN
+      contact_email = 'mail@oral-history.digital'
+      locale = 'de'
+      @project_name = 'Oral-History.Digital'
+    end
+
+    @url = "#{domain}/#{locale}/user_accounts/password/edit?reset_password_token=#{token}"
+
+    opts[:from] = contact_email
+    opts[:reply_to] = contact_email
     devise_mail(record, :reset_password_instructions, opts)
   end
 
