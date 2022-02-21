@@ -8,13 +8,18 @@ import { getMapSections } from 'modules/data';
 import { setSidebarTabsIndex, INDEX_MAP } from 'modules/sidebar';
 import { MapComponent } from 'modules/map';
 import { useI18n } from 'modules/i18n';
+import useSearchMap from '../search-map/useSearchMap';
 import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
 import MapSectionsSelect from './MapSectionsSelect';
-import useSearchMap from '../search-map/useSearchMap';
+import MapNewBoundsSetter from './MapNewBoundsSetter';
+import { setMapView } from '../actions';
+import { getMapView } from '../selectors';
 
 export default function SearchMap() {
     const mapSections = useSelector(getMapSections);
+    const mapView = useSelector(getMapView);
+
     const [currentSection, setCurrentSection] = useState(mapSections[0].name);
     const { t } = useI18n();
     const dispatch = useDispatch();
@@ -30,6 +35,13 @@ export default function SearchMap() {
         [defaultSection.corner2_lat, defaultSection.corner2_lon]
     ];
 
+    function handleViewChange({ center, zoom }) {
+        dispatch(setMapView({
+            center,
+            zoom,
+        }));
+    }
+
     return (
         <ScrollToTop>
             <Helmet>
@@ -44,10 +56,15 @@ export default function SearchMap() {
                         (<MapComponent
                             className="Map--search"
                             loading={isLoading}
-                            bounds={bounds}
                             markers={markers || []}
                             popupComponent={SearchMapPopup}
-                        />)
+                        >
+                            <MapNewBoundsSetter
+                                bounds={bounds}
+                                view={mapView}
+                                onViewChange={handleViewChange}
+                            />
+                        </MapComponent>)
                 }
 
                 <div className="SearchMap-controls">
