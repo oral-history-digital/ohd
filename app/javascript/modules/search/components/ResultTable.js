@@ -13,8 +13,8 @@ export default function ResultTable({
 
     return (
         <table className="Table Table--searchResults">
-            <thead>
-                <tr>
+            <thead className="Table-head">
+                <tr className="Table-row">
                     <AuthorizedContent object={{type: 'General'}} action="edit">
                         <th className="Table-header" />
                     </AuthorizedContent>
@@ -37,7 +37,7 @@ export default function ResultTable({
                     }
                 </tr>
             </thead>
-            <tbody>
+            <tbody className="Table-body">
                 {foundInterviews?.map(interview => (
                     <InterviewListRowContainer
                         key={interview.id}

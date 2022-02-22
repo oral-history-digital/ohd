@@ -1,10 +1,28 @@
-.Table { }
+.Table {
+  border-collapse: collapse;
+  margin-left: -0.5 * $base-unit;
+  margin-right: -0.5 * $base-unit;
+}
 
 .Table--searchResults {
-  width: 100%;
 }
 
 .Table-header {
   font-weight: bold;
   text-align: left;
+}
+
+.Table-body > .Table-row:nth-child(odd) {
+  background-color: $gray-lighter;
+}
+
+.Table-body > .Table-row:nth-child(even) {
+  background-color: white;
+}
+
+.Table-header,
+.Table-cell {
+  font-size: 1rem;
+  line-height: $base-unit;
+  padding: ($base-unit / 4) ($base-unit / 2);
 }
