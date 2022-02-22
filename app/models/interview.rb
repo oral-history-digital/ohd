@@ -397,6 +397,11 @@ class Interview < ApplicationRecord
     segment_count > 0
   end
 
+  def observations_for_latex(locale)
+    escaped_text = LatexToPdf.escape_latex(observations(locale))
+    escaped_text.gsub(/\r?\n/, '~\newline~')
+  end
+
   def index_observations?
     public_attributes = properties.fetch(:public_attributes, {})
     observations_public = public_attributes.fetch('observations', true)
