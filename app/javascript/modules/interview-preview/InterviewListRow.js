@@ -51,10 +51,10 @@ export default function InterviewListRow({
     const resultCount = searchResultCount(searchResults);
 
     return (
-        <tr>
+        <tr className="Table-row">
             {
                 isAuthorized(interview, 'show') && isAuthorized({ type: 'General' }, 'edit') && (
-                    <td>
+                    <td className="Table-cell">
                         <input
                             type="checkbox"
                             className="export-checkbox"
@@ -64,7 +64,7 @@ export default function InterviewListRow({
                     </td>
                 )
             }
-            <td>
+            <td className="Table-cell">
                 <Link className="search-result-link"
                     onClick={() => {
                         setArchiveId(interview.archive_id);
@@ -100,7 +100,7 @@ export default function InterviewListRow({
                         interviewee;
 
                     return (
-                        <td key={column.name}>
+                        <td key={column.name} className="Table-cell">
                             {obj && humanReadable(obj, column.name, { locale, translations, languages, collections, optionsScope: 'search_facets' }, {})}
                         </td>
                     );
@@ -108,7 +108,7 @@ export default function InterviewListRow({
             }
             {
                 fulltext && resultCount > 0 && (
-                    <td>
+                    <td className="Table-cell">
                         <Link className="search-result-link"
                             onClick={() => setArchiveId(interview.archive_id)}
                             to={`${pathBase}/interviews/${interview.archive_id}`}
