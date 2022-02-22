@@ -18,56 +18,76 @@ export default class InterviewTabs extends Component {
         this.state = {
             tabIndex: 0
         }
+
+        this.setTabIndex = this.setTabIndex.bind(this);
     }
 
     resultsCount() {
+        const { interviewSearchResults } = this.props;
+
         let count = 0;
-        if (this.props.interviewSearchResults && this.props.interviewSearchResults.foundSegments) {
-            count += this.props.interviewSearchResults.foundSegments.length +
-                this.props.interviewSearchResults.foundRegistryEntries.length +
-                this.props.interviewSearchResults.foundBiographicalEntries.length;
+        if (interviewSearchResults?.foundSegments) {
+            count += interviewSearchResults.foundSegments.length +
+                interviewSearchResults.foundRegistryEntries.length +
+                interviewSearchResults.foundBiographicalEntries.length;
         }
         return count;
     }
 
     componentDidMount(){
+        const { interviewSearchResults, locale, interview } = this.props;
+
         if (
-            this.props.interviewSearchResults &&
-            this.props.interviewSearchResults.fulltext &&
-            this.props.interviewSearchResults.fulltext !== "" &&
+            interviewSearchResults?.fulltext &&
+            interviewSearchResults.fulltext !== "" &&
             this.resultsCount() > 0
         ) {
-            this.setState({['tabIndex']: 3});
-        } else if(this.props.locale != this.props.interview.lang){
-            this.setState({['tabIndex']: 1});
+            this.setState({ tabIndex: 3 });
+        } else if(locale != interview.lang){
+            this.setState({ tabIndex: 1 });
         } else {
-            this.setState({['tabIndex']: 0});
+            this.setState({ tabIndex: 0 });
         }
     }
 
     componentDidUpdate(prevProps) {
+        const { interviewSearchResults, tabIndex } = this.props;
+
         if (
             !(prevProps.interviewSearchResults && prevProps.interviewSearchResults.fulltext) &&
-            this.props.interviewSearchResults &&
-            this.props.interviewSearchResults.fulltext &&
-            this.props.interviewSearchResults.fulltext !== ""
+            interviewSearchResults?.fulltext &&
+            interviewSearchResults.fulltext !== ""
         ) {
-            this.setState({['tabIndex']: 3});
-        } else if (prevProps.tabIndex !== this.props.tabIndex) {
-            this.setState({['tabIndex']: this.props.tabIndex});
+            this.setState({ tabIndex: 3});
+        } else if (prevProps.tabIndex !== tabIndex) {
+            this.setState({ tabIndex });
         }
+    }
+
+    setTabIndex(tabIndex) {
+        const { setInterviewTabIndex } = this.props;
+
+        // TODO: Why is this saved redundantly?
+        this.setState({ tabIndex });
+        setInterviewTabIndex(tabIndex)
     }
 
     render() {
         const { interview, projectId, locale } = this.props;
         const { tabIndex } = this.state;
 
+        // When changing locales sometimes tab 1 will be hidden, so if tab 1
+        // was active we need to switch to tab 0.
+        if (tabIndex === 1 && !showTranslationTab(projectId, interview.lang, locale)) {
+            this.setTabIndex(0);
+        }
+
         return (
             <Tabs
                 className="Tabs"
                 keyboardActivation="manual"
                 index={tabIndex}
-                onChange={tabIndex => {this.setState({tabIndex}); this.props.setInterviewTabIndex(tabIndex)}}
+                onChange={this.setTabIndex}
             >
                 <div className="Layout-contentTabs">
                     <TabList className="Tabs-tabList">
