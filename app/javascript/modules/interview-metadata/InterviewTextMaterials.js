@@ -31,7 +31,7 @@ export default class InterviewTextMaterials extends Component {
 
     render() {
         const { interview, project, locale } = this.props;
-        const observationsMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'observations');
+        const observationsPublic = interview.properties?.public_attributes?.['observations'] === true;
 
         if (!interview.language_id) {
             return null;
@@ -41,7 +41,6 @@ export default class InterviewTextMaterials extends Component {
             <>
                 <AuthorizedContent object={interview} action="show">
                     {
-                        observationsMetadataField?.use_in_details_view &&
                         <SingleValueWithFormContainer
                             obj={interview}
                             collapse
@@ -57,13 +56,13 @@ export default class InterviewTextMaterials extends Component {
                         { this.download(
                             interview.lang,
                             'observations',
-                            (interview.observations && interview.observations[interview.lang]),
+                            (observationsPublic && interview.observations?.[interview.lang]),
                             true
                         )}
                         { this.download(
                             locale,
                             'observations',
-                            (interview.observations && interview.observations[locale] && interview.lang !== locale)
+                            (observationsPublic && interview.observations?.[locale] && interview.lang !== locale)
                         )}
                     </p>
                     <p>
@@ -71,14 +70,14 @@ export default class InterviewTextMaterials extends Component {
                         { this.download(
                             interview.lang,
                             'transcript',
-                            (interview.segments && interview.segments[1]?.[interview.first_segments_ids[1]]),
+                            (interview.segments?.[1]?.[interview.first_segments_ids[1]]),
                             true
                         )}
                         { this.download(
                             locale,
                             'transcript',
                             (interview.languages.indexOf(locale) > -1 && interview.lang !== locale) &&
-                            (interview.segments && interview.segments[1]?.[interview.first_segments_ids[1]])
+                            (interview.segments?.[1]?.[interview.first_segments_ids[1]])
                         )}
                     </p>
                 </AuthShowContainer>
