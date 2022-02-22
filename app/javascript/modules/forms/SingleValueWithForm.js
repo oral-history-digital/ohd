@@ -105,7 +105,7 @@ export default class SingleValueWithForm extends Component {
                     (projectAccessGranted && metadataField?.use_in_details_view) ||
                     (!projectAccessGranted && metadataField?.display_on_landing_page)
                 ) &&
-                (obj.properties.public_attributes?.[attribute] !== false)
+                ([false, 'false'].indexOf(obj.properties?.public_attributes?.[attribute]) == -1)
             )
         ) {
             let value = humanReadable(obj, attribute, this.props, this.state);
