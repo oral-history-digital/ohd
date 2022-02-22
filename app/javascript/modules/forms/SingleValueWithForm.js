@@ -57,7 +57,7 @@ export default class SingleValueWithForm extends Component {
         let statusCheckbox = {
             elementType: 'input',
             attribute: `public_attributes[${this.props.attribute}]`,
-            value: this.props.obj.properties.public_attributes && (this.props.obj.properties.public_attributes[this.props.attribute] === 'true'),
+            value: this.props.obj.properties?.public_attributes?.[this.props.attribute]?.toString() === 'true',
             labelKey: 'activerecord.attributes.default.publish',
             type: 'checkbox',
         };
@@ -105,7 +105,7 @@ export default class SingleValueWithForm extends Component {
                     (projectAccessGranted && metadataField?.use_in_details_view) ||
                     (!projectAccessGranted && metadataField?.display_on_landing_page)
                 ) &&
-                ([false, 'false'].indexOf(obj.properties?.public_attributes?.[attribute]) == -1)
+                (obj.properties?.public_attributes?.[attribute]?.toString() === 'true')
             )
         ) {
             let value = humanReadable(obj, attribute, this.props, this.state);

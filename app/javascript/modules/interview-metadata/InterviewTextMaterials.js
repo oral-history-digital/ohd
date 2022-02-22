@@ -1,89 +1,74 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaDownload } from 'react-icons/fa';
 
-import { t } from 'modules/i18n';
-import { pathBase } from 'modules/routes';
-import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { AuthShowContainer, AuthorizedContent, useAuthorization } from 'modules/auth';
 import { SingleValueWithFormContainer } from 'modules/forms';
+import InterviewDownloads from './InterviewDownloads';
 
-export default class InterviewTextMaterials extends Component {
-    download(lang, type, condition, showEmpty=false) {
-        const { interview } = this.props;
+export default function InterviewTextMaterials({
+    interview,
+    project,
+    locale,
+}) {
 
-        if (condition) {
-            return (
-                <a
-                    href={`${pathBase(this.props)}/interviews/${interview.archive_id}/${type}.pdf?lang=${lang}`}
-                    className="flyout-content-data"
-                >
-                    <FaDownload className="Icon Icon--small" title={t(this.props, 'download')} />
-                    {' '}
-                    {t(this.props, lang)}
-                </a>
-            )
-        } else if (showEmpty) {
-            return '---';
-        } else {
-            return null;
-        }
+    const { t } = useI18n();
+    const { isAuthorized } = useAuthorization();
+    const showObservations = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.observations?.toString() === 'true';
+    debugger
+
+    if (!interview.language_id) {
+        return null;
     }
 
-    render() {
-        const { interview, project, locale } = this.props;
-        const observationsPublic = interview.properties?.public_attributes?.['observations'] === true;
-
-        if (!interview.language_id) {
-            return null;
-        }
-
-        return (
-            <>
-                <AuthorizedContent object={interview} action="show">
-                    {
-                        <SingleValueWithFormContainer
-                            obj={interview}
-                            collapse
-                            elementType="textarea"
-                            multiLocale
-                            attribute={'observations'}
-                        />
-                    }
-                </AuthorizedContent>
-                <AuthShowContainer ifLoggedIn>
-                    <p>
-                        <span className='flyout-content-label'>{t(this.props, 'activerecord.attributes.interview.observations')}:</span>
-                        { this.download(
-                            interview.lang,
-                            'observations',
-                            (observationsPublic && interview.observations?.[interview.lang]),
-                            true
-                        )}
-                        { this.download(
-                            locale,
-                            'observations',
-                            (observationsPublic && interview.observations?.[locale] && interview.lang !== locale)
-                        )}
-                    </p>
-                    <p>
-                        <span className='flyout-content-label'>{t(this.props, 'transcript')}:</span>
-                        { this.download(
-                            interview.lang,
-                            'transcript',
-                            (interview.segments?.[1]?.[interview.first_segments_ids[1]]),
-                            true
-                        )}
-                        { this.download(
-                            locale,
-                            'transcript',
+    return (
+        <>
+            <AuthorizedContent object={interview} action="show">
+                {
+                    <SingleValueWithFormContainer
+                        obj={interview}
+                        collapse
+                        elementType="textarea"
+                        multiLocale
+                        attribute={'observations'}
+                    />
+                }
+            </AuthorizedContent>
+            <AuthShowContainer ifLoggedIn>
+                <p>
+                    <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
+                    <InterviewDownloads
+                        lang={interview.lang}
+                        type='observations'
+                        condition={showObservations && interview.observations?.[interview.lang]}
+                        showEmpty={true}
+                    />
+                    <InterviewDownloads
+                        lang={locale}
+                        type='observations'
+                        condition={showObservations && interview.observations?.[locale] && interview.lang !== locale}
+                    />
+                </p>
+                <p>
+                    <span className='flyout-content-label'>{t('transcript')}:</span>
+                    <InterviewDownloads
+                        lang={interview.lang}
+                        type='transcript'
+                        condition={interview.segments?.[1]?.[interview.first_segments_ids[1]]}
+                        showEmpty={true}
+                    />
+                    <InterviewDownloads
+                        lang={locale}
+                        type='transcript'
+                        condition={
                             (interview.languages.indexOf(locale) > -1 && interview.lang !== locale) &&
                             (interview.segments?.[1]?.[interview.first_segments_ids[1]])
-                        )}
-                    </p>
-                </AuthShowContainer>
-            </>
-        );
-    }
+                        }
+                        showEmpty={true}
+                    />
+                </p>
+            </AuthShowContainer>
+        </>
+    );
 }
 
 InterviewTextMaterials.propTypes = {
