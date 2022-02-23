@@ -61,7 +61,12 @@ class InterviewMetadataExporter
     Date.parse(@interview.interview_date)
 
     rescue
-      nil
+      begin
+        year = @interview.interview_date[/\d{4}/]
+        Date.new(year.to_i)
+      rescue
+        nil
+      end
   end
 
   def contributor_details(contributor, contribution_type)

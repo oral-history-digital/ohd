@@ -19,7 +19,7 @@ class ProjectMetadataExporter
     @md.name = @project.shortname
     @md.title = @project.name
     @md.id = @project.shortname.downcase
-    @md.owner = @project.hosting_institution
+    @md.owner = @project.institutions.first.name
     @md.publication_year = @project.created_at.year.to_s  # TODO: Not good
     @md.description = ActionView::Base.full_sanitizer.sanitize(@project.introduction)
     @md.description_lang = I18n.locale.to_s
