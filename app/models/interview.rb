@@ -70,6 +70,8 @@ class Interview < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
 
+  has_and_belongs_to_many :archiving_batches
+
   serialize :properties
 
   after_create :set_public_attributes_to_properties

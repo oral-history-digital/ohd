@@ -1,16 +1,17 @@
 class InterviewMetadataExporter
-  def initialize(interview)
+  def initialize(interview, batch = 1)
     @interview = interview
     @project = @interview.project
+    @batch = batch
     @md = InterviewMetadata.new
   end
 
   def build
     # Header
-    @md.self_link = self_url
     @md.creation_date = Date.today
 
     # Resources
+    @md.batch = @batch
     @md.media_type = @interview.media_type
     @md.mime_type = mime_type
     @md.tape_paths = @interview.tapes.map { |tape| "#{@interview.archive_id.upcase}_original/#{tape.media_id}.wav" }
@@ -29,20 +30,6 @@ class InterviewMetadataExporter
     @md.topic = @interview.collection&.name
 
     @md
-  end
-
-  def self_url
-    if @project.archive_domain.present?
-      "#{@project.archive_domain}/de/interviews/#{@interview.archive_id}/cmdi_metadata.xml"
-    else
-      Rails.application.routes.url_helpers.cmdi_metadata_interview_url(
-        id: @interview.archive_id,
-        locale: 'de',
-        project_id: @project.identifier,
-        host: OHD_DOMAIN,
-        format: :xml
-      )
-    end
   end
 
   def mime_type

@@ -1,5 +1,5 @@
 class ProjectMetadata
-  attr_accessor :self_link, :creation_date,
+  attr_accessor :creation_date, :batch,
     :metadata_resources, :documentation_url, :documentation_languages, :num_interviews,
     :name, :title, :id, :owner, :publication_year, :description, :description_lang,
     :media_types, :mime_types
@@ -27,7 +27,7 @@ class ProjectMetadata
         xml.Header {
           xml.MdCreator 'Nokogiri'
           xml.MdCreationDate creation_date
-          xml.MdSelfLink self_link
+          xml.MdSelfLink
           xml.MdProfile 'clarin.eu:cr1:p_1387365569699'
           xml.MdCollectionDisplayName 'Bavarian Archive for Speech Signals (BAS)'
         }
@@ -35,7 +35,7 @@ class ProjectMetadata
           xml.ResourceProxyList {
             metadata_resources.each_with_index do |name, index|
               id = self.class.pad(index + 1)
-              url = "#{name.upcase}/#{name}.xml"
+              url = "#{name.downcase}/#{name}.xml"
 
               xml.ResourceProxy('id' => "c_#{id}") {
                 xml.ResourceType('Metadata', 'mimetype' => 'text/xml')
@@ -58,7 +58,7 @@ class ProjectMetadata
               xml.GeneralInfo {
                 xml.Name name
                 xml.Title "OHD #{title}"
-                xml.ID "ohd_#{id}_001"
+                xml.ID "ohd_#{id}_#{batch.to_s.rjust(3, '0')}"
                 xml.Owner owner
                 xml.PublicationYear publication_year
                 xml.Description {
