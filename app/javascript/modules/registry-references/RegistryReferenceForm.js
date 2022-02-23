@@ -37,17 +37,6 @@ export default function RegistryReferenceForm({
                 goDeeper: true
             },
         ]
-        if (!inTranscript) {
-            elements.push(
-                {
-                    elementType: 'select',
-                    attribute: 'workflow_state',
-                    values: ['preliminary', 'checked', 'rejected'],
-                    value: registryReference?.workflow_state,
-                    optionsScope: 'workflow_states',
-                }
-            )
-        }
         if (!registryReferenceTypeId) {
             elements.push(
                 {
