@@ -18,7 +18,7 @@ const mapStateToProps = state => ({
     formElements: [
         {
             attribute: 'shortname',
-            validate: function(v){return /^[\-a-z]{2,12}$/.test(v)},
+            validate: function(v){return /^[\-a-z0-9]{1,11}[a-z]$/.test(v)},
             hidden: !getCurrentAccount(state).admin,
         },
         {
