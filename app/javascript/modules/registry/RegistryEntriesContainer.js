@@ -5,6 +5,7 @@ import { fetchData, getCurrentProject, getCurrentAccount, getProjects, getRegist
     getRegistryEntriesStatus } from 'modules/data';
 import { getEditView, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import RegistryEntries from './RegistryEntries';
+import { getIsLoggedIn } from 'modules/account';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
@@ -16,6 +17,7 @@ const mapStateToProps = state => ({
     project: getCurrentProject(state),
     account: getCurrentAccount(state),
     editView: getEditView(state),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

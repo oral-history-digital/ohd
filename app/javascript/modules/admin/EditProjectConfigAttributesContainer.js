@@ -86,6 +86,9 @@ const mapStateToProps = state => ({
             attribute: "pseudo_upload_types",
         },
         {
+            attribute: "pseudo_logged_out_visible_registry_entry_ids"
+        },
+        {
             attribute: "pseudo_hidden_registry_entry_ids"
         },
         {

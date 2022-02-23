@@ -23,7 +23,7 @@ export default function Registry({
     const { t } = useI18n();
 
     useEffect(() => {
-        setSidebarTabsIndex(isLoggedIn ? INDEX_REGISTRY_ENTRIES : INDEX_ACCOUNT);
+        setSidebarTabsIndex(INDEX_REGISTRY_ENTRIES);
     }, []);
 
     return (
@@ -37,37 +37,32 @@ export default function Registry({
                     testSelector={getRootRegistryEntryFetched}
                     reloadSelector={getRootRegistryEntryReload}
                 >
-                    <AuthShowContainer ifLoggedIn>
-                            <h1 className='registry-entries-title'>
-                                {t('registry')}
-                            </h1>
+                    <h1 className='registry-entries-title'>
+                        {t('registry')}
+                    </h1>
 
-                            <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
-                                <MergeRegistryEntriesButtonContainer />
-                            </AuthorizedContent>
+                    <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
+                        <MergeRegistryEntriesButtonContainer />
+                    </AuthorizedContent>
 
-                            {
-                                showRegistryEntriesTree ?
-                                    <RegistryEntriesContainer root registryEntryParent={rootRegistryEntry} /> :
-                                    (foundRegistryEntries.results.length === 0 && !isRegistryEntrySearching ?
-                                        (
-                                            <div className="search-result">
-                                                {`0 ${t('registryentry_results')}`}
-                                            </div>
-                                        ) :
-                                        (
-                                            <ul className="RegistryEntryList RegistryEntryList--root">
-                                                {
-                                                    foundRegistryEntries.results.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
-                                                }
-                                            </ul>
-                                        )
-                                    )
-                            }
-                    </AuthShowContainer>
-                    <AuthShowContainer ifLoggedOut ifNoProject>
-                        {t('devise.failure.unauthenticated')}
-                    </AuthShowContainer>
+                    {
+                        showRegistryEntriesTree ?
+                            <RegistryEntriesContainer root registryEntryParent={rootRegistryEntry} /> :
+                            (foundRegistryEntries.results.length === 0 && !isRegistryEntrySearching ?
+                                (
+                                    <div className="search-result">
+                                        {`0 ${t('registryentry_results')}`}
+                                    </div>
+                                ) :
+                                (
+                                    <ul className="RegistryEntryList RegistryEntryList--root">
+                                        {
+                                            foundRegistryEntries.results.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
+                                        }
+                                    </ul>
+                                )
+                            )
+                    }
                 </Fetch>
             </div>
         </ScrollToTop>

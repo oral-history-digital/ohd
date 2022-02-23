@@ -49,9 +49,15 @@ export default class RegistryEntries extends Component {
         ) {
             return true;
         }
-        else {
-            return false;
+
+        if (
+            this.props.project.logged_out_visible_registry_entry_ids?.indexOf(id.toString()) === -1 &&
+            !this.props.isLoggedIn
+        ) {
+            return true;
         }
+
+        return false;
     }
 
     registryEntries() {

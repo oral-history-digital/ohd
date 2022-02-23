@@ -116,6 +116,7 @@ class ProjectsController < ApplicationController
           "pseudo_view_modes",
           "pseudo_upload_types",
           "pseudo_funder_names",
+          "pseudo_logged_out_visible_registry_entry_ids",
           "pseudo_hidden_registry_entry_ids",
           "pseudo_pdf_registry_entry_ids",
           "pseudo_hidden_transcript_registry_entry_ids",
