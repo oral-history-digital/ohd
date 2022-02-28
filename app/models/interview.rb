@@ -457,7 +457,7 @@ class Interview < ApplicationRecord
     language && language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale)
+  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, update_only_speakers)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
@@ -465,15 +465,20 @@ class Interview < ApplicationRecord
         contribution = contributions.select{|c| c.speaker_designation == row[:speaker]}.first
         speaker_id = contribution && contribution.person_id
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}([:.,]{1}\d{2,3})*\]*$/
-          Segment.create_or_update_by({
-            interview_id: id,
-            timecode: row[:timecode],
-            next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode,
-            tape_id: tape_id,
-            text: row[:transcript] || '',
-            locale: locale,
-            speaker_id: speaker_id
-          })
+          if update_only_speakers && speaker_id
+            segment = Segment.find_or_create_by(interview_id: id, timecode: row[:timecode], tape_id: tape_id)
+            segment.update_attributes speaker_id: speaker_id
+          else
+            Segment.create_or_update_by({
+              interview_id: id,
+              timecode: row[:timecode],
+              next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode,
+              tape_id: tape_id,
+              text: row[:transcript] || '',
+              locale: locale,
+              speaker_id: speaker_id
+            })
+          end
         end
       end
     end

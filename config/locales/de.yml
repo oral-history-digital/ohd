@@ -948,6 +948,8 @@ de:
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         delete_existing: vorhandenes Transkript löschen
         delete_existing_explanation: Löscht vorhandene Überschriften und Schlagwörter für dieses Tape
+        update_only_speakers: nur Sprecher aktualisieren
+        update_only_speakers_explanation: es werden keine textuellen Änderungen vorgenommen
       project:
         pseudo_available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)

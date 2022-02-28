@@ -119,6 +119,12 @@ export default function UploadTranscript({
                         type: 'checkbox'
                     },
                     {
+                        elementType: 'input',
+                        help: 'activerecord.attributes.transcript.update_only_speakers_explanation',
+                        attribute: 'update_only_speakers',
+                        type: 'checkbox'
+                    },
+                    {
                         attribute: 'tape_durations',
                         help: 'activerecord.attributes.transcript.tape_durations_explanation',
                         hidden: !isOdt,
