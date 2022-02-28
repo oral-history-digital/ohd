@@ -38,7 +38,7 @@ class MetadataImport
         registry_entry = find_or_create_registry_entry(field, row, locale)
         ref_object = field.ref_object_type == 'Interview' ? interview : interview.interviewee
         destroy_reference(ref_object, field.registry_reference_type_id)
-        create_reference(registry_entry, interview, ref_object, field.registry_reference_type_id)
+        create_reference(registry_entry, interview, ref_object, field.registry_reference_type_id) if registry_entry
       end
 
       interview.touch
@@ -164,7 +164,7 @@ class MetadataImport
     unless registry_entry
       sub_category_registry_entry = field_rrt_re.find_descendant_by_name(row[sub_category_col_key], locale) ||
         (row[sub_category_col_key] && field_rrt_re.create_child(row[sub_category_col_key], locale))
-      registry_entry = row[col_key] && (sub_category_registry_entry || field_rrt_re).create_child(row[col_key], locale)
+      registry_entry = row[col_key] ? (sub_category_registry_entry || field_rrt_re).create_child(row[col_key], locale) : sub_category_registry_entry
     end
     registry_entry
   end
