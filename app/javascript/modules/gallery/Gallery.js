@@ -14,6 +14,10 @@ export default function Gallery({
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
 
+    function handleContextMenu(event) {
+        event.preventDefault();
+    }
+
     let visiblePhotos = [];
     if (interview.photos) {
         visiblePhotos = Object.values(interview.photos)
@@ -36,7 +40,12 @@ export default function Gallery({
                                 trigger={(
                                     <>
                                         <FaExpandAlt className="Gallery-icon" />
-                                        <img className="Gallery-image" src={photo.thumb_src} alt="" />
+                                        <img
+                                            className="Gallery-image"
+                                            src={photo.thumb_src}
+                                            alt=""
+                                            onContextMenu={handleContextMenu}
+                                        />
                                     </>
                                 )}
                                 triggerClassName="Gallery-button"
