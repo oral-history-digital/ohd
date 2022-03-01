@@ -14,7 +14,6 @@ export default function InterviewTextMaterials({
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const showObservations = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.observations?.toString() === 'true';
-    debugger
 
     if (!interview.language_id) {
         return null;
@@ -36,35 +35,29 @@ export default function InterviewTextMaterials({
             <AuthShowContainer ifLoggedIn>
                 <p>
                     <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
-                    <InterviewDownloads
-                        lang={interview.lang}
-                        type='observations'
-                        condition={showObservations && interview.observations?.[interview.lang]}
-                        showEmpty={true}
-                    />
-                    <InterviewDownloads
-                        lang={locale}
-                        type='observations'
-                        condition={showObservations && interview.observations?.[locale] && interview.lang !== locale}
-                    />
+                    { interview.languages.map( lang => {
+                        return (
+                            <InterviewDownloads
+                                lang={lang}
+                                type='observations'
+                                condition={showObservations && interview.observations?.[lang]}
+                                showEmpty={true}
+                            />
+                        )
+                    })}
                 </p>
                 <p>
                     <span className='flyout-content-label'>{t('transcript')}:</span>
-                    <InterviewDownloads
-                        lang={interview.lang}
-                        type='transcript'
-                        condition={interview.segments?.[1]?.[interview.first_segments_ids[1]]}
-                        showEmpty={true}
-                    />
-                    <InterviewDownloads
-                        lang={locale}
-                        type='transcript'
-                        condition={
-                            (interview.languages.indexOf(locale) > -1 && interview.lang !== locale) &&
-                            (interview.segments?.[1]?.[interview.first_segments_ids[1]])
-                        }
-                        showEmpty={true}
-                    />
+                    { interview.languages.map( lang => {
+                        return (
+                            <InterviewDownloads
+                                lang={lang}
+                                type='transcript'
+                                condition={interview.segments?.[1]?.[interview.first_segments_ids[1]]}
+                                showEmpty={true}
+                            />
+                        )
+                    })}
                 </p>
             </AuthShowContainer>
         </>
