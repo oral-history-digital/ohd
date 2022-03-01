@@ -442,6 +442,12 @@
   - :name: Project update
     :klass: Project
     :action_name: update
+  - :name: InstitutionProject update
+    :klass: InstitutionProject
+    :action_name: update
+  - :name: InstitutionProject create
+    :klass: InstitutionProject
+    :action_name: create
   - :name: RegistryEntry create
     :klass: RegistryEntry
     :action_name: create
