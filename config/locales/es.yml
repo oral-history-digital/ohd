@@ -216,11 +216,11 @@ es:
   translation_title: Traducción (%{lang}) de la entrevista con
   transcript_footer: 'Cómo citar: Transcripción de la entrevista con'
   transcript_template: Modelo para la importación de archivos .ods
-  biographical_entries_header: 'Biografía breve:'
-  biographical_entries_title: 'Biografía breve de'
+  biographical_entries_header: 'Biografía breve (español): %{interviewee_name} (Interview ID %{archive_id})'
+  biographical_entries_title: 'Biografía breve (español) de %{interviewee_name}'
   biographical_entries_footer: 'Cómo citar: Biografía breve de'
-  observations_header: 'Protokoll (%{lang}):'
-  observations_title: Protokoll (%{lang}) des Interviews mit
+  observations_header: 'Notas (español): %{interviewee_name} (Interview ID %{archive_id})'
+  observations_title: Notas (español) de la entrevista con %{interviewee_name}
   observations_footer: 'Zitiervorgabe: Protokoll von'
   interview_info: Sobre la entrevista
   place: Lugar

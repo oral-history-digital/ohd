@@ -1,7 +1,7 @@
 <%
   interviewee_name = "#{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}"
-  title = "#{I18n.t('observations_title', lang: @locale)} #{interviewee_name}"
-  header_text = "#{I18n.t('observations_header', lang: @locale)} #{interviewee_name}, #{@interview.archive_id}"
+  title = "#{I18n.t('observations_title', interviewee_name: interviewee_name, archive_id: @interview.archive_id, locale: @locale)}"
+  header_text = "#{I18n.t('observations_header', interviewee_name: interviewee_name, archive_id: @interview.archive_id, locale: @locale)}"
 %>
 
 \title{<%= title %>}
