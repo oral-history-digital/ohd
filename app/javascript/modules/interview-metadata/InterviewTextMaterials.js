@@ -21,17 +21,6 @@ export default function InterviewTextMaterials({
 
     return (
         <>
-            <AuthorizedContent object={interview} action="show">
-                {
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        collapse
-                        elementType="textarea"
-                        multiLocale
-                        attribute={'observations'}
-                    />
-                }
-            </AuthorizedContent>
             <AuthShowContainer ifLoggedIn>
                 <p>
                     <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
@@ -46,6 +35,19 @@ export default function InterviewTextMaterials({
                         )
                     })}
                 </p>
+            </AuthShowContainer>
+            <AuthorizedContent object={interview} action="show">
+                {
+                    <SingleValueWithFormContainer
+                        obj={interview}
+                        collapse
+                        elementType="textarea"
+                        multiLocale
+                        attribute={'observations'}
+                    />
+                }
+            </AuthorizedContent>
+            <AuthShowContainer ifLoggedIn>
                 <p>
                     <span className='flyout-content-label'>{t('transcript')}:</span>
                     { interview.languages.map( lang => {
