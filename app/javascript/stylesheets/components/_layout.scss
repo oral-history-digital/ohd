@@ -25,10 +25,10 @@
 
 .Layout.is-sticky {
   .wrapper-content {
-    margin-top: $media-player-height-mobile + $content-tabs-height;
+    margin-top: $media-player-height-mobile + $horizontal-tabs-height;
 
     @include screen-m {
-      margin-top: $media-player-height-desktop + $content-tabs-height;
+      margin-top: $media-player-height-desktop + $horizontal-tabs-height;
     }
   }
 }
