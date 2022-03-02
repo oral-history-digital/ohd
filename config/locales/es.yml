@@ -94,6 +94,25 @@ es:
         Ergänzungen, wie Aliasname oder Aufschlüsselung eines Akronyms;
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
+    default:
+      interruption: Interrupción (interruption) de la entrevista o de la grabación, p.e. <i(pausa)>
+      pause: Periodo en que no se habla con la duración en segundos, p.e. <p3>, tres segundos
+      unclear: Fragmento ininteligible y su duración en segundos, p.e. <?5>, ininteligible por cinco segundos
+      broken_word: El guion abajo marca palabras o frases incompletas
+      fast_word: Secuencia rápida de palabras
+      lexical_phenomenon: Palabras en otros idiomas se marcan con “l” (lexical phenomenon) y la abreviación para el idioma, p.e. <l(de)> para alemán y <l(es)> para español. Palabras de origen español que se usan en forma germanizada se marcan con <l(es-de)> o en el caso contrario con <l(de-es)>.
+      changed_voice: Cambios notables en la forma de hablar (shift in vocal quality), p.e. <(en voz alta) así era>
+      vocal_shift: forma de hablar
+      simultaneous: Cuando la persona entrevistada y el/la entrevistador/a hablan simultáneamente (simultaneous) se marca con <sim>
+      non_linguistic: Sonidos o eventos que influyen en la entrevista se marcan con <nl> (non-linguistic incidents) p.e. <nl(suena el teléfono)>
+      sound: sonido
+      non_verbal: Expresiones non verbales pero fonéticos se marcan con <v> (vocal), p.e. <v(bosteza)>
+      fonetic_expression: tipo de expresión fonética
+      gesture: Gestos especialmente notables se marcan con <g(tipo del gesto)>, p.e. <g(niega con la cabeza)>
+      gesture_type: tipo de gesto
+      facial_expression: Expresiones mímicas especialmente notables se marcan con <m(tipo de mímica)>, p.e. <m(cierra los ojos)>
+      expression_type: tipo de mímica
+      notes: Correcciones o añadiduras (notes)
   mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
   selected: seleccionado

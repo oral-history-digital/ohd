@@ -5,7 +5,8 @@
                space_below: 0.01,
                font_size: 13
            } %>
-<% if @interview.project.identifier.to_sym == :mog %>
+<% case @interview.project.identifier.to_sym %>
+<% when :mog %>
 \par{
   \begin{description}[leftmargin=4em,style=nextline]
     \item[\normalfont{( )}] <%= latex_escape(I18n.backend.translate(@locale,'legend.mog.missed')) %>
@@ -25,7 +26,7 @@
     \item[\normalfont{'}] <%= latex_escape(I18n.backend.translate(@locale,'legend.mog.omission')) %>
   \end{description}
 }
-<% else %>
+<% when :zwar %>
 \par{
   \begin{description}[leftmargin=4em,style=nextline]
     \item[\normalfont{[...]}] <%= latex_escape(I18n.backend.translate(@locale,'legend.zwar.address')) %>
@@ -47,6 +48,37 @@
     \item[\normalfont{{<%= I18n.backend.translate(@locale, :text) %>} <%= I18n.backend.translate(@locale, :or) %> {(<%= I18n.backend.translate(@locale, :text) %>)}}] <%= latex_escape(I18n.backend.translate(@locale,'legend.zwar.annotation')) %>
     \vspace*{0.2cm}
     \item[\normalfont{<***>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.zwar.tape_end')) %>
+    \vspace*{0.2cm}
+  \end{description}
+}
+<% else %>
+\par{
+  \begin{description}[leftmargin=4em,style=nextline]
+    \item[\normalfont{<i>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.interruption')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<p2>, <p3> etc.}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.pause')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<?2>, <?3> etc.}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.unclear')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{\_}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.broken_word')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<=>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.fast_word')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<l(es) xyz>; <l(es-de)>; <l(de-es)>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.lexical_phenomenon')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<s(<%= I18n.backend.translate(@locale, 'legend.default.vocal_shift') %>) xyz>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.changed_voice')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<sim>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.simultaneous')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<nl(<%= I18n.backend.translate(@locale, 'legend.default.sound') %>) xyz>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.non_linguistic')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<v(<%= I18n.backend.translate(@locale, 'legend.default.fonetic_expression') %>)>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.non_verbal')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<g(<%= I18n.backend.translate(@locale, 'legend.default.gesture_type') %>) xyz>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.gesture')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<m(<%= I18n.backend.translate(@locale, 'legend.default.expression_type') %>) xyz>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.facial_expression')) %>
+    \vspace*{0.2cm}
+    \item[\normalfont{<n>}] <%= latex_escape(I18n.backend.translate(@locale,'legend.default.notes')) %>
     \vspace*{0.2cm}
   \end{description}
 }
