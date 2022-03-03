@@ -42,16 +42,17 @@ export default class RegistryEntries extends Component {
         }
     }
 
-    hideRegistryEntry(id) {
+    hideRegistryEntry(registryEntry) {
         if (
-            this.props.project.hidden_registry_entry_ids?.indexOf(id.toString()) > -1 &&
+            this.props.project.hidden_registry_entry_ids?.indexOf(registryEntry.id.toString()) > -1 &&
             !admin(this.props, {type: 'RegistryEntry'}, 'update')
         ) {
             return true;
         }
 
         if (
-            this.props.project.logged_out_visible_registry_entry_ids?.indexOf(id.toString()) === -1 &&
+            this.props.project.logged_out_visible_registry_entry_ids?.indexOf(registryEntry.id.toString()) === -1 &&
+            !!registryEntry.parent_registry_hierarchy_ids[this.props.project.root_registry_entry_id] &&
             !this.props.isLoggedIn
         ) {
             return true;
@@ -70,7 +71,7 @@ export default class RegistryEntries extends Component {
             return this.props.registryEntryParent.child_ids[this.props.locale].map((id) => {
                 let registryEntry = this.props.registryEntries[id]
 
-                if (registryEntry && !this.hideRegistryEntry(id)) {
+                if (registryEntry && !this.hideRegistryEntry(registryEntry)) {
                     return (
                         <RegistryEntryContainer
                             key={id}
