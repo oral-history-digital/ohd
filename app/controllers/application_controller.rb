@@ -121,6 +121,7 @@ class ApplicationController < ActionController::Base
         },
         registry_entries: {},
         interviews: {},
+        segments: {},
       },
       'media-player': {
         tape: 1,

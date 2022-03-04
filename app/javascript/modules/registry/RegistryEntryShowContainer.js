@@ -7,6 +7,7 @@ import { fetchData, getProjects, getInterviews, getRegistryEntries, getInterview
 import { setArchiveId, getLocale, getProjectId, getTranslations, getEditView } from 'modules/archive';
 import { sendTimeChangeRequest } from 'modules/media-player';
 import RegistryEntryShow from './RegistryEntryShow';
+import { getIsLoggedIn } from 'modules/account';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
@@ -24,6 +25,7 @@ const mapStateToProps = state => ({
     registryEntries: getRegistryEntries(state),
     editView: getEditView(state),
     account: getCurrentAccount(state),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

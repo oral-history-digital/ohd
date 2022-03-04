@@ -8,6 +8,7 @@ import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { admin } from 'modules/auth';
 import { formatTimecode } from 'modules/interview-helpers';
+import { RefObjectLinkContainer } from 'modules/registry';
 
 export default class RegistryEntryShow extends Component {
     componentDidMount() {
@@ -29,31 +30,6 @@ export default class RegistryEntryShow extends Component {
         }
     }
 
-    fetchInterview(archiveId) {
-        const { interviewsStatus, fetchData } = this.props;
-
-        if(archiveId && !interviewsStatus[archiveId]) {
-            fetchData(this.props, 'interviews', archiveId)
-            fetchData(this.props, 'interviews', archiveId, 'short_title')
-        }
-    }
-
-    interviewIsFetched(archiveId) {
-        return this.props.interviewsStatus[archiveId] &&
-            this.props.interviewsStatus[archiveId].split('-')[0] === 'fetched' &&
-            this.props.interviews[archiveId].short_title
-    }
-
-    fetchSegment(id) {
-        if(id && !this.props.segmentsStatus[id]) {
-            this.props.fetchData(this.props, 'segments', id)
-        }
-    }
-
-    segmentIsFetched(id) {
-        return this.props.segmentsStatus[id] && this.props.segmentsStatus[id].split('-')[0] === 'fetched'
-    }
-
     loadRegistryReferenceTypes() {
         if (!this.props.registryReferenceTypesStatus[`for_projects_${this.props.project?.id}`]) {
             this.props.fetchData(this.props, 'registry_reference_types', null, null, `for_projects=${this.props.project?.id}`);
@@ -64,81 +40,8 @@ export default class RegistryEntryShow extends Component {
         return this.props.registryEntries[this.props.registryEntryId];
     }
 
-    tape(segment) {
-        if (segment && segment.tape_count && segment.tape_count > 1){
-            return `(${t(this.props, 'tape')} ${segment.tape_nbr}/${segment.tape_count})`
-        }
-        else {
-            return '';
-        }
-    }
-
-    refObject(rr) {
-        const { interviews, onSubmit } = this.props;
-
-        let ref_object_string = ''
-        if (!this.interviewIsFetched(rr.archive_id)) {
-            this.fetchInterview(rr.archive_id);
-        }
-
-        const isAllowedToSee = admin(this.props, {type: 'General'}, 'edit') ||
-            interviews[rr.archive_id]?.workflow_state === 'public';
-
-        switch (rr.ref_object_type) {
-            case 'Segment':
-                if(this.segmentIsFetched(rr.ref_object_id) && isAllowedToSee) {
-                    if (this.interviewIsFetched(rr.archive_id)) {
-                        ref_object_string = formatTimecode(this.props.segments[rr.ref_object_id].time) + ' ' +
-                                            this.tape(this.props.segments[rr.ref_object_id]) + ' ' +
-                                            t(this.props, 'in') + ' ' +
-                                            this.props.interviews[rr.archive_id]?.short_title[this.props.locale] + ' ' +
-                                            `(${rr.archive_id})`
-                        return (
-                            <Link className={'search-result-link'}
-                                onClick={() => {
-                                    this.props.setArchiveId(rr.archive_id);
-                                    this.props.sendTimeChangeRequest(this.props.segments[rr.ref_object_id].tape_nbr, this.props.segments[rr.ref_object_id].time)
-                                    if (typeof onSubmit === 'function') {
-                                        onSubmit();
-                                    }
-                                }}
-                                to={pathBase(this.props) + '/interviews/' + rr.archive_id}
-                            >
-                                {`${ref_object_string}`}
-                            </Link>
-                        )
-                    } else if (rr.archive_id) {
-                        this.fetchInterview(rr.archive_id)
-                    }
-                } else if (rr.ref_object_id) {
-                    this.fetchSegment(rr.ref_object_id)
-                }
-                break;
-            default:
-                if(this.interviewIsFetched(rr.archive_id) && isAllowedToSee) {
-                    ref_object_string = `${this.props.interviews[rr.archive_id]?.short_title[this.props.locale]} (${rr.archive_id})`
-                    return (
-                        <Link className={'search-result-link'}
-                            onClick={() => {
-                                this.props.setArchiveId(rr.archive_id);
-                                if (typeof onSubmit === 'function') {
-                                    onSubmit();
-                                }
-                            }}
-                            to={pathBase(this.props) + '/interviews/' + rr.archive_id}
-                        >
-                            {`${ref_object_string}`}
-                        </Link>
-                    )
-                } else if (rr.archive_id) {
-                    this.fetchInterview(rr.archive_id)
-                }
-                break;
-        }
-    }
-
     registryReferences() {
-        const { project, registryReferenceTypesStatus, registryReferenceTypes, locale } = this.props;
+        const { project, registryReferenceTypesStatus, registryReferenceTypes, locale, onSubmit } = this.props;
 
         const registryEntry = this.registryEntry();
 
@@ -151,21 +54,18 @@ export default class RegistryEntryShow extends Component {
             for (var r in registryEntry.registry_references) {
                 let rr = registryEntry.registry_references[r]
                 let rr_type = registryReferenceTypes[rr.registry_reference_type_id]
-                let ro = this.refObject(rr);
 
-                if (ro) {
-                    references.push(
-                        <li
-                            key={`this.registryEntry().registry_reference-${r}`}
-                        >
-                            <strong>
-                                {rr_type && `${rr_type.name[locale]} `}
-                            </strong>
-                            {`${t(this.props, 'in')} ${t(this.props, rr.ref_object_type.toLowerCase())} `}
-                            {ro}
-                        </li>
-                    );
-                }
+                references.push(
+                    <li
+                        key={`this.registryEntry().registry_reference-${r}`}
+                    >
+                        <strong>
+                            {rr_type && `${rr_type.name[locale]} `}
+                        </strong>
+                        {`${t(this.props, 'in')} ${t(this.props, rr.ref_object_type.toLowerCase())} `}
+                        <RefObjectLinkContainer registryReference={rr} onSubmit={onSubmit} />
+                    </li>
+                );
             }
         }
 
