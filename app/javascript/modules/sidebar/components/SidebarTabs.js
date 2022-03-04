@@ -72,7 +72,10 @@ export default function SidebarTabs({
     }
 
     const showInterviewTab = !!interview;
-    const showRegistryTab = project?.logged_out_visible_registry_entry_ids.length > 0;
+    const showRegistryTab = project && (
+        (!isLoggedIn && project.logged_out_visible_registry_entry_ids.length > 0) ||
+        isLoggedIn
+    )
     const showMapTab = hasMap && project;
     const showWorkbookTab = isLoggedIn;
     const showIndexingTab = project && isAuthorized({type: 'General'}, 'edit');
