@@ -21,7 +21,7 @@ export default function Gallery({
     let visiblePhotos = [];
     if (interview.photos) {
         visiblePhotos = Object.values(interview.photos)
-            .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'show'))
+            .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'update'))
             .sort(photoComparator);
     }
 
