@@ -1,44 +1,31 @@
-import { useEffect, useRef } from 'react';
 import classNames from 'classnames';
-import useResizeAware from 'react-resize-aware';
 import PropTypes from 'prop-types';
 import 'leaflet/dist/leaflet.css';
-import { Map, TileLayer, CircleMarker } from 'react-leaflet';
+import { MapContainer, TileLayer, CircleMarker } from 'react-leaflet';
 
-import { INITIAL_MAP_CENTER, INITIAL_MAP_ZOOM } from '../constants';
 import MapPopup from './MapPopup';
 import MapOverlay from './MapOverlay';
 import MapTooltip from './MapTooltip';
+import MapResizeHandler from './MapResizeHandler';
 
 export default function MapComponent({
     loading = false,
     className,
-    initialCenter = INITIAL_MAP_CENTER,
-    initialZoom = INITIAL_MAP_ZOOM,
     markers = [],
     bounds,
     popupComponent,
+    children,
 }) {
-    const [resizeListener, sizes] = useResizeAware();
-    const mapEl = useRef(null);
-
-    useEffect(() => {
-        mapEl.current?.leafletElement?.invalidateSize();
-    }, [sizes.width, sizes.height]);
-
     return (
         <div style={{ position: 'relative' }}>
-            {resizeListener}
-            <Map
-                ref={mapEl}
+            <MapContainer
                 className={classNames('Map', className)}
-                center={initialCenter}
                 bounds={bounds}
                 maxZoom={16}
                 scrollWheelZoom={false}
-                zoom={initialZoom}
                 zoomAnimation={false}
             >
+                <MapResizeHandler />
                 {
                     loading && <MapOverlay />
                 }
@@ -69,7 +56,8 @@ export default function MapComponent({
                         </CircleMarker>
                     ))
                 }
-            </Map>
+                {children}
+            </MapContainer>
         </div>
     );
 }
@@ -77,8 +65,6 @@ export default function MapComponent({
 MapComponent.propTypes = {
     loading: PropTypes.bool,
     className: PropTypes.string,
-    initialCenter: PropTypes.arrayOf(PropTypes.number),
-    initialZoom: PropTypes.number,
     markers: PropTypes.arrayOf(PropTypes.shape({
         id: PropTypes.number.isRequired,
         lat: PropTypes.number.isRequired,
@@ -90,4 +76,8 @@ MapComponent.propTypes = {
     })),
     bounds: PropTypes.arrayOf(PropTypes.array),
     popupComponent: PropTypes.elementType.isRequired,
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node,
+    ]),
 };

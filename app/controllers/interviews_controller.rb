@@ -254,7 +254,7 @@ class InterviewsController < ApplicationController
     interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.xml do
-        exporter = InterviewMetadataExporter.new(interview)
+        exporter = InterviewMetadataExporter.new(interview, params[:batch])
         metadata = exporter.build
 
         if metadata.valid?

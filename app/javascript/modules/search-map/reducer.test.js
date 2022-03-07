@@ -51,3 +51,20 @@ describe('TOGGLE_MAP_FILTER', () => {
         expect(reducer(state, action)).toEqual(expectedState);
     });
 });
+
+test('handles the SET_MAP_VIEW action', () => {
+    const bounds = [
+        [51.50939, -0.11832],
+        [44.433333, 26.1],
+    ];
+    const state = initialState;
+    const action = {
+        type: types.SET_MAP_VIEW,
+        payload: bounds,
+    };
+    const expectedState = {
+        ...initialState,
+        mapView: bounds,
+    };
+    expect(reducer(state, action)).toEqual(expectedState);
+});

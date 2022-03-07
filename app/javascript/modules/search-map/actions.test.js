@@ -18,3 +18,16 @@ test('toggleMapFilter', () => {
     };
     expect(actual).toEqual(expected);
 });
+
+test('setMapView', () => {
+    const bounds = [
+        [51.50939, -0.11832],
+        [44.433333, 26.1],
+    ];
+    const actual = actions.setMapView(bounds);
+    const expected = {
+        type: types.SET_MAP_VIEW,
+        payload: bounds,
+    };
+    expect(actual).toEqual(expected);
+});

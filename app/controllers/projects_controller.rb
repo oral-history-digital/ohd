@@ -42,7 +42,7 @@ class ProjectsController < ApplicationController
   def cmdi_metadata
     respond_to do |format|
       format.xml do
-        exporter = ProjectMetadataExporter.new(@project)
+        exporter = ProjectMetadataExporter.new(@project, params[:batch])
         metadata = exporter.build
         render xml: metadata.to_xml
       end

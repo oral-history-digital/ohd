@@ -25,6 +25,7 @@ class Project < ApplicationRecord
   has_many :registry_name_types, dependent: :destroy
   has_many :people, dependent: :destroy
   has_many :map_sections, dependent: :destroy
+  has_many :archiving_batches, dependent: :destroy
 
   translates :name, :display_name, :introduction, :more_text, :landing_page_text,
     fallbacks_for_empty_translations: true, touch: true

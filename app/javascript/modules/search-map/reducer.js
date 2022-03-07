@@ -1,9 +1,11 @@
 import xor from 'lodash.xor';
 
-import { INITIALIZE_MAP_FILTER, TOGGLE_MAP_FILTER } from './action-types';
+import { INITIALIZE_MAP_FILTER, TOGGLE_MAP_FILTER,
+    SET_MAP_VIEW } from './action-types';
 
 export const initialState = {
     filter: null,
+    mapView: null,
 }
 
 const search = (state = initialState, action) => {
@@ -17,6 +19,11 @@ const search = (state = initialState, action) => {
             return {
                 ...state,
                 filter: xor(state.filter, [action.payload]),
+            };
+        case SET_MAP_VIEW:
+            return {
+                ...state,
+                mapView: action.payload,
             };
         default:
             return state;
