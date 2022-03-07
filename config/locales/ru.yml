@@ -239,7 +239,7 @@ ru:
   biographical_entries_footer: 'Метод цитирования: Краткая биография,'
   observations_header: 'Protokoll (%{lang}):'
   observations_title: Protokoll (%{lang}) des Interviews mit
-  observations_footer: 'Zitiervorgabe: Protokoll von'
+  observations_footer: 'Zitierweise: Protokoll von'
   interview_info: об интервью
   place: Ort
   group: Gruppe

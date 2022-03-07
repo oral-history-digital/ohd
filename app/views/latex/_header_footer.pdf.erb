@@ -22,12 +22,12 @@
 }
 
 <%
-  interviewee_name = @interview && @interview.interviewees.first.name(false)[@locale.to_sym]
+  interviewee_name = @interview && @interview.anonymous_title(@locale.to_sym)
   footer_text = ""
   footer_text += "#{I18n.t("#{@doc_type}_footer", locale: @locale)} #{interviewee_name}" if @interview
   footer_text += ", #{I18n.t('interview', locale: @locale)} #{@interview.archive_id}, #{@interview.interview_date && Date.parse(@interview.interview_date).strftime("%d.%m.%Y") rescue @interview.interview_date}" if @interview
-  footer_text += ", #{I18n.t('interview_archive', locale: @locale)} \"#{current_project.name(@locale)}\""
-  footer_text += ", #{current_project.archive_domain}/#{@locale}"
+  footer_text += ", #{current_project.name(@locale)}"
+    footer_text += ", #{current_project.domain_with_optional_identifier}/#{@locale}/interviews/#{@interview.archive_id}"
 %>
 
 <% if @interview && @interview.doi_status == 'created'
