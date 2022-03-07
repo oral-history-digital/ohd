@@ -258,7 +258,7 @@ class Project < ApplicationRecord
         when "collection_id"
           facet_label_hash = facet.localized_hash(:label)
           cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}-#{Collection.count}") do
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
               subfacets: collections.includes(:translations).inject({}) do |subfacets, sf|
