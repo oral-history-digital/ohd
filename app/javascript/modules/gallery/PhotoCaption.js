@@ -12,7 +12,7 @@ export default function PhotoCaption({
     const caption = photo.captions[locale] || photo.captions['de'];
     const photoExplanation = photo.captions[locale] ? null : t('activerecord.attributes.photo.caption_explanation');
 
-    const translations = photo.translations.find(t => t.locale === locale);
+    const translations = photo.translations.find(t => t.locale === locale) || photo.translations[0] || {};
 
     return (
         <div className={classNames('PhotoCaption', 'slider-text', className)}>
