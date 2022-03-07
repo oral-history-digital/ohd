@@ -27,10 +27,6 @@ export default function Gallery({
 
     return (
         <div>
-            <div className="explanation">
-                {t(visiblePhotos.length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation')}
-            </div>
-
             {
                 visiblePhotos.length > 0 && (
                     <div className="Gallery">
