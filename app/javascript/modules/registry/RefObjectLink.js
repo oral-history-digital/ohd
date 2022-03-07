@@ -27,22 +27,29 @@ export default function RefObjectLink({
     const statuses = useSelector(getStatuses);
     const interview = interviews[registryReference.archive_id];
     const segment = registryReference.ref_object_type === 'Segment' && segments[registryReference.ref_object_id];
-    const interviewTitle = isLoggedIn ? interview?.short_title[locale] : interview?.anonymous_title[locale];
+    const interviewTitle = isLoggedIn ? interview?.short_title?.[locale] : interview?.anonymous_title[locale];
     let title = interviewTitle + `(${registryReference.archive_id})`;
 
     if (isLoggedIn && segment) {
         const tape = segment?.tape_number > 1 ? `(${t('tape')} ${segment.tape_nbr}/${segment.tape_count})` : '';
-        title = segment && `${formatTimecode(segments[segmentId].time)} ${tape} ${t('in')} ${title}`;
+        title = segment && `${formatTimecode(segment.time)} ${tape} ${t('in')} ${title}`;
     }
 
     const fetchingInterview = !!statuses['interviews'][registryReference.archive_id];
+    const fetchingShortTitle = !!statuses['short_title']?.[`for_interviews_${registryReference.archive_id}`];
     const fetchingSegment = !!statuses['segments'][registryReference.ref_object_id];
 
     useEffect(() => {
         if (!fetchingInterview) {
             dispatch(fetchData({ projectId, locale, projects }, 'interviews', registryReference.archive_id));
         }
-    }, [interview]);
+    }, [interview, isLoggedIn]);
+
+    useEffect(() => {
+        if (!fetchingShortTitle && isLoggedIn) {
+            dispatch(fetchData({ projectId, locale, projects }, 'interviews', registryReference.archive_id, 'short_title'));
+        }
+    }, [interview, isLoggedIn]);
 
     useEffect(() => {
         if (
@@ -50,7 +57,6 @@ export default function RefObjectLink({
             registryReference.ref_object_type === 'Segment' &&
             isLoggedIn
         ) {
-            debugger
             dispatch(fetchData({ projectId, locale, projects }, 'segments', registryReference.ref_object_id));
         }
     }, [segment, isLoggedIn]);
