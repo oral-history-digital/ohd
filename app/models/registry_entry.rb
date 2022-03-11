@@ -89,7 +89,6 @@ class RegistryEntry < ApplicationRecord
 
   def public_registry_references_count
     registry_references.joins(:interview)
-      .where(workflow_state: 'checked')
       .where('interviews.workflow_state': 'public')
       .count
   end
