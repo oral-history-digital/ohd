@@ -1164,7 +1164,7 @@ de:
         photographer: Foto/Quelle
         license: Lizenz
         data: Fotodatei
-        caption_explanation: Die Beschreibung gibt es nur auf deutsch.
+        caption_explanation: Die Beschreibung gibt es nur auf spanisch.
         workflow_state: 'Status'
       uploaded_file:
         href: Link
