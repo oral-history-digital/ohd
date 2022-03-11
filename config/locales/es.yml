@@ -175,13 +175,13 @@ es:
   change_password: Cambiar contraseña
   archive_results: Resultados de búsqueda
   segment_results: Resultados de búsqueda en la transcripción
-  translation_results: Search results in translations
-  heading_results: Search results in the table of contents
+  translation_results: Resultados de búsqueda en la traducción 
+  heading_results: Resultados de búsqueda en la tabla de contenido
   photo_results: Resultados de búsqueda en imágenes
-  annotation_results: Search results in annotations
+  annotation_results: Resultados de búsqueda en las anotaciones
   registryentry_results: Resultados de búsqueda en el índice
   biographicalentry_results: Resultados de búsqueda en la biografía breve
-  observation_results: Search results in the protocol
+  observation_results: Resultados de búsqueda en las notas
   person_results: Resultados de búsqueda para personas
   user_registration_results: Resultados de búsqueda para usuaria/os
   segment_hits: Resultados en la transcripción
