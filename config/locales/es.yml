@@ -175,7 +175,7 @@ es:
   change_password: Cambiar contraseña
   archive_results: Resultados de búsqueda
   segment_results: Resultados de búsqueda en la transcripción
-  translation_results: Resultados de búsqueda en la traducción 
+  translation_results: Resultados de búsqueda en la traducción
   heading_results: Resultados de búsqueda en la tabla de contenido
   photo_results: Resultados de búsqueda en imágenes
   annotation_results: Resultados de búsqueda en las anotaciones
@@ -1236,7 +1236,7 @@ es:
       description: Presentación de los lugares que se mencionan en la entrevista.
       error: Error loading map
       error_references: Error loading references
-      segment_references: Mentions
+      segment_references: Lugares mencionados
       at: at
     interview_metadata:
       add_contributors: Add contributors
@@ -1258,7 +1258,7 @@ es:
     registry:
       name_missing: "registry name missing"
     map:
-      mentions: Mentions
+      mentions: Lugares mencionados
     search_map:
       title: Map
       multiple_types: Multiple location types
