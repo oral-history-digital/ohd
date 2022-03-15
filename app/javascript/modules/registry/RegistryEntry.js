@@ -4,7 +4,7 @@ import { FaGlobeEurope, FaMinus, FaPlus }
     from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { AdminMenu, Modal } from 'modules/ui';
+import { AdminMenu, Modal, Checkbox } from 'modules/ui';
 import { AuthorizedContent, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
 import { DeleteItemForm } from 'modules/forms';
@@ -269,8 +269,7 @@ export default class RegistryEntry extends Component {
             >
                 <div className="RegistryEntry-content">
                     <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
-                        <input
-                            type='checkbox'
+                        <Checkbox
                             className='select-checkbox'
                             checked={selectedRegistryEntryIds.includes(data.id)}
                             onChange={() => addRemoveRegistryEntryId(data.id)}

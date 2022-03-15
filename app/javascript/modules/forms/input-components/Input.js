@@ -1,6 +1,7 @@
 import { createElement, Component } from 'react';
 import { FaPencilAlt} from 'react-icons/fa';
 
+import { Checkbox } from 'modules/ui';
 import Element from '../Element';
 
 export default class Input extends Component {
@@ -80,6 +81,8 @@ export default class Input extends Component {
                     </button>
                 </div>
             )
+        } else if (this.props.type === 'checkbox') {
+            return createElement(Checkbox, this.cleanProps());
         } else {
             return createElement('input', this.cleanProps());
         }

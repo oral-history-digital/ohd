@@ -8,10 +8,12 @@
 }
 
 .MapFilter-label {
+  align-items: center;
+  display: flex;
   font-size: 1rem;
   line-height: $base-unit;
-  user-select: none;
   opacity: 0.5;
+  user-select: none;
 }
 
 .MapFilter-label.is-active {
