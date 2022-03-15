@@ -813,6 +813,9 @@ class Interview < ApplicationRecord
             end
           end
         end
+
+        # Order
+        # TODO: sort linguistically
         if params[:fulltext].blank? && params[:order].blank?
           if project && project.default_search_order == 'collection'
             order_by(:collection_id, :asc)
@@ -824,8 +827,10 @@ class Interview < ApplicationRecord
           order_by(params[:order].split('-')[0].to_sym, params[:order].split('-')[1].to_sym)
         else
           order_by(:score, :desc)
+          order_by("person_name_#{locale}".to_sym, :asc)
         end
-        # TODO: sort linguistically
+
+        # Pagination
         paginate page: params[:page] || 1, per_page: per_page
       end
     end
