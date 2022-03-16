@@ -43,10 +43,6 @@ test('getIsPlaying retrieves wether medium is playing', () => {
     expect(selectors.getIsPlaying(state)).toEqual(state[NAME].isPlaying);
 });
 
-test('getResolution retrieves media resolution', () => {
-    expect(selectors.getResolution(state)).toEqual(state[NAME].resolution);
-});
-
 test('getTimeChangeRequest gets requested time change', () => {
     expect(selectors.getTimeChangeRequest(state)).toEqual(state[NAME].timeChangeRequest);
 });

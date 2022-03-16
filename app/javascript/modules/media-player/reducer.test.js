@@ -6,7 +6,6 @@ const state = {
     tape: 1,
     mediaTime: 0,
     isPlaying: false,
-    resolution: null,
     timeChangeRequest: null,
 };
 
@@ -19,15 +18,6 @@ test('handles the setTape action', () => {
     const expectedState = {
         ...state,
         tape: 3,
-    };
-    expect(reducer(state, action)).toEqual(expectedState);
-});
-
-test('handles the setResolution action', () => {
-    const action = actions.setResolution('480p');
-    const expectedState = {
-        ...state,
-        resolution: '480p',
     };
     expect(reducer(state, action)).toEqual(expectedState);
 });
@@ -57,7 +47,6 @@ test('handles the resetMedia action', () => {
         tape: 3,
         mediaTime: 25.4,
         isPlaying: true,
-        resolution: '480p',
     };
     const expectedState = initialState;
     expect(reducer(_state, action)).toEqual(expectedState);

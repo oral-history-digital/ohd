@@ -127,7 +127,6 @@ class ApplicationController < ActionController::Base
         tape: 1,
         mediaTime: 0,
         isPlaying: false,
-        resolution: nil,
         timeChangeRequest: nil,
       },
       interview: {
