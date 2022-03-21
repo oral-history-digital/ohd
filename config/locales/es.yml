@@ -1241,17 +1241,17 @@ es:
     interview_metadata:
       add_contributors: Add contributors
     interview_search:
-      no_results: No results
-      annotation_for: Annotation for
+      no_results: No hay resultados
+      annotation_for: Anotaciones para
       search_results:
-        heading: Search results
-        in_transcript: in the transcript
-        in_toc: in the table of contents
-        in_photo_captions: in photo captions
-        in_annotations: in annotations
-        in_registry: in the registry
-        in_biography: in the short biography
-        in_observations: in the protocol
+        heading: Resultados de busqueda
+        in_transcript: en la transcripción
+        in_toc: en la tabla de contenido
+        in_photo_captions: en los fotos
+        in_annotations: en las anotaciones
+        in_registry: en el índice
+        in_biography: en la biografía breve
+        in_observations: en las notas
     layout:
       back_to_top:
         label: "Back to top"
