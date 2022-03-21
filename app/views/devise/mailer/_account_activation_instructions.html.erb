@@ -1,5 +1,5 @@
 <%
-  case @resource.default_locale || I18n.locale
+  case (@resource.default_locale || I18n.locale).to_sym
   when :en
 -%>
 
