@@ -44,15 +44,15 @@ class UserRegistrationSerializer < ApplicationSerializer
   end
 
   def user_roles
-    object.user_account ? object.user_account.user_roles.inject({}){|mem, c| mem[c.id] = UserRoleSerializer.new(c); mem} : {}
+    object.user_account ? object.user_account.user_roles.inject({}){|mem, c| mem[c.id] = cache_single(c.role.project, c); mem} : {}
   end
 
   def user_registration_projects
-    object.user_registration_projects.inject({}){|mem, c| mem[c.id] = UserRegistrationProjectSerializer.new(c); mem}
+    object.user_registration_projects.inject({}){|mem, c| mem[c.id] = cache_single(c.project, c); mem}
   end
 
   def tasks
-    object.user_account ? object.user_account.tasks.inject({}){|mem, c| mem[c.id] = TaskSerializer.new(c); mem} : {}
+    object.user_account ? object.user_account.tasks.inject({}){|mem, c| mem[c.id] = cache_single(c.interview.project, c); mem} : {}
   end
 
   def created_at

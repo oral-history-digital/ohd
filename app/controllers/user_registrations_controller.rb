@@ -99,7 +99,7 @@ class UserRegistrationsController < ApplicationController
 
     total_pages = user_registrations.total_pages
     user_registrations = user_registrations.includes(:user_registration_projects).
-      inject({}){|mem, s| mem[s.id] = cache_single(s); mem}
+      inject({}){|mem, s| mem[s.id] = UserRegistrationSerializer.new(s); mem}
 
     update_initial_redux_state(user_registrations)
     extra_params = search_params.update(page: page).inject([]){|mem, (k,v)| mem << "#{k}_#{v}"; mem}.join("_")
