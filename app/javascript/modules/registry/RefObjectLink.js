@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
@@ -23,7 +23,6 @@ export default function RefObjectLink({
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
-    const dispatch = useDispatch();
     const statuses = useSelector(getStatuses);
     const interview = interviews[registryReference.archive_id];
     const segment = registryReference.ref_object_type === 'Segment' && segments[registryReference.ref_object_id];
@@ -41,13 +40,13 @@ export default function RefObjectLink({
 
     useEffect(() => {
         if (!fetchingInterview) {
-            dispatch(fetchData({ projectId, locale, projects }, 'interviews', registryReference.archive_id));
+            fetchData({ projectId, locale, projects }, 'interviews', registryReference.archive_id);
         }
     }, [interview, isLoggedIn]);
 
     useEffect(() => {
         if (!fetchingShortTitle && isLoggedIn) {
-            dispatch(fetchData({ projectId, locale, projects }, 'interviews', registryReference.archive_id, 'short_title'));
+            fetchData({ projectId, locale, projects }, 'interviews', registryReference.archive_id, 'short_title');
         }
     }, [interview, isLoggedIn]);
 
@@ -57,7 +56,7 @@ export default function RefObjectLink({
             registryReference.ref_object_type === 'Segment' &&
             isLoggedIn
         ) {
-            dispatch(fetchData({ projectId, locale, projects }, 'segments', registryReference.ref_object_id));
+            fetchData({ projectId, locale, projects }, 'segments', registryReference.ref_object_id);
         }
     }, [segment, isLoggedIn]);
 
