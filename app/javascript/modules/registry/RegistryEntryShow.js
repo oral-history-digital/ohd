@@ -8,7 +8,7 @@ import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { admin } from 'modules/auth';
 import { formatTimecode } from 'modules/interview-helpers';
-import { RefObjectLinkContainer } from 'modules/registry';
+import RefObjectLinkContainer from './RefObjectLinkContainer';
 
 export default class RegistryEntryShow extends Component {
     componentDidMount() {

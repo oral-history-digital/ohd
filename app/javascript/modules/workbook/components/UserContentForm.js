@@ -4,6 +4,7 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import moment from 'moment';
 import classNames from 'classnames';
 
+import { Checkbox } from 'modules/ui';
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
 
@@ -158,8 +159,12 @@ export default class UserContentForm extends Component {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
             return <div className="form-group">
                 {this.label('publish')}
-                <input className={'publish-input'} type='checkbox' name='shared' checked={this.state.shared}
-                       onChange={this.toggleValue}/>
+                <Checkbox
+                    className="publish-input"
+                    name='shared'
+                    checked={this.state.shared}
+                    onChange={this.toggleValue}
+                />
             </div>
         }
     }

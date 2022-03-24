@@ -1,13 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { getCurrentProject, getProjects } from 'modules/data';
 import { getLocale, setProjectId } from 'modules/archive';
 import { projectByDomain } from 'modules/routes';
 import { OHD_DOMAINS } from './constants';
 
-function OHDLink() {
+function OHDLink({ className }) {
     const locale = useSelector(getLocale);
     const project = useSelector(getCurrentProject);
     const projects = useSelector(getProjects);
@@ -25,7 +26,7 @@ function OHDLink() {
                 <a
                     title='OHD'
                     href={`${OHD_DOMAINS[railsMode]}/${locale}`}
-                    className="u-mr"
+                    className={classNames(className, 'u-mr')}
                 >
                     <img className="logo-img" src='/ohd-logo-gr.png' alt="" />
                 </a> :
@@ -33,7 +34,7 @@ function OHDLink() {
                     to={`/${locale}`}
                     title='OHD'
                     onClick={unsetProjectId}
-                    className="u-mr"
+                    className={classNames(className, 'u-mr')}
                 >
                     <img className="logo-img" src='/ohd-logo-gr.png' alt="" />
                 </Link>

@@ -11,7 +11,9 @@ const Loader = {
                 if (error) {
                     console.log("loading json from " + url + " failed: " + error);
                     console.log("original error: " + error.original);
-                    dispatch(callback(error));
+                    if (typeof callback === 'function') {
+                        dispatch(callback(error));
+                    }
                 } else if (res) {
                     if (res.error) {
                         console.log("loading json from " + url + " failed: " + res.error);

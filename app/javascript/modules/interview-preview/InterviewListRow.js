@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaEyeSlash } from 'react-icons/fa';
 
+import { Checkbox } from 'modules/ui';
 import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
-import { useProjectAccessStatus } from 'modules/auth';
-import { AuthShowContainer, useAuthorization } from 'modules/auth';
-import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
+import { useProjectAccessStatus, AuthShowContainer, useAuthorization } from
+    'modules/auth';
 import searchResultCount from './searchResultCount';
 
 export default function InterviewListRow({
@@ -55,8 +55,7 @@ export default function InterviewListRow({
             {
                 isAuthorized(interview, 'show') && isAuthorized({ type: 'General' }, 'edit') && (
                     <td className="Table-cell">
-                        <input
-                            type="checkbox"
+                        <Checkbox
                             className="export-checkbox"
                             checked={selectedArchiveIds.indexOf(interview.archive_id) > 0}
                             onChange={() => addRemoveArchiveId(interview.archive_id)}

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaEyeSlash } from 'react-icons/fa';
 import classNames from 'classnames';
+import { Checkbox } from 'modules/ui';
 
 import { OHD_DOMAINS } from 'modules/layout';
 import { LinkOrA, pathBase } from 'modules/routes';
@@ -88,8 +89,7 @@ export default function InterviewPreview({
 
             <AuthorizedContent object={{ type: 'Interview', interview_id: interview.id }} action='update'>
                 <div>
-                    <input
-                        type='checkbox'
+                    <Checkbox
                         className='export-checkbox'
                         checked={selectedArchiveIds.indexOf(interview.archive_id) > 0}
                         onChange={() => {addRemoveArchiveId(interview.archive_id)}}

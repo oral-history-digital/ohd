@@ -1,10 +1,10 @@
 import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-
 import { useI18n } from 'modules/i18n';
-import { MARKER_COLOR_MULTIPLE_TYPES, useMapReferenceTypes } from 'modules/map';
 
+import { MARKER_COLOR_MULTIPLE_TYPES, useMapReferenceTypes } from 'modules/map';
+import { Checkbox } from 'modules/ui';
 import useMapFilter from '../map-filter/useMapFilter';
 import { MAP_NUM_INITIALLY_SELECTED_TYPES } from '../constants';
 
@@ -40,16 +40,14 @@ export default function MapFilter({
                                 key={type.id}
                                 className={classNames('MapFilter-label', { 'is-active': type.filterIsSet })}
                             >
-                                <input
-                                    className="MapFilter-checkbox"
+                                <Checkbox
                                     name={type.name}
-                                    type="checkbox"
                                     checked={type.filterIsSet}
                                     onChange={() => toggleMapFilter(type.id.toString())}
                                 />
-                                {`${type.name} `}
+                                <span className="u-ml-tiny">{type.name}</span>
                                 <svg
-                                    className="MapFilter-icon"
+                                    className="MapFilter-icon u-ml-tiny"
                                     viewBox="0 0 100 100"
                                     xmlns="http://www.w3.org/2000/svg"
                                 >
@@ -61,7 +59,9 @@ export default function MapFilter({
                                         fill={type.color}
                                     />
                                 </svg>
-                                {` (${type.locationCount})`}
+                                <span className="u-ml-tiny">
+                                    ({type.locationCount})
+                                </span>
                             </label>
                         );
                     })
