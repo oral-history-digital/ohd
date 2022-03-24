@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -7,6 +8,7 @@ import { usePathBase } from 'modules/routes';
 export default function ProjectLogo({
     logos,
     defaultLocale,
+    className,
 }) {
     const { t, locale } = useI18n();
     const pathBase = usePathBase();
@@ -24,7 +26,7 @@ export default function ProjectLogo({
     return (
         <Link
             to={pathBase}
-            className="Link logo-link"
+            className={classNames('Link', 'logo-link', className)}
             title={t('home')}
         >
             <img
@@ -39,4 +41,5 @@ export default function ProjectLogo({
 ProjectLogo.propTypes = {
     logos: PropTypes.object.isRequired,
     defaultLocale: PropTypes.string.isRequired,
+    className: PropTypes.string,
 };

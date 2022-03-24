@@ -9,10 +9,11 @@ function SiteHeader() {
 
     return (
         <header className="SiteHeader">
-            <OHDLink />
+            <OHDLink className="SiteHeader-link" />
 
             {project && (
                 <ProjectLogo
+                    className="SiteHeader-link"
                     logos={project.logos}
                     defaultLocale={project.default_locale}
                 />

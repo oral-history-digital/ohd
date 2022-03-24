@@ -14,3 +14,7 @@
     height: $site-header-height-desktop;
   }
 }
+
+.SiteHeader-link {
+  flex-shrink: 0;
+}
