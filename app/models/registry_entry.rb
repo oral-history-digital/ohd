@@ -288,6 +288,10 @@ class RegistryEntry < ApplicationRecord
     end
   end
 
+  def get_first_descendant_of(code)
+    parents.first.code == code ? self : parents.first.get_first_descendant_of(code)
+  end
+
   def search_project_id
     project_id || (parents.first && parents.first.search_project_id)
   end
