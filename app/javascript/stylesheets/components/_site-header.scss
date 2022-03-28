@@ -2,8 +2,10 @@
  * SiteHeader component
  */
 
+$siteheader-collection-logo-width: 17.5 * $base-unit;
+
 .SiteHeader {
-  align-items: center;
+  align-items: flex-start;
   background: #fff;
   display: flex;
   height: $site-header-height-mobile;
@@ -16,5 +18,18 @@
 }
 
 .SiteHeader-link {
+}
+
+.SiteHeader-link--site {
   flex-shrink: 0;
+}
+
+.SiteHeader-link--collection {
+  flex-shrink: 1;
+  max-width: $siteheader-collection-logo-width;
+}
+
+.SiteHeader-logo {
+  max-width: 100%;
+  vertical-align: baseline;
 }

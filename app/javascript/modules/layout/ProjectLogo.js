@@ -30,7 +30,7 @@ export default function ProjectLogo({
             title={t('home')}
         >
             <img
-                className="logo-img"
+                className="SiteHeader-logo logo-img"
                 src={src}
                 alt="Collection logo"
             />
