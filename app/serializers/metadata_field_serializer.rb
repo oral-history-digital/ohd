@@ -12,6 +12,7 @@ class MetadataFieldSerializer < ApplicationSerializer
     :map_color,
     :list_columns_order,
     :use_in_details_view,
+    :use_in_metadata_import,
     :display_on_landing_page,
     :ref_object_type,
     :source,
