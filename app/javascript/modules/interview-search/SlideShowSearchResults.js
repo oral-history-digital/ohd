@@ -26,6 +26,9 @@ export default function SlideShowSearchResults({
             className="Slider Slider--thumbnail"
             dots={false}
         >
+            <div>
+                <SlideShowSearchStats searchResults={searchResults} />
+            </div>
             {
                 segments.map(segment => {
                     let lang;
@@ -64,9 +67,6 @@ export default function SlideShowSearchResults({
                     );
                 })
             }
-            <div>
-                <SlideShowSearchStats searchResults={searchResults} />
-            </div>
         </Slider>
     );
 }
