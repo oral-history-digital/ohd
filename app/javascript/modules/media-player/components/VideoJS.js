@@ -7,8 +7,6 @@ import 'video.js/dist/video-js.css';
 import videoJsQualitySelector from '@silvermine/videojs-quality-selector';
 import '@silvermine/videojs-quality-selector/dist/css/quality-selector.css';
 videoJsQualitySelector(videojs);
-//import 'videojs-seek-buttons';
-//import 'videojs-seek-buttons/dist/videojs-seek-buttons.css';
 
 // Languages
 import langDe from 'video.js/dist/lang/de.json';

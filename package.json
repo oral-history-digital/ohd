@@ -66,8 +66,7 @@
     "superagent": "^5.0.2",
     "superagent-no-cache": "^0.1.1",
     "swr": "^1.0.0-beta.8",
-    "video.js": "^7.18.1",
-    "videojs-seek-buttons": "^2.2.0"
+    "video.js": "^7.18.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",
