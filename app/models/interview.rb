@@ -48,7 +48,7 @@ class Interview < ApplicationRecord
            :through => :registry_references
 
   has_many :segments,
-           -> { order(:tape_number, :timecode) },
+           #-> { order(:tape_number, :timecode) },
            dependent: :destroy
            #inverse_of: :interview
 
