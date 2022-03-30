@@ -26,11 +26,11 @@ export default function ProjectLogo({
     return (
         <Link
             to={pathBase}
-            className={classNames('Link', 'logo-link', className)}
+            className={classNames('Link', className)}
             title={t('home')}
         >
             <img
-                className="SiteHeader-logo logo-img"
+                className="SiteHeader-logo"
                 src={src}
                 alt="Collection logo"
             />

@@ -1,7 +1,3 @@
-.logo-link {
-  color: var(--primary-color);
-}
-
 .logo-img {
   display: block;
   height: 3.5rem;
@@ -10,8 +6,4 @@
   @include screen-m {
     height: 4.75rem;
   }
-}
-
-.logo-link:hover {
-  text-decoration: none !important;
 }

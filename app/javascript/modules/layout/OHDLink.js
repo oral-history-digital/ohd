@@ -28,7 +28,7 @@ function OHDLink({ className }) {
                     href={`${OHD_DOMAINS[railsMode]}/${locale}`}
                     className={classNames(className, 'u-mr')}
                 >
-                    <img className="logo-img" src='/ohd-logo-gr.png' alt="" />
+                    <img className="SiteHeader-logo" src='/ohd-logo-gr.png' alt="" />
                 </a> :
                 <Link
                     to={`/${locale}`}
@@ -36,7 +36,7 @@ function OHDLink({ className }) {
                     onClick={unsetProjectId}
                     className={classNames(className, 'u-mr')}
                 >
-                    <img className="logo-img" src='/ohd-logo-gr.png' alt="" />
+                    <img className="SiteHeader-logo" src='/ohd-logo-gr.png' alt="" />
                 </Link>
             ) :
             null
