@@ -10,15 +10,6 @@ test('setTape', () => {
     expect(actual).toEqual(expected);
 });
 
-test('setResolution', () => {
-    const actual = actions.setResolution('192k');
-    const expected = {
-        type: types.SET_RESOLUTION,
-        payload: { resolution: '192k' },
-    };
-    expect(actual).toEqual(expected);
-});
-
 test('updateMediaTime', () => {
     const actual = actions.updateMediaTime(25.3);
     const expected = {

@@ -13,6 +13,7 @@
     "@reach/menu-button": "^0.16.2",
     "@reach/tabs": "^0.16.4",
     "@reach/visually-hidden": "^0.16.0",
+    "@silvermine/videojs-quality-selector": "^1.2.5",
     "actioncable": "^5.2.3",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "babel-polyfill": "^6.23.0",
@@ -64,7 +65,8 @@
     "slick-carousel": "^1.8.1",
     "superagent": "^5.0.2",
     "superagent-no-cache": "^0.1.1",
-    "swr": "^1.0.0-beta.8"
+    "swr": "^1.0.0-beta.8",
+    "video.js": "^7.18.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.3",

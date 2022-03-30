@@ -14,20 +14,17 @@ export default class MediaControls extends Component {
         super(props);
 
         this.handleTapeChange = this.handleTapeChange.bind(this);
-        this.handleResolutionChange = this.handleResolutionChange.bind(this);
     }
 
     handleTapeChange(e) {
-        this.props.setTape(Number.parseInt(e.target.value));
-    }
+        const { setTape } = this.props;
 
-    handleResolutionChange(e) {
-        this.props.setResolution(e.target.value);
+        setTape(Number.parseInt(e.target.value));
     }
 
     rememberInterviewLink() {
-        const { locale, translations } = this.props;
-        const shortTitle = this.props.interview.short_title && this.props.interview.short_title[locale];
+        const { interview, locale, translations } = this.props;
+        const shortTitle = interview.short_title && interview.short_title[locale];
 
         return (
             <Modal
@@ -39,10 +36,10 @@ export default class MediaControls extends Component {
                     <UserContentFormContainer
                         title={this.defaultTitle()}
                         description=''
-                        properties={{title: this.props.interview.title}}
-                        reference_id={this.props.interview.id}
+                        properties={{title: interview.title}}
+                        reference_id={interview.id}
                         reference_type='Interview'
-                        media_id={this.props.interview.archive_id}
+                        media_id={interview.archive_id}
                         type='InterviewReference'
                         submitLabel={t({ locale, translations }, 'notice')}
                         onSubmit={closeModal}
@@ -105,59 +102,32 @@ export default class MediaControls extends Component {
         }
     }
 
-    tapeSelector(){
-        const { locale, translations } = this.props;
-
-        let options = [];
-        for(var i = 1; i <= this.props.interview.tape_count; i++) {
-                options.push(<option value={i} key={'tape' + i}>{t({ locale, translations }, 'tape')} {i}</option>);
-        }
-        return options;
-    }
-
-    resolutionSelector(){
-        if (this.props.interview.media_type && this.props.mediaStreams) {
-            let resolutions = Object.values(this.props.mediaStreams).filter(m => m.media_type === this.props.interview.media_type).map(m => m.resolution)
-            if (resolutions.length > 1) {
-
-                let options = [];
-                for(var i = 0; i < resolutions.length; i++) {
-                    options.push(<option value={resolutions[i]} key={'resolution' + i}>{resolutions[i]}</option>);
-                }
-                return (
-                    <select
-                        value={this.props.resolution}
-                        onChange={this.handleResolutionChange}
-                        className="MediaControls-resolutionSelector"
-                    >
-                        {options}
-                    </select>
-                )
-            }
-        }
-        else {
-            return null;
-        }
-    }
-
     render() {
-        const { className, tape, interview, resolution } = this.props;
+        const { className, tape: currentTape, interview, locale, translations } = this.props;
+
+        const tapes = [...Array(Number.parseInt(interview.tape_count)).keys()]
+            .map(i => i + 1);
 
         return (
             <div className={classNames(className, 'MediaControls')}>
                 <div className="MediaControls-selects">
                     {
-                        interview.tape_count > 1 && (
+                        tapes.length > 1 && (
                             <select
-                                value={tape}
+                                value={currentTape}
                                 onChange={this.handleTapeChange}
                                 className="MediaControls-tapeSelector"
                             >
-                                {this.tapeSelector()}
+                                {
+                                    tapes.map(tape => (
+                                        <option key={tape} value={tape}>
+                                            {t({ locale, translations }, 'tape')} {tape}
+                                        </option>
+                                    ))
+                                }
                             </select>
                         )
                     }
-                    {resolution && this.resolutionSelector()}
                 </div>
 
                 <div className="MediaControls-buttons">
@@ -174,11 +144,8 @@ MediaControls.propTypes = {
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    mediaStreams: PropTypes.object.isRequired,
-    resolution: PropTypes.string,
     tape: PropTypes.number.isRequired,
     translations: PropTypes.object.isRequired,
     mediaTime: PropTypes.number.isRequired,
     setTape: PropTypes.func.isRequired,
-    setResolution: PropTypes.func.isRequired,
 };
