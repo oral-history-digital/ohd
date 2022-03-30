@@ -44,15 +44,24 @@ class UserRegistrationSerializer < ApplicationSerializer
   end
 
   def user_roles
-    object.user_account ? object.user_account.user_roles.inject({}){|mem, c| mem[c.id] = cache_single(c.role.project, c); mem} : {}
+    object.user_account ? object.user_account.user_roles.inject({}) do |mem, c|
+      mem[c.id] = cache_single(c.role.project, c) if c.role.project
+      mem
+    end : {}
   end
 
   def user_registration_projects
-    object.user_registration_projects.inject({}){|mem, c| mem[c.id] = cache_single(c.project, c); mem}
+    object.user_registration_projects.inject({}) do |mem, c|
+      mem[c.id] = cache_single(c.project, c) if c.project
+      mem
+    end
   end
 
   def tasks
-    object.user_account ? object.user_account.tasks.inject({}){|mem, c| mem[c.id] = cache_single(c.interview.project, c); mem} : {}
+    object.user_account ? object.user_account.tasks.inject({}) do |mem, c|
+      mem[c.id] = cache_single(c.interview.project, c) if c.interview.project
+      mem
+    end : {}
   end
 
   def created_at
