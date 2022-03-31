@@ -118,7 +118,7 @@ function InnerContent({
             </div>
 
             <p className="InterviewCard-title">
-                {interview.workflow_state === 'unshared' && <FaEyeSlash />}
+                {interview.workflow_state === 'unshared' && <FaEyeSlash className="u-mr-tiny" />}
                 {interview.short_title?.[locale] || interview.anonymous_title[locale]}
             </p>
 

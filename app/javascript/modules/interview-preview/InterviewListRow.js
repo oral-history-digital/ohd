@@ -80,7 +80,7 @@ export default function InterviewListRow({
                                     {interview.short_title && interview.short_title[locale]}
                                     {
                                         interview.workflow_state === 'unshared' && (
-                                            <FaEyeSlash />
+                                            <FaEyeSlash className="u-ml-tiny" />
                                         )
                                     }
                                 </AuthShowContainer>
