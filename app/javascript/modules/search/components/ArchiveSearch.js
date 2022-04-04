@@ -12,6 +12,7 @@ import { usePathBase } from 'modules/routes';
 import { INDEX_SEARCH } from 'modules/sidebar';
 import { Spinner } from 'modules/spinners';
 import { ScrollToTop } from 'modules/user-agent';
+import { useQuery } from 'modules/react-toolbox';
 import { VIEWMODE_GRID, VIEWMODE_LIST, VIEWMODE_WORKFLOW } from 'modules/constants';
 
 import ResultTableContainer from './ResultTableContainer';
@@ -37,6 +38,7 @@ export default function ArchiveSearch({
     const { t } = useI18n();
     const pathBase = usePathBase();
     const { isAuthorized } = useAuthorization();
+    const searchParams = useQuery();
 
     useEffect(() => {
         setSidebarTabsIndex(INDEX_SEARCH);
@@ -59,7 +61,14 @@ export default function ArchiveSearch({
     function search(query={page: 1}) {
         const url = `${pathBase}/searches/archive`;
 
-        searchInArchive(url, query);
+        console.log(query);
+        const combinedQuery = {
+            ...query,
+            sort: searchParams.get('sort') || 'relevance',
+        };
+        console.log('combined', combinedQuery)
+
+        searchInArchive(url, combinedQuery);
     }
 
     function handleTabClick(tabIndex) {
@@ -69,8 +78,6 @@ export default function ArchiveSearch({
             hideSidebar();
         }
     }
-
-    console.log(foundInterviews.length);
 
     return (
         <ScrollToTop>

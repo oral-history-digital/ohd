@@ -63,6 +63,7 @@ function receiveArchiveSearchResults(json){
 }
 
 export function searchInArchive(url, searchQuery) {
+    console.log(searchQuery)
     return dispatch => {
         dispatch(requestArchiveSearch(searchQuery))
         Loader.getJson(url, searchQuery, dispatch, receiveArchiveSearchResults);
