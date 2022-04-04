@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import Home from './Home';
 import { setSidebarTabsIndex } from 'modules/sidebar';
 import { getCurrentProject, getProjectTranslation, getShowFeaturedInterviews,
-    getShowStartPageVideo, getInstitutions } from 'modules/data';
+    getShowStartPageVideo, getInstitutions, getIsCampscapesProject } from 'modules/data';
 
 const mapStateToProps = state => ({
     project: getCurrentProject(state),
@@ -12,6 +12,7 @@ const mapStateToProps = state => ({
     showStartPageVideo: getShowStartPageVideo(state),
     showFeaturedInterviews: getShowFeaturedInterviews(state),
     institutions: getInstitutions(state),
+    isCampscapesProject: getIsCampscapesProject(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

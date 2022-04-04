@@ -29,6 +29,7 @@ export default function SidebarTabs({
     project,
     archiveId,
     isLoggedIn,
+    isCampscapesProject,
     hasMap,
     setSidebarTabsIndex,
 }) {
@@ -71,6 +72,7 @@ export default function SidebarTabs({
         }
     }
 
+    const showAccountTab = !isCampscapesProject;
     const showInterviewTab = !!interview;
     const showRegistryTab = project && (
         (!isLoggedIn && project.logged_out_visible_registry_entry_ids?.length > 0) ||
@@ -96,6 +98,7 @@ export default function SidebarTabs({
                 <Tab
                     key="1"
                     className="SidebarTabs-tab"
+                    disabled={!showAccountTab}
                 >
                     {t(isLoggedIn ? 'account_page' : 'login_page')}
                 </Tab>
@@ -104,7 +107,7 @@ export default function SidebarTabs({
                     key="2"
                     className="SidebarTabs-tab"
                 >
-                    {t((projectId === 'campscapes' && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search')}
+                    {t((isCampscapesProject && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search')}
                 </Tab>
 
                 <Tab
@@ -253,13 +256,13 @@ export default function SidebarTabs({
 }
 
 SidebarTabs.propTypes = {
-    visible: PropTypes.bool.isRequired,
     interview: PropTypes.object,
     projectId: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     archiveId: PropTypes.string,
     hasMap: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
+    isCampscapesProject: PropTypes.bool.isRequired,
     sidebarTabsIndex: PropTypes.number.isRequired,
     selectedArchiveIds: PropTypes.array,
     setSidebarTabsIndex: PropTypes.func.isRequired,
