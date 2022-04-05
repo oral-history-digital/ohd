@@ -22,12 +22,12 @@ export default class MultiLocaleWrapper extends Component {
     findTranslation(locale) {
         const { data } = this.props;
 
-        if (!data?.translations) {
+        if (!data?.translations_attributes) {
             return null;
         }
 
-        const translationsArray = Array.isArray(data.translations) ? data.translations :
-            Object.values(data.translations);
+        const translationsArray = Array.isArray(data.translations_attributes) ? data.translations_attributes :
+            Object.values(data.translations_attributes);
         const originalTranslation = translationsArray.find(t => t.locale === locale);
         const publicTranslation = translationsArray.find(t => t.locale === `${locale}-public`);
 

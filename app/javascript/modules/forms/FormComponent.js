@@ -28,6 +28,8 @@ export default class FormComponent extends Component {
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
         this.handleNestedFormSubmit = this.handleNestedFormSubmit.bind(this);
+        this.writeNestedObjectToStateValues = this.writeNestedObjectToStateValues.bind(this);
+        this.deleteNestedObject = this.deleteNestedObject.bind(this);
     }
 
     initValues() {
@@ -87,21 +89,12 @@ export default class FormComponent extends Component {
     }
 
     deleteNestedObject(index, scope) {
-        return <button
-            type="button"
-            className="Button Button--transparent Button--icon"
-            title={t(this.props, 'delete')}
-            onClick={() => {
-                let nestedObjects = this.state.values[this.nestedRailsScopeName(scope)];
-                this.setState({
-                    values: Object.assign({}, this.state.values, {
-                        [this.nestedRailsScopeName(scope)]: nestedObjects.slice(0,index).concat(nestedObjects.slice(index+1))
-                    })
-                })
-            }}
-        >
-            <FaTrash className="Icon Icon--editorial"/>
-        </button>
+        let nestedObjects = this.state.values[this.nestedRailsScopeName(scope)];
+        this.setState({
+            values: Object.assign({}, this.state.values, {
+                [this.nestedRailsScopeName(scope)]: nestedObjects.slice(0,index).concat(nestedObjects.slice(index+1))
+            })
+        })
     }
 
     nestedRailsScopeName(scope) {
@@ -124,72 +117,18 @@ export default class FormComponent extends Component {
         })})
     }
 
-    showNewNestedObjects() {
-        if (this.props.nestedFormScope && this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)]) {
-            return (
-                <div>
-                    <h4 className='nested-value-header'>{t(this.props, `${pluralize(this.props.nestedFormScope)}.title`)}</h4>
-                    {this.state.values[this.nestedRailsScopeName(this.props.nestedFormScope)].map((value, index) => {
-                        return (
-                            <p key={`${this.props.scope}-${this.props.nestedFormScope}-${index}`} >
-                                <span className='flyout-content-data'>{this.props.nestedScopeRepresentation(value)}</span>
-                                {this.deleteNestedObject(index, this.props.nestedFormScope)}
-                            </p>
-                        )
-                    })}
-                </div>
-            )
-        }
-    }
-
     // props is a dummy here
     handleNestedFormSubmit(props, params) {
         this.writeNestedObjectToStateValues(params);
-        //this.setState({ showNestedForm: false });
     }
-
-    //toggleNestedForm() {
-        //if (this.props.nestedForm) {
-            //return (
-                //<button
-                    //type="button"
-                    //className="Button Button--transparent Button--icon"
-                    //title={t(this.props, `edit.${this.props.nestedFormScope}.new`)}
-                    //onClick={() => this.setState({showNestedForm: !this.state.showNestedForm})}
-                //>
-                    //{t(this.props, `${pluralize(this.props.nestedFormScope)}.add`) + '  '}
-                    //{
-                        //this.state.showNestedForm ?
-                            //<FaTimes className="Icon Icon--editorial" /> :
-                            //<FaPlus className="Icon Icon--editorial" />
-                    //}
-                //</button>
-            //)
-        //}
-    //}
-
-    //nestedForm() {
-        //if (this.props.nestedForm && this.state.showNestedForm) {
-            //this.props.nestedFormProps.formClasses = 'nested-form default';
-            //if (!this.props.data) {
-                //this.props.nestedFormProps.submitData = this.handleNestedFormSubmit;
-            //} else {
-                //this.props.nestedFormProps.onSubmitCallback = () => this.setState({ showNestedForm: false });
-            //}
-            //return (
-                //<div>
-                    //{createElement(this.props.nestedForm, this.props.nestedFormProps)}
-                //</div>
-            //);
-        //}
-    //}
 
     nestedScopes() {
         return this.props.nestedScopeProps?.map(props => {
             return (
                 <NestedScope {...props}
                     onSubmit={this.handleNestedFormSubmit}
-                    newElements={this.state.values[this.nestedRailsScopeName(props.scope)]}
+                    onDelete={this.deleteNestedObject}
+                    getNewElements={() => this.state.values[this.nestedRailsScopeName(props.scope)]}
                 />
             )
         })
@@ -234,9 +173,6 @@ export default class FormComponent extends Component {
         const { onCancel, className, children, elements, formId, formClasses,
             scope, submitText } = this.props;
 
-                //{this.showNewNestedObjects()}
-                //{this.nestedForm()}
-                //{this.toggleNestedForm()}
         return (
             <div className={className}>
                 {this.nestedScopes()}

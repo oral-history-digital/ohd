@@ -13,10 +13,10 @@ export default class RegistryNameForm extends Component {
                 onSubmit={function(params){_this.props.onSubmit(_this.props, params);}}
                 onSubmitCallback={_this.props.onSubmitCallback}
                 formClasses={_this.props.formClasses}
-                data={this.props.registryName}
+                data={this.props.data}
                 values={{
-                    registry_entry_id: (_this.props.registryName && _this.props.registryName.registry_entry_id) || _this.props.registryEntryId,
-                    registry_name_type_id: (_this.props.registryName && _this.props.registryName.registry_name_type_id) || defaultNameType.id,
+                    registry_entry_id: (_this.props.data && _this.props.data.registry_entry_id) || _this.props.registryEntryId,
+                    registry_name_type_id: (_this.props.data && _this.props.data.registry_name_type_id) || defaultNameType.id,
                     name_position: 1,
                 }}
                 submitText='submit'
@@ -33,7 +33,7 @@ export default class RegistryNameForm extends Component {
                     {
                         elementType: 'select',
                         attribute: 'registry_name_type_id',
-                        value: (_this.props.registryName && _this.props.registryName.registry_name_type_id) || defaultNameType.id,
+                        value: (_this.props.data && _this.props.data.registry_name_type_id) || defaultNameType.id,
                         values: this.props.registryNameTypes && Object.values(this.props.registryNameTypes),
                         validate: function(v){return /^\d+$/.test(v)}
                     },

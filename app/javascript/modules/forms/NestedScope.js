@@ -1,45 +1,54 @@
 import { FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
-import NestedScopeElement from './NestedScopeElement';
+import NestedScopeElementContainer from './NestedScopeElementContainer';
 import { useState, createElement } from 'react';
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 
 export default function NestedScope({
     onSubmit,
+    onDelete,
     formComponent,
     formProps,
     parent,
     scope,
-    newElements,
+    getNewElements,
     elementRepresentation,
 }) {
     const { t } = useI18n();
-    const elements = (parent?.[pluralize(scope)] || []).concat(newElements);
+    const elements = (parent?.[pluralize(scope)] || []);//.concat(getNewElements());
     const [editing, setEditing] = useState(elements.length === 0);
 
     return (
         <>
             { elements.map( element => {
                 return (
-                    <NestedScopeElement
+                    <NestedScopeElementContainer
                         element={element}
                         onSubmit={onSubmit}
+                        onDelete={onDelete}
                         formComponent={formComponent}
                         formProps={formProps}
+                        scope={scope}
+                        elementRepresentation={elementRepresentation}
+                    />
+                )
+            })}
+            { (getNewElements() || []).map( (element, index) => {
+                return (
+                    <NestedScopeElementContainer
+                        element={element}
+                        index={index}
+                        onSubmit={onSubmit}
+                        onDelete={onDelete}
+                        formComponent={formComponent}
+                        formProps={formProps}
+                        scope={scope}
                         elementRepresentation={elementRepresentation}
                     />
                 )
             })}
             { editing ?
                 createElement(formComponent, {...formProps, ...{data: {}, onSubmit: onSubmit, onSubmitCallback: setEditing}}) : null
-                //<NestedScopeElement
-                    //element={{}}
-                    //onSubmit={onSubmit}
-                    //formComponent={formComponent}
-                    //formProps={formProps}
-                    //showForm={editing}
-                    //elementRepresentation={elementRepresentation}
-                ///> : null
             }
             <button
                 type="button"
