@@ -9,7 +9,7 @@ export default function WorkflowResults({
     query,
     project,
     foundInterviews,
-    search,
+    onSortOrderChange,
 }) {
     const [sortings, setSortings] = useState({
         title: 'asc',
@@ -25,7 +25,11 @@ export default function WorkflowResults({
             ...prev,
             [column]: direction,
         }));
-        search(Object.assign({}, query, {order: `${column}-${direction}`, page: 1}));
+        onSortOrderChange({
+            ...query,
+            order: `${column}-${direction}`,
+            page: 1,
+        });
     }
 
     return (
@@ -102,5 +106,5 @@ WorkflowResults.propTypes = {
     query: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     foundInterviews: PropTypes.array,
-    search: PropTypes.func.isRequired,
+    onSortOrderChange: PropTypes.func.isRequired,
 };
