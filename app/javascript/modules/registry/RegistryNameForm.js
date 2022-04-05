@@ -10,7 +10,7 @@ export default class RegistryNameForm extends Component {
         return (
             <Form
                 scope='registry_name'
-                onSubmit={function(params){_this.props.submitData(_this.props, params);}}
+                onSubmit={function(params){_this.props.onSubmit(_this.props, params);}}
                 onSubmitCallback={_this.props.onSubmitCallback}
                 formClasses={_this.props.formClasses}
                 data={this.props.registryName}

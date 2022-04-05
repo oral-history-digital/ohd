@@ -90,7 +90,7 @@ export default class RegistryName extends Component {
             <RegistryNameFormContainer
                 registryName={this.props.registryName}
                 registryEntryId={this.props.registryEntryId}
-                submitData={this.props.submitData}
+                onSubmit={this.props.submitData}
                 formClasses={this.props.formClasses}
                 onSubmitCallback={this.setEditing}
             />
