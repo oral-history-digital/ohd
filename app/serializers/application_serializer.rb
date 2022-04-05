@@ -1,5 +1,5 @@
 class ApplicationSerializer < ActiveModel::Serializer
-  attributes :id, :type, :translations, :project_id
+  attributes :id, :type, :translations_attributes, :project_id
 
   def type
     object.class.name
@@ -10,7 +10,7 @@ class ApplicationSerializer < ActiveModel::Serializer
   #
   # without the id a translation would not be updated but newly created!!
   #
-  def translations
+  def translations_attributes
     if object.respond_to? :translations
       object.translations.map(&:as_json)
     else

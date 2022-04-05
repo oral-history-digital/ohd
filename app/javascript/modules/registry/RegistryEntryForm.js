@@ -23,9 +23,7 @@ export default class RegistryEntryForm extends Component {
     showRegistryName(registryName) {
         if (!registryName)
             return null;
-        let translation = (
-            registryName.translations_attributes || registryName.translations
-        ).find(t => t.locale === this.props.locale);
+        let translation = registryName.translations_attributes.find(t => t.locale === this.props.locale);
         return (
             <span>{translation.descriptor}</span>
         )
@@ -127,7 +125,7 @@ export default class RegistryEntryForm extends Component {
                             parent: this.registryEntry(),
                             scope: 'registry_name',
                             elementRepresentation: this.showRegistryName,
-                            showOnInit: true
+                            //showOnInit: true
                         },
                         //{
                             //formComponent: RegistryNormDataForm,

@@ -98,8 +98,8 @@ export default class RegistryName extends Component {
     }
 
     show() {
-        let translation = this.props.registryName.translations.find(t => t.locale === this.props.locale);
-        translation ||= this.props.registryName.translations[0];
+        let translation = this.props.registryName.translations_attributes.find(t => t.locale === this.props.locale);
+        translation ||= this.props.registryName.translations_attributes[0];
         return (
             <span>{translation.descriptor}</span>
         )

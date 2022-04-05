@@ -1,6 +1,6 @@
 import { FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
 import NestedScopeElement from './NestedScopeElement';
-import { useState } from 'react';
+import { useState, createElement } from 'react';
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 
@@ -31,14 +31,15 @@ export default function NestedScope({
                 )
             })}
             { editing ?
-                <NestedScopeElement
-                    element={{}}
-                    onSubmit={onSubmit}
-                    formComponent={formComponent}
-                    formProps={formProps}
-                    showForm={editing}
-                    elementRepresentation={elementRepresentation}
-                /> : null
+                createElement(formComponent, {...formProps, ...{data: {}, onSubmit: onSubmit, onSubmitCallback: setEditing}}) : null
+                //<NestedScopeElement
+                    //element={{}}
+                    //onSubmit={onSubmit}
+                    //formComponent={formComponent}
+                    //formProps={formProps}
+                    //showForm={editing}
+                    //elementRepresentation={elementRepresentation}
+                ///> : null
             }
             <button
                 type="button"
