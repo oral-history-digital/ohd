@@ -35,18 +35,14 @@ export default function ArchiveSearch({
 
     function handleScroll(inView) {
         if (inView) {
-            search(true);
+            let page = query.page ? Number.parseInt(query.page) : 1;
+            page += 1;
+            search(page);
         }
     }
 
-    function search(nextPage = false) {
-        console.log(query);
-
+    function search(page = 1) {
         const url = `${pathBase}/searches/archive`;
-        let page = query.page ? Number.parseInt(query.page) : 1;
-        if (nextPage) {
-            page += 1;
-        }
 
         const combinedQuery = {
             ...query,
