@@ -26,7 +26,7 @@ export default function NestedScopeElement({
         <>
             { editing ?
                 createElement(formComponent, {...formProps, ...{data: element, onSubmit: onSubmit, onSubmitCallback: setEditing}}) :
-                <>
+                <div>
                     {elementRepresentation(element)}
                     <button
                         type="button"
@@ -60,7 +60,7 @@ export default function NestedScopeElement({
                     >
                         <FaTrash className="Icon Icon--editorial" />
                     </button> }
-                </>
+                </div>
             }
         </>
     )
