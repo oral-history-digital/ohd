@@ -254,12 +254,12 @@ export default class ArchiveSearchForm extends Component {
     renderOptions() {
         const { allInterviewsTitles, allInterviewsPseudonyms, locale } = this.props;
 
-        const titles = allInterviewsTitles
+        const titles = allInterviewsTitles ? allInterviewsTitles
             .concat(allInterviewsPseudonyms)
             .map(title => title?.[locale])
             .filter(title => title)
             .filter(title => title !== 'no interviewee given')
-            .filter(onlyUnique);
+            .filter(onlyUnique) : [];
 
         return titles.map(title => (
             <option key={title} value={`"${title}"`} />
