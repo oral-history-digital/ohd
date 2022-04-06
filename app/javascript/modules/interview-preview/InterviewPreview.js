@@ -12,6 +12,7 @@ import missingStill from 'assets/images/missing_still.png';
 import ThumbnailBadge from './ThumbnailBadge';
 import ThumbnailMetadataContainer from './ThumbnailMetadataContainer';
 import searchResultCount from './searchResultCount';
+import { useProjectAccessStatus } from 'modules/auth';
 
 export default function InterviewPreview({
     fulltext,
@@ -106,6 +107,8 @@ function InnerContent({
     locale,
     isExpanded
 }) {
+    const { projectAccessGranted } = useProjectAccessStatus(project);
+
     return (
         <>
             <div className="InterviewCard-image aspect-ratio">
@@ -119,7 +122,7 @@ function InnerContent({
 
             <p className="InterviewCard-title">
                 {interview.workflow_state === 'unshared' && <FaEyeSlash className="u-mr-tiny" />}
-                {interview.short_title?.[locale] || interview.anonymous_title[locale]}
+                {projectAccessGranted ? interview.short_title?.[locale] : interview.anonymous_title[locale]}
             </p>
 
             {!isExpanded && (
