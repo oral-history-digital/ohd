@@ -128,7 +128,7 @@ class Interview < ApplicationRecord
       end
     end
     string :media_type, :stored => true
-    string :duration, :stored => true
+    integer :duration, :stored => true
     string :language, :stored => true do
       language && language.translations.map(&:name).join(' ')
     end
@@ -815,7 +815,6 @@ class Interview < ApplicationRecord
         end
 
         # Order
-        # TODO: sort linguistically
         if params[:fulltext].blank? && params[:sort].blank?
           if project && project.default_search_order == 'collection'
             order_by(:collection_id, :asc)
@@ -824,9 +823,23 @@ class Interview < ApplicationRecord
             order_by("person_name_#{locale}".to_sym, :asc)
           end
         else
+          sort_order = params.fetch(:order, 'asc').to_sym
           # TODO: Implement order => asc/desc
           case params[:sort]
-          when 'name'
+          when 'title'
+            order_by("person_name_#{locale}".to_sym, sort_order)
+          when 'media'
+            order_by(:media_type, sort_order)
+            order_by("person_name_#{locale}".to_sym, :asc)
+          when 'id'
+            order_by(:archive_id, sort_order)
+          when 'duration'
+            order_by(:duration, sort_order)
+          when 'language'
+            order_by(:language, sort_order)
+            order_by("person_name_#{locale}".to_sym, :asc)
+          when 'relevance'
+            order_by(:score, sort_order)
             order_by("person_name_#{locale}".to_sym, :asc)
           else
             # relevance

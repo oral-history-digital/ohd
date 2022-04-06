@@ -1293,6 +1293,21 @@ de:
         label: "Zurück nach oben"
     map:
       mentions: Erwähnungen
+    search:
+      sorting:
+        label: Sortierung
+        by:
+          relevance: Relevanz
+          title: Titel
+          date: Datum
+          duration: Länge
+          id: Interview-ID
+          media: Medientyp
+          language: Sprache
+          state: Status
+        order:
+          asc: aufsteigend
+          desc: absteigend
     search_map:
       title: Karte
       multiple_types: Mehrere Ortstypen

@@ -11,6 +11,7 @@ import { ScrollToTop } from 'modules/user-agent';
 import { useQuery } from 'modules/react-toolbox';
 import SearchActionsContainer from './SearchActionsContainer';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
+import ArchiveSearchSorting from './ArchiveSearchSorting';
 
 export default function ArchiveSearch({
     isLoggedIn,
@@ -29,32 +30,33 @@ export default function ArchiveSearch({
     }, []);
 
     useEffect(() => {
-        search({
-            ...query,
-            page: 1,
-        });
-    }, [isLoggedIn]);
+        search();
+    }, [isLoggedIn, searchParams]);
 
     function handleScroll(inView) {
         if (inView) {
-            let page = (parseInt(query.page) || 0) + 1;
-            search(Object.assign({}, query, {page: page}));
+            search(true);
         }
     }
 
-    function search(query={page: 1}) {
-        const url = `${pathBase}/searches/archive`;
-
+    function search(nextPage = false) {
         console.log(query);
+
+        const url = `${pathBase}/searches/archive`;
+        let page = query.page ? Number.parseInt(query.page) : 1;
+        if (nextPage) {
+            page += 1;
+        }
+
         const combinedQuery = {
             ...query,
             sort: searchParams.get('sort') || 'relevance',
+            order: searchParams.get('order') || 'asc',
+            page,
         };
-        console.log('combined', combinedQuery)
 
         searchInArchive(url, combinedQuery);
     }
-
 
     return (
         <ScrollToTop>
@@ -77,10 +79,10 @@ export default function ArchiveSearch({
                         )
                     }
                 </div>
-                <ArchiveSearchTabsContainer
-                    onScroll={handleScroll}
-                    onSortOrderChange={search}
-                />
+
+                <ArchiveSearchSorting />
+
+                <ArchiveSearchTabsContainer onScroll={handleScroll} />
             </div>
         </ScrollToTop>
     );

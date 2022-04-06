@@ -22,7 +22,6 @@ export default function ArchiveSearchTabs({
     hideSidebar,
     setViewMode,
     onScroll,
-    onSortOrderChange,
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
@@ -78,7 +77,7 @@ export default function ArchiveSearchTabs({
                             case VIEWMODE_WORKFLOW:
                                 tabContent = (
                                     <AuthorizedContent object={{type: 'General'}} action="edit">
-                                        <WorkflowResultsContainer onSortOrderChange={onSortOrderChange} />
+                                        <WorkflowResultsContainer />
                                     </AuthorizedContent>
                                 );
                                 break;
@@ -125,5 +124,4 @@ ArchiveSearchTabs.propTypes = {
     hideSidebar: PropTypes.func.isRequired,
     setViewMode: PropTypes.func.isRequired,
     onScroll: PropTypes.func.isRequired,
-    onSortOrderChange: PropTypes.func.isRequired,
 };

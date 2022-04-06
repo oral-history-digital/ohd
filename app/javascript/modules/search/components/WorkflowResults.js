@@ -1,36 +1,24 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
+import { useQuery } from 'modules/react-toolbox';
 import { Fetch, getTaskTypesForCurrentProjectFetched } from 'modules/data';
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
-import SortHeader from './SortHeader';
+import WorkflowHeader from './WorkflowHeader';
 
 export default function WorkflowResults({
-    query,
     project,
     foundInterviews,
-    onSortOrderChange,
 }) {
-    const [sortings, setSortings] = useState({
-        title: 'asc',
-        archive_id: 'asc',
-        media_type: 'asc',
-        duration: 'asc',
-        language: 'asc',
-        workflow_state: 'asc',
-    });
+    const searchParams = useQuery();
 
-    function sort(column, direction) {
-        setSortings(prev => ({
-            ...prev,
-            [column]: direction,
-        }));
-        onSortOrderChange({
-            ...query,
-            order: `${column}-${direction}`,
-            page: 1,
-        });
+    const sortBy = searchParams.get('sort');
+    const sortOrder = searchParams.get('order');
+
+    function handleClick(newSortBy, newSortOrder) {
+        console.log(newSortBy, newSortOrder);
     }
+
+    console.log(foundInterviews.sort((a, b) => a.id - b.id));
 
     return (
         <Fetch
@@ -38,63 +26,62 @@ export default function WorkflowResults({
             testSelector={getTaskTypesForCurrentProjectFetched}
         >
             <div className="data boxes workflow-header">
-                <SortHeader
-                    sortColumn="title"
-                    direction={sortings.title}
+                <WorkflowHeader
+                    sortable="title"
+                    order={sortBy === 'title' ? sortOrder : null}
+                    onClick={handleClick}
                     width={10}
                     tKey="interview"
-                    onClick={sort}
                 />
-                <SortHeader
-                    sortColumn="archive_id"
-                    direction={sortings.archive_id}
+                <WorkflowHeader
+                    sortable="id"
+                    order={sortBy === 'id' ? sortOrder : null}
+                    onClick={handleClick}
                     width={10}
                     tKey="id"
-                    onClick={sort}
                 />
-                <SortHeader
-                    sortColumn="media_type"
-                    direction={sortings.media_type}
+                <WorkflowHeader
+                    sortable="media"
+                    order={sortBy === 'media' ? sortOrder : null}
+                    onClick={handleClick}
                     width={10}
                     tKey="activerecord.attributes.interview.media_type"
-                    onClick={sort}
                 />
-                <SortHeader
-                    sortColumn="duration"
-                    direction={sortings.duration}
+                <WorkflowHeader
+                    sortable="duration"
+                    order={sortBy === 'duration' ? sortOrder : null}
+                    onClick={handleClick}
                     width={10}
                     tKey="activerecord.attributes.interview.duration"
-                    onClick={sort}
                 />
-                <SortHeader
-                    sortColumn="language"
-                    direction={sortings.language}
+                <WorkflowHeader
+                    sortable="language"
+                    order={sortBy === 'language' ? sortOrder : null}
+                    onClick={handleClick}
                     width={10}
                     tKey="activerecord.attributes.interview.language"
-                    onClick={sort}
                 />
-
-                <SortHeader
+                <WorkflowHeader
                     width={10}
                     tKey="activerecord.attributes.interview.collection_id"
                 />
-                <SortHeader
+                <WorkflowHeader
                     width={30}
                     tKey="activerecord.attributes.interview.tasks_states"
                 />
-                <SortHeader
-                    sortColumn="workflow_state"
-                    direction={sortings.workflow_state}
+                <WorkflowHeader
+                    sortable="state"
+                    order={sortBy === 'state' ? sortOrder : null}
+                    onClick={handleClick}
                     width={10}
                     tKey="activerecord.attributes.interview.workflow_state"
-                    onClick={sort}
                 />
             </div>
             {
                 foundInterviews?.map(interview => (
                     <InterviewWorkflowRowContainer
+                        key={interview.id}
                         interview={interview}
-                        key={interview.archive_id}
                     />
                 ))
             }
@@ -106,5 +93,4 @@ WorkflowResults.propTypes = {
     query: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     foundInterviews: PropTypes.array,
-    onSortOrderChange: PropTypes.func.isRequired,
 };
