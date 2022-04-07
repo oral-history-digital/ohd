@@ -14,8 +14,8 @@ import ResultGrid from './ResultGrid';
 
 export default function ArchiveSearchTabs({
     query,
-    foundInterviews,
-    isArchiveSearching,
+    interviews,
+    isValidating,
     resultPagesCount,
     viewModes,
     currentViewMode,
@@ -63,7 +63,7 @@ export default function ArchiveSearchTabs({
                 {
                     viewModes?.map(viewMode => {
                         let tabContent;
-                        if (foundInterviews?.length === 0 && !isArchiveSearching) {
+                        if (interviews?.length === 0 && !isValidating) {
                             tabContent = (
                                 <div className="search-result">
                                     {t('no_interviews_results')}
@@ -72,31 +72,31 @@ export default function ArchiveSearchTabs({
                         } else {
                             switch (viewMode) {
                             case VIEWMODE_LIST:
-                                tabContent = <ResultTableContainer/>;
+                                tabContent = <ResultTableContainer interviews={interviews} />;
                                 break;
                             case VIEWMODE_WORKFLOW:
                                 tabContent = (
                                     <AuthorizedContent object={{type: 'General'}} action="edit">
-                                        <WorkflowResultsContainer />
+                                        <WorkflowResultsContainer interviews={interviews} />
                                     </AuthorizedContent>
                                 );
                                 break;
                             case VIEWMODE_GRID:
                             default:
-                                tabContent = <ResultGrid interviews={foundInterviews} />;
+                                tabContent = <ResultGrid interviews={interviews} />;
                                 break;
                             }
                         }
 
                         return (<TabPanel key={viewMode}>
                             {
-                                isArchiveSearching && query['page'] === 1 && !foundInterviews ?
+                                isValidating && query['page'] === 1 && !interviews ?
                                     <Spinner /> :
                                     (
                                         <>
                                             {tabContent}
                                             {
-                                                isArchiveSearching ?
+                                                isValidating ?
                                                     <Spinner /> :
                                                     (
                                                         resultPagesCount > (Number.parseInt(query.page) || 1) &&
@@ -116,8 +116,8 @@ export default function ArchiveSearchTabs({
 
 ArchiveSearchTabs.propTypes = {
     query: PropTypes.object.isRequired,
-    foundInterviews: PropTypes.array.isRequired,
-    isArchiveSearching: PropTypes.bool,
+    interviews: PropTypes.array,
+    isValidating: PropTypes.bool.isRequired,
     resultPagesCount: PropTypes.number.isRequired,
     viewModes: PropTypes.array.isRequired,
     currentViewMode: PropTypes.string.isRequired,

@@ -193,7 +193,7 @@ class SearchesController < ApplicationController
           # found_segments_for_interviews: number_of_found_segments,
           # found_segments_for_interviews: found_segments,
           facets: current_project ? current_project.updated_search_facets(search) : {},
-          page: params[:page] || 1,
+          page: params[:page].to_i || 1,
         }
       end
       format.csv do

@@ -9,6 +9,7 @@ import { usePathBase } from 'modules/routes';
 import { INDEX_SEARCH } from 'modules/sidebar';
 import { ScrollToTop } from 'modules/user-agent';
 import { useQuery } from 'modules/react-toolbox';
+import useArchiveSearch from '../useArchiveSearch';
 import SearchActionsContainer from './SearchActionsContainer';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
 import ArchiveSearchSorting from './ArchiveSearchSorting';
@@ -16,7 +17,6 @@ import ArchiveSearchSorting from './ArchiveSearchSorting';
 export default function ArchiveSearch({
     isLoggedIn,
     query,
-    resultsAvailable,
     resultsCount,
     searchInArchive,
     setSidebarTabsIndex,
@@ -24,6 +24,9 @@ export default function ArchiveSearch({
     const { t } = useI18n();
     const pathBase = usePathBase();
     const searchParams = useQuery();
+
+    const { data, isValidating } = useArchiveSearch();
+    console.log(data);
 
     useEffect(() => {
         setSidebarTabsIndex(INDEX_SEARCH);
@@ -68,9 +71,9 @@ export default function ArchiveSearch({
                         <SearchActionsContainer />
                     </AuthShowContainer>
                     {
-                        resultsAvailable && (
+                        data && (
                             <div className="search-results-legend-text">
-                                {resultsCount} {t('archive_results')}
+                                {data.total} {t('archive_results')}
                             </div>
                         )
                     }
@@ -78,7 +81,11 @@ export default function ArchiveSearch({
 
                 <ArchiveSearchSorting />
 
-                <ArchiveSearchTabsContainer onScroll={handleScroll} />
+                <ArchiveSearchTabsContainer
+                    interviews={data?.interviews}
+                    isValidating={isValidating}
+                    onScroll={handleScroll}
+                />
             </div>
         </ScrollToTop>
     );

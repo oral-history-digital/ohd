@@ -5,7 +5,7 @@ import { AuthorizedContent } from 'modules/auth';
 import { InterviewListRowContainer } from 'modules/interview-preview';
 
 export default function ResultTable({
-    foundInterviews,
+    interviews,
     query,
     project,
 }) {
@@ -38,7 +38,7 @@ export default function ResultTable({
                 </tr>
             </thead>
             <tbody className="Table-body">
-                {foundInterviews?.map(interview => (
+                {interviews?.map(interview => (
                     <InterviewListRowContainer
                         key={interview.id}
                         interview={interview}
@@ -50,7 +50,7 @@ export default function ResultTable({
 }
 
 ResultTable.propTypes = {
-    foundInterviews: PropTypes.array,
+    interviews: PropTypes.array,
     project: PropTypes.object.isRequired,
     query: PropTypes.object.isRequired,
 };

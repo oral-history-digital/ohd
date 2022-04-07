@@ -6,8 +6,8 @@ import { InterviewWorkflowRowContainer } from 'modules/workflow';
 import WorkflowHeader from './WorkflowHeader';
 
 export default function WorkflowResults({
+    interviews,
     project,
-    foundInterviews,
 }) {
     const searchParams = useQuery();
 
@@ -15,10 +15,8 @@ export default function WorkflowResults({
     const sortOrder = searchParams.get('order');
 
     function handleClick(newSortBy, newSortOrder) {
-        console.log(newSortBy, newSortOrder);
+        //console.log(newSortBy, newSortOrder);
     }
-
-    console.log(foundInterviews.sort((a, b) => a.id - b.id));
 
     return (
         <Fetch
@@ -78,7 +76,7 @@ export default function WorkflowResults({
                 />
             </div>
             {
-                foundInterviews?.map(interview => (
+                interviews?.map(interview => (
                     <InterviewWorkflowRowContainer
                         key={interview.id}
                         interview={interview}
@@ -92,5 +90,5 @@ export default function WorkflowResults({
 WorkflowResults.propTypes = {
     query: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
-    foundInterviews: PropTypes.array,
+    interviews: PropTypes.array,
 };
