@@ -8,7 +8,7 @@ import { getCurrentProject } from 'modules/data';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { HomeContainer } from 'modules/startpage';
 import { InterviewContainer } from 'modules/interview';
-import { ArchiveSearch, clearSearch, clearAllInterviewSearch } from 'modules/search';
+import { SearchPage, clearSearch, clearAllInterviewSearch } from 'modules/search';
 import { SearchMap } from 'modules/search-map';
 import { RegistryContainer } from 'modules/registry';
 import { EditInterviewContainer } from 'modules/admin';
@@ -54,7 +54,7 @@ export default function ProjectRoutes() {
                     <InterviewContainer />
                 </Route>
                 <Route path={`${path}/searches/archive`}>
-                    <ArchiveSearch />
+                    <SearchPage />
                 </Route>
                 <Route path={`${path}/searches/map`}>
                     <SearchMap />

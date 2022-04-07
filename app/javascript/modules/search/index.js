@@ -17,7 +17,7 @@ export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
     getAnnotationResults, getObservationsResults
 } from './selectors';
 
-export { default as ArchiveSearch } from './components/ArchiveSearch';
+export { default as SearchPage } from './components/SearchPage';
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';
 
 export { default as queryToText } from './queryToText';
