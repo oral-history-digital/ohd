@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import PropTypes from 'prop-types';
 import Observer from 'react-intersection-observer';
 import { useSelector, useDispatch } from 'react-redux';
 
@@ -10,9 +11,12 @@ import SearchActionsContainer from './SearchActionsContainer';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
 import ArchiveSearchSorting from './ArchiveSearchSorting';
 
-function ArchiveSearch() {
+function ArchiveSearch({
+    search,
+}) {
     const { t } = useI18n();
     const dispatch = useDispatch();
+    console.log(search);
 
     const { data, error, isValidating, size, setSize } = useArchiveSearch();
     console.log(data, size);
@@ -53,6 +57,10 @@ function ArchiveSearch() {
             }
         </>
     );
+}
+
+ArchiveSearch.propTypes = {
+    search: PropTypes.string,
 }
 
 const MemoizedArchiveSearch = memo(ArchiveSearch);
