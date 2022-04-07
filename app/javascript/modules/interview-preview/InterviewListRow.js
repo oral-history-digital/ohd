@@ -36,6 +36,8 @@ export default function InterviewListRow({
     const intervieweeId = interview.interviewee_id;
 
     useEffect(() => {
+        return;
+
         if (!projectAccessGranted) {
             fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, 'landing_page_metadata');
         } else if (projectAccessGranted && !interviewee?.associations_loaded) {

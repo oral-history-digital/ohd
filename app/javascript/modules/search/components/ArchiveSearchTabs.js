@@ -1,13 +1,12 @@
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import Observer from 'react-intersection-observer';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
 import { VIEWMODE_GRID, VIEWMODE_LIST, VIEWMODE_WORKFLOW } from 'modules/constants';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
-import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
+import { Spinner } from 'modules/spinners';
 import ResultTableContainer from './ResultTableContainer';
 import WorkflowResultsContainer from './WorkflowResultsContainer';
 import ResultGrid from './ResultGrid';
@@ -16,12 +15,10 @@ export default function ArchiveSearchTabs({
     query,
     interviews,
     isValidating,
-    resultPagesCount,
     viewModes,
     currentViewMode,
     hideSidebar,
     setViewMode,
-    onScroll,
 }) {
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
@@ -92,19 +89,7 @@ export default function ArchiveSearchTabs({
                             {
                                 isValidating && query['page'] === 1 && !interviews ?
                                     <Spinner /> :
-                                    (
-                                        <>
-                                            {tabContent}
-                                            {
-                                                isValidating ?
-                                                    <Spinner /> :
-                                                    (
-                                                        resultPagesCount > (Number.parseInt(query.page) || 1) &&
-                                                            <Observer onChange={onScroll} />
-                                                    )
-                                            }
-                                        </>
-                                    )
+                                    tabContent
                             }
                         </TabPanel>);
                     })
@@ -118,10 +103,8 @@ ArchiveSearchTabs.propTypes = {
     query: PropTypes.object.isRequired,
     interviews: PropTypes.array,
     isValidating: PropTypes.bool.isRequired,
-    resultPagesCount: PropTypes.number.isRequired,
     viewModes: PropTypes.array.isRequired,
     currentViewMode: PropTypes.string.isRequired,
     hideSidebar: PropTypes.func.isRequired,
     setViewMode: PropTypes.func.isRequired,
-    onScroll: PropTypes.func.isRequired,
 };

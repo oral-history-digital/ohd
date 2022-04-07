@@ -1,12 +1,15 @@
+import { memo } from 'react';
 import { useEffect } from 'react';
-import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
+import { useSelector, useDispatch } from 'react-redux';
+import Observer from 'react-intersection-observer';
 
+import { getIsLoggedIn } from 'modules/account';
 import { AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { usePathBase } from 'modules/routes';
-import { INDEX_SEARCH } from 'modules/sidebar';
+import { Spinner } from 'modules/spinners';
+import { INDEX_SEARCH, setSidebarTabsIndex } from 'modules/sidebar';
 import { ScrollToTop } from 'modules/user-agent';
 import { useQuery } from 'modules/react-toolbox';
 import useArchiveSearch from '../useArchiveSearch';
@@ -14,57 +17,45 @@ import SearchActionsContainer from './SearchActionsContainer';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
 import ArchiveSearchSorting from './ArchiveSearchSorting';
 
-export default function ArchiveSearch({
-    isLoggedIn,
-    query,
-    resultsCount,
-    searchInArchive,
-    setSidebarTabsIndex,
-}) {
-    const { t } = useI18n();
-    const pathBase = usePathBase();
+function ArchiveSearch() {
+    //const { t } = useI18n();
     const searchParams = useQuery();
+    const dispatch = useDispatch();
+    //const isLoggedIn = useSelector(getIsLoggedIn);
 
-    const { data, isValidating } = useArchiveSearch();
-    console.log(data);
+    const { data, error, isValidating, size, setSize } = useArchiveSearch();
+    console.log(data, size);
 
     useEffect(() => {
-        setSidebarTabsIndex(INDEX_SEARCH);
+        dispatch(setSidebarTabsIndex(INDEX_SEARCH));
     }, []);
 
-    useEffect(() => {
-        search();
-    }, [isLoggedIn, searchParams]);
+    //useEffect(() => {
+    //}, [isLoggedIn, searchParams]);
 
     function handleScroll(inView) {
         if (inView) {
-            let page = query.page ? Number.parseInt(query.page) : 1;
-            page += 1;
-            search(page);
+            setSize(size + 1);
         }
     }
 
     function search(page = 1) {
-        const url = `${pathBase}/searches/archive`;
-
         const combinedQuery = {
-            ...query,
+            //...query,
             sort: searchParams.get('sort') || 'relevance',
             order: searchParams.get('order') || 'asc',
             page,
         };
-
-        searchInArchive(url, combinedQuery);
     }
 
     return (
         <ScrollToTop>
             <Helmet>
-                <title>{t('interviews')}</title>
+                <title>{/*t('interviews')*/}</title>
             </Helmet>
             <div className="wrapper-content interviews">
                 <h1 className="search-results-title">
-                    {t('interviews')}
+                    {/*t('interviews')*/}
                 </h1>
                 <div className="SearchResults-legend search-results-legend">
                     <AuthShowContainer ifLoggedIn>
@@ -73,7 +64,7 @@ export default function ArchiveSearch({
                     {
                         data && (
                             <div className="search-results-legend-text">
-                                {data.total} {t('archive_results')}
+                                {data.total} {/*t('archive_results')*/}
                             </div>
                         )
                     }
@@ -86,16 +77,21 @@ export default function ArchiveSearch({
                     isValidating={isValidating}
                     onScroll={handleScroll}
                 />
+
+                {
+                    isValidating ?
+                        <Spinner /> :
+                        (
+                            data?.numPages > size && (
+                                <Observer onChange={handleScroll} />
+                            )
+                        )
+                }
             </div>
         </ScrollToTop>
     );
 }
 
-ArchiveSearch.propTypes = {
-    isLoggedIn: PropTypes.bool.isRequired,
-    query: PropTypes.object.isRequired,
-    resultsAvailable: PropTypes.bool.isRequired,
-    resultsCount: PropTypes.number.isRequired,
-    searchInArchive: PropTypes.func.isRequired,
-    setSidebarTabsIndex: PropTypes.func.isRequired,
-};
+const MemoizedArchiveSearch = memo(ArchiveSearch);
+
+export default MemoizedArchiveSearch;
