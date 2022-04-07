@@ -31,11 +31,11 @@ export default function Home({
                 }
                 <div className="home-text">
                     <h1>{projectTranslation?.name}</h1>
-                    {Object.values(project.institution_projects).map(ip => {
-                        return (
-                            <p><b>{institutions[ip.institution_id].name[projectTranslation.locale]}</b></p>
-                        )
-                    })}
+                    {Object.values(project.institution_projects).map(ip => (
+                        <p key={ip.id}>
+                            <b>{institutions[ip.institution_id].name[projectTranslation.locale]}</b>
+                        </p>
+                    ))}
                     <div dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}} />
                 </div>
                 {
