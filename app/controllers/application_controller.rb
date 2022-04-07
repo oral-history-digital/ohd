@@ -277,7 +277,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clear_cache(ref_object)
-    Rails.cache.delete "#{current_project.cache_key_prefix}-#{ref_object.class.name.underscore}-#{ref_object.id}-#{ref_object.updated_at}"
+    ref_object.touch
   end
 
   def create_tmp_file(file)

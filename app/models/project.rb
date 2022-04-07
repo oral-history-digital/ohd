@@ -158,9 +158,10 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_results_list: true).order(:list_columns_order)
   end
 
-  def clear_cache(namespace)
-    Rails.cache.delete_matched /^#{cache_key_prefix}-#{namespace}*/
-  end
+  # runs only with memcache
+  #def clear_cache(namespace)
+    #Rails.cache.delete_matched /^#{cache_key_prefix}-#{namespace}*/
+  #end
 
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
   %w(RegistryReferenceType Person Interview).each do |m|
