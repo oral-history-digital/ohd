@@ -12,7 +12,7 @@ import WorkflowResultsContainer from './WorkflowResultsContainer';
 import ResultGrid from './ResultGrid';
 
 export default function ArchiveSearchTabs({
-    query,
+    size,
     interviews,
     isValidating,
     viewModes,
@@ -59,6 +59,10 @@ export default function ArchiveSearchTabs({
             <TabPanels className="u-mt">
                 {
                     viewModes?.map(viewMode => {
+                        if (viewMode !== currentViewMode) {
+                            return <TabPanel key={viewMode} />;
+                        }
+
                         let tabContent;
                         if (interviews?.length === 0 && !isValidating) {
                             tabContent = (
@@ -85,13 +89,15 @@ export default function ArchiveSearchTabs({
                             }
                         }
 
-                        return (<TabPanel key={viewMode}>
-                            {
-                                isValidating && query['page'] === 1 && !interviews ?
-                                    <Spinner /> :
-                                    tabContent
-                            }
-                        </TabPanel>);
+                        return (
+                            <TabPanel key={viewMode}>
+                                {
+                                    isValidating && size === 1 && !interviews ?
+                                        <Spinner /> :
+                                        tabContent
+                                }
+                            </TabPanel>
+                        );
                     })
                 }
             </TabPanels>
@@ -100,7 +106,7 @@ export default function ArchiveSearchTabs({
 }
 
 ArchiveSearchTabs.propTypes = {
-    query: PropTypes.object.isRequired,
+    size: PropTypes.number.isRequired,
     interviews: PropTypes.array,
     isValidating: PropTypes.bool.isRequired,
     viewModes: PropTypes.array.isRequired,

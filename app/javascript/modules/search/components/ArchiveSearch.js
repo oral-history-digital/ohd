@@ -18,8 +18,22 @@ function ArchiveSearch({
     const dispatch = useDispatch();
     console.log(search);
 
-    const { data, error, isValidating, size, setSize } = useArchiveSearch();
+    const searchParams = new URLSearchParams(search);
+
+    const sortBy = searchParams.get('sort');
+    const sortOrder = searchParams.get('order');
+
+    const { data, error, isValidating, size, setSize } = useArchiveSearch(
+        sortBy, sortOrder
+    );
     console.log(data, size);
+
+
+    function handleScroll(inView) {
+        if (inView) {
+            setSize(size + 1);
+        }
+    }
 
     return (
         <>
@@ -33,7 +47,7 @@ function ArchiveSearch({
                 {
                     data && (
                         <div className="search-results-legend-text">
-                            {data.total} {/*t('archive_results')*/}
+                            {data.total} {t('archive_results')}
                         </div>
                     )
                 }
@@ -43,6 +57,7 @@ function ArchiveSearch({
 
             <ArchiveSearchTabsContainer
                 interviews={data?.interviews}
+                size={size}
                 isValidating={isValidating}
             />
 
@@ -51,7 +66,7 @@ function ArchiveSearch({
                     <Spinner /> :
                     (
                         data?.numPages > size && (
-                            <Observer onChange={() => {}} />
+                            <Observer onChange={handleScroll} />
                         )
                     )
             }

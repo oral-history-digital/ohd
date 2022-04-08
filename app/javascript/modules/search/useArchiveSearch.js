@@ -1,4 +1,5 @@
 import useSWRInfinite from 'swr/infinite';
+import queryString from 'query-string';
 
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
@@ -17,11 +18,17 @@ function transformData(data) {
     };
 }
 
-export default function useArchiveSearch() {
-    //const pathBase = usePathBase();
+export default function useArchiveSearch(sortBy, sortOrder) {
+    const pathBase = usePathBase();
 
     function getKey(pageIndex, previousPageData) {
-        return `/de/searches/archive?page=${pageIndex + 1}`;
+        const params = {
+            page: pageIndex + 1,
+            sort: sortBy,
+            order: sortOrder,
+        };
+        const paramStr = queryString.stringify(params);
+        return `${pathBase}/searches/archive?${paramStr}`;
     }
 
     const { data, error, isValidating, size, setSize } =
