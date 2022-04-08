@@ -18,7 +18,7 @@ function transformData(data) {
     };
 }
 
-export default function useArchiveSearch(sortBy, sortOrder) {
+export default function useArchiveSearch(sortBy, sortOrder, isLoggedIn) {
     const pathBase = usePathBase();
 
     function getKey(pageIndex, previousPageData) {
@@ -26,6 +26,7 @@ export default function useArchiveSearch(sortBy, sortOrder) {
             page: pageIndex + 1,
             sort: sortBy,
             order: sortOrder,
+            'logged-in': isLoggedIn, // just to build different keys
         };
         const paramStr = queryString.stringify(params);
         return `${pathBase}/searches/archive?${paramStr}`;

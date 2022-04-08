@@ -1298,9 +1298,9 @@ de:
         label: Sortierung
         by:
           relevance: Relevanz
-          title: Titel
+          title: Name
           date: Datum
-          duration: Länge
+          duration: Dauer
           id: Interview-ID
           media: Medientyp
           language: Sprache

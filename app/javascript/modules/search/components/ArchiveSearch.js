@@ -1,11 +1,12 @@
 import { memo } from 'react';
 import PropTypes from 'prop-types';
 import Observer from 'react-intersection-observer';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
+import { getIsLoggedIn } from 'modules/account';
 import useArchiveSearch from '../useArchiveSearch';
 import SearchActionsContainer from './SearchActionsContainer';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
@@ -15,19 +16,17 @@ function ArchiveSearch({
     search,
 }) {
     const { t } = useI18n();
-    const dispatch = useDispatch();
-    console.log(search);
+    const isLoggedIn = useSelector(getIsLoggedIn);
 
     const searchParams = new URLSearchParams(search);
-
     const sortBy = searchParams.get('sort');
     const sortOrder = searchParams.get('order');
 
     const { data, error, isValidating, size, setSize } = useArchiveSearch(
-        sortBy, sortOrder
+        sortBy, sortOrder, isLoggedIn,
     );
-    console.log(data, size);
 
+    console.log(data, size);
 
     function handleScroll(inView) {
         if (inView) {
