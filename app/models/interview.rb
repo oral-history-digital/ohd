@@ -828,15 +828,21 @@ class Interview < ApplicationRecord
           case params[:sort]
           when 'title'
             order_by("person_name_#{locale}".to_sym, sort_order)
-          when 'media'
+          when 'media_type'
             order_by(:media_type, sort_order)
             order_by("person_name_#{locale}".to_sym, :asc)
-          when 'id'
+          when 'archive_id'
             order_by(:archive_id, sort_order)
           when 'duration'
             order_by(:duration, sort_order)
           when 'language'
             order_by(:language, sort_order)
+            order_by("person_name_#{locale}".to_sym, :asc)
+          when 'workflow_state'
+            order_by(:workflow_state, sort_order)
+            order_by("person_name_#{locale}".to_sym, :asc)
+          when 'interview_date'
+            order_by(:interview_date, sort_order)
             order_by("person_name_#{locale}".to_sym, :asc)
           when 'relevance'
             order_by(:score, sort_order)

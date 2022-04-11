@@ -9,21 +9,11 @@ import flow from 'lodash.flow';
 
 import { useI18n } from 'modules/i18n';
 import { getCurrentProject } from 'modules/data';
+import { getEditView } from 'modules/archive';
 import addObligatoryOptions from '../addObligatoryOptions';
 import filterByPossibleOptions from '../filterByPossibleOptions';
 import searchOptionsFromMetadataFields from '../searchOptionsFromMetadataFields';
 import sortByFacetOrder from '../sortByFacetOrder';
-
-
-/* const sortByOptions = [
-    'relevance',
-    'title',
-    'id',
-    'media',
-    'duration',
-    'language',
-]; */
-
 
 export default function ArchiveSearchSorting({
     className,
@@ -32,16 +22,29 @@ export default function ArchiveSearchSorting({
     const { t } = useI18n();
     const history = useHistory();
     const project = useSelector(getCurrentProject);
+    const editView = useSelector(getEditView);
 
-    const transformMetadataFields = flow(
-        sortByFacetOrder,
-        searchOptionsFromMetadataFields,
-        filterByPossibleOptions,
-        addObligatoryOptions,
-    );
-    const sortByOptions = transformMetadataFields(
-        Object.values(project?.metadata_fields) || []);
-
+    let sortByOptions;
+    if (editView) {
+        sortByOptions = [
+            'relevance',
+            'title',
+            'archive_id',
+            'media_type',
+            'duration',
+            'language',
+            'workflow_state',
+        ];
+    } else {
+        const transformMetadataFields = flow(
+            sortByFacetOrder,
+            searchOptionsFromMetadataFields,
+            filterByPossibleOptions,
+            addObligatoryOptions,
+        );
+        sortByOptions = transformMetadataFields(
+            Object.values(project?.metadata_fields) || []);
+    }
 
     function setParam(name, value) {
         searchParams.set(name, value);

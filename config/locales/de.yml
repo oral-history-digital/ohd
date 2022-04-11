@@ -1299,12 +1299,12 @@ de:
         by:
           relevance: Relevanz
           title: Name
-          date: Datum
+          interview_date: Datum
           duration: Dauer
-          id: Interview-ID
-          media: Medientyp
+          archive_id: Interview-ID
+          media_type: Medientyp
           language: Sprache
-          state: Status
+          workflow_state: Status
         order:
           asc: aufsteigend
           desc: absteigend
