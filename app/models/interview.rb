@@ -826,6 +826,8 @@ class Interview < ApplicationRecord
           sort_order = params.fetch(:order, 'asc').to_sym
           # TODO: Implement order => asc/desc
           case params[:sort]
+          when 'random'
+            order_by(:random, seed: Date.today.to_s)
           when 'title'
             order_by("person_name_#{locale}".to_sym, sort_order)
           when 'media_type'
