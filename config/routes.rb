@@ -168,9 +168,10 @@ Rails.application.routes.draw do
   end
 
   concern :search do
-    resources :searches, only: [:new, :facets, :archive, :interview, :map] do
+    resources :searches, only: [:new, :facets, :suggestions, :archive, :interview, :map] do
       collection do
         get :facets
+        get :suggestions
         get :archive
         get :export_archive_search
         get :interview

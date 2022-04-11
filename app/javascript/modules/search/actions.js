@@ -50,8 +50,6 @@ function receiveArchiveSearchResults(json){
         type: RECEIVE_ARCHIVE_SEARCH,
         allInterviewsTitles: json.all_interviews_titles,
         allInterviewsPseudonyms: json.all_interviews_pseudonyms,
-        allInterviewsPlacesOfBirth: json.all_interviews_birth_locations,
-        allInterviewsCount: json.all_interviews_count,
         sortedArchiveIds: json.sorted_archive_ids,
         resultPagesCount: json.result_pages_count,
         resultsCount: json.results_count,

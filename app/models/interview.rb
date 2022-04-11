@@ -792,7 +792,6 @@ class Interview < ApplicationRecord
           #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
           #    ...]
           all_interviews_pseudonyms: search.hits.map{|hit| eval hit.stored(:alias_names)}
-          #all_interviews_birth_locations: search.hits.map{|hit| hit.stored(:birth_location)}
         }
       end
     end
