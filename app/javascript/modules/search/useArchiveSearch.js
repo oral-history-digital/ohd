@@ -11,11 +11,7 @@ function transformData(data) {
         datum.interviews.forEach(interview => combinedResults.push(interview));
     });
 
-    return {
-        total: data[0].results_count,
-        numPages: data[0].result_pages_count,
-        interviews: combinedResults,
-    };
+    return combinedResults;
 }
 
 export default function useArchiveSearch(sortBy, sortOrder, isLoggedIn) {
@@ -33,7 +29,9 @@ export default function useArchiveSearch(sortBy, sortOrder, isLoggedIn) {
     }
 
     const { data, error, isValidating, size, setSize } =
-        useSWRInfinite(getKey, fetcher);
+        useSWRInfinite(getKey, fetcher, {
+            revalidateOnFocus: false,
+        });
 
     let transformedData;
     if (data) {
@@ -43,5 +41,13 @@ export default function useArchiveSearch(sortBy, sortOrder, isLoggedIn) {
 
     console.log(data, error, isValidating);
 
-    return { data: transformedData, error, isValidating, size, setSize };
+    return {
+        interviews: transformedData,
+        total: data?.[0].results_count,
+        data,
+        error,
+        isValidating,
+        size,
+        setSize,
+    };
 }

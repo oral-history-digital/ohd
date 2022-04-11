@@ -12,6 +12,8 @@ import SearchActionsContainer from './SearchActionsContainer';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
 import ArchiveSearchSorting from './ArchiveSearchSorting';
 
+const PAGE_SIZE = 12;
+
 function ArchiveSearch({
     search,
 }) {
@@ -22,7 +24,7 @@ function ArchiveSearch({
     const sortBy = searchParams.get('sort');
     const sortOrder = searchParams.get('order');
 
-    const { data, error, isValidating, size, setSize } = useArchiveSearch(
+    const { interviews, total, data, error, isValidating, size, setSize } = useArchiveSearch(
         sortBy, sortOrder, isLoggedIn,
     );
 
@@ -34,6 +36,14 @@ function ArchiveSearch({
         }
     }
 
+    const isLoadingInitialData = !data && !error;
+    const isLoadingMore = isLoadingInitialData ||
+        (size > 0 && data && typeof data[size - 1] === 'undefined');
+    const isEmpty = data?.[0]?.length === 0;
+    const isReachingEnd =
+        isEmpty || (data && data[data.length - 1]?.length < PAGE_SIZE);
+    const isRefreshing = isValidating && data && data.length === size;
+
     return (
         <>
             <h1 className="search-results-title">
@@ -44,9 +54,9 @@ function ArchiveSearch({
                     <SearchActionsContainer />
                 </AuthShowContainer>
                 {
-                    data && (
+                    interviews && (
                         <div className="search-results-legend-text">
-                            {data.total} {t('archive_results')}
+                            {total} {t('archive_results')}
                         </div>
                     )
                 }
@@ -55,20 +65,15 @@ function ArchiveSearch({
             <ArchiveSearchSorting />
 
             <ArchiveSearchTabsContainer
-                interviews={data?.interviews}
-                size={size}
-                isValidating={isValidating}
+                interviews={interviews}
+                empty={isEmpty}
             />
 
-            {
-                isValidating ?
-                    <Spinner /> :
-                    (
-                        data?.numPages > size && (
-                            <Observer onChange={handleScroll} />
-                        )
-                    )
-            }
+            {!isLoadingMore && !isReachingEnd && (
+                <Observer onChange={handleScroll} />
+            )}
+
+            {isLoadingMore && <Spinner />}
         </>
     );
 }

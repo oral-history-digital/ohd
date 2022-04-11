@@ -6,15 +6,13 @@ import '@reach/tabs/styles.css';
 import { VIEWMODE_GRID, VIEWMODE_LIST, VIEWMODE_WORKFLOW } from 'modules/constants';
 import { AuthorizedContent, useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
-import { Spinner } from 'modules/spinners';
 import ResultTableContainer from './ResultTableContainer';
 import WorkflowResultsContainer from './WorkflowResultsContainer';
 import ResultGrid from './ResultGrid';
 
 export default function ArchiveSearchTabs({
-    size,
     interviews,
-    isValidating,
+    empty,
     viewModes,
     currentViewMode,
     hideSidebar,
@@ -64,7 +62,7 @@ export default function ArchiveSearchTabs({
                         }
 
                         let tabContent;
-                        if (interviews?.length === 0 && !isValidating) {
+                        if (empty) {
                             tabContent = (
                                 <div className="search-result">
                                     {t('no_interviews_results')}
@@ -78,7 +76,9 @@ export default function ArchiveSearchTabs({
                             case VIEWMODE_WORKFLOW:
                                 tabContent = (
                                     <AuthorizedContent object={{type: 'General'}} action="edit">
-                                        <WorkflowResultsContainer interviews={interviews} />
+                                        <WorkflowResultsContainer
+                                            interviews={interviews}
+                                        />
                                     </AuthorizedContent>
                                 );
                                 break;
@@ -91,11 +91,7 @@ export default function ArchiveSearchTabs({
 
                         return (
                             <TabPanel key={viewMode}>
-                                {
-                                    isValidating && size === 1 && !interviews ?
-                                        <Spinner /> :
-                                        tabContent
-                                }
+                                {tabContent}
                             </TabPanel>
                         );
                     })
@@ -106,9 +102,8 @@ export default function ArchiveSearchTabs({
 }
 
 ArchiveSearchTabs.propTypes = {
-    size: PropTypes.number.isRequired,
     interviews: PropTypes.array,
-    isValidating: PropTypes.bool.isRequired,
+    empty: PropTypes.bool.isRequired,
     viewModes: PropTypes.array.isRequired,
     currentViewMode: PropTypes.string.isRequired,
     hideSidebar: PropTypes.func.isRequired,
