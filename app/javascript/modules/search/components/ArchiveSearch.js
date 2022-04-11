@@ -62,7 +62,9 @@ function ArchiveSearch({
                 }
             </div>
 
-            <ArchiveSearchSorting />
+            <ArchiveSearchSorting
+                searchParams={searchParams}
+            />
 
             <ArchiveSearchTabsContainer
                 interviews={interviews}

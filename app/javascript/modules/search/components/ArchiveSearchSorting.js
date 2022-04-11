@@ -1,43 +1,73 @@
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { useHistory } from 'react-router-dom';
 import { Listbox, ListboxOption } from '@reach/listbox';
 import '@reach/listbox/styles.css';
+import flow from 'lodash.flow';
 
 import { useI18n } from 'modules/i18n';
-import { useQuery } from 'modules/react-toolbox';
+import { getCurrentProject } from 'modules/data';
+import addObligatoryOptions from '../addObligatoryOptions';
+import filterByPossibleOptions from '../filterByPossibleOptions';
+import searchOptionsFromMetadataFields from '../searchOptionsFromMetadataFields';
+import sortByFacetOrder from '../sortByFacetOrder';
+
+
+/* const sortByOptions = [
+    'relevance',
+    'title',
+    'id',
+    'media',
+    'duration',
+    'language',
+]; */
+
 
 export default function ArchiveSearchSorting({
     className,
+    searchParams,
 }) {
     const { t } = useI18n();
-    const searchParams = useQuery();
     const history = useHistory();
+    const project = useSelector(getCurrentProject);
 
-    function handleSortByChange(newSortBy) {
-        searchParams.set('sort', newSortBy);
+    const transformMetadataFields = flow(
+        sortByFacetOrder,
+        searchOptionsFromMetadataFields,
+        filterByPossibleOptions,
+        addObligatoryOptions,
+    );
+    const sortByOptions = transformMetadataFields(
+        Object.values(project?.metadata_fields) || []);
+
+
+    function setParam(name, value) {
+        searchParams.set(name, value);
         history.push({
             search: searchParams.toString(),
         });
+    }
+
+    useEffect(() => {
+        if (searchParams.get('sort') === null) {
+            setParam('sort', 'relevance');
+        }
+        if (searchParams.get('order') === null) {
+            setParam('order', 'desc');
+        }
+    }, []);
+
+    function handleSortByChange(newSortBy) {
+        setParam('sort', newSortBy);
     }
 
     function handleSortOrderChange(newSortOrder) {
-        searchParams.set('order', newSortOrder);
-        history.push({
-            search: searchParams.toString(),
-        });
+        setParam('order', newSortOrder);
     }
 
     const sortBy = searchParams.get('sort') || 'relevance';
-
-    const sortByOptions = [
-        'relevance',
-        'title',
-        'id',
-        'media',
-        'duration',
-        'language',
-    ];
 
     const sortOrder = searchParams.get('order') || 'asc';
 
@@ -90,4 +120,5 @@ export default function ArchiveSearchSorting({
 
 ArchiveSearchSorting.propTypes = {
     className: PropTypes.string,
+    searchParams: PropTypes.object,
 };
