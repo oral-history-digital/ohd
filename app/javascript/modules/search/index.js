@@ -11,7 +11,7 @@ export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
     getLanguagesQuery, getInstitutionsQuery, getContributionTypesQuery, getRegistryNameTypesQuery,
     getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
     getArchiveFacets, getArchiveQuery, getArchiveQueryFulltext,
-    getArchiveResultPagesCount, getArchiveResultsCount, getArchiveFoundInterviews,
+    getArchiveResultPagesCount, getArchiveResultsCount,
     getInterviewSearchResults, getCurrentInterviewSearchResults,
     getSegmentResults, getHeadingResults, getRegistryEntryResults, getPhotoResults, getBiographyResults,
     getAnnotationResults, getObservationsResults
@@ -22,4 +22,5 @@ export { default as ArchiveSearchFormContainer } from './components/ArchiveSearc
 
 export { default as queryToText } from './queryToText';
 
+export { default as useArchiveSearch } from './useArchiveSearch';
 export { default as useSearchSuggestions } from './useSearchSuggestions';

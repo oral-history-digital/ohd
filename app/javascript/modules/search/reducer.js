@@ -18,7 +18,6 @@ export const initialState = {
     archive: {
         facets: null,
         query:{page: 1},
-        foundInterviews: null,
         resultPagesCount: 1,
         resultsCount: 0,
     },
@@ -121,17 +120,9 @@ const search = (state = initialState, action) => {
             })
         })
     case RECEIVE_ARCHIVE_SEARCH:
-        let foundInterviews;
-        if (parseInt(action.page) > 1){
-            foundInterviews = state.archive.foundInterviews.concat(action.foundInterviews);
-        }
-        else {
-            foundInterviews = action.foundInterviews;
-        }
         return Object.assign({}, state, {
             archive: Object.assign({}, state.archive, {
                 facets: action.facets,
-                foundInterviews: foundInterviews,
                 resultPagesCount: action.resultPagesCount,
                 resultsCount: action.resultsCount,
             }),
@@ -153,7 +144,6 @@ const search = (state = initialState, action) => {
             archive: Object.assign({}, state.archive, {
                 facets: null,
                 query: { page: 1 },
-                foundInterviews: [],
                 resultPagesCount: null,
                 resultsCount: null,
             }),

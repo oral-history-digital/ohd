@@ -33,12 +33,6 @@ const state = {
                 fulltext: 'alice',
                 page: 1,
             },
-            foundInterviews: [
-                {
-                    id: 254,
-                    type: 'Interview',
-                },
-            ],
             resultPagesCount: 50,
             resultsCount: 590,
         },
@@ -144,10 +138,6 @@ test('getArchiveQuery retrieves archive query object', () => {
 
 test('getArchiveQueryFulltext retrieves archive query object fulltext part', () => {
     expect(selectors.getArchiveQueryFulltext(state)).toEqual(state[NAME].archive.query.fulltext);
-});
-
-test('getArchiveFoundInterviews retrieves archive found interviews array', () => {
-    expect(selectors.getArchiveFoundInterviews(state)).toEqual(state[NAME].archive.foundInterviews);
 });
 
 describe('getArchiveSearchResultsAvailable', () => {

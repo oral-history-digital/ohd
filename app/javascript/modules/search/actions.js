@@ -50,7 +50,6 @@ function receiveArchiveSearchResults(json){
         type: RECEIVE_ARCHIVE_SEARCH,
         resultPagesCount: json.result_pages_count,
         resultsCount: json.results_count,
-        foundInterviews: json.interviews,
         facets: json.facets,
         page: json.page,
         receivedAt: Date.now()

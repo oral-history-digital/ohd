@@ -139,23 +139,12 @@ class ApplicationController < ActionController::Base
 
   def initial_search_redux_state
     search = Interview.archive_search(current_user_account, current_project, locale, params)
-    serializer_name = if current_user_account.present?
-      'InterviewLoggedInSearchResult'
-    else
-      'InterviewBase'
-    end
-    interview_results = search.results.map do |i|
-      cache_single(i, serializer_name)
-    end
-
-    dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
     facets = current_project ? current_project.updated_search_facets(search) : {}
 
     {
       archive: {
         facets: facets,
         query: search_query,
-        foundInterviews: interview_results,
         resultPagesCount: search.results.total_pages,
         resultsCount: search.total,
       },
