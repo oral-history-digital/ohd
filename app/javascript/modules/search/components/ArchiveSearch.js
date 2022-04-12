@@ -28,8 +28,6 @@ function ArchiveSearch({
         sortBy, sortOrder, isLoggedIn,
     );
 
-    console.log(data, size);
-
     function handleScroll(inView) {
         if (inView) {
             setSize(size + 1);

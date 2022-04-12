@@ -1,9 +1,8 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { getLocale, getTranslations, getProjectId, getEditView } from 'modules/archive';
+import { getLocale, getProjectId } from 'modules/archive';
 import { hideSidebar } from 'modules/sidebar';
-import { getProjects, getCurrentAccount, getCurrentProject } from 'modules/data';
 import { resetQuery, setQueryParams, searchInArchive, setMapQuery, clearSearch,
     clearAllInterviewSearch } from '../actions';
 import { getArchiveFacets, getArchiveQuery, getMapFacets } from '../selectors';
@@ -15,15 +14,10 @@ const mapStateToProps = state => ({
     facets: getArchiveFacets(state),
     mapSearchFacets: getMapFacets(state),
     query: getArchiveQuery(state),
-    translations: getTranslations(state),
     locale: getLocale(state),
     isArchiveSearching: state.search.isArchiveSearching,
     isMapSearching: state.search.isMapSearching,
     projectId: getProjectId(state),
-    projects: getProjects(state),
-    project: getCurrentProject(state),
-    account: getCurrentAccount(state),
-    editView: getEditView(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

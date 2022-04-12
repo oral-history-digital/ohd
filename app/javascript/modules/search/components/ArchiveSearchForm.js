@@ -1,10 +1,10 @@
-import { Component } from 'react';
+import { useRef } from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 import { FaSearch, FaUndo } from 'react-icons/fa';
 
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
+import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
 import { isMobile, isIOS } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
@@ -14,17 +14,28 @@ function onlyUnique(value, index, self) {
     return self.indexOf(value) === index;
 }
 
-export default class ArchiveSearchForm extends Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleReset = this.handleReset.bind(this);
-    }
+export default function ArchiveSearchForm({
+    allInterviewsPseudonyms,
+    allInterviewsTitles,
+    clearAllInterviewSearch,
+    clearSearch,
+    facets,
+    hideSidebar,
+    isArchiveSearching,
+    locale,
+    map,
+    projectId,
+    query,
+    resetQuery,
+    searchInArchive,
+    setMapQuery,
+    setQueryParams,
+}) {
+    const { t } = useI18n();
+    const pathBase = usePathBase();
+    const formEl = useRef(null);
 
-    handleChange(event) {
-        const { map, setQueryParams } = this.props;
-
+    function handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
         if (map){
@@ -34,10 +45,8 @@ export default class ArchiveSearchForm extends Component {
         }
     }
 
-    handleReset(event) {
-        const { hideSidebar, resetQuery, setMapQuery, searchInArchive, map } = this.props;
-
-        this.form.reset();
+    function handleReset() {
+        formEl.current.reset();
         if (isMobile()) {
             hideSidebar();
         }
@@ -46,26 +55,24 @@ export default class ArchiveSearchForm extends Component {
             setMapQuery({});
         } else {
             resetQuery('archive');
-            let url = `${pathBase(this.props)}/searches/archive`;
+            let url = `${pathBase}/searches/archive`;
             searchInArchive(url, {});
         }
     }
 
-    handleSubmit(event) {
-        const { hideSidebar } = this.props;
-
+    function handleSubmit(event) {
         if (event !== undefined) event.preventDefault();
-        let params = serialize(this.form, {hash: true});
-        params = this.getValueFromDataList(params, event);
-        params = this.prepareQuery(params);
+        let params = serialize(formEl.current, {hash: true});
+        params = getValueFromDataList(params, event);
+        params = prepareQuery(params);
         params['page'] = 1;
         if (isMobile()) {
             hideSidebar();
         }
-        this.submit(params);
+        submit(params);
     }
 
-    getValueFromDataList(params, event) {
+    function getValueFromDataList(params, event) {
         if (event && event.currentTarget.list) {
             for (let i = 0; i < event.currentTarget.list.children.length; i++) {
                 if (event.currentTarget.list.children[i].innerText === event.currentTarget.value) {
@@ -78,7 +85,7 @@ export default class ArchiveSearchForm extends Component {
         return params;
     }
 
-    arrayToRange(min, max) {
+    function arrayToRange(min, max) {
         let array = [];
         if (min <= max) {
             for (let i = min; i <= max; i++){
@@ -88,9 +95,7 @@ export default class ArchiveSearchForm extends Component {
         return array;
     }
 
-    prepareQuery(params) {
-        const { facets } = this.props;
-
+    function prepareQuery(params) {
         // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
         // Thus the last checkbox would never uncheck.
         // Send list values. e.g. key[] = ["a", "b"]
@@ -101,28 +106,32 @@ export default class ArchiveSearchForm extends Component {
         }
         // create list of years for year_of_birth
         if (params['year_of_birth_min']) {
-            preparedQuery['year_of_birth[]'] = this.arrayToRange( params['year_of_birth_min'], params['year_of_birth_max'] )
+            preparedQuery['year_of_birth[]'] = arrayToRange( params['year_of_birth_min'], params['year_of_birth_max'] )
         }
         return preparedQuery;
     }
 
-    submit(params) {
-        const { map, isArchiveSearching, searchInArchive, clearSearch, clearAllInterviewSearch, setMapQuery } = this.props;
-
+    function submit(params) {
         if(map) {
             setMapQuery(params);
         } else if (!map && !isArchiveSearching) {
-            let url = `${pathBase(this.props)}/searches/archive`;
+            let url = `${pathBase}/searches/archive`;
             clearSearch();
             clearAllInterviewSearch();
             searchInArchive(url, params);
         }
     }
 
-    renderInputField() {
-        const { map, query, projectId } = this.props;
+    function renderInputField() {
+        const fulltext = query.fulltext ? query.fulltext : '';
 
-        let fulltext = query.fulltext ? query.fulltext : "";
+        const titles = allInterviewsTitles ? allInterviewsTitles
+            .concat(allInterviewsPseudonyms)
+            .map(title => title?.[locale])
+            .filter(title => title)
+            .filter(title => title !== 'no interviewee given')
+            .filter(onlyUnique) : [];
+
         if (map !== true) {
             return (
                 <div className="flyout-search-input">
@@ -131,16 +140,26 @@ export default class ArchiveSearchForm extends Component {
                         type="text"
                         name="fulltext"
                         value={fulltext}
-                        placeholder={t(this.props, (projectId === 'dg' ? 'enter_field_dg' : 'enter_field'))}
-                        onChange={this.handleChange}
+                        placeholder={t(projectId === 'dg' ? 'enter_field_dg' : 'enter_field')}
+                        onChange={handleChange}
                         list='allInterviewTitles'
                     />
-                    {this.renderDataList()}
+                    {!isIOS() && (
+                        <datalist id="allInterviewTitles">
+                            <select>
+                                {
+                                    titles.map(title => (
+                                        <option key={title} value={`"${title}"`} />
+                                    ))
+                                }
+                            </select>
+                        </datalist>
+                    )}
                     <button
                         type="submit"
                         id="search-button"
                         className="Button Button--transparent Button--icon search-button"
-                        title={t(this.props, 'archive_search')}
+                        title={t('archive_search')}
                     >
                         <FaSearch />
                     </button>
@@ -151,81 +170,48 @@ export default class ArchiveSearchForm extends Component {
         }
     }
 
-    renderDataList() {
-        if( !isIOS() ) {
-            return (
-                <datalist id="allInterviewTitles">
-                    <select>
-                        {this.renderOptions()}
-                    </select>
-                </datalist>
-            );
-        } else {
-            return null;
+    if (!facets) {
+        if (!isArchiveSearching) {
+            let url = `${pathBase}/searches/archive`;
+            searchInArchive(url, query);
         }
+        return <Spinner withPadding />;
     }
 
-    renderOptions() {
-        const { allInterviewsTitles, allInterviewsPseudonyms, locale } = this.props;
-
-        const titles = allInterviewsTitles ? allInterviewsTitles
-            .concat(allInterviewsPseudonyms)
-            .map(title => title?.[locale])
-            .filter(title => title)
-            .filter(title => title !== 'no interviewee given')
-            .filter(onlyUnique) : [];
-
-        return titles.map(title => (
-            <option key={title} value={`"${title}"`} />
-        ));
-    }
-
-    render() {
-        const { isArchiveSearching, query, projectId, searchInArchive, facets, map } = this.props;
-
-        if (!facets) {
-            if (!isArchiveSearching) {
-                let url = `${pathBase(this.props)}/searches/archive`;
-                searchInArchive(url, query);
-            }
-            return <Spinner withPadding />;
-        }
-
-        return (
-            <div>
-                <form
-                    ref={(form) => { this.form = form; }}
-                    id="archiveSearchForm"
-                    className="flyout-search"
-                    onSubmit={this.handleSubmit}
+    return (
+        <div>
+            <form
+                ref={formEl}
+                id="archiveSearchForm"
+                className="flyout-search"
+                onSubmit={handleSubmit}
+            >
+                {
+                    (projectId === 'mog') ?
+                        renderInputField()
+                    :
+                    <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
+                        {renderInputField()}
+                    </AuthShowContainer>
+                }
+                <button
+                    type="button"
+                    className="Button reset"
+                    onClick={handleReset}
                 >
-                    {
-                        (projectId === 'mog') ?
-                            this.renderInputField()
-                        :
-                        <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
-                            {this.renderInputField()}
-                        </AuthShowContainer>
-                    }
-                    <button
-                        type="button"
-                        className="Button reset"
-                        onClick={this.handleReset}
-                    >
-                        {t(this.props, 'reset')}
-                        <FaUndo className="Icon" />
-                    </button>
+                    {t('reset')}
+                    <FaUndo className="Icon" />
+                </button>
 
-                    <ArchiveFacets
-                        query={query}
-                        facets={facets}
-                        map={map}
-                        handleSubmit={this.handleSubmit}
-                    />
-                </form>
-            </div>
-        );
-    }
+                <ArchiveFacets
+                    query={query}
+                    facets={facets}
+                    map={map}
+                    handleSubmit={handleSubmit}
+                />
+            </form>
+        </div>
+    );
 }
 
 ArchiveSearchForm.propTypes = {

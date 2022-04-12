@@ -23,20 +23,16 @@ export default function ArchiveFacets({
         }
     }
 
-    function currentYearRange() {
-        return [
-            query['year_of_birth[]'] && Number.parseInt(query['year_of_birth[]'][0]),
-            query['year_of_birth[]'] && Number.parseInt(query['year_of_birth[]'][query['year_of_birth[]'].length -1])
-        ]
-    }
-
     if (!facets) {
         return null;
     }
 
-    const adminFacets = ['workflow_state', 'tasks_user_account_ids', 'tasks_supervisor_ids'];
+    const currentYearRange = [
+        query['year_of_birth[]'] && Number.parseInt(query['year_of_birth[]'][0]),
+        query['year_of_birth[]'] && Number.parseInt(query['year_of_birth[]'][query['year_of_birth[]'].length -1])
+    ];
 
-    console.log(facets);
+    const adminFacets = ['workflow_state', 'tasks_user_account_ids', 'tasks_supervisor_ids'];
 
     return Object.keys(facets).map((facet, index) => (
         <FacetContainer
@@ -47,8 +43,8 @@ export default function ArchiveFacets({
             slider={facet === 'year_of_birth'}
             sliderMin={yearRange(facet)[0]}
             sliderMax={yearRange(facet)[1]}
-            currentMin={currentYearRange()[0] || yearRange(facet)[0]}
-            currentMax={currentYearRange()[1] || yearRange(facet)[1]}
+            currentMin={currentYearRange[0] || yearRange(facet)[0]}
+            currentMax={currentYearRange[1] || yearRange(facet)[1]}
             map={map}
             show={(adminFacets.indexOf(facet) > -1 && isAuthorized({type: 'General'}, 'edit')) || (adminFacets.indexOf(facet) === -1)}
             admin={(adminFacets.indexOf(facet) > -1)}

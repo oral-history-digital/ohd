@@ -35,11 +35,8 @@ export default function useArchiveSearch(sortBy, sortOrder, isLoggedIn) {
 
     let transformedData;
     if (data) {
-        console.log(data);
         transformedData = transformData(data);
     }
-
-    console.log(data, error, isValidating);
 
     return {
         interviews: transformedData,
