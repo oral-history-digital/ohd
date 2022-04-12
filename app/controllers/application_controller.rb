@@ -155,7 +155,6 @@ class ApplicationController < ActionController::Base
       archive: {
         facets: facets,
         query: search_query,
-        sortedArchiveIds: Rails.cache.fetch("sorted_archive_ids-#{current_project ? current_project.cache_key_prefix : 'OHD'}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
         foundInterviews: interview_results,
         resultPagesCount: search.results.total_pages,
         resultsCount: search.total,

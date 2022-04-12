@@ -21,3 +21,5 @@ export { default as SearchPage } from './components/SearchPage';
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';
 
 export { default as queryToText } from './queryToText';
+
+export { default as useSearchSuggestions } from './useSearchSuggestions';

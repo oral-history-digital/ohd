@@ -21,7 +21,6 @@ export const initialState = {
         foundInterviews: null,
         resultPagesCount: 1,
         resultsCount: 0,
-        sortedArchiveIds: [],
     },
     map: {
         facets: null,
@@ -135,7 +134,6 @@ const search = (state = initialState, action) => {
                 foundInterviews: foundInterviews,
                 resultPagesCount: action.resultPagesCount,
                 resultsCount: action.resultsCount,
-                sortedArchiveIds: action.sortedArchiveIds,
             }),
             isArchiveSearching: false,
         })
@@ -158,7 +156,6 @@ const search = (state = initialState, action) => {
                 foundInterviews: [],
                 resultPagesCount: null,
                 resultsCount: null,
-                sortedArchiveIds: [],
             }),
             isArchiveSearching: false,
         })

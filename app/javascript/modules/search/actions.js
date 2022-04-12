@@ -48,7 +48,6 @@ export const setMapQuery = (query) => ({
 function receiveArchiveSearchResults(json){
     return {
         type: RECEIVE_ARCHIVE_SEARCH,
-        sortedArchiveIds: json.sorted_archive_ids,
         resultPagesCount: json.result_pages_count,
         resultsCount: json.results_count,
         foundInterviews: json.interviews,

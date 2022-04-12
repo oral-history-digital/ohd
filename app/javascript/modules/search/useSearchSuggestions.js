@@ -9,10 +9,6 @@ export default function useSearchSuggestions() {
     const path = `${pathBase}/searches/suggestions`;
     const { isValidating, data, error } = useSWRImmutable(path, fetcher);
 
-    if (data) {
-        console.log(data);
-    }
-
     return {
         isValidating,
         allInterviewsPseudonyms: data?.all_interviews_pseudonyms,
