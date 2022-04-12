@@ -6,8 +6,9 @@ import { FaSearch, FaUndo } from 'react-icons/fa';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
-import { isMobile, isIOS } from 'modules/user-agent';
+import { isMobile } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
+import useSearchSuggestions from '../useSearchSuggestions';
 import ArchiveFacets from './ArchiveFacets';
 
 function onlyUnique(value, index, self) {
@@ -15,8 +16,6 @@ function onlyUnique(value, index, self) {
 }
 
 export default function ArchiveSearchForm({
-    allInterviewsPseudonyms,
-    allInterviewsTitles,
     clearAllInterviewSearch,
     clearSearch,
     facets,
@@ -34,6 +33,7 @@ export default function ArchiveSearchForm({
     const { t } = useI18n();
     const pathBase = usePathBase();
     const formEl = useRef(null);
+    const { allInterviewsPseudonyms, allInterviewsTitles } = useSearchSuggestions();
 
     function handleChange(event) {
         const value = event.target.value;
@@ -125,12 +125,15 @@ export default function ArchiveSearchForm({
     function renderInputField() {
         const fulltext = query.fulltext ? query.fulltext : '';
 
-        const titles = allInterviewsTitles ? allInterviewsTitles
-            .concat(allInterviewsPseudonyms)
-            .map(title => title?.[locale])
-            .filter(title => title)
-            .filter(title => title !== 'no interviewee given')
-            .filter(onlyUnique) : [];
+        let titles = [];
+        if (allInterviewsTitles && allInterviewsPseudonyms) {
+            titles = allInterviewsTitles
+                .concat(allInterviewsPseudonyms)
+                .map(title => title?.[locale])
+                .filter(title => title)
+                .filter(title => title !== 'no interviewee given')
+                .filter(onlyUnique);
+        }
 
         if (map !== true) {
             return (
@@ -144,17 +147,13 @@ export default function ArchiveSearchForm({
                         onChange={handleChange}
                         list='allInterviewTitles'
                     />
-                    {!isIOS() && (
-                        <datalist id="allInterviewTitles">
-                            <select>
-                                {
-                                    titles.map(title => (
-                                        <option key={title} value={`"${title}"`} />
-                                    ))
-                                }
-                            </select>
-                        </datalist>
-                    )}
+                    <datalist id="allInterviewTitles">
+                        {
+                            titles.map(title => (
+                                <option key={title} value={`"${title}"`} />
+                            ))
+                        }
+                    </datalist>
                     <button
                         type="submit"
                         id="search-button"
@@ -215,8 +214,6 @@ export default function ArchiveSearchForm({
 }
 
 ArchiveSearchForm.propTypes = {
-    allInterviewsTitles: PropTypes.array.isRequired,
-    allInterviewsPseudonyms: PropTypes.array.isRequired,
     locale: PropTypes.string.isRequired,
     query: PropTypes.object.isRequired,
     facets: PropTypes.object.isRequired,

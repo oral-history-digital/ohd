@@ -9,8 +9,6 @@ import { getArchiveFacets, getArchiveQuery, getMapFacets } from '../selectors';
 import ArchiveSearchForm from './ArchiveSearchForm';
 
 const mapStateToProps = state => ({
-    allInterviewsTitles: state.search.archive.allInterviewsTitles,
-    allInterviewsPseudonyms: state.search.archive.allInterviewsPseudonyms,
     facets: getArchiveFacets(state),
     mapSearchFacets: getMapFacets(state),
     query: getArchiveQuery(state),

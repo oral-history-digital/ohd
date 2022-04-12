@@ -182,8 +182,6 @@ class SearchesController < ApplicationController
         search = Interview.archive_search(current_user_account, current_project, locale, params)
         dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
         render json: {
-          all_interviews_titles: current_user_account ? dropdown_values[:all_interviews_titles] : [],
-          all_interviews_pseudonyms: current_user_account ? dropdown_values[:all_interviews_pseudonyms] : [],
           sorted_archive_ids: Rails.cache.fetch("#{current_project ? current_project.cache_key_prefix : 'OHD'}-sorted_archive_ids-#{Interview.maximum(:created_at)}") { Interview.archive_ids_by_alphabetical_order(locale) },
           result_pages_count: search.results.total_pages,
           results_count: search.total,

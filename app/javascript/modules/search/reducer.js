@@ -18,8 +18,6 @@ export const initialState = {
     archive: {
         facets: null,
         query:{page: 1},
-        allInterviewsTitles: [],
-        allInterviewsPseudonyms: [],
         foundInterviews: null,
         resultPagesCount: 1,
         resultsCount: 0,
@@ -135,8 +133,6 @@ const search = (state = initialState, action) => {
             archive: Object.assign({}, state.archive, {
                 facets: action.facets,
                 foundInterviews: foundInterviews,
-                allInterviewsTitles: action.allInterviewsTitles,
-                allInterviewsPseudonyms: action.allInterviewsPseudonyms,
                 resultPagesCount: action.resultPagesCount,
                 resultsCount: action.resultsCount,
                 sortedArchiveIds: action.sortedArchiveIds,
@@ -160,8 +156,6 @@ const search = (state = initialState, action) => {
                 facets: null,
                 query: { page: 1 },
                 foundInterviews: [],
-                allInterviewsTitles: [],
-                allInterviewsPseudonyms: [],
                 resultPagesCount: null,
                 resultsCount: null,
                 sortedArchiveIds: [],
