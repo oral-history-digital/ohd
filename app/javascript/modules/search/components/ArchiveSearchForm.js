@@ -73,9 +73,13 @@ export default function ArchiveSearchForm({
 
         if (event !== undefined) event.preventDefault();
         let params = serialize(formEl.current, {hash: true});
+
+        console.log(params);
+
         params = getValueFromDataList(params, event);
         params = prepareQuery(params);
         params['page'] = 1;
+
         if (isMobile()) {
             hideSidebar();
         }
@@ -122,6 +126,8 @@ export default function ArchiveSearchForm({
     }
 
     function submit(params) {
+        console.log(params);
+
         if(map) {
             setMapQuery(params);
         } else if (!map && !isArchiveSearching) {
