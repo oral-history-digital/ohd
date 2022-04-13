@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaInfoCircle, FaExternalLinkAlt, FaSearch, FaPlus, FaMinus }
     from 'react-icons/fa';
@@ -7,7 +8,6 @@ import { Checkbox } from 'modules/ui';
 import YearRangeContainer from './YearRangeContainer';
 
 export default class Facet extends Component {
-
     constructor(props) {
         super(props);
         this.handleChange = this.handleChange.bind(this);
@@ -26,10 +26,12 @@ export default class Facet extends Component {
     }
 
     checkedFacets() {
-        if(this.props.map){
-            return this.props.mapSearchQuery[`${this.props.facet}[]`];
+        const { map, mapSearchQuery, query, facet } = this.props;
+
+        if (map){
+            return mapSearchQuery[`${facet}[]`];
         } else {
-            return this.props.query[`${this.props.facet}[]`];
+            return query[`${facet}[]`];
         }
     }
 
@@ -43,9 +45,11 @@ export default class Facet extends Component {
     }
 
     handleClick(event) {
+        const { open } = this.state;
+
         event?.preventDefault()
 
-        if (this.state.open) {
+        if (open) {
             this.setState({ open: false });
         } else {
             this.setState({ open: true });
@@ -54,6 +58,7 @@ export default class Facet extends Component {
 
     filterInput() {
         const { data, facet } = this.props;
+        const { filter } = this.state;
 
         // filter only where size of list >= 15
         if (Object.keys(data.subfacets).length >= 15) {
@@ -63,7 +68,7 @@ export default class Facet extends Component {
                     <input
                         type="text"
                         className={classNames('filter', facet)}
-                        value={this.state.filter}
+                        value={filter}
                         onChange={this.handleChange}
                         onKeyDown={this.handleKeyDown}
                         style={{borderBottom: '1px solid ', marginBottom: '0.7rem'}}
@@ -76,8 +81,10 @@ export default class Facet extends Component {
     }
 
     panelContent() {
+        const { open } = this.state;
+
         return (
-            <div className={classNames('panel', { 'open': this.state.open })}>
+            <div className={classNames('panel', { 'open': open })}>
                 <div className="flyout-radio-container">
                     {this.filterInput()}
                     {this.renderSubfacets()}
@@ -87,9 +94,12 @@ export default class Facet extends Component {
     }
 
     render() {
+        const { slider, data, locale, show, admin,
+            sliderMin, sliderMax, currentMin, currentMax,
+            handleSubmit } = this.props;
         const { open } = this.state;
 
-        if (this.props.slider) {
+        if (slider) {
             let style = { width: 400, paddingLeft: 11, paddingRight: 15 };
             return (
                 <div className="subfacet-container">
@@ -98,7 +108,7 @@ export default class Facet extends Component {
                         type="button"
                         onClick={this.handleClick}
                     >
-                        {this.props.data.name[this.props.locale]}
+                        {data.name[locale]}
                         {
                             open ?
                                 <FaMinus className="Icon Icon--primary" /> :
@@ -111,29 +121,29 @@ export default class Facet extends Component {
                     >
                         <div className="flyout-radio-container">
                             <YearRangeContainer
-                                sliderMin={this.props.sliderMin}
-                                sliderMax={this.props.sliderMax}
-                                currentMin={this.props.currentMin}
-                                currentMax={this.props.currentMax}
-                                onChange={this.props.handleSubmit}
+                                sliderMin={sliderMin}
+                                sliderMax={sliderMax}
+                                currentMin={currentMin}
+                                currentMax={currentMax}
+                                onChange={handleSubmit}
                             />
                         </div>
                     </div>
                 </div>
                 )
         }
-        else if (this.props.show) {
+        else if (show) {
             return (
                 <div className="subfacet-container">
                     <button
                         type="button"
                         className={classNames('Button', 'accordion', {
                             'active': open,
-                            'admin': this.props.admin,
+                            'admin': admin,
                         })}
                         onClick={this.handleClick}
                     >
-                        {this.props.data.name[this.props.locale]}
+                        {data.name[locale]}
                         {
                             open ?
                                 <FaMinus className="Icon Icon--primary" /> :
@@ -155,21 +165,25 @@ export default class Facet extends Component {
     }
 
     priority(subfacetId) {
-        return this.props.data.subfacets[subfacetId].priority;
+        const { data } = this.props;
+
+        return data.subfacets[subfacetId].priority;
     }
 
     sortedSubfacets() {
+        const { data } = this.props;
+
         let _this = this;
         // if the Facet is about time periods, sort by years ( by doing: .replace(/[^\d]/g, '') )
-        if(this.props.data.name['de'] && this.props.data.name['de'].trim() === 'Zeitperioden') {
-            return Object.keys(this.props.data.subfacets).sort(function (a, b) {
+        if (data.name['de'] && data.name['de'].trim() === 'Zeitperioden') {
+            return Object.keys(data.subfacets).sort(function (a, b) {
                 return (_this.localDescriptor(a).replace(/[^\d]/g, '') > _this.localDescriptor(b).replace(/[^\d]/g, '')) ? 1 : ((_this.localDescriptor(b).replace(/[^\d]/g, '') > _this.localDescriptor(a).replace(/[^\d]/g, '')) ? -1 : 0);
             })
         }
         // everything else
         // sort first alphabetically, then put prioritized down in the list (like "others"/"sonstige")
         else {
-            return Object.keys(this.props.data.subfacets).sort(function (a, b) {
+            return Object.keys(data.subfacets).sort(function (a, b) {
                 return (_this.localDescriptor(a) > _this.localDescriptor(b)) ? 1 : ((_this.localDescriptor(b) > _this.localDescriptor(a)) ? -1 : 0);
             }).sort(function (a, b) {
                 return (_this.priority(a) > _this.priority(b)) ? 1 : ((_this.priority(b) > _this.priority(a)) ? -1 : 0);
@@ -208,15 +222,15 @@ export default class Facet extends Component {
     }
 
     renderSubfacets() {
-        const { facet } = this.props;
+        const { data, facet, locale, handleSubmit } = this.props;
 
         return this.sortedSubfacets().filter(subfacetId => {
-            let subfacetName = this.props.data.subfacets[subfacetId].name[this.props.locale];
+            let subfacetName = data.subfacets[subfacetId].name[locale];
             if (subfacetName) {
                 return subfacetName.toLowerCase().includes(this.state.filter.toLowerCase());
             }
         }).map((subfacetId, index) => {
-            if ((this.props.inputField && this.props.data.subfacets[subfacetId].count) || !this.props.inputField ) {
+            if ((this.props.inputField && data.subfacets[subfacetId].count) || !this.props.inputField ) {
                 let checkedState = false;
                 if (this.checkedFacets()) {
                     checkedState = this.checkedFacets().indexOf(subfacetId.toString()) > -1;
@@ -229,23 +243,40 @@ export default class Facet extends Component {
                         })}
                     >
                         <Checkbox
-                            className={classNames('Input', 'with-font', this.props.facet, 'checkbox')}
-                            id={this.props.facet + "_" + subfacetId}
-                            name={this.props.facet + "[]"}
+                            className={classNames('Input', 'with-font', facet, 'checkbox')}
+                            id={facet + "_" + subfacetId}
+                            name={facet + "[]"}
                             checked={checkedState}
                             value={subfacetId}
-                            onChange={this.props.handleSubmit}
+                            onChange={handleSubmit}
                         />
                         {' '}
-                        <label htmlFor={this.props.facet + "_" + subfacetId}>
+                        <label htmlFor={facet + "_" + subfacetId}>
                             {this.localDescriptor(subfacetId)}
-                            <span className='flyout-radio-container-facet-count'>({this.props.data.subfacets[subfacetId].count})</span>
+                            <span className='flyout-radio-container-facet-count'>({data.subfacets[subfacetId].count})</span>
                         </label>
                         &nbsp;
-                        {this.renderCollectionInfo(this.props.data.subfacets[subfacetId])}
+                        {this.renderCollectionInfo(data.subfacets[subfacetId])}
                     </div>
                 )
             }
         })
     }
 }
+
+Facet.propTypes = {
+    facet: PropTypes.string,
+    slider: PropTypes.bool.isRequired,
+    show: PropTypes.bool.isRequired,
+    admin: PropTypes.bool.isRequired,
+    locale: PropTypes.string.isRequired,
+    data: PropTypes.object.isRequired,
+    sliderMin: PropTypes.number,
+    sliderMax: PropTypes.number,
+    currentMin: PropTypes.number,
+    currentMax: PropTypes.number,
+    map: PropTypes.bool,
+    mapSearchQuery: PropTypes.object,
+    query: PropTypes.object,
+    handleSubmit: PropTypes.func.isRequired,
+};

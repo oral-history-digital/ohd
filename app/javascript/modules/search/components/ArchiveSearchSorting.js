@@ -2,7 +2,6 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
 import { Listbox, ListboxOption } from '@reach/listbox';
 import '@reach/listbox/styles.css';
 import flow from 'lodash.flow';
@@ -14,15 +13,16 @@ import addObligatoryOptions from '../addObligatoryOptions';
 import filterByPossibleOptions from '../filterByPossibleOptions';
 import searchOptionsFromMetadataFields from '../searchOptionsFromMetadataFields';
 import sortByFacetOrder from '../sortByFacetOrder';
+import useSearchParams from '../useSearchParams';
 
 export default function ArchiveSearchSorting({
     className,
-    searchParams,
 }) {
     const { t } = useI18n();
-    const history = useHistory();
     const project = useSelector(getCurrentProject);
     const editView = useSelector(getEditView);
+
+    const { sortBy, sortOrder, setSortBy, setSortOrder } = useSearchParams();
 
     let sortByOptions;
     if (editView) {
@@ -46,33 +46,22 @@ export default function ArchiveSearchSorting({
             Object.values(project?.metadata_fields) || []);
     }
 
-    function setParam(name, value) {
-        searchParams.set(name, value);
-        history.push({
-            search: searchParams.toString(),
-        });
-    }
-
     useEffect(() => {
-        if (searchParams.get('sort') === null) {
-            setParam('sort', 'relevance');
+        if (sortBy === null) {
+            setSortBy('relevance');
         }
-        if (searchParams.get('order') === null) {
-            setParam('order', 'desc');
+        if (sortOrder === null) {
+            setSortOrder('desc');
         }
     }, []);
 
     function handleSortByChange(newSortBy) {
-        setParam('sort', newSortBy);
+        setSortBy(newSortBy);
     }
 
     function handleSortOrderChange(newSortOrder) {
-        setParam('order', newSortOrder);
+        setSortOrder(newSortOrder);
     }
-
-    const sortBy = searchParams.get('sort') || 'relevance';
-
-    const sortOrder = searchParams.get('order') || 'asc';
 
     const sortOrderOptions = [
         'asc',

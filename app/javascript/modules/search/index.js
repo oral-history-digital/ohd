@@ -22,5 +22,6 @@ export { default as ArchiveSearchFormContainer } from './components/ArchiveSearc
 
 export { default as queryToText } from './queryToText';
 
+export { default as useSearchParams } from './useSearchParams';
 export { default as useArchiveSearch } from './useArchiveSearch';
 export { default as useSearchSuggestions } from './useSearchSuggestions';

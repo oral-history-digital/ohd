@@ -1,5 +1,3 @@
-import { memo } from 'react';
-import PropTypes from 'prop-types';
 import Observer from 'react-intersection-observer';
 import { useSelector } from 'react-redux';
 
@@ -7,6 +5,7 @@ import { AuthShowContainer } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { getIsLoggedIn } from 'modules/account';
+import useSearchParams from '../useSearchParams';
 import useArchiveSearch from '../useArchiveSearch';
 import SearchActionsContainer from './SearchActionsContainer';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
@@ -14,18 +13,18 @@ import ArchiveSearchSorting from './ArchiveSearchSorting';
 
 const PAGE_SIZE = 12;
 
-function ArchiveSearch({
-    search,
-}) {
+function ArchiveSearch() {
     const { t } = useI18n();
     const isLoggedIn = useSelector(getIsLoggedIn);
 
-    const searchParams = new URLSearchParams(search);
-    const sortBy = searchParams.get('sort');
-    const sortOrder = searchParams.get('order');
+    const { sortBy, sortOrder, fulltext } = useSearchParams();
+
+    //const searchParams = new URLSearchParams(search);
+    //const sortBy = searchParams.get('sort');
+    //const sortOrder = searchParams.get('order');
 
     const { interviews, total, data, error, isValidating, size, setSize } = useArchiveSearch(
-        sortBy, sortOrder, isLoggedIn,
+        sortBy, sortOrder, fulltext, isLoggedIn,
     );
 
     function handleScroll(inView) {
@@ -60,9 +59,7 @@ function ArchiveSearch({
                 }
             </div>
 
-            <ArchiveSearchSorting
-                searchParams={searchParams}
-            />
+            <ArchiveSearchSorting />
 
             <ArchiveSearchTabsContainer
                 interviews={interviews}
@@ -78,10 +75,4 @@ function ArchiveSearch({
     );
 }
 
-ArchiveSearch.propTypes = {
-    search: PropTypes.string,
-}
-
-const MemoizedArchiveSearch = memo(ArchiveSearch);
-
-export default MemoizedArchiveSearch;
+export default ArchiveSearch;

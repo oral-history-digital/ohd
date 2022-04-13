@@ -14,14 +14,15 @@ function transformData(data) {
     return combinedResults;
 }
 
-export default function useArchiveSearch(sortBy, sortOrder, isLoggedIn) {
+export default function useArchiveSearch(sortBy, sortOrder, fulltext, isLoggedIn) {
     const pathBase = usePathBase();
 
     function getKey(pageIndex, previousPageData) {
         const params = {
-            page: pageIndex + 1,
+            fulltext,
             sort: sortBy,
             order: sortOrder,
+            page: pageIndex + 1,
             'logged-in': isLoggedIn, // just to build different keys
         };
         const paramStr = queryString.stringify(params);

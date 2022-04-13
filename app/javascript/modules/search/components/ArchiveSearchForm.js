@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 import { FaSearch, FaUndo } from 'react-icons/fa';
@@ -8,6 +8,7 @@ import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
 import { isMobile } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
+import useSearchParams from '../useSearchParams';
 import useSearchSuggestions from '../useSearchSuggestions';
 import ArchiveFacets from './ArchiveFacets';
 
@@ -35,6 +36,10 @@ export default function ArchiveSearchForm({
     const formEl = useRef(null);
     const { allInterviewsPseudonyms, allInterviewsTitles } = useSearchSuggestions();
 
+    const { fulltext, setFulltext } = useSearchParams();
+
+    const [fulltextInput, setFulltextInput] = useState(fulltext);
+
     function handleChange(event) {
         const value = event.target.value;
         const name = event.target.name;
@@ -54,6 +59,9 @@ export default function ArchiveSearchForm({
             resetQuery('map');
             setMapQuery({});
         } else {
+            setFulltextInput('');
+            setFulltext('');
+
             resetQuery('archive');
             let url = `${pathBase}/searches/archive`;
             searchInArchive(url, {});
@@ -61,6 +69,8 @@ export default function ArchiveSearchForm({
     }
 
     function handleSubmit(event) {
+        setFulltext(fulltextInput?.trim());
+
         if (event !== undefined) event.preventDefault();
         let params = serialize(formEl.current, {hash: true});
         params = getValueFromDataList(params, event);
@@ -123,8 +133,6 @@ export default function ArchiveSearchForm({
     }
 
     function renderInputField() {
-        const fulltext = query.fulltext ? query.fulltext : '';
-
         let titles = [];
         if (allInterviewsTitles && allInterviewsPseudonyms) {
             titles = allInterviewsTitles
@@ -135,38 +143,38 @@ export default function ArchiveSearchForm({
                 .filter(onlyUnique);
         }
 
-        if (map !== true) {
-            return (
-                <div className="flyout-search-input">
-                    <input
-                        className="search-input"
-                        type="text"
-                        name="fulltext"
-                        value={fulltext}
-                        placeholder={t(projectId === 'dg' ? 'enter_field_dg' : 'enter_field')}
-                        onChange={handleChange}
-                        list='allInterviewTitles'
-                    />
-                    <datalist id="allInterviewTitles">
-                        {
-                            titles.map(title => (
-                                <option key={title} value={`"${title}"`} />
-                            ))
-                        }
-                    </datalist>
-                    <button
-                        type="submit"
-                        id="search-button"
-                        className="Button Button--transparent Button--icon search-button"
-                        title={t('archive_search')}
-                    >
-                        <FaSearch />
-                    </button>
-                </div>
-            )
-        } else {
-            return fulltext;
+        if (map) {
+            return fulltext;  // why?
         }
+
+        return (
+            <div className="flyout-search-input">
+                <input
+                    className="search-input"
+                    type="text"
+                    name="fulltext"
+                    value={fulltextInput}
+                    placeholder={t(projectId === 'dg' ? 'enter_field_dg' : 'enter_field')}
+                    onChange={event => setFulltextInput(event.target.value)}
+                    list='allInterviewTitles'
+                />
+                <datalist id="allInterviewTitles">
+                    {
+                        titles.map(title => (
+                            <option key={title} value={`"${title}"`} />
+                        ))
+                    }
+                </datalist>
+                <button
+                    type="submit"
+                    id="search-button"
+                    className="Button Button--transparent Button--icon search-button"
+                    title={t('archive_search')}
+                >
+                    <FaSearch />
+                </button>
+            </div>
+        );
     }
 
     if (!facets) {
