@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getProjectId } from 'modules/archive';
 import { hideSidebar } from 'modules/sidebar';
-import { resetQuery, setQueryParams, searchInArchive, setMapQuery, clearSearch,
+import { resetQuery, setQueryParams, setMapQuery, clearSearch,
     clearAllInterviewSearch } from '../actions';
 import { getArchiveFacets, getArchiveQuery, getMapFacets } from '../selectors';
 import ArchiveSearchForm from './ArchiveSearchForm';
@@ -23,7 +23,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     resetQuery,
     clearSearch,
     clearAllInterviewSearch,
-    searchInArchive,
     setMapQuery,
     hideSidebar,
 }, dispatch);

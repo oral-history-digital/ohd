@@ -14,7 +14,7 @@ function transformData(data) {
     return combinedResults;
 }
 
-export default function useArchiveSearch(sortBy, sortOrder, fulltext, isLoggedIn) {
+export default function useArchiveSearch(sortBy, sortOrder, fulltext, facets, isLoggedIn) {
     const pathBase = usePathBase();
 
     function getKey(pageIndex, previousPageData) {
@@ -22,10 +22,11 @@ export default function useArchiveSearch(sortBy, sortOrder, fulltext, isLoggedIn
             fulltext,
             sort: sortBy,
             order: sortOrder,
+            ...facets,
             page: pageIndex + 1,
             'logged-in': isLoggedIn, // just to build different keys
         };
-        const paramStr = queryString.stringify(params);
+        const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
         return `${pathBase}/searches/archive?${paramStr}`;
     }
 

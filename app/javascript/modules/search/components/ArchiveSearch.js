@@ -17,14 +17,14 @@ function ArchiveSearch() {
     const { t } = useI18n();
     const isLoggedIn = useSelector(getIsLoggedIn);
 
-    const { sortBy, sortOrder, fulltext } = useSearchParams();
+    const { sortBy, sortOrder, fulltext, facets } = useSearchParams();
 
     //const searchParams = new URLSearchParams(search);
     //const sortBy = searchParams.get('sort');
     //const sortOrder = searchParams.get('order');
 
     const { interviews, total, data, error, isValidating, size, setSize } = useArchiveSearch(
-        sortBy, sortOrder, fulltext, isLoggedIn,
+        sortBy, sortOrder, fulltext, facets, isLoggedIn,
     );
 
     function handleScroll(inView) {

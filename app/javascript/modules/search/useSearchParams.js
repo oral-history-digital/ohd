@@ -13,6 +13,21 @@ export default function useSearchParams() {
     const sortOrder = searchParams.get('order');
     const fulltext = searchParams.get('fulltext');
 
+    // Get facets
+    const facetKeys = [];
+    for (let key of searchParams.keys()) {
+        if (key.endsWith('[]')) {
+            facetKeys.push(key.slice(0, -2));
+        }
+    }
+    const uniqueFacetKeys = [...new Set(facetKeys)];
+
+    const facets = {};
+    uniqueFacetKeys.forEach(key => {
+        facets[key] = searchParams.getAll(`${key}[]`);
+    });
+
+
     function setSortBy(value) {
         setParam('sort', value);
     }
@@ -27,6 +42,38 @@ export default function useSearchParams() {
 
     function setParam(name, value) {
         searchParams.set(name, value);
+        sortAndPush();
+    }
+
+    function addFacetParam(name, value) {
+        const previousValues = searchParams.getAll(name);
+        if (previousValues.includes(value)) {
+            return;
+        }
+
+        searchParams.append(name, value);
+
+        sortAndPush();
+    }
+
+    function deleteFacetParam(name, value) {
+        const previousValues = searchParams.getAll(name);
+        searchParams.delete(name);
+
+        const newValues = previousValues.filter(v => v !== value);
+        newValues.forEach(v => {
+            searchParams.append(name, v);
+        });
+
+        sortAndPush();
+    }
+
+    function getFacetParam(name) {
+        return searchParams.getAll(`${name}[]`);
+    }
+
+    function sortAndPush() {
+        searchParams.sort();
         history.push({
             search: searchParams.toString(),
         });
@@ -37,8 +84,13 @@ export default function useSearchParams() {
         sortBy,
         sortOrder,
         fulltext,
+        facets,
         setSortBy,
         setSortOrder,
         setFulltext,
+        setParam,
+        addFacetParam,
+        deleteFacetParam,
+        getFacetParam,
     };
 }

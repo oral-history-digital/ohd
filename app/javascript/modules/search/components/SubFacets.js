@@ -3,15 +3,30 @@ import classNames from 'classnames';
 import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
 
 import { Checkbox } from 'modules/ui';
+import useSearchParams from '../useSearchParams';
 
 export default function SubFacets({
     data,
     facet,
     filter,
     locale,
-    checkedFacets,
+    //checkedFacets,
     handleSubmit,
 }) {
+    const { getFacetParam, addFacetParam, deleteFacetParam } = useSearchParams();
+
+    const checkedFacets = getFacetParam(facet);
+
+    function handleCheckboxChange(event) {
+        const name = event.target.name;
+        const value = event.target.value;
+
+        if (event.target.checked) {
+            addFacetParam(name, value);
+        } else {
+            deleteFacetParam(name, value);
+        }
+    }
 
     function sortedSubfacets() {
         // if the Facet is about time periods, sort by years ( by doing: .replace(/[^\d]/g, '') )
@@ -89,7 +104,7 @@ export default function SubFacets({
                     name={facet + "[]"}
                     checked={checkedState}
                     value={subfacetId}
-                    onChange={handleSubmit}
+                    onChange={handleCheckboxChange}
                 />
                 {' '}
                 <label htmlFor={facet + "_" + subfacetId}>

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
 import { FaSearch, FaUndo } from 'react-icons/fa';
 
-import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
 import { isMobile } from 'modules/user-agent';
@@ -27,12 +26,10 @@ export default function ArchiveSearchForm({
     projectId,
     query,
     resetQuery,
-    searchInArchive,
     setMapQuery,
     setQueryParams,
 }) {
     const { t } = useI18n();
-    const pathBase = usePathBase();
     const formEl = useRef(null);
     const { allInterviewsPseudonyms, allInterviewsTitles } = useSearchSuggestions();
 
@@ -63,8 +60,6 @@ export default function ArchiveSearchForm({
             setFulltext('');
 
             resetQuery('archive');
-            let url = `${pathBase}/searches/archive`;
-            searchInArchive(url, {});
         }
     }
 
@@ -131,10 +126,8 @@ export default function ArchiveSearchForm({
         if(map) {
             setMapQuery(params);
         } else if (!map && !isArchiveSearching) {
-            let url = `${pathBase}/searches/archive`;
             clearSearch();
             clearAllInterviewSearch();
-            searchInArchive(url, params);
         }
     }
 
@@ -183,14 +176,6 @@ export default function ArchiveSearchForm({
         );
     }
 
-    if (!facets) {
-        if (!isArchiveSearching) {
-            let url = `${pathBase}/searches/archive`;
-            searchInArchive(url, query);
-        }
-        return <Spinner withPadding />;
-    }
-
     return (
         <div>
             <form
@@ -216,12 +201,17 @@ export default function ArchiveSearchForm({
                     <FaUndo className="Icon" />
                 </button>
 
-                <ArchiveFacets
-                    query={query}
-                    facets={facets}
-                    map={map}
-                    handleSubmit={handleSubmit}
-                />
+                {
+                    facets ? (
+                        <ArchiveFacets
+                            query={query}
+                            facets={facets}
+                            map={map}
+                            handleSubmit={handleSubmit}
+                        />
+                    ) :
+                    <Spinner withPadding />
+                }
             </form>
         </div>
     );
