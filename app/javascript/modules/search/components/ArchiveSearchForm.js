@@ -1,6 +1,5 @@
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
-import serialize from 'form-serialize';
 import { FaUndo } from 'react-icons/fa';
 
 import { useI18n } from 'modules/i18n';
@@ -13,80 +12,40 @@ import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
 export default function ArchiveSearchForm({
-    clearAllInterviewSearch,
-    clearSearch,
-    hideSidebar,
-    isArchiveSearching,
     map,
     projectId,
     query,
-    resetQuery,
-    setMapQuery,
-    setQueryParams,
+    hideSidebar,
+    clearAllInterviewSearch,
 }) {
     const { t } = useI18n();
     const formEl = useRef(null);
     const { facets } = useArchiveSearch();
 
-    const { fulltext, setFulltext } = useSearchParams();
+    const { fulltext, setFulltext, resetSearchParams } = useSearchParams();
 
     const [fulltextInput, setFulltextInput] = useState(fulltext);
 
-    function handleChange(event) {
-        const value = event.target.value;
-        const name = event.target.name;
-        if (map){
-            setQueryParams('map', {[name]: value});
-        } else {
-            setQueryParams('archive', {[name]: value});
-        }
-    }
-
     function handleReset() {
-        formEl.current.reset();
+        resetSearchParams();
+
         if (isMobile()) {
             hideSidebar();
-        }
-        if (map) {
-            resetQuery('map');
-            setMapQuery({});
-        } else {
-            setFulltextInput('');
-            setFulltext('');
-
-            resetQuery('archive');
         }
     }
 
     function handleSubmit(event) {
+        event.preventDefault();
+
         setFulltext(fulltextInput?.trim());
 
-        if (event !== undefined) event.preventDefault();
-        let params = serialize(formEl.current, {hash: true});
-
-        console.log(params);
-
-        params = getValueFromDataList(params, event);
-        params = prepareQuery(params);
-        params['page'] = 1;
+        if(!map) {
+            clearAllInterviewSearch();
+        }
 
         if (isMobile()) {
             hideSidebar();
         }
-        submit(params);
-    }
-
-    function getValueFromDataList(params, event) {
-        if (event && event.currentTarget.list) {
-            for (let i = 0; i < event.currentTarget.list.children.length; i++) {
-                if (event.currentTarget.list.children[i].innerText === event.currentTarget.value) {
-                    let facet = event.currentTarget.name;
-                    let facetValue = event.currentTarget.list.children[i].dataset[facet];
-                    params[facet] = [facetValue];
-                }
-            }
-        }
-        return params;
     }
 
     function arrayToRange(min, max) {
@@ -113,17 +72,6 @@ export default function ArchiveSearchForm({
             preparedQuery['year_of_birth[]'] = arrayToRange( params['year_of_birth_min'], params['year_of_birth_max'] )
         }
         return preparedQuery;
-    }
-
-    function submit(params) {
-        console.log(params);
-
-        if(map) {
-            setMapQuery(params);
-        } else if (!map && !isArchiveSearching) {
-            clearSearch();
-            clearAllInterviewSearch();
-        }
     }
 
     return (
@@ -177,15 +125,8 @@ export default function ArchiveSearchForm({
 
 ArchiveSearchForm.propTypes = {
     query: PropTypes.object.isRequired,
-    facets: PropTypes.object.isRequired,
     projectId: PropTypes.string,
-    isArchiveSearching: PropTypes.bool.isRequired,
     map: PropTypes.bool,
-    searchInArchive: PropTypes.func.isRequired,
-    setMapQuery: PropTypes.func.isRequired,
-    setQueryParams: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
-    resetQuery: PropTypes.func.isRequired,
-    clearSearch: PropTypes.func.isRequired,
     clearAllInterviewSearch: PropTypes.func.isRequired,
 };

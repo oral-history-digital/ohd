@@ -12,6 +12,8 @@ export default function useSearchParams() {
     const sortBy = searchParams.get('sort');
     const sortOrder = searchParams.get('order');
     const fulltext = searchParams.get('fulltext');
+    const yearMin = searchParams.get('year_min')
+    const yearMax = searchParams.get('year_max');
 
     // Get facets
     const facetKeys = [];
@@ -40,8 +42,29 @@ export default function useSearchParams() {
         setParam('fulltext', value);
     }
 
+    function setYearMin(value) {
+        if (value === null) {
+            deleteParam('year_min');
+        } else {
+            setParam('year_min', value);
+        }
+    }
+
+    function setYearMax(value) {
+        if (value === null) {
+            deleteParam('year_max');
+        } else {
+            setParam('year_max', value);
+        }
+    }
+
     function setParam(name, value) {
         searchParams.set(name, value);
+        sortAndPush();
+    }
+
+    function deleteParam(name) {
+        searchParams.delete(name);
         sortAndPush();
     }
 
@@ -72,6 +95,14 @@ export default function useSearchParams() {
         return searchParams.getAll(`${name}[]`);
     }
 
+    function resetSearchParams() {
+        uniqueFacetKeys.forEach(key => {
+            searchParams.delete(`${key}[]`);
+        });
+        setParam('fulltext', '');
+        sortAndPush();
+    }
+
     function sortAndPush() {
         searchParams.sort();
         history.push({
@@ -83,14 +114,19 @@ export default function useSearchParams() {
         searchParams,
         sortBy,
         sortOrder,
+        yearMin,
+        yearMax,
         fulltext,
         facets,
         setSortBy,
         setSortOrder,
         setFulltext,
+        setYearMin,
+        setYearMax,
         setParam,
         addFacetParam,
         deleteFacetParam,
         getFacetParam,
+        resetSearchParams,
     };
 }

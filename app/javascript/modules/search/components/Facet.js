@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 
-import YearRangeContainer from './YearRangeContainer';
+import YearRange from './YearRange';
 import FacetFilterInput from './FacetFilterInput';
 import SubFacets from './SubFacets';
 
@@ -21,7 +21,6 @@ export default function Facet({
     sliderMax,
     currentMin,
     currentMax,
-    handleSubmit,
 }) {
     const checkedFacets = map ?
         mapSearchQuery[`${facet}[]`] :
@@ -62,12 +61,11 @@ export default function Facet({
                     className={classNames('panel', { 'open': open })}
                 >
                     <div className="flyout-radio-container">
-                        <YearRangeContainer
+                        <YearRange
                             sliderMin={sliderMin}
                             sliderMax={sliderMax}
                             currentMin={currentMin}
                             currentMax={currentMax}
-                            onChange={handleSubmit}
                         />
                     </div>
                 </div>
@@ -105,9 +103,7 @@ export default function Facet({
                             data={data}
                             facet={facet}
                             filter={filter}
-                            checkedFacets={checkedFacets}
                             locale={locale}
-                            handleSubmit={handleSubmit}
                         />
                     </div>
                 </div>
@@ -132,5 +128,4 @@ Facet.propTypes = {
     map: PropTypes.bool,
     mapSearchQuery: PropTypes.object,
     query: PropTypes.object,
-    handleSubmit: PropTypes.func.isRequired,
 };

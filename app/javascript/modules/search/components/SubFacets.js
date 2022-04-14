@@ -10,8 +10,6 @@ export default function SubFacets({
     facet,
     filter,
     locale,
-    //checkedFacets,
-    handleSubmit,
 }) {
     const { getFacetParam, addFacetParam, deleteFacetParam } = useSearchParams();
 
@@ -124,6 +122,4 @@ SubFacets.propTypes = {
     data: PropTypes.object.isRequired,
     facet: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
-    checkedFacets: PropTypes.array,
-    handleSubmit: PropTypes.func.isRequired,
 };
