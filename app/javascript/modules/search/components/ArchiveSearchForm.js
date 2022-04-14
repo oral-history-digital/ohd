@@ -1,19 +1,15 @@
 import { useState, useRef } from 'react';
 import PropTypes from 'prop-types';
 import serialize from 'form-serialize';
-import { FaSearch, FaUndo } from 'react-icons/fa';
+import { FaUndo } from 'react-icons/fa';
 
 import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
 import { isMobile } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
 import useSearchParams from '../useSearchParams';
-import useSearchSuggestions from '../useSearchSuggestions';
 import ArchiveFacets from './ArchiveFacets';
-
-function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-}
+import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
 export default function ArchiveSearchForm({
     clearAllInterviewSearch,
@@ -21,7 +17,6 @@ export default function ArchiveSearchForm({
     facets,
     hideSidebar,
     isArchiveSearching,
-    locale,
     map,
     projectId,
     query,
@@ -31,7 +26,6 @@ export default function ArchiveSearchForm({
 }) {
     const { t } = useI18n();
     const formEl = useRef(null);
-    const { allInterviewsPseudonyms, allInterviewsTitles } = useSearchSuggestions();
 
     const { fulltext, setFulltext } = useSearchParams();
 
@@ -131,51 +125,6 @@ export default function ArchiveSearchForm({
         }
     }
 
-    function renderInputField() {
-        let titles = [];
-        if (allInterviewsTitles && allInterviewsPseudonyms) {
-            titles = allInterviewsTitles
-                .concat(allInterviewsPseudonyms)
-                .map(title => title?.[locale])
-                .filter(title => title)
-                .filter(title => title !== 'no interviewee given')
-                .filter(onlyUnique);
-        }
-
-        if (map) {
-            return fulltext;  // why?
-        }
-
-        return (
-            <div className="flyout-search-input">
-                <input
-                    className="search-input"
-                    type="text"
-                    name="fulltext"
-                    value={fulltextInput}
-                    placeholder={t(projectId === 'dg' ? 'enter_field_dg' : 'enter_field')}
-                    onChange={event => setFulltextInput(event.target.value)}
-                    list='allInterviewTitles'
-                />
-                <datalist id="allInterviewTitles">
-                    {
-                        titles.map(title => (
-                            <option key={title} value={`"${title}"`} />
-                        ))
-                    }
-                </datalist>
-                <button
-                    type="submit"
-                    id="search-button"
-                    className="Button Button--transparent Button--icon search-button"
-                    title={t('archive_search')}
-                >
-                    <FaSearch />
-                </button>
-            </div>
-        );
-    }
-
     return (
         <div>
             <form
@@ -186,10 +135,18 @@ export default function ArchiveSearchForm({
             >
                 {
                     (projectId === 'mog') ?
-                        renderInputField()
+                        <ArchiveSearchFormInput
+                            value={fulltextInput}
+                            projectId={projectId}
+                            onChange={setFulltextInput}
+                        />
                     :
                     <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
-                        {renderInputField()}
+                       <ArchiveSearchFormInput
+                            value={fulltextInput}
+                            projectId={projectId}
+                            onChange={setFulltextInput}
+                        />
                     </AuthShowContainer>
                 }
                 <button
@@ -218,7 +175,6 @@ export default function ArchiveSearchForm({
 }
 
 ArchiveSearchForm.propTypes = {
-    locale: PropTypes.string.isRequired,
     query: PropTypes.object.isRequired,
     facets: PropTypes.object.isRequired,
     projectId: PropTypes.string,
