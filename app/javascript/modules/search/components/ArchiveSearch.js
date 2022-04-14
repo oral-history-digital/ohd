@@ -1,11 +1,8 @@
 import Observer from 'react-intersection-observer';
-import { useSelector } from 'react-redux';
 
 import { AuthShowContainer } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
-import { getIsLoggedIn } from 'modules/account';
-import useSearchParams from '../useSearchParams';
 import useArchiveSearch from '../useArchiveSearch';
 import SearchActionsContainer from './SearchActionsContainer';
 import ArchiveSearchTabsContainer from './ArchiveSearchTabsContainer';
@@ -15,17 +12,9 @@ const PAGE_SIZE = 12;
 
 function ArchiveSearch() {
     const { t } = useI18n();
-    const isLoggedIn = useSelector(getIsLoggedIn);
 
-    const { sortBy, sortOrder, fulltext, facets } = useSearchParams();
-
-    //const searchParams = new URLSearchParams(search);
-    //const sortBy = searchParams.get('sort');
-    //const sortOrder = searchParams.get('order');
-
-    const { interviews, total, data, error, isValidating, size, setSize } = useArchiveSearch(
-        sortBy, sortOrder, fulltext, facets, isLoggedIn,
-    );
+    const { interviews, total, data, error, isValidating, size, setSize } =
+        useArchiveSearch();
 
     function handleScroll(inView) {
         if (inView) {

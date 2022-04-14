@@ -7,14 +7,12 @@ import { pathBase } from 'modules/routes';
 import DeleteInterviews from './DeleteInterviews';
 import UpdateInterviews from './UpdateInterviews';
 import SubmitInterviewIds from './SubmitInterviewIds';
-
 export default class AdminActions extends Component {
     selectedArchiveIds() {
         return this.props.archiveIds.filter(
             (archiveId) => archiveId !== 'dummy'
         );
     }
-
     doiResults() {
         if (Object.keys(this.props.doiResult).length > 0) {
             return (
@@ -30,7 +28,6 @@ export default class AdminActions extends Component {
             );
         }
     }
-
     messages() {
         return this.selectedArchiveIds().map((archiveId) => {
             if (this.props.statuses[archiveId] !== undefined) {
@@ -43,7 +40,6 @@ export default class AdminActions extends Component {
             }
         });
     }
-
     metadataLinks(archiveIds) {
         return archiveIds.map((archiveId, i) => [
             i > 0 && ', ',
@@ -59,7 +55,6 @@ export default class AdminActions extends Component {
             </a>,
         ]);
     }
-
     doiText() {
         return (
             <AuthorizedContent object={{ type: 'Interview' }} action="dois">
@@ -104,7 +99,6 @@ export default class AdminActions extends Component {
             </AuthorizedContent>
         );
     }
-
     render() {
         const { archiveSearchResults, setArchiveIds } = this.props;
         const selectedArchiveIds = this.selectedArchiveIds();
@@ -185,7 +179,6 @@ export default class AdminActions extends Component {
         );
     }
 }
-
 AdminActions.propTypes = {
     archiveSearchResults: PropTypes.array,
     archiveIds: PropTypes.array,

@@ -1,8 +1,11 @@
 import useSWRInfinite from 'swr/infinite';
 import queryString from 'query-string';
+import { useSelector } from 'react-redux';
 
+import { getIsLoggedIn } from 'modules/account';
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
+import useSearchParams from './useSearchParams';
 
 function transformData(data) {
     const combinedResults = [];
@@ -14,7 +17,9 @@ function transformData(data) {
     return combinedResults;
 }
 
-export default function useArchiveSearch(sortBy, sortOrder, fulltext, facets, isLoggedIn) {
+export default function useArchiveSearch() {
+    const isLoggedIn = useSelector(getIsLoggedIn);
+    const { sortBy, sortOrder, fulltext, facets } = useSearchParams();
     const pathBase = usePathBase();
 
     function getKey(pageIndex, previousPageData) {
@@ -43,6 +48,7 @@ export default function useArchiveSearch(sortBy, sortOrder, fulltext, facets, is
     return {
         interviews: transformedData,
         total: data?.[0].results_count,
+        facets: data?.[0].facets,
         data,
         error,
         isValidating,

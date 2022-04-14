@@ -8,13 +8,13 @@ import { AuthShowContainer } from 'modules/auth';
 import { isMobile } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
 import useSearchParams from '../useSearchParams';
+import useArchiveSearch from '../useArchiveSearch';
 import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
 export default function ArchiveSearchForm({
     clearAllInterviewSearch,
     clearSearch,
-    facets,
     hideSidebar,
     isArchiveSearching,
     map,
@@ -26,6 +26,7 @@ export default function ArchiveSearchForm({
 }) {
     const { t } = useI18n();
     const formEl = useRef(null);
+    const { facets } = useArchiveSearch();
 
     const { fulltext, setFulltext } = useSearchParams();
 
@@ -133,14 +134,14 @@ export default function ArchiveSearchForm({
                 className="flyout-search"
                 onSubmit={handleSubmit}
             >
-                {
-                    (projectId === 'mog') ?
-                        <ArchiveSearchFormInput
-                            value={fulltextInput}
-                            projectId={projectId}
-                            onChange={setFulltextInput}
-                        />
-                    :
+                {!map && projectId === 'mog' && (
+                    <ArchiveSearchFormInput
+                        value={fulltextInput}
+                        projectId={projectId}
+                        onChange={setFulltextInput}
+                    />
+                )}
+                {!map && projectId !== 'mog' && (
                     <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
                        <ArchiveSearchFormInput
                             value={fulltextInput}
@@ -148,7 +149,7 @@ export default function ArchiveSearchForm({
                             onChange={setFulltextInput}
                         />
                     </AuthShowContainer>
-                }
+                )}
                 <button
                     type="button"
                     className="Button reset"

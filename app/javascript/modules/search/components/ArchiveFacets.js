@@ -1,15 +1,16 @@
 import PropTypes from 'prop-types';
 
 import { useAuthorization } from 'modules/auth';
+import useArchiveSearch from '../useArchiveSearch';
 import FacetContainer from './FacetContainer';
 
 export default function ArchiveFacets({
     query,
-    facets,
     map,
     handleSubmit,
 }) {
     const { isAuthorized } = useAuthorization();
+    const { facets } = useArchiveSearch();
 
     function yearRange(facet) {
         if (facet === 'year_of_birth') {
