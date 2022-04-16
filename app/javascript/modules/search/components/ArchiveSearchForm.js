@@ -14,7 +14,6 @@ import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 export default function ArchiveSearchForm({
     map,
     projectId,
-    query,
     hideSidebar,
     clearAllInterviewSearch,
 }) {
@@ -110,8 +109,6 @@ export default function ArchiveSearchForm({
                 {
                     facets ? (
                         <ArchiveFacets
-                            query={query}
-                            facets={facets}
                             map={map}
                             handleSubmit={handleSubmit}
                         />
@@ -124,7 +121,6 @@ export default function ArchiveSearchForm({
 }
 
 ArchiveSearchForm.propTypes = {
-    query: PropTypes.object.isRequired,
     projectId: PropTypes.string,
     map: PropTypes.bool,
     hideSidebar: PropTypes.func.isRequired,

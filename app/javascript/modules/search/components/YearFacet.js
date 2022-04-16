@@ -3,48 +3,36 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 
-import FacetFilterInput from './FacetFilterInput';
-import SubFacets from './SubFacets';
+import YearRange from './YearRange';
 
-export default function Facet({
+export default function YearFacet({
     data,
     facet,
     map,
     mapSearchQuery,
     query,
     locale,
-    show,
-    admin,
+    sliderMin,
+    sliderMax,
 }) {
     const checkedFacets = map ?
         mapSearchQuery[`${facet}[]`] :
         query[`${facet}[]`];
 
     const [open, setOpen] = useState(checkedFacets?.length > 0);
-    const [filter, setFilter] = useState('');
-
-    function handleFilterChange(event) {
-        event.preventDefault();
-        setFilter(event.target.value);
-    }
 
     function handleClick(event) {
         event.preventDefault();
         setOpen(prev => !prev);
     }
 
-    if (!show) {
-        return null;
-    }
+    const style = { width: 400, paddingLeft: 11, paddingRight: 15 };
 
     return (
         <div className="subfacet-container">
             <button
+                className={classNames('Button', 'accordion', { 'active': open })}
                 type="button"
-                className={classNames('Button', 'accordion', {
-                    'active': open,
-                    'admin': admin,
-                })}
                 onClick={handleClick}
             >
                 {data.name[locale]}
@@ -54,20 +42,14 @@ export default function Facet({
                         <FaPlus className="Icon Icon--primary" />
                 }
             </button>
-
-            <div className={classNames('panel', { 'open': open })}>
+            <div
+                style={style}
+                className={classNames('panel', { 'open': open })}
+            >
                 <div className="flyout-radio-container">
-                    <FacetFilterInput
-                        data={data}
-                        facet={facet}
-                        filter={filter}
-                        onChange={handleFilterChange}
-                    />
-                    <SubFacets
-                        data={data}
-                        facet={facet}
-                        filter={filter}
-                        locale={locale}
+                    <YearRange
+                        sliderMin={sliderMin}
+                        sliderMax={sliderMax}
                     />
                 </div>
             </div>
@@ -75,12 +57,12 @@ export default function Facet({
     );
 }
 
-Facet.propTypes = {
+YearFacet.propTypes = {
     facet: PropTypes.string,
-    show: PropTypes.bool.isRequired,
-    admin: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
+    sliderMin: PropTypes.number,
+    sliderMax: PropTypes.number,
     map: PropTypes.bool,
     mapSearchQuery: PropTypes.object,
     query: PropTypes.object,

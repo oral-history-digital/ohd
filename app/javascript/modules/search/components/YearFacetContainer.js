@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 
 import { getLocale } from 'modules/archive';
 import { getArchiveQuery, getMapQuery } from '../selectors';
-import Facet from './Facet';
+import YearFacet from './YearFacet';
 
 const mapStateToProps = state => ({
     query: getArchiveQuery(state),
@@ -10,4 +10,4 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
 });
 
-export default connect(mapStateToProps)(Facet);
+export default connect(mapStateToProps)(YearFacet);
