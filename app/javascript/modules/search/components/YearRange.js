@@ -14,11 +14,10 @@ export default function YearRange({
     sliderMin,
     sliderMax,
 }) {
-    const { yearMin, yearMax, setYearMin, setYearMax } = useSearchParams();
+    const { yearMin, yearMax, setYearMinMax } = useSearchParams();
 
     function onSliderChange(value) {
-        setYearMin(value[0] === sliderMin ? null : value[0]);
-        setYearMax(value[1] === sliderMax ? null : value[1]);
+        setYearMinMax(value[0], value[1]);
     }
 
     let marks = {};

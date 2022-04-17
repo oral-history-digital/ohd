@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 
 import { useAuthorization } from 'modules/auth';
 import useArchiveSearch from '../useArchiveSearch';
-import FacetContainer from './FacetContainer';
-import YearFacetContainer from './YearFacetContainer';
+import Facet from './Facet';
+import YearFacet from './YearFacet';
 
 export default function ArchiveFacets({
     map,
@@ -28,7 +28,7 @@ export default function ArchiveFacets({
                 .map(year => Number.parseInt(year));
 
             return (
-                <YearFacetContainer
+                <YearFacet
                     data={facets[facet]}
                     facet={facet}
                     key={index}
@@ -43,7 +43,7 @@ export default function ArchiveFacets({
             );
         } else {
             return (
-                <FacetContainer
+                <Facet
                     data={facets[facet]}
                     facet={facet}
                     key={index}

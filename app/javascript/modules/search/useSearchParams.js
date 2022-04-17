@@ -1,33 +1,33 @@
 import { useMemo } from 'react';
 import { useHistory, useLocation } from 'react-router-dom';
+import queryString from 'query-string';
+
+const qsOptions = {
+    arrayFormat: 'bracket',
+}
 
 export default function useSearchParams() {
     const { search } = useLocation();
     const history = useHistory();
 
-    console.log('search: ' + search)
+    const params = useMemo(
+        () => queryString.parse(search, qsOptions), [search]
+    );
 
-    const searchParams = useMemo(() => new URLSearchParams(search), [search]);
+    const sortBy = params.sort;
+    const sortOrder = params.order;
+    const fulltext = params.fulltext;
+    const yearMin = params.year_min
+    const yearMax = params.year_max;
 
-    const sortBy = searchParams.get('sort');
-    const sortOrder = searchParams.get('order');
-    const fulltext = searchParams.get('fulltext');
-    const yearMin = searchParams.get('year_min')
-    const yearMax = searchParams.get('year_max');
-
-    // Get facets
-    const facetKeys = [];
-    for (let key of searchParams.keys()) {
-        if (key.endsWith('[]')) {
-            facetKeys.push(key.slice(0, -2));
-        }
-    }
-    const uniqueFacetKeys = [...new Set(facetKeys)];
-
-    const facets = {};
-    uniqueFacetKeys.forEach(key => {
-        facets[key] = searchParams.getAll(`${key}[]`);
-    });
+    const facets = {
+        ...params,
+    };
+    delete facets.sort;
+    delete facets.order;
+    delete facets.fulltext;
+    delete facets.year_min;
+    delete facets.year_max;
 
 
     function setSortBy(value) {
@@ -42,76 +42,107 @@ export default function useSearchParams() {
         setParam('fulltext', value);
     }
 
-    function setYearMin(value) {
-        if (value === null) {
-            deleteParam('year_min');
-        } else {
-            setParam('year_min', value);
-        }
-    }
-
-    function setYearMax(value) {
-        if (value === null) {
-            deleteParam('year_max');
-        } else {
-            setParam('year_max', value);
-        }
+    function setYearMinMax(min, max) {
+        setParams({
+            year_min: min,
+            year_max: max,
+        });
     }
 
     function setParam(name, value) {
-        searchParams.set(name, value);
-        sortAndPush();
+        const newParams = {
+            ...params,
+           [name]: value,
+        };
+        pushToHistory(newParams);
+    }
+
+    function setParams(object) {
+        const newParams = {
+            ...params,
+            ...object,
+        };
+        pushToHistory(newParams);
     }
 
     function deleteParam(name) {
-        searchParams.delete(name);
-        sortAndPush();
+        const newParams = {
+            ...params,
+        };
+        delete newParams[name];
+
+        pushToHistory(newParams);
     }
 
     function addFacetParam(name, value) {
-        const previousValues = searchParams.getAll(name);
-        if (previousValues.includes(value)) {
-            return;
+        const newParams = {
+            ...params,
+        };
+
+        const previousValues = newParams[name];
+
+        if (!previousValues) {
+            newParams[name] = [value];
+        } else {
+            if (previousValues.includes(value)) {
+                return;
+            } else {
+                newParams[name] = newParams[name].concat(value);
+            }
         }
 
-        searchParams.append(name, value);
-
-        sortAndPush();
+        pushToHistory(newParams);
     }
 
     function deleteFacetParam(name, value) {
-        const previousValues = searchParams.getAll(name);
-        searchParams.delete(name);
+        const newParams = {
+            ...params,
+        };
 
-        const newValues = previousValues.filter(v => v !== value);
-        newValues.forEach(v => {
-            searchParams.append(name, v);
-        });
+        const previousValues = newParams[name];
+        if (!previousValues) {
+            // No need to delete.
+            return;
+        }
 
-        sortAndPush();
+        if (!previousValues.includes(value)) {
+            // No need to delete.
+            return;
+        }
+
+        const valueIndex = previousValues.indexOf(value);
+        const firstPart = previousValues.slice(0, valueIndex);
+        const lastPart = previousValues.slice(valueIndex + 1);
+        const newValues = firstPart.concat(lastPart);
+
+        newParams[name] = newValues;
+
+        pushToHistory(newParams);
     }
 
     function getFacetParam(name) {
-        return searchParams.getAll(`${name}[]`);
+        return params[name] || [];
     }
 
     function resetSearchParams() {
-        uniqueFacetKeys.forEach(key => {
-            searchParams.delete(`${key}[]`);
-        });
-        setParam('fulltext', '');
-        sortAndPush();
+        // Just keep sort criterion and order.
+        const newParams = {
+            sort: params.sort,
+            order: params.order,
+        };
+
+        pushToHistory(newParams);
     }
 
-    function sortAndPush() {
-        searchParams.sort();
+    function pushToHistory(newParams) {
+        console.log(queryString.stringify(newParams, qsOptions));
+
         history.push({
-            search: searchParams.toString(),
+            search: queryString.stringify(newParams, qsOptions),
         });
     }
 
     return {
-        searchParams,
         sortBy,
         sortOrder,
         yearMin,
@@ -121,8 +152,7 @@ export default function useSearchParams() {
         setSortBy,
         setSortOrder,
         setFulltext,
-        setYearMin,
-        setYearMax,
+        setYearMinMax,
         setParam,
         addFacetParam,
         deleteFacetParam,

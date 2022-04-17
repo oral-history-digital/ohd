@@ -3,23 +3,17 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 
+import { useI18n } from 'modules/i18n';
 import YearRange from './YearRange';
 
 export default function YearFacet({
     data,
-    facet,
-    map,
-    mapSearchQuery,
-    query,
-    locale,
     sliderMin,
     sliderMax,
 }) {
-    const checkedFacets = map ?
-        mapSearchQuery[`${facet}[]`] :
-        query[`${facet}[]`];
+    const { locale } = useI18n();
 
-    const [open, setOpen] = useState(checkedFacets?.length > 0);
+    const [open, setOpen] = useState(false);
 
     function handleClick(event) {
         event.preventDefault();
@@ -58,12 +52,7 @@ export default function YearFacet({
 }
 
 YearFacet.propTypes = {
-    facet: PropTypes.string,
-    locale: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
     sliderMin: PropTypes.number,
     sliderMax: PropTypes.number,
-    map: PropTypes.bool,
-    mapSearchQuery: PropTypes.object,
-    query: PropTypes.object,
 };

@@ -20,6 +20,7 @@ export default function SubFacets({
         const value = event.target.value;
 
         if (event.target.checked) {
+            console.log(name);
             addFacetParam(name, value);
         } else {
             deleteFacetParam(name, value);
@@ -99,7 +100,7 @@ export default function SubFacets({
                 <Checkbox
                     className={classNames('Input', 'with-font', facet, 'checkbox')}
                     id={facet + "_" + subfacetId}
-                    name={facet + "[]"}
+                    name={facet}
                     checked={checkedState}
                     value={subfacetId}
                     onChange={handleCheckboxChange}

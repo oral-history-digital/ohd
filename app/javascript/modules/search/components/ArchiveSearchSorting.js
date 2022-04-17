@@ -46,15 +46,6 @@ export default function ArchiveSearchSorting({
             Object.values(project?.metadata_fields) || []);
     }
 
-    useEffect(() => {
-        if (sortBy === null) {
-            setSortBy('relevance');
-        }
-        if (sortOrder === null) {
-            setSortOrder('desc');
-        }
-    }, []);
-
     function handleSortByChange(newSortBy) {
         setSortBy(newSortBy);
     }

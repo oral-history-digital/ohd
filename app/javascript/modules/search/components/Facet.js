@@ -3,24 +3,19 @@ import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { FaPlus, FaMinus } from 'react-icons/fa';
 
+import { useI18n } from 'modules/i18n';
 import FacetFilterInput from './FacetFilterInput';
 import SubFacets from './SubFacets';
 
 export default function Facet({
     data,
     facet,
-    map,
-    mapSearchQuery,
-    query,
-    locale,
     show,
     admin,
 }) {
-    const checkedFacets = map ?
-        mapSearchQuery[`${facet}[]`] :
-        query[`${facet}[]`];
+    const { locale } = useI18n();
 
-    const [open, setOpen] = useState(checkedFacets?.length > 0);
+    const [open, setOpen] = useState(false);
     const [filter, setFilter] = useState('');
 
     function handleFilterChange(event) {
@@ -79,9 +74,5 @@ Facet.propTypes = {
     facet: PropTypes.string,
     show: PropTypes.bool.isRequired,
     admin: PropTypes.bool.isRequired,
-    locale: PropTypes.string.isRequired,
     data: PropTypes.object.isRequired,
-    map: PropTypes.bool,
-    mapSearchQuery: PropTypes.object,
-    query: PropTypes.object,
 };
