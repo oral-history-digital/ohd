@@ -7,15 +7,14 @@ import { Checkbox } from 'modules/ui';
 import { OHD_DOMAINS } from 'modules/layout';
 import { LinkOrA, pathBase } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
-import { AuthorizedContent } from 'modules/auth';
+import { AuthorizedContent, useProjectAccessStatus } from 'modules/auth';
+import { useSearchParams } from 'modules/search';
 import missingStill from 'assets/images/missing_still.png';
 import ThumbnailBadge from './ThumbnailBadge';
 import ThumbnailMetadataContainer from './ThumbnailMetadataContainer';
 import searchResultCount from './searchResultCount';
-import { useProjectAccessStatus } from 'modules/auth';
 
 export default function InterviewPreview({
-    fulltext,
     statuses,
     interview,
     locale,
@@ -30,6 +29,7 @@ export default function InterviewPreview({
     const project = projects[interview.project_id];
     const projectId = project.identifier;
     const pathBaseStr = pathBase({projectId, locale: project.default_locale, projects});
+    const { fulltext } = useSearchParams();
 
     const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;
     const showSlideShow = (onOHD && (!project.archive_domain || project.archive_domain === '')) || project.archive_domain === window.location.origin;
@@ -131,11 +131,10 @@ function InnerContent({
         </>
     );
 };
+
 InterviewPreview.propTypes = {
-    fulltext: PropTypes.string,
     interview: PropTypes.object.isRequired,
     interviewSearchResults: PropTypes.object.isRequired,
-    query: PropTypes.object.isRequired,
     projects: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     statuses: PropTypes.object.isRequired,

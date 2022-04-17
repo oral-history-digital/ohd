@@ -8,6 +8,7 @@ import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
 import { useProjectAccessStatus, AuthShowContainer, useAuthorization } from
     'modules/auth';
+import { useSearchParams } from 'modules/search';
 import searchResultCount from './searchResultCount';
 
 export default function InterviewListRow({
@@ -16,7 +17,6 @@ export default function InterviewListRow({
     projects,
     interview,
     interviewee,
-    fulltext,
     interviewSearchResults,
     selectedArchiveIds,
     locale,
@@ -33,6 +33,7 @@ export default function InterviewListRow({
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const pathBase = usePathBase();
+    const { fulltext } = useSearchParams();
     const intervieweeId = interview.interviewee_id;
 
     useEffect(() => {
@@ -126,11 +127,10 @@ export default function InterviewListRow({
 InterviewListRow.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
-    fulltext: PropTypes.string,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     interview: PropTypes.object,
-    interviewee: PropTypes.object.isRequired,
+    interviewee: PropTypes.object,
     interviewSearchResults: PropTypes.object,
     project: PropTypes.object.isRequired,
     peopleStatus: PropTypes.object.isRequired,

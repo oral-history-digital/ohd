@@ -8,8 +8,6 @@ export default function WorkflowResults({
     interviews,
     project,
 }) {
-    console.log(project);
-
     return (
         <Fetch
             fetchParams={['task_types', null, null, `for_projects=${project?.id}`]}

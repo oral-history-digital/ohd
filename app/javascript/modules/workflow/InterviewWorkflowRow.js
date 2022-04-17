@@ -1,4 +1,5 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
@@ -6,68 +7,61 @@ import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
 import missingStill from 'assets/images/missing_still.png';
 import { loadIntervieweeWithAssociations } from 'modules/interview-preview';
 import { SingleValueWithFormContainer } from 'modules/forms';
-import { pathBase } from 'modules/routes';
+import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
+import { useSearchParams } from 'modules/search';
 import TaskContainer from './TaskContainer';
 
-export default class InterviewWorkflowRow extends Component {
+export default function InterviewWorkflowRow({
+    interview,
+    interviewee,
+    intervieweeId,
+    locale,
+    translations,
+    languages,
+    collections,
+    project,
+    projectId,
+    projects,
+    tasks,
+    tasksStatus,
+    peopleStatus,
+    userAccountsStatus,
+    fetchData,
+    setArchiveId,
+    searchInInterview,
+}) {
+    const [collapsed, setCollapsed] = useState(true);
+    const { t } = useI18n();
+    const pathBase = usePathBase();
+    const { fulltext } = useSearchParams();
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            collapsed: true
-        };
-    }
-
-    toggleButton() {
-        const { collapsed } = this.state;
-
-        return (
-            <span>
-                <button
-                    type="button"
-                    className="Button Button--transparent Button--icon"
-                    title={t(this.props, this.state.collapsed ? 'edit_workflow' : 'do_not_edit_workflow')}
-                    onClick={() => this.setState({ collapsed: !this.state.collapsed })}
-                >
-                    {
-                        collapsed ?
-                            <FaAngleDown className="Icon Icon--text" /> :
-                            <FaAngleUp className="Icon Icon--text" />
-                    }
-                </button>
-            </span>
-        )
-    }
-
-    componentDidMount() {
-        const { interviewee, intervieweeId, peopleStatus, locale, projectId,
-            projects, fetchData } = this.props;
-
-        this.loadUserAccounts();
-        this.loadTasks();
+    useEffect(() => {
+        loadUserAccounts();
+        loadTasks();
         loadIntervieweeWithAssociations({ interviewee, intervieweeId,
             peopleStatus, locale, projectId, projects, fetchData });
-    }
 
-    loadUserAccounts() {
+    }, []);
+
+    function loadUserAccounts() {
         if (
-            !this.props.userAccountsStatus.all
+            !userAccountsStatus.all
         ) {
-            this.props.fetchData(this.props, 'accounts');
+            fetchData({ projectId, projects, locale }, 'accounts');
         }
     }
 
-    loadTasks() {
+    function loadTasks() {
         if (
-            !this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`]
+            !tasksStatus[`for_interview_${interview.archive_id}`]
         ) {
-            this.props.fetchData(this.props, 'tasks', null, null, `for_interview=${this.props.interview.archive_id}`);
+            fetchData({ projectId, projects, locale }, 'tasks', null, null, `for_interview=${interview.archive_id}`);
         }
     }
 
-    box(value, width='17-5') {
+    function box(value, width='17-5') {
         return (
             <div className={`box box-${width}`}>
                 {value}
@@ -75,131 +69,135 @@ export default class InterviewWorkflowRow extends Component {
         )
     }
 
-    intervieweeWithPhoto() {
-        const { interview, interviewee, locale, setArchiveId,
-            searchInInterview, fulltext } = this.props;
-
-        if (interviewee?.names?.[locale]) {
-            return (
-                <Link className="Link search-result-link box-10"
-                    onClick={() => {
-                        setArchiveId(interview.archive_id);
-                        searchInInterview(`${pathBase(this.props)}/searches/interview`, { fulltext, id: interview.archive_id});
-                    }}
-                    to={pathBase(this.props) + '/interviews/' + interview.archive_id}
-                >
-                    <img
-                        className="workflow"
-                        src={interview.still_url || 'missing_still'}
-                        onError={(e)=> { e.target.src = missingStill; }}
-                        alt=""
-                    />
-                    <span className='workflow' >
-                        {interviewee.names[locale].lastname + ', '}<br />
-                        {interviewee.names[locale].firstname }
-                    </span>
-                </Link>
-            )
-        }
-    }
-
-    symbol(task) {
+    function symbol(task) {
         return (
-            <span className={task.workflow_state} key={task.id} title={task.task_type.label[this.props.locale]} >
+            <span
+                className={task.workflow_state}
+                key={task.id}
+                title={task.task_type.label[locale]}
+            >
                 {task.task_type.abbreviation}
             </span>
         )
     }
 
-    symbols() {
-        if (
-            this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`] &&
-            this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`].split('-')[0] === 'fetched'
-        ) {
-            return (
-                <div className='workflow-symbols'>
-                    {this.props.interview.task_ids.map((taskId, index) => {
-                        // using the slightly more complicated way to get task_types' use attribute
-                        // (this.props.tasks[taskId].task_type.use would be easier)
-                        // otherwise all tasks cache would have to be cleared on project configuration changes
-                        //
-                        if (this.props.project.task_types[this.props.tasks[taskId].task_type.id]?.use) {
-                            return this.symbol(this.props.tasks[taskId]);
-                        }
-                    })}
-                    {this.toggleButton()}
-                </div>
-            );
-        }
-    }
+    const tasksFetched = tasksStatus[`for_interview_${interview.archive_id}`] &&
+        tasksStatus[`for_interview_${interview.archive_id}`].split('-')[0] === 'fetched';
 
-    fullView() {
-        if (
-            !this.state.collapsed &&
-            this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`] &&
-            this.props.tasksStatus[`for_interview_${this.props.interview.archive_id}`].split('-')[0] === 'fetched'
-        ) {
-            return (
-                <div className='workflow-active tasks'>
-                    {this.props.interview.task_ids.map((taskId, index) => {
-                        if (this.props.project.task_types[this.props.tasks[taskId].task_type.id]?.use) {
-                            return <TaskContainer task={this.props.tasks[taskId]} interview={this.props.interview} />
-                        }
-                    })}
-                </div>
-            );
-        }
-    }
+    return (
+        <div className='border-top'>
+            <div className='search-result-workflow data boxes'>
+                {interviewee?.names?.[locale] && (
+                    <Link className="Link search-result-link box-10"
+                        onClick={() => {
+                            setArchiveId(interview.archive_id);
+                            searchInInterview(`${pathBase}/searches/interview`, { fulltext, id: interview.archive_id});
+                        }}
+                        to={pathBase + '/interviews/' + interview.archive_id}
+                    >
+                        <img
+                            className="workflow"
+                            src={interview.still_url || 'missing_still'}
+                            onError={(e)=> { e.target.src = missingStill; }}
+                            alt=""
+                        />
+                        <span className='workflow' >
+                            {interviewee.names[locale].lastname + ', '}<br />
+                            {interviewee.names[locale].firstname }
+                        </span>
+                    </Link>
+                )}
 
-    fullViewHeader() {
-        if (!this.state.collapsed) {
-            return (
-                <div className='workflow-active boxes header'>
-                    {this.box(t(this.props, 'activerecord.attributes.task.task_type_id'))}
-                    {this.box(t(this.props, 'activerecord.attributes.task.supervisor_id'))}
-                    {this.box(t(this.props, 'activerecord.attributes.task.user_account_id'))}
-                    {this.box(t(this.props, 'activerecord.attributes.task.workflow_state'))}
-                    {this.box(t(this.props, 'activerecord.attributes.task.comments'), 30)}
-                </div>
-            );
-        }
-    }
+                {box(humanReadable(interview, 'archive_id', { locale, translations }, { collapsed }), '10')}
+                {box(humanReadable(interview, 'media_type', { locale, translations }, { collapsed }), '10')}
+                {box(humanReadable(interview, 'duration', { locale, translations }, { collapsed }), '10')}
+                {box(humanReadable(interview, 'language_id', { locale, translations, languages }, { collapsed }), '10')}
+                {box(humanReadable(interview, 'collection_id', { locale, translations, collections }, { collapsed }), '10')}
 
-    render() {
-        return (
-            <div className='border-top' key={`interview-workflow-${this.props.interview.archive_id}`}>
-                <div className='search-result-workflow data boxes' key={`${this.props.interview.archive_id}-collapsed-view`}>
-                    {this.intervieweeWithPhoto()}
-                    {this.box(humanReadable(this.props.interview, 'archive_id', this.props, this.state), '10')}
-                    {this.box(humanReadable(this.props.interview, 'media_type', this.props, this.state), '10')}
-                    {this.box(humanReadable(this.props.interview, 'duration', this.props, this.state), '10')}
-                    {this.box(humanReadable(this.props.interview, 'language_id', this.props, this.state), '10')}
-                    {this.box(humanReadable(this.props.interview, 'collection_id', this.props, this.state), '10')}
-                    <div className={`box-30 workflow-${this.state.collapsed ? 'inactive' : 'active'}`} >
-                        {this.symbols()}
-                    </div>
-                    {this.box(
-                        <SingleValueWithFormContainer
-                            elementType={'select'}
-                            obj={this.props.interview}
-                            attribute={'workflow_state'}
-                            values={['public', 'unshared']}
-                            optionsScope={'workflow_states'}
-                            noStatusCheckbox={true}
-                            noLabel={true}
-                            withEmpty={true}
-                        />, '10'
+                <div className={classNames('box-30', collapsed ? 'workflow-inactive' : 'workflow-active')} >
+                    {tasksFetched && (
+                        <div className='workflow-symbols'>
+                            {interview.task_ids.map(taskId => {
+                                // using the slightly more complicated way to get task_types' use attribute
+                                // (tasks[taskId].task_type.use would be easier)
+                                // otherwise all tasks cache would have to be cleared on project configuration changes
+                                //
+                                if (project.task_types[tasks[taskId].task_type.id]?.use) {
+                                    return symbol(tasks[taskId]);
+                                }
+                            })}
+
+                            <span>
+                                <button
+                                    type="button"
+                                    className="Button Button--transparent Button--icon"
+                                    title={t(collapsed ? 'edit_workflow' : 'do_not_edit_workflow')}
+                                    onClick={() => setCollapsed(prev => !prev)}
+                                >
+                                    {
+                                        collapsed ?
+                                            <FaAngleDown className="Icon Icon--text" /> :
+                                            <FaAngleUp className="Icon Icon--text" />
+                                    }
+                                </button>
+                            </span>
+                        </div>
                     )}
                 </div>
-                <div className='search-result-workflow-detail data boxes' key={`${this.props.interview.archive_id}-workflow-details`}>
-                    {this.fullViewHeader()}
-                    {this.fullView()}
-                </div>
+
+                {box(
+                    <SingleValueWithFormContainer
+                        elementType={'select'}
+                        obj={interview}
+                        attribute={'workflow_state'}
+                        values={['public', 'unshared']}
+                        optionsScope={'workflow_states'}
+                        noStatusCheckbox={true}
+                        noLabel={true}
+                        withEmpty={true}
+                    />, '10'
+                )}
             </div>
-        );
-    }
+            <div className='search-result-workflow-detail data boxes'>
+                {!collapsed && (
+                    <div className='workflow-active boxes header'>
+                        {box(t('activerecord.attributes.task.task_type_id'))}
+                        {box(t('activerecord.attributes.task.supervisor_id'))}
+                        {box(t('activerecord.attributes.task.user_account_id'))}
+                        {box(t('activerecord.attributes.task.workflow_state'))}
+                        {box(t('activerecord.attributes.task.comments'), '30')}
+                    </div>
+                )}
+                {!collapsed && tasksFetched && (
+                    <div className='workflow-active tasks'>
+                        {interview.task_ids.map(taskId => {
+                            if (project.task_types[tasks[taskId].task_type.id]?.use) {
+                                return <TaskContainer task={tasks[taskId]} interview={interview} />
+                            }
+                        })}
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 }
 
 InterviewWorkflowRow.propTypes = {
-    interviewee: PropTypes.object.isRequired,
+    interview: PropTypes.object.isRequired,
+    interviewee: PropTypes.object,
+    intervieweeId: PropTypes.number,
+    peopleStatus: PropTypes.object.isRequired,
+    userAccountsStatus: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+    languages: PropTypes.object.isRequired,
+    collections: PropTypes.object.isRequired,
+    project: PropTypes.object.isRequired,
+    projectId: PropTypes.string.isRequired,
+    projects: PropTypes.object.isRequired,
+    tasks: PropTypes.object,
+    tasksStatus: PropTypes.object.isRequired,
+    setArchiveId: PropTypes.func.isRequired,
+    searchInInterview: PropTypes.func.isRequired,
+    fetchData: PropTypes.func.isRequired,
 };
