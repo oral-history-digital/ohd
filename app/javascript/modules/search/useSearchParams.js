@@ -142,21 +142,25 @@ export default function useSearchParams() {
         });
     }
 
-    return {
-        sortBy,
-        sortOrder,
-        yearMin,
-        yearMax,
-        fulltext,
-        facets,
-        setSortBy,
-        setSortOrder,
-        setFulltext,
-        setYearMinMax,
-        setParam,
-        addFacetParam,
-        deleteFacetParam,
-        getFacetParam,
-        resetSearchParams,
-    };
+    const memoizedValue = useMemo(() => {
+        return {
+            sortBy,
+            sortOrder,
+            yearMin,
+            yearMax,
+            fulltext,
+            facets,
+            setSortBy,
+            setSortOrder,
+            setFulltext,
+            setYearMinMax,
+            setParam,
+            addFacetParam,
+            deleteFacetParam,
+            getFacetParam,
+            resetSearchParams,
+        };
+    }, [search]);
+
+    return memoizedValue;
 }
