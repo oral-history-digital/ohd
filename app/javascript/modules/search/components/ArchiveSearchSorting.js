@@ -63,12 +63,15 @@ export default function ArchiveSearchSorting({
 
     return (
         <div className={classNames('SearchSorting', className)}>
-            <p className="SearchSorting-label">
+            <p
+                id="sort_options"
+                className="SearchSorting-label"
+            >
                 {t('modules.search.sorting.label')}
             </p>
             <Listbox
                 className="SearchSorting-select u-ml-tiny"
-                aria-labelledby="map_section"
+                aria-labelledby="sort_options"
                 value={sortBy}
                 onChange={handleSortByChange}
             >
@@ -88,7 +91,7 @@ export default function ArchiveSearchSorting({
             {showSortOrderSelect && (
                 <Listbox
                     className="SearchSorting-select u-ml-tiny"
-                    aria-labelledby="map_section"
+                    aria-labelledby="sort_options"
                     value={sortOrder}
                     onChange={handleSortOrderChange}
                 >
