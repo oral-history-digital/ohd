@@ -5,18 +5,6 @@ import { NAME } from './constants';
 
 const getState = state => state[NAME];
 
-const getArchiveSearch = state => getState(state).archive;
-
-export const getArchiveFacets = state => getArchiveSearch(state).facets;
-
-export const getArchiveSearchResultsAvailable = state => Array.isArray(getArchiveFoundInterviews(state));
-
-export const getArchiveResultPagesCount = state => getArchiveSearch(state).resultPagesCount;
-
-export const getArchiveResultsCount = state => getArchiveSearch(state).resultsCount;
-
-export const getMapSearch = state => getState(state).map;
-
 export const getRegistryEntriesSearch = state => getState(state).registryEntries;
 
 export const getShowRegistryEntriesTree = createSelector(

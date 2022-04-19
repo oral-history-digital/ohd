@@ -1,5 +1,4 @@
 import {
-    CLEAR_SEARCH,
     REQUEST_INTERVIEW_SEARCH,
     RECEIVE_INTERVIEW_SEARCH,
     CLEAR_SINGLE_INTERVIEW_SEARCH,
@@ -9,17 +8,9 @@ import {
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
     SET_QUERY_PARAMS,
     RESET_QUERY,
-    REQUEST_ARCHIVE_SEARCH,
-    RECEIVE_ARCHIVE_SEARCH,
 } from './action-types';
 
 export const initialState = {
-    archive: {
-        facets: null,
-        query:{page: 1},
-        resultPagesCount: 1,
-        resultsCount: 0,
-    },
     interviews: {},
     registryEntries: {
         showRegistryEntriesTree: true,
@@ -106,32 +97,6 @@ const search = (state = initialState, action) => {
             registryEntries: Object.assign({}, state.registryEntries, {
                 showRegistryEntriesTree: action.bool
             })
-        })
-    case REQUEST_ARCHIVE_SEARCH:
-        return Object.assign({}, state, {
-            isArchiveSearching: true,
-            archive: Object.assign({}, state.archive, {
-                query: Object.assign({}, state.archive.query, action.searchQuery)
-            })
-        })
-    case RECEIVE_ARCHIVE_SEARCH:
-        return Object.assign({}, state, {
-            archive: Object.assign({}, state.archive, {
-                facets: action.facets,
-                resultPagesCount: action.resultPagesCount,
-                resultsCount: action.resultsCount,
-            }),
-            isArchiveSearching: false,
-        })
-    case CLEAR_SEARCH:
-        return Object.assign({}, state, {
-            archive: Object.assign({}, state.archive, {
-                facets: null,
-                query: { page: 1 },
-                resultPagesCount: null,
-                resultsCount: null,
-            }),
-            isArchiveSearching: false,
         })
     default:
         return state;

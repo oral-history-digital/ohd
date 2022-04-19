@@ -129,7 +129,6 @@ export default class Account extends Component {
                                 }
                                 this.props.clearStateData('accounts');
                                 this.props.clearStateData('user_registrations');
-                                this.props.clearSearch();
                                 this.props.submitLogout(`${pathBase(this.props)}/user_accounts/sign_out`);
                             }}
                         >

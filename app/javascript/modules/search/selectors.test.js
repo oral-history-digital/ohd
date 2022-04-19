@@ -21,33 +21,6 @@ const state = {
         },
     },
     [NAME]: {
-        archive: {
-            facets: {
-                gender: {
-                    name: {
-                        en: 'Gender',
-                    },
-                },
-            },
-            query: {
-                fulltext: 'alice',
-                page: 1,
-            },
-            resultPagesCount: 50,
-            resultsCount: 590,
-        },
-        map: {
-            facets: {
-                language_id: {
-                    name: {
-                        en: 'Language',
-                    },
-                },
-            },
-            query: {
-                page: 1,
-            },
-        },
         interviews: {
             cd003: {
                 fulltext: 'berlin',
@@ -127,29 +100,6 @@ const state = {
         isRegistryEntrySearching: true,
     },
 };
-
-test('getArchiveFacets retrieves archive facets object', () => {
-    expect(selectors.getArchiveFacets(state)).toEqual(state[NAME].archive.facets);
-});
-
-describe('getArchiveSearchResultsAvailable', () => {
-    test('is true if results are available', () => {
-        expect(selectors.getArchiveSearchResultsAvailable(state)).toBeTruthy();
-    });
-
-    test('is false if results are not available', () => {
-        const _state = dotProp.set(state, `${NAME}.archive.foundInterviews`, null);
-        expect(selectors.getArchiveSearchResultsAvailable(_state)).toBeFalsy();
-    });
-});
-
-test('getArchiveResultPagesCount retrieves number of archive result pages', () => {
-    expect(selectors.getArchiveResultPagesCount(state)).toEqual(state[NAME].archive.resultPagesCount);
-});
-
-test('getArchiveResultsCount retrieves number of archive results', () => {
-    expect(selectors.getArchiveResultsCount(state)).toEqual(state[NAME].archive.resultsCount);
-});
 
 test('getRegistryEntriesSearch retrieves registry entries part of search state', () => {
     expect(selectors.getRegistryEntriesSearch(state)).toEqual(state[NAME].registryEntries);

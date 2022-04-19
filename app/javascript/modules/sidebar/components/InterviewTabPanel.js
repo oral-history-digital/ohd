@@ -26,7 +26,6 @@ export default function InterviewTabPanel({
     interviewee,
     hasMap,
     isCatalog,
-    searchInArchive,
     setViewMode,
     hideSidebar,
     isLoggedIn,
@@ -34,7 +33,7 @@ export default function InterviewTabPanel({
     const pathBase = usePathBase();
     const { t } = useI18n();
 
-    const searchPath = `${pathBase}/searches/archive`;
+    const searchPath = `${pathBase}/searches/archive?fulltext=${archiveId}`;
 
     if (!archiveId || archiveId === 'new') {
         return null;
@@ -57,7 +56,6 @@ export default function InterviewTabPanel({
                     <p>
                         <Link
                             onClick={() => {
-                                searchInArchive(searchPath, {archive_id: interview.archive_id});
                                 setViewMode('workflow')
                                 hideSidebar();
                             }}
@@ -167,7 +165,6 @@ InterviewTabPanel.propTypes = {
     interviewee: PropTypes.object,
     hasMap: PropTypes.bool.isRequired,
     isCatalog: PropTypes.bool.isRequired,
-    searchInArchive: PropTypes.func.isRequired,
     setViewMode: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
     isLoggedIn: PropTypes.bool.isRequired,

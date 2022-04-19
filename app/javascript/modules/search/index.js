@@ -1,6 +1,6 @@
 export { NAME as SEARCH_NAME } from './constants';
 
-export { clearSearch, resetQuery, setQueryParams, searchInArchive, searchInInterview,
+export { resetQuery, setQueryParams, searchInInterview,
     clearSingleInterviewSearch, clearAllInterviewSearch, searchRegistryEntry,
     changeRegistryEntriesViewMode } from './actions';
 
@@ -10,8 +10,6 @@ export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
     getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery,
     getLanguagesQuery, getInstitutionsQuery, getContributionTypesQuery, getRegistryNameTypesQuery,
     getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
-    getArchiveFacets,
-    getArchiveResultPagesCount, getArchiveResultsCount,
     getInterviewSearchResults, getCurrentInterviewSearchResults,
     getSegmentResults, getHeadingResults, getRegistryEntryResults, getPhotoResults, getBiographyResults,
     getAnnotationResults, getObservationsResults

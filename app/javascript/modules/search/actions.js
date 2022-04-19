@@ -1,11 +1,8 @@
 import { Loader } from 'modules/api';
 
 import {
-    CLEAR_SEARCH,
     SET_QUERY_PARAMS,
     RESET_QUERY,
-    REQUEST_ARCHIVE_SEARCH,
-    RECEIVE_ARCHIVE_SEARCH,
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
@@ -27,35 +24,6 @@ export function resetQuery(scope){
     return {
         type: RESET_QUERY,
         scope: scope,
-    }
-}
-
-const requestArchiveSearch = (searchQuery) => ({
-    type: REQUEST_ARCHIVE_SEARCH,
-    searchQuery: searchQuery,
-});
-
-export const clearSearch = () => ({
-    type: CLEAR_SEARCH,
-});
-
-function receiveArchiveSearchResults(json){
-    return {
-        type: RECEIVE_ARCHIVE_SEARCH,
-        resultPagesCount: json.result_pages_count,
-        resultsCount: json.results_count,
-        facets: json.facets,
-        page: json.page,
-        receivedAt: Date.now()
-    }
-}
-
-export function searchInArchive(url, searchQuery) {
-    console.log(searchQuery);
-
-    return dispatch => {
-        dispatch(requestArchiveSearch(searchQuery))
-        Loader.getJson(url, searchQuery, dispatch, receiveArchiveSearchResults);
     }
 }
 

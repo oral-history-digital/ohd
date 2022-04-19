@@ -13,7 +13,6 @@ export default function UserContent({
     data,
     locale,
     projects,
-    searchInArchive,
     setArchiveId,
     sendTimeChangeRequest,
     hideSidebar,
@@ -38,7 +37,7 @@ export default function UserContent({
     }
 
     function onSearchClick(pathBase) {
-        searchInArchive(`${pathBase}/searches/archive`, data.properties);
+        // TODO: searchInArchive(`${pathBase}/searches/archive`, data.properties);
         hideSidebarIfMobile();
     }
 
@@ -148,7 +147,6 @@ UserContent.propTypes = {
     data: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
-    searchInArchive: PropTypes.func.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
