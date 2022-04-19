@@ -148,10 +148,6 @@ class ApplicationController < ActionController::Base
         resultPagesCount: search.results.total_pages,
         resultsCount: search.total,
       },
-      map: {
-        facets: facets,
-        query: search_query,
-      },
       interviews: {},
       registryEntries: {
         showRegistryEntriesTree: true,

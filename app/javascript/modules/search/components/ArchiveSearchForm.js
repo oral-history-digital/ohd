@@ -12,7 +12,6 @@ import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
 export default function ArchiveSearchForm({
-    map,
     projectId,
     hideSidebar,
     clearAllInterviewSearch,
@@ -38,9 +37,7 @@ export default function ArchiveSearchForm({
 
         setFulltext(fulltextInput?.trim());
 
-        if(!map) {
-            clearAllInterviewSearch();
-        }
+        clearAllInterviewSearch();
 
         if (isMobile()) {
             hideSidebar();
@@ -55,14 +52,13 @@ export default function ArchiveSearchForm({
                 className="flyout-search"
                 onSubmit={handleSubmit}
             >
-                {!map && projectId === 'mog' && (
+                {projectId === 'mog' ? (
                     <ArchiveSearchFormInput
                         value={fulltextInput}
                         projectId={projectId}
                         onChange={setFulltextInput}
                     />
-                )}
-                {!map && projectId !== 'mog' && (
+                ) : (
                     <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
                        <ArchiveSearchFormInput
                             value={fulltextInput}
@@ -81,13 +77,9 @@ export default function ArchiveSearchForm({
                 </button>
 
                 {
-                    facets ? (
-                        <ArchiveFacets
-                            map={map}
-                            handleSubmit={handleSubmit}
-                        />
-                    ) :
-                    <Spinner withPadding />
+                    facets ?
+                        <ArchiveFacets /> :
+                        <Spinner withPadding />
                 }
             </form>
         </div>
@@ -96,7 +88,6 @@ export default function ArchiveSearchForm({
 
 ArchiveSearchForm.propTypes = {
     projectId: PropTypes.string,
-    map: PropTypes.bool,
     hideSidebar: PropTypes.func.isRequired,
     clearAllInterviewSearch: PropTypes.func.isRequired,
 };

@@ -1,24 +1,26 @@
 import { useSelector } from 'react-redux';
 import queryString from 'query-string';
 import useSWRImmutable from 'swr/immutable';
+import range from 'lodash.range';
 
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
 import { getEditView } from 'modules/archive';
-import { getMapQuery } from 'modules/search';
+import { useSearchParams } from 'modules/search';
 
 export default function useMapLocations() {
     const pathBase = usePathBase();
     const isEditView = useSelector(getEditView);
-    const query = useSelector(getMapQuery);
+
+    const { facets, birthYearMin, birthYearMax } = useSearchParams();
 
     const params = {
-        ...query,
+        ...facets,
+        year_of_birth: range(birthYearMin, birthYearMax + 1),
+        all: isEditView ? true : undefined,
     };
-    if (isEditView) {
-        params['all'] = true;
-    }
-    const paramStr = queryString.stringify(params);
+    const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
+
     const path = `${pathBase}/searches/map?${paramStr}`;
     const { isValidating, data, error } = useSWRImmutable(path, fetcher);
 

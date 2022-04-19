@@ -21,10 +21,6 @@ export const getArchiveResultsCount = state => getArchiveSearch(state).resultsCo
 
 export const getMapSearch = state => getState(state).map;
 
-export const getMapQuery = state => getMapSearch(state).query;
-
-export const getMapFacets = state => getMapSearch(state).facets;
-
 export const getRegistryEntriesSearch = state => getState(state).registryEntries;
 
 export const getShowRegistryEntriesTree = createSelector(

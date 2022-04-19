@@ -159,14 +159,6 @@ test('getArchiveResultsCount retrieves number of archive results', () => {
     expect(selectors.getArchiveResultsCount(state)).toEqual(state[NAME].archive.resultsCount);
 });
 
-test('getMapQuery retrieves map query object', () => {
-    expect(selectors.getMapQuery(state)).toEqual(state[NAME].map.query);
-});
-
-test('getMapFacets retrieves map facets object', () => {
-    expect(selectors.getMapFacets(state)).toEqual(state[NAME].map.facets);
-});
-
 test('getRegistryEntriesSearch retrieves registry entries part of search state', () => {
     expect(selectors.getRegistryEntriesSearch(state)).toEqual(state[NAME].registryEntries);
 });

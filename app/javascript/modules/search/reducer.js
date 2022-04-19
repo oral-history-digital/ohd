@@ -11,7 +11,6 @@ import {
     RESET_QUERY,
     REQUEST_ARCHIVE_SEARCH,
     RECEIVE_ARCHIVE_SEARCH,
-    SET_MAP_QUERY,
 } from './action-types';
 
 export const initialState = {
@@ -20,10 +19,6 @@ export const initialState = {
         query:{page: 1},
         resultPagesCount: 1,
         resultsCount: 0,
-    },
-    map: {
-        facets: null,
-        query: {},
     },
     interviews: {},
     registryEntries: {
@@ -128,17 +123,6 @@ const search = (state = initialState, action) => {
             }),
             isArchiveSearching: false,
         })
-    case SET_MAP_QUERY:
-        return {
-            ...state,
-            map: {
-                ...state.map,
-                query: {
-                    ...state.map.query,
-                    ...action.payload,
-                },
-            },
-        };
     case CLEAR_SEARCH:
         return Object.assign({}, state, {
             archive: Object.assign({}, state.archive, {

@@ -2,12 +2,12 @@ export { NAME as SEARCH_NAME } from './constants';
 
 export { clearSearch, resetQuery, setQueryParams, searchInArchive, searchInInterview,
     clearSingleInterviewSearch, clearAllInterviewSearch, searchRegistryEntry,
-    changeRegistryEntriesViewMode, setMapQuery } from './actions';
+    changeRegistryEntriesViewMode } from './actions';
 
 export { default as searchReducer } from './reducer';
 
 export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree,
-    getMapQuery, getMapFacets, getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery,
+    getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery,
     getLanguagesQuery, getInstitutionsQuery, getContributionTypesQuery, getRegistryNameTypesQuery,
     getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
     getArchiveFacets, getArchiveQuery, getArchiveQueryFulltext,
@@ -19,6 +19,7 @@ export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
 
 export { default as SearchPage } from './components/SearchPage';
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';
+export { default as MapFacets } from './components/MapFacets';
 
 export { default as queryToText } from './queryToText';
 

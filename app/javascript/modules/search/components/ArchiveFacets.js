@@ -1,14 +1,9 @@
-import PropTypes from 'prop-types';
-
 import { useAuthorization } from 'modules/auth';
 import useArchiveSearch from '../useArchiveSearch';
 import Facet from './Facet';
 import BirthYearFacet from './BirthYearFacet';
 
-export default function ArchiveFacets({
-    map,
-    handleSubmit,
-}) {
+export default function ArchiveFacets() {
     const { isAuthorized } = useAuthorization();
     const { facets } = useArchiveSearch();
 
@@ -30,15 +25,9 @@ export default function ArchiveFacets({
             return (
                 <BirthYearFacet
                     data={facets[facet]}
-                    facet={facet}
                     key={index}
-                    handleSubmit={handleSubmit}
-                    slider
                     sliderMin={Math.min(...years)}
                     sliderMax={Math.max(...years)}
-                    map={map}
-                    show={(adminFacets.indexOf(facet) > -1 && isAuthorized({type: 'General'}, 'edit')) || (adminFacets.indexOf(facet) === -1)}
-                    admin={(adminFacets.indexOf(facet) > -1)}
                 />
             );
         } else {
@@ -47,8 +36,6 @@ export default function ArchiveFacets({
                     data={facets[facet]}
                     facet={facet}
                     key={index}
-                    handleSubmit={handleSubmit}
-                    map={map}
                     show={(adminFacets.indexOf(facet) > -1 && isAuthorized({type: 'General'}, 'edit')) || (adminFacets.indexOf(facet) === -1)}
                     admin={(adminFacets.indexOf(facet) > -1)}
                 />
@@ -56,8 +43,3 @@ export default function ArchiveFacets({
         }
     });
 }
-
-ArchiveFacets.propTypes = {
-    map: PropTypes.bool,
-    handleSubmit: PropTypes.func.isRequired,
-};
