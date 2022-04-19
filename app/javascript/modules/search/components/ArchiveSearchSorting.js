@@ -23,10 +23,13 @@ export default function ArchiveSearchSorting({
 
     const { sortBy, sortOrder, setSortBy, setSortOrder } = useSearchParams();
 
+    const showSortOrderSelect = sortBy !== 'random';
+
     let sortByOptions;
     if (editView) {
         sortByOptions = [
             'relevance',
+            'random',
             'title',
             'archive_id',
             'media_type',
@@ -82,24 +85,26 @@ export default function ArchiveSearchSorting({
                 }
             </Listbox>
 
-            <Listbox
-                className="SearchSorting-select u-ml-tiny"
-                aria-labelledby="map_section"
-                value={sortOrder}
-                onChange={handleSortOrderChange}
-            >
-                {
-                    sortOrderOptions.map(option => (
-                        <ListboxOption
-                            key={option}
-                            value={option}
-                            label={t(`modules.search.sorting.order.${option}`)}
-                        >
-                            {t(`modules.search.sorting.order.${option}`)}
-                        </ListboxOption>
-                    ))
-                }
-            </Listbox>
+            {showSortOrderSelect && (
+                <Listbox
+                    className="SearchSorting-select u-ml-tiny"
+                    aria-labelledby="map_section"
+                    value={sortOrder}
+                    onChange={handleSortOrderChange}
+                >
+                    {
+                        sortOrderOptions.map(option => (
+                            <ListboxOption
+                                key={option}
+                                value={option}
+                                label={t(`modules.search.sorting.order.${option}`)}
+                            >
+                                {t(`modules.search.sorting.order.${option}`)}
+                            </ListboxOption>
+                        ))
+                    }
+                </Listbox>
+            )}
         </div>
     );
 }
