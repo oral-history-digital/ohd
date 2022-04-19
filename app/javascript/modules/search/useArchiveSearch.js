@@ -1,6 +1,7 @@
 import useSWRInfinite from 'swr/infinite';
 import queryString from 'query-string';
 import { useSelector } from 'react-redux';
+import range from 'lodash.range';
 
 import { getIsLoggedIn } from 'modules/account';
 import { fetcher } from 'modules/api';
@@ -19,15 +20,17 @@ function transformData(data) {
 
 export default function useArchiveSearch() {
     const isLoggedIn = useSelector(getIsLoggedIn);
-    const { sortBy, sortOrder, fulltext, facets } = useSearchParams();
+    const { sortBy, sortOrder, fulltext, facets, birthYearMin,
+        birthYearMax } = useSearchParams();
     const pathBase = usePathBase();
 
     function getKey(pageIndex, previousPageData) {
         const params = {
             fulltext,
+            ...facets,
+            year_of_birth: range(birthYearMin, birthYearMax + 1),
             sort: sortBy,
             order: sortOrder,
-            ...facets,
             page: pageIndex + 1,
             'logged-in': isLoggedIn, // just to build different keys
         };

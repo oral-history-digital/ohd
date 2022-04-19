@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useAuthorization } from 'modules/auth';
 import useArchiveSearch from '../useArchiveSearch';
 import Facet from './Facet';
-import YearFacet from './YearFacet';
+import BirthYearFacet from './BirthYearFacet';
 
 export default function ArchiveFacets({
     map,
@@ -28,7 +28,7 @@ export default function ArchiveFacets({
                 .map(year => Number.parseInt(year));
 
             return (
-                <YearFacet
+                <BirthYearFacet
                     data={facets[facet]}
                     facet={facet}
                     key={index}

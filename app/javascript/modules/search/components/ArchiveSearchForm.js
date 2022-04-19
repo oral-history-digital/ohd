@@ -47,32 +47,6 @@ export default function ArchiveSearchForm({
         }
     }
 
-    function arrayToRange(min, max) {
-        let array = [];
-        if (min <= max) {
-            for (let i = min; i <= max; i++){
-                array.push(i)
-            }
-        }
-        return array;
-    }
-
-    function prepareQuery(params) {
-        // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
-        // Thus the last checkbox would never uncheck.
-        // Send list values. e.g. key[] = ["a", "b"]
-        let preparedQuery = {};
-        if (params['fulltext']) preparedQuery['fulltext'] = params['fulltext'];
-        for (let [key, value] of Object.entries(facets)) {
-            preparedQuery[`${key}[]`] = params[key] && !(typeof params[key] == "string") ? params[key] : []
-        }
-        // create list of years for year_of_birth
-        if (params['year_of_birth_min']) {
-            preparedQuery['year_of_birth[]'] = arrayToRange( params['year_of_birth_min'], params['year_of_birth_max'] )
-        }
-        return preparedQuery;
-    }
-
     return (
         <div>
             <form

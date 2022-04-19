@@ -4,7 +4,7 @@ import queryString from 'query-string';
 
 const qsOptions = {
     arrayFormat: 'bracket',
-}
+};
 
 export default function useSearchParams() {
     const { search } = useLocation();
@@ -17,8 +17,8 @@ export default function useSearchParams() {
     const sortBy = params.sort;
     const sortOrder = params.order;
     const fulltext = params.fulltext;
-    const yearMin = params.year_min
-    const yearMax = params.year_max;
+    const birthYearMin = Number.parseInt(params.birth_year_min);
+    const birthYearMax = Number.parseInt(params.birth_year_max);
 
     const facets = {
         ...params,
@@ -26,8 +26,8 @@ export default function useSearchParams() {
     delete facets.sort;
     delete facets.order;
     delete facets.fulltext;
-    delete facets.year_min;
-    delete facets.year_max;
+    delete facets.birth_year_min;
+    delete facets.birth_year_max;
 
 
     function setSortBy(value) {
@@ -44,8 +44,8 @@ export default function useSearchParams() {
 
     function setYearMinMax(min, max) {
         setParams({
-            year_min: min,
-            year_max: max,
+            birth_year_min: min,
+            birth_year_max: max,
         });
     }
 
@@ -146,8 +146,8 @@ export default function useSearchParams() {
         return {
             sortBy,
             sortOrder,
-            yearMin,
-            yearMax,
+            birthYearMin,
+            birthYearMax,
             fulltext,
             facets,
             setSortBy,
