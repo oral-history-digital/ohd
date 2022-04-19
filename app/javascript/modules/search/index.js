@@ -10,7 +10,7 @@ export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryE
     getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery,
     getLanguagesQuery, getInstitutionsQuery, getContributionTypesQuery, getRegistryNameTypesQuery,
     getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
-    getArchiveFacets, getArchiveQuery, getArchiveQueryFulltext,
+    getArchiveFacets,
     getArchiveResultPagesCount, getArchiveResultsCount,
     getInterviewSearchResults, getCurrentInterviewSearchResults,
     getSegmentResults, getHeadingResults, getRegistryEntryResults, getPhotoResults, getBiographyResults,
@@ -25,4 +25,5 @@ export { default as queryToText } from './queryToText';
 
 export { default as useSearchParams } from './useSearchParams';
 export { default as useArchiveSearch } from './useArchiveSearch';
+export { default as useFacets } from './useFacets';
 export { default as useSearchSuggestions } from './useSearchSuggestions';

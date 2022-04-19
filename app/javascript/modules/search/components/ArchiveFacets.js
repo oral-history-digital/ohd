@@ -1,14 +1,15 @@
 import { useAuthorization } from 'modules/auth';
-import useArchiveSearch from '../useArchiveSearch';
+import { Spinner } from 'modules/spinners';
 import Facet from './Facet';
 import BirthYearFacet from './BirthYearFacet';
+import useFacets from '../useFacets';
 
 export default function ArchiveFacets() {
     const { isAuthorized } = useAuthorization();
-    const { facets } = useArchiveSearch();
+    const { facets } = useFacets();
 
     if (!facets) {
-        return null;
+        return <Spinner withPadding />;
     }
 
     const adminFacets = [

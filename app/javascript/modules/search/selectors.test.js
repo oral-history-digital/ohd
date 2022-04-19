@@ -132,14 +132,6 @@ test('getArchiveFacets retrieves archive facets object', () => {
     expect(selectors.getArchiveFacets(state)).toEqual(state[NAME].archive.facets);
 });
 
-test('getArchiveQuery retrieves archive query object', () => {
-    expect(selectors.getArchiveQuery(state)).toEqual(state[NAME].archive.query);
-});
-
-test('getArchiveQueryFulltext retrieves archive query object fulltext part', () => {
-    expect(selectors.getArchiveQueryFulltext(state)).toEqual(state[NAME].archive.query.fulltext);
-});
-
 describe('getArchiveSearchResultsAvailable', () => {
     test('is true if results are available', () => {
         expect(selectors.getArchiveSearchResultsAvailable(state)).toBeTruthy();

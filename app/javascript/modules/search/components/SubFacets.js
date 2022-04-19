@@ -20,7 +20,6 @@ export default function SubFacets({
         const value = event.target.value;
 
         if (event.target.checked) {
-            console.log(name);
             addFacetParam(name, value);
         } else {
             deleteFacetParam(name, value);

@@ -9,16 +9,17 @@ import { Modal } from 'modules/ui';
 import { usePathBase } from 'modules/routes';
 import { UserContentFormContainer } from 'modules/workbook';
 import queryToText from '../queryToText';
+import useFacets from '../useFacets';
 
 export default function SearchActions({
-    query,
-    facets,
+    query = {},
     projectId,
     locale,
     translations,
 }) {
     const { t } = useI18n();
     const pathBase = usePathBase();
+    const { facets } = useFacets();
 
     function saveSearchForm(closeModal) {
         moment.locale(locale);
@@ -74,7 +75,6 @@ export default function SearchActions({
 
 SearchActions.propTypes = {
     query: PropTypes.object.isRequired,
-    facets: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,

@@ -5,9 +5,7 @@ import { FaUndo } from 'react-icons/fa';
 import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
 import { isMobile } from 'modules/user-agent';
-import { Spinner } from 'modules/spinners';
 import useSearchParams from '../useSearchParams';
-import useArchiveSearch from '../useArchiveSearch';
 import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
@@ -18,7 +16,6 @@ export default function ArchiveSearchForm({
 }) {
     const { t } = useI18n();
     const formEl = useRef(null);
-    const { facets } = useArchiveSearch();
 
     const { fulltext, setFulltext, resetSearchParams } = useSearchParams();
 
@@ -76,11 +73,7 @@ export default function ArchiveSearchForm({
                     <FaUndo className="Icon" />
                 </button>
 
-                {
-                    facets ?
-                        <ArchiveFacets /> :
-                        <Spinner withPadding />
-                }
+                <ArchiveFacets />
             </form>
         </div>
     );

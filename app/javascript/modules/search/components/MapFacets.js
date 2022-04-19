@@ -6,12 +6,12 @@ import { isMobile } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
 import { hideSidebar } from 'modules/sidebar';
 import useSearchParams from '../useSearchParams';
-import useArchiveSearch from '../useArchiveSearch';
 import ArchiveFacets from './ArchiveFacets';
+import useFacets from '../useFacets';
 
 export default function ArchiveSearchForm() {
     const { t } = useI18n();
-    const { facets } = useArchiveSearch();
+    const { facets } = useFacets();
     const { resetSearchParams } = useSearchParams();
     const dispatch = useDispatch();
 
@@ -30,8 +30,6 @@ export default function ArchiveSearchForm() {
             dispatch(hideSidebar());
         }
     }
-
-    console.log(facets);
 
     return (
         <div>

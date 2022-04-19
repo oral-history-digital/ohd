@@ -138,16 +138,8 @@ class ApplicationController < ActionController::Base
   end
 
   def initial_search_redux_state
-    search = Interview.archive_search(current_user_account, current_project, locale, params)
-    facets = current_project ? current_project.updated_search_facets(search) : {}
-
     {
-      archive: {
-        facets: facets,
-        query: search_query,
-        resultPagesCount: search.results.total_pages,
-        resultsCount: search.total,
-      },
+      archive: {},
       interviews: {},
       registryEntries: {
         showRegistryEntriesTree: true,

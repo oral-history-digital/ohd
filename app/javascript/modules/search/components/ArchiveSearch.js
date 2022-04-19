@@ -16,8 +16,6 @@ function ArchiveSearch() {
     const { interviews, total, data, error, isValidating, size, setSize } =
         useArchiveSearch();
 
-    console.log('rendering ArchiveSearch')
-
     function handleScroll(inView) {
         if (inView) {
             setSize(size + 1);

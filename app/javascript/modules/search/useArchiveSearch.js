@@ -51,7 +51,6 @@ export default function useArchiveSearch() {
     return {
         interviews: transformedData,
         total: data?.[0].results_count,
-        facets: data?.[0].facets,
         data,
         error,
         isValidating,

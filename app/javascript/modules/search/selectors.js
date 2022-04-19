@@ -9,10 +9,6 @@ const getArchiveSearch = state => getState(state).archive;
 
 export const getArchiveFacets = state => getArchiveSearch(state).facets;
 
-export const getArchiveQuery = state => getArchiveSearch(state).query;
-
-export const getArchiveQueryFulltext = state => getArchiveQuery(state).fulltext;
-
 export const getArchiveSearchResultsAvailable = state => Array.isArray(getArchiveFoundInterviews(state));
 
 export const getArchiveResultPagesCount = state => getArchiveSearch(state).resultPagesCount;

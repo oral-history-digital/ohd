@@ -135,8 +135,6 @@ export default function useSearchParams() {
     }
 
     function pushToHistory(newParams) {
-        console.log(queryString.stringify(newParams, qsOptions));
-
         history.push({
             search: queryString.stringify(newParams, qsOptions),
         });
