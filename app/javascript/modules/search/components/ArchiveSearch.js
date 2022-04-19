@@ -37,7 +37,7 @@ function ArchiveSearch() {
             <h1 className="search-results-title">
                 {t('interviews')}
             </h1>
-            <div className="SearchResults-legend search-results-legend">
+            <div className="SearchResults-legend search-results-legend u-mt">
                 <AuthShowContainer ifLoggedIn>
                     <SearchActionsContainer />
                 </AuthShowContainer>
@@ -50,9 +50,10 @@ function ArchiveSearch() {
                 }
             </div>
 
-            <ArchiveSearchSorting />
+            <ArchiveSearchSorting className="u-mt-small" />
 
             <ArchiveSearchTabsContainer
+                className="u-mt-small"
                 interviews={interviews}
                 empty={isEmpty}
             />

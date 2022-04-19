@@ -1,4 +1,3 @@
-import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -60,9 +59,12 @@ export default function ArchiveSearchSorting({
     ];
 
     return (
-        <div className={classNames(className, 'u-flex', 'u-mb-small')}>
-            <p>{t('modules.search.sorting.label')}</p>
+        <div className={classNames('SearchSorting', className)}>
+            <p className="SearchSorting-label">
+                {t('modules.search.sorting.label')}
+            </p>
             <Listbox
+                className="SearchSorting-select u-ml-tiny"
                 aria-labelledby="map_section"
                 value={sortBy}
                 onChange={handleSortByChange}
@@ -81,6 +83,7 @@ export default function ArchiveSearchSorting({
             </Listbox>
 
             <Listbox
+                className="SearchSorting-select u-ml-tiny"
                 aria-labelledby="map_section"
                 value={sortOrder}
                 onChange={handleSortOrderChange}
@@ -103,5 +106,4 @@ export default function ArchiveSearchSorting({
 
 ArchiveSearchSorting.propTypes = {
     className: PropTypes.string,
-    searchParams: PropTypes.object,
 };

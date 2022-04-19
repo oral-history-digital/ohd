@@ -13,6 +13,7 @@ import ResultGrid from './ResultGrid';
 export default function ArchiveSearchTabs({
     interviews,
     empty,
+    className,
     viewModes,
     currentViewMode,
     hideSidebar,
@@ -31,7 +32,7 @@ export default function ArchiveSearchTabs({
 
     return (
         <Tabs
-            className="Tabs"
+            className={classNames('Tabs', className)}
             keyboardActivation="manual"
             index={(viewModes && viewModes.indexOf(currentViewMode)) || 0}
             onChange={handleTabClick}
@@ -104,6 +105,7 @@ export default function ArchiveSearchTabs({
 ArchiveSearchTabs.propTypes = {
     interviews: PropTypes.array,
     empty: PropTypes.bool.isRequired,
+    className: PropTypes.string,
     viewModes: PropTypes.array.isRequired,
     currentViewMode: PropTypes.string.isRequired,
     hideSidebar: PropTypes.func.isRequired,
