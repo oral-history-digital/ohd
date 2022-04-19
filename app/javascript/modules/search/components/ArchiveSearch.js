@@ -13,8 +13,8 @@ const PAGE_SIZE = 12;
 function ArchiveSearch() {
     const { t } = useI18n();
 
-    const { interviews, total, data, error, isValidating, size, setSize } =
-        useArchiveSearch();
+    const { interviews, total, data, error, isValidating, isLoading, size,
+        setSize } = useArchiveSearch();
 
     function handleScroll(inView) {
         if (inView) {
@@ -54,6 +54,7 @@ function ArchiveSearch() {
                 className="u-mt-small"
                 interviews={interviews}
                 empty={isEmpty}
+                loading={isLoading}
             />
 
             {!isLoadingMore && !isReachingEnd && (

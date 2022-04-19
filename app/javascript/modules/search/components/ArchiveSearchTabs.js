@@ -13,6 +13,7 @@ import ResultGrid from './ResultGrid';
 export default function ArchiveSearchTabs({
     interviews,
     empty,
+    loading,
     className,
     viewModes,
     currentViewMode,
@@ -92,7 +93,11 @@ export default function ArchiveSearchTabs({
 
                         return (
                             <TabPanel key={viewMode}>
-                                {tabContent}
+                                <div className={classNames('LoadingOverlay', {
+                                    'is-loading': loading,
+                                })}>
+                                    {tabContent}
+                                </div>
                             </TabPanel>
                         );
                     })
@@ -105,6 +110,7 @@ export default function ArchiveSearchTabs({
 ArchiveSearchTabs.propTypes = {
     interviews: PropTypes.array,
     empty: PropTypes.bool.isRequired,
+    loading: PropTypes.bool.isRequired,
     className: PropTypes.string,
     viewModes: PropTypes.array.isRequired,
     currentViewMode: PropTypes.string.isRequired,

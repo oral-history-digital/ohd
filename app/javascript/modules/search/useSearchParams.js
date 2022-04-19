@@ -42,7 +42,7 @@ export default function useSearchParams() {
         setParam('fulltext', value);
     }
 
-    function setYearMinMax(min, max) {
+    function setBirthYearMinMax(min, max) {
         setParams({
             birth_year_min: min,
             birth_year_max: max,
@@ -151,7 +151,7 @@ export default function useSearchParams() {
             setSortBy,
             setSortOrder,
             setFulltext,
-            setYearMinMax,
+            setBirthYearMinMax,
             setParam,
             addFacetParam,
             deleteFacetParam,

@@ -18,11 +18,14 @@ export default function useFacets() {
     const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
     const path = `${pathBase}/searches/facets?${paramStr}`;
 
-    const { isValidating, data, error } = useSWRImmutable(path, fetcher);
+    const { isValidating, isLoading, data, error } = useSWRImmutable(path, fetcher, {
+        keepPreviousData: true,
+    });
 
     return {
         facets: data?.facets,
         error,
         isValidating,
+        isLoading,
     };
 }

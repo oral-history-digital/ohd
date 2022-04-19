@@ -38,9 +38,10 @@ export default function useArchiveSearch() {
         return `${pathBase}/searches/archive?${paramStr}`;
     }
 
-    const { data, error, isValidating, size, setSize } =
+    const { data, error, isValidating, isLoading, size, setSize } =
         useSWRInfinite(getKey, fetcher, {
             revalidateOnFocus: false,
+            keepPreviousData: true,
         });
 
     let transformedData;
@@ -53,6 +54,7 @@ export default function useArchiveSearch() {
         total: data?.[0].results_count,
         data,
         error,
+        isLoading,
         isValidating,
         size,
         setSize,
