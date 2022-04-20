@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import { FaUndo } from 'react-icons/fa';
 
@@ -17,12 +17,20 @@ export default function ArchiveSearchForm({
     const { t } = useI18n();
     const formEl = useRef(null);
 
-    const { fulltext, setFulltext, resetSearchParams } = useSearchParams();
+    const { fulltext, setFulltext, setSort, setFulltextAndSort,
+        resetSearchParams } = useSearchParams();
 
     const [fulltextInput, setFulltextInput] = useState(fulltext);
 
+    useEffect(() => {
+        setFulltextInput(fulltext);
+    }, [fulltext])
+
     function handleReset() {
         resetSearchParams();
+
+        // Set defaults. TODO: add random option.
+        //setSort('title', 'asc');
 
         if (isMobile()) {
             hideSidebar();
@@ -32,7 +40,16 @@ export default function ArchiveSearchForm({
     function handleSubmit(event) {
         event.preventDefault();
 
-        setFulltext(fulltextInput?.trim());
+        const searchTerm = fulltextInput?.trim();
+
+        if (searchTerm?.length > 0)  {
+            setFulltextAndSort(searchTerm, 'relevance', 'desc');
+        } else {
+            setFulltextInput('');
+
+            // Set defaults. TODO: add random option.
+            setFulltextAndSort(undefined, 'title', 'asc');
+        }
 
         clearAllInterviewSearch();
 

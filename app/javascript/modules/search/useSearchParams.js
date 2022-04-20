@@ -38,10 +38,10 @@ export default function useSearchParams() {
         setParam('order', value);
     }
 
-    function setSort(criterion, order) {
+    function setSort(sort, order) {
         const newParams = {
             ...params,
-           sort: criterion,
+           sort,
            order,
         };
         pushToHistory(newParams);
@@ -49,6 +49,16 @@ export default function useSearchParams() {
 
     function setFulltext(value) {
         setParam('fulltext', value);
+    }
+
+    function setFulltextAndSort(fulltext, sort, order) {
+        const newParams = {
+            ...params,
+           fulltext,
+           sort,
+           order,
+        };
+        pushToHistory(newParams);
     }
 
     function setYearOfBirthRange(min, max) {
@@ -162,6 +172,7 @@ export default function useSearchParams() {
             setSortOrder,
             setSort,
             setFulltext,
+            setFulltextAndSort,
             setYearOfBirthRange,
             setParam,
             addFacetParam,

@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
@@ -48,6 +49,17 @@ export default function ArchiveSearchSorting({
         sortByOptions = transformMetadataFields(
             Object.values(project?.metadata_fields) || []);
     }
+
+    useEffect(() => {
+        if (!sortBy) {
+            // Set defaults.
+            if (project.default_search_order === 'random') {
+                setSort('random', undefined);
+            } else {
+                setSort('title', 'asc');
+            }
+        }
+    }, []);
 
     function handleSortByChange(newSortBy) {
         switch (newSortBy) {
