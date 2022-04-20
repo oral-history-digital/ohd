@@ -142,6 +142,7 @@ export default function useSearchParams() {
 
     const memoizedValue = useMemo(() => {
         return {
+            allParams: params,
             sortBy,
             sortOrder,
             birthYearMin,

@@ -20,6 +20,7 @@ export { default as ArchiveSearchFormContainer } from './components/ArchiveSearc
 export { default as MapFacets } from './components/MapFacets';
 
 export { default as queryToText } from './queryToText';
+export { default as convertLegacyQuery } from './convertLegacyQuery';
 
 export { default as useSearchParams } from './useSearchParams';
 export { default as useArchiveSearch } from './useArchiveSearch';

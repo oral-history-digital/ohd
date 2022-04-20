@@ -1,8 +1,9 @@
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash, FaAngleRight } from 'react-icons/fa';
+import queryString from 'query-string';
 
 import { LinkOrA } from 'modules/routes';
-import { queryToText, useFacets } from 'modules/search';
+import { queryToText, convertLegacyQuery, useFacets } from 'modules/search';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
@@ -38,8 +39,7 @@ export default function UserContent({
         hideSidebarIfMobile();
     }
 
-    function onSearchClick(pathBase) {
-        // TODO: searchInArchive(`${pathBase}/searches/archive`, data.properties);
+    function onSearchClick() {
         hideSidebarIfMobile();
     }
 
@@ -65,7 +65,11 @@ export default function UserContent({
             break;
         case 'Search':
             linkNode = (
-                <LinkOrA project={project} to='searches/archive' params={`${new URLSearchParams(data.properties)}`} onLinkClick={onSearchClick}>
+                <LinkOrA
+                    project={project}
+                    to={`searches/archive?${queryString.stringify(convertLegacyQuery(data.properties), { arrayFormat: 'bracket' })}`}
+                    onLinkClick={onSearchClick}
+                >
                     {t(callKey)}
                 </LinkOrA>
             );
@@ -91,7 +95,8 @@ export default function UserContent({
                     <p>
                         <span className='flyout-content-label'>{t('query')}:</span>
                         <span className='flyout-content-data'>
-                            {queryToText(data.properties, facets, locale, translations)}
+                            {queryToText(convertLegacyQuery(data.properties),
+                                facets, locale, translations)}
                         </span>
                     </p>
                 )
