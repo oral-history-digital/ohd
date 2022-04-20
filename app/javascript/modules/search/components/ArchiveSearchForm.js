@@ -23,7 +23,7 @@ export default function ArchiveSearchForm({
     const [fulltextInput, setFulltextInput] = useState(fulltext);
 
     useEffect(() => {
-        setFulltextInput(fulltext);
+        setFulltextInput(fulltext || '');
     }, [fulltext])
 
     function handleReset() {
