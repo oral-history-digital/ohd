@@ -25,13 +25,13 @@ export default function useMapReferences(registryEntryId) {
     const filter = useSelector(getMapFilter);
     const isEditView = useSelector(getEditView);
     const isLoggedIn = useSelector(getIsLoggedIn);
-    const { facets, birthYearMin, birthYearMax } = useSearchParams();
+    const { facets, yearOfBirthMin, yearOfBirthMax } = useSearchParams();
 
     const { referenceTypes, error: referenceTypesError } = useMapReferenceTypes();
 
     const params = {
         ...facets,
-        year_of_birth: range(birthYearMin, birthYearMax + 1),
+        year_of_birth: range(yearOfBirthMin, yearOfBirthMax + 1),
         all: isEditView ? true : undefined,
         // This is ignored in backend and only needed to create different keys for SWR.
         'logged-in': isLoggedIn ? true : undefined,

@@ -14,10 +14,10 @@ export default function YearRange({
     sliderMin,
     sliderMax,
 }) {
-    const { birthYearMin, birthYearMax, setBirthYearMinMax } = useSearchParams();
+    const { yearOfBirthMin, yearOfBirthMax, setYearOfBirthRange } = useSearchParams();
 
     function onSliderChange(value) {
-        setBirthYearMinMax(value[0], value[1]);
+        setYearOfBirthRange(value[0], value[1]);
     }
 
     let marks = {};
@@ -34,7 +34,7 @@ export default function YearRange({
     return (
         <div>
             <div style={style} className="year-range-state">
-                <span>{birthYearMin || sliderMin} - {birthYearMax || sliderMax}</span>
+                <span>{yearOfBirthMin || sliderMin} - {yearOfBirthMax || sliderMax}</span>
             </div>
             <Range
                 min={sliderMin}
@@ -44,7 +44,7 @@ export default function YearRange({
                 marks={marks}
                 tipProps={{placement: 'top'}}
                 style={rangeStyle}
-                value={[birthYearMin || sliderMin, birthYearMax || sliderMax]}
+                value={[yearOfBirthMin || sliderMin, yearOfBirthMax || sliderMax]}
             />
         </div>
     );

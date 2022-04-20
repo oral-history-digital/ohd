@@ -21,8 +21,8 @@ export default function SearchActions({
     const { t } = useI18n();
     const pathBase = usePathBase();
     const { facets } = useFacets();
-    const { allParams, fulltext, facets: urlFacets, birthYearMin,
-        birthYearMax } = useSearchParams();
+    const { allParams, fulltext, facets: urlFacets, yearOfBirthMin,
+        yearOfBirthMax } = useSearchParams();
 
     function saveSearchForm(closeModal) {
         moment.locale(locale);
@@ -46,7 +46,7 @@ export default function SearchActions({
     const params = {
         fulltext,
         ...urlFacets,
-        year_of_birth: range(birthYearMin, birthYearMax + 1),
+        year_of_birth: range(yearOfBirthMin, yearOfBirthMax + 1),
     };
     const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
     const exportUrl = `${pathBase}/searches/archive.csv?${paramStr}`;

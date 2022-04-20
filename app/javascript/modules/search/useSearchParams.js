@@ -17,8 +17,8 @@ export default function useSearchParams() {
     const sortBy = params.sort;
     const sortOrder = params.order;
     const fulltext = params.fulltext;
-    const birthYearMin = Number.parseInt(params.birth_year_min);
-    const birthYearMax = Number.parseInt(params.birth_year_max);
+    const yearOfBirthMin = Number.parseInt(params.year_of_birth_min);
+    const yearOfBirthMax = Number.parseInt(params.year_of_birth_max);
 
     const facets = {
         ...params,
@@ -26,8 +26,8 @@ export default function useSearchParams() {
     delete facets.sort;
     delete facets.order;
     delete facets.fulltext;
-    delete facets.birth_year_min;
-    delete facets.birth_year_max;
+    delete facets.year_of_birth_min;
+    delete facets.year_of_birth_max;
 
 
     function setSortBy(value) {
@@ -42,10 +42,10 @@ export default function useSearchParams() {
         setParam('fulltext', value);
     }
 
-    function setBirthYearMinMax(min, max) {
+    function setYearOfBirthRange(min, max) {
         setParams({
-            birth_year_min: min,
-            birth_year_max: max,
+            year_of_birth_min: min,
+            year_of_birth_max: max,
         });
     }
 
@@ -145,14 +145,14 @@ export default function useSearchParams() {
             allParams: params,
             sortBy,
             sortOrder,
-            birthYearMin,
-            birthYearMax,
+            yearOfBirthMin,
+            yearOfBirthMax,
             fulltext,
             facets,
             setSortBy,
             setSortOrder,
             setFulltext,
-            setBirthYearMinMax,
+            setYearOfBirthRange,
             setParam,
             addFacetParam,
             deleteFacetParam,

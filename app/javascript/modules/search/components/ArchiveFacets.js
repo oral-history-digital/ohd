@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { useAuthorization } from 'modules/auth';
 import { Spinner } from 'modules/spinners';
 import Facet from './Facet';
-import BirthYearFacet from './BirthYearFacet';
+import YearOfBirthFacet from './YearOfBirthFacet';
 import useFacets from '../useFacets';
 
 export default function ArchiveFacets() {
@@ -30,7 +30,7 @@ export default function ArchiveFacets() {
                         .map(year => Number.parseInt(year));
 
                     return (
-                        <BirthYearFacet
+                        <YearOfBirthFacet
                             data={facets[facet]}
                             key={index}
                             sliderMin={Math.min(...years)}

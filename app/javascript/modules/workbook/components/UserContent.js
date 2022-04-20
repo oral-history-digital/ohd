@@ -7,6 +7,7 @@ import { queryToText, convertLegacyQuery, useFacets } from 'modules/search';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
+import { INDEX_SEARCH } from 'modules/sidebar';
 import UserContentFormContainer from './UserContentFormContainer';
 import UserContentDeleteContainer from './UserContentDeleteContainer';
 
@@ -18,6 +19,7 @@ export default function UserContent({
     setArchiveId,
     sendTimeChangeRequest,
     hideSidebar,
+    setSidebarTabsIndex,
 }) {
     const { t } = useI18n();
     const { facets } = useFacets();
@@ -40,6 +42,7 @@ export default function UserContent({
     }
 
     function onSearchClick() {
+        setSidebarTabsIndex(INDEX_SEARCH);
         hideSidebarIfMobile();
     }
 
@@ -160,4 +163,5 @@ UserContent.propTypes = {
     setArchiveId: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
+    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

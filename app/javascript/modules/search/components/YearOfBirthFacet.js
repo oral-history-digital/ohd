@@ -6,7 +6,7 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import { useI18n } from 'modules/i18n';
 import YearRange from './YearRange';
 
-export default function BirthYearFacet({
+export default function YearOfBirthFacet({
     data,
     sliderMin,
     sliderMax,
@@ -51,7 +51,7 @@ export default function BirthYearFacet({
     );
 }
 
-BirthYearFacet.propTypes = {
+YearOfBirthFacet.propTypes = {
     data: PropTypes.object.isRequired,
     sliderMin: PropTypes.number,
     sliderMax: PropTypes.number,

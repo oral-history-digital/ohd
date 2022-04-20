@@ -7,13 +7,13 @@ import { usePathBase } from 'modules/routes';
 import useSearchParams from './useSearchParams';
 
 export default function useFacets() {
-    const { fulltext, facets, birthYearMin, birthYearMax } = useSearchParams();
+    const { fulltext, facets, yearOfBirthMin, yearOfBirthMax } = useSearchParams();
     const pathBase = usePathBase();
 
     const params = {
         fulltext,
         ...facets,
-        year_of_birth: range(birthYearMin, birthYearMax + 1),
+        year_of_birth: range(yearOfBirthMin, yearOfBirthMax + 1),
     };
     const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
     const path = `${pathBase}/searches/facets?${paramStr}`;

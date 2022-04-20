@@ -12,11 +12,11 @@ export default function useMapLocations() {
     const pathBase = usePathBase();
     const isEditView = useSelector(getEditView);
 
-    const { facets, birthYearMin, birthYearMax } = useSearchParams();
+    const { facets, yearOfBirthMin, yearOfBirthMax } = useSearchParams();
 
     const params = {
         ...facets,
-        year_of_birth: range(birthYearMin, birthYearMax + 1),
+        year_of_birth: range(yearOfBirthMin, yearOfBirthMax + 1),
         all: isEditView ? true : undefined,
     };
     const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });

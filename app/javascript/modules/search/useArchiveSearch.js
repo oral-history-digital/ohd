@@ -20,15 +20,15 @@ function transformData(data) {
 
 export default function useArchiveSearch() {
     const isLoggedIn = useSelector(getIsLoggedIn);
-    const { sortBy, sortOrder, fulltext, facets, birthYearMin,
-        birthYearMax } = useSearchParams();
+    const { sortBy, sortOrder, fulltext, facets, yearOfBirthMin,
+        yearOfBirthMax } = useSearchParams();
     const pathBase = usePathBase();
 
     function getKey(pageIndex, previousPageData) {
         const params = {
             fulltext,
             ...facets,
-            year_of_birth: range(birthYearMin, birthYearMax + 1),
+            year_of_birth: range(yearOfBirthMin, yearOfBirthMax + 1),
             sort: sortBy,
             order: sortOrder,
             page: pageIndex + 1,
