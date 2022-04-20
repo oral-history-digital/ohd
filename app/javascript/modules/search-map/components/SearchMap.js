@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import 'leaflet/dist/leaflet.css';
 import { useDispatch, useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
+import classNames from 'classnames';
 
 import { ScrollToTop } from 'modules/user-agent';
 import { getMapSections } from 'modules/data';
@@ -13,6 +14,7 @@ import SearchMapPopup from './SearchMapPopup';
 import MapFilterContainer from './MapFilterContainer';
 import MapSectionsSelect from './MapSectionsSelect';
 import MapNewBoundsSetter from './MapNewBoundsSetter';
+import useMapLocations from '../useMapLocations';
 import { setMapView } from '../actions';
 import { getMapView } from '../selectors';
 
@@ -24,6 +26,7 @@ export default function SearchMap() {
     const { t } = useI18n();
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
+    const { isLoading: locationsLoading } = useMapLocations();
 
     useEffect(() => {
         dispatch(setSidebarTabsIndex(INDEX_MAP));
@@ -48,24 +51,28 @@ export default function SearchMap() {
                 <title>{t('modules.search_map.title')}</title>
             </Helmet>
             <div className="wrapper-content map SearchMap">
-                {
-                    error ?
-                        (<div>
-                            {t('modules.search_map.error')}: {error.message}
-                        </div>) :
-                        (<MapComponent
-                            className="Map--search"
-                            loading={isLoading}
-                            markers={markers || []}
-                            popupComponent={SearchMapPopup}
-                        >
-                            <MapNewBoundsSetter
-                                bounds={bounds}
-                                view={mapView}
-                                onViewChange={handleViewChange}
-                            />
-                        </MapComponent>)
-                }
+                <div className={classNames('LoadingOverlay', {
+                    'is-loading': locationsLoading,
+                })}>
+                    {
+                        error ?
+                            (<div>
+                                {t('modules.search_map.error')}: {error.message}
+                            </div>) :
+                            (<MapComponent
+                                className="Map--search"
+                                loading={isLoading}
+                                markers={markers || []}
+                                popupComponent={SearchMapPopup}
+                            >
+                                <MapNewBoundsSetter
+                                    bounds={bounds}
+                                    view={mapView}
+                                    onViewChange={handleViewChange}
+                                />
+                            </MapComponent>)
+                    }
+                </div>
 
                 <div className="SearchMap-controls">
                     <MapFilterContainer />
