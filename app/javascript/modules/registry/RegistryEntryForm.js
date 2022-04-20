@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { t } from 'modules/i18n';
-import RegistryNameContainer from './RegistryNameContainer';
+//import RegistryNameContainer from './RegistryNameContainer';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 
 export default class RegistryEntryForm extends Component {
@@ -29,28 +29,6 @@ export default class RegistryEntryForm extends Component {
         )
     }
 
-    //registryNames() {
-        //if (this.registryEntry()) {
-            //return (
-                //<div>
-                    //<h4 className="u-mb-none">
-                        //{t(this.props, 'registry_names.title')}
-                    //</h4>
-                    //{
-                        //this.registryEntry().registry_names.map(registryName => (
-                            //<RegistryNameContainer
-                                //registryName={registryName}
-                                //registryEntryId={this.props.registryEntryId}
-                                //formClasses={'nested-form default'}
-                                //key={registryName.id}
-                            ///>
-                        //))
-                    //}
-                //</div>
-            //);
-        //}
-    //}
-
     parentRegistryEntry() {
         if (this.props.registryEntryParent){
             return (
@@ -62,23 +40,12 @@ export default class RegistryEntryForm extends Component {
         }
     }
 
-    //nestedFormProps() {
-        //let props = {
-            //registryEntryId: this.props.registryEntryId,
-            //showOnInit: true
-        //};
-        //if (this.props.registryEntryId)
-            //props.submitData = this.props.submitData;
-        //return props;
-    //}
-
     render() {
         const { submitData, onSubmit, onCancel } = this.props;
 
         return (
             <div>
                 {this.parentRegistryEntry()}
-                {/*this.registryNames()*/}
                 <Form
                     key={this.props.registryEntryId}
                     scope='registry_entry'
@@ -125,7 +92,6 @@ export default class RegistryEntryForm extends Component {
                             parent: this.registryEntry(),
                             scope: 'registry_name',
                             elementRepresentation: this.showRegistryName,
-                            //showOnInit: true
                         },
                         //{
                             //formComponent: RegistryNormDataForm,
