@@ -21,7 +21,8 @@ export default function ArchiveSearchSorting({
     const project = useSelector(getCurrentProject);
     const editView = useSelector(getEditView);
 
-    const { sortBy, sortOrder, setSortBy, setSortOrder } = useSearchParams();
+    const { sortBy, sortOrder, setSortOrder, setSort } =
+        useSearchParams();
 
     const showSortOrderSelect = sortBy !== 'random';
 
@@ -49,7 +50,17 @@ export default function ArchiveSearchSorting({
     }
 
     function handleSortByChange(newSortBy) {
-        setSortBy(newSortBy);
+        switch (newSortBy) {
+        case 'random':
+            setSort(newSortBy, undefined);
+            break;
+        case 'relevance':
+            setSort(newSortBy, 'desc');
+            break;
+        default:
+            setSort(newSortBy, 'asc');
+            break;
+        }
     }
 
     function handleSortOrderChange(newSortOrder) {

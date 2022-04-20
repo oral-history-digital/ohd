@@ -38,6 +38,15 @@ export default function useSearchParams() {
         setParam('order', value);
     }
 
+    function setSort(criterion, order) {
+        const newParams = {
+            ...params,
+           sort: criterion,
+           order,
+        };
+        pushToHistory(newParams);
+    }
+
     function setFulltext(value) {
         setParam('fulltext', value);
     }
@@ -151,6 +160,7 @@ export default function useSearchParams() {
             facets,
             setSortBy,
             setSortOrder,
+            setSort,
             setFulltext,
             setYearOfBirthRange,
             setParam,
