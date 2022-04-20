@@ -24,7 +24,7 @@ export default function SearchActions({
     function saveSearchForm(closeModal) {
         moment.locale(locale);
         const now = moment().format('lll');
-        const queryText = queryToText(query, { locale, translations, facets });
+        const queryText = queryToText(query, facets, locale, translations);
         const title = queryText === '' ? now : queryText + ' - ' + now;
 
         return <UserContentFormContainer

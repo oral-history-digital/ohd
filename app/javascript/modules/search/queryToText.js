@@ -1,25 +1,34 @@
 import { t } from 'modules/i18n';
 
-export default function queryToText(query, props) {
-    let queryText = "";
-    for (let [k, value] of Object.entries(query)) {
+export default function queryToText(query, facets, locale, translations) {
+    let queryText = '';
+
+    for (let [key, value] of Object.entries(query)) {
         {
-            if (value?.length && props.facets) {
-                let key = t(props, 'search_facets.' + k.replace('[]',''));
-                let nextElement = queryText == "" ? "" : " - "
-                queryText = queryText + nextElement + key + ": ";
-                if (Array.isArray(value)) {
-                    value.forEach(function (element, index) {
-                        let el = props.facets[k.replace('[]','')] && props.facets[k.replace('[]','')]['subfacets'][element]
-                        let val = el ? el['name'][props.locale] : ''
-                        let endElement = index == value.length - 1 ? "" : ", "
-                        queryText = queryText + " " + val + endElement;
-                    })
-                } else {
-                    queryText = queryText + " " + value
-                }
+            if (key === 'sort' || key === 'order') {
+                continue;
+            }
+            if (typeof value !== 'string' && !Array.isArray(value)) {
+                continue;
+            }
+
+            const translatedKey = t({ locale, translations }, `search_facets.${key}`);
+            const separator = queryText === '' ? '' : ' - ';
+            queryText += `${separator}${translatedKey}: `;
+
+            if (typeof value === 'string') {
+                queryText += value;
+            } else {
+                // Array
+                value.forEach((element, index) => {
+                    const el = facets?.[key]?.['subfacets'][element];
+                    const val = el ? el['name'][locale] : element;
+                    const endElement = index === value.length - 1 ? '' : ', ';
+                    queryText += `${val}${endElement}`;
+                })
             }
         }
     }
+
     return queryText;
 }

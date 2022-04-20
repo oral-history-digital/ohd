@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash, FaAngleRight } from 'react-icons/fa';
 
 import { LinkOrA } from 'modules/routes';
-import { queryToText } from 'modules/search';
+import { queryToText, useFacets } from 'modules/search';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
@@ -12,12 +12,14 @@ import UserContentDeleteContainer from './UserContentDeleteContainer';
 export default function UserContent({
     data,
     locale,
+    translations,
     projects,
     setArchiveId,
     sendTimeChangeRequest,
     hideSidebar,
 }) {
     const { t } = useI18n();
+    const { facets } = useFacets();
 
     function hideSidebarIfMobile() {
         if (isMobile()) {
@@ -88,7 +90,9 @@ export default function UserContent({
                 data.type === 'Search' && (
                     <p>
                         <span className='flyout-content-label'>{t('query')}:</span>
-                        <span className='flyout-content-data'>{queryToText(data.properties, { locale })}</span>
+                        <span className='flyout-content-data'>
+                            {queryToText(data.properties, facets, locale, translations)}
+                        </span>
                     </p>
                 )
             }
@@ -146,6 +150,7 @@ export default function UserContent({
 UserContent.propTypes = {
     data: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
     projects: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
