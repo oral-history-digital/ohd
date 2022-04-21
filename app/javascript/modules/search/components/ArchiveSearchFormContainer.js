@@ -3,7 +3,6 @@ import { bindActionCreators } from 'redux';
 
 import { getProjectId } from 'modules/archive';
 import { hideSidebar } from 'modules/sidebar';
-import { clearAllInterviewSearch } from '../actions';
 import ArchiveSearchForm from './ArchiveSearchForm';
 
 const mapStateToProps = state => ({
@@ -11,7 +10,6 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-    clearAllInterviewSearch,
     hideSidebar,
 }, dispatch);
 

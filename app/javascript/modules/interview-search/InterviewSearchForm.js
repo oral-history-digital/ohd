@@ -1,29 +1,39 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaSearch, FaTimesCircle } from 'react-icons/fa';
 
-import { usePathBase } from 'modules/routes';
+import { useSearchParams } from 'modules/search';
 import { useI18n } from 'modules/i18n';
+import useInterviewSearch from './useInterviewSearch';
 
 export default function InterviewSearchForm({
     archiveId,
-    isInterviewSearching,
-    interviewFulltext,
-    clearSingleInterviewSearch,
-    searchInInterview,
 }) {
-    const [searchTerm, setSearchTerm] = useState(interviewFulltext || '');
-    const pathBase = usePathBase();
+    const { fulltext, setFulltext } = useSearchParams();
+    const { isLoading } = useInterviewSearch(archiveId, fulltext);
+
+    const [searchTerm, setSearchTerm] = useState(fulltext || '');
     const { t } = useI18n();
+
+    useEffect(() => {
+        setSearchTerm(fulltext);
+    }, [fulltext]);
 
     function handleSubmit(event) {
         event.preventDefault();
-        searchInInterview(`${pathBase}/searches/interview`, {fulltext: searchTerm, id: archiveId});
+
+        const trimmedTerm = searchTerm.trim();
+
+        if (trimmedTerm.length > 0) {
+            setFulltext(trimmedTerm);
+        } else {
+            setFulltext(undefined);
+        }
     }
 
     function handleClear() {
         setSearchTerm('');
-        clearSingleInterviewSearch(archiveId);
+        setFulltext(undefined);
     }
 
     return (
@@ -43,7 +53,7 @@ export default function InterviewSearchForm({
                 <button
                     type="button"
                     className="Button Button--transparent Button--icon search-button"
-                    disabled={isInterviewSearching}
+                    disabled={isLoading}
                     onClick={handleClear}
                 >
                     <FaTimesCircle className="Icon Icon--primary" />
@@ -51,7 +61,7 @@ export default function InterviewSearchForm({
                 <button
                     type="submit"
                     className="Button Button--transparent Button--icon search-button"
-                    disabled={isInterviewSearching}
+                    disabled={isLoading}
                 >
                     <FaSearch className="Icon Icon--primary" />
                 </button>
@@ -62,8 +72,4 @@ export default function InterviewSearchForm({
 
 InterviewSearchForm.propTypes = {
     archiveId: PropTypes.string.isRequired,
-    interviewFulltext: PropTypes.string,
-    isInterviewSearching: PropTypes.bool,
-    clearSingleInterviewSearch: PropTypes.func.isRequired,
-    searchInInterview: PropTypes.func.isRequired,
 };

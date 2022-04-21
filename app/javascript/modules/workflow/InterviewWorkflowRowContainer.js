@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { searchInInterview } from 'modules/search';
 import { setArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject, getProjects,
     getLanguages, getCollectionsForCurrentProject, getPeopleStatus,
@@ -25,7 +24,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setArchiveId,
-    searchInInterview,
     fetchData,
 }, dispatch);
 

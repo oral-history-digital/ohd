@@ -1,18 +1,29 @@
 export { NAME as SEARCH_NAME } from './constants';
 
-export { resetQuery, setQueryParams, searchInInterview,
-    clearSingleInterviewSearch, clearAllInterviewSearch, searchRegistryEntry,
-    changeRegistryEntriesViewMode } from './actions';
+export {
+    changeRegistryEntriesViewMode,
+    resetQuery,
+    searchRegistryEntry,
+    setQueryParams,
+} from './actions';
 
 export { default as searchReducer } from './reducer';
 
-export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree,
-    getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery,
-    getLanguagesQuery, getInstitutionsQuery, getContributionTypesQuery, getRegistryNameTypesQuery,
-    getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
-    getInterviewSearchResults, getCurrentInterviewSearchResults,
-    getSegmentResults, getHeadingResults, getRegistryEntryResults, getPhotoResults, getBiographyResults,
-    getAnnotationResults, getObservationsResults
+export {
+    getCollectionsQuery,
+    getContributionTypesQuery,
+    getInstitutionsQuery,
+    getIsRegistryEntrySearching,
+    getLanguagesQuery,
+    getPeopleQuery,
+    getPermissionsQuery,
+    getRegistryEntriesSearch,
+    getRegistryNameTypesQuery,
+    getRegistryReferenceTypesQuery,
+    getRolesQuery,
+    getShowRegistryEntriesTree,
+    getTaskTypesQuery,
+    getUserRegistrationsQuery,
 } from './selectors';
 
 export { default as SearchPage } from './components/SearchPage';

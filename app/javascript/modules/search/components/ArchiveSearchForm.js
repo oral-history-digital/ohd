@@ -12,7 +12,6 @@ import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 export default function ArchiveSearchForm({
     projectId,
     hideSidebar,
-    clearAllInterviewSearch,
 }) {
     const { t } = useI18n();
     const formEl = useRef(null);
@@ -50,8 +49,6 @@ export default function ArchiveSearchForm({
             // Set defaults. TODO: add random option.
             setFulltextAndSort(undefined, 'title', 'asc');
         }
-
-        clearAllInterviewSearch();
 
         if (isMobile()) {
             hideSidebar();
@@ -99,5 +96,4 @@ export default function ArchiveSearchForm({
 ArchiveSearchForm.propTypes = {
     projectId: PropTypes.string,
     hideSidebar: PropTypes.func.isRequired,
-    clearAllInterviewSearch: PropTypes.func.isRequired,
 };

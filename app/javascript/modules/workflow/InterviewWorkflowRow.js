@@ -30,7 +30,6 @@ export default function InterviewWorkflowRow({
     userAccountsStatus,
     fetchData,
     setArchiveId,
-    searchInInterview,
 }) {
     const [collapsed, setCollapsed] = useState(true);
     const { t } = useI18n();
@@ -91,9 +90,8 @@ export default function InterviewWorkflowRow({
                     <Link className="Link search-result-link box-10"
                         onClick={() => {
                             setArchiveId(interview.archive_id);
-                            searchInInterview(`${pathBase}/searches/interview`, { fulltext, id: interview.archive_id});
                         }}
-                        to={pathBase + '/interviews/' + interview.archive_id}
+                        to={`${pathBase}/interviews/${interview.archive_id}?fulltext=${fulltext}`}
                     >
                         <img
                             className="workflow"
@@ -198,6 +196,5 @@ InterviewWorkflowRow.propTypes = {
     tasks: PropTypes.object,
     tasksStatus: PropTypes.object.isRequired,
     setArchiveId: PropTypes.func.isRequired,
-    searchInInterview: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

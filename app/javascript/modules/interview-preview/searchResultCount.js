@@ -1,14 +1,14 @@
 export default function searchResultCount(interviewSearchResults) {
     let count = 0;
-    if (interviewSearchResults?.foundSegments) {
+    if (interviewSearchResults?.found_segments) {
         count
-            += interviewSearchResults.foundSegments.length
-            + interviewSearchResults.foundHeadings.length
-            + interviewSearchResults.foundRegistryEntries.length
-            + interviewSearchResults.foundBiographicalEntries.length
-            + interviewSearchResults.foundAnnotations.length
-            + interviewSearchResults.foundPhotos.length
-            + interviewSearchResults.foundObservations.length;
+            += interviewSearchResults.found_segments.length
+            + interviewSearchResults.found_headings.length
+            + interviewSearchResults.found_registry_entries.length
+            + interviewSearchResults.found_biographical_entries.length
+            + interviewSearchResults.found_annotations.length
+            + interviewSearchResults.found_photos.length
+            + interviewSearchResults.found_observations.length;
     }
 
     return count;

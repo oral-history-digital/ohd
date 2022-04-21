@@ -139,8 +139,6 @@ class ApplicationController < ActionController::Base
 
   def initial_search_redux_state
     {
-      archive: {},
-      interviews: {},
       registryEntries: {
         showRegistryEntriesTree: true,
         results: []

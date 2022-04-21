@@ -1,8 +1,4 @@
 import {
-    REQUEST_INTERVIEW_SEARCH,
-    RECEIVE_INTERVIEW_SEARCH,
-    CLEAR_SINGLE_INTERVIEW_SEARCH,
-    CLEAR_ALL_INTERVIEW_SEARCH,
     REQUEST_REGISTRY_ENTRY_SEARCH,
     RECEIVE_REGISTRY_ENTRY_SEARCH,
     CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
@@ -11,7 +7,6 @@ import {
 } from './action-types';
 
 export const initialState = {
-    interviews: {},
     registryEntries: {
         showRegistryEntriesTree: true,
         results: []
@@ -31,42 +26,7 @@ export const initialState = {
 }
 
 const search = (state = initialState, action) => {
-    let nextState;
     switch (action.type) {
-    case REQUEST_INTERVIEW_SEARCH:
-        return Object.assign({}, state, {
-            isInterviewSearching: true,
-        });
-    case RECEIVE_INTERVIEW_SEARCH:
-        return Object.assign({}, state, {
-            isInterviewSearching: false,
-            interviews: Object.assign({}, state.interviews, {
-                [action.archiveId]: {
-                    foundSegments: action.foundSegments,
-                    foundHeadings: action.foundHeadings,
-                    foundRegistryEntries: action.foundRegistryEntries,
-                    foundBiographicalEntries: action.foundBiographicalEntries,
-                    foundPhotos: action.foundPhotos,
-                    foundAnnotations: action.foundAnnotations,
-                    foundObservations: action.foundObservations,
-                    fulltext: action.fulltext,
-                }
-            })
-        });
-    case CLEAR_SINGLE_INTERVIEW_SEARCH:
-        nextState = {
-            ...state,
-            interviews: {
-                ...state.interviews,
-            },
-        };
-        delete nextState.interviews[action.payload];
-        return nextState;
-    case CLEAR_ALL_INTERVIEW_SEARCH:
-        return {
-            ...state,
-            interviews: {},
-        };
     case REQUEST_REGISTRY_ENTRY_SEARCH:
         return Object.assign({}, state, {
             isRegistryEntrySearching: true,

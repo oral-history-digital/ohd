@@ -8,8 +8,8 @@ import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
 import { useProjectAccessStatus, AuthShowContainer, useAuthorization } from
     'modules/auth';
+import { useInterviewSearch } from 'modules/interview-search';
 import { useSearchParams } from 'modules/search';
-import searchResultCount from './searchResultCount';
 
 export default function InterviewListRow({
     project,
@@ -17,7 +17,6 @@ export default function InterviewListRow({
     projects,
     interview,
     interviewee,
-    interviewSearchResults,
     selectedArchiveIds,
     locale,
     translations,
@@ -25,7 +24,6 @@ export default function InterviewListRow({
     collections,
     peopleStatus,
     setArchiveId,
-    searchInInterview,
     addRemoveArchiveId,
     fetchData,
     isLoggedIn,
@@ -34,24 +32,16 @@ export default function InterviewListRow({
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const pathBase = usePathBase();
     const { fulltext } = useSearchParams();
-    const intervieweeId = interview.interviewee_id;
+
+    const { numResults } = useInterviewSearch(interview.archive_id, fulltext);
 
     useEffect(() => {
-        return;
-
         if (!projectAccessGranted) {
             fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, 'landing_page_metadata');
         } else if (projectAccessGranted && !interviewee?.associations_loaded) {
             fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, null, 'with_associations=true');
         }
-
-        if (fulltext) {
-            searchInInterview(`${pathBase}/searches/interview`, { fulltext, id: interview.archive_id });
-        }
     }, [projectAccessGranted, isLoggedIn, interviewee?.associations_loaded]);
-
-    const searchResults = interviewSearchResults[interview.archive_id];
-    const resultCount = searchResultCount(searchResults);
 
     return (
         <tr className="Table-row">
@@ -70,9 +60,8 @@ export default function InterviewListRow({
                 <Link className="search-result-link"
                     onClick={() => {
                         setArchiveId(interview.archive_id);
-                        searchInInterview(`${pathBase}/searches/interview`, { fulltext, id: interview.archive_id });
                     }}
-                    to={`${pathBase}/interviews/${interview.archive_id}`}
+                    to={`${pathBase}/interviews/${interview.archive_id}?fulltext=${fulltext}`}
                 >
                     {
                         project.is_catalog ? (
@@ -109,13 +98,13 @@ export default function InterviewListRow({
                 })
             }
             {
-                fulltext && resultCount > 0 && (
+                fulltext && numResults > 0 && (
                     <td className="Table-cell">
                         <Link className="search-result-link"
                             onClick={() => setArchiveId(interview.archive_id)}
                             to={`${pathBase}/interviews/${interview.archive_id}`}
                         >
-                            {resultCount}
+                            {numResults}
                         </Link>
                     </td>
                 )
@@ -131,12 +120,10 @@ InterviewListRow.propTypes = {
     translations: PropTypes.object.isRequired,
     interview: PropTypes.object,
     interviewee: PropTypes.object,
-    interviewSearchResults: PropTypes.object,
     project: PropTypes.object.isRequired,
     peopleStatus: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
     setArchiveId: PropTypes.func.isRequired,
-    searchInInterview: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

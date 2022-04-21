@@ -15,7 +15,7 @@ export default function SlideShowSearchResults({
 }) {
     const dispatch = useDispatch();
 
-    const segments = searchResults.foundSegments;
+    const segments = searchResults.found_segments;
 
     if (!segments) {
         return null;

@@ -1,5 +1,3 @@
-import dotProp from 'dot-prop-immutable';
-
 import { NAME  } from './constants';
 import * as selectors from './selectors';
 
@@ -21,21 +19,6 @@ const state = {
         },
     },
     [NAME]: {
-        interviews: {
-            cd003: {
-                fulltext: 'berlin',
-                foundSegments: ['dummySegment'],
-                foundHeadings: ['dummyHeading'],
-                foundRegistryEntries: ['dummyRegistryEntry'],
-                foundBiographicalEntries: ['dummyBiographicalEntry'],
-                foundPhotos: [],
-                foundAnnotations: ['dummyAnnotation'],
-                foundObservations: ['dummy', 'dummy', 'dummy'],
-            },
-            za003: {
-                fulltext: 'poland',
-            },
-        },
         registryEntries: {
             showRegistryEntriesTree: true,
             results: [],
@@ -96,7 +79,6 @@ const state = {
                 page: 2,
             },
         },
-        isMapSearching: true,
         isRegistryEntrySearching: true,
     },
 };
@@ -143,40 +125,4 @@ test('getTaskTypesQuery retrieves task types query params', () => {
 
 test('getUserRegistrationsQuery retrieves user registrations query params', () => {
     expect(selectors.getUserRegistrationsQuery(state)).toEqual(state[NAME].user_registrations.query);
-});
-
-test('getInterviewSearchResults retrieves interview search results', () => {
-    expect(selectors.getInterviewSearchResults(state)).toEqual(state[NAME].interviews);
-});
-
-test('getCurrentInterviewSearchResults retrieves current interview search results', () => {
-    expect(selectors.getCurrentInterviewSearchResults(state)).toEqual(state[NAME].interviews.cd003);
-});
-
-test('getSegmentResults retrieves current interview segment search results', () => {
-    expect(selectors.getSegmentResults(state)).toEqual(state[NAME].interviews.cd003.foundSegments);
-});
-
-test('getHeadingResults retrieves current interview heading search results', () => {
-    expect(selectors.getHeadingResults(state)).toEqual(state[NAME].interviews.cd003.foundHeadings);
-});
-
-test('getRegistryEntryResults retrieves current interview registry entry search results', () => {
-    expect(selectors.getRegistryEntryResults(state)).toEqual(state[NAME].interviews.cd003.foundRegistryEntries);
-});
-
-test('getPhotoResults retrieves current interview photo search results', () => {
-    expect(selectors.getPhotoResults(state)).toEqual(state[NAME].interviews.cd003.foundPhotos);
-});
-
-test('getBiographyResults retrieves current interview biography search results', () => {
-    expect(selectors.getBiographyResults(state)).toEqual(state[NAME].interviews.cd003.foundBiographicalEntries);
-});
-
-test('getAnnotationResults retrieves current interview annotation search results', () => {
-    expect(selectors.getAnnotationResults(state)).toEqual(state[NAME].interviews.cd003.foundAnnotations);
-});
-
-test('getObservationsResults retrieves current interview observations search results', () => {
-    expect(selectors.getObservationsResults(state)).toEqual(state[NAME].interviews.cd003.foundObservations);
 });
