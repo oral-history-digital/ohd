@@ -59,7 +59,7 @@ export default function ArchiveSearchSorting({
                 setSort('title', 'asc');
             }
         }
-    }, []);
+    }, [sortBy]);
 
     function handleSortByChange(event) {
         const newSortBy = event.target.value;
