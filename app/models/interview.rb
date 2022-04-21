@@ -842,6 +842,9 @@ class Interview < ApplicationRecord
           when 'language_id'
             order_by(:language_id, sort_order)
             order_by("person_name_#{locale}".to_sym, :asc)
+          when 'collection_id'
+            order_by(:collection_id, sort_order)
+            order_by("person_name_#{locale}".to_sym, :asc)
           when 'workflow_state'
             order_by(:workflow_state, sort_order)
             order_by("person_name_#{locale}".to_sym, :asc)

@@ -1305,6 +1305,7 @@ de:
           media_type: Medientyp
           language: Sprache
           language_id: Sprache
+          collection_id: Teilsammlung
           workflow_state: Status
           random: Zufall
         order:

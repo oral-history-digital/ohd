@@ -4,6 +4,7 @@ const possibleOptions = [
     'language',
     'language_id',
     'media_type',
+    'collection_id',
 ];
 
 export default function filterByPossibleOptions(options) {
