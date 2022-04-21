@@ -61,7 +61,9 @@ export default function ArchiveSearchSorting({
         }
     }, []);
 
-    function handleSortByChange(newSortBy) {
+    function handleSortByChange(event) {
+        const newSortBy = event.target.value;
+
         switch (newSortBy) {
         case 'random':
             setSort(newSortBy, undefined);
@@ -75,8 +77,8 @@ export default function ArchiveSearchSorting({
         }
     }
 
-    function handleSortOrderChange(newSortOrder) {
-        setSortOrder(newSortOrder);
+    function handleSortOrderChange(event) {
+        setSortOrder(event.target.value);
     }
 
     const sortOrderOptions = [
@@ -92,7 +94,8 @@ export default function ArchiveSearchSorting({
             >
                 {t('modules.search.sorting.label')}
             </p>
-            <Listbox
+
+            <select
                 className="SearchSorting-select u-ml-tiny"
                 aria-labelledby="sort_options"
                 value={sortBy}
@@ -100,19 +103,18 @@ export default function ArchiveSearchSorting({
             >
                 {
                     sortByOptions.map(option => (
-                        <ListboxOption
+                        <option
                             key={option}
                             value={option}
-                            label={t(`modules.search.sorting.by.${option}`)}
                         >
                             {t(`modules.search.sorting.by.${option}`)}
-                        </ListboxOption>
+                        </option>
                     ))
                 }
-            </Listbox>
+            </select>
 
             {showSortOrderSelect && (
-                <Listbox
+                <select
                     className="SearchSorting-select u-ml-tiny"
                     aria-labelledby="sort_options"
                     value={sortOrder}
@@ -120,16 +122,15 @@ export default function ArchiveSearchSorting({
                 >
                     {
                         sortOrderOptions.map(option => (
-                            <ListboxOption
+                            <option
                                 key={option}
                                 value={option}
-                                label={t(`modules.search.sorting.order.${option}`)}
                             >
                                 {t(`modules.search.sorting.order.${option}`)}
-                            </ListboxOption>
+                            </option>
                         ))
                     }
-                </Listbox>
+                </select>
             )}
         </div>
     );
