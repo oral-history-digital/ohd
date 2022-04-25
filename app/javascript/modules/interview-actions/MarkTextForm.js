@@ -46,10 +46,14 @@ export default class MarkTextForm extends Component {
                             individualErrorMsg: 'empty'
                         },
                     ]}
-                    nestedForm={SingleTextInputFormContainer}
-                    nestedFormProps={{}}
-                    nestedFormScope='text'
-                    nestedScopeRepresentation={this.showMarkedText}
+
+                    nestedScopeProps={[{
+                        formComponent: SingleTextInputFormContainer,
+                        formProps: {},
+                        parent: this.props.interview,
+                        scope: 'text',
+                        elementRepresentation: this.showMarkedText,
+                    }]}
                 />
             )
         }

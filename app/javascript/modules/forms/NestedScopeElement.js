@@ -20,7 +20,7 @@ export default function NestedScopeElement({
     projects,
 }) {
     const { t } = useI18n();
-    const [editing, setEditing] = useState(showForm);
+    const [editing, setEditing] = useState(!!showForm);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
     return (

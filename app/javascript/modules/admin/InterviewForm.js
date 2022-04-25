@@ -131,10 +131,13 @@ export default class InterviewForm extends Component {
         }
 
         if (this.props.withContributions) {
-            props['nestedForm'] = ContributionFormContainer;
-            props['nestedFormProps'] = {withSpeakerDesignation: true};
-            props['nestedFormScope'] = 'contribution';
-            props['nestedScopeRepresentation'] = this.showContribution;
+            props['nestedScopeProps'] = [{
+                formComponent: ContributionFormContainer,
+                formProps: {withSpeakerDesignation: true},
+                parent: this.props.interview,
+                scope: 'contribution',
+                elementRepresentation: this.showContribution,
+            }]
         }
 
         return createElement(Form, props);

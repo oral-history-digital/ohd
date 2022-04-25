@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 
 import { getLocale, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
 import { fetchData, submitData, getProjectLocales, getProjects, getCurrentAccount,
-    getPeopleForCurrentProject, getPeopleStatus, getSpeakerDesignationsStatus } from 'modules/data';
+    getPeopleForCurrentProject, getPeopleStatus, getSpeakerDesignationsStatus,
+    getContributionTypesForCurrentProject } from 'modules/data';
 import AssignSpeakersForm from './AssignSpeakersForm';
 
 const mapStateToProps = state => ({
@@ -17,6 +18,7 @@ const mapStateToProps = state => ({
     people: getPeopleForCurrentProject(state),
     peopleStatus: getPeopleStatus(state),
     speakerDesignationsStatus: getSpeakerDesignationsStatus(state),
+    contributionTypes: getContributionTypesForCurrentProject(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({

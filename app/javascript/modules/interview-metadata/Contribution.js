@@ -45,7 +45,7 @@ export default function Contribution({
                         >
                             {close => (
                                 <ContributionFormContainer
-                                    contribution={contribution}
+                                    data={contribution}
                                     withSpeakerDesignation
                                     submitData={submitData}
                                     onSubmit={close}

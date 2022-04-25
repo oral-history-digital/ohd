@@ -21,7 +21,7 @@ export default function NestedScope({
 
     return (
         <>
-            { elements.map( element => {
+            { Array.isArray(elements) && elements.map( element => {
                 return (
                     <NestedScopeElementContainer
                         element={element}

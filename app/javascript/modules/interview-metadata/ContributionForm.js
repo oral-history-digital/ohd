@@ -16,11 +16,13 @@ export default function ContributionForm({
     projects,
     projectId,
     locale,
-    contribution,
+    data,
     contributionTypes,
     interview,
     formClasses,
     onSubmit,
+    onSubmitCallback,
+    index,
     onCancel,
     setSidebarTabsIndex,
     fetchData,
@@ -40,7 +42,7 @@ export default function ContributionForm({
             elementType: 'select',
             attribute: 'person_id',
             values: people && Object.values(people),
-            value: contribution?.person_id,
+            value: data?.person_id,
             withEmpty: true,
             validate: v => v !== '',
             individualErrorMsg: 'empty',
@@ -49,7 +51,7 @@ export default function ContributionForm({
             elementType: 'select',
             attribute: 'contribution_type_id',
             values: contributionTypes && Object.values(contributionTypes),
-            value: contribution?.contribution_type_id,
+            value: data?.contribution_type_id,
             optionsScope: 'contributions',
             keepOrder: true,
             withEmpty: true,
@@ -59,14 +61,14 @@ export default function ContributionForm({
             elementType: 'select',
             attribute: 'workflow_state',
             values: ["unshared", "public"],
-            value: contribution ? contribution.workflow_state : 'public',
+            value: data ? data.workflow_state : 'public',
             optionsScope: 'workflow_states',
         }
     ]
     if (withSpeakerDesignation) {
         formElements.push({
             attribute: 'speaker_designation',
-            value: contribution?.speaker_designation,
+            value: data?.speaker_designation,
         });
     }
 
@@ -77,19 +79,20 @@ export default function ContributionForm({
         >
             <Form
                 scope='contribution'
-                data={contribution}
+                data={data}
                 values={{
                     interview_id: interview?.id,
-                    workflow_state: contribution ? contribution.workflow_state : 'public'
+                    workflow_state: data ? data.workflow_state : 'public'
                 }}
                 onSubmit={(params) => {
                     if (typeof submitData === 'function') {
-                        submitData({ locale, projectId, projects }, params);
+                        submitData({ locale, projectId, projects }, params, index);
                     }
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
                 }}
+                onSubmitCallback={onSubmitCallback}
                 onCancel={onCancel}
                 formClasses={formClasses}
                 elements={formElements}
@@ -114,7 +117,7 @@ export default function ContributionForm({
 ContributionForm.propTypes = {
     interview: PropTypes.object.isRequired,
     withSpeakerDesignation: PropTypes.bool,
-    contribution: PropTypes.object,
+    data: PropTypes.object,
     contributionTypes: PropTypes.object.isRequired,
     formClasses: PropTypes.string,
     people: PropTypes.object,

@@ -37,7 +37,7 @@ export default class AssignSpeakersForm extends Component {
         return (
             <span>
                 <span>{fullname(this.props, this.props.people[parseInt(value.person_id)]) + ', '}</span>
-                <span>{t(this.props, `contributions.${value.contribution_type}`) + ', '}</span>
+                <span>{this.props.contributionTypes[value.contribution_type_id].label[this.props.locale] + ', '}</span>
                 <span>{value.speaker_designation}</span>
             </span>
         )
@@ -72,10 +72,13 @@ export default class AssignSpeakersForm extends Component {
                         id: this.props.interview.archive_id
                     }}
                     elements={this.formElements()}
-                    nestedForm={this.allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer}
-                    nestedFormProps={{withSpeakerDesignation: true, interview: this.props.interview}}
-                    nestedFormScope='contribution'
-                    nestedScopeRepresentation={this.showContribution}
+                    nestedScopeProps={[{
+                        formComponent: this.allHiddenSpeakerDesignationsAssigned() && ContributionFormContainer,
+                        formProps: {withSpeakerDesignation: true, interview: this.props.interview},
+                        parent: this.props.interview,
+                        scope: 'contribution',
+                        elementRepresentation: this.showContribution,
+                    }]}
                 />
             )
         }
