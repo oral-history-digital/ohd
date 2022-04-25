@@ -22,8 +22,8 @@ export default function ArchiveSearchSorting({
     const project = useSelector(getCurrentProject);
     const editView = useSelector(getEditView);
 
-    const { fulltextIsSet, sortBy, sortOrder, setSortOrder, setSort } =
-        useSearchParams();
+    const { fulltextIsSet, sortBy, sortOrder, setSortOrder, setSort,
+        setDefaultSortOptions } = useSearchParams();
 
     const showSortOrderSelect = sortBy !== 'random';
 
@@ -64,9 +64,9 @@ export default function ArchiveSearchSorting({
         if (!sortBy) {
             // Set defaults.
             if (project.default_search_order === 'random') {
-                setSort('random', undefined);
+                setDefaultSortOptions('random', undefined);
             } else {
-                setSort('title', 'asc');
+                setDefaultSortOptions('title', 'asc');
             }
         }
     }, [sortBy]);

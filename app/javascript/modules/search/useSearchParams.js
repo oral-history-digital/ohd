@@ -48,6 +48,15 @@ export default function useSearchParams() {
         pushToHistory(newParams);
     }
 
+    function setDefaultSortOptions(sort, order) {
+        const newParams = {
+            ...params,
+           sort,
+           order,
+        };
+        pushToHistory(newParams, true);
+    }
+
     function setFulltext(value) {
         setParam('fulltext', value);
     }
@@ -154,10 +163,16 @@ export default function useSearchParams() {
         pushToHistory(newParams);
     }
 
-    function pushToHistory(newParams) {
-        history.push({
+    function pushToHistory(newParams, replace = false) {
+        const options = {
             search: queryString.stringify(newParams, qsOptions),
-        });
+        };
+
+        if (replace) {
+            history.replace(options);
+        } else {
+            history.push(options);
+        }
     }
 
     const memoizedValue = useMemo(() => {
@@ -173,6 +188,7 @@ export default function useSearchParams() {
             setSortBy,
             setSortOrder,
             setSort,
+            setDefaultSortOptions,
             setFulltext,
             setFulltextAndSort,
             setYearOfBirthRange,
