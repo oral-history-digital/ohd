@@ -17,6 +17,7 @@ export default function useSearchParams() {
     const sortBy = params.sort;
     const sortOrder = params.order;
     const fulltext = params.fulltext;
+    const fulltextIsSet = fulltext?.length > 0;
     const yearOfBirthMin = Number.parseInt(params.year_of_birth_min);
     const yearOfBirthMax = Number.parseInt(params.year_of_birth_max);
 
@@ -167,6 +168,7 @@ export default function useSearchParams() {
             yearOfBirthMin,
             yearOfBirthMax,
             fulltext,
+            fulltextIsSet,
             facets,
             setSortBy,
             setSortOrder,

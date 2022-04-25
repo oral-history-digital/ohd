@@ -2,9 +2,9 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
-import { Listbox, ListboxOption } from '@reach/listbox';
 import '@reach/listbox/styles.css';
 import flow from 'lodash.flow';
+import curry from 'lodash.curry';
 
 import { useI18n } from 'modules/i18n';
 import { getCurrentProject } from 'modules/data';
@@ -22,14 +22,14 @@ export default function ArchiveSearchSorting({
     const project = useSelector(getCurrentProject);
     const editView = useSelector(getEditView);
 
-    const { sortBy, sortOrder, setSortOrder, setSort } =
+    const { fulltextIsSet, sortBy, sortOrder, setSortOrder, setSort } =
         useSearchParams();
 
     const showSortOrderSelect = sortBy !== 'random';
 
     let sortByOptions;
     if (editView) {
-        sortByOptions = [
+        sortByOptions = fulltextIsSet ? [
             'relevance',
             'random',
             'title',
@@ -37,6 +37,16 @@ export default function ArchiveSearchSorting({
             'media_type',
             'duration',
             'language',
+            'collection_id',
+            'workflow_state',
+        ] : [
+            'random',
+            'title',
+            'archive_id',
+            'media_type',
+            'duration',
+            'language',
+            'collection_id',
             'workflow_state',
         ];
     } else {
@@ -44,7 +54,7 @@ export default function ArchiveSearchSorting({
             sortByFacetOrder,
             searchOptionsFromMetadataFields,
             filterByPossibleOptions,
-            addObligatoryOptions,
+            curry(addObligatoryOptions)(fulltextIsSet)
         );
         sortByOptions = transformMetadataFields(
             Object.values(project?.metadata_fields) || []);
