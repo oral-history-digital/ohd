@@ -28,7 +28,7 @@ export default function ArchiveSearchFormInput({
                 className="search-input"
                 type="search"
                 name="fulltext"
-                value={value}
+                value={value || ''}
                 placeholder={t(projectId === 'dg' ? 'enter_field_dg' : 'enter_field')}
                 onChange={event => onChange(event.target.value)}
                 list='allInterviewTitles'
