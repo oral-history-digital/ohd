@@ -9,6 +9,7 @@ export default function NestedScopeElement({
     formProps,
     onSubmit,
     onDelete,
+    submitData,
     deleteData,
     formComponent,
     showForm,
@@ -22,11 +23,15 @@ export default function NestedScopeElement({
     const [editing, setEditing] = useState(showForm);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
-    debugger
     return (
         <>
             { editing ?
-                createElement(formComponent, {...formProps, ...{data: element, index: index, submitData: onSubmit, onSubmitCallback: setEditing}}) :
+                createElement(formComponent, {...formProps, ...{
+                    data: element,
+                    index: index,
+                    submitData: !!element.id ? submitData : onSubmit,
+                    onSubmitCallback: setEditing
+                }}) :
                 <div>
                     {elementRepresentation(element)}
 

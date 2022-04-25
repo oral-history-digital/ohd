@@ -120,7 +120,6 @@ export default class FormComponent extends Component {
 
     // props is a dummy here
     handleNestedFormSubmit(props, params, index) {
-        debugger
         this.writeNestedObjectToStateValues(params, null, index);
     }
 

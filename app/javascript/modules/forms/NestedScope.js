@@ -19,7 +19,6 @@ export default function NestedScope({
     const newElements = (getNewElements() || []);
     const [editing, setEditing] = useState(elements.length === 0);
 
-    debugger
     return (
         <>
             { elements.map( element => {

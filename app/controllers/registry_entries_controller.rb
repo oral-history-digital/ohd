@@ -67,7 +67,7 @@ class RegistryEntriesController < ApplicationController
         render json: {
           id: @registry_entry.id,
           data_type: "registry_entries",
-          data: cache_single(@registry_entry),
+          data: cache_single(@registry_entry.reload),
         }
       end
     end
