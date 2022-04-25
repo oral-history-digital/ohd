@@ -26,7 +26,7 @@ export default function useArchiveSearch() {
         yearOfBirthMax } = useSearchParams();
     const pathBase = usePathBase();
 
-    function getKey(pageIndex, previousPageData) {
+    function getKey(pageIndex) {
         const params = {
             fulltext,
             ...facets,
@@ -54,8 +54,9 @@ export default function useArchiveSearch() {
 
     const { data, error, isValidating, isLoading, size, setSize } =
         useSWRInfinite(getKey, fetcher, {
-            revalidateOnFocus: false,
             keepPreviousData: true,
+            revalidateFirstPage: false,
+            revalidateOnFocus: false,
         });
 
     let transformedData;
