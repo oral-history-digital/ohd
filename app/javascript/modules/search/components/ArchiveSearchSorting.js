@@ -63,7 +63,7 @@ export default function ArchiveSearchSorting({
     useEffect(() => {
         if (!sortBy) {
             // Set defaults.
-            if (project.default_search_order === 'random') {
+            if (project?.default_search_order === 'random') {
                 setDefaultSortOptions('random', undefined);
             } else {
                 setDefaultSortOptions('title', 'asc');

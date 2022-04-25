@@ -57,7 +57,8 @@ class ProjectSerializer < ApplicationSerializer
     :list_columns,
     :grid_fields,
     :root_registry_entry_id,
-    :display_ohd_link
+    :display_ohd_link,
+    :default_search_order
 
   def title
     object.shortname

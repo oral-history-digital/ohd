@@ -5,6 +5,7 @@ import range from 'lodash.range';
 
 import { getIsLoggedIn } from 'modules/account';
 import { fetcher } from 'modules/api';
+import { getCurrentProject } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 import useSearchParams from './useSearchParams';
 
@@ -19,6 +20,7 @@ function transformData(data) {
 }
 
 export default function useArchiveSearch() {
+    const project = useSelector(getCurrentProject);
     const isLoggedIn = useSelector(getIsLoggedIn);
     const { sortBy, sortOrder, fulltext, facets, yearOfBirthMin,
         yearOfBirthMax } = useSearchParams();
@@ -34,6 +36,18 @@ export default function useArchiveSearch() {
             page: pageIndex + 1,
             'logged-in': isLoggedIn, // just to build different keys
         };
+
+        // Set defaults if sort options are not set.
+        if (!params.sortBy) {
+            if (project?.default_search_order === 'random') {
+                params.sort = 'random';
+                delete params.order;
+            } else {
+                params.sort = 'title';
+                params.order = 'asc';
+            }
+        }
+
         const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });
         return `${pathBase}/searches/archive?${paramStr}`;
     }
@@ -48,8 +62,6 @@ export default function useArchiveSearch() {
     if (data) {
         transformedData = transformData(data);
     }
-
-    console.log(data?.[0].fulltext)
 
     return {
         interviews: transformedData,
