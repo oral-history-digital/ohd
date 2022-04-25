@@ -49,9 +49,12 @@ export default function useArchiveSearch() {
         transformedData = transformData(data);
     }
 
+    console.log(data?.[0].fulltext)
+
     return {
         interviews: transformedData,
         total: data?.[0].results_count,
+        fulltext: data?.[0].fulltext,
         data,
         error,
         isLoading,

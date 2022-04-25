@@ -187,6 +187,7 @@ class SearchesController < ApplicationController
           results_count: search.total,
           interviews: search.results.map { |i| cache_single(i, current_user_account ? 'InterviewLoggedInSearchResult' : 'InterviewBase') },
           page: params[:page].to_i || 1,
+          fulltext: params[:fulltext]
         }
       end
       format.csv do

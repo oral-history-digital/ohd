@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaEyeSlash } from 'react-icons/fa';
+import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
 import { usePathBase } from 'modules/routes';
@@ -9,7 +10,7 @@ import { humanReadable } from 'modules/data';
 import { useProjectAccessStatus, AuthShowContainer, useAuthorization } from
     'modules/auth';
 import { useInterviewSearch } from 'modules/interview-search';
-import { useSearchParams } from 'modules/search';
+import { useArchiveSearch } from 'modules/search';
 
 export default function InterviewListRow({
     project,
@@ -31,9 +32,12 @@ export default function InterviewListRow({
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const pathBase = usePathBase();
-    const { fulltext } = useSearchParams();
-
+    const { fulltext } = useArchiveSearch();
     const { numResults } = useInterviewSearch(interview.archive_id, fulltext);
+
+    const params = { fulltext };
+    const paramStr = queryString.stringify(params, { skipNull: true });
+    const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
 
     useEffect(() => {
         if (!projectAccessGranted) {
@@ -61,7 +65,7 @@ export default function InterviewListRow({
                     onClick={() => {
                         setArchiveId(interview.archive_id);
                     }}
-                    to={`${pathBase}/interviews/${interview.archive_id}?fulltext=${fulltext}`}
+                    to={linkUrl}
                 >
                     {
                         project.is_catalog ? (

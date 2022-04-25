@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import classNames from 'classnames';
+import queryString from 'query-string';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaAngleDown, FaAngleUp } from 'react-icons/fa';
@@ -10,7 +11,7 @@ import { SingleValueWithFormContainer } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { useSearchParams } from 'modules/search';
+import { useArchiveSearch } from 'modules/search';
 import TaskContainer from './TaskContainer';
 
 export default function InterviewWorkflowRow({
@@ -34,7 +35,11 @@ export default function InterviewWorkflowRow({
     const [collapsed, setCollapsed] = useState(true);
     const { t } = useI18n();
     const pathBase = usePathBase();
-    const { fulltext } = useSearchParams();
+    const { fulltext } = useArchiveSearch();
+
+    const params = { fulltext };
+    const paramStr = queryString.stringify(params, { skipNull: true });
+    const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
 
     useEffect(() => {
         loadUserAccounts();
@@ -91,7 +96,7 @@ export default function InterviewWorkflowRow({
                         onClick={() => {
                             setArchiveId(interview.archive_id);
                         }}
-                        to={`${pathBase}/interviews/${interview.archive_id}?fulltext=${fulltext}`}
+                        to={linkUrl}
                     >
                         <img
                             className="workflow"
