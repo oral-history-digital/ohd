@@ -10,7 +10,6 @@ import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthorizedContent } from 'modules/auth';
 import { useArchiveSearch } from 'modules/search';
 import { useInterviewSearch } from 'modules/interview-search';
-import { usePathBase } from 'modules/routes';
 import ThumbnailBadge from './ThumbnailBadge';
 import InterviewPreviewInner from './InterviewPreviewInner';
 
@@ -24,14 +23,13 @@ export default function InterviewPreview({
     addRemoveArchiveId,
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
-    const pathBase = usePathBase();
     const project = projects[interview.project_id];
     const projectId = project.identifier;
     const { fulltext } = useArchiveSearch();
 
     const params = { fulltext };
     const paramStr = queryString.stringify(params, { skipNull: true });
-    const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
+    const linkPath = `interviews/${interview.archive_id}?${paramStr}`;
 
     /* TODO: Only load search results in certain cases.
       project.archive_domain === window.location.origin ||
@@ -60,7 +58,7 @@ export default function InterviewPreview({
             />
             <LinkOrA
                 project={project}
-                to={linkUrl}
+                to={linkPath}
                 onLinkClick={doSetArchiveId}
                 className="InterviewCard-link"
             >
