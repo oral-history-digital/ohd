@@ -81,7 +81,7 @@ export default class FormComponent extends Component {
         let _this = this;
         event.preventDefault();
         if(this.valid()) {
-            this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values});
+            this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values}, this.props.index);
             if (typeof(this.props.onSubmitCallback) === "function") {
                 this.props.onSubmitCallback()
             }
@@ -101,13 +101,14 @@ export default class FormComponent extends Component {
         return `${pluralize(scope)}_attributes`;
     }
 
-    writeNestedObjectToStateValues(params, identifier) {
+    writeNestedObjectToStateValues(params, identifier, index) {
         // for translations identifier is 'locale' to not multiply translations
         identifier ||= 'id';
         let scope = Object.keys(params)[0];
         let nestedObject = params[scope];
         let nestedObjects = this.state.values[this.nestedRailsScopeName(scope)] || [];
-        let index = nestedObjects.findIndex((t) => nestedObject[identifier] && t[identifier] === nestedObject[identifier]);
+        if (index === undefined)
+            index = nestedObjects.findIndex((t) => nestedObject[identifier] && t[identifier] === nestedObject[identifier]);
         index = index === -1 ? nestedObjects.length : index;
 
         this.setState({values: Object.assign({}, this.state.values, {
@@ -118,8 +119,9 @@ export default class FormComponent extends Component {
     }
 
     // props is a dummy here
-    handleNestedFormSubmit(props, params) {
-        this.writeNestedObjectToStateValues(params);
+    handleNestedFormSubmit(props, params, index) {
+        debugger
+        this.writeNestedObjectToStateValues(params, null, index);
     }
 
     nestedScopes() {

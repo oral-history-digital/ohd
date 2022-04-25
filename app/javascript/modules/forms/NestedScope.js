@@ -15,9 +15,11 @@ export default function NestedScope({
     elementRepresentation,
 }) {
     const { t } = useI18n();
-    const elements = (parent?.[pluralize(scope)] || []);//.concat(getNewElements());
+    const elements = (parent?.[pluralize(scope)] || []);
+    const newElements = (getNewElements() || []);
     const [editing, setEditing] = useState(elements.length === 0);
 
+    debugger
     return (
         <>
             { elements.map( element => {
@@ -33,7 +35,7 @@ export default function NestedScope({
                     />
                 )
             })}
-            { (getNewElements() || []).map( (element, index) => {
+            { newElements.map( (element, index) => {
                 return (
                     <NestedScopeElementContainer
                         element={element}
@@ -48,7 +50,7 @@ export default function NestedScope({
                 )
             })}
             { editing ?
-                createElement(formComponent, {...formProps, ...{data: {}, onSubmit: onSubmit, onSubmitCallback: setEditing}}) : null
+                createElement(formComponent, {...formProps, ...{data: {}, submitData: onSubmit, onSubmitCallback: setEditing}}) : null
             }
             <button
                 type="button"

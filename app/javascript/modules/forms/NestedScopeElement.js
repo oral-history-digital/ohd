@@ -22,12 +22,14 @@ export default function NestedScopeElement({
     const [editing, setEditing] = useState(showForm);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
+    debugger
     return (
         <>
             { editing ?
-                createElement(formComponent, {...formProps, ...{data: element, onSubmit: onSubmit, onSubmitCallback: setEditing}}) :
+                createElement(formComponent, {...formProps, ...{data: element, index: index, submitData: onSubmit, onSubmitCallback: setEditing}}) :
                 <div>
                     {elementRepresentation(element)}
+
                     <button
                         type="button"
                         className="Button Button--transparent Button--icon"
@@ -40,6 +42,7 @@ export default function NestedScopeElement({
                                 <FaPencilAlt className="Icon Icon--editorial" />
                         }
                     </button>
+
                     { showConfirmDelete && <button
                         type="button"
                         className="Button Button--transparent Button--icon"
@@ -52,6 +55,7 @@ export default function NestedScopeElement({
                     >
                         <FaTrash className="Icon Icon--danger" />
                     </button> }
+
                     { !showConfirmDelete && <button
                         type="button"
                         className="Button Button--transparent Button--icon"
