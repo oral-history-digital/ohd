@@ -38,7 +38,7 @@ export default function useArchiveSearch() {
         };
 
         // Set defaults if sort options are not set.
-        if (!params.sortBy) {
+        if (!params.sort) {
             if (project?.default_search_order === 'random') {
                 params.sort = 'random';
                 delete params.order;
