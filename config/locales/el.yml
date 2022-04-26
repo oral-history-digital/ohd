@@ -102,9 +102,9 @@ el:
       broken_word: Ein Unterstrich kennzeichnet abgebrochene Wörter oder Sätze.
       fast_word: Schneller Wortanschluss
       lexical_phenomenon: Fremdsprachige Begriffe sind mit „l“ (lexical phenomenon) und dem Sprachkürzel gekennzeichnet, z.B. <l(de)> für Deutsch und <l(es)> für Spanisch. Begriffe, die aus dem Spanischen stammen, aber eingedeutscht verwendet werden, sind mit <l(es-de)> oder, im umgekehrten Fall, mit <l(de-es)> gekennzeichnet.
-      changed_voice: Besonders auffällige Änderung der Sprechweise (shift in vocal quality), z.B. <s(laut) so war das>. 
+      changed_voice: Besonders auffällige Änderung der Sprechweise (shift in vocal quality), z.B. <s(laut) so war das>.
       vocal_shift: Sprechweise
-      simultaneous: Simultanes Sprechen (simultaneous); wenn Interviewer*in und Interviewte*r gleichzeitig sprechen. 
+      simultaneous: Simultanes Sprechen (simultaneous); wenn Interviewer*in und Interviewte*r gleichzeitig sprechen.
       non_linguistic: Kennzeichnung von Geräuschen oder Ereignisse, die das Interview beeinflussen, mit <nl> (non-linguistic incidents), z.B. <nl(Telefonklingeln)>.
       sound: Geräusch
       non_verbal: Kennzeichnung für nonverbale aber lautliche Äußerungen (vocal), z. B. <v(Gähnen)>
@@ -113,7 +113,7 @@ el:
       gesture_type: Gestikart
       facial_expression: Kennzeichnung von besonders auffälliger Mimik mit <m(Art der Mimik)>, z.B. <m(schließt die Augen)>
       expression_type: Mimikart
-      notes: Korrekturen oder Ergänzungen (notes) 
+      notes: Korrekturen oder Ergänzungen (notes)
   mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
@@ -1169,7 +1169,7 @@ el:
         photographer: Photographer
         license: License
         data: Αρχείο της φωτογραφίας
-        caption_explanation: Αυτή η λεζάντα είναι διαθέσιμη μόνο στα γερμανικά.
+        caption_explanation: No photo caption available in this language.
         workflow_state: 'Κατάσταση'
       uploaded_file:
         href: Link

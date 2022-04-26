@@ -1136,7 +1136,7 @@ es:
         photographer: Foto/Fuente
         license: Licencia
         data: Archivo de la foto
-        caption_explanation: Este pie de foto sólo está disponible en alemán.
+        caption_explanation: No photo caption available in this language.
         workflow_state: 'estatus'
       uploaded_file:
         href: Link

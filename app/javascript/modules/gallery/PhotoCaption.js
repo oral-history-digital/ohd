@@ -17,11 +17,10 @@ export default function PhotoCaption({
     return (
         <div className={classNames('PhotoCaption', 'slider-text', className)}>
             {
-                photoExplanation ?
+                photoExplanation &&
                     (<p className='photo-explanation'>
                         {photoExplanation}
-                    </p>) :
-                    null
+                    </p>)
             }
             <h3 className="PhotoCaption-heading">
                 {caption}
