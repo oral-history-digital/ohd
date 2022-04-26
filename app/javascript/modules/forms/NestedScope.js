@@ -1,4 +1,5 @@
 import { FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
+import classNames from 'classnames';
 import NestedScopeElementContainer from './NestedScopeElementContainer';
 import { useState, createElement } from 'react';
 import { pluralize } from 'modules/strings';
@@ -20,7 +21,7 @@ export default function NestedScope({
     const [editing, setEditing] = useState(elements.length === 0);
 
     return (
-        <>
+        <div className={classNames('nested-scope', scope)} >
             { Array.isArray(elements) && elements.map( (element, index) => {
                 return (
                     <NestedScopeElementContainer
@@ -51,7 +52,13 @@ export default function NestedScope({
                 )
             })}
             { editing ?
-                createElement(formComponent, {...formProps, ...{data: {}, submitData: onSubmit, onSubmitCallback: setEditing}}) : null
+                createElement(formComponent, {...formProps,
+                    data: {},
+                    submitData: onSubmit,
+                    onSubmitCallback: setEditing,
+                    onCancel: setEditing,
+                    formClasses: 'nested-form default'
+                }) : null
             }
             <button
                 type="button"
@@ -66,7 +73,7 @@ export default function NestedScope({
                         <FaPlus className="Icon Icon--editorial" />
                 }
             </button>
-        </>
+        </div>
     )
                     
 }

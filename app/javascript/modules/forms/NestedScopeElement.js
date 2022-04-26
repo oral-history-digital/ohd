@@ -1,4 +1,5 @@
 import { createElement, useState } from 'react';
+import classNames from 'classnames';
 import { FaPencilAlt, FaTimes, FaTrash } from 'react-icons/fa';
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
@@ -24,14 +25,16 @@ export default function NestedScopeElement({
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
     return (
-        <>
+        <div className={classNames('nested-scope-element', scope)} >
             { editing ?
-                createElement(formComponent, {...formProps, ...{
+                createElement(formComponent, {...formProps,
                     data: element,
                     index: index,
                     submitData: !!element.id ? submitData : onSubmit,
-                    onSubmitCallback: setEditing
-                }}) :
+                    onSubmitCallback: setEditing,
+                    onCancel: setEditing,
+                    formClasses: 'nested-form default',
+                }) :
                 <div>
                     {elementRepresentation(element)}
 
@@ -71,6 +74,6 @@ export default function NestedScopeElement({
                     </button> }
                 </div>
             }
-        </>
+        </div>
     )
 }

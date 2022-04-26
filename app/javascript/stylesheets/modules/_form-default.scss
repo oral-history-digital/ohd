@@ -135,10 +135,20 @@ form.default {
   }
 
   &.nested-form {
-    background-color: $gray-light;
-    padding: 3%;
+    border-top: 1px solid $gray-medium;
+    padding: 3% 0;
   }
 }
+
+.nested-scope {
+  border: 1px solid $gray-medium;
+  padding: 1% 2%;
+  margin: 1% 0;
+  .nested-scope-element {
+    margin: 1px 0;
+  }
+}
+
 .register {
   .errors {
     border: 1px solid red;
