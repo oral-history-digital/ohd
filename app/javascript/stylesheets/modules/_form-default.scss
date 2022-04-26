@@ -137,8 +137,8 @@ form.default {
   &.nested-form {
     border-top: 1px solid $gray-medium;
     padding: 3% 0;
-    .Form-footer {
-      padding-left: 95%;
+    .Form-footer > * {
+      flex-grow: 0;
     }
   }
 }
