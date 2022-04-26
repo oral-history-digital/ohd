@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { t } from 'modules/i18n';
-//import RegistryNameContainer from './RegistryNameContainer';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
+import NormDatumFormContainer from './NormDatumFormContainer';
 
 export default class RegistryEntryForm extends Component {
 
     constructor(props) {
         super(props);
         this.showRegistryName = this.showRegistryName.bind(this);
+        this.showNormDatum = this.showNormDatum.bind(this);
     }
 
     // get registry_entry via it`s id from state.
@@ -26,6 +27,12 @@ export default class RegistryEntryForm extends Component {
         let translation = registryName.translations_attributes.find(t => t.locale === this.props.locale);
         return (
             <span>{translation.descriptor}</span>
+        )
+    }
+
+    showNormDatum(normDatum) {
+        return (
+            <span>{`${normDatum.provider} - ${normDatum.nid} `}</span>
         )
     }
 
@@ -80,10 +87,6 @@ export default class RegistryEntryForm extends Component {
                             optionsScope: 'workflow_states',
                         }
                     ]}
-                    //nestedForm={RegistryNameFormContainer}
-                    //nestedFormProps={this.nestedFormProps()}
-                    //nestedFormScope='registry_name'
-                    //nestedScopeRepresentation={this.showRegistryName}
 
                     nestedScopeProps={[
                         {
@@ -93,9 +96,13 @@ export default class RegistryEntryForm extends Component {
                             scope: 'registry_name',
                             elementRepresentation: this.showRegistryName,
                         },
-                        //{
-                            //formComponent: RegistryNormDataForm,
-                        //}
+                        {
+                            formComponent: NormDatumFormContainer,
+                            formProps: {registryEntryId: this.props.registryEntryId},
+                            parent: this.registryEntry(),
+                            scope: 'norm_datum',
+                            elementRepresentation: this.showNormDatum,
+                        }
                     ]}
                 />
             </div>

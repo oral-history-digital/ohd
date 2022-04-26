@@ -126,7 +126,7 @@ export default class FormComponent extends Component {
     nestedScopes() {
         return this.props.nestedScopeProps?.map(props => {
             return (
-                <NestedScope {...props}
+                <NestedScope key={props.scope} {...props}
                     onSubmit={this.handleNestedFormSubmit}
                     onDelete={this.deleteNestedObject}
                     getNewElements={() => this.state.values[this.nestedRailsScopeName(props.scope)]}

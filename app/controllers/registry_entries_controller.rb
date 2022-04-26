@@ -1,9 +1,9 @@
 class RegistryEntriesController < ApplicationController
   skip_before_action :authenticate_user_account!, only: [:index, :show]
-  skip_after_action :verify_authorized, only: [:norm_data]
-  skip_after_action :verify_policy_scoped, only: [:norm_data]
+  skip_after_action :verify_authorized, only: [:norm_data_api]
+  skip_after_action :verify_policy_scoped, only: [:norm_data_api]
 
-  def norm_data
+  def norm_data_api
     uri = URI.parse("https://c105-230.cloud.gwdg.de/transformation/api/610819aba6ab26663fe6163d")
     results = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
       request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
@@ -200,6 +200,12 @@ class RegistryEntriesController < ApplicationController
       :parent_id,
       :latitude,
       :longitude,
+      norm_data_attributes: [
+        :id,
+        :registry_entry_id,
+        :provider,
+        :nid
+      ],
       registry_names_attributes: [
         :id,
         :registry_entry_id,

@@ -21,9 +21,10 @@ export default function NestedScope({
 
     return (
         <>
-            { Array.isArray(elements) && elements.map( element => {
+            { Array.isArray(elements) && elements.map( (element, index) => {
                 return (
                     <NestedScopeElementContainer
+                        key={`nse-${index}`}
                         element={element}
                         onSubmit={onSubmit}
                         onDelete={onDelete}
@@ -37,6 +38,7 @@ export default function NestedScope({
             { newElements.map( (element, index) => {
                 return (
                     <NestedScopeElementContainer
+                        key={`nnse-${index}`}
                         element={element}
                         index={index}
                         onSubmit={onSubmit}
