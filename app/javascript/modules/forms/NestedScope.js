@@ -24,6 +24,7 @@ export default function NestedScope({
 
     return (
         <div className={classNames('nested-scope', scope)} >
+            <h4>{t(`${pluralize(scope)}.title`)}</h4>
             { Array.isArray(elements) && elements.map( (element, index) => {
                 return (
                     <NestedScopeElementContainer
