@@ -20,6 +20,8 @@ export default function NestedScope({
     const newElements = (getNewElements() || []);
     const [editing, setEditing] = useState(elements.length === 0);
 
+    const cancel = () => setEditing(false);
+
     return (
         <div className={classNames('nested-scope', scope)} >
             { Array.isArray(elements) && elements.map( (element, index) => {
@@ -54,25 +56,26 @@ export default function NestedScope({
             { editing ?
                 createElement(formComponent, {...formProps,
                     data: {},
+                    nested: true,
+                    bla: 2,
                     submitData: onSubmit,
                     onSubmitCallback: setEditing,
-                    onCancel: setEditing,
-                    formClasses: 'nested-form default'
+                    onCancel: cancel,
+                    formClasses: 'nested-form default',
                 }) : null
             }
-            <button
-                type="button"
-                className="Button Button--transparent Button--icon"
-                title={t(`edit.${scope}.new`)}
-                onClick={() => setEditing(!editing)}
-            >
-                {t(`${pluralize(scope)}.add`) + '  '}
-                {
-                    editing ?
-                        <FaTimes className="Icon Icon--editorial" /> :
-                        <FaPlus className="Icon Icon--editorial" />
-                }
-            </button>
+
+            { editing ? null :
+                <button
+                    type="button"
+                    className="Button Button--transparent Button--icon"
+                    title={t(`edit.${scope}.new`)}
+                    onClick={() => setEditing(!editing)}
+                >
+                    {t(`${pluralize(scope)}.add`) + '  '}
+                    <FaPlus className="Icon Icon--editorial" />
+                </button>
+            }
         </div>
     )
                     

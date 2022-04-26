@@ -1,6 +1,6 @@
 import { createElement, useState } from 'react';
 import classNames from 'classnames';
-import { FaPencilAlt, FaTimes, FaTrash } from 'react-icons/fa';
+import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { pluralize } from 'modules/strings';
 import { useI18n } from 'modules/i18n';
 
@@ -24,32 +24,33 @@ export default function NestedScopeElement({
     const [editing, setEditing] = useState(!!showForm);
     const [showConfirmDelete, setShowConfirmDelete] = useState(false);
 
+    const cancel = () => setEditing(false);
+
     return (
         <div className={classNames('nested-scope-element', scope)} >
             { editing ?
                 createElement(formComponent, {...formProps,
+                    nested: true,
                     data: element,
                     index: index,
                     submitData: !!element.id ? submitData : onSubmit,
-                    onSubmitCallback: setEditing,
-                    onCancel: setEditing,
+                    onSubmitCallback: cancel,
+                    onCancel: cancel,
                     formClasses: 'nested-form default',
                 }) :
                 <div>
                     {elementRepresentation(element)}
 
-                    <button
-                        type="button"
-                        className="Button Button--transparent Button--icon"
-                        title={t(`edit.default.${editing ? 'cancel' : 'edit'}`)}
-                        onClick={() => setEditing(!editing)}
-                    >
-                        {
-                            editing ?
-                                <FaTimes className="Icon Icon--editorial" /> :
-                                <FaPencilAlt className="Icon Icon--editorial" />
-                        }
-                    </button>
+                    { editing ? null :
+                        <button
+                            type="button"
+                            className="Button Button--transparent Button--icon"
+                            title={t(`edit.default.${editing ? 'cancel' : 'edit'}`)}
+                            onClick={() => setEditing(!editing)}
+                        >
+                            <FaPencilAlt className="Icon Icon--editorial" />
+                        </button>
+                    }
 
                     { showConfirmDelete && <button
                         type="button"

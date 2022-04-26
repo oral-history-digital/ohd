@@ -137,13 +137,16 @@ form.default {
   &.nested-form {
     border-top: 1px solid $gray-medium;
     padding: 3% 0;
+    .Form-footer {
+      padding-left: 95%;
+    }
   }
 }
 
 .nested-scope {
   border: 1px solid $gray-medium;
   padding: 1% 2%;
-  margin: 1% 0;
+  margin-bottom: 2%;
   .nested-scope-element {
     margin: 1px 0;
   }

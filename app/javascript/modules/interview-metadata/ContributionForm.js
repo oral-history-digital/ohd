@@ -17,6 +17,7 @@ export default function ContributionForm({
     projectId,
     locale,
     data,
+    nested,
     contributionTypes,
     interview,
     formClasses,
@@ -80,6 +81,7 @@ export default function ContributionForm({
             <Form
                 scope='contribution'
                 data={data}
+                nested={nested}
                 values={{
                     interview_id: interview?.id,
                     workflow_state: data ? data.workflow_state : 'public'

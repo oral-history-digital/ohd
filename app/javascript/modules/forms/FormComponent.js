@@ -1,7 +1,7 @@
 import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import RichTextEditor from 'react-rte-17';
-import { FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
+import { FaCheckCircle, FaPlus, FaTimes, FaTrash } from 'react-icons/fa';
 import classNames from 'classnames';
 
 import { TreeSelectContainer } from 'modules/tree-select';
@@ -172,7 +172,7 @@ export default class FormComponent extends Component {
 
     render() {
         const { onCancel, className, children, elements, formId, formClasses,
-            scope, submitText } = this.props;
+            scope, submitText, nested } = this.props;
 
         return (
             <div className={className}>
@@ -194,18 +194,35 @@ export default class FormComponent extends Component {
                     {children}
 
                     <div className="Form-footer u-mt">
-                        <input
-                            type="submit"
-                            className="Button Button--primaryAction"
-                            value={t(this.props, submitText || 'submit')}
-                        />
-                        {typeof onCancel === 'function' && (
+                        { nested ?
+                            <button
+                                type="submit"
+                                className="Button Button--transparent Button--icon"
+                                value={t(this.props, submitText || 'submit')}
+                            >
+                                <FaCheckCircle className="Icon Icon--editorial" />
+                            </button> :
                             <input
-                                type="button"
-                                className="Button Button--secondaryAction"
-                                value={t(this.props, 'cancel')}
-                                onClick={onCancel}
+                                type="submit"
+                                className="Button Button--primaryAction"
+                                value={t(this.props, submitText || 'submit')}
                             />
+                        }
+                        {typeof onCancel === 'function' && (
+                            nested ?
+                                <button
+                                    className="Button Button--transparent Button--icon"
+                                    title={t(this.props, 'edit.default.cancel')}
+                                    onClick={onCancel}
+                                >
+                                    <FaTimes className="Icon Icon--editorial" />
+                                </button> :
+                                <input
+                                    type="button"
+                                    className="Button Button--secondaryAction"
+                                    value={t(this.props, 'cancel')}
+                                    onClick={onCancel}
+                                />
                         )}
                     </div>
                 </form>
