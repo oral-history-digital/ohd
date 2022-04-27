@@ -2,6 +2,7 @@ import { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import classNames from 'classnames';
 import PropTypes from 'prop-types';
+import Select from 'react-select';
 import '@reach/listbox/styles.css';
 import flow from 'lodash.flow';
 import curry from 'lodash.curry';
@@ -71,8 +72,8 @@ export default function ArchiveSearchSorting({
         }
     }, [sortBy]);
 
-    function handleSortByChange(event) {
-        const newSortBy = event.target.value;
+    function handleSortByChange(option) {
+        const newSortBy = option.value;
 
         switch (newSortBy) {
         case 'random':
@@ -87,13 +88,18 @@ export default function ArchiveSearchSorting({
         }
     }
 
-    function handleSortOrderChange(event) {
-        setSortOrder(event.target.value);
+    function handleSortOrderChange(option) {
+        setSortOrder(option.value);
     }
 
+    const sortByOptionsWithLabels = sortByOptions.map(option => ({
+        value: option,
+        label: t(`modules.search.sorting.by.${option}`),
+    }));
+
     const sortOrderOptions = [
-        'asc',
-        'desc',
+        { value: 'asc',  label: t('modules.search.sorting.order.asc') },
+        { value: 'desc', label: t('modules.search.sorting.order.desc') },
     ];
 
     return (
@@ -105,42 +111,21 @@ export default function ArchiveSearchSorting({
                 {t('modules.search.sorting.label')}
             </p>
 
-            <select
+            <Select
                 className="SearchSorting-select u-ml-tiny"
                 aria-labelledby="sort_options"
-                value={sortBy}
+                options={sortByOptionsWithLabels}
+                value={{ value: sortBy, label: t(`modules.search.sorting.by.${sortBy}`) }}
                 onChange={handleSortByChange}
-            >
-                {
-                    sortByOptions.map(option => (
-                        <option
-                            key={option}
-                            value={option}
-                        >
-                            {t(`modules.search.sorting.by.${option}`)}
-                        </option>
-                    ))
-                }
-            </select>
-
+            />
             {showSortOrderSelect && (
-                <select
+                <Select
                     className="SearchSorting-select u-ml-tiny"
                     aria-labelledby="sort_options"
-                    value={sortOrder}
+                    options={sortOrderOptions}
+                    value={{ value: sortOrder, label: t(`modules.search.sorting.order.${sortOrder}`) }}
                     onChange={handleSortOrderChange}
-                >
-                    {
-                        sortOrderOptions.map(option => (
-                            <option
-                                key={option}
-                                value={option}
-                            >
-                                {t(`modules.search.sorting.order.${option}`)}
-                            </option>
-                        ))
-                    }
-                </select>
+                />
             )}
         </div>
     );
