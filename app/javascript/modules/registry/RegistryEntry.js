@@ -4,9 +4,10 @@ import { FaGlobeEurope, FaMinus, FaPlus }
     from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { AdminMenu, Modal } from 'modules/ui';
-import { AuthorizedContent } from 'modules/auth';
+import { AdminMenu, Modal, Checkbox } from 'modules/ui';
+import { AuthorizedContent, admin } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { DeleteItemForm } from 'modules/forms';
 import RegistryHierarchyFormContainer from './RegistryHierarchyFormContainer';
 import RegistryEntryShowContainer from './RegistryEntryShowContainer';
 import RegistryEntryFormContainer from './RegistryEntryFormContainer';
@@ -102,6 +103,7 @@ export default class RegistryEntry extends Component {
                                 registryEntryId={data.id}
                                 registryEntryParent={registryEntryParent}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
                     </Item>
@@ -110,19 +112,15 @@ export default class RegistryEntry extends Component {
                         label={t(this.props, 'delete')}
                     >
                         {close => (
-                            <>
+                            <DeleteItemForm
+                                onSubmit={() => {
+                                    this.destroy();
+                                    close();
+                                }}
+                                onCancel={close}
+                            >
                                 <p>{data.name[locale]}</p>
-                                <button
-                                    type="button"
-                                    className="Button any-button"
-                                    onClick={() => {
-                                        this.destroy();
-                                        close();
-                                    }}
-                                >
-                                    {t(this.props, 'delete')}
-                                </button>
-                            </>
+                            </DeleteItemForm>
                         )}
                     </Item>
                     <Item
@@ -133,6 +131,7 @@ export default class RegistryEntry extends Component {
                             <RegistryEntryFormContainer
                                 registryEntryParent={data}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
                     </Item>
@@ -144,6 +143,7 @@ export default class RegistryEntry extends Component {
                             <RegistryEntryFromNormDataFormContainer
                                 registryEntryParent={data}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
                     </Item>
@@ -155,6 +155,7 @@ export default class RegistryEntry extends Component {
                             <RegistryHierarchyFormContainer
                                 descendantRegistryEntry={data}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
 
@@ -165,21 +166,12 @@ export default class RegistryEntry extends Component {
                             label={t(this.props, 'edit.registry_entry.delete_parent')}
                         >
                             {close => (
-                                <>
-                                    <p>
-                                        {registryEntryParent.name[locale]}
-                                    </p>
-                                    <button
-                                        type="button"
-                                        className="Button any-button"
-                                        onClick={() => {
-                                            this.rmParent();
-                                            close();
-                                        }}
-                                    >
-                                        {t(this.props, 'delete')}
-                                    </button>
-                                </>
+                                <DeleteItemForm
+                                    onSubmit={() => { this.rmParent(); close(); }}
+                                    onCancel={close}
+                                >
+                                    <p>{registryEntryParent.name[locale]}</p>
+                                </DeleteItemForm>
                             )}
                         </Item>
                     )}
@@ -195,7 +187,10 @@ export default class RegistryEntry extends Component {
     entry() {
         const { data, locale, registryEntryParent } = this.props;
 
-        const hasReferences = data.registry_references_count > 0;
+        const hasReferences = admin(this.props, {type: 'General'}, 'edit') ?
+            data.registry_references_count > 0 :
+            data.public_registry_references_count > 0;
+
         const localizedName = data.name[locale];
         const name = localizedName && localizedName.length > 0 ?
             localizedName :
@@ -210,7 +205,7 @@ export default class RegistryEntry extends Component {
         if (hasReferences) {
             return (
                 <Modal
-                    title={t(this.props, 'edit.annotation.edit')}
+                    title={t(this.props, 'activerecord.models.registry_entry.actions.show')}
                     triggerClassName="Button Button--transparent Button--withoutPadding RegistryEntry-label is-clickable"
                     trigger={displayName}
                 >
@@ -274,8 +269,7 @@ export default class RegistryEntry extends Component {
             >
                 <div className="RegistryEntry-content">
                     <AuthorizedContent object={{type: 'RegistryEntry'}} action='update'>
-                        <input
-                            type='checkbox'
+                        <Checkbox
                             className='select-checkbox'
                             checked={selectedRegistryEntryIds.includes(data.id)}
                             onChange={() => addRemoveRegistryEntryId(data.id)}

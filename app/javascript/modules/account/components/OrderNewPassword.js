@@ -1,44 +1,46 @@
-import { Component } from 'react';
 import { Helmet } from 'react-helmet';
+import PropTypes from 'prop-types';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import OrderNewPasswordFormContainer from './OrderNewPasswordFormContainer';
 
-export default class OrderNewPassword extends Component {
+export default function OrderNewPassword({
+    orderNewPasswordStatus,
+    error,
+}) {
+    const { t } = useI18n();
 
-    passwordStatus() {
-        return <div className='text'>{t(this.props, this.props.orderNewPasswordStatus)}</div>;
-    }
+    return (
+        <div className='wrapper-content register'>
+            <Helmet>
+                <title>{t('devise.passwords.forgot')}</title>
+            </Helmet>
+            {
+                orderNewPasswordStatus ? (
+                    <div className='text'>
+                        {t(orderNewPasswordStatus)}
+                    </div>
+                ) : (
+                    <div>
+                        <h1 className='forgot-password-header'>{t('devise.passwords.forgot')}</h1>
+                        <p className='forgot-passord-text'>{t('devise.passwords.send_instructions')}</p>
+                        {
+                            error && (
+                                <div
+                                    className='errors'
+                                    dangerouslySetInnerHTML={{__html: t(error)}}
+                                />
+                            )
+                        }
+                        <OrderNewPasswordFormContainer />
+                    </div>
+                )
+            }
+        </div>
+    );
+}
 
-    error() {
-        if (this.props.error) {
-            return <div className='errors' dangerouslySetInnerHTML={{__html: t(this.props, this.props.error)}} />;
-        }
-    }
-
-    content() {
-        if (this.props.orderNewPasswordStatus) {
-            return this.passwordStatus();
-        } else {
-            return (
-                <div>
-                    <h1 className='forgot-password-header'>{t(this.props, 'devise.passwords.forgot')}</h1>
-                    <p className='forgot-passord-text'>{t(this.props, 'devise.passwords.send_instructions')}</p>
-                    {this.error()}
-                    <OrderNewPasswordFormContainer />
-                </div>
-            )
-        }
-    }
-
-    render() {
-        return (
-            <div className='wrapper-content register'>
-                <Helmet>
-                    <title>{t(this.props, 'devise.passwords.forgot')}</title>
-                </Helmet>
-                {this.content()}
-            </div>
-        )
-    }
+OrderNewPassword.propTypes = {
+    orderNewPasswordStatus: PropTypes.string,
+    error: PropTypes.string,
 }

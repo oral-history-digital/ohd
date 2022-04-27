@@ -33,6 +33,8 @@ class ProjectSerializer < ApplicationSerializer
     :contact_email,
     :smtp_server,
     :has_newsletter,
+    :logged_out_visible_registry_entry_ids,
+    :pseudo_logged_out_visible_registry_entry_ids,
     :hidden_registry_entry_ids,
     :pseudo_hidden_registry_entry_ids,
     :pdf_registry_entry_ids,

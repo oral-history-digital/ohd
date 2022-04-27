@@ -48,7 +48,7 @@ class Interview < ApplicationRecord
            :through => :registry_references
 
   has_many :segments,
-           -> { order(:tape_number, :timecode) },
+           #-> { order(:tape_number, :timecode) },
            dependent: :destroy
            #inverse_of: :interview
 
@@ -70,12 +70,14 @@ class Interview < ApplicationRecord
 
   has_many :tasks, dependent: :destroy
 
+  has_and_belongs_to_many :archiving_batches
+
   serialize :properties
 
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
-    atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id)
-    update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
+    atts = %w(archive_id media_type interview_date duration tape_count language_id collection_id description)
+    update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = "true"; mem})
   end
 
   after_create :create_tasks
@@ -252,7 +254,7 @@ class Interview < ApplicationRecord
   end
 
   def self.non_public_method_names
-    %w(title short_title description observations contributions photos registry_references)
+    %w(title short_title description contributions photos registry_references)
   end
 
   def tasks_user_account_ids
@@ -380,8 +382,8 @@ class Interview < ApplicationRecord
   end
 
   def languages
-    if segments.first
-      segments.first.languages
+    if segments.length > 0
+      segments.joins(:translations).group(:locale).count.keys.map{|k| k.split('-').first}.uniq
     elsif language
       [ISO_639.find(language.first_code).try(:alpha2) || language.first_code]
     else
@@ -395,6 +397,11 @@ class Interview < ApplicationRecord
       .where('segments.interview_id': id, 'segment_translations.locale': "#{locale}-public")
       .count
     segment_count > 0
+  end
+
+  def observations_for_latex(locale)
+    escaped_text = LatexToPdf.escape_latex(observations(locale))
+    escaped_text.gsub(/\r?\n/, '~\newline~')
   end
 
   def index_observations?
@@ -452,7 +459,7 @@ class Interview < ApplicationRecord
     language && language.code == 'heb' ? true : false
   end
 
-  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale)
+  def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, update_only_speakers)
     ods = Roo::Spreadsheet.open(file_path)
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
@@ -460,15 +467,20 @@ class Interview < ApplicationRecord
         contribution = contributions.select{|c| c.speaker_designation == row[:speaker]}.first
         speaker_id = contribution && contribution.person_id
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}([:.,]{1}\d{2,3})*\]*$/
-          Segment.create_or_update_by({
-            interview_id: id,
-            timecode: row[:timecode],
-            next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode,
-            tape_id: tape_id,
-            text: row[:transcript] || '',
-            locale: locale,
-            speaker_id: speaker_id
-          })
+          if update_only_speakers && speaker_id
+            segment = Segment.find_or_create_by(interview_id: id, timecode: row[:timecode], tape_id: tape_id)
+            segment.update_attributes speaker_id: speaker_id
+          else
+            Segment.create_or_update_by({
+              interview_id: id,
+              timecode: row[:timecode],
+              next_timecode: (parsed_sheet[index+1] && parsed_sheet[index+1][:timecode]) || Timecode.new(Tape.find(tape_id).duration).timecode,
+              tape_id: tape_id,
+              text: row[:transcript] || '',
+              locale: locale,
+              speaker_id: speaker_id
+            })
+          end
         end
       end
     end
@@ -801,8 +813,11 @@ class Interview < ApplicationRecord
             end
           end
         end
+
+        # Order
+        # TODO: sort linguistically
         if params[:fulltext].blank? && params[:order].blank?
-          if project.default_search_order == 'collection'
+          if project && project.default_search_order == 'collection'
             order_by(:collection_id, :asc)
             order_by("person_name_#{locale}".to_sym, :asc)
           else
@@ -812,8 +827,10 @@ class Interview < ApplicationRecord
           order_by(params[:order].split('-')[0].to_sym, params[:order].split('-')[1].to_sym)
         else
           order_by(:score, :desc)
+          order_by("person_name_#{locale}".to_sym, :asc)
         end
-        # TODO: sort linguistically
+
+        # Pagination
         paginate page: params[:page] || 1, per_page: per_page
       end
     end

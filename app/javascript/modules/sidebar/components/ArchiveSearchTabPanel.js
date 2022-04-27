@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { ArchiveSearchFormContainer } from 'modules/search';
 import { useI18n } from 'modules/i18n';
 import { AuthorizedContent } from 'modules/auth';
-import InterviewDataContainer from './InterviewDataContainer';
+import SubTab from './SubTab';
 import AdminActionsContainer from './AdminActionsContainer';
 
 function ArchiveSearchTabPanel({ selectedArchiveIds, project }) {
@@ -20,9 +20,9 @@ function ArchiveSearchTabPanel({ selectedArchiveIds, project }) {
             { project &&
                 <div className='flyout-sub-tabs-container flyout-video'>
                     <AuthorizedContent object={{type: 'General'}} action='edit'>
-                        <InterviewDataContainer title={t('admin_actions')} >
+                        <SubTab title={t('admin_actions')} >
                             <AdminActionsContainer archiveIds={selectedArchiveIds} />
-                        </InterviewDataContainer>
+                        </SubTab>
                     </AuthorizedContent>
                 </div>
             }

@@ -119,23 +119,31 @@ export default class WrappedDataList extends Component {
         })
     }
 
-    form(data, onSubmit) {
-        if (this.props.form) {
-            return createElement(this.props.form, {data: data, values: this.props.initialFormValues, onSubmit: onSubmit});
+    form(data, onSubmit, onCancel) {
+        const { form, initialFormValues, scope, formElements, submitData } = this.props;
+
+        if (form) {
+            return createElement(form, {
+                data,
+                values: initialFormValues,
+                onSubmit,
+                onCancel,
+            });
         } else {
             return (
                 <Form
                     data={data}
-                    values={this.props.initialFormValues}
-                    scope={this.props.scope}
+                    values={initialFormValues}
+                    scope={scope}
                     onSubmit={(params) => {
-                        this.props.submitData(this.props, params);
+                        submitData(this.props, params);
                         if (typeof onSubmit === 'function') {
                             onSubmit();
                         }
                     }}
+                    onCancel={onCancel}
                     submitText='submit'
-                    elements={this.props.formElements}
+                    elements={formElements}
                 />
             );
         }
@@ -149,7 +157,7 @@ export default class WrappedDataList extends Component {
                         title={t(this.props, `edit.${this.props.scope}.new`)}
                         trigger={<><FaPlus className="Icon Icon--editorial" /> {t(this.props, `edit.${this.props.scope}.new`)}</>}
                     >
-                        {close => this.form(undefined, close)}
+                        {close => this.form(undefined, close, close)}
                     </Modal>
                 </AuthorizedContent>
             )

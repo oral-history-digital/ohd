@@ -6,7 +6,6 @@ class InterviewSerializer < InterviewBaseSerializer
     :workflow_states,
     :doi_status,
     :landing_page_texts,
-    :properties,
     :signature_original,
     :task_ids,
     :tasks_user_account_ids,
@@ -51,10 +50,6 @@ class InterviewSerializer < InterviewBaseSerializer
         mem
       end
     end
-  end
-
-  def properties
-    object.properties || {}
   end
 
 end

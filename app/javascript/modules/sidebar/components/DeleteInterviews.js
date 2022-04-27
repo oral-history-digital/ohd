@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getProjectId } from 'modules/archive';
 import { deleteData, getProjects } from 'modules/data';
 import { Modal } from 'modules/ui';
+import { DeleteItemForm } from 'modules/forms';
 import { usePathBase } from 'modules/routes';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -41,20 +42,15 @@ export default function DeleteInterviews({
                 triggerClassName="flyout-sub-tabs-content-ico-link"
             >
                 {close => (
-                    <div>
+                    <DeleteItemForm
+                        onSubmit={() => {
+                            deleteInterviews();
+                            close();
+                        }}
+                        onCancel={close}
+                    >
                         {t('edit.interviews.delete.confirm_text', {archive_ids: selectedArchiveIds.join(', ')})}
-
-                        <button
-                            type="button"
-                            className="Button any-button"
-                            onClick={() => {
-                                deleteInterviews();
-                                close();
-                            }}
-                        >
-                            {t('submit')}
-                        </button>
-                    </div>
+                    </DeleteItemForm>
                 )}
             </Modal>
         </AuthorizedContent>

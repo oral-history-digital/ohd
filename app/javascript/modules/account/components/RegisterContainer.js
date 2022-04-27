@@ -1,17 +1,12 @@
 import { connect } from 'react-redux';
 
-import Register from './Register';
 import { getCurrentProject } from 'modules/data';
-import { getLocale, getTranslations } from 'modules/archive';
 import { getRegistrationStatus } from '../selectors';
+import Register from './Register';
 
-const mapStateToProps = (state) => {
-    return {
-        registrationStatus: getRegistrationStatus(state),
-        translations: getTranslations(state),
-        project: getCurrentProject(state),
-        locale: getLocale(state),
-    }
-}
+const mapStateToProps = state => ({
+    project: getCurrentProject(state),
+    registrationStatus: getRegistrationStatus(state),
+});
 
 export default connect(mapStateToProps)(Register);

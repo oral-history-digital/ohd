@@ -8,6 +8,7 @@ export default function AuthShow({
     ifCatalog,
     project,
     account,
+    isCatalog,
     children,
 }) {
     if (
@@ -18,7 +19,7 @@ export default function AuthShow({
             Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
         ) ||
         // catalog-project
-        (ifCatalog && project?.isCatalog)
+        (ifCatalog && isCatalog)
     ) {
         return children;
     } else if (
@@ -45,5 +46,6 @@ AuthShow.propTypes = {
     ifCatalog: PropTypes.bool,
     project: PropTypes.object,
     account: PropTypes.object,
+    isCatalog: PropTypes.bool.isRequired,
     children: PropTypes.node,
 };

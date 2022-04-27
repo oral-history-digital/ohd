@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import { ArchiveSearchFormContainer } from 'modules/search';
 import { t } from 'modules/i18n';
-import InterviewDataContainer from './InterviewDataContainer';
+import SubTab from './SubTab';
 import AdminActionsContainer from './AdminActionsContainer';
 import { AuthorizedContent } from 'modules/auth';
 
@@ -17,9 +17,9 @@ function MapTabPanel(props) {
 
             <div className='flyout-sub-tabs-container flyout-video'>
                 <AuthorizedContent object={{type: 'General'}} action='edit'>
-                    <InterviewDataContainer title={t(props, 'admin_actions')} >
+                    <SubTab title={t(props, 'admin_actions')} >
                         <AdminActionsContainer archiveIds={props.selectedArchiveIds} />
-                    </InterviewDataContainer>
+                    </SubTab>
                 </AuthorizedContent>
             </div>
         </>

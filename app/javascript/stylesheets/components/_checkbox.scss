@@ -1,0 +1,36 @@
+/**
+ * Checkbox component based on ReachUI checkboxes.
+ *
+ * Icon source:
+ * https://raw.githubusercontent.com/FortAwesome/Font-Awesome/7d3d774145ac38663f6d1effc6def0334b68ab7e/svgs/solid/check.svg
+ */
+
+$checkbox-width: 0.875rem;
+$checkbox-border-width: 0.125rem;
+$checkbox-inner-width: $checkbox-width - 2 * $checkbox-border-width;
+
+.Checkbox {
+  border: $checkbox-border-width solid $ui-background-color;
+  border-radius: 0.125rem;
+  margin-right: 0;
+}
+
+.Checkbox[data-state='checked'] {
+  border-color: var(--primary-color);
+}
+
+.Checkbox[data-state='checked']:before {
+  background-color: var(--primary-color);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><path fill='white' d='M173.898 439.404l-166.4-166.4c-9.997-9.997-9.997-26.206 0-36.204l36.203-36.204c9.997-9.998 26.207-9.998 36.204 0L192 312.69 432.095 72.596c9.997-9.997 26.207-9.997 36.204 0l36.203 36.204c9.997 9.997 9.997 26.206 0 36.204l-294.4 294.401c-9.998 9.997-26.207 9.997-36.204-.001z'/></svg>");
+  color: white;
+  content: '';
+  display: block;
+  height: $checkbox-inner-width;
+  width: $checkbox-inner-width;
+}
+
+.Checkbox[data-focused],
+.Checkbox:focus,
+.Checkbox:focus-within {
+  box-shadow: 0 0 0 $focus-radius $focus-color;
+}

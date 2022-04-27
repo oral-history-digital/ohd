@@ -3,6 +3,7 @@ import classNames from 'classnames';
 import { FaInfoCircle, FaExternalLinkAlt, FaSearch, FaPlus, FaMinus }
     from 'react-icons/fa';
 
+import { Checkbox } from 'modules/ui';
 import YearRangeContainer from './YearRangeContainer';
 
 export default class Facet extends Component {
@@ -227,12 +228,13 @@ export default class Facet extends Component {
                             'checked': checkedState,
                         })}
                     >
-                        <input
+                        <Checkbox
                             className={classNames('Input', 'with-font', this.props.facet, 'checkbox')}
                             id={this.props.facet + "_" + subfacetId}
-                            name={this.props.facet + "[]"} checked={checkedState} type="checkbox"
+                            name={this.props.facet + "[]"}
+                            checked={checkedState}
                             value={subfacetId}
-                            onChange={() => this.props.handleSubmit()}
+                            onChange={this.props.handleSubmit}
                         />
                         {' '}
                         <label htmlFor={this.props.facet + "_" + subfacetId}>

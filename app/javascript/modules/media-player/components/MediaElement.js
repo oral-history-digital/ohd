@@ -1,176 +1,277 @@
-import { createRef, Component } from 'react';
+import { useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import { t } from 'modules/i18n';
-import { pathBase } from 'modules/routes';
-
+import { usePathBase } from 'modules/routes';
+import { useI18n } from 'modules/i18n';
 import speakerImage from 'assets/images/speaker.png';
+import mediaStreamsToSources from '../mediaStreamsToSources';
+import VideoJS from './VideoJS';
 
-export default class MediaElement extends Component {
-    constructor(props) {
-        super(props);
+const KEYCODE_F = 70;
+const KEYCODE_M = 77;
+const KEYCODE_P = 80;
+const KEYCODE_SPACE = 32;
+const KEYCODE_LEFT = 37;
+const KEYCODE_RIGHT = 39;
+const KEYCODE_UP = 38;
+const KEYCODE_DOWN = 40;
 
-        this.mediaElement = createRef();
+const FORWARD_STEP = 5;
+const BACKWARD_STEP = 5;
 
-        this.handlePlayEvent = this.handlePlayEvent.bind(this);
-        this.handlePauseEvent = this.handlePauseEvent.bind(this);
-        this.handleTimeUpdateEvent = this.handleTimeUpdateEvent.bind(this);
-        this.handleCanPlayEvent = this.handleCanPlayEvent.bind(this);
-        this.handleEndedEvent = this.handleEndedEvent.bind(this);
-        this.checkForTimeChangeRequest = this.checkForTimeChangeRequest.bind(this);
+export default function MediaElement({
+    archiveId,
+    className,
+    interview,
+    project,
+    mediaStreams,
+    tape,
+    timeChangeRequestAvailable,
+    timeChangeRequest,
+    updateIsPlaying,
+    updateMediaTime,
+    resetMedia,
+    sendTimeChangeRequest,
+    clearTimeChangeRequest,
+}) {
+    const pathBase = usePathBase();
+    const { t, locale } = useI18n();
+    const playerRef = useRef(null);
+
+    const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
+    const initialSources = mediaStreamsToSources(Object.values(mediaStreams),
+        interview.media_type, archiveId, interview.tape_count, tape);
+
+    const videoJsOptions = {
+        autoplay: false,
+        controls: true,
+        responsive: false,
+        fluid: false,
+        //aspectRatio,
+        language: locale,
+        sources: initialSources,
+        poster: interview.still_url || speakerImage,
+        playbackRates: [0.5, 1, 1.5, 2],
+        controlBar: {
+            children: [
+                'playToggle',
+                'progressControl',
+                'remainingTimeDisplay',
+                'volumePanel',
+                'subsCapsButton',
+                'playbackRateMenuButton',
+                'qualitySelector',
+                'fullscreenToggle',
+            ],
+        },
+        userActions: {
+            click: true,
+            doubleClick: true,
+            hotkeys: handleKeyPress,
+        },
+        // plugins: {
+        //     seekButtons: {
+        //         forward: FORWARD_STEP,
+        //         back: BACKWARD_STEP,
+        //     },
+        // },
+    };
+
+    function handleKeyPress(event) {
+        let newTime, newVolume;
+
+        switch (event.which) {
+        case KEYCODE_F:
+            if (this.isFullscreen()) {
+                this.exitFullscreen();
+            } else {
+                this.requestFullscreen();
+            }
+            break;
+        case KEYCODE_M:
+            if (this.muted()) {
+                this.muted(false);
+            } else {
+                this.muted(true);
+            }
+            break;
+        case KEYCODE_P:
+        case KEYCODE_SPACE:
+            if (this.paused()) {
+                this.play();
+            } else {
+                this.pause();
+            }
+            break;
+        case KEYCODE_LEFT:
+            newTime = this.currentTime() - BACKWARD_STEP;
+            if (newTime < 0) {
+                newTime = 0;
+            }
+            this.currentTime(newTime);
+            break;
+        case KEYCODE_RIGHT:
+            newTime = this.currentTime() + FORWARD_STEP;
+            this.currentTime(newTime);
+            break;
+        case KEYCODE_UP:
+            newVolume = this.volume() + 0.1;
+            if (newVolume > 1) {
+                newVolume = 1;
+            }
+            this.volume(newVolume);
+            break;
+        case KEYCODE_DOWN:
+            newVolume = this.volume() - 0.1;
+            if (newVolume < 0) {
+                newVolume = 0;
+            }
+            this.volume(newVolume);
+            break;
+        default:
+        }
     }
 
-    componentDidMount() {
-        let initialResolution = this.props.interview.media_type === 'audio' ? '192k' : '480p';
-        this.props.setResolution(initialResolution);
+    // Reset media position on unmount.
+    useEffect(() => {
+        return resetMedia;
+    }, []);
 
-        const mediaElement = this.mediaElement.current;
-        mediaElement.addEventListener('play', this.handlePlayEvent);
-        mediaElement.addEventListener('pause', this.handlePauseEvent);
-        mediaElement.addEventListener('timeupdate', this.handleTimeUpdateEvent);
-        mediaElement.addEventListener('ended', this.handleEndedEvent);
-        mediaElement.addEventListener('contextmenu', this.handleContextMenuEvent);
+    // Update sources and tracks if tape has been changed.
+    useEffect(() => {
+        const player = playerRef.current
+        if (!player) {
+            return;
+        }
 
-        this.checkForTimeChangeRequest();
+        const newSources = mediaStreamsToSources(Object.values(mediaStreams),
+            interview.media_type, archiveId, interview.tape_count, tape);
+
+        player.src(newSources);
+
+        addTextTracks();
+    }, [tape]);
+
+    // Check if time has been changed from outside of component.
+    useEffect(() => {
+        checkForTimeChangeRequest();
+    }, [timeChangeRequestAvailable]);
+
+
+    function addTextTracks() {
+        const player = playerRef.current
+        if (!player) {
+            return;
+        }
+
+        // Remove old text tracks, if any.
+        const tracks = player.remoteTextTracks();
+        for (let i = tracks.length - 1; i >= 0; i--) {
+            player.removeRemoteTextTrack(tracks[i]);
+        }
+
+        // Add new text tracks.
+        let newTracks = [];
+        if (interview.media_type === 'video') {
+            newTracks = interview.languages.map(lang => ({
+                src: `${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${tape}`,
+                language: lang,
+                kind: 'captions',
+                label: t(lang),
+            }));
+        }
+        newTracks.forEach(newTrack => {
+            player.addRemoteTextTrack(newTrack, false);
+        });
     }
 
-    componentDidUpdate() {
-        this.checkForTimeChangeRequest();
+    function checkForTimeChangeRequest() {
+        // We use Redux as an event system here.
+        // If a request is available, it is immediately cleared and processed.
+        const player = playerRef.current
+        if (!player) {
+            return;
+        }
+
+        if (timeChangeRequestAvailable) {
+            clearTimeChangeRequest();
+
+            player.currentTime(timeChangeRequest);
+
+            if (player.readyState() >= 2) {
+                player.play();
+            } else {
+                player.autoplay(true);
+            }
+        }
     }
 
-    componentWillUnmount() {
-        this.props.resetMedia();
-
-        const mediaElement = this.mediaElement.current;
-        mediaElement.removeEventListener('play', this.handlePlayEvent);
-        mediaElement.removeEventListener('pause', this.handlePauseEvent);
-        mediaElement.removeEventListener('timeupdate', this.handleTimeUpdateEvent);
-        mediaElement.removeEventListener('ended', this.handleEndedEvent);
-        mediaElement.removeEventListener('contextmenu', this.handleContextMenuEvent);
-        mediaElement.removeEventListener('canplay', this.handleCanPlayEvent);
+    function handlePlayEvent() {
+        updateIsPlaying(true);
     }
 
-    handlePlayEvent() {
-        this.props.updateIsPlaying(true);
+    function handlePauseEvent() {
+        updateIsPlaying(false);
     }
 
-    handlePauseEvent() {
-        this.props.updateIsPlaying(false);
+    function handleTimeUpdateEvent() {
+        const time = playerRef.current.currentTime();
+        const roundedTime = Math.round(time * 10) / 10;
+        updateMediaTime(roundedTime);
     }
 
-    handleTimeUpdateEvent(e) {
-        const time = Math.round(e.target.currentTime * 10) / 10;
-        this.props.updateMediaTime(time);
-    }
-
-    handleEndedEvent() {
-        const { tape, interview, sendTimeChangeRequest } = this.props;
-
+    function handleEndedEvent() {
         if (tape < interview.tape_count) {
             sendTimeChangeRequest(tape + 1, 0);
         }
     }
 
-    handleContextMenuEvent(e) {
+    function handleContextMenuEvent(e) {
         e.preventDefault();
         return false;
     }
 
-    handleCanPlayEvent(e) {
-        const mediaElement = this.mediaElement.current;
+    function handlePlayerReady(player) {
+        playerRef.current = player;
 
-        mediaElement.removeEventListener('canplay', this.handleCanPlayEvent);
+        addTextTracks();
 
-        mediaElement.play().catch((err) => {
-            console.log(err);
-        });
+        player.on('play', handlePlayEvent);
+        player.on('pause', handlePauseEvent);
+        player.on('timeupdate', handleTimeUpdateEvent);
+        player.on('ended', handleEndedEvent);
+        player.on('contextmenu', handleContextMenuEvent);
+
+        checkForTimeChangeRequest();
     }
 
-    checkForTimeChangeRequest() {
-        // We use Redux as an event system here.
-        // If a request is available, it is immediately cleared and processed.
-        if (this.props.timeChangeRequestAvailable) {
-            this.props.clearTimeChangeRequest();
-
-            const mediaElement = this.mediaElement.current;
-
-            mediaElement.currentTime = this.props.timeChangeRequest;
-
-            // If medium is ready, play it directly, if not, play it when ready.
-            if (mediaElement.readyState >= 2) {
-                mediaElement.play().catch((err) => {
-                    console.log(err);
-                });
-            } else {
-                mediaElement.addEventListener('canplay', this.handleCanPlayEvent);
-            }
-        }
-    }
-
-    src() {
-        if(this.props.interview.media_type && this.props.resolution) {
-            let mediaStream = Object.values(this.props.mediaStreams).find(m => {
-                return m.media_type === this.props.interview.media_type &&
-                    m.resolution === this.props.resolution
-            });
-            return mediaStream?.path.replace(/INTERVIEW_ID/g, this.props.archiveId).
-                replace(/TAPE_COUNT/g, this.props.interview.tape_count).
-                replace(/TAPE_NUMBER/g, (this.props.tape.toString().length > 1 ? this.props.tape : `0${this.props.tape}`));
-        } else {
-            return null;
-        }
-    }
-
-    render() {
-        const { interview, className, tape, archiveId, locale, projectId, projects } = this.props;
-
-        const isVideo = interview.media_type === 'video';
-        const pathBaseStr = pathBase({projectId, locale, projects});
-
-        return (
-            <div className={classNames('MediaElement', className, isVideo ? 'MediaElement--video' : 'MediaElement--audio')}>
-                <video
-                    ref={this.mediaElement}
-                    className="MediaElement-element"
-                    controls
-                    controlsList="nodownload"
-                    poster={interview.still_url || speakerImage}
-                    src={this.src()}
-                >
-                    {
-                        isVideo && interview.languages.map(language => (
-                            <track
-                                key={language}
-                                kind="captions"
-                                label={t(this.props, language)}
-                                src={`${pathBaseStr}/interviews/${archiveId}.vtt?lang=${language}&tape_number=${tape}`}
-                                srcLang={language}
-                            />
-                        ))
-                    }
-                </video>
-            </div>
-        );
-    }
+    return (
+        <div className={classNames('MediaElement', className,
+            `MediaElement--${aspectRatio}`, {
+            'MediaElement--video': interview.media_type === 'video',
+            'MediaElement--audio': interview.media_type === 'audio',
+        })}>
+            <VideoJS
+                type={interview.media_type}
+                options={videoJsOptions}
+                onReady={handlePlayerReady}
+            />
+        </div>
+    );
 }
 
 MediaElement.propTypes = {
-    className: PropTypes.string,
     archiveId: PropTypes.string.isRequired,
+    className: PropTypes.string,
     interview: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
+    project: PropTypes.object.isRequired,
     mediaStreams: PropTypes.object.isRequired,
-    projectId: PropTypes.string.isRequired,
-    projects: PropTypes.object.isRequired,
-    resolution: PropTypes.string,
-    tape: PropTypes.number.isRequired,
+    tape: PropTypes.number,
+    timeChangeRequestAvailable: PropTypes.bool,
     timeChangeRequest: PropTypes.number,
-    timeChangeRequestAvailable: PropTypes.bool.isRequired,
-    translations: PropTypes.object.isRequired,
-    updateMediaTime: PropTypes.func.isRequired,
     updateIsPlaying: PropTypes.func.isRequired,
-    setResolution: PropTypes.func.isRequired,
+    updateMediaTime: PropTypes.func.isRequired,
     resetMedia: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
     clearTimeChangeRequest: PropTypes.func.isRequired,

@@ -48,11 +48,41 @@ export default class AdminActions extends Component {
 
     doiText() {
         return (
-            <p>
-                {t(this.props, 'doi.text1') + ' '}
-                {this.metadataLinks(this.selectedArchiveIds())}
-                {' ' + t(this.props, 'doi.text2')}
-            </p>
+            <AuthorizedContent object={{type: 'Interview'}} action='dois'>
+                <Modal
+                    title={t(this.props, 'doi.title')}
+                    trigger={t(this.props, 'doi.title')}
+                    triggerClassName="flyout-sub-tabs-content-ico-link"
+                >
+                    {close => (
+                        <form className="Form">
+                            {t(this.props, 'doi.text1') + ' '}
+                            {this.metadataLinks(this.selectedArchiveIds())}
+                            {' ' + t(this.props, 'doi.text2')}
+
+                            <div className="Form-footer u-mt">
+                                <button
+                                    type="button"
+                                    className="Button Button--primaryAction"
+                                    onClick={() => {
+                                        this.exportDOI();
+                                        close();
+                                    }}
+                                >
+                                    {t(this.props, 'doi.ok')}
+                                </button>
+                                <button
+                                    type="button"
+                                    className="Button Button--secondaryAction"
+                                    onClick={close}
+                                >
+                                    {t(this.props, 'cancel')}
+                                </button>
+                            </div>
+                        </form>
+                    )}
+                </Modal>
+            </AuthorizedContent>
         );
     }
 

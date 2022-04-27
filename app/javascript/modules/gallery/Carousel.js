@@ -13,7 +13,7 @@ export default function Carousel({
     const { isAuthorized } = useAuthorization();
 
     const photos = Object.values(interview.photos)
-        .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'show'))
+        .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'update'))
         .sort(photoComparator);
 
     return (

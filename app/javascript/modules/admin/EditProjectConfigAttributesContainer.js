@@ -18,7 +18,7 @@ const mapStateToProps = state => ({
     formElements: [
         {
             attribute: 'shortname',
-            validate: function(v){return /^[\-a-z]{2,12}$/.test(v)},
+            validate: function(v){return /^[\-a-z0-9]{1,11}[a-z]$/.test(v)},
             hidden: !getCurrentAccount(state).admin,
         },
         {
@@ -84,6 +84,9 @@ const mapStateToProps = state => ({
         },
         {
             attribute: "pseudo_upload_types",
+        },
+        {
+            attribute: "pseudo_logged_out_visible_registry_entry_ids"
         },
         {
             attribute: "pseudo_hidden_registry_entry_ids"

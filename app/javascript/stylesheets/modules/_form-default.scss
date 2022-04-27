@@ -5,8 +5,7 @@ form.default {
  .form-group {
     width: 100%;
     @include clearfix;
-    padding: 1px;
-    margin: 0 0 15px 0;
+    margin: 0 0 $base-unit;
  }
   label {
     width: 100%;
@@ -26,7 +25,6 @@ form.default {
     width: 100%;
     border: 1px solid $gray-medium;
     padding: 5px 10px;
-    margin-top: 5px;
     @include screen-l {
       width: 72%;
     }
@@ -86,14 +84,17 @@ form.default {
       border-color: red;
     }
   }
+
   .help-block {
-    margin:5px 0 0 0;
     color: $gray-dark;
     font-size: $font-size-medium;
-    line-height: $line-height-medium;
+    line-height: $base-unit;
+    margin: 0;
+
     @include screen-l {
-      margin:10px 0 0 28%;
+      margin-left: 28%;
     }
+
     &.annotation-confirmation-text {
       margin: 10px 0 5px 0;
     }
@@ -115,24 +116,24 @@ form.default {
   }
   .form-input {
     width: 100%;
-    margin-top: 5px;
   }
+
   select {
+    background-image: none;
+    background: transparent;
+    border-radius: 0;
     border: 1px solid $gray-medium;
+    box-shadow: none;
+    height: $base-unit * 1.5;
+    line-height: $base-unit;
     padding: 5px 10px;
     width: 100%;
-    border-radius: 0;
-    box-shadow: none;
-    background: transparent;
-    background-image: none;
-    // -webkit-appearance: none;
+
     @include screen-l {
       width: 72%;
     }
   }
-  option {
-    padding: 5px 10px;
-  }
+
   &.nested-form {
     background-color: $gray-light;
     padding: 3%;

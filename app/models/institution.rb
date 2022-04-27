@@ -5,5 +5,6 @@ class Institution < ApplicationRecord
   has_many :projects, through: :institution_projects
   has_many :collections
 
-  translates :name, :description
+  translates :name, :description, fallbacks_for_empty_translations: true, touch: true
+  accepts_nested_attributes_for :translations
 end

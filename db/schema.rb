@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_02_11_153448) do
+ActiveRecord::Schema.define(version: 2022_03_30_141154) do
 
-  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
     t.string "record_type", limit: 255, null: false
     t.bigint "record_id", null: false
@@ -22,11 +22,11 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true, length: { record_type: 191, name: 191 }
   end
 
-  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "active_storage_blobs", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "key", limit: 255, null: false
     t.string "filename", limit: 255, null: false
     t.string "content_type", limit: 255
-    t.text "metadata", limit: 16777215
+    t.text "metadata", limit: 4294967295
     t.bigint "byte_size", null: false
     t.string "checksum", limit: 255, null: false
     t.datetime "created_at", null: false
@@ -53,6 +53,18 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.string "workflow_state", default: "public"
     t.index ["interview_id"], name: "index_annotations_on_interview_id"
     t.index ["segment_id"], name: "index_annotations_on_segment_id"
+  end
+
+  create_table "archiving_batches", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "number", null: false
+    t.bigint "project_id", null: false
+    t.index ["project_id"], name: "index_archiving_batches_on_project_id"
+  end
+
+  create_table "archiving_batches_interviews", id: false, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "interview_id", null: false
+    t.bigint "archiving_batch_id", null: false
+    t.index ["archiving_batch_id"], name: "index_archiving_batches_interviews_on_archiving_batch_id"
   end
 
   create_table "biographical_entries", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -213,14 +225,14 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.index ["importable_id", "importable_type"], name: "index_imports_on_importable_id_and_importable_type", length: { importable_type: 191 }
   end
 
-  create_table "institution_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "institution_projects", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "institution_id"
     t.integer "project_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "institution_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "institution_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "institution_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -231,7 +243,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.index ["locale"], name: "index_institution_translations_on_locale"
   end
 
-  create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "institutions", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "shortname"
     t.string "street"
     t.string "zip"
@@ -303,7 +315,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.datetime "updated_at"
   end
 
-  create_table "map_section_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "map_section_translations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "map_section_id", null: false
     t.string "locale", null: false
     t.datetime "created_at", null: false
@@ -313,7 +325,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.index ["map_section_id"], name: "index_map_section_translations_on_map_section_id"
   end
 
-  create_table "map_sections", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
+  create_table "map_sections", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "name", null: false
     t.decimal "corner1_lat", precision: 10, scale: 6, null: false
     t.decimal "corner1_lon", precision: 10, scale: 6, null: false
@@ -469,6 +481,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.string "hidden_transcript_registry_entry_ids"
     t.boolean "display_ohd_link", default: false
     t.integer "default_search_order", default: 0, null: false
+    t.string "logged_out_visible_registry_entry_ids"
   end
 
   create_table "registry_entries", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
@@ -699,7 +712,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.index ["user_id"], name: "index_tasks_on_user_id"
   end
 
-  create_table "text_materials", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "text_materials", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "interview_id"
     t.string "document_type", limit: 255
     t.string "document_file_name", limit: 255
@@ -755,7 +768,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.index ["user_account_id", "ip"], name: "index_user_account_ips_on_user_account_id_and_ip", length: { ip: 191 }
   end
 
-  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=latin1", force: :cascade do |t|
+  create_table "user_accounts", id: :integer, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "email", limit: 255, default: "", null: false
     t.string "encrypted_password", limit: 128, default: "", null: false
     t.string "password_salt", limit: 255, default: "", null: false
@@ -778,7 +791,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.string "appellation"
     t.string "job_description"
     t.string "research_intentions"
-    t.text "comments"
+    t.text "comments", limit: 16777215
     t.string "organization"
     t.string "homepage"
     t.string "street"
@@ -794,7 +807,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.boolean "tos_agreement"
     t.boolean "receive_newsletter"
     t.string "default_locale"
-    t.text "admin_comments"
+    t.text "admin_comments", limit: 16777215
     t.datetime "processed_at"
     t.datetime "activated_at"
     t.boolean "anonymized", default: false
@@ -862,6 +875,8 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.bigint "user_id"
     t.bigint "role_id"
     t.integer "user_account_id"
+    t.datetime "updated_at"
+    t.datetime "created_at"
     t.index ["role_id"], name: "index_user_roles_on_role_id"
     t.index ["user_id"], name: "index_user_roles_on_user_id"
   end
@@ -907,6 +922,7 @@ ActiveRecord::Schema.define(version: 2022_02_11_153448) do
     t.index ["interview_id"], name: "index_workflow_comments_on_interview_id"
   end
 
+  add_foreign_key "archiving_batches", "projects"
   add_foreign_key "histories", "people"
   add_foreign_key "map_sections", "projects"
 end

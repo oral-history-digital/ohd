@@ -3,15 +3,17 @@
 
 .Tabs-tabList {
   background: transparent;
+  height: $horizontal-tabs-height;
 }
 
 .Tabs-tab {
   background-color: $gray-lighter;
   border-bottom-color: $gray-lighter;
   border-bottom-style: solid;
-  border-bottom-width: $base-unit / 8 !important;
+  border-bottom-width: ($base-unit) / 8 !important;
+  line-height: $base-unit;
   margin-right: 1px;
-  padding: ($base-unit / 2) $base-unit ($base-unit / 2 - $base-unit / 8);
+  padding: 0 $base-unit;
 }
 
 .Tabs-tab[data-selected] {

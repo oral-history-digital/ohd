@@ -10,7 +10,9 @@ export default function MapPopup(props) {
         <Popup ref={popupEl}>
             <MapPopupContent
                 {...props}
-                onUpdate={() => popupEl.current?.leafletElement.update()}
+                onUpdate={() => {
+                    popupEl.current?.update();
+                }}
             />
         </Popup>
     );

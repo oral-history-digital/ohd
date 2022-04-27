@@ -17,7 +17,7 @@ export default class UserRegistrations extends Component {
     }
 
     componentDidMount() {
-        const query =  'page=1&user_registrations.workflow_state=account_confirmed';
+        const query =  'page=1&user_registration_projects.workflow_state=account_confirmed';
         this.props.fetchData(this.props, 'user_registrations', null, null, query);
     }
 

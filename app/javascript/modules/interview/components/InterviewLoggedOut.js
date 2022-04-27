@@ -1,15 +1,18 @@
 import { useState } from 'react';
 import { useSelector } from 'react-redux';
+import classNames from 'classnames';
 
-import { getCurrentInterview } from 'modules/data';
+import { getCurrentProject, getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import fallbackImage from 'assets/images/speaker.png';
 
 export default function InterviewLoggedOut() {
     const { t, locale } = useI18n();
     const interview = useSelector(getCurrentInterview);
+    const project = useSelector(getCurrentProject);
 
     const [imgUrl, setImgUrl] = useState(interview.still_url || fallbackImage);
+    const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
 
     function handleError() {
         setImgUrl(fallbackImage);
@@ -23,7 +26,8 @@ export default function InterviewLoggedOut() {
                         {interview.anonymous_title[locale]}
                     </h1>
                 </header>
-                <div className="MediaElement">
+                <div className={classNames('MediaElement',
+                    `MediaElement--${aspectRatio}`)}>
                     <img
                         className="MediaElement-element"
                         src={imgUrl}

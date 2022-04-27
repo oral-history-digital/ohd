@@ -88,6 +88,25 @@ en:
       quote: quotations, direct speech, book and other titles are in quotation marks in accordance with the rules applicable in the original languages
       annotation: notes by transcriptors, editors, translators; Additions like aliases or breakdown of an acronym; naming of nonverbal behavior
       tape_end: end of tape
+    default:
+      interruption: Unterbrechung (interruption) des Interviews bzw. der Aufnahme, z. B. <i(Pause)>
+      pause: Sprechpausen mit Länge in Sekunden, z.B. <p3> drei Sek.
+      unclear: Unverständliche Passagen und ihre Dauer in Sekunden, z.B. <?5>, fünf Sek. unverständlich
+      broken_word: Ein Unterstrich kennzeichnet abgebrochene Wörter oder Sätze.
+      fast_word: Schneller Wortanschluss
+      lexical_phenomenon: Fremdsprachige Begriffe sind mit „l“ (lexical phenomenon) und dem Sprachkürzel gekennzeichnet, z.B. <l(de)> für Deutsch und <l(es)> für Spanisch. Begriffe, die aus dem Spanischen stammen, aber eingedeutscht verwendet werden, sind mit <l(es-de)> oder, im umgekehrten Fall, mit <l(de-es)> gekennzeichnet.
+      changed_voice: Besonders auffällige Änderung der Sprechweise (shift in vocal quality), z.B. <s(laut) so war das>.
+      vocal_shift: Sprechweise
+      simultaneous: Simultanes Sprechen (simultaneous); wenn Interviewer*in und Interviewte*r gleichzeitig sprechen.
+      non_linguistic: Kennzeichnung von Geräuschen oder Ereignisse, die das Interview beeinflussen, mit <nl> (non-linguistic incidents), z.B. <nl(Telefonklingeln)>.
+      sound: Geräusch
+      non_verbal: Kennzeichnung für nonverbale aber lautliche Äußerungen (vocal), z. B. <v(Gähnen)>
+      fonetic_expression: Art der Äußerung
+      gesture: Kennzeichnung von besonders auffälligen Gesten mit <g(Art der Geste)>, z.B. g(Kopfschütteln)>
+      gesture_type: Gestikart
+      facial_expression: Kennzeichnung von besonders auffälliger Mimik mit <m(Art der Mimik)>, z.B. <m(schließt die Augen)>
+      expression_type: Mimikart
+      notes: Korrekturen oder Ergänzungen (notes)
   mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
   selected: Selected
@@ -223,6 +242,9 @@ en:
   biographical_entries_header: 'Short biography:'
   biographical_entries_title: 'Short biography of'
   biographical_entries_footer: 'Citation: Short biography of'
+  observations_header: 'Protokoll (%{lang}):'
+  observations_title: Protocol (%{lang}) of the interview with
+  observations_footer: 'Citation: Protocol of'
   interview_info: About the interview
   place: Place
   group: Group
@@ -726,6 +748,7 @@ en:
     workflow_state: Workflow state
     date_of_birth: Date of birth
     signature_original: Signature original
+    startpage_position: Startpage position
   activerecord:
     models:
       interview:
@@ -926,6 +949,8 @@ en:
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         delete_existing: delete existing transcript
         delete_existing_explanation: Deletes existing headings and keywords for this tape
+        update_only_speakers: nur Sprecher aktualisieren
+        update_only_speakers_explanation: es werden keine textuellen Änderungen vorgenommen
       project:
         pseudo_available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
@@ -950,7 +975,8 @@ en:
         smtp_server: SMTP-Server
         has_newsletter: Newsletter
         has_map: Karte anzeigen
-        pseudo_hidden_registry_entry_ids: versteckte Registereinträge (IDs)
+        pseudo_logged_out_visible_registry_entry_ids: Auch ohne Anmeldung sichtbare Registerbäume (oberste IDs)
+        pseudo_hidden_registry_entry_ids: Nur für Sammlungsmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
@@ -1125,7 +1151,7 @@ en:
         photographer: Photographer
         license: License
         data: Fotodatei
-        caption_explanation: This photo caption is only available in German.
+        caption_explanation: No photo caption available in this language.
         workflow_state: 'Status'
       uploaded_file:
         href: Link

@@ -121,12 +121,12 @@ class ApplicationController < ActionController::Base
         },
         registry_entries: {},
         interviews: {},
+        segments: {},
       },
       'media-player': {
         tape: 1,
         mediaTime: 0,
         isPlaying: false,
-        resolution: nil,
         timeChangeRequest: nil,
       },
       interview: {
@@ -155,8 +155,8 @@ class ApplicationController < ActionController::Base
       archive: {
         facets: facets,
         query: search_query,
-        allInterviewsTitles: dropdown_values[:all_interviews_titles],
-        allInterviewsPseudonyms: dropdown_values[:all_interviews_pseudonyms],
+        allInterviewsTitles: current_user_account && dropdown_values[:all_interviews_titles],
+        allInterviewsPseudonyms: current_user_account && dropdown_values[:all_interviews_pseudonyms],
         allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
         sortedArchiveIds: Rails.cache.fetch("sorted_archive_ids-#{current_project ? current_project.cache_key_prefix : 'OHD'}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
         foundInterviews: interview_results,
@@ -277,7 +277,7 @@ class ApplicationController < ActionController::Base
   end
 
   def clear_cache(ref_object)
-    Rails.cache.delete "#{current_project.cache_key_prefix}-#{ref_object.class.name.underscore}-#{ref_object.id}-#{ref_object.updated_at}"
+    ref_object.touch
   end
 
   def create_tmp_file(file)

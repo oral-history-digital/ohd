@@ -2,7 +2,6 @@ import {
     UPDATE_MEDIA_TIME,
     UPDATE_IS_PLAYING,
     SET_TAPE,
-    SET_RESOLUTION,
     RESET_MEDIA,
     SEND_TIME_CHANGE_REQUEST,
     CLEAR_TIME_CHANGE_REQUEST,
@@ -12,7 +11,6 @@ export const initialState = {
     tape: 1,
     mediaTime: 0,
     isPlaying: false,
-    resolution: null,
     timeChangeRequest: null,
 };
 
@@ -32,11 +30,6 @@ const mediaPlayer = (state = initialState, action) => {
             return {
                 ...state,
                 tape: action.payload.tape,
-            };
-        case SET_RESOLUTION:
-            return {
-                ...state,
-                resolution: action.payload.resolution,
             };
         case RESET_MEDIA:
             return initialState;

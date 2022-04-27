@@ -10,6 +10,7 @@ export default function BiographicalEntryForm({
     projects,
     submitData,
     onSubmit,
+    onCancel,
 }) {
     return (
         <Form
@@ -18,6 +19,7 @@ export default function BiographicalEntryForm({
                 submitData({ locale, projectId, projects }, params);
                 onSubmit();
             }}
+            onCancel={onCancel}
             data={biographicalEntry}
             values={{
                 person_id: (person?.id) || (biographicalEntry?.person_id)
@@ -57,4 +59,5 @@ BiographicalEntryForm.propTypes = {
     projects: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
 };

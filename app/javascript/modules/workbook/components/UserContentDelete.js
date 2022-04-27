@@ -8,6 +8,7 @@ export default function UserContentDelete({
     title,
     description,
     onSubmit,
+    onCancel,
     deleteWorkbook,
 }) {
     const { t } = useI18n();
@@ -19,7 +20,7 @@ export default function UserContentDelete({
     };
 
     return (
-        <div>
+        <form className="Form">
             <p>{t('title') + ': '}
                 <span>{title}</span>
             </p>
@@ -27,14 +28,23 @@ export default function UserContentDelete({
                 <span>{description}</span>
             </p>
 
-            <button
-                type="button"
-                className="Button any-button"
-                onClick={destroy}
-            >
-                {t('delete')}
-            </button>
-        </div>
+            <div className="Form-footer">
+                <button
+                    type="button"
+                    className="Button Button--primaryAction"
+                    onClick={destroy}
+                >
+                    {t('delete')}
+                </button>
+                <button
+                    type="button"
+                    className="Button Button--secondaryAction"
+                    onClick={onCancel}
+                >
+                    {t('cancel')}
+                </button>
+            </div>
+        </form>
     );
 }
 
@@ -43,5 +53,6 @@ UserContentDelete.propTypes = {
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func.isRequired,
     deleteWorkbook: PropTypes.func.isRequired,
 };

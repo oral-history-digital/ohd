@@ -3,11 +3,11 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaEyeSlash } from 'react-icons/fa';
 
+import { Checkbox } from 'modules/ui';
 import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
-import { useProjectAccessStatus } from 'modules/auth';
-import { AuthShowContainer, useAuthorization } from 'modules/auth';
-import loadIntervieweeWithAssociations from './loadIntervieweeWithAssociations';
+import { useProjectAccessStatus, AuthShowContainer, useAuthorization } from
+    'modules/auth';
 import searchResultCount from './searchResultCount';
 
 export default function InterviewListRow({
@@ -51,12 +51,11 @@ export default function InterviewListRow({
     const resultCount = searchResultCount(searchResults);
 
     return (
-        <tr>
+        <tr className="Table-row">
             {
                 isAuthorized(interview, 'show') && isAuthorized({ type: 'General' }, 'edit') && (
-                    <td>
-                        <input
-                            type="checkbox"
+                    <td className="Table-cell">
+                        <Checkbox
                             className="export-checkbox"
                             checked={selectedArchiveIds.indexOf(interview.archive_id) > 0}
                             onChange={() => addRemoveArchiveId(interview.archive_id)}
@@ -64,7 +63,7 @@ export default function InterviewListRow({
                     </td>
                 )
             }
-            <td>
+            <td className="Table-cell">
                 <Link className="search-result-link"
                     onClick={() => {
                         setArchiveId(interview.archive_id);
@@ -81,7 +80,7 @@ export default function InterviewListRow({
                                     {interview.short_title && interview.short_title[locale]}
                                     {
                                         interview.workflow_state === 'unshared' && (
-                                            <FaEyeSlash />
+                                            <FaEyeSlash className="u-ml-tiny" />
                                         )
                                     }
                                 </AuthShowContainer>
@@ -100,7 +99,7 @@ export default function InterviewListRow({
                         interviewee;
 
                     return (
-                        <td key={column.name}>
+                        <td key={column.name} className="Table-cell">
                             {obj && humanReadable(obj, column.name, { locale, translations, languages, collections, optionsScope: 'search_facets' }, {})}
                         </td>
                     );
@@ -108,7 +107,7 @@ export default function InterviewListRow({
             }
             {
                 fulltext && resultCount > 0 && (
-                    <td>
+                    <td className="Table-cell">
                         <Link className="search-result-link"
                             onClick={() => setArchiveId(interview.archive_id)}
                             to={`${pathBase}/interviews/${interview.archive_id}`}

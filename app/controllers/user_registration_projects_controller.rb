@@ -6,6 +6,7 @@ class UserRegistrationProjectsController < ApplicationController
     @user_registration_project.user_registration_id = current_user_account.user_registration.id
     @user_registration_project.save
     current_user_account.touch
+    current_user_account.user_registration.touch
 
     respond_to do |format|
       format.json do

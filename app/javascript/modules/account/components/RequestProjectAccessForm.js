@@ -12,6 +12,7 @@ export default function RequestProjectAccessForm({
     project,
     submitData,
     onSubmit,
+    onCancel,
 }) {
 
     const { t } = useI18n();
@@ -28,6 +29,7 @@ export default function RequestProjectAccessForm({
                     onSubmit();
                 }
             }}
+            onCancel={onCancel}
             values={{
                 project_id: project.id,
             }}
@@ -68,4 +70,5 @@ RequestProjectAccessForm.propTypes = {
     projects: PropTypes.object.isRequired,
     submitData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
+    onCancel: PropTypes.func,
 };

@@ -2,7 +2,6 @@ import {
     UPDATE_MEDIA_TIME,
     UPDATE_IS_PLAYING,
     SET_TAPE,
-    SET_RESOLUTION,
     RESET_MEDIA,
     SEND_TIME_CHANGE_REQUEST,
     CLEAR_TIME_CHANGE_REQUEST,
@@ -21,11 +20,6 @@ export const updateIsPlaying = (isPlaying) => ({
 export const setTape = (tape) => ({
     type: SET_TAPE,
     payload: { tape },
-});
-
-export const setResolution = (resolution) => ({
-    type: SET_RESOLUTION,
-    payload: { resolution },
 });
 
 export const resetMedia = () => ({ type: RESET_MEDIA });

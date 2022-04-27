@@ -4,6 +4,7 @@ import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
 import moment from 'moment';
 import classNames from 'classnames';
 
+import { Checkbox } from 'modules/ui';
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
 
@@ -156,10 +157,14 @@ export default class UserContentForm extends Component {
     // TODO: currently unused - we have to implement the publication workflow first.
     publish() {
         if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
-            return <div className={"form-group"}>
+            return <div className="form-group">
                 {this.label('publish')}
-                <input className={'publish-input'} type='checkbox' name='shared' checked={this.state.shared}
-                       onChange={this.toggleValue}/>
+                <Checkbox
+                    className="publish-input"
+                    name='shared'
+                    checked={this.state.shared}
+                    onChange={this.toggleValue}
+                />
             </div>
         }
     }
@@ -185,22 +190,43 @@ export default class UserContentForm extends Component {
     }
 
     render() {
+        const { onCancel } = this.props;
+
         let submitLabel = this.props.submitLabel ? this.props.submitLabel : t(this.props, 'save');
+
         return (
             <div>
                 <div className='errors'>{this.state.errors}</div>
-                <form className='default' onSubmit={this.handleSubmit}>
-                    <div className={"form-group"}>
+                <form
+                    className='Form default'
+                    onSubmit={this.handleSubmit}
+                >
+                    <div className="form-group">
                         {this.label('title')}
                         <input type="text" name='title' value={this.state.title} onChange={this.handleChange}/>
                     </div>
-                    <div className={"form-group"}>
+                    <div className="form-group">
                         {this.label('description')}
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>
                     {this.segmentSelect()}
-                    {/*this.annotationConfirmation()*/}
-                    <input type="submit" value={submitLabel}/>
+
+                    <div className="Form-footer">
+                        <input
+                            className="Button Button--primaryAction"
+                            type="submit"
+                            value={submitLabel}
+                        />
+                        {typeof onCancel === 'function' && (
+                            <button
+                                type="button"
+                                className="Button Button--secondaryAction"
+                                onClick={onCancel}
+                            >
+                                {t(this.props, 'cancel')}
+                            </button>
+                        )}
+                    </div>
                 </form>
             </div>
         );
@@ -212,6 +238,7 @@ UserContentForm.propTypes = {
     projects: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    onCancel: PropTypes.func,
     createWorkbook: PropTypes.func.isRequired,
     updateWorkbook: PropTypes.func.isRequired,
 };

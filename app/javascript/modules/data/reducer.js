@@ -101,7 +101,7 @@ const data = (state = initialState, action) => {
                     })
                 })
             } else if (action.id) {
-                if(state[action.id]) {
+                if(state[action.dataType]) {
                     return Object.assign({}, state, {
                         statuses: updateStatus(state.statuses, action.dataType, {lastModified: new Date()}),
                         [action.dataType]: Object.keys(state[action.dataType]).reduce((acc, key) => {

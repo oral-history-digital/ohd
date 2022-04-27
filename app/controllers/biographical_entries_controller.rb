@@ -20,11 +20,13 @@ class BiographicalEntriesController < ApplicationController
   def show
     authorize BiographicalEntry
     @interview = Interview.find_by_archive_id params[:id]
-    @locale = params[:lang]
+    @locale = current_project.available_locales.include?(params[:lang]) ? params[:lang] : params[:locale]
+    @lang = params[:lang]
     @biography = true
     respond_to do |format|
       format.pdf do
-        pdf = Rails.cache.fetch("#{current_project.cache_key_prefix}-biographical-entries-#{@interview.archive_id}-#{@interview.interviewees.first.biographical_entries.count}-#{@interview.interviewees.first.biographical_entries.maximum(:updated_at)}-#{@locale}") do
+        @doc_type = 'biographical_entries'
+        pdf = Rails.cache.fetch("#{current_project.cache_key_prefix}-biographical-entries-#{@interview.archive_id}-#{@interview.interviewees.first.biographical_entries.count}-#{@interview.interviewees.first.biographical_entries.maximum(:updated_at)}-#{@lang}-#{@locale}") do
           render_to_string(:template => '/latex/biographical_entries.pdf.erb', :layout => 'latex.pdf.erbtex')
         end
         send_data pdf, filename: "#{@interview.archive_id}_biography_#{params[:lang]}.pdf", :type => "application/pdf", :disposition => "attachment"

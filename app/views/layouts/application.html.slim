@@ -8,6 +8,7 @@ html
 
     javascript:
       var developmentMode = #{Rails.env == 'development' ? true : false};
+      var railsMode = '#{Rails.env}';
 
     == javascript_pack_tag 'application'
     == stylesheet_pack_tag 'application'

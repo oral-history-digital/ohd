@@ -1,54 +1,58 @@
-import { Component } from 'react';
+import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import { ScrollToTop } from 'modules/user-agent';
 import RegisterFormContainer from './RegisterFormContainer';
 import findExternalLink from '../findExternalLink';
 
-export default class Register extends Component {
-    content() {
-        if (!this.props.registrationStatus) {
+export default function Register({
+    project,
+    registrationStatus,
+}) {
+    const { t, locale } = useI18n();
 
-            const conditionsLink = findExternalLink(this.props.project, 'conditions');
-            const privacyLink = findExternalLink(this.props.project, 'privacy_protection');
+    const conditionsLink = findExternalLink(project, 'conditions');
+    const privacyLink = findExternalLink(project, 'privacy_protection');
 
-            return (
-                <div>
-                    <h1>
-                        {t(this.props, 'devise.registrations.link')}
-                    </h1>
-                    <p>
-                        {t(this.props, 'user_registration.registration_text_one')}
-                        <a href={conditionsLink[this.props.locale]} target="_blank" title="" rel="noreferrer">
-                            {t(this.props, 'user_registration.tos_agreement')}
-                        </a>
-                        {t(this.props, 'user_registration.registration_text_two')}
-                        <a href={privacyLink[this.props.locale]} target="_blank" title="" rel="noreferrer">
-                            {t(this.props, 'user_registration.priv_agreement_alias')}
-                        </a>
-                        {t(this.props, 'user_registration.registration_text_three')}
-                    </p>
-                    <RegisterFormContainer />
-                </div>
-            )
-        } else {
-            return (
-                <p className='status' dangerouslySetInnerHTML = {{__html: this.props.registrationStatus}} />
-            )
-        }
-    }
-
-    render() {
-        return (
-            <ScrollToTop>
-                <Helmet>
-                    <title>{t(this.props, 'devise.registrations.link')}</title>
-                </Helmet>
-                <div className='wrapper-content register'>
-                    {this.content()}
-                </div>
-            </ScrollToTop>
-        );
-    }
+    return (
+        <ScrollToTop>
+            <Helmet>
+                <title>{t('devise.registrations.link')}</title>
+            </Helmet>
+            <div className='wrapper-content register'>
+                {
+                    registrationStatus ? (
+                        <p
+                            className='status'
+                            dangerouslySetInnerHTML={{__html: registrationStatus}}
+                        />
+                    ) : (
+                        <div>
+                            <h1>
+                                {t('devise.registrations.link')}
+                            </h1>
+                            <p>
+                                {t('user_registration.registration_text_one')}
+                                <a href={conditionsLink[locale]} target="_blank" title="" rel="noreferrer">
+                                    {t('user_registration.tos_agreement')}
+                                </a>
+                                {t('user_registration.registration_text_two')}
+                                <a href={privacyLink[locale]} target="_blank" title="" rel="noreferrer">
+                                    {t('user_registration.priv_agreement_alias')}
+                                </a>
+                                {t('user_registration.registration_text_three')}
+                            </p>
+                            <RegisterFormContainer />
+                        </div>
+                    )
+                }
+            </div>
+        </ScrollToTop>
+    );
 }
+
+Register.propTypes = {
+    project: PropTypes.object.isRequired,
+    registrationStatus: PropTypes.string,
+};

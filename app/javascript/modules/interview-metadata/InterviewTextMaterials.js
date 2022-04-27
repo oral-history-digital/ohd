@@ -1,65 +1,69 @@
-import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaDownload } from 'react-icons/fa';
 
-import { t } from 'modules/i18n';
-import { pathBase } from 'modules/routes';
-import { AuthShowContainer, AuthorizedContent } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import { AuthShowContainer, AuthorizedContent, useAuthorization } from 'modules/auth';
 import { SingleValueWithFormContainer } from 'modules/forms';
+import InterviewDownloads from './InterviewDownloads';
 
-export default class InterviewTextMaterials extends Component {
-    download(lang, condition) {
-        const { interview } = this.props;
+export default function InterviewTextMaterials({
+    interview,
+    project,
+    locale,
+}) {
 
-        // here the index ([1]) stands for the tape number. Therefore it is not 0-basded.
-        if (condition && interview.segments && interview.segments[1]?.[interview.first_segments_ids[1]]) {
-            return (
-                <a
-                    href={`${pathBase(this.props)}/interviews/${interview.archive_id}.pdf?lang=${lang}`}
-                    className="flyout-content-data"
-                >
-                    <FaDownload className="Icon Icon--small" title={t(this.props, 'download')} />
-                    {' '}
-                    {t(this.props, lang)}
-                </a>
-            )
-        } else {
-            return null;
-        }
+    const { t } = useI18n();
+    const { isAuthorized } = useAuthorization();
+    const showObservations = isAuthorized(interview, 'update') || interview.properties?.public_attributes?.observations?.toString() === 'true';
+
+    if (!interview.language_id) {
+        return null;
     }
 
-    render() {
-        const { interview, project, locale } = this.props;
-        const observationsMetadataField = Object.values(project.metadata_fields).find(m => m.name === 'observations');
-
-        if (!interview.language_id) {
-            return null;
-        }
-
-        return (
-            <>
-                <AuthorizedContent object={interview} action="show">
-                    {
-                        observationsMetadataField?.use_in_details_view &&
-                        <SingleValueWithFormContainer
-                            obj={interview}
-                            collapse
-                            elementType="textarea"
-                            multiLocale
-                            attribute={'observations'}
-                        />
-                    }
-                </AuthorizedContent>
-                <AuthShowContainer ifLoggedIn>
-                    <p>
-                        <span className='flyout-content-label'>{t(this.props, 'transcript')}:</span>
-                        {this.download(interview.lang, true)}
-                        {this.download(locale, (interview.languages.indexOf(locale) > -1 && interview.lang !== locale))}
-                    </p>
-                </AuthShowContainer>
-            </>
-        );
-    }
+    return (
+        <>
+            <AuthShowContainer ifLoggedIn>
+                <p>
+                    <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
+                    { interview.languages.map( lang => {
+                        return (
+                            <InterviewDownloads
+                                lang={lang}
+                                type='observations'
+                                condition={showObservations && interview.observations?.[lang]}
+                                showEmpty={true}
+                            />
+                        )
+                    })}
+                </p>
+            </AuthShowContainer>
+            <AuthorizedContent object={interview} action="show">
+                {
+                    <SingleValueWithFormContainer
+                        obj={interview}
+                        collapse
+                        elementType="textarea"
+                        multiLocale
+                        attribute={'observations'}
+                    />
+                }
+            </AuthorizedContent>
+            <AuthShowContainer ifLoggedIn>
+                <p>
+                    <span className='flyout-content-label'>{t('transcript')}:</span>
+                    { interview.languages.map( lang => {
+                        return (
+                            <InterviewDownloads
+                                lang={lang}
+                                type='transcript'
+                                condition={interview.segments?.[1]?.[interview.first_segments_ids[1]]}
+                                showEmpty={true}
+                            />
+                        )
+                    })}
+                </p>
+            </AuthShowContainer>
+        </>
+    );
 }
 
 InterviewTextMaterials.propTypes = {

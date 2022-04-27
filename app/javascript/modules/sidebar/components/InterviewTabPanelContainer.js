@@ -4,6 +4,7 @@ import { bindActionCreators } from 'redux';
 import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getIsCatalog } from 'modules/data';
 import { searchInArchive } from 'modules/search';
 import { setViewMode, getArchiveId, getProjectId } from 'modules/archive';
+import { getIsLoggedIn } from 'modules/account';
 import InterviewTabPanel from './InterviewTabPanel';
 import { hideSidebar } from '../actions';
 
@@ -16,6 +17,7 @@ const mapStateToProps = (state) => {
         interviewee: getCurrentInterviewee(state),
         hasMap: project && project.has_map === 1,
         isCatalog: getIsCatalog(state),
+        isLoggedIn: getIsLoggedIn(state),
     };
 };
 

@@ -67,7 +67,7 @@ group :development do
   gem 'guard-spork'
   gem 'guard-rspec'
   gem 'guard-cucumber'
-  gem "capistrano", "= 3.11.0"
+  gem 'capistrano', '~> 3.17.0'
   gem 'capistrano3-delayed-job', '~> 1.0'
   gem 'capistrano-rbenv'
   gem 'capistrano-rails'

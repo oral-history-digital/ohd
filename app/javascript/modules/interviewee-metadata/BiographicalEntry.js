@@ -7,6 +7,7 @@ import { FaPencilAlt, FaTrash, FaAngleUp, FaAngleDown } from 'react-icons/fa';
 import { t } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
+import { DeleteItemForm } from 'modules/forms';
 import BiographicalEntryFormContainer from './BiographicalEntryFormContainer';
 
 export default class BiographicalEntry extends Component {
@@ -29,6 +30,7 @@ export default class BiographicalEntry extends Component {
                         <BiographicalEntryFormContainer
                             biographicalEntry={data}
                             onSubmit={close}
+                            onCancel={close}
                         />
                     )}
                 </Modal>
@@ -38,20 +40,15 @@ export default class BiographicalEntry extends Component {
                     trigger={<FaTrash className="Icon Icon--editorial Icon--small" />}
                 >
                     {close => (
-                        <div>
+                        <DeleteItemForm
+                            onSubmit={() => {
+                                deleteData(this.props, 'people', data.person_id, 'biographical_entries', data.id, true);
+                                close();
+                            }}
+                            onCancel={close}
+                        >
                             {this.entries()}
-
-                            <button
-                                type="button"
-                                className="Button any-button"
-                                onClick={() => {
-                                    deleteData(this.props, 'people', data.person_id, 'biographical_entries', data.id, true);
-                                    close();
-                                }}
-                            >
-                                {t(this.props, 'delete')}
-                            </button>
-                        </div>
+                        </DeleteItemForm>
                     )}
                 </Modal>
             </AuthorizedContent>

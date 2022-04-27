@@ -1,101 +1,97 @@
-import { Component, Fragment } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import Select from 'react-select';
 import { FaDownload } from 'react-icons/fa';
 
 import { UserRegistrationSearchFormContainer } from 'modules/admin';
-import { pathBase } from 'modules/routes';
-import { admin } from 'modules/auth';
-import { t } from 'modules/i18n';
-import SubTab from './SubTab';
+import { usePathBase } from 'modules/routes';
+import { useAuthorization } from 'modules/auth';
+import { useI18n } from 'modules/i18n';
+import AdminSubTab from './AdminSubTab';
 
-class UsersAdminTabPanel extends Component {
-    static propTypes = {
-        countryKeys: PropTypes.object.isRequired,
-        locale: PropTypes.string.isRequired,
-        translations: PropTypes.object.isRequired,
-        projectId: PropTypes.string.isRequired,
-        account: PropTypes.object.isRequired,
-        editView: PropTypes.bool.isRequired,
+export default function UsersAdminTabPanel({
+    countryKeys,
+    locale,
+    translations,
+}) {
+    const { t } = useI18n();
+    const { isAuthorized } = useAuthorization();
+    const pathBase = usePathBase();
+
+    const [selectedCountries, setSelectedCountries] = useState([]);
+
+    function countryKeyOptions() {
+        return countryKeys[locale].map(x => ({
+            label: translations[locale]['countries'][x],
+            value: x
+        }));
     }
 
-    constructor(props) {
-        super(props);
-
-        this.state = { selectedCountries: [] };
-
-        this.onCountrySelectorChange = this.onCountrySelectorChange.bind(this);
-    }
-
-    countryKeys() {
-        const { locale, translations } = this.props;
-
-        let countryKeys = [];
-        this.props.countryKeys[locale].map((x, i) => {
-            countryKeys[i] = {'label': translations[locale]["countries"][x], 'value': x}
-        })
-        return countryKeys;
-    }
-
-    userStatisticsPath() {
-        let path = `${pathBase(this.props)}/admin/user_statistics.csv`;
-        if (this.state.selectedCountries.length > 0) {
+    function userStatisticsPath() {
+        let path = `${pathBase}/admin/user_statistics.csv`;
+        if (selectedCountries.length > 0) {
             path = path + "?countries[]="
-            path = path + this.state.selectedCountries.join("&countries[]=")
+            path = path + selectedCountries.join("&countries[]=")
         }
         return path;
     }
 
-    onCountrySelectorChange(value) {
+    function onCountrySelectorChange(value) {
         let array = [];
         for(var o in value) {
             array.push(value[o]['value']);
         }
-        this.setState({ selectedCountries: array });
+        setSelectedCountries(array);
     }
 
-    render() {
-        return admin(this.props, {type: 'General'}, 'edit') ?
-            (<Fragment>
-                <h3 className='SidebarTabs-title'>
-                    { t(this.props, 'edit.administration') }
-                </h3>
-                <div className='flyout-sub-tabs-container'>
-                    <SubTab
-                        title='edit.users.admin'
-                        url={`${pathBase(this.props)}/user_registrations`}
-                        obj={{type: 'UserRegistration'}}
-                        action='update'
-                    >
-                        <div>
-                            <div>
-                                <UserRegistrationSearchFormContainer/>
-                                <a href={this.userStatisticsPath()}>
-                                    <FaDownload
-                                        className="Icon Icon--primary"
-                                        title={t(this.props, 'download_user_statistics')}
-                                    />
-                                    {' '}
-                                    {t(this.props, 'download_user_statistics')}
-                                </a>
-                            </div>
-                            <Select
-                                options={this.countryKeys()}
-                                className="basic-multi-select"
-                                isMulti
-                                onChange={this.onCountrySelectorChange}
-                                styles={{
-                                    placeholder: (provided) => Object.assign(Object.assign({}, provided), { cursor: 'text' }),
-                                    menu: (provided) => Object.assign(Object.assign({}, provided), { position: 'relative' }),
-                                }}
-                                placeholder="Statistik nach Ländern filtern (optional)"
-                            />
-                        </div>,
-                    </SubTab>
-                </div>
-            </Fragment>) :
-            null;
+    if (!isAuthorized({ type: 'General' }, 'edit')) {
+        return null;
     }
+
+    return (
+        <>
+            <h3 className='SidebarTabs-title'>
+                { t('edit.administration') }
+            </h3>
+            <div className='flyout-sub-tabs-container flyout-video'>
+                <AdminSubTab
+                    title='edit.users.admin'
+                    url={`${pathBase}/user_registrations`}
+                    obj={{type: 'UserRegistration'}}
+                    action='update'
+                >
+                    <div>
+                        <div>
+                            <UserRegistrationSearchFormContainer/>
+                            <a href={userStatisticsPath()}>
+                                <FaDownload
+                                    className="Icon Icon--primary"
+                                    title={t('download_user_statistics')}
+                                />
+                                {' '}
+                                {t('download_user_statistics')}
+                            </a>
+                        </div>
+                        <Select
+                            options={countryKeyOptions()}
+                            className="basic-multi-select"
+                            isMulti
+                            onChange={onCountrySelectorChange}
+                            styles={{
+                                placeholder: provided => ({...provided, cursor: 'text'}),
+                                menu: provided => ({...provided, position: 'relative'}),
+                            }}
+                            placeholder="Statistik nach Ländern filtern (optional)"
+                        />
+                    </div>
+                </AdminSubTab>
+            </div>
+        </>
+    );
 }
 
-export default UsersAdminTabPanel;
+UsersAdminTabPanel.propTypes = {
+    countryKeys: PropTypes.object.isRequired,
+    locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
+}

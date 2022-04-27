@@ -94,6 +94,25 @@ es:
         Ergänzungen, wie Aliasname oder Aufschlüsselung eines Akronyms;
         Bezeichnung nonverbalen Verhaltens
       tape_end: Band-Ende
+    default:
+      interruption: Interrupción (interruption) de la entrevista o de la grabación, p.e. <i(pausa)>
+      pause: Periodo en que no se habla con la duración en segundos, p.e. <p3>, tres segundos
+      unclear: Fragmento ininteligible y su duración en segundos, p.e. <?5>, ininteligible por cinco segundos
+      broken_word: El guion abajo marca palabras o frases incompletas
+      fast_word: Secuencia rápida de palabras
+      lexical_phenomenon: Palabras en otros idiomas se marcan con “l” (lexical phenomenon) y la abreviación para el idioma, p.e. <l(de)> para alemán y <l(es)> para español. Palabras de origen español que se usan en forma germanizada se marcan con <l(es-de)> o en el caso contrario con <l(de-es)>.
+      changed_voice: Cambios notables en la forma de hablar (shift in vocal quality), p.e. <(en voz alta) así era>
+      vocal_shift: forma de hablar
+      simultaneous: Cuando la persona entrevistada y el/la entrevistador/a hablan simultáneamente (simultaneous) se marca con <sim>
+      non_linguistic: Sonidos o eventos que influyen en la entrevista se marcan con <nl> (non-linguistic incidents) p.e. <nl(suena el teléfono)>
+      sound: sonido
+      non_verbal: Expresiones non verbales pero fonéticos se marcan con <v> (vocal), p.e. <v(bosteza)>
+      fonetic_expression: tipo de expresión fonética
+      gesture: Gestos especialmente notables se marcan con <g(tipo del gesto)>, p.e. <g(niega con la cabeza)>
+      gesture_type: tipo de gesto
+      facial_expression: Expresiones mímicas especialmente notables se marcan con <m(tipo de mímica)>, p.e. <m(cierra los ojos)>
+      expression_type: tipo de mímica
+      notes: Correcciones o añadiduras (notes)
   mark_texts: Replace text
   selected_registry_entry: Ausgewählter Registereintrag
   selected: seleccionado
@@ -156,13 +175,13 @@ es:
   change_password: Cambiar contraseña
   archive_results: Resultados de búsqueda
   segment_results: Resultados de búsqueda en la transcripción
-  translation_results: Search results in translations
-  heading_results: Search results in the table of contents
+  translation_results: Resultados de búsqueda en la traducción
+  heading_results: Resultados de búsqueda en la tabla de contenido
   photo_results: Resultados de búsqueda en imágenes
-  annotation_results: Search results in annotations
+  annotation_results: Resultados de búsqueda en las anotaciones
   registryentry_results: Resultados de búsqueda en el índice
   biographicalentry_results: Resultados de búsqueda en la biografía breve
-  observation_results: Search results in the protocol
+  observation_results: Resultados de búsqueda en las notas
   person_results: Resultados de búsqueda para personas
   user_registration_results: Resultados de búsqueda para usuaria/os
   segment_hits: Resultados en la transcripción
@@ -216,9 +235,12 @@ es:
   translation_title: Traducción (%{lang}) de la entrevista con
   transcript_footer: 'Cómo citar: Transcripción de la entrevista con'
   transcript_template: Modelo para la importación de archivos .ods
-  biographical_entries_header: 'Biografía breve:'
-  biographical_entries_title: 'Biografía breve de'
-  biographical_entries_footer: 'Cómo citar: Biografía breve de'
+  biographical_entries_header: 'Biografía breve (español): %{interviewee_name} (Interview ID %{archive_id})'
+  biographical_entries_title: 'Biografía breve (español) de %{interviewee_name}'
+  biographical_entries_footer: 'Cómo citar: Biografía breve'
+  observations_header: 'Notas (español): %{interviewee_name} (Interview ID %{archive_id})'
+  observations_title: Notas (español) de la entrevista con %{interviewee_name}
+  observations_footer: 'Cómo citar: Notas de la entrevista con'
   interview_info: Sobre la entrevista
   place: Lugar
   group: Grupo
@@ -718,6 +740,7 @@ es:
     workflow_state: Status
     date_of_birth: Geburtsdatum
     signature_original: Originalsignatur
+    startpage_position: Startpage position
   activerecord:
     models:
       interview:
@@ -917,6 +940,8 @@ es:
         time_shifts_explanation: Zeiten bis zum Sprechbeginn pro Tape, kommasepariert, im Format hh:mm:ss oder in Sekunden (nur für .odt)
         delete_existing: delete existing transcript
         delete_existing_explanation: Deletes existing headings and keywords for this tape
+        update_only_speakers: nur Sprecher aktualisieren
+        update_only_speakers_explanation: es werden keine textuellen Änderungen vorgenommen
       project:
         available_locales: verfügbare Sprachcodes (alpha2)
         default_locale: default Sprachcode (alpha2)
@@ -943,7 +968,8 @@ es:
         smtp_server: Servidor SMTP
         has_newsletter: Newsletter
         has_map: Karte anzeigen
-        hidden_registry_entry_ids: versteckte Registereinträge (IDs)
+        pseudo_logged_out_visible_registry_entry_ids: Auch ohne Anmeldung sichtbare Registerbäume (oberste IDs)
+        pseudo_hidden_registry_entry_ids: Nur für Sammlungsmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
@@ -1110,7 +1136,7 @@ es:
         photographer: Foto/Fuente
         license: Licencia
         data: Archivo de la foto
-        caption_explanation: Este pie de foto sólo está disponible en alemán.
+        caption_explanation: No photo caption available in this language.
         workflow_state: 'estatus'
       uploaded_file:
         href: Link
@@ -1210,29 +1236,29 @@ es:
       description: Presentación de los lugares que se mencionan en la entrevista.
       error: Error loading map
       error_references: Error loading references
-      segment_references: Mentions
+      segment_references: Lugares mencionados
       at: at
     interview_metadata:
       add_contributors: Add contributors
     interview_search:
-      no_results: No results
-      annotation_for: Annotation for
+      no_results: No hay resultados
+      annotation_for: Anotaciones para
       search_results:
-        heading: Search results
-        in_transcript: in the transcript
-        in_toc: in the table of contents
-        in_photo_captions: in photo captions
-        in_annotations: in annotations
-        in_registry: in the registry
-        in_biography: in the short biography
-        in_observations: in the protocol
+        heading: Resultados de busqueda
+        in_transcript: en la transcripción
+        in_toc: en la tabla de contenido
+        in_photo_captions: en los fotos
+        in_annotations: en las anotaciones
+        in_registry: en el índice
+        in_biography: en la biografía breve
+        in_observations: en las notas
     layout:
       back_to_top:
         label: "Back to top"
     registry:
       name_missing: "registry name missing"
     map:
-      mentions: Mentions
+      mentions: Lugares mencionados
     search_map:
       title: Map
       multiple_types: Multiple location types

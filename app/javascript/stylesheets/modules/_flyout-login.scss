@@ -43,9 +43,9 @@ form.flyout-login {
 	vertical-align: top;
   width: 100%;
   // max-width: 200px;
-	height: 44px;
-	padding: 3px;
-	margin: 0 10px 10px 0;
+	height: $base-unit * 2;
+
+	margin: 0 10px 0 0;
 	background: linear-gradient(to bottom, #eeeeee, #FFFFFF 25px);
 	background-image: -webkit-linear-gradient(top, #eeeeee, #FFFFFF 25px);
 	border-radius: 0;

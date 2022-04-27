@@ -81,13 +81,14 @@ export default class Account extends Component {
                     </p>
                     <Modal
                         title={t(this.props, 'request_project_access_link')}
-                        triggerClassName="Button Button--transparent Button--withoutPadding Button--primary"
+                        triggerClassName="Button Button--transparent Button--withoutPadding Button--primaryColor"
                         trigger={t(this.props, 'request_project_access_link')}
                     >
                         {close => (
                             <RequestProjectAccessFormContainer
                                 project={project}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
                     </Modal>
@@ -111,7 +112,7 @@ export default class Account extends Component {
                         {this.changeToEditView()}
                         <button
                             type="button"
-                            className='Button logout'
+                            className='Button Button--fullWidth Button--secondaryAction u-mt-small'
                             onClick={() => {
                                 // clear non-public data
                                 if (this.props.archiveId) {

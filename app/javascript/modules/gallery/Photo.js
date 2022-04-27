@@ -9,6 +9,10 @@ export default function Photo({
 }) {
     const { locale } = useI18n();
 
+    function handleContextMenu(event) {
+        event.preventDefault();
+    }
+
     return (
         <div className="PhotoSlide">
             <div className="PhotoSlide-photo">
@@ -16,6 +20,7 @@ export default function Photo({
                     className="PhotoSlide-image"
                     src={photo.src}
                     alt={photo.captions[locale] || photo.captions['de']}
+                    onContextMenu={handleContextMenu}
                 />
             </div>
 

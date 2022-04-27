@@ -80,7 +80,11 @@ export default class OrderNewPasswordForm extends Component {
                     handleChange={this.handleChange}
                     handleErrors={this.handleErrors}
                 />
-                <input type="submit" value={t(this.props, 'devise.registrations.activate_submit')}/>
+                <input
+                    type="submit"
+                    className="Button Button--primaryAction"
+                    value={t(this.props, 'devise.registrations.activate_submit')}
+                />
             </form>
         );
     }

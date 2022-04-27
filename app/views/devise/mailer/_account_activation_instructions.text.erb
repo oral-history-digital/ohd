@@ -1,5 +1,5 @@
 <%
-  case @resource.default_locale || I18n.locale
+  case (@resource.default_locale || I18n.locale).to_sym
   when :en
 -%>
 
@@ -78,9 +78,9 @@ Bitte bestätigen Sie innerhalb der kommenden 14 Tage Ihre Registrierung, indem 
 
 Nach erfolgter Bestätigung wird Ihre Registrierung inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktage dauern. Nach dieser Überprüfung werden Sie über die Aktivierung Ihres Zugangs zu dem Interview-Archiv informiert.
 
-<% if @resource.projects.count == 1 %>
+<% if false && @resource.projects.count == 1 %>
   Mit dieser Registrierung sind Sie zugleich im sammlungsübergreifenden Interview-Portal "Oral-History.Digital" registriert. Dort können Sie für weitere Interview-Sammlungen eine Freischaltung beantragen oder direkt auf sie zugreifen.
-<% else %>
+<% elsif false %>
   Nach erfolgter Bestätigung können Sie im sammlungsübergreifenden Interview-Portal "Oral-History.Digital" recherchieren und für einzelne Interview-Sammlungen eine Freischaltung beantragen oder direkt auf sie zugreifen.
 <% end %>  
 

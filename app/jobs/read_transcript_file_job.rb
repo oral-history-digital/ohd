@@ -1,13 +1,13 @@
 class ReadTranscriptFileJob < ApplicationJob
   queue_as :default
 
-  def perform(interview, file_path, tape_id, locale, receiver, tape_shifts=[])
+  def perform(interview, file_path, tape_id, locale, receiver, update_only_speakers=false)
     jobs_logger.info "*** uploading #{file_path} to interview #{interview.archive_id} and tape #{tape_id}"
     extension = File.extname(file_path).strip.downcase[1..-1]
     case extension
     # only ods is tested
     when 'ods', 'xlsx', 'xlsm','xls', 'xlm', 'csv'
-      interview.create_or_update_segments_from_spreadsheet(file_path, tape_id, locale)
+      interview.create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, update_only_speakers)
     when 'odt'
       interview.create_or_update_segments_from_text(file_path, tape_id, locale)
     when 'vtt', 'srt'

@@ -1,13 +1,14 @@
 import { useSelector, useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
+import classNames from 'classnames';
 
 import { getCurrentProject, getProjects } from 'modules/data';
 import { getLocale, setProjectId } from 'modules/archive';
 import { projectByDomain } from 'modules/routes';
-import { OHD_DOMAIN_DEVELOPMENT, OHD_DOMAIN_PRODUCTION } from './constants';
+import { OHD_DOMAINS } from './constants';
 
-function OHDLink() {
+function OHDLink({ className }) {
     const locale = useSelector(getLocale);
     const project = useSelector(getCurrentProject);
     const projects = useSelector(getProjects);
@@ -24,18 +25,18 @@ function OHDLink() {
             (projectHasOwnDomain ?
                 <a
                     title='OHD'
-                    href={`${developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION}/${locale}`}
-                    className="u-mr"
+                    href={`${OHD_DOMAINS[railsMode]}/${locale}`}
+                    className={classNames(className, 'u-mr')}
                 >
-                    <img className="logo-img" src='/ohd-logo-gr.png' alt="" />
+                    <img className="SiteHeader-logo" src='/ohd-logo-gr.png' alt="" />
                 </a> :
                 <Link
                     to={`/${locale}`}
                     title='OHD'
                     onClick={unsetProjectId}
-                    className="u-mr"
+                    className={classNames(className, 'u-mr')}
                 >
-                    <img className="logo-img" src='/ohd-logo-gr.png' alt="" />
+                    <img className="SiteHeader-logo" src='/ohd-logo-gr.png' alt="" />
                 </Link>
             ) :
             null

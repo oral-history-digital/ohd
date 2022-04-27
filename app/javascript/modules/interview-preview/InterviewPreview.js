@@ -2,8 +2,9 @@ import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { FaEyeSlash } from 'react-icons/fa';
 import classNames from 'classnames';
+import { Checkbox } from 'modules/ui';
 
-import { OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT } from 'modules/layout';
+import { OHD_DOMAINS } from 'modules/layout';
 import { LinkOrA, pathBase } from 'modules/routes';
 import { SlideShowSearchResults } from 'modules/interview-search';
 import { AuthorizedContent } from 'modules/auth';
@@ -11,6 +12,7 @@ import missingStill from 'assets/images/missing_still.png';
 import ThumbnailBadge from './ThumbnailBadge';
 import ThumbnailMetadataContainer from './ThumbnailMetadataContainer';
 import searchResultCount from './searchResultCount';
+import { useProjectAccessStatus } from 'modules/auth';
 
 export default function InterviewPreview({
     fulltext,
@@ -29,7 +31,7 @@ export default function InterviewPreview({
     const projectId = project.identifier;
     const pathBaseStr = pathBase({projectId, locale: project.default_locale, projects});
 
-    const onOHD = [OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT].indexOf(window.location.origin) > -1;
+    const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;
     const showSlideShow = (onOHD && (!project.archive_domain || project.archive_domain === '')) || project.archive_domain === window.location.origin;
 
     useEffect(() => {
@@ -88,8 +90,7 @@ export default function InterviewPreview({
 
             <AuthorizedContent object={{ type: 'Interview', interview_id: interview.id }} action='update'>
                 <div>
-                    <input
-                        type='checkbox'
+                    <Checkbox
                         className='export-checkbox'
                         checked={selectedArchiveIds.indexOf(interview.archive_id) > 0}
                         onChange={() => {addRemoveArchiveId(interview.archive_id)}}
@@ -106,6 +107,8 @@ function InnerContent({
     locale,
     isExpanded
 }) {
+    const { projectAccessGranted } = useProjectAccessStatus(project);
+
     return (
         <>
             <div className="InterviewCard-image aspect-ratio">
@@ -118,8 +121,8 @@ function InnerContent({
             </div>
 
             <p className="InterviewCard-title">
-                {interview.workflow_state === 'unshared' && <FaEyeSlash />}
-                {interview.short_title?.[locale] || interview.anonymous_title[locale]}
+                {interview.workflow_state === 'unshared' && <FaEyeSlash className="u-mr-tiny" />}
+                {projectAccessGranted ? interview.short_title?.[locale] : interview.anonymous_title[locale]}
             </p>
 
             {!isExpanded && (

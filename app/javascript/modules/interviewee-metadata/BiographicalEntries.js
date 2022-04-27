@@ -32,6 +32,7 @@ export default class BiographicalEntries extends Component {
                             <BiographicalEntryFormContainer
                                 person={this.props.person}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
                     </Modal>

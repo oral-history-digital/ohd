@@ -1,7 +1,7 @@
 class InterviewMetadata
   include ActiveModel::Validations
 
-  attr_accessor :self_link, :creation_date,
+  attr_accessor :creation_date, :batch,
     :media_type, :mime_type, :tape_paths, :transcript_paths, :project_id,
     :name, :num_speakers, :corpus_name, :recording_date, :dominant_language,
     :actors, :topic
@@ -33,7 +33,7 @@ class InterviewMetadata
           xml.Header {
             xml.MdCreator 'Nokogiri'
             xml.MdCreationDate creation_date
-            xml.MdSelfLink self_link
+            xml.MdSelfLink
             xml.MdProfile 'clarin.eu:cr1:p_1336550377513'
             xml.MdCollectionDisplayName 'Bavarian Archive for Speech Signals (BAS)'
           }
@@ -57,7 +57,7 @@ class InterviewMetadata
             xml.JournalFileProxyList
             xml.ResourceRelationList
             xml.IsPartOfList {
-              xml.IsPartOf "../ohd_#{project_id}_001.xml"
+              xml.IsPartOf "../ohd_#{project_id}_#{batch.to_s.rjust(3, '0')}.xml"
             }
           }
           xml.Components {

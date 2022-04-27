@@ -25,6 +25,7 @@ class Project < ApplicationRecord
   has_many :registry_name_types, dependent: :destroy
   has_many :people, dependent: :destroy
   has_many :map_sections, dependent: :destroy
+  has_many :archiving_batches, dependent: :destroy
 
   translates :name, :display_name, :introduction, :more_text, :landing_page_text,
     fallbacks_for_empty_translations: true, touch: true
@@ -35,6 +36,7 @@ class Project < ApplicationRecord
   serialize :upload_types, Array
   #serialize :name, Array
   serialize :funder_names, Array
+  serialize :logged_out_visible_registry_entry_ids, Array
   serialize :hidden_registry_entry_ids, Array
   serialize :hidden_transcript_registry_entry_ids, Array
   serialize :pdf_registry_entry_ids, Array
@@ -46,7 +48,15 @@ class Project < ApplicationRecord
   # if params[:available_locales] = "de,en,ru" (a string!!) it can not be serialized
   # therefore the string-values from the params-hash are splitted  first
   #
-  [:view_modes, :available_locales, :upload_types, :funder_names, :hidden_registry_entry_ids, :pdf_registry_entry_ids, :hidden_transcript_registry_entry_ids].each do |m|
+  [:view_modes,
+    :available_locales,
+    :upload_types,
+    :funder_names,
+    :logged_out_visible_registry_entry_ids,
+    :hidden_registry_entry_ids,
+    :pdf_registry_entry_ids,
+    :hidden_transcript_registry_entry_ids
+  ].each do |m|
     define_method "pseudo_#{m}=" do |string|
       write_attribute(m, string.strip.split(/,\s*/))
     end
@@ -58,7 +68,7 @@ class Project < ApplicationRecord
   validates :aspect_x, numericality: { only_integer: true },  allow_nil: true
   validates :aspect_y, numericality: { only_integer: true },  allow_nil: true
   validates :archive_id_number_length, numericality: { only_integer: true },  allow_nil: true
-  validates :shortname, format: { with: /\A[\-a-z]{2,12}\z/ },  uniqueness: true,  presence: true
+  validates :shortname, format: { with: /\A[\-a-z0-9]{1,11}[a-z]\z/ },  uniqueness: true,  presence: true
 
   before_save :touch_interviews
   def touch_interviews
@@ -148,9 +158,10 @@ class Project < ApplicationRecord
     metadata_fields.where(use_in_results_list: true).order(:list_columns_order)
   end
 
-  def clear_cache(namespace)
-    Rails.cache.delete_matched /^#{cache_key_prefix}-#{namespace}*/
-  end
+  # runs only with memcache
+  #def clear_cache(namespace)
+    #Rails.cache.delete_matched /^#{cache_key_prefix}-#{namespace}*/
+  #end
 
   #%w(RegistryEntry RegistryReferenceType Person Interview).each do |m|
   %w(RegistryReferenceType Person Interview).each do |m|
@@ -169,7 +180,8 @@ class Project < ApplicationRecord
   end
 
   def min_to_max_birth_year_range
-    Rails.cache.fetch("#{cache_key_with_version}/min_to_max_birth_year", expires_in: 12.hours) do
+    cache_key_date = [people.maximum(:updated_at), DateTime.now].compact.max.strftime("%d.%m-%H:%M")
+    Rails.cache.fetch("#{shortname}-#{cache_key_date}-#{people.count}") do
       first = (interviews.map { |i| i.interviewee.try(:year_of_birth).try(:to_i) } - [nil, 0]).min || 1900
       last = (interviews.map { |i| i.interviewee.try(:year_of_birth).try(:to_i) } - [nil, 0]).max || DateTime.now.year
       (first..last)
@@ -177,7 +189,10 @@ class Project < ApplicationRecord
   end
 
   def featured_interviews
-    interviews.where.not(startpage_position: nil).order(startpage_position: :asc)
+    interviews
+      .where(workflow_state: 'public')
+      .where.not(startpage_position: nil)
+      .order(startpage_position: :asc)
   end
 
   def search_facets_hash
@@ -188,7 +203,7 @@ class Project < ApplicationRecord
       when "RegistryReferenceType"
         rr = facet.registry_reference_type
         if rr
-          cache_key_date = [rr.updated_at, facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
+          cache_key_date = [rr.updated_at, facet.updated_at, RegistryEntry.maximum(:updated_at)].compact.max.strftime("%d.%m-%H:%M")
           mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
             ::FacetSerializer.new(rr).as_json
           end
@@ -246,7 +261,7 @@ class Project < ApplicationRecord
         when "collection_id"
           facet_label_hash = facet.localized_hash(:label)
           cache_key_date = [Collection.maximum(:updated_at), facet.updated_at].compact.max.strftime("%d.%m-%H:%M")
-          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}") do
+          mem[facet.name.to_sym] = Rails.cache.fetch("#{cache_key_prefix}-facet-#{facet.id}-#{cache_key_date}-#{Collection.count}") do
             {
               name: facet_label_hash || localized_hash_for("search_facets", facet.name),
               subfacets: collections.includes(:translations).inject({}) do |subfacets, sf|

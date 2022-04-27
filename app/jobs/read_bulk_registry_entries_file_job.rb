@@ -81,8 +81,9 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
             if parent_id
               parent = RegistryEntry.find(parent_id)
             elsif !parent_id && parent_name
-              parent_name = RegistryName.where(descriptor: parent_name).first
-              parent = parent_name && parent_name.registry_entry
+              parent = RegistryEntry.joins(registry_names: :translations).
+                where("registry_name_translations.descriptor": parent_name).
+                where(project_id: project.id).first
             end
 
             RegistryHierarchy.find_or_create_by(ancestor_id: parent.id, descendant_id: entry.id) if parent

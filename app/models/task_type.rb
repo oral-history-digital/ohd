@@ -14,7 +14,7 @@ class TaskType < ApplicationRecord
       VALUES #{Interview.all.map {|i| "(#{i.id},#{self.id},'created','#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}','#{Time.now.strftime("%Y-%m-%d %H:%M:%S")}')" }.join(",")}
     END_SQL
     Interview.count > 0 && ActiveRecord::Base.connection.execute(sql)
-    project.clear_cache('interview')
+    project.interviews.update_all(updated_at: Time.now)
   end
 
   after_update :touch_tasks

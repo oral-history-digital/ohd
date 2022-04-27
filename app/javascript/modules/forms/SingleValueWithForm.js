@@ -57,7 +57,7 @@ export default class SingleValueWithForm extends Component {
         let statusCheckbox = {
             elementType: 'input',
             attribute: `public_attributes[${this.props.attribute}]`,
-            value: this.props.obj.properties.public_attributes && (this.props.obj.properties.public_attributes[this.props.attribute] === 'true'),
+            value: this.props.obj.properties?.public_attributes?.[this.props.attribute]?.toString() === 'true',
             labelKey: 'activerecord.attributes.default.publish',
             type: 'checkbox',
         };
@@ -79,7 +79,7 @@ export default class SingleValueWithForm extends Component {
             <Form
                 scope={underscore(this.props.obj.type)}
                 onSubmit={function(params){_this.props.submitData(_this.props, params, {updateStateBeforeSubmit: true}); _this.setEditing()}}
-                cancel={_this.setEditing}
+                onCancel={_this.setEditing}
                 formClasses='default single-value'
                 className="ContentField"
                 data={this.props.obj}
@@ -105,7 +105,7 @@ export default class SingleValueWithForm extends Component {
                     (projectAccessGranted && metadataField?.use_in_details_view) ||
                     (!projectAccessGranted && metadataField?.display_on_landing_page)
                 ) &&
-                (obj.properties.public_attributes?.[attribute] !== false)
+                (obj.properties?.public_attributes?.[attribute]?.toString() === 'true')
             )
         ) {
             let value = humanReadable(obj, attribute, this.props, this.state);
@@ -162,5 +162,7 @@ export default class SingleValueWithForm extends Component {
 }
 
 SingleValueWithForm.propTypes = {
+    obj: PropTypes.object,
+    attribute: PropTypes.string,
     readOnly: PropTypes.bool,
 };

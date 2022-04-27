@@ -2,7 +2,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
-import { OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT } from 'modules/layout';
+import { OHD_DOMAINS } from 'modules/layout';
 import { getLocale, setProjectId, getProjectId } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
 
@@ -18,11 +18,11 @@ function LinkOrA({
     const currentProjectId = useSelector(getProjectId);
     const dispatch = useDispatch();
 
-    const onOHD = [OHD_DOMAIN_PRODUCTION, OHD_DOMAIN_DEVELOPMENT].indexOf(window.location.origin) > -1;
+    const onOHD = OHD_DOMAINS[railsMode] === window.location.origin;
     const projectHasOtherDomain = project.archive_domain && project.archive_domain !== window.location.origin;
     const projectIsCurrentProject = project.identifier === currentProjectId;
 
-    const ohdDomain = developmentMode ? OHD_DOMAIN_DEVELOPMENT : OHD_DOMAIN_PRODUCTION;
+    const ohdDomain = OHD_DOMAINS[railsMode];
 
     const pathBase = project.archive_domain ? `/${locale}` : `/${project.identifier}/${locale}`;
     const path = to.length > 0 ? `${pathBase}/${to}` : pathBase;

@@ -71,7 +71,7 @@ class MetadataImportTemplate
     @project.registry_reference_type_import_metadata_fields.inject({}) do |mem, field|
       label = field.label(@locale)
       mem["rrt_#{field.registry_reference_type_id}".to_sym] = label
-      mem["rrt_sub_#{field.registry_reference_type_id}".to_sym] = "#{label} (Subkategorie)"
+      mem["rrt_sub_#{field.registry_reference_type_id}".to_sym] = "#{label} (direkter Oberbegriff)"
       mem
     end
   end

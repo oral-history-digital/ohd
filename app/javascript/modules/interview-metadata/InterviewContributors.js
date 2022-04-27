@@ -36,6 +36,7 @@ export default function InterviewContributors({
                                 withSpeakerDesignation={withSpeakerDesignation}
                                 submitData={submitData}
                                 onSubmit={close}
+                                onCancel={close}
                             />
                         )}
                     </Modal>

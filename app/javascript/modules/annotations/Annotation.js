@@ -4,6 +4,7 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { AuthorizedContent } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
+import { DeleteItemForm } from 'modules/forms';
 import AnnotationFormContainer from './AnnotationFormContainer';
 
 export default function Annotation({
@@ -35,6 +36,7 @@ export default function Annotation({
                                 segment={segment}
                                 contentLocale={contentLocale}
                                 onSubmit={closeModal}
+                                onCancel={closeModal}
                             />
                         )}
                     </Modal>
@@ -43,19 +45,15 @@ export default function Annotation({
                         trigger={<FaTrash className="Icon Icon--editorial Icon--small"/>}
                     >
                         {closeModal => (
-                            <div>
+                            <DeleteItemForm
+                                onSubmit={() => {
+                                    deleteData({ locale, projectId, projects }, 'annotations', annotation.id, null, null, true);
+                                    closeModal();
+                                }}
+                                onCancel={closeModal}
+                            >
                                 <p dangerouslySetInnerHTML={{__html: annotation.text[contentLocale]}} />
-                                <button
-                                    type="button"
-                                    className="Button any-button"
-                                    onClick={() => {
-                                        deleteData({ locale, projectId, projects }, 'annotations', annotation.id, null, null, true);
-                                        closeModal();
-                                    }}
-                                >
-                                    {t('edit.annotation.delete')}
-                                </button>
-                            </div>
+                            </DeleteItemForm>
                         )}
                     </Modal>
                 </span>

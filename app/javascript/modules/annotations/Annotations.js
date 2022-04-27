@@ -38,6 +38,7 @@ export default function Annotations({
                                 segment={segment}
                                 contentLocale={contentLocale}
                                 onSubmit={closeModal}
+                                onCancel={closeModal}
                             />
                         )}
                     </Modal>

@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 
 import { useI18n } from 'modules/i18n';
+import { showTranslationTab } from 'modules/interview';
 import { searchResultCount } from 'modules/interview-preview';
 import ResultList from './ResultList';
 import TranscriptResult from './TranscriptResult';
@@ -12,6 +13,8 @@ import TocResult from './TocResult';
 export default function InterviewSearchResults({
     interview,
     project,
+    projectId,
+    locale,
     currentInterviewSearchResults,
     segmentResults,
     headingResults,
@@ -58,7 +61,8 @@ export default function InterviewSearchResults({
                     className="u-mt"
                 />
             )}
-            {translatedTranscriptResultsPerLocale?.map(([resultLocale, results]) => (
+            {showTranslationTab(projectId, interview.lang, locale) &&
+            translatedTranscriptResultsPerLocale?.map(([resultLocale, results]) => (
                 <ResultList
                     key={resultLocale}
                     heading={t('translation_results')}

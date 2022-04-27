@@ -80,6 +80,7 @@ namespace :database do
     task :unify_user_accounts, [:max_id] => :environment do |t, args|
       UserRegistration.group(:email).count.select{|k,v| v > 1}.each do |email, count|
         first_ur = UserRegistration.where(email: email).where("id <= ?", args.max_id).first
+        first_user_account = first_ur.user_account
         if first_ur
           other_urs = UserRegistration.where(email: email).where("id > ?", args.max_id)
 
@@ -91,6 +92,9 @@ namespace :database do
             ur.user_account.user_contents.update_all(user_account_id: first_ur.user_account_id)
             ur.user_account.searches.update_all(user_account_id: first_ur.user_account_id)
 
+            if first_user_account && !first_user_account.activated_at && ur.user_account.activated_at
+              first_user_account.update_attributes(activated_at: ur.user_account.activated_at)
+            end
             ur.user_account.destroy
             ur.destroy
           end

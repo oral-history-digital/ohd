@@ -77,6 +77,7 @@ class RegistryEntry < ApplicationRecord
 
   after_update :touch_objects
   after_create :touch_objects
+  before_destroy :touch_objects
 
   def parents
     ancestors
@@ -84,6 +85,12 @@ class RegistryEntry < ApplicationRecord
 
   def children
     descendants
+  end
+
+  def public_registry_references_count
+    registry_references.joins(:interview)
+      .where('interviews.workflow_state': 'public')
+      .count
   end
 
   # A registry entry may not be deleted if it still has children or
@@ -279,6 +286,10 @@ class RegistryEntry < ApplicationRecord
       block.call d
       d.on_all_descendants(&block)
     end
+  end
+
+  def get_first_descendant_of(code)
+    parents.first.code == code ? self : parents.first.get_first_descendant_of(code)
   end
 
   def search_project_id

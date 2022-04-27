@@ -169,10 +169,24 @@ class InterviewsController < ApplicationController
         end
         render plain: vtt
       end
+      format.ods do
+        @locale = params[:lang]
+        send_data @interview.to_ods(@locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{@locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet" #, :disposition => "attachment"
+      end
+      format.html
+    end
+  end
+
+  def transcript
+    @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
+
+    respond_to do |format|
       format.pdf do
         @locale = current_project.available_locales.include?(params[:lang]) ? params[:lang] : params[:locale]
         interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
         @lang = "#{params[:lang]}-public"
+        @doc_type = 'transcript'
         @lang_human = I18n.t(params[:lang], locale: @locale)
         @orig_lang = "#{interview_locale}-public"
         first_segment_with_heading = @interview.segments.with_heading.first
@@ -182,11 +196,29 @@ class InterviewsController < ApplicationController
         end
         send_data pdf, filename: "#{@interview.archive_id}_transcript_#{params[:lang]}.pdf", :type => "application/pdf"#, :disposition => "attachment"
       end
-      format.ods do
-        @locale = params[:lang]
-        send_data @interview.to_ods(@locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{@locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet" #, :disposition => "attachment"
+    end
+  end
+
+  def observations
+    @interview = Interview.find_by_archive_id(params[:id])
+    authorize @interview
+
+    respond_to do |format|
+      format.pdf do
+        @locale = current_project.available_locales.include?(params[:lang]) ? params[:lang] : params[:locale]
+        @lang = params[:lang]
+        @doc_type = 'observations'
+        pdf = render_to_string(:template => '/latex/interview_observations.pdf.erb', :layout => 'latex.pdf.erbtex')
+        send_data pdf, filename: "#{@interview.archive_id}_protocol_#{params[:lang]}.pdf", :type => "application/pdf"
       end
-      format.html
+      format.json do
+        render json: {
+          id: @interview.archive_id,
+          data_type: "interviews",
+          nested_data_type: 'observations',
+          data: @interview.localized_hash(:observations)
+        }, status: :ok
+      end
     end
   end
 
@@ -222,7 +254,7 @@ class InterviewsController < ApplicationController
     interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.xml do
-        exporter = InterviewMetadataExporter.new(interview)
+        exporter = InterviewMetadataExporter.new(interview, params[:batch])
         metadata = exporter.build
 
         if metadata.valid?
@@ -303,7 +335,7 @@ class InterviewsController < ApplicationController
         json = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-ref-tree-#{@interview.id}-#{RegistryEntry.maximum(:updated_at)}" do
           ref_tree = ReferenceTree.new(@interview.segment_registry_references)
           {
-            data: ActiveRecord::Base.connection.column_exists?(:registry_entries, :entry_dedalo_code) ? ref_tree.part(RegistryEntry.where(entry_dedalo_code: "ts1_1").first.id) : ref_tree.part(1),
+            data: ref_tree.part(current_project.root_registry_entry.id),
             nested_data_type: "ref_tree",
             data_type: "interviews",
             archive_id: params[:id],
@@ -388,6 +420,7 @@ class InterviewsController < ApplicationController
       "workflow_state",
       "media_type",
       "biographies_workflow_state",
+      :startpage_position,
       properties: {},
       public_attributes: {},
       contributions_attributes: [:person_id, :contribution_type_id, :speaker_designation],

@@ -14,19 +14,19 @@ export default function Gallery({
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
 
+    function handleContextMenu(event) {
+        event.preventDefault();
+    }
+
     let visiblePhotos = [];
     if (interview.photos) {
         visiblePhotos = Object.values(interview.photos)
-            .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'show'))
+            .filter(photo => photo.workflow_state === 'public' || isAuthorized(photo, 'update'))
             .sort(photoComparator);
     }
 
     return (
         <div>
-            <div className="explanation">
-                {t(visiblePhotos.length > 0 ? 'interview_gallery_explanation' : 'interview_empty_gallery_explanation')}
-            </div>
-
             {
                 visiblePhotos.length > 0 && (
                     <div className="Gallery">
@@ -36,7 +36,12 @@ export default function Gallery({
                                 trigger={(
                                     <>
                                         <FaExpandAlt className="Gallery-icon" />
-                                        <img className="Gallery-image" src={photo.thumb_src} alt="" />
+                                        <img
+                                            className="Gallery-image"
+                                            src={photo.thumb_src}
+                                            alt=""
+                                            onContextMenu={handleContextMenu}
+                                        />
                                     </>
                                 )}
                                 triggerClassName="Gallery-button"
@@ -59,6 +64,7 @@ export default function Gallery({
                                 interview={interview}
                                 withUpload
                                 onSubmit={closeModal}
+                                onCancel={closeModal}
                             />
                         )
                     }

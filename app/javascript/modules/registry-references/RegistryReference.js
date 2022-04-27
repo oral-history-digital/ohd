@@ -5,6 +5,7 @@ import { FaPencilAlt, FaTrash } from 'react-icons/fa';
 import { Modal } from 'modules/ui';
 import { useAuthorization } from 'modules/auth'
 import { useI18n } from 'modules/i18n';
+import { DeleteItemForm } from 'modules/forms';
 import RegistryReferenceFormContainer from './RegistryReferenceFormContainer';
 
 export default function RegistryReference({
@@ -93,6 +94,7 @@ export default function RegistryReference({
                                     registryReferenceTypeId={registryReferenceTypeId}
                                     locale={locale}
                                     onSubmit={close}
+                                    onCancel={close}
                                     goDeeper
                                 />
                             )}
@@ -106,19 +108,15 @@ export default function RegistryReference({
                             trigger={<FaTrash className="Icon Icon--editorial Icon--small"/>}
                         >
                             {close => (
-                                <div>
+                                <DeleteItemForm
+                                    onSubmit={() => {
+                                        destroy();
+                                        close();
+                                    }}
+                                    onCancel={close}
+                                >
                                     <p>{registryEntry.name[locale]}</p>
-                                    <button
-                                        type="button"
-                                        className='Button any-button'
-                                        onClick={() => {
-                                            destroy();
-                                            close();
-                                        }}
-                                    >
-                                        {t('edit.registry_reference.delete')}
-                                    </button>
-                                </div>
+                                </DeleteItemForm>
                             )}
                         </Modal>
                     )
