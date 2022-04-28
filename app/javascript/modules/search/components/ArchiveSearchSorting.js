@@ -15,6 +15,7 @@ import filterByPossibleOptions from '../filterByPossibleOptions';
 import searchOptionsFromMetadataFields from '../searchOptionsFromMetadataFields';
 import sortByFacetOrder from '../sortByFacetOrder';
 import useSearchParams from '../useSearchParams';
+import SortOrderButton from './SortOrderButton';
 
 export default function ArchiveSearchSorting({
     className,
@@ -88,10 +89,6 @@ export default function ArchiveSearchSorting({
         }
     }
 
-    function handleSortOrderChange(option) {
-        setSortOrder(option.value);
-    }
-
     const sortByOptionsWithLabels = sortByOptions.map(option => ({
         value: option,
         label: t(`modules.search.sorting.by.${option}`),
@@ -119,12 +116,11 @@ export default function ArchiveSearchSorting({
                 onChange={handleSortByChange}
             />
             {showSortOrderSelect && (
-                <Select
-                    className="SearchSorting-select u-ml-tiny"
-                    aria-labelledby="sort_options"
-                    options={sortOrderOptions}
-                    value={{ value: sortOrder, label: t(`modules.search.sorting.order.${sortOrder}`) }}
-                    onChange={handleSortOrderChange}
+                <SortOrderButton
+                    type={['relevance', 'duration'].includes(sortBy) ? 'amount' : 'alpha'}
+                    className="u-ml-tiny"
+                    value={sortOrder}
+                    onChange={setSortOrder}
                 />
             )}
         </div>
