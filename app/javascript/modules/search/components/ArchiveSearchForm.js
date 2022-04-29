@@ -16,8 +16,7 @@ export default function ArchiveSearchForm({
     const { t } = useI18n();
     const formEl = useRef(null);
 
-    const { fulltext, setFulltext, setSort, setFulltextAndSort,
-        resetSearchParams } = useSearchParams();
+    const { fulltext, setFulltextAndSort, resetSearchParams } = useSearchParams();
 
     const [fulltextInput, setFulltextInput] = useState(fulltext);
 
@@ -27,9 +26,6 @@ export default function ArchiveSearchForm({
 
     function handleReset() {
         resetSearchParams();
-
-        // Set defaults. TODO: add random option.
-        //setSort('title', 'asc');
 
         if (isMobile()) {
             hideSidebar();

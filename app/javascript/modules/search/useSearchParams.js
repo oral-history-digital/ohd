@@ -154,12 +154,7 @@ export default function useSearchParams() {
     }
 
     function resetSearchParams() {
-        // Just keep sort criterion and order.
-        const newParams = {
-            sort: params.sort,
-            order: params.order,
-        };
-
+        const newParams = {};
         pushToHistory(newParams);
     }
 
