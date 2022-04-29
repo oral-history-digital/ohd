@@ -4,6 +4,7 @@ import classNames from 'classnames';
 import { useI18n } from 'modules/i18n';
 import { showTranslationTab } from 'modules/interview';
 import { useSearchParams } from 'modules/search';
+import { Spinner } from 'modules/spinners';
 import ResultList from './ResultList';
 import TranscriptResult from './TranscriptResult';
 import AnnotationResult from './AnnotationResult';
@@ -25,8 +26,11 @@ export default function InterviewSearchResults({
         photoResults, biographyResults, annotationResults, observationsResults }
         = useInterviewSearch(archiveId, fulltext);
 
-
-    console.log(data, numResults);
+    if (isLoading) {
+        return (
+            <Spinner />
+        );
+    }
 
     if (numResults === 0) {
         return (

@@ -12,7 +12,7 @@ export default function InterviewSearchForm({
     const { fulltext, setFulltext } = useSearchParams();
     const { isLoading } = useInterviewSearch(archiveId, fulltext);
 
-    const [searchTerm, setSearchTerm] = useState(fulltext || '');
+    const [searchTerm, setSearchTerm] = useState(fulltext);
     const { t } = useI18n();
 
     useEffect(() => {
@@ -22,7 +22,7 @@ export default function InterviewSearchForm({
     function handleSubmit(event) {
         event.preventDefault();
 
-        const trimmedTerm = searchTerm.trim();
+        const trimmedTerm = searchTerm ? searchTerm.trim() : '';
 
         if (trimmedTerm.length > 0) {
             setFulltext(trimmedTerm);

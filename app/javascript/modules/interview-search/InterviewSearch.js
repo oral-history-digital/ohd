@@ -2,10 +2,8 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { ScrollToTop } from 'modules/user-agent';
-import { useSearchParams } from 'modules/search';
 import InterviewSearchForm from './InterviewSearchForm';
 import InterviewSearchResultsContainer from './InterviewSearchResultsContainer';
-import useInterviewSearch from './useInterviewSearch';
 
 export default function InterviewSearch({
     locale,
@@ -15,9 +13,6 @@ export default function InterviewSearch({
     refTreeStatus,
     fetchData,
 }) {
-    const { fulltext } = useSearchParams();
-    const { isLoading } = useInterviewSearch(archiveId, fulltext);
-
     useEffect(() => {
         if (refTreeStatus === 'n/a') {
             fetchData({ locale, projectId, projects }, 'interviews', archiveId, 'ref_tree');
