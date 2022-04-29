@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import Slider from 'rc-slider';
 // TODO: this does not work
@@ -15,9 +16,15 @@ export default function YearRange({
     sliderMax,
 }) {
     const { yearOfBirthMin, yearOfBirthMax, setYearOfBirthRange } = useSearchParams();
+    const [currentValue, setCurrentValue] = useState([yearOfBirthMin,
+        yearOfBirthMax]);
 
-    function onSliderChange(value) {
-        setYearOfBirthRange(value[0], value[1]);
+    useEffect(() => {
+        setCurrentValue([yearOfBirthMin, yearOfBirthMax]);
+    }, [yearOfBirthMin, yearOfBirthMax]);
+
+    function handleCompleteChange() {
+        setYearOfBirthRange(...currentValue);
     }
 
     let marks = {};
@@ -34,17 +41,18 @@ export default function YearRange({
     return (
         <div>
             <div style={style} className="year-range-state">
-                <span>{yearOfBirthMin || sliderMin} - {yearOfBirthMax || sliderMax}</span>
+                <span>{currentValue[0] || sliderMin} - {currentValue[1] || sliderMax}</span>
             </div>
             <Range
                 min={sliderMin}
                 max={sliderMax}
-                onChange={onSliderChange}
+                onChange={setCurrentValue}
+                onAfterChange={handleCompleteChange}
                 allowCross
                 marks={marks}
                 tipProps={{placement: 'top'}}
                 style={rangeStyle}
-                value={[yearOfBirthMin || sliderMin, yearOfBirthMax || sliderMax]}
+                value={[currentValue[0] || sliderMin, currentValue[1] || sliderMax]}
             />
         </div>
     );
