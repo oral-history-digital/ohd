@@ -33,19 +33,12 @@ function ArchiveSearch() {
     return (
         <>
             <h1 className="search-results-title">
-                {t('interviews')}
+                {total} {t('interviews')}
             </h1>
             <div className="SearchResults-legend search-results-legend u-mt">
                 <AuthShowContainer ifLoggedIn>
                     <SearchActionsContainer />
                 </AuthShowContainer>
-                {
-                    interviews && (
-                        <div className="search-results-legend-text">
-                            {total} {t('archive_results')}
-                        </div>
-                    )
-                }
             </div>
 
             <ArchiveSearchSorting className="u-mt-small" />

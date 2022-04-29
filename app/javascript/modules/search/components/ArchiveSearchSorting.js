@@ -29,38 +29,14 @@ export default function ArchiveSearchSorting({
 
     const showSortOrderSelect = sortBy !== 'random';
 
-    let sortByOptions;
-    if (editView) {
-        sortByOptions = fulltextIsSet ? [
-            'relevance',
-            'random',
-            'title',
-            'archive_id',
-            'media_type',
-            'duration',
-            'language',
-            'collection_id',
-            'workflow_state',
-        ] : [
-            'random',
-            'title',
-            'archive_id',
-            'media_type',
-            'duration',
-            'language',
-            'collection_id',
-            'workflow_state',
-        ];
-    } else {
-        const transformMetadataFields = flow(
-            sortByFacetOrder,
-            searchOptionsFromMetadataFields,
-            filterByPossibleOptions,
-            curry(addObligatoryOptions)(fulltextIsSet)
-        );
-        sortByOptions = transformMetadataFields(
-            Object.values(project?.metadata_fields) || []);
-    }
+    const transformMetadataFields = flow(
+        sortByFacetOrder,
+        curry(searchOptionsFromMetadataFields)(editView),
+        filterByPossibleOptions,
+        curry(addObligatoryOptions)(fulltextIsSet)
+    );
+    const sortByOptions = transformMetadataFields(
+        Object.values(project?.metadata_fields) || []);
 
     useEffect(() => {
         if (!sortBy) {

@@ -1,18 +1,19 @@
-const withoutRelevance = [
+const prependWithoutRelevance = [
     'title',
-    'random',
 ];
 
-const withRelevance = [
+const prependWithRelevance = [
     'relevance',
     'title',
-    'random',
 ];
 
 export default function addObligatoryOptions(includeRelevance, options) {
+    let combinedOptions;
     if (includeRelevance) {
-        return withRelevance.concat(options);
+        combinedOptions = prependWithRelevance.concat(options);
     } else {
-        return withoutRelevance.concat(options);
+        combinedOptions = prependWithoutRelevance.concat(options);
     }
+
+    return combinedOptions.concat('random');
 }
