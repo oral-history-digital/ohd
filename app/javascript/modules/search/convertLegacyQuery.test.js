@@ -8,7 +8,21 @@ test('normalizes old style queries', () => {
             'female',
         ],
         'workflow_state[]': [],
-        'year_of_birth[]': [],
+        'year_of_birth[]': [
+            '1922',
+            1923,
+            1924,
+            1925,
+            1926,
+            1927,
+            1928,
+            1929,
+            1930,
+            1931,
+            1932,
+            1933,
+            1934,
+        ],
         'typology[]': [
             '646776',
         ],
@@ -23,6 +37,8 @@ test('normalizes old style queries', () => {
         gender: [
             'female',
         ],
+        year_of_birth_min: 1922,
+        year_of_birth_max: 1934,
         typology: [
             '646776',
         ],
