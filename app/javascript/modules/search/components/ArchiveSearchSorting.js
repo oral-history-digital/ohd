@@ -36,7 +36,7 @@ export default function ArchiveSearchSorting({
         curry(addObligatoryOptions)(fulltextIsSet)
     );
     const sortByOptions = transformMetadataFields(
-        Object.values(project?.metadata_fields) || []);
+        Object.values(project?.metadata_fields || {}));
 
     useEffect(() => {
         if (!sortBy) {
@@ -69,11 +69,6 @@ export default function ArchiveSearchSorting({
         value: option,
         label: t(`modules.search.sorting.by.${option}`),
     }));
-
-    const sortOrderOptions = [
-        { value: 'asc',  label: t('modules.search.sorting.order.asc') },
-        { value: 'desc', label: t('modules.search.sorting.order.desc') },
-    ];
 
     return (
         <div className={classNames('SearchSorting', className)}>
