@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import { AuthorizedContent } from 'modules/auth';
 import { InterviewListRowContainer } from 'modules/interview-preview';
-import useSearchParams from '../useSearchParams';
+import { useSearchParams } from 'modules/query-string';
 
 export default function ResultTable({
     interviews,

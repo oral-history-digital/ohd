@@ -4,7 +4,7 @@ import Slider from 'rc-slider';
 // TODO: this does not work
 import 'rc-slider/assets/index.css';
 
-import useSearchParams from '../useSearchParams';
+import { useSearchParams } from 'modules/query-string';
 
 const Range = Slider.createSliderWithTooltip(Slider.Range);
 const rangeStyle = { width: 318 };

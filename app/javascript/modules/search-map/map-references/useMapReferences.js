@@ -10,7 +10,7 @@ import { useMapReferenceTypes, sortByReferenceTypeOrder } from 'modules/map';
 import { usePathBase } from 'modules/routes';
 import { getEditView } from 'modules/archive';
 import { getIsLoggedIn } from 'modules/account';
-import { useSearchParams } from 'modules/search';
+import { useSearchParams } from 'modules/query-string';
 import { getMapFilter } from '../selectors';
 import filterReferences from './filterReferences';
 import addAbbreviationPoint from './addAbbreviationPoint';

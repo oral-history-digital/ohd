@@ -5,7 +5,7 @@ import { useI18n } from 'modules/i18n';
 import { isMobile } from 'modules/user-agent';
 import { Spinner } from 'modules/spinners';
 import { hideSidebar } from 'modules/sidebar';
-import useSearchParams from '../useSearchParams';
+import { useSearchParams } from 'modules/query-string';
 import ArchiveFacets from './ArchiveFacets';
 import useFacets from '../useFacets';
 

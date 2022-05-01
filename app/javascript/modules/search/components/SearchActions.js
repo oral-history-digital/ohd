@@ -9,9 +9,9 @@ import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { usePathBase } from 'modules/routes';
 import { UserContentFormContainer } from 'modules/workbook';
+import { useSearchParams } from 'modules/query-string';
 import queryToText from '../queryToText';
 import useFacets from '../useFacets';
-import useSearchParams from '../useSearchParams';
 
 export default function SearchActions({
     projectId,

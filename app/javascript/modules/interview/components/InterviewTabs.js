@@ -8,11 +8,10 @@ import { TableOfContentsContainer } from 'modules/toc';
 import { TranscriptContainer } from 'modules/transcript';
 import { InterviewSearchContainer, useInterviewSearch } from 'modules/interview-search';
 import { RefTreeContainer } from 'modules/interview-references';
-import { useSearchParams } from 'modules/search';
+import { useSearchParams } from 'modules/query-string';
 import { useI18n } from 'modules/i18n';
 import showTranslationTab from './showTranslationTab';
 import showTocTab from './showTocTab';
-
 
 export default function InterviewTabs({
     interview,

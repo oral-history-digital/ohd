@@ -33,7 +33,6 @@ export { default as MapFacets } from './components/MapFacets';
 export { default as queryToText } from './queryToText';
 export { default as convertLegacyQuery } from './convertLegacyQuery';
 
-export { default as useSearchParams } from './useSearchParams';
 export { default as useArchiveSearch } from './useArchiveSearch';
 export { default as useFacets } from './useFacets';
 export { default as useSearchSuggestions } from './useSearchSuggestions';

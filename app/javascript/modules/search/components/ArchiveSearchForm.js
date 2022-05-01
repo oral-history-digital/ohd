@@ -5,7 +5,7 @@ import { FaUndo } from 'react-icons/fa';
 import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
 import { isMobile } from 'modules/user-agent';
-import useSearchParams from '../useSearchParams';
+import { useSearchParams } from 'modules/query-string';
 import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 

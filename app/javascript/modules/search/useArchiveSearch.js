@@ -7,7 +7,7 @@ import { getIsLoggedIn } from 'modules/account';
 import { fetcher } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
 import { usePathBase } from 'modules/routes';
-import useSearchParams from './useSearchParams';
+import { useSearchParams } from 'modules/query-string';
 
 function transformData(data) {
     const combinedResults = [];

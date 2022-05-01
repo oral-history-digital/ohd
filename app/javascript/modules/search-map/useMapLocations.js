@@ -6,7 +6,7 @@ import range from 'lodash.range';
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
 import { getEditView } from 'modules/archive';
-import { useSearchParams } from 'modules/search';
+import { useSearchParams } from 'modules/query-string';
 
 export default function useMapLocations() {
     const pathBase = usePathBase();

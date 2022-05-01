@@ -4,7 +4,7 @@ import range from 'lodash.range';
 
 import { fetcher } from 'modules/api';
 import { usePathBase } from 'modules/routes';
-import useSearchParams from './useSearchParams';
+import { useSearchParams } from 'modules/query-string';
 
 export default function useFacets() {
     const { fulltext, facets, yearOfBirthMin, yearOfBirthMax } = useSearchParams();

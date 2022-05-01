@@ -3,7 +3,7 @@ import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
 import { showTranslationTab } from 'modules/interview';
-import { useSearchParams } from 'modules/search';
+import { useSearchParams } from 'modules/query-string';
 import { Spinner } from 'modules/spinners';
 import ResultList from './ResultList';
 import TranscriptResult from './TranscriptResult';

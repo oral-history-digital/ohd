@@ -10,11 +10,11 @@ import curry from 'lodash.curry';
 import { useI18n } from 'modules/i18n';
 import { getCurrentProject } from 'modules/data';
 import { getEditView } from 'modules/archive';
+import { useSearchParams } from 'modules/query-string';
 import addObligatoryOptions from '../addObligatoryOptions';
 import filterByPossibleOptions from '../filterByPossibleOptions';
 import searchOptionsFromMetadataFields from '../searchOptionsFromMetadataFields';
 import sortByFacetOrder from '../sortByFacetOrder';
-import useSearchParams from '../useSearchParams';
 import SortOrderButton from './SortOrderButton';
 
 export default function ArchiveSearchSorting({

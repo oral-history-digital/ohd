@@ -3,7 +3,7 @@ import classNames from 'classnames';
 import { FaInfoCircle, FaExternalLinkAlt } from 'react-icons/fa';
 
 import { Checkbox } from 'modules/ui';
-import useSearchParams from '../useSearchParams';
+import { useSearchParams } from 'modules/query-string';
 
 export default function SubFacets({
     data,
