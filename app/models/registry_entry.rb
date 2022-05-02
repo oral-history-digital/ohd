@@ -19,8 +19,10 @@ class RegistryEntry < ApplicationRecord
            -> { includes(:translations) },
            #-> { includes(:translations, :registry_name_type) },
            :dependent => :destroy
-
   accepts_nested_attributes_for :registry_names
+
+  has_many :norm_data
+  accepts_nested_attributes_for :norm_data
 
   has_many :parent_registry_hierarchies,
            foreign_key: :descendant_id,

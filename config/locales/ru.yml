@@ -660,6 +660,10 @@ ru:
     title: Registernamen
     new: Registernamen hinzufügen
     add: Registernamen hinzufügen
+  norm_data:
+    title: Normdaten
+    new: Normdaten hinzufügen
+    add: Normdaten hinzufügen
   texts:
     add: Text hinzufügen
     title: Ausgewählte Textpassagen
@@ -1180,6 +1184,9 @@ ru:
         notes: Anmerkungen
         registry_name_type_id: Registernamensart
         name_position: Position
+      norm_datum:
+        provider: Provider
+        nid: ID
       registry_reference:
         registry_entry_id: Registereintrag
         registry_reference_type_id: Art der Beziehung

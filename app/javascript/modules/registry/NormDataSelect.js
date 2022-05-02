@@ -43,7 +43,7 @@ function NormDataSelect({
     }
 
     const loadOptions = (inputValue) => {
-        return fetch(`/de/norm_data?expression=${inputValue}`).then(res => res.json());
+        return fetch(`/de/norm_data_api?expression=${inputValue}`).then(res => res.json());
     };
 
     return (

@@ -14,7 +14,7 @@ const state = {
                 id: 1,
                 type: 'Project',
                 identifier: 'cdoh',
-                translations: [
+                translations_attributes: [
                     { locale: 'de' },
                     { locale: 'es' },
                 ],
@@ -69,7 +69,7 @@ describe('getshowStartPageVideo', () => {
 
 test('getProjectTranslation gets project translation for current locale', () => {
     const actual = selectors.getProjectTranslation(state);
-    const expected = state.data.projects[1].translations[0];
+    const expected = state.data.projects[1].translations_attributes[0];
     expect(actual).toEqual(expected);
 });
 

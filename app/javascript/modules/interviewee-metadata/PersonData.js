@@ -50,7 +50,7 @@ export default function PersonData({
                         >
                             {close => (
                                 <ContributionFormContainer
-                                    contribution={interview.contributions && Object.values(interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]}
+                                    data={interview.contributions && Object.values(interview.contributions).filter(c => c.contribution_type === 'interviewee')[0]}
                                     interview={interview}
                                     withSpeakerDesignation
                                     submitData={submitData}

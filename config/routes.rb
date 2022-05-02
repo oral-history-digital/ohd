@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
 
   scope "/:locale", :constraints => { locale: /[a-z]{2}/ } do
-    get "norm_data" => "registry_entries#norm_data"
+    get "norm_data_api" => "registry_entries#norm_data_api"
   end
 
   concern :archive do
@@ -34,6 +34,7 @@ Rails.application.routes.draw do
     resources :registry_references, only: [:create, :update, :destroy, :index]
     resources :registry_reference_types, only: [:create, :update, :index, :destroy]
     resources :registry_name_types, only: [:create, :update, :index, :destroy]
+    resources :norm_data
     resources :contribution_types, only: [:create, :update, :index, :destroy]
     resources :annotations, only: [:create, :update, :destroy]
     get "locations", to: "registry_references#locations"

@@ -6,9 +6,9 @@ import { pluralize } from 'modules/strings';
  */
 
 export default function humanReadable(obj, attribute, props, state, none='---') {
-    let translation = obj.translations &&
-        (Array.isArray(obj.translations) ? obj.translations.find(t => t.locale === props.locale) :
-        Object.values(obj.translations).find(t => t.locale === props.locale))
+    let translation = obj.translations_attributes &&
+        (Array.isArray(obj.translations_attributes) ? obj.translations_attributes.find(t => t.locale === props.locale) :
+        Object.values(obj.translations_attributes).find(t => t.locale === props.locale))
 
     let value = state.value || obj[attribute] || (translation && translation[attribute]);
 

@@ -3,14 +3,15 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { t } from 'modules/i18n';
-import RegistryNameContainer from './RegistryNameContainer';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
+import NormDatumFormContainer from './NormDatumFormContainer';
 
 export default class RegistryEntryForm extends Component {
 
     constructor(props) {
         super(props);
         this.showRegistryName = this.showRegistryName.bind(this);
+        this.showNormDatum = this.showNormDatum.bind(this);
     }
 
     // get registry_entry via it`s id from state.
@@ -21,32 +22,18 @@ export default class RegistryEntryForm extends Component {
     }
 
     showRegistryName(registryName) {
+        if (!registryName)
+            return null;
         let translation = registryName.translations_attributes.find(t => t.locale === this.props.locale);
         return (
             <span>{translation.descriptor}</span>
         )
     }
 
-    registryNames() {
-        if (this.registryEntry()) {
-            return (
-                <div>
-                    <h4 className="u-mb-none">
-                        {t(this.props, 'registry_names.title')}
-                    </h4>
-                    {
-                        this.registryEntry().registry_names.map(registryName => (
-                            <RegistryNameContainer
-                                registryName={registryName}
-                                registryEntryId={this.props.registryEntryId}
-                                formClasses={'nested-form default'}
-                                key={registryName.id}
-                            />
-                        ))
-                    }
-                </div>
-            );
-        }
+    showNormDatum(normDatum) {
+        return (
+            <span>{`${normDatum.provider} - ${normDatum.nid} `}</span>
+        )
     }
 
     parentRegistryEntry() {
@@ -60,20 +47,12 @@ export default class RegistryEntryForm extends Component {
         }
     }
 
-    nestedFormProps() {
-        let props = {registryEntryId: this.props.registryEntryId};
-        if (this.props.registryEntryId)
-            props.submitData = this.props.submitData;
-        return props;
-    }
-
     render() {
         const { submitData, onSubmit, onCancel } = this.props;
 
         return (
             <div>
                 {this.parentRegistryEntry()}
-                {this.registryNames()}
                 <Form
                     key={this.props.registryEntryId}
                     scope='registry_entry'
@@ -108,10 +87,23 @@ export default class RegistryEntryForm extends Component {
                             optionsScope: 'workflow_states',
                         }
                     ]}
-                    nestedForm={RegistryNameFormContainer}
-                    nestedFormProps={this.nestedFormProps()}
-                    nestedFormScope='registry_name'
-                    nestedScopeRepresentation={this.showRegistryName}
+
+                    nestedScopeProps={[
+                        {
+                            formComponent: RegistryNameFormContainer,
+                            formProps: {registryEntryId: this.props.registryEntryId},
+                            parent: this.registryEntry(),
+                            scope: 'registry_name',
+                            elementRepresentation: this.showRegistryName,
+                        },
+                        {
+                            formComponent: NormDatumFormContainer,
+                            formProps: {registryEntryId: this.props.registryEntryId},
+                            parent: this.registryEntry(),
+                            scope: 'norm_datum',
+                            elementRepresentation: this.showNormDatum,
+                        }
+                    ]}
                 />
             </div>
         );

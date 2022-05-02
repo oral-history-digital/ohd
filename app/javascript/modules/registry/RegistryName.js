@@ -90,7 +90,7 @@ export default class RegistryName extends Component {
             <RegistryNameFormContainer
                 registryName={this.props.registryName}
                 registryEntryId={this.props.registryEntryId}
-                submitData={this.props.submitData}
+                onSubmit={this.props.submitData}
                 formClasses={this.props.formClasses}
                 onSubmitCallback={this.setEditing}
             />
@@ -98,8 +98,8 @@ export default class RegistryName extends Component {
     }
 
     show() {
-        let translation = this.props.registryName.translations.find(t => t.locale === this.props.locale);
-        translation ||= this.props.registryName.translations[0];
+        let translation = this.props.registryName.translations_attributes.find(t => t.locale === this.props.locale);
+        translation ||= this.props.registryName.translations_attributes[0];
         return (
             <span>{translation.descriptor}</span>
         )
