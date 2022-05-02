@@ -15,6 +15,7 @@ import addObligatoryOptions from '../addObligatoryOptions';
 import filterByPossibleOptions from '../filterByPossibleOptions';
 import searchOptionsFromMetadataFields from '../searchOptionsFromMetadataFields';
 import sortByFacetOrder from '../sortByFacetOrder';
+import defaultSortOptions from '../defaultSortOptions';
 import SortOrderButton from './SortOrderButton';
 
 export default function ArchiveSearchSorting({
@@ -41,11 +42,8 @@ export default function ArchiveSearchSorting({
     useEffect(() => {
         if (!sortBy) {
             // Set defaults.
-            if (project?.default_search_order === 'random') {
-                setDefaultSortOptions('random', undefined);
-            } else {
-                setDefaultSortOptions('title', 'asc');
-            }
+            const defaults = defaultSortOptions(project?.default_search_order);
+            setDefaultSortOptions(defaults.sort, defaults.order);
         }
     }, [sortBy]);
 
@@ -56,7 +54,7 @@ export default function ArchiveSearchSorting({
         case 'random':
             setSort(newSortBy, undefined);
             break;
-        case 'relevance':
+        case 'score':
             setSort(newSortBy, 'desc');
             break;
         default:
@@ -88,7 +86,7 @@ export default function ArchiveSearchSorting({
             />
             {showSortOrderSelect && (
                 <SortOrderButton
-                    type={['relevance', 'duration'].includes(sortBy) ? 'amount' : 'alpha'}
+                    type={['score', 'duration'].includes(sortBy) ? 'amount' : 'alpha'}
                     className="u-ml-tiny"
                     value={sortOrder}
                     onChange={setSortOrder}

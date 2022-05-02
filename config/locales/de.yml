@@ -1297,7 +1297,7 @@ de:
       sorting:
         label: Sortierung
         by:
-          relevance: Relevanz
+          score: Relevanz
           title: Name
           interview_date: Datum
           duration: Dauer

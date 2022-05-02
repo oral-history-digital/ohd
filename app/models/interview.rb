@@ -813,52 +813,19 @@ class Interview < ApplicationRecord
           end
         end
 
-        # Order
-        if params[:fulltext].blank? && params[:sort].blank?
-          if project && project.default_search_order == 'collection'
-            order_by(:collection_id, :asc)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          else
-            order_by("person_name_#{locale}".to_sym, :asc)
-          end
+        sort_by =    params.fetch(:sort, 'title').to_sym
+        sort_order = params.fetch(:order, 'asc').to_sym
+
+        case sort_by
+        when :random
+          order_by(:random, seed: Date.today.to_s)
+        when :title
+          order_by("person_name_#{locale}".to_sym, sort_order)
         else
-          sort_order = params.fetch(:order, 'asc').to_sym
-          # TODO: Implement order => asc/desc
-          case params[:sort]
-          when 'random'
-            order_by(:random, seed: Date.today.to_s)
-          when 'title'
-            order_by("person_name_#{locale}".to_sym, sort_order)
-          when 'media_type'
-            order_by(:media_type, sort_order)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          when 'archive_id'
-            order_by(:archive_id, sort_order)
-          when 'duration'
-            order_by(:duration, sort_order)
-          when 'language'
-            order_by(:language, sort_order)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          when 'language_id'
-            order_by(:language_id, sort_order)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          when 'collection_id'
-            order_by(:collection_id, sort_order)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          when 'workflow_state'
-            order_by(:workflow_state, sort_order)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          when 'interview_date'
-            order_by(:interview_date, sort_order)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          when 'relevance'
-            order_by(:score, sort_order)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          else
-            # relevance
-            order_by(:score, :desc)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          end
+          # e.g. score, media_type, duration, etc.
+          # First sort according to sort_by, then alphabetically.
+          order_by(sort_by, sort_order)
+          order_by("person_name_#{locale}".to_sym, :asc)
         end
 
         # Pagination

@@ -8,6 +8,7 @@ import { fetcher } from 'modules/api';
 import { getCurrentProject } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 import { useSearchParams } from 'modules/query-string';
+import defaultSortOptions from './defaultSortOptions';
 
 function transformData(data) {
     const combinedResults = [];
@@ -39,13 +40,9 @@ export default function useArchiveSearch() {
 
         // Set defaults if sort options are not set.
         if (!params.sort) {
-            if (project?.default_search_order === 'random') {
-                params.sort = 'random';
-                delete params.order;
-            } else {
-                params.sort = 'title';
-                params.order = 'asc';
-            }
+            const defaults = defaultSortOptions(project?.default_search_order);
+            params.sort = defaults.sort;
+            params.order = defaults.order;
         }
 
         const paramStr = queryString.stringify(params, { arrayFormat: 'bracket' });

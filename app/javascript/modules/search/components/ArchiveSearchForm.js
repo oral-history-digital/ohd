@@ -6,11 +6,13 @@ import { useI18n } from 'modules/i18n';
 import { AuthShowContainer } from 'modules/auth';
 import { isMobile } from 'modules/user-agent';
 import { useSearchParams } from 'modules/query-string';
+import defaultSortOptions from '../defaultSortOptions';
 import ArchiveFacets from './ArchiveFacets';
 import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
 export default function ArchiveSearchForm({
     projectId,
+    project,
     hideSidebar,
 }) {
     const { t } = useI18n();
@@ -38,12 +40,13 @@ export default function ArchiveSearchForm({
         const searchTerm = fulltextInput?.trim();
 
         if (searchTerm?.length > 0)  {
-            setFulltextAndSort(searchTerm, 'relevance', 'desc');
+            setFulltextAndSort(searchTerm, 'score', 'desc');
         } else {
             setFulltextInput('');
 
-            // Set defaults. TODO: add random option.
-            setFulltextAndSort(undefined, 'title', 'asc');
+            // Set defaults.
+            const defaults = defaultSortOptions(project?.default_search_order);
+            setFulltextAndSort(undefined, defaults.sort, defaults.order);
         }
 
         if (isMobile()) {
@@ -91,5 +94,6 @@ export default function ArchiveSearchForm({
 
 ArchiveSearchForm.propTypes = {
     projectId: PropTypes.string,
+    project: PropTypes.object,
     hideSidebar: PropTypes.func.isRequired,
 };

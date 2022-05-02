@@ -16,7 +16,7 @@ test('adds options not configurable by metadata fields', () => {
     expect(actual).toEqual(expected);
 });
 
-test('optionally adds relevance', () => {
+test('optionally adds score', () => {
     const options = [
         'archive_id',
         'duration',
@@ -24,7 +24,7 @@ test('optionally adds relevance', () => {
 
     const actual = addObligatoryOptions(true, options);
     const expected = [
-        'relevance',
+        'score',
         'title',
         'archive_id',
         'duration',

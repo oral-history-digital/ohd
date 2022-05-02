@@ -1724,7 +1724,7 @@ ru:
       sorting:
         label: Sorting
         by:
-          relevance: Relevance
+          score: Relevance
           title: Name
           interview_date: Date
           duration: Duration
