@@ -1,4 +1,5 @@
 import request from 'superagent';
+
 import { setCookie } from 'modules/persistence';
 import { Loader } from 'modules/api';
 
@@ -92,17 +93,27 @@ const receiveResult = (result) => ({
     result: result
 });
 
-export function submitSelectedArchiveIds(archiveIds, action, pathBase) {
+export function submitSelectedArchiveIds(archiveIds, action, pathBase, filename) {
     return dispatch => {
-        request
-            .post(`${pathBase}/interviews/${action}`)
-            .send({ archive_ids: archiveIds })
-            .set('Accept', 'application/json')
-            .then(res => {
-                if (res) {
-                    dispatch(receiveResult(JSON.parse(res.text)));
-                }
-            });
+        if (filename) {
+            const link = document.createElement('a');
+            const params = archiveIds.map((aid) => `archive_ids[]=${aid}`).join('&');
+            link.href = `${pathBase}/${action}.zip?${params}`;
+            link.setAttribute('download', filename);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+        } else {
+            request
+                .post(`${pathBase}/interviews/${action}`)
+                .send({ archive_ids: archiveIds })
+                .set('Accept', 'application/json')
+                .then(res => {
+                    if (res) {
+                        dispatch(receiveResult(JSON.parse(res.text)));
+                    }
+                });
+        }
     }
 }
 

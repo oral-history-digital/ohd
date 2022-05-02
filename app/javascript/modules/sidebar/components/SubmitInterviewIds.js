@@ -10,6 +10,7 @@ export default function SubmitInterviewIds({
     action,
     selectedArchiveIds,
     confirmText,
+    filename,
 }) {
     const { t } = useI18n();
     const dispatch = useDispatch();
@@ -30,7 +31,7 @@ export default function SubmitInterviewIds({
                         type="button"
                         className="Button any-button"
                         onClick={() => {
-                            dispatch(submitSelectedArchiveIds(selectedArchiveIds, action, pathBase));
+                            dispatch(submitSelectedArchiveIds(selectedArchiveIds, action, pathBase, filename));
                             close();
                         }}
                     >

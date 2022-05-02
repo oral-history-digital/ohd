@@ -59,6 +59,7 @@ Rails.application.routes.draw do
 
     put "update_speakers/:id", to: "interviews#update_speakers"
     put "mark_texts/:id", to: "interviews#mark_texts"
+    get "export_photos", to: "interviews#export_photos"
     put "merge_registry_entries/:id", to: "registry_entries#merge"
 
     resources :interviews do
@@ -78,7 +79,6 @@ Rails.application.routes.draw do
       end
       collection do
         post :dois
-        post :export_photos
       end
       resources :contributions, only: [:create, :destroy]
       resources :photos, only: [:create, :update, :destroy]

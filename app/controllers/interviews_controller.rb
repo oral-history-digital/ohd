@@ -267,8 +267,16 @@ class InterviewsController < ApplicationController
   end
 
   def export_photos
-    ExportPhotosJob.perform_later(params[:archive_ids], current_user_account, current_project, params[:locale])
-    #TODO
+    authorize Interview
+    zip_path = PhotoExport.new(params[:archive_ids], current_project, params[:locale]).process
+    respond_to do |format|
+      format.zip do
+        File.open(zip_path, 'r') do |f|
+          send_data f.read, type: "application/zip"
+        end
+      end
+    end
+    File.delete(zip_path) if File.exist?(zip_path)
   end
 
   def dois

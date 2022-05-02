@@ -106,6 +106,7 @@ export default class AdminActions extends Component {
                     <SubmitInterviewIds
                         selectedArchiveIds={selectedArchiveIds}
                         action='export_photos'
+                        filename='photos.zip'
                     />
                 </AuthorizedContent>
 
