@@ -1338,3 +1338,4 @@ de:
         actions: Aktionen
     workbook:
       project_unavailable: 'Sammlung nicht mehr verfügbar.'
+      copy_link: 'Link kopieren'

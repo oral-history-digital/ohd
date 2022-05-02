@@ -4,10 +4,13 @@ import PropTypes from 'prop-types';
 import { FaCopy } from 'react-icons/fa';
 import { CopyToClipboard } from 'react-copy-to-clipboard';
 
+import { useI18n } from 'modules/i18n';
+
 export default function CopyLink({
     url,
 }) {
     const [copied, setCopied] = useState(false);
+    const { t } = useI18n();
 
     useEffect(() => {
         if (copied) {
@@ -29,8 +32,8 @@ export default function CopyLink({
             <button
                 className="Button Button--icon Button--transparent"
                 type="button"
-                label="Link kopieren"
-                title="Link kopieren"
+                aria-label={t('modules.workbook.copy_link')}
+                title={t('modules.workbook.copy_link')}
             >
                 <FaCopy
                     className={classNames('Icon', copied ?

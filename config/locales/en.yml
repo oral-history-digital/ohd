@@ -1347,3 +1347,4 @@ en:
         actions: Actions
     workbook:
       project_unavailable: 'Collection not available anymore.'
+      copy_link: 'Copy link'
