@@ -7,9 +7,11 @@ import { queryToText, convertLegacyQuery, useFacets } from 'modules/search';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
+import { usePathBase } from 'modules/routes';
 import { INDEX_SEARCH } from 'modules/sidebar';
 import UserContentFormContainer from './UserContentFormContainer';
 import UserContentDeleteContainer from './UserContentDeleteContainer';
+import CopyLink from './CopyLink';
 
 export default function UserContent({
     data,
@@ -23,6 +25,7 @@ export default function UserContent({
 }) {
     const { t } = useI18n();
     const { facets } = useFacets();
+    const pathBase = usePathBase();
 
     function hideSidebarIfMobile() {
         if (isMobile()) {
@@ -50,6 +53,12 @@ export default function UserContent({
     const project = projects[data.project_id];
 
     let linkNode = null;
+    let searchPath;
+
+    if (project && data.type === 'Search') {
+        searchPath = `searches/archive?${queryString.stringify(convertLegacyQuery(data.properties), { arrayFormat: 'bracket' })}`;
+    }
+
     if (project) {
         switch (data.type) {
         case 'InterviewReference':
@@ -70,7 +79,7 @@ export default function UserContent({
             linkNode = (
                 <LinkOrA
                     project={project}
-                    to={`searches/archive?${queryString.stringify(convertLegacyQuery(data.properties), { arrayFormat: 'bracket' })}`}
+                    to={searchPath}
                     onLinkClick={onSearchClick}
                 >
                     {t(callKey)}
@@ -150,6 +159,13 @@ export default function UserContent({
                         />
                     )}
                 </Modal>
+                {
+                    project && data.type === 'Search' && (
+                        <CopyLink
+                            url={`${window.location.host}${pathBase}/${searchPath}`}
+                        />
+                    )
+                }
             </div>
         </div>
     );

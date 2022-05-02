@@ -42,6 +42,7 @@
     "rc-slider": "^9.2.4",
     "react": "^17.0.2",
     "react-colorful": "^5.2.0",
+    "react-copy-to-clipboard": "^5.1.0",
     "react-dom": "^17.0.2",
     "react-dropdown-tree-select": "^2.5.1",
     "react-helmet": "^6.1.0",
