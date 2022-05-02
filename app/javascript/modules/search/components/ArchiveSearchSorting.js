@@ -68,6 +68,25 @@ export default function ArchiveSearchSorting({
         label: t(`modules.search.sorting.by.${option}`),
     }));
 
+    const customStyles = {
+        menu: provided => ({
+            ...provided,
+            zIndex: 10,
+        }),
+        control: (provided, state) => {
+            if (!state.isFocused) {
+                return provided;
+            }
+
+            return {
+                ...provided,
+                borderColor: 'var(--secondary-color)',
+                boxShadow: '0 0 0 1px var(--secondary-color)',
+                '&:hover': { borderColor: 'var(--secondary-color)' },
+            };
+        },
+    };
+
     return (
         <div className={classNames('SearchSorting', className)}>
             <p
@@ -83,6 +102,7 @@ export default function ArchiveSearchSorting({
                 options={sortByOptionsWithLabels}
                 value={{ value: sortBy, label: t(`modules.search.sorting.by.${sortBy}`) }}
                 onChange={handleSortByChange}
+                styles={customStyles}
             />
             {showSortOrderSelect && (
                 <SortOrderButton
