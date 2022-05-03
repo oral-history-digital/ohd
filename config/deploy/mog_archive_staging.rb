@@ -1,7 +1,7 @@
 server "deploy_da03", roles: %w{app db web}
 
 set :application, "mog_archive_staging"
-set :branch, 'extend_norm_data'
+#set :branch, 'extend_norm_data'
 
 # 1 st problem
 #set :branch, 'unteraufgabe/intarch-799-gender-divers-in-registrierung-einfuegen'
