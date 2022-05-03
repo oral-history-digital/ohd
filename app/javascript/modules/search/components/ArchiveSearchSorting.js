@@ -108,7 +108,7 @@ export default function ArchiveSearchSorting({
                 <SortOrderButton
                     type={['score', 'duration'].includes(sortBy) ? 'amount' : 'alpha'}
                     className="u-ml-tiny"
-                    value={sortOrder}
+                    value={sortOrder || 'asc'}
                     onChange={setSortOrder}
                 />
             )}
