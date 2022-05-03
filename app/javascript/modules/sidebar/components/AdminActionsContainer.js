@@ -1,38 +1,20 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-    addRemoveArchiveId,
-    setArchiveIds,
-    getArchiveId,
-    getLocale,
-    getProjectId,
-    getTranslations,
-    getDoiResult,
-} from 'modules/archive';
-import {
-    deleteData,
-    submitData,
-    getProjects,
-    getInterviewsStatus,
-} from 'modules/data';
-import { getArchiveFoundInterviews } from 'modules/search';
+
+import { getIsLoggedIn } from 'modules/account';
+import { addRemoveArchiveId, setArchiveIds, getDoiResult } from 'modules/archive';
+import { getInterviewsStatus } from 'modules/data';
 import AdminActions from './AdminActions';
 
 const mapStateToProps = (state) => ({
-    locale: getLocale(state),
-    projectId: getProjectId(state),
-    projects: getProjects(state),
-    translations: getTranslations(state),
-    archiveId: getArchiveId(state),
     statuses: getInterviewsStatus(state),
     doiResult: getDoiResult(state),
-    archiveSearchResults: getArchiveFoundInterviews(state),
+    isLoggedIn: getIsLoggedIn(state),
 });
 
-const mapDispatchToProps = (dispatch) =>
-    bindActionCreators(
-        { addRemoveArchiveId, setArchiveIds, deleteData, submitData },
-        dispatch
-    );
+const mapDispatchToProps = (dispatch) => bindActionCreators({
+    addRemoveArchiveId,
+    setArchiveIds
+}, dispatch);
 
-    export default connect(mapStateToProps, mapDispatchToProps)(AdminActions);
+export default connect(mapStateToProps, mapDispatchToProps)(AdminActions);
