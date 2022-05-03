@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { searchInInterview, getArchiveQueryFulltext, getInterviewSearchResults } from 'modules/search';
 import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations, getEditView,
     getSelectedArchiveIds } from 'modules/archive';
 import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeopleForCurrentProject,
@@ -10,8 +9,6 @@ import InterviewListRow from './InterviewListRow';
 import { getIsLoggedIn } from 'modules/account';
 
 const mapStateToProps = (state, props) => ({
-    fulltext: getArchiveQueryFulltext(state),
-    interviewSearchResults: getInterviewSearchResults(state),
     locale: getLocale(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
@@ -32,7 +29,6 @@ const mapStateToProps = (state, props) => ({
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setArchiveId,
-    searchInInterview,
     addRemoveArchiveId,
     fetchData,
 }, dispatch);

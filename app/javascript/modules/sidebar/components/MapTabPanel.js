@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { ArchiveSearchFormContainer } from 'modules/search';
+import { MapFacets } from 'modules/search';
 import { t } from 'modules/i18n';
 import SubTab from './SubTab';
 import AdminActionsContainer from './AdminActionsContainer';
@@ -13,7 +13,7 @@ function MapTabPanel(props) {
                 { t(props, 'map') }
             </h3>
 
-            <ArchiveSearchFormContainer map />
+            <MapFacets />
 
             <div className='flyout-sub-tabs-container flyout-video'>
                 <AuthorizedContent object={{type: 'General'}} action='edit'>

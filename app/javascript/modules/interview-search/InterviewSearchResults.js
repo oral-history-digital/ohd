@@ -1,32 +1,36 @@
 import PropTypes from 'prop-types';
+import classNames from 'classnames';
 
 import { useI18n } from 'modules/i18n';
 import { showTranslationTab } from 'modules/interview';
-import { searchResultCount } from 'modules/interview-preview';
+import { useSearchParams } from 'modules/query-string';
+import { Spinner } from 'modules/spinners';
 import ResultList from './ResultList';
 import TranscriptResult from './TranscriptResult';
 import AnnotationResult from './AnnotationResult';
 import RegistryResult from './RegistryResult';
 import PhotoResult from './PhotoResult';
 import TocResult from './TocResult';
+import useInterviewSearch from './useInterviewSearch';
 
 export default function InterviewSearchResults({
+    archiveId,
     interview,
     project,
     projectId,
     locale,
-    currentInterviewSearchResults,
-    segmentResults,
-    headingResults,
-    registryEntryResults,
-    photoResults,
-    biographyResults,
-    annotationResults,
-    observationsResults,
 }) {
     const { t } = useI18n();
+    const { fulltext } = useSearchParams();
+    const { isLoading, data, numResults, segmentResults, headingResults, registryEntryResults,
+        photoResults, biographyResults, annotationResults, observationsResults }
+        = useInterviewSearch(archiveId, fulltext);
 
-    const numResults = searchResultCount(currentInterviewSearchResults);
+    if (isLoading) {
+        return (
+            <Spinner />
+        );
+    }
 
     if (numResults === 0) {
         return (
@@ -51,7 +55,9 @@ export default function InterviewSearchResults({
         .filter(([_, results]) => results.length > 0);
 
     return (
-        <div>
+        <div className={classNames('LoadingOverlay', {
+            'is-loading': isLoading,
+        })}>
             {originalTranscriptResults?.length > 0 && (
                 <ResultList
                     heading={t('segment_results')}
@@ -119,16 +125,9 @@ export default function InterviewSearchResults({
 }
 
 InterviewSearchResults.propTypes = {
+    archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
-    currentInterviewSearchResults: PropTypes.object.isRequired,
-    segmentResults: PropTypes.array,
-    headingResults: PropTypes.array,
-    registryEntryResults: PropTypes.array,
-    photoResults: PropTypes.array,
-    biographyResults: PropTypes.array,
-    annotationResults: PropTypes.array,
-    observationsResults: PropTypes.array,
 };

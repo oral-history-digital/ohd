@@ -1,23 +1,38 @@
 export { NAME as SEARCH_NAME } from './constants';
 
-export { clearSearch, resetQuery, setQueryParams, searchInArchive, searchInInterview,
-    clearSingleInterviewSearch, clearAllInterviewSearch, searchRegistryEntry,
-    changeRegistryEntriesViewMode, setMapQuery } from './actions';
+export {
+    changeRegistryEntriesViewMode,
+    resetQuery,
+    searchRegistryEntry,
+    setQueryParams,
+} from './actions';
 
 export { default as searchReducer } from './reducer';
 
-export { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree,
-    getMapQuery, getMapFacets, getPeopleQuery, getRegistryReferenceTypesQuery, getCollectionsQuery,
-    getLanguagesQuery, getInstitutionsQuery, getContributionTypesQuery, getRegistryNameTypesQuery,
-    getRolesQuery, getPermissionsQuery, getTaskTypesQuery, getUserRegistrationsQuery,
-    getArchiveFacets, getArchiveQuery, getArchiveQueryFulltext,
-    getArchiveResultPagesCount, getArchiveResultsCount, getArchiveFoundInterviews,
-    getInterviewSearchResults, getCurrentInterviewSearchResults,
-    getSegmentResults, getHeadingResults, getRegistryEntryResults, getPhotoResults, getBiographyResults,
-    getAnnotationResults, getObservationsResults
+export {
+    getCollectionsQuery,
+    getContributionTypesQuery,
+    getInstitutionsQuery,
+    getIsRegistryEntrySearching,
+    getLanguagesQuery,
+    getPeopleQuery,
+    getPermissionsQuery,
+    getRegistryEntriesSearch,
+    getRegistryNameTypesQuery,
+    getRegistryReferenceTypesQuery,
+    getRolesQuery,
+    getShowRegistryEntriesTree,
+    getTaskTypesQuery,
+    getUserRegistrationsQuery,
 } from './selectors';
 
-export { default as ArchiveSearchContainer } from './components/ArchiveSearchContainer';
+export { default as SearchPage } from './components/SearchPage';
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';
+export { default as MapFacets } from './components/MapFacets';
 
 export { default as queryToText } from './queryToText';
+export { default as convertLegacyQuery } from './convertLegacyQuery';
+
+export { default as useArchiveSearch } from './useArchiveSearch';
+export { default as useFacets } from './useFacets';
+export { default as useSearchSuggestions } from './useSearchSuggestions';

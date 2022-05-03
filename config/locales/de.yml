@@ -1293,6 +1293,24 @@ de:
         label: "Zurück nach oben"
     map:
       mentions: Erwähnungen
+    search:
+      sorting:
+        label: Sortierung
+        by:
+          score: Relevanz
+          title: Name
+          interview_date: Datum
+          duration: Dauer
+          archive_id: Interview-ID
+          media_type: Medientyp
+          language: Sprache
+          language_id: Sprache
+          collection_id: Teilsammlung
+          workflow_state: Status
+          random: Zufall
+        order:
+          asc: aufsteigend
+          desc: absteigend
     search_map:
       title: Karte
       multiple_types: Mehrere Ortstypen
@@ -1320,3 +1338,4 @@ de:
         actions: Aktionen
     workbook:
       project_unavailable: 'Sammlung nicht mehr verfügbar.'
+      copy_link: 'Link kopieren'

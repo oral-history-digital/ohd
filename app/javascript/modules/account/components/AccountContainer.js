@@ -6,7 +6,6 @@ import { hideSidebar } from 'modules/sidebar';
 import { getCookie } from 'modules/persistence';
 import { clearStateData, getCurrentProject, getProjects, getCurrentAccount } from 'modules/data';
 import { submitLogout } from '../actions';
-import { clearSearch } from 'modules/search';
 import { getFirstName, getIsLoggedIn, getLastName, getLoginError } from '../selectors';
 import Account from './Account';
 
@@ -33,7 +32,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     changeToEditView,
     hideSidebar,
     clearStateData,
-    clearSearch,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Account);

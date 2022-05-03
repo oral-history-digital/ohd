@@ -2,13 +2,15 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaEyeSlash } from 'react-icons/fa';
+import queryString from 'query-string';
 
 import { Checkbox } from 'modules/ui';
 import { usePathBase } from 'modules/routes';
 import { humanReadable } from 'modules/data';
 import { useProjectAccessStatus, AuthShowContainer, useAuthorization } from
     'modules/auth';
-import searchResultCount from './searchResultCount';
+import { useInterviewSearch } from 'modules/interview-search';
+import { useArchiveSearch } from 'modules/search';
 
 export default function InterviewListRow({
     project,
@@ -16,8 +18,6 @@ export default function InterviewListRow({
     projects,
     interview,
     interviewee,
-    fulltext,
-    interviewSearchResults,
     selectedArchiveIds,
     locale,
     translations,
@@ -25,7 +25,6 @@ export default function InterviewListRow({
     collections,
     peopleStatus,
     setArchiveId,
-    searchInInterview,
     addRemoveArchiveId,
     fetchData,
     isLoggedIn,
@@ -33,7 +32,12 @@ export default function InterviewListRow({
     const { isAuthorized } = useAuthorization();
     const { projectAccessGranted } = useProjectAccessStatus(project);
     const pathBase = usePathBase();
-    const intervieweeId = interview.interviewee_id;
+    const { fulltext } = useArchiveSearch();
+    const { numResults } = useInterviewSearch(interview.archive_id, fulltext);
+
+    const params = { fulltext };
+    const paramStr = queryString.stringify(params, { skipNull: true });
+    const linkUrl = `${pathBase}/interviews/${interview.archive_id}?${paramStr}`;
 
     useEffect(() => {
         if (!projectAccessGranted) {
@@ -41,14 +45,7 @@ export default function InterviewListRow({
         } else if (projectAccessGranted && !interviewee?.associations_loaded) {
             fetchData({ projectId, locale, projects }, 'people', interview.interviewee_id, null, 'with_associations=true');
         }
-
-        if (fulltext) {
-            searchInInterview(`${pathBase}/searches/interview`, { fulltext, id: interview.archive_id });
-        }
     }, [projectAccessGranted, isLoggedIn, interviewee?.associations_loaded]);
-
-    const searchResults = interviewSearchResults[interview.archive_id];
-    const resultCount = searchResultCount(searchResults);
 
     return (
         <tr className="Table-row">
@@ -67,9 +64,8 @@ export default function InterviewListRow({
                 <Link className="search-result-link"
                     onClick={() => {
                         setArchiveId(interview.archive_id);
-                        searchInInterview(`${pathBase}/searches/interview`, { fulltext, id: interview.archive_id });
                     }}
-                    to={`${pathBase}/interviews/${interview.archive_id}`}
+                    to={linkUrl}
                 >
                     {
                         project.is_catalog ? (
@@ -106,13 +102,13 @@ export default function InterviewListRow({
                 })
             }
             {
-                fulltext && resultCount > 0 && (
+                fulltext && numResults > 0 && (
                     <td className="Table-cell">
                         <Link className="search-result-link"
                             onClick={() => setArchiveId(interview.archive_id)}
                             to={`${pathBase}/interviews/${interview.archive_id}`}
                         >
-                            {resultCount}
+                            {numResults}
                         </Link>
                     </td>
                 )
@@ -124,17 +120,14 @@ export default function InterviewListRow({
 InterviewListRow.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
-    fulltext: PropTypes.string,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
     interview: PropTypes.object,
-    interviewee: PropTypes.object.isRequired,
-    interviewSearchResults: PropTypes.object,
+    interviewee: PropTypes.object,
     project: PropTypes.object.isRequired,
     peopleStatus: PropTypes.object.isRequired,
     selectedArchiveIds: PropTypes.array.isRequired,
     setArchiveId: PropTypes.func.isRequired,
-    searchInInterview: PropTypes.func.isRequired,
     addRemoveArchiveId: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

@@ -24,5 +24,5 @@ export default function ResultGrid({
 }
 
 ResultGrid.propTypes = {
-    interviews: PropTypes.array.isRequired,
+    interviews: PropTypes.array,
 };

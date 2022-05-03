@@ -138,37 +138,7 @@ class ApplicationController < ActionController::Base
   end
 
   def initial_search_redux_state
-    search = Interview.archive_search(current_user_account, current_project, locale, params)
-    serializer_name = if current_user_account.present?
-      'InterviewLoggedInSearchResult'
-    else
-      'InterviewBase'
-    end
-    interview_results = search.results.map do |i|
-      cache_single(i, serializer_name)
-    end
-
-    dropdown_values = Interview.dropdown_search_values(current_project, current_user_account)
-    facets = current_project ? current_project.updated_search_facets(search) : {}
-
     {
-      archive: {
-        facets: facets,
-        query: search_query,
-        allInterviewsTitles: current_user_account && dropdown_values[:all_interviews_titles],
-        allInterviewsPseudonyms: current_user_account && dropdown_values[:all_interviews_pseudonyms],
-        allInterviewsPlacesOfBirth: dropdown_values[:all_interviews_birth_locations],
-        sortedArchiveIds: Rails.cache.fetch("sorted_archive_ids-#{current_project ? current_project.cache_key_prefix : 'OHD'}-#{Interview.maximum(:created_at)}") { Interview.all.map(&:archive_id) },
-        foundInterviews: interview_results,
-        allInterviewsCount: search.total,
-        resultPagesCount: search.results.total_pages,
-        resultsCount: search.total,
-      },
-      map: {
-        facets: facets,
-        query: search_query,
-      },
-      interviews: {},
       registryEntries: {
         showRegistryEntriesTree: true,
         results: []

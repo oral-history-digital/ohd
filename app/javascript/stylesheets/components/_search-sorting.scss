@@ -1,0 +1,17 @@
+.SearchSorting {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.SearchSorting-label {
+  font-size: 1rem !important;
+  line-height: $base-unit !important;
+  margin-bottom: 0 !important;
+}
+
+.SearchSorting-select {
+  flex-shrink: 1;
+  flex-basis: 7 * $base-unit;
+  flex-grow: 0;
+}

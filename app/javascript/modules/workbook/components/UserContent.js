@@ -1,24 +1,31 @@
 import PropTypes from 'prop-types';
 import { FaPencilAlt, FaTrash, FaAngleRight } from 'react-icons/fa';
+import queryString from 'query-string';
 
 import { LinkOrA } from 'modules/routes';
-import { queryToText } from 'modules/search';
+import { queryToText, convertLegacyQuery, useFacets } from 'modules/search';
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
+import { usePathBase } from 'modules/routes';
+import { INDEX_SEARCH } from 'modules/sidebar';
 import UserContentFormContainer from './UserContentFormContainer';
 import UserContentDeleteContainer from './UserContentDeleteContainer';
+import CopyLink from './CopyLink';
 
 export default function UserContent({
     data,
     locale,
+    translations,
     projects,
-    searchInArchive,
     setArchiveId,
     sendTimeChangeRequest,
     hideSidebar,
+    setSidebarTabsIndex,
 }) {
     const { t } = useI18n();
+    const { facets } = useFacets();
+    const pathBase = usePathBase();
 
     function hideSidebarIfMobile() {
         if (isMobile()) {
@@ -37,8 +44,8 @@ export default function UserContent({
         hideSidebarIfMobile();
     }
 
-    function onSearchClick(pathBase) {
-        searchInArchive(`${pathBase}/searches/archive`, data.properties);
+    function onSearchClick() {
+        setSidebarTabsIndex(INDEX_SEARCH);
         hideSidebarIfMobile();
     }
 
@@ -46,6 +53,12 @@ export default function UserContent({
     const project = projects[data.project_id];
 
     let linkNode = null;
+    let searchPath;
+
+    if (project && data.type === 'Search') {
+        searchPath = `searches/archive?${queryString.stringify(convertLegacyQuery(data.properties), { arrayFormat: 'bracket' })}`;
+    }
+
     if (project) {
         switch (data.type) {
         case 'InterviewReference':
@@ -64,7 +77,11 @@ export default function UserContent({
             break;
         case 'Search':
             linkNode = (
-                <LinkOrA project={project} to='searches/archive' params={`${new URLSearchParams(data.properties)}`} onLinkClick={onSearchClick}>
+                <LinkOrA
+                    project={project}
+                    to={searchPath}
+                    onLinkClick={onSearchClick}
+                >
                     {t(callKey)}
                 </LinkOrA>
             );
@@ -89,7 +106,10 @@ export default function UserContent({
                 data.type === 'Search' && (
                     <p>
                         <span className='flyout-content-label'>{t('query')}:</span>
-                        <span className='flyout-content-data'>{queryToText(data.properties, { locale })}</span>
+                        <span className='flyout-content-data'>
+                            {queryToText(convertLegacyQuery(data.properties),
+                                facets, locale, translations)}
+                        </span>
                     </p>
                 )
             }
@@ -139,6 +159,13 @@ export default function UserContent({
                         />
                     )}
                 </Modal>
+                {
+                    project && data.type === 'Search' && (
+                        <CopyLink
+                            url={`${window.location.host}${pathBase}/${searchPath}`}
+                        />
+                    )
+                }
             </div>
         </div>
     );
@@ -147,9 +174,10 @@ export default function UserContent({
 UserContent.propTypes = {
     data: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
     projects: PropTypes.object.isRequired,
-    searchInArchive: PropTypes.func.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
+    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

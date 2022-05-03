@@ -1,9 +1,4 @@
-import { ENABLE_AUTO_SCROLL, DISABLE_AUTO_SCROLL, SET_INTERVIEW_TAB_INDEX } from './action-types';
-
-export const setInterviewTabIndex = (tabIndex) => ({
-    type: SET_INTERVIEW_TAB_INDEX,
-    tabIndex: tabIndex,
-});
+import { ENABLE_AUTO_SCROLL, DISABLE_AUTO_SCROLL } from './action-types';
 
 export const enableAutoScroll = () => ({ type: ENABLE_AUTO_SCROLL });
 

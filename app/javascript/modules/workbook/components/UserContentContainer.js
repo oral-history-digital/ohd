@@ -1,23 +1,23 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setArchiveId, getLocale  } from 'modules/archive';
-import { searchInArchive } from 'modules/search';
+import { setArchiveId, getLocale, getTranslations  } from 'modules/archive';
 import { getProjects } from 'modules/data';
 import { sendTimeChangeRequest } from 'modules/media-player';
-import { hideSidebar } from 'modules/sidebar';
+import { hideSidebar, setSidebarTabsIndex } from 'modules/sidebar';
 import UserContent from './UserContent';
 
 const mapStateToProps = state => ({
     locale: getLocale(state),
+    translations: getTranslations(state),
     projects: getProjects(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     sendTimeChangeRequest,
-    searchInArchive,
     setArchiveId,
     hideSidebar,
+    setSidebarTabsIndex,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContent);

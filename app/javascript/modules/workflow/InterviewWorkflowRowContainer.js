@@ -1,46 +1,29 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { searchInInterview, getArchiveQueryFulltext, getInterviewSearchResults } from 'modules/search';
-import { setArchiveId, addRemoveArchiveId, getLocale, getProjectId, getTranslations,
-    getEditView, getSelectedArchiveIds } from 'modules/archive';
-import { fetchData, getInterviewee, getCurrentProject, getProjects, getCurrentAccount, getPeopleForCurrentProject,
-    getLanguages, getCollectionsForCurrentProject, getInterviews, getPeopleStatus, getCollectionsStatus,
-    getLanguagesStatus, getAccounts, getAccountsStatus, getTasksStatus, getTasks } from 'modules/data';
+import { setArchiveId, getLocale, getProjectId, getTranslations } from 'modules/archive';
+import { fetchData, getInterviewee, getCurrentProject, getProjects,
+    getLanguages, getCollectionsForCurrentProject, getPeopleStatus,
+    getAccountsStatus, getTasksStatus, getTasks } from 'modules/data';
 import InterviewWorkflowRow from './InterviewWorkflowRow';
 
-const mapStateToProps = (state, props) => {
-    let project = getCurrentProject(state);
-    return {
-        fulltext: getArchiveQueryFulltext(state),
-        interviewSearchResults: getInterviewSearchResults(state),
-        locale: getLocale(state),
-        projectId: getProjectId(state),
-        projects: getProjects(state),
-        translations: getTranslations(state),
-        project: project,
-        editView: getEditView(state),
-        account: getCurrentAccount(state),
-        selectedArchiveIds: getSelectedArchiveIds(state),
-        people: getPeopleForCurrentProject(state),
-        peopleStatus: getPeopleStatus(state),
-        languages: getLanguages(state),
-        languagesStatus: getLanguagesStatus(state),
-        collections: getCollectionsForCurrentProject(state),
-        collectionsStatus: getCollectionsStatus(state),
-        interviews: getInterviews(state),
-        interviewee: getInterviewee(state, props),
-        tasks: getTasks(state),
-        tasksStatus: getTasksStatus(state),
-        userAccounts: getAccounts(state),
-        userAccountsStatus: getAccountsStatus(state),
-    }
-}
+const mapStateToProps = (state, props) => ({
+    locale: getLocale(state),
+    projectId: getProjectId(state),
+    projects: getProjects(state),
+    translations: getTranslations(state),
+    project: getCurrentProject(state),
+    peopleStatus: getPeopleStatus(state),
+    languages: getLanguages(state),
+    collections: getCollectionsForCurrentProject(state),
+    interviewee: getInterviewee(state, props),
+    tasks: getTasks(state),
+    tasksStatus: getTasksStatus(state),
+    userAccountsStatus: getAccountsStatus(state),
+});
 
 const mapDispatchToProps = dispatch => bindActionCreators({
     setArchiveId,
-    searchInInterview,
-    addRemoveArchiveId,
     fetchData,
 }, dispatch);
 

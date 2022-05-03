@@ -2,8 +2,7 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import { ScrollToTop } from 'modules/user-agent';
-import { Spinner } from 'modules/spinners';
-import InterviewSearchFormContainer from './InterviewSearchFormContainer';
+import InterviewSearchForm from './InterviewSearchForm';
 import InterviewSearchResultsContainer from './InterviewSearchResultsContainer';
 
 export default function InterviewSearch({
@@ -11,8 +10,6 @@ export default function InterviewSearch({
     projectId,
     projects,
     archiveId,
-    isInterviewSearching = false,
-    currentInterviewSearchResults,
     refTreeStatus,
     fetchData,
 }) {
@@ -24,11 +21,8 @@ export default function InterviewSearch({
 
     return (
         <ScrollToTop>
-            <InterviewSearchFormContainer />
-            {isInterviewSearching ?
-                <Spinner /> :
-                (currentInterviewSearchResults && <InterviewSearchResultsContainer />)
-            }
+            <InterviewSearchForm archiveId={archiveId} />
+            <InterviewSearchResultsContainer archiveId={archiveId} />
         </ScrollToTop>
     );
 }
@@ -38,8 +32,6 @@ InterviewSearch.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     archiveId: PropTypes.string.isRequired,
-    isInterviewSearching: PropTypes.bool,
-    currentInterviewSearchResults: PropTypes.object,
     refTreeStatus: PropTypes.string.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

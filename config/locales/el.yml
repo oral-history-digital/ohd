@@ -1306,6 +1306,24 @@ el:
       name_missing: "registry name missing"
     map:
       mentions: Mentions
+    search:
+      sorting:
+        label: Sorting
+        by:
+          score: Relevance
+          title: Name
+          interview_date: Date
+          duration: Duration
+          archive_id: Interview ID
+          media_type: Media type
+          language: Language
+          language_id: Language
+          collection_id: Collection
+          workflow_state: State
+          random: Random
+        order:
+          asc: ascending
+          desc: descending
     search_map:
       title: Map
       multiple_types: Multiple location types
@@ -1331,3 +1349,4 @@ el:
         actions: Actions
     workbook:
       project_unavailable: 'Collection not available anymore.'
+      copy_link: 'Copy link'

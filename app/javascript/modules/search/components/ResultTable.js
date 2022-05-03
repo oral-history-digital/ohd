@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import { AuthorizedContent } from 'modules/auth';
 import { InterviewListRowContainer } from 'modules/interview-preview';
+import { useSearchParams } from 'modules/query-string';
 
 export default function ResultTable({
-    foundInterviews,
-    query,
+    interviews,
     project,
 }) {
     const { t, locale } = useI18n();
+    const { fulltext } = useSearchParams();
 
     return (
         <table className="Table Table--searchResults">
@@ -29,7 +30,7 @@ export default function ResultTable({
                         ))
                     }
                     {
-                        query.fulltext && (
+                        fulltext && (
                             <th className="Table-header">
                                 {t('archive_results')}
                             </th>
@@ -38,7 +39,7 @@ export default function ResultTable({
                 </tr>
             </thead>
             <tbody className="Table-body">
-                {foundInterviews?.map(interview => (
+                {interviews?.map(interview => (
                     <InterviewListRowContainer
                         key={interview.id}
                         interview={interview}
@@ -50,7 +51,6 @@ export default function ResultTable({
 }
 
 ResultTable.propTypes = {
-    foundInterviews: PropTypes.array,
+    interviews: PropTypes.array,
     project: PropTypes.object.isRequired,
-    query: PropTypes.object.isRequired,
 };

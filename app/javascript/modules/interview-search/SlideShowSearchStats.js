@@ -11,13 +11,13 @@ export default function SlideShowSearchStats({
         return null;
     }
 
-    const segments = searchResults.foundSegments;
-    const headings = searchResults.foundHeadings;
-    const annotations = searchResults.foundAnnotations;
-    const registryEntries = searchResults.foundRegistryEntries;
-    const biographicalEntries = searchResults.foundBiographicalEntries;
-    const photos = searchResults.foundPhotos;
-    const observations = searchResults.foundObservations;
+    const segments = searchResults.found_segments;
+    const headings = searchResults.found_headings;
+    const annotations = searchResults.found_annotations;
+    const registryEntries = searchResults.found_registry_entries;
+    const biographicalEntries = searchResults.found_biographical_entries;
+    const photos = searchResults.found_photos;
+    const observations = searchResults.found_observations;
 
     return (
         <div className="SearchStats">

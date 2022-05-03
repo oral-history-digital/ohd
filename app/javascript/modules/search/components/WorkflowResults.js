@@ -1,96 +1,57 @@
-import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { Fetch, getTaskTypesForCurrentProjectFetched } from 'modules/data';
 import { InterviewWorkflowRowContainer } from 'modules/workflow';
-import SortHeader from './SortHeader';
+import WorkflowHeader from './WorkflowHeader';
 
 export default function WorkflowResults({
-    query,
+    interviews,
     project,
-    foundInterviews,
-    search,
 }) {
-    const [sortings, setSortings] = useState({
-        title: 'asc',
-        archive_id: 'asc',
-        media_type: 'asc',
-        duration: 'asc',
-        language: 'asc',
-        workflow_state: 'asc',
-    });
-
-    function sort(column, direction) {
-        setSortings(prev => ({
-            ...prev,
-            [column]: direction,
-        }));
-        search(Object.assign({}, query, {order: `${column}-${direction}`, page: 1}));
-    }
-
     return (
         <Fetch
             fetchParams={['task_types', null, null, `for_projects=${project?.id}`]}
             testSelector={getTaskTypesForCurrentProjectFetched}
         >
             <div className="data boxes workflow-header">
-                <SortHeader
-                    sortColumn="title"
-                    direction={sortings.title}
+                <WorkflowHeader
                     width={10}
                     tKey="interview"
-                    onClick={sort}
                 />
-                <SortHeader
-                    sortColumn="archive_id"
-                    direction={sortings.archive_id}
+                <WorkflowHeader
                     width={10}
                     tKey="id"
-                    onClick={sort}
                 />
-                <SortHeader
-                    sortColumn="media_type"
-                    direction={sortings.media_type}
+                <WorkflowHeader
                     width={10}
                     tKey="activerecord.attributes.interview.media_type"
-                    onClick={sort}
                 />
-                <SortHeader
-                    sortColumn="duration"
-                    direction={sortings.duration}
+                <WorkflowHeader
                     width={10}
                     tKey="activerecord.attributes.interview.duration"
-                    onClick={sort}
                 />
-                <SortHeader
-                    sortColumn="language"
-                    direction={sortings.language}
+                <WorkflowHeader
                     width={10}
                     tKey="activerecord.attributes.interview.language"
-                    onClick={sort}
                 />
-
-                <SortHeader
+                <WorkflowHeader
                     width={10}
                     tKey="activerecord.attributes.interview.collection_id"
                 />
-                <SortHeader
+                <WorkflowHeader
                     width={30}
                     tKey="activerecord.attributes.interview.tasks_states"
                 />
-                <SortHeader
-                    sortColumn="workflow_state"
-                    direction={sortings.workflow_state}
+                <WorkflowHeader
                     width={10}
                     tKey="activerecord.attributes.interview.workflow_state"
-                    onClick={sort}
                 />
             </div>
             {
-                foundInterviews?.map(interview => (
+                interviews?.map(interview => (
                     <InterviewWorkflowRowContainer
+                        key={interview.id}
                         interview={interview}
-                        key={interview.archive_id}
                     />
                 ))
             }
@@ -99,8 +60,6 @@ export default function WorkflowResults({
 }
 
 WorkflowResults.propTypes = {
-    query: PropTypes.object.isRequired,
     project: PropTypes.object.isRequired,
-    foundInterviews: PropTypes.array,
-    search: PropTypes.func.isRequired,
+    interviews: PropTypes.array,
 };

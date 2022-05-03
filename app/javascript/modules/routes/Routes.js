@@ -5,7 +5,7 @@ import { ErrorBoundary } from 'modules/react-toolbox';
 import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer, ActivateAccount }
     from 'modules/account';
 import { UserRegistrationsContainer } from 'modules/users';
-import { ArchiveSearchContainer } from 'modules/search';
+import { SearchPage } from 'modules/search';
 import ProjectIndex from './ProjectIndex';
 import ProjectRoutes from './ProjectRoutes';
 import { WrappedInstitutionsContainer } from 'modules/admin';
@@ -55,7 +55,7 @@ export const RoutesWithProjectId = () => (
         </Route>
         <Route path="/:locale/searches/archive">
             <ErrorBoundary>
-                <ArchiveSearchContainer />
+                <SearchPage />
             </ErrorBoundary>
         </Route>
         <Route exact path="/:locale">

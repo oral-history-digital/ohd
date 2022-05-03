@@ -128,7 +128,7 @@ class Interview < ApplicationRecord
       end
     end
     string :media_type, :stored => true
-    string :duration, :stored => true
+    integer :duration, :stored => true
     string :language, :stored => true do
       language && language.translations.map(&:name).join(' ')
     end
@@ -792,7 +792,6 @@ class Interview < ApplicationRecord
           #    {:de=>"Jusefowitsch, Alexandra Maximowna", :en=>"Jusefowitsch, Alexandra Maximowna", :ru=>"Юзефович Александра Максимовна"},
           #    ...]
           all_interviews_pseudonyms: search.hits.map{|hit| eval hit.stored(:alias_names)}
-          #all_interviews_birth_locations: search.hits.map{|hit| hit.stored(:birth_location)}
         }
       end
     end
@@ -814,19 +813,18 @@ class Interview < ApplicationRecord
           end
         end
 
-        # Order
-        # TODO: sort linguistically
-        if params[:fulltext].blank? && params[:order].blank?
-          if project && project.default_search_order == 'collection'
-            order_by(:collection_id, :asc)
-            order_by("person_name_#{locale}".to_sym, :asc)
-          else
-            order_by("person_name_#{locale}".to_sym, :asc)
-          end
-        elsif params[:order]
-          order_by(params[:order].split('-')[0].to_sym, params[:order].split('-')[1].to_sym)
+        sort_by =    params.fetch(:sort, 'title').to_sym
+        sort_order = params.fetch(:order, 'asc').to_sym
+
+        case sort_by
+        when :random
+          order_by(:random, seed: Date.today.to_s)
+        when :title
+          order_by("person_name_#{locale}".to_sym, sort_order)
         else
-          order_by(:score, :desc)
+          # e.g. score, media_type, duration, etc.
+          # First sort according to sort_by, then alphabetically.
+          order_by(sort_by, sort_order)
           order_by("person_name_#{locale}".to_sym, :asc)
         end
 

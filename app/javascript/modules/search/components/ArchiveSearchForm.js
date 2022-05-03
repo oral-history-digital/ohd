@@ -1,268 +1,99 @@
-import { Component } from 'react';
-import serialize from 'form-serialize';
-import { FaSearch, FaUndo } from 'react-icons/fa';
+import { useState, useEffect, useRef } from 'react';
+import PropTypes from 'prop-types';
+import { FaUndo } from 'react-icons/fa';
 
-import FacetContainer from './FacetContainer';
-import { pathBase } from 'modules/routes';
-import { t } from 'modules/i18n';
-import { AuthShowContainer, admin } from 'modules/auth';
-import { isMobile, isIOS } from 'modules/user-agent';
-import { Spinner } from 'modules/spinners';
+import { useI18n } from 'modules/i18n';
+import { AuthShowContainer } from 'modules/auth';
+import { isMobile } from 'modules/user-agent';
+import { useSearchParams } from 'modules/query-string';
+import defaultSortOptions from '../defaultSortOptions';
+import ArchiveFacets from './ArchiveFacets';
+import ArchiveSearchFormInput from './ArchiveSearchFormInput';
 
-function onlyUnique(value, index, self) {
-    return self.indexOf(value) === index;
-}
+export default function ArchiveSearchForm({
+    projectId,
+    project,
+    hideSidebar,
+}) {
+    const { t } = useI18n();
+    const formEl = useRef(null);
 
-export default class ArchiveSearchForm extends Component {
-    constructor(props) {
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-        this.handleReset = this.handleReset.bind(this);
-    }
+    const { fulltext, setFulltextAndSort, resetSearchParams } = useSearchParams();
 
-    facetsLoaded() {
-        return this.props.facets;
-    }
+    const [fulltextInput, setFulltextInput] = useState(fulltext);
 
-    handleChange(event) {
-        const value = event.target.value;
-        const name = event.target.name;
-        if(this.props.map){
-            this.props.setQueryParams('map', {[name]: value});
-        } else {
-            this.props.setQueryParams('archive', {[name]: value});
-        }
-    }
+    useEffect(() => {
+        setFulltextInput(fulltext || '');
+    }, [fulltext])
 
-    handleReset(event) {
-        this.form.reset();
+    function handleReset() {
+        resetSearchParams();
+
         if (isMobile()) {
-            this.props.hideSidebar();
+            hideSidebar();
         }
-        if(this.props.map){
-            this.props.resetQuery('map');
-            this.props.setMapQuery({});
+    }
+
+    function handleSubmit(event) {
+        event.preventDefault();
+
+        const searchTerm = fulltextInput?.trim();
+
+        if (searchTerm?.length > 0)  {
+            setFulltextAndSort(searchTerm, 'score', 'desc');
         } else {
-            this.props.resetQuery('archive');
-            let url = `${pathBase(this.props)}/searches/archive`;
-            this.props.searchInArchive(url, {});
+            setFulltextInput('');
 
+            // Set defaults.
+            const defaults = defaultSortOptions(project?.default_search_order);
+            setFulltextAndSort(undefined, defaults.sort, defaults.order);
         }
-    }
 
-    handleSubmit(event) {
-        if (event !== undefined) event.preventDefault();
-        let params = serialize(this.form, {hash: true});
-        params = this.getValueFromDataList(params, event);
-        params = this.prepareQuery(params);
-        params['page'] = 1;
         if (isMobile()) {
-            this.props.hideSidebar();
-        }
-        this.submit(params);
-    }
-
-    getValueFromDataList(params, event) {
-        if (event && event.currentTarget.list) {
-            for (let i = 0; i < event.currentTarget.list.children.length; i++) {
-                if (event.currentTarget.list.children[i].innerText === event.currentTarget.value) {
-                    let facet = event.currentTarget.name;
-                    let facetValue = event.currentTarget.list.children[i].dataset[facet];
-                    params[facet] = [facetValue];
-                }
-            }
-        }
-        return params;
-    }
-
-    arrayToRange(min, max) {
-        let array = [];
-        if (min <= max) {
-            for (let i = min; i <= max; i++){
-                array.push(i)
-            }
-        }
-        return array;
-    }
-
-    prepareQuery(params) {
-        // Set params[key] to empty array. Otherwise Object.assign in reducer would not reset it.
-        // Thus the last checkbox would never uncheck.
-        // Send list values. e.g. key[] = ["a", "b"]
-        let preparedQuery = {};
-        if (params['fulltext']) preparedQuery['fulltext'] = params['fulltext'];
-        for (let [key, value] of Object.entries(this.props.facets)) {
-            preparedQuery[`${key}[]`] = params[key] && !(typeof params[key] == "string") ? params[key] : []
-        }
-        // create list of years for year_of_birth
-        if (params['year_of_birth_min']) {
-            preparedQuery['year_of_birth[]'] = this.arrayToRange( params['year_of_birth_min'], params['year_of_birth_max'] )
-        }
-        return preparedQuery;
-    }
-
-    submit(params) {
-        if(this.props.map) {
-            this.props.setMapQuery(params);
-        } else if (!this.props.map && !this.props.isArchiveSearching) {
-            let url = `${pathBase(this.props)}/searches/archive`;
-            this.props.clearSearch();
-            this.props.clearAllInterviewSearch();
-            this.props.searchInArchive(url, params);
+            hideSidebar();
         }
     }
 
-    renderResetButton() {
-        return (
-            <button
-                type="button"
-                className="Button reset"
-                onClick={this.handleReset}
+    return (
+        <div>
+            <form
+                ref={formEl}
+                id="archiveSearchForm"
+                className="flyout-search"
+                onSubmit={handleSubmit}
             >
-                {t(this.props, 'reset')}
-                <FaUndo className="Icon" />
-            </button>
-        )
-    }
-
-    renderInputField() {
-        let fulltext = this.props.query.fulltext ? this.props.query.fulltext : "";
-        if(this.props.map !== true) {
-            return (
-                <div className="flyout-search-input">
-                    <input
-                        className="search-input"
-                        type="text"
-                        name="fulltext"
-                        value={fulltext}
-                        placeholder={t(this.props, (this.props.projectId === 'dg' ? 'enter_field_dg' : 'enter_field'))}
-                        onChange={this.handleChange}
-                        list='allInterviewTitles'
-                        autoFocus
+                {projectId === 'mog' ? (
+                    <ArchiveSearchFormInput
+                        value={fulltextInput}
+                        projectId={projectId}
+                        onChange={setFulltextInput}
                     />
-                    {this.renderDataList()}
-                    <button
-                        type="submit"
-                        id="search-button"
-                        className="Button Button--transparent Button--icon search-button"
-                        title={t(this.props, 'archive_search')}
-                    >
-                        <FaSearch />
-                    </button>
-                </div>
-            )
-        } else {
-            return fulltext;
-        }
-    }
+                ) : (
+                    <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
+                       <ArchiveSearchFormInput
+                            value={fulltextInput}
+                            projectId={projectId}
+                            onChange={setFulltextInput}
+                        />
+                    </AuthShowContainer>
+                )}
+                <button
+                    type="button"
+                    className="Button reset"
+                    onClick={handleReset}
+                >
+                    {t('reset')}
+                    <FaUndo className="Icon" />
+                </button>
 
-    searchform(){
-        if (!this.facetsLoaded()) {
-            if (!this.props.isArchiveSearching) {
-                let url = `${pathBase(this.props)}/searches/archive`;
-                this.props.searchInArchive(url, this.props.query);
-            }
-            return <Spinner withPadding />;
-        } else {
-            return(
-                <div>
-                    <form
-                        ref={(form) => { this.form = form; }}
-                        id="archiveSearchForm"
-                        className="flyout-search"
-                        onSubmit={this.handleSubmit}
-                    >
-                        {
-                            (this.props.projectId === 'mog') ?
-                                this.renderInputField()
-                            :
-                            <AuthShowContainer ifLoggedIn ifCatalog ifNoProject>
-                                {this.renderInputField()}
-                            </AuthShowContainer>
-                        }
-                        {this.renderResetButton()}
-                        {this.renderFacets()}
-                    </form>
-                </div>
-
-            )
-        }
-    }
-
-    render() {
-        return this.searchform();
-    }
-
-    yearRange(facet) {
-        if (facet === 'year_of_birth') {
-            return [
-                parseInt(Object.keys(this.props.facets[facet]['subfacets']).sort(function(a, b){return a-b})[0]),
-                parseInt(Object.keys(this.props.facets[facet]['subfacets']).sort(function(a, b){return b-a})[0])
-            ]
-        }
-        else {
-            return []
-        }
-    }
-
-    currentYearRange(){
-        return [
-            this.props.query['year_of_birth[]'] && parseInt(this.props.query['year_of_birth[]'][0]),
-            this.props.query['year_of_birth[]'] && parseInt(this.props.query['year_of_birth[]'][this.props.query['year_of_birth[]'].length -1])
-        ]
-    }
-
-    renderFacets() {
-        if (this.facetsLoaded()) {
-            let adminFacets = ['workflow_state', 'tasks_user_account_ids', 'tasks_supervisor_ids'];
-            return Object.keys(this.props.facets).map((facet, index) => {
-                return (
-                    <FacetContainer
-                        data={this.props.facets[facet]}
-                        facet={facet}
-                        key={"facet-" + index}
-                        handleSubmit={this.handleSubmit}
-                        slider={facet === 'year_of_birth'}
-                        sliderMin={this.yearRange(facet)[0]}
-                        sliderMax={this.yearRange(facet)[1]}
-                        currentMin={this.currentYearRange()[0] || this.yearRange(facet)[0]}
-                        currentMax={this.currentYearRange()[1] || this.yearRange(facet)[1]}
-                        map={this.props.map}
-                        show={(adminFacets.indexOf(facet) > -1 && admin(this.props, {type: 'General'}, 'edit')) || (adminFacets.indexOf(facet) === -1)}
-                        admin={(adminFacets.indexOf(facet) > -1)}
-                    />
-                )
-            })
-        }
-    }
-
-    renderDataList() {
-        if( !isIOS() ) {
-            return (
-                <datalist id="allInterviewTitles">
-                    <select>
-                        {this.renderOptions()}
-                    </select>
-                </datalist>
-            );
-        } else {
-            return null;
-        }
-    }
-
-    renderOptions() {
-        const { allInterviewsTitles, allInterviewsPseudonyms, locale } = this.props;
-
-        const titles = allInterviewsTitles ? allInterviewsTitles
-            .concat(allInterviewsPseudonyms)
-            .map(title => title?.[locale])
-            .filter(title => title)
-            .filter(title => title !== 'no interviewee given')
-            .filter(onlyUnique) : [];
-
-        return titles.map(title => (
-            <option key={title} value={`"${title}"`} />
-        ));
-    }
+                <ArchiveFacets />
+            </form>
+        </div>
+    );
 }
+
+ArchiveSearchForm.propTypes = {
+    projectId: PropTypes.string,
+    project: PropTypes.object,
+    hideSidebar: PropTypes.func.isRequired,
+};
