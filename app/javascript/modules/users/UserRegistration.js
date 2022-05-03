@@ -132,7 +132,6 @@ export default class UserRegistration extends Component {
             this.props.userRegistration.user_account_id &&
             admin(this.props, {type: 'UserRole'}, 'create')
         ) {
-            debugger
             const roles = Object.values(this.props.userRegistration.user_roles).filter(u => u.project_id === this.props.project.id) || [];
             return (
                 <div className={'roles box'}>

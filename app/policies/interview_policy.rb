@@ -40,6 +40,10 @@ class InterviewPolicy < ApplicationPolicy
     user
   end
 
+  def export_photos?
+    user
+  end
+
   Interview.non_public_method_names.each do |m|
     define_method "#{m}?" do
       user

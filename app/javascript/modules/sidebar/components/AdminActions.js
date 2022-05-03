@@ -4,9 +4,11 @@ import PropTypes from 'prop-types';
 import { Modal } from 'modules/ui';
 import { AuthorizedContent } from 'modules/auth';
 import { t } from 'modules/i18n';
+import { pathBase } from 'modules/routes';
 
 import DeleteInterviews from './DeleteInterviews';
 import UpdateInterviews from './UpdateInterviews';
+import SubmitInterviewIds from './SubmitInterviewIds';
 
 export default class AdminActions extends Component {
     selectedArchiveIds() {
@@ -37,18 +39,14 @@ export default class AdminActions extends Component {
         })
     }
 
-    exportDOI() {
-        this.props.submitDois(this.selectedArchiveIds(), this.props.locale)
-    }
-
-    links(archiveIds) {
+    metadataLinks(archiveIds) {
         return archiveIds.map((archiveId, i) => [
             i > 0 && ", ",
-            <a href={`/${this.props.locale}/interviews/${archiveId}/metadata.xml`} target='_blank' rel="noreferrer" key={`link-to-${archiveId}`}>{archiveId}</a>
+            <a href={`/${pathBase(this.props)}/interviews/${archiveId}/metadata.xml`} target='_blank' rel="noreferrer" key={`link-to-${archiveId}`}>{archiveId}</a>
         ])
     }
 
-    doiButton() {
+    doiText() {
         return (
             <AuthorizedContent object={{type: 'Interview'}} action='dois'>
                 <Modal
@@ -59,7 +57,7 @@ export default class AdminActions extends Component {
                     {close => (
                         <form className="Form">
                             {t(this.props, 'doi.text1') + ' '}
-                            {this.links(this.selectedArchiveIds())}
+                            {this.metadataLinks(this.selectedArchiveIds())}
                             {' ' + t(this.props, 'doi.text2')}
 
                             <div className="Form-footer u-mt">
@@ -96,7 +94,21 @@ export default class AdminActions extends Component {
         return (
             <div>
                 {this.doiResults()}
-                {this.doiButton()}
+
+                <AuthorizedContent object={{type: 'Interview'}} action='dois'>
+                    <SubmitInterviewIds
+                        selectedArchiveIds={selectedArchiveIds}
+                        action='dois'
+                        confirmText={this.doiText()}
+                    />
+                </AuthorizedContent>
+                <AuthorizedContent object={{ type: 'Interview' }} action='update'>
+                    <SubmitInterviewIds
+                        selectedArchiveIds={selectedArchiveIds}
+                        action='export_photos'
+                        filename='photos.zip'
+                    />
+                </AuthorizedContent>
 
                 {this.messages()}
 
@@ -157,5 +169,5 @@ AdminActions.propTypes = {
     addRemoveArchiveId: PropTypes.func.isRequired,
     submitData: PropTypes.func.isRequired,
     deleteData: PropTypes.func.isRequired,
-    submitDois: PropTypes.func.isRequired,
+    submitSelectedArchiveIds: PropTypes.func.isRequired,
 };
