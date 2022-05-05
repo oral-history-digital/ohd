@@ -52,7 +52,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
       xml.contributorName current_project.manager
     end
     xml.contributor contributorType: "HostingInstitution" do 
-      xml.contributorName current_project.hosting_institution
+      xml.contributorName current_project.institutions.map(&:name).join(", ")
     end
   end
 
