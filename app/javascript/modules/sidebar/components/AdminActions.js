@@ -21,6 +21,19 @@ export default function AdminActions({
     const selectedArchiveIds = archiveIds.filter(
         archiveId => archiveId !== 'dummy');
 
+                //{
+                    //selectedArchiveIds.map(archiveId => {
+                        //if (statuses[archiveId] !== undefined) {
+                            //return (
+                                //<div key={archiveId}>
+                                    //{' '}
+                                    //{`${archiveId}: ${statuses[archiveId]}`}{' '}
+                                //</div>
+                            //);
+                        //}
+                    //})
+                //}
+
     return (
         <div>
             {Object.keys(doiResult).length > 0 && (
@@ -36,67 +49,67 @@ export default function AdminActions({
                 </div>
             )}
 
-            <AuthorizedContent object={{ type: 'Interview' }} action="dois">
-                {' '}
-                <SubmitInterviewIds
-                    selectedArchiveIds={selectedArchiveIds}
-                    action="dois"
-                    confirmText={<DOIText selectedArchiveIds={selectedArchiveIds} />}
-                />{' '}
-            </AuthorizedContent>{' '}
-            <AuthorizedContent
-                object={{ type: 'Interview' }}
-                action="update"
-            >
-                {' '}
-                <SubmitInterviewIds
-                    selectedArchiveIds={selectedArchiveIds}
-                    action="export_photos"
-                    filename="photos.zip"
-                />{' '}
-            </AuthorizedContent>{' '}
+            <ul>
+                <AuthorizedContent object={{ type: 'Interview' }} action="dois">
+                    <li>
+                        <SubmitInterviewIds
+                            selectedArchiveIds={selectedArchiveIds}
+                            action="dois"
+                            confirmText={<DOIText selectedArchiveIds={selectedArchiveIds} />}
+                        />
+                    </li>
+                </AuthorizedContent>{' '}
+                <AuthorizedContent
+                    object={{ type: 'Interview' }}
+                    action="update"
+                >
+                    <li>
+                        <SubmitInterviewIds
+                            selectedArchiveIds={selectedArchiveIds}
+                            action="export_photos"
+                            filename="photos.zip"
+                        />
+                    </li>
+                </AuthorizedContent>
 
-            {
-                selectedArchiveIds.map(archiveId => {
-                    if (statuses[archiveId] !== undefined) {
-                        return (
-                            <div key={archiveId}>
-                                {' '}
-                                {`${archiveId}: ${statuses[archiveId]}`}{' '}
-                            </div>
-                        );
-                    }
-                })
-            }
+                <li>
+                    <DeleteInterviews selectedArchiveIds={selectedArchiveIds} />
+                </li>
 
-            <DeleteInterviews selectedArchiveIds={selectedArchiveIds} />{' '}
-
-            <AuthorizedContent
-                object={{ type: 'Interview' }}
-                action="update"
-            >
-                {' '}
-                <UpdateInterviews
-                    selectedArchiveIds={selectedArchiveIds}
-                    params={{ workflow_state: 'public' }}
-                    action="publish"
-                />{' '}
-                <UpdateInterviews
-                    selectedArchiveIds={selectedArchiveIds}
-                    params={{ workflow_state: 'unshared' }}
-                    action="unpublish"
-                />{' '}
-                <UpdateInterviews
-                    selectedArchiveIds={selectedArchiveIds}
-                    params={{ biographies_workflow_state: 'public' }}
-                    action="publish_biographies"
-                />{' '}
-                <UpdateInterviews
-                    selectedArchiveIds={selectedArchiveIds}
-                    params={{ biographies_workflow_state: 'unshared' }}
-                    action="publish_biographies"
-                />{' '}
-            </AuthorizedContent>{' '}
+                <AuthorizedContent
+                    object={{ type: 'Interview' }}
+                    action="update"
+                >
+                    <li>
+                        <UpdateInterviews
+                            selectedArchiveIds={selectedArchiveIds}
+                            params={{ workflow_state: 'public' }}
+                            action="publish"
+                        />
+                    </li>
+                    <li>
+                        <UpdateInterviews
+                            selectedArchiveIds={selectedArchiveIds}
+                            params={{ workflow_state: 'unshared' }}
+                            action="unpublish"
+                        />
+                    </li>
+                    <li>
+                        <UpdateInterviews
+                            selectedArchiveIds={selectedArchiveIds}
+                            params={{ biographies_workflow_state: 'public' }}
+                            action="publish_biographies"
+                        />
+                    </li>
+                    <li>
+                        <UpdateInterviews
+                            selectedArchiveIds={selectedArchiveIds}
+                            params={{ biographies_workflow_state: 'unshared' }}
+                            action="unpublish_biographies"
+                        />
+                    </li>
+                </AuthorizedContent>
+            </ul>
 
             <button
                 type="button"
