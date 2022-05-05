@@ -1,7 +1,5 @@
 import PropTypes from 'prop-types';
 
-import { Modal } from 'modules/ui';
-import { AuthorizedContent } from 'modules/auth';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
