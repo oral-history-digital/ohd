@@ -110,6 +110,9 @@ class ApplicationController < ActionController::Base
             includes(:translations, [{metadata_fields: :translations}, {external_links: :translations}]).
             inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
         end,
+        norm_data_providers: Rails.cache.fetch("norm_data_providers-#{NormDataProvider.count}-#{NormDataProvider.maximum(:updated_at)}") do
+          NormDataProvider.all.inject({}) { |mem, s| mem[s.id] = cache_single(s); mem }
+        end,
         languages: Rails.cache.fetch("languages-#{Language.count}-#{Language.maximum(:updated_at)}") do
           Language.all.includes(:translations).inject({}){|mem, s| mem[s.id] = LanguageSerializer.new(s); mem}
         end,

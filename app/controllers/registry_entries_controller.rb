@@ -203,7 +203,7 @@ class RegistryEntriesController < ApplicationController
       norm_data_attributes: [
         :id,
         :registry_entry_id,
-        :provider,
+        :norm_data_provider_id,
         :nid
       ],
       registry_names_attributes: [

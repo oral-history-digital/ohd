@@ -1,7 +1,7 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { submitData, getProjects, getRegistryEntries } from 'modules/data';
+import { submitData, getProjects, getRegistryEntries, getNormDataProviders } from 'modules/data';
 import { getLocale, getProjectId, getTranslations } from 'modules/archive';
 import RegistryEntryForm from './RegistryEntryForm';
 
@@ -9,6 +9,7 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
+    normDataProviders: getNormDataProviders(state),
     translations: getTranslations(state),
     registryEntries: getRegistryEntries(state),
 });

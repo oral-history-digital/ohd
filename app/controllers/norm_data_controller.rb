@@ -41,7 +41,7 @@ class NormDataController < ApplicationController
   def norm_datum_params
     params.require(:norm_datum).permit(
       :registry_entry_id,
-      :provider,
+      :norm_data_provider_id,
       :nid
     )
   end

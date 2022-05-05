@@ -1,0 +1,2 @@
+class NormDataProvider < ApplicationRecord
+end

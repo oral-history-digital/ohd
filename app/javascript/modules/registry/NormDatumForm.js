@@ -11,6 +11,7 @@ export default function NormDatumForm({
     registryEntryId,
     projectId,
     projects,
+    normDataProviders,
     locale,
 }) {
 
@@ -29,10 +30,15 @@ export default function NormDatumForm({
             submitText='submit'
             elements={[
                 {
-                    attribute: 'provider',
+                    attribute: 'norm_data_provider_id',
+                    elementType: 'select',
+                    values: normDataProviders,
+                    withEmpty: true,
+                    validate: function(v){return v !== ''}
                 },
                 {
                     attribute: 'nid',
+                    validate: function(v){return v !== ''}
                 },
             ]}
         />

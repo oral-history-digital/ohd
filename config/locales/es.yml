@@ -1122,7 +1122,7 @@ es:
         registry_name_type_id: Registernamensart
         name_position: Position
       norm_datum:
-        provider: Provider
+        norm_data_provider_id: Provider
         nid: ID
       registry_reference:
         registry_entry_id: Registereintrag

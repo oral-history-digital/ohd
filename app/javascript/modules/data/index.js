@@ -8,7 +8,7 @@ export { getStatuses, getContributorsFetched, getCurrentAccount, getCurrentInter
     getCurrentInterviewFetched, getCurrentProject,
     getCurrentRefTree, getFlattenedRefTree, getProjectLocales, getProjectHasMap,
     getLanguages, getPeopleForCurrentProjectFetched, getPeopleForCurrentProject, getProjects,
-    getRootRegistryEntry, getRootRegistryEntryFetched, getPermissions,
+    getRootRegistryEntry, getRootRegistryEntryFetched, getPermissions, getNormDataProviders,
     getRegistryReferenceTypesForCurrentProjectFetched, getRolesForCurrentProject, getTasks, getAccounts,
     getRootRegistryEntryReload, getRegistryEntries, getRegistryReferenceTypesForCurrentProject,
     getRegistryNameTypesForCurrentProject, getCollectionsForCurrentProject, getCurrentInterviewee, getInterviewee,
