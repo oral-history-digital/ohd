@@ -32,6 +32,7 @@ export default class RegistryEntryForm extends Component {
 
     showNormDatum(normDatum) {
         const { normDataProviders } = this.props;
+        debugger
         return (
             <span>{`${normDataProviders[normDatum.norm_data_provider_id].name} - ${normDatum.nid} `}</span>
         )

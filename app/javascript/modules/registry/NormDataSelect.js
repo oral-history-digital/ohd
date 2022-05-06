@@ -8,6 +8,7 @@ function NormDataSelect({
     setRegistryEntryAttributes,
     registryEntryParent,
     registryNameTypes,
+    normDataProviders,
 }) {
     const { t } = useI18n();
     const [inputValue, setValue] = useState('');
@@ -36,6 +37,10 @@ function NormDataSelect({
                         notes: `ID: ${value.Entry.ID}; Info: ${value.Entry.Label}`,
                         locale: 'de'
                     }],
+                }],
+                norm_data_attributes: [{
+                    norm_data_provider_id: Object.values(normDataProviders).find( p => p.api_name === value.Entry.Provider ).id,
+                    nid: value.Entry.ID,
                 }],
             };
             setRegistryEntryAttributes(preparedAttributes);

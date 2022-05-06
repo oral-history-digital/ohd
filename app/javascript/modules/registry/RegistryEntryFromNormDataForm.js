@@ -10,6 +10,7 @@ export default function RegistryEntryFromNormDataForm({
     onCancel,
     parentId,
     projects,
+    normDataProviders,
     projectId,
     locale,
     registryEntryParent,
@@ -24,6 +25,7 @@ export default function RegistryEntryFromNormDataForm({
                 setRegistryEntryAttributes={setRegistryEntryAttributes}
                 registryEntryParent={registryEntryParent}
                 registryNameTypes={registryNameTypes}
+                normDataProviders={normDataProviders}
             />
             <form
                 className="Form RegistryEntry default"
