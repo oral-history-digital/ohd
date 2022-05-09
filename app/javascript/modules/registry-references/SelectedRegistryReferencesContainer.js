@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getCurrentProject, fetchData, getRegistryEntriesStatus, getProjects } from 'modules/data';
-import { getProjectId, getLocale } from 'modules/archive';
+import { getProjectId, getLocale, getEditView } from 'modules/archive';
 import SelectedRegistryReferences from './SelectedRegistryReferences';
 
 const mapStateToProps = state => ({
@@ -11,6 +11,7 @@ const mapStateToProps = state => ({
     locale: getLocale(state),
     projectId: getProjectId(state),
     projects: getProjects(state),
+    editView: getEditView(state),
 });
 
 const mapDispatchToProps = dispatch => bindActionCreators({
