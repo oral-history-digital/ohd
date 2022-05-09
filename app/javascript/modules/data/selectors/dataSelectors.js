@@ -11,6 +11,8 @@ export const getInstitutions = state => getData(state).institutions;
 
 export const getProjects = state => getData(state).projects;
 
+export const getCollections = state => getData(state).collections;
+
 export const getNormDataProviders = state => getData(state).norm_data_providers;
 
 export const getInterviews = state => getData(state).interviews;

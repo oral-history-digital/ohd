@@ -119,6 +119,9 @@ class ApplicationController < ActionController::Base
         institutions: Rails.cache.fetch("institutions-#{Institution.count}-#{Institution.maximum(:updated_at)}") do
           Institution.all.inject({}){|mem, s| mem[s.id] = InstitutionSerializer.new(s); mem}
         end,
+        collections: Rails.cache.fetch("collections-#{Collection.maximum(:updated_at)}") do
+          Collection.all.inject({}){|mem, s| mem[s.id] = CollectionSerializer.new(s); mem}
+        end,
         accounts: {
           current: current_user_account && ::UserAccountSerializer.new(current_user_account) || nil #{}
         },

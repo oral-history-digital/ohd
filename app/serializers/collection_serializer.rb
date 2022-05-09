@@ -2,10 +2,9 @@ class CollectionSerializer < ApplicationSerializer
   attributes :id,
     :name,
     :institution,
+    :project_id,
     :homepage,
     :notes
-
-  belongs_to :project
 
   %w(name homepage notes).each do |m|
     define_method m do

@@ -1,24 +1,28 @@
 import PropTypes from 'prop-types';
 
 import { MapFacets } from 'modules/search';
-import { t } from 'modules/i18n';
+import { useI18n } from 'modules/i18n';
 import SubTab from './SubTab';
 import AdminActionsContainer from './AdminActionsContainer';
 import { AuthorizedContent } from 'modules/auth';
 
-function MapTabPanel(props) {
+function MapTabPanel({
+    selectedArchiveIds,
+}) {
+    const { t } = useI18n();
+
     return (
         <>
             <h3 className='SidebarTabs-title'>
-                { t(props, 'map') }
+                { t('map') }
             </h3>
 
             <MapFacets />
 
             <div className='flyout-sub-tabs-container flyout-video'>
                 <AuthorizedContent object={{type: 'General'}} action='edit'>
-                    <SubTab title={t(props, 'admin_actions')} >
-                        <AdminActionsContainer archiveIds={props.selectedArchiveIds} />
+                    <SubTab title={t('admin_actions')} >
+                        <AdminActionsContainer archiveIds={selectedArchiveIds} />
                     </SubTab>
                 </AuthorizedContent>
             </div>
@@ -28,10 +32,6 @@ function MapTabPanel(props) {
 
 MapTabPanel.propTypes = {
     selectedArchiveIds: PropTypes.array.isRequired,
-    locale: PropTypes.string.isRequired,
-    translations: PropTypes.object.isRequired,
-    account: PropTypes.object.isRequired,
-    editView: PropTypes.bool.isRequired,
-}
+};
 
 export default MapTabPanel;

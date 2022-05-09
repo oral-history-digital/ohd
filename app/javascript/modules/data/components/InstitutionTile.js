@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { LinkOrA } from 'modules/routes';
 import { getLocale } from 'modules/archive';
-import { getProjects } from 'modules/data';
+import { getProjects, getCollections } from 'modules/data';
 import { useI18n } from 'modules/i18n';
 import { INDEX_ACCOUNT, setSidebarTabsIndex } from 'modules/sidebar';
 
@@ -12,7 +12,10 @@ export default function InstitutionTile ({
 }) {
     const locale = useSelector(getLocale);
     const projects = useSelector(getProjects);
+    const collections = useSelector(getCollections);
     const { t } = useI18n();
+
+    const collectionsForInstitute = data.collection_ids.map(id => collections[id]);
 
     const logo = data.logos && Object.values(data.logos).find(l => l.locale === locale);
 
@@ -28,35 +31,42 @@ export default function InstitutionTile ({
                 src={logo?.src}
                 alt="Logo"
             />
-            <p>
-                <h3>{t('activerecord.models.project.other')}</h3>
+
+            <h3>{t('activerecord.models.project.other')}</h3>
+            <ul>
                 {Object.values(data.institution_projects).map(ip => {
                     const project = projects[ip.project_id];
                     return (
-                        <LinkOrA
-                            project={project}
-                            to=""
-                            onLinkClick={setFlyoutTabsToAccount}
-                        >
-                            <p>{project.name[locale]}</p>
-                        </LinkOrA>
+                        <li key={ip.id}>
+                            <LinkOrA
+                                project={project}
+                                to=""
+                                onLinkClick={setFlyoutTabsToAccount}
+                            >
+                                {project.name[locale]}
+                            </LinkOrA>
+                        </li>
                     )
                 })}
-            </p>
-            <p>
-                <h3>{t('activerecord.models.collection.other')}</h3>
-                {data.collections && Object.values(data.collections).map(collection => {
+            </ul>
+
+            <h3>{t('activerecord.models.collection.other')}</h3>
+            <ul>
+                {collectionsForInstitute.map(collection => {
+                    const project = projects[collection.project_id];
                     return (
-                        <LinkOrA
-                            project={collection.project}
-                            to=""
-                            onLinkClick={setFlyoutTabsToAccount}
-                        >
-                            <p>{collection.name[locale]}</p>
-                        </LinkOrA>
+                        <li key={collection.id}>
+                            <LinkOrA
+                                project={project}
+                                to=""
+                                onLinkClick={setFlyoutTabsToAccount}
+                            >
+                                {collection.name[locale]}
+                            </LinkOrA>
+                        </li>
                     )
                 })}
-            </p>
+            </ul>
         </div>
     );
 }
