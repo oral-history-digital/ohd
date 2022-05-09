@@ -8,7 +8,7 @@
   display: flex;
   height: $site-header-height-mobile;
   overflow: hidden;
-  padding: 0 5%;
+  padding: ($base-unit / 2) 5%;
 
   @include screen-m {
     height: $site-header-height-desktop;
@@ -30,7 +30,7 @@
 .SiteHeader-logo {
   max-height: 3.5rem;
   max-width: 100%;
-  vertical-align: baseline;
+  vertical-align: bottom;
 
   @include screen-m {
     max-height: 4.75rem;

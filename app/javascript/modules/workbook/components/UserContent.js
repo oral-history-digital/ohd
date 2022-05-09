@@ -63,14 +63,22 @@ export default function UserContent({
         switch (data.type) {
         case 'InterviewReference':
             linkNode = (
-                <LinkOrA project={project} to={`interviews/${data.media_id}`} onLinkClick={onInterviewReferenceClick}>
+                <LinkOrA
+                    project={project}
+                    to={`interviews/${data.media_id}`}
+                    onLinkClick={onInterviewReferenceClick}
+                >
                     {t(callKey)}
                 </LinkOrA>
             );
             break;
         case 'UserAnnotation':
             linkNode = (
-                <LinkOrA project={project} to={`interviews/${data.properties.interview_archive_id}`} onLinkClick={onAnnotationClick}>
+                <LinkOrA
+                    project={project}
+                    to={`interviews/${data.properties.interview_archive_id}`}
+                    onLinkClick={onAnnotationClick}
+                >
                     {t(callKey)}
                 </LinkOrA>
             );
@@ -159,6 +167,13 @@ export default function UserContent({
                         />
                     )}
                 </Modal>
+                {
+                    project && data.type === 'InterviewReference' && (
+                        <CopyLink
+                            url={`${window.location.host}${pathBase}/interviews/${data.media_id}`}
+                        />
+                    )
+                }
                 {
                     project && data.type === 'Search' && (
                         <CopyLink
