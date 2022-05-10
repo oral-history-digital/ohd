@@ -39,6 +39,7 @@ class MetadataImport
         ref_object = field.ref_object_type == 'Interview' ? interview : interview.interviewee
         destroy_reference(ref_object, field.registry_reference_type_id)
         create_reference(registry_entry, interview, ref_object, field.registry_reference_type_id) if registry_entry
+        registry_entry.touch
       end
 
       interview.touch
