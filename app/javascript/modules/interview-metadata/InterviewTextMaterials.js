@@ -36,7 +36,7 @@ export default function InterviewTextMaterials({
                     })}
                 </p>
             </AuthShowContainer>
-            <AuthorizedContent object={interview} action="show">
+            <AuthorizedContent object={interview} action="update">
                 {
                     <SingleValueWithFormContainer
                         obj={interview}
@@ -44,6 +44,7 @@ export default function InterviewTextMaterials({
                         elementType="textarea"
                         multiLocale
                         attribute={'observations'}
+                        noLabel
                     />
                 }
             </AuthorizedContent>
