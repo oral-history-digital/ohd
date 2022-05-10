@@ -7,7 +7,11 @@ class RegistryEntriesController < ApplicationController
     uri = URI.parse("https://c105-230.cloud.gwdg.de/transformation/api/610819aba6ab26663fe6163d")
     results = Net::HTTP.start(uri.host, uri.port, :use_ssl => uri.scheme == 'https') do |http|
       request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
-      request.body = {expression: params[:expression]}.to_json
+      request.body = {
+        expression: params[:expression],
+        PlaceType: params[:place_type],
+        GeoFilter: params[:geo_filter]
+      }.to_json
       response = http.request request
       response.body
     end
