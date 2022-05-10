@@ -1271,19 +1271,19 @@ es:
       mentions: Lugares mencionados
     search:
       sorting:
-        label: Sorting
+        label: Ordenar por
         by:
           score: Relevance
-          title: Name
+          title: Nombre
           interview_date: Date
-          duration: Duration
-          archive_id: Interview ID
-          media_type: Media type
-          language: Language
-          language_id: Language
-          collection_id: Collection
+          duration: Duración
+          archive_id: ID de la entrevista
+          media_type: Tipo de medio
+          language: Idioma
+          language_id: Idioma
+          collection_id: Colección
           workflow_state: State
-          random: Random
+          random: Al azar
         order:
           asc: ascending
           desc: descending

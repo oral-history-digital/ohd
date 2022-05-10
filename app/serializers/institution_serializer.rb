@@ -14,7 +14,7 @@ class InstitutionSerializer < ApplicationSerializer
     :website,
     :parent_id,
     :institution_projects,
-    :collections,
+    :collection_ids,
     :logos
 
   def name
@@ -29,12 +29,7 @@ class InstitutionSerializer < ApplicationSerializer
     object.logos.inject({}) { |mem, c| mem[c.id] = UploadedFileSerializer.new(c); mem }
   end
 
-  %w(
-    institution_projects
-    collections
-  ).each do |m|
-    define_method m do
-      object.send(m).inject({}) { |mem, c| mem[c.id] = "#{m.singularize.classify}Serializer".constantize.new(c); mem }
-    end
+  def institution_projects
+    object.institution_projects.inject({}) { |mem, c| mem[c.id] = InstitutionProjectSerializer.new(c); mem }
   end
 end
