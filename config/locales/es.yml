@@ -929,7 +929,7 @@ es:
         translated: se ha traducido la entrevista?
         workflow_state: estatus
         tasks_states: Bearbeitungsstand
-        observations: Protócolo
+        observations: Nota
         description: Description
       transcript:
         collection_id: Teilsammlung
