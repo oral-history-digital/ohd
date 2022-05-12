@@ -3,7 +3,6 @@ require 'rails_helper'
 RSpec.describe ProjectMetadata do
   it 'exports to CMDI XML correctly' do
     md = ProjectMetadata.new
-    md.self_link = 'http://www.example.com/'
     md.creation_date = Date.parse('2021/01/01')
     md.metadata_resources = ['za_001', 'za_002', 'za_003']
     md.documentation_url = 'http://www.example.com/archive/'
@@ -12,11 +11,13 @@ RSpec.describe ProjectMetadata do
     md.name = 'Test'
     md.title = 'The Test Archive'
     md.id = 'test'
+    md.batch = 1
     md.owner = 'Free University of Berlin'
     md.publication_year = '2000'
     md.description = 'This archive exists for testing purposes only…'
     md.description_lang = 'en'
-    md.media_types = ['video', 'audio']
+    md.subject_languages = ['ell']
+    md.media_types = ['video', 'audio', 'text']
     md.mime_types = ['video/mp4', 'audio/x-wav']
 
     expect(md.to_xml).to match_snapshot('test_project_cmdi')

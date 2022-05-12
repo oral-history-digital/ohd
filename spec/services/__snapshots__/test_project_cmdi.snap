@@ -3,7 +3,7 @@
   <Header>
     <MdCreator>Nokogiri</MdCreator>
     <MdCreationDate>2021-01-01</MdCreationDate>
-    <MdSelfLink>http://www.example.com/</MdSelfLink>
+    <MdSelfLink/>
     <MdProfile>clarin.eu:cr1:p_1387365569699</MdProfile>
     <MdCollectionDisplayName>Bavarian Archive for Speech Signals (BAS)</MdCollectionDisplayName>
   </Header>
@@ -11,15 +11,15 @@
     <ResourceProxyList>
       <ResourceProxy id="c_0000000001">
         <ResourceType mimetype="text/xml">Metadata</ResourceType>
-        <ResourceRef>ZA_001/za_001.xml</ResourceRef>
+        <ResourceRef>za_001/za_001.xml</ResourceRef>
       </ResourceProxy>
       <ResourceProxy id="c_0000000002">
         <ResourceType mimetype="text/xml">Metadata</ResourceType>
-        <ResourceRef>ZA_002/za_002.xml</ResourceRef>
+        <ResourceRef>za_002/za_002.xml</ResourceRef>
       </ResourceProxy>
       <ResourceProxy id="c_0000000003">
         <ResourceType mimetype="text/xml">Metadata</ResourceType>
-        <ResourceRef>ZA_003/za_003.xml</ResourceRef>
+        <ResourceRef>za_003/za_003.xml</ResourceRef>
       </ResourceProxy>
       <ResourceProxy id="d_0000000001">
         <ResourceType mimetype="application/zip">Resource</ResourceType>
@@ -35,7 +35,7 @@
       <Collection>
         <GeneralInfo>
           <Name>Test</Name>
-          <Title>OHD The Test Archive</Title>
+          <Title>OH.D The Test Archive</Title>
           <ID>ohd_test_001</ID>
           <Owner>Free University of Berlin</Owner>
           <PublicationYear>2000</PublicationYear>
@@ -72,6 +72,7 @@
         </DocumentationLanguages>
         <Access>
           <Availability>RES</Availability>
+          <Availability>BAS:test</Availability>
           <DistributionMedium>online</DistributionMedium>
           <Contact>
             <Person>Florian Schiel</Person>
@@ -85,6 +86,7 @@
         <CollectionType>
           <CollectionType>video</CollectionType>
           <CollectionType>audio</CollectionType>
+          <CollectionType>text</CollectionType>
         </CollectionType>
       </Collection>
       <Corpus>
@@ -99,6 +101,18 @@
             <SizeUnit>interview</SizeUnit>
           </TotalSize>
         </Size>
+        <SubjectLanguages>
+          <SubjectLanguage>
+            <Dominant>true</Dominant>
+            <SourceLanguage>false</SourceLanguage>
+            <Language>
+              <LanguageName>Greek, Modern (1453-)</LanguageName>
+              <ISO639>
+                <iso-639-3-code>ell</iso-639-3-code>
+              </ISO639>
+            </Language>
+          </SubjectLanguage>
+        </SubjectLanguages>
         <Modality>
           <Modality>Spoken</Modality>
           <Modality>Written</Modality>

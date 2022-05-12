@@ -65,7 +65,7 @@ class InterviewMetadata
               xml.send('media-session') {
                 xml.Name name
                 xml.NumberOfSpeakers num_speakers
-                xml.Corpus "OHD #{corpus_name}"
+                xml.Corpus "OH.D #{corpus_name}"
                 xml.Environment 'unknown'
                 xml.RecordingDate recording_date.to_s
                 xml.NumberOfRecordings tape_paths.size
@@ -109,6 +109,9 @@ class InterviewMetadata
                     xml.Channel 'Face to Face'
                   }
                 }
+                xml.Description {
+                    xml.Description(description, 'LanguageID' => 'ISO639-3:eng')
+                }
                 tape_paths.each_with_index do |path, index|
                   id = self.class.pad(index + 1)
                   xml.send('media-annotation-bundle') {
@@ -135,6 +138,10 @@ class InterviewMetadata
     end
 
     builder.to_xml
+  end
+
+  def description
+    "This is the interview #{name} of the Oral History collection 'OH.D #{corpus_name}'."
   end
 
   def all_actors_as_string
