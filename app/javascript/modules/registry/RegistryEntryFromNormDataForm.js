@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { useI18n } from 'modules/i18n';
-import NormDataSelect from './NormDataSelect';
+import NormDataSelectContainer from './NormDataSelectContainer';
 
 export default function RegistryEntryFromNormDataForm({
     submitData,
@@ -11,22 +11,18 @@ export default function RegistryEntryFromNormDataForm({
     onCancel,
     parentId,
     projects,
-    normDataProviders,
     projectId,
     locale,
     registryEntryParent,
-    registryNameTypes,
 }) {
     const { t } = useI18n();
     const [registryEntryAttributes, setRegistryEntryAttributes] = useState({})
 
     return (
         <>
-            <NormDataSelect
+            <NormDataSelectContainer
                 setRegistryEntryAttributes={setRegistryEntryAttributes}
                 registryEntryParent={registryEntryParent}
-                registryNameTypes={registryNameTypes}
-                normDataProviders={normDataProviders}
             />
             <Form
                 onSubmit={() => {
