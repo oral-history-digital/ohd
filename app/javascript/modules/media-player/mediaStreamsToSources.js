@@ -11,11 +11,11 @@ export default function mediaStreamsToSources(mediaStreams, mediaType,
         stream.media_type === mediaType);
     let sources;
 
+    // Omit 'type' in sources because VideoJS can guess it from file extension.
     switch (mediaType) {
     case 'video':
         sources = filteredStreams.map(stream => ({
             src: buildMediaUrl(stream.path, archiveId, numTapes, tape),
-            type: 'video/mp4',
             label: stream.resolution,
             selected: stream.resolution === DEFAULT_VIDEO_RESOLUTION,
         }));
@@ -24,7 +24,6 @@ export default function mediaStreamsToSources(mediaStreams, mediaType,
     default:
         sources = filteredStreams.map(stream => ({
             src: buildMediaUrl(stream.path, archiveId, numTapes, tape),
-            type: 'audio/mp3',
             label: stream.resolution,
             selected: stream.resolution === DEFAULT_AUDIO_RESOLUTION,
         }));
