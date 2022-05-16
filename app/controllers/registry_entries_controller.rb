@@ -79,7 +79,7 @@ class RegistryEntriesController < ApplicationController
 
   def index
     policy_scope RegistryEntry
-    cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at)].max.strftime('%s')
+    cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at), current_project.updated_at].max.strftime('%s')
 
     respond_to do |format|
       format.html { render "react/app" }
@@ -114,6 +114,7 @@ class RegistryEntriesController < ApplicationController
       end
       format.pdf do
         @locale = params[:lang]
+        @project = current_project
 
         pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
           @registry_entries = RegistryEntry.pdf_entries(current_project)
