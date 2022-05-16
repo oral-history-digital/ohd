@@ -1,3 +1,3 @@
-parent_name;parent_id;name;id;description;latitude;longitude
-Personen;81;Contreras, Manuel;68;;;
-Personen;81;Allende, Salvador;;;;
+parent_name	parent_id	name	id	description	latitude	longitude
+Personen	81	Contreras, Manuel	68			
+Personen	81	Allende, Salvador				
