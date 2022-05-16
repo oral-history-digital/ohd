@@ -125,7 +125,7 @@ class ProjectMetadata
                     xml.Language {
                       xml.LanguageName ISO_639.find_by_code(code).english_name
                       xml.ISO639 {
-                        xml.send('iso-639-3-code', code)
+                        xml.send('iso-639-3-code', self.class.language_code(code))
                       }
                     }
                   }
