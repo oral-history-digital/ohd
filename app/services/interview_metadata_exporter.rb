@@ -19,7 +19,7 @@ class InterviewMetadataExporter
     @md.project_id = @project.shortname.downcase  # must match element ID in corpus CMDI
 
     # Components
-    @md.name = @interview.anonymous_title
+    @md.name = @interview.archive_id
     @md.num_speakers = @interview.interviewees.count + @interview.interviewers.count
     @md.corpus_name = @interview.project.name  # must match element Title in corpus CMDI
     @md.recording_date = recording_date

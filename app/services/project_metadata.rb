@@ -53,7 +53,7 @@ class ProjectMetadata
         }
         xml.Components {
           xml.send('media-corpus-profile') {
-            xml.DocumentationURL(:documentation_url, 'lang' => 'ISO639-3:deu', 'startingpoint' => 'true')
+            xml.DocumentationURL(documentation_url, 'lang' => 'ISO639-3:deu', 'startingpoint' => 'true')
             xml.Collection {
               xml.GeneralInfo {
                 xml.Name name
