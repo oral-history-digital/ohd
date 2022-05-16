@@ -3,7 +3,7 @@
   <Header>
     <MdCreator>Nokogiri</MdCreator>
     <MdCreationDate>2021-01-01</MdCreationDate>
-    <MdSelfLink>http://www.example.com/</MdSelfLink>
+    <MdSelfLink/>
     <MdProfile>clarin.eu:cr1:p_1336550377513</MdProfile>
     <MdCollectionDisplayName>Bavarian Archive for Speech Signals (BAS)</MdCollectionDisplayName>
   </Header>
@@ -39,9 +39,9 @@
   <Components>
     <media-session-profile>
       <media-session>
-        <Name>Alice H.</Name>
+        <Name>za001</Name>
         <NumberOfSpeakers>3</NumberOfSpeakers>
-        <Corpus>OHD Test collection</Corpus>
+        <Corpus>OH.D Test collection</Corpus>
         <Environment>unknown</Environment>
         <RecordingDate>2021-03-10</RecordingDate>
         <NumberOfRecordings>3</NumberOfRecordings>
@@ -96,6 +96,9 @@
             <Channel>Face to Face</Channel>
           </CommunicationContext>
         </Content>
+        <Description>
+          <Description LanguageID="ISO639-3:eng">This is the interview za001 of the Oral History collection 'OH.D Test collection'.</Description>
+        </Description>
         <media-annotation-bundle>
           <media-file ref="r_0000000001" actor-ref="s_0000000001 s_0000000002 s_0000000003">
             <Type>video</Type>

@@ -189,8 +189,17 @@ Example: Switch from `mog` to `zwar`:
     ```
 
 
-## Running integration tests
+## Running end-to-end tests
 
-1. Start Cypress: ```yarn cypress:open``` - if it does not start, run ```yarn install``` first. (For more information about Cypress see https://docs.cypress.io/)
+1. Place a **.env** file in the project root containing http auth credentials,
+e.g.:
 
-Optional: setting the environment variable (for expamle in your ~/.bashrc file) ```export CYPRESS_CRASH_REPORTS=0``` prevents Cypres from sending error reports to the company.
+```
+OHD_PROD_USERNAME=...
+OHD_PROD_PASSWORD=...
+```
+
+2. Start Cypress: ```yarn cypress:open``` and run test **after_deploy_spec.js**
+or run ```yarn cypress:deploy``` to run the test in the console.
+
+Optional: setting the environment variable (for example in your ~/.bashrc file) ```export CYPRESS_CRASH_REPORTS=0``` prevents Cypress from sending error reports to the company.

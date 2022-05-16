@@ -2,7 +2,7 @@ class ProjectMetadata
   attr_accessor :creation_date, :batch,
     :metadata_resources, :documentation_url, :documentation_languages, :num_interviews,
     :name, :title, :id, :owner, :publication_year, :description, :description_lang,
-    :media_types, :mime_types
+    :subject_languages, :media_types, :mime_types
 
   def self.pad(number)
     number.to_s.rjust(10, '0')
@@ -57,7 +57,7 @@ class ProjectMetadata
             xml.Collection {
               xml.GeneralInfo {
                 xml.Name name
-                xml.Title "OHD #{title}"
+                xml.Title "OH.D #{title}"
                 xml.ID "ohd_#{id}_#{batch.to_s.rjust(3, '0')}"
                 xml.Owner owner
                 xml.PublicationYear publication_year
@@ -87,6 +87,7 @@ class ProjectMetadata
               }
               xml.Access {
                 xml.Availability 'RES'
+                xml.Availability "BAS:#{id}"
                 xml.DistributionMedium 'online'
                 # xml.CatalogueLink TODO: Eventually use collection registry url?
                 xml.Contact {
@@ -115,6 +116,20 @@ class ProjectMetadata
                   xml.Number num_interviews
                   xml.SizeUnit 'interview'
                 }
+              }
+              xml.SubjectLanguages {
+                subject_languages.each do |code|
+                  xml.SubjectLanguage {
+                    xml.Dominant true
+                    xml.SourceLanguage false
+                    xml.Language {
+                      xml.LanguageName ISO_639.find_by_code(code).english_name
+                      xml.ISO639 {
+                        xml.send('iso-639-3-code', code)
+                      }
+                    }
+                  }
+                end
               }
               xml.Modality {
                 xml.Modality 'Spoken'

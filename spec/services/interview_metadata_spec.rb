@@ -3,14 +3,14 @@ require 'rails_helper'
 RSpec.describe InterviewMetadata do
   it 'exports to CMDI XML correctly' do
     md = InterviewMetadata.new
-    md.self_link = 'http://www.example.com/'
     md.creation_date = Date.parse('2021/01/01')
+    md.batch = 1
     md.media_type = 'video';
     md.mime_type = 'video/mp4';
     md.tape_paths = ['za001/za001_03_01.mp4', 'za001/za001_03_02.mp4', 'za001/za001_03_03.mp4']
     md.transcript_paths = ['za001/transcript_de.pdf', 'za001/transcript_en.pdf']
     md.project_id = 'zwar';
-    md.name = 'Alice H.'
+    md.name = 'za001'
     md.num_speakers = 3
     md.corpus_name = 'Test collection'
     md.recording_date = Date.parse('2021/03/10')

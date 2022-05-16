@@ -20,7 +20,10 @@ yarn-debug.log*
 .yarn-integrity
 coverage
 .byebug_history
+/cypress/screenshots/
+/cypress/videos/
 
 # Ignore uploaded files in development.
 /storage/*
 !/storage/.keep
+/.env

@@ -24,13 +24,11 @@ test('converts video streams to sources', () => {
     const expected = [
         {
             src: 'https://medien.cedis.fu-berlin.de/zwar/zwar/cd003/cd003_05_03_sd240p.mp4',
-            type: 'video/mp4',
             label: '240p',
             selected: false,
         },
         {
             src: 'https://medien.cedis.fu-berlin.de/zwar/zwar/cd003/cd003_05_03_sd480p.mp4',
-            type: 'video/mp4',
             label: '480p',
             selected: true,
         },
@@ -56,13 +54,11 @@ test('converts audio streams to sources', () => {
     const expected = [
         {
             src: 'https://medien.cedis.fu-berlin.de/zwar/zwar/cd003/cd003_05_03_128k.mp3',
-            type: 'audio/mp3',
             label: '128k',
             selected: false,
         },
         {
             src: 'https://medien.cedis.fu-berlin.de/zwar/zwar/cd003/cd003_05_03_192k.mp3',
-            type: 'audio/mp3',
             label: '192k',
             selected: true,
         },

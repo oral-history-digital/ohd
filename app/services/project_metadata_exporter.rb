@@ -32,7 +32,8 @@ class ProjectMetadataExporter
     @md.publication_year = @project.created_at.year.to_s  # TODO: Not good
     @md.description = ActionView::Base.full_sanitizer.sanitize(@project.introduction)
     @md.description_lang = I18n.locale.to_s
-    @md.media_types = @interviews.pluck(:media_type).uniq
+    @md.subject_languages = @interviews.map { |i| i.language.code }.uniq
+    @md.media_types = @interviews.pluck(:media_type).uniq + ['text']
     @md.mime_types = mime_types
 
     @md
