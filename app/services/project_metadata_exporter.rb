@@ -16,7 +16,6 @@ class ProjectMetadataExporter
   def build
     # Header
     @md.creation_date = Date.today
-    @md.batch = @batch || 1
 
     # Resources
     @md.metadata_resources = @interviews.pluck(:archive_id)
@@ -25,18 +24,28 @@ class ProjectMetadataExporter
     @md.documentation_url = @project.domain
     @md.documentation_languages = @project.available_locales
     @md.num_interviews = @interviews.count
-    @md.name = @project.shortname
     @md.title = @project.name
-    @md.id = @project.shortname.downcase
+    @md.id = id
     @md.owner = @project.institutions.first.name
     @md.publication_year = @project.created_at.year.to_s  # TODO: Not good
-    @md.description = ActionView::Base.full_sanitizer.sanitize(@project.introduction)
+    @md.description = description
     @md.description_lang = I18n.locale.to_s
     @md.subject_languages = @interviews.map { |i| i.language.code }.uniq
     @md.media_types = @interviews.pluck(:media_type).uniq + ['text']
     @md.mime_types = mime_types
 
     @md
+  end
+
+  def id
+    project_name = @project.shortname.downcase
+    batch_str = (@batch || 1).to_s.rjust(3, '0')
+    "ohd_#{project_name}_#{batch_str}"
+  end
+
+  def description
+    text = @project.introduction
+    ActionView::Base.full_sanitizer.sanitize(text)
   end
 
   def mime_types

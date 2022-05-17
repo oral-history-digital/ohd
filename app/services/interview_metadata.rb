@@ -1,7 +1,7 @@
 class InterviewMetadata
   include ActiveModel::Validations
 
-  attr_accessor :creation_date, :batch,
+  attr_accessor :creation_date,
     :media_type, :mime_type, :tape_paths, :transcript_paths, :project_id,
     :name, :num_speakers, :corpus_name, :recording_date, :dominant_language,
     :actors, :topic
@@ -57,7 +57,7 @@ class InterviewMetadata
             xml.JournalFileProxyList
             xml.ResourceRelationList
             xml.IsPartOfList {
-              xml.IsPartOf "../ohd_#{project_id}_#{batch.to_s.rjust(3, '0')}.xml"
+              xml.IsPartOf "../#{project_id}.xml"
             }
           }
           xml.Components {

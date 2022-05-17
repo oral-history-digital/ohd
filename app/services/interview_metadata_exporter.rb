@@ -11,12 +11,11 @@ class InterviewMetadataExporter
     @md.creation_date = Date.today
 
     # Resources
-    @md.batch = @batch
     @md.media_type = @interview.media_type
     @md.mime_type = mime_type
     @md.tape_paths = @interview.tapes.map { |tape| "#{@interview.archive_id.upcase}_original/#{tape.media_id}.wav" }
     @md.transcript_paths = transcript_languages.map { |lang| "#{@interview.archive_id}_transcript_#{lang}.pdf" }
-    @md.project_id = @project.shortname.downcase  # must match element ID in corpus CMDI
+    @md.project_id = project_id  # must match element ID in corpus CMDI
 
     # Components
     @md.name = @interview.archive_id
@@ -30,6 +29,12 @@ class InterviewMetadataExporter
     @md.topic = @interview.collection&.name
 
     @md
+  end
+
+  def project_id
+    project_name = @project.shortname.downcase
+    batch_str = (@batch || 1).to_s.rjust(3, '0')
+    "ohd_#{project_name}_#{batch_str}"
   end
 
   def mime_type

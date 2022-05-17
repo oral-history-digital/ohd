@@ -8,10 +8,8 @@ RSpec.describe ProjectMetadata do
     md.documentation_url = 'http://www.example.com/archive/'
     md.documentation_languages = ['en', 'de', 'fr']
     md.num_interviews = 3
-    md.name = 'Test'
     md.title = 'The Test Archive'
-    md.id = 'test'
-    md.batch = 1
+    md.id = 'ohd_test_001'
     md.owner = 'Free University of Berlin'
     md.publication_year = '2000'
     md.description = 'This archive exists for testing purposes only…'
