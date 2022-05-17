@@ -17,7 +17,7 @@ function NormDataSelect({
     const [geoFilter, setGeoFilter] = useState(null);
     const [placeType, setPlaceType] = useState(null);
 
-    const normDataRegistryNameType = Object.values(registryNameTypes).filter(r => r.code === 'norm_data')[0];
+    const defaultNameType = Object.values(registryNameTypes).find(r => r.code === 'spelling')
     const handleInputChange = value => {
         setValue(value);
     };
@@ -31,7 +31,7 @@ function NormDataSelect({
                 latitude: value.Entry.Location?.Latitude,
                 longitude: value.Entry.Location?.Longitude,
                 registry_names_attributes: [{
-                    registry_name_type_id: normDataRegistryNameType.id,
+                    registry_name_type_id: defaultNameType.id,
                     name_position: 1,
                     translations_attributes: [{
                         descriptor: value.Entry.Name,
@@ -56,7 +56,7 @@ function NormDataSelect({
         <div className="NormData">
             <form className='Form default'>
                 <Element
-                    labelKey='geo_filter'
+                    labelKey='normdata.geo_filter'
                 >
                     <select
                         key={'geoFilter-select'}
@@ -66,15 +66,15 @@ function NormDataSelect({
                         <option value='' key={'geoFilter-choose'}>
                             {t('choose')}
                         </option>
-                        { ['de', 'en', 'ru', 'el', 'es'].map( v => (
+                        { ['de', 'eu'].map( v => (
                             <option value={v} key={`geoFilter-${v}`}>
-                                {t(v)}
+                                {t(`normdata.${v}`)}
                             </option>
                         ))}
                     </select>
                 </Element>
                 <Element
-                    labelKey='place_type'
+                    labelKey='normdata.place_type'
                 >
                     <select
                         key={'placeType-select'}
@@ -84,9 +84,9 @@ function NormDataSelect({
                         <option value='' key={'placeType-choose'}>
                             {t('choose')}
                         </option>
-                        { ['town'].map( v => (
+                        { ['city', 'town', 'village'].map( v => (
                             <option value={v} key={`geoFilter-${v}`}>
-                                {t(v)}
+                                {t(`normdata.${v}`)}
                             </option>
                         ))}
                     </select>
