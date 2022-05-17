@@ -157,16 +157,19 @@ class RegistryEntriesController < ApplicationController
   def merge
     @registry_entry = RegistryEntry.find(params[:id])
     authorize @registry_entry
-    #policy_scope RegistryEntry
+    first_merged_entry_parent = RegistryEntry.find(params[:merge_registry_entry][:ids].first).parents.first
     RegistryEntry.merge({id: params[:id], ids: params[:merge_registry_entry][:ids]})
     current_project.touch
 
     respond_to do |format|
       format.json do
         render json: {
-            data_type: 'registry_entries',
-            msg: 'processing'
-          }, status: :ok
+          id: @registry_entry.id,
+          data_type: "registry_entries",
+          data: cache_single(@registry_entry),
+          reload_data_type: "registry_entries",
+          reload_id: first_merged_entry_parent.id
+        }
       end
     end
   end
