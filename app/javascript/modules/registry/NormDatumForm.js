@@ -34,11 +34,9 @@ export default function NormDatumForm({
                     elementType: 'select',
                     values: normDataProviders,
                     withEmpty: true,
-                    validate: function(v){return v !== ''}
                 },
                 {
                     attribute: 'nid',
-                    validate: function(v){return v !== ''}
                 },
             ]}
         />

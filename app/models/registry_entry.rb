@@ -278,7 +278,9 @@ class RegistryEntry < ApplicationRecord
     method = descending ? :descendants : :ancestors
     all = [send(method).includes(registry_names: [:translations, :registry_name_type])]
     send(method).each do |d|
-      all << d.all_relatives(descending)
+      unless d.descendants.include?(self)
+        all << d.all_relatives(descending)
+      end
     end
     all.flatten
   end
@@ -286,7 +288,9 @@ class RegistryEntry < ApplicationRecord
   def on_all_descendants(&block)
     descendants.each do |d|
       block.call d
-      d.on_all_descendants(&block)
+      unless d.descendants.include?(self)
+        d.on_all_descendants(&block)
+      end
     end
   end
 

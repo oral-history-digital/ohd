@@ -79,7 +79,7 @@ class RegistryEntriesController < ApplicationController
 
   def index
     policy_scope RegistryEntry
-    cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at)].max.strftime('%s')
+    cache_key_date = [RegistryName.maximum(:updated_at), RegistryEntry.maximum(:updated_at), current_project.updated_at].max.strftime('%s')
 
     respond_to do |format|
       format.html { render "react/app" }
@@ -114,6 +114,7 @@ class RegistryEntriesController < ApplicationController
       end
       format.pdf do
         @locale = params[:lang]
+        @project = current_project
 
         pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-pdf-#{params[:lang]}-#{cache_key_date}" do
           @registry_entries = RegistryEntry.pdf_entries(current_project)
@@ -156,16 +157,19 @@ class RegistryEntriesController < ApplicationController
   def merge
     @registry_entry = RegistryEntry.find(params[:id])
     authorize @registry_entry
-    #policy_scope RegistryEntry
+    first_merged_entry_parent = RegistryEntry.find(params[:merge_registry_entry][:ids].first).parents.first
     RegistryEntry.merge({id: params[:id], ids: params[:merge_registry_entry][:ids]})
     current_project.touch
 
     respond_to do |format|
       format.json do
         render json: {
-            data_type: 'registry_entries',
-            msg: 'processing'
-          }, status: :ok
+          id: @registry_entry.id,
+          data_type: "registry_entries",
+          data: cache_single(@registry_entry),
+          reload_data_type: "registry_entries",
+          reload_id: first_merged_entry_parent.id
+        }
       end
     end
   end

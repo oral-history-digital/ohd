@@ -20,6 +20,7 @@
                font_size: 18
            } %>
 
+<% if @project.shortname.to_sym == :mog %> 
 <%= render partial: "./latex/authors",
            locals: {
                space_above: 3,
@@ -28,6 +29,7 @@
            } %>
 
    \vspace{2cm}
+<% end %>
 
 <%= render partial: "./latex/explanation",
            locals: {
