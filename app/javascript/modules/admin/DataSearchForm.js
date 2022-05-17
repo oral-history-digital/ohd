@@ -1,4 +1,5 @@
 import { createElement, Component } from 'react';
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 
 import { FormElement } from 'modules/forms';
@@ -63,7 +64,7 @@ export default class DataSearchForm extends Component {
 
     searchFormElement(element) {
         let opts = {
-            className: "search-input full" ,
+            className: classNames('Input', 'Input--fullWidth'),
             name: element.attributeName,
             value: this.props.query[element.attributeName] || element.value,
             onChange: this.handleChange,

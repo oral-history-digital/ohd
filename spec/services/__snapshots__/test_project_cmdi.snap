@@ -31,7 +31,7 @@
   </Resources>
   <Components>
     <media-corpus-profile>
-      <DocumentationURL lang="ISO639-3:deu" startingpoint="true">documentation_url</DocumentationURL>
+      <DocumentationURL lang="ISO639-3:deu" startingpoint="true">http://www.example.com/archive/</DocumentationURL>
       <Collection>
         <GeneralInfo>
           <Name>Test</Name>
