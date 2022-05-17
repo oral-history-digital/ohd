@@ -1,7 +1,7 @@
 class ProjectMetadata
-  attr_accessor :creation_date, :batch,
+  attr_accessor :creation_date,
     :metadata_resources, :documentation_url, :documentation_languages, :num_interviews,
-    :name, :title, :id, :owner, :publication_year, :description, :description_lang,
+    :title, :id, :owner, :publication_year, :description, :description_lang,
     :subject_languages, :media_types, :mime_types
 
   def self.pad(number)
@@ -56,9 +56,9 @@ class ProjectMetadata
             xml.DocumentationURL(documentation_url, 'lang' => 'ISO639-3:deu', 'startingpoint' => 'true')
             xml.Collection {
               xml.GeneralInfo {
-                xml.Name name
+                xml.Name id
                 xml.Title "OH.D #{title}"
-                xml.ID "ohd_#{id}_#{batch.to_s.rjust(3, '0')}"
+                xml.ID id
                 xml.Owner owner
                 xml.PublicationYear publication_year
                 xml.Description {

@@ -34,7 +34,7 @@
       <DocumentationURL lang="ISO639-3:deu" startingpoint="true">http://www.example.com/archive/</DocumentationURL>
       <Collection>
         <GeneralInfo>
-          <Name>Test</Name>
+          <Name>ohd_test_001</Name>
           <Title>OH.D The Test Archive</Title>
           <ID>ohd_test_001</ID>
           <Owner>Free University of Berlin</Owner>
@@ -72,7 +72,7 @@
         </DocumentationLanguages>
         <Access>
           <Availability>RES</Availability>
-          <Availability>BAS:test</Availability>
+          <Availability>BAS:ohd_test_001</Availability>
           <DistributionMedium>online</DistributionMedium>
           <Contact>
             <Person>Florian Schiel</Person>
