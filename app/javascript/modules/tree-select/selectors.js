@@ -65,7 +65,7 @@ export function buildTree(data) {
 }
 
 function sortChildrenRecursively(children) {
-    children.sort((a, b) => {
+    children.filter(c => c.label?.length > 0).sort((a, b) => {
         const aLower = a.label.toLowerCase();
         const bLower = b.label.toLowerCase();
         return aLower.localeCompare(bLower);
