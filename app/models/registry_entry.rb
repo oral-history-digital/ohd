@@ -241,6 +241,7 @@ class RegistryEntry < ApplicationRecord
     merge_to_id = opts[:id]
     where(id: opts[:ids]).each do |registry_entry|
       registry_entry.move_associated_to(merge_to_id)
+      registry_entry.reload
       registry_entry.destroy
     end
   end
@@ -249,21 +250,8 @@ class RegistryEntry < ApplicationRecord
     registry_entry_relations.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
     registry_references.each{|r| r.update_attribute(:registry_entry_id, merge_to_id)}
 
-    child_registry_hierarchies.each do |rh|
-      if RegistryHierarchy.where(ancestor_id: merge_to_id, descendant_id: rh.descendant_id).exists?
-        rh.destroy
-      else
-        rh.update_attribute(:ancestor_id, merge_to_id)
-      end
-    end
-
-    parent_registry_hierarchies.each do |rh|
-      if RegistryHierarchy.where(ancestor_id: rh.ancestor_id, descendant_id: merge_to_id).exists?
-        rh.destroy
-      else
-        rh.update_attribute(:descendant_id, merge_to_id)
-      end
-    end
+    child_registry_hierarchies.update_all(ancestor_id: merge_to_id)
+    parent_registry_hierarchies.destroy_all
   end
 
   def self.pdf_entries(project)
