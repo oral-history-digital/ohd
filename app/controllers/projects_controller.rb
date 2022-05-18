@@ -1,6 +1,9 @@
 class ProjectsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:show, :cmdi_metadata, :index, :edit_info, :edit_display, :edit_config]
-  before_action :set_project, only: [:show, :cmdi_metadata, :edit_info, :edit_display, :edit_config, :edit, :update, :destroy]
+  skip_before_action :authenticate_user_account!,
+    only: [:show, :cmdi_metadata, :archiving_batches, :index, :edit_info, :edit_display, :edit_config]
+  before_action :set_project,
+    only: [:show, :cmdi_metadata, :archiving_batches, :edit_info, :edit_display,
+           :edit_config, :edit, :update, :destroy]
 
   # GET /projects
   def index
@@ -45,6 +48,23 @@ class ProjectsController < ApplicationController
         exporter = ProjectMetadataExporter.new(@project, params[:batch])
         metadata = exporter.build
         render xml: metadata.to_xml
+      end
+    end
+  end
+
+  def archiving_batches
+    respond_to do |format|
+      format.json do
+        batch_number = params[:number].to_i
+        archiving_batch = @project.archiving_batches
+          .where(number: batch_number).first
+
+        if archiving_batch.blank?
+          render json: []
+        else
+          interview_ids = archiving_batch.interviews.map(&:archive_id).sort
+          render json: interview_ids
+        end
       end
     end
   end

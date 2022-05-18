@@ -10,6 +10,10 @@ class ProjectPolicy < ApplicationPolicy
     show?
   end
 
+  def archiving_batches?
+    show?
+  end
+
   def edit_info?
     update?
   end

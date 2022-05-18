@@ -12,6 +12,7 @@ Rails.application.routes.draw do
     get "project/edit-config", to: "projects#edit_config"
     get "project/edit-display", to: "projects#edit_display"
     get "project/cmdi_metadata", to: "projects#cmdi_metadata"
+    get "project/archiving_batches/:number", to: "projects#archiving_batches"
 
     get 'metadata-import-template', to: "uploads#metadata_import_template"
 
