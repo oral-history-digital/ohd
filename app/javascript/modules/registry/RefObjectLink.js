@@ -27,7 +27,7 @@ export default function RefObjectLink({
     const interview = interviews[registryReference.archive_id];
     const segment = registryReference.ref_object_type === 'Segment' && segments[registryReference.ref_object_id];
     const interviewTitle = isLoggedIn ? interview?.short_title?.[locale] : interview?.anonymous_title[locale];
-    let title = interviewTitle + `(${registryReference.archive_id})`;
+    let title = interviewTitle + ` (${registryReference.archive_id})`;
 
     if (isLoggedIn && segment) {
         const tape = segment?.tape_number > 1 ? `(${t('tape')} ${segment.tape_nbr}/${segment.tape_count})` : '';
