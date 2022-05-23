@@ -17,13 +17,13 @@ class PhotoExport
   
   def write_csv
     now = DateTime.now.strftime("%d.%m.%Y-%H.%M")
-    File.open(File.join(Rails.root, 'tmp', 'files', "#{@tmp_name}.csv"), 'a') do |f|
+    CSV.open(File.join(Rails.root, 'tmp', 'files', "#{@tmp_name}.csv"), 'a', col_sep: "\t") do |f|
 
-      f.puts "Interview-ID;Bild-ID;Dateiname;Beschreibung;Datum;Ort;Fotograf*in /Urheber*in;Quelle/Lizenz;Format;Öffentlich"
+      f << ['Interview-ID', 'Bild-ID', 'Dateiname', 'Beschreibung', 'Datum', 'Ort', 'Fotograf*in/Urheber*in', 'Quelle/Lizenz', 'Format', 'Öffentlich']
 
       Interview.where(archive_id: @public_interview_ids).each do |interview|
         interview.photos.each do |photo|
-          f.puts [
+          f << [
             interview.archive_id,
             photo.public_id,
             photo.photo_file_name,
@@ -34,7 +34,7 @@ class PhotoExport
             photo.license,
             photo.photo_content_type,
             photo.workflow_state == 'public' ? 'ja' : 'nein'
-          ].join(';')
+          ]
         end
       end
     end
