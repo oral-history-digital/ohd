@@ -47,7 +47,7 @@ class PhotoExport
       zip_file.add("photos.csv", Rails.root.join('tmp', 'files', "#{@tmp_name}.csv"))
       Interview.where(archive_id: @public_interview_ids).each do |interview|
         interview.photos.each do |photo|
-          zip_file.add(photo.photo_file_name, ActiveStorage::Blob.service.path_for(photo.photo.key))
+          zip_file.add(photo.photo_file_name || photo.photo.blob.filename, ActiveStorage::Blob.service.path_for(photo.photo.key))
         end
       end
     end
