@@ -337,7 +337,7 @@ es:
         confirm_text: "Sollen die Interviews %{archive_ids} wirklich gelöscht werden?"
       export_photos:
         title: Fotos exportieren
-        confirm_text: "Sollen die Fotos der Interviews %{archive_ids} wirklich exportiert werden?"
+        confirm_text: "Der Download vieler Fotos kann lange dauern oder sogar abbrechen. Wollen Sie den Export der Fotos der Interviews %{archive_ids} starten?"
       dois:
         title: DOI registrieren
     segment:
