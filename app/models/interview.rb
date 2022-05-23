@@ -60,6 +60,11 @@ class Interview < ApplicationRecord
            },
            class_name: 'RegistryReference'
 
+  has_many :person_registry_references,
+           -> { where("registry_references.ref_object_type='Person'") },
+           class_name: 'RegistryReference',
+           dependent: :destroy
+
   has_many :segment_registry_entries,
            through: :segment_registry_references,
            source: :registry_entry
