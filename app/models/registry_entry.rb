@@ -24,6 +24,14 @@ class RegistryEntry < ApplicationRecord
   has_many :norm_data
   accepts_nested_attributes_for :norm_data
 
+  has_many :gnd_norm_data, 
+           ->{ where(norm_data_provider_id: NormDataProvider.where(name: 'GND').first.id)},
+           class_name: 'NormDatum'
+
+  has_many :osm_norm_data, 
+           ->{ where(norm_data_provider_id: NormDataProvider.where(name: 'OSM').first.id)},
+           class_name: 'NormDatum'
+
   has_many :parent_registry_hierarchies,
            foreign_key: :descendant_id,
            class_name: 'RegistryHierarchy',
@@ -387,6 +395,21 @@ class RegistryEntry < ApplicationRecord
 
   def available_translations
     registry_names.map { |n| n.translations.map{|t| t.locale[0..1]} }.flatten.uniq
+  end
+
+  # normdata methods
+  #
+  %w(gnd osm).each do |provider|
+    define_method "#{provider}_id=" do |nid|
+      norm_datum = self.send("#{provider}_norm_data").first_or_initialize
+      norm_datum.nid = nid
+      norm_datum.save
+    end
+
+    define_method "#{provider}_id" do
+      norm_datum = self.send("#{provider}_norm_data").first
+      norm_datum && norm_datum.nid
+    end
   end
 
   def descriptor=(descriptor)

@@ -36,6 +36,8 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
         description = data[4]
         latitude    = data[5]
         longitude   = data[6]
+        gnd_id      = data[7]
+        osm_id      = data[8]
 
         begin
           unless name.blank? && id.blank?
@@ -48,7 +50,9 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
               notes: description,
               workflow_state: 'public',
               list_priority: false,
-              project_id: project.id
+              project_id: project.id,
+              gnd_id: gnd_id,
+              osm_id: osm_id
             }
             parent = nil
 
@@ -91,6 +95,7 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
         rescue StandardError => e
           log("#{e.message}: #{e.backtrace}")
         end
+        project.registry_entries.update_all(updated_at: Time.now)
       end
     end
   end
