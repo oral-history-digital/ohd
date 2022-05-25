@@ -9,7 +9,7 @@ describe MetadataImportTemplate do
     end
 
     it 'should contain all base column-headers' do
-      expect(@csv.parse_csv(col_sep: ";")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Teilsammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Anzahl der Bänder", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Geschlecht", "Geburtsdatum", "Biographie", "Interviewführung", "Transkription", "Übersetzung", "Erschließung"])
+      expect(@csv.parse_csv(col_sep: "\t")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Teilsammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Anzahl der Bänder", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Geschlecht", "Geburtsdatum", "Biographie", "Interviewführung", "Transkription", "Übersetzung", "Erschließung"])
     end
   end
 
@@ -20,7 +20,7 @@ describe MetadataImportTemplate do
     end
 
     it 'should contain all base column-headers and columns for registry_reference_type-metadata_fields' do
-      expect(@csv.parse_csv(col_sep: ";")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Teilsammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Anzahl der Bänder", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Geschlecht", "Geburtsdatum", "Biographie", "Interviewführung", "Transkription", "Übersetzung", "Erschließung", "Geburtsort", "Geburtsort (Subkategorie)", "Interviewort", "Interviewort (Subkategorie)"])
+      expect(@csv.parse_csv(col_sep: "\t")).to eq(["Interview-ID", "Originalsignatur", "Sprache", "Teilsammlung", "Interview-Datum", "Medientyp", "Dauer", "Protokoll", "Beschreibung", "Anzahl der Bänder", "Vorname", "Nachname", "Geburtsname", "Weitere Namen", "Weitere Vornamen", "Geschlecht", "Geburtsdatum", "Biographie", "Interviewführung", "Transkription", "Übersetzung", "Erschließung", "Geburtsort", "Geburtsort (direkter Oberbegriff)", "Interviewort", "Interviewort (direkter Oberbegriff)"])
     end
   end
 

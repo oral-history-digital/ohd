@@ -15,7 +15,6 @@ FactoryBot.define do
     cooperation_partner { "Stiftung 'Erinnerung, Verantwortung und Zukunft'" }
     leader { "Rinke, Stefan" }
     manager { "Kandler, Philipp; Pagenstecher, Cord; Wein, Doroth..." }
-    hosting_institution { "Freie Universität Berlin, Universitätsbibliothek/C..." }
     funder_names { ["Auswärtiges Amt aufgrund eines Beschlusses des Deutschen Bundestags"] }
     contact_email { "mail@cdoh.net" }
     smtp_server { "mail.fu-berlin.de" }
