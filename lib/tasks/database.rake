@@ -28,7 +28,7 @@ namespace :database do
       max = 0
       Rails.application.eager_load!
       ActiveRecord::Base.descendants.each do |model|
-        if ActiveRecord::Base.connection.table_exists? model.table_name
+        if ActiveRecord::Base.connection.table_exists?(model.table_name) && model.column_names.include?('id')
           puts model
           max = [model.maximum(:id) || 0, max].max
         end
@@ -43,7 +43,7 @@ namespace :database do
         puts "updating #{model}"
         id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id'])
         id_columns.each do |col|
-          if ActiveRecord::Base.connection.table_exists? model.table_name
+          if ActiveRecord::Base.connection.table_exists?(model.table_name) && model.column_names.include?(col)
             puts "updating #{col}"
             sql = "UPDATE #{model.table_name} SET #{col} = #{col} + #{args.max_id.to_i}"
             puts sql
