@@ -5,7 +5,7 @@ RSpec.describe ProjectCreator do
   before(:all) do
     @project_params = {
       name: 'test',
-      shortname: 'te',
+      shortname: ('a'..'z').to_a.shuffle[0,4].join,
       default_locale: 'en',
       pseudo_available_locales: "en,de",
       contact_email: 'manager@archive.com'
