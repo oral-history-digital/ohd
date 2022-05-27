@@ -27,7 +27,7 @@ namespace :database do
     task :get_max_id => :environment do
       max = 0
       Rails.application.eager_load!
-      ActiveRecord::Base.descendants.each do |model|
+      ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).uniq.each do |model|
         if ActiveRecord::Base.connection.table_exists?(model.table_name) && model.column_names.include?('id')
           puts model
           max = [model.maximum(:id) || 0, max].max
@@ -39,7 +39,7 @@ namespace :database do
     desc 'add x to all id and *_id fields' 
     task :add_to_all_id_fields, [:max_id] => :environment do |t, args|
       Rails.application.eager_load!
-      ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).each do |model|
+      ([ActiveStorage::Attachment, ActiveStorage::Blob] | ActiveRecord::Base.descendants).uniq.each do |model|
         puts "updating #{model}"
         id_columns = ['id'] | (model.attribute_names.select{|a| a =~ /_id$/} - ['archive_id', 'media_id', 'public_id'])
         id_columns.each do |col|
