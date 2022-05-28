@@ -15,8 +15,10 @@ export default function AuthShow({
         // logged in and registered for the current project
         //(isLoggedIn && ifLoggedIn) ||
         (
-            isLoggedIn && ifLoggedIn && account &&
-            Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
+            isLoggedIn && ifLoggedIn && account && (
+                account.admin ||
+                Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
+            )
         ) ||
         // catalog-project
         (ifCatalog && isCatalog)
@@ -27,7 +29,7 @@ export default function AuthShow({
         (!isLoggedIn && ifLoggedOut) ||
         // logged in and NOT registered for the current project
         (
-            isLoggedIn && ifNoProject && account &&
+            isLoggedIn && ifNoProject && account && !account.admin &&
             !Object.values(account.user_registration_projects).find(urp => urp.project_id === project?.id && urp.activated_at !== null)
         )
     ) {
