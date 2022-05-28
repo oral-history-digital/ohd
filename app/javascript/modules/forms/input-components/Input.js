@@ -52,7 +52,7 @@ export default class Input extends Component {
     }
 
     cleanProps() {
-        let value = this.props.value || this.props.data && this.props.data[this.props.attribute];
+        let value = this.props.data && this.props.data[this.props.attribute] || this.props.value;
         let props = {
             id: `${this.props.scope}_${this.props.attribute}`,
             className: 'Input',
