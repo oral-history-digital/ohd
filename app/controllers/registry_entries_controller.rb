@@ -9,8 +9,8 @@ class RegistryEntriesController < ApplicationController
       request = Net::HTTP::Post.new(uri, 'Content-Type' => 'application/json')
       request.body = {
         expression: params[:expression],
-        PlaceType: params[:place_type],
-        GeoFilter: params[:geo_filter]
+        placeType: params[:place_type],
+        geoFilter: params[:geo_filter]
       }.to_json
       response = http.request request
       response.body
