@@ -36,6 +36,26 @@ test('converts video streams to sources', () => {
     expect(actual).toEqual(expected);
 });
 
+test('converts HLS stream to sources', () => {
+    const streams = [
+        {
+            media_type: 'video',
+            path: 'https://medien.cedis.fu-berlin.de/zwar/zwar/INTERVIEW_ID/INTERVIEW_ID/INTERVIEW_ID.m3u8',
+            resolution: null,
+        },
+    ];
+
+    const actual = mediaStreamsToSources(streams, 'video', 'cd003', '05', 3);
+    const expected = [
+        {
+            src: 'https://medien.cedis.fu-berlin.de/zwar/zwar/cd003/cd003/cd003.m3u8',
+            label: 'default',
+            selected: true,
+        },
+    ];
+    expect(actual).toEqual(expected);
+});
+
 test('converts audio streams to sources', () => {
     const streams = [
         {
