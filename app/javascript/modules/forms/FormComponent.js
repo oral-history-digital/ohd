@@ -33,7 +33,7 @@ export default class FormComponent extends Component {
     }
 
     initValues() {
-        let values = this.props.values || {};
+        let values = { ...this.props.values };
         if (this.props.data)
             values.id = this.props.data.type === 'Interview' ? this.props.data.archive_id : this.props.data.id;
         return values;
