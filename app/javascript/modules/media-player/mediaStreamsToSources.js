@@ -16,17 +16,19 @@ export default function mediaStreamsToSources(mediaStreams, mediaType,
     case 'video':
         sources = filteredStreams.map(stream => ({
             src: buildMediaUrl(stream.path, archiveId, numTapes, tape),
-            label: stream.resolution,
-            selected: stream.resolution === DEFAULT_VIDEO_RESOLUTION,
+            label: stream.resolution || 'default',
+            selected: stream.resolution === DEFAULT_VIDEO_RESOLUTION || filteredStreams.length === 1,
         }));
-        return sources;
+        break;
     case 'audio':
     default:
         sources = filteredStreams.map(stream => ({
             src: buildMediaUrl(stream.path, archiveId, numTapes, tape),
-            label: stream.resolution,
-            selected: stream.resolution === DEFAULT_AUDIO_RESOLUTION,
+            label: stream.resolution || 'default',
+            selected: stream.resolution === DEFAULT_AUDIO_RESOLUTION || filteredStreams.length === 1,
         }));
-        return sources;
+        break;
     }
+
+    return sources;
 }
