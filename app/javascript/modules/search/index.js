@@ -21,7 +21,7 @@ export {
     getRegistryNameTypesQuery,
     getRegistryReferenceTypesQuery,
     getRolesQuery,
-    getShowRegistryEntriesTree,
+    getShowRegistryEntriesSearchResults,
     getTaskTypesQuery,
     getUserRegistrationsQuery,
 } from './selectors';

@@ -32,6 +32,7 @@ function receiveRegistryEntrySearchResults(json){
     return {
         type: RECEIVE_REGISTRY_ENTRY_SEARCH,
         registryEntries: json.registry_entries,
+        project: json.project,
         fulltext: json.fulltext,
         receivedAt: Date.now()
     }
@@ -44,9 +45,10 @@ export function searchRegistryEntry(url, searchQuery) {
     }
 }
 
-export function changeRegistryEntriesViewMode(bool){
+export function changeRegistryEntriesViewMode(bool, projectId){
     return {
         type: CHANGE_REGISTRY_ENTRIES_VIEW_MODE,
-        bool: bool
+        bool: bool,
+        projectId: projectId,
     }
 }

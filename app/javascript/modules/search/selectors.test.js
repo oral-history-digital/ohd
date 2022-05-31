@@ -20,8 +20,10 @@ const state = {
     },
     [NAME]: {
         registryEntries: {
-            showRegistryEntriesTree: true,
-            results: [],
+            cdoh: {
+                showRegistryEntriesTree: true,
+                results: [],
+            }
         },
         user_registrations: {
             query: {
@@ -84,11 +86,11 @@ const state = {
 };
 
 test('getRegistryEntriesSearch retrieves registry entries part of search state', () => {
-    expect(selectors.getRegistryEntriesSearch(state)).toEqual(state[NAME].registryEntries);
+    expect(selectors.getRegistryEntriesSearch(state)).toEqual(state[NAME].registryEntries.cdoh);
 });
 
-test('getShowRegistryEntriesTree get wether to show search results', () => {
-    expect(selectors.getShowRegistryEntriesTree(state)).toEqual(state[NAME].registryEntries.showRegistryEntriesTree);
+test('getShowRegistryEntriesSearchResults get wether to show search results', () => {
+    expect(selectors.getShowRegistryEntriesSearchResults(state)).toEqual(!!state[NAME].registryEntries.cdoh.showRegistryEntriesSearchResults);
 });
 
 test('getIsRegistryEntrySearching retrieves registry entry search state', () => {

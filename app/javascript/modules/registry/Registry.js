@@ -15,7 +15,7 @@ export default function Registry({
     currentProject,
     rootRegistryEntry,
     foundRegistryEntries,
-    showRegistryEntriesTree,
+    showRegistryEntriesSearchResults,
     isRegistryEntrySearching,
     setSidebarTabsIndex,
     isLoggedIn,
@@ -46,9 +46,8 @@ export default function Registry({
                     </AuthorizedContent>
 
                     {
-                        showRegistryEntriesTree ?
-                            <RegistryEntriesContainer root registryEntryParent={rootRegistryEntry} /> :
-                            (foundRegistryEntries.results.length === 0 && !isRegistryEntrySearching ?
+                        showRegistryEntriesSearchResults ?
+                            (foundRegistryEntries?.results?.length === 0 && !isRegistryEntrySearching ?
                                 (
                                     <div className="search-result">
                                         {`0 ${t('registryentry_results')}`}
@@ -57,11 +56,12 @@ export default function Registry({
                                 (
                                     <ul className="RegistryEntryList RegistryEntryList--root">
                                         {
-                                            foundRegistryEntries.results.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
+                                            foundRegistryEntries?.results?.map(result => <RegistrySearchResultContainer key={result.id} result={result} />)
                                         }
                                     </ul>
                                 )
-                            )
+                            ) :
+                            <RegistryEntriesContainer root registryEntryParent={rootRegistryEntry} />
                     }
                 </Fetch>
             </div>
@@ -73,7 +73,7 @@ Registry.propTypes = {
     currentProject: PropTypes.object,
     rootRegistryEntry: PropTypes.object,
     foundRegistryEntries: PropTypes.object.isRequired,
-    showRegistryEntriesTree: PropTypes.bool.isRequired,
+    showRegistryEntriesSearchResults: PropTypes.bool.isRequired,
     isRegistryEntrySearching: PropTypes.bool,
     setSidebarTabsIndex: PropTypes.func.isRequired,
 };

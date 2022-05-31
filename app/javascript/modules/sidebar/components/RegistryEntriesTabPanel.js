@@ -8,7 +8,17 @@ import { RegistrySearchFormContainer } from 'modules/registry';
 import DownloadRegistryEntriesContainer from './DownloadRegistryEntriesContainer';
 import { PROJECT_MOG } from 'modules/constants';
 
-function RegistryEntriesTabPanel(props) {
+function RegistryEntriesTabPanel({
+    projectId,
+    projects,
+    showRegistryEntriesSearchResults,
+    locale,
+    locales,
+    translations,
+    account,
+    editView,
+    changeRegistryEntriesViewMode,
+}) {
     const { t } = useI18n();
 
     return (
@@ -22,14 +32,14 @@ function RegistryEntriesTabPanel(props) {
                     <button
                         type="button"
                         className="Button"
-                        onClick={() => props.changeRegistryEntriesViewMode(!props.showRegistryEntriesTree)}
+                        onClick={() => changeRegistryEntriesViewMode(!showRegistryEntriesSearchResults, projectId)}
                     >
-                        {t('activerecord.models.registry_entry.actions.' + (props.showRegistryEntriesTree ? 'show_search_results' : 'show_tree'))}
+                        {t('activerecord.models.registry_entry.actions.' + (showRegistryEntriesSearchResults ? 'show_tree' : 'show_search_results'))}
                     </button>
                 </p>
                 {
-                    props.projectId != PROJECT_MOG ?
-                        props.locales.map((locale) => (
+                    projectId != PROJECT_MOG ?
+                        locales.map((locale) => (
                             <AuthorizedContent key={locale} object={{type: 'General', action: 'edit'}}>
                                 <div key={locale}>
                                     <DownloadRegistryEntriesContainer format="pdf" specificLocale={locale} />
@@ -40,16 +50,16 @@ function RegistryEntriesTabPanel(props) {
                         null
                 }
                 {
-                    (props.projectId === PROJECT_MOG) ?
-                            <div key={props.locale}>
+                    (projectId === PROJECT_MOG) ?
+                            <div key={locale}>
                                 <p>
-                                    <a href={`/alfa-${props.locale}.pdf`}>
+                                    <a href={`/alfa-${locale}.pdf`}>
                                         <FaDownload
                                             className="Icon Icon--primary"
-                                            title={t('download_registry_entries', { format: 'pdf' , locale: props.locale })}
+                                            title={t('download_registry_entries', { format: 'pdf' , locale: locale })}
                                         />
                                         {' '}
-                                        {t('download_registry_entries', { format: 'pdf', locale: props.locale })}
+                                        {t('download_registry_entries', { format: 'pdf', locale: locale })}
                                     </a>
                                 </p>
                             </div>
@@ -63,7 +73,7 @@ function RegistryEntriesTabPanel(props) {
 
 RegistryEntriesTabPanel.propTypes = {
     projectId: PropTypes.string.isRequired,
-    showRegistryEntriesTree: PropTypes.bool.isRequired,
+    showRegistryEntriesSearchResults: PropTypes.bool.isRequired,
     locale: PropTypes.string.isRequired,
     locales: PropTypes.array.isRequired,
     translations: PropTypes.object.isRequired,

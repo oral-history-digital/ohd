@@ -1,15 +1,26 @@
 import { createSelector } from 'reselect';
 
-import { getArchiveId } from 'modules/archive';
+import { getArchiveId, getProjectId } from 'modules/archive';
 import { NAME } from './constants';
 
 const getState = state => state[NAME];
 
-export const getRegistryEntriesSearch = state => getState(state).registryEntries;
+export const getRegistryEntriesSearch = createSelector(
+    [getState, getProjectId],
+    (search, projectId) => {
+        if (projectId) {
+            return search.registryEntries[projectId];
+        } else {
+            return null;
+        }
+    }
+);
 
-export const getShowRegistryEntriesTree = createSelector(
-    getRegistryEntriesSearch,
-    registryEntriesSearch => registryEntriesSearch.showRegistryEntriesTree
+export const getShowRegistryEntriesSearchResults = createSelector(
+    [getRegistryEntriesSearch],
+    (registryEntriesSearch) => {
+        return !!registryEntriesSearch?.showRegistryEntriesSearchResults;
+    }
 );
 
 export const getIsRegistryEntrySearching = state => getState(state).isRegistryEntrySearching;

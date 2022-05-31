@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 
 import { getRootRegistryEntry, getCurrentProject, getProjects } from 'modules/data';
 import { setSidebarTabsIndex } from 'modules/sidebar';
-import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesTree } from 'modules/search';
+import { getIsRegistryEntrySearching, getRegistryEntriesSearch, getShowRegistryEntriesSearchResults } from 'modules/search';
 import { getIsLoggedIn } from 'modules/account';
 import Registry from './Registry';
 
@@ -12,7 +12,7 @@ const mapStateToProps = (state) => ({
     projects: getProjects(state),
     currentProject: getCurrentProject(state),
     foundRegistryEntries: getRegistryEntriesSearch(state),
-    showRegistryEntriesTree: getShowRegistryEntriesTree(state),
+    showRegistryEntriesSearchResults: getShowRegistryEntriesSearchResults(state),
     isRegistryEntrySearching: getIsRegistryEntrySearching(state),
     isLoggedIn: getIsLoggedIn(state),
 });

@@ -28,6 +28,7 @@ class SearchesController < ApplicationController
       end
       format.json do
         render json: {
+          project: current_project.shortname,
           result_pages_count: search.results.total_pages,
           results_count: search.total,
           registry_entries: search.results.map do |result|

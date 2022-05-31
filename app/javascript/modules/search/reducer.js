@@ -7,10 +7,7 @@ import {
 } from './action-types';
 
 export const initialState = {
-    registryEntries: {
-        showRegistryEntriesTree: true,
-        results: []
-    },
+    registryEntries: {},
     user_registrations: {
         query: {
             'user_registration_projects.workflow_state': 'account_confirmed',
@@ -35,8 +32,10 @@ const search = (state = initialState, action) => {
         return Object.assign({}, state, {
             isRegistryEntrySearching: false,
             registryEntries: {
-                showRegistryEntriesTree: false,
-                results: action.registryEntries
+                [action.project]: {
+                    showRegistryEntriesSearchResults: true,
+                    results: action.registryEntries
+                }
             }
         })
     case SET_QUERY_PARAMS :
@@ -55,7 +54,9 @@ const search = (state = initialState, action) => {
     case CHANGE_REGISTRY_ENTRIES_VIEW_MODE:
         return Object.assign({}, state, {
             registryEntries: Object.assign({}, state.registryEntries, {
-                showRegistryEntriesTree: action.bool
+                [action.projectId]: Object.assign({}, state.registryEntries[action.projectId], {
+                    showRegistryEntriesSearchResults: action.bool
+                })
             })
         })
     default:
