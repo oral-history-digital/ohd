@@ -9,7 +9,7 @@ export function useProjectAccessStatus(project) {
     const projectAccessStatus = projectRegistration?.workflow_state;
 
     return { 
-        projectAccessGranted: account.admin || projectAccessStatus === 'project_access_granted',
+        projectAccessGranted: account?.admin || projectAccessStatus === 'project_access_granted',
         projectAccessStatus: projectAccessStatus,
     };
 }
