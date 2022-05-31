@@ -21,6 +21,7 @@ export default class MultiLocaleWrapper extends Component {
 
     findTranslation(locale) {
         const { data } = this.props;
+        debugger
 
         if (!data?.translations_attributes) {
             return null;
