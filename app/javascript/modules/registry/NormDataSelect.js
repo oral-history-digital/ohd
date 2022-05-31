@@ -84,7 +84,7 @@ function NormDataSelect({
                         <option value='' key={'placeType-choose'}>
                             {t('choose')}
                         </option>
-                        { ['city', 'town', 'village'].map( v => (
+                        { ['town', 'placeOfWorship', 'natural', 'historic', 'tourism'].map( v => (
                             <option value={v} key={`geoFilter-${v}`}>
                                 {t(`normdata.${v}`)}
                             </option>

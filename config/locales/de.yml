@@ -33,9 +33,13 @@ de:
   normdata:
     geo_filter: Geofilter
     place_type: Art der Lokalität
-    town: Stadt
-    city: Großstadt
-    village: Dorf
+    town: Ort
+    #city: Großstadt
+    #village: Dorf
+    historic: Denkmal
+    tourism: Tourismus
+    natural: natürlich
+    placeOfWorship: Kultstätte
     de: Deutschland
     eu: Europa
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
