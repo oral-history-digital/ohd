@@ -40,7 +40,7 @@ function RegistryEntriesTabPanel({
                 {
                     projectId != PROJECT_MOG ?
                         locales.map((locale) => (
-                            <AuthorizedContent key={locale} object={{type: 'General', action: 'edit'}}>
+                            <AuthorizedContent key={locale} object={{type: 'General'}} action='edit'>
                                 <div key={locale}>
                                     <DownloadRegistryEntriesContainer format="pdf" specificLocale={locale} />
                                     <DownloadRegistryEntriesContainer format="csv" specificLocale={locale} />
