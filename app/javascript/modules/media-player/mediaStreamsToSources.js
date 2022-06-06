@@ -1,7 +1,7 @@
 import buildMediaUrl from './buildMediaUrl';
 import { DEFAULT_VIDEO_RESOLUTION, DEFAULT_AUDIO_RESOLUTION } from './constants';
 
-export default function mediaStreamsToSources(mediaStreams, mediaType,
+export default function mediaStreamsToSources(mediaStreams, pathBase, mediaType,
     archiveId, numTapes, tape) {
     if (mediaType !== 'audio' && mediaType != 'video') {
         throw new TypeError("mediaType must be 'audio' or 'video'");
@@ -15,7 +15,7 @@ export default function mediaStreamsToSources(mediaStreams, mediaType,
     switch (mediaType) {
     case 'video':
         sources = filteredStreams.map(stream => ({
-            src: buildMediaUrl(stream.path, archiveId, numTapes, tape),
+            src: buildMediaUrl(stream.path, pathBase, archiveId, tape, stream.resolution),
             label: stream.resolution || 'default',
             selected: stream.resolution === DEFAULT_VIDEO_RESOLUTION || filteredStreams.length === 1,
         }));
@@ -23,7 +23,7 @@ export default function mediaStreamsToSources(mediaStreams, mediaType,
     case 'audio':
     default:
         sources = filteredStreams.map(stream => ({
-            src: buildMediaUrl(stream.path, archiveId, numTapes, tape),
+            src: buildMediaUrl(stream.path, pathBase, archiveId, tape, stream.resolution),
             label: stream.resolution || 'default',
             selected: stream.resolution === DEFAULT_AUDIO_RESOLUTION || filteredStreams.length === 1,
         }));

@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :photos, only: [:create, :update, :destroy]
     resources :logos, only: [:create, :update, :destroy]
     resources :sponsor_logos, only: [:create, :update, :destroy]
+    get "media_streams/:archive_id/:tape/:resolution", to: "media_streams#show"
     resources :media_streams, only: [:create, :update, :destroy]
     resources :segments, only: [:create, :update, :index, :destroy, :show]
     resources :registry_entries, only: [:create, :show, :update, :index, :destroy]

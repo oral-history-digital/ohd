@@ -1,4 +1,16 @@
 class MediaStreamsController < ApplicationController
+  require 'open-uri'
+
+  def show
+    interview = Interview.find_by_archive_id(params[:archive_id])
+    authorize interview
+    url = current_project.media_streams.where(resolution: params[:resolution]).first.path.
+      gsub('INTERVIEW_ID', interview.archive_id).
+      sub('TAPE_COUNT', format('%02d', interview.tape_count.to_s)).
+      sub('TAPE_NUMBER', format('%02d', params[:tape].to_s))
+
+    redirect_to url, allow_other_host: true
+  end
 
   def create
     authorize MediaStream
@@ -58,6 +70,8 @@ class MediaStreamsController < ApplicationController
       :media_type,
       :path, 
       :resolution,
+      :tape,
+      :archive_id,
       :project_id
     )
   end

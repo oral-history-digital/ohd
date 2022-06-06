@@ -1,8 +1,6 @@
-export default function buildMediaUrl(path, archiveId, numTapes, tape) {
-    const url = path
-        .replace(/INTERVIEW_ID/g, archiveId)
-        .replace(/TAPE_COUNT/g, numTapes)
-        .replace(/TAPE_NUMBER/g, tape.toString().padStart(2, '0'));
-
+export default function buildMediaUrl(path, pathBase, archiveId, tape, resolution) {
+    const splittedPath = path.split('.');
+    const suffix = splittedPath[splittedPath.length - 1];
+    const url = `${pathBase}/media_streams/${archiveId}/${tape}/${resolution}.${suffix}`;
     return url;
 }

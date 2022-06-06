@@ -41,7 +41,7 @@ export default function MediaElement({
 
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
     const initialSources = mediaStreamsToSources(Object.values(mediaStreams),
-        interview.media_type, archiveId, interview.tape_count, tape);
+        pathBase, interview.media_type, archiveId, interview.tape_count, tape);
 
     const videoJsOptions = {
         autoplay: false,
