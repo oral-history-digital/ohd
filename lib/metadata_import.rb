@@ -65,15 +65,16 @@ class MetadataImport
 
     # TODO: fit to campscape specifications again
     #properties = {interviewer: data[23], link: data[27], subcollection: data[13]}.select{|k,v| v != nil}
+    properties = {link: row[:link_to_interview]}.select{|k,v| v != nil}
 
     interview = Interview.find_by_archive_id(row[:archive_id]) ||
       (row[:signature_original] && Interview.find_by_signature_original(row[:signature_original]))
 
     if interview
-      #interview_properties = interview.properties.update(properties)
-      interview.update_attributes interview_data.select{|k,v| v != nil}#.update(properties: interview_properties)
+      interview_properties = interview.properties.update(properties)
+      interview.update_attributes interview_data.select{|k,v| v != nil}.update(properties: interview_properties)
     else
-      interview = Interview.create interview_data#.update(properties: properties)
+      interview = Interview.create interview_data.update(properties: properties)
     end
     interview
   end

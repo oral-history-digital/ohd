@@ -33,6 +33,7 @@ class MetadataImportTemplate
       :observations,
       :description,
       :tape_count,
+      :link_to_interview,
     ].inject({}) do |mem, c| 
       mem[c] = I18n.t("metadata_labels.#{c}", locale: @locale)
       mem

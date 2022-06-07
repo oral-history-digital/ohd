@@ -314,6 +314,7 @@ de:
     interview_location: Ort des Interviews
     home_location: Wohnort
   metadata_labels:
+    link_to_interview: Link zum Interview
     tape_count: Anzahl der Bänder
     description: Beschreibung
     duration: Dauer

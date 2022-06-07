@@ -299,6 +299,7 @@ el:
     interview_location: Interview location
     home_location: Home location
   metadata_labels:
+    link_to_interview: Link to interview
     tape_count: Tape count
     description: Description
     duration: Duration
