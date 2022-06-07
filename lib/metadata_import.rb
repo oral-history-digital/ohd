@@ -35,11 +35,10 @@ class MetadataImport
       create_contributions(interview, row[:research], 'research')
             
       project.registry_reference_type_import_metadata_fields.each do |field|
-        registry_entry = find_or_create_registry_entry(field, row, locale)
+        registry_entries = find_or_create_registry_entries(field, row, locale)
         ref_object = field.ref_object_type == 'Interview' ? interview : interview.interviewee
-        destroy_reference(ref_object, field.registry_reference_type_id)
-        create_reference(registry_entry, interview, ref_object, field.registry_reference_type_id) if registry_entry
-        registry_entry.touch
+        destroy_references(ref_object, field.registry_reference_type_id)
+        create_references(registry_entries, interview, ref_object, field.registry_reference_type_id)
       end
 
       interview.touch
@@ -157,25 +156,42 @@ class MetadataImport
     end
   end
 
-  def find_or_create_registry_entry(field, row, locale)
+  def find_or_create_registry_entries(field, row, locale)
     col_key = "rrt_#{field.registry_reference_type_id}".to_sym
     sub_category_col_key = "rrt_sub_#{field.registry_reference_type_id}".to_sym
 
     field_rrt_re = field.registry_reference_type.registry_entry
-    registry_entry = field_rrt_re.find_descendant_by_name(row[col_key], locale)
-    unless registry_entry
-      sub_category_registry_entry = field_rrt_re.find_descendant_by_name(row[sub_category_col_key], locale) ||
-        (row[sub_category_col_key] && field_rrt_re.create_child(row[sub_category_col_key], locale))
-      registry_entry = row[col_key] ? (sub_category_registry_entry || field_rrt_re).create_child(row[col_key], locale) : sub_category_registry_entry
+    sub_category_registry_entry = field_rrt_re.find_descendant_by_name(row[sub_category_col_key], locale) ||
+      (row[sub_category_col_key] && field_rrt_re.create_child(row[sub_category_col_key], locale))
+
+    registry_entries = row[col_key].split('#').map do |name|
+      field_rrt_re.find_descendant_by_name(name, locale) || 
+        (sub_category_registry_entry || field_rrt_re).create_child(name, locale)
     end
-    registry_entry
+
+    registry_entries.empty? ? [sub_category_registry_entry] : registry_entries
   end
 
-  def create_reference(registry_entry, interview, ref_object, ref_type_id=nil)
-    RegistryReference.create registry_entry_id: registry_entry.id, ref_object_id: ref_object.id, ref_object_type:ref_object.class.name, registry_reference_type_id: ref_type_id, ref_position: 0, original_descriptor: "", ref_details: "", ref_comments: "", ref_info: "", workflow_state: "checked", interview_id: interview.id
+  def create_references(registry_entries, interview, ref_object, ref_type_id=nil)
+    registry_entries.each do |registry_entry|
+      RegistryReference.create(
+        registry_entry_id: registry_entry.id,
+        ref_object_id: ref_object.id,
+        ref_object_type:ref_object.class.name,
+        registry_reference_type_id: ref_type_id,
+        ref_position: 0,
+        original_descriptor: "",
+        ref_details: "",
+        ref_comments: "",
+        ref_info: "",
+        workflow_state: "checked",
+        interview_id: interview.id
+      )
+      registry_entry.touch
+    end
   end
 
-  def destroy_reference(ref_object, ref_type_id)
+  def destroy_references(ref_object, ref_type_id)
     if ref_type_id
       ref_object.registry_references.where(registry_reference_type_id: ref_type_id).destroy_all
     end
