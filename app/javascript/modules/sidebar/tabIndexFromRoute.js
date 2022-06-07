@@ -15,10 +15,14 @@ export default function tabIndexFromRoute(pathBase, pathname, isCampscapesProjec
         index = indexes.INDEX_ACCOUNT;
     } else if (matchPath(`${pathBase}/user_registrations/new`, pathname)) {
         index = indexes.INDEX_ACCOUNT;
+    } else if (matchPath(`${pathBase}/not_found`, pathname)) {
+        index = indexes.INDEX_ACCOUNT;
     } else if (matchPath(`${pathBase}/user_registrations`, pathname)) {
         index = indexes.INDEX_ADMINISTRATION;
     } else if (matchPath(`${pathBase}/searches/archive`, pathname)) {
         index = indexes.INDEX_SEARCH;
+    } else if (matchPath(`${pathBase}/catalog/*`, pathname)) {
+        index = indexes.INDEX_CATALOG;
     } else if (matchPath(`${pathBase}/interviews/new`, pathname)) {
         index = indexes.INDEX_INDEXING;
     } else if (matchPath(`${pathBase}/interviews/:archiveId`, pathname)) {

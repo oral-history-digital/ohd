@@ -56,6 +56,9 @@ export default function SidebarTabs({
         case indexes.INDEX_SEARCH:
             navigate(`${pathBase}/searches/archive`);
             break;
+        case indexes.INDEX_CATALOG:
+            navigate(`${pathBase}/catalog`);
+            break;
         case indexes.INDEX_INTERVIEW:
             navigate(`${pathBase}/interviews/${archiveId}`);
             break;
@@ -76,6 +79,7 @@ export default function SidebarTabs({
     }
 
     const showAccountTab = !isCampscapesProject;
+    const showCatalogTab = !project;
     const showInterviewTab = !!interview;
     const showRegistryTab = project && (
         (!isLoggedIn && project.logged_out_visible_registry_entry_ids?.length > 0) ||
@@ -110,11 +114,22 @@ export default function SidebarTabs({
                     key="2"
                     className="SidebarTabs-tab"
                 >
-                    {t((isCampscapesProject && !archiveId) ? 'user_registration.notes_on_tos_agreement' : 'archive_search')}
+                    {t((isCampscapesProject && !archiveId) ?
+                        'user_registration.notes_on_tos_agreement' :
+                        (project ? 'archive_search' : 'modules.sidebar.search')
+                    )}
                 </Tab>
 
                 <Tab
                     key="3"
+                    className="SidebarTabs-tab"
+                    disabled={!showCatalogTab}
+                >
+                    {t('modules.sidebar.catalog')}
+                </Tab>
+
+                <Tab
+                    key="4"
                     className="SidebarTabs-tab"
                     disabled={!showInterviewTab}
                 >
@@ -122,7 +137,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="4"
+                    key="5"
                     className="SidebarTabs-tab"
                     disabled={!showRegistryTab}
                 >
@@ -130,7 +145,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="5"
+                    key="6"
                     className="SidebarTabs-tab"
                     disabled={!showMapTab}
                 >
@@ -138,7 +153,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="6"
+                    key="7"
                     className="SidebarTabs-tab"
                     disabled={!showWorkbookTab}
                 >
@@ -146,7 +161,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="7"
+                    key="8"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showIndexingTab}
                 >
@@ -154,7 +169,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="8"
+                    key="9"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showAdministrationTab}
                 >
@@ -162,7 +177,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="9"
+                    key="10"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showProjectAdminTab}
                 >
@@ -170,7 +185,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="10"
+                    key="11"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showProjectsTab}
                 >
@@ -178,7 +193,7 @@ export default function SidebarTabs({
                 </Tab>
 
                 <Tab
-                    key="11"
+                    key="12"
                     className="SidebarTabs-tab SidebarTabs-tab--admin"
                     disabled={!showInstitutionsTab}
                 >
@@ -195,7 +210,9 @@ export default function SidebarTabs({
                     <ArchiveSearchTabPanelContainer selectedArchiveIds={selectedArchiveIds} />
                 </TabPanel>
 
-                <TabPanel key="3">
+                <TabPanel key="3" />
+
+                <TabPanel key="4">
                     {showInterviewTab && (
                         <StateCheck
                             testSelector={getCurrentInterviewFetched}
@@ -206,49 +223,49 @@ export default function SidebarTabs({
                     )}
                 </TabPanel>
 
-                <TabPanel key="4">
+                <TabPanel key="5">
                     {showRegistryTab && (
                         <RegistryEntriesTabPanelContainer />
                     )}
                 </TabPanel>
 
-                <TabPanel key="5">
+                <TabPanel key="6">
                     {showMapTab && (
                         <MapTabPanelContainer />
                     )}
                 </TabPanel>
 
-                <TabPanel key="6">
+                <TabPanel key="7">
                     {showWorkbookTab && (
                         <WorkbookTabPanel />
                     )}
                 </TabPanel>
 
-                <TabPanel key="7">
+                <TabPanel key="8">
                     {showIndexingTab && (
                         <IndexingTabPanel />
                     )}
                 </TabPanel>
 
-                <TabPanel key="8">
+                <TabPanel key="9">
                     {showAdministrationTab && (
                         <UsersAdminTabPanelContainer />
                     )}
                 </TabPanel>
 
-                <TabPanel key="9">
+                <TabPanel key="10">
                     {showProjectAdminTab && (
                         <ProjectConfigTabPanel />
                     )}
                 </TabPanel>
 
-                <TabPanel key="10">
+                <TabPanel key="11">
                     {false && showProjectsTab && (
                         <div className='flyout-tab-title'>{t('edit.projects.admin')}</div>
                     )}
                 </TabPanel>
 
-                <TabPanel key="11">
+                <TabPanel key="12">
                     {false && showInstitutionsTab && (
                         <div className='flyout-tab-title'>{t('edit.institution.admin')}</div>
                     )}

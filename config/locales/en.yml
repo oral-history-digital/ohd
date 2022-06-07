@@ -1273,6 +1273,20 @@ en:
   interview_title_patterns:
 
   modules:
+    catalog:
+      title: Catalog
+      part_of_institution: Part of institution
+      volume: Volume
+      web_page: Web page
+      table:
+        name_header:
+          main: Institution/Archive/Collection
+          institution: Institution/Archive/Collection
+          archive: Collection/Interview
+          collection: Interview
+        shortname: Shortname
+        num_interviews: Interview count
+        search: Search…
     edit_table:
       filter:
         label: "Filter"
@@ -1311,10 +1325,20 @@ en:
     layout:
       back_to_top:
         label: "Back to top"
-    registry:
-      name_missing: "registry name missing"
     map:
       mentions: Mentions
+    media_player:
+      auto_scroll:
+        enable: "enable auto-scrolling transcript"
+        disable: "disable auto-scrolling transcript"
+      copy_position: Copy position
+    registry:
+      name_missing: "registry name missing"
+    routes:
+      not_found:
+        title: Error 404
+        description: This page does not exist.
+        link: Back to startpage
     search:
       sorting:
         label: Sorting
@@ -1338,11 +1362,9 @@ en:
       multiple_types: Multiple location types
       error: Error loading map
       map_section: Section
-    media_player:
-      auto_scroll:
-        enable: "enable auto-scrolling transcript"
-        disable: "disable auto-scrolling transcript"
-      copy_position: Copy position
+    sidebar:
+      catalog: Catalog
+      search: Search
     toc:
       collapse: Collapse
       expand: Expand

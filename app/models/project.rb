@@ -125,6 +125,10 @@ class Project < ApplicationRecord
     shortname.downcase
   end
 
+  def num_interviews
+    interviews.where('workflow_state': 'public').count
+  end
+
   def domain_with_optional_identifier
     archive_domain.blank? ? "#{OHD_DOMAIN}/#{identifier}" : archive_domain
   end

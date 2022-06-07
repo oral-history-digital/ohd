@@ -7,4 +7,19 @@ class Institution < ApplicationRecord
 
   translates :name, :description, fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
+
+  def num_projects
+    projects.count
+  end
+
+  def num_interviews
+    # TODO: This only works with two-level-hierarchies.
+    all_interviews = Institution.where(id: id)
+      .or(Institution.where(parent_id: id))
+      .joins(projects: :interviews)
+      .where('interviews.workflow_state': 'public')
+      .select(:archive_id)
+      .distinct
+      .count
+  end
 end
