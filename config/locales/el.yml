@@ -190,12 +190,13 @@ el:
   email: E-Mail
   change_password: Αλλαγή κωδικού
   archive_results: Αποτελέσματα αναζήτησης
-  segment_results: Αποτελέσματα αναζήτησης στην απομαγνητοφώνηση
-  translation_results: Search results in translations
-  heading_results: Search results in the table of contents
+  segment_results: αποτελέσματα αναζήτησης στην απομαγνητοφώνηση
+  translation_results: αποτελέσματα αναζήτησης στις μεταφράσεις
+  heading_results: αποτελέσματα αναζήτησης στα περιεχόμενα
   photo_results: Αποτελέσματα αναζήτησης στις φωτογραφίες
   annotation_results: Search results in annotations
-  biographicalentry_results: Αποτελέσματα αναζήτησης στο σύντομο βιογραφικό
+  registryentry_results: αποτελέσματα αναζήτησης στο ευρετήριο
+  biographicalentry_results: αποτελέσματα αναζήτησης στο σύντομο βιογραφικό
   observation_results: Search results in the protocol
   person_results: Αποτελέσματα αναζήτησης στα ονόματα
   user_registration_results: Αποτελέσματα αναζήτησης στους χρήστες
@@ -1321,19 +1322,19 @@ el:
       mentions: Mentions
     search:
       sorting:
-        label: Sorting
+        label: Ταξινόμηση
         by:
           score: Relevance
-          title: Name
+          title: όνομα
           interview_date: Date
           duration: Duration
-          archive_id: Interview ID
-          media_type: Media type
-          language: Language
-          language_id: Language
+          archive_id: ID της συνέντευξης
+          media_type: είδος
+          language: γλώσσα
+          language_id: γλώσσα
           collection_id: Collection
           workflow_state: State
-          random: Random
+          random: τυχαία
         order:
           asc: ascending
           desc: descending
