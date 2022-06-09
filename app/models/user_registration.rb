@@ -3,7 +3,7 @@ class UserRegistration < ApplicationRecord
 
   belongs_to :user_account
 
-  has_many :user_registration_projects
+  has_many :user_registration_projects, dependent: :destroy
   has_many :projects,
     through: :user_registration_projects
 

@@ -7,14 +7,14 @@ class UserAccount < ApplicationRecord
          :recoverable,
          :trackable
 
-  has_one :user_registration
+  has_one :user_registration, dependent: :destroy
   has_many :projects,
            through: :user_registration_projects
 
   has_many :user_account_ips,
            :class_name => 'UserAccountIp'
 
-  has_many :user_roles
+  has_many :user_roles, dependent: :destroy
   has_many :roles, through: :user_roles
   has_many :permissions, through: :roles
 
@@ -23,8 +23,8 @@ class UserAccount < ApplicationRecord
            class_name: 'Task',
            foreign_key: :supervisor_id
 
-  has_many :user_contents
-  has_many :searches
+  has_many :user_contents, dependent: :destroy
+  has_many :searches, dependent: :destroy
   has_many :comments, foreign_key: :author_id, dependent: :destroy
 
   validates_uniqueness_of :login
