@@ -146,7 +146,7 @@ export default function MediaElement({
         }
 
         const newSources = mediaStreamsToSources(Object.values(mediaStreams),
-            interview.media_type, archiveId, interview.tape_count, tape);
+            pathBase, interview.media_type, archiveId, interview.tape_count, tape);
 
         player.src(newSources);
 
