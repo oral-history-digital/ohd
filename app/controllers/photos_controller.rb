@@ -54,14 +54,6 @@ class PhotosController < ApplicationController
     end
   end
 
-  def src
-    deliver "original/#{sub_folder(params[:name])}/#{params[:name]}.jpg"
-  end
-
-  def thumb
-    deliver "1.5MB/#{sub_folder(params[:name])}/#{params[:name]}.jpg"
-  end
-
   private
 
   def photo_params
@@ -73,33 +65,20 @@ class PhotosController < ApplicationController
     )
   end
 
-  def deliver file_name
-    base_url = 'http://dedalo.cedis.fu-berlin.de/dedalo/media/image/'
-    url = base_url + file_name
-    data = open(url).read
-    send_data data, :disposition => 'inline', :filename=>file_name
-  end
-
-  def sub_folder image_name
-    ((image_name.split('_').last().to_i / 1000) * 1000).to_s;
-  end
-
   def write_iptc_metadata
     if photo_params[:translations_attributes].blank?
       return
     end
 
-    # we can write only one language version as IPTC
-    translation_params = photo_params[:translations_attributes].first
-    date = Date.parse(translation_params[:date]).strftime("%Y%m%d") rescue translation_params[:date]
+    date = photo_params[:translations_attributes].map{|t| Date.parse(t[:date]).strftime("%Y%m%d") rescue t[:date]}.join(' ')
 
     WriteImageIptcMetadataJob.perform_later(@photo.id, {
-      caption: translation_params[:caption],
-      creator: translation_params[:photographer],
+      caption: photo_params[:translations_attributes].map{|t| t[:caption]}.join(' '),
+      creator: photo_params[:translations_attributes].map{|t| t[:photographer]}.join(' '),
       headline: "#{@photo.interview.archive_id}-Interview mit #{@photo.interview.short_title(locale)}",
-      copyright: translation_params[:license],
+      copyright: photo_params[:translations_attributes].map{|t| t[:license]}.join(' '),
       date: date,
-      city: translation_params[:place]
+      city: photo_params[:translations_attributes].map{|t| t[:place]}.join(' ')
     })
   end
 
