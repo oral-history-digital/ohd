@@ -1,6 +1,8 @@
 import { Fragment } from 'react';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
+import SubmitInterviewIds from './SubmitInterviewIds';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
@@ -41,6 +43,13 @@ export default function DownloadLinks({
                         ))}
                     </li>
                 ))}
+                <li>
+                    <SubmitInterviewIds
+                        selectedArchiveIds={[archiveId]}
+                        action="export_photos"
+                        filename={`photos-${archiveId}-${moment().format('DD.MM.YYYY-HH:mm')}.zip`}
+                    />
+                </li>
             </ul>
         </div>
     );

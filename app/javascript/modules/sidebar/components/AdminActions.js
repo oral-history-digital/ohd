@@ -59,18 +59,6 @@ export default function AdminActions({
                         />
                     </li>
                 </AuthorizedContent>{' '}
-                <AuthorizedContent
-                    object={{ type: 'Interview' }}
-                    action="update"
-                >
-                    <li>
-                        <SubmitInterviewIds
-                            selectedArchiveIds={selectedArchiveIds}
-                            action="export_photos"
-                            filename="photos.zip"
-                        />
-                    </li>
-                </AuthorizedContent>
 
                 <li>
                     <DeleteInterviews selectedArchiveIds={selectedArchiveIds} />
