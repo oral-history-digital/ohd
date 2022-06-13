@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getProjectId } from 'modules/archive';
@@ -19,8 +19,8 @@ export default function DeleteInterviews({
     const projects = useSelector(getProjects);
 
     const dispatch = useDispatch();
-    const history = useHistory();
     const location = useLocation();
+    const navigate = useNavigate();
 
     function deleteInterviews() {
         selectedArchiveIds.forEach(
@@ -30,7 +30,7 @@ export default function DeleteInterviews({
         const isDetailPage = new RegExp(`^${pathBase}/interviews`);
 
         if (isDetailPage.test(location.pathname)) {
-            history.push(`${pathBase}/searches/archive`);
+            navigate(`${pathBase}/searches/archive`);
         }
     }
 

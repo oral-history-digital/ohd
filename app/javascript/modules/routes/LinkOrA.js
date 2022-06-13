@@ -1,17 +1,15 @@
 import { useSelector, useDispatch } from 'react-redux';
-import { useCallback } from 'react';
 import { Link } from 'react-router-dom';
 
 import { OHD_DOMAINS } from 'modules/layout';
 import { getLocale, setProjectId, getProjectId } from 'modules/archive';
-import { getCurrentProject } from 'modules/data';
 
 function LinkOrA({
     to = '',
     className,
     project,
     children,
-    onLinkClick,
+    onLinkClick = f => f,
     params,
 }) {
     const locale = useSelector(getLocale);

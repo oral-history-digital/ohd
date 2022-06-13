@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 
 import { Form } from 'modules/forms';
 import { Fetch, getPeopleForCurrentProjectFetched } from 'modules/data';
-import { INDEX_INDEXING } from 'modules/sidebar';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
@@ -25,7 +24,6 @@ export default function ContributionForm({
     onSubmitCallback,
     index,
     onCancel,
-    setSidebarTabsIndex,
     fetchData,
     submitData,
 }) {
@@ -104,7 +102,6 @@ export default function ContributionForm({
                 to={`${pathBase}/people`}
                 className='Link admin'
                 onClick={() => {
-                    setSidebarTabsIndex(INDEX_INDEXING);
                     if (typeof onSubmit === 'function') {
                         onSubmit();
                     }
@@ -133,5 +130,4 @@ ContributionForm.propTypes = {
     fetchData: PropTypes.func.isRequired,
     onSubmit: PropTypes.func,
     onCancel: PropTypes.func,
-    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

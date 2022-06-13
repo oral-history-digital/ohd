@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
 
 const qsOptions = {
@@ -8,7 +8,7 @@ const qsOptions = {
 
 export default function useSearchParams() {
     const { search } = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     const params = useMemo(
         () => queryString.parse(search, qsOptions), [search]
@@ -163,11 +163,7 @@ export default function useSearchParams() {
             search: queryString.stringify(newParams, qsOptions),
         };
 
-        if (replace) {
-            history.replace(options);
-        } else {
-            history.push(options);
-        }
+        navigate(options, { replace });
     }
 
     const memoizedValue = useMemo(() => {

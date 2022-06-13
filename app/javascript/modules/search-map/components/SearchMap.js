@@ -6,7 +6,6 @@ import classNames from 'classnames';
 
 import { ScrollToTop } from 'modules/user-agent';
 import { getMapSections } from 'modules/data';
-import { setSidebarTabsIndex, INDEX_MAP } from 'modules/sidebar';
 import { MapComponent } from 'modules/map';
 import { useI18n } from 'modules/i18n';
 import useSearchMap from '../search-map/useSearchMap';
@@ -27,10 +26,6 @@ export default function SearchMap() {
     const dispatch = useDispatch();
     const { isLoading, markers, error } = useSearchMap();
     const { isLoading: locationsLoading } = useMapLocations();
-
-    useEffect(() => {
-        dispatch(setSidebarTabsIndex(INDEX_MAP));
-    }, []);
 
     const defaultSection = mapSections.find(section => section.name === currentSection);
     const bounds = [

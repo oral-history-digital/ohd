@@ -1,8 +1,6 @@
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import Home from './Home';
-import { setSidebarTabsIndex } from 'modules/sidebar';
 import { getCurrentProject, getProjectTranslation, getShowFeaturedInterviews,
     getShowStartPageVideo, getInstitutions, getIsCampscapesProject } from 'modules/data';
 
@@ -15,8 +13,4 @@ const mapStateToProps = state => ({
     isCampscapesProject: getIsCampscapesProject(state),
 });
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-    setSidebarTabsIndex,
-}, dispatch);
-
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps)(Home);

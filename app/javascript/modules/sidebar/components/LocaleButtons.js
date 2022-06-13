@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { useHistory, useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { pathBase } from 'modules/routes';
 
@@ -12,8 +12,8 @@ export default function LocaleButtons({
     projectId,
     projects,
 }) {
-    const history = useHistory();
     const location = useLocation();
+    const navigate = useNavigate();
 
     function handleButtonClick(e) {
         const locale = e.target.textContent;
@@ -29,7 +29,7 @@ export default function LocaleButtons({
             newPath = location.pathname.replace(/^(?:\/[a-z]{2,4})?\/[a-z]{2}\//, pathBaseStr + '/');
         }
 
-        history.push(newPath);
+        navigate(newPath);
         setLocale(locale);
     }
 

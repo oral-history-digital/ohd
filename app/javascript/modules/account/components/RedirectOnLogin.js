@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { usePrevious } from 'modules/react-toolbox';
 import { getLocale, getProjectId } from 'modules/archive';
@@ -21,7 +21,7 @@ export default function RedirectOnLogin({
 
     if (prevIsLoggedIn === false && isLoggedIn === true) {
         return (
-            <Redirect to={to} />
+            <Navigate to={to} />
         );
     }
 

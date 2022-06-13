@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 
 import { LinkOrA } from 'modules/routes';
 import { getLocale } from 'modules/archive';
-import { INDEX_ACCOUNT, setSidebarTabsIndex } from 'modules/sidebar';
 
 export default function ProjectShow({
     data,
@@ -14,14 +13,11 @@ export default function ProjectShow({
 
     const logo = data.logos && Object.values(data.logos).find(l => l.locale === locale);
 
-    const setFlyoutTabsToAccount = () => setSidebarTabsIndex(INDEX_ACCOUNT);
-
     return (
         <>
             <LinkOrA
                 project={data}
                 to=""
-                onLinkClick={setFlyoutTabsToAccount}
             >
                 {
                     !hideLogo && <img className="logo-img" src={logo?.src} alt="project logo" />

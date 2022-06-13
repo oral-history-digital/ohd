@@ -1,7 +1,6 @@
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { setSidebarTabsIndex } from 'modules/sidebar';
 import { getIsLoggedIn } from 'modules/account';
 import { setArchiveId, getInterviewEditView, getProjectId, getLocale } from 'modules/archive';
 import { getCurrentInterview, getCurrentInterviewFetched, getIsCatalog, getProjects,
@@ -24,7 +23,6 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => bindActionCreators({
     fetchData,
     setArchiveId,
-    setSidebarTabsIndex,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(Interview);

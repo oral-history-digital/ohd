@@ -1,6 +1,7 @@
 import { useSelector } from 'react-redux';
 import { Helmet } from 'react-helmet';
 
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { useI18n } from 'modules/i18n';
 import { getRegistrationStatus } from '../selectors';
 import ChangePasswordFormContainer from './ChangePasswordFormContainer';
@@ -14,11 +15,13 @@ export default function ActivateAccount() {
             <Helmet>
                 <title>{t('devise.passwords.forgot')}</title>
             </Helmet>
-            {
-                registrationStatus ?
-                    <div className='errors'>{registrationStatus}</div> :
-                    <ChangePasswordFormContainer />
-            }
+            <ErrorBoundary>
+                {
+                    registrationStatus ?
+                        <div className='errors'>{registrationStatus}</div> :
+                        <ChangePasswordFormContainer />
+                }
+            </ErrorBoundary>
         </div>
     );
 }

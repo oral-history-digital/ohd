@@ -6,7 +6,7 @@ import { getEditView, getLocale, setLocale, getProjectId } from 'modules/archive
 import { fetchData, deleteData, getCurrentAccount, getProjects, getCollectionsStatus,
     getLanguagesStatus, getAccountsStatus, getProjectsStatus, getCurrentProject } from 'modules/data';
 import { getIsLoggedIn, getIsLoggedOut, getLoggedInAt } from 'modules/account';
-import WrapperPage from './WrapperPage';
+import Layout from './Layout';
 
 const mapStateToProps = state => ({
     projectId: getProjectId(state),
@@ -32,4 +32,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     setLocale,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(WrapperPage);
+export default connect(mapStateToProps, mapDispatchToProps)(Layout);

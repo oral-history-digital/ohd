@@ -24,7 +24,6 @@ const mapStateToProps = (state) => {
         resultPagesCount: getProjectsStatus(state).resultPagesCount,
         query: state.search.projects.query,
         scope: 'project',
-        sidebarTabsIndex: INDEX_PROJECTS,
         detailsAttributes: ['title'],
         initialFormValues: {display_ohd_link: true, pseudo_view_modes: 'grid,list,workflow'},
         formElements: [

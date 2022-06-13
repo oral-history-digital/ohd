@@ -1,5 +1,4 @@
-import { SHOW_SIDEBAR, HIDE_SIDEBAR, TOGGLE_SIDEBAR, SET_SIDEBAR_TABS_INDEX }
-    from './action-types';
+import { SHOW_SIDEBAR, HIDE_SIDEBAR, TOGGLE_SIDEBAR } from './action-types';
 import { INDEX_ACCOUNT } from './constants';
 
 export const initialState = {
@@ -23,11 +22,6 @@ export default function sidebar(state = initialState, action) {
             return {
                 ...state,
                 visible: !state.visible,
-            };
-        case SET_SIDEBAR_TABS_INDEX:
-            return {
-                ...state,
-                index: action.index,
             };
         default:
             return state;

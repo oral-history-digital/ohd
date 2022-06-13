@@ -5,7 +5,6 @@ import { LinkOrA } from 'modules/routes';
 import { getLocale } from 'modules/archive';
 import { getProjects, getCollections } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { INDEX_ACCOUNT, setSidebarTabsIndex } from 'modules/sidebar';
 
 export default function InstitutionTile ({
     data,
@@ -18,8 +17,6 @@ export default function InstitutionTile ({
     const collectionsForInstitute = data.collection_ids.map(id => collections[id]);
 
     const logo = data.logos && Object.values(data.logos).find(l => l.locale === locale);
-
-    const setFlyoutTabsToAccount = () => setSidebarTabsIndex(INDEX_ACCOUNT);
 
     return (
         <div className="ProjectTile">
@@ -41,7 +38,6 @@ export default function InstitutionTile ({
                             <LinkOrA
                                 project={project}
                                 to=""
-                                onLinkClick={setFlyoutTabsToAccount}
                             >
                                 {project.name[locale]}
                             </LinkOrA>
@@ -59,7 +55,6 @@ export default function InstitutionTile ({
                             <LinkOrA
                                 project={project}
                                 to=""
-                                onLinkClick={setFlyoutTabsToAccount}
                             >
                                 {collection.name[locale]}
                             </LinkOrA>

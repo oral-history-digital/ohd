@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { LinkOrA } from 'modules/routes';
 import { getLocale } from 'modules/archive';
 import { getInstitutions } from 'modules/data';
-import { INDEX_ACCOUNT, setSidebarTabsIndex } from 'modules/sidebar';
 
 export default function ProjectTile({
     data,
@@ -14,14 +13,11 @@ export default function ProjectTile({
 
     const logo = data.logos && Object.values(data.logos).find(l => l.locale === locale);
 
-    const setFlyoutTabsToAccount = () => setSidebarTabsIndex(INDEX_ACCOUNT);
-
     return (
         <LinkOrA
             className="ProjectTile"
             project={data}
             to=""
-            onLinkClick={setFlyoutTabsToAccount}
         >
             <img
                 className="ProjectTile-image logo-img"

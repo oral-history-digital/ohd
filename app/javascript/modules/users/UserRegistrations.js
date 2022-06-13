@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import Observer from 'react-intersection-observer'
 import { Helmet } from 'react-helmet';
 
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthShowContainer } from 'modules/auth';
 import { parametrizedQuery } from 'modules/admin';
 import { t } from 'modules/i18n';
@@ -63,16 +64,18 @@ export default class UserRegistrations extends Component {
                 <Helmet>
                     <title>{t(this.props, `edit.users.admin`)}</title>
                 </Helmet>
-                <AuthShowContainer ifLoggedIn={true}>
-                    <h1 className='registry-entries-title'>
-                        {t(this.props, `edit.users.admin`)}
-                    </h1>
-                    {this.userRegistrations()}
-                    {this.renderScrollObserver()}
-                </AuthShowContainer>
-                <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
-                    {t(this.props, 'devise.failure.unauthenticated')}
-                </AuthShowContainer>
+                <ErrorBoundary>
+                    <AuthShowContainer ifLoggedIn={true}>
+                        <h1 className='registry-entries-title'>
+                            {t(this.props, `edit.users.admin`)}
+                        </h1>
+                        {this.userRegistrations()}
+                        {this.renderScrollObserver()}
+                    </AuthShowContainer>
+                    <AuthShowContainer ifLoggedOut={true} ifNoProject={true}>
+                        {t(this.props, 'devise.failure.unauthenticated')}
+                    </AuthShowContainer>
+                </ErrorBoundary>
             </div>
         );
     }

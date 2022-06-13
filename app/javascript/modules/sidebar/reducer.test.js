@@ -55,12 +55,3 @@ describe('toggle action', () => {
         expect(reducer(_state, action)).toEqual(expectedState);
     });
 });
-
-test('handles the set index action', () => {
-    const action = actions.setSidebarTabsIndex(5);
-    const expectedState = {
-        ...state,
-        index: 5,
-    };
-    expect(reducer(state, action)).toEqual(expectedState);
-});

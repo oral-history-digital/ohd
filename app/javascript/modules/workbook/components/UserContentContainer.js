@@ -4,7 +4,7 @@ import { bindActionCreators } from 'redux';
 import { setArchiveId, getLocale, getTranslations  } from 'modules/archive';
 import { getProjects } from 'modules/data';
 import { sendTimeChangeRequest } from 'modules/media-player';
-import { hideSidebar, setSidebarTabsIndex } from 'modules/sidebar';
+import { hideSidebar } from 'modules/sidebar';
 import UserContent from './UserContent';
 
 const mapStateToProps = state => ({
@@ -17,7 +17,6 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     sendTimeChangeRequest,
     setArchiveId,
     hideSidebar,
-    setSidebarTabsIndex,
 }, dispatch);
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserContent);
