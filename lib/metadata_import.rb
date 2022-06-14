@@ -164,7 +164,7 @@ class MetadataImport
     sub_category_registry_entry = field_rrt_re.find_descendant_by_name(row[sub_category_col_key], locale) ||
       (row[sub_category_col_key] && field_rrt_re.create_child(row[sub_category_col_key], locale))
 
-    registry_entries = row[col_key].split('#').map do |name|
+    registry_entries = row[col_key] && row[col_key].split('#').map do |name|
       field_rrt_re.find_descendant_by_name(name, locale) || 
         (sub_category_registry_entry || field_rrt_re).create_child(name, locale)
     end
