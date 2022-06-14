@@ -68,23 +68,16 @@ export default function InterviewListRow({
                     to={linkUrl}
                 >
                     {
-                        project.is_catalog ? (
-                            interview.anonymous_title[locale]
-                        ) : (
+                        projectAccessGranted ?
                             <div>
-                                <AuthShowContainer ifLoggedIn>
-                                    {interview.short_title && interview.short_title[locale]}
-                                    {
-                                        interview.workflow_state === 'unshared' && (
-                                            <FaEyeSlash className="u-ml-tiny" />
-                                        )
-                                    }
-                                </AuthShowContainer>
-                                <AuthShowContainer ifLoggedOut ifNoProject>
-                                    {interview.anonymous_title[locale]}
-                                </AuthShowContainer>
-                            </div>
-                        )
+                                {interview.short_title && interview.short_title[locale]}
+                                {
+                                    interview.workflow_state === 'unshared' && (
+                                        <FaEyeSlash className="u-ml-tiny" />
+                                    )
+                                }
+                            </div> :
+                            interview.anonymous_title[locale]
                     }
                 </Link>
             </td>
