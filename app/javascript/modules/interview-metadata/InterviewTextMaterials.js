@@ -9,6 +9,7 @@ export default function InterviewTextMaterials({
     interview,
     project,
     locale,
+    isCatalog,
 }) {
 
     const { t } = useI18n();
@@ -36,33 +37,37 @@ export default function InterviewTextMaterials({
                     })}
                 </p>
             </AuthShowContainer>
-            <AuthorizedContent object={interview} action="update">
-                {
-                    <SingleValueWithFormContainer
-                        obj={interview}
-                        collapse
-                        elementType="textarea"
-                        multiLocale
-                        attribute={'observations'}
-                        noLabel
-                    />
-                }
-            </AuthorizedContent>
-            <AuthShowContainer ifLoggedIn>
-                <p>
-                    <span className='flyout-content-label'>{t('transcript')}:</span>
-                    { interview.languages.map( lang => {
-                        return (
-                            <InterviewDownloads
-                                lang={lang}
-                                type='transcript'
-                                condition={interview.segments?.[1]?.[interview.first_segments_ids[1]]}
-                                showEmpty={true}
+            {!isCatalog && (
+                <>
+                    <AuthorizedContent object={interview} action="update">
+                        {
+                            <SingleValueWithFormContainer
+                                obj={interview}
+                                collapse
+                                elementType="textarea"
+                                multiLocale
+                                attribute={'observations'}
+                                noLabel
                             />
-                        )
-                    })}
-                </p>
-            </AuthShowContainer>
+                        }
+                    </AuthorizedContent>
+                    <AuthShowContainer ifLoggedIn>
+                        <p>
+                            <span className='flyout-content-label'>{t('transcript')}:</span>
+                            { interview.languages.map( lang => {
+                                return (
+                                    <InterviewDownloads
+                                        lang={lang}
+                                        type='transcript'
+                                        condition={interview.segments?.[1]?.[interview.first_segments_ids[1]]}
+                                        showEmpty={true}
+                                    />
+                                )
+                            })}
+                        </p>
+                    </AuthShowContainer>
+                </>
+            )}
         </>
     );
 }

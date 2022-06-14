@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa';
 
-import { InterviewInfoContainer, InterviewContributorsContainer } from 'modules/interview-metadata';
+import { InterviewInfoContainer, InterviewContributorsContainer, InterviewTextMaterialsContainer } from 'modules/interview-metadata';
 import { SelectedRegistryReferencesContainer } from 'modules/registry-references';
 import { ContentField } from 'modules/forms';
 import { PersonDataContainer } from 'modules/interviewee-metadata';
@@ -41,6 +41,7 @@ export default function InterviewDetailsLeftSide({
                 <h3>{t('interview_info')}</h3>
                 <InterviewInfoContainer />
                 <InterviewContributorsContainer/>
+                <InterviewTextMaterialsContainer/>
                 { interview?.properties?.subcollection &&
                     <ContentField
                         label={t('subcollection')}
