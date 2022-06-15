@@ -167,9 +167,9 @@ class MetadataImport
     registry_entries = row[col_key] && row[col_key].split('#').map do |name|
       field_rrt_re.find_descendant_by_name(name, locale) || 
         (sub_category_registry_entry || field_rrt_re).create_child(name, locale)
-    end
+    end || []
 
-    registry_entries.empty? ? [sub_category_registry_entry] : registry_entries
+    (registry_entries.empty? ? [sub_category_registry_entry] : registry_entries).compact.uniq
   end
 
   def create_references(registry_entries, interview, ref_object, ref_type_id=nil)
