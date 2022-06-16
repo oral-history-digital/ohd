@@ -9,3 +9,23 @@
 .u-bold {
   font-weight: bold !important;
 }
+
+.u-align-left {
+  text-align: left;
+}
+
+.u-align-right {
+  text-align: right;
+}
+
+.u-align-center {
+  text-align: center;
+}
+
+.u-align-justify {
+  text-align: justify;
+}
+
+.u-line-height {
+  line-height: $base-unit;
+}

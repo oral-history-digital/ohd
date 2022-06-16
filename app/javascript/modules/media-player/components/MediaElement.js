@@ -4,8 +4,10 @@ import classNames from 'classnames';
 
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
+import { useTimeQueryString } from 'modules/query-string';
 import speakerImage from 'assets/images/speaker.png';
 import mediaStreamsToSources from '../mediaStreamsToSources';
+import humanTimeToSeconds from '../humanTimeToSeconds';
 import VideoJS from './VideoJS';
 
 const KEYCODE_F = 70;
@@ -38,6 +40,8 @@ export default function MediaElement({
     const pathBase = usePathBase();
     const { t, locale } = useI18n();
     const playerRef = useRef(null);
+
+    const { tape: tapeParam, time: timeParam } = useTimeQueryString();
 
     const aspectRatio = `${project.aspect_x}:${project.aspect_y}`;
     const initialSources = mediaStreamsToSources(Object.values(mediaStreams),
@@ -133,6 +137,24 @@ export default function MediaElement({
         }
     }
 
+    // Check if time params exist in query string.
+    useEffect(() => {
+        const numTapes = Number.parseInt(interview.tape_count);
+
+        if (tapeParam && timeParam) {
+            try {
+                const timeInSeconds = humanTimeToSeconds(timeParam);
+                // TODO: Validate tape and time params.
+                sendTimeChangeRequest(
+                    Math.max(Math.min(tapeParam, numTapes), 1),
+                    timeInSeconds
+                );
+            } catch (e) {
+                console.log('error in time format, skipping');
+            }
+        }
+    }, []);
+
     // Reset media position on unmount.
     useEffect(() => {
         return resetMedia;
@@ -155,8 +177,10 @@ export default function MediaElement({
 
     // Check if time has been changed from outside of component.
     useEffect(() => {
+        // Now checking on every render because otherwise tape and time params
+        // are not recognized.
         checkForTimeChangeRequest();
-    }, [timeChangeRequestAvailable]);
+    });
 
 
     function addTextTracks() {

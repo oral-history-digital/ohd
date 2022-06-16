@@ -1,5 +1,6 @@
 .Icon {
   font-size: 0.875rem;
+  transition: color $transition-duration;
 }
 
 .Icon--small {
@@ -8,6 +9,10 @@
 
 .Icon--large {
   font-size: 1.5rem;
+}
+
+.Icon--white {
+  color: white;
 }
 
 .Icon--primary {

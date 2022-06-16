@@ -285,7 +285,7 @@ en:
   help: Hilfe
   usage_application: Nutzungsantrag
   save_interview_reference: Add to saved interviews
-  save_user_annotation: Write an annotation
+  save_user_annotation: Remember segment
   save_search: Save search
   call_search: Show Search Results
   call_interview_reference: View interview
@@ -528,9 +528,9 @@ en:
   enter_search_field: Please enter search term ...
   enter_field: Search ...
   enter_field_dg: Name, Pseudonym, Suchbegriff, ...
-  saved_searches: Saved search results
-  saved_interviews: Saved interviews
-  saved_annotations: Saved annotations
+  saved_searches: Search results
+  saved_interviews: Interviews
+  saved_annotations: Segments
   text_materials: Textmaterialien
   download_registry_entries: 'Gesamtes Register als %{format} herunterladen (%{locale})'
   search_registry_entry: Registereintrag suchen
@@ -1342,6 +1342,7 @@ en:
       auto_scroll:
         enable: "enable auto-scrolling transcript"
         disable: "disable auto-scrolling transcript"
+      copy_position: Copy position
     toc:
       collapse: Collapse
       expand: Expand
@@ -1356,6 +1357,7 @@ en:
     ui:
       admin_menu:
         actions: Actions
+      copy_link: Copy link
     workbook:
       project_unavailable: Archive not available anymore.
-      copy_link: 'Copy link'
+      segment_link: Segment Link

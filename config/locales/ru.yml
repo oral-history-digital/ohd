@@ -1758,6 +1758,7 @@ ru:
       auto_scroll:
         enable: "enable auto-scrolling transcript"
         disable: "disable auto-scrolling transcript"
+      copy_position: Copy position
     toc:
       collapse: Collapse
       expand: Expand
@@ -1772,6 +1773,7 @@ ru:
     ui:
       admin_menu:
         actions: Actions
+      copy_link: Copy link
     workbook:
       project_unavailable: Archive not available anymore.
-      copy_link: 'Copy link'
+      segment_link: Segment Link

@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
+import { CopyLink } from 'modules/ui';
+import { formatTimecode } from 'modules/interview-helpers';
 
 export default class UserContentForm extends Component {
     constructor(props) {
@@ -58,21 +60,30 @@ export default class UserContentForm extends Component {
     }
 
     setErrors() {
-        this.setState({errors: t(this.props, 'user_content_errors')});
+        const { locale, translations } = this.props;
+
+        this.setState({errors: t({ locale, translations }, 'user_content_errors')});
     }
 
     clearErrors() {
         this.setState({errors: undefined});
     }
 
-    label(term) {
-        return <label className={'publish-label'}>
-            {t(this.props, term)}
-        </label>
+    positionUrl() {
+        const { locale, projectId, projects, properties } = this.props;
+
+        const protocol = window.location.protocol;
+        const host = window.location.host;
+        const pathBaseStr = pathBase({ locale, projectId, projects });
+        const interviewId = properties.interview_archive_id;
+        const tape = properties.tape_nbr;
+        const time = formatTimecode(properties.time, true);
+
+        return `${protocol}//${host}${pathBaseStr}/interviews/${interviewId}?tape=${tape}&time=${time}`;
     }
 
     render() {
-        const { onCancel } = this.props;
+        const { type, locale, translations, onCancel } = this.props;
 
         let submitLabel = this.props.submitLabel ? this.props.submitLabel : t(this.props, 'save');
 
@@ -84,13 +95,31 @@ export default class UserContentForm extends Component {
                     onSubmit={this.handleSubmit}
                 >
                     <div className="form-group">
-                        {this.label('title')}
+                        <label className="publish-label">
+                            {t({ locale, translations }, 'title')}
+                        </label>
                         <input type="text" name='title' value={this.state.title} onChange={this.handleChange}/>
                     </div>
                     <div className="form-group">
-                        {this.label('description')}
+                        <label className="publish-label">
+                            {t({ locale, translations }, 'description')}
+                        </label>
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>
+
+                    {type==='UserAnnotation' && (
+                        <div className="u-mb">
+                            <h4 className="u-line-height u-mt-none u-mb-none">
+                                {t({ locale, translations }, 'modules.workbook.segment_link')}
+                            </h4>
+                            {this.positionUrl()}
+                            {' '}
+                            <CopyLink
+                                className="Icon--primary"
+                                url={this.positionUrl()}
+                            />
+                        </div>
+                    )}
 
                     <div className="Form-footer">
                         <input
@@ -104,7 +133,7 @@ export default class UserContentForm extends Component {
                                 className="Button Button--secondaryAction"
                                 onClick={onCancel}
                             >
-                                {t(this.props, 'cancel')}
+                                {t({ locale, translations }, 'cancel')}
                             </button>
                         )}
                     </div>
@@ -115,9 +144,12 @@ export default class UserContentForm extends Component {
 }
 
 UserContentForm.propTypes = {
+    type: PropTypes.string.isRequired,
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
+    properties: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
+    translations: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     createWorkbook: PropTypes.func.isRequired,

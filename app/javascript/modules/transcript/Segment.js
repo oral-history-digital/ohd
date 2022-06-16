@@ -1,13 +1,14 @@
 import { useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaUser, FaStar } from 'react-icons/fa';
+import { FaUser } from 'react-icons/fa';
 
 import { fullname } from 'modules/people';
 import { SCROLL_OFFSET } from 'modules/constants';
 import { useAuthorization } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
 import { scrollSmoothlyTo } from 'modules/user-agent';
+import { useTranscriptQueryString } from 'modules/query-string';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
 import RememberSegmentButton from './RememberSegmentButton';
@@ -31,10 +32,24 @@ function Segment({
     const divEl = useRef();
     const { isAuthorized } = useAuthorization();
     const { t } = useI18n();
+    const { segment: segmentParam } = useTranscriptQueryString();
 
     useEffect(() => {
         // Checking for divEl.current is necessary because sometimes component returns null.
-        if (active && divEl.current) {
+        if (!divEl.current) {
+            return;
+        }
+
+        if (active && !segmentParam) {
+            const topOfSegment = divEl.current.offsetTop;
+
+            // Quickfix for wrong offsetTop values.
+            if (topOfSegment === 0) {
+                return;
+            }
+
+            window.scrollTo(0, topOfSegment - SCROLL_OFFSET);
+        } else if (segmentParam === data.id) {
             const topOfSegment = divEl.current.offsetTop;
 
             // Quickfix for wrong offsetTop values.

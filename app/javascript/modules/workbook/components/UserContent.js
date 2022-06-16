@@ -5,12 +5,12 @@ import queryString from 'query-string';
 import { LinkOrA } from 'modules/routes';
 import { queryToText, convertLegacyQuery, useFacets } from 'modules/search';
 import { useI18n } from 'modules/i18n';
-import { Modal } from 'modules/ui';
+import { Modal, CopyLink } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
+import { formatTimecode } from 'modules/interview-helpers';
 import { usePathBase } from 'modules/routes';
 import UserContentFormContainer from './UserContentFormContainer';
 import UserContentDeleteContainer from './UserContentDeleteContainer';
-import CopyLink from './CopyLink';
 
 export default function UserContent({
     data,
@@ -55,6 +55,9 @@ export default function UserContent({
     if (project && data.type === 'Search') {
         searchPath = `searches/archive?${queryString.stringify(convertLegacyQuery(data.properties), { arrayFormat: 'bracket' })}`;
     }
+    if (project && data.type === 'UserAnnotation') {
+        searchPath = `interviews/${data.properties.interview_archive_id}?tape=${data.properties.tape_nbr}&time=${formatTimecode(data.properties.time, true)}`;
+    }
 
     if (project) {
         switch (data.type) {
@@ -94,6 +97,20 @@ export default function UserContent({
         default:
             linkNode = null;
         }
+    }
+
+    let copyLinkUrl;
+    switch (data.type) {
+    case 'InterviewReference':
+        copyLinkUrl = `${window.location.protocol}//${window.location.host}${pathBase}/interviews/${data.media_id}`;
+        break;
+    case 'Search':
+        copyLinkUrl = `${window.location.protocol}//${window.location.host}${pathBase}/${searchPath}`;
+        break;
+    case 'UserAnnotation':
+        copyLinkUrl = `${window.location.protocol}//${window.location.host}${pathBase}/${searchPath}`;
+        break;
+    default:
     }
 
     return (
@@ -164,19 +181,9 @@ export default function UserContent({
                         />
                     )}
                 </Modal>
-                {
-                    project && data.type === 'InterviewReference' && (
-                        <CopyLink
-                            url={`${window.location.host}${pathBase}/interviews/${data.media_id}`}
-                        />
-                    )
-                }
-                {
-                    project && data.type === 'Search' && (
-                        <CopyLink
-                            url={`${window.location.host}${pathBase}/${searchPath}`}
-                        />
-                    )
+
+                {project &&
+                    <CopyLink className="Icon--primary" url={copyLinkUrl} />
                 }
             </div>
         </div>

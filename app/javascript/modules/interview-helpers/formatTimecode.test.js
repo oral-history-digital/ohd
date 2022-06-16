@@ -17,3 +17,9 @@ test('displays hours correctly', () => {
     const expected = '2:45:05';
     expect(actual).toEqual(expected);
 });
+
+test('can use hms format,', () => {
+    const actual = formatTimecode(9905.9, true);
+    const expected = '2h45m05s';
+    expect(actual).toEqual(expected);
+});

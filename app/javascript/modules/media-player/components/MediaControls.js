@@ -5,15 +5,19 @@ import classNames from 'classnames';
 import { defaultTitle } from 'modules/interview-helpers';
 import { UserContentFormContainer } from 'modules/workbook';
 import { useI18n } from 'modules/i18n';
-import { Modal } from 'modules/ui';
+import { usePathBase } from 'modules/routes';
+import { Modal, CopyLink } from 'modules/ui';
+import { formatTimecode } from 'modules/interview-helpers';
 
 export default function MediaControls({
     className,
     tape: currentTape,
+    mediaTime,
     interview,
     setTape,
 }) {
     const { t, locale } = useI18n();
+    const pathBase = usePathBase();
 
     function handleTapeChange(e) {
         setTape(Number.parseInt(e.target.value));
@@ -21,6 +25,8 @@ export default function MediaControls({
 
     const tapes = [...Array(Number.parseInt(interview.tape_count)).keys()]
         .map(i => i + 1);
+
+    const positionUrl=`${window.location.protocol}//${window.location.host}${pathBase}/interviews/${interview.archive_id}?tape=${currentTape}&time=${formatTimecode(mediaTime, true)}`;
 
     return (
         <div className={classNames(className, 'MediaControls')}>
@@ -65,6 +71,13 @@ export default function MediaControls({
                         />
                     )}
                 </Modal>
+                <CopyLink
+                    className="MediaControls-bookmark"
+                    iconClassName="Icon--white"
+                    url={positionUrl}
+                >
+                    {t('modules.media_player.copy_position')}
+                </CopyLink>
             </div>
         </div>
     );
@@ -72,11 +85,8 @@ export default function MediaControls({
 
 MediaControls.propTypes = {
     className: PropTypes.string,
-    archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
-    locale: PropTypes.string.isRequired,
     tape: PropTypes.number.isRequired,
-    translations: PropTypes.object.isRequired,
     mediaTime: PropTypes.number.isRequired,
     setTape: PropTypes.func.isRequired,
 };

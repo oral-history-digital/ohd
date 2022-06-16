@@ -293,7 +293,7 @@ de:
   help: Hilfe
   usage_application: Nutzungsantrag
   save_interview_reference: Interview merken
-  save_user_annotation: Anmerkung verfassen
+  save_user_annotation: Segment merken
   save_search: Suche speichern
   call_search: Suche aufrufen
   call_interview_reference: Interview aufrufen
@@ -550,9 +550,9 @@ de:
   enter_search_field: Bitte Suchbegriff eingeben ...
   enter_field: Name, Suchbegriff, ...
   enter_field_dg: Name, Pseudonym, Suchbegriff, ...
-  saved_searches: Gespeicherte Suchergebnisse
-  saved_interviews: Gespeicherte Interviews
-  saved_annotations: Gespeicherte Anmerkungen
+  saved_searches: Suchergebnisse
+  saved_interviews: Interviews
+  saved_annotations: Segmente
   text_materials: Textmaterialien
   download_registry_entries: 'Gesamtes Register als %{format} herunterladen (%{locale})'
   search_registry_entry: Registereintrag suchen
@@ -1335,6 +1335,7 @@ de:
       auto_scroll:
         enable: "mitlaufendes Transkript ein"
         disable: "mitlaufendes Transkript aus"
+      copy_position: Position kopieren
     registry:
       name_missing: "Registername fehlt"
     toc:
@@ -1351,6 +1352,7 @@ de:
     ui:
       admin_menu:
         actions: Aktionen
+      copy_link: Link kopieren
     workbook:
-      project_unavailable: 'Archiv nicht mehr verfügbar.'
-      copy_link: 'Link kopieren'
+      project_unavailable: Archiv nicht mehr verfügbar.
+      segment_link: Segment-Link
