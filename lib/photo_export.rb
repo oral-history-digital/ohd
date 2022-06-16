@@ -44,7 +44,7 @@ class PhotoExport
 
     Zip::File.open(zip_path, create: true) do |zip_file|
       @project.available_locales.each do |locale|
-        zip_file.add("photos-#{@interviews.first.archive_id}-#{DateTime.now.strftime("%d.%m.%Y-%H:%M:%S")}-#{locale}.csv", Rails.root.join('tmp', 'files', "#{@tmp_name}-#{locale}.csv"))
+        zip_file.add("#{@interviews.first.archive_id}_photos_#{locale}_#{DateTime.now.strftime("%Y-%m-%d")}.csv", Rails.root.join('tmp', 'files', "#{@tmp_name}-#{locale}.csv"))
       end
       @interviews.each do |interview|
         interview.photos.each do |photo|
