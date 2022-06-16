@@ -274,7 +274,7 @@ class InterviewsController < ApplicationController
     respond_to do |format|
       format.zip do
         File.open(zip_path, 'r') do |f|
-          send_data f.read, type: "application/zip", filename: "photos-#{params[:archive_ids].first}-#{DateTime.now.strftime("%d.%m.%Y-%H:%M:%S")}.zip"
+          send_data f.read, type: "application/zip", filename: "#{params[:archive_ids].first}_photos_#{DateTime.now.strftime("%Y-%m-%d")}.zip"
         end
       end
     end

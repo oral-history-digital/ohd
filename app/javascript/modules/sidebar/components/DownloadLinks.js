@@ -47,7 +47,7 @@ export default function DownloadLinks({
                     <SubmitInterviewIds
                         selectedArchiveIds={[archiveId]}
                         action="export_photos"
-                        filename={`photos-${archiveId}-${moment().format('DD.MM.YYYY-HH:mm')}.zip`}
+                        filename={`${archiveId}_photos_${moment().format('YYYY-MM-DD')}.zip`}
                     />
                 </li>
             </ul>
