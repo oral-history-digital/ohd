@@ -1,9 +1,8 @@
-import { Route } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 
-import { WrapperPageContainer, useScrollBelowThreshold } from 'modules/layout';
+import { LayoutContainer, useScrollBelowThreshold } from 'modules/layout';
 import { getProjects } from 'modules/data';
-import { MemoizedRoutes, MemoizedRoutesWithProjectId } from './Routes';
+import { MemoizedRoutesWithoutProjectId, MemoizedRoutesWithProjectId } from './Routes';
 import projectByDomain from './projectByDomain';
 
 function RouteDivider() {
@@ -12,14 +11,12 @@ function RouteDivider() {
     const isScrollBelowThreshold = useScrollBelowThreshold();
 
     return (
-        <Route path={'/'} render={routeProps => (
-            <WrapperPageContainer
-                {...routeProps}
-                scrollPositionBelowThreshold={isScrollBelowThreshold}
-            >
-                { projectFromDomain ? <MemoizedRoutes /> : <MemoizedRoutesWithProjectId /> }
-            </WrapperPageContainer>
-        )} />
+        <LayoutContainer scrollPositionBelowThreshold={isScrollBelowThreshold}>
+            {projectFromDomain ?
+                <MemoizedRoutesWithoutProjectId /> :
+                <MemoizedRoutesWithProjectId />
+            }
+        </LayoutContainer>
     );
 }
 

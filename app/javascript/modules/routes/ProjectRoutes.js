@@ -1,5 +1,5 @@
 import { useEffect  } from 'react';
-import { Route, Switch, useRouteMatch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
 import { getProjectId, setArchiveId, setAvailableViewModes, setViewMode,
@@ -27,7 +27,6 @@ export default function ProjectRoutes() {
     const projectId = useSelector(getProjectId);
     const project = useSelector(getCurrentProject);
     const dispatch = useDispatch();
-    const { path } = useRouteMatch();
 
     useEffect(() => {
         // Set project-specific redux data here.
@@ -43,89 +42,34 @@ export default function ProjectRoutes() {
 
     return (
         <ErrorBoundary>
-            <Switch>
-                <Route exact path={`${path}/interviews/new`}>
-                    <EditInterviewContainer />
-                </Route>
-                <Route path={`${path}/interviews/:archiveId`}>
-                    <InterviewContainer />
-                </Route>
-                <Route path={`${path}/searches/archive`}>
-                    <SearchPage />
-                </Route>
-                <Route path={`${path}/searches/map`}>
-                    <SearchMap />
-                </Route>
-                <Route path={`${path}/registry_entries`}>
-                    <RegistryContainer />
-                </Route>
-
-                <Route path={`${path}/accounts/current`}>
-                    <WrappedAccountContainer />
-                </Route>
-                <Route path={`${path}/user_accounts/password/new`}>
-                    <OrderNewPasswordContainer />
-                </Route>
-                <Route path={`${path}/user_accounts/password/edit`}>
-                    <ActivateAccount />
-                </Route>
-                <Route path={`${path}/user_registrations/:resetPasswordToken/activate`}>
-                    <ActivateAccount />
-                </Route>
-                <Route path={`${path}/user_registrations/new`}>
-                    <RegisterContainer />
-                </Route>
-                <Route path={`${path}/user_registrations`}>
-                    <UserRegistrationsContainer />
-                </Route>
-
-                <Route path={`${path}/uploads/new`}>
-                    <UploadsContainer />
-                </Route>
-                <Route path={`${path}/project/edit-info`}>
-                    <EditProjectInfo />
-                </Route>
-                <Route path={`${path}/project/edit-config`}>
-                    <EditProjectConfig />
-                </Route>
-                <Route path={`${path}/project/edit-display`}>
-                    <EditProjectDisplay />
-                </Route>
-                <Route path={`${path}/metadata_fields`}>
-                    <MetadataFieldsContainer />
-                </Route>
-                <Route path={`${path}/people`}>
-                    <WrappedPeopleContainer />
-                </Route>
-                <Route path={`${path}/registry_reference_types`}>
-                    <WrappedRegistryReferenceTypesContainer />
-                </Route>
-                <Route path={`${path}/registry_name_types`}>
-                    <WrappedRegistryNameTypesContainer />
-                </Route>
-                <Route path={`${path}/contribution_types`}>
-                    <WrappedContributionTypesContainer />
-                </Route>
-                <Route path={`${path}/languages`}>
-                    <WrappedLanguagesContainer />
-                </Route>
-                <Route path={`${path}/collections`}>
-                    <WrappedCollectionsContainer />
-                </Route>
-                <Route path={`${path}/roles`}>
-                    <WrappedRolesContainer />
-                </Route>
-                <Route path={`${path}/permissions`}>
-                    <WrappedPermissionsContainer />
-                </Route>
-                <Route path={`${path}/task_types`}>
-                    <WrappedTaskTypesContainer />
-                </Route>
-
-                <Route exact path={path}>
-                    <HomeContainer />
-                </Route>
-            </Switch>
+            <Routes>
+                <Route exact path="interviews/new" element={<EditInterviewContainer />} />
+                <Route path="interviews/:archiveId" element={<InterviewContainer />} />
+                <Route path="searches/archive" element={<SearchPage />} />
+                <Route path="searches/map" element={<SearchMap />} />
+                <Route path="registry_entries" element={<RegistryContainer />} />
+                <Route path="accounts/current" element={<WrappedAccountContainer />} />
+                <Route path="user_accounts/password/new" element={<OrderNewPasswordContainer />} />
+                <Route path="user_accounts/password/edit" element={<ActivateAccount />} />
+                <Route path="user_registrations/:resetPasswordToken/activate" element={<ActivateAccount />} />
+                <Route path="user_registrations/new" element={<RegisterContainer />} />
+                <Route path="user_registrations" element={<UserRegistrationsContainer />} />
+                <Route path="uploads/new" element={<UploadsContainer />} />
+                <Route path="project/edit-info" element={<EditProjectInfo />} />
+                <Route path="project/edit-config" element={<EditProjectConfig />} />
+                <Route path="project/edit-display" element={<EditProjectDisplay />} />
+                <Route path="metadata_fields" element={<MetadataFieldsContainer />} />
+                <Route path="people" element={<WrappedPeopleContainer />} />
+                <Route path="registry_reference_types" element={<WrappedRegistryReferenceTypesContainer />} />
+                <Route path="registry_name_types" element={<WrappedRegistryNameTypesContainer />} />
+                <Route path="contribution_types" element={<WrappedContributionTypesContainer />} />
+                <Route path="languages" element={<WrappedLanguagesContainer />} />
+                <Route path="collections" element={<WrappedCollectionsContainer />} />
+                <Route path="roles" element={<WrappedRolesContainer />} />
+                <Route path="permissions" element={<WrappedPermissionsContainer />} />
+                <Route path="task_types" element={<WrappedTaskTypesContainer />} />
+                <Route exact path="/" element={<HomeContainer />} />
+            </Routes>
         </ErrorBoundary>
     );
 }

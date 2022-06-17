@@ -24,7 +24,6 @@ const mapStateToProps = state => ({
     resultPagesCount: getInstitutionsStatus(state).resultPagesCount,
     query: getInstitutionsQuery(state),
     scope: 'institution',
-    sidebarTabsIndex: INDEX_INSTITUTIONS ,
     detailsAttributes: ['name', 'description'],
     formElements: [
         {

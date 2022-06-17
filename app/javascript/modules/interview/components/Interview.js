@@ -25,7 +25,6 @@ export default function Interview({
     projects,
     project,
     locale,
-    setSidebarTabsIndex,
     setArchiveId,
     fetchData,
     isLoggedIn,
@@ -37,7 +36,6 @@ export default function Interview({
     const status = statuses[archiveId];
 
     useEffect(() => {
-        setSidebarTabsIndex(INDEX_INTERVIEW);
         setArchiveId(archiveId);
     }, []);
 
@@ -108,7 +106,6 @@ Interview.propTypes = {
     projectId: PropTypes.string.isRequired,
     projects: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
-    setSidebarTabsIndex: PropTypes.func.isRequired,
     setArchiveId: PropTypes.func.isRequired,
     fetchData: PropTypes.func.isRequired,
 };

@@ -2,13 +2,13 @@ import { createElement, Component } from 'react';
 import PropTypes from 'prop-types';
 import { FaPlus } from 'react-icons/fa';
 
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { AuthorizedContent } from 'modules/auth';
 import { Modal } from 'modules/ui';
 import { Form } from 'modules/forms';
 import { camelCase } from 'modules/strings';
 import { t } from 'modules/i18n';
 import DataContainer from './DataContainer';
-import { setSidebarTabsIndex } from 'modules/sidebar';
 
 export default class DataList extends Component {
 
@@ -19,7 +19,6 @@ export default class DataList extends Component {
 
     componentDidMount() {
         this.loadJoinData();
-        setSidebarTabsIndex(this.props.sidebarTabsIndex);
     }
 
     loadJoinData() {
@@ -102,8 +101,10 @@ export default class DataList extends Component {
     render() {
         return (
             <div>
-                {this.data()}
-                {this.add()}
+                <ErrorBoundary>
+                    {this.data()}
+                    {this.add()}
+                </ErrorBoundary>
             </div>
         );
     }

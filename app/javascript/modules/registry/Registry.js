@@ -17,14 +17,8 @@ export default function Registry({
     foundRegistryEntries,
     showRegistryEntriesSearchResults,
     isRegistryEntrySearching,
-    setSidebarTabsIndex,
-    isLoggedIn,
 }) {
     const { t } = useI18n();
-
-    useEffect(() => {
-        setSidebarTabsIndex(INDEX_REGISTRY_ENTRIES);
-    }, []);
 
     return (
         <ScrollToTop>
@@ -75,5 +69,4 @@ Registry.propTypes = {
     foundRegistryEntries: PropTypes.object.isRequired,
     showRegistryEntriesSearchResults: PropTypes.bool.isRequired,
     isRegistryEntrySearching: PropTypes.bool,
-    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

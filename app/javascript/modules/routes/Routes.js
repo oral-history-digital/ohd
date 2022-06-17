@@ -1,84 +1,36 @@
 import { memo } from 'react';
-import { Route, Switch } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 
-import { ErrorBoundary } from 'modules/react-toolbox';
-import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer, ActivateAccount }
-    from 'modules/account';
+import { WrappedAccountContainer, OrderNewPasswordContainer, RegisterContainer,
+    ActivateAccount } from 'modules/account';
 import { UserRegistrationsContainer } from 'modules/users';
 import { SearchPage } from 'modules/search';
+import { WrappedInstitutionsContainer } from 'modules/admin';
 import ProjectIndex from './ProjectIndex';
 import ProjectRoutes from './ProjectRoutes';
-import { WrappedInstitutionsContainer } from 'modules/admin';
 
-export const Routes = () => (
-    <Switch>
-        <Route path="/:locale">
-            <ProjectRoutes />
-        </Route>
-    </Switch>
+const RoutesWithoutProjectId = () => (
+    <Routes>
+        <Route path="/:locale/*" element={<ProjectRoutes />} />
+    </Routes>
 );
 
-export const MemoizedRoutes = memo(Routes);
+export const MemoizedRoutesWithoutProjectId = memo(RoutesWithoutProjectId);
 
-export const RoutesWithProjectId = () => (
-    <Switch>
-        {/* OHD account and search routes */}
-        <Route path="/:locale/user_accounts/password/new">
-            <ErrorBoundary>
-                <OrderNewPasswordContainer />
-            </ErrorBoundary>
-        </Route>
-        <Route path="/:locale/user_accounts/password/edit">
-            <ErrorBoundary>
-                <ActivateAccount />
-            </ErrorBoundary>
-        </Route>
-        <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate">
-            <ErrorBoundary>
-                <ActivateAccount />
-            </ErrorBoundary>
-        </Route>
-        <Route exact path="/:locale/user_registrations/new">
-            <ErrorBoundary>
-                <RegisterContainer />
-            </ErrorBoundary>
-        </Route>
-        <Route exact path="/:locale/user_registrations">
-            <ErrorBoundary>
-                <UserRegistrationsContainer />
-            </ErrorBoundary>
-        </Route>
-        <Route path="/:locale/accounts/current">
-            <ErrorBoundary>
-                <WrappedAccountContainer />
-            </ErrorBoundary>
-        </Route>
-        <Route path="/:locale/searches/archive">
-            <ErrorBoundary>
-                <SearchPage />
-            </ErrorBoundary>
-        </Route>
-        <Route exact path="/:locale">
-            <ErrorBoundary>
-                {/* TODO: needs another startpage */}
-                <ProjectIndex />
-            </ErrorBoundary>
-        </Route>
-        <Route exact path="/:locale/projects">
-            <ErrorBoundary>
-                <ProjectIndex />
-            </ErrorBoundary>
-        </Route>
-        <Route exact path="/:locale/institutions">
-            <ErrorBoundary>
-                <WrappedInstitutionsContainer />
-            </ErrorBoundary>
-        </Route>
-
-        <Route path="/:projectId/:locale">
-            <ProjectRoutes />
-        </Route>
-    </Switch>
+const RoutesWithProjectId = () => (
+    <Routes>
+        <Route path="/:locale/user_accounts/password/new" element={<OrderNewPasswordContainer />} />
+        <Route path="/:locale/user_accounts/password/edit" element={<ActivateAccount />} />
+        <Route exact path="/:locale/user_registrations/:resetPasswordToken/activate" element={<ActivateAccount />} />
+        <Route exact path="/:locale/user_registrations/new" element={<RegisterContainer />} />
+        <Route exact path="/:locale/user_registrations" element={<UserRegistrationsContainer />} />
+        <Route path="/:locale/accounts/current" element={<WrappedAccountContainer />} />
+        <Route path="/:locale/searches/archive" element={<SearchPage />} />
+        <Route exact path="/:locale" element={<ProjectIndex />} />
+        <Route exact path="/:locale/projects" element={<ProjectIndex />} />
+        <Route exact path="/:locale/institutions" element={<WrappedInstitutionsContainer />} />
+        <Route path="/:projectId/:locale/*" element={<ProjectRoutes />} />
+    </Routes>
 );
 
 export const MemoizedRoutesWithProjectId = memo(RoutesWithProjectId);

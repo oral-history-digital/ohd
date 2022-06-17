@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import PropTypes from 'prop-types';
 import queryString from 'query-string';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import { useLocation, useParams, useNavigate } from 'react-router-dom';
 
 import { usePrevious } from 'modules/react-toolbox';
 import { usePathBase } from 'modules/routes';
@@ -24,7 +24,7 @@ export default function ChangePasswordForm({
     const { t } = useI18n();
     const pathBase = usePathBase();
 
-    const history = useHistory();
+    const navigate = useNavigate();
     const location = useLocation();
     const { resetPasswordToken } = useParams();
 
@@ -32,7 +32,7 @@ export default function ChangePasswordForm({
     const prevAccount = usePrevious(account);
     if (!prevAccount?.email && account.email) {
         const to = projectId ? `${pathBase}/searches/archive` : `/${locale}`;
-        history.push(to);
+        navigate(to);
     }
 
     function handleChange(name, value) {

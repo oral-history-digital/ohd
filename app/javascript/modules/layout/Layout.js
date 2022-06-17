@@ -2,19 +2,19 @@ import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 import { Helmet } from 'react-helmet';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ResizeWatcherContainer } from 'modules/user-agent';
 import { Sidebar } from 'modules/sidebar';
+import { pathBase } from 'modules/routes';
 import SiteHeader from './SiteHeader';
 import SiteFooter from './SiteFooter';
 import MessagesContainer from './MessagesContainer';
 import BurgerButton from './BurgerButton';
 import BackToTopButton from './BackToTopButton';
-import { pathBase } from 'modules/routes';
-import { useHistory, useLocation } from 'react-router';
 
-export default function WrapperPage({
+export default function Layout({
     scrollPositionBelowThreshold,
     sidebarVisible,
     children,
@@ -36,7 +36,7 @@ export default function WrapperPage({
     deleteData,
 }) {
     const location = useLocation();
-    const history = useHistory();
+    const navigate = useNavigate();
 
     useEffect(() => {
         fitLocale();
@@ -53,7 +53,7 @@ export default function WrapperPage({
             if (project?.available_locales.indexOf(pathLocale) === -1) {
                 const newPathBase = pathBase({projectId, locale: project.default_locale, projects}) + '/';
                 const newPath = location.pathname.replace(pathBasePart, newPathBase);
-                history.push(newPath);
+                navigate(newPath);
                 setLocale(locale);
             } else if (pathLocale !== locale) {
                 setLocale(pathLocale);
@@ -152,7 +152,7 @@ export default function WrapperPage({
     );
 }
 
-WrapperPage.propTypes = {
+Layout.propTypes = {
     scrollPositionBelowThreshold: PropTypes.bool.isRequired,
     isLoggedIn: PropTypes.bool,
     isLoggedOut: PropTypes.bool,

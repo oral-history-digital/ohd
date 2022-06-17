@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import { INDEX_NONE, INDEX_ACCOUNT } from 'modules/sidebar';
 import { RedirectOnLogin } from 'modules/account';
 import { ScrollToTop } from 'modules/user-agent';
 import StartPageVideo from './StartPageVideo';
@@ -9,17 +7,11 @@ import FeaturedInterviews from './FeaturedInterviews';
 
 export default function Home({
     project,
-    isCampscapesProject,
     projectTranslation,
     showStartPageVideo,
     showFeaturedInterviews,
-    setSidebarTabsIndex,
     institutions,
 }) {
-    useEffect(() => {
-        setSidebarTabsIndex(isCampscapesProject ? INDEX_NONE : INDEX_ACCOUNT);
-    }, []);
-
     return (
         <ScrollToTop>
             <div className='wrapper-content home-content'>
@@ -60,9 +52,7 @@ export default function Home({
 
 Home.propTypes = {
     project: PropTypes.object.isRequired,
-    isCampscapesProject: PropTypes.bool.isRequired,
     projectTranslation: PropTypes.object.isRequired,
     showStartPageVideo: PropTypes.bool.isRequired,
     showFeaturedInterviews: PropTypes.bool.isRequired,
-    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

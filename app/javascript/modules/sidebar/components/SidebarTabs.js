@@ -1,6 +1,7 @@
+import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import { Tabs, TabList, Tab, TabPanels, TabPanel } from '@reach/tabs';
 import '@reach/tabs/styles.css';
 
@@ -20,53 +21,55 @@ import MapTabPanelContainer from './MapTabPanelContainer';
 import InterviewTabPanelContainer from './InterviewTabPanelContainer';
 import ProjectConfigTabPanel from './ProjectConfigTabPanel';
 import * as indexes from '../constants';
+import tabIndexFromRoute from '../tabIndexFromRoute';
 
 export default function SidebarTabs({
-    sidebarTabsIndex,
     selectedArchiveIds,
     interview,
-    projectId,
     project,
     archiveId,
     isLoggedIn,
     isCampscapesProject,
     hasMap,
-    setSidebarTabsIndex,
 }) {
+    const [tabIndex, setTabIndex] = useState(indexes.INDEX_ACCOUNT);
     const { t } = useI18n();
     const { isAuthorized } = useAuthorization();
     const pathBase = usePathBase();
     const locale = useSelector(getLocale);
-    const history = useHistory();
+    const navigate = useNavigate();
+    const { pathname } = useLocation();
+
+    useEffect(() => {
+        setTabIndex(tabIndexFromRoute(pathBase, pathname, isCampscapesProject));
+    }, [pathname]);
 
     function handleTabClick(index) {
-        setSidebarTabsIndex(index);
+        setTabIndex(index);
 
         switch (index) {
         case indexes.INDEX_ACCOUNT:
             if (isLoggedIn) {
-                history.push(`${pathBase}/accounts/current`);
+                navigate(`${pathBase}/accounts/current`);
             }
             break;
         case indexes.INDEX_SEARCH:
-            history.push(`${pathBase}/searches/archive`);
+            navigate(`${pathBase}/searches/archive`);
             break;
         case indexes.INDEX_INTERVIEW:
-            history.push(`${pathBase}/interviews/${archiveId}`);
+            navigate(`${pathBase}/interviews/${archiveId}`);
             break;
         case indexes.INDEX_REGISTRY_ENTRIES:
-            history.push(`${pathBase}/registry_entries`);
+            navigate(`${pathBase}/registry_entries`);
             break;
         case indexes.INDEX_MAP:
-            if (hasMap) {
-                history.push(`${pathBase}/searches/map`);
-            }
+            navigate(`${pathBase}/searches/map`);
             break;
         case indexes.INDEX_PROJECTS:
-            history.push(`/${locale}/projects`);
+            navigate(`/${locale}/projects`);
             break;
         case indexes.INDEX_INSTITUTIONS:
-            history.push(`/${locale}/institutions`);
+            navigate(`/${locale}/institutions`);
             break;
         default:
         }
@@ -91,7 +94,7 @@ export default function SidebarTabs({
             className="SidebarTabs"
             orientation="vertical"
             keyboardActivation="manual"
-            index={sidebarTabsIndex}
+            index={tabIndex}
             onChange={handleTabClick}
         >
             <TabList>
@@ -263,7 +266,5 @@ SidebarTabs.propTypes = {
     hasMap: PropTypes.bool,
     isLoggedIn: PropTypes.bool,
     isCampscapesProject: PropTypes.bool.isRequired,
-    sidebarTabsIndex: PropTypes.number.isRequired,
     selectedArchiveIds: PropTypes.array,
-    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

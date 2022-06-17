@@ -8,7 +8,6 @@ import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
 import { isMobile } from 'modules/user-agent';
 import { usePathBase } from 'modules/routes';
-import { INDEX_SEARCH } from 'modules/sidebar';
 import UserContentFormContainer from './UserContentFormContainer';
 import UserContentDeleteContainer from './UserContentDeleteContainer';
 import CopyLink from './CopyLink';
@@ -21,7 +20,6 @@ export default function UserContent({
     setArchiveId,
     sendTimeChangeRequest,
     hideSidebar,
-    setSidebarTabsIndex,
 }) {
     const { t } = useI18n();
     const { facets } = useFacets();
@@ -45,7 +43,6 @@ export default function UserContent({
     }
 
     function onSearchClick() {
-        setSidebarTabsIndex(INDEX_SEARCH);
         hideSidebarIfMobile();
     }
 
@@ -194,5 +191,4 @@ UserContent.propTypes = {
     setArchiveId: PropTypes.func.isRequired,
     sendTimeChangeRequest: PropTypes.func.isRequired,
     hideSidebar: PropTypes.func.isRequired,
-    setSidebarTabsIndex: PropTypes.func.isRequired,
 };

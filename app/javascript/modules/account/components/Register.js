@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import { Helmet } from 'react-helmet';
 
+import { ErrorBoundary } from 'modules/react-toolbox';
 import { useI18n } from 'modules/i18n';
 import { ScrollToTop } from 'modules/user-agent';
 import RegisterFormContainer from './RegisterFormContainer';
@@ -21,32 +22,34 @@ export default function Register({
                 <title>{t('devise.registrations.link')}</title>
             </Helmet>
             <div className='wrapper-content register'>
-                {
-                    registrationStatus ? (
-                        <p
-                            className='status'
-                            dangerouslySetInnerHTML={{__html: registrationStatus}}
-                        />
-                    ) : (
-                        <div>
-                            <h1>
-                                {t('devise.registrations.link')}
-                            </h1>
-                            <p>
-                                {t('user_registration.registration_text_one')}
-                                <a href={conditionsLink[locale]} target="_blank" title="" rel="noreferrer">
-                                    {t('user_registration.tos_agreement')}
-                                </a>
-                                {t('user_registration.registration_text_two')}
-                                <a href={privacyLink[locale]} target="_blank" title="" rel="noreferrer">
-                                    {t('user_registration.priv_agreement_alias')}
-                                </a>
-                                {t('user_registration.registration_text_three')}
-                            </p>
-                            <RegisterFormContainer />
-                        </div>
-                    )
-                }
+                <ErrorBoundary>
+                    {
+                        registrationStatus ? (
+                            <p
+                                className='status'
+                                dangerouslySetInnerHTML={{__html: registrationStatus}}
+                            />
+                        ) : (
+                            <div>
+                                <h1>
+                                    {t('devise.registrations.link')}
+                                </h1>
+                                <p>
+                                    {t('user_registration.registration_text_one')}
+                                    <a href={conditionsLink[locale]} target="_blank" title="" rel="noreferrer">
+                                        {t('user_registration.tos_agreement')}
+                                    </a>
+                                    {t('user_registration.registration_text_two')}
+                                    <a href={privacyLink[locale]} target="_blank" title="" rel="noreferrer">
+                                        {t('user_registration.priv_agreement_alias')}
+                                    </a>
+                                    {t('user_registration.registration_text_three')}
+                                </p>
+                                <RegisterFormContainer />
+                            </div>
+                        )
+                    }
+                </ErrorBoundary>
             </div>
         </ScrollToTop>
     );
