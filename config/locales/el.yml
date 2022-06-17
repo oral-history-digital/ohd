@@ -254,11 +254,11 @@ el:
   translation_title: Μετάφραση της συνέντευξης με
   transcript_footer: 'Τρόπος παραπομπής: Απομαγνητοφώνηση της συνέντευξης με'
   transcript_template: Υπόδειγμα για την εισαγωγή αρχείων .ods
-  biographical_entries_header: 'Σύντομο βιογραφικό:'
-  biographical_entries_title: 'Σύντομο βιογραφικό της/του'
+  biographical_entries_header: 'Σύντομο βιογραφικό: %{interviewee_name} (Interview-ID %{archive_id})'
+  biographical_entries_title: 'Σύντομο βιογραφικό της/του %{interviewee_name}'
   biographical_entries_footer: 'Τρόπος παραπομπής: Σύντομο βιογραφικό της/του'
-  observations_header: 'Protokoll (%{lang}):'
-  observations_title: Protokoll (%{lang}) des Interviews mit
+  observations_header: 'Protokoll (griechisch): %{interviewee_name} (Interview-ID %{archive_id})'
+  observations_title: Protokoll (griechisch) des Interviews mit %{interviewee_name}
   observations_footer: 'Zitiervorgabe: Protokoll von'
   interview_info: Σχετικά με τη συνέντευξη
   place: Τόπος

@@ -246,11 +246,11 @@ ru:
   translation_title: Перевод интервью (%{lang})
   transcript_footer: 'Метод цитирования: Транскрипт интервью'
   transcript_template: Vorlage für den Import von .ods Dateien
-  biographical_entries_header: 'Краткая биография:'
-  biographical_entries_title: 'Краткая биография:'
+  biographical_entries_header: 'Краткая биография: %{interviewee_name} (Interview-ID %{archive_id})'
+  biographical_entries_title: 'Краткая биография: %{interviewee_name}'
   biographical_entries_footer: 'Метод цитирования: Краткая биография,'
-  observations_header: 'Protokoll (%{lang}):'
-  observations_title: Protokoll (%{lang}) des Interviews mit
+  observations_header: 'Protokoll (deutsch): %{interviewee_name} (Interview-ID %{archive_id})'
+  observations_title: Protokoll (deutsch) des Interviews mit %{interviewee_name}
   observations_footer: 'Zitierweise: Protokoll von'
   interview_info: об интервью
   place: Ort

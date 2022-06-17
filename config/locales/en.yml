@@ -251,11 +251,11 @@ en:
   translation_title: Translation (%{lang}) of the interview with
   transcript_footer: 'Citation: Transcript of the Interview with'
   transcript_template: Vorlage für den Import von .ods Dateien
-  biographical_entries_header: 'Short biography:'
-  biographical_entries_title: 'Short biography of'
+  biographical_entries_header: 'Short biography (english): %{interviewee_name} (Interview-ID %{archive_id})'
+  biographical_entries_title: 'Short biography (english) of %{interviewee_name}'
   biographical_entries_footer: 'Citation: Short biography of'
-  observations_header: 'Protokoll (%{lang}):'
-  observations_title: Protocol (%{lang}) of the interview with
+  observations_header: 'Protokoll (%{lang}): %{interviewee_name} (Interview-ID %{archive_id})'
+  observations_title: Protocol (%{lang}) of the interview with %{interviewee_name}
   observations_footer: 'Citation: Protocol of'
   interview_info: About the interview
   place: Place
