@@ -85,7 +85,7 @@ export default function PersonData({
                 })
             }
 
-            { interviewee?.associations_loaded && <Biography /> }
+            { !project.is_catalog && interviewee?.associations_loaded && <Biography /> }
         </>
     );
 }
