@@ -13,6 +13,8 @@ class ReadBulkMetadataFileJob < ApplicationJob
       #file: File.basename(file_path),
     #)
 
+    Sunspot.index project.interviews
+    project.touch
     jobs_logger.info "*** uploaded #{file_path} metadata"
     AdminMailer.with(project: project, receiver: receiver, type: 'read_bulk_metadata', file: file_path).finished_job.deliver_now
     File.delete(file_path) if File.exist?(file_path)
