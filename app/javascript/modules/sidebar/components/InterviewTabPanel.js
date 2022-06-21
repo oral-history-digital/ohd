@@ -9,7 +9,7 @@ import { InterviewInfoContainer, InterviewContributorsContainer, InterviewTextMa
     CitationInfoContainer } from 'modules/interview-metadata';
 import { InterviewMap } from 'modules/interview-map';
 import { GalleryContainer } from 'modules/gallery';
-import { AssignSpeakersFormContainer, MarkTextFormContainer, UploadTranscriptContainer } from 'modules/interview-actions';
+import { AssignSpeakersFormContainer, MarkTextFormContainer, UploadTranscriptContainer, UploadEditTableContainer } from 'modules/interview-actions';
 import { usePathBase } from 'modules/routes';
 import { AuthorizedContent, AuthShowContainer } from 'modules/auth';
 import { useI18n } from 'modules/i18n';
@@ -96,6 +96,12 @@ export default function InterviewTabPanel({
                 <AuthorizedContent object={{type: 'Segment', interview_id: interview.id}} action='update'>
                     <SubTab title={t('edit.upload_transcript.title')}>
                         <UploadTranscriptContainer />
+                    </SubTab>
+                </AuthorizedContent>
+
+                <AuthorizedContent object={{type: 'Interview', interview_id: interview.id}} action='upload_edit_table'>
+                    <SubTab title={t('edit.upload_edit_table.title')}>
+                        <UploadEditTableContainer />
                     </SubTab>
                 </AuthorizedContent>
 
