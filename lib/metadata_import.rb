@@ -37,7 +37,7 @@ class MetadataImport
       project.registry_reference_type_import_metadata_fields.each do |field|
         registry_entries = find_or_create_registry_entries(field, row, locale)
         ref_object = field.ref_object_type == 'Interview' ? interview : interview.interviewee
-        destroy_references(ref_object, field.registry_reference_type_id)
+        destroy_references(ref_object, field.registry_reference_type_id, interview)
         create_references(registry_entries, interview, ref_object, field.registry_reference_type_id)
       end
 
@@ -191,9 +191,9 @@ class MetadataImport
     end
   end
 
-  def destroy_references(ref_object, ref_type_id)
+  def destroy_references(ref_object, ref_type_id, interview)
     if ref_type_id
-      ref_object.registry_references.where(registry_reference_type_id: ref_type_id).destroy_all
+      ref_object.registry_references.where(registry_reference_type_id: ref_type_id, interview_id: interview.id).destroy_all
     end
   end
 
