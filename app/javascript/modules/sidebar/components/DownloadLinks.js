@@ -50,6 +50,16 @@ export default function DownloadLinks({
                         filename={`${archiveId}_photos_${moment().format('YYYY-MM-DD')}.zip`}
                     />
                 </li>
+                <li>
+                    {'Erschließungstabelle: '}
+                    <a
+                        href={`${pathBase}/edit_tables/${archiveId}.csv`}
+                        className="flyout-content-data"
+                        download
+                    >
+                        {`${archiveId}_er_${moment().format('YYYY-MM-DD')}.csv`}
+                    </a>
+                </li>
             </ul>
         </div>
     );

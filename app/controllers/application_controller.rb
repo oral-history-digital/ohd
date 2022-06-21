@@ -263,4 +263,12 @@ class ApplicationController < ActionController::Base
     File.open(file_path, 'wb') {|f| f.write(file.read) }
     file_path
   end
+
+  def update_contributions(interview, contribution_attributes)
+    (contribution_attributes || []).each do |attributes|
+      contribution = Contribution.find(attributes[:id])
+      contribution.update_attributes(speaker_designation: attributes[:speaker_designation])
+    end
+  end
+
 end

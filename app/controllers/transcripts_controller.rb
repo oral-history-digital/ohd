@@ -18,7 +18,7 @@ class TranscriptsController < ApplicationController
     update_tape_durations_and_time_shifts(interview) if transcript_params[:tape_durations]
     tape.segments.destroy_all if transcript_params[:delete_existing]
 
-    update_contributions(interview)
+    update_contributions(interview, transcript_params[:contributions_attributes])
 
     locale = ISO_639.find(Language.find(transcript_params[:transcript_language_id]).code.split(/[\/-]/)[0]).send("alpha2")
 
@@ -63,12 +63,4 @@ class TranscriptsController < ApplicationController
     end
   end
 
-  def update_contributions(interview)
-    contribution_attributes = transcript_params[:contributions_attributes] || []
-
-    contribution_attributes.each do |attributes|
-      contribution = Contribution.find(attributes[:id])
-      contribution.update_attributes(speaker_designation: attributes[:speaker_designation])
-    end
-  end
 end
