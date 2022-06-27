@@ -524,7 +524,6 @@ de:
       admin: 'Berechtigungen bearbeiten'
     upload_transcript:
       title: Transkript hochladen
-      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist, erhalten Sie eine Email.'
     downloads:
       title: Downloads
@@ -678,7 +677,7 @@ de:
         Delimiter sollten entweder Semikolon oder Tab sein.
       bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
-        Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
+        Dateinamen müssen dem Muster Interview-ID_Typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
         Im .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
@@ -700,7 +699,7 @@ de:
     notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes abonnieren.
     notes_on_tos_agreement: Ich stimme den Nutzungsbedingungen zu.
     priv_agreement_alias: Datenschutzbestimmungen
-    notes_on_priv_agreement: Ich stimme der  Datenschutzpraxis zu.
+    notes_on_priv_agreement: Ich stimme der Datenschutzpraxis zu.
     register: Registrierung senden
     appellation:
       dr: Dr.
@@ -974,8 +973,6 @@ de:
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
         transcript_language_id: Sprache der Transkriptdatei
-        tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
-          erschliessen?
         tape_count: Geamtzahl der Tapes
         tape_number: Tape Nr.
         tape_durations: Tape-Dauer

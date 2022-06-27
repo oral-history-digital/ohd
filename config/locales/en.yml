@@ -506,7 +506,6 @@ en:
       admin: Erlaubnisse bearbeiten
     upload_transcript:
       title: Transkript hochladen
-      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört, aus dem Dateinamen erschlossen werden. Dabei steht gg für die Gesamtzahl der Tapes und aa für die Nummer des aktuellen Tapes.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhalten Sie eine Email.'
     default:
       show: Description
@@ -662,7 +661,7 @@ en:
         Use semicolon or tab as delimiter.
       bulk_texts: Compress your protocoll- or biography-files into a zip
         file and upload. No subfolders in the zip-archive allowed. File names
-        must be like ArchiveId_type_Language.ext, where type is 'bg' for biographies and 'prot' for protocolls. E.g. za123_prot_de.rtf or za007_bg_de.odt.
+        must be like InterviewID_Type_Language.ext, where type is 'bg' for biographies and 'prot' for protocolls. E.g. za123_prot_de.rtf or za007_bg_de.odt.
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
         Im .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
@@ -956,8 +955,6 @@ en:
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
         transcript_language_id: Sprache der Transkriptdatei
-        tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
-          erschliessen?
         tape_count: Geamtzahl der Tapes
         tape_number: Tape Nr.
         tape_durations: Tape-Dauer
