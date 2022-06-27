@@ -44,8 +44,8 @@ de:
     eu: Europa
   unauthorized: Keine Berechtigung diesen Inhalt zu sehen
   in: bei
-  request_project_access_explanation: 'Sie haben für diese Sammlung noch keine Freischaltung beantragt.'
-  request_project_access_link: 'Freischaltung für diese Sammlung beantragen'
+  request_project_access_explanation: 'Sie haben für dieses Archiv noch keine Freischaltung beantragt.'
+  request_project_access_link: 'Freischaltung für dieses Archiv beantragen'
   project_access_in_process: Ihre Registrierung wird derzeit inhaltlich vom Projektteam geprüft, diese Prüfung kann bis zu zwei Werktagen dauern. Erst danach wird Ihr Zugang aktiviert und Sie können auf die Inhalte des Interview-Archivs zugreifen.
   registration_needed: Aus Gründen des Persönlichkeitsschutzes müssen Sie sich registrieren.
     Nach Anmeldung haben Sie Zugriff auf alle Interviews in voller Länge.
@@ -330,7 +330,7 @@ de:
     observations: Protokoll
     language_id: Sprache
     workflow_state: Status
-    collection_id: Teilsammlung
+    collection_id: Sammlung
     home_location: Wohnort
   edit:
     text:
@@ -386,11 +386,11 @@ de:
       processed: 'Person angelegt: '
       return: Weitere Person anlegen
     collection:
-      admin: Teilsammlungen bearbeiten
-      new: Teilsammlung hinzufügen
-      edit: Teilsammlung bearbeiten
-      processed: 'Teilsammlung angelegt: '
-      return: Weitere Teilsammlung anlegen
+      admin: Sammlungen bearbeiten
+      new: Sammlung hinzufügen
+      edit: Sammlung bearbeiten
+      processed: 'Sammlung angelegt: '
+      return: Weitere Sammlung anlegen
     language:
       admin: Sprachen bearbeiten
       new: Sprache hinzufügen
@@ -398,16 +398,16 @@ de:
       processed: 'Sprache angelegt: '
       return: Weitere Sprache anlegen
     project:
-      new: Sammlung hinzufügen
-      edit: Sammlung bearbeiten
-      admin: Sammlungskonfiguration
-      info: Sammlungsinformation bearbeiten
-      config: Sammlung konfigurieren
+      new: Archiv hinzufügen
+      edit: Archiv bearbeiten
+      admin: Archivkonfiguration
+      info: Archivinformation bearbeiten
+      config: Archiv konfigurieren
       display: Anzeigeoptionen bearbeiten
-      processed: 'Sammlung angelegt: '
-      return: Weitere Sammlung anlegen
+      processed: 'Archiv angelegt: '
+      return: Weiteres Archiv anlegen
     projects:
-      admin: Sammlungen
+      admin: Archive
     institution:
       admin: Institutionen
     metadata_field:
@@ -524,7 +524,6 @@ de:
       admin: 'Berechtigungen bearbeiten'
     upload_transcript:
       title: Transkript hochladen
-      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes (gg) sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört (aa), aus dem Dateinamen erschlossen werden.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist, erhalten Sie eine Email.'
     downloads:
       title: Downloads
@@ -678,7 +677,7 @@ de:
         Delimiter sollten entweder Semikolon oder Tab sein.
       bulk_texts: Komprimiere deine Protokoll- oder Biografietextdateien
         in eine zip-Datei und lade sie hoch (die Textdateien müssen flach in der zip-Datei liegen, also keine Unterordner!).
-        Dateinamen müssen dem Muster ArchiveId_typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
+        Dateinamen müssen dem Muster Interview-ID_Typ_Sprache.ext folgen, wobei der Typ für Biographieen 'bg' und für Protokolle 'prot' ist. Z.B. za123_prot_de.rtf oder za007_bg_de.odt.
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
         Im .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
@@ -700,7 +699,7 @@ de:
     notes_on_receive_newsletter: Ich möchte den Newsletter des Projektes abonnieren.
     notes_on_tos_agreement: Ich stimme den Nutzungsbedingungen zu.
     priv_agreement_alias: Datenschutzbestimmungen
-    notes_on_priv_agreement: Ich stimme der  Datenschutzpraxis zu.
+    notes_on_priv_agreement: Ich stimme der Datenschutzpraxis zu.
     register: Registrierung senden
     appellation:
       dr: Dr.
@@ -767,7 +766,7 @@ de:
     collaboration: Kollaboration
     interview_id: Interviews
     archive_id: Interview-ID
-    collection_id: Teilsammlung
+    collection_id: Sammlung
     media_type: Medientyp
     language_id: Sprache
     age: Alter
@@ -797,8 +796,8 @@ de:
         one: Ausschnitt
         other: Ausschnitte
       collection:
-        one: Teilsammlung
-        other: Teilsammlungen
+        one: Sammlung
+        other: Sammlungen
       language:
         one: Sprache
         other: Sprachen
@@ -884,8 +883,8 @@ de:
         one: 'Zur Rolle gehörende Berechtigung'
         other: 'Zur Rolle gehörende Berechtigungen'
       project:
-        one: Sammlung
-        other: Sammlungen
+        one: Archiv
+        other: Archive
       person:
         one: Person
         other: Personen
@@ -916,7 +915,7 @@ de:
         person_id: Person
         speaker_designation: Sprecher*innen­auszeichnung (z.B. *CG:*)
       collection:
-        project_id: Sammlung
+        project_id: Archiv
         institution_id: Institution
         homepage: Website
         countries: Interviews in
@@ -936,7 +935,7 @@ de:
         institution_id: Institution
       interview:
         person_name: Name
-        collection_id: Teilsammlung
+        collection_id: Sammlung
         archive_id: Interview-ID
         forced_labor_groups: Gruppe
         forced_labor_fields: Einsatzbereich
@@ -969,13 +968,11 @@ de:
         observations: Protokoll
         description: Beschreibung
       transcript:
-        collection_id: Teilsammlung
+        collection_id: Sammlung
         archive_id: Interview-ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
         transcript_language_id: Sprache der Transkriptdatei
-        tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
-          erschliessen?
         tape_count: Geamtzahl der Tapes
         tape_number: Tape Nr.
         tape_durations: Tape-Dauer
@@ -1011,7 +1008,7 @@ de:
         has_newsletter: Newsletter
         has_map: Karte anzeigen
         pseudo_logged_out_visible_registry_entry_ids: Auch ohne Anmeldung sichtbare Registerbäume (oberste IDs)
-        pseudo_hidden_registry_entry_ids: Nur für Sammlungsmanager sichtbare Registerbäume (oberste IDs)
+        pseudo_hidden_registry_entry_ids: Nur für Archivmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
@@ -1224,7 +1221,7 @@ de:
         href: Href
         file: Datei
         publish: Öffentlich
-        project_id: Sammlung
+        project_id: Archiv
         key: Schlüssel
         created_at: Angelegt am
         code: Code
@@ -1247,7 +1244,7 @@ de:
         interview:
           attributes:
             collection_id:
-              empty: Bitte Teilsammlung auswählen
+              empty: Bitte Sammlung auswählen
         upload:
           attributes:
             type:
@@ -1318,7 +1315,7 @@ de:
           media_type: Medientyp
           language: Sprache
           language_id: Sprache
-          collection_id: Teilsammlung
+          collection_id: Sammlung
           workflow_state: Status
           random: Zufall
         order:
@@ -1350,5 +1347,5 @@ de:
       admin_menu:
         actions: Aktionen
     workbook:
-      project_unavailable: 'Sammlung nicht mehr verfügbar.'
+      project_unavailable: 'Archiv nicht mehr verfügbar.'
       copy_link: 'Link kopieren'

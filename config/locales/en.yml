@@ -313,7 +313,7 @@ en:
     observations: Observations
     language_id: Language
     workflow_state: Workflow state
-    collection_id: Subcollection
+    collection_id: Collection
     home_location: Home location
   edit:
     text:
@@ -373,22 +373,22 @@ en:
       edit: Sprache bearbeiten
       admin: Sprachen bearbeiten
     collection:
-      admin: Teilsammlungen bearbeiten
-      new: Teilsammlung hinzufügen
-      edit: Teilsammlung bearbeiten
-      processed: 'Teilsammlung angelegt: '
-      return: Weitere Teilsammlung anlegen
+      admin: Edit collection
+      new: New collection
+      edit: Edit collection
+      processed: 'Collection created: '
+      return: Create another collection
     project:
-      new: Sammlung hinzufügen
-      edit: Sammlung bearbeiten
-      admin: Sammlungskonfiguration
-      info: Sammlungsinformation bearbeiten
-      config: Sammlung konfigurieren
-      display: Anzeigeoptionen bearbeiten
-      processed: 'Sammlung angelegt: '
-      return: Weitere Sammlung anlegen
+      new: New archive
+      edit: Edit archive
+      admin: Archive configuration
+      info: Edit archive information
+      config: Configure archive
+      display: Edit display options
+      processed: "Archive created:"
+      return: Create another archive
     projects:
-      admin: Sammlungen
+      admin: Archives
     institution:
       admin: Institutionen
     metadata_field:
@@ -506,7 +506,6 @@ en:
       admin: Erlaubnisse bearbeiten
     upload_transcript:
       title: Transkript hochladen
-      tape_and_archive_id_from_file_explanation: Wenn der Dateinname die Form archiveId_gg_aa.ext hat, dann können die Archiv-ID, die Gesamtanzahl der Tapes sowie die Nummmer des Tapes zu dem das hochgeladene Transkript gehört, aus dem Dateinamen erschlossen werden. Dabei steht gg für die Gesamtzahl der Tapes und aa für die Nummer des aktuellen Tapes.
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhalten Sie eine Email.'
     default:
       show: Description
@@ -662,7 +661,7 @@ en:
         Use semicolon or tab as delimiter.
       bulk_texts: Compress your protocoll- or biography-files into a zip
         file and upload. No subfolders in the zip-archive allowed. File names
-        must be like ArchiveId_type_Language.ext, where type is 'bg' for biographies and 'prot' for protocolls. E.g. za123_prot_de.rtf or za007_bg_de.odt.
+        must be like InterviewID_Type_Language.ext, where type is 'bg' for biographies and 'prot' for protocolls. E.g. za123_prot_de.rtf or za007_bg_de.odt.
       transcript:
         Es können Transkripte in den Formaten .ods, .odt, .vtt, .srt hochgeladen werden.
         Im .ods-Format müssen die Spalten mit 'In|Timecode', 'Speaker|Sprecher' und 'Trans[c|k]ript|Translation|Übersetzung' betitelt werden.
@@ -748,7 +747,7 @@ en:
     collaboration: Collaboration
     interview_id: Interviews
     archive_id: Interview ID
-    collection_id: Subcollection
+    collection_id: Collection
     media_type: Media type
     language_id: Language
     age: Age
@@ -865,8 +864,8 @@ en:
         one: Zur Rolle gehörende Erlaubnis
         other: Zur Rolle gehörende Erlaubnisse
       project:
-        one: Sammlung
-        other: Sammlungen
+        one: Archive
+        other: Archives
       person:
         one: Person
         other: Personen
@@ -896,7 +895,7 @@ en:
         person_id: Person
         speaker_designation: speaker designation (e.g. *CG:*)
       collection:
-        project_id: Sammlung
+        project_id: Archive
         institution_id: Institution
         homepage: Website
         name: Name
@@ -918,7 +917,7 @@ en:
         institution_id: Institution
       interview:
         person_name: Name
-        collection_id: Teilsammlung
+        collection_id: Collection
         archive_id: Interview ID
         forced_labor_groups: Gruppe
         forced_labor_fields: Einsatzbereich
@@ -951,13 +950,11 @@ en:
         observations: Protokoll
         description: Description
       transcript:
-        collection_id: Teilsammlung
+        collection_id: Collection
         archive_id: Interview ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
         transcript_language_id: Sprache der Transkriptdatei
-        tape_and_archive_id_from_file: Archiv-ID und Tapedaten aus dem Dateinamen
-          erschliessen?
         tape_count: Geamtzahl der Tapes
         tape_number: Tape Nr.
         tape_durations: Tape-Dauer
@@ -993,7 +990,7 @@ en:
         has_newsletter: Newsletter
         has_map: Karte anzeigen
         pseudo_logged_out_visible_registry_entry_ids: Auch ohne Anmeldung sichtbare Registerbäume (oberste IDs)
-        pseudo_hidden_registry_entry_ids: Nur für Sammlungsmanager sichtbare Registerbäume (oberste IDs)
+        pseudo_hidden_registry_entry_ids: Nur für Archivmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
@@ -1211,7 +1208,7 @@ en:
         href: Href
         file: File
         publish: Public
-        project_id: Sammlung
+        project_id: Archive
         key: Schlüssel
         created_at: Angelegt am
         code: Code
@@ -1234,7 +1231,7 @@ en:
         interview:
           attributes:
             collection_id:
-              empty: Bitte Teilsammlung auswählen
+              empty: Please choose a collection
         upload:
           attributes:
             type:
@@ -1359,5 +1356,5 @@ en:
       admin_menu:
         actions: Actions
     workbook:
-      project_unavailable: 'Collection not available anymore.'
+      project_unavailable: 'Archive not available anymore.'
       copy_link: 'Copy link'
