@@ -1217,6 +1217,7 @@ en:
         code: Code
         use_in_details_view: in der Detailansicht zeigen
         order: Reihenfolge
+        data: Datei
     errors:
       default:
         empty: Please select
