@@ -59,16 +59,12 @@ export default function UploadEditTable({
 
     return (
         <>
-            <p className='explanation'>
-                {t('upload.explanation.edit_table')}
-            </p>
-
             <p>
-                <a href="/edit_table-import-template.ods" download>
+                <a href="/edit_table-import-template.csv" download>
                     <span className="flyout-sub-tabs-content-ico-link">
                         <FaDownload className="Icon Icon--small" title={t('download')} />
                         {' '}
-                        {t('edit_table_template')}
+                        {t('edit.iupload_edit_table.template')}
                     </span>
                 </a>
             </p>
@@ -101,7 +97,7 @@ export default function UploadEditTable({
     );
 }
 
-UploadTranscript.propTypes = {
+UploadEditTable.propTypes = {
     archiveId: PropTypes.string.isRequired,
     interview: PropTypes.object.isRequired,
     languages: PropTypes.object.isRequired,
