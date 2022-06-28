@@ -13,12 +13,10 @@ import RefObjectLinkContainer from './RefObjectLinkContainer';
 export default class RegistryEntryShow extends Component {
     componentDidMount() {
         this.loadWithAssociations();
-        this.loadRegistryReferenceTypes()
     }
 
     componentDidUpdate() {
         this.loadWithAssociations();
-        this.loadRegistryReferenceTypes()
     }
 
     loadWithAssociations() {
@@ -30,43 +28,28 @@ export default class RegistryEntryShow extends Component {
         }
     }
 
-    loadRegistryReferenceTypes() {
-        if (!this.props.registryReferenceTypesStatus[`for_projects_${this.props.project?.id}`]) {
-            this.props.fetchData(this.props, 'registry_reference_types', null, null, `for_projects=${this.props.project?.id}`);
-        }
-    }
-
     registryEntry() {
         return this.props.registryEntries[this.props.registryEntryId];
     }
 
     registryReferences() {
-        const { project, registryReferenceTypesStatus, registryReferenceTypes, locale, onSubmit } = this.props;
+        const { project, registryReferenceTypesStatus, locale, onSubmit } = this.props;
 
         const registryEntry = this.registryEntry();
 
         const references = [];
 
-        if (
-            registryReferenceTypesStatus[`for_projects_${project?.id}`] &&
-            registryReferenceTypesStatus[`for_projects_${project?.id}`].split('-')[0] === 'fetched'
-        ) {
-            for (var r in registryEntry.registry_references) {
-                let rr = registryEntry.registry_references[r]
-                let rr_type = registryReferenceTypes[rr.registry_reference_type_id]
+        for (var r in registryEntry.registry_references) {
+            let rr = registryEntry.registry_references[r]
 
-                references.push(
-                    <li
-                        key={`this.registryEntry().registry_reference-${r}`}
-                    >
-                        <strong>
-                            {rr_type && `${rr_type.name[locale]} `}
-                        </strong>
-                        {`${t(this.props, 'in')} ${t(this.props, rr.ref_object_type.toLowerCase())} `}
-                        <RefObjectLinkContainer registryReference={rr} onSubmit={onSubmit} />
-                    </li>
-                );
-            }
+            references.push(
+                <li
+                    key={`this.registryEntry().registry_reference-${r}`}
+                >
+                    {`${t(this.props, 'in')} ${t(this.props, rr.ref_object_type.toLowerCase())} `}
+                    <RefObjectLinkContainer registryReference={rr} onSubmit={onSubmit} />
+                </li>
+            );
         }
 
         return references;
