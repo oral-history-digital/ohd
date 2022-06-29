@@ -26,7 +26,7 @@ export default function EntryReferences({
     const statuses = useSelector(getStatuses);
 
     const groupedReferences = groupBy(registryEntry.registry_references, 'archive_id');
-    const referencesCount = Object.values(groupedReferences);
+    const referencesCount = Object.values(registryEntry.registry_references).length;
     const archiveIds = Object.keys(groupedReferences);
 
     useEffect(() => {
@@ -48,10 +48,10 @@ export default function EntryReferences({
     return (
         <>
             <h4>
-                {referencesCount.length}
+                {referencesCount}
                 &nbsp;
-                {(referencesCount.length === 1) ? t('activerecord.models.registry_reference.one') : t('activerecord.models.registry_reference.other')}
-                {referencesCount.length > 0 ? ':' : ''}
+                {(referencesCount === 1) ? t('activerecord.models.registry_reference.one') : t('activerecord.models.registry_reference.other')}
+                {referencesCount > 0 ? ':' : ''}
             </h4>
             <br/>
             <ul>
@@ -72,13 +72,15 @@ export default function EntryReferences({
                                 >
                                     {`${t('activerecord.models.registry_reference.one')} ${t('in')} ${interviewTitle} (${archiveId})`}
                                 </Link>
-                                <>
+                                <p>
                                     {
                                         groupedReferences[archiveId].filter(ref => ref.ref_object_type === 'Segment').map(ref => {
                                             return <RefObjectLinkContainer registryReference={ref} onSubmit={onSubmit} />
-                                        })
+                                        }).reduce((accu, elem) => {
+                                            return accu === null ? [elem] : [...accu, ', ', elem]
+                                        }, null)
                                     }
-                                </>
+                                </p>
                             </li>
                         )
                     })
