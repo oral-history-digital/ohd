@@ -401,9 +401,12 @@ class RegistryEntry < ApplicationRecord
   #
   %w(gnd osm).each do |provider|
     define_method "#{provider}_id=" do |nid|
-      norm_datum = self.send("#{provider}_norm_data").first_or_initialize
-      norm_datum.nid = nid
-      norm_datum.save
+      if nid
+        norm_datum = self.send("#{provider}_norm_data").first_or_initialize
+        norm_datum.nid = nid
+        norm_datum.save
+        binding.pry
+      end
     end
 
     define_method "#{provider}_id" do
