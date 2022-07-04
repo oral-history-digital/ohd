@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import groupBy from 'lodash.groupby';
 
+import { PixelLoader } from 'modules/spinners';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { getStatuses } from 'modules/data';
@@ -45,6 +46,15 @@ export default function EntryReferences({
         })
     }, [isLoggedIn]);
 
+    const archiveIdsWithTitles = archiveIds.reduce((acc, archiveId) => {
+        const interviewTitle = isLoggedIn ? interviews[archiveId]?.short_title?.[locale] : interviews[archiveId]?.anonymous_title[locale];
+        acc[archiveId] = interviewTitle;
+        return acc;
+    }, {});
+
+    let loaded = Object.values(archiveIdsWithTitles).reduce((acc, title) => acc + (title ? 1 : 0), 0);
+    archiveIds.sort((a, b) => archiveIdsWithTitles[a]?.localeCompare(archiveIdsWithTitles[b]));
+
     return (
         <>
             <h4>
@@ -54,40 +64,38 @@ export default function EntryReferences({
                 {referencesCount > 0 ? ':' : ''}
             </h4>
             <br/>
-            <ul>
-                {
-                    archiveIds.map(archiveId => {
-                        const interview = interviews[archiveId];
-                        const interviewTitle = isLoggedIn ? interview?.short_title?.[locale] : interview?.anonymous_title[locale];
-                        return (
-                            <li
-                                key={`references-${registryEntry.id}-${archiveId}`}
-                            >
-                                <Link className={'search-result-link'}
-                                    key={archiveId}
-                                    onClick={() => {
-                                        setArchiveId(archiveId);
-                                    }}
-                                    to={pathBase + '/interviews/' + archiveId}
-                                >
-                                    {`${t('activerecord.models.registry_reference.one')} ${t('in')} ${interviewTitle} (${archiveId})`}
-                                </Link>
-                                <p>
-                                    {
-                                        groupedReferences[archiveId].filter(ref => ref.ref_object_type === 'Segment').map(ref => {
-                                            return <RefObjectLinkContainer registryReference={ref} onSubmit={onSubmit} />
-                                        }).reduce((accu, elem) => {
-                                            return accu === null ? [elem] : [...accu, ', ', elem]
-                                        }, null)
-                                    }
-                                </p>
-                            </li>
-                        )
-                    })
-                }
-            </ul>
             {
-                //!references || (references.length !== Object.keys(this.registryEntry().registry_references).length) && <PixelLoader/>
+                loaded < referencesCount ? <PixelLoader/> :
+                <ul>
+                    {
+                        archiveIds.map(archiveId => {
+                            return (
+                                <li
+                                    key={`references-${registryEntry.id}-${archiveId}`}
+                                >
+                                    <Link className={'search-result-link'}
+                                        key={archiveId}
+                                        onClick={() => {
+                                            setArchiveId(archiveId);
+                                        }}
+                                        to={pathBase + '/interviews/' + archiveId}
+                                    >
+                                        {`${t('activerecord.models.registry_reference.one')} ${t('in')} ${archiveIdsWithTitles[archiveId]} (${archiveId})`}
+                                    </Link>
+                                    <p>
+                                        {
+                                            groupedReferences[archiveId].filter(ref => ref.ref_object_type === 'Segment').map(ref => {
+                                                return <RefObjectLinkContainer registryReference={ref} onSubmit={onSubmit} />
+                                            }).reduce((accu, elem) => {
+                                                return accu === null ? [elem] : [...accu, ', ', elem]
+                                            }, null)
+                                        }
+                                    </p>
+                                </li>
+                            )
+                        })
+                    }
+                </ul>
             }
         </>
     )

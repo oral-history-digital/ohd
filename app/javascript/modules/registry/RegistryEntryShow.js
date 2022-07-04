@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaGlobeEurope } from 'react-icons/fa';
 
-import { PixelLoader } from 'modules/spinners';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { admin } from 'modules/auth';
@@ -108,7 +107,7 @@ export default class RegistryEntryShow extends Component {
                 <p>
                     {this.registryEntry().notes[locale]}
                 </p>
-                { this.registryEntry() && <EntryReferencesContainer registryEntry={this.registryEntry()} onSubmit={this.props.onSubmit} />}
+                <EntryReferencesContainer registryEntry={this.registryEntry()} onSubmit={this.props.onSubmit} />
             </div>
         );
     }
