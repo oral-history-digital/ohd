@@ -53,6 +53,7 @@
   color: var(--primary-color) !important;
 }
 
+.Button--hover:hover,
 .Button--primaryAction:hover,
 .Button--secondaryAction:hover {
   filter: brightness(1.2);

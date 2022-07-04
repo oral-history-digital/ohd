@@ -1,7 +1,7 @@
 import { useEffect, useRef, memo } from 'react';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
-import { FaUser } from 'react-icons/fa';
+import { FaUser, FaStar } from 'react-icons/fa';
 
 import { fullname } from 'modules/people';
 import { SCROLL_OFFSET } from 'modules/constants';
@@ -10,6 +10,7 @@ import { useI18n } from 'modules/i18n';
 import { scrollSmoothlyTo } from 'modules/user-agent';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
+import RememberSegmentButton from './RememberSegmentButton';
 
 function Segment({
     data,
@@ -100,6 +101,8 @@ function Segment({
                 >
                     {text || <i>{t('modules.transcript.no_text')}</i>}
                 </button>
+
+                <RememberSegmentButton segment={data} />
 
                 {
                     showButtons && (

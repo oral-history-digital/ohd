@@ -65,6 +65,17 @@ $segment-icon-width: 1rem;
   box-shadow: 0 0 0 $focus-radius $focus-color;
 }
 
+.Segment-hiddenButton {
+  opacity: 0;
+  transition: opacity $transition-duration;
+}
+
+.Segment:hover > .Segment-hiddenButton,
+.Segment-text:focus + .Segment-hiddenButton,
+.Segment-hiddenButton:focus {
+  opacity: 1;
+}
+
 .Segment-buttons {
   align-self: flex-end;
   border-bottom: 2px solid transparent;
