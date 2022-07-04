@@ -65,7 +65,7 @@ export default function EntryReferences({
             </h4>
             <br/>
             {
-                loaded < referencesCount ? <PixelLoader/> :
+                loaded < archiveIds.length ? <PixelLoader/> :
                 <ul>
                     {
                         archiveIds.map(archiveId => {
