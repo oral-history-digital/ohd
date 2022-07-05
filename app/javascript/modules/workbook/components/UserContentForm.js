@@ -1,10 +1,6 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
-import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
-import moment from 'moment';
-import classNames from 'classnames';
 
-import { Checkbox } from 'modules/ui';
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
 
@@ -27,8 +23,6 @@ export default class UserContentForm extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
-        this.toggleValue = this.toggleValue.bind(this);
-
     }
 
     handleChange(event) {
@@ -39,11 +33,6 @@ export default class UserContentForm extends Component {
         if (this.valid()) {
             this.clearErrors();
         }
-    }
-
-    toggleValue(event) {
-        const name = event.target.name;
-        this.setState({[name]: !this.state[name]});
     }
 
     handleSubmit(event) {
@@ -76,117 +65,10 @@ export default class UserContentForm extends Component {
         this.setState({errors: undefined});
     }
 
-    segmentTime() {
-        return moment.utc(this.props.sortedSegments[this.state.segmentIndex].time * 1000).format("HH:mm:ss");
-    }
-
-    segmentTape() {
-        return this.props.sortedSegments[this.state.segmentIndex].tape_nbr;
-    }
-
-    segmentSelect() {
-        if (this.state.type === 'UserAnnotation' && this.props.segment) {
-            return <div>
-                <div className='popup-segment-nav-container'>
-                    <div className='popup-segment-nav-label'>
-                        {t(this.props, 'segment')}
-                    </div>
-                    <div className='popup-segment-nav'>
-                        {this.previousSegment()}
-                        <div className='popup-segment-nav-data'>
-                            {`${this.segmentTape()} - ${this.segmentTime()}`}
-                        </div>
-                        {this.nextSegment()}
-                    </div>
-                </div>
-                <div className='popup-segment-nav-container'>
-                    <div className='popup-segment'>
-                        {this.props.sortedSegments[this.state.segmentIndex].text[`${this.props.locale}-public`]}
-                    </div>
-                </div>
-            </div>
-        }
-    }
-
-    previousSegment() {
-        const isDisabled = this.state.segmentIndex === 0;
-
-        return (
-            <button
-                type="button"
-                className="Button Button--transparent Button--icon"
-                disabled={isDisabled}
-                onClick={() => this.setSegment(this.state.segmentIndex - 1)}
-            >
-                <FaArrowLeft className={classNames('Icon', {'Icon--primary': !isDisabled})} />
-            </button>
-        );
-    }
-
-    nextSegment() {
-        const isDisabled = this.state.segmentIndex >= this.props.sortedSegments.length - 1;
-
-        return (
-            <button
-                type="button"
-                className="Button Button--transparent Button--icon"
-                disabled={isDisabled}
-                onClick={() => this.setSegment(this.state.segmentIndex + 1)}
-            >
-                <FaArrowRight className={classNames('Icon', {'Icon--primary': !isDisabled})} />
-            </button>
-        );
-    }
-
-    setSegment(segmentIndex) {
-        let segment = this.props.sortedSegments[segmentIndex];
-        this.setState({
-            segmentIndex: segmentIndex,
-            properties: {
-                time: segment.time,
-                tape_nbr: segment.tape_nbr,
-                segmentIndex: segmentIndex,
-                interview_archive_id: this.props.archiveId
-            },
-            reference_id: segment.id,
-            media_id: segment.media_id
-        });
-    }
-
-
-    // TODO: currently unused - we have to implement the publication workflow first.
-    publish() {
-        if (this.state.type === 'UserAnnotation' && this.state.workflow_state === 'private') {
-            return <div className="form-group">
-                {this.label('publish')}
-                <Checkbox
-                    className="publish-input"
-                    name='shared'
-                    checked={this.state.shared}
-                    onChange={this.toggleValue}
-                />
-            </div>
-        }
-    }
-
     label(term) {
         return <label className={'publish-label'}>
             {t(this.props, term)}
         </label>
-    }
-
-    annotationConfirmation() {
-        if (this.state.type === 'UserAnnotation') {
-            if (this.props.locale && this.props.project.external_links) {
-                let guidelines = Object.values(this.props.project.external_links).filter(link => link.internal_name === 'annotation_guidelines')[0] || {};
-                let link = guidelines.translations_attributes && Object.values(guidelines.translations_attributes).filter(link => link.locale === this.props.locale)[0]
-                if (link) {
-                    return <div className={'annotation-confirmation-text'} dangerouslySetInnerHTML={{__html: t(this.props, 'annotation_confirmation', {link: link.url})}} />
-                } else {
-                    return null;
-                }
-            }
-        }
     }
 
     render() {
@@ -209,7 +91,6 @@ export default class UserContentForm extends Component {
                         {this.label('description')}
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>
-                    {this.segmentSelect()}
 
                     <div className="Form-footer">
                         <input

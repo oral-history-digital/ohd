@@ -18,7 +18,7 @@ class BaseRegistryReference < ApplicationRecord
 
   # Uniqueness constraints are enforced at DB level too, but MySQL does consider NULL values distinct
   # which means that duplicate records with registry_reference_type_id == NULL will not be identified.
-  validates_uniqueness_of :registry_entry_id, :scope => [:ref_object_type, :ref_object_id, :registry_reference_type_id]
+  validates_uniqueness_of :registry_entry_id, :scope => [:ref_object_type, :ref_object_id, :registry_reference_type_id, :interview_id]
   #validates_uniqueness_of :ref_position, :registry_entry_id, :scope => [:ref_object_type, :ref_object_id, :registry_reference_type_id]
 
   scope :with_type, -> (code) {

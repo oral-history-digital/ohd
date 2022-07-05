@@ -95,9 +95,9 @@ class ReadBulkRegistryEntriesFileJob < ApplicationJob
         rescue StandardError => e
           log("#{e.message}: #{e.backtrace}")
         end
-        project.registry_entries.update_all(updated_at: Time.now)
       end
     end
+    project.registry_entries.update_all(updated_at: Time.now)
   end
 
   def log(text, error=true)

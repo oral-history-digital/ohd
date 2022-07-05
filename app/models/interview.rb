@@ -809,7 +809,8 @@ class Interview < ApplicationRecord
         with(:archive_id, params[:archive_id]) if params[:archive_id]
         if project
           dynamic :search_facets do
-            facet *project.search_facets_names
+            # By default Sunspot will only return the first 100 facet values. You can increase this limit, or force it to return all facets by setting limit to -1.
+            facet *(project.search_facets_names | [limit: -1])
             project.search_facets_names.each do |facet|
               facet_value = params[facet]
               facet_value.delete_if(&:blank?) if facet_value.is_a?(Array)

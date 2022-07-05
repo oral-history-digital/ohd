@@ -3,22 +3,19 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { FaGlobeEurope } from 'react-icons/fa';
 
-import { PixelLoader } from 'modules/spinners';
 import { pathBase } from 'modules/routes';
 import { t } from 'modules/i18n';
 import { admin } from 'modules/auth';
 import { formatTimecode } from 'modules/interview-helpers';
-import RefObjectLinkContainer from './RefObjectLinkContainer';
+import EntryReferencesContainer from './EntryReferencesContainer';
 
 export default class RegistryEntryShow extends Component {
     componentDidMount() {
         this.loadWithAssociations();
-        this.loadRegistryReferenceTypes()
     }
 
     componentDidUpdate() {
         this.loadWithAssociations();
-        this.loadRegistryReferenceTypes()
     }
 
     loadWithAssociations() {
@@ -30,46 +27,8 @@ export default class RegistryEntryShow extends Component {
         }
     }
 
-    loadRegistryReferenceTypes() {
-        if (!this.props.registryReferenceTypesStatus[`for_projects_${this.props.project?.id}`]) {
-            this.props.fetchData(this.props, 'registry_reference_types', null, null, `for_projects=${this.props.project?.id}`);
-        }
-    }
-
     registryEntry() {
         return this.props.registryEntries[this.props.registryEntryId];
-    }
-
-    registryReferences() {
-        const { project, registryReferenceTypesStatus, registryReferenceTypes, locale, onSubmit } = this.props;
-
-        const registryEntry = this.registryEntry();
-
-        const references = [];
-
-        if (
-            registryReferenceTypesStatus[`for_projects_${project?.id}`] &&
-            registryReferenceTypesStatus[`for_projects_${project?.id}`].split('-')[0] === 'fetched'
-        ) {
-            for (var r in registryEntry.registry_references) {
-                let rr = registryEntry.registry_references[r]
-                let rr_type = registryReferenceTypes[rr.registry_reference_type_id]
-
-                references.push(
-                    <li
-                        key={`this.registryEntry().registry_reference-${r}`}
-                    >
-                        <strong>
-                            {rr_type && `${rr_type.name[locale]} `}
-                        </strong>
-                        {`${t(this.props, 'in')} ${t(this.props, rr.ref_object_type.toLowerCase())} `}
-                        <RefObjectLinkContainer registryReference={rr} onSubmit={onSubmit} />
-                    </li>
-                );
-            }
-        }
-
-        return references;
     }
 
     show(id, key) {
@@ -136,8 +95,6 @@ export default class RegistryEntryShow extends Component {
             return null;
         }
 
-        const references = this.registryReferences();
-
         return (
             <div>
                 <div>
@@ -150,26 +107,13 @@ export default class RegistryEntryShow extends Component {
                 <p>
                     {this.registryEntry().notes[locale]}
                 </p>
-                <h4>
-                    {references.length}
-                    &nbsp;
-                    {(references.length === 1) ? t(this.props, 'activerecord.models.registry_reference.one') : t(this.props, 'activerecord.models.registry_reference.other')}
-                    {references.length > 0 ? ':' : ''}
-                </h4>
-                <br/>
-                <ul>
-                    {references}
-                </ul>
-                {
-                    !references || (references.length !== Object.keys(this.registryEntry().registry_references).length) && <PixelLoader/>
-                }
+                <EntryReferencesContainer registryEntry={this.registryEntry()} onSubmit={this.props.onSubmit} />
             </div>
         );
     }
 }
 
 RegistryEntryShow.propTypes = {
-    interviews: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     project: PropTypes.object.isRequired,
     fetchData: PropTypes.func.isRequired,
