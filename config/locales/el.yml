@@ -1302,13 +1302,13 @@ el:
       no_results: No results
       annotation_for: Annotation for
       search_results:
-        heading: Search results
-        in_transcript: in the transcript
-        in_toc: in the table of contents
+        heading: αποτελέσματα αναζήτησης
+        in_transcript: στην απομαγνητοφώνηση
+        in_toc: στα περιεχόμενα
         in_photo_captions: in photo captions
         in_annotations: in annotations
-        in_registry: in the registry
-        in_biography: in the short biography
+        in_registry: στο ευρετήριο
+        in_biography: στο σύντομο βιογραφικό
         in_observations: in the protocol
     layout:
       back_to_top:
