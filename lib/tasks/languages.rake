@@ -1,3 +1,9 @@
+# JSON file represents our base languages, which are based on ISO-639-1,
+# but with ISO-639-3 three-letter language codes.
+# 'bih' (Bihari) is not included because there is no ISO-639-3 code for it.
+# Additional, and more specific languages can be created by hand.
+#
+#
 # JSON file created with:
 #
 # languages = ISO_639::ISO_639_1
