@@ -126,7 +126,7 @@ class RegistryEntriesController < ApplicationController
         if current_user_account && (current_user_account.admin? || current_user_account.roles?(current_project, 'RegistryEntry', 'show'))
           root = params[:root_id] ? RegistryEntry.find(params[:root_id]) : current_project.root_registry_entry
           csv = Rails.cache.fetch "#{current_project.cache_key_prefix}-registry-entries-csv-#{root.id}-#{params[:lang]}-#{cache_key_date}" do
-            CSV.generate(col_sep: "\t") do |row|
+            CSV.generate(col_sep: "\t", quote_char: "\x00") do |row|
               row << ['parent_name', 'parent_id', 'name', 'id', 'description', 'latitude', 'longitude', 'GND ID', 'OSM ID'] 
               root.on_all_descendants do |entry|
                 entry.parents.each do |parent|

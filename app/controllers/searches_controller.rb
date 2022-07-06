@@ -194,7 +194,7 @@ class SearchesController < ApplicationController
       format.csv do
         search = Interview.archive_search(current_user_account, current_project, locale, params, 999999)
         desired_columns = current_project.list_columns.map(&:name)
-        options = {col_sep: ";"}
+        options = {col_sep: "\t", quote_char: "\x00"}
         csv = CSV.generate(options) do |csv|
           csv << (desired_columns.map { |c| t("search_facets.#{c}") }).insert(0, t("title"))
           interviews = search.results.map { |i| cache_single(i) }

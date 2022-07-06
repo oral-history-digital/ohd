@@ -1,0 +1,74 @@
+class EditTableExport
+
+  attr_accessor :file_path, :interview, :contributions, :original_locale, :translation_locale
+
+  def initialize(public_interview_id)
+    @interview = Interview.find_by_archive_id(public_interview_id)
+    @contributions = @interview.contributions.inject({}) do |mem, c|
+      mem[c.person_id] = c.speaker_designation
+      mem
+    end
+    @original_locale = @interview.lang
+    @translation_locale = (@interview.languages - [@interview.lang]).first
+    @file_path = File.join(Rails.root, 'tmp', 'files', "#{@interview.archive_id}_er_#{DateTime.now.strftime("%Y-%m-%d")}.csv")
+  end
+
+  def process
+    CSV.open(file_path, 'w', col_sep: "\t", quote_char: "\x00") do |f|
+
+      f << [
+        'Band',
+        'Timecode',
+        'Sprecher',
+        'Transkript',
+        'Übersetzung',
+        'Hauptüberschrift',
+        'Zwischenüberschrift',
+        'Hauptüberschrift (Übersetzung)',
+        'Zwischenüberschrift (Übersetzung)',
+        'Registerverknüpfungen',
+        'Anmerkungen'
+      ]
+
+      interview.tapes.includes(
+        segments: [
+          :translations,
+          {annotations: :translations},
+          {registry_references: {registry_entry: {registry_names: :translations}}}
+        ]
+      ).each do |tape|
+        tape.segments.each do |segment|
+
+          segment_locales = segment.translations.map(&:locale)
+          segment_original_locale = segment_locales.include?(original_locale) ? original_locale : "#{original_locale}-public"
+          segment_translation_locale = segment_locales.include?(translation_locale) ? translation_locale : "#{translation_locale}-public"
+
+          text_orig = segment.text(segment_original_locale)
+          text_trans = segment.text(segment_translation_locale)
+          mainheading_orig = segment.mainheading(segment_original_locale)
+          subheading_orig = segment.subheading(segment_original_locale)
+          mainheading_trans = segment.mainheading(segment_translation_locale)
+          subheading_trans = segment.subheading(segment_translation_locale)
+          registry_references = segment.registry_references.compact.uniq.map{|r| r.registry_entry.descriptor(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          annotations = segment.annotations.compact.uniq.map{|a| a.text(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
+
+          f << [
+            tape.number,
+            segment.timecode,
+            contributions[segment.speaker_id],
+            text_orig.blank? ? nil : text_orig,
+            text_trans.blank? ? nil : text_trans,
+            mainheading_orig.blank? ? nil : mainheading_orig,
+            subheading_orig.blank? ? nil : subheading_orig,
+            mainheading_trans.blank? ? nil : mainheading_trans,
+            subheading_trans.blank? ? nil : subheading_trans,
+            registry_references.blank? ? nil : registry_references,
+            annotations.blank? ? nil : annotations
+          ]
+        end
+      end
+    end
+    file_path
+  end
+
+end

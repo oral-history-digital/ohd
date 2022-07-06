@@ -305,6 +305,7 @@ de:
     read_bulk_metadata: Import von Metadaten
     read_bulk_texts: Import von Textdateien
     read_bulk_photos: Import von Fotos
+    read_edit_table: Import der Erschliessungstabelle
     read_bulk_registry_entries: Import von Registereinträgen
     assign_speakers: Sprecher*innen zuordnen
     mark_text: Text ersetzen
@@ -525,6 +526,9 @@ de:
     upload_transcript:
       title: Transkript hochladen
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist, erhalten Sie eine Email.'
+    upload_edit_table:
+      title: Erschliessungstabelle hochladen
+      template: Vorlage für den Import
     downloads:
       title: Downloads
     administration: Verwaltung
@@ -1227,6 +1231,7 @@ de:
         code: Code
         use_in_details_view: in der Detailansicht zeigen
         order: Reihenfolge
+        data: Datei
     errors:
       default:
         empty: Bitte auswählen

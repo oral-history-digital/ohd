@@ -16,6 +16,7 @@ Rails.application.routes.draw do
 
     get 'metadata-import-template', to: "uploads#metadata_import_template"
 
+    resources :edit_tables, only: [:create, :show]
     resources :languages
     resources :metadata_fields#, only: [:create, :update, :index]
     resources :external_links#, only: [:create, :update, :index]

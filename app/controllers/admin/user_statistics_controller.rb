@@ -115,7 +115,7 @@ class Admin::UserStatisticsController < Admin::BaseController
       end
     end
 
-    content = CSV.generate(:col_sep => "\t") do |csv|
+    content = CSV.generate(:col_sep => "\t", quote_char: "\x00") do |csv|
       @list.each do |col|
         row = @rows[col]
         if row === nil
