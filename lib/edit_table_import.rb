@@ -9,7 +9,8 @@ class EditTableImport
       mem
     end
     @original_locale = @interview.lang
-    @translation_locale = (@interview.languages - [@interview.lang]).first || :de
+    @translation_locale = (@interview.languages - [@interview.lang]).first ||
+      (@interview.project.available_locales - [@interview.lang]).first
     @file_path = file_path
     @sheet = parse_sheet
   end
@@ -45,6 +46,7 @@ class EditTableImport
       unless interview.tapes.where(number: row[:tape_number]).first
         binding.pry
       end
+
       segment = Segment.create(
         interview_id: interview.id,
         tape_id: interview.tapes.where(number: row[:tape_number]).first.id,

@@ -14,7 +14,7 @@ class EditTableExport
   end
 
   def process
-    CSV.open(file_path, 'w', col_sep: "\t") do |f|
+    CSV.open(file_path, 'w', col_sep: "\t", quote_char: "\x00") do |f|
 
       f << [
         'Band',
@@ -43,18 +43,27 @@ class EditTableExport
           segment_original_locale = segment_locales.include?(original_locale) ? original_locale : "#{original_locale}-public"
           segment_translation_locale = segment_locales.include?(translation_locale) ? translation_locale : "#{translation_locale}-public"
 
+          text_orig = segment.text(segment_original_locale)
+          text_trans = segment.text(segment_translation_locale)
+          mainheading_orig = segment.mainheading(segment_original_locale)
+          subheading_orig = segment.subheading(segment_original_locale)
+          mainheading_trans = segment.mainheading(segment_translation_locale)
+          subheading_trans = segment.subheading(segment_translation_locale)
+          registry_references = segment.registry_references.compact.uniq.map{|r| r.registry_entry.descriptor(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          annotations = segment.annotations.compact.uniq.map{|a| a.text(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
+
           f << [
-            segment.tape_number,
+            tape.number,
             segment.timecode,
             contributions[segment.speaker_id],
-            segment.text(segment_original_locale),
-            segment.text(segment_translation_locale),
-            segment.mainheading(segment_original_locale),
-            segment.subheading(segment_original_locale),
-            segment.mainheading(segment_translation_locale),
-            segment.subheading(segment_translation_locale),
-            segment.registry_references.compact.uniq.map{|r| r.registry_entry.descriptor(:de).gsub(/[\t\n\r]+/, ' ')}.join('#'),
-            segment.annotations.compact.uniq.map{|a| a.text(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
+            text_orig.blank? ? nil : text_orig,
+            text_trans.blank? ? nil : text_trans,
+            mainheading_orig.blank? ? nil : mainheading_orig,
+            subheading_orig.blank? ? nil : subheading_orig,
+            mainheading_trans.blank? ? nil : mainheading_trans,
+            subheading_trans.blank? ? nil : subheading_trans,
+            registry_references.blank? ? nil : registry_references,
+            annotations.blank? ? nil : annotations
           ]
         end
       end

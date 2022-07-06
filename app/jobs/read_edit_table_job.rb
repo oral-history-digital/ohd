@@ -15,7 +15,7 @@ class ReadEditTableJob < ApplicationJob
       #archive_id: interview.archive_id
     #)
 
-    AdminMailer.with(interview: interview, receiver: receiver, type: 'read_edit_table_job', file: file_path, locale: locale).finished_job.deliver_now
+    AdminMailer.with(interview: interview, receiver: receiver, type: 'read_edit_table', file: file_path, locale: locale).finished_job.deliver_now
   end
 
 end
