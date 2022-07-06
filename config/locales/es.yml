@@ -309,7 +309,7 @@ es:
     observations: Observations
     language_id: Language
     workflow_state: Workflow state
-    collection_id: Subcollection
+    collection_id: Collection
     home_location: Home location
   edit:
     text:
@@ -369,24 +369,24 @@ es:
       edit: Sprache bearbeiten
       admin: Sprachen bearbeiten
     collection:
-      admin: Teilsammlungen bearbeiten
-      new: Teilsammlung hinzufügen
-      edit: Teilsammlung bearbeiten
-      processed: 'Teilsammlung angelegt: '
-      return: Weitere Teilsammlung anlegen
+      admin: Edit collection
+      new: New collection
+      edit: Edit collection
+      processed: 'Collection created: '
+      return: Create another collection
     project:
-      new: Sammlung hinzufügen
-      edit: Sammlung bearbeiten
-      admin: Sammlungskonfiguration
-      info: Sammlungsinformation bearbeiten
-      config: Sammlung konfigurieren
-      display: Anzeigeoptionen bearbeiten
-      processed: 'Sammlung angelegt: '
-      return: Weitere Sammlung anlegen
+      new: New archive
+      edit: Edit archive
+      admin: Archive configuration
+      info: Edit archive information
+      config: Configure archive
+      display: Edit display options
+      processed: "Archive created:"
+      return: Create another archive
     projects:
-      admin: Sammlungen
+      admin: Archives
     institution:
-      admin: Institutionen
+      admin: Institutions
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
@@ -739,7 +739,7 @@ es:
     collaboration: Colaboración
     interview_id: Entrevistas
     archive_id: Interview ID
-    collection_id: Colección parcial
+    collection_id: Colección
     media_type: Formato de medio
     language_id: Idioma
     age: Edad
@@ -856,8 +856,8 @@ es:
         one: 'Zur Rolle gehörende Berechtigung'
         other: 'Zur Rolle gehörende Berechtigungen'
       project:
-        one: Sammlung
-        other: Sammlungen
+        one: Archive
+        other: Archives
       person:
         one: Person
         other: Personen
@@ -888,7 +888,7 @@ es:
         person_id: persona
         speaker_designation: Especificación del/la hablante (p.ej. *CG:*)
       collection:
-        project_id: Colección
+        project_id: Archive
         institution_id: Institution
         homepage: Página web
         countries: Entrevistas en
@@ -908,7 +908,7 @@ es:
         institution_id: Institution
       interview:
         person_name: Apellido
-        collection_id: Subcolección
+        collection_id: Colección
         archive_id: Interview ID
         forced_labor_groups: Grupo
         forced_labor_fields: Área de trabajo
@@ -941,7 +941,7 @@ es:
         observations: Nota
         description: Description
       transcript:
-        collection_id: Teilsammlung
+        collection_id: Colección
         archive_id: Interview ID
         data: Transkriptdatei
         interview_original_language_id: Interview Sprache
@@ -983,7 +983,7 @@ es:
         has_newsletter: Newsletter
         has_map: Karte anzeigen
         pseudo_logged_out_visible_registry_entry_ids: Auch ohne Anmeldung sichtbare Registerbäume (oberste IDs)
-        pseudo_hidden_registry_entry_ids: Nur für Sammlungsmanager sichtbare Registerbäume (oberste IDs)
+        pseudo_hidden_registry_entry_ids: Nur für Archivmanager sichtbare Registerbäume (oberste IDs)
         pseudo_hidden_transcript_registry_entry_ids: im Transkript versteckte Registereinträge (IDs)
         pseudo_pdf_registry_entry_ids: PDF-Registereinträge (IDs)
         is_catalog: Ist das Projekt ein Katalog
@@ -1192,7 +1192,7 @@ es:
         href: Href
         file: Dato
         publish: Público
-        project_id: Sammlung
+        project_id: Archive
         key: Schlüssel
         created_at: Angelegt am
         code: Code
@@ -1215,7 +1215,7 @@ es:
         interview:
           attributes:
             collection_id:
-              empty: Bitte Teilsammlung auswählen
+              empty: Please choose a collection
         upload:
           attributes:
             type:
@@ -1318,5 +1318,5 @@ es:
       admin_menu:
         actions: Actions
     workbook:
-      project_unavailable: 'Collection not available anymore.'
+      project_unavailable: Archive not available anymore.
       copy_link: 'Copy link'

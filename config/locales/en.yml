@@ -390,7 +390,7 @@ en:
     projects:
       admin: Archives
     institution:
-      admin: Institutionen
+      admin: Institutions
     metadata_field:
       new: Metadatum hinzufügen
       edit: Metadatum bearbeiten
@@ -1356,5 +1356,5 @@ en:
       admin_menu:
         actions: Actions
     workbook:
-      project_unavailable: 'Archive not available anymore.'
+      project_unavailable: Archive not available anymore.
       copy_link: 'Copy link'
