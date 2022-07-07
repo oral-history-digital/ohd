@@ -1,3 +1,5 @@
+require "#{Rails.root}/lib/edit_table_import.rb"
+
 class ReadEditTableJob < ApplicationJob
   queue_as :default
 
