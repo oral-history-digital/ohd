@@ -336,6 +336,12 @@ class Project < ApplicationRecord
         p "*** error: #{e.message}"
       end
     end
+
+    # Delete facet values with zero count.
+    facets.each do |k, facet|
+      facet[:subfacets].delete_if { |k, subfacet| subfacet[:count] == 0 }
+    end
+
     facets
   end
 
