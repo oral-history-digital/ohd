@@ -26,10 +26,10 @@ export default function DownloadLinks({
                         {languages.map((lang, index) => (
                             <Fragment key={lang}>
                                 <a
-                                    href={`${pathBase}/interviews/${archiveId}.ods?lang=${lang}&tape_number=${tapeNumber}`}
+                                    href={`${pathBase}/interviews/${archiveId}.csv?lang=${lang}&tape_number=${tapeNumber}`}
                                     download
                                 >
-                                    {`ods-${lang}`}
+                                    {`csv-${lang}`}
                                 </a>
                                 {', '}
                                 <a

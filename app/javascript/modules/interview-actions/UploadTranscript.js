@@ -73,7 +73,7 @@ export default function UploadTranscript({
             </p>
 
             <p>
-                <a href="/transcript-import-template.ods" download>
+                <a href="/transcript-import-template.csv" download>
                     <span className="flyout-sub-tabs-content-ico-link">
                         <FaDownload className="Icon Icon--small" title={t('download')} />
                         {' '}

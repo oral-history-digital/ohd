@@ -171,9 +171,9 @@ class InterviewsController < ApplicationController
         end
         render plain: vtt
       end
-      format.ods do
+      format.csv do
         @locale = params[:lang]
-        send_data @interview.to_ods(@locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{@locale}_tc_tab.ods", type: "application/vnd.oasis.opendocument.spreadsheet" #, :disposition => "attachment"
+        send_data @interview.to_csv(@locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{@locale}_tc_tab.csv", type: "text/csv"
       end
       format.html
     end

@@ -433,11 +433,15 @@ class Interview < ApplicationRecord
     vtt
   end
 
-  def to_ods(locale, tape_number=1)
+  def to_csv(locale, tape_number=1)
     CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |csv|
       csv << %w(Timecode Speaker Transkript)
 
-      tapes[tape_number.to_i - 1].segments.each do |segment|
+      tapes[tape_number.to_i - 1].segments.includes(
+        :translations,
+        {annotations: :translations},
+        {registry_references: {registry_entry: {registry_names: :translations}}}
+      ).each do |segment|
         contribution = contributions.where(person_id: segment.speaker_id).first
         speaker_designation = contribution && contribution.speaker_designation
         csv << [segment.timecode, speaker_designation || "", segment.text_translations[locale] || segment.text_translations["#{locale}-public"]]
@@ -465,7 +469,7 @@ class Interview < ApplicationRecord
   end
 
   def create_or_update_segments_from_spreadsheet(file_path, tape_id, locale, update_only_speakers)
-    ods = Roo::Spreadsheet.open(file_path)
+    ods = Roo::Spreadsheet.open(file_path, { csv_options: { encoding: 'utf-8', col_sep: "\t", quote_char: "\x00" } })
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
       parsed_sheet.each_with_index do |row, index|
