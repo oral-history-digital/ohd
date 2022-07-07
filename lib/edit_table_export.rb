@@ -8,8 +8,9 @@ class EditTableExport
       mem[c.person_id] = c.speaker_designation
       mem
     end
-    @original_locale = @interview.lang
-    @translation_locale = (@interview.languages - [@interview.lang]).first
+    @original_locale = @interview.lang.to_s
+    @translation_locale = (@interview.languages - [@interview.lang]).first ||
+      (@interview.project.available_locales - [@interview.lang]).first.to_s
     @file_path = File.join(Rails.root, 'tmp', 'files', "#{@interview.archive_id}_er_#{DateTime.now.strftime("%Y-%m-%d")}.csv")
   end
 
@@ -39,16 +40,19 @@ class EditTableExport
       ).each do |tape|
         tape.segments.each do |segment|
 
-          segment_locales = segment.translations.map(&:locale)
+          segment_locales = segment.translations.map{|t| t.locale.to_s}
           segment_original_locale = segment_locales.include?(original_locale) ? original_locale : "#{original_locale}-public"
           segment_translation_locale = segment_locales.include?(translation_locale) ? translation_locale : "#{translation_locale}-public"
 
-          text_orig = segment.text(segment_original_locale)
-          text_trans = segment.text(segment_translation_locale)
-          mainheading_orig = segment.mainheading(segment_original_locale)
-          subheading_orig = segment.subheading(segment_original_locale)
-          mainheading_trans = segment.mainheading(segment_translation_locale)
-          subheading_trans = segment.subheading(segment_translation_locale)
+          original = segment.translations.where(locale: segment_original_locale).first
+          translation = segment.translations.where(locale: segment_translation_locale).first
+
+          text_orig = original && original.text
+          text_trans = translation && translation.text
+          mainheading_orig = original && original.mainheading
+          subheading_orig = original && original.subheading
+          mainheading_trans = translation && translation.mainheading
+          subheading_trans = translation && translation.subheading
           registry_references = segment.registry_references.compact.uniq.map{|r| r.registry_entry.descriptor(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
           annotations = segment.annotations.compact.uniq.map{|a| a.text(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
 
