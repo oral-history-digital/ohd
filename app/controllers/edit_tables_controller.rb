@@ -29,9 +29,7 @@ class EditTablesController < ApplicationController
     authorize interview, :download?
 
     cache_key_date = [interview.segments.maximum(:updated_at), interview.updated_at].max
-    csv = Rails.cache.fetch "er-#{interview.id}-#{cache_key_date}" do
-      EditTableExport.new(params[:id]).process
-    end
+    csv = EditTableExport.new(params[:id]).process
 
     respond_to do |format|
       format.csv do
