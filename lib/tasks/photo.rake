@@ -20,4 +20,18 @@ namespace :photo do
     end
   end
 
+  desc 'rewrite IPTC-metadata from all translations'
+  task :rewrite_iptc_metadata => :environment do
+    Photo.all.each do |photo|
+      photo.write_iptc_metadata({
+        caption: photo.translations.map(&:caption).join(' '),
+        creator: photo.translations.map(&:photographer).join(' '),
+        headline: photo.translations.map{|t| "#{photo.interview.archive_id} - #{I18n.backend.translate(t.locale, 'interview_with')} #{photo.interview.short_title(t.locale)}"},
+        copyright: photo.translations.map(&:license).join(' '),
+        date: photo.translations.map(&:date).join(' '),
+        city: photo.translations.map(&:place).join(' ')
+      })
+    end
+  end
+
 end
