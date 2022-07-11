@@ -5,7 +5,7 @@ class EditTableImport
   def initialize(public_interview_id, file_path)
     @interview = Interview.find_by_archive_id(public_interview_id)
     @contributions = @interview.contributions.inject({}) do |mem, c|
-      mem[c.person_id] = c.speaker_designation
+      mem[c.speaker_designation] = c.person_id
       mem
     end
     @original_locale = @interview.lang
@@ -43,13 +43,12 @@ class EditTableImport
 
   def process
     sheet.each do |row|
-      unless interview.tapes.where(number: row[:tape_number]).first
-        binding.pry
-      end
+      speaker_id = contributions[row[:speaker_designation]]
 
       segment = Segment.create(
         interview_id: interview.id,
         tape_id: interview.tapes.where(number: row[:tape_number]).first.id,
+        speaker_id: speaker_id,
         timecode: row[:timecode],
         translations_attributes: [
           {
