@@ -125,7 +125,7 @@ class RegistryReference < BaseRegistryReference
       self.archive_id = Segment.find(ref_object_id).interview.archive_id
     elsif ref_object_type == "Person"
       begin
-        self.archive_id = Person.find(ref_object_id).interviews.first.archive_id
+        self.archive_id = self.interview.archive_id
       rescue
         nil
       end
