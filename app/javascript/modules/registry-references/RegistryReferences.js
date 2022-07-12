@@ -36,7 +36,8 @@ export default function RegistryReferences({
 
     const refs = Object.values(refObject.registry_references)
         .filter(ref => (typeof registryEntries[ref.registry_entry_id]?.name[locale] === 'string'))
-        .filter(ref => (registryReferenceTypeId && registryReferenceTypeId === ref.registry_reference_type_id) || !registryReferenceTypeId);
+        .filter(ref => (registryReferenceTypeId && registryReferenceTypeId === ref.registry_reference_type_id) || !registryReferenceTypeId)
+        .filter(ref => ref.interview_id === interview.id);
 
     return (
         <>
