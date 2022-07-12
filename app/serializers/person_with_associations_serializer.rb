@@ -10,7 +10,7 @@ class PersonWithAssociationsSerializer < PersonSerializer
     hash = super
     object.project.registry_reference_type_metadata_fields.where(ref_object_type: 'Person').each do |m|
       hash[m.name] = object.project.available_locales.inject({}) do |mem, locale|
-        mem[locale] = object.send(m.name).compact.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
+        mem[locale] = object.send(m.name).compact.uniq.map { |f| RegistryEntry.find(f).to_s(locale) }.join(", ")
         mem
       end
     end
