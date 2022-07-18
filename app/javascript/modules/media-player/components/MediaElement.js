@@ -61,7 +61,7 @@ export default function MediaElement({
             children: [
                 'playToggle',
                 'progressControl',
-                'remainingTimeDisplay',
+                'currentTimeDisplay',
                 'volumePanel',
                 'subsCapsButton',
                 'playbackRateMenuButton',
