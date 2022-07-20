@@ -2,8 +2,8 @@ import { useEffect  } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 
-import { getProjectId, setArchiveId, setAvailableViewModes, setViewMode,
-    clearViewModes } from 'modules/archive';
+import { setProjectId, getProjectId, setArchiveId, setAvailableViewModes,
+    setViewMode, clearViewModes } from 'modules/archive';
 import { getCurrentProject } from 'modules/data';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { HomeContainer } from 'modules/startpage';
@@ -37,6 +37,7 @@ export default function ProjectRoutes() {
             // Unset project-specific redux data here.
             dispatch(clearViewModes());
             dispatch(setArchiveId(null));
+            dispatch(setProjectId(null));
         };
     }, [projectId, dispatch]);
 

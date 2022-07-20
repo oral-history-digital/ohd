@@ -31,6 +31,9 @@ export default function ArchiveCatalogPage() {
     const institutions = Object.values(project.institution_projects)
         .map(ip => allInstitutions[ip.institution_id]);
 
+    const projectTranslation = project.translations_attributes.find(trans =>
+        trans.locale === locale);
+
     return (
         <ScrollToTop>
             <Helmet>
@@ -68,15 +71,11 @@ export default function ArchiveCatalogPage() {
                         ))}
                     </p>
 
-                    <p className="Paragraph u-mb">
-                        {t('modules.catalog.volume')}
-                        {': '}
-                        <LinkOrA project={project} to="">
-                            {project.num_interviews}
-                            {' '}
-                            {t('activerecord.models.interview.other')}
-                        </LinkOrA>
-                    </p>
+                    <p
+                        className="Paragraph u-mb"
+                        dangerouslySetInnerHTML={{__html: projectTranslation?.introduction}}
+                    />
+
                     <p className="Paragraph u-mb">
                         <a
                             href={project.archive_domain}
@@ -85,6 +84,16 @@ export default function ArchiveCatalogPage() {
                         >
                             {project.archive_domain}
                         </a>
+                    </p>
+
+                    <p className="Paragraph u-mb">
+                        {t('modules.catalog.volume')}
+                        {': '}
+                        <LinkOrA project={project} to="">
+                            {project.num_interviews}
+                            {' '}
+                            {t('activerecord.models.interview.other')}
+                        </LinkOrA>
                     </p>
 
                     <ArchiveCatalog id={Number.parseInt(id)} />

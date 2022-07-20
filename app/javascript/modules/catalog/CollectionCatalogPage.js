@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ErrorBoundary } from 'modules/react-toolbox';
 import { ScrollToTop } from 'modules/user-agent';
 import { getCollections, getProjects } from 'modules/data';
-import { usePathBase } from 'modules/routes';
+import { usePathBase, LinkOrA } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { Breadcrumbs } from 'modules/ui';
 
@@ -69,9 +69,13 @@ export default function CollectionCatalogPage() {
                     </p>
 
                     <p className="Paragraph u-mb">
-                        {`${t('modules.catalog.volume')}: ${collection.num_interviews}`}
-                        {' '}
-                        {t('activerecord.models.interview.other')}
+                        {t('modules.catalog.volume')}
+                        {': '}
+                        <LinkOrA project={project} to={`searches/archive?collection_id[]=${collection.id}`}>
+                            {collection.num_interviews}
+                            {' '}
+                            {t('activerecord.models.interview.other')}
+                        </LinkOrA>
                     </p>
                 </div>
             </ErrorBoundary>

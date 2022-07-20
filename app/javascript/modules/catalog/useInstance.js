@@ -46,12 +46,6 @@ export default function useInstance(data, type) {
         usedColumns = ['expander', 'name', 'shortname', 'num_interviews'];
     }
 
-    function filterFunction(row, columnId, filterValue) {
-        const columnValue = row.getValue(columnId).toLowerCase();
-        const result = columnValue.includes(filterValue.trim());
-        return result;
-    }
-
     const columns = useMemo(() => {
         return usedColumns.map(id => {
             switch (id) {
@@ -75,7 +69,6 @@ export default function useInstance(data, type) {
                     header: t(`modules.catalog.table.name_header.${type}`),
                     cell: NameCell,
                     enableColumnFilter: true,
-                    filterFn: filterFunction, //'includesString',
                 };
             case 'num_interviews':
                 return {
@@ -97,7 +90,7 @@ export default function useInstance(data, type) {
             columnFilters,
             sorting,
         },
-        filterFromLeafRows: true,
+        //filterFromLeafRows: true,
         onExpandedChange: setExpanded,
         onColumnFiltersChange: setColumnFilters,
         onSortingChange: setSorting,

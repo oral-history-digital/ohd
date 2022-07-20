@@ -64,11 +64,7 @@ export default function InstitutionCatalogPage() {
                     <p className="Paragraph u-mb">
                         {institution.description[locale]}
                     </p>
-                    <p className="Paragraph u-mb">
-                        {`${t('modules.catalog.volume')}: ${institution.num_interviews}`}
-                        {' '}
-                        {t('activerecord.models.interview.other')}
-                    </p>
+
                     <p className="Paragraph u-mb">
                         {t('modules.catalog.web_page')}
                         {': '}
@@ -79,6 +75,12 @@ export default function InstitutionCatalogPage() {
                         >
                             {institution.website}
                         </a>
+                    </p>
+
+                    <p className="Paragraph u-mb">
+                        {`${t('modules.catalog.volume')}: ${institution.num_interviews}`}
+                        {' '}
+                        {t('activerecord.models.interview.other')}
                     </p>
 
                     <div>

@@ -10,6 +10,10 @@ export default function ArchiveCatalog({
     const data = useArchiveData(id);
     const { instance } = useInstance(data, 'archive');
 
+    if (data.length === 0) {
+        return null;
+    }
+
     return <CatalogTable instance={instance} />;
 }
 
