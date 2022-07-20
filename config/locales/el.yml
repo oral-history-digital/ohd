@@ -1285,8 +1285,7 @@ el:
         name_header:
           main: Institution/Archive/Collection
           institution: Institution/Archive/Collection
-          archive: Collection/Interview
-          collection: Interview
+          archive: Collection
         shortname: Shortname
         num_interviews: Interview count
         search: Search…

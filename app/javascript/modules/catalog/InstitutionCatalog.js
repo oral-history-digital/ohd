@@ -7,7 +7,7 @@ import CatalogTable from './CatalogTable';
 export default function InstitutionCatalog({
     id,
 }) {
-    const { data } = useInstitutionData(id);
+    const data = useInstitutionData(id);
     const { instance } = useInstance(data, 'institution');
 
     return <CatalogTable instance={instance} />;

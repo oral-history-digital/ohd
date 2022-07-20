@@ -1277,8 +1277,7 @@ de:
         name_header:
           main: Institution/Archiv/Sammlung
           institution: Institution/Archiv/Sammlung
-          archive: Sammlung/Interview
-          collection: Interview
+          archive: Sammlung
         shortname: Kurzname
         num_interviews: Anzahl Interviews
         search: Suchen…

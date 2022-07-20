@@ -11,18 +11,18 @@ import mapInstitution from './mappers/mapInstitution';
 import rowComparator from './rowComparator';
 
 export default function useData() {
-    const data = Object.values(useSelector(getInstitutions));
+    const institutions = Object.values(useSelector(getInstitutions));
     const projects = Object.values(useSelector(getProjects));
     const collections = Object.values(useSelector(getCollections));
     const { locale } = useI18n();
 
-    const transformedData = useMemo(() => {
+    const data = useMemo(() => {
         const curriedMapInstitution = curry(mapInstitution)(locale);
         const curriedAddChildCollections = curry(addChildCollections)(collections);
         const projectsWithChildren = projects.map(curriedAddChildCollections);
 
         const curriedAddChildProjects = curry(addChildProjects)(projectsWithChildren);
-        const institutionsWithChildren = data.map(curriedAddChildProjects);
+        const institutionsWithChildren = institutions.map(curriedAddChildProjects);
         const rootInstitutions = institutionsWithChildren.filter(i => i.parent_id === null);
         const institutionsAsTree = buildInstitutionTree(rootInstitutions, institutionsWithChildren);
 
@@ -31,9 +31,7 @@ export default function useData() {
             .sort(rowComparator);
 
         return institutionRows;
-    }, [data, locale]);
+    }, [institutions, locale]);
 
-    return {
-        data: transformedData,
-    };
+    return data;
 }

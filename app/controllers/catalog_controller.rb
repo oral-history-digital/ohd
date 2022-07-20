@@ -24,13 +24,6 @@ class CatalogController < ApplicationController
       format.html do
         render template: '/react/app.html'
       end
-      format.json do
-        project_id = params[:id]
-        interviews = Interview.where(project_id: project_id,
-            workflow_state: 'public')
-
-        render json: interviews
-      end
     end
   end
 
@@ -38,13 +31,6 @@ class CatalogController < ApplicationController
     respond_to do |format|
       format.html do
         render template: '/react/app.html'
-      end
-      format.json do
-        collection_id = params[:id]
-        interviews = Interview.where(collection_id: collection_id,
-            workflow_state: 'public')
-
-        render json: interviews
       end
     end
   end

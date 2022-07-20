@@ -9,7 +9,6 @@ import { getCollections, getProjects } from 'modules/data';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 import { Breadcrumbs } from 'modules/ui';
-import CollectionCatalog from './CollectionCatalog';
 
 export default function CollectionCatalogPage() {
     const projects = useSelector(getProjects);
@@ -56,11 +55,7 @@ export default function CollectionCatalogPage() {
                     <p className="Paragraph u-mb">
                         {collection.notes[locale]}
                     </p>
-                    <p className="Paragraph u-mb">
-                        {`${t('modules.catalog.volume')}: ${collection.num_interviews}`}
-                        {' '}
-                        {t('activerecord.models.interview.other')}
-                    </p>
+
                     <p className="Paragraph u-mb">
                         {t('modules.catalog.web_page')}
                         {': '}
@@ -73,9 +68,11 @@ export default function CollectionCatalogPage() {
                         </a>
                     </p>
 
-                    <div>
-                        <CollectionCatalog id={Number.parseInt(id)} />
-                    </div>
+                    <p className="Paragraph u-mb">
+                        {`${t('modules.catalog.volume')}: ${collection.num_interviews}`}
+                        {' '}
+                        {t('activerecord.models.interview.other')}
+                    </p>
                 </div>
             </ErrorBoundary>
         </ScrollToTop>
