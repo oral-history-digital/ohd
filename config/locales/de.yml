@@ -1268,6 +1268,19 @@ de:
   interview_title_patterns:
 
   modules:
+    catalog:
+      title: Katalog
+      part_of_institution: Teil der Institution
+      volume: Umfang
+      web_page: Webseite
+      table:
+        name_header:
+          main: Institution/Archiv/Sammlung
+          institution: Institution/Archiv/Sammlung
+          archive: Sammlung
+        shortname: Kurzname
+        num_interviews: Anzahl Interviews
+        search: Suchen…
     edit_table:
       filter:
         label: "Filter"
@@ -1308,6 +1321,11 @@ de:
         label: "Zurück nach oben"
     map:
       mentions: Erwähnungen
+    media_player:
+      auto_scroll:
+        enable: "mitlaufendes Transkript ein"
+        disable: "mitlaufendes Transkript aus"
+      copy_position: Position kopieren
     search:
       sorting:
         label: Sortierung
@@ -1331,13 +1349,16 @@ de:
       multiple_types: Mehrere Ortstypen
       error: Fehler beim Laden der Karte
       map_section: Ausschnitt
-    media_player:
-      auto_scroll:
-        enable: "mitlaufendes Transkript ein"
-        disable: "mitlaufendes Transkript aus"
-      copy_position: Position kopieren
     registry:
       name_missing: "Registername fehlt"
+    routes:
+      not_found:
+        title: Fehler 404
+        description: Diese Seite existiert nicht.
+        link: Zurück zur Startseite
+    sidebar:
+      catalog: Katalog
+      search: Suche
     toc:
       collapse: Einklappen
       expand: Ausklappen

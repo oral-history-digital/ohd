@@ -1,0 +1,66 @@
+/* Wrapper */
+
+.CatalogTable {
+  overflow-x: auto;
+}
+
+
+/* Table */
+
+.CatalogTable-table {
+  border-collapse: collapse;
+}
+
+
+/* Rows */
+
+.CatalogTable-row {
+  line-height: $base-unit;
+}
+
+.CatalogTable-row:nth-child(even) {
+  background-color: transparent;
+}
+
+.CatalogTable-row:nth-child(odd) {
+  background-color: $gray-lightest;
+}
+
+.CatalogTable-row--institution {
+  font-weight: bold;
+}
+
+.CatalogTable-row--archive {
+}
+
+.CatalogTable-row--collection {
+  font-size: 0.875rem;
+  font-style: italic;
+}
+
+.CatalogTable-row--interview {
+
+}
+
+.CatalogTable-row a {
+  color: black;
+}
+
+
+/* Cells */
+
+.CatalogTable-header {
+  background-color: var(--primary-color);
+  color: white;
+  font-weight: bold;
+  text-align: left;
+}
+
+.CatalogTable-header,
+.CatalogTable-cell {
+  padding: ($base-unit / 4) ($base-unit / 2);
+}
+
+.CatalogTable-cell--number {
+  text-align: right;
+}

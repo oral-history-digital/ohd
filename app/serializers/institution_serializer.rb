@@ -15,7 +15,9 @@ class InstitutionSerializer < ApplicationSerializer
     :parent_id,
     :institution_projects,
     :collection_ids,
-    :logos
+    :logos,
+    :num_projects,
+    :num_interviews
 
   def name
     object.localized_hash(:name)

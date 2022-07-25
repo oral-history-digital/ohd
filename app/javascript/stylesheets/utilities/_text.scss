@@ -11,21 +11,21 @@
 }
 
 .u-align-left {
-  text-align: left;
+  text-align: left !important;
 }
 
 .u-align-right {
-  text-align: right;
+  text-align: right !important;
 }
 
 .u-align-center {
-  text-align: center;
+  text-align: center !important;
 }
 
 .u-align-justify {
-  text-align: justify;
+  text-align: justify !important;
 }
 
 .u-line-height {
-  line-height: $base-unit;
+  line-height: $base-unit !important;
 }

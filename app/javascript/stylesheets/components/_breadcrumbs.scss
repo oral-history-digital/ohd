@@ -1,0 +1,13 @@
+.Breadcrumbs {
+  color: $ui-background-color;
+  font-size: 0.875rem;
+}
+
+.Breadcrumbs-separator {
+  padding-left: 0.25 * $base-unit;
+  padding-right: 0.25 * $base-unit;
+}
+
+.Breadcrumbs-lastItem {
+  font-weight: bold;
+}

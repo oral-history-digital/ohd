@@ -11,6 +11,10 @@ class Collection < ApplicationRecord
 
   validates_presence_of :name, :project_id
 
+  def num_interviews
+    interviews.where('workflow_state': 'public').count
+  end
+
   def to_s
     name(I18n.locale)
   end

@@ -4,7 +4,8 @@ class CollectionSerializer < ApplicationSerializer
     :institution,
     :project_id,
     :homepage,
-    :notes
+    :notes,
+    :num_interviews
 
   %w(name homepage notes).each do |m|
     define_method m do
