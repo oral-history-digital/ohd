@@ -1,0 +1,2 @@
+class NormDatumPolicy < ApplicationPolicy
+end

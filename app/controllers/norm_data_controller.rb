@@ -1,8 +1,8 @@
 class NormDataController < ApplicationController
 
   def create
-    authorize NormDataum
-    norm_datum = NormDataum.create(norm_datum_params)
+    authorize NormDatum
+    norm_datum = NormDatum.create(norm_datum_params)
 
     respond_to do |format|
       format.json do
@@ -12,7 +12,7 @@ class NormDataController < ApplicationController
   end
 
   def update
-    norm_datum = NormDataum.find params[:id]
+    norm_datum = NormDatum.find params[:id]
     authorize norm_datum
     norm_datum.update_attributes norm_datum_params
 
@@ -24,7 +24,7 @@ class NormDataController < ApplicationController
   end
 
   def destroy 
-    norm_datum = NormDataum.find params[:id]
+    norm_datum = NormDatum.find params[:id]
     authorize norm_datum
     registry_entry = norm_datum.registry_entry
     norm_datum.destroy
