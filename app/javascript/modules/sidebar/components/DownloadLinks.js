@@ -47,7 +47,7 @@ export default function DownloadLinks({
                     <SubmitInterviewIds
                         selectedArchiveIds={[archiveId]}
                         action="export_photos"
-                        filename={`${archiveId}_photos_${moment().format('YYYY-MM-DD')}.zip`}
+                        filename={`${archiveId}_photos_${moment().format('YYYY_MM_DD')}.zip`}
                     />
                 </li>
                 <li>
@@ -57,7 +57,7 @@ export default function DownloadLinks({
                         className="flyout-content-data"
                         download
                     >
-                        {`${archiveId}_er_${moment().format('YYYY-MM-DD')}.csv`}
+                        {`${archiveId}_er_${moment().format('YYYY_MM_DD')}.csv`}
                     </a>
                 </li>
             </ul>
