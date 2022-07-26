@@ -22,8 +22,8 @@ class Segment < ApplicationRecord
 
   # NB: Don't use a :dependent => :destroy or :delete
   # on these, as they are user-generated.
-  has_many  :user_annotations, as: :reference
-  has_many  :annotations
+  has_many  :user_annotations, as: :reference, dependent: :destroy
+  has_many  :annotations, dependent: :destroy
 
   scope :with_heading, -> {
     where(has_heading: true).

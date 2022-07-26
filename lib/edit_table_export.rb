@@ -28,7 +28,8 @@ class EditTableExport
         'Hauptüberschrift (Übersetzung)',
         'Zwischenüberschrift (Übersetzung)',
         'Registerverknüpfungen',
-        'Anmerkungen'
+        'Anmerkungen',
+        'Anmerkungen (Übersetzung)'
       ]
 
       interview.tapes.includes(
@@ -54,7 +55,8 @@ class EditTableExport
           mainheading_trans = translation && translation.mainheading
           subheading_trans = translation && translation.subheading
           registry_references = segment.registry_references.compact.uniq.map{|r| r.registry_entry.descriptor(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
-          annotations = segment.annotations.compact.uniq.map{|a| a.text(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          annotations = segment.annotations.map{|a| a.text(original_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          annotations_trans = segment.annotations.map{|a| a.text(translation_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
 
           f << [
             tape.number,
@@ -67,7 +69,8 @@ class EditTableExport
             mainheading_trans.blank? ? nil : mainheading_trans,
             subheading_trans.blank? ? nil : subheading_trans,
             registry_references.blank? ? nil : registry_references,
-            annotations.blank? ? nil : annotations
+            annotations.blank? ? nil : annotations,
+            annotations_trans.blank? ? nil : annotations_trans
           ]
         end
       end

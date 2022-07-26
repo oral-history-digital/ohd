@@ -37,7 +37,8 @@ class EditTableImport
       mainheading_trans: 'Hauptüberschrift (Übersetzung)',
       subheading_trans: 'Zwischenüberschrift (Übersetzung)',
       registry_references: 'Registerverknüpfungen',
-      annotations: 'Anmerkungen'
+      annotations: 'Anmerkungen',
+      annotations_trans: 'Anmerkungen (Übersetzung)'
     })
   end
 
@@ -102,16 +103,35 @@ class EditTableImport
   end
 
   def create_annotations(row, interview, segment)
-    row[:annotations] && row[:annotations].split('#').each do |text|
-      unless text.blank?
+    binding.pry
+    annotations_trans = row[:annotations_trans] && row[:annotations_trans].split('#')
+    row[:annotations] && row[:annotations].split('#').each_with_index do |text, index|
+
+      translation = annotations_trans[index]
+
+      original_annotation = text && {
+        text: text,
+        locale: original_locale
+      }
+
+      translated_annotation = translation && {
+        text: translation,
+        locale: translation_locale
+      }
+
+      translations_attributes = [
+        original_annotation,
+        translated_annotation
+      ].compact
+
+    binding.pry
+      unless text.blank? && translation.blank?
+    binding.pry
         Annotation.create(
           segment_id: segment.id,
           interview_id: interview.id,
           workflow_state: "public",
-          text: text,
-          locale: :de
-          #author_id: 
-          #author:
+          translations_attributes: translations_attributes
         )
       end
     end
