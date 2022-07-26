@@ -17,6 +17,7 @@ export default function RegistryReferences({
     inTranscript,
     lowestAllowedRegistryEntryId,
     locale,
+    contentLocale,
     setOpenReference,
 }) {
     const { t } = useI18n();
@@ -53,7 +54,7 @@ export default function RegistryReferences({
                                 refObject={refObject}
                                 lowestAllowedRegistryEntryId={lowestAllowedRegistryEntryId}
                                 inTranscript={inTranscript}
-                                locale={locale}
+                                locale={contentLocale}
                                 setOpenReference={setOpenReference}
                             />
                         ))}

@@ -56,7 +56,7 @@ export default function SegmentPopup({
                                     refObject={data}
                                     lowestAllowedRegistryEntryId={1}
                                     inTranscript={true}
-                                    locale={contentLocale}
+                                    contentLocale={contentLocale}
                                     setOpenReference={setOpenReference}
                                 />
                             </Fetch>
