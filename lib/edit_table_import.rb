@@ -66,8 +66,7 @@ class EditTableImport
           }
         ]
       )
-      registry_entries = find_or_create_registry_entries(row).compact.uniq
-      create_references(registry_entries, interview, segment)
+      create_references(row, interview, segment)
       create_annotations(row, interview, segment)
     end
   rescue StandardError => e
@@ -75,35 +74,28 @@ class EditTableImport
     log("#{e.message}: #{e.backtrace}")
   end
 
-  def find_or_create_registry_entries(row)
-    (row[:registry_references] && row[:registry_references].split('#') || []).inject([]) do |mem, name|
-      registry_entry = interview.project.registry_entries.joins(registry_names: :translations).
-        where("registry_name_translations.descriptor": name).first
-      registry_entry ||= interview.project.root_registry_entry.create_child(name, :de)
-      mem << registry_entry
-    end
-  end
-
-  def create_references(registry_entries, interview, ref_object)
-    registry_entries.each do |registry_entry|
-      RegistryReference.create(
-        registry_entry_id: registry_entry.id,
-        ref_object_id: ref_object.id,
-        ref_object_type: ref_object.class.name,
-        ref_position: 0,
-        original_descriptor: "",
-        ref_details: "",
-        ref_comments: "",
-        ref_info: "",
-        workflow_state: "checked",
-        interview_id: interview.id
-      )
-      registry_entry.touch
+  def create_references(row, interview, ref_object)
+    row[:registry_references] && row[:registry_references].split('#').each do |registry_entry_id|
+      registry_entry = RegistryEntry.find(registry_entry_id)
+      if registry_entry
+        RegistryReference.create(
+          registry_entry_id: registry_entry_id,
+          ref_object_id: ref_object.id,
+          ref_object_type: ref_object.class.name,
+          ref_position: 0,
+          original_descriptor: "",
+          ref_details: "",
+          ref_comments: "",
+          ref_info: "",
+          workflow_state: "checked",
+          interview_id: interview.id
+        )
+        registry_entry.touch
+      end
     end
   end
 
   def create_annotations(row, interview, segment)
-    binding.pry
     annotations_trans = row[:annotations_trans] && row[:annotations_trans].split('#')
     row[:annotations] && row[:annotations].split('#').each_with_index do |text, index|
 
@@ -124,9 +116,7 @@ class EditTableImport
         translated_annotation
       ].compact
 
-    binding.pry
       unless text.blank? && translation.blank?
-    binding.pry
         Annotation.create(
           segment_id: segment.id,
           interview_id: interview.id,

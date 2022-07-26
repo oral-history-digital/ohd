@@ -54,7 +54,7 @@ class EditTableExport
           subheading_orig = original && original.subheading
           mainheading_trans = translation && translation.mainheading
           subheading_trans = translation && translation.subheading
-          registry_references = segment.registry_references.compact.uniq.map{|r| r.registry_entry.descriptor(:de).gsub(/[\t\n\r]+/, ' ')}.join('#')
+          registry_references = segment.registry_references.map{|r| r.registry_entry_id}.compact.uniq.join('#')
           annotations = segment.annotations.map{|a| a.text(original_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
           annotations_trans = segment.annotations.map{|a| a.text(translation_locale).gsub(/[\t\n\r]+/, ' ')}.join('#')
 
