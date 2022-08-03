@@ -886,8 +886,8 @@ ru:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
-        one: Benutzerkonto
-        other: Benutzerkonten
+        one: Benutzer*innen-Konto
+        other: Benutzer*innen-Konten
       role:
         one: Rolle
         other: Rollen
