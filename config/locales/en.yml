@@ -1237,6 +1237,12 @@ en:
           attributes:
             type:
               empty: Bitte Art des Imports auswählen
+        registry_entry:
+          attributes:
+            latitude:
+              format: Wrong format for latitude
+            longitude:
+              format: Wrong format for longitude
         user_annotation:
           attributes:
             description:

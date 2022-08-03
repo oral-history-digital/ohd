@@ -74,11 +74,13 @@ export default class RegistryEntryForm extends Component {
                             attribute: 'latitude',
                             validate: validateGeoCoordinate,
                             optional: true,
+                            individualErrorMsg: 'format',
                         },
                         {
                             attribute: 'longitude',
                             validate: validateGeoCoordinate,
                             optional: true,
+                            individualErrorMsg: 'format',
                         },
                         {
                             elementType: 'select',

@@ -1250,6 +1250,12 @@ de:
           attributes:
             collection_id:
               empty: Bitte Sammlung auswählen
+        registry_entry:
+          attributes:
+            latitude:
+              format: Falsches Format für geografische Breite
+            longitude:
+              format: Falsches Format für geografische Länge
         upload:
           attributes:
             type:
