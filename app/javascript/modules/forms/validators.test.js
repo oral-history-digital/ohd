@@ -41,6 +41,11 @@ describe('validateGeoCoordinate', () => {
         expect(result).toBeTruthy();
     });
 
+    it('accepts negative values', () => {
+        const result = validateGeoCoordinate('-6');
+        expect(result).toBeTruthy();
+    });
+
     it('accepts empty values', () => {
         const result = validateGeoCoordinate('');
         expect(result).toBeTruthy();
