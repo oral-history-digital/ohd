@@ -1,7 +1,7 @@
 import { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Form } from 'modules/forms';
+import { Form, validateGeoCoordinate } from 'modules/forms';
 import { t } from 'modules/i18n';
 import RegistryNameFormContainer from './RegistryNameFormContainer';
 import NormDatumFormContainer from './NormDatumFormContainer';
@@ -72,9 +72,13 @@ export default class RegistryEntryForm extends Component {
                     elements={[
                         {
                             attribute: 'latitude',
+                            validate: validateGeoCoordinate,
+                            optional: true,
                         },
                         {
                             attribute: 'longitude',
+                            validate: validateGeoCoordinate,
+                            optional: true,
                         },
                         {
                             elementType: 'select',

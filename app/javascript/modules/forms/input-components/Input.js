@@ -12,6 +12,7 @@ export default class Input extends Component {
     //   @type
     //   @value = default value
     //   @validate = function
+    //   @optional = boolean
     //   @handleChange = function
     //   @handleErrors = function
     //   @help
@@ -19,7 +20,7 @@ export default class Input extends Component {
     constructor(props, context) {
         super(props);
         this.state = {
-            valid: !this.props.validate,
+            valid: (typeof this.props.validate !== 'function') || this.props.optional,
             changeFile: false
         };
 
@@ -89,6 +90,8 @@ export default class Input extends Component {
     }
 
     render() {
+        const { validate, optional } = this.props;
+
         return (
             <Element
                 scope={this.props.scope}
@@ -100,7 +103,7 @@ export default class Input extends Component {
                 className={this.props.className}
                 hidden={this.props.hidden}
                 valid={this.state.valid}
-                mandatory={typeof(this.props.validate) === 'function'}
+                mandatory={typeof validate === 'function' && !optional}
                 elementType={`${this.props.type}_input`}
                 individualErrorMsg={this.props.individualErrorMsg}
                 help={this.props.help}
