@@ -9,6 +9,6 @@ export function validateColor(v) {
 }
 
 export function validateGeoCoordinate(v) {
-    const geoCoordinate = /^-?(\d{1,3}\.?\d{0,20})?$/;
+    const geoCoordinate = /^(-?\d{1,3}(\.\d{0,20})?)?$/;
     return geoCoordinate.test(v);
 }

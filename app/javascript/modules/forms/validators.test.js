@@ -55,4 +55,9 @@ describe('validateGeoCoordinate', () => {
         const result = validateGeoCoordinate('S023.547500');
         expect(result).toBeFalsy();
     });
+
+    it('rejects a large integer', () => {
+        const result = validateGeoCoordinate('513889312744');
+        expect(result).toBeFalsy();
+    });
 });
