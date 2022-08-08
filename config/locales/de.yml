@@ -863,8 +863,8 @@ de:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
-        one: Benutzerkonto
-        other: Benutzerkonten
+        one: Benutzer*innen-Konto
+        other: Benutzer*innen-Konten
       role:
         one: Rolle
         other: Rollen
@@ -1250,6 +1250,12 @@ de:
           attributes:
             collection_id:
               empty: Bitte Sammlung auswählen
+        registry_entry:
+          attributes:
+            latitude:
+              format: Falsches Format für geografische Breite
+            longitude:
+              format: Falsches Format für geografische Länge
         upload:
           attributes:
             type:

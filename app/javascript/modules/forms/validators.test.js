@@ -1,4 +1,5 @@
-import { validateTapeNumber, validateColor } from './validators';
+import { validateTapeNumber, validateColor, validateGeoCoordinate }
+    from './validators';
 
 describe('validateTapeNumber', () => {
     it('returns true for 0', () => {
@@ -31,5 +32,32 @@ describe('validateColor', () => {
     it('accepts uppercase letters', () => {
         const result = validateColor('#3A5F00');
         expect(result).toBeTruthy();
+    });
+});
+
+describe('validateGeoCoordinate', () => {
+    it('accepts a float', () => {
+        const result = validateGeoCoordinate('51.513889312744');
+        expect(result).toBeTruthy();
+    });
+
+    it('accepts negative values', () => {
+        const result = validateGeoCoordinate('-6');
+        expect(result).toBeTruthy();
+    });
+
+    it('accepts empty values', () => {
+        const result = validateGeoCoordinate('');
+        expect(result).toBeTruthy();
+    });
+
+    it('rejects value containing cardinal direction', () => {
+        const result = validateGeoCoordinate('S023.547500');
+        expect(result).toBeFalsy();
+    });
+
+    it('rejects a large integer', () => {
+        const result = validateGeoCoordinate('513889312744');
+        expect(result).toBeFalsy();
     });
 });
