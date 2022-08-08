@@ -40,14 +40,14 @@ export default function EntryReferences({
 
     useEffect(() => {
         archiveIds.map(archiveId => {
-            if (!statuses['short_title']?.[`for_interviews_${archiveId}`]) {
-                fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'short_title');
+            if (!statuses['title']?.[`for_interviews_${archiveId}`]) {
+                fetchData({ projectId, locale, projects }, 'interviews', archiveId, 'title');
             }
         })
     }, [isLoggedIn]);
 
     const archiveIdsWithTitles = archiveIds.reduce((acc, archiveId) => {
-        const interviewTitle = isLoggedIn ? interviews[archiveId]?.short_title?.[locale] : interviews[archiveId]?.anonymous_title[locale];
+        const interviewTitle = isLoggedIn ? interviews[archiveId]?.title?.[locale] : interviews[archiveId]?.anonymous_title[locale];
         acc[archiveId] = interviewTitle;
         return acc;
     }, {});
@@ -84,7 +84,7 @@ export default function EntryReferences({
                                     </Link>
                                     <p>
                                         {
-                                            groupedReferences[archiveId].filter(ref => ref.ref_object_type === 'Segment').map(ref => {
+                                            isLoggedIn && groupedReferences[archiveId].filter(ref => ref.ref_object_type === 'Segment').map(ref => {
                                                 return <RefObjectLinkContainer registryReference={ref} onSubmit={onSubmit} />
                                             }).reduce((accu, elem) => {
                                                 return accu === null ? [elem] : [...accu, ', ', elem]

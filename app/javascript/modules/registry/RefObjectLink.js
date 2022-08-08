@@ -27,7 +27,7 @@ export default function RefObjectLink({
     const segment = registryReference.ref_object_type === 'Segment' && segments[registryReference.ref_object_id];
 
     const tape = `${t('tape')} ${segment?.tape_nbr}`;
-    const title = segment && `${formatTimecode(segment.time)} - ${tape}`;
+    const title = segment && `${tape} - ${formatTimecode(segment.time)}`;
 
     const fetchingSegment = !!statuses['segments'][registryReference.ref_object_id];
 
@@ -42,7 +42,7 @@ export default function RefObjectLink({
     }, [segment, isLoggedIn]);
 
     return (
-        <Link className={'search-result-link'}
+        <Link className={'small'}
             key={registryReference.id}
             onClick={() => {
                 setArchiveId(registryReference.archive_id);
