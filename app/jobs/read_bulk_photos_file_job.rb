@@ -91,6 +91,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
           date = Date.parse(data[4]).strftime("%Y%m%d") rescue data[4]
 
           photo.write_iptc_metadata({
+            title: data[1],
             caption: data[3],
             creator: data[6],
             headline: "#{interview.archive_id}-Interview mit #{interview.short_title(locale)}",

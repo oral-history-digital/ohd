@@ -73,6 +73,7 @@ class PhotosController < ApplicationController
     date = photo_params[:translations_attributes].map{|t| Date.parse(t[:date]).strftime("%Y%m%d") rescue t[:date]}.join(' ')
 
     WriteImageIptcMetadataJob.perform_later(@photo.id, {
+      title: photo_params[:public_id],
       caption: photo_params[:translations_attributes].map{|t| t[:caption]}.join(' '),
       creator: photo_params[:translations_attributes].map{|t| t[:photographer]}.join(' '),
       headline: "#{@photo.interview.archive_id}-Interview mit #{@photo.interview.short_title(locale)}",
