@@ -20,7 +20,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.titles do
-    xml.title "Lebensgeschichtliches Interview mit #{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}, interviewt von #{@interview.interviewers.first.first_name(@locale)}, #{@interview.interviewers.first.last_name(@locale)} am #{@interview.interview_date && Date.parse(@interview.interview_date).strftime('%d.%m.%Y')}"
+    xml.title "Interview mit #{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}, interviewt von #{@interview.interviewers.first.first_name(@locale)}, #{@interview.interviewers.first.last_name(@locale)} am #{@interview.interview_date && Date.parse(@interview.interview_date).strftime('%d.%m.%Y')}"
   end
 
   xml.publisher "Interview-Archiv \"#{current_project.name(@locale)}\""
@@ -78,7 +78,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
 
   xml.descriptions do
     xml.description descriptionType: "Abstract" do
-      xml.text! "Lebensgeschichtliches #{@interview.video}-Interview in #{@interview.language.name.downcase}er Sprache mit Transkription, deutscher Übersetzung, Erschließung, Kurzbiografie und Fotografien"
+      xml.text! "#{@interview.video}-Interview in #{@interview.language.name.downcase}er Sprache."
     end
   end
 
