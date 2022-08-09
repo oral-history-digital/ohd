@@ -88,17 +88,7 @@ class ReadBulkPhotosFileJob < ApplicationJob
           photo.photo.attach(io: File.open(tmp_photo_path), filename: data[2])
           #photo.photo.attach(io: File.open(File.join(Rails.root, 'tmp', 'files', data[2])), filename: data[2], metadata: {title: data[3]})
 
-          date = Date.parse(data[4]).strftime("%Y%m%d") rescue data[4]
-
-          photo.write_iptc_metadata({
-            title: data[1],
-            caption: data[3],
-            creator: data[6],
-            headline: "#{interview.archive_id}-Interview mit #{interview.short_title(locale)}",
-            copyright: data[7],
-            date: date,
-            city: data[5]
-          })
+          photo.write_iptc_metadata
 
           interviews_to_reindex << interview
           File.delete(tmp_photo_path) if File.exist?(tmp_photo_path)

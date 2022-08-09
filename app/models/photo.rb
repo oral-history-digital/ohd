@@ -28,11 +28,15 @@ class Photo < ApplicationRecord
     end
   end
 
-  def write_iptc_metadata(metadata)
+  def write_iptc_metadata
     file = MiniExiftool.new ActiveStorage::Blob.service.path_for(photo.key)
-    metadata.each do |k,v|
-      file[k] = [v, file[k]].compact.uniq.join(' ')
-    end
+    file[:title] = public_id
+    file[:caption] = translations.map(&:caption).join(' ')
+    file[:creator] = translations.map(&:photographer).join(' ')
+    file[:headline] = translations.map{|t| "#{interview.archive_id} - #{I18n.backend.translate(t.locale, 'interview_with')} #{interview.short_title(t.locale)}"}.join(' ')
+    file[:copyright] = translations.map(&:license).join(' ')
+    file[:date] = translations.map(&:date).join(' ')
+    file[:city] = translations.map(&:place).join(' ')
     file.save
   end
 
