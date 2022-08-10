@@ -160,20 +160,26 @@ class InterviewsController < ApplicationController
       raise ActiveRecord::RecordNotFound
     end
 
+    @locale = params[:lang]
+    if params[:tape_number]
+      trans = @interview.lang == @locale ? 'tr' : 'ue'
+      tape_count = format('%02d', @interview.tape_count)
+      tape_number = format('%02d', params[:tape_number])
+      filename = "#{@interview.archive_id}_#{tape_count}_#{tape_number}_#{trans}_#{params[:lang]}_#{DateTime.now.strftime("%Y_%m_%d")}"
+    end
+
     respond_to do |format|
       format.json do
         render json: data_json(@interview)
       end
       format.vtt do
-        @locale = params[:lang]
         vtt = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-vtt-#{@interview.id}-#{@interview.updated_at}-#{@interview.segments.maximum(:updated_at)}-#{@locale}-#{params[:tape_number]}" do
           @interview.to_vtt(@locale, params[:tape_number])
         end
-        render plain: vtt
+        send_data vtt, filename: "#{filename}.vtt", type: "text/vtt"
       end
       format.csv do
-        @locale = params[:lang]
-        send_data @interview.to_csv(@locale, params[:tape_number]), filename: "#{@interview.archive_id}_transcript_#{@locale}_tc_tab.csv", type: "text/csv"
+        send_data @interview.to_csv(@locale, params[:tape_number]), filename: "#{filename}.csv", type: "text/csv"
       end
       format.html
     end
