@@ -11,7 +11,9 @@ class RegistryEntryWithAssociationsSerializer < RegistryEntrySerializer
 
   def child_ids
     I18n.available_locales.inject({}) do |mem, locale|
-      mem[locale.to_s] = object.children.ordered_by_name(locale).map(&:id)
+      # fallback when name is empty
+      mem[locale.to_s] = object.children.sort{ |a, b| a.descriptor(locale) <=> b.descriptor(locale)}.map(&:id)
+      #mem[locale.to_s] = object.children.ordered_by_name(locale).map(&:id)
       mem
     end
   end
