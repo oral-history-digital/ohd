@@ -1,10 +1,10 @@
 class PhotoExport
 
-  attr_accessor :file_path, :project, :sheet
+  attr_accessor :file_path, :project, :sheet, :interview
 
-  def initialize(public_interview_ids, project)
+  def initialize(archive_id, project)
     @project = project
-    @interviews = Interview.where(archive_id: public_interview_ids)
+    @interview = Interview.find_by_archive_id(archive_id)
     @tmp_name = rand(36**8).to_s(36)
   end
 
@@ -19,21 +19,19 @@ class PhotoExport
 
         f << ['Interview-ID', 'Bild-ID', 'Dateiname', 'Beschreibung', 'Datum', 'Ort', 'Fotograf*in/Urheber*in', 'Quelle/Lizenz', 'Format', 'Öffentlich']
 
-        @interviews.each do |interview|
-          interview.photos.each do |photo|
-            f << [
-              interview.archive_id,
-              photo.public_id,
-              photo.photo_file_name,
-              photo.caption(locale),
-              photo.date(locale),
-              photo.place(locale),
-              photo.photographer(locale),
-              photo.license(locale),
-              photo.photo_content_type,
-              photo.workflow_state == 'public' ? 'ja' : 'nein'
-            ]
-          end
+        interview.photos.each do |photo|
+          f << [
+            interview.archive_id,
+            photo.public_id,
+            photo.photo_file_name,
+            photo.caption(locale),
+            photo.date(locale),
+            photo.place(locale),
+            photo.photographer(locale),
+            photo.license(locale),
+            photo.photo_content_type,
+            photo.workflow_state == 'public' ? 'ja' : 'nein'
+          ]
         end
       end
     end

@@ -67,7 +67,6 @@ Rails.application.routes.draw do
 
     put "update_speakers/:id", to: "interviews#update_speakers"
     put "mark_texts/:id", to: "interviews#mark_texts"
-    get "export_photos", to: "interviews#export_photos"
     put "merge_registry_entries/:id", to: "registry_entries#merge"
 
     resources :interviews do
@@ -81,6 +80,7 @@ Rails.application.routes.draw do
         get :reload_translations
         get :transcript
         get :observations
+        get :export_photos
         Interview.non_public_method_names.each do |m|
           get m
         end
