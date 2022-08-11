@@ -1209,12 +1209,12 @@ ru:
         path: Pfad
         resolution: Auflösung
       photo:
-        public_id: Image ID
-        caption: Fotobeschreibung
-        place: Place
-        date: Date
-        photographer: Photographer
-        license: License
+        public_id: Фото-ID
+        caption: Caption
+        place: место
+        date: дата
+        photographer: фотограф
+        license: лицензия
         data: Fotodatei
         caption_explanation: No photo caption available in this language.
         workflow_state: Status
