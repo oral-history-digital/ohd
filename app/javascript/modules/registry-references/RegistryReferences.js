@@ -54,7 +54,7 @@ export default function RegistryReferences({
                                 refObject={refObject}
                                 lowestAllowedRegistryEntryId={lowestAllowedRegistryEntryId}
                                 inTranscript={inTranscript}
-                                locale={contentLocale}
+                                locale={contentLocale || locale}
                                 setOpenReference={setOpenReference}
                             />
                         ))}
