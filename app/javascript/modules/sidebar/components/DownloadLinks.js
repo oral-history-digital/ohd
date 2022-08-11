@@ -24,20 +24,21 @@ export default function DownloadLinks({
                 {translationLocale && LinksForTapes(archiveId, numTapes, translationLocale, 'csv')}
                 {translationLocale && LinksForTapes(archiveId, numTapes, translationLocale, 'vtt')}
                 <li>
-                    <SubmitInterviewIds
-                        selectedArchiveIds={[archiveId]}
-                        action="export_photos"
-                        filename={`${archiveId}_photos_${moment().format('YYYY_MM_DD')}.zip`}
-                    />
-                </li>
-                <li>
-                    {'Erschließungstabelle: '}
                     <a
                         href={`${pathBase}/edit_tables/${archiveId}.csv`}
                         className="flyout-content-data"
                         download
                     >
-                        {`${archiveId}_er_${moment().format('YYYY_MM_DD')}.csv`}
+                        Erschließungstabelle bandübergreifend (csv)
+                    </a>
+                </li>
+                <li>
+                    <a
+                        href={`${pathBase}/interviews/${archiveId}/export_photos.zip`}
+                        className="flyout-content-data"
+                        download
+                    >
+                        Fotos
                     </a>
                 </li>
             </ul>

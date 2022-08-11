@@ -275,12 +275,13 @@ class InterviewsController < ApplicationController
   end
 
   def export_photos
-    authorize Interview
-    zip_path = PhotoExport.new(params[:archive_ids], current_project).process
+    interview = Interview.find_by_archive_id(params[:id])
+    authorize interview
+    zip_path = PhotoExport.new(params[:id], current_project).process
     respond_to do |format|
       format.zip do
         File.open(zip_path, 'r') do |f|
-          send_data f.read, type: "application/zip", filename: "#{params[:archive_ids].first}_photos_#{DateTime.now.strftime("%Y_%m_%d")}.zip"
+          send_data f.read, type: "application/zip", filename: "#{params[:id]}_photos_#{DateTime.now.strftime("%Y_%m_%d")}.zip"
         end
       end
     end
