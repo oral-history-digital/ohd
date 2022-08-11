@@ -69,17 +69,27 @@ export default class FormComponent extends Component {
     }
 
     valid() {
-        let showErrors = false;
-        Object.keys(this.state.errors).map((name, index) => {
-            let hidden = this.props.elements.filter(element => element.attribute === name)[0] && this.props.elements.filter(element => element.attribute === name)[0].hidden;
-            showErrors = (!hidden && this.state.errors[name]) || showErrors;
+        const { elements } = this.props;
+        const { errors } = this.state;
+
+        let hasErrors = false;
+
+        Object.keys(errors).forEach(name => {
+            const element = elements.find(element => element.attribute === name);
+
+            const isHidden = element?.hidden;
+            const isOptional = element?.optional;
+
+            hasErrors = hasErrors || (!isHidden && !isOptional && errors[name]);
         })
-        return !showErrors;
+
+        return !hasErrors;
     }
 
     handleSubmit(event) {
         let _this = this;
         event.preventDefault();
+
         if(this.valid()) {
             this.props.onSubmit({[this.props.scope || this.props.submitScope]: this.state.values}, this.props.index);
             if (typeof(this.props.onSubmitCallback) === "function") {
