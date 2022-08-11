@@ -10,39 +10,19 @@ export default function DownloadLinks({
     archiveId,
     numTapes,
     languages,
+    interview,
 }) {
     const pathBase = usePathBase();
+    const translationLocale = interview.languages.filter(locale => locale !== interview.lang)[0];
     const { t } = useI18n();
-    const tapeNumbers = Array.from({length: numTapes}, (_, index) => index + 1);
 
     return (
         <div>
-            <h4>{archiveId}:</h4>
-
             <ul>
-                {tapeNumbers.map(tapeNumber => (
-                    <li key={tapeNumber}>
-                        {`${t('tape')} ${tapeNumber}: `}
-                        {languages.map((lang, index) => (
-                            <Fragment key={lang}>
-                                <a
-                                    href={`${pathBase}/interviews/${archiveId}.csv?lang=${lang}&tape_number=${tapeNumber}`}
-                                    download
-                                >
-                                    {`csv-${lang}`}
-                                </a>
-                                {', '}
-                                <a
-                                    href={`${pathBase}/interviews/${archiveId}.vtt?lang=${lang}&tape_number=${tapeNumber}`}
-                                    download
-                                >
-                                    {`vtt-${lang}`}
-                                </a>
-                                {(index < languages.length - 1) && ', '}
-                            </Fragment>
-                        ))}
-                    </li>
-                ))}
+                {LinksForTapes(archiveId, numTapes, interview.lang, 'csv')}
+                {LinksForTapes(archiveId, numTapes, interview.lang, 'vtt')}
+                {translationLocale && LinksForTapes(archiveId, numTapes, translationLocale, 'csv')}
+                {translationLocale && LinksForTapes(archiveId, numTapes, translationLocale, 'vtt')}
                 <li>
                     <SubmitInterviewIds
                         selectedArchiveIds={[archiveId]}
@@ -63,6 +43,26 @@ export default function DownloadLinks({
             </ul>
         </div>
     );
+}
+
+function LinksForTapes(archiveId, numTapes, locale, format) {
+
+    const pathBase = usePathBase();
+    const { t } = useI18n();
+    const tapeNumbers = Array.from({length: numTapes}, (_, index) => index + 1);
+
+    return (
+        tapeNumbers.map(tapeNumber => (
+            <li key={`${tapeNumber}-${locale}`}>
+                <a
+                    href={`${pathBase}/interviews/${archiveId}.${format}?lang=${locale}&tape_number=${tapeNumber}`}
+                    download
+                >
+                    {`${t('transcript')} ${t('tape')} ${tapeNumber}: ${t(locale)} (${format})`}
+                </a>
+            </li>
+        ))
+    )
 }
 
 DownloadLinks.propTypes = {

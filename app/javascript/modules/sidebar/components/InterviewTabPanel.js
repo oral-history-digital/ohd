@@ -152,12 +152,13 @@ export default function InterviewTabPanel({
                     title='edit.downloads.title'
                     obj={interview}
                     action='download'
-                    >
+                >
                     <DownloadLinks
                         archiveId={archiveId}
                         numTapes={Number.parseInt(interview.tape_count)}
                         languages={interview.languages}
-                        />
+                        interview={interview}
+                    />
                 </AdminSubTab>
             </div>
         </>
