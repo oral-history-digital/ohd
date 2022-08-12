@@ -33,7 +33,7 @@ class Tape < ApplicationRecord
   end
 
   def next
-    interview.tapes.where(number:  number + 1)
+    interview.tapes.where(number:  number + 1).first
   end
 
   def media_file(extension, subdirectories=false)

@@ -473,7 +473,7 @@ class Interview < ApplicationRecord
     ods.each_with_pagename do |name, sheet|
       parsed_sheet = sheet.parse(timecode: /^Timecode|In$/i, transcript: /^Trans[k|c]ript|Translation|Übersetzung$/i, speaker: /^Speaker|Sprecher$/i)
       parsed_sheet.each_with_index do |row, index|
-        contribution = contributions.select{|c| c.speaker_designation == row[:speaker]}.first
+        contribution = contributions.select{|c| c.speaker_designation && c.speaker_designation == row[:speaker]}.first
         speaker_id = contribution && contribution.person_id
         if row[:timecode] =~ /^\[*\d{2}:\d{2}:\d{2}([:.,]{1}\d{2,3})*\]*$/
           if update_only_speakers && speaker_id
@@ -521,7 +521,7 @@ class Interview < ApplicationRecord
       #
       speaker_match = cue.text.match(/<v (\S+)>/)
       speaker_designation = speaker_match && speaker_match[1]
-      contribution = contributions.select{|c| c.speaker_designation == speaker_designation}.first
+      contribution = contributions.select{|c| c.speaker_designation && c.speaker_designation == speaker_designation}.first
       speaker_id = contribution && contribution.person_id
       #
       # cut speaker-tag
