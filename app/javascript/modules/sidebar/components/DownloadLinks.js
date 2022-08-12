@@ -13,7 +13,7 @@ export default function DownloadLinks({
     interview,
 }) {
     const pathBase = usePathBase();
-    const translationLocale = interview.languages.filter(locale => locale !== interview.lang)[0];
+    const translationLocale = interview.languages?.filter(locale => locale !== interview.lang)[0];
     const { t } = useI18n();
 
     return (
