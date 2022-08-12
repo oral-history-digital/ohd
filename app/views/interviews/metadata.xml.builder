@@ -20,7 +20,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.titles do
-    xml.title "Interview mit #{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}, interviewt von #{@interview.interviewers.first.first_name(@locale)}, #{@interview.interviewers.first.last_name(@locale)} am #{@interview.interview_date && Date.parse(@interview.interview_date).strftime('%d.%m.%Y')}"
+    xml.title "Interview mit #{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}, interviewt von #{@interview.interviewers.first.first_name(@locale)} #{@interview.interviewers.first.last_name(@locale)} am #{@interview.interview_date && Date.parse(@interview.interview_date).strftime('%d.%m.%Y')}"
   end
 
   xml.publisher "Interview-Archiv \"#{current_project.name(@locale)}\""
@@ -57,7 +57,7 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.subjects do
-    current_project.registry_reference_type_metadata_fields.where(use_in_results_table: true, ref_object_type: 'Interview').each do |field|
+    current_project.registry_reference_type_metadata_fields.each do |field|
       xml.subject "#{field.label(@locale)}: #{@interview.send(field.name).map{|f| RegistryEntry.find(f).to_s(@locale)}.join(', ')}"
     end
   end

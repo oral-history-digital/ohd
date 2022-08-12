@@ -1,9 +1,9 @@
 require "#{Rails.root}/lib/photo_export.rb"
 
 class InterviewsController < ApplicationController
-  skip_before_action :authenticate_user_account!, only: [:new, :show, :cmdi_metadata, :random_featured]
-  skip_after_action :verify_authorized, only: [:show, :metadata, :cmdi_metadata, :random_featured]
-  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :cmdi_metadata, :random_featured]
+  skip_before_action :authenticate_user_account!, only: [:new, :show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
+  skip_after_action :verify_authorized, only: [:show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
+  skip_after_action :verify_policy_scoped, only: [:show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
 
   def new
     authorize Interview
@@ -255,6 +255,16 @@ class InterviewsController < ApplicationController
     @locale = params[:locale]
     respond_to do |format|
       format.xml
+    end
+  end
+
+  def download_metadata
+    @interview = Interview.find_by_archive_id(params[:id])
+    @locale = params[:locale]
+    respond_to do |format|
+      format.xml do
+        send_data render_to_string(:metadata), type: "application/xml", filename: "#{params[:id]}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml"
+      end
     end
   end
 

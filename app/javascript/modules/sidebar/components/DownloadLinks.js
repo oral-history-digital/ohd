@@ -41,6 +41,15 @@ export default function DownloadLinks({
                         Fotos
                     </a>
                 </li>
+                <li>
+                    <a
+                        href={`${pathBase}/interviews/${archiveId}/download_metadata.xml`}
+                        className="flyout-content-data"
+                        download
+                    >
+                        Metadaten
+                    </a>
+                </li>
             </ul>
         </div>
     );

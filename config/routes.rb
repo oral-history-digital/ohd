@@ -81,6 +81,7 @@ Rails.application.routes.draw do
         get :transcript
         get :observations
         get :export_photos
+        get :download_metadata
         Interview.non_public_method_names.each do |m|
           get m
         end
