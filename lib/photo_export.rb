@@ -1,6 +1,6 @@
 class PhotoExport
 
-  attr_accessor :file_path, :project, :sheet, :interview
+  attr_accessor :project, :interview, :tmp_name
 
   def initialize(archive_id, project)
     @project = project
@@ -14,8 +14,8 @@ class PhotoExport
   end
   
   def write_csv
-    @project.available_locales.each do |locale|
-      CSV.open(File.join(Rails.root, 'tmp', 'files', "#{@tmp_name}-#{locale}.csv"), 'a', col_sep: "\t") do |f|
+    project.available_locales.each do |locale|
+      CSV.open(File.join(Rails.root, 'tmp', 'files', "#{tmp_name}-#{locale}.csv"), 'a', col_sep: "\t") do |f|
 
         f << ['Interview-ID', 'Bild-ID', 'Dateiname', 'Beschreibung', 'Datum', 'Ort', 'Fotograf*in/Urheber*in', 'Quelle/Lizenz', 'Format', 'Öffentlich']
 
@@ -38,11 +38,11 @@ class PhotoExport
   end
 
   def write_zip
-    zip_path = Rails.root.join('tmp', 'files', "#{@tmp_name}.zip")
+    zip_path = Rails.root.join('tmp', 'files', "#{tmp_name}.zip")
 
     Zip::File.open(zip_path, create: true) do |zip_file|
-      @project.available_locales.each do |locale|
-        zip_file.add("#{interviews.archive_id}_photos_#{locale}_#{DateTime.now.strftime("%Y_%m_%d")}.csv", Rails.root.join('tmp', 'files', "#{@tmp_name}-#{locale}.csv"))
+      project.available_locales.each do |locale|
+        zip_file.add("#{interview.archive_id}_photos_#{locale}_#{DateTime.now.strftime("%Y_%m_%d")}.csv", Rails.root.join('tmp', 'files', "#{tmp_name}-#{locale}.csv"))
       end
       interview.photos.each do |photo|
         zip_file.add(photo.photo_file_name || photo.photo.blob.filename, ActiveStorage::Blob.service.path_for(photo.photo.key))
