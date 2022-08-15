@@ -413,10 +413,10 @@ el:
         edit: Überschrift bearbeiten
       annotations:
         new: Anmerkungen hinzufügen
-        edit: Anmerkungen
+        edit: Σημειώσεις
       references:
         new: Registereintrag verknüpfen
-        edit: verknüpfte Registereinträge
+        edit: σχετιζόμενα λήμματα ευρετηρίου
       speaker_string: Sprecher*in (als String)
     person:
       admin: Personen bearbeiten
@@ -1319,20 +1319,20 @@ el:
     interview_metadata:
       add_contributors: Add contributors
     interview_search:
-      no_results: No results
+      no_results: Δεν υπάρχουν αποτελέσματα
       annotation_for: Annotation for
       search_results:
         heading: αποτελέσματα αναζήτησης
         in_transcript: στην απομαγνητοφώνηση
         in_toc: στα περιεχόμενα
-        in_photo_captions: in photo captions
-        in_annotations: in annotations
+        in_photo_captions: στις φωτογραφίες
+        in_annotations: στις σημειώσεις
         in_registry: στο ευρετήριο
         in_biography: στο σύντομο βιογραφικό
         in_observations: in the protocol
     layout:
       back_to_top:
-        label: "Back to top"
+        label: Back to top
     map:
       mentions: Mentions
     media_player:
@@ -1341,7 +1341,7 @@ el:
         disable: "disable auto-scrolling transcript"
       copy_position: Copy position
     registry:
-      name_missing: "registry name missing"
+      name_missing: registry name missing
     routes:
       not_found:
         title: Error 404
@@ -1351,8 +1351,8 @@ el:
       sorting:
         label: Ταξινόμηση
         by:
-          score: Relevance
-          title: όνομα
+          score: κατά συνάφεια
+          title: κατά όνομα
           interview_date: Date
           duration: Duration
           archive_id: ID της συνέντευξης
@@ -1377,11 +1377,11 @@ el:
       collapse: Collapse
       expand: Expand
     transcript:
-      no_text: 'segment contains no text'
+      no_text: segment contains no text
     tree_select:
-      enter_or_choose: 'Enter or choose'
-      no_matches: 'no matches'
-      remove_selection: 'remove selection'
+      enter_or_choose: Enter or choose
+      no_matches: no matches
+      remove_selection: remove selection
       loading: 'Loading tree data…'
       help_text: 'Use Arrow Up/Down, Home/End to change between entries, Arrow Right/Left to expand or collapse sub-entries and Return/Backspace to select or remove an entry.'
     ui:
