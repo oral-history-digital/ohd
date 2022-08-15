@@ -122,8 +122,6 @@ export default function UserContent({
                 <span className='flyout-content-data'>{data.description}</span>
             </p>
 
-            {data.type === 'UserAnnotation' && t(data.workflow_state)}
-
             {
                 data.type === 'Search' && (
                     <p>
