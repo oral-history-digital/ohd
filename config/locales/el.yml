@@ -843,8 +843,8 @@ el:
         one: Benutzer*in/ Registrierung
         other: Benutzer*innen/ Registrierung
       user_account:
-        one: Benutzer*innen-Konto
-        other: Benutzer*innen-Konten
+        one: Λογαριασμός
+        other: Λογαριασμός
       role:
         one: Rolle
         other: Rollen
