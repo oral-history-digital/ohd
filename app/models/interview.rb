@@ -449,6 +449,30 @@ class Interview < ApplicationRecord
     end
   end
 
+  def photos_csv(locale)
+    CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |f|
+      f << ['Interview-ID', 'Bild-ID', 'Dateiname', 'Beschreibung', 'Datum', 'Ort', 'Fotograf*in/Urheber*in', 'Quelle/Lizenz', 'Format', 'Öffentlich']
+
+      photos.each do |photo|
+        f << [
+          archive_id,
+          photo.public_id,
+          photo.photo_file_name,
+          photo.caption(locale),
+          photo.date(locale),
+          photo.place(locale),
+          photo.photographer(locale),
+          photo.license(locale),
+          photo.photo_content_type,
+          photo.workflow_state == 'public' ? 'ja' : 'nein'
+        ]
+      end
+    end
+  end
+
+  def to_pdf(locale)
+  end
+
   #
   # speaker designations from column speaker of table segments
   #
