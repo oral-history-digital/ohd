@@ -1,7 +1,5 @@
 require 'globalize'
 require 'webvtt'
-require "#{Rails.root}/lib/reference_tree.rb"
-require "#{Rails.root}/lib/timecode.rb"
 
 class Interview < ApplicationRecord
   include OaiRepository::Set

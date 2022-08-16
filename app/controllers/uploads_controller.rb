@@ -1,5 +1,3 @@
-require "#{Rails.root}/lib/metadata_import_template.rb"
-
 class UploadsController < ApplicationController
 
   skip_before_action :authenticate_user_account!, only: [:new, :metadata_import_template]

@@ -1,5 +1,4 @@
 require 'exception_notification'
-require Rails.root.join('lib/project_context.rb') # autoload lib files in production not always works
 
 class ApplicationController < ActionController::Base
   include Pundit

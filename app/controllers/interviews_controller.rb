@@ -1,5 +1,3 @@
-require "#{Rails.root}/lib/photo_export.rb"
-
 class InterviewsController < ApplicationController
   skip_before_action :authenticate_user_account!, only: [:new, :show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]
   skip_after_action :verify_authorized, only: [:show, :metadata, :download_metadata, :cmdi_metadata, :random_featured]

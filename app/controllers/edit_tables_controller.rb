@@ -29,16 +29,12 @@ class EditTablesController < ApplicationController
     authorize interview, :download?
 
     cache_key_date = [interview.segments.maximum(:updated_at), interview.updated_at].max
-    csv = EditTableExport.new(params[:id]).process
 
     respond_to do |format|
       format.csv do
-        File.open(csv, 'r') do |f|
-          send_data f.read, type: "application/csv", filename: csv.split('/').last
-        end
+        send_data EditTableExport.new(params[:id]).process, type: "application/csv", filename: "#{interview.archive_id}_er_#{DateTime.now.strftime("%Y_%m_%d")}.csv"
       end
     end
-    File.delete(csv) if File.exist?(csv)
   end
 
   private

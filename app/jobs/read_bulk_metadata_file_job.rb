@@ -1,5 +1,3 @@
-require "#{Rails.root}/lib/metadata_import.rb"
-
 class ReadBulkMetadataFileJob < ApplicationJob
   queue_as :default
 
