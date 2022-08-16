@@ -73,7 +73,9 @@ xml.resource "xsi:schemaLocation": "http://datacite.org/schema/kernel-4 http://s
   end
 
   xml.sizes do
-    xml.size Time.at(@interview.duration).utc.strftime("%H h %M min")
+    if @interview.duration
+      xml.size Time.at(@interview.duration).utc.strftime("%H h %M min")
+    end
   end
 
   xml.descriptions do
