@@ -19,45 +19,21 @@ export default function DownloadLinks({
     return (
         <div>
             <ul>
-                {LinksForTapes(archiveId, numTapes, interview.lang, 'csv')}
-                {LinksForTapes(archiveId, numTapes, interview.lang, 'vtt')}
-                {translationLocale && LinksForTapes(archiveId, numTapes, translationLocale, 'csv')}
-                {translationLocale && LinksForTapes(archiveId, numTapes, translationLocale, 'vtt')}
-                <li>
-                    <a
-                        href={`${pathBase}/edit_tables/${archiveId}.csv`}
-                        className="flyout-content-data"
-                        download
-                    >
-                        Erschließungstabelle bandübergreifend (csv)
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href={`${pathBase}/interviews/${archiveId}/export_photos.zip`}
-                        className="flyout-content-data"
-                        download
-                    >
-                        Fotos
-                    </a>
-                </li>
-                <li>
-                    <a
-                        href={`${pathBase}/interviews/${archiveId}/download_metadata.xml`}
-                        className="flyout-content-data"
-                        download
-                    >
-                        Metadaten
-                    </a>
-                </li>
+                { LinksForTapes(pathBase, archiveId, numTapes, interview.lang, 'csv') }
+                { LinksForTapes(pathBase, archiveId, numTapes, interview.lang, 'vtt') }
+                { translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'csv') }
+                { translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'vtt') }
+                { dataLink(`${pathBase}/edit_tables/${archiveId}.csv`, 'Erschließungstabelle bandübergreifend (csv)') }
+                { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip`, 'Fotos') }
+                { dataLink(`${pathBase}/interviews/${archiveId}/download_metadata.xml`, 'Metadaten') }
+                { dataLink(`${pathBase}/interviews/${archiveId}/export_all.zip`, 'kompletter Metadatenexport') }
             </ul>
         </div>
     );
 }
 
-function LinksForTapes(archiveId, numTapes, locale, format) {
+function LinksForTapes(pathBase, archiveId, numTapes, locale, format) {
 
-    const pathBase = usePathBase();
     const { t } = useI18n();
     const tapeNumbers = Array.from({length: numTapes}, (_, index) => index + 1);
 
@@ -72,6 +48,20 @@ function LinksForTapes(archiveId, numTapes, locale, format) {
                 </a>
             </li>
         ))
+    )
+}
+
+function dataLink(link, title) {
+    return (
+        <li>
+            <a
+                href={link}
+                className="flyout-content-data"
+                download
+            >
+                {title}
+            </a>
+        </li>
     )
 }
 

@@ -469,6 +469,18 @@ class Interview < ApplicationRecord
   end
 
   def to_pdf(locale)
+    @locale = locale
+    @lang = "#{@locale}-public"
+    @doc_type = 'transcript'
+    @lang_human = I18n.t(params[:lang], locale: @locale)
+    @orig_lang = "#{interview.lang}-public"
+    first_segment_with_heading = interview.segments.with_heading.first
+    @lang_headings_exist = !!first_segment_with_heading && (first_segment_with_heading.mainheading(@lang) || first_segment_with_heading.subheading(@lang))
+    render_to_string(template: '/latex/interview_transcript.pdf.erb', layout: 'latex.pdf.erbtex')
+  end
+
+  def biography_pdf(locale)
+    @locale = locale
   end
 
   #

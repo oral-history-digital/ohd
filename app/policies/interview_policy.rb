@@ -33,15 +33,19 @@ class InterviewPolicy < ApplicationPolicy
   end
 
   def transcript?
-    user
+    download?
   end
 
   def observations?
-    user
+    download?
   end
 
   def export_photos?
-    user
+    download?
+  end
+
+  def export_all?
+    download?
   end
 
   Interview.non_public_method_names.each do |m|

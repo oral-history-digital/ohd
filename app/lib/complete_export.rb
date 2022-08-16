@@ -13,28 +13,21 @@ class CompleteExport
 
     Zip::File.open(zip_path, create: true) do |zip_file|
       tape_count = format('%02d', interview.tape_count)
-      interview.tapes.each do |tape|
-        tape_number = format('%02d', tape.number)
-        interview.languages.each do |locale|
+      interview.languages.each do |locale|
+        interview.tapes.each do |tape|
+          tape_number = format('%02d', tape.number)
           trans = interview.lang == locale ? 'tr' : 'ue'
           filename = "#{interview.archive_id}_#{tape_count}_#{tape_number}_#{trans}_#{locale}_#{DateTime.now.strftime("%Y_%m_%d")}"
 
-          zip_file.add("#{filename}.vtt", interview.to_vtt(locale, tape_number))
-          zip_file.add("#{filename}.csv", interview.to_csv(locale, tape_number))
+          zip_file.get_output_stream("#{filename}.vtt") {|f| f.puts(interview.to_vtt(locale, tape_number))}
+          zip_file.get_output_stream("#{filename}.csv") {|f| f.puts(interview.to_csv(locale, tape_number))}
         end
+        #zip_file.add("#{interview.archive_id}_transcript_#{locale}.pdf", interview.to_pdf)
       end
 
-        @lang = "#{@locale}-public"
-        @doc_type = 'transcript'
-        @lang_human = I18n.t(params[:lang], locale: @locale)
-        @orig_lang = "#{interview.lang}-public"
-        first_segment_with_heading = interview.segments.with_heading.first
-        @lang_headings_exist = !!first_segment_with_heading && (first_segment_with_heading.mainheading(@lang) || first_segment_with_heading.subheading(@lang))
-        pdf = render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
-        zip_file.add("#{interview.archive_id}_transcript_#{@locale}.pdf", pdf)
 
-      zip_file.add("#{interview.archive_id}_er_#{DateTime.now.strftime("%Y_%m_%d")}.xml", EditTableExport.new(params[:id]).process)
-      zip_file.add("#{interview.archive_id}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml", render_to_string(:metadata))
+      zip_file.get_output_stream("#{interview.archive_id}_er_#{DateTime.now.strftime("%Y_%m_%d")}.xml") {|f| f.puts(EditTableExport.new(interview.archive_id).process)}
+      #zip_file.get_output_stream("#{interview.archive_id}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml") {|f| f.puts(render_to_string(:metadata))}
 
 
       project.available_locales.each do |locale|
