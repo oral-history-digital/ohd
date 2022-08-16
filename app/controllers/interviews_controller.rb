@@ -284,6 +284,20 @@ class InterviewsController < ApplicationController
     end
   end
 
+  def export_all
+    interview = Interview.find_by_archive_id(params[:id])
+    authorize interview
+    zip_path = CompleteExport.new(params[:id], current_project).process
+    respond_to do |format|
+      format.zip do
+        File.open(zip_path, 'r') do |f|
+          send_data f.read, type: "application/zip", filename: "#{params[:id]}_complete_#{DateTime.now.strftime("%Y_%m_%d")}.zip"
+        end
+      end
+    end
+    File.delete(zip_path) if File.exist?(zip_path)
+  end
+
   def export_photos
     interview = Interview.find_by_archive_id(params[:id])
     authorize interview
