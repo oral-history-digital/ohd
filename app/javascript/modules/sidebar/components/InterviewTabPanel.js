@@ -22,6 +22,7 @@ import DownloadLinks from './DownloadLinks';
 export default function InterviewTabPanel({
     archiveId,
     projectId,
+    editView,
     interview,
     interviewee,
     hasMap,
@@ -38,6 +39,9 @@ export default function InterviewTabPanel({
     if (!archiveId || archiveId === 'new') {
         return null;
     }
+
+    const hasPhotos = interview.photos && Object.values(interview.photos).length > 0;
+    const showGallerySection = hasPhotos || editView;
 
     return (
         <>
@@ -127,11 +131,13 @@ export default function InterviewTabPanel({
                             </AuthorizedContent>
                         </AuthShowContainer>
 
-                        <AuthorizedContent object={interview} action='show' showIfPublic>
-                            <SubTab title={t('photos')}>
-                                <GalleryContainer/>
-                            </SubTab>
-                        </AuthorizedContent>
+                        {showGallerySection && (
+                            <AuthorizedContent object={interview} action='show' showIfPublic>
+                                <SubTab title={t('photos')}>
+                                    <GalleryContainer/>
+                                </SubTab>
+                            </AuthorizedContent>
+                        )}
 
                         <AuthorizedContent object={interview} action='show' showIfPublic>
                             <SubTab title={t('citation')}>
@@ -168,6 +174,7 @@ export default function InterviewTabPanel({
 InterviewTabPanel.propTypes = {
     archiveId: PropTypes.string,
     projectId: PropTypes.string.isRequired,
+    editView: PropTypes.bool,
     interview: PropTypes.object,
     interviewee: PropTypes.object,
     hasMap: PropTypes.bool.isRequired,

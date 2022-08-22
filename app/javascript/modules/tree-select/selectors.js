@@ -17,7 +17,8 @@ export const getTree = createSelector(
         }
 
         const preparedData = prepareEntriesForComponent(data, selectedRegistryEntryId);
-        const root = buildTree(preparedData);
+        const filteredData = filterEntriesWithOutLabels(preparedData);
+        const root = buildTree(filteredData);
         sortChildrenRecursively(root.children);
         disableTopCategories(root);
         return root;
@@ -32,6 +33,10 @@ function prepareEntriesForComponent(data, selectedRegistryEntryId) {
         checked: id === selectedRegistryEntryId,
         disabled: false,
     }));
+}
+
+function filterEntriesWithOutLabels(entries) {
+    return entries.filter(entry => entry.label?.length > 0);
 }
 
 export function buildTree(data) {
@@ -53,7 +58,7 @@ export function buildTree(data) {
         if (parentEl) {
             parentEl.children = [...(parentEl.children || []), el];
         } else {
-            console.warn(`[${NAME}] Parent ${el.parent} of registry entry ${el.value} (${el.label}) does not exist.`);
+            console.info(`[${NAME}] Parent ${el.parent} of registry entry ${el.value} (${el.label}) does not exist.`);
         }
     });
 
@@ -65,16 +70,18 @@ export function buildTree(data) {
 }
 
 function sortChildrenRecursively(children) {
-    children.filter(c => c.label?.length > 0).sort((a, b) => {
-        const aLower = a.label.toLowerCase();
-        const bLower = b.label.toLowerCase();
-        return aLower.localeCompare(bLower);
-    });
-    children.forEach(child => {
-        if (child.children) {
-            sortChildrenRecursively(child.children);
-        }
-    })
+    children
+        .sort((a, b) => {
+            const aLower = a.label.toLowerCase();
+            const bLower = b.label.toLowerCase();
+
+            return aLower.localeCompare(bLower);
+        })
+        .forEach(child => {
+            if (child.children) {
+                sortChildrenRecursively(child.children);
+            }
+        });
 }
 
 function disableTopCategories(root) {

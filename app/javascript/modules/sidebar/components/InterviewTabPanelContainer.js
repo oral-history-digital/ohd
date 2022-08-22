@@ -2,7 +2,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getCurrentInterview, getCurrentInterviewee, getCurrentProject, getIsCatalog } from 'modules/data';
-import { setViewMode, getArchiveId, getProjectId } from 'modules/archive';
+import { setViewMode, getArchiveId, getProjectId, getEditView } from 'modules/archive';
 import { getIsLoggedIn } from 'modules/account';
 import InterviewTabPanel from './InterviewTabPanel';
 import { hideSidebar } from '../actions';
@@ -10,6 +10,7 @@ import { hideSidebar } from '../actions';
 const mapStateToProps = (state) => ({
     archiveId: getArchiveId(state),
     projectId: getProjectId(state),
+    editView: getEditView(state),
     interview: getCurrentInterview(state),
     interviewee: getCurrentInterviewee(state),
     hasMap: getCurrentProject(state)?.has_map === 1,
