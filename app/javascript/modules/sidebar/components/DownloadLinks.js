@@ -26,7 +26,7 @@ export default function DownloadLinks({
                 { dataLink(`${pathBase}/edit_tables/${archiveId}.csv`, 'Erschließungstabelle bandübergreifend (csv)') }
                 { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip`, 'Fotos') }
                 { dataLink(`${pathBase}/interviews/${archiveId}/download_metadata.xml`, 'Metadaten') }
-                { dataLink(`${pathBase}/interviews/${archiveId}/export_all.zip`, 'kompletter Metadatenexport') }
+                { dataLink(`${pathBase}/interviews/${archiveId}/export_all.zip`, 'Alle Daten herunterladen') }
             </ul>
         </div>
     );
