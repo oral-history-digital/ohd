@@ -293,11 +293,12 @@ de:
   help: Hilfe
   usage_application: Nutzungsantrag
   save_interview_reference: Interview merken
+  save_interview_reference_tooltip: Interview zu Arbeitsmappe hinzufügen
   save_user_annotation: Segment merken
   save_search: Suche speichern
-  call_search: Suche aufrufen
+  call_search: Suchergebnisse aufrufen
   call_interview_reference: Interview aufrufen
-  call_user_annotation: Stelle im Interview aufrufen
+  call_user_annotation: Segment aufrufen
   title: Titel
   description: Beschreibung
   jobs:
@@ -545,7 +546,6 @@ de:
   query: Suchkriterien
   delete: Löschen
   really_destroy: Wirklich löschen?
-  delete_user_content: Aus Arbeitsmappe entfernen
   choose: Bitte auswählen
   enter_search_field: Bitte Suchbegriff eingeben ...
   enter_field: Name, Suchbegriff, ...
@@ -1332,6 +1332,7 @@ de:
         enable: "mitlaufendes Transkript ein"
         disable: "mitlaufendes Transkript aus"
       copy_position: Position kopieren
+      copy_position_tooltip: Aktuelle Zeitmarke als URL kopieren
     search:
       sorting:
         label: Sortierung
@@ -1379,7 +1380,10 @@ de:
     ui:
       admin_menu:
         actions: Aktionen
-      copy_link: Link kopieren
+      copy_link: URL kopieren
     workbook:
+      delete: Aus Arbeitsmappe entfernen
+      edit: Bearbeiten
+      note: Notiz
       project_unavailable: Archiv nicht mehr verfügbar.
       segment_link: Segment-Link

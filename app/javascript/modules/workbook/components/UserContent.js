@@ -118,8 +118,12 @@ export default function UserContent({
             <h3><span className='flyout-content-data'>{data.title}</span></h3>
 
             <p>
-                <span className='flyout-content-label'>{t('description')}:</span>
-                <span className='flyout-content-data'>{data.description}</span>
+                <span className='flyout-content-label'>
+                    {t('modules.workbook.note')}:
+                </span>
+                <span className='flyout-content-data'>
+                    {data.description}
+                </span>
             </p>
 
             {
@@ -145,7 +149,7 @@ export default function UserContent({
             }
             <div className="flyout-sub-tabs-content-ico">
                 <Modal
-                    title={t('edit')}
+                    title={t('modules.workbook.edit')}
                     trigger={<FaPencilAlt className="Icon Icon--primary" />}
                 >
                     {closeModal => (
@@ -166,7 +170,7 @@ export default function UserContent({
                     )}
                 </Modal>
                 <Modal
-                    title={t('delete_user_content')}
+                    title={t('modules.workbook.delete')}
                     trigger={<FaTrash className="Icon Icon--primary" />}
                 >
                     {closeModal => (

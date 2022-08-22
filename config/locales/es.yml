@@ -280,6 +280,7 @@ es:
   help: Ayuda
   usage_application: Solicitud de uso
   save_interview_reference: Recordar entrevista
+  save_interview_reference_tooltip: Add interview to workbook
   save_user_annotation: Redactar una anotación
   save_search: Guardar búsqueda
   call_search: Abrir búsqueda
@@ -518,7 +519,6 @@ es:
   query: Criterios de búsqueda
   delete: Borrar
   really_destroy: Realmente borar?
-  delete_user_content: Eliminar de la carpeta
   choose: Seleccione por favor
   enter_search_field: Introduzca término de búsqueda por favor ...
   enter_field: Apellido, término de búsqueda, ...
@@ -1299,6 +1299,7 @@ es:
         enable: "enable auto-scrolling transcript"
         disable: "disable auto-scrolling transcript"
       copy_position: Copy position
+      copy_position_tooltip: Copy current timestamp as URL
     registry:
       name_missing: "registry name missing"
     routes:
@@ -1346,7 +1347,10 @@ es:
     ui:
       admin_menu:
         actions: Actions
-      copy_link: Copy link
+      copy_link: Copy URL
     workbook:
+      delete: Eliminar de la carpeta
+      edit: Edit
+      note: Note
       project_unavailable: Archive not available anymore.
       segment_link: Segment Link

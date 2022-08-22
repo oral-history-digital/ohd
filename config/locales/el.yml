@@ -288,6 +288,7 @@ el:
   help: Βοήθεια
   usage_application: Αίτηση χρήσης του υλικού
   save_interview_reference: Αποθηκεύστε τη συνέντευξη
+  save_interview_reference_tooltip: Add interview to workbook
   save_user_annotation: Γράψτε σημείωση
   save_search: Αποθήκευση αναζήτησης
   call_search: Εναπαφορά αναζήτησης
@@ -526,7 +527,6 @@ el:
   query: Κριτήρια αναζήτησης
   delete: Διαγραφή
   really_destroy: Wirklich löschen?
-  delete_user_content: Απομάκρυνση από τον προσωπικό φάκελο
   choose: " Παρακαλώ επιλέξτε"
   enter_search_field: Παρακαλώ δώστε τον όρο αναζήτησης ...
   enter_field: Στοιχεία ...
@@ -1340,6 +1340,7 @@ el:
         enable: "enable auto-scrolling transcript"
         disable: "disable auto-scrolling transcript"
       copy_position: Copy position
+      copy_position_tooltip: Copy current timestamp as URL
     registry:
       name_missing: registry name missing
     routes:
@@ -1387,7 +1388,10 @@ el:
     ui:
       admin_menu:
         actions: Actions
-      copy_link: Copy link
+      copy_link: Copy URL
     workbook:
+      delete: Απομάκρυνση από τον προσωπικό φάκελο
+      edit: Edit
+      note: Note
       project_unavailable: Archive not available anymore.
       segment_link: Segment Link

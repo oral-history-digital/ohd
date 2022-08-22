@@ -102,7 +102,7 @@ export default class UserContentForm extends Component {
                     </div>
                     <div className="form-group">
                         <label className="publish-label">
-                            {t({ locale, translations }, 'description')}
+                            {t({ locale, translations }, 'modules.workbook.note')}
                         </label>
                         <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
                     </div>

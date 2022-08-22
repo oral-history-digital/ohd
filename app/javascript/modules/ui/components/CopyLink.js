@@ -10,6 +10,7 @@ export default function CopyLink({
     className,
     iconClassName,
     url,
+    title,
     children,
 }) {
     const { copied, setToCopied } = useCopyState();
@@ -25,7 +26,7 @@ export default function CopyLink({
                     'Button--icon', className)}
                 type="button"
                 aria-label={t('modules.ui.copy_link')}
-                title={t('modules.ui.copy_link')}
+                title={title || t('modules.ui.copy_link')}
             >
                 <FaCopy
                     className={classNames('Icon', copied ?
@@ -40,6 +41,7 @@ CopyLink.propTypes = {
     className: PropTypes.string,
     iconClassName: PropTypes.string,
     url: PropTypes.string.isRequired,
+    title: PropTypes.string,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,

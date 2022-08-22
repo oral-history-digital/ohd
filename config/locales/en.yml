@@ -284,12 +284,13 @@ en:
   contact: Contact
   help: Hilfe
   usage_application: Nutzungsantrag
-  save_interview_reference: Add to saved interviews
-  save_user_annotation: Remember segment
+  save_interview_reference: Bookmark interview
+  save_interview_reference_tooltip: Add interview to workbook
+  save_user_annotation: Bookmark segment
   save_search: Save search
-  call_search: Show Search Results
-  call_interview_reference: View interview
-  call_user_annotation: View annotation
+  call_search: Show search results
+  call_interview_reference: Show interview
+  call_user_annotation: Show segment
   title: Title
   description: Description
   registry_reference_types:
@@ -520,10 +521,9 @@ en:
   edit_interview_reference: Edit saved interview
   edit_user_annotation: Ed saved annotation
   edit_search: Edit saved search
-  query: search criteria
+  query: Search criteria
   delete: Delete
   really_destroy: really delete?
-  delete_user_content: Remove from workbook
   choose: Please select
   enter_search_field: Please enter search term ...
   enter_field: Search ...
@@ -1037,7 +1037,7 @@ en:
       user_content:
         title: Titel
         description: Notiz
-        query: Suchkriterien
+        query: Search criteria
       user_annotation:
         author: Autor
         archive_id: Interview ID
@@ -1337,6 +1337,7 @@ en:
         enable: "enable auto-scrolling transcript"
         disable: "disable auto-scrolling transcript"
       copy_position: Copy position
+      copy_position_tooltip: Copy current timestamp as URL
     registry:
       name_missing: "registry name missing"
     routes:
@@ -1384,7 +1385,10 @@ en:
     ui:
       admin_menu:
         actions: Actions
-      copy_link: Copy link
+      copy_link: Copy URL
     workbook:
+      delete: Remove from workbook
+      edit: Edit
+      note: Note
       project_unavailable: Archive not available anymore.
       segment_link: Segment Link

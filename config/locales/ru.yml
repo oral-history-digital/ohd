@@ -330,6 +330,7 @@ ru:
         будет окончательно сохранена.
   usage_application: Nutzungsantrag
   save_interview_reference: Добавить в сохраненные интервью
+  save_interview_reference_tooltip: Add interview to workbook
   save_user_annotation: Создать аннотацию
   save_search: Сохранить поиск
   call_search: результаты поиска
@@ -568,7 +569,6 @@ ru:
   query: Поисковый запрос
   delete: уничтожение
   really_destroy: Wirklich löschen?
-  delete_user_content: Удалить из рабочей тетради
   choose: Пожалуйста, выберите...
   enter_search_field: Поиск в архиве
   enter_field: Ключевое понятие
@@ -1753,6 +1753,7 @@ ru:
         enable: "enable auto-scrolling transcript"
         disable: "disable auto-scrolling transcript"
       copy_position: Copy position
+      copy_position_tooltip: Copy current timestamp as URL
     registry:
       name_missing: "registry name missing"
     routes:
@@ -1800,7 +1801,10 @@ ru:
     ui:
       admin_menu:
         actions: Actions
-      copy_link: Copy link
+      copy_link: Copy URL
     workbook:
+      delete: Удалить из рабочей тетради
+      edit: Edit
+      note: Note
       project_unavailable: Archive not available anymore.
       segment_link: Segment Link

@@ -52,7 +52,7 @@ export default function MediaControls({
 
             <div className="MediaControls-buttons">
                 <Modal
-                    title={t('save_interview_reference') + ': ' + interview.short_title?.[locale]}
+                    title={t('save_interview_reference_tooltip')}
                     trigger={<><FaStar /> <span>{t('save_interview_reference')}</span></>}
                     triggerClassName="MediaControls-bookmark"
                 >
@@ -75,6 +75,7 @@ export default function MediaControls({
                     className="MediaControls-bookmark"
                     iconClassName="Icon--white"
                     url={positionUrl}
+                    title={t('modules.media_player.copy_position_tooltip')}
                 >
                     {t('modules.media_player.copy_position')}
                 </CopyLink>
