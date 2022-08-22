@@ -1,5 +1,3 @@
-require "#{Rails.root}/lib/edit_table_export.rb"
-
 class EditTablesController < ApplicationController
 
   def create
