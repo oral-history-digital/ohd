@@ -184,45 +184,30 @@ class InterviewsController < ApplicationController
   end
 
   def transcript
-    @interview = Interview.find_by_archive_id(params[:id])
-    authorize @interview
+    interview = Interview.find_by_archive_id(params[:id])
+    authorize interview
 
     respond_to do |format|
       format.pdf do
-        @locale = current_project.available_locales.include?(params[:lang]) ? params[:lang] : params[:locale]
-        interview_locale = @interview.alpha3_transcript_locales.first && ISO_639.find(@interview.alpha3_transcript_locales.first).alpha2.to_sym
-        @lang = "#{params[:lang]}-public"
-        @doc_type = 'transcript'
-        @lang_human = I18n.t(params[:lang], locale: @locale)
-        @orig_lang = "#{interview_locale}-public"
-        first_segment_with_heading = @interview.segments.with_heading.first
-        @lang_headings_exist = !!first_segment_with_heading && (first_segment_with_heading.mainheading(@lang) || first_segment_with_heading.subheading(@lang))
-        pdf = Rails.cache.fetch "#{current_project.cache_key_prefix}-interview-pdf-#{@interview.id}-#{@interview.segments.maximum(:updated_at)}-#{params[:lang]}-#{params[:locale]}" do
-          render_to_string(:template => '/latex/interview_transcript.pdf.erb', :layout => 'latex.pdf.erbtex')
-        end
-        send_data pdf, filename: "#{@interview.archive_id}_transcript_#{params[:lang]}.pdf", :type => "application/pdf"#, :disposition => "attachment"
+        send_data interview.to_pdf(params[:locale], params[:lang]), filename: "#{interview.archive_id}_transcript_#{params[:lang]}.pdf", type: "application/pdf"
       end
     end
   end
 
   def observations
-    @interview = Interview.find_by_archive_id(params[:id])
-    authorize @interview
+    interview = Interview.find_by_archive_id(params[:id])
+    authorize interview
 
     respond_to do |format|
       format.pdf do
-        @locale = current_project.available_locales.include?(params[:lang]) ? params[:lang] : params[:locale]
-        @lang = params[:lang]
-        @doc_type = 'observations'
-        pdf = render_to_string(:template => '/latex/interview_observations.pdf.erb', :layout => 'latex.pdf.erbtex')
-        send_data pdf, filename: "#{@interview.archive_id}_protocol_#{params[:lang]}.pdf", :type => "application/pdf"
+        send_data interview.observations_pdf(params[:locale], params[:lang]), filename: "#{interview.archive_id}_protocol_#{params[:lang]}.pdf", :type => "application/pdf"
       end
       format.json do
         render json: {
-          id: @interview.archive_id,
+          id: interview.archive_id,
           data_type: "interviews",
           nested_data_type: 'observations',
-          data: @interview.localized_hash(:observations)
+          data: interview.localized_hash(:observations)
         }, status: :ok
       end
     end

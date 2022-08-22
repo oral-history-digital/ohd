@@ -1,12 +1,12 @@
 <%= render partial: "./latex/title",
            locals: {
-               title: latex_escape(I18n.backend.translate(@locale, 'observation')),
+               title: latex_escape(I18n.backend.translate(header_locale, 'observation')),
                space_above: 0,
                space_below: 0.01,
                font_size: 13
            } %>
 \par{
-  <% observations = @interview.observations(@locale) %>
+  <% observations = interview.observations(header_locale) %>
   <%= observations && latex_escape(ActionView::Base.full_sanitizer.sanitize(observations).gsub("&amp;", "&")) %>
 }
 

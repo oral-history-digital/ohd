@@ -22,13 +22,16 @@ class CompleteExport
           zip_file.get_output_stream("#{filename}.vtt") {|f| f.puts(interview.to_vtt(locale, tape_number))}
           zip_file.get_output_stream("#{filename}.csv") {|f| f.puts(interview.to_csv(locale, tape_number))}
         end
-        #zip_file.add("#{interview.archive_id}_transcript_#{locale}.pdf", interview.to_pdf)
       end
 
+      project.available_locales.each do |locale|
+        zip_file.get_output_stream("#{interview.archive_id}_transcript_#{locale}.pdf") {|f| f.puts(interview.to_pdf(:de, locale))}
+        zip_file.get_output_stream("#{interview.archive_id}_biography_#{locale}.pdf") {|f| f.puts(interview.biography_pdf(:de, locale))}
+        zip_file.get_output_stream("#{interview.archive_id}_protocol_#{locale}.pdf") {|f| f.puts(interview.observations_pdf(:de, locale))}
+      end
 
       zip_file.get_output_stream("#{interview.archive_id}_er_#{DateTime.now.strftime("%Y_%m_%d")}.xml") {|f| f.puts(EditTableExport.new(interview.archive_id).process)}
       #zip_file.get_output_stream("#{interview.archive_id}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml") {|f| f.puts(render_to_string(:metadata))}
-
 
       project.available_locales.each do |locale|
         zip_file.get_output_stream("#{interview.archive_id}_photos_#{locale}_#{DateTime.now.strftime("%Y_%m_%d")}.csv") {|f| f.puts(interview.photos_csv(locale))}

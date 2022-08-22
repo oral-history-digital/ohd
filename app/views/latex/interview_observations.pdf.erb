@@ -1,24 +1,33 @@
+\definecolor{primaryColor}{HTML}{<%= "#{(interview.project.primary_color || DEFAULT_PRIMARY_COLOR).sub('#', '')}" %>}
+
 <%
-  interviewee_name = "#{@interview.interviewees.first.first_name(@locale)} #{@interview.interviewees.first.last_name(@locale)}"
-  title = "#{I18n.t('observations_title', interviewee_name: interviewee_name, archive_id: @interview.archive_id, locale: @locale)}"
-  header_text = "#{I18n.t('observations_header', interviewee_name: interviewee_name, archive_id: @interview.archive_id, locale: @locale)}"
+  interviewee_name = "#{interview.interviewees.first.first_name(header_locale)} #{interview.interviewees.first.last_name(header_locale)}"
+  title = "#{I18n.t('observations_title', interviewee_name: interviewee_name, archive_id: interview.archive_id, locale: header_locale)}"
+  header_text = "#{I18n.t('observations_header', interviewee_name: interviewee_name, archive_id: interview.archive_id, locale: header_locale)}"
 %>
 
 \title{<%= title %>}
 
 \begin{document}
 
-<%= render partial: "./latex/header_footer",
-           locals: {
-               header_text: header_text
-           } %>
-<%= render partial: "./latex/title",
-           locals:
-               {
-                   title: title,
-                   space_above: 0.4,
-                   space_below: 0.4,
-                   font_size: 14,
-               } %>
+<%=
+  render partial: "./latex/header_footer",
+    locals: {
+      header_text: header_text,
+      interview: interview,
+      header_locale: header_locale,
+      doc_type: doc_type
+  } 
+%>
 
-<%= @interview.observations_for_latex(@lang) %>
+<%=
+  render partial: "./latex/title",
+    locals: {
+      title: title,
+      space_above: 0.4,
+      space_below: 0.4,
+      font_size: 14
+  }
+%>
+
+<%= interview.observations_for_latex(content_locale) %>

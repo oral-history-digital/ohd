@@ -4,6 +4,7 @@ require 'webvtt'
 class Interview < ApplicationRecord
   include OaiRepository::Set
   include ActiveModel::Validations
+  include Export
 
   belongs_to :project
   belongs_to :collection
@@ -421,66 +422,6 @@ class Interview < ApplicationRecord
         true
       end
     end
-  end
-
-  def to_vtt(lang, tape_number=1)
-    vtt = "WEBVTT\n"
-    tapes.where(number: tape_number).first.segments.includes(:translations).each_with_index do |segment, index |
-      vtt << "\n#{index + 1}\n#{segment.as_vtt_subtitles(lang)}\n"
-    end
-    vtt
-  end
-
-  def to_csv(locale, tape_number=1)
-    CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |csv|
-      csv << %w(Timecode Speaker Transkript)
-
-      tapes[tape_number.to_i - 1].segments.includes(
-        :translations,
-        {annotations: :translations},
-        {registry_references: {registry_entry: {registry_names: :translations}}}
-      ).each do |segment|
-        contribution = contributions.where(person_id: segment.speaker_id).first
-        speaker_designation = contribution && contribution.speaker_designation
-        csv << [segment.timecode, speaker_designation || "", segment.text_translations[locale] || segment.text_translations["#{locale}-public"]]
-      end
-    end
-  end
-
-  def photos_csv(locale)
-    CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |f|
-      f << ['Interview-ID', 'Bild-ID', 'Dateiname', 'Beschreibung', 'Datum', 'Ort', 'Fotograf*in/Urheber*in', 'Quelle/Lizenz', 'Format', 'Öffentlich']
-
-      photos.each do |photo|
-        f << [
-          archive_id,
-          photo.public_id,
-          photo.photo_file_name,
-          photo.caption(locale),
-          photo.date(locale),
-          photo.place(locale),
-          photo.photographer(locale),
-          photo.license(locale),
-          photo.photo_content_type,
-          photo.workflow_state == 'public' ? 'ja' : 'nein'
-        ]
-      end
-    end
-  end
-
-  def to_pdf(locale)
-    @locale = locale
-    @lang = "#{@locale}-public"
-    @doc_type = 'transcript'
-    @lang_human = I18n.t(params[:lang], locale: @locale)
-    @orig_lang = "#{interview.lang}-public"
-    first_segment_with_heading = interview.segments.with_heading.first
-    @lang_headings_exist = !!first_segment_with_heading && (first_segment_with_heading.mainheading(@lang) || first_segment_with_heading.subheading(@lang))
-    render_to_string(template: '/latex/interview_transcript.pdf.erb', layout: 'latex.pdf.erbtex')
-  end
-
-  def biography_pdf(locale)
-    @locale = locale
   end
 
   #

@@ -254,8 +254,8 @@ en:
   biographical_entries_header: 'Short biography (english): %{interviewee_name} (Interview-ID %{archive_id})'
   biographical_entries_title: 'Short biography (english) of %{interviewee_name}'
   biographical_entries_footer: 'Citation: Short biography of'
-  observations_header: 'Protokoll (%{lang}): %{interviewee_name} (Interview-ID %{archive_id})'
-  observations_title: Protocol (%{lang}) of the interview with %{interviewee_name}
+  observations_header: 'Protokoll (english): %{interviewee_name} (Interview-ID %{archive_id})'
+  observations_title: Protocol (english) of the interview with %{interviewee_name}
   observations_footer: 'Citation: Protocol of'
   interview_info: About the interview
   place: Place
