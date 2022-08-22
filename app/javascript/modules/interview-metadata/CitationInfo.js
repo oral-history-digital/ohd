@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
@@ -34,6 +33,8 @@ export default function CitationInfo({
         collectionName = 'Teilsammlung "Deutsche Seelen", ';
     }
 
+    const currentDateStr = (new Date()).toLocaleDateString(undefined, { dateStyle: 'medium' });
+
     return (
         <div>
             <p>
@@ -60,7 +61,7 @@ export default function CitationInfo({
                                 {' '}
                                 <a href={doiLink}>{doiLink}</a>
                                 {' '}
-                                {`(${t('called')}: ${moment().format('DD.MM.YYYY')})`}
+                                {`(${t('called')}: ${currentDateStr})`}
                             </>)
                         }
                     </span>

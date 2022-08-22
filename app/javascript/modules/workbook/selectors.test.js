@@ -10,14 +10,17 @@ const state = {
             1: {
                 id: 1,
                 type: 'UserAnnotation',
+                created_at: '2022-08-23T17:00:01.000+02:00',
             },
             2: {
                 id: 2,
                 type: 'Search',
+                created_at: '2022-08-23T17:23:05.000+02:00',
             },
             3: {
                 id: 3,
                 type: 'InterviewReference',
+                created_at: '2022-08-25T10:25:10.000+02:00',
             },
         },
     },
@@ -29,6 +32,16 @@ test('getWorkbookIsLoading retrieves loading state', () => {
 
 test('getWorkbookData retrieves workbook data', () => {
     expect(selectors.getWorkbookData(state)).toEqual(state[NAME].data);
+});
+
+test('getSortedWorkbookData returns sorted workbook items', () => {
+    const actual = selectors.getSortedWorkbookData(state);
+    const expected = [
+        state[NAME].data[3],
+        state[NAME].data[2],
+        state[NAME].data[1],
+    ];
+    expect(actual).toEqual(expected);
 });
 
 test('getWorkbookAnnotations retrieves user annotations', () => {

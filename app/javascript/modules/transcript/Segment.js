@@ -11,7 +11,7 @@ import { scrollSmoothlyTo } from 'modules/user-agent';
 import { useTranscriptQueryString } from 'modules/query-string';
 import SegmentButtonsContainer from './SegmentButtonsContainer';
 import SegmentPopupContainer from './SegmentPopupContainer';
-import RememberSegmentButton from './RememberSegmentButton';
+import BookmarkSegmentButton from './BookmarkSegmentButton';
 
 function Segment({
     data,
@@ -117,7 +117,7 @@ function Segment({
                     {text || <i>{t('modules.transcript.no_text')}</i>}
                 </button>
 
-                <RememberSegmentButton segment={data} />
+                <BookmarkSegmentButton segment={data} />
 
                 {
                     showButtons && (

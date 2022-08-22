@@ -1349,8 +1349,20 @@ es:
         actions: Actions
       copy_link: Copiar enlace
     workbook:
+      from: from
       delete: Eliminar de la carpeta
       edit: Editar
       note: Nota
       project_unavailable: Archive not available anymore.
+      segment: Segmento
       segment_link: Segment Link
+      cite: cita
+      citation: citation
+      copy_citation: Copy citation
+      position: Position
+      full_text_search: Búsqueda de texto completa
+      filter: Filtro
+      default_titles:
+        search_for_term: 'Search for "%{searchTerm}"'
+        search_for_term_and_filters: 'Search for "%{searchTerm}", %{numFilters} filters'
+        and_filters_more: 'and %{numFilters} more'

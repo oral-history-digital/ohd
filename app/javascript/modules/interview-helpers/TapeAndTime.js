@@ -6,6 +6,7 @@ import formatTimecode from './formatTimecode';
 export default function TapeAndTime({
     tape,
     time,
+    separator = ' | ',
     className,
     style,
 }) {
@@ -16,7 +17,7 @@ export default function TapeAndTime({
             className={className}
             style={style}
         >
-            {t('tape')} {tape} | {formatTimecode(time)}
+            {t('tape')} {tape}{separator}{formatTimecode(time)}
         </span>
     )
 }
@@ -24,6 +25,7 @@ export default function TapeAndTime({
 TapeAndTime.propTypes = {
     tape: PropTypes.number.isRequired,
     time: PropTypes.number.isRequired,
+    separator: PropTypes.string,
     className: PropTypes.string,
     style: PropTypes.object,
 };

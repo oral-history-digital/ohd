@@ -5,7 +5,7 @@ import { getCurrentProject, getCurrentInterview, getProjects } from 'modules/dat
 import { getLocale, getArchiveId, getProjectId, getTranslations } from 'modules/archive';
 import { getCurrentTape } from 'modules/media-player';
 import { createWorkbook, updateWorkbook } from '../actions';
-import UserContentForm from './UserContentForm';
+import WorkbookItemForm from './WorkbookItemForm';
 
 const mapStateToProps = state => ({
     archiveId: getArchiveId(state),
@@ -23,4 +23,4 @@ const mapDispatchToProps = dispatch => bindActionCreators({
     updateWorkbook,
 }, dispatch);
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserContentForm);
+export default connect(mapStateToProps, mapDispatchToProps)(WorkbookItemForm);

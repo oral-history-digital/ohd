@@ -10,7 +10,9 @@ class UserContentSerializer < ApplicationSerializer
     :reference_type,
     :type,
     :shared,
-    :workflow_state
+    :workflow_state,
+    :created_at,
+    :updated_at
 
   def reference_id
     if object.is_a? UserAnnotation

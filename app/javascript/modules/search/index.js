@@ -30,7 +30,6 @@ export { default as SearchPage } from './components/SearchPage';
 export { default as ArchiveSearchFormContainer } from './components/ArchiveSearchFormContainer';
 export { default as MapFacets } from './components/MapFacets';
 
-export { default as queryToText } from './queryToText';
 export { default as convertLegacyQuery } from './convertLegacyQuery';
 
 export { default as useArchiveSearch } from './useArchiveSearch';

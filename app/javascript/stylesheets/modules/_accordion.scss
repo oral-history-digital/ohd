@@ -5,20 +5,24 @@
 .Layout-page {
   button.accordion {
     background-color: transparent;
+    border-top: 1px solid $gray-dark;
     color: var(--primary-color);
+    cursor: pointer;
+    font-size: $font-size-large;
+    line-height: $base-unit;
+    margin-bottom: 2px;
+    outline: none;
+    padding-bottom: $base-unit / 2;
+    padding-left: 0;
+    padding-right: 15px;
+    padding-top: $base-unit / 2 - 0.0625rem;
+    text-align: left;
+    text-transform: uppercase;
+    transition: 0.4s;
+    width: 100%;
     &.admin {
       color: var(--editorial-color);
     }
-    cursor: pointer;
-    padding: 8px 15px 8px 2px;
-    width: 100%;
-    border-top: 1px solid $gray-dark;
-    text-align: left;
-    outline: none;
-    font-size: $font-size-large;
-    text-transform: uppercase;
-    transition: 0.4s;
-    margin-bottom: 2px;
     &:hover {
       color: $gray-dark;
     }
@@ -34,7 +38,7 @@
     transition: 0.2s ease-out;
     &.open {
       overflow: initial;
-      padding: 10px 0 20px 0;
+      padding-bottom: $base-unit;
       max-height: 100%;
     }
   }

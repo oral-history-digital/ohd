@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 
 import { t } from 'modules/i18n';
 import { pathBase } from 'modules/routes';
-import { CopyLink } from 'modules/ui';
 import { formatTimecode } from 'modules/interview-helpers';
+import CitationInfo from './CitationInfo';
+import SegmentLink from './SegmentLink';
 
-export default class UserContentForm extends Component {
+export default class WorkbookItemForm extends Component {
     constructor(props) {
         super(props);
+
         this.state = {
             id: this.props.id,
-            title: this.props.title,
+            title: this.props.title || this.defaultTitle(),
             description: this.props.description,
             properties: this.props.properties,
             reference_id: this.props.reference_id,
@@ -25,6 +27,24 @@ export default class UserContentForm extends Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+    }
+
+    defaultTitle() {
+        const { type, interview, properties, locale, translations } = this.props;
+
+        const name = interview.anonymous_title?.[locale];
+        const interviewStr = t({ locale, translations }, 'activerecord.models.interview.one');
+        const archiveId = interview.archive_id;
+        const tapeStr = t({ locale, translations }, 'activerecord.models.tape.one');
+
+        switch (type) {
+        case 'Search':
+        case 'UserAnnotation':
+            return `${name}, ${interviewStr} ${archiveId}, ${tapeStr} ${properties.tape_nbr}, ${formatTimecode(properties.time)}`;
+        case 'InterviewReference':
+        default:
+            return `${name}, ${interviewStr} ${archiveId}`;
+        }
     }
 
     handleChange(event) {
@@ -55,8 +75,7 @@ export default class UserContentForm extends Component {
     }
 
     valid() {
-        return this.state.title &&
-            this.state.title.length > 1
+        return this.state.title?.length > 1
     }
 
     setErrors() {
@@ -69,21 +88,10 @@ export default class UserContentForm extends Component {
         this.setState({errors: undefined});
     }
 
-    positionUrl() {
-        const { locale, projectId, projects, properties } = this.props;
-
-        const protocol = window.location.protocol;
-        const host = window.location.host;
-        const pathBaseStr = pathBase({ locale, projectId, projects });
-        const interviewId = properties.interview_archive_id;
-        const tape = properties.tape_nbr;
-        const time = formatTimecode(properties.time, true);
-
-        return `${protocol}//${host}${pathBaseStr}/interviews/${interviewId}?tape=${tape}&time=${time}`;
-    }
 
     render() {
-        const { type, locale, translations, onCancel } = this.props;
+        const { type, locale, translations, properties,
+            interview, project, onCancel } = this.props;
 
         let submitLabel = this.props.submitLabel ? this.props.submitLabel : t(this.props, 'save');
 
@@ -95,30 +103,55 @@ export default class UserContentForm extends Component {
                     onSubmit={this.handleSubmit}
                 >
                     <div className="form-group">
-                        <label className="publish-label">
+                        <label className="publish-label" htmlFor="workbook_item_form_title">
                             {t({ locale, translations }, 'title')}
                         </label>
-                        <input type="text" name='title' value={this.state.title} onChange={this.handleChange}/>
+                        <input
+                            id="workbook_item_form_title"
+                            type="text"
+                            name="title"
+                            required
+                            value={this.state.title}
+                            onChange={this.handleChange}
+                        />
                     </div>
                     <div className="form-group">
-                        <label className="publish-label">
+                        <label className="publish-label" htmlFor="workbook_item_form_description">
                             {t({ locale, translations }, 'modules.workbook.note')}
                         </label>
-                        <textarea name='description' value={this.state.description} onChange={this.handleChange}/>
+                        <textarea
+                            id="workbook_item_form_description"
+                            name="description"
+                            maxLength={300}
+                            value={this.state.description}
+                            onChange={this.handleChange}
+                        />
                     </div>
 
-                    {type==='UserAnnotation' && (
-                        <div className="u-mb">
-                            <h4 className="u-line-height u-mt-none u-mb-none">
-                                {t({ locale, translations }, 'modules.workbook.segment_link')}
-                            </h4>
-                            {this.positionUrl()}
-                            {' '}
-                            <CopyLink
-                                className="Icon--primary"
-                                url={this.positionUrl()}
+                    {type === 'InterviewReference' && (
+                        <CitationInfo
+                            interview={interview}
+                            project={project}
+                            className="u-mb"
+                        />
+                    )}
+
+                    {type === 'UserAnnotation' && (
+                        <>
+                            <SegmentLink
+                                interviewId={properties.interview_archive_id}
+                                tape={properties.tape_nbr}
+                                time={properties.time}
+                                className="u-mb"
                             />
-                        </div>
+                            <CitationInfo
+                                interview={interview}
+                                project={project}
+                                tape={properties.tape_nbr}
+                                time={properties.time}
+                                className="u-mb"
+                            />
+                        </>
                     )}
 
                     <div className="Form-footer">
@@ -143,13 +176,17 @@ export default class UserContentForm extends Component {
     }
 }
 
-UserContentForm.propTypes = {
+WorkbookItemForm.propTypes = {
+    title: PropTypes.string,
     type: PropTypes.string.isRequired,
+    interview: PropTypes.object.isRequired,
     projectId: PropTypes.string.isRequired,
+    project: PropTypes.object.isRequired,
     projects: PropTypes.object.isRequired,
     properties: PropTypes.object.isRequired,
     locale: PropTypes.string.isRequired,
     translations: PropTypes.object.isRequired,
+    submitLabel: PropTypes.string,
     onSubmit: PropTypes.func.isRequired,
     onCancel: PropTypes.func,
     createWorkbook: PropTypes.func.isRequired,

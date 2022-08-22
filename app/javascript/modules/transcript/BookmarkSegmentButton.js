@@ -2,16 +2,15 @@ import PropTypes from 'prop-types';
 import { useSelector } from 'react-redux';
 import { FaStar } from 'react-icons/fa';
 
-import { defaultTitle } from 'modules/interview-helpers';
 import { getCurrentInterview } from 'modules/data';
 import { useI18n } from 'modules/i18n';
-import { UserContentFormContainer } from 'modules/workbook';
+import { WorkbookItemFormContainer } from 'modules/workbook';
 import { Modal } from 'modules/ui';
 
-export default function RememberSegmentButton({
+export default function BookmarkSegmentButton({
     segment,
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const interview = useSelector(getCurrentInterview);
 
     return (
@@ -21,8 +20,7 @@ export default function RememberSegmentButton({
             triggerClassName="Button--hover Segment-hiddenButton"
         >
             {closeModal => (
-                <UserContentFormContainer
-                    title={defaultTitle(interview, locale)}
+                <WorkbookItemFormContainer
                     description=''
                     properties={{
                         time: segment.time,
@@ -44,6 +42,6 @@ export default function RememberSegmentButton({
     );
 }
 
-RememberSegmentButton.propTypes = {
+BookmarkSegmentButton.propTypes = {
     segment: PropTypes.object.isRequired,
 };

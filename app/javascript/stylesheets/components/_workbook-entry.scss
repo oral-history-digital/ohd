@@ -1,0 +1,44 @@
+.WorkbookEntry {
+
+}
+
+.WorkbookEntry-title {
+  font-size: 1rem;
+  font-weight: bold;
+  line-height: $base-unit;
+  margin-bottom: 0;
+}
+
+.WorkbookEntry-list {
+  margin: 0;
+}
+
+.WorkbookEntry-listItem {
+  display: flex;
+}
+
+.WorkbookEntry-list dt,
+.WorkbookEntry-list dd {
+  font-size: 0.875rem;
+  line-height: $base-unit;
+  margin: 0;
+}
+
+.WorkbookEntry-list dt {
+  color: $ui-background-color;
+  margin-right: 0.25 * $base-unit;
+}
+
+.WorkbookEntry-list dt:after {
+  content: ": ";
+}
+
+.WorkbookEntry-link {
+  font-size: 0.875rem;
+  line-height: $base-unit !important;
+  margin: 0;
+}
+
+.WorkbookEntry-actions {
+
+}

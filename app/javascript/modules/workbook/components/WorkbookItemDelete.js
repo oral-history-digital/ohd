@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 
-export default function UserContentDelete({
+export default function WorkbookItemDelete({
     id,
     title,
     description,
@@ -48,7 +48,7 @@ export default function UserContentDelete({
     );
 }
 
-UserContentDelete.propTypes = {
+WorkbookItemDelete.propTypes = {
     id: PropTypes.number.isRequired,
     title: PropTypes.string.isRequired,
     description: PropTypes.string,

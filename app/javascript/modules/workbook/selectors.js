@@ -8,7 +8,7 @@ export const getWorkbookIsLoading = state => getState(state).isLoading;
 
 export const getWorkbookData = state => getState(state).data;
 
-export const getWorkbookAnnotations = createSelector(
+export const getSortedWorkbookData = createSelector(
     getWorkbookData,
     data => {
         if (!data) {
@@ -16,32 +16,27 @@ export const getWorkbookAnnotations = createSelector(
         }
 
         return Object.values(data)
-            .filter(datum => datum.type === 'UserAnnotation');
+            .sort((a, b) => {
+                const aDate = new Date(a.created_at);
+                const bDate = new Date(b.created_at);
+                return bDate - aDate;
+            });
     }
+);
+
+export const getWorkbookAnnotations = createSelector(
+    getSortedWorkbookData,
+    data => data?.filter(item => item.type === 'UserAnnotation') || null,
 );
 
 export const getWorkbookSearches = createSelector(
-    getWorkbookData,
-    data => {
-        if (!data) {
-            return null;
-        }
-
-        return Object.values(data)
-            .filter(datum => datum.type === 'Search');
-    }
+    getSortedWorkbookData,
+    data => data?.filter(item => item.type === 'Search') || null,
 );
 
 export const getWorkbookInterviews = createSelector(
-    getWorkbookData,
-    data => {
-        if (!data) {
-            return null;
-        }
-
-        return Object.values(data)
-            .filter(datum => datum.type === 'InterviewReference');
-    }
+    getSortedWorkbookData,
+    data => data?.filter(item => item.type === 'InterviewReference') || null,
 );
 
 export const getWorkbookLoaded = createSelector(
