@@ -404,7 +404,7 @@ class Interview < ApplicationRecord
   end
 
   def observations_for_latex(locale)
-    escaped_text = LatexToPdf.escape_latex(observations(locale))
+    escaped_text = LatexToPdf.escape_latex(observations(locale).gsub(/\"/, '``'))
     escaped_text.gsub(/\r?\n/, '~\newline~')
   end
 
