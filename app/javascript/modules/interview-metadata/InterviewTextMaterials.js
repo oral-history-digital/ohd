@@ -25,12 +25,12 @@ export default function InterviewTextMaterials({
             <AuthShowContainer ifLoggedIn>
                 <p>
                     <span className='flyout-content-label'>{t('activerecord.attributes.interview.observations')}:</span>
-                    { interview.languages.map( lang => {
+                    { Object.values(interview.translations).map( ({ locale }) => {
                         return (
                             <InterviewDownloads
-                                lang={lang}
+                                lang={locale}
                                 type='observations'
-                                condition={showObservations && interview.observations?.[lang]}
+                                condition={showObservations && interview.observations?.[locale]}
                                 showEmpty={true}
                             />
                         )
