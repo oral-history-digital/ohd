@@ -403,6 +403,11 @@ class Interview < ApplicationRecord
     segment_count > 0
   end
 
+  def has_protocol?(locale)
+    t = translations.where(locale: locale).first
+    !!t && !t.observations.blank?
+  end
+
   def observations_for_latex(locale)
     escaped_text = LatexToPdf.escape_latex(observations(locale).gsub(/\"/, '``'))
     escaped_text.gsub(/\r?\n/, '~\newline~')

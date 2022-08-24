@@ -130,6 +130,12 @@ class Person < ApplicationRecord
     'id'
   end
 
+  def has_biography?(locale)
+    biographical_entries.joins(:translations).
+      where.not("biographical_entry_translations.text": [nil, '']).
+      group(:locale).count.keys.map(&:to_s).include?(locale.to_s)
+  end
+
   def biography=(text)
     biographical_entries.destroy_all
     biographical_entries.build({text: text})
