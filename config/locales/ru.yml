@@ -329,13 +329,13 @@ ru:
         кнопки "обновить" в верхней панели команд; только после этого последовательность
         будет окончательно сохранена.
   usage_application: Nutzungsantrag
-  save_interview_reference: Добавить в сохраненные интервью
-  save_interview_reference_tooltip: Add interview to workbook
-  save_user_annotation: Создать аннотацию
+  save_interview_reference: Отметить интервью
+  save_interview_reference_tooltip: Добавить интервью в рабочую тетрадь
+  save_user_annotation: Отметить сегмент
   save_search: Сохранить поиск
-  call_search: результаты поиска
-  call_interview_reference: перейти к интервью
-  call_user_annotation: перейти к отрывку
+  call_search: Показать результаты
+  call_interview_reference: Показать интервью
+  call_user_annotation: Показать сегмент
   title: Название
   description: Описание
   registry_reference_types:
@@ -573,9 +573,9 @@ ru:
   enter_search_field: Поиск в архиве
   enter_field: Ключевое понятие
   enter_field_dg: Name, Pseudonym, Suchbegriff, ...
-  saved_searches: Сохраненные результаты поиска
-  saved_interviews: Сохраненные интервью
-  saved_annotations: Сохраненные комментарии
+  saved_searches: Результаты поиска
+  saved_interviews: Интервью
+  saved_annotations: Сегменты
   text_materials: текстовые материалы
   download_registry_entries: 'Gesamtes Register als %{format} herunterladen (%{locale})'
   search_registry_entry: поиск в регистре
@@ -1084,7 +1084,7 @@ ru:
       user_content:
         title: Заглавие
         description: Заметка
-        query: Критерии поиска
+        query: Поисковый запрос
       user_annotation:
         author: Автор
         archive_id: Interview ID
@@ -1752,8 +1752,8 @@ ru:
       auto_scroll:
         enable: "enable auto-scrolling transcript"
         disable: "disable auto-scrolling transcript"
-      copy_position: Copy position
-      copy_position_tooltip: Copy current timestamp as URL
+      copy_position: Копировать позицию
+      copy_position_tooltip: Копировать актуальную отметку времени как URL
     registry:
       name_missing: "registry name missing"
     routes:
@@ -1801,10 +1801,10 @@ ru:
     ui:
       admin_menu:
         actions: Actions
-      copy_link: Copy URL
+      copy_link: Копировать URL
     workbook:
-      delete: Удалить из рабочей тетради
-      edit: Edit
-      note: Note
+      delete: Удалить из Рабочей тетради
+      edit: Редактировать
+      note: Примечание
       project_unavailable: Archive not available anymore.
       segment_link: Segment Link
