@@ -234,19 +234,22 @@ class InterviewsController < ApplicationController
   end
 
   def metadata
-    @interview = Interview.find_by_archive_id(params[:id])
-    @locale = params[:locale]
+    interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
-      format.xml
+      format.xml do
+        render :metadata, locals: {
+          interview: interview,
+          locale: params[:locale]
+        }
+      end
     end
   end
 
   def download_metadata
-    @interview = Interview.find_by_archive_id(params[:id])
-    @locale = params[:locale]
+    interview = Interview.find_by_archive_id(params[:id])
     respond_to do |format|
       format.xml do
-        send_data render_to_string(:metadata), type: "application/xml", filename: "#{params[:id]}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml"
+        send_data interview.metadata_xml(params[:locale]), type: "application/xml", filename: "#{params[:id]}_metadata_datacite_#{DateTime.now.strftime("%Y_%m_%d")}.xml"
       end
     end
   end
@@ -270,29 +273,25 @@ class InterviewsController < ApplicationController
   def export_all
     interview = Interview.find_by_archive_id(params[:id])
     authorize interview
-    zip_path = CompleteExport.new(params[:id], current_project).process
+    zip = CompleteExport.new(params[:id], current_project).process
+    zip.rewind
     respond_to do |format|
       format.zip do
-        File.open(zip_path, 'r') do |f|
-          send_data f.read, type: "application/zip", filename: "#{params[:id]}_complete_#{DateTime.now.strftime("%Y_%m_%d")}.zip"
-        end
+        send_data zip.read, type: "application/zip", filename: "#{params[:id]}_complete_#{DateTime.now.strftime("%Y_%m_%d")}.zip"
       end
     end
-    File.delete(zip_path) if File.exist?(zip_path)
   end
 
   def export_photos
     interview = Interview.find_by_archive_id(params[:id])
     authorize interview
-    zip_path = PhotoExport.new(params[:id], current_project).process
+    zip = PhotoExport.new(params[:id], current_project).process
+    zip.rewind
     respond_to do |format|
       format.zip do
-        File.open(zip_path, 'r') do |f|
-          send_data f.read, type: "application/zip", filename: "#{params[:id]}_photos_#{DateTime.now.strftime("%Y_%m_%d")}.zip"
-        end
+        send_data zip.read, type: "application/zip", filename: "#{params[:id]}_photos_#{DateTime.now.strftime("%Y_%m_%d")}.zip"
       end
     end
-    File.delete(zip_path) if File.exist?(zip_path)
   end
 
   def dois

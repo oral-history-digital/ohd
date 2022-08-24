@@ -93,4 +93,14 @@ module Interview::Export
     )
   end
 
+  def metadata_xml(locale)
+    ApplicationController.new.render_to_string(
+      template: 'interviews/metadata.xml',
+      locals: {
+        interview: self,
+        locale: locale,
+      }
+    )
+  end
+
 end
