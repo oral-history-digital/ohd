@@ -1,6 +1,6 @@
 class EditTableExport
 
-  attr_accessor :file_path, :interview, :contributions, :original_locale, :translation_locale
+  attr_accessor :interview, :contributions, :original_locale, :translation_locale
 
   def initialize(public_interview_id)
     @interview = Interview.find_by_archive_id(public_interview_id)
@@ -11,11 +11,10 @@ class EditTableExport
     @original_locale = @interview.lang.to_s
     @translation_locale = (@interview.languages - [@interview.lang]).first ||
       (@interview.project.available_locales - [@interview.lang]).first.to_s
-    @file_path = File.join(Rails.root, 'tmp', 'files', "#{@interview.archive_id}_er_#{DateTime.now.strftime("%Y_%m_%d")}.csv")
   end
 
   def process
-    CSV.open(file_path, 'w', col_sep: "\t", quote_char: "\x00") do |f|
+    CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |f|
 
       f << [
         'Band',
@@ -75,7 +74,6 @@ class EditTableExport
         end
       end
     end
-    file_path
   end
 
 end
