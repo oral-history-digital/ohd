@@ -280,12 +280,12 @@ es:
   help: Ayuda
   usage_application: Solicitud de uso
   save_interview_reference: Recordar entrevista
-  save_interview_reference_tooltip: Add interview to workbook
-  save_user_annotation: Redactar una anotación
+  save_interview_reference_tooltip: Agregar a la carpeta
+  save_user_annotation: Recordar segmento
   save_search: Guardar búsqueda
-  call_search: Abrir búsqueda
-  call_interview_reference: Abrir entrevista
-  call_user_annotation: Ir a un punto en la entrevista
+  call_search: Mostrar resultados
+  call_interview_reference: Mostrar entrevista
+  call_user_annotation: Ir al segmento
   title: Título
   description: Descripción
   registry_reference_types:
@@ -525,7 +525,7 @@ es:
   enter_field_dg: Apellido, Seudónimo, Término de búsqueda, ...
   saved_searches: Resultados de búsqueda
   saved_interviews: Entrevistas
-  saved_annotations: Anotaciones
+  saved_annotations: Segmentos
   text_materials: Textos
   download_registry_entries: 'Descargar el índice completo como %{format} (%{locale})'
   search_registry_entry: Buscar entrada en el índice
@@ -1298,8 +1298,8 @@ es:
       auto_scroll:
         enable: "enable auto-scrolling transcript"
         disable: "disable auto-scrolling transcript"
-      copy_position: Copy position
-      copy_position_tooltip: Copy current timestamp as URL
+      copy_position: Copiar posición
+      copy_position_tooltip: Copiar codigo de tiempo como enlace
     registry:
       name_missing: "registry name missing"
     routes:
@@ -1347,10 +1347,10 @@ es:
     ui:
       admin_menu:
         actions: Actions
-      copy_link: Copy URL
+      copy_link: Copiar enlace
     workbook:
       delete: Eliminar de la carpeta
-      edit: Edit
-      note: Note
+      edit: Editar
+      note: Nota
       project_unavailable: Archive not available anymore.
       segment_link: Segment Link
