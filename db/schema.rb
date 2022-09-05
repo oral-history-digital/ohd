@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_08_31_191026) do
+ActiveRecord::Schema.define(version: 2022_09_05_153455) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -58,6 +58,7 @@ ActiveRecord::Schema.define(version: 2022_08_31_191026) do
   create_table "archiving_batches", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.integer "number", null: false
     t.bigint "project_id", null: false
+    t.string "completed"
     t.index ["project_id"], name: "index_archiving_batches_on_project_id"
   end
 
@@ -424,6 +425,7 @@ ActiveRecord::Schema.define(version: 2022_08_31_191026) do
     t.string "birth_name", limit: 255
     t.string "other_first_names", limit: 255
     t.string "alias_names", limit: 255
+    t.text "description"
     t.index ["locale"], name: "index_person_translations_on_locale", length: 191
     t.index ["person_id"], name: "index_person_translations_on_person_id"
   end

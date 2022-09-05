@@ -18,8 +18,12 @@ class Person < ApplicationRecord
 
   validates :gender, inclusion: %w(male female diverse), allow_nil: true
 
-  translates :first_name, :last_name, :birth_name, :other_first_names, :alias_names, fallbacks_for_empty_translations: true, touch: true
+  translates :first_name, :last_name, :birth_name, :other_first_names,
+    :alias_names, :description,
+    fallbacks_for_empty_translations: true, touch: true
   accepts_nested_attributes_for :translations
+
+  validates_length_of :description, maximum: 1000
 
   serialize :properties
 
