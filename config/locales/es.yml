@@ -934,6 +934,7 @@ es:
         segmentators: Segmentación
         language: Idioma
         language_id: Idioma original
+        translation_language_id: Übersetzungssprache
         media_type: Formato de medio
         translated: se ha traducido la entrevista?
         workflow_state: estatus

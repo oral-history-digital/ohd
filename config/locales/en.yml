@@ -943,6 +943,7 @@ en:
         segmentators: Segmentierung
         language: Sprache
         language_id: Originalsprache
+        translation_language_id: Übersetzungssprache
         media_type: Media Typ
         translated: ist das Interview bereits übersetzt?
         workflow_state: Interview-Status

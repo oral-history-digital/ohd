@@ -9,6 +9,8 @@ class Interview < ApplicationRecord
   belongs_to :project
   belongs_to :collection
   belongs_to :language
+  belongs_to :translation_language,
+             class_name: 'Language'
 
   has_many :photos,
            #-> {includes(:interview, :translations)},
@@ -386,7 +388,11 @@ class Interview < ApplicationRecord
   end
 
   def languages
-    if segments.length > 0
+    if language && translation_language
+      [language, translation_language].map do |l|
+        ISO_639.find(l.first_code).try(:alpha2) || l.first_code
+      end
+    elsif segments.length > 0
       segments.joins(:translations).where.not("segment_translations.text": [nil, '']).group(:locale).count.keys.map{|k| k.split('-').first}.uniq
     elsif language
       [ISO_639.find(language.first_code).try(:alpha2) || language.first_code]

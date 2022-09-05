@@ -946,6 +946,7 @@ el:
         segmentators: Τεμαχισμός
         language: Γλώσσα
         language_id: Γλώσσα
+        translation_language_id: Übersetzungssprache
         media_type: Τύπος μέσου
         translated: η συνέντευξη έχει ήδη μεταφραστεί;
         workflow_state: 'Κατάσταση'

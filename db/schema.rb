@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_05_17_134918) do
+ActiveRecord::Schema.define(version: 2022_08_31_191026) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci", force: :cascade do |t|
     t.string "name", limit: 255, null: false
@@ -297,6 +297,7 @@ ActiveRecord::Schema.define(version: 2022_05_17_134918) do
     t.integer "registry_references_count", default: 0
     t.string "original_content_type"
     t.integer "startpage_position"
+    t.integer "translation_language_id"
     t.index ["startpage_position"], name: "index_interviews_on_startpage_position"
   end
 

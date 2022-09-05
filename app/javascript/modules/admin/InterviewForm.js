@@ -86,6 +86,14 @@ export default class InterviewForm extends Component {
             },
             {
                 elementType: 'select',
+                attribute: 'translation_language_id',
+                values: this.props.languages,
+                value: this.props.interview && this.props.interview.language_id,
+                withEmpty: true,
+                //validate: function(v){return /^\d+$/.test(v)},
+            },
+            {
+                elementType: 'select',
                 attribute: 'collection_id',
                 values: this.props.collections,
                 value: this.props.interview && this.props.interview.collection_id,
