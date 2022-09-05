@@ -28,7 +28,7 @@ const mapStateToProps = (state) => {
         sortAttributeTranslated: true,
         baseTabIndex: 4 + getProjectHasMap(state),
         //detailsAttributes: ['name'],
-        detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth', 'typology'],
+        detailsAttributes: ['first_name', 'last_name', 'birth_name', 'alias_names', 'other_first_names', 'date_of_birth'],
         initialFormValues: {project_id: project.id},
         formElements: [
             {
