@@ -509,7 +509,7 @@ en:
       title: Transkript hochladen
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhalten Sie eine Email.'
     default:
-      show: Description
+      show: Display
       edit: Edit
       new: Hinzufügen
       return: Weiter

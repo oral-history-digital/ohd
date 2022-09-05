@@ -535,7 +535,7 @@ de:
     administration: Verwaltung
     indexing: Erschliessung
     default:
-      show: Beschreibung
+      show: Ansicht
       edit: Bearbeiten
       new: Hinzufügen
       return: Weiter
