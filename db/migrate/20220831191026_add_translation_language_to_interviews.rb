@@ -7,12 +7,10 @@ class AddTranslationLanguageToInterviews < ActiveRecord::Migration[5.2]
         group(:locale).count.keys.
         map{|k| k.split('-').first}.uniq
       translation_locale = (locales - [interview.lang]).first
-      binding.pry
       if translation_locale
         t = ISO_639.find(translation_locale)
         translation_language = Language.where(code: t.alpha3_bibliographic).first ||
           Language.where(code: t.alpha3_terminologic).first
-        binding.pry
         interview.update_attributes(translation_language_id: translation_language.id) if translation_language
       end
     end
