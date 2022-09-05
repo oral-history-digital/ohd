@@ -3,9 +3,9 @@ import { FaPlus, FaMinus } from 'react-icons/fa';
 import PropTypes from 'prop-types';
 import classNames from 'classnames';
 
-import UserContentContainer from './UserContentContainer';
+import WorkbookItemContainer from './WorkbookItemContainer';
 
-export default function UserContents({
+export default function WorkbookItemList({
     contents,
     title,
 }) {
@@ -31,10 +31,11 @@ export default function UserContents({
             </button>
             <div className={classNames('panel', {'open': open})}>
                 {
-                    contents && contents.map(content => (
-                        <UserContentContainer
+                    contents && contents.map((content, index, array) => (
+                        <WorkbookItemContainer
                             key={content.id}
                             data={content}
+                            className={index < array.length - 1 ? 'u-mb' : null}
                         />
                     ))
                 }
@@ -43,7 +44,7 @@ export default function UserContents({
     );
 }
 
-UserContents.propTypes = {
+WorkbookItemList.propTypes = {
     contents: PropTypes.array,
     title: PropTypes.string,
 };

@@ -1,4 +1,4 @@
-export default function t(props, key, params) {
+export default function t({ locale, translations }, key, params) {
     let text, defaultKey;
     let keyArray = key.split('.');
     let productionFallback = keyArray[keyArray.length - 1];
@@ -10,11 +10,11 @@ export default function t(props, key, params) {
 
     try {
         try {
-            eval(`text = props.translations.${props.locale}.${key}`);
+            eval(`text = translations.${locale}.${key}`);
         } catch (e) {
         } finally {
             if (typeof(text) !== 'string') {
-                eval(`text = props.translations.${props.locale}.${defaultKey}`);
+                eval(`text = translations.${locale}.${defaultKey}`);
             }
         }
     } catch (e) {
@@ -28,7 +28,7 @@ export default function t(props, key, params) {
             return text
         } else {
             if (developmentMode === 'true') {
-                return `translation for ${props.locale}.${key} is missing!`;
+                return `translation for ${locale}.${key} is missing!`;
             } else {
                 return productionFallback;
             }

@@ -512,7 +512,7 @@ el:
       title: Transkript hochladen
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhalten Sie eine Email.'
     default:
-      show: Beschreibung
+      show: Display
       edit: Bearbeiten
       new: Hinzufügen
       return: Weiter
@@ -1391,8 +1391,20 @@ el:
         actions: Actions
       copy_link: Αντιγραφή URL
     workbook:
+      from: from
       delete: Διαγραφή από φάκελο εργασίας
       edit: Επεξεργασία
       note: Σημείωση
       project_unavailable: Archive not available anymore.
+      segment: Segment
       segment_link: Segment Link
+      cite: απόσπασμα
+      citation: citation
+      copy_citation: Copy citation
+      position: Position
+      full_text_search: Αναζήτηση πλήρους κειμένου
+      filter: Φίλτρο
+      default_titles:
+        search_for_term: 'Search for "%{searchTerm}"'
+        search_for_term_and_filters: 'Search for "%{searchTerm}", %{numFilters} filters'
+        and_filters_more: 'and %{numFilters} more'

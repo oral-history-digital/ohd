@@ -504,7 +504,7 @@ es:
       title: Transkript hochladen
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhalten Sie eine Email.'
     default:
-      show: Beschreibung
+      show: Display
       edit: Bearbeiten
       new: Hinzufügen
       return: Weiter
@@ -1350,8 +1350,20 @@ es:
         actions: Actions
       copy_link: Copiar enlace
     workbook:
+      from: from
       delete: Eliminar de la carpeta
       edit: Editar
       note: Nota
       project_unavailable: Archive not available anymore.
+      segment: Segmento
       segment_link: Segment Link
+      cite: cita
+      citation: citation
+      copy_citation: Copy citation
+      position: Position
+      full_text_search: Búsqueda de texto completa
+      filter: Filtro
+      default_titles:
+        search_for_term: 'Search for "%{searchTerm}"'
+        search_for_term_and_filters: 'Search for "%{searchTerm}", %{numFilters} filters'
+        and_filters_more: 'and %{numFilters} more'

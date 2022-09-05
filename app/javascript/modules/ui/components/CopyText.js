@@ -6,19 +6,22 @@ import { CopyToClipboard } from 'react-copy-to-clipboard';
 import { useI18n } from 'modules/i18n';
 import { useCopyState } from 'modules/react-toolbox';
 
-export default function CopyLink({
+export default function CopyText({
     className,
     iconClassName,
-    url,
+    text,
     title,
+    iconComponent = FaCopy,
     children,
 }) {
     const { copied, setToCopied } = useCopyState();
     const { t } = useI18n();
 
+    const IconComponent = iconComponent;
+
     return (
         <CopyToClipboard
-            text={url}
+            text={text}
             onCopy={setToCopied}
         >
             <button
@@ -28,20 +31,23 @@ export default function CopyLink({
                 aria-label={t('modules.ui.copy_link')}
                 title={title || t('modules.ui.copy_link')}
             >
-                <FaCopy
+                <IconComponent
                     className={classNames('Icon', copied ?
                         'Icon--attention' : iconClassName)}
-                /> {children}
+                />
+                {' '}
+                {children}
             </button>
         </CopyToClipboard>
     );
 }
 
-CopyLink.propTypes = {
+CopyText.propTypes = {
     className: PropTypes.string,
     iconClassName: PropTypes.string,
-    url: PropTypes.string.isRequired,
+    text: PropTypes.string.isRequired,
     title: PropTypes.string,
+    iconComponent: PropTypes.node,
     children: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.node),
         PropTypes.node,

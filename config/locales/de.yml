@@ -535,7 +535,7 @@ de:
     administration: Verwaltung
     indexing: Erschliessung
     default:
-      show: Beschreibung
+      show: Ansicht
       edit: Bearbeiten
       new: Hinzufügen
       return: Weiter
@@ -1383,8 +1383,20 @@ de:
         actions: Aktionen
       copy_link: URL kopieren
     workbook:
+      from: vom
       delete: Aus Arbeitsmappe entfernen
       edit: Bearbeiten
       note: Notiz
       project_unavailable: Archiv nicht mehr verfügbar.
       segment_link: Segment-Link
+      segment: Segment
+      cite: zitieren
+      citation: Zitat
+      copy_citation: Zitat kopieren
+      position: Position
+      full_text_search: Volltextsuche
+      filter: Filter
+      default_titles:
+        search_for_term: 'Suche nach "%{searchTerm}"'
+        search_for_term_and_filters: 'Suche nach "%{searchTerm}", %{numFilters} Filter'
+        and_filters_more: 'und %{numFilters} weitere'

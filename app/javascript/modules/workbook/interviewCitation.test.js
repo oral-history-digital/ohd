@@ -1,0 +1,41 @@
+import interviewCitation from './interviewCitation';
+import timekeeper from 'timekeeper';
+
+const interview = {
+    anonymous_title: { de: 'Alice H.' },
+    archive_id: 'da001',
+    interview_date: '18.06.2005',
+};
+const project = {
+    archive_domain: 'http://www.example.com:3000',
+    name: { de: 'Dummy Archive' },
+};
+const pathBase = '/de';
+const locale = 'de';
+const translations = { de: { interview: 'Interview' } };
+
+beforeAll(() => {
+    // Lock Time
+    timekeeper.freeze(new Date('2014-01-01'));
+});
+
+afterAll(() => {
+    // Unlock Time
+    timekeeper.reset();
+});
+
+test('creates citation string for interviews', () => {
+    const actual = interviewCitation(interview, project, pathBase, locale,
+        translations);
+    const expected = 'Alice H., Interview da001, 18.06.2005, Dummy Archive, http://www.example.com:3000/de/interviews/da001, 1.1.2014';
+
+    expect(actual).toEqual(expected);
+});
+
+test('creates citation string for segments', () => {
+    const actual = interviewCitation(interview, project, pathBase, locale,
+        translations, 1, 3245);
+    const expected = 'Alice H., Interview da001, 18.06.2005, Position: 1 – 0:54:05, Dummy Archive, http://www.example.com:3000/de/interviews/da001?tape=1&time=0h54m05s, 1.1.2014';
+
+    expect(actual).toEqual(expected);
+});

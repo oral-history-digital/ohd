@@ -2,11 +2,10 @@ import PropTypes from 'prop-types';
 import { FaStar } from 'react-icons/fa';
 import classNames from 'classnames';
 
-import { defaultTitle } from 'modules/interview-helpers';
-import { UserContentFormContainer } from 'modules/workbook';
+import { WorkbookItemFormContainer } from 'modules/workbook';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
-import { Modal, CopyLink } from 'modules/ui';
+import { Modal, CopyText } from 'modules/ui';
 import { formatTimecode } from 'modules/interview-helpers';
 
 export default function MediaControls({
@@ -16,7 +15,7 @@ export default function MediaControls({
     interview,
     setTape,
 }) {
-    const { t, locale } = useI18n();
+    const { t } = useI18n();
     const pathBase = usePathBase();
 
     function handleTapeChange(e) {
@@ -57,8 +56,7 @@ export default function MediaControls({
                     triggerClassName="MediaControls-bookmark"
                 >
                     {closeModal => (
-                        <UserContentFormContainer
-                            title={defaultTitle(interview, locale)}
+                        <WorkbookItemFormContainer
                             description=""
                             properties={{title: interview.title}}
                             reference_id={interview.id}
@@ -71,14 +69,14 @@ export default function MediaControls({
                         />
                     )}
                 </Modal>
-                <CopyLink
+                <CopyText
                     className="MediaControls-bookmark"
                     iconClassName="Icon--white"
-                    url={positionUrl}
+                    text={positionUrl}
                     title={t('modules.media_player.copy_position_tooltip')}
                 >
                     {t('modules.media_player.copy_position')}
-                </CopyLink>
+                </CopyText>
             </div>
         </div>
     );

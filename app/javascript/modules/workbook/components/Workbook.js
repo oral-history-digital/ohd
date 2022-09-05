@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { useI18n } from 'modules/i18n';
 import { usePathBase } from 'modules/routes';
 import { Spinner } from 'modules/spinners';
-import UserContents from './UserContents';
+import WorkbookItemList from './WorkbookItemList';
 
 export default function Workbook({
     account,
@@ -30,15 +30,15 @@ export default function Workbook({
 
     return (
         <div>
-            <UserContents
+            <WorkbookItemList
                 contents={workbookSearches}
                 title={t('saved_searches')}
             />
-            <UserContents
+            <WorkbookItemList
                 contents={workbookInterviews}
                 title={t('saved_interviews')}
             />
-            <UserContents
+            <WorkbookItemList
                 contents={workbookAnnotations}
                 title={t('saved_annotations')}
             />

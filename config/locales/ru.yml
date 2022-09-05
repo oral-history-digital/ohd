@@ -554,7 +554,7 @@ ru:
       title: Transkript hochladen
       processing: 'Das Transkript für %{archiveId} wird jetzt eingelesen. Sobald der Prozeß beendet ist erhalten Sie eine Email.'
     default:
-      show: Beschreibung
+      show: Display
       edit: Bearbeiten
       new: Hinzufügen
       return: Weiter
@@ -1804,8 +1804,20 @@ ru:
         actions: Actions
       copy_link: Копировать URL
     workbook:
+      from: from
       delete: Удалить из Рабочей тетради
       edit: Редактировать
       note: Примечание
       project_unavailable: Archive not available anymore.
+      segment: Сегмент
       segment_link: Segment Link
+      cite: цитата
+      citation: citation
+      copy_citation: Copy citation
+      position: Position
+      full_text_search: Полнотекстовый поиск
+      filter: фильтр
+      default_titles:
+        search_for_term: 'Search for "%{searchTerm}"'
+        search_for_term_and_filters: 'Search for "%{searchTerm}", %{numFilters} filters'
+        and_filters_more: 'and %{numFilters} more'

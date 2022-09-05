@@ -1,20 +1,15 @@
-import { Fragment } from 'react';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
-import SubmitInterviewIds from './SubmitInterviewIds';
 import { usePathBase } from 'modules/routes';
 import { useI18n } from 'modules/i18n';
 
 export default function DownloadLinks({
     archiveId,
     numTapes,
-    languages,
     interview,
 }) {
     const pathBase = usePathBase();
     const translationLocale = interview.languages?.filter(locale => locale !== interview.lang)[0];
-    const { t } = useI18n();
 
     return (
         <div>
@@ -69,5 +64,5 @@ function dataLink(link, title) {
 DownloadLinks.propTypes = {
     archiveId: PropTypes.string.isRequired,
     numTapes: PropTypes.number.isRequired,
-    languages: PropTypes.array.isRequired,
+    interview: PropTypes.object.isRequired,
 };

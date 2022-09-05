@@ -1,4 +1,4 @@
-import queryToText from './queryToText';
+import queryToTitle from './queryToTitle';
 
 const query = {
     fulltext: 'athen',
@@ -96,16 +96,70 @@ const facets = {
     },
 };
 
+const translations = {
+    de: {
+        modules: {
+            workbook: {
+                default_titles: {
+                    search_for_term: 'Suche nach "%{searchTerm}"',
+                    search_for_term_and_filters: 'Suche nach "%{searchTerm}", %{numFilters} Filter',
+                    filter: 'Filter',
+                    and_filters_more: 'und %{numFilters} weitere',
+                },
+            },
+        },
+    },
+};
+
 test('converts queries to readable titles', () => {
-    const actual = queryToText(query, facets, 'de', {});
-    const expected = 'fulltext: athen - gender: weiblich, männlich - typology: Flucht';
+    const actual = queryToTitle(query, facets, 'de', translations);
+    const expected = 'Suche nach "athen", 3 Filter';
+
+    expect(actual).toEqual(expected);
+});
+
+test('produces title for fulltext only queries', () => {
+    const actual = queryToTitle({ fulltext: 'athen' }, facets, 'de', translations);
+    const expected = 'Suche nach "athen"';
+
+    expect(actual).toEqual(expected);
+});
+
+test('produces title for 3 filters', () => {
+    const clonedQuery = {...query};
+    delete clonedQuery.fulltext;
+    const actual = queryToTitle(clonedQuery, facets, 'de', translations);
+    const expected = 'Filter weiblich, männlich und 1 weitere';
+
+    expect(actual).toEqual(expected);
+});
+
+test('produces title for 2 filters', () => {
+    const query = {
+        gender: ['male'],
+        typology: ['646776'],
+    };
+    const actual = queryToTitle(query, facets, 'de', translations);
+    const expected = 'Filter männlich, Flucht';
+
+    expect(actual).toEqual(expected);
+});
+
+test('produces title for 1 filter', () => {
+    const query = { gender: ['male'] };
+    const actual = queryToTitle(query, facets, 'de', translations);
+    const expected = 'Filter männlich';
 
     expect(actual).toEqual(expected);
 });
 
 test('also works without facets being available', () => {
-    const actual = queryToText(query, undefined, 'de', {});
-    const expected = 'fulltext: athen - gender: female, male - typology: 646776';
+    const query = {
+        gender: ['male'],
+        typology: ['646776'],
+    };
+    const actual = queryToTitle(query, undefined, 'de', translations);
+    const expected = 'Filter male, 646776';
 
     expect(actual).toEqual(expected);
 });

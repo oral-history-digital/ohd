@@ -1,12 +1,11 @@
 import PropTypes from 'prop-types';
 import { FaStar } from 'react-icons/fa';
-import moment from 'moment';
 
 import { useI18n } from 'modules/i18n';
 import { Modal } from 'modules/ui';
-import { UserContentFormContainer } from 'modules/workbook';
+import { WorkbookItemFormContainer } from 'modules/workbook';
 import { useSearchParams } from 'modules/query-string';
-import queryToText from '../queryToText';
+import queryToTitle from '../queryToTitle';
 import useFacets from '../useFacets';
 
 export default function SearchActions({
@@ -17,14 +16,21 @@ export default function SearchActions({
     const { facets } = useFacets();
     const { allParams } = useSearchParams();
 
-    function saveSearchForm(closeModal) {
-        moment.locale(locale);
-        const now = moment().format('lll');
-        const queryText = queryToText(allParams, facets, locale, translations);
-        const title = queryText === '' ? now : `${queryText} - ${now}`;
+    function showSaveButton() {
+        const searchTerm = allParams.fulltext;
+        const facetValues = Object.values(allParams)
+            .filter(val => Array.isArray(val))
+            .flat();
+        const numFilters = facetValues.length;
 
-        return <UserContentFormContainer
-            title={title}
+        return searchTerm || numFilters > 0;
+    }
+
+    function saveSearchForm(closeModal) {
+        const queryTitle = queryToTitle(allParams, facets, locale, translations);
+
+        return <WorkbookItemFormContainer
+            title={queryTitle}
             description=''
             properties={allParams}
             type='Search'
@@ -32,6 +38,10 @@ export default function SearchActions({
             onSubmit={closeModal}
             onCancel={closeModal}
         />
+    }
+
+    if (!showSaveButton()) {
+        return null;
     }
 
     return (
