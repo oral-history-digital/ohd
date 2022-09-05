@@ -24,7 +24,8 @@ export default function DownloadLinks({
                 { translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'csv') }
                 { translationLocale && LinksForTapes(pathBase, archiveId, numTapes, translationLocale, 'vtt') }
                 { dataLink(`${pathBase}/edit_tables/${archiveId}.csv`, 'Erschließungstabelle bandübergreifend (csv)') }
-                { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip`, 'Fotos') }
+                { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip`, 'Fotos (alle)') }
+                { dataLink(`${pathBase}/interviews/${archiveId}/export_photos.zip?only_public=true`, 'Fotos (nur öffentliche)') }
                 { dataLink(`${pathBase}/interviews/${archiveId}/download_metadata.xml`, 'Metadaten (DataCite)') }
                 { dataLink(`${pathBase}/interviews/${archiveId}/export_all.zip`, 'Alle Daten herunterladen') }
             </ul>

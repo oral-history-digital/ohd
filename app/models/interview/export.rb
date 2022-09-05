@@ -24,11 +24,13 @@ module Interview::Export
     end
   end
 
-  def photos_csv(locale)
+  def photos_csv(locale, only_public)
     CSV.generate(headers: true, col_sep: "\t", row_sep: :auto, quote_char: "\x00") do |f|
       f << ['Interview-ID', 'Bild-ID', 'Dateiname', 'Beschreibung', 'Datum', 'Ort', 'Fotograf*in/Urheber*in', 'Quelle/Lizenz', 'Format', 'Öffentlich']
 
-      photos.each do |photo|
+      photos_to_export = only_public ? photos.where(workflow_state: 'public') : photos
+
+      photos_to_export.each do |photo|
         f << [
           archive_id,
           photo.public_id,
