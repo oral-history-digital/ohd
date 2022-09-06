@@ -1358,9 +1358,9 @@ es:
       segment: Segmento
       segment_link: Segment Link
       cite: cita
-      citation: citation
-      copy_citation: Copy citation
-      position: Position
+      citation: citación
+      copy_citation: Copiar citación
+      position: Posición
       full_text_search: Búsqueda de texto completa
       filter: Filtro
       default_titles:
