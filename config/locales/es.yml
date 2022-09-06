@@ -1350,7 +1350,7 @@ es:
         actions: Actions
       copy_link: Copiar enlace
     workbook:
-      from: from
+      from: del
       delete: Eliminar de la carpeta
       edit: Editar
       note: Nota
