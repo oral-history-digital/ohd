@@ -76,7 +76,7 @@ class EditTableImport
 
   def create_references(row, interview, ref_object)
     row[:registry_references] && row[:registry_references].split('#').each do |registry_entry_id|
-      registry_entry = RegistryEntry.find(registry_entry_id)
+      registry_entry = RegistryEntry.find(registry_entry_id) rescue nil
       if registry_entry
         RegistryReference.create(
           registry_entry_id: registry_entry_id,
@@ -90,7 +90,7 @@ class EditTableImport
           workflow_state: "checked",
           interview_id: interview.id
         )
-        registry_entry.touch
+        registry_entry && registry_entry.touch
       end
     end
   end
@@ -99,7 +99,7 @@ class EditTableImport
     annotations_trans = row[:annotations_trans] && row[:annotations_trans].split('#')
     row[:annotations] && row[:annotations].split('#').each_with_index do |text, index|
 
-      translation = annotations_trans[index]
+      translation = annotations_trans && annotations_trans[index]
 
       original_annotation = text && {
         text: text,
