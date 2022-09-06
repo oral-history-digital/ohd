@@ -1,7 +1,7 @@
 FactoryBot.define do
   factory :user_annotation do
     #segment
-    user
+    user_account
     sequence(:media_id){|n| "ZA907_01_01_0#{n}" }
     description { 'Oh nein ...' }
     #reference

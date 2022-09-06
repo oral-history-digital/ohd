@@ -5,10 +5,6 @@ FactoryBot.define do
     workflow_state { "public" }
     list_priority { 0 }
     association :project 
-
-    after :create do |registry_entry|
-      create_list :registry_name, 2, registry_entry: registry_entry
-    end
   end
 
   factory :registry_hierarchy do
@@ -18,31 +14,22 @@ FactoryBot.define do
 
   factory :registry_name do
     association :registry_entry
-    #association :registry_name_type
+    association :registry_name_type
     registry_name_type_id { 1 }
     name_position { 1 }
-    after :create do |registry_name|
-      create_list :registry_name_translation, 2, registry_name_id: registry_name.id
-    end
   end
 
   factory :registry_name_translation, class: RegistryName::Translation do
     association :registry_name
-    sequence(:locale){|n| "de_#{n}" }
-    #locale { "de" }
+    locale { "de" }
     descriptor { "Orte" }
   end
 
   factory :registry_name_type do
-    after :create do |registry_name_type|
-      create_list :registry_name_type_translation, 2, registry_name_type: registry_name_type
-    end
-  end
-
-  factory :registry_name_type_translation do
-    association :registry_name_type
-    locale { "de" }
-    descriptor { "Orte" }
+    code {"spelling"}
+    name {"Bezeichner"}
+    order_priority { 0 }
+    project
   end
 
   factory :registry_reference_type do
@@ -51,5 +38,21 @@ FactoryBot.define do
     name { 'Geburtsort' }
   end
 
+  factory :registry_reference do
+    registry_entry
+    interview
+    association :ref_object, factory: :segment
+    registry_reference_type 
+  end
+
 end
 
+def registry_entry_with_names(names={de: 'Deutschland', ru: 'Герма́ния'})
+  FactoryBot.create(:registry_entry) do |registry_entry|
+    registry_name = FactoryBot.create :registry_name, registry_entry: registry_entry
+    names.each do |locale, descriptor|
+      FactoryBot.create(:registry_name_translation, registry_name_id: registry_name.id, descriptor: descriptor, locale: locale)
+    end
+    registry_entry.reload
+  end
+end
