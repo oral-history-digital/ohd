@@ -7,7 +7,7 @@ import { AdminMenu } from 'modules/ui';
 import { DeleteItemForm } from 'modules/forms';
 import BaseData from './BaseData';
 import JoinedData from './JoinedData';
-import DataDetailsContainer from './DataDetailsContainer';
+import DataDetails from './DataDetails';
 
 const Item = AdminMenu.Item;
 
@@ -73,7 +73,7 @@ export default function Data({
                             label={t('edit.default.show')}
                             dialogTitle={name}
                         >
-                            <DataDetailsContainer
+                            <DataDetails
                                 detailsAttributes={detailsAttributes}
                                 data={data}
                                 scope={scope}
@@ -90,7 +90,7 @@ export default function Data({
                             {close => (
                                 <>
                                     {hideShow && (
-                                        <DataDetailsContainer
+                                        <DataDetails
                                             detailsAttributes={detailsAttributes}
                                             data={data}
                                             scope={scope}

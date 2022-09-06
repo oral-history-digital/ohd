@@ -29,7 +29,7 @@ class Person < ApplicationRecord
 
   after_create :set_public_attributes_to_properties
   def set_public_attributes_to_properties
-    atts = %w(first_name last_name alias_names other_first_names gender date_of_birth)
+    atts = %w(first_name last_name alias_names other_first_names gender date_of_birth description)
     update_attributes properties: (properties || {}).update(public_attributes: atts.inject({}){|mem, att| mem[att] = true; mem})
   end
 
@@ -113,10 +113,10 @@ class Person < ApplicationRecord
   def names
     translations.inject({}) do |mem, translation|
       mem[translation.locale] = {
-        firstname: translation.first_name || first_name(I18n.default_locale),
-        lastname: translation.last_name || last_name(I18n.default_locale),
-        aliasname: translation.alias_names || alias_names(I18n.default_locale),
-        birthname: translation.birth_name || birth_name(I18n.default_locale),
+        first_name: translation.first_name || first_name(I18n.default_locale),
+        last_name: translation.last_name || last_name(I18n.default_locale),
+        alias_name: translation.alias_names || alias_names(I18n.default_locale),
+        birth_name: translation.birth_name || birth_name(I18n.default_locale),
       }
       mem
     end
