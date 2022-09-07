@@ -1,14 +1,15 @@
 import { t } from 'modules/i18n';
 
 import { formatTimecode } from 'modules/interview-helpers';
+import { OHD_LOCATION } from 'modules/constants';
 
 export default function interviewCitation(interview, project, pathBase, locale,
     translations, tape, time) {
-    const archiveDomain = project.archive_domain;
+    const domain = project.archive_domain || OHD_LOCATION;
     const projectName = project.name;
     let selfLink;
-    if (archiveDomain) {
-        selfLink = `${archiveDomain}${pathBase}/interviews/${interview.archive_id}`;
+    if (domain) {
+        selfLink = `${domain}${pathBase}/interviews/${interview.archive_id}`;
     }
     if (tape && time) {
         selfLink += `?tape=${tape}&time=${formatTimecode(time, true)}`;

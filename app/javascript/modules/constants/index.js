@@ -28,5 +28,6 @@ export const VIEWMODE_GRID = 'grid';
 export const VIEWMODE_LIST = 'list';
 export const VIEWMODE_WORKFLOW = 'workflow';
 
+export const OHD_LOCATION = 'https://portal.oral-history.digital';
 export const OHD_USAGE_URL = 'https://www.oral-history.digital/impressum/nutzungsbedingungen/index.html';
 export const OHD_PRIVACY_URL = 'https://www.oral-history.digital/impressum/datenschutzhinweise/index.html';
