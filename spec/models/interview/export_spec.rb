@@ -7,18 +7,24 @@ describe Interview::Export do
   end
   subject(:interview){@interview}
 
+  describe 'exporting to vtt' do
+    it 'should write the original transcript of tape 1' do
+      @vtt = interview.to_vtt(:ru, 1)
+      expect(@vtt).to eq("WEBVTT\n\n1\n00:00:02.000 --> 00:00:09.000\nИтак, сегодня 10-ое сентября 2005-го года, и мы находимся в гостях у Константина Войтовича Адамца\n")
+    end
+
+    it 'should write the original transcript of tape 2' do
+      @vtt = interview.to_vtt(:ru, 2)
+      expect(@vtt).to eq("WEBVTT\n\n1\n00:02:02.000 --> 00:02:09.000\nИ, я бы попросил Вас, Константин Войтович, расскажите, пожалуйста, историю Вашей жизни\n")
+    end
+
+    it 'should write the translation of tape 1' do
+      @vtt = interview.to_vtt(:de, 1)
+      expect(@vtt).to eq("WEBVTT\n\n1\n00:00:02.000 --> 00:00:09.000\nAlso gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez\n")
+    end
+  end
+
   describe 'exporting to csv' do
-    #before(:all) do
-      #@rows = @csv.split(/\n/)
-      #@first_row_entries = @rows[1].split(/\t/)
-      #@second_row_entries = @rows[2].split(/\t/)
-    #end
-
-    #subject(:csv){@csv}
-    #subject(:rows){@rows}
-    #subject(:first_row_entries){@first_row_entries}
-    #subject(:second_row_entries){@second_row_entries}
-
     it 'should write the header correctly' do
       @csv = interview.to_csv(:ru, 1)
       @rows = @csv.split(/\n/)
