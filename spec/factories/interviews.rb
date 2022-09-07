@@ -51,6 +51,8 @@ end
 
 def interview_with_everything(interview_attibutes={})
   interview = interview_with_contributions(interview_attibutes)
+  photo = photo_with_translation(interview)
+
   first_tape = FactoryBot.create(:tape, interview: interview)
   second_tape = FactoryBot.create(:tape, interview: interview, number: 2)
   first_speaker = interview.contributions.first.person

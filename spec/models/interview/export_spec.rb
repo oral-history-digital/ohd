@@ -65,4 +65,41 @@ describe Interview::Export do
       expect(@first_row_entries[2]).to eq("Also gut, heute ist der 10. September 2005, und wir sind bei Konstantin Woitowitsch Adamez")
     end
   end
+
+  describe 'export photos csv' do
+    it 'should write the header correctly' do
+      @csv = interview.photos_csv(:ru, false)
+      @rows = @csv.split(/\n/)
+      @header_row_entries = @rows[0].split(/\t/)
+
+      expect(@header_row_entries[0]).to eq('Interview-ID')
+      expect(@header_row_entries[1]).to eq('Bild-ID')
+      expect(@header_row_entries[2]).to eq('Dateiname')
+      expect(@header_row_entries[3]).to eq('Beschreibung')
+      expect(@header_row_entries[4]).to eq('Datum')
+      expect(@header_row_entries[5]).to eq('Ort')
+      expect(@header_row_entries[6]).to eq('Fotograf*in/Urheber*in')
+      expect(@header_row_entries[7]).to eq('Quelle/Lizenz')
+      expect(@header_row_entries[8]).to eq('Format')
+      expect(@header_row_entries[9]).to eq('Öffentlich')
+    end
+
+    it 'should write correct csv' do
+      photo = interview.photos.first
+      @csv = interview.photos_csv(:de, false)
+      @rows = @csv.split(/\n/)
+      @first_row_entries = @rows[1].split(/\t/)
+
+      expect(@first_row_entries[0]).to eq(interview.archive_id)
+      expect(@first_row_entries[1]).to eq(photo.public_id)
+      expect(@first_row_entries[2]).to eq(photo.photo_file_name)
+      expect(@first_row_entries[3]).to eq(photo.caption(:de))
+      expect(@first_row_entries[4]).to eq(photo.date(:de))
+      expect(@first_row_entries[5]).to eq(photo.place(:de))
+      expect(@first_row_entries[6]).to eq(photo.photographer(:de))
+      expect(@first_row_entries[7]).to eq(photo.license(:de))
+      expect(@first_row_entries[8]).to eq(photo.photo_content_type)
+      expect(@first_row_entries[9]).to eq('ja')
+    end
+  end
 end
